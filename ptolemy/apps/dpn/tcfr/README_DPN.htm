@@ -1,0 +1,378 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<TITLE>PtolemyII Distributed Process Network (DPN) API README File</TITLE>
+</HEAD>
+<BODY>
+<H1 align="center">The PtolemyII DPN domain</H1>
+<H2 align="center">The Distributed Process Network API</H2>
+
+<!--  PtolemyII Distributed Process Network (DPN) API README File -->
+<!--  Version: $Id$ -->
+
+<XMP>
+
+0) Description
+
+   The PtolemyII DPN 1.0 consists of a Java package that introduces a
+   new domain in PtolemyII named "Distributed Process Network" (DPN).
+   The DPN domain supports the execution in a distributed context of
+   the Kahn Process Network (PN) domain of PtolemyII. For more
+   information on the PN domain, refer to the PtolemyII documentation.
+
+   The main difference between the PN and the DPN domain is the use of
+   a distributed fifo that enables the transfer of tokens between
+   actors located on different hosts.
+
+   A distributed fifo is composed of two fifo-channels linked together.
+   The first one is a passive fifo-channel that contains a local fifo
+   queue binded in a naming service (see section 2.1).
+   The second one is an active fifo-channel that contains:
+    - one local fifo queue
+    - one proxy of the remote passive fifo-channel, and
+    - one transfer token thread.
+   The transfer token thread manages the unidirectionnal transfer of
+   tokens between the local and the remote fifo-channel. It either
+   produces or consumes tokens, depending on the <role> of the active
+   fifo-channel:
+   a) if <role>= "prod", the active fifo-channel transmit tokens from
+      the local fifo-channel to the remote one.
+   b) if <role>= "cons", the active fifo-channel transmit tokens from
+      the remote fifo-channel to the local one.
+
+   The distributed fifo has been designed to run similarly whichever
+   middleware is chosen. Two middlewares are supported in the DPN API
+   v1.0: RMI (over IIOP or JRMP) and CORBA.
+
+
+1) Installation of the DPN API Distribution
+
+1.1) Prerequisites
+
+Prerequisites of this release are the same as those of PtolemyII 2.0
+beta, except we need JDK 1.4.0 or later.
+
+So before trying to build or run PtolemyII verify that:
+- the JDK 1.4 or higher is installed and included in the PATH.
+- the following commands java, javac, make, rmiregistry and orbd are
+  accessible from a Cygwin or an MSDOS shell).
+- to build you will also need Java3D 1.2.1_03 or later.
+
+PS: This release has been tested on Windows NT4 SP6.
+    with JDK1.4.0 and java3d-1_2_1_03-win32-opengl-sdk
+
+1.2) Building from sources
+
+Uncompress the ptII2DPN_v1.0.src.zip archive in a user-chosen
+PtolemyII base directory.  Set the PTII environment variable to this
+PtolemyII base directory and export it.
+
+1.2.1) Configuring the PtolemyII devel environment
+
+In order to compile and run successfully PtolemyII on your computer,
+you must add ${PTII} to the class-path.
+Make sure junit.jar is present in ${PTII}/lib.
+
+1.2.2) Compiling the DPN API in Ptolemy II
+
+- Go to the PtolemyII base directory
+
+             > cd $PTII
+
+  You may reconfigure the source repository using the following
+  commands:
+
+             > rm -rf config.*  (delete the configure cache file etc...)
+             > ./configure      (re)generate the makefiles
+             > make clean       remove compiled classes etc...
+
+- Generate the java source files required to use the Corba
+  implementation of the distributed fifo in Ptolemy II.
+
+  If no orb_name is given in argument, uses the default Java IDL ORB
+  provided with the JDK. The following orb_name are in this release
+  recognized: "javaidl", "orbacus" and "visibroker".
+  Make sure the ORB you want to use is installed on your machine
+  and its IDL to java compiler accessible in your PATH.
+
+  For more details, refer to the file ./bin/corba
+
+             > ./bin/corba [<orb_name>]
+
+- Generate the stub, skeleton and tie required to use the RMI
+  implementation of the distributed fifo in Ptolemy II.
+  For more details, refer to the file ./bin/rmi
+
+             > ./bin/rmi
+
+- Compile PtolemyII
+
+             > make
+
+- Create the ptII.jar archive.
+
+             > make install
+
+1.3) Using prebuilt files (binary)
+
+Uncompress the ptII2DPN_v1.0.jar.zip archive in a user-chosen
+PtolemyII base directory.  Set the PTII environment variable to that
+base directory and export it.  (You can use for example the setptenv
+script)
+
+Two files are extracted from the archive as follows:
+          ${PTII}/bin/binvergil
+          ${PTII}/ptII.jar
+ptII.jar contains all files compiled in previous section
+(and needed to run PtolemyII 2.0 beta with the DPN API).
+
+
+2) Creating or specifying a naming service
+
+Important: you only need to use one naming service located on one
+           specific host (called the provider host) when using the DPN
+           API.  This naming service isn't absolutely necessary when
+           starting Vergil.  It's needed only when starting a
+           simulation that uses the DPN director.
+
+2.1) Creating a naming service
+
+a) Using the RMI/JRMP implementation of the distributed fifo
+   If no RMI registry already resides on the provider host,
+   you must create one with the following command
+
+        > rmiregistry&
+
+b) Using the RMI/IIOP or Corba implementation of the distributed fifo
+   If no CosNaming service already resides on the provider host,
+   you must create such a naming service with the following command:
+
+        > orbd -ORBInitialHost <naming_service_host>
+                -ORBInitialPort <naming_service_port>
+
+The bin/nms script provides these two alternatives. For more
+information, refer to the file bin/nms.
+
+2.2) Using PtolemyII with an already started naming service
+
+In this release the only way to specify an already started naming
+service is to start Vergil with the script $PTII/bin/binvergil as
+it's explained in section 3.2.
+
+Ideally, one should be able to use the genuine bin/vergil script with
+the use of a properties file specific to the DPN API (see section
+4). This could be done in a future version.
+
+
+3) Running Ptolemy II with the DPN API
+
+3.1) using ./bin/binvergil without source tree (see section 1.3)
+
+Enter the following commands:
+%  cd $PTII
+%  ./bin/binvergil <middleware> <naming_service_host> <naming_service_port> <loggingLevel> [<xml_file>]
+
+   where:
+
+   <middleware> is either "iiop", "corba" or "jrmp"
+
+   <naming_service_host> is the host of the machine where the naming
+                         service resides.
+
+   <naming_service_port> is the port number used by the naming service.
+   
+   <loggingLevel> is either (ALL|SEVERE|CONFIG|INFO|FINER|FINEST).
+
+   <xml_file> is the name of the Ptolemy II MoML file.
+
+You only need the ptII.jar file to run PtolemyII with the binvergil script.
+
+Using the binvergil script is well suited for testing the DPN API in a
+distributed context because you just have to do on each host the
+following tasks:
+- Verify the release prerequisites (see section 1.1)
+- Install the binary release (see section 1.3)
+- Start Vergil with the binvergil script (see section 3.2)
+
+
+4) Customizing the DPN API
+
+You can customize the execution of the DPN API by changing the values
+of its distributed fifo properties.
+
+Available fifo properties are:
+
+ property| property name,                   |               | 
+ family  | property vailable values	    | default value |            comments
+       	 | and name of the file that use it |		    |
+ ________|__________________________________|_______________|_______________________________________
+ 	 |				    |		    | 
+ dpn	 | tcfr.dpn.middleware (string)     |        "iiop" | Name of the middleware to be used.
+	 | "jrmp", "iiop", "corba"          |	            | Currently there is 3 choices:
+	 |(in tcfr.domains.dpn.kernel.fifo.\|		    | Corba, RMI/JRMP and RMI/IIOP.
+	 |    FifoChannelFactory.java)	    |		    | All distributed fifos created during
+	 |				    |		    | one vergil session use the same
+	 |				    |		    | middleware.
+	 |				    |		    | 
+       	 | tcfr.dpn.master (boolean)        |  	     false  | true if the started vergil   
+	 |(in tcfr.domains.dpn.kernel.\     |		    | owns the main composite actor
+         |    BaseDPNDirector.java)         |               | of the simulation, which is  
+	 |				    |		    | always the case when using the
+	 |				    |		    | script ${PTII}/bin/binvergil
+ ________|__________________________________|_______________|_______________________________________
+	 |				    |		    |
+ fifo  	 | tcfr.fifo.transfer.mode (string) |"demand-driven"| This property set the way vector
+	 | "data-driven" or "demand-driven" |  		    | of tokens are transfered from the
+	 |(in tcfr.domains.dpn.kernel.\     |		    | producer fifo-channel to the cons-
+	 |   DPNQueueReceiver.java)	    |		    | umer one.
+	 |				    |		    |  If transfer mode is demand-driven
+	 |				    |		    | (resp. data-driven), the transfer is
+	 |				    |		    | managed by the consumer (resp. producer)
+	 |				    |		    | side fifo-channel.
+	 |				    |		    |
+	 | tcfr.fifo.buffer.size (int)	    |	       128  | This property defines the buffer
+	 |(in tcfr.domains.dpn.kernel.fifo.\|		    | size of the vector of tokens that
+	 |   BufferedInputFifo.java and	    |		    | will be transmitted through the
+	 |   BufferedOutputFifo.java)	    |		    | network. (*)
+ ________|__________________________________|_______________|_______________________________________
+	 | 				    |		    |
+ naming  | tcfr.fifo.naming.host (string)   |  "localhost"  | Name of the host where the naming 
+ service |(in tcfr.domains.dpn.kernel.\	    |		    | service is running
+	 |   JNDIProperties.java)	    |		    |
+	 |				    |		    |
+         | tcfr.fifo.naming.port (int)      |orbd:      900 | Port number of the host where the
+         |(in tcfr.domains.dpn.kernel.\     |rmi-           | naming service is running.
+	 |   JNDIProperties.java)	    |registry: 1099 |
+	 |				    |		    |
+         |tcfr.fifo.naming.lookup.frequency(ms)   10*1000   | If a lookup for a remote fifo-channel
+	 |(in tcfr.domains.dpn.kernel.\     |  (10 seconds) | doesn't succeed at the first time, this
+	 |   JNDIProperties.java)	    |		    | property set the frequency which is
+         |                                  |               | used to retry the lookup.
+         |                                  |               |
+         |tcfr.fifo.naming.lookup.timeout(ms)   60*60*1000  | If a lookup for a remote fifo-channel
+	 |(in tcfr.domains.dpn.kernel.\     |  (one minute) | doesn't succeed since some time, this
+	 |   JNDIProperties.java)	    |		    | property set the timeout value from
+	 |				    |		    | which we stop to look up for it.
+ ________|__________________________________|_______________|_______________________________________
+         |                                  |               |
+ corba   | tcfr.fifo.corba.orb              |    "javaidl"  | Refers to the name of the ORB that
+         |"javaidl","orbacus",or"visibroker"| (provided in  | has been used to generate the java
+	 |(in tcfr.domains.dpn.kernel.fifo.\|SUN j2sdk1.4.0 | source file from the distributed   
+	 |  corba.CorbaProperties.java)	    |   or later)   | fifo IDL interfaces.
+         |(see section 1.2.2 or the file    |               |
+	 | $PTII/bin/corba for more details)|               | 
+
+
+(*)      The vectorization mode is at present always active. It is hard coded
+         in the file tcfr/domains/dpn/kernel/DPNQueueReceiver.java at the following line: 
+	                                                                               
+	           _queue = FifoChannelFactory.newChannel(true, true);                 
+	                                                                               
+	 in the DPNQueueReceiver(IOPort inputPort, int channelIndex) constructor.      
+	 You may enable to toggle this mode either by replacing the above line with    
+	                                                                               
+	           _queue = FifoChannelFactory.newChannel(true, false);                
+	                                                                               
+	 and recompile the tcfr archive.                                               
+	 You should also define a new fifo property named "tcfr.transfer.vectorization"
+	 and use it for initializing this channel.                                     
+
+Warning: If you want to change the value of a fifo property not
+         supported in the bin/binvergil command-line arguments, you must
+         add this property in the $PTII/bin/binvergil script, using
+         the -D option of java when starting vergil. See the file
+         bin/binvergil for details.
+
+In a future version, a proper way to handle these properties would be
+to create a "dpn.properties" file in $PTII/tcfr/domains/dpn and to read
+it at DPN domain initialization. The user would customize the DPN API
+simply by editing this property file.
+
+Here you are done!
+
+
+
+Appendices
+
+
+5) Using the DPN domain in Vergil
+
+Localisation of all atomic actors of a simulation (or of a composite
+actor) must be specified using the real host name (the one returned by
+the hostname command under the DOS prompt) and no aliases such as
+localhost.
+
+
+6) Testing the DPN API independently from PtolemyII.
+
+6.1) Testing distributed fifo implementations from the command line
+
+   When testing a distributed fifo implementation, you need at least
+   to open three consoles:
+   - one for starting the naming service (see section 2.1)
+   - one for creating a passive fifo-channel, and
+   - one for creating an active fifo-channel.
+
+   For each console, you must set its current directory to PTII
+                        > cd $PTII.
+
+   The test proceeding is the same whichever middleware is chosen:
+   - start the naming service (see section 2.1) in the first console
+   - create a passive fifo-channel in the second console, and
+   - create an active fifo-channel in the third console.
+   You can now interact with the fifo-channel services that are open
+   on both fifo-channel consoles.
+   The commands you can use are the following:
+         put <token>, get, size, capacity, list, isFull, help and exit.
+   For example, put tokens on the producer-side fifo-channel and make sure
+   they are well transmitted to the consumer-side fifo-channel.
+   Middleware dependant command-lines that are used to create the passive
+   and active fifo-channels are presented in the next sections.
+
+6.1.1) distributed fifo using RMI
+
+   Warning: make sure the RMI protocol you give in argument matches
+   the kind of naming service you use (see section 2.1).
+
+   a) create a passive RMI fifo-channel
+       > java tcfr.domains.dpn.kernel.fifo.rmi.test.RMIFifoShell
+                        <"iiop"|"jrmp"> <local_fifo_name>
+
+   b) create an active RMI fifo-channel
+
+       > java tcfr.domains.dpn.kernel.fifo.rmi.test.RMIFifoShell
+                <"iiop"|"jrmp"> <remote_fifo_name>
+                <remote_fifo_host> <"prod"|"cons">
+
+6.1.2) distributed fifo using Corba
+
+   Warning: make sure the orb name you give in option matches the orb
+   that has been used to build the DPN API (default orb name is
+   "javaidl").
+
+   a) create a passive CORBA fifo-channel
+
+       > java -Dtcfr.fifo.corba.orb=<orb_name>
+              tcfr.domains.dpn.kernel.fifo.corba.test.CORBAFifoShell
+              <local_fifo_name>
+
+   c) create an active CORBA fifo-channel
+
+      > java -Dtcfr.fifo.corba.orb=<orb_name>
+             tcfr.domains.dpn.kernel.fifo.corba.test.CORBAFifoShell
+             <remote_fifo_name> <remote_fifo_host> <"prod"|"cons">
+
+6.2) Unit testing of the DPN API
+
+This section has to be completed. The use of JUNIT has to be described.
+(cf. G. Poirot document)
+
+
+7) Documentation
+
+The Ptolemy II DPN API documentation can be found in
+${PTII}/tcfr/domains/dpn/doc/index.htm.
+
+</XMP>
+</BODY>
+</HTML>

@@ -1,0 +1,78 @@
+
+==========================
+Quick install instructions
+==========================
+
+
+A) Production of PtolemyII with DPN
+-----------------------------------
+
+  Prerequisites:
+  - JDK1.4.0 or later (for: CORBA and RMI support, Java logging classes).
+  Tested on:
+  - Windows NT4 + cygnus b20
+  - Linux Red Hat 7.3
+
+The DPN support for PtolemyII is consisted of 2 files, that need to be
+included in PtolemyII2.0.1 source tree before code production
+phase. The files are:
+
+- add.tar.gz: files added in PtolemyII2.0.1, mainly in newly created
+  tcfr subdirectory tree.
+
+- applied.patch: patch file gathering updates of existing
+  PtolemyII2.0.1 files.
+
+The tcfr subdirectory tree organisation is the same as the ptolemy
+one. The general idea is to minimise interference between the two
+subtrees and to allow easy fusion of the tcfr code with "vanilla"
+ptolemy code (by replacing occurrences of tcfr in files by occurences
+of ptolemy, and moving files to ptolemy). This is true except for
+files in the config directory, which contents have to be carefully merged.
+
+1) untar PtolemyII 2.0.1 source distribution
+
+2) define PTII as usual
+
+3) copy add.tar.gz and applied.patch to PTII directory
+
+4) copy junit.jar to PTII/lib directory
+
+5) do the following operations
+
+% cd $PTII
+% tar xzf add.tar.gz
+% patch -l -F 2 -b -z .distrib -p 0 -s < applied.patch
+% ./configure
+% ./bin/corba
+% ./bin/rmi
+% make all
+
+
+B) Execution
+------------
+
+1) prepare PtolemyII for DPN.
+
+edit file $PTII/findremote.sh and add lines with names of your 2 hosts
+
+2) run PtolemyII with DPN (client host only)
+
+% ./tcfr/adm/client.sh		  (another host)
+
+then
+- in Run Window, update host names accordingly
+  to what has been added in 6).
+- save the file.
+
+8) run PtolemyII with DPN (need 2 hosts)
+
+% ./tcfr/adm/server.sh		  (one host)
+% ./tcfr/adm/client.sh		  (another host)
+
+
+C) Further reference
+--------------------
+
+refer to tcfr/README_DPN.htm
+
