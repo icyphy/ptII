@@ -319,7 +319,7 @@ public class MoMLParser extends HandlerBase {
      *  @param systemId The system ID of the document type.
      *  @exception CancelException If the public ID is not that of MoML.
      */
-    public void doctypeDecl (String name, String publicId, String systemId)
+    public void doctypeDecl(String name, String publicId, String systemId)
             throws CancelException {
         if (publicId != null
                 && !publicId.trim().equals("")
@@ -725,7 +725,7 @@ public class MoMLParser extends HandlerBase {
      *  @param target The name of the processing instruction.
      *  @param data The body of the processing instruction.
      */
-    public void processingInstruction (String target, String data) {
+    public void processingInstruction(String target, String data) {
         if (_currentCharData != null) {
             _currentCharData.append("<?");
             _currentCharData.append(target);
@@ -776,6 +776,60 @@ public class MoMLParser extends HandlerBase {
         } else {
             return null;
         }
+    }
+
+    /** Given the name of a MoML class and a source URL, check to see
+     * whether this class has already been instantiated, and if so,
+     * return the previous instance.
+     * @param name The name of the MoML class to search for.
+     * @param source The URL source
+     * @return If the class has already been instantiated, return
+     * the previous instance.
+     */
+    public ComponentEntity searchForClass(String name, String source)
+            throws XmlException {
+
+        // If the name is absolute, the class may refer to an existing
+        // entity.  Check to see whether there is one with a matching source.
+        ComponentEntity candidate;
+        if (name.startsWith(".")) {
+            candidate = _searchForEntity(name);
+            if (candidate != null) {
+                // Check that it's a class.
+                if (candidate.getMoMLInfo().elementName.equals("class")) {
+                    // Check that its source matches.
+                    String candidateSource = candidate.getMoMLInfo().source;
+
+                    if (source == null && candidateSource == null) {
+                        return candidate;
+                    } else if (source != null
+                            && source.equals(candidateSource)) {
+                        return candidate;
+                    }
+                }
+            }
+        }
+        if (_imports != null) {
+            Iterator entries = _imports.iterator();
+            while (entries.hasNext()) {
+                Object possibleCandidate = entries.next();
+                if (possibleCandidate instanceof ComponentEntity) {
+                    candidate = (ComponentEntity)possibleCandidate;
+                    String candidateClassName
+                        = candidate.getMoMLInfo().className;
+                    if (candidateClassName.equals(name)) {
+                        String candidateSource = candidate.getMoMLInfo().source;
+                        if (source == null && candidateSource == null) {
+                            return candidate;
+                        } else if (source != null
+                                && source.equals(candidateSource)) {
+                            return candidate;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /** Set the context for parsing.  This can be used to associate this
@@ -1733,7 +1787,7 @@ public class MoMLParser extends HandlerBase {
         ComponentEntity reference = null;
         if (className != null) {
             // A class name is given.
-            reference = _searchForClass(className, source);
+            reference = searchForClass(className, source);
             if (reference == null) {
                 // No previously defined class with this name.
                 // First attempt to instantiate a Java class.
@@ -1919,9 +1973,9 @@ public class MoMLParser extends HandlerBase {
             // Search for the .xml file before searching for the .moml
             // file.  .moml files are obsolete, and we should probably
             // not bother searching for them at all.
-            classAsFile = className.replace('.','/') + ".xml";
+            classAsFile = className.replace('.', '/') + ".xml";
 	    // RIM uses .moml files, so leave them in.
-            altClassAsFile = className.replace('.','/') + ".moml";
+            altClassAsFile = className.replace('.', '/') + ".moml";
         } else {
             // Source is given.
             classAsFile = source;
@@ -2068,7 +2122,8 @@ public class MoMLParser extends HandlerBase {
 
     // Delete the port after verifying that it is contained (deeply)
     // by the current environment.
-    private Port _deletePort(String portName, String entityName) throws Exception {
+    private Port _deletePort(String portName, String entityName)
+            throws Exception {
         // NOTE: if the entity attribute is not used, then the
         // deletion of any links associated with this port will
         // not be undoable.
@@ -2359,8 +2414,8 @@ public class MoMLParser extends HandlerBase {
                 attr.appendMoMLDescription(
                         "<delete" + type + " name=\"" + deleted + "\"/>");
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record deletion from class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex
+                        "Unable to record deletion from class!");
             }
         }
     }
@@ -2394,8 +2449,8 @@ public class MoMLParser extends HandlerBase {
                             + "\"/>");
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record extension to class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Unable to record extension to class!");
             }
         }
 
@@ -2411,8 +2466,8 @@ public class MoMLParser extends HandlerBase {
                         container.uniqueName("_extension"));
                 attr.appendMoMLDescription(newObj.exportMoML());
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record extension to class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Unable to record extension to class!");
             }
         }
     }
@@ -2450,8 +2505,8 @@ public class MoMLParser extends HandlerBase {
                             + "\"/>");
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record extension to class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Unable to record extension to class!);
             }
         }
     }
@@ -2485,55 +2540,6 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         return result;
-    }
-
-    // Given the name of a MoML class and a source URL, check to see
-    // whether this class has already been instantiated, and if so,
-    // return the previous instance.
-    public ComponentEntity _searchForClass(String name, String source)
-            throws XmlException {
-
-        // If the name is absolute, the class may refer to an existing
-        // entity.  Check to see whether there is one with a matching source.
-        ComponentEntity candidate;
-        if (name.startsWith(".")) {
-            candidate = _searchForEntity(name);
-            if (candidate != null) {
-                // Check that it's a class.
-                if (candidate.getMoMLInfo().elementName.equals("class")) {
-                    // Check that its source matches.
-                    String candidateSource = candidate.getMoMLInfo().source;
-
-                    if (source == null && candidateSource == null) {
-                        return candidate;
-                    } else if (source != null
-                            && source.equals(candidateSource)) {
-                        return candidate;
-                    }
-                }
-            }
-        }
-        if (_imports != null) {
-            Iterator entries = _imports.iterator();
-            while (entries.hasNext()) {
-                Object possibleCandidate = entries.next();
-                if (possibleCandidate instanceof ComponentEntity) {
-                    candidate = (ComponentEntity)possibleCandidate;
-                    String candidateClassName
-                        = candidate.getMoMLInfo().className;
-                    if (candidateClassName.equals(name)) {
-                        String candidateSource = candidate.getMoMLInfo().source;
-                        if (source == null && candidateSource == null) {
-                            return candidate;
-                        } else if (source != null
-                                && source.equals(candidateSource)) {
-                            return candidate;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     // Given a name that is either absolute (with a leading period)
