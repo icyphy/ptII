@@ -271,11 +271,11 @@ public class BasePNDirector extends CompositeProcessDirector {
 	if (!((((CompositeActor)getContainer()).
 		inputPortList()).isEmpty())
 		&& _getActiveActorsCount() != 0 ){
-            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
+            // System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
 	    return _notDone;
 	} else {
-            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone
-		    + " again.");
+            //System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone
+	    //	    + " again.");
 	    return _notDone;
 	}
     }
