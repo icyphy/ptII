@@ -258,13 +258,28 @@ abstract public class CipherActor extends CryptographyActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    Protected Methods                      ////
+    ////                    Protected Variables                    ////
+
+    /** The cipher that will be used to process the data.
+     */
+    protected Cipher _cipher;
+
+    /** The mode to be used to process the data.
+     */
+    protected String _mode;
+
+    /** The padding scheme to be used process the data.
+     */
+    protected String _padding;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    Private  Methods                      ////
 
     /** The value of _cipher is updated by calling 
      * javax.crypt.Cipher.getInstance() with an argument that is
      * created from the values of the _algorithm, _mode and _padding.
      */
-    protected void _updateCipher() throws IllegalActionException {
+    private void _updateCipher() throws IllegalActionException {
         // Usually, this method is called from initialize().
         // This method may end up being called in fire() if
         // the user changed attributes while the model is running.
@@ -301,21 +316,6 @@ abstract public class CipherActor extends CryptographyActor {
             _updateCipherNeeded = false;
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                    Protected Variables                    ////
-
-    /** The cipher that will be used to process the data.
-     */
-    protected Cipher _cipher;
-
-    /** The mode to be used to process the data.
-     */
-    protected String _mode;
-
-    /** The padding scheme to be used process the data.
-     */
-    protected String _padding;
 
     ///////////////////////////////////////////////////////////////////
     ////                    Private Variables                      ////
