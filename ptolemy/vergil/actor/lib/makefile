@@ -49,8 +49,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ModelReference.java \
-	MonitorImage.java
+	MonitorImage.java \
+	VisualModelReference.java
 
 OTHER_FILES_TO_BE_JARED = \
 	interactive.xml
