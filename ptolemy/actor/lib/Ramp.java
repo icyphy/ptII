@@ -81,11 +81,13 @@ public class Ramp extends SequenceSource {
 	if(icon == null) {
 	    icon = new NonpersistentProcessedString(this, "iconDescription");
 	}
-	icon.setInstruction("graphml");
-	icon.setString("<xmlgraphic>\n" + 
-		"<rectangle coords=\"0 0 60 40\" fill=\"white\"/>\n" +
-		"<polygon coords=\"10 30 50 10 50 30\" fill=\"blue\"/>\n" + 
-		"</xmlgraphic>\n");
+        // FIXME: should be 'svg'
+	icon.setInstruction(null);
+	icon.setString("<svg>\n" +
+"  <rect x=\"0\" y=\"0\" width=\"60\" height=\"40\" style=\"fill:white\"/>\n" +
+"  <polygon points=\"10,30 50,10 50,30\" style=\"fill:blue\"/>\n" +
+"</svg>\n");
+        
     }
 
     ///////////////////////////////////////////////////////////////////

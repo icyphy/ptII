@@ -809,9 +809,10 @@ public class Director extends Attribute implements Executable {
 	    throw new InternalErrorException(
                     "Error creating icon for " + getFullName());
 	}
-	icon.setInstruction("graphml");
-	icon.setString("<xmlgraphic>\n" + 
-		"<rectangle coords=\"10 10 100 30\" fill=\"green\"/>\n" +
-		"</xmlgraphic>\n");
+        // FIXME should be 'svg'
+	icon.setInstruction(null);
+	icon.setString("<svg>\n" + 
+		"<rect x=\"0\" y=\"10\" width=\"100\" height=\"30\" style=\"fill:green\"/>\n" +
+		"</svg>\n");
     }
 }
