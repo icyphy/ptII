@@ -71,26 +71,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+//////////////////////////////////////////////////////////////////////////
+//// CalInterpreter
 /**
- * This actor interprets CAL source as an actor inside the Ptolemy II framework. It has a <tt>calCode</tt> string
- * attribute that contains the text of a CAL actor. It configures itself according to CAL code string (setting up
- * ports, parameters, types etc.) and then proceeds to execute the actor by interpreting the actions using the
- * {@link ptolemy.caltrop.ddi.util.DataflowActorInterpreter DataflowActorInterpreter} infrastructure.
- * <p>
- * The actor interpreter is configured by a context that injects the appropriate <tt>Token</tt>-based value system
- * into the evaluation of the actions. This is implemented in the class {@link ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
- * <p>
- * For further documentation on CAL, see the
- * <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
- *
- * @author Jörn W. Janneck <jwj@acm.org> Christopher Chang <cbc@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- * @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
- * @see Context
- * @see PtolemyPlatform
- */
+ This actor interprets CAL source as an actor inside the Ptolemy II
+ framework. It has a <tt>calCode</tt> string attribute that contains
+ the text of a CAL actor. It configures itself according to CAL code
+ string (setting up ports, parameters, types etc.) and then proceeds
+ to execute the actor by interpreting the actions using the {@link
+ ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+ DataflowActorInterpreter} infrastructure.
 
+ <p> The actor interpreter is configured by a context that injects the
+ appropriate <tt>Token</tt>-based value system into the evaluation of
+ the actions. This is implemented in the class {@link
+ ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
+
+ <p> For further documentation on CAL, see the
+<a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
+
+@author Jörn W. Janneck <jwj@acm.org> Christopher Chang <cbc@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+@see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+@see Context
+@see PtolemyPlatform
+*/
 public class CalInterpreter extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -111,14 +117,17 @@ public class CalInterpreter extends TypedAtomicActor {
     }
 
     /**
-     * The only attribute whose modifications are handled is the <tt>calCode</tt> attribute, which contains the
-     * source code of the CAL actor.
+     * The only attribute whose modifications are handled is the
+     * <tt>calCode</tt> attribute, which contains the source code of
+     * the CAL actor.
      * <p>
-     * Whenever the source is changed, the text is parsed, transformed, and translated into an internal data structure
+     * Whenever the source is changed, the text is parsed,
+     * transformed, and translated into an internal data structure
      * used for interpretation.
      *
      * @param attribute The attribute that changed.
-     * @throws IllegalActionException If an error occurs parsing or transforming the CAL source code.
+     * @throws IllegalActionException If an error occurs parsing or
+     * transforming the CAL source code.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -137,25 +146,31 @@ public class CalInterpreter extends TypedAtomicActor {
     }
 
     /**
-     * Populate the initial actor environment. This is done by binding the parameters
-     * to the user-supplied values and then evaluating the definitions of state variables and creating the
+     * Populate the initial actor environment. This is done by binding
+     * the parameters to the user-supplied values and then evaluating
+     * the definitions of state variables and creating the
      * corresponding bindings.
      *
-     * @throws IllegalActionException If an error occurred during the retrieval of parameter values or the evaluation
-     * of actor state variable values.
+     * @throws IllegalActionException If an error occurred during the
+     * retrieval of parameter values or the evaluation of actor state
+     * variable values.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        Environment env = new HashEnvironment(new CacheEnvironment(_env, _theContext), _theContext);
+        Environment env = new HashEnvironment(new CacheEnvironment(_env,
+                _theContext), _theContext);
         try {
             _bindActorParameters(env);
             _bindActorStateVariables(env);
-        } catch (Exception e) {
-            throw new IllegalActionException("Cannot initialize actor environment for actor '" + _actor.getName() + "': " + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(
+                    "Cannot initialize actor environment for actor '"
+                    + _actor.getName(), ex);
         }
         _ddi = _getPlugin(env);
         if (!_ddi.isLegalActor())
-            throw new IllegalActionException(_actor.getName() + " is not a valid " + _ddi.getName() + " actor.");
+            throw new IllegalActionException(_actor.getName()
+                    + " is not a valid " + _ddi.getName() + " actor.");
         _ddi.setupActor();
     }
 
@@ -190,10 +205,11 @@ public class CalInterpreter extends TypedAtomicActor {
         return super.postfire();
     }
 
-    // FIXME uh this is totally braindead...only needed in SDFPlugin.prefire(), there has GOT
-    // to be a better way.
     public boolean superPrefire()
             throws IllegalActionException {
+        // FIXME uh this is totally braindead...
+        // only needed in SDFPlugin.prefire(), there has GOT
+        // to be a better way.
         return super.prefire();
     }
 
@@ -235,15 +251,20 @@ public class CalInterpreter extends TypedAtomicActor {
             for (int i = 0; i < decls.length; i++) {
                 String var = decls[i].getName();
                 Expression valExpr = decls[i].getInitialValue();
-                // Note: this assumes that declarations are ordered by eager dependency
-                Object value = (valExpr == null) ? _theContext.createNull() : eval.evaluate(valExpr);
+
+                // Note: this assumes that declarations are 
+                // ordered by eager dependency
+
+                Object value = (valExpr == null)
+                    ? _theContext.createNull() : eval.evaluate(valExpr);
                 env.bind(var, value);
             }
         }
     }
 
     private DDI _getPlugin(Environment env) {
-        DDIFactory pluginFactory = (DDIFactory) _directorDDIMap.get(this.getDirector().getClass().getName());
+        DDIFactory pluginFactory = (DDIFactory) _directorDDIMap
+            .get(this.getDirector().getClass().getName());
         if (pluginFactory != null) {
             return pluginFactory.create(this, _actor, _theContext, env);
         } else {
@@ -257,11 +278,13 @@ public class CalInterpreter extends TypedAtomicActor {
         Set parNames = new HashSet();
         for (int i = 0; i < _actor.getParameters().length; i++) {
             String name = _actor.getParameters()[i].getName();
-            if (this.getAttribute(name, ptolemy.data.expr.Parameter.class) == null)
+            if (this.getAttribute(name, ptolemy.data.expr.Parameter.class)
+                    == null)
                 new Parameter(this, name);
             parNames.add(name);
         }
-        List parameters = this.attributeList(ptolemy.data.expr.Parameter.class);
+        List parameters =
+            this.attributeList(ptolemy.data.expr.Parameter.class);
         for (Iterator i = parameters.iterator(); i.hasNext();) {
             Parameter a = (Parameter) i.next();
             if (!parNames.contains(a.getName()))
@@ -269,33 +292,43 @@ public class CalInterpreter extends TypedAtomicActor {
         }
     }
 
-    private void _refreshTypedIOPorts(PortDecl[] ports, boolean isInput, boolean isOutput)
+    private void _refreshTypedIOPorts(PortDecl[] ports,
+            boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
         // a place to store names of ports as we iterate through them later.
         Set portNames = new HashSet();
-        // this part creates new ports, and also recreates ports which may have changed their characteristics
+
+        // this part creates new ports, and also recreates
+        // ports which may have changed their characteristics
         // since the time they were created.
+
         for (int i = 0; i < ports.length; i++) {
             TypedIOPort port = (TypedIOPort) this.getPort(ports[i].getName());
-            if (port != null && ((port.isInput() != isInput) || (port.isOutput() != isOutput) ||
+            if (port != null && 
+                    ((port.isInput() != isInput)
+                            || (port.isOutput() != isOutput) ||
                     (port.isMultiport() != ports[i].isMultiport()))) {
                 port.setContainer(null);
                 port = null;
             }
             if (port == null) {
-                port = new TypedIOPort(this, ports[i].getName(), isInput, isOutput);
+                port = new TypedIOPort(this, ports[i].getName(),
+                        isInput, isOutput);
             }
             portNames.add(ports[i].getName());
         }
         // this part releases any ports which are no longer used.
-        for (Iterator i = isInput ? this.inputPortList().iterator() : this.outputPortList().iterator(); i.hasNext();) {
+        for (Iterator i = isInput ? this.inputPortList().iterator()
+                 : this.outputPortList().iterator();
+             i.hasNext();) {
             IOPort p = (IOPort) i.next();
             if (!portNames.contains(p.getName()))
                 p.setContainer(null);
         }
         // now set the types.
         for (int i = 0; i < ports.length; i++) {
-            ((TypedIOPort) this.getPort(ports[i].getName())).setTypeEquals(_getPtolemyType(ports[i].getType()));
+            ((TypedIOPort) this.getPort(ports[i].getName()))
+                .setTypeEquals(_getPtolemyType(ports[i].getType()));
         }
     }
 
@@ -308,13 +341,15 @@ public class CalInterpreter extends TypedAtomicActor {
             _refreshParameters();
 
             CompositeEntity container = (CompositeEntity)getContainer();
-            if (container != null && container.getEntity(_actor.getName()) != this) {
-                this.setName(((CompositeEntity) this.getContainer()).uniqueName(_actor.getName()));
+            if (container != null && container.getEntity(_actor.getName())
+                    != this) {
+                this.setName(((CompositeEntity) this.getContainer())
+                        uniqueName(_actor.getName()));
             }
             _attachActorIcon(_actor.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Cannot set up actor '" + _actor.getName() + "'.");
+        } catch (Exception ex) {
+            throw new RuntimeException("Cannot set up actor '"
+                    + _actor.getName() + "'.", ex);
         }
     }
 
@@ -341,18 +376,24 @@ public class CalInterpreter extends TypedAtomicActor {
             Import anImport = imports[i];
             String packagePrefix = anImport.getPackagePrefix();
             if (anImport instanceof PackageImport) {
-                lastEnv = new PackageEnvironment(lastEnv, this.getClass().getClassLoader(), _theContext, packagePrefix);
+                lastEnv = new PackageEnvironment(lastEnv,
+                        this.getClass().getClassLoader(),
+                        _theContext, packagePrefix);
             } else if (anImport instanceof SingleImport) {
                 String className = ((SingleImport) anImport).getClassName();
                 String alias = ((SingleImport) anImport).getAlias();
                 if (alias == "") {
-                    lastEnv = new SingleClassEnvironment(lastEnv, this.getClass().getClassLoader(),
+                    lastEnv = new SingleClassEnvironment(lastEnv,
+                            this.getClass().getClassLoader(),
                             _theContext, packagePrefix, className);
                 } else {
-                    lastEnv = new SingleClassEnvironment(lastEnv, this.getClass().getClassLoader(),
+                    lastEnv = new SingleClassEnvironment(lastEnv,
+                            this.getClass().getClassLoader(),
                             _theContext, packagePrefix, className, alias);
                 }
-            } else throw new RuntimeException("Unknown import type encountered in '" + _actor.getName() + "'.");
+            } else throw new RuntimeException(
+                    "Unknown import type encountered in '"
+                    + _actor.getName() + "'.");
         }
         return lastEnv;
     }
@@ -370,8 +411,10 @@ public class CalInterpreter extends TypedAtomicActor {
     private final static Map _directorDDIMap = new HashMap();
 
     static {
-        _directorDDIMap.put("ptolemy.domains.sdf.kernel.SDFDirector", new SDFFactory());
-        _directorDDIMap.put("ptolemy.domains.csp.kernel.CSPDirector", new CSPFactory());
+        _directorDDIMap.put("ptolemy.domains.sdf.kernel.SDFDirector",
+                new SDFFactory());
+        _directorDDIMap.put("ptolemy.domains.csp.kernel.CSPDirector",
+                new CSPFactory());
     }
 
     private final static String defaultActorText = "actor CalActor () Input ==> Output : end";
