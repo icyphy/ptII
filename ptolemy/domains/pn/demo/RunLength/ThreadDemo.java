@@ -261,7 +261,7 @@ public class ThreadDemo {
         window.setLocation(20, 20);
         window.setVisible(true);
 
-        // Make sure we ahve the right renders and then
+        // Make sure we have the right renders and then
         // display the graph
         GraphPane gp = (GraphPane) g.getCanvasPane();
         GraphView gv = gp.getGraphView();
