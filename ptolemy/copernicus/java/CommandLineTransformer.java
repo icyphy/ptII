@@ -62,6 +62,7 @@ import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
+import soot.jimple.StringConstant;
 import soot.jimple.InterfaceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
@@ -208,6 +209,14 @@ public class CommandLineTransformer extends SceneTransformer {
                 Jimple.v().newInstanceFieldRef(body.getThisLocal(),
                         modelField);
             units.insertBefore(Jimple.v().newAssignStmt(fieldRef, modelLocal),
+                    insertPoint);
+            
+            // Set the name.
+            units.insertBefore(
+                    Jimple.v().newInvokeStmt(
+                            Jimple.v().newVirtualInvokeExpr(modelLocal, 
+                                    PtolemyUtilities.setNameMethod,
+                                    StringConstant.v(_model.getName()))),
                     insertPoint);
         }
 

@@ -35,8 +35,12 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.lib.Expression;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.LocationAttribute;
+import ptolemy.moml.LibraryAttribute;
+import ptolemy.actor.gui.TableauFactory;
+import ptolemy.domains.fsm.kernel.*;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -49,6 +53,7 @@ import soot.*;
 import soot.util.Chain;
 import soot.jimple.AssignStmt;
 import soot.jimple.IntConstant;
+import soot.jimple.NullConstant;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
@@ -160,9 +165,16 @@ public class ActorTransformer extends SceneTransformer {
             //  newClass.setApplicationClass();
  
             if(entity instanceof CompositeActor) {
-                _createCompositeActor((CompositeActor)entity, newClassName, options);
+                CompositeActor composite = (CompositeActor)entity;
+        //         if(composite.getDirector() instanceof ptolemy.domains.fsm.kernel.HSDirector) {
+//                     _createModalModel((FSMActor)entity, newClassName, options);
+//                 } else {
+                    _createCompositeActor(composite, newClassName, options);
+                    //      }
             } else if(entity instanceof Expression) {
                 _createExpressionActor((Expression)entity, newClassName, options);
+            } else if(entity instanceof FSMActor) {
+                _createFSMActor((FSMActor)entity, newClassName, options);
             } else {
                 // Must be an atomicActor.
                 _createAtomicActor(model, (AtomicActor)entity, newClassName, options);
@@ -217,16 +229,6 @@ public class ActorTransformer extends SceneTransformer {
         // make sure that we never call the baseclass initialize method.
         // FIXME: When we get to the point where we no longer derive
         // from TypedAtomicActor, we need to implement all of these methods.
-        /*  if (!theClass.declaresMethodByName("initialize")) {
-            SootMethod method = new SootMethod("initialize",
-            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
-            theClass.addMethod(method);
-            JimpleBody body = Jimple.v().newBody(method);
-            method.setActiveBody(body);
-            body.insertIdentityStmts();
-            body.getUnits().add(Jimple.v().newReturnVoidStmt());
-            }
-        */
         if (!theClass.declaresMethodByName("preinitialize")) {
             SootMethod method = new SootMethod("preinitialize",
                     new LinkedList(), VoidType.v(), Modifier.PUBLIC);
@@ -415,12 +417,13 @@ public class ActorTransformer extends SceneTransformer {
     // the given entity.
     private static EntitySootClass _createCompositeActor(
             CompositeActor entity, String newClassName, Map options) {
-      
-        String className = entity.getClass().getName();
+        // FIXME: what about subclasses of CompositeActor?
+        //  String className = entity.getClass().getName();
 
-        SootClass entityClass = Scene.v().loadClassAndSupport(className);
-        entityClass.setLibraryClass();
+//         SootClass entityClass = Scene.v().loadClassAndSupport(className);
+//         entityClass.setLibraryClass();
 
+        SootClass entityClass = PtolemyUtilities.compositeActorClass;
         // create a class for the entity instance.
         EntitySootClass entityInstanceClass =
             new EntitySootClass(entityClass, newClassName,
@@ -500,7 +503,7 @@ public class ActorTransformer extends SceneTransformer {
                 // PtolemyUtilities.getSootTypeForTokenType(
                        //  port.getType());
                 SootField field = new SootField(
-                        name + "Token",
+                        StringUtilities.sanitizeName(name) + "Token",
                         type);
                 entityInstanceClass.addField(field);
                 nameToField.put(name, field);
@@ -588,21 +591,10 @@ public class ActorTransformer extends SceneTransformer {
                 entity.getAttribute("expression");
             String expression = expressionAttribute.getExpression();
 
-            Local local = null;
-            try {
-                PtParser parser = new PtParser();
-                ASTPtRootNode parseTree = 
-                    parser.generateParseTree(expression);
-                ActorCodeGenerationScope scope = 
-                    new ActorCodeGenerationScope(nameToField, nameToType, body);
-                ParseTreeCodeGenerator generator = 
-                    new ParseTreeCodeGenerator();
-                local = generator.generateCode(parseTree, body, scope);
-            } catch (IllegalActionException ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex.toString());
-            }
-           
+            Local local = _generateExpressionCode(
+                    entity, entityInstanceClass, expression,
+                    nameToField, nameToType, body);
+            
             // send the computed token
             String name = "output";
             Local portLocal = Jimple.v().newLocal("port",
@@ -649,15 +641,543 @@ public class ActorTransformer extends SceneTransformer {
 
         return entityInstanceClass;
     }
+ 
+//     private static EntitySootClass _createModalModel(
+//             CompositeEntity entity, String newClassName, Map options) {
+//     }
+
+    // Populate the given class with code to create the contents of
+    // the given entity.
+    private static EntitySootClass _createFSMActor(
+            FSMActor entity, String newClassName, Map options) {
+      
+        SootClass entityClass = PtolemyUtilities.actorClass;
+      
+        // create a class for the entity instance.
+        EntitySootClass entityInstanceClass =
+            new EntitySootClass(entityClass, newClassName,
+                    Modifier.PUBLIC);
+        Scene.v().addClass(entityInstanceClass);
+        entityInstanceClass.setApplicationClass();
+ 
+        // Record everything that the class creates.
+        HashSet tempCreatedSet = new HashSet();
+
+        SootMethod initMethod = entityInstanceClass.getInitMethod();
+        {
+            System.out.println("creating <init>");
+            // Populate the initialization method.
+            JimpleBody body = Jimple.v().newBody(initMethod);
+            initMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+            
+            // Populate...
+            // Initialize attributes that already exist in the class.
+            //  System.out.println("initializing attributes");
+            _initializeAttributes(body, entity, thisLocal,
+                    entity, thisLocal, entityInstanceClass, tempCreatedSet);
+            
+            // Create and initialize ports
+            // System.out.println("initializing ports");
+            _initializePorts(body, thisLocal, entity,
+                    thisLocal, entity, entityInstanceClass, tempCreatedSet);
+            
+            // return void
+            units.add(Jimple.v().newReturnVoidStmt());
+        }
+         
+        // Add fields to contain the tokens for each port. 
+        Map nameToField = new HashMap();
+        Map nameToType = new HashMap();
+        {
+            Iterator inputPorts = entity.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort)(inputPorts.next());
+                String name = port.getName(entity);
+                Type type = PtolemyUtilities.tokenType;
+                nameToType.put(name, port.getType());
+                // PtolemyUtilities.getSootTypeForTokenType(
+                       //  port.getType());
+                SootField field = new SootField(
+                        StringUtilities.sanitizeName(name) + "Token",
+                        type);
+                entityInstanceClass.addField(field);
+                nameToField.put(name, field);
+                
+                field = new SootField(
+                        StringUtilities.sanitizeName(name) + "IsPresent",
+                        type);
+                entityInstanceClass.addField(field);
+                nameToField.put(name + "_isPresent", field);       
+            }
+        }
+
+        // Add a field to keep track of the current state.
+        SootField currentStateField = new SootField(
+                "_currentState", IntType.v());
+        entityInstanceClass.addField(currentStateField);
+        
+        // populate the initialize method.
+        {
+            System.out.println("create initialize()");
+            SootMethod initializeMethod = new SootMethod("initialize",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            entityInstanceClass.addMethod(initializeMethod);
+            JimpleBody body = Jimple.v().newBody(initializeMethod);
+            initializeMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            // Set the initial state.
+            String initialStateName = ((StringAttribute)
+                    entity.getAttribute("initialStateName")).getExpression();
+            int initialStateIndex = entity.entityList().indexOf(
+                    entity.getEntity(initialStateName));
+            units.add(Jimple.v().newAssignStmt(
+                              Jimple.v().newInstanceFieldRef(
+                                      thisLocal, currentStateField),
+                              IntConstant.v(initialStateIndex)));
+
+            // return void
+            units.add(Jimple.v().newReturnVoidStmt());
+        
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
+        }        
+        // populate the fire method.
+        {
+            System.out.println("create fire()");
+            SootMethod fireMethod = new SootMethod("fire",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            entityInstanceClass.addMethod(fireMethod);
+            JimpleBody body = Jimple.v().newBody(fireMethod);
+            fireMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local hasTokenLocal = Jimple.v().newLocal(
+                    "hasTokenLocal", BooleanType.v());
+            body.getLocals().add(hasTokenLocal);
+            Local tokenLocal = Jimple.v().newLocal(
+                    "tokenLocal", PtolemyUtilities.tokenType);
+            body.getLocals().add(tokenLocal);
+
+            Iterator inputPorts = entity.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort)(inputPorts.next());
+                // FIXME: Handle multiports
+                if (port.getWidth() > 0) {
+                    String name = port.getName(entity);
+
+                    // Create an if statement.
+                    // 
+                    Local portLocal = Jimple.v().newLocal("port",
+                            PtolemyUtilities.portType);
+                    body.getLocals().add(portLocal);
+                    SootField portField = entityInstanceClass.getFieldByName(
+                            StringUtilities.sanitizeName(name));
+                    units.add(
+                            Jimple.v().newAssignStmt(portLocal,
+                                    Jimple.v().newInstanceFieldRef(
+                                            thisLocal, portField)));
+                    units.add(
+                            Jimple.v().newAssignStmt(hasTokenLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.hasTokenMethod,
+                                            IntConstant.v(0))));
+                    Local hasTokenToken =
+                        PtolemyUtilities.addTokenLocal(body, "token",
+                                PtolemyUtilities.booleanTokenClass,
+                                PtolemyUtilities.booleanTokenConstructor,
+                                hasTokenLocal);
+                  
+                    // store the isPresent
+                    SootField tokenIsPresentField = (SootField)
+                        nameToField.get(name + "_isPresent");
+                    units.add(Jimple.v().newAssignStmt(
+                                      Jimple.v().newInstanceFieldRef(
+                                              thisLocal,
+                                              tokenIsPresentField),
+                                      hasTokenToken));
+                 
+                    Stmt target = Jimple.v().newNopStmt();
+                    units.add(Jimple.v().newIfStmt(
+                                      Jimple.v().newEqExpr(hasTokenLocal,
+                                              IntConstant.v(0)),
+                                      target));
+                    units.add(Jimple.v().newAssignStmt(
+                                      tokenLocal,
+                                      Jimple.v().newVirtualInvokeExpr(
+                                              portLocal,
+                                              PtolemyUtilities.getMethod,
+                                              IntConstant.v(0))));
+                    // cast?
+//                     RefType type = PtolemyUtilities.getSootTypeForTokenType(
+//                             port.getType());
+//                     units.add(Jimple.v().newAssignStmt(
+//                                       tokenLocal,
+//                                       Jimple.v().newCastExpr(
+//                                               tokenLocal,
+//                                               type)));
+                    SootField tokenField = (SootField)
+                        nameToField.get(name);
+                    units.add(Jimple.v().newAssignStmt(
+                                      Jimple.v().newInstanceFieldRef(
+                                              thisLocal,
+                                              tokenField),
+                                      tokenLocal));
+                    units.add(target);
+                    //                 if (port.hasToken(0)) {
+                    //                     Token inputToken = port.get(0);
+                    //                     _tokenMap.put(port.getName(), inputToken);
+                    //                 }
+                }
+            }
+
+            Map stateToStartStmt = new HashMap();
+            List stateStmtList = new LinkedList();
+            int numberOfStates = entity.entityList().size();
+            // Figure out what state we are in.
+            for(Iterator states = entity.entityList().iterator();
+                states.hasNext();) {
+                State state = (State)states.next();
+                Stmt startStmt = Jimple.v().newNopStmt();
+                
+                stateToStartStmt.put(state, startStmt);
+                stateStmtList.add(startStmt);
+            }
+         
+            Local currentStateLocal = Jimple.v().newLocal(
+                    "currentStateLocal", IntType.v());
+            body.getLocals().add(currentStateLocal);
+                 
+            Local nextStateLocal = Jimple.v().newLocal(
+                    "nextStateLocal", IntType.v());
+            body.getLocals().add(nextStateLocal);
+           
+            Local flagLocal = Jimple.v().newLocal(
+                    "flagLocal", BooleanType.v());
+            body.getLocals().add(flagLocal);
+            Local transitionTakenLocal = Jimple.v().newLocal(
+                    "transitionTakenLocal", BooleanType.v());
+            body.getLocals().add(transitionTakenLocal);
+  
+            units.add(
+                    Jimple.v().newAssignStmt(
+                            currentStateLocal,
+                            Jimple.v().newInstanceFieldRef(
+                                    thisLocal,
+                                    currentStateField)));
+            // Start by doing nothing.
+            units.add(
+                    Jimple.v().newAssignStmt(
+                            transitionTakenLocal,
+                            IntConstant.v(0)));
+            
+            // If no transition is taken, then stay in this state.
+            units.add(
+                    Jimple.v().newAssignStmt(
+                            nextStateLocal,
+                            currentStateLocal));
+   
+         
+            Stmt finishedStmt = Jimple.v().newNopStmt();
+            Stmt errorStmt = Jimple.v().newNopStmt();
+
+            // Get the current state.
+            units.add(
+                    Jimple.v().newTableSwitchStmt(currentStateLocal,
+                            0, numberOfStates - 1,
+                            stateStmtList, 
+                            errorStmt));
+         
+            // Generate code for each state.
+            for(Iterator states = entity.entityList().iterator();
+                states.hasNext();) {
+                State state = (State)states.next();
+                System.out.println("state " + state.getName());
+
+                Stmt startStmt = (Stmt)stateToStartStmt.get(state);
+                units.add(startStmt);
+
+                // Fire the refinement actor.
+                TypedActor[] refinements;
+                try {
+                    refinements = state.getRefinement();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
+                if(refinements != null)
+                for(int i = 0; i < refinements.length; i++) {
+                    TypedActor refinement = refinements[i];
+                    
+                    Local containerLocal = Jimple.v().newLocal("container",
+                           RefType.v(PtolemyUtilities.namedObjClass));
+                    body.getLocals().add(containerLocal);
+                     Local entityLocal = Jimple.v().newLocal("entity",
+                             RefType.v(PtolemyUtilities.entityClass));
+                    body.getLocals().add(entityLocal);
+                     
+                    NamedObj toplevel = entity.toplevel();
+                    String deepName = ((NamedObj)refinement).getName(toplevel);
+                                       
+                    units.add(
+                            Jimple.v().newAssignStmt(containerLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            thisLocal,
+                                            PtolemyUtilities.toplevelMethod)));
+                    units.add(
+                            Jimple.v().newAssignStmt(containerLocal,
+                                    Jimple.v().newCastExpr(
+                                            containerLocal,
+                                            RefType.v(PtolemyUtilities.compositeActorClass))));
+                    units.add(
+                            Jimple.v().newAssignStmt(entityLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            containerLocal,
+                                            PtolemyUtilities.getEntityMethod,
+                                            StringConstant.v(deepName))));
+      //               units.add(
+//                             Jimple.v().newAssignStmt(entityLocal,
+//                                     Jimple.v().newCastExpr(entityLocal,
+//                                             RefType.v(PtolemyUtilities.executableInterface))));
+
+
+                    units.add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newInterfaceInvokeExpr(
+                                            entityLocal,
+                                            PtolemyUtilities.executablePrefireMethod)));
+                    units.add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newInterfaceInvokeExpr(
+                                            entityLocal,
+                                            PtolemyUtilities.executableFireMethod)));
+                    units.add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newInterfaceInvokeExpr(
+                                            entityLocal,
+                                            PtolemyUtilities.executablePostfireMethod)));
+
+                }
+
+                // Determine the next state in this state.
+                for(Iterator transitions = state.outgoingPort.linkedRelationList().iterator();
+                    transitions.hasNext();) {
+                    Transition transition = (Transition)transitions.next();
+                    String guardExpression = transition.getGuardExpression();
+                    
+                    Local guardLocal = _generateExpressionCode(
+                            entity, entityInstanceClass, guardExpression, 
+                            nameToField, nameToType, body);
+          
+                    // Test the guard.
+                    units.add(Jimple.v().newAssignStmt(
+                                      tokenLocal,
+                                      Jimple.v().newCastExpr(
+                                              guardLocal,
+                                              RefType.v(PtolemyUtilities.booleanTokenClass))));
+                    units.add(
+                            Jimple.v().newAssignStmt(
+                                    flagLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            tokenLocal,
+                                            PtolemyUtilities.booleanValueMethod)));
+                    Stmt skipStmt = Jimple.v().newNopStmt();
+
+                    units.add(
+                            Jimple.v().newIfStmt(
+                                    Jimple.v().newEqExpr(
+                                            flagLocal,
+                                            IntConstant.v(0)),
+                                    skipStmt));
+                    units.add(
+                            Jimple.v().newIfStmt(
+                                    Jimple.v().newEqExpr(
+                                            transitionTakenLocal,
+                                            IntConstant.v(1)),
+                                    errorStmt));
+                    
+                    // If transition taken, then store the next state
+                    units.add(
+                            Jimple.v().newAssignStmt(
+                                    transitionTakenLocal,
+                                    IntConstant.v(1)));
+                    int nextStateIndex = entity.entityList().indexOf(
+                            transition.destinationState());
+                    units.add(
+                            Jimple.v().newAssignStmt(
+                                    nextStateLocal,
+                                    IntConstant.v(nextStateIndex)));
+
+                    // Generate code for the outputExpression of the guard.
+                    for(Iterator actions = transition.choiceActionList().iterator();
+                        actions.hasNext();) {
+                        AbstractActionsAttribute action = 
+                            (AbstractActionsAttribute)actions.next();
+                        _generateActionCode(entity, entityInstanceClass,
+                                    nameToField, nameToType, body, action);
+                    }
+                    
+                    // Generate code for the commitExpression of the guard.
+                    for(Iterator actions = transition.commitActionList().iterator();
+                        actions.hasNext();) {
+                        AbstractActionsAttribute action = 
+                            (AbstractActionsAttribute)actions.next();
+                        _generateActionCode(entity, entityInstanceClass,
+                                    nameToField, nameToType, body, action);
+                    }
+                    units.add(skipStmt);
+                }
+                units.add(Jimple.v().newGotoStmt(finishedStmt));
+            }
+            units.add(errorStmt);
+            
+            // throw an exception.
+            units.add(finishedStmt);
+    
+            Local exceptionLocal = SootUtilities.createRuntimeException(
+                    body, errorStmt, "state error");
+            units.insertBefore(
+                    Jimple.v().newThrowStmt(exceptionLocal),
+                    errorStmt);                            
+                            
+            // Store the next state.
+            units.add(
+                    Jimple.v().newAssignStmt(
+                            Jimple.v().newInstanceFieldRef(
+                                    thisLocal,
+                                    currentStateField),
+                            nextStateLocal));
+                     
+            
+            // return void
+            units.add(Jimple.v().newReturnVoidStmt());
+        
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
+        }
+
+        // Remove super calls to the executable interface.
+        // FIXME: This would be nice to do by inlining instead of
+        // special casing.
+        _implementExecutableInterface(entityInstanceClass);
+        
+        // Reinitialize the hierarchy, since we've added classes.
+        Scene.v().setActiveHierarchy(new Hierarchy());
+        
+        // Inline all methods in the class that are called from
+        // within the class.
+        _inlineLocalCalls(entityInstanceClass);
+        
+        // Remove the __CGInit method.  This should have been
+        // inlined above.
+        entityInstanceClass.removeMethod(
+                entityInstanceClass.getInitMethod());
+
+        return entityInstanceClass;
+    }
+  
+    private static void _generateActionCode(
+            Entity entity, SootClass entityClass,
+            Map nameToField, Map nameToType, JimpleBody body, 
+            AbstractActionsAttribute action) {
+        for(Iterator names = action.getDestinationNameList().iterator();
+            names.hasNext();) {
+            String name = (String)names.next();
+            String actionExpression = action.getExpression(name);
+            Local outputTokenLocal = _generateExpressionCode(
+                    entity, entityClass, actionExpression, 
+                    nameToField, nameToType, body);
+            try {
+                NamedObj destination = action.getDestination(name);
+                if(destination instanceof TypedIOPort) {
+                    // send the computed token
+                    Local portLocal = Jimple.v().newLocal("port",
+                            PtolemyUtilities.portType);
+                    body.getLocals().add(portLocal);
+                    
+                    SootField portField = 
+                        entityClass.getFieldByName(name);
+                    
+                    body.getUnits().add(
+                            Jimple.v().newAssignStmt(portLocal,
+                                    Jimple.v().newInstanceFieldRef(
+                                            body.getThisLocal(), portField)));
+                    body.getUnits().add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.sendMethod,
+                                            IntConstant.v(0), outputTokenLocal)));
+                } else if(destination instanceof Parameter) {
+                    // set the computed token
+                    Local paramLocal = Jimple.v().newLocal("param",
+                            RefType.v(PtolemyUtilities.variableClass));
+                    body.getLocals().add(paramLocal);
+                    
+                    SootField paramField = 
+                        entityClass.getFieldByName(name);
+                    
+                    body.getUnits().add(
+                            Jimple.v().newAssignStmt(paramLocal,
+                                    Jimple.v().newInstanceFieldRef(
+                                            body.getThisLocal(), paramField)));
+                    body.getUnits().add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            paramLocal,
+                                            PtolemyUtilities.variableSetTokenMethod,
+                                            outputTokenLocal)));
+            
+                } else {
+                    throw new RuntimeException("unknown object");
+                }
+            } catch (IllegalActionException ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }
+    }
+        
+    private static Local _generateExpressionCode(
+            Entity entity, SootClass entityClass, String expression,
+            Map nameToField, Map nameToType, JimpleBody body) {
+        
+        Local local;
+        try {
+            PtParser parser = new PtParser();
+            ASTPtRootNode parseTree = 
+                parser.generateParseTree(expression);
+            ActorCodeGenerationScope scope = 
+                new ActorCodeGenerationScope(
+                        entity, entityClass, nameToField, nameToType, body);
+            ParseTreeCodeGenerator generator = 
+                new ParseTreeCodeGenerator();
+            local = generator.generateCode(
+                    parseTree, body, scope);
+        } catch (IllegalActionException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex.toString());
+        }
+        return local;
+    }
 
     public static class ActorCodeGenerationScope
         implements CodeGenerationScope {
-        public ActorCodeGenerationScope(Map nameToField, 
+        public ActorCodeGenerationScope(
+                Entity entity, SootClass entityClass, Map nameToField, 
                 Map nameToType, JimpleBody body) {
             _nameToField = nameToField;
             _nameToType = nameToType;
             _body = body;
             _units = body.getUnits();
+            _entity = entity;
+            _entityClass = entityClass;
         }
         
         public ptolemy.data.Token get(String name)
@@ -668,10 +1188,30 @@ public class ActorTransformer extends SceneTransformer {
 
         public Local getLocal(String name)
                 throws IllegalActionException {
+            Local thisLocal = _body.getThisLocal();
+            
+           //  if(name.equals("time")) {
+//                 throw new RuntimeException("Time not supported");
+//             } else if(name.equals("iteration")) {
+//                 Local intLocal = Jimple.v().newLocal("intLocal",
+//                         IntType.v());
+//                 _body.getLocals().add(intLocal);
+//                 _units.add(
+//                         Jimple.v().newAssignStmt(intLocal,
+//                                 Jimple.v().newInstanceFieldRef(
+//                                         thisLocal, 
+//                                         entityClass.getFieldByName("_iteration"))));
+//                 Local tokenLocal =
+//                     PtolemyUtilities.addTokenLocal(_body, "iterationLocal",
+//                         PtolemyUtilities.intTokenClass,
+//                         PtolemyUtilities.intTokenConstructor,
+//                         intLocal);
+//                 return tokenLocal;
+//             }
+            
             SootField portField = (SootField)_nameToField.get(name);
-
+               
             if(portField != null) {
-                Local thisLocal = _body.getThisLocal();
                 
                 Local portLocal = Jimple.v().newLocal("portToken",
                         PtolemyUtilities.getSootTypeForTokenType(
@@ -694,28 +1234,122 @@ public class ActorTransformer extends SceneTransformer {
                                                 getType(name)))));
              
                 return portLocal;
-            } else {
-                throw new IllegalActionException(
-                        "The ID " + name + " is undefined.");
             }
+
+            // Look for parameter in actor.
+            NamedObj container = _entity;
+            Variable result = null;
+            while (container != null) {
+                result = _searchIn(container, name);
+                if (result != null) {
+                    // Insert code to get a ref to the variable,
+                    // and to get the token of that variable.
+                    Local containerLocal = Jimple.v().newLocal("container",
+                           RefType.v(PtolemyUtilities.namedObjClass));
+                    _body.getLocals().add(containerLocal);
+                     Local attributeLocal = Jimple.v().newLocal("attribute",
+                            PtolemyUtilities.attributeType);
+                    _body.getLocals().add(attributeLocal);
+                    Local tokenLocal = Jimple.v().newLocal("token",
+                            PtolemyUtilities.tokenType);
+                    _body.getLocals().add(tokenLocal);
+                    
+                    NamedObj toplevel = _entity.toplevel();
+                    String deepName = result.getName(toplevel);
+                    
+                    
+                    _units.add(
+                            Jimple.v().newAssignStmt(containerLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            thisLocal,
+                                            PtolemyUtilities.toplevelMethod)));
+                   _units.add(
+                            Jimple.v().newAssignStmt(attributeLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            containerLocal,
+                                            PtolemyUtilities.getAttributeMethod,
+                                            StringConstant.v(deepName))));
+                    _units.add(
+                            Jimple.v().newAssignStmt(attributeLocal,
+                                    Jimple.v().newCastExpr(attributeLocal,
+                                            RefType.v(
+                                                    PtolemyUtilities.variableClass))));
+                    _units.add(
+                            Jimple.v().newAssignStmt(tokenLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            attributeLocal,
+                                            PtolemyUtilities.variableGetTokenMethod)));
+                  
+                    return tokenLocal;
+                    // Create a local that has the correct value.
+                    // Note that it would be much nicer to just call
+                    // getAttribute here...
+                    
+   //                  Stmt stmt = Jimple.v().newNopStmt();
+//                     _units.add(stmt);
+//                     return PtolemyUtilities.buildConstantTokenLocal(_body,
+//                             stmt, result.getToken(), "token");
+                } else {
+                    container = (NamedObj)container.getContainer();
+                }
+            }
+
+            throw new IllegalActionException(
+                    "The ID " + name + " is undefined.");
         }
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
+          //   if(name.equals("time")) {
+//                 return BaseType.DOUBLE;
+//             } else if(name.equals("iteration")) {
+//                 return BaseType.INT;
+//             }
+            
             if(_nameToType.containsKey(name)) {
                 return (ptolemy.data.type.Type)_nameToType.get(name);
-            } else {
-                throw new IllegalActionException(
-                        "The ID " + name + " is undefined.");
+            } 
+
+            NamedObj container = _entity;
+            while (container != null) {
+                Variable result = _searchIn(container, name);
+                if (result != null) {
+                    return result.getType();
+                } else {
+                    container = (NamedObj)container.getContainer();
+                }
             }
+            
+            throw new IllegalActionException(
+                    "The ID " + name + " is undefined.");
         }
         public NamedList variableList() {
             return new NamedList();
         }
         
+        // Search in the container for an attribute with the given name.
+        // Search recursively in any instance of ScopeExtender in the
+        // container.
+        private Variable _searchIn(NamedObj container, String name) {
+            Attribute result = container.getAttribute(name);
+            if (result != null && result instanceof Variable)
+                return (Variable)result;
+            Iterator extenders =
+                    container.attributeList(ScopeExtender.class).iterator();
+            while (extenders.hasNext()) {
+                ScopeExtender extender = (ScopeExtender)extenders.next();
+                result = extender.getAttribute(name);
+                if (result != null && result instanceof Variable)
+                    return (Variable)result;
+            }
+            return null;
+        }
+
         private Map _nameToField;
         private Map _nameToType;
         private JimpleBody _body;
         private Chain _units;
+        private Entity _entity;
+        private SootClass _entityClass;
     }
 
     private static void _removeAttributeInitialization(SootClass theClass) {
@@ -795,6 +1429,12 @@ public class ActorTransformer extends SceneTransformer {
             Local contextLocal, NamedObj namedObj, Local namedObjLocal,
             SootClass theClass, HashSet createdSet) {
 
+        //   System.out.println("initializing attributes in " + namedObj);
+
+        // Check to see if we have anything to do.
+        if(namedObj.attributeList().size() == 0) return;
+
+        
         Type variableType = RefType.v(PtolemyUtilities.variableClass);
 
         // A local that we will use to set the value of our
@@ -828,18 +1468,21 @@ public class ActorTransformer extends SceneTransformer {
             // Ignore frame sizes and locations.  They aren't really
             // necessary in the generated code, I don't think.
             if (attribute instanceof SizeAttribute ||
-                attribute instanceof LocationAttribute) {
+                attribute instanceof LocationAttribute ||
+                attribute instanceof LibraryAttribute ||
+                attribute instanceof TableauFactory) {
                 continue;
             }
 
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
-            String fieldName = ModelTransformer.getFieldNameForAttribute(attribute, context);
+            String fieldName = ModelTransformer.getFieldNameForAttribute(
+                    attribute, context);
 
             Local local;
             if (createdSet.contains(attribute.getFullName())) {
-                //    System.out.println("already has " + attributeName);
+                //     System.out.println("already has " + attributeName);
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
                 // Note that if the class creates the attribute, but
@@ -862,19 +1505,21 @@ public class ActorTransformer extends SceneTransformer {
 //                     continue;
 //                 }
             } else {
-                //   System.out.println("creating " + attributeName);
+                //System.out.println("creating " + attribute.getFullName());
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
                 local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         namedObjLocal, attribute.getName());
+                // System.out.println("created local");
                 Attribute classAttribute =
                     (Attribute)ModelTransformer._findDeferredInstance(attribute);
                 ModelTransformer.updateCreatedSet(namedObj.getFullName() + "."
                         + attribute.getName(),
                         classAttribute, classAttribute, createdSet);
             }
-
+            
+            // System.out.println("creating new field");
             // Create a new field for the attribute, and initialize
             // it to the the attribute above.
             SootUtilities.createAndSetFieldFromLocal(body, local,

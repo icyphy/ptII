@@ -55,6 +55,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
@@ -111,6 +112,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         _indexExistingFields(ModelTransformer.getModelClass(),
                 _model);
 
+        _replaceEntityCalls(ModelTransformer.getModelClass(),
+                _model);
+
         _replaceAttributeCalls(ModelTransformer.getModelClass(),
                 _model);
 
@@ -149,7 +153,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         box.setValue(NullConstant.v());
                     } else if (r.getMethod().equals(
                                        PtolemyUtilities.getAttributeMethod)) {
-                        // inline calls to getAttribute(arg)
+                        // Replace calls to getAttribute(arg)
                         // when arg is a string that can be
                         // statically evaluated.
                         Value nameValue = r.getArg(0);
@@ -162,9 +166,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                             // type of the base is.
                             
                             Local baseLocal = (Local)r.getBase();
-                            Value newFieldRef = _createAttributeField(
-                                    baseLocal, name, unit, localDefs);
-                                box.setValue(newFieldRef);
+                            _replaceGetAttributeMethod(
+                                    body, box, baseLocal,
+                                    name, unit, localDefs);
                         } else {
                             String string = "Attribute cannot be " +
                                 "statically determined";
@@ -175,7 +179,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             }
         }   
 
-        if(actor instanceof CompositeEntity) {
+        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)actor;
             // Loop over all the entity classes and replace getAttribute calls.
             for (Iterator i = model.deepEntityList().iterator();
@@ -191,38 +195,116 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         }
     }
 
+    private void _replaceEntityCalls(SootClass actorClass, 
+            ComponentEntity actor) {
+        
+        // Replace calls to entity method with field references.
+        for (Iterator methods = actorClass.getMethods().iterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            
+            CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+            // this will help us figure out where locals are defined.
+            SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+            
+            for (Iterator units = body.getUnits().snapshotIterator();
+                 units.hasNext();) {
+                Stmt unit = (Stmt)units.next();
+                if (!unit.containsInvokeExpr()) {
+                    continue;
+                }
+                ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                Value value = box.getValue();
+                if (value instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                   //  if (r.getMethod().getSubSignature().equals(
+//                                 PtolemyUtilities
+//                                 .getContainerMethod.getSubSignature())) {
+//                         // 
+//                     } else 
+                //     if (r.getMethod().equals(
+//                                 PtolemyUtilities.toplevelMethod)) {
+//                         // Replace with reference to the toplevel
+                        
+//                     }
+                }
+            }
+        }   
+
+        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+            CompositeEntity model = (CompositeEntity)actor;
+            // Loop over all the entity classes and replace getAttribute calls.
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass =
+                    Scene.v().loadClassAndSupport(className);
+                _replaceEntityCalls(entityClass, entity);
+           
+            }
+        }
+    }
+
     // Given a local variable that refers to a namedObj, and the name
-    // of an attribute in that object, return a new field ref that
-    // refers to that attribute.
-    private FieldRef _createAttributeField(Local baseLocal,
+    // of an attribute in that object, replace the getAttribute method
+    // invocation in the box with a reference to the appropriate field
+    // for the attribute.
+    private void _replaceGetAttributeMethod(
+            JimpleBody body, ValueBox box, Local baseLocal,
             String name, Unit unit, LocalDefs localDefs) {
           
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        NamedObj baseObject = (NamedObj)_classToObjectMap.get(type.getSootClass());
         System.out.println("name = " + name);
-        System.out.println("object = " + object);
-        if (object != null) {
+        System.out.println("baseObject = " + baseObject);
+        if (baseObject != null) {
             // Then we are dealing with a getAttribute call on one of the
             // classes we are generating.
-            Attribute attribute = object.getAttribute(name);
+            Attribute attribute = baseObject.getAttribute(name);
+            Entity entityContainer =
+                FieldsForEntitiesTransformer.getEntityContainerOfObject(
+                        attribute);
             SootField attributeField = (SootField)
                 _attributeToFieldMap.get(attribute);
-            if (attributeField != null) {
-                return Jimple.v().newInstanceFieldRef(
-                        baseLocal, attributeField);
+            Local local;
+            System.out.println("entityContainer = " + entityContainer);
+            if(entityContainer.equals(baseObject)) {
+                local = baseLocal;
             } else {
-                return null;
+                local = Jimple.v().newLocal("container", 
+                                RefType.v(PtolemyUtilities.entityClass));
+                body.getLocals().add(local);
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(local, 
+                                FieldsForEntitiesTransformer.getFieldRefForEntity(entityContainer)),
+                        unit);
+            }
+            if (attributeField != null) {
+                box.setValue(Jimple.v().newInstanceFieldRef(
+                       local, attributeField));
+            } else {
+                throw new RuntimeException(
+                        "Failed to find field for attribute " + attribute.getFullName());
             }
         } else {
-            // Walk back and get the definition of the field.
+            // Otherwise, we have an attribute inside a port or
+            // another attribute...  In such cases, we need to work
+            // backwards to get to an entity, so we can find the
+            // correct port.  Walk back and get the definition of the
+            // field.
             DefinitionStmt definition =
                 _getFieldDef(baseLocal, unit, localDefs);
             InstanceFieldRef fieldRef = (InstanceFieldRef)
                 definition.getRightOp();
             SootField baseField = fieldRef.getField();
             System.out.println("baseField = " + baseField);
-            return _createAttributeField((Local)fieldRef.getBase(),
+            _replaceGetAttributeMethod(
+                    body, box, (Local)fieldRef.getBase(),
                     baseField.getName() + "." + name, definition,
                     localDefs);
             //baseField.getDeclaringClass().getFieldByName(
@@ -285,6 +367,26 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
             // retrieve the existing field.
             SootField field = theClass.getFieldByName(fieldName);
+
+            Type type = field.getType();
+            if(!(type instanceof RefType)) {
+                System.out.println("Class " + theClass
+                        + " declares field for attribute "
+                        + attribute.getFullName() + " but it has type " 
+                        + type);
+                continue;
+            } else {
+                SootClass fieldClass = ((RefType)type).getSootClass();
+                if(!SootUtilities.derivesFrom(fieldClass,
+                        PtolemyUtilities.attributeClass)) {
+                    System.out.println("Class " + theClass
+                            + " declares field for attribute "
+                            + attribute.getFullName() + " but it has type " 
+                            + fieldClass.getName());
+                    continue;
+                }
+            }
+
             // Make the field final and private.
             field.setModifiers((field.getModifiers() & Modifier.STATIC) |
                     Modifier.FINAL | Modifier.PUBLIC); // FIXME | Modifier.PRIVATE);
@@ -313,7 +415,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
         // Loop over all the actor instance classes and get
         // fields for ports.
-        if(actor instanceof CompositeEntity) {
+        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             // Then recurse
             CompositeEntity model = (CompositeEntity)actor;
             for (Iterator i = model.deepEntityList().iterator();

@@ -35,6 +35,9 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
+import ptolemy.domains.fsm.kernel.HSDirector;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.actor.IOPort;
@@ -126,11 +129,39 @@ public class InlineDirectorTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineDirectorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
        
+        SootClass modelClass = ModelTransformer.getModelClass();
+        _inlineDirectorsIn(_model, modelClass, phaseName, options);        
+    }
+
+    private void _inlineDirectorsIn(CompositeActor model, SootClass modelClass,
+            String phaseName, Map options) {
+
+        for (Iterator i = model.deepEntityList().iterator();
+             i.hasNext();) {
+            Entity entity = (Entity)i.next();
+            if(entity instanceof CompositeActor) {
+                String className = 
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass compositeClass = Scene.v().getSootClass(className);
+                _inlineDirectorsIn((CompositeActor)entity, compositeClass,
+                        phaseName, options);
+            }
+        }
+
+        if(model.getDirector() instanceof SDFDirector) {
+            _inlineSDFDirector(model, modelClass, phaseName, options);
+        } else if(model.getDirector() instanceof HSDirector ||
+                  model.getDirector() instanceof FSMDirector) {
+            _inlineHSDirector(model, modelClass, phaseName, options);
+        } else {
+            throw new RuntimeException("Inlining a director can not "
+                    + "be performed on a director of class " 
+                    + model.getDirector().getClass().getName());
+        }
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
-        for (Iterator i = _model.deepEntityList().iterator();
+        for (Iterator i = model.deepEntityList().iterator();
              i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
@@ -163,35 +194,425 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 }
             }
         }
-        
-        SootClass modelClass = ModelTransformer.getModelClass();
-        _inlineDirectorsIn(_model, modelClass, phaseName, options);
     }
 
-    private void _inlineDirectorsIn(CompositeActor model, SootClass modelClass,
+    private void _inlineHSDirector(CompositeActor model, SootClass modelClass,
             String phaseName, Map options) {
+        FSMDirector director = (FSMDirector) model.getDirector();
+        FSMActor controller;
+        try {
+            controller = director.getController();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
+        
+        System.out.println("Inlining director for " + model.getFullName());
+        Type actorType = RefType.v(PtolemyUtilities.actorClass);
 
-        for (Iterator i = model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            if(entity instanceof CompositeActor) {
-                String className = 
+//         SootField postfireReturnsField = new SootField("_postfireReturns", 
+//                 BooleanType.v(), Modifier.PRIVATE);
+//         modelClass.addField(postfireReturnsField);
+
+        // Inline the director
+        {
+            // populate the preinitialize method
+            SootMethod classMethod = new SootMethod("preinitialize",
+                    new LinkedList(), VoidType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            //DavaBody body = Dava.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            for (Iterator entities = model.deepEntityList().iterator();
+                 entities.hasNext();) {
+                Entity entity = (Entity)entities.next();
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                String className =
                     ActorTransformer.getInstanceClassName(entity, options);
-                SootClass compositeClass = Scene.v().getSootClass(className);
-                _inlineDirectorsIn((CompositeActor)entity, compositeClass,
-                        phaseName, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod preinitializeMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "preinitialize");
+                Local actorLocal = Jimple.v().newLocal("actor",
+                        RefType.v(theClass));
+                body.getLocals().add(actorLocal);
+                // Get the field.
+                units.add(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
+                units.add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                preinitializeMethod)));
             }
+            units.add(Jimple.v().newReturnVoidStmt());
         }
 
-        if(model.getDirector() instanceof SDFDirector) {
-            _inlineSDFDirector(model, modelClass, phaseName, options);
-        } else {
-            throw new RuntimeException("Inlining a director can not "
-                    + "be performed on a director of class " 
-                    + _model.getDirector().getClass().getName());
+        {
+            // populate the initialize method
+            SootMethod classMethod = new SootMethod("initialize",
+                    new LinkedList(), VoidType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local actorLocal = Jimple.v().newLocal("actor", actorType);
+            body.getLocals().add(actorLocal);
+            for (Iterator entities = model.deepEntityList().iterator();
+                 entities.hasNext();) {
+                Entity entity = (Entity)entities.next();
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod initializeMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "initialize");
+                // Set the field.
+                units.add(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
+                units.add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                initializeMethod)));
+            }
+            units.add(Jimple.v().newReturnVoidStmt());
         }
+
+        {
+            // populate the prefire method
+            SootMethod classMethod = new SootMethod("prefire",
+                    new LinkedList(), BooleanType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());
+            body.getLocals().add(prefireReturnsLocal);
+
+            // Prefire the controller.
+            Local actorLocal = Jimple.v().newLocal("actor", actorType);
+            body.getLocals().add(actorLocal);
+            String fieldName = ModelTransformer.getFieldNameForEntity(
+                    controller, model);
+            SootField field = modelClass.getFieldByName(fieldName);
+            String className =
+                ActorTransformer.getInstanceClassName(controller, options);
+            SootClass theClass = Scene.v().loadClassAndSupport(className);
+            SootMethod actorPrefireMethod =
+                SootUtilities.searchForMethodByName(
+                        theClass, "prefire");
+            
+            units.add(Jimple.v().newAssignStmt(actorLocal,
+                    Jimple.v().newInstanceFieldRef(thisLocal, field)));
+            units.add(Jimple.v().newAssignStmt(prefireReturnsLocal,
+                              Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                      actorPrefireMethod)));
+            
+            units.add(Jimple.v().newReturnStmt(prefireReturnsLocal));
+
+            LocalSplitter.v().transform(body, phaseName + ".lns");
+            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+            TypeResolver.resolve(body, Scene.v());
+        }
+
+        {
+            // populate the fire method
+            SootMethod classMethod = new SootMethod("fire",
+                    new LinkedList(), VoidType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local indexLocal = Jimple.v().newLocal("index", IntType.v());
+            body.getLocals().add(indexLocal);
+            Local tokenLocal = Jimple.v().newLocal("token", 
+                    PtolemyUtilities.tokenType);
+            body.getLocals().add(tokenLocal);
+            
+            // Transfer Inputs from input ports.
+            for(Iterator ports = model.inputPortList().iterator();
+                ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                int rate = 1;
+ 
+                String fieldName = ModelTransformer.getFieldNameForPort(
+                        port, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                
+                // Get a reference to the port.
+                Local portLocal = Jimple.v().newLocal("port",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(portLocal);
+                Local tempPortLocal = Jimple.v().newLocal("tempPort",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(tempPortLocal);
+                units.add(
+                        Jimple.v().newAssignStmt(tempPortLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        thisLocal, field)));
+                units.add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newCastExpr(
+                                        tempPortLocal,
+                                        PtolemyUtilities.ioportType)));
+            
+
+                for (int i = 0; i < port.getWidth(); i++) {
+                    // The list of initializer instructions.
+                    List initializerList = new LinkedList();
+                    initializerList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    IntConstant.v(0)));
+
+                    // The list of body instructions.
+                    List bodyList = new LinkedList();
+                    // Read
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    tokenLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.getMethod,
+                                            IntConstant.v(i))));
+                    // Write
+                    bodyList.add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.sendInsideMethod,
+                                            IntConstant.v(i),
+                                            tokenLocal)));
+                    // Increment the index.
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    Jimple.v().newAddExpr(
+                                            indexLocal,
+                                            IntConstant.v(1))));
+                    
+                    Expr conditionalExpr =
+                        Jimple.v().newLtExpr(
+                                indexLocal,
+                                IntConstant.v(rate));
+                    
+                    Stmt stmt = Jimple.v().newNopStmt();
+                    units.add(stmt);
+                    SootUtilities.createForLoopBefore(body,
+                            stmt,
+                            initializerList,
+                            bodyList,
+                            conditionalExpr);
+                }
+            }
+
+            {
+                // Fire the controller.
+                Local actorLocal = Jimple.v().newLocal("actor", actorType);
+                body.getLocals().add(actorLocal);
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        controller, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                String className =
+                    ActorTransformer.getInstanceClassName(controller, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod actorFireMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "fire");
+                
+                units.add(Jimple.v().newAssignStmt(actorLocal,
+                                  Jimple.v().newInstanceFieldRef(thisLocal, field)));
+                units.add(Jimple.v().newInvokeStmt(
+                                  Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                          actorFireMethod)));
+            }
+
+            // Transfer outputs from output ports
+            for(Iterator ports = model.outputPortList().iterator();
+                ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                int rate;
+                try {
+                    rate = SDFScheduler.getTokenProductionRate(port);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
+
+                String fieldName = ModelTransformer.getFieldNameForPort(
+                        port, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                
+                // Get a reference to the port.
+                Local portLocal = Jimple.v().newLocal("port",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(portLocal);
+                Local tempPortLocal = Jimple.v().newLocal("tempPort",
+                        PtolemyUtilities.ioportType);
+                body.getLocals().add(tempPortLocal);
+                units.add(
+                        Jimple.v().newAssignStmt(tempPortLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        thisLocal, field)));
+                units.add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newCastExpr(
+                                        tempPortLocal,
+                                        PtolemyUtilities.ioportType)));
+            
+
+                for (int i = 0; i < port.getWidth(); i++) {
+                    // The list of initializer instructions.
+                    List initializerList = new LinkedList();
+                    initializerList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    IntConstant.v(0)));
+
+                    // The list of body instructions.
+                    List bodyList = new LinkedList();
+                 
+                    // Read
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    tokenLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.getInsideMethod,
+                                            IntConstant.v(i))));
+                    // Write
+                    bodyList.add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.sendMethod,
+                                            IntConstant.v(i),
+                                            tokenLocal)));
+                    // Increment the index.
+                    bodyList.add(
+                            Jimple.v().newAssignStmt(
+                                    indexLocal,
+                                    Jimple.v().newAddExpr(
+                                            indexLocal,
+                                            IntConstant.v(1))));
+                    
+                    Expr conditionalExpr =
+                        Jimple.v().newLtExpr(
+                                indexLocal,
+                                IntConstant.v(rate));
+                    
+                    Stmt stmt = Jimple.v().newNopStmt();
+                    units.add(stmt);
+                    SootUtilities.createForLoopBefore(body,
+                            stmt,
+                            initializerList,
+                            bodyList,
+                            conditionalExpr);
+                }
+            }
+
+            // Return.
+            units.add(Jimple.v().newReturnVoidStmt());
+            LocalSplitter.v().transform(body, phaseName + ".lns");
+            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+            TypeResolver.resolve(body, Scene.v());
+        }
+
+        {
+            // populate the postfire method
+            SootMethod classMethod = new SootMethod("postfire",
+                    new LinkedList(), BooleanType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local postfireReturnsLocal = 
+                Jimple.v().newLocal("postfireReturns", BooleanType.v());
+            body.getLocals().add(postfireReturnsLocal);
+           
+            // Postfire the controller.
+            Local actorLocal = Jimple.v().newLocal("actor", actorType);
+            body.getLocals().add(actorLocal);
+            String fieldName = ModelTransformer.getFieldNameForEntity(
+                    controller, model);
+            SootField field = modelClass.getFieldByName(fieldName);
+            String className =
+                ActorTransformer.getInstanceClassName(controller, options);
+            SootClass theClass = Scene.v().loadClassAndSupport(className);
+            SootMethod actorPostfireMethod =
+                SootUtilities.searchForMethodByName(
+                        theClass, "postfire");
+            
+            units.add(Jimple.v().newAssignStmt(actorLocal,
+                    Jimple.v().newInstanceFieldRef(thisLocal, field)));
+            units.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
+                              Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                      actorPostfireMethod)));
+
+            units.add(Jimple.v().newReturnStmt(postfireReturnsLocal));
+            LocalSplitter.v().transform(body, phaseName + ".lns");
+            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+            TypeResolver.resolve(body, Scene.v());
+        }
+
+        {
+            // populate the wrapup method
+            SootMethod classMethod = new SootMethod("wrapup",
+                    new LinkedList(), VoidType.v(),
+                    Modifier.PUBLIC);
+            modelClass.addMethod(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            classMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Local actorLocal = Jimple.v().newLocal("actor", actorType);
+            body.getLocals().add(actorLocal);
+            for (Iterator entities = model.deepEntityList().iterator();
+                 entities.hasNext();) {
+                Entity entity = (Entity)entities.next();
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod wrapupMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "wrapup");
+                // Set the field.
+                units.add(Jimple.v().newAssignStmt(actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)));
+                units.add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                wrapupMethod)));
+            }
+            units.add(Jimple.v().newReturnVoidStmt());
+        }
+        Scene.v().setActiveHierarchy(new Hierarchy());
     }
-
 
     private void _inlineSDFDirector(CompositeActor model, SootClass modelClass,
             String phaseName, Map options) {

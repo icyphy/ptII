@@ -56,8 +56,10 @@ JSRCS = \
 	DeadObjectEliminator.java \
 	ExceptionEliminator.java \
 	FieldsForAttributesTransformer.java \
+	FieldsForEntitiesTransformer.java \
 	FieldsForPortsTransformer.java \
 	FieldOptimizationTransformer.java \
+	HSPortInliner.java \
 	InlineDirectorTransformer.java \
 	InlineParameterTransformer.java \
 	InlinePortTransformer.java \
@@ -67,6 +69,8 @@ JSRCS = \
 	NamedObjEliminator.java \
 	NamedObjEqualityEliminator.java \
 	ParseTreeCodeGenerator.java \
+	PortInliner.java \
+	SDFPortInliner.java \
 	TestApplication.java \
 	TokenConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \

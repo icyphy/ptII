@@ -122,18 +122,26 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.idt",
                         InlineDirectorTransformer.v(_toplevel)));
-
+        
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(_toplevel)));
-
+        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ffet",
+                        FieldsForEntitiesTransformer.v(_toplevel)));
+      
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-        
-        
+             
+        // Infer the types of locals again, since replacing attributes
+        // depends on the types of fields
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ta",
+                        new TransformerAdapter(TypeAssigner.v())));
         
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
@@ -155,6 +163,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", ClassWriter.v()));
         
+        /*        
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -185,12 +194,12 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(_toplevel)));
-        
+         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", ClassWriter.v()));
-        
+         */
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
@@ -256,7 +265,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-        
+        /*
         
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
@@ -402,7 +411,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-         
+         */
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
          
         // This snapshot should be last...

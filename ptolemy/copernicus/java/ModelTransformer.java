@@ -34,6 +34,8 @@ import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.LocationAttribute;
+import ptolemy.actor.gui.TableauFactory;
+import ptolemy.moml.LibraryAttribute;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -367,7 +369,9 @@ public class ModelTransformer extends SceneTransformer {
             // Ignore frame sizes and locations.  They aren't really
             // necessary in the generated code, I don't think.
             if (attribute instanceof SizeAttribute ||
-                attribute instanceof LocationAttribute) {
+                attribute instanceof LocationAttribute ||
+                attribute instanceof LibraryAttribute ||
+                attribute instanceof TableauFactory) {
                 continue;
             }
             
@@ -376,6 +380,7 @@ public class ModelTransformer extends SceneTransformer {
             String attributeName = attribute.getName(context);
             String fieldName = getFieldNameForAttribute(attribute, context);
 
+            System.out.println("className = " + className);
             Local local;
             if (createdSet.contains(attribute.getFullName())) {
                 System.out.println("already has " + attributeName);
@@ -642,8 +647,10 @@ public class ModelTransformer extends SceneTransformer {
 	    Port port = (Port)ports.next();
 	    //System.out.println("ModelTransformer: port: " + port);
 	  
-            String className = port.getClass().getName();
-            RefType portType = RefType.v(className);
+            // FIXME: what about subclasses?
+            //  String className = port.getClass().getName();
+            String className = "ptolemy.actor.TypedIOPort";
+            RefType portType = RefType.v(PtolemyUtilities.ioportClass);//className);
 
             String portName = port.getName(container);
             String fieldName = getFieldNameForPort(port, container);
@@ -896,13 +903,13 @@ public class ModelTransformer extends SceneTransformer {
      */
     // FIXME: duplicate with MoMLWriter.
     public static NamedObj _findDeferredInstance(NamedObj object) {
-        // System.out.println("findDeferred =" + object.getFullName());
+        //  System.out.println("findDeferred =" + object.getFullName());
         NamedObj deferredObject = null;
         NamedObj.MoMLInfo info = object.getMoMLInfo();
         if (info.deferTo != null) {
             deferredObject = info.deferTo;
             // System.out.println("object = " + object.getFullName());
-            //System.out.println("deferredDirectly = " + deferredObject);
+            // System.out.println("deferredDirectly = " + deferredObject);
             //(new Exception()).printStackTrace(System.out);
         } else if (info.className != null) {
             try {
@@ -928,7 +935,7 @@ public class ModelTransformer extends SceneTransformer {
                 }
                 Class theClass = Class.forName(deferredClass,
                         true, ClassLoader.getSystemClassLoader());
-                // System.out.println("reflecting " + theClass);
+                //   System.out.println("reflecting " + theClass);
                 // OK..  try reflecting using a workspace constructor
                 _reflectionArguments[0] = _reflectionWorkspace;
                 Constructor[] constructors =
@@ -960,8 +967,8 @@ public class ModelTransformer extends SceneTransformer {
                 //    + object.getName() + "\" class=\""
                 //    + deferredClass + "\"/>";
                 //deferredObject = parser.parse(source);
-                //System.out.println("class with workspace = " +
-                //        deferredClass);
+                //   System.out.println("class with workspace = " +
+                //         deferredClass);
                 if (deferredObject == null) {
                     // Damn, no workspace constructor.  Let's
                     // try a container, name constructor.
@@ -999,8 +1006,8 @@ public class ModelTransformer extends SceneTransformer {
                         deferredObject =
                             toplevel.getEntity(object.getName());
                     }
-                    //  System.out.println("class without workspace = " +
-                    //   deferredClass);
+                    //       System.out.println("class without workspace = " +
+                    //         deferredClass);
                 }
             } catch (Exception ex) {
                 System.out.println("Exception occurred during parsing:\n"
