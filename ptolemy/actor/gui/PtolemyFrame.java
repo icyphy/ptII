@@ -35,6 +35,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import javax.swing.filechooser.FileFilter;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
@@ -74,6 +75,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     public PtolemyFrame(CompositeEntity model, Tableau tableau) {
         super(tableau);
+	_fileFilter = new XMLOrMoMLFileFilter();
         setModel(model);
     }
 
@@ -124,9 +126,61 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
     }
 
+    /** Query the user for a filename, save the model to that file,
+     *  and open a new window to view the model.
+     *  This overrides the base class to set the initial filename to
+     *  <code>model.xml</code>.
+     *  @return True if the save succeeds.
+     */
+    protected boolean _saveAs() {
+	_initialSaveAsFileName = "model.xml";
+	return super._saveAs();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The model that this window controls, if any.
     private CompositeEntity _model;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Display only .xml and .moml files */
+    class XMLOrMoMLFileFilter extends FileFilter {
+    
+	/** Accept only .xml or .moml files.
+	 *  @param file The file to be checked.
+	 *  @return true if the file is a directory, a .xml or a .moml file.
+         */
+	public boolean accept(File fileOrDirectory) {
+	    if (fileOrDirectory.isDirectory()) {
+		return true;
+	    }
+
+	    String fileOrDirectoryName = fileOrDirectory.getName();
+	    int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+	    if (dotIndex == -1) {
+		return false;
+	    }
+	    String extension =
+		fileOrDirectoryName
+		.substring(dotIndex);
+
+	    if (extension != null) {
+		if (extension.equalsIgnoreCase(".xml")
+		    || extension.equalsIgnoreCase(".moml")) {
+                    return true;
+		} else {
+		    return false;
+		}
+	    }
+	    return false;
+	}
+    
+	/**  The description of this filter */
+	public String getDescription() {
+	    return ".xml and .moml files";
+	}
+    }
 }
