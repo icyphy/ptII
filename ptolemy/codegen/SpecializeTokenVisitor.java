@@ -355,6 +355,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 		    } catch (ClassCastException e) {
 			System.err.println("SpecializeTokenVisitor."
                                 + "visitMethodCallNode: " + e
+                                + "\n methodName = " + methodName
+                                + "\n this = " + this
                                 + "\n node = " + node
                                 + "\n node.getArgs() = "
                                 + node.getArgs()
@@ -534,6 +536,11 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     private _ConstantTerm _makeConstantTerm(TypeNode type, TypedDecl decl) {
         int kind = _typeID.kind(type);
         if (!_typeID.isSupportedTokenKind(kind)) {
+//             System.err.println("SpecializedTokenVisitor._makeConstantTerm("
+//                     + "type= " + type
+//                     + ", decl = " + decl + ") _typeId: "
+//                     + _typeID + " is not a supported Token kind, kind = "
+//                     + kind);
             return null;
         }
 
