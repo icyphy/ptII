@@ -695,15 +695,27 @@ public class MoMLParser extends HandlerBase {
 
                 // First handle special properties that are not translated
                 // into Ptolemy II attributes.
+                // Note that we have to push something on to the
+                // stack so that we can pop it off later.
+                // An xml version of the FSM ABP demo tickled this bug
                 boolean isIOPort = (_current instanceof IOPort);
                 if (propertyName.equals("multiport") && isIOPort) {
                     // The mere presense of a named property "multiport"
                     // makes the enclosing port a multiport.
                     ((IOPort)_current).setMultiport(true);
+                    _containers.push(_current);
+                    _current =  (Attribute)
+                        _current.getAttribute(propertyName);
                 } else if (propertyName.equals("output") && isIOPort) {
                     ((IOPort)_current).setOutput(true);
+                    _containers.push(_current);
+                    _current =  (Attribute)
+                        _current.getAttribute(propertyName);
                 } else if (propertyName.equals("input") && isIOPort) {
                     ((IOPort)_current).setInput(true);
+                    _containers.push(_current);
+                    _current =  (Attribute)
+                        _current.getAttribute(propertyName);
                 } else {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
