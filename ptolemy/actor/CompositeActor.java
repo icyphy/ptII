@@ -180,6 +180,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (actor instanceof CompositeActor) {
                 // Remove the composit actor and add its containees.
                 entities.remove(i);
+                // Note that remove an element from the list causes
+                // the indeces of later element to shift forward by 1.
+                // We reduce the index i by one to match the index in
+                // the list.
+                i--;
                 entities.addAll(
                         ((CompositeActor) actor).allAtomicEntityList());
             }
