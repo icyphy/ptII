@@ -81,7 +81,7 @@ import java.util.Enumeration;
 //// ViewScreen
 
 /** A sink actor that renders the GR geometry into a display screen
-@author C. Fong
+@author C. Fong, Adam Cataldo
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -247,12 +247,20 @@ public class ViewScreen extends GRActor implements Placeable {
         return branchRoot;
     }
 
+	
+	/** This method creates the ViewScreen frame if it hasn't been
+	 *  created (_canvas != null).  It sets up the canvas and draws any 3D 
+	 *  shapes.
+	 */
 
     public void initialize() throws IllegalActionException {
+    	
+    	boolean addLights = false;
 
         super.initialize();
         if (_canvas == null) {
             place(_container);
+            addLights = true;
         }
         if (_frame != null) {
             _frame.setVisible(true);
@@ -340,24 +348,27 @@ public class ViewScreen extends GRActor implements Placeable {
         }
 
 
-        // Setup the lights.
-        BranchGroup lightRoot = new BranchGroup();
-
-        AmbientLight lightA = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
-        lightA.setInfluencingBounds(bounds);
-        lightRoot.addChild(lightA);
-
-        DirectionalLight lightD1 = new DirectionalLight();
-        lightD1.setInfluencingBounds(bounds);
-        Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
-        direction.normalize();
-        lightD1.setDirection(direction);
-        lightD1.setColor(new Color3f(1.0f, 1.0f, 1.0f));
-        lightRoot.addChild(lightD1);
-
-
-        simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
-        simpleUniverse.addBranchGraph(lightRoot);
+        // Setup the lights, if needed.
+        if (addLights) {
+        	BranchGroup lightRoot = new BranchGroup();
+	
+	        AmbientLight lightA = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
+	        lightA.setInfluencingBounds(bounds);
+	        lightRoot.addChild(lightA);
+	
+	        DirectionalLight lightD1 = new DirectionalLight();
+	        lightD1.setInfluencingBounds(bounds);
+	        Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
+	        direction.normalize();
+	        lightD1.setDirection(direction);
+	        lightD1.setColor(new Color3f(1.0f, 1.0f, 1.0f));
+	        lightRoot.addChild(lightD1);
+	
+	
+	        simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
+	        simpleUniverse.addBranchGraph(lightRoot);
+	        
+	    }
 
         if (_iterationSynchronized) {
             if (_canvas != null) _canvas.stopRenderer();
