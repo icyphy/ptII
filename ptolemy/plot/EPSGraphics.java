@@ -59,12 +59,12 @@ public class EPSGraphics extends Graphics {
         _width = width;
         _height = height;
         _file = file;
-        _buffer.append("%!PS-Adobe-3.0\n");
+        _buffer.append("%!PS-Adobe-3.0 EPSF-3.0\n");
         _buffer.append("%%Creator: UC Berkeley Plot Package\n");
+        _buffer.append("%%BoundingBox: 50 50 " + (50+width) + " "
+                + (50+height) +"\n");
         _buffer.append("%%Pages: 1\n");
         _buffer.append("%%Page: 1 1\n");
-        _buffer.append("%%BoundingBox: 100 100 " + (100+width)
-                + " " + (100+height) + "\n");
         _buffer.append("%%LanguageLevel: 2\n");
     }
 
@@ -235,7 +235,7 @@ public class EPSGraphics extends Graphics {
         + radius + " 0 360 arc closepath fill\n");
     }
 
-    /** Fill the specified rectangle.
+    /** Fill the specified rectangle and draw a thin outline around it.
      *  The left and right edges of the rectangle are at x and x + width - 1.
      *  The top and bottom edges are at y and y + height - 1.
      *  The resulting rectangle covers an area width pixels wide by
@@ -254,9 +254,10 @@ public class EPSGraphics extends Graphics {
         _buffer.append("" + width + " 0 rlineto\n");
         _buffer.append("0 " + height + " rlineto\n");
         _buffer.append("" + (-width) + " 0 rlineto\n");
-        _buffer.append("closepath fill\n");
+        _buffer.append("closepath gsave fill grestore\n");
+        _buffer.append("0.5 setlinewidth 0 setgray [] 0 setdash stroke\n");
         // reset the gray scale to black
-        _buffer.append("0 setgray\n");
+        _buffer.append("1 setlinewidth\n");
     }
 
     public void fillRoundRect(int x, int y, int width, int height,
@@ -309,19 +310,19 @@ public class EPSGraphics extends Graphics {
         if (c == Color.black) {
             _buffer.append("0 setgray\n");
             _buffer.append("[] 0 setdash\n");
+            _buffer.append("1 setlinewidth\n");
         } else if (c == Color.white) {
             _buffer.append("1 setgray\n");
             _buffer.append("[] 0 setdash\n");
+            _buffer.append("1 setlinewidth\n");
         } else if (c == Color.lightGray) {
             _buffer.append("0.9 setgray\n");
             _buffer.append("[] 0 setdash\n");
-        } else if (c == Color.white) {
-            _buffer.append("1 setgray\n");
-            _buffer.append("[] 0 setdash\n");
+            _buffer.append("0.5 setlinewidth\n");
         } else {
             if (_linepattern.containsKey(c)) {
                 _buffer.append((String)_linepattern.get(c) + " 0 setdash\n");
-
+                _buffer.append("1 setlinewidth\n");
             } else {
                 _buffer.append("0 setgray\n");
                 // construct a new line pattern.
@@ -329,6 +330,7 @@ public class EPSGraphics extends Graphics {
                     _patternIndex = 0;
                 }
                 _buffer.append(_patterns[_patternIndex] + " 0 setdash\n");
+                _buffer.append("1 setlinewidth\n");
                 _linepattern.put(c, _patterns[_patternIndex]);
                 _patternIndex++;
             }
@@ -389,23 +391,28 @@ public class EPSGraphics extends Graphics {
         return true;
     }
 
-
     // Issue a command to set the fill pattern.
-    // Currently, this is a gray level that is a function of hue and
-    // the saturation of the color.  The brightness is ignored.
+    // Currently, this is a gray level that is a function of the color.
     private void _fillPattern() {
         // FIXME: We probably want a fill pattern rather than
         // just a gray scale.
-        float[] hsb = Color.RGBtoHSB(_currentColor.getRed(),
-               _currentColor.getGreen(), _currentColor.getBlue(), null);
-        // Use the hue so that no hue translates to white
-        double graylevel = 1.0 - (0.2 + 0.8*hsb[0])*hsb[1];
+        int red = _currentColor.getRed();
+        int green = _currentColor.getGreen();
+        int blue = _currentColor.getBlue();
+        // Scaling constants so that fully saturated R, G, or B appear
+        // different.
+        double bluescale = 0.6;    // darkest
+        double redscale = 0.8;
+        double greenscale = 1.0;   // lightest
+        double fullscale = Math.sqrt(255.0*255.0*(bluescale*bluescale
+                + redscale*redscale + greenscale*greenscale));
+        double graylevel = Math.sqrt((double)(red*red*redscale*redscale
+                + blue*blue*bluescale*bluescale
+                + green*green*greenscale*greenscale))/fullscale;
         _buffer.append("" + graylevel + " setgray\n");
-        // FIXME -- for debugging, output color spec in comments
-        _buffer.append("%---- rgb: " + _currentColor.getRed() + " " +
-               _currentColor.getGreen() + " " + _currentColor.getBlue() +"\n");
-        _buffer.append("%---- hsb: " + hsb[0] + " " +
-               hsb[1] + " " + hsb[2] +"\n");
+        // NOTE -- for debugging, output color spec in comments
+        _buffer.append("%---- rgb: " + red + " " +
+               green + " " + blue +"\n");
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -427,6 +434,12 @@ public class EPSGraphics extends Graphics {
         "[4 4]",
         "[4 4 1 4]",
         "[2 2]",
+        "[4 2 1 2 1 2]",
+        "[5 3 2 3]",
+        "[3 3]",
+        "[4 2 1 2 2 2]",
+        "[1 2 5 2 1 2 1 2]",
+        "[4 1 2 1]",
     };
     private int _patternIndex = 0;
 }
