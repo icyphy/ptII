@@ -173,6 +173,19 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public Parameter StartTime;
+    public Parameter StopTime;
+    public Parameter InitStepSize;
+    public Parameter MinStepSize;
+    public Parameter MaxStepSize;
+    public Parameter MaxIterations;
+    public Parameter ErrorTolerance;
+    public Parameter ValueResolution;
+    public Parameter TimeResolution;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     /** Static public variable indicating whether the statistics
@@ -412,7 +425,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  iteration.
      *  @param curstepsize The step size used for currentStepSize().
      */
-    public void setCurrentStepSize(double curstepsize){
+    public void setCurrentStepSize(double curstepsize) {
         _currentStepSize = curstepsize;
     }
 
@@ -421,7 +434,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  value for a correct simulation. The method should be carefully used.
      *  @param tnow The current time.
      */
-    public void setCurrentTime(double tnow){
+    public void setCurrentTime(double tnow) {
         _currentTime = tnow;
     }
 
@@ -492,7 +505,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             ValueResolution =  new Parameter(
                 this, "ConvergeValueResolution",
                 new DoubleToken(_valueResolution));
-            TimeResolution= new Parameter(
+            TimeResolution = new Parameter(
                 this, "TimeResolution", new DoubleToken(_timeResolution));
 
         } catch (IllegalActionException e) {
@@ -576,18 +589,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     // current ODE solver.
     private ODESolver _currentSolver = null;
-
-    // parameters.
-    public Parameter StartTime;
-    public Parameter StopTime;
-    public Parameter InitStepSize;
-    public Parameter MinStepSize;
-    public Parameter MaxStepSize;
-    public Parameter MaxIterations;
-    public Parameter ErrorTolerance;
-    public Parameter ValueResolution;
-    public Parameter TimeResolution;
-
 
     // local copy of the parameters.
     private double _startTime;
