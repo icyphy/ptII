@@ -31,10 +31,13 @@
 package ptolemy.kernel.attributes;
 
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.attributes.URLAttribute;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 
@@ -43,14 +46,20 @@ import java.net.URL;
 /**
 This is an attribute that specifies a file or URL.  The value of this
 attribute, accessed by getExpression(), is a string that names a file
-or URL.  The key method is the asURL() method, which converts the file
-or URL specification into a java.net.URL object.  It first attempts to
-directly use the file name to identify a readable file, and if it finds
-one, returns that file as a URL.  If this fails, then it tries to open
-the file relative to the URL of the first container above this one
-that has a URLAttribute.  If there is no such URLAttribute, then it
-tries to open the file relative to the classpath.  If that fails, then it
-throws an exception.
+or URL. If the model containing this attribute has been saved to a
+MoML file, then the file name can be given relative to the directory
+containing that MoML file.  If the model has not been saved to a file,
+then the classpath is used for identifying relative file names.
+<p>
+The following special file names are understood:
+<ul>
+<li> System.in: Standard input.
+</ul>
+Note, however, that these file names cannot be converted to URLs
+using the asURL() method.
+<p>
+A file name can also contain the string "$PTII", which refers to
+the home directory of the Ptolemy II installation.
 <p>
 @author Edward A. Lee
 @version $Id$
@@ -73,6 +82,10 @@ public class FileAttribute extends StringAttribute {
     public FileAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        if (_stdIn == null) {
+            _stdIn = new BufferedReader(new InputStreamReader(System.in));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,12 +94,13 @@ public class FileAttribute extends StringAttribute {
     /** Return the file as a URL.  This method first attempts to directly
      *  use the file name to identify a readable file, and if it finds one,
      *  returns that file as a URL.  If this fails, then it tries to open
-     *  the file relative to the URL of the first container above this one
-     *  that has a URLAttribute.  If there is no such base URL,
+     *  the file relative to the URI of the first container above this one
+     *  that has a URIAttribute.  If there is no such base URI,
      *  then it tries to open the file relative to the classpath.
      *  If that fails, then it throws an exception.
      *  @return A URL, or null if no file name or URL has been specified.
-     *  @exception IllegalActionException If the file cannot be read.
+     *  @exception IllegalActionException If the file cannot be read, or
+     *   if the file cannot be represented as a URL (e.g. System.in).
      */
     public URL asURL() throws IllegalActionException {
         String name = getExpression();
@@ -106,13 +120,13 @@ public class FileAttribute extends StringAttribute {
                 "Cannot open file: " + ex.toString());
             }
         } else {
-            // Try relative to the URLAttribute.
-            // Search up the tree for this attribute.
-            URL modelURL = getModelURL();
-            if (modelURL != null) {
+            // Try relative to the URIAttribute.
+            URI modelURI = URIAttribute.getModelURI(this);
+            if (modelURI != null) {
                 try {
-                    // Try an absolute URL
-                    return new URL(modelURL, name);
+                    // Try to resolve the URI.
+                    URI newURI = modelURI.resolve(name);
+                    return newURI.toURL();
                 } catch (MalformedURLException e) {
                     throw new IllegalActionException(this,
                     "Unable to open as a file or URL: " + name);
@@ -120,13 +134,13 @@ public class FileAttribute extends StringAttribute {
             }
 
             // NOTE: This doesn't seem right.  This code will never be
-            // reached if there is a URLAttribute.  But there seems to
+            // reached if there is a URIAttribute.  But there seems to
             // be no way to decide between these.  It won't work
-            // to try to open the URL, because it is premature.
+            // to try to open the URI, because it is premature.
             // This method gets called when the model is opened,
             // not when it is run.  We do not want to require a net
             // connection to be present to open a model that refers
-            // to a URL.
+            // to a URI.
 
             // Try relative to classpath.
             URL result = getClass().getClassLoader().getResource(name);
@@ -144,31 +158,100 @@ public class FileAttribute extends StringAttribute {
         }
     }
 
-    /** Return the URL from which the model that
-     *  contains this attribute was read, or null if there is none.
-     *  This is obtained by finding a URLAttribute in the first
-     *  container above this attribute in the hierarchy that has
-     *  such an attribute.  Note that this URL may represent a
-     *  file on the local filesystem, in which case it will use
-     *  the "file" protocol.
-     *  @return A URL, or null if none can be found.
+    /** Clone the attribute into the specified workspace.  This loses
+     *  the base directory name and references to any open streams.
+     *  @return A new attribute.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public URL getModelURL() {
-        // Search up the tree for this attribute.
-        URLAttribute modelURL = null;
-        NamedObj container = this;
-        while (container != null && modelURL == null) {
-            try {
-                modelURL = (URLAttribute)container.getAttribute(
-                       "_url", URLAttribute.class);
-            } catch (IllegalActionException ex) {
-                // An attribute was found with name "_url", but it is not
-                // an instance of URLAttribute.  Continue the search.
-                modelURL = null;
-            }
-            container = (NamedObj)container.getContainer();
-        }
-        if (modelURL != null) return modelURL.getURL();
-        else return null;
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        FileAttribute newObject = (FileAttribute)super.clone(workspace);
+        newObject._baseDirectory = null;
+        newObject._reader = null;
+        return newObject;
     }
+
+    /** Close the file. If it has not been opened using openForReading(),
+     *  then do nothing.  Also, if the file is System.in, then do not
+     *  close it (it does not make sense to close standard input).
+     *  @exception IllegalActionException If the file or URL cannot be
+     *   closed.
+     */
+    public void close() throws IllegalActionException {
+        if (_reader != null) {
+            if (_reader != _stdIn) {
+                try {
+                    _reader.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex,
+                    "Cannot close previous file!");
+                }
+            }
+        }
+    }
+
+    /** Return the directory to use as the base for relative file or URL names.
+     *  If setBaseDirectory() has been called, then that directory is
+     *  returned.  Otherwise, the directory containing the file returned
+     *  by getModelURI() is returned.
+     *  @return A directory name.
+     */
+    public URI getBaseDirectory() {
+        if (_baseDirectory != null) {
+            return _baseDirectory;
+        } else {
+            return URIAttribute.getModelURI(this);
+        }
+    }
+
+    /** Open the file or URL for reading.
+     *  @return A buffered reader.
+     *  @exception IllegalActionException If the file or URL cannot be
+     *   opened.
+     */
+    public BufferedReader openForReading() throws IllegalActionException {
+        if (getExpression().trim().equals("System.in")) {
+            _reader = new BufferedReader(
+                    new InputStreamReader(System.in));
+            return _reader;
+        }
+        // Check for special substrings.
+        if (getExpression().indexOf("$PTII") >= 0) {
+            setExpression(StringUtilities.substitute(getExpression(),
+                    "$PTII",
+                    System.getProperty("ptolemy.ptII.dir")));
+        }
+        // Not standard input. Try URL mechanism.
+        URL url = asURL();
+        try {
+            _reader = new BufferedReader(
+                    new InputStreamReader(url.openStream()));
+            return _reader;
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot open file or URL");
+        }
+    }
+
+    /** Set the directory to use as the base for relative file or URL names.
+     *  If this is not called, then the default is the directory
+     *  containing the file returned by getModelURI() is returned.
+     *  @param directory The base directory.
+     */
+    public void setBaseDirectory(URI directory) {
+        _baseDirectory = directory;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    /** The base directory to use for relative file names. */
+    private URI _baseDirectory;
+
+    /** The current reader for the input file. */
+    private BufferedReader _reader;
+
+    /** Standard in as a reader. */
+    private static BufferedReader _stdIn = null;
 }

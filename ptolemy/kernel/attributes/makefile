@@ -51,7 +51,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	FileAttribute.java
+	FileAttribute.java \
+	URIAttribute.java
 
 EXTRA_SRCS =	$(JSRCS)
 
