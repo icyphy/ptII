@@ -396,6 +396,13 @@ public class NamedObj implements
         try {
             _workspace.getReadAccess();
             NamedObj newObject = (NamedObj)super.clone();
+            
+            // Occassionally, a derived object needs to know what
+            // it is being cloned from to manage the adjustments
+            // made.  This can be accomplished by overriding the
+            // protected method called here.
+            newObject._clonedFrom(this);
+            
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
@@ -1178,7 +1185,6 @@ public class NamedObj implements
      *  @return True if the object is a derived object.
      */
     public final boolean isDerived() {
-        // NOTE: New method added. EAL 12/03
         return _isDerived;
     }
 
@@ -1637,6 +1643,15 @@ public class NamedObj implements
                     + getFullName());
         }
     }
+    
+    /** In this base class, do nothing. This method is called
+     *  on a cloned object just after the built-in Java cloning
+     *  mechanism has been invoked, but before any adjustments
+     *  are made to parameters, etc. Derived classes can use this
+     *  to affect how they make the adjustments.
+     *  @param source The object from which this was cloned.
+     */
+    protected void _clonedFrom(NamedObj source) {}
 
     /** Fix the fields of the given object which point to Attributes.
      *  The object is assumed to be a clone of this one.  The fields
@@ -2198,10 +2213,6 @@ public class NamedObj implements
                         result.add(candidate);
                         if (depthList != null) {
                             depthList.add(new Integer(depth));
-                        }
-                        if (candidate.getFullName().equals("..iD.iAB.cABC.p")) {
-                            // FIXME: for debugging
-                            System.out.println("FIXME");
                         }
 
                         // Add objects that this defers to.
