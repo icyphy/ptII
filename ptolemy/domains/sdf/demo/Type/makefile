@@ -61,10 +61,12 @@ OPTIONAL_FILES = \
 	doc \
 	'Type$$1.class' \
 	'Type$$2.class' \
+	'Type$$3.class' \
 	'Type$$DisplayListener.class' \
 	'Type$$LineRenderer.class' \
 	'Type$$MyTypeConflictListener.class' \
 	'Type$$MyTypeListener.class' \
+	'Type$$PortTypeListener.class' \
 	'Type$$SchematicPanel.class' \
 	'Type$$TypeGraphController.class' \
 	'Type$$TypeRenderer.class'
