@@ -57,7 +57,8 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	Object.tcl \
 	Simple.tcl \
-    ramp.tcl
+    ramp.tcl \
+    FIR.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -1,0 +1,28 @@
+<!-- @author Shuvra S. Bhattacharyya, @version $Id$ -->
+<!-- @version $Id$ -->
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+	<entity name="multirate" class="ptolemy.actor.TypedCompositeActor">
+    <doc>A simple multirate model for C code generation</doc>
+	<property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp"/>
+    <entity name="filter" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="decimation" class="ptolemy.data.expr.Parameter" 
+                value="3"> 
+        </property>
+        <property name="interpolation" class="ptolemy.data.expr.Parameter" 
+                value="5"> 
+        </property>
+    </entity>
+    <entity name="sink" class="ptolemy.actor.lib.FileWriter"/>
+    <entity name="scale" class="ptolemy.actor.lib.Scale"/>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation"/>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation"/>
+    <link port="ramp.output" relation="r1"/>
+    <link port="filter.input" relation="r1"/>
+    <link port="filter.output" relation="r2"/>
+    <link port="scale.input" relation="r2"/>
+    <link port="scale.output" relation="r3"/>
+    <link port="sink.input" relation="r3"/>
+</entity>
