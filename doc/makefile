@@ -297,6 +297,8 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.tm.lib \
 			ptolemy.domains.wireless.kernel \
 			ptolemy.domains.wireless.lib \
+			ptolemy.domains.wireless.lib.network \
+			ptolemy.domains.wireless.lib.network.mac \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
