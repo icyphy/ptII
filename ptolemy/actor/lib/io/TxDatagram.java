@@ -65,7 +65,7 @@ public class TxDatagram extends TypedAtomicActor {
 
     public TxDatagram(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container,name);
+        super(container, name);
 
         remoteAddress = new TypedIOPort(this, "remoteAddress");
         remoteAddress.setInput(true);
@@ -90,8 +90,8 @@ public class TxDatagram extends TypedAtomicActor {
     ////                     public methods                        ////
 
     /** If the parameter changed is <i>port</i>, then if the model
-     * is running (as evedenced by socket != null) then close socket 
-     * and reopen with new port number (even if same as old port 
+     * is running (as evedenced by socket != null) then close socket
+     * and reopen with new port number (even if same as old port
      * number).
      */
     public void attributeChanged(Attribute attribute)
@@ -99,13 +99,15 @@ public class TxDatagram extends TypedAtomicActor {
         if (attribute == port) {
             if ( socket != null ) {
 
-                System.out.println("Current socket port is " + socket.getLocalPort());
+                System.out.println("Current socket port is "
+                        + socket.getLocalPort());
                 socket.close();
 
                 int portNum = ((IntToken)(port.getToken())).intValue();
                 System.out.println("Port number is " + portNum);
                 try {
-                    System.out.println("Try create socket for port " + portNum);
+                    System.out.println("Try create socket for port "
+                            + portNum);
                     socket = new DatagramSocket(portNum);
                     System.out.println("A socket is created!!");
                 }
@@ -125,7 +127,8 @@ public class TxDatagram extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
 
-        String _address = ((StringToken)(remoteAddress.get(0))).stringValue();
+        String _address =
+            ((StringToken)(remoteAddress.get(0))).stringValue();
         try {
             __address = InetAddress.getByName(_address);
         }
@@ -136,7 +139,8 @@ public class TxDatagram extends TypedAtomicActor {
         int _port = 4096;
         byte _data[] = {'A'};
         int _length = 1;
-        DatagramPacket __packet = new DatagramPacket(_data,_length,__address,_port);
+        DatagramPacket __packet =
+            new DatagramPacket(_data, _length, __address, _port);
 
         try {
             socket.send(__packet);
@@ -153,7 +157,8 @@ public class TxDatagram extends TypedAtomicActor {
         super.preinitialize();
         int portNum = ((IntToken)(port.getToken())).intValue();
         if (portNum == -1) {
-            throw new IllegalActionException("Model cannot be run with port=-1");
+            throw new IllegalActionException("Model cannot be run with "
+                    + "port == -1");
         }
         try {
             System.out.println("PI Try create socket for port " + portNum);
@@ -175,7 +180,8 @@ public class TxDatagram extends TypedAtomicActor {
             socket.close();
             socket = null;
         } else {
-            throw new IllegalActionException("Socket was already null at wrapup!?");
+            throw new IllegalActionException("Socket was already null "
+                    +  "at wrapup!?");
         }
     }
 
