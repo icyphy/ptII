@@ -57,6 +57,8 @@ JSRCS = \
         HuffmanBasic.java \
         HuffmanCoder.java \
         HuffmanDecoder.java \
+        LempelZivCoder.java \
+        LempelZivCoder.java \
         Scrambler.java \
 	Slicer.java \
 	TrellisDecoder.java \
