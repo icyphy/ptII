@@ -51,16 +51,16 @@ public class CSPCondGet extends CSPGet {
 
     /**
      */
-    public CSPCondGet(TypedCompositeActor cont, String name, int rcvrCnt)
+    public CSPCondGet(TypedCompositeActor cont, String name, int receiverCount)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          
-	 _rcvrCnt = rcvrCnt;
-	 _truth = new boolean[rcvrCnt]; 
-	 _winningBrch = new boolean[rcvrCnt]; 
+	 _receiverCount = receiverCount;
+	 _truth = new boolean[receiverCount]; 
+	 _winningBranch = new boolean[receiverCount]; 
 
-	for( int i = 0; i < rcvrCnt; i++ ) {
-	    _winningBrch[i] = false;
+	for( int i = 0; i < receiverCount; i++ ) {
+	    _winningBranch[i] = false;
 	    _truth[i] = false;
 	}
 	
@@ -72,35 +72,35 @@ public class CSPCondGet extends CSPGet {
     /**
      */
     public void fire() throws IllegalActionException {
-	int numRcvrs = 0;
+	int numReceivers = 0;
         Receiver[][] rcvrs = inputPort.getReceivers(); 
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
-		numRcvrs++;
+		numReceivers++;
             }
 	}
 
-	if( _rcvrCnt != numRcvrs ) {
+	if( _receiverCount != numReceivers ) {
 	    throw new IllegalActionException(getName()+": Error in the number"
 		    + " of receivers. Be sure constructor is properly"
 		    + " instantiated.");
 	}
 
-	ConditionalBranch[] brchs = new ConditionalBranch[numRcvrs]; 
+	ConditionalBranch[] brchs = new ConditionalBranch[numReceivers]; 
 
-	for( int i = 0; i < numRcvrs; i++ ) {
+	for( int i = 0; i < numReceivers; i++ ) {
 	    brchs[i] = new ConditionalReceive(_truth[i], inputPort, i, i);
         }
 
 	int winner = chooseBranch(brchs);
 
-	_winningBrch[winner] = true;
+	_winningBranch[winner] = true;
     }
 
     /**
      */
     public boolean isWinner(int index) {
-	return _winningBrch[index];
+	return _winningBranch[index];
     }
 
     /**
@@ -112,8 +112,7 @@ public class CSPCondGet extends CSPGet {
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    private int _rcvrCnt;
+    private int _receiverCount;
     private boolean[] _truth;
-    private boolean[] _winningBrch; 
-
+    private boolean[] _winningBranch; 
 }

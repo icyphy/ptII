@@ -51,16 +51,17 @@ public class CSPCondPut extends CSPPutToken {
 
     /**
      */
-    public CSPCondPut(TypedCompositeActor cont, String name, int numTokens, int rcvrCnt)
+    public CSPCondPut(TypedCompositeActor cont, String name,
+            int numTokens, int receiverCount)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name, numTokens);
          
-	 _rcvrCnt = rcvrCnt;
-	 _truth = new boolean[rcvrCnt]; 
-	 _winningBrch = new boolean[rcvrCnt]; 
+	 _receiverCount = receiverCount;
+	 _truth = new boolean[receiverCount]; 
+	 _winningBranch = new boolean[receiverCount]; 
 
-	for( int i = 0; i < rcvrCnt; i++ ) {
-	    _winningBrch[i] = false;
+	for( int i = 0; i < receiverCount; i++ ) {
+	    _winningBranch[i] = false;
 	    _truth[i] = false;
 	}
 	
@@ -80,29 +81,29 @@ public class CSPCondPut extends CSPPutToken {
             }
 	}
 
-	if( _rcvrCnt != numRcvrs ) {
+	if( _receiverCount != numRcvrs ) {
 	    throw new IllegalActionException(getName()+": Error in the number"
 		    + " of receivers. Be sure constructor is properly"
 		    + " instantiated.");
 	}
 
-	ConditionalBranch[] brchs = new ConditionalBranch[numRcvrs]; 
+	ConditionalBranch[] Branchs = new ConditionalBranch[numRcvrs]; 
 
 	Token token = new Token();
 
 	for( int i = 0; i < numRcvrs; i++ ) {
-	    brchs[i] = new ConditionalSend(_truth[i], outputPort, i, i, token);
+	    Branchs[i] = new ConditionalSend(_truth[i], outputPort, i, i, token);
         }
 
-	int winner = chooseBranch(brchs);
+	int winner = chooseBranch(Branchs);
 
-	_winningBrch[winner] = true;
+	_winningBranch[winner] = true;
     }
 
     /**
      */
     public boolean isWinner(int index) {
-	return _winningBrch[index];
+	return _winningBranch[index];
     }
 
     /**
@@ -114,8 +115,7 @@ public class CSPCondPut extends CSPPutToken {
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    private int _rcvrCnt;
+    private int _receiverCount;
     private boolean[] _truth;
-    private boolean[] _winningBrch; 
-
+    private boolean[] _winningBranch; 
 }
