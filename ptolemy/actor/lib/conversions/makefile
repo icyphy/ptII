@@ -68,8 +68,9 @@ JSRCS = \
 	PolarToCartesian.java \
 	PolarToComplex.java \
 	Round.java \
-    StringToUnsignedByteArray.java \
-    StringToXML.java \
+	StringToIntArray.java \
+	StringToUnsignedByteArray.java \
+	StringToXML.java \
 	TokenToExpression.java 
 
 OTHER_FILES_TO_BE_JARED = \
@@ -86,6 +87,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
+	'ExpressionToToken$$1.class' \
+	'ExpressionToToken$$ExpressionScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
