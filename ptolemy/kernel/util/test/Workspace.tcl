@@ -157,8 +157,9 @@ test Workspace-5.1 {Test multi-thread access} {
 test Workspace-5.2 {Test multi-thread access} {
     # NOTE: Uses previous setup
     $t start
-    # Give the thread a chance to start up.
-    sleep 1
+    # Give the thread a chance to start up, don't print dots
+    set printDots 0
+    sleep 2 $printDots
     $t profile
 } {T.getReadAccess()
 T.doneReading()
