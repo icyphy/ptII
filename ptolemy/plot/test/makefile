@@ -53,6 +53,7 @@ JSIMPLE_TESTS = \
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
+	PlotApplication.tcl \
 	PlotBox.tcl \
 	Pxgraph.tcl
 
