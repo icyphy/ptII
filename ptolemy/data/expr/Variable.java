@@ -126,7 +126,7 @@ by the getType() method.  This is not necessarily the same as the class
 of the token that was inserted via setToken().  It might be a distinct
 type if the contained token can be converted losslessly into one of the
 type given by getType().  In rare circumstances, you may need to directly
-access the contained token without any conversion occuring.  To do this,
+access the contained token without any conversion occurring.  To do this,
 use getContainedToken().
 <p>
 A variable can also be reset. If the variable was originally set from a
