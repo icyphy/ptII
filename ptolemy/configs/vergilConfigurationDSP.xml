@@ -42,6 +42,7 @@
       <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
       <entity name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
       <entity name="Code Generator" class="ptolemy.codegen.saveasjava.GeneratorTableau$Factory"/>
+      <entity name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
     </entity>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
       <!-- This will appear in the View menu of an entity tableau. -->
