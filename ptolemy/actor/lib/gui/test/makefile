@@ -59,7 +59,6 @@ JGRAPHICAL_TESTS =
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) \
 	Display.xml \
-	FileWriter.xml \
 	HistogramPlotter.xml \
 	XYScope.xml
 
