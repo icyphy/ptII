@@ -43,6 +43,7 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -62,8 +63,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
-
-import ptolemy.copernicus.java.ConstVariableModelAnalysis;
 
 ///////////////////////////////////////////////////////////
 //// SDFScheduler
