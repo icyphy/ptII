@@ -49,6 +49,8 @@
 
 # CG_ROOT	The root of the directory tree that contains
 #	        the .java files that are generated.  Usually set to $(ROOT).
+# SOURCE_SYSTEM_CLASS  The classname of the system to generate code for
+#		This class extends TypedCompositeActor.
 # ITERATIONS	Number of iterations, for example 10.
 # OUTPKG	Output package name for generated code, which also
 # 		determines the directory relative to PTII where the
@@ -65,15 +67,17 @@
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-all: cg_interpret cg_generate cg_compile cg_run
+all: interpret generate compile run
 
-cg_interpret: $(PTCLASSJAR)
+# Run the source system without using code generation.
+interpret: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)" \
 		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS)
 
-cg_generate:
+# Generate code for the system.
+generate:
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)" \
 		"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class $(SOURCE_SYSTEM_CLASS) \
@@ -81,18 +85,17 @@ cg_generate:
 		-outdir $(CG_ROOT) \
 		-outpkg $(OUTPKG)
 
-cg_compile:
+# Compile the code generation system.
+compile:
 	(cd $(OUTPKG_DIR); \
 		CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
 		"$(JAVAC)" $(JFLAGS) $(OUTPKG_MAIN_CLASS).java)
 
-cg_run:
+# Run the code generation system.
+run:
 	(cd $(OUTPKG_DIR); \
 		CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
 		"$(JAVA)" $(OUTPKG).$(OUTPKG_MAIN_CLASS))
-
-cg_clean:
-	(cd $(OUTPKG_DIR); rm -f *.class)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -31,6 +31,7 @@
 package ptolemy.domains.sdf.codegen;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
@@ -49,6 +50,8 @@ import ptolemy.actor.gui.CompositeActorApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.codegen.*;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.lang.*;
@@ -76,6 +79,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         implements JavaStaticSemanticConstants {
 
     public void generateCode() throws IllegalActionException {
+
         // We print elapsed time statistics during code generation
         // Note that this is different than printing stats at runtime.
         long startTime = new Date().getTime();
@@ -93,6 +97,20 @@ public class SDFCodeGenerator extends CompositeActorApplication
             _outputPackageName.replace('.', File.separatorChar) +
             File.separatorChar;
 
+        // Assume exactly one model on the command line.
+        _compositeActor = (TypedCompositeActor)
+            _models.iterator().next();
+
+        try {
+            _generateMakefile();
+        } catch ( IOException ioe) {
+            System.err.println("Error: failed to write makefile: " + ioe);
+        }
+        if (_makefileOnly) {
+            System.out.println("generated the makefile"); 
+            return;
+        }
+
         // Create the directory to put the output package in,
         // creating subdirectories as needed.
         // This must be done before the Java compiler classes are loaded so
@@ -100,10 +118,6 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // (this is a nasty hack)
         System.out.println("packageDir = " + _packageDirectoryName);
         new File(_packageDirectoryName).mkdirs();
-
-        // Assume exactly one model on the command line.
-        _compositeActor = (TypedCompositeActor)
-            _models.iterator().next();
 
         // FIXME: this should not be CG_Main.
         //_systemName = _compositeActor.getName();
@@ -191,7 +205,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
 
         ActorCodeGenerator actorCodeGen =
-            new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName,
+            new ActorCodeGenerator(_codeGeneratorClassFactory,
+                    _outputDirectoryName,
                     _outputPackageName);
         System.out.println("\nSDFCodeGenerator: " +
                 "Done accumulating class info ---" +
@@ -253,8 +268,6 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             actorCodeGen.pass3(renamedSource);
         }
-
-        _generateMakefile();
 
         System.out.println("AST loading status: "
                 + ASTReflect.getLoadingStatus());
@@ -334,7 +347,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         Iterator bufferItr = _bufferInfoMap.values().iterator();
         PtolemyTypeIdentifier typeID =
-            _codeGenClassFactory.createPtolemyTypeIdentifier();
+            _codeGeneratorClassFactory.createPtolemyTypeIdentifier();
 
         while (bufferItr.hasNext()) {
             BufferInfo bufferInfo = (BufferInfo) bufferItr.next();
@@ -527,11 +540,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
                             actorObjectNode),
                     new LinkedList());
 
-            stmtList.addLast(new ExprStmtNode(methodCallNode));
+            statementList.addLast(new ExprStmtNode(methodCallNode));
         }
 
         // Generate the iteration loop.
-        LinkedList iterationStmtList = new LinkedList();
+        LinkedList iterationStatementList = new LinkedList();
 
         Iterator schedule = null;
 
@@ -563,7 +576,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                     ObjectNode actorVarNode = (ObjectNode)
                         ((ObjectNode) actorToVariableMap.get(lastActor)).clone();
 
-                    ExprStmtNode prefireCallStmtNode = new ExprStmtNode(
+                    ExprStmtNode prefireCallStatementNode = new ExprStmtNode(
                             new MethodCallNode(new ObjectFieldAccessNode(
                                     new NameNode(AbsentTreeNode.instance,
                                             "prefire"),
@@ -572,14 +585,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
                     // Every node in the tree needs to be unique, so the
                     // actor node needs to be cloned here.
-                    ExprStmtNode fireCallStmtNode = new ExprStmtNode(
+                    ExprStmtNode fireCallStatementNode = new ExprStmtNode(
                             new MethodCallNode(new ObjectFieldAccessNode(
                                     new NameNode(AbsentTreeNode.instance,
                                             "fire"),
                                     ((ObjectNode)actorVarNode.clone())),
                                     new LinkedList()));
 
-                    ExprStmtNode postfireCallStmtNode = new ExprStmtNode(
+                    ExprStmtNode postfireCallStatementNode = new ExprStmtNode(
                             new MethodCallNode(new ObjectFieldAccessNode(
                                     new NameNode(AbsentTreeNode.instance,
                                             "postfire"),
@@ -587,9 +600,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
                                     new LinkedList()));
 
                     LinkedList iterationCalls = new LinkedList();
-                    iterationCalls.add(prefireCallStmtNode);
-                    iterationCalls.add(fireCallStmtNode);
-                    iterationCalls.add(postfireCallStmtNode);
+                    iterationCalls.add(prefireCallStatementNode);
+                    iterationCalls.add(fireCallStatementNode);
+                    iterationCalls.add(postfireCallStatementNode);
 
                     BlockNode iterationBlockNode =
                         new BlockNode(iterationCalls);
@@ -614,12 +627,12 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         List forUpdateList = TNLManip.addFirst(new PostIncrNode(
                                 (ObjectNode) loopCounterObjectNode.clone()));
 
-                        iterationStmtList.addLast(new ForNode(forInitList,
+                        iterationStatementList.addLast(new ForNode(forInitList,
                                 forTestExprNode,
                                 forUpdateList,
                                 iterationBlockNode));
                     }  else {
-                        iterationStmtList.addLast(iterationBlockNode);
+                        iterationStatementList.addLast(iterationBlockNode);
                     }
                 }
                 lastActor = actor;
@@ -635,11 +648,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
         if (iterations == 1) {
             // Just add all the iteration statements to the
             // list of all statements.
-            stmtList.addAll(iterationStmtList);
+            statementList.addAll(iterationStatementList);
         } else {
             if (iterations == 0) {
                 // iterate forever
-                stmtList.addLast(new LoopNode(new BlockNode(iterationStmtList),
+                statementList.addLast(new LoopNode(new BlockNode(iterationStatementList),
                         new BoolLitNode("true"), AbsentTreeNode.instance));
             } else {
 
@@ -661,8 +674,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 List forUpdateList = TNLManip.addFirst(new PostIncrNode(
                         (ObjectNode) loopCounterObjectNode.clone()));
 
-                stmtList.addLast(new ForNode(forInitList, forTestExprNode,
-                        forUpdateList, new BlockNode(iterationStmtList)));
+                statementList.addLast(new ForNode(forInitList, forTestExprNode,
+                        forUpdateList, new BlockNode(iterationStatementList)));
             }
         }
 
@@ -682,7 +695,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                                 actorObjectNode),
                         new LinkedList());
 
-                stmtList.addLast(new ExprStmtNode(methodCallNode));
+                statementList.addLast(new ExprStmtNode(methodCallNode));
             }
         }
 
@@ -711,7 +724,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         allocateEndTimeNode),
                         new LinkedList());
 
-	    stmtList.addLast(
+	    statementList.addLast(
                     new LocalVarDeclNode(NO_MOD, endTimeTypeNode,
                             endTimeVarNameNode,
                             getTimeMethodCallNode));
@@ -733,7 +746,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         "out"),
                         systemTypeNameNode);
 
-	    stmtList.addLast(new LocalVarDeclNode(NO_MOD,
+	    statementList.addLast(new LocalVarDeclNode(NO_MOD,
                     stdOutTypeNameNode,
                     stdOutVarNameNode,
                     outTypeFieldAccessNode));
@@ -762,7 +775,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                                 "println"),
                         stdOutObjectNode),
                         timingList);
-            stmtList.addLast(new ExprStmtNode(printlnMethodCallNode));
+            statementList.addLast(new ExprStmtNode(printlnMethodCallNode));
 	}
 
 
@@ -772,13 +785,61 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         TypeUtility.makeArrayType(
                                 (TypeNode) StaticResolution.STRING_TYPE.clone(), 1),
                         new NameNode(AbsentTreeNode.instance, "args"))),
-                new LinkedList(), new BlockNode(stmtList),
+                new LinkedList(), new BlockNode(statementList),
                 VoidTypeNode.instance);
     }
 
 
-    /** Generate a makefile. */
-    protected void _generateMakefile() {
+    /** Generate a makefile.
+     */
+    protected void _generateMakefile() throws IOException {
+        String makefileName;
+        String sourceSystemClassName = _compositeActor.getClass().getName();
+
+        // If _makefileOnly is true, create a makefile in the
+        // current directory that uses the name of the class that
+        // defines the system
+        if (_makefileOnly) {
+            if (sourceSystemClassName.lastIndexOf('.') == -1) {
+                makefileName = sourceSystemClassName + ".mk";
+            } else {
+                makefileName =
+                    sourceSystemClassName.substring(sourceSystemClassName
+                            .lastIndexOf('.') + 1)
+                    + ".mk";
+            }
+        } else {
+            makefileName = _packageDirectoryName + "makefile";
+        }
+
+        System.out.println("SDFCodeGenerator: creating " + makefileName);
+        FileOutputStream makefileStream =
+            new FileOutputStream(makefileName);
+
+        String iterations = new String("0");
+        Attribute attribute =
+            _compositeActor.getDirector().getAttribute("iterations");
+        if (attribute instanceof Variable) {
+            iterations = ((Variable)attribute).getExpression();
+        }
+        String makefileString = new String(
+                "# This makefile is automatically generated by "
+                + "SDFCodeGenerator\n"
+                + "ME =	" + _outputPackageName + "\n"
+                + "ROOT =                $(PTII)\n"
+                + "CG_ROOT =             $(ROOT)\n"
+                + "SOURCE_SYSTEM_CLASS = " +  sourceSystemClassName + "\n"
+                + "ITERATIONS =          " + iterations + "\n"
+                + "OUTPKG =              " + _outputPackageName + "\n"
+                + "OUTPKG_DIR =          " + _packageDirectoryName + "\n"
+                /* FIXME: need to figure out OUTPKG_ROOT */
+                + "OUTPKG_ROOT =         " + "$(ROOT)" + "\n"
+                + "OUTPKG_MAIN_CLASS =   " + _systemName + "\n"
+                + "CODEGEN_MK =          $(ROOT)/mk/codegen.mk\n"
+                + "include $(CODEGEN_MK)\n"
+                );
+        makefileStream.write(makefileString.getBytes());
+        makefileStream.close();
     }
 
     /** Figure out which buffers are connected to each input port of a given
@@ -955,8 +1016,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  and # is a number.
      */
     protected String _makeUniqueName(String name) {
-        String returnValue = "_cg_" + name + "_" + labelNum;
-        labelNum++;
+        String returnValue = "_cg_" + name + "_" + _labelNumber;
+        _labelNumber++;
         return returnValue;
     }
 
@@ -965,7 +1026,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  @exception Exception If something goes wrong.
      */
     protected boolean _parseArg(String arg) throws Exception {
-        if (arg.equals("-outdir")) {
+        if (arg.equals("-makefileOnly")) {
+            _makefileOnly = true;
+        } else if (arg.equals("-outdir")) {
             _expectingOutputDirectory = true;
         } else if (arg.equals("-outpkg")) {
             _expectingOutputPackage = true;
@@ -1007,7 +1070,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         for(i = 0; i < _commandFlags.length; i++) {
             result += " " + _commandFlags[i];
         }
-        result += " -all Run w/o codegen, generate files, compile & run\n";
+        result += " -makefileOnly    Just generate a makefile\n";
         result += " -shallowLoading  Load ASTs shallowly\n";
 
         return result;
@@ -1016,32 +1079,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
-    /** The TypedCompositeActor containing the system for which to generate
-     *  code.
-     */
-    protected TypedCompositeActor _compositeActor = null;
-
-    /** The name of the system.
-     *  FIXME: Currently, this defaults to CG_Main, we should
-     *  get the name using _compositeActor.getName(), but
-     *  sdf/codegen/SDFActorTransformer needs to be able to get the
-     *  name too.
-     */
-    protected String _systemName = new String("CG_Main");
-
-    /** The director for the SDF system. */
-    protected SDFDirector _director = null;
-
-    /** The scheduler for the SDF system. */
-    protected SDFScheduler _scheduler = null;
-
-    /** The set of all actors in the system. */
-    protected HashSet _actorSet = new HashSet();
-
     /** A map containing instances of SDFActorCodeGeneratorInfo, using the
      *  corresponding Actors as keys.
      */
     protected HashMap _actorInfoMap = new HashMap();
+
+    /** The set of all actors in the system. */
+    protected HashSet _actorSet = new HashSet();
+
 
     /** A map containing instances of BufferInfo, using the corresponding
      *  ports as keys. This map contains all BufferInfos for all output
@@ -1049,11 +1094,26 @@ public class SDFCodeGenerator extends CompositeActorApplication
      */
     protected HashMap _bufferInfoMap = new HashMap();
 
-    protected CodeGeneratorClassFactory _codeGenClassFactory =
-            SDFCodeGeneratorClassFactory.getInstance();
+    /** The TypedCompositeActor containing the system for which to generate
+     *  code.
+     */
+    protected TypedCompositeActor _compositeActor = null;
 
-    /** A non-decreasing number used for globally unique labeling. */
-    protected int labelNum = 0;
+    /** The director for the SDF system. */
+    protected SDFDirector _director = null;
+
+    /** A flag indicating whether we generate statistics
+     * such as elapsed time
+     */
+    protected boolean _generateStatistics = true;
+
+    /** A flag indicated whether we should only generate a makefile
+     *  If _makefileOnly is true, then create a makefile in the current
+     *  directory using the name of the source system class.
+     *  If _makefileOnly is false, then create a makefile in the package
+     *  output directory.
+     */    
+    protected boolean _makefileOnly = false;
 
     /** The canonical pathname of the directory in which to place the
      *  output package, not including the last file separator character.
@@ -1070,18 +1130,35 @@ public class SDFCodeGenerator extends CompositeActorApplication
      */
     protected String _packageDirectoryName;
 
+    /** The scheduler for the SDF system. */
+    protected SDFScheduler _scheduler = null;
+
+    /** The name of the system.
+     *  FIXME: Currently, this defaults to CG_Main, we should
+     *  get the name using _compositeActor.getName(), but
+     *  sdf/codegen/SDFActorTransformer needs to be able to get the
+     *  name too.
+     */
+    protected String _systemName = new String("CG_Main");
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                    ////
+
+
+    /** SDF Code Generator Class Factory */
+    protected CodeGeneratorClassFactory _codeGeneratorClassFactory =
+            SDFCodeGeneratorClassFactory.getInstance();
+
     /** A flag indicating that we are expecting an output directory as the
      *  next argument in the command-line.
      */
-    protected boolean _expectingOutputDirectory = false;
+    private boolean _expectingOutputDirectory = false;
 
     /** A flag indicating that we are expecting an output package name as the
      *  next argument in the command-line.
      */
-    protected boolean _expectingOutputPackage = false;
+    private boolean _expectingOutputPackage = false;
 
-    /** A flag indicating whether we generate statistics
-     * such as elapsed time
-     */
-    protected boolean _generateStatistics = true;
+    /** A non-decreasing number used for globally unique labeling. */
+    private int _labelNumber = 0;
 }
