@@ -296,7 +296,10 @@ public class ShallowModelTransformer extends SceneTransformer {
                 local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         namedObjLocal, attribute.getName());
-                _updateCreatedSet(attribute, createdSet);
+                Attribute classAttribute =
+                    (Attribute)_findDeferredInstance(attribute);
+                _updateCreatedSet(namedObj.getFullName() + "." + attribute.getName(),
+                        classAttribute, classAttribute, createdSet);
             }
 
             // Create a new field for the attribute, and initialize
@@ -362,21 +365,26 @@ public class ShallowModelTransformer extends SceneTransformer {
                 String className = entity.getClass().getName();
                 // Create a new local variable.
                 // The name of the local is determined automatically.
-                // The name of the NamedObj is the same as in the model.  (Note that
-                // this might not be a valid Java identifier.)
-                local = PtolemyUtilities.createNamedObjAndLocal(body, className,
-                        thisLocal, entity.getName());
-                _updateCreatedSet(entity, createdSet);
-
-                /*        if(!className.equals(entity.getMoMLInfo().className)) {
-                    // If the entity is a moml class.... then we need to create
-                    // the stuff inside the moml class before we keep going...
-                    // FIXME: what about not composite classes?
-                    CompositeEntity classEntity = (CompositeEntity)
-                        _findDeferredInstance(entity);
-                    _composite(body, containerLocal, container, local, classEntity, modelClass, createdSet);
-                    
-                    }*/
+                // The name of the NamedObj is the same as in the model. 
+                // (Note that this might not be a valid Java identifier.)
+                local = PtolemyUtilities.createNamedObjAndLocal(body, 
+                        className, thisLocal, entity.getName());
+                
+                Entity classEntity = (Entity)_findDeferredInstance(entity);
+                
+                if(!(entity instanceof CompositeEntity) ||
+                        className.equals(entity.getMoMLInfo().className)) {
+                    CompositeEntity classCompositeEntity = 
+                        (CompositeEntity)classEntity;
+                    // If the entity is NOT a moml class....
+                    // Then record the things inside the master as things
+                    // that automagically get created when we construct the
+                    // object.  Otherwise, we'll go through and create 
+                    // them manually later.
+                    _updateCreatedSet(
+                            composite.getFullName() + "." + entity.getName(),
+                            classEntity, classEntity, createdSet);
+                }
             }
             
 	    _entityLocalMap.put(entity, local);
@@ -437,7 +445,9 @@ public class ShallowModelTransformer extends SceneTransformer {
                         body, className,
                         entityLocal, port.getName());
 
-                _updateCreatedSet(port, createdSet);
+                Port classPort = (Port)_findDeferredInstance(port);
+                _updateCreatedSet(entity.getFullName() + "." + port.getName(),
+                        classPort, classPort, createdSet);
                 if(port instanceof TypedIOPort) {
                     TypedIOPort ioport = (TypedIOPort)port;
                     if(ioport.isInput()) {
@@ -724,22 +734,29 @@ public class ShallowModelTransformer extends SceneTransformer {
     }
 
     // Add the full names of all named objects contained in the given object
-    // to the given set.
-    private static void _updateCreatedSet(NamedObj object, HashSet set) {
-        System.out.println("creating " + object);
+    // to the given set, assuming that the object is contained within the 
+    // given context.
+    private static void _updateCreatedSet(String prefix,
+            NamedObj context, NamedObj object, HashSet set) {
+        if(object == context) {
+            System.out.println("creating " + prefix);
+            set.add(prefix);
+        } else {
+            String name = prefix + "." + object.getName(context);
+            System.out.println("creating " + name);
+            set.add(name);
+        }
         if(object instanceof CompositeEntity) {
             CompositeEntity composite = (CompositeEntity) object;
             for(Iterator entities = composite.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                set.add(entity.getFullName());
-                _updateCreatedSet(entity, set);
+                _updateCreatedSet(prefix, context, entity, set);
             }
             for(Iterator relations = composite.relationList().iterator();
                 relations.hasNext();) {
                 Relation relation = (Relation) relations.next();
-                set.add(relation.getFullName());
-                _updateCreatedSet(relation, set);
+                _updateCreatedSet(prefix, context, relation, set);
             }
         }
         if(object instanceof Entity) {
@@ -747,15 +764,13 @@ public class ShallowModelTransformer extends SceneTransformer {
             for(Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port)ports.next();
-                set.add(port.getFullName());
-                _updateCreatedSet(port, set);
+                _updateCreatedSet(prefix, context, port, set);
             }
         }
         for(Iterator attributes = object.attributeList().iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
-            set.add(attribute.getFullName());
-            _updateCreatedSet(attribute, set);
+            _updateCreatedSet(prefix, context, attribute, set);
         }
     }
     
