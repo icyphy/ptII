@@ -329,3 +329,13 @@ test ComplexMatrixMath-5.1.7 {crop} {
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{-7.0 + 8.0i -4.9 - 6.0i} {-0.25 + 0.4i 1.0 + 2.0i}}}
 } {}
+
+####################################################################
+test ComplexMatrixMath-5.1.8 {conjugateTranspose} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    conjugateTranspose $m33]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-4.9 + 6.0i -0.25 - 0.4i 3.0 + 4.0i} {1.0 - 2.0i -7.0 - 8.0i -0.25 - 0.4i} {-7.0 - 8.0i -4.9 + 6.0i 1.0 - 2.0i}}}
+} {}
+
