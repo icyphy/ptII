@@ -573,7 +573,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/comm \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
