@@ -437,7 +437,6 @@ public class Configuration extends CompositeEntity {
 
         // If the entity defers its MoML definition to another,
         // then open that other, unless this is a class extending another.
-        // FIXME: Need a way to represent a base class in what is opened!
         NamedObj deferredTo = entity.getMoMLInfo().deferTo;
         String elementName = entity.getMoMLInfo().elementName;        
         if (deferredTo != null
