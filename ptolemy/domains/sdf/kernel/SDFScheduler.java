@@ -188,6 +188,40 @@ public class SDFScheduler extends Scheduler {
         return ((IntToken)param.getToken()).intValue();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return the scheduling sequence.  An exception will be thrown if the
+     *  graph is not schedulable.  This occurs in the following circumstances:
+     *  <ul>
+     *  <li>The graph is not a connected graph.
+     *  <li>No integer solution exists for the balance equations.
+     *  <li>The graph contains cycles without delays (deadlock).
+     *  <li>Multiple output ports are connected to the same broadcast
+     *  relation. (equivalent to a non-deterministic merge)
+     *  </ul>
+     *
+     * @return A Schedule of the deeply contained opaque entities
+     *  in the firing order.
+     * @exception NotScheduleableException If the CompositeActor is not
+     *  schedulable.
+     */
+    protected Schedule _getSchedule() throws NotSchedulableException {
+	// FIXME: This method just builds a Shedule
+	// object out of the Enumeration returned by _schedule().
+	// Should probably put the main scheduling code in this
+	// method.
+	Schedule schedule = new Schedule();
+	Enumeration enumSched = _schedule();
+	while (enumSched.hasMoreElements()) {
+	    Executable actor = (Executable)enumSched.nextElement();
+	    Firing firing = new Firing();
+	    firing.setActor(actor);
+	    schedule.add(firing);
+	}
+	return schedule;
+    }
+
     /** Initialize the local data members of this object.  */
     protected void _localMemberInitialize() {
         _firingvector = new TreeMap(new NamedObjComparator());

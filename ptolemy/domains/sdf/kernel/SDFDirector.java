@@ -203,9 +203,12 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (s == null)
                 throw new IllegalActionException("Attempted to fire " +
                         "SDF system with no scheduler");
-            Enumeration allactors = s.schedule();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+	    Schedule sched = s.getSchedule();
+	    Iterator firings = sched.firingIterator();
+            while (firings.hasNext()) {
+		Firing firing = (Firing)firings.next();
+		Actor actor = (Actor)firing.getActor();
+		int iterationCount = firing.getIterationCount();
 
 		if(_debugging) {		    
 		  _debug("Iterating " + ((Nameable)actor).getFullName());
@@ -229,7 +232,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                          "The supplied value was: " + factor);
 		}
 		int returnVal = 
-		  actor.iterate(factor);
+		  actor.iterate(factor*iterationCount);
 		if (returnVal == COMPLETED) {
 		    _postfirereturns = _postfirereturns && true;
 		} else if (returnVal == NOT_READY) {
