@@ -14,7 +14,7 @@
 	<doc>The number of QR opdates to perform on the antenna data.</doc>
 	</property>
 
-    <entity name="plot" class="ptolemy.actor.gui.SequencePlotter">
+    <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
@@ -143,7 +143,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="MatrixViewer" class="ptolemy.actor.gui.MatrixViewer">
+    <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
