@@ -71,7 +71,6 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	doc-files \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR) \
 	'ArcTutorial$$1.class' \
@@ -98,10 +97,20 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass doc-files
 	@echo "Run 'make demos' to run all the tutorials"
 
 install: all jars
+
+doc-files:
+	if [ ! -d doc-files ]; then \
+	    @echo "Updating doc-files directory for javadoc"; \
+	    mkdir doc-files; \
+	    cp ../../doc/packages/canvas/tutorial/images/* doc-files; \
+	fi
+
+# 'make clean' removes files listed in KRUFT
+KRUFT = doc-files
 
 DEMOS = $(JSRCS:%.java=%)
 demos: $(DEMOS)
