@@ -99,9 +99,9 @@ function. Try Look Inside after running it.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 310.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{247.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.0, 175.0}">
     </property>
     <entity name="ContinuousTransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
