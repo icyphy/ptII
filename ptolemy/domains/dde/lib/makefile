@@ -52,6 +52,8 @@ JSRCS = \
 	DDEPrinter.java \
 	DDEStringMerge.java \
 	DDEStringSource.java \
+	DDEPipe.java \
+	DDEDoubleFork.java \
 	TimedSource.java
 
 EXTRA_SRCS =	$(JSRCS)
