@@ -128,6 +128,7 @@ public class BranchController implements Runnable {
     }
 
     /**
+     * FIXME: What if this is called twice with the same port?
      */
     public void createBranches(IOPort port) throws 
             IllegalActionException {
@@ -163,6 +164,7 @@ public class BranchController implements Runnable {
 
 	    branch = new Branch( prodRcvr, consRcvr, this );
 	    _branches.add(branch);
+	    _numberOfBranches++;
 	}
     }
 
@@ -242,7 +244,7 @@ public class BranchController implements Runnable {
             while( threads.hasNext() ) {
                 thread = (BranchThread)threads.next();
                 branch = thread.getBranch();
-                branch.setActive(true);
+                branch._reset();
                 thread.start();
             }
         }
@@ -322,6 +324,7 @@ public class BranchController implements Runnable {
      */
     public void run() {
 	_active = true;
+	activateBranches();
 
 	synchronized(this) {
 	    try {
@@ -379,10 +382,16 @@ public class BranchController implements Runnable {
     protected void _reset() {
         synchronized(this) {
 	    deactivateBranches();
-            _branchesActive = 0;
 	    _branchesBlocked = 0;
             _branchesActive = 0;
+	    _numberOfBranches = 0;
         }
+    }
+
+    /**
+     */
+    public int getNumberOfBranches() {
+	return _numberOfBranches;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -427,5 +436,7 @@ public class BranchController implements Runnable {
     private int _maxEngagers = -1;
 
     private boolean _active = false;
+
+    private int _numberOfBranches = 0;
 
 }

@@ -86,7 +86,7 @@ public class Branch {
     public void completeEngagement() {
 	if( _currentlyEngaged ) {
 	    _completedEngagements++;
-	    _currentlyEngaged = false ;
+	    _currentlyEngaged = false;
 	} else {
 	    throw new TerminateBranchException("Can not complete "
 		    + "an engagement if not currently engaged.");
@@ -99,16 +99,6 @@ public class Branch {
         return _completedEngagements;
     }
     
-    /** Return the controller that manges conditional rendezvous for this
-     *  branch when performing a CIF or CDO.
-     *  @return The controller that manages conditional rendezvous for
-     *  this branch.
-     *  FIXME: Is this necesary? What about package friendly variable?
-    public BranchController getController() {
-        return _controller;
-    }
-     */
-
     /** Return the Consumer BoundaryReceiver that this branch puts data into.
      *  @return The Consumer BoundaryReceiver that this branch puts data into.
      */
@@ -165,6 +155,16 @@ public class Branch {
     	if( _rcvrBlocked ) {
             _controller._branchUnBlocked();
         }
+    }
+
+    /**
+     */
+    protected void _reset() {
+	_rcvrBlocked = false;
+	_completedEngagements = 0;
+	_currentlyEngaged = false;
+	_stopped = false;
+	_active = true;
     }
 
     /** 

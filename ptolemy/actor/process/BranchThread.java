@@ -76,40 +76,28 @@ public class BranchThread extends PtolemyThread {
     /**
      */
     public void run() {
-        /*
         try {
-        */
             while( _branch.isActive() ) {
                 _branch.transferTokens();
-                /*
-                while( _stopRequest && _continue ) {
+
+                while( _branch.isStopped() && _branch.isActive() ) {
                     synchronized(this) {
                         wait();
                     }
                 }
-                */
             }
-        /*
         } catch( InterruptedException e ) {
         }
-        */
     } 
 
     /**
-    public void run() {
-        try {
-            while( _branch.isActive() ) {
-                _branch.transferTokens();
-                while( _stopRequest && _continue ) {
-                    synchronized(this) {
-                        wait();
-                    }
-                }
-            }
-        } catch( InterruptedException e ) {
-        }
-    } 
      */
+    public void restart() {
+	synchronized(this) {
+	    _branch.setStopped(false);
+	    notifyAll();
+	}
+    } 
 
     /** 
      */

@@ -30,7 +30,10 @@
 
 package ptolemy.actor.process;
 
-import ptolemy.actor.Actor;
+import ptolemy.actor.*;
+import ptolemy.kernel.util.*;
+
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// MultiBranchActor
@@ -40,18 +43,49 @@ import ptolemy.actor.Actor;
 @version $Id$
 @see BranchController
 */
-public interface MultiBranchActor extends Actor {
+public class MultiBranchActor extends CompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the the conditional branch controller of this actor.
-     *  @return The conditional branch controller.
-    public BranchController getBranchController();
+    /** 
      */
+    public void fire() throws IllegalActionException {
+        try {
+            _workspace.getReadAccess();
+            if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot fire a non-opaque actor.");
+            }
 
-    /** Return the the conditional branch controller of this actor.
-     *  @return The conditional branch controller.
+	    ((ProcessDirector)getDirector()).transferBoundaryData();
+
+            // Note that this is assured of firing the local director,
+            // not the executive director, because this is opaque.
+            getDirector().fire();
+
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** 
      */
-    public boolean hasProcessDirector();
+    public void initialize() throws IllegalActionException {
+	Director director = getDirector();
+	if( !isOpaque() ) {
+	    throw new IllegalActionException(this, "Error: " +
+		    "MultiBranchActors must be opaque.");
+	} else if( !(director instanceof ProcessDirector) ) {
+	    throw new IllegalActionException(this, "Error: " +
+		    "The local director of a MultiBranchActor " +
+		    "must be an instance of " +
+		    "ptolemy/actor/process/ProcessDirector.");
+	}
+	super.initialize();
+    }
+
 }
+
+
+
