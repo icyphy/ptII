@@ -73,6 +73,7 @@ public class GRActor extends TypedAtomicActor {
         throw new IllegalActionException("3D domain actor" + this +
                 " cannot have children");
     }
+        
 
     protected void _createModel() throws IllegalActionException {
     }

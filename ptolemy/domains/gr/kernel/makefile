@@ -51,7 +51,6 @@ JSRCS = \
 	GRDirector.java \
 	GRReceiver.java \
 	GRScheduler.java \
-	QueueBuffer.java \
 	GRActor.java \
 	GRDebug.java
 

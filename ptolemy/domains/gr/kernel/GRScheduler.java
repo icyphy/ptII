@@ -95,23 +95,7 @@ public class GRScheduler extends Scheduler {
         }
     }
 
-    /**
-     * Get the number of tokens that are produced on this output port
-     * during initialization, as supplied by
-     * by the port's "tokenInitProduction" parameter.   If the parameter
-     * does not exist, then assume the actor is zero-delay and return
-     * a value of zero.
-     * @exception IllegalActionException If the tokenInitProduction
-     *  parameter has an invalid expression.
-     */
-    //public static int getTokenInitProduction(IOPort p)
-    //        throws IllegalActionException {
-    //    Parameter param = (Parameter)p.getAttribute("tokenInitProduction");
-    //    if(param == null)
-    //        return 0;
-    //    return ((IntToken)param.getToken()).intValue();
-    //}
-
+  
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor during each firing,
      *  as supplied by
