@@ -74,7 +74,7 @@ public class StickyBallApplet extends CTApplet {
             // the top level CT director
             CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                     _toplevel, "CTTopLevelDirector");
-            topdir.addDebugListener(new StreamListener());
+            //topdir.addDebugListener(new StreamListener());
             // two const sources
             // FIXME: to be replaced by impulse sources
             Const source1 = new Const(_toplevel, "Const1");
@@ -245,7 +245,7 @@ public class StickyBallApplet extends CTApplet {
 
             CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
                     ctInc, "CTIncDir");
-            ctIncDir.addDebugListener(new StreamListener());
+            //ctIncDir.addDebugListener(new StreamListener());
             //System.out.println("Building the dynamics of two balls "
             //        + "sticking together.");
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Together");
@@ -308,7 +308,7 @@ public class StickyBallApplet extends CTApplet {
             ctDec.connect(ctDecOF, ctDecE2.output);
             CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
                     ctDec, "CTDecDir");            
-            ctDecDir.addDebugListener(new StreamListener());
+            //ctDecDir.addDebugListener(new StreamListener());
 
             // connect the hybrid system
             ctrlInc.setRefinement(ctInc);
