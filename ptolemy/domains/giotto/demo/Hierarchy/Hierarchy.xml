@@ -19,7 +19,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 275]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
     </property>
