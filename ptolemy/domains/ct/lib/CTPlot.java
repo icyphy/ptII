@@ -135,6 +135,7 @@ public class  CTPlot extends CTActor {
         }
         int width = input.getWidth();
         _firstPoint = new boolean[width];
+        _inputs = new double[width];
         for (int i = 0; i < width; i++) {
              if (_legends != null && i < _legends.length &&
                     _legends[i].length() != 0) {
@@ -170,51 +171,24 @@ public class  CTPlot extends CTActor {
         int numEmptyChannel = 0;
 
         int width = input.getWidth();
+        if (width != _inputs.length) {
+            _inputs = new double[width];
+        } 
         for (int i = 0; i<width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
-                double curTime =((Director)getDirector()).getCurrentTime();
                 // channel i is not empty, get all the tokens in it.
-                while (input.hasToken(i)) {
+                if (input.hasToken(i)) {
                     DoubleToken curToken = null;
                     curToken = (DoubleToken)input.get(i);
-                    double curValue = curToken.doubleValue();
-
-                    // update the y range
-                    boolean yRangeChanged = false;
-                    if (curValue < _yMin) {
-                        yRangeChanged = true;
-                        _yMin = curValue;
-                    }
-                    if (curValue > _yMax) {
-                        yRangeChanged = true;
-                        _yMax = curValue;
-                    }
-                    if (yRangeChanged) {
-                        _plot.setYRange(_yMin, _yMax);
-                        _plot.repaint();
-                    }
-
-                    // add the point
-                    if (DEBUG) {
-                        System.out.print(this.getFullName() + ":");
-                        System.out.println("Dataset = " + i +
-                                ", CurrentTime = " + curTime +
-                                ", CurrentValue = " + curValue + ".");
-                    }
-                    if(_firstPoint[i]) {
-                        _plot.addPoint(i, curTime, curValue, false);
-                        _firstPoint[i] = false;
-                    } else {
-                        _plot.addPoint(i, curTime, curValue, true);
-                    }
+                    _inputs[i] = curToken.doubleValue();
+                } else {
+                    // Empty channel. Ignore
+                    // But keep track of the number of empty channel,
+                    // because this actor shouldn't be fired if all channels
+                    // are empty..
+                    numEmptyChannel++;
                 }
-            } else {
-                // Empty channel. Ignore
-                // But keep track of the number of empty channel,
-                // because this actor shouldn't be fired if all channels
-                // are empty..
-                numEmptyChannel++;
             }
         }
         // If all channels are empty, then the scheduler is wrong.
@@ -223,6 +197,44 @@ public class  CTPlot extends CTActor {
                 "scheduling error. CTPlot fired, but there "
                 + "is no input data.");
         }
+    }
+
+    /** plot the tokens.
+     */
+    public boolean postfire() throws IllegalActionException {
+        double curTime =((Director)getDirector()).getCurrentTime();
+        for (int i = 0; i < _inputs.length; i++) {
+            // update the y range
+            double curValue = _inputs[i];
+            boolean yRangeChanged = false;
+            if (curValue < _yMin) {
+                yRangeChanged = true;
+                _yMin = curValue;
+            }
+            if (curValue > _yMax) {
+                yRangeChanged = true;
+                _yMax = curValue;
+            }
+            if (yRangeChanged) {
+                _plot.setYRange(_yMin, _yMax);
+                _plot.repaint();
+            }
+        
+            // add the point
+            if (DEBUG) {
+                System.out.print(this.getFullName() + ":");
+                System.out.println("Dataset = " + i +
+                        ", CurrentTime = " + curTime +
+                        ", CurrentValue = " + curValue + ".");
+            }
+            if(_firstPoint[i]) {
+                _plot.addPoint(i, curTime, curValue, false);
+                _firstPoint[i] = false;
+            } else {
+                _plot.addPoint(i, curTime, curValue, true);
+            }
+        }
+        return true;
     }
 
     /** Set the legends.
@@ -279,4 +291,6 @@ public class  CTPlot extends CTActor {
     private boolean _rangeInitialized = false;
 
     private boolean[] _firstPoint;
+
+    private double[] _inputs;
 }
