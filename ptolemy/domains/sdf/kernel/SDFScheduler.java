@@ -1357,11 +1357,7 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                         new Fraction(currentRate, 1));
                 Fraction previousRate =
                     (Fraction) externalRates.get(connectedPort);
-                if (previousRate == null) {
-                    System.out.println("Scheduler = " + getFullName());
-                    System.out.println("port = " + connectedPort);
-                }
-
+               
                 if (previousRate.equals(Fraction.ZERO)) {
                     externalRates.put(connectedPort, rate);
                 } else if (!rate.equals(previousRate)) {
@@ -1832,31 +1828,36 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                 // Note that this is a very simple type of inference...
                 // However, in general, we don't want to try to
                 // flatten this model...
-                Iterator connectedPorts = port.deepInsidePortList().iterator();
+                Iterator connectedPorts =
+                    port.insideSourcePortList().iterator();
                 IOPort foundOutputPort = null;
                 while (connectedPorts.hasNext()) {
                     IOPort connectedPort = (IOPort) connectedPorts.next();
+                    int connectedRate;
                     if (connectedPort.isOutput()) {
-                        // If we've already set the rate, then check that the
-                        // rate for any other internal port is correct.
-                        if (foundOutputPort != null &&
-                                getTokenInitProduction(foundOutputPort) !=
-                                getTokenInitProduction(connectedPort)) {
-                            throw new NotSchedulableException(
-                                    "External output port " + port
-                                    + " is connected on the inside to ports "
-                                    + "with different initial production: "
-                                    + foundOutputPort + " and "
-                                    + connectedPort);
-                        }
-                        _setIfNotDefined(port, "tokenInitProduction",
-                                getTokenInitProduction(connectedPort));
-                        if (_debugging && VERBOSE) {
-                            _debug("Setting tokenInitProduction to "
-                                    + getTokenInitProduction(connectedPort));
-                        }
-                        foundOutputPort = connectedPort;
+                        connectedRate = getTokenInitProduction(connectedPort);
+                    } else {
+                        connectedRate = 0;
                     }
+                    // If we've already set the rate, then check that the
+                    // rate for any other internal port is correct.
+                    if (foundOutputPort != null &&
+                            getTokenInitProduction(foundOutputPort) !=
+                            connectedRate) {
+                        throw new NotSchedulableException(
+                                "External output port " + port
+                                + " is connected on the inside to ports "
+                                + "with different initial production: "
+                                + foundOutputPort + " and "
+                                + connectedPort);
+                    }
+                    _setIfNotDefined(port, "tokenInitProduction",
+                            connectedRate);
+                    if (_debugging && VERBOSE) {
+                        _debug("Setting tokenInitProduction to "
+                                + getTokenInitProduction(connectedPort));
+                    }
+                    foundOutputPort = connectedPort;
                 }
                 if (_debugging && VERBOSE) {
                     _debug("tokenInitProduction = " + rate);
