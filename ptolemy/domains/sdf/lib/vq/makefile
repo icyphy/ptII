@@ -55,6 +55,7 @@ JSRCS = \
 	ImageScale.java \
 	ImageSequence.java \
 	ImageUnpartition.java \
+	SNR.java \
 	VQDecode.java \
 	VQEncode.java
 
