@@ -139,8 +139,8 @@ public class KeyWriter extends KeyStoreActor {
                 output.broadcast(BooleanToken.TRUE);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to store keyStore '"
-                        + fileOrURL + "'");
+                        "Failed to store "
+                        + fileOrURLDescription());
             }
         }
         return super.postfire();

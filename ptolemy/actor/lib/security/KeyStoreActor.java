@@ -28,6 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.security;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -403,8 +404,10 @@ public class KeyStoreActor extends TypedAtomicActor {
             // unbuffered stream.
             InputStream keyStoreInputStream = null;
             try {
+                // The next line might throw a NullPointerException
+                // if the fileOrURL does not exist.
                 keyStoreInputStream = fileOrURL.asURL().openStream();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 // Ignore, this means that the file does not exist,
                 // so we are trying to create a new empty keyStore.
             }
@@ -432,19 +435,63 @@ public class KeyStoreActor extends TypedAtomicActor {
                     keyStoreInputStream.close();
                 } catch (java.io.EOFException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Problem loading '" + fileOrURL.asURL()
-                            + "', perhaps the file is of length 0? "
+                            "Problem loading " + fileOrURLDescription()
+                            + ", perhaps the file is of length 0? "
                             + "To create a sample file, try "
                             + "cd $PTII; make ptKeystore");
 
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                            "Problem loading '" + fileOrURL.asURL()
-                            + "'");
+                            "Problem loading " + fileOrURLDescription());
                 }
             }
             _loadKeyStoreNeeded = false;
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return descriptive information about fileOrURL */
+    protected String fileOrURLDescription() {
+        if (fileOrURL == null) {
+            return "Keystore URL is null";
+        }
+        StringBuffer results = new StringBuffer("Keystore");
+        String name = null;
+        try {
+            name = ": '" + fileOrURL.stringValue() + "'";
+        } catch(Exception ex) {
+            name = ": " + fileOrURL.toString();
+        }
+        results.append(name); 
+
+
+        String exists = ", which does not exist";
+        try {
+            File fileHandle = fileOrURL.asFile();
+            if (fileHandle.exists()) {
+                if (fileHandle.canRead()) {
+                    exists = ", which exists and is readable";
+                } else {
+                    exists = ", which exists and is not readable";
+                }
+            } 
+        } catch (Exception ex) {
+            // Ignore
+        }
+        results.append(exists + ", ");
+
+
+        String url = " and cannot be represented as a URL";
+        try {
+            url = " as a URL is: '" + fileOrURL.asURL().toString() + "'";
+        } catch (Exception ex) {
+            // Ignore
+        }
+        results.append(url);
+
+        return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

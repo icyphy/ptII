@@ -219,8 +219,8 @@ public class KeyReader extends KeyStoreActor {
                     if (certificate == null) {
                         throw new KeyStoreException("Failed to get certificate"
                                 + " for alias '" + _alias
-                                + "' from  keystore '" + fileOrURL.asURL() +
-                                "', keyStore: " + _keyStore);
+                                + "' from  "
+                                + fileOrURLDescription());
                     }
                     PublicKey publicKey = certificate.getPublicKey();
 
@@ -245,7 +245,7 @@ public class KeyReader extends KeyStoreActor {
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to get key store alias '" + _alias
-                        + "' or certificate from " + fileOrURL.asURL());
+                        + "' or certificate from " + fileOrURLDescription());
             }
         }
     }
