@@ -70,6 +70,13 @@ public class EllipseAttribute extends FilledShapeAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
+    /** Return a circle.
+     *  @return A Circle.
+     */
+    public Shape _getDefaultShape() {
+        return new Ellipse2D.Double(0.0, 0.0, 20.0, 20.0);
+    }
+
     /** Return the a new ellipse given a new width and height.
      *  @param width The new width.
      *  @param height The new height.

@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+import java.awt.Shape;
 import java.awt.geom.Line2D;
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,5 +115,15 @@ public class LineAttribute extends ShapeAttribute {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Return a line.
+     *  @return A line.
+     */
+    public Shape _getDefaultShape() {
+        return new Line2D.Double(0.0, 0.0, 20.0, 20.0);
     }
 }

@@ -42,6 +42,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.ShapeIcon;
 
 import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// ShapeAttribute
@@ -76,7 +78,7 @@ public abstract class ShapeAttribute extends Attribute {
         // Hide the name.
         new Attribute(this, "_hideName");
 
-        _icon = new ShapeIcon(this, "_icon");
+        _icon = new ShapeIcon(this, "_icon", _getDefaultShape());
 
         lineWidth = new Parameter(this, "lineWidth");
         lineWidth.setTypeEquals(BaseType.DOUBLE);
@@ -135,6 +137,24 @@ public abstract class ShapeAttribute extends Attribute {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Return the default shape to use for this icon.
+     *  Note that this is called in the constructor, so if you override
+     *  it in derived classed, you cannot access any methods or members
+     *  of the derived class because they will not have been constructed.
+     *  @return The default shape for this attribute.
+     */
+    public Shape _getDefaultShape() {
+        // NOTE: In an ideal world, this would not be necessary, because
+        // setShape() would override the default shape.  Unfortunately,
+        // without this, icons are rendered before setShape() has been called,
+        // and consequently, all shape attributes are rendered the same in
+        // the utilities library.
+        return new Rectangle2D.Double(0.0, 0.0, 20.0, 20.0);
+    }
+                       
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
 
