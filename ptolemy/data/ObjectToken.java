@@ -99,7 +99,7 @@ public class ObjectToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                  ////
+    ////                         protected variables               ////
 
     // This is protected to allow access in derived classes only.
     protected Object _value = null;
