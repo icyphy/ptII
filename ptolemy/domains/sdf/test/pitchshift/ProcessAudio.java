@@ -126,8 +126,11 @@ public class ProcessAudio implements Runnable {
 	// line. Also number of sample frames to attempt to wrte to the
 	// source data line. This size should be chosen smaller (1/2 to 1/8)
 	// the size of the queues used by JavaSound.
-	int readWriteDataSizeInFrames = 1024;
-
+	// The number of samples frames to attempt to read/write from the
+	// target/source data line is given by (readWriteDataSizeInFrames*
+	// jsBufferSizeOverReadWriteSize).
+	int readWriteDataSizeInFrames = 750;
+	int jsBufferSizeOverReadWriteSize = 8;
 	TargetDataLine targetLine;
         
 	
@@ -147,16 +150,13 @@ public class ProcessAudio implements Runnable {
 
 	  int frameSizeInBytes = format.getFrameSize();
 
-	 //AudioFormat format = formatControls.getFormat();
-	  /*DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class,
-	  null, null, new Class[0], format, AudioSystem.NOT_SPECIFIED);
-	  */
+	 
 	DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class,
 					  null, null,
 					  new Class[0], format
-					  , readWriteDataSizeInFrames*4);
+					  ,  AudioSystem.NOT_SPECIFIED);
 	  
-                        
+	
             if (!AudioSystem.isSupportedLine(targetInfo)) {
                 shutDown("Line matching " + targetInfo + " not supported.");
                 return;
@@ -164,7 +164,7 @@ public class ProcessAudio implements Runnable {
 
 	    try {
                 targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
-                targetLine.open(format, targetLine.getBufferSize());
+                targetLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
             } catch (LineUnavailableException ex) { 
                 shutDown("Unable to open the line: " + ex);
                 return;
@@ -188,7 +188,7 @@ public class ProcessAudio implements Runnable {
 	DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
 					 null, null,
 					 new Class[0], format,
-					 readWriteDataSizeInFrames*4);
+					 AudioSystem.NOT_SPECIFIED);
 
 	
 
@@ -201,7 +201,7 @@ public class ProcessAudio implements Runnable {
 	SourceDataLine sourceLine;
 	try {
 	    sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-	    sourceLine.open(format, sourceLine.getBufferSize());
+	    sourceLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
 	} catch (LineUnavailableException ex) { 
 	    shutDown("Unable to open the line: " + ex);
 	    return;
