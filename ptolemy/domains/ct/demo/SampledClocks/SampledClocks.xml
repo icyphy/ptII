@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SampledClocks" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -27,14 +27,14 @@
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 916, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 916, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 400]">
     </property>
@@ -50,52 +50,27 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 40.0">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Continuous Clock 
-Offsets: 0.0, 0.2
-Period: 0.5</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 30.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates that the sampled clock
-signals are different. The sampled continuous
-clock signal has some delay compared with the
-sampled discrete clock signal. The delay is the
-the sample period of the sampler. As the sample
-period goes to 0.0, the delay goes to 0.0.
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates continuous-time signals
+and discrete signals. It shows that samples of
+a piecewise continuous signal have the value of
+the signal at the start of the discontinuity,
+as one would expect in hardware samplers that
+require a setup time.  In the semantics of
+HyVisual (and continuous-time in Ptolemy II),
+piecewise continuous signals have more than
+one value at the time of the discontinuity.
 
-The cause of the delay can be interpreted as
-samplers only sample the signals with some set 
-up time. 
-
-Caution: This model shows a deterministic 
-behavior of samplers, which is desirable for
-software. However, in reality, non-deterministic
-behaviors caused by the jitter of timers usually 
-can not be avoided. 
-</text></svg></configure>
+Discrete signals can also be sampled, but if
+the discrete signal has only one value at each
+discrete time, then the samples will reflect
+exactly that value.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -108,33 +83,42 @@ can not be avoided.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 10.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 200.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 325.0]">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 371, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 362, 508, 202}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 147]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="273.3203125, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[274.3203125, 290.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Sampled Signal of Discrete Clock</title>
-<xLabel></xLabel>
+<title>Output of the Discrete Clock</title>
+<xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1.0"/>
 <yRange min="0.0" max="1.0"/>
+<noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -150,10 +134,10 @@ can not be avoided.
         </property>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[46.0, 105.5]">
         </property>
     </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
@@ -162,7 +146,7 @@ can not be avoided.
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 290.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -174,7 +158,7 @@ can not be avoided.
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[161.0, 105.5]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -192,60 +176,115 @@ can not be avoided.
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={535, 370, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 561, 508, 206}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 151]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[278.3203125, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[269.3203125, 105.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Sampled Signal of Continuous Clock</title>
-<xLabel></xLabel>
+<title>Samples of the Continuous Clock</title>
+<xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1.0"/>
 <yRange min="0.0" max="1.0"/>
+<noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 195.0]">
+    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 560, 508, 208}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 153]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[151.0, 225.5]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Samples of the Discrete Clock</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="1.0"/>
+<yRange min="0.0" max="1.0"/>
+<noGrid/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
     </entity>
-    <entity name="triggers" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+    <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 362, 508, 206}, maximized=false}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 151]">
         </property>
-        <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 250.0]">
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 165.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Continuous Clock</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="1.0"/>
+<yRange min="0.0" max="1.0"/>
+<noGrid/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 290.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[106.0, 290.5]">
+        </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[91.0, 105.5]">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="TimedPlotter.input" relation="relation5"/>
-    <link port="ContinuousClock.output" relation="relation4"/>
-    <link port="Clock.output" relation="relation"/>
-    <link port="PeriodicSampler2.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="ContinuousClock.output" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation6"/>
+    <link port="PeriodicSampler2.input" relation="relation"/>
     <link port="PeriodicSampler2.output" relation="relation3"/>
     <link port="TimedPlotter2.input" relation="relation3"/>
-    <link port="Sampler.input" relation="relation"/>
-    <link port="Sampler.output" relation="relation5"/>
-    <link port="Sampler.trigger" relation="relation2"/>
-    <link port="triggers.output" relation="relation2"/>
+    <link port="TimedPlotter3.input" relation="relation6"/>
+    <link port="TimedPlotter4.input" relation="relation"/>
+    <link port="PeriodicSampler.input" relation="relation6"/>
+    <link port="PeriodicSampler.output" relation="relation2"/>
 </entity>

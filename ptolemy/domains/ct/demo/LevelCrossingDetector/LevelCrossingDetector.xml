@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LevelCrossingDetector" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -27,14 +27,14 @@
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 44, 919, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 1, 919, 606}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 488]">
     </property>
@@ -193,9 +193,9 @@ detectors.</text></svg></configure>
     <entity name="Signals" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 269, 420, 326}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 495, 420, 274}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[412, 271]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[412, 219]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -213,37 +213,6 @@ detectors.</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="LevelCrossingDetector2" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
-        <property name="level" class="ptolemy.data.expr.Parameter" value="level2">
-        </property>
-        <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 335.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-    </entity>
     <entity name="ContinuousClock2" class="ptolemy.domains.ct.lib.ContinuousClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5, 1.0}">
         </property>
@@ -256,9 +225,9 @@ detectors.</text></svg></configure>
     <entity name="Events" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={439, 271, 417, 329}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={586, 496, 417, 273}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[409, 274]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[409, 218]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -277,74 +246,12 @@ detectors.</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
-        <property name="level" class="ptolemy.data.expr.Parameter" value="level">
-        </property>
-        <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-    </entity>
     <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1,0}">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 185.0">
         </property>
-    </entity>
-    <entity name="LevelCrossingDetector3" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
-        <property name="level" class="ptolemy.data.expr.Parameter" value="level3">
-        </property>
-        <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.75, 420.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -375,24 +282,48 @@ detectors.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 420.0">
         </property>
     </entity>
+    <entity name="LevelCrossingDetector1" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector2" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="2.5">
+        </property>
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="1.3">
+        </property>
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 420.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="140.0, 335.0">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[280.0, 335.0]">
-        </vertex>
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="145.0, 185.0">
-        </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="300.75, 185.0">
-        </vertex>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="295.0, 420.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -401,24 +332,27 @@ detectors.</text></svg></configure>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Signals.input" relation="relation"/>
     <link port="Signals.input" relation="relation4"/>
     <link port="Signals.input" relation="relation6"/>
-    <link port="LevelCrossingDetector2.input" relation="relation"/>
-    <link port="LevelCrossingDetector2.output" relation="relation3"/>
-    <link port="LevelCrossingDetector2.trigger" relation="relation"/>
     <link port="ContinuousClock2.output" relation="relation"/>
     <link port="Events.input" relation="relation3"/>
-    <link port="Events.input" relation="relation5"/>
     <link port="Events.input" relation="relation2"/>
-    <link port="LevelCrossingDetector.input" relation="relation4"/>
-    <link port="LevelCrossingDetector.output" relation="relation5"/>
-    <link port="LevelCrossingDetector.trigger" relation="relation4"/>
+    <link port="Events.input" relation="relation5"/>
     <link port="ContinuousClock.output" relation="relation4"/>
-    <link port="LevelCrossingDetector3.input" relation="relation6"/>
-    <link port="LevelCrossingDetector3.output" relation="relation2"/>
-    <link port="LevelCrossingDetector3.trigger" relation="relation6"/>
     <link port="Integrator.input" relation="relation7"/>
     <link port="Integrator.output" relation="relation6"/>
     <link port="Const.output" relation="relation7"/>
+    <link port="LevelCrossingDetector1.output" relation="relation3"/>
+    <link port="LevelCrossingDetector1.trigger" relation="relation4"/>
+    <link port="LevelCrossingDetector2.output" relation="relation2"/>
+    <link port="LevelCrossingDetector2.trigger" relation="relation"/>
+    <link port="LevelCrossingDetector.output" relation="relation5"/>
+    <link port="LevelCrossingDetector.trigger" relation="relation6"/>
 </entity>
