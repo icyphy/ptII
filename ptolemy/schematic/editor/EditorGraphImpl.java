@@ -138,14 +138,14 @@ public class EditorGraphImpl extends BasicGraphImpl {
                     } else if(tailObject instanceof Port &&
                             headObject instanceof VertexAttribute) {
                         vertex = (VertexAttribute)headObject;
-                        port = (Port)headObject;
+                        port = (Port)tailObject;
                     } else {
                         throw new InternalErrorException("Edge must be between " + 
                                 "Port and VertexAttribute");
                     }   
                     Relation relation = (Relation)vertex.getContainer();
                     link = new LinkAttribute(relation, 
-                            "link");
+					     createLinkName(relation));
                     e.setSemanticObject(link);
                     link.setPort(port);
                     link.setVertex(vertex);
@@ -230,14 +230,14 @@ public class EditorGraphImpl extends BasicGraphImpl {
                     } else if(tailObject instanceof Port &&
                             headObject instanceof VertexAttribute) {
                         vertex = (VertexAttribute)headObject;
-                        port = (Port)headObject;
+                        port = (Port)tailObject;
                     } else {
                         throw new InternalErrorException("Edge must be between " + 
                                 "Port and VertexAttribute");
                     }   
                     Relation relation = (Relation)vertex.getContainer();
                     link = new LinkAttribute(relation, 
-                            "link");
+					     createLinkName(relation));
                     e.setSemanticObject(link);
                     link.setPort(port);
                     link.setVertex(vertex);
@@ -252,4 +252,17 @@ public class EditorGraphImpl extends BasicGraphImpl {
             throw new GraphException(ex.getMessage());
         }
     }
+
+    public String createLinkName(NamedObj container) {
+	String root = "link_";
+	int ID = 0;
+	String name = null;
+	// This is unimportant..  it just gets the loop started.
+	Object obj = root;
+	while(obj != null) {
+	    name = root + ID++;
+	    obj = container.getAttribute(name);
+	}
+	return name;
+    }    
 }

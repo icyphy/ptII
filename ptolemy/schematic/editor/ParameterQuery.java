@@ -74,7 +74,7 @@ public class ParameterQuery extends Query implements QueryListener {
             Attribute attribute = (Attribute)parameters.nextElement();
             if(attribute instanceof Parameter) {
                 Parameter param = 
-                    (Parameter) parameters.nextElement();
+                    (Parameter) attribute;
                 addLine(param.getName(), param.getName(), 
                         param.getToken().stringValue());
             }
@@ -88,9 +88,11 @@ public class ParameterQuery extends Query implements QueryListener {
      */
     public void changed(String name) {
         String value = stringValue(name);
-        Attribute attribute = _target.getAttribute("name");
+	System.out.println("name=" + name + ", value=" + value);
+        Attribute attribute = _target.getAttribute(name);
         if(attribute instanceof Parameter) {
             Parameter param = (Parameter) attribute;
+	    System.out.println("parem = " + param);
             param.setExpression(value);
         }
     }

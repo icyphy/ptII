@@ -80,9 +80,13 @@ public class EditorGraphController extends GraphController {
      */
     private SelectionDragger _selectionDragger;
 
-    /** The interactor for creating new terminals
+    /** The interactor for creating new relations
      */
     private RelationCreator _relationCreator;
+
+    /** The interactor for creating new vertecies connected to an existing relation
+     */
+    private ConnectedVertexCreator _connectedVertexCreator;
 
      /** The interactor for creating new terminals
      */
@@ -132,10 +136,14 @@ public class EditorGraphController extends GraphController {
         ConnectorTarget ct = new PerimeterTarget() {
 	    public boolean accept (Figure f) {
     //		System.out.println(f.getUserObject().toString());
-                return (f.getUserObject() instanceof Node);
-		                // FIXME Used needs something like: ||
-		// (f instanceof FigureWrapper &&
-                //             ((FigureWrapper)f).getChild().instanceof Node);
+		Object object = f.getUserObject();
+                if(object instanceof Node) {
+		    Node node = (Node) object;
+		    object = node.getSemanticObject();
+		    if(object instanceof Port) return true;
+		    if(object instanceof VertexAttribute) return true;
+		}
+		return false;
             }
 	};
         setConnectorTarget(ct);
@@ -169,6 +177,33 @@ public class EditorGraphController extends GraphController {
     //    }
 
     /** Add an edge to this graph editor and render it
+     * from the given tail node to the given head node.  This edge is 
+     * anchored to it's head and tail node, and does not have a regular edge
+     * interactor.
+     */
+    public void addAnchoredEdge(Edge edge, Node head, Node tail, 
+				double x, double y) {
+        Figure hf = (Figure) head.getVisualObject();
+        Figure tf = (Figure) tail.getVisualObject();
+        FigureLayer layer = getGraphPane().getForegroundLayer();
+        Site headSite, tailSite;
+
+	tailSite = getConnectorTarget().getTailSite(tf, x, y);
+	getGraphImpl().setEdgeTail(edge, tail);
+	headSite = getConnectorTarget().getHeadSite(hf, x, y);
+	getGraphImpl().setEdgeHead(edge, head);
+        
+        Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
+
+        // Add to the view
+        ef.setUserObject(edge);
+        edge.setVisualObject(ef);
+        layer.add(ef);
+
+	ef.route();
+    }
+
+    /** Add an edge to this graph editor and render it
      * from the given tail node to an autonomous site at the
      * given location. The "end" flag is either HEAD_END
      * or TAIL_END, from diva.canvas.connector.ConnectorEvent.
@@ -197,10 +232,7 @@ public class EditorGraphController extends GraphController {
         layer.add(ef);
 
 	ef.route();
-        // Add to the graph
-        // FIXME
-        // SchematicGraphImpl impl = (SchematicGraphImpl) getGraphImpl();
-        // impl.addEdge(edge, getGraph());
+
     }
 
     /** Add a node to this graph editor and render it
@@ -260,10 +292,14 @@ public class EditorGraphController extends GraphController {
                 // Assume that CompositeNode -> CompositeFigure
 		((CompositeFigure)nf).add(nodeFigure);
 
-                //FIXME Where to put the damned things?
-                //		CanvasUtilities.translateTo(nodeFigure, 
-		//			  terminal.getX(), 
-		//			  terminal.getY());
+		NamedObj semanticObject = (NamedObj)node.getSemanticObject();
+		LocationAttribute location = (LocationAttribute)
+		    semanticObject.getAttribute(
+			LocationAttribute.LOCATION_ATTRIBUTE_NAME);
+		
+		int nodeX = location.getX();
+		int nodeY = location.getY();
+		CanvasUtilities.translateTo(nodeFigure, nodeX, nodeY);
 
 		nodeFigure.setUserObject(node);
 		node.setVisualObject(nodeFigure);
@@ -313,6 +349,11 @@ public class EditorGraphController extends GraphController {
 	_edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);
         getNodeInteractor().addInteractor(_edgeCreator);
+
+        // Create the interactor that drags new edges.
+	_connectedVertexCreator = new ConnectedVertexCreator();
+        _connectedVertexCreator.setMouseFilter(_shiftFilter);
+        getNodeInteractor().addInteractor(_connectedVertexCreator);
 
         // MenuCreator 
         _menuCreator = new MenuCreator();
@@ -493,42 +534,80 @@ public class EditorGraphController extends GraphController {
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
 
-            if(!(sourceObject instanceof VertexAttribute)) return;
-	    System.out.println(sourceObject.description());
-
-            FigureLayer layer = (FigureLayer) e.getLayerSource();
-            
-            // Create a new edge
-            CompositeEntity container = 
-                (CompositeEntity)getGraph().getSemanticObject();
-            /*            LinkAttribute link;
-            try {
-                link = new LinkAttribute(container, 
-                        createUniqueName("Relation"));
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex.getMessage());
-                }*/
-            Edge edge = getGraphImpl().createEdge(null);	    
-            
-            // Add it to the editor
-            addEdge(edge,
-                    sourcenode,
-                    ConnectorEvent.TAIL_END,
-                    e.getLayerX(),
-                    e.getLayerY());
-
-            // Add it to the selection so it gets a manipulator, and
-            // make events go to the grab-handle under the mouse
-            Figure ef = (Figure) edge.getVisualObject();
-            getSelectionModel().addSelection(ef);
-            ConnectorManipulator cm = (ConnectorManipulator) ef.getParent();
-            GrabHandle gh = cm.getHeadHandle();
-            layer.grabPointer(e, gh);
-        }
+            if((sourceObject instanceof VertexAttribute)||
+	       (sourceObject instanceof Port)) {
+		System.out.println(sourceObject.description());
+		
+		FigureLayer layer = (FigureLayer) e.getLayerSource();
+		
+		// Create a new edge
+		CompositeEntity container = 
+		    (CompositeEntity)getGraph().getSemanticObject();
+		Edge edge = getGraphImpl().createEdge(null);	    
+		
+		// Add it to the editor
+		addEdge(edge,
+			sourcenode,
+			ConnectorEvent.TAIL_END,
+			e.getLayerX(),
+			e.getLayerY());
+		
+		// Add it to the selection so it gets a manipulator, and
+		// make events go to the grab-handle under the mouse
+		Figure ef = (Figure) edge.getVisualObject();
+		getSelectionModel().addSelection(ef);
+		ConnectorManipulator cm = (ConnectorManipulator) ef.getParent();
+		GrabHandle gh = cm.getHeadHandle();
+		layer.grabPointer(e, gh);
+	    }
+	}
     }
-    
+
+    /** An interactor that creates a new Vertex that is connected to a vertex
+     *  in a relation
+     */
+    protected class ConnectedVertexCreator extends AbstractInteractor {
+        public void mousePressed(LayerEvent e) {
+	    FigureLayer layer = (FigureLayer) e.getLayerSource();
+	    Figure source = e.getFigureSource();
+	    Node sourcenode = (Node) source.getUserObject();
+	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
+
+            if((sourceObject instanceof VertexAttribute)) {
+		System.out.println(sourceObject.description());
+		
+		Relation relation = (Relation)sourceObject.getContainer();
+		VertexAttribute vertex = null;
+		try {
+		    vertex = new VertexAttribute(relation, 
+						 createUniqueName("vertex"), 
+						 e.getX(), e.getY());
+		}
+		catch (Exception ex) {
+		    ex.printStackTrace();
+		    throw new RuntimeException(ex.getMessage());
+		}
+		Node node = getGraphImpl().createNode(vertex);
+		addNode(node, e.getLayerX(), e.getLayerY());
+
+		Edge edge = getGraphImpl().createEdge(null);	    		
+		addEdge(edge,
+			sourcenode,
+			ConnectorEvent.TAIL_END,
+			e.getLayerX(),
+			e.getLayerY());
+		
+		// Add it to the selection so it gets a manipulator, and
+		// make events go to the grab-handle under the mouse
+		Figure nf = (Figure) node.getVisualObject();
+		getSelectionModel().addSelection(nf);
+		//		ConnectorManipulator cm = (ConnectorManipulator) ef.getParent();
+		//GrabHandle gh = cm.getHeadHandle();
+		layer.grabPointer(e, nf);
+	    }
+	}
+    }
+	
     /** An interactor that creates context-sensitive menus.
      */
     protected class MenuCreator extends AbstractInteractor {
@@ -596,7 +675,7 @@ public class EditorGraphController extends GraphController {
     }
 
     /*    public class SchematicContextMenu extends ObjectContextMenu {
-        public SchematicContextMenu(Schematic target) {
+        public SchematicContextMenu(CompositeEntity target) {
             super(target);
 
             Action action;
@@ -604,8 +683,9 @@ public class EditorGraphController extends GraphController {
                 public void actionPerformed(ActionEvent e) {
                     // Create a dialog and attach the dialog values 
                     // to the parameters of the schematic's director
-                    Schematic object = (Schematic) getValue("target");
-                    SchematicDirector director = object.getDirector();
+                    CompositeEntity object = 
+		    (CompositeEntity) getValue("target");
+                    Director director = object.getDirector();
                     JFrame frame =
                         new JFrame("Parameters for " + director.getName());
                     JPanel pane = (JPanel) frame.getContentPane();
@@ -624,7 +704,7 @@ public class EditorGraphController extends GraphController {
             action.putValue("menuItem", item);           
         }
     }
-    */
+    */    
     
     public String createUniqueName(String root) {
 	String name = root + _uniqueID++;

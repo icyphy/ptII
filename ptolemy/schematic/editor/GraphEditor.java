@@ -262,10 +262,16 @@ public class GraphEditor extends AbstractApplication {
         lib.setName("root");
         ComponentEntity e;
         Port p;
+	Parameter pa;
+	LocationAttribute l;
 	ptolemy.schematic.util.Icon i;
         e = new ComponentEntity(lib, "E1");
 	p = e.newPort("P1");
+	l = new LocationAttribute(p, 20, 0);
 	p = e.newPort("P2");
+	pa = new Parameter(e, "Param1");
+	pa.setExpression("7.0");
+	l = new LocationAttribute(p, -20, 0);
         i = new ptolemy.schematic.util.Icon(e);
         e = new ComponentEntity(lib, "E2");
         i = new ptolemy.schematic.util.Icon(e);
