@@ -460,22 +460,31 @@ public class FixMatrixToken extends MatrixToken {
      *  multiplied by the value of the argument token.  It is assumed
      *  that the type of the argument is FixMatrixToken.
      *  @param rightArgument The token to multiply this token by.
-     *  @exception IllegalActionException If the units are not
-     *  compatible, or this operation is not supported by the derived
-     *  class.
      *  @return A new FixMatrixToken containing the result.
+     *  @exception IllegalActionException If the units are not
+     *   compatible, or if the matrix dimensions are incompatible.
      */
     protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
-        FixPoint[][] result = convertedArgument.fixMatrix();
+        if (_columnCount != convertedArgument._rowCount) {
+            throw new IllegalActionException(
+                   "Matrix dimensions are not compatible. Cannot multiply.");
+        }
+        FixPoint[][] result
+                = new FixPoint[_rowCount][convertedArgument._columnCount];
         
         for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = result[i][j].multiply(_value[i][j]);
+            for (int j = 0; j < convertedArgument._columnCount; j++) {
+                FixPoint sum = _value[i][0].multiply(
+                        convertedArgument._value[0][j]);
+                for (int k = 1; k < _columnCount; k++) {
+                    sum = sum.add(_value[i][k].multiply(
+                        convertedArgument._value[k][j]));
+                }
+                result[i][j] = sum;
             }
         }
-        
         return new FixMatrixToken(result);
     }    
 

@@ -130,7 +130,7 @@ test FixToken-3.3 {Test Multiply} {
     set res [$pa multiply $pb]   
 
     list [$res toString]
-} {fix(-4.996926784515380859375,28,4)}
+} {fix(-4.996926784515380859375,32,8)}
 
 test FixToken-3.4 {Test Divide} {    
    set res [$pa divide $pb]    	
