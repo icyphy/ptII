@@ -1217,25 +1217,20 @@ public class IOPort extends ComponentPort {
                 }
                 result += "receivers {\n";
                 try {
-                    Receiver[][] receivers = null;
-                    receivers = getReceivers();
-                    if (receivers != null) {
-                        for (int i = 0; i < receivers.length; i++) {
-                            // One list item per group
-                            result += _getIndentPrefix(indent+1) + "{\n";
-                            if (receivers[i] != null) {
-                                for (int j = 0; j < receivers[i].length; j++) {
-                                    result += _getIndentPrefix(indent+2);
-                                    result += "{";
-                                    if (receivers[i][j] != null) {
-                                        result +=
-                                            receivers[i][j].getClass().getName();
-                                    }
-                                    result += "}\n";
+                    Receiver[][] receivers = getReceivers();
+                    for (int i = 0; i < receivers.length; i++) {
+                        // One list item per group
+                        result += _getIndentPrefix(indent+1) + "{\n";
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            result += _getIndentPrefix(indent+2);
+                            result += "{";
+                            if (receivers[i][j] != null) {
+                                result += 
+				        receivers[i][j].getClass().getName();
                                 }
-                            }
-                            result += _getIndentPrefix(indent+1) + "}\n";
+                            result += "}\n";
                         }
+                        result += _getIndentPrefix(indent+1) + "}\n";
                     }
                 } catch (IllegalActionException ex) {
                     result += _getIndentPrefix(indent+1) +
