@@ -46,6 +46,7 @@ import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.BasicGraphFrame; // VERGIL_USER_LIBRARY_NAME
 
 import javax.swing.SwingUtilities;
 import java.io.File;
@@ -196,17 +197,20 @@ public class VergilApplication extends MoMLApplication {
         Configuration configuration = 
             _readConfiguration("ptolemy/configs/vergilConfiguration.xml");
 
-        String libraryName = System.getProperty("user.home") + 
-            System.getProperty("file.separator") + "vergilUserLibrary.xml";
-        System.out.println("Attempting to open user library from " +
-                libraryName);
+        // Use StringUtilities.getProperty() so we get the proper 
+        // canonical path
+        String libraryName = StringUtilities.getProperty("user.home")
+            + StringUtilities.getProperty("file.separator")
+            + "vergilUserLibrary.xml";
+        System.out.print("Opening user library " + libraryName + "...");
         File file = new File(libraryName);
         if(!file.isFile() || !file.exists()) {
             try {
                 file.createNewFile();
                 FileWriter writer = new FileWriter(file);
-                writer.write("<entity name=\"vergilUserLibrary\" " +
-                        "class=\"ptolemy.moml.EntityLibrary\"/>");
+                writer.write("<entity name=\"" 
+                        + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
+                        + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
                 writer.close();
             } catch (Exception ex) {
                 MessageHandler.error("Failed to create an empty user library:"
@@ -217,6 +221,7 @@ public class VergilApplication extends MoMLApplication {
         // Load the user library.
         try {
             openLibrary(configuration, file);
+            System.out.println(" Done");
         } catch (Exception ex) {
             MessageHandler.error("Failed to display user library.", ex);
         }
