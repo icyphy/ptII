@@ -164,7 +164,6 @@ public class ArrayType extends StructuredType {
 
     /** Set the elements that have declared type BaseType.ANY (the leaf
      *  type variable) to the specified type.
-     *  This method is called at the beginning of type resolution.
      *  @param t the type to set the leaf type variable to.
      */
     public void initialize(Type t) {
@@ -220,11 +219,11 @@ public class ArrayType extends StructuredType {
      *  @return True if the argument represents the same ArrayType as
      *   this object; false otherwise.
      */
-    public boolean isEqualTo(Type t) {
-        if ( !(t instanceof ArrayType)) {
+    public boolean isEqualTo(Type type) {
+        if ( !(type instanceof ArrayType)) {
             return false;
         }
-        return _elementType.isEqualTo(((ArrayType)t).getElementType());
+        return _elementType.isEqualTo(((ArrayType)type).getElementType());
     }
 
     /** Determine if this type corresponds to an instantiable token
@@ -241,7 +240,7 @@ public class ArrayType extends StructuredType {
      *  be a variable, and the argument must be a type that can be obtained
      *  by replacing the BaseType.NAT component of the declared type by
      *  another type.
-     *  @parameter type A Type.
+     *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
      */
     public boolean isSubstitutionInstance(Type type) {
@@ -266,7 +265,7 @@ public class ArrayType extends StructuredType {
      *  this type.
      *  This method will only update the component whose declared type is
      *  BaseType.ANY, and leave the constant part of this type intact.
-     *  @param st A StructuredType.
+     *  @param newType A StructuredType.
      *  @exception IllegalActionException If the specified type is not an
      *   ArrayType or it does not have the same structure as this one.
      */
@@ -295,7 +294,7 @@ public class ArrayType extends StructuredType {
             try {
                 _elementType = (Type)newElemType.clone();
             } catch (CloneNotSupportedException cnse) {
-                throw new InternalErrorException("RecordType.updateType: " +
+                throw new InternalErrorException("ArrayType.updateType: " +
                         "The specified type cannot be cloned.");
             }
         } else {
@@ -316,19 +315,19 @@ public class ArrayType extends StructuredType {
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating this type is lower
      *  than, equal to, higher than, or incomparable with the
      *  specified type in the type hierarchy, respectively.
-     *  @param t an ArrayType.
+     *  @param type an ArrayType.
      *  @return An integer.
      *  @exception IllegalArgumentException If the specified type is
      *   not an ArrayType.
      */
-    protected int _compare(StructuredType t) {
-        if ( !(t instanceof ArrayType)) {
+    protected int _compare(StructuredType type) {
+        if ( !(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.compare: " +
                     "The argument is not an ArrayType.");
         }
 
         return TypeLattice.compare(_elementType,
-                ((ArrayType)t).getElementType());
+                ((ArrayType)type).getElementType());
     }
 
     /** Return a static instance of ArrayType.
@@ -341,38 +340,38 @@ public class ArrayType extends StructuredType {
     /** Return the greatest lower bound of this type with the specified
      *  type. The specified type must be an ArrayType, otherwise an
      *  exception will be thrown.
-     *  @param t an ArrayType.
+     *  @param type an ArrayType.
      *  @return an ArrayType.
      *  @exception IllegalArgumentException If the specified type is
      *   not an ArrayType.
      */
-    protected StructuredType _greatestLowerBound(StructuredType t) {
-        if ( !(t instanceof ArrayType)) {
+    protected StructuredType _greatestLowerBound(StructuredType type) {
+        if ( !(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.greatestLowerBound: "
                     + "The argument is not an ArrayType.");
         }
 
         Type elementGLB = (Type)TypeLattice.lattice().greatestLowerBound(
-                _elementType, ((ArrayType)t).getElementType());
+                _elementType, ((ArrayType)type).getElementType());
         return new ArrayType(elementGLB);
     }
 
     /** Return the least Upper bound of this type with the specified
      *  type. The specified type must be an ArrayType, otherwise an
      *  exception will be thrown.
-     *  @param t an ArrayType.
+     *  @param type an ArrayType.
      *  @return an ArrayType.
      *  @exception IllegalArgumentException If the specified type is
      *   not an ArrayType.
      */
-    protected StructuredType _leastUpperBound(StructuredType t) {
-        if ( !(t instanceof ArrayType)) {
+    protected StructuredType _leastUpperBound(StructuredType type) {
+        if ( !(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.leastUpperBound: "
                     + "The argument is not an ArrayType.");
         }
 
         Type elementLUB = (Type)TypeLattice.lattice().leastUpperBound(
-                _elementType, ((ArrayType)t).getElementType());
+                _elementType, ((ArrayType)type).getElementType());
         return new ArrayType(elementLUB);
     }
 
@@ -407,8 +406,8 @@ public class ArrayType extends StructuredType {
 
         // Pass the ArrayType reference in the constructor so it can be
         // returned by getAssociatedObject().
-        private ElementTypeTerm(ArrayType t) {
-            _arrayType = t;
+        private ElementTypeTerm(ArrayType type) {
+            _arrayType = type;
         }
 
         ///////////////////////////////////////////////////////////////
@@ -448,16 +447,17 @@ public class ArrayType extends StructuredType {
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
-        public void initialize(Object e)
-                throws IllegalActionException {
+        public void initialize(Object e) throws IllegalActionException {
             if (isConstant()) {
-                throw new IllegalActionException("ArrayType$ElementTypeTerm." +
-                        "initialize: The type is not settable.");
+                throw new IllegalActionException(
+		        "ArrayType$ElementTypeTerm.initialize: " +
+			"This type is not settable.");
             }
 
             if ( !(e instanceof Type)) {
-                throw new IllegalActionException("ElementTypeTerm.initialize: "
-                        + "The argument is not a Type.");
+                throw new IllegalActionException(
+		        "ArrayType$ElementTypeTerm.initialize: " +
+                        "The argument is not a Type.");
             }
 
             if (_declaredElementType == BaseType.NAT) {
@@ -472,7 +472,7 @@ public class ArrayType extends StructuredType {
          *  @return True if the element type is a type variable.
          */
         public boolean isSettable() {
-            return !isConstant();
+            return !_declaredElementType.isConstant();
         }
 
         /** Check whether the current element type is acceptable.
@@ -481,31 +481,27 @@ public class ArrayType extends StructuredType {
          *  @return True if the element type is acceptable.
          */
         public boolean isValueAcceptable() {
-            return isInstantiable();
+            return _elementType.isInstantiable();
         }
 
         /** Set the element type to the specified type.
          *  @param e a Type.
-         *  @exception IllegalActionException If setting the element type to
-         *   to the specified one would result in circular type structure;
-         *   or the specified type is not a substitution instance of the
-         *   element type.
+         *  @exception IllegalActionException If the specified type is not a
+	 *   substitution instance of the declared element type.
          */
-        public void setValue(Object e)
-                throws IllegalActionException {
+        public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
                 throw new IllegalActionException(
-                        "ArrayType$ElementTypeTerm.setValue: The type is not " +
-                        "settable.");
+                        "ArrayType$ElementTypeTerm.setValue: This type is " +
+			"not settable.");
             }
 
             if ( !_declaredElementType.isSubstitutionInstance((Type)e)) {
                 // The LUB of the _elementType and another type is General,
                 // this is a type conflict.
-
                 throw new IllegalActionException("ElementTypeTerm.setValue:" +
-                        " The new type is not a substitution instance of the " +
-                        "element type. element type: " +
+                        " The new type is not a substitution instance of " +
+			"the element type. element type: " +
                         _declaredElementType.toString() + "new type: " +
                         e.toString());
             }
