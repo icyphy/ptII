@@ -3,12 +3,10 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
   <director class="ptolemy.domains.sdf.kernel.SDFDirector">
-    <property name="iterations" value="1">
-        <doc>Number of iterations in an execution.</doc>
-    </property>
+<parameter name="defaultIerations" value="1"/>
   </director>
   <entity name="const" class="ptolemy.actor.lib.Const">
-    <property name="value" value="readFile(&quot;fileReader.xml&quot;)"/>
+    <property name="value" value="readFile(&quot;modulation.xml&quot;)"/>
     <port name="output"></port>
     <rendition class="ptolemy.moml.Icon">
       <location value="100, 100"/>
