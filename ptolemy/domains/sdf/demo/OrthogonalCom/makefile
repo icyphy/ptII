@@ -1,9 +1,10 @@
-# Makefile for PtolemyII SDF Domain
+# Makefile for Ptolemy II sdf Orthogonal Communication demo
 #
-# @Version: $Id$
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands, Jeff Tsay
 #
-# @Copyright (c) 1998-2000 The Regents of the University of California.
+# @Version: : ptmkmodel,v 1.7 1999/07/16 01:17:49 cxh Exp $
+#
+# @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,43 +29,47 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo
+ME =		ptolemy/domains/sdf/demo/OrthogonalCom
 
-DIRS = 		Butterfly ComSystem Expression FixPoint FixFIR \
-		HTVQ OrthogonalCom Sketch Type
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+JSRCS = \
+	OrthogonalCom.java 
 
-# Used to build jar files
-PTPACKAGE = 	sdf
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+EXTRA_SRCS = \
+	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS) \
-	index.htm
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES = 
 
-all: jclass
-	@echo "To run all the demos, run 'make demo'"
+JCLASS = $(JSRCS:%.java=%.class)
 
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all demo, run 'make demo'"
+install: all
 
-demo: subdemo
+demo: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) \
+		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
+		-iterations 50
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
