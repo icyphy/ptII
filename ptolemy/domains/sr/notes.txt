@@ -35,6 +35,21 @@ NonStrictLogicFunction - sr.lib
 NonStrictThreeBitAdder - sr.lib
 Undefined - sr.lib
 
+RampsDisconnectedGraph.xml - kernel
+RampFiringLimit.xml - kernel
+PulseOr.xml - kernel
+
+Absent - lib
+InstantaneousDialog - lib
+Latch - kernel (need to move)
+NonStrictDelay - lib
+NonStrictOrCyclic - lib
+NonStrictThreeBitAdder - lib
+NonStrictThreeBitAdder2 - lib
+PulseNonStrictAnd - lib
+PulseNonStrictOr - lib
+
+
 -------------------------------------------------------------------------------
 
 Issues:
