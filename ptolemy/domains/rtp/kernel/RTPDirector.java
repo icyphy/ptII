@@ -146,11 +146,11 @@ public class RTPDirector extends ProcessDirector {
         if (time > tnow) {
             long delay = (long) (time - tnow);
             try {
-                System.out.println("Sleep " + delay);
+                if (_debugging) _debug("Sleep " + delay);
                 Thread.sleep(delay+ 5);
-                System.out.println("Wake up at " + getCurrentTime());
+                if (_debugging) _debug("Wake up at " + getCurrentTime());
             } catch (InterruptedException ex) {
-                System.out.println("interrupted.");
+                if (_debugging) _debug("interrupted.");
                 // ignore...
             }
         }
@@ -160,7 +160,7 @@ public class RTPDirector extends ProcessDirector {
      *  @exception IllegalActionException If any of the actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        System.out.println("Start threads.");
+        if (_debugging) _debug("Start threads.");
         _realStartTime = System.currentTimeMillis();
         super.initialize();
     }
@@ -182,7 +182,7 @@ public class RTPDirector extends ProcessDirector {
         long duration = ((LongToken)executionDuration.getToken()).longValue();
         if (duration>0) {
             try {
-                System.out.println(getName() + " sleep... " + duration);
+                if (_debugging) _debug(getName() + " sleep... " + duration);
                 Thread.sleep(duration);
                 stopFire();
                 Thread.sleep(100);
