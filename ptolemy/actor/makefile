@@ -47,7 +47,7 @@ ME =		java/pt/actors
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-JAVAHOME = /opt/jdk1.2latest
+JAVAHOME = 	$(LATEST_JAVAHOME)
 DIRS = 		test #doc
 
 CLASSPATH = ../..
