@@ -142,7 +142,7 @@ public class Picture extends Canvas {
      *  @param intensity The value of the pixel.
      */
     public void setPixel(int row, int col, int intensity) {
-        if (row < 0 || row > _height || col < 0 || col > _width) return;
+        if (row < 0 || row >= _height || col < 0 || col >= _width) return;
         if (intensity < 0) intensity = 0;
         else if (intensity > 255) intensity = 255;
         // Alpha, red, green, blue, where alpha controls transparency.
@@ -164,7 +164,7 @@ public class Picture extends Canvas {
      *  @param blue The blue value of the pixel.
      */
     public void setPixel(int row, int col, int red, int green, int blue) {
-        if (row < 0 || row > _height || col < 0 || col > _width) return;
+        if (row < 0 || row >= _height || col < 0 || col >= _width) return;
 
         if (red < 0) red = 0;
         else if (red > 255) red = 255;
