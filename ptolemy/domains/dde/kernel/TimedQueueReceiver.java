@@ -166,7 +166,8 @@ public class TimedQueueReceiver {
                 }
             }
         } catch( IllegalActionException e ) {
-            // FIXME: Do Something
+            System.err.println("An exception thrown while setting"
+                    + " the output time of TimeKeeper");
         }
 
         // Call updateRcvrList() even if _queue.size() == 0,
@@ -175,19 +176,6 @@ public class TimedQueueReceiver {
             TimeKeeper timeKeeper =
                 ((DDEThread)thread).getTimeKeeper();
 
-            /*
-	    if( !isInsideBoundary() && !isOutsideBoundary() ) {
-		if( !timeKeeper.searchingForIgnoredTokens() ) {
-		    timeKeeper.setSearchForIgnoredTokens( true );
-		    timeKeeper.updateIgnoredReceivers();
-		}
-		if( !timeKeeper.searchingForIgnoredTokens() ) {
-		    timeKeeper.updateRcvrList(this);
-		}
-	    } else if( !isInsideBoundary() ) {
-		timeKeeper.updateRcvrList(this);
-	    }
-            */
 	    if( !isInsideBoundary() && !isOutsideBoundary() ) {
 		timeKeeper.updateIgnoredReceivers();
 	    	timeKeeper.updateRcvrList(this);
@@ -197,23 +185,6 @@ public class TimedQueueReceiver {
             }
         }
 
-
-	/*
-        // Call updateRcvrList() even if _queue.size() == 0,
-        // so that the triple is no longer in front.
-        if( thread instanceof DDEThread ) {
-            TimeKeeper timeKeeper =
-                ((DDEThread)thread).getTimeKeeper();
-
-            if( !timeKeeper.searchingForIgnoredTokens() ) {
-                timeKeeper.setSearchForIgnoredTokens( true );
-                timeKeeper.updateIgnoredReceivers();
-            }
-            if( !timeKeeper.searchingForIgnoredTokens() ) {
-                timeKeeper.updateRcvrList(this);
-            }
-        }
-	*/
         return token;
     }
 
@@ -229,85 +200,6 @@ public class TimedQueueReceiver {
      */
     public IOPort getContainer() {
         return _container;
-    }
-
-    /** Take the the oldest token off of the queue and return it.
-     *  If the queue is empty, throw a NoTokenException. If there are
-     *  other tokens left on the queue after this removal, then set
-     *  the receiver time of this receiver to equal that of the next
-     *  oldest token. Update the TimeKeeper that manages this
-     *  TimedQueueReceiver. If there are any receivers in the
-     *  TimeKeeper with receiver times of TimedQueueReceiver.IGNORE,
-     *  remove the first token from these receivers.
-     * @exception NoTokenException If the queue is empty.
-     */
-    public void removeIgnoredToken() {
-        if( getRcvrTime() != TimedQueueReceiver.IGNORE ) {
-            return;
-        }
-        // Get the a token and set all relevant 
-        // local time parameters
-        Event event = (Event)_queue.take();
-        if (event == null) {
-            throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty "
-                    + "TimedQueueReceiver.");
-        }
-        event.getToken();
-        if( _queue.size() > 0 ) {
-            Event nextEvent = (Event)_queue.get(0);
-            _rcvrTime = nextEvent.getTime();
-        }
-        
-        // Set relevant TimeKeeper time parameters
-        // based on whether this receiver is contained
-        // in a boundary port or not.
-	Thread thread = Thread.currentThread();
-        try {
-            if( thread instanceof DDEThread ) {
-                TimeKeeper timeKeeper =
-                        ((DDEThread)thread).getTimeKeeper();
-            
-                if( isInsideBoundary() ) {
-                    /*
-                    timeKeeper.setOutputTime( event.getTime() );
-                    */
-                    return;
-                } 
-                
-                else if( isOutsideBoundary() ) {
-                    /*
-                    timeKeeper.setCurrentTime( event.getTime() );
-                    */
-                } 
-                
-                else {
-                    /*
-                    timeKeeper.setCurrentTime( event.getTime() );
-                    */
-                    timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
-                }
-            }
-        } catch( IllegalActionException e ) {
-            // FIXME: Do Something
-        }
-        
-	// Set the receiver time if value is still IGNORE
-	if( getRcvrTime() == TimedQueueReceiver.IGNORE ) {
-	    if( thread instanceof DDEThread ) {
-                TimeKeeper timeKeeper =
-                        ((DDEThread)thread).getTimeKeeper();
-		setRcvrTime( timeKeeper.getCurrentTime() );
-	    }
-	}
-        
-        // Call updateRcvrList() even if _queue.size() == 0,
-        // so that the triple is no longer in front.
-        if( thread instanceof DDEThread ) {
-            TimeKeeper timeKeeper =
-                ((DDEThread)thread).getTimeKeeper();
-            timeKeeper.updateRcvrList(this);
-        }
     }
 
     /** Return the last time of this receiver. The last time is
@@ -379,23 +271,23 @@ public class TimedQueueReceiver {
          while( enum.hasMoreElements() ) {
              outerPort = (Port)enum.nextElement();
              outerEntity = (ComponentEntity)outerPort.getContainer();
-             // if( !outerEntity.isAtomic() && outerPort.isOpaque() ) {
              if( outerEntity == innerEntity.getContainer() ) {
 		 // We are connected to a boundary port. Now
 		 // determine if the boundary port is connected
 		 // to this relation.
                  try {
-		 Receiver[][] rcvrs = 
+		     Receiver[][] rcvrs = 
                          ((IOPort)outerPort).deepGetReceivers();
-		 for( int i = 0; i < rcvrs.length; i++ ) {
-		     for( int j = 0; j < rcvrs[i].length; j++ ) {
-		         if( this == rcvrs[i][j] ) {
-			     return true;
-			 }
+		     for( int i = 0; i < rcvrs.length; i++ ) {
+		     	 for( int j = 0; j < rcvrs[i].length; j++ ) {
+		             if( this == rcvrs[i][j] ) {
+			         return true;
+			     }
+		         }
 		     }
-		 }
                  } catch( IllegalActionException e) {
-                     // FIXME: Do Something!
+            	     System.err.println("An exception thrown while "
+                             + " accessing the remote receivers.");
                  }
              }
          }
@@ -428,7 +320,7 @@ public class TimedQueueReceiver {
              } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
                  return false;
              } else {
-                 // FIXME: The following only works if the port is not 
+                 // NOTE: The following only works if the port is not 
                  // both an input and output.
                  throw new IllegalArgumentException("A port that is "
                          + "both an input and output can not be " 
@@ -465,7 +357,7 @@ public class TimedQueueReceiver {
              } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
                  return false;
              } else {
-                 // FIXME: The following only works if the port is not 
+                 // NOTE: The following only works if the port is not 
                  // both an input and output.
                  throw new IllegalArgumentException("A port that is "
                          + "both an input and output can not be " 
@@ -509,18 +401,69 @@ public class TimedQueueReceiver {
             throw new NoRoomException (getContainer(),
                     "Queue is at capacity. Cannot insert token.");
         }
+    }
+
+    /** Remove the oldest token off of this queue if it has a
+     *  time stamp with a value of IGNORE. Reset the receiver
+     *  time and update the time keeper's receiver list.
+     * @exception NoTokenException If the queue is empty.
+     */
+    public void removeIgnoredToken() {
+        if( getRcvrTime() != TimedQueueReceiver.IGNORE ) {
+            return;
+        }
+        // Get the a token and set all relevant 
+        // local time parameters
+        Event event = (Event)_queue.take();
+        if (event == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get token from an empty "
+                    + "TimedQueueReceiver.");
+        }
+        event.getToken();
+        if( _queue.size() > 0 ) {
+            Event nextEvent = (Event)_queue.get(0);
+            _rcvrTime = nextEvent.getTime();
+        }
         
-        /*
-        Thread thread = Thread.currentThread();
-        if( thread instanceof DDEThread ) {
-            TimeKeeper timeKeeper =
-            	    (DDEThread)thread). getTimeKeeper();
-            if( getRcvrTime() = INACTIVE ) {
-                if( timeKeeper.getNextTime() == IGNORE ) {
+        // Set relevant TimeKeeper time parameters
+        // based on whether this receiver is contained
+        // in a boundary port or not.
+	Thread thread = Thread.currentThread();
+        try {
+            if( thread instanceof DDEThread ) {
+                TimeKeeper timeKeeper =
+                        ((DDEThread)thread).getTimeKeeper();
+            
+                if( isInsideBoundary() || isOutsideBoundary() ) {
+                    return;
+                } 
+                
+                else {
+                    timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
                 }
             }
+        } catch( IllegalActionException e ) {
+            System.err.println("An exception thrown while setting"
+                    + " the output time of TimeKeeper");
         }
-        */
+        
+	// Set the receiver time if value is still IGNORE
+	if( getRcvrTime() == TimedQueueReceiver.IGNORE ) {
+	    if( thread instanceof DDEThread ) {
+                TimeKeeper timeKeeper =
+                        ((DDEThread)thread).getTimeKeeper();
+		setRcvrTime( timeKeeper.getCurrentTime() );
+	    }
+	}
+        
+        // Call updateRcvrList() even if _queue.size() == 0,
+        // so that the triple is no longer in front.
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+            timeKeeper.updateRcvrList(this);
+        }
     }
 
     /** Set the queue capacity of this receiver.
