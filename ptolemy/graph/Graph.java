@@ -93,7 +93,7 @@ public class Graph {
     public void add(Object o) {
         if (contains(o)) {
             throw new IllegalArgumentException("Graph.add: Object is " +
-			"already in the graph.");
+                    "already in the graph.");
         }
         _nodeObject.addElement(o);
         _graph.addElement(new Vector());
@@ -236,7 +236,7 @@ public class Graph {
         Integer v = (Integer)(_nodeIdTable.get(o));
         if (v == null) {
             throw new IllegalArgumentException("Graph._getNodeId: " +
-		"the specified Object is not a node in this graph.");
+                    "the specified Object is not a node in this graph.");
         }
 
         return v.intValue();
@@ -254,8 +254,8 @@ public class Graph {
 	    return _nodeObject.elementAt(nodeId);
 	} catch (ArrayIndexOutOfBoundsException ex) {
 	    throw new IllegalArgumentException("Graph._getNodeObject: " +
-		"node ID is negative or is not less than the total " +
-		"number of nodes in this graph.");
+                    "node ID is negative or is not less than the total " +
+                    "number of nodes in this graph.");
 	}
     }
 

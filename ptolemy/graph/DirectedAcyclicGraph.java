@@ -134,7 +134,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     public void addEdge(Object o1, Object o2) {
         if (o1.equals(o2)) {
             throw new IllegalArgumentException("DirectedAcyclicGraph.addEdge: "
-		+ "Cannot add a self loop in acyclic graph.");
+                    + "Cannot add a self loop in acyclic graph.");
         }
 
         super.addEdge(o1, o2);
@@ -370,7 +370,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
             }
             if(finished && active) {
                 throw new InvalidStateException(
-		    "DirectedAcyclicGraph.topologicalSort: Graph is cyclic.");
+                        "DirectedAcyclicGraph.topologicalSort: Graph is cyclic.");
             }
         }
         return result;

@@ -268,8 +268,8 @@ public class InequalitySolver {
         for (int i = 0; i < variables.length; i++) {
 	    if ( !variables[i].isSettable()) {
 		throw new InvalidStateException(
-		    "InequalitySolver._addToClist: An InequalityTerm returns "
-		    + "a variable that is not settable.");
+                        "InequalitySolver._addToClist: An InequalityTerm returns "
+                        + "a variable that is not settable.");
 	    }
 
             Vector entry = (Vector)(_Clist.get(variables[i]));
@@ -353,12 +353,12 @@ public class InequalitySolver {
 	    if (least) {
 		updateTerm = info._ineq.getGreaterTerm();
 	        value = _cpo.leastUpperBound(
-				info._ineq.getLesserTerm().getValue(),
-                        	updateTerm.getValue());
+                        info._ineq.getLesserTerm().getValue(),
+                        updateTerm.getValue());
 	    } else {
 		updateTerm = info._ineq.getLesserTerm();
 	        value = _cpo.greatestLowerBound(updateTerm.getValue(),
-                        	info._ineq.getGreaterTerm().getValue());
+                        info._ineq.getGreaterTerm().getValue());
 	    }
 
             if (value == null) {
