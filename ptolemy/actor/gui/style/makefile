@@ -57,7 +57,8 @@ JSRCS = \
 	FileChooserStyle.java \
 	LineStyle.java \
 	ParameterEditorStyle.java \
-	StyleConfigurer.java
+	StyleConfigurer.java \
+	TextStyle.java
 
 EXTRA_SRCS =	$(JSRCS)
 
