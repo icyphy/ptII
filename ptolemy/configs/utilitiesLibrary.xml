@@ -13,6 +13,8 @@
         <input source="ptolemy/configs/utilityModelReference.xml"/>
         <input source="ptolemy/configs/utilityVisualModelReference.xml"/>
         <input source="ptolemy/configs/basicUtilities.xml"/>
+        <!-- Do not include this as singleton parameters are buggy. -->
+        <!-- input source="ptolemy/configs/customize.xml"/ -->
         <input source="ptolemy/data/unit/unitSystems.xml"/>
       </group>
     ?>
