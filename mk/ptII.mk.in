@@ -200,7 +200,7 @@ JINI_LIB =	$(JINI_DIR)/lib
 JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar
 
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
-JMF_JARS =	@JMF_JARS@
+JMF_JARS =	"@JMF_JARS@"
 
 # Jar file that contains Joystick interface,
 # see http://sourceforge.net/projects/javajoystick/
