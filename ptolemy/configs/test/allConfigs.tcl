@@ -79,6 +79,14 @@ foreach i $configs {
 
 	#puts "file name vergilConfiguration.xml: $inFile"
 
+	# See if jxta is present
+	set jxta 1
+	if [catch {java::info superclass net.jxta.resolver.QueryHandler} \
+		err] { 
+	    puts "net.jxta.resolver.QueryHandler not found, skipping jxta"
+	    set jxta 0
+	}
+
 	set infd [open $inFile]
 	set outfd [open vergilConfigurationNoMatlabNoSerialNoApps.xml "w"]
 	while {![eof $infd]} {
@@ -97,7 +105,12 @@ foreach i $configs {
 	    # Filter out interactive icons
 	    regsub -all {.*lib/interactive.xml.*} $lineout4 {} lineout5
 	    # Filter out jxta
-	    regsub -all {.*jxta/jxta.xml.*} $lineout5 {} lineout6
+	    if {$jxta == 1} {
+		set lineout6 $lineout5
+	    } else {
+		# Filter out jxta
+		regsub -all {.*jxta/jxta.xml.*} $lineout5 {} lineout6
+	    }
 	    puts $outfd $lineout6
 	}
 	close $infd
