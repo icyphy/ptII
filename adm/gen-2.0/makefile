@@ -461,8 +461,8 @@ remote1distjavadocs:
 JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
-	$(REMOTE1PTIIDIST)/ptolemy/data \
 	$(REMOTE1PTIIDIST)/ptolemy/math \
+	$(REMOTE1PTIIDIST)/ptolemy/data \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
