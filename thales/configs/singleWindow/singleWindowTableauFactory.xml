@@ -5,7 +5,7 @@
 <property name="factoryNav" class="ptolemy.actor.gui.PtolemyTableauFactory">
   <!-- These will appear in the View menu of a the graph editor. -->
   <property name="Navigable Graph Editor"
-            class="ptolemy.vergil.navigable.NavigableActorGraphTableau$Factory"/>
+            class="thales.vergil.navigable.NavigableActorGraphTableau$Factory"/>
   <property name="Run Window"
             class="ptolemy.actor.gui.RunTableau$Factory"/>
   <property name="Tree View"
