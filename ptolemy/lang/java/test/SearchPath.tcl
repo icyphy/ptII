@@ -136,8 +136,8 @@ test SearchPath-2.1 {openSource on not-a-file} {
 #
 test SearchPath-3.1 {systemClasses} {
     set systemClassSet [java::call ptolemy.lang.java.SearchPath systemClasses]
-    set objectString [java::new String "java/lang/Object"]
-    set notAClassString [java::new String "java/lang/NotAClass"]
+    set objectString [java::new String "java.lang.Object"]
+    set notAClassString [java::new String "java.lang.NotAClass"]
     list \
 	    [expr {[$systemClassSet size] > 4000}] \
 	    [$systemClassSet contains $objectString] \
@@ -150,9 +150,9 @@ test SearchPath-3.1 {systemClasses} {
 test SearchPath-4.1 {PtolemyCoreClasses} {
     set ptolemyCoreClassSet \
 	    [java::call ptolemy.lang.java.SearchPath ptolemyCoreClasses]
-    set namedObjString [java::new String "ptolemy/kernel/util/NamedObj"]
+    set namedObjString [java::new String "ptolemy.kernel.util.NamedObj"]
     set notAClassString [java::new String \
-	    "ptolemy/kernel/util/NotAClass."]
+	    "ptolemy.kernel.util.NotAClass."]
     list \
 	    [expr {[$ptolemyCoreClassSet size] > 100}] \
 	    [$ptolemyCoreClassSet contains $namedObjString] \
