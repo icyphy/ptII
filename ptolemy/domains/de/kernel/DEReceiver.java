@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (lmuliadi@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -166,7 +166,7 @@ public class DEReceiver implements Receiver {
         try {
             DEDirector dir = getDirector();
             dir._enqueueEvent(this, token,
-                dir.getCurrentTime() + _delay, _depth);
+                    dir.getCurrentTime() + _delay, _depth);
             _delay = 0.0;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
@@ -190,7 +190,7 @@ public class DEReceiver implements Receiver {
     public void setDelay(double delay) throws IllegalActionException {
         if (delay < 0.0) {
             throw new IllegalActionException(getContainer(),
-                "Cannot specify a negative delay.");
+                    "Cannot specify a negative delay.");
         }
         _delay = delay;
     }

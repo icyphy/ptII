@@ -241,7 +241,7 @@ public class DEDirector extends Director {
             boolean refire = false;
             do {
                 _debug("Iterating actor", ((Entity)actorToFire).getName(),
-                    "at time " + getCurrentTime());
+                        "at time " + getCurrentTime());
                 if (!actorToFire.prefire()) {
                     _debug("Prefire returned false.");
                     break;
@@ -249,7 +249,7 @@ public class DEDirector extends Director {
                 actorToFire.fire();
                 if (!actorToFire.postfire()) {
                     _debug("Postfire returned false:",
-                        ((Entity)actorToFire).getName());
+                            ((Entity)actorToFire).getName());
                     // Actor requests that it not be fired again.
                     if (_deadActors == null) {
                         _deadActors = new HashSet();
@@ -286,8 +286,8 @@ public class DEDirector extends Director {
                 break;
             } else if (nextKey.timeStamp() < getCurrentTime()) {
                 throw new InternalErrorException(
-                    "fire(): the next event has smaller time stamp than" +
-                    " the current time!");
+                        "fire(): the next event has smaller time stamp than" +
+                        " the current time!");
             }
         }
     }
@@ -491,8 +491,8 @@ public class DEDirector extends Director {
             container.getExecutiveDirector().getCurrentTime();
         if (outsideCurrTime < getCurrentTime()) {
             throw new IllegalActionException(this,
-                "Received an event in the past at "
-                + "an opaque composite actor boundary.");
+                    "Received an event in the past at "
+                    + "an opaque composite actor boundary.");
         }
         setCurrentTime(outsideCurrTime);
         super.transferInputs(port);
@@ -521,13 +521,13 @@ public class DEDirector extends Director {
         // Check for events in the past.
         if (_startTime != Double.MAX_VALUE && time < getCurrentTime()) {
             throw new IllegalActionException((Entity)actor,
-            "Attempt to schedule a firing in the past.");
+                    "Attempt to schedule a firing in the past.");
         }
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(actor, key);
         _eventQueue.put(event);
         _debug("Enqueue pure event for actor:", ((Entity)actor).getName(),
-        "at time " + time, "with depth " + depth);
+                "at time " + time, "with depth " + depth);
     }
 
     /** Put an event into the event queue with the specified destination
@@ -547,16 +547,16 @@ public class DEDirector extends Director {
 
         Nameable destination = receiver.getContainer();
         if (time < getCurrentTime()) {
-             throw new IllegalActionException(destination,
-            "Attempt to send a token with a time stamp in the past.");
+            throw new IllegalActionException(destination,
+                    "Attempt to send a token with a time stamp in the past.");
         }
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(receiver, token, key);
         _eventQueue.put(event);
         _debug("Enqueue event for port:",
-            destination.getFullName(),
-            "at time " + time,
-            "with depth " + depth);
+                destination.getFullName(),
+                "at time " + time,
+                "with depth " + depth);
     }
 
     /** Override the default Director implementation, because in DE
@@ -816,7 +816,7 @@ public class DEDirector extends Director {
             }
             if (!dag.isAcyclic()) {
                 throw new IllegalActionException(this,
-                "Zero delay loop including port: " + ioPort.getFullName());
+                        "Zero delay loop including port: " + ioPort.getFullName());
             }
         }
         return dag;
@@ -862,14 +862,14 @@ public class DEDirector extends Director {
             sortkey = _eventQueue.getNextTag();
         } catch (IllegalAccessException e) {
             throw new IllegalActionException(
-                "Request to refire composite actor, "
-                + "but the event queue is empty.");
+                    "Request to refire composite actor, "
+                    + "but the event queue is empty.");
         }
         double nextRefire = sortkey.timeStamp();
 
         // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
-            (Actor)getContainer(), nextRefire);
+                (Actor)getContainer(), nextRefire);
 
         _debug("DEDirector requests refiring at " + nextRefire);
     }
