@@ -33,6 +33,7 @@ import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -204,7 +205,12 @@ public class TextEditorTableau extends Tableau {
                 // the name "textEffigy".
                 // Attempt to use it's url attribute and create a new
                 // instance of TextEffigy contained by the specified one.
-                URL url = effigy.uri.getURL();
+		//
+		// Note, in HyVisual 2.2-beta, URIAttribute.getURL()
+		// has problems with jar URLS.  This problem was fixed
+		// in later releases.
+                //URL url = effigy.uri.getURL();
+		URL url = new URL(effigy.uri.getURI().toString());
                 TextEffigy textEffigy;
                 if (effigy instanceof PtolemyEffigy) {
                     // NOTE: It seems unfortunate here to have
@@ -223,9 +229,26 @@ public class TextEditorTableau extends Tableau {
                     textEffigy.setName("textEffigy");
                 } else {
 		    // The View Source choice of the HTMLViewer runs this code.
-		    textEffigy = (TextEffigy)
-                        _newTextEffigyURL.invoke
-                        (null, new Object[]{effigy, url, url});
+		    try {
+			textEffigy = (TextEffigy)
+			    _newTextEffigyURL.invoke
+			    (null, new Object[]{effigy, url, url});
+		    } catch (java.lang.reflect.InvocationTargetException ex) {
+			throw new
+			    InternalErrorException(this, ex,
+						   "InvocationTargetException:"
+						   + " Cause was " + 
+						   KernelException
+						   .stackTraceToString(ex.getCause())
+						   + "\nFailed to invoke a "
+						   + "method with signature: "
+						   + _newTextEffigyURL
+						   + "\n1st arg (effigy): "
+						   + effigy
+						   + " 2nd and 3rd args (url): "
+						   + url);
+
+		    }
                     textEffigy.setName("textEffigy");
                 }
                 TextEditorTableau textTableau =

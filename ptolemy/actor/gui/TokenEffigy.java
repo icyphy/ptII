@@ -104,7 +104,11 @@ public class TokenEffigy extends Effigy {
         super.attributeChanged(attribute);
         if (attribute == uri) {
             try {
-                URL urlToRead = uri.getURL();
+		// Note, in HyVisual 2.2-beta, URIAttribute.getURL()
+		// has problems with jar URLS.  This problem was fixed
+		// in later releases.
+                //URL urlToRead = uri.getURL();
+                URL urlToRead = new URL(uri.getURI().toString());
                 if (urlToRead != null) {
                     read(urlToRead);
                 }
