@@ -355,20 +355,19 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         if (node.getFunctionName().compareTo("matlab") == 0) {
-            if (argCount == 1) { 
-                ptolemy.data.Token token =
-                argValues[0];
-                if (token instanceof StringToken) {
-                    String expression = ((StringToken)token).stringValue();
-                    ParseTreeFreeVariableCollector collector =
-                        new ParseTreeFreeVariableCollector();
-                    Set freeVariables =
-                        collector.collectFreeVariables(node, _scope);
-                    _evaluatedChildToken =
-                        MatlabUtilities.evaluate(
-                                expression, freeVariables, _scope);
-                    return;
-                } 
+            _evaluateChild(node, 1);
+            ptolemy.data.Token token =
+                _evaluatedChildToken;
+            if (token instanceof StringToken) {
+                String expression = ((StringToken)token).stringValue();
+                ParseTreeFreeVariableCollector collector =
+                    new ParseTreeFreeVariableCollector();
+                Set freeVariables =
+                    collector.collectFreeVariables(node, _scope);
+                _evaluatedChildToken =
+                    MatlabUtilities.evaluate(
+                            expression, freeVariables, _scope);
+                return;
             } else {
                 throw new IllegalActionException("The function \"matlab\" is" +
                         " reserved for invoking the matlab engine, and takes" +
