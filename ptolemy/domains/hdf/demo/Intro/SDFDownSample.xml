@@ -194,7 +194,7 @@ to another. Then delete this annotation.</text>
         <entity name="init" class="ptolemy.vergil.fsm.modal.Refinement">
             <property name="IODependence" class="ptolemy.actor.IODependence">
             </property>
-            <property name="HDFInit" class="ptolemy.domains.hdf.kernel.HDFDirector">
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
@@ -203,13 +203,9 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="Scheduler2" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
-                </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 70.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 80.0">
                 </property>
             </property>
             <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
