@@ -169,12 +169,12 @@ as a unit-handling integrator.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 215.0">
+        <property name="_location" class="ptolemy.moml.Location" value="50.0, 285.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 8]">
     </property>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
