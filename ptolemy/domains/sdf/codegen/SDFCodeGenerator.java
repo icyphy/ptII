@@ -91,20 +91,21 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // (this is a nasty hack)
         new File(_packageDirectoryName).mkdirs();
 
-        // write a dummy CG_Main.java file to the output package directory so
+        // Assume exactly one model on the command line.
+        _compositeActor = (TypedCompositeActor)
+            _models.iterator().next();
+
+        // Write a dummy main file to the output package directory so
         // that a ClassDecl stub is placed in the package scope for it
-        // (this is a nasty hack)
+        // FIXME: (this is a nasty hack)
         try {
-            new File(_packageDirectoryName + "CG_Main.java").createNewFile();
+            new File(_packageDirectoryName
+		     + _compositeActor.getName()
+		     + ".java").createNewFile();
         } catch (IOException ioe) {
             throw new RuntimeException("could not create output directory " +
                     _packageDirectoryName);
         }
-
-        // assume exactly one model on the command line
-
-        _compositeActor = (TypedCompositeActor)
-            _models.iterator().next();
 
         try {
             // initialize the model to ensure type resolution and scheduling
@@ -241,6 +242,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 " freeMemory: " + runtime.freeMemory());
     }
 
+    /** Return the canonical pathname of the output package, including the last
+     *  file separator character.
+     *  @returns the pathnam of the output package.
+     */
+    public String getPackageDirectoryName() {
+	return _packageDirectoryName;
+    }
+
     /** The top-level main() method. Create an SDF code generator using the
      *  input arguments as they would be used for CompositeActorApplication,
      *  and generate code for the system.
@@ -262,6 +271,27 @@ public class SDFCodeGenerator extends CompositeActorApplication
      */
     public void setGenerateStatistics(boolean generateStatistics) {
 	_generateStatistics = generateStatistics;
+    }
+
+    /** Set the output directory.
+     *  @param the output directory.
+     */	
+    public void setOutputDirectoryName(String outputDirectoryName) {
+	_outputDirectoryName = outputDirectoryName;
+    }
+
+    /** Set the output package.
+     *  @param the output package.
+     */	
+    public void setOutputPackageName(String outputPackageName) {
+	_outputPackageName = outputPackageName;
+    }
+
+    /** Set the list of models.
+     *  @param the list of models. 
+     */	
+    public void setModels(List models) {
+	_models = models;
     }
 
     /** Override the base class to not run the model.
@@ -322,7 +352,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
 
         ClassDeclNode classDeclNode = new ClassDeclNode(PUBLIC_MOD,
-                new NameNode(AbsentTreeNode.instance, "CG_Main"),
+                new NameNode(AbsentTreeNode.instance, _compositeActor.getName()),
                 new LinkedList(), memberList,
                 (TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
 
@@ -347,12 +377,15 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 StaticResolution.makeNameNode(_outputPackageName),
                 importList, TNLManip.addFirst(classDeclNode));
 
-        String outFileName = _packageDirectoryName +  "CG_Main.java";
+        String outFileName = _packageDirectoryName
+	    + _compositeActor.getName()
+	    + ".java";
 
         // Remove extra imports in the source code before writing to a file,
         // namely those for Complex and FixPoint added previously.
         // The CompileUnitNode must first undergo pass 2.
-        unitNode.setProperty(IDENT_KEY, _packageDirectoryName + "CG_Main");
+        unitNode.setProperty(IDENT_KEY, _packageDirectoryName
+			     + _compositeActor.getName());
         unitNode = StaticResolution.loadCompileUnit(unitNode, 2);
         unitNode.accept(new FindExtraImportsVisitor(true, null), null);
 
