@@ -1,5 +1,4 @@
-/* An Actor is a non-hierarchical computational unit which operates on 
-and/or produces data.
+/* An executable entity.
    
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -24,42 +23,54 @@ and/or produces data.
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package pt.actors;
 import pt.kernel.*;
 import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Actor
 /** 
-An Actor is a non-hierarchical computational unit which operates on 
-and/or produces data. The Ports of Actors are constrained to be IOPorts
-and the Relations are constrained to be IORelations.
-@author Mudit Goel
+An Actor is an executable entity. The Ports of Actors are
+constrained to be IOPorts.
+An actor is always contained by a CompositeActor (its container
+can never be null).  In this base class, the actor does nothing
+in the action methods (prefire, fire, ...).
+The container argument must not be null, or a NullPointerException
+will be thrown.
+
+@author Mudit Goel, Edward A. Lee
 @version $Id$
-@see CompositeActor
-@see IOPort
-@see full-classname
+@see pt.actors.CompositeActor
+@see pt.actors.IOPort
 */
-public abstract class Actor extends ComponentEntity implements Executable {
-    /** Constructor. This registers the actor with both the director and 
-     *  the compositeActor
-     * @param container is the CompositeActor containing this Actor
-     * @param name is the name of this actor
+public class Actor extends ComponentEntity implements Executable {
+
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown. 
+     *  @param container The containing CompositeActor.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException Name coincides with
+     *   an entity already in the container.
      */    
     public Actor(CompositeActor container, String name) 
-            throws NameDuplicationException {
-        super((CompositeEntity)container, name);
-        container.getDirector().registerNewActor(this);
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
     
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
     
-    /** Returns the director responsible for the execution of the 
-     *  CompositeActor containing this actor
-     * @return the director
+    /** Return the director responsible for the execution of this actor. 
+     * @return The director that invokes this actor.
      */
     public Director getDirector() {
         return ((CompositeActor)getContainer()).getDirector();            
@@ -77,50 +88,67 @@ public abstract class Actor extends ComponentEntity implements Executable {
     public void initialize() {
     }
 
-    /** get an enumeration of the input ports
-     *  FIXME: Moved from AtomicActor.
+    /** Return an enumeration of the input ports.
+     *  This method is synchronized on the workspace.
+     *  @returns An enumeration of IOPort objects.
      */ 
     public Enumeration inputPorts() {
         synchronized(workspace()) {
-            if(_inputPortsVersion == workspace().getVersion()) {
-                return _cachedInputPorts.getElements();
-            }
-            NamedList inports = new NamedList();
-            Enumeration ports = getPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort)ports.nextElement();
-                if( p.isInput()) {
-                    try {
-                        inports.append(p);
-                    }catch(KernelException e) {}
+            if(_inputPortsVersion != workspace().getVersion()) {
+                // Update the cache.
+                LinkedList inports = new LinkedList();
+                Enumeration ports = getPorts();
+                while(ports.hasMoreElements()) {
+                    IOPort p = (IOPort)ports.nextElement();
+                    if( p.isInput()) {
+                        inports.insertLast(p);
+                    }
                 }
+                _cachedInputPorts = inports;
+                _inputPortsVersion = workspace().getVersion();
             }
-            _cachedInputPorts = inports;
-            _inputPortsVersion = workspace().getVersion();
-            return _cachedInputPorts.getElements();
+            return _cachedInputPorts.elements();
+        }
+    }
+
+    /** Create a new IOPort with the specified name.
+     *  The container of the port is set to this actor.
+     *  This method is synchronized on the workspace, and increments
+     *  its version number.
+     *  @param name The name of the newly created port.
+     *  @return The new port.
+     *  @exception IllegalActionException if the argument is null.
+     *  @exception NameDuplicationException if the actor already has a port 
+     *   with the specified name.
+     */	
+    public Port newPort(String name) 
+            throws IllegalActionException, NameDuplicationException {
+        synchronized(workspace()) {
+            IOPort port = new IOPort(this, name);
+            workspace().incrVersion();
+            return port;
         }
     }
 
     /** get an enumeration of the output ports
+     *  This method is synchronized on the workspace.
+     *  @returns An enumeration of IOPort objects.
      */
     public Enumeration outputPorts() {
         synchronized(workspace()) {
-            if(_outputPortsVersion == workspace().getVersion()) {
-                return _cachedOutputPorts.getElements();
-            }
-            NamedList outports = new NamedList();
-            Enumeration ports = getPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort)ports.nextElement();
-                if( p.isOutput()) { 
-                    try {
-                        outports.append(p);
-                    }catch (KernelException e) {}
+            if(_outputPortsVersion != workspace().getVersion()) {
+                LinkedList outports = new LinkedList();
+                Enumeration ports = getPorts();
+                while(ports.hasMoreElements()) {
+                    IOPort p = (IOPort)ports.nextElement();
+                    if( p.isOutput()) { 
+                        outports.insertLast(p);
+                    }
                 }
+                _cachedOutputPorts = outports;
+                _outputPortsVersion = workspace().getVersion();
             }
-            _cachedOutputPorts = outports;
-            _outputPortsVersion = workspace().getVersion();
-            return _cachedOutputPorts.getElements();
+            return _cachedOutputPorts.elements();
         }
     }
 
@@ -137,6 +165,9 @@ public abstract class Actor extends ComponentEntity implements Executable {
     public boolean prefire() {
         return true;
     }
+
+    // FIXME: Override setContainer to ensure types.
+    // Also, newPort... what else?
   
     /** This is called at the end of every execution of the star. This is for 
      *  cleanups and freeing resources that the actor currently has access to
@@ -148,11 +179,11 @@ public abstract class Actor extends ComponentEntity implements Executable {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // FIXME: from AtomicPort
-    private long _inputPortsVersion = -1;
-    private transient NamedList _cachedInputPorts;
-    private long _outputPortsVersion = -1;
-    private transient NamedList _cachedOutputPorts;
+    // Cached lists of input and output ports.
+    private transient long _inputPortsVersion = -1;
+    private transient LinkedList _cachedInputPorts;
+    private transient long _outputPortsVersion = -1;
+    private transient LinkedList _cachedOutputPorts;
 }
 
 

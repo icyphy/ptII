@@ -73,11 +73,9 @@ JSRCS = \
 	Executable.java \
 	FIFOQueue.java \
 	FlowFifoQ.java \
-	FlowPort.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
-	MailboxPort.java \
 	Receiver.java \
 	TokenHolderFullException.java
 

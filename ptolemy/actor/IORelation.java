@@ -42,11 +42,25 @@ one another via message passing. One purpose of this relation is to
 ensure that IOPorts are only connected to IOPorts. A second purpose
 is to support the notion of a <i>width</i> to represent something
 like a bus. By default the relation is not a bus, which means that
-its width can only be zero or one. Calling <code>makeBus</code> with
-a true argument will allow the width to be larger than one. If you
-call <code>makeBus</code> but do not then call
-<code>setWidth</code>, then the width is a wildcard, and will be
+its width can only be zero or one. Calling <code>setWidth()</code> with
+an argument larger than one makes the relation a bus of fixed width.
+Calling <code>setWidth()</code> with an argument of zero makes the relation
+a bus with indeterminate width, in which case the width will be
 inferred (if possible) from the context.
+<p>
+Instances of IORelation can only be linked to instances of IOPort.
+Derived classes may further constrain this to subclasses of IOPort.
+Such derived classes should override the protected method _checkPort()
+to throw an exception.
+<p>
+To link a IOPort to a IORelation, use the link() or
+liberalLink() method in the IOPort class.  To remove a link,
+use the unlink() method.
+<p>
+The container for instances of this class can only be instances of
+CompositeActor.  Derived classes may wish to further constrain the
+container to subclasses of ComponentEntity.  To do this, they should
+override the setContainer() method.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
@@ -79,11 +93,13 @@ public class IORelation extends ComponentRelation {
      *  Increment the version of the workspace.
      *  @param container The container entity.
      *  @param name The name of the relation.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this relation.
+     *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
      */	
-    public IORelation(CompositeEntity container, String name)
-            throws NameDuplicationException {
+    public IORelation(CompositeActor container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -243,10 +259,42 @@ public class IORelation extends ComponentRelation {
         }
     }
 
+    /** Specify the container, adding the relation to the list 
+     *  of relations in the container.  
+     *  If this relation already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the list of objects in the workspace. If the argument is null, then
+     *  unlink the ports from the relation, remove it from
+     *  its container, and add it to the list of objects in the workspace.
+     *  If the relation is already contained by the container, do nothing.
+     *  <p>
+     *  The container must be an
+     *  instance of CompositeActor or an exception is thrown.
+     *  Derived classes may further constrain the class of the container
+     *  to a subclass of CompositeActor.
+     *  <p>
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not a
+     *   CompositeActor, or this entity and the container are not in
+     *   the same workspace.
+     *  @exception NameDuplicationException If the name collides with a name 
+     *   already on the contents list of the container.
+     */	
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (!(container instanceof CompositeActor)) {
+            throw new IllegalActionException (this, container,
+            "IORelation can only be contained by CompositeActor.");
+        }
+    }
+
     /** Set the width of the IORelation. The width is the number of
      *  channels that the relation represents.  If the argument
      *  is zero, then the relation becomes a bus with unspecified width,
-     *  and the width will be inferred from the way the relation is used.
+     *  and the width will be inferred from the way the relation is used
+     *  (but will never be less than one).
      *  If the argument is not one, then all linked ports must
      *  be multiports, or an exception is thrown.
      *  This method increments the workspace version number.
@@ -293,18 +341,16 @@ public class IORelation extends ComponentRelation {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Return a reference to the local port list.  Throw an exception if
-     *  the specified port is not an IOPort.
+    /** Throw an exception if the specified port cannot be linked to this
+     *  relation (is not of class IOPort).
      *  @param port The port to link to.
-     *  @exception IllegalActionException Incompatible port.
+     *  @exception IllegalActionException If the port is not an IOPort.
      */
-    protected CrossRefList _getPortList (Port port) 
-            throws IllegalActionException {
+    protected void _checkPort (Port port) throws IllegalActionException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
                     "IORelation can only link to a IOPort.");
         }
-        return super._getPortList(port);
     }
 
     //////////////////////////////////////////////////////////////////////////
