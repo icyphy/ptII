@@ -54,7 +54,7 @@ In specific, it calls the prefire(), fire() and postfire() methods
 of the actor. Before termination, this calls the wrapup() method of
 the actor.
 <P>
-If an actor returns false in its prefire() or postfire() methods, the
+If an actor returns false in its postfire() methods, the
 actor is never fired again and the thread or process would terminate
 after calling wrapup() on the actor.
 <P>
@@ -97,10 +97,15 @@ public class ProcessThread extends PtolemyThread {
         // count even before this thread has incremented the active count.
         // This results in false deadlocks.
         _director._increaseActiveCount();
-        _name = ((Nameable)_actor).getName();
 
+        if (_actor instanceof NamedObj) {
+            _name = ((NamedObj)_actor).getFullName();
+            addDebugListener((NamedObj)_actor);
+        } else {
+            _name = "Unnamed";
+        }
         // Set the name of the thread to the full name of the actor.
-        setName(((Nameable)_actor).getFullName());
+        setName(_name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,6 +116,9 @@ public class ProcessThread extends PtolemyThread {
      *  in the prefire method.
      */
     public void cancelStopThread() {
+        if (_threadStopRequested) {
+            _debug("-- Thread request to stop has been canceled.");
+        }
         _threadStopRequested = false;
     }
 
@@ -126,23 +134,43 @@ public class ProcessThread extends PtolemyThread {
      *  on the actor.
      */
     public void run() {
+        _debug("-- Starting thread.");
         Workspace workspace = _director.workspace();
-        boolean iterate = true;
-        try {
+	boolean iterate = true;
+	try {
             // Initialize the actor.
             _actor.initialize();
 
-            while (iterate) {
-                // If a stop has been requested, then
+            // While postfire() returns true and stop() is not called.
+	    while (iterate) {
+                // If a stop has been requested, then either
+                // pause execution (if the director does not report
+                // that a stop has been requested) or stop
+                // execution altogether and run wrapup().
+                if (_director.isStopRequested()) {
+                    _debug("-- Thread stop requested, so cancel iteration.");
+                    break;
+                }
+                // NOTE: Possible race condition... actor.stop()
+                // might be called before we get to this.
+                // This will cause postfire() on the actor
+                // to return false, which will stop its execution.
                 if(_threadStopRequested) {
-                    // Tell the director we're stopped
-                    _director._actorHasStopped();
                     // And wait until the flag has been cleared.
+                    _debug("-- Thread pause requested. Get lock on director.");
                     synchronized(_director) {
+                        // Tell the director we're stopped (necessary
+                        // for deadlock detection).
+                        _director._actorHasStopped();
                         while(_threadStopRequested) {
+                            _debug("-- Thread waiting for canceled stop request.");
                             workspace.wait(_director);
                         }
+                        // NOTE: Do we need to indicate that actor has
+                        // restarted, with something like
+                        // _director._actorHasRestarted();
                     }
+                    _debug("-- Thread resuming.");
                 }
 
                 // container is checked for null to detect the
@@ -156,22 +184,20 @@ public class ProcessThread extends PtolemyThread {
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
+            _debug("-- Blocked Receiver call threw TerminateProcessException.");
         } catch (IllegalActionException e) {
+            _debug("-- Exception: " + e);
             _manager.notifyListenersOfException(e);
-        }
-        finally {
+        } finally {
             try {
-                 wrapup();
+                wrapup();
             } catch (IllegalActionException e) {
+                _debug("-- Exception: " + e);
                 _manager.notifyListenersOfException(e);
+            } finally {
+                _director._decreaseActiveCount();
+                _debug("-- Thread stopped.");
             }
-            _director._decreaseActiveCount();
-            /*
-              String name = ((Nameable)_actor).getName();
-              + _director.getName() + "; there are "
-              + _director._getActiveActorsCount()+" active actors in "
-              + _director.getName() +".");
-             */
         }
     }
 
@@ -181,17 +207,19 @@ public class ProcessThread extends PtolemyThread {
      *  this director.
      */
     public void stopThread() {
-            _threadStopRequested = true;
+        _threadStopRequested = true;
+        _debug("-- Thread requested to stop.");
     }
 
     /** End the execution of the actor under the control of this
      *  thread. Subclasses are encouraged to override this method
      *  as necessary for domain specific functionality.
-     * @exception IllegalActionException If an error occurs while
-     *  ending execution of the actor under the control of this
-     *  thread.
+     *  @exception IllegalActionException If an error occurs while
+     *   ending execution of the actor under the control of this
+     *   thread.
      */
     public void wrapup() throws IllegalActionException {
+        _debug("-- Thread wrapup() called.");
         _actor.wrapup();
     }
 
