@@ -51,9 +51,9 @@ OTHER_FILES_TO_BE_JARED = \
 	HocDE.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
-	#HocDE.htm \
-	#HocDEVergil.htm
+	$(OTHER_FILES_TO_BE_JARED) \
+	HocDE.htm \
+	HocDEVergil.htm
 
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -74,9 +74,10 @@ all: jclass
 
 install: all
 
-demo: demo_ptolemy demo_vergil
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer HocDE.htm
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer HocDE.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer HocDEVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" HocDE.xml
