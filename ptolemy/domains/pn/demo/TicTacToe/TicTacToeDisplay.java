@@ -50,7 +50,7 @@ import java.awt.image.*;
 public final class TicTacToeDisplay extends AtomicActor {
     public TicTacToeDisplay(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        super(container, name);
         input = new IOPort(this, "input", true, false);
         output = new IOPort(this, "output", false, true);
 	//new Parameter(this, "FrameName", new StringToken("ImageDisplay"));
