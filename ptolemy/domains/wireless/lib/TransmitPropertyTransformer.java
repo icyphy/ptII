@@ -30,15 +30,16 @@ package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.lib.hoc.RunCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.hoc.LifeCycleManager;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.PropertyTransformer;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
@@ -47,7 +48,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,27 +57,33 @@ import ptolemy.kernel.util.Workspace;
    This actor reads input tokens and sends them unmodified to the output;
    its role is not to operate on input tokens, but rather to modify the
    properties of a transmission.
-
-   This actor implements the PropertyTransformer interface with a callback
-   that can be use to modify the transmit properties of a transmission.
-   It register itself and its connected wireless
+   <p>
+   This actor implements the PropertyTransformer interface, which provides
+   a callback that can be use to modify the transmit properties of a
+   transmission.  It register itself and its connected wireless
    output port with the channel that the wireless output port uses.
    The channel will call its transformProperties() method for each
    transmission from the registed output port.
-
-   <p>FIXME: this is going to be changed to work like RunCompositeActor.
-   This actor has a <i>modelFileOrURL</i> parameter that specify a model
-   used to calculate the properties. When transformProperties() is
-   called, it calls the ModelUtilities.executeModel() method to execute
-   the specified model and return the (possibly) modified property to the
-   channel.
-
-   <p>The specified model should calculate/modify the properties based on
-   the sender's location and the receiver's location. It should contains
-   attributes of "SenderLocation", "ReceiverLocation" and
-   "Properties". This actor will use this attributes to pass the sender
-   and receiver's location and the current properties information to the
-   specified model and get the new properties back from it.
+   <p>
+   When transformProperties() is called, this actor sets the value
+   of three parameters and then performs a complete execution of the
+   contained model. The three parameters are <i>senderLocation</i>
+   (an array of doubles), <i>receiverLocation</i> (also an array of
+   doubles), and <i>property</i> (a record token containing the
+   transmit properties to be modified). After execution of the contained
+   model, the (possibly modified) value of the record <i>property</i>
+   is taken to be the modified properties. Thus, a contained model would
+   normally read the parameter <i>property</i>, change it, and use
+   a SetVariable actor to set the new value of <i>property</i>.
+   <p>
+   This actor expects its output port to be connected directly
+   to the inside of a WirelessIOPort belonging to this actor's container.
+   It looks for this port in the preinitialize() method, and registers
+   with the channel specified by that port.  If there is no such port,
+   or no such channel, then preinitialize() throws an exception.
+   Note that since this connectivity is checked only during preinitialize(),
+   this actor does not support dynamically reconnecting its output port
+   during execution of the model.
 
    @author Yang Zhao, Edward Lee
    @version $Id$
@@ -85,8 +91,9 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)
 */
-public class TransmitPropertyTransformer extends RunCompositeActor
-    implements PropertyTransformer {
+public class TransmitPropertyTransformer extends LifeCycleManager
+        implements PropertyTransformer {
+            
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -104,23 +111,25 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         output.setTypeSameAs(input);
         // Create and configure the parameters.
         senderLocation = new Parameter(this, "senderLocation");
-        //senderLocation.setTypeEquals(BaseType.GENERAL);
+        senderLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         senderLocation.setExpression("{0.0, 0.0}");
 
         receiverLocation = new Parameter(this, "receiverLocation");
-        //receiverLocation.setTypeEquals(BaseType.GENERAL);
+        receiverLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         receiverLocation.setExpression("{0.0, 0.0}");
 
         property = new Parameter(this, "property");
-        //property.setTypeEquals(BaseType.GENERAL);
+        // FIXME: property type should be at least an empty record.
         property.setExpression("{power = 0.0, range = 0.0}");
 
-        //modelFileOrURL = new FileParameter(this, "modelFileOrURL");
         // Create the icon.
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");
+        
+        // To ensure that exported MoML does not represent this as
+        // an ordinary TypedCompositeActor.
         setClassName("ptolemy.domains.wireless.lib.TransmitPropertyTransformer");
     }
 
@@ -137,31 +146,25 @@ public class TransmitPropertyTransformer extends RunCompositeActor
      */
     public TypedIOPort output;
 
-    /** The x/y location of the sender.  The default value is a double
-     *  array of length 2: {0.0, 0.0}
+    /** The location of the sender. This is a double array with default
+     *  value {0.0, 0.0}.
      */
     public Parameter senderLocation;
 
-    /** The x/y location of the receiver.  The default value is a double
-     *  array of length 2: {0.0, 0.0}
+    /** The location of the receiver. This is a double array with default
+     *  value {0.0, 0.0}.
      */
     public Parameter receiverLocation;
 
-    /** The properties of the transformer.  The default value is a
+    /** The properties to be transformed. This is a
      *  record token with value {power = 0.0, range = 0.0}.
      */
     public Parameter property;
 
-    /** The file name or URL of the model that this actor invokes to
-     *  transform properties.
-     */
-    //public FileParameter modelFileOrURL;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and dissociates itself with the specified model.
+    /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -172,60 +175,87 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         TransmitPropertyTransformer newObject =
             (TransmitPropertyTransformer)(super.clone(workspace));
 
-        newObject._model = null;
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
     /** Read at most one token from the <i>input</i>
-     *  port and simply transmit the data on the <i>output</i> port.
+     *  port and simply transmit the data to the <i>output</i> port.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
-
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
-            if (_debugging) {
-                _debug("Input data received: " + inputValue.toString());
-            }
             output.send(0, inputValue);
         }
     }
-
-    /** Register itself with the channel as a PropertyTransformer
-     *  for its connected wireless output port.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *  but declared so the subclasses can throw it.
+    
+    /** Return true, indicating that execution can continue.
+     *  @exception IllegalActionException Not thrown in this class,
+     *   but declared so the subclasses can throw it.
      */
-    public void initialize() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException {
+        // Do not call the superclass postfire(), as that will
+        // call postfire() on the diretor.
         if (_debugging) {
-            _debug("Called initialize()");
+            _debug("Called postfire(), which returns true.");
         }
-        _isSubclassOfRunCompositeActor = true;
+        return true;
+    }
+
+    /** Return true, indicating that this actor is always ready to fire.
+     *  @exception IllegalActionException Not thrown in this class,
+     *   but declared so the subclasses can throw it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // Do not call the superclass prefire(), as that will
+        // call prefire() on the diretor.
+        if (_debugging) {
+            _debug("Called prefire(), which returns true.");
+        }
+        return true;
+    }
+
+    /** Register with the channel as a PropertyTransformer
+     *  for its connected wireless output port. If the output
+     *  is not connected directly to a WirelessIOPort, then throw
+     *  an exception.
+     *  @exception IllegalActionException If the output is not
+     *   connected directly to a WirelessIOPort, or if the port's
+     *   container does not have a container, or if no channel is
+     *   found.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        if (_debugging) {
+            _debug("Called preinitialize()");
+        }
         Iterator connectedPorts = output.sinkPortList().iterator();
+        boolean foundOne = false;
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();
-            if (!port.isInput() && port instanceof WirelessIOPort) {
+            if (port.isOutput() && port instanceof WirelessIOPort) {
                 // Found the port.
+                foundOne = true;
                 Entity container = (Entity)(port.getContainer());
                 String channelName
-                    = ((WirelessIOPort)port).outsideChannel.stringValue();
-                CompositeEntity container2 = (CompositeEntity)
-                    container.getContainer();
+                        = ((WirelessIOPort)port).outsideChannel.stringValue();
+                CompositeEntity container2
+                        = (CompositeEntity)container.getContainer();
                 if (container2 == null) {
                     throw new IllegalActionException(this,
-                            "The container does not have a container.");
+                            "The port's container does not have a container.");
                 }
                 Entity channel = container2.getEntity(channelName);
                 if (channel instanceof WirelessChannel) {
-                    //Cach it here, so no need to do it again in wrapup().
+                    // Cache it here, so no need to do it again in wrapup().
                     _channel = (WirelessChannel)channel;
                     _wirelessIOPort = (WirelessIOPort)port;
-                    ((WirelessChannel)channel).
-                        registerPropertyTransformer(this,
-                                (WirelessIOPort)port);
+                    ((WirelessChannel)channel)
+                            .registerPropertyTransformer(this,
+                            (WirelessIOPort)port);
                 } else {
                     throw new IllegalActionException(this,
                             "The connected port does not refer to a "
@@ -233,23 +263,21 @@ public class TransmitPropertyTransformer extends RunCompositeActor
                 }
             }
         }
+        if (!foundOne) {
+            throw new IllegalActionException(this,
+                    "Output is not connected to a WirelessIOPort.");
+        }
     }
 
-    /** Return true, indicating that execution can continue.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *  but declared so the subclasses can throw it.
-     */
-    public boolean postfire() throws IllegalActionException {
-        return true;
-    }
-
-    /** Invoke the execution of the subsysteml and return the result.
-     *  see RunCompositeActor.fire().
-     * @param properties The transform properties.
-     * @param sender The sending port.
-     * @param destination The receiving port.
-     * @return The modified transform properties.
-     * @exception IllegalActionException If failed to execute the model.
+    /** Set the <i>senderLocation</i>, <i>receiverLocation</i>, and
+     *  <i>property</i> parameter and execute the contained model.
+     *  Return the final value of the <i>property</i> parameter.
+     *  @param properties The initial value of the properties.
+     *  @param sender The sending port.
+     *  @param destination The receiving port.
+     *  @return The modified transform properties.
+     *  @exception IllegalActionException If executing the model
+     *   throws it.
      */
     public RecordToken transformProperties(RecordToken properties,
             WirelessIOPort sender, WirelessIOPort destination)
@@ -270,25 +298,13 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         property.setToken(properties);
 
         if (_debugging) {
-            _debug("----transformProperties is called, "
+            _debug("----transformProperties is called; "
                     + "execute the subsystem.");
         }
 
-        try {
-            setDeferringChangeRequests(true);
-            _executeInsideModel();
-        } finally {
-            try {
-                super.wrapup();
-                if (_debugging) {
-                    _debug("---- Firing of RunCompositeActor is complete.");
-                }
-            } finally {
-                // Indicate that it is now safe to execute
-                // change requests when they are requested.
-                setDeferringChangeRequests(false);
-            }
-        }
+        // FIXME: Should use return value to determine what postfire() returns?
+        _executeInsideModel();
+
         RecordToken result = (RecordToken)property.getToken();
         if (_debugging) {
             _debug("---- the modified property is. "
@@ -297,24 +313,35 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         return result;
     }
 
-    /** Override the base class to call wrap up to unregister this with the
-     *  channel and do nothing else.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *  but declared so the subclasses can throw it.
+    /** Override the base class to unregister this actor with the
+     *  channel.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void wrapup() throws IllegalActionException{
+        // Do not call the superclass wrapup(), as that will
+        // call wrapup() on the diretor.
         if (_debugging) {
-            _debug("Called wrapup()");
+            _debug("Called wrapup(), which unregisters the property transformer.");
         }
-        //setDeferChangeRequests(false);
         if (_channel != null) {
-            if (_debugging) {
-                _debug("unregister property transformer in wrapup()");
-            }
             _channel.unregisterPropertyTransformer(this,
                     _wirelessIOPort);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Override the base class to not read any inputs.
+     */
+    protected void _readInputs() {}
+
+    /** Override the base class to not write any outputs.
+     */
+    protected void _writeOutputs() {}
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
     /** Return the location of the given WirelessIOPort.
      *  @param port A port with a location.
@@ -339,12 +366,13 @@ public class TransmitPropertyTransformer extends RunCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
-    private CompositeActor _executable;
-    private NamedObj _model;
+    
+    /** The channel found in preinitialize(). */
     private WirelessChannel _channel;
+    
+    /** The connected port found in preinitialize(). */
     private WirelessIOPort _wirelessIOPort;
-    /** Indicator of what the last call to iterate() returned. */
-    private int _lastIterateResult = NOT_READY;
-    // Name of the location attribute.
+        
+    /** Name of the location attribute. */
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }

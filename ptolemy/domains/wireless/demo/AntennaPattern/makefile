@@ -47,6 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	AntennaGainTest.xml \
 	AntennaPattern.xml \
 	modelAntennaGain.xml
 

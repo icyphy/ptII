@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PowerVariability" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 1023, 757}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 1, 1023, 757}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 641]">
     </property>
@@ -143,7 +143,7 @@ require physical connectivity.</text></svg></configure>
         </property>
     </property>
     <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 565.0">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -152,12 +152,10 @@ require physical connectivity.</text></svg></configure>
         <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 565.0">
         </property>
     </property>
     <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 565.0">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -167,11 +165,9 @@ require physical connectivity.</text></svg></configure>
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 565.0">
-        </property>
     </property>
     <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 570.0">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -181,19 +177,19 @@ require physical connectivity.</text></svg></configure>
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 570.0">
-        </property>
     </property>
     <property name="annotation6" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:black">This model assumes that the transmitter
-broadcasts one watt using an isotropic
-antenna, and that anything more than 200
-meters from it is out of range. The
-receiver has a perfect efficiency
-antenna with area (1cm)^2. The received
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:black">This model assumes that the
+transmitter broadcasts one
+watt using an isotropic antenna,
+and that anything more than 200
+meters from it is out of range.
+The receiver has a perfect
+efficiency antenna with area
+(1cm)^2. The received
 power is shown on the plot.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -209,6 +205,10 @@ power is shown on the plot.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 130.0">
         </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.0, 320.5}">
     </property>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 250.0">
@@ -279,12 +279,6 @@ power is shown on the plot.</text></svg></configure>
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -306,13 +300,6 @@ power is shown on the plot.</text></svg></configure>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 310.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[500 - in*10, 250]">
@@ -349,9 +336,6 @@ power is shown on the plot.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 320.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
@@ -364,10 +348,6 @@ power is shown on the plot.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 140.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -379,26 +359,10 @@ power is shown on the plot.</text></svg></configure>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 320.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 200.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 180.0">
@@ -419,8 +383,6 @@ power is shown on the plot.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 487, 508, 263}}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 208]">
@@ -429,10 +391,6 @@ power is shown on the plot.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 220.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -459,12 +417,6 @@ power is shown on the plot.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 200.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -521,8 +473,6 @@ power is shown on the plot.</text></svg></configure>
         </property>
         <property name="_icon2" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
@@ -535,12 +485,8 @@ power is shown on the plot.</text></svg></configure>
                 </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.08}">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
-                </property>
             </property>
             <property name="antenna2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -552,8 +498,6 @@ power is shown on the plot.</text></svg></configure>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
                 <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}">
                 </property>
@@ -608,10 +552,6 @@ power is shown on the plot.</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=range}">
             </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_hide" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
@@ -635,13 +575,6 @@ power is shown on the plot.</text></svg></configure>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 150.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -653,16 +586,6 @@ power is shown on the plot.</text></svg></configure>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 160.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
