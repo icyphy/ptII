@@ -379,14 +379,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (tokenizer.hasMoreTokens()) {
                 // Do the trim so "$ ref (" can be recognized.
                 String token = (tokenizer.nextToken()).trim();
-                if ((token.equals("ref") || token.equals("val")
+                if ((token.equals("ref") || token.equals("val") || token.equals("actorSymbol")
                             || token.equals("size")) && tokenizer.hasMoreTokens()) {
                     if (token.equals("ref")) {
                         flag = 1;
                     } else if (token.equals("val")) {
                         flag = 2;
-                    } else {
+                    } else if (token.equals("size")){
                         flag = 3;
+                    } else {
+                        flag = 4;
                     }
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
@@ -408,8 +410,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                     result.append(getReference(name));
                                 } else if (flag == 2) {
                                     result.append(getParameterValue(name));
-                                } else {
+                                } else if (flag == 3) {
                                     result.append(getSize(name));
+                                } else {
+                                    result.append(_component.getFullName().replace('.', '_'));
+                                    result.append("_" + name);
                                 }
                                 while (tokenizer.hasMoreTokens()) {
                                     result.append(tokenizer.nextToken());
