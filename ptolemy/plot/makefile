@@ -46,7 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java, LogicAnalyzerFrame.java,
-#    PlotApplication.java, doc/main.htm, doc/changes.htm
+#    PlotApplication.java, doc/main.htm, doc/changes.htm, doc/install.htm 
 PTVERSION =	3.1
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
@@ -319,9 +319,8 @@ fixtmpdist:
 	echo "<head>" >> $(PTTMPME)/doc/download/index.htm
 	echo "<title>Download Ptplot</title>" >> $(PTTMPME)/doc/download/index.htm
 	echo '<body bgcolor="#faf0e6">'  >> $(PTTMPME)/doc/download/index.htm
-	echo "<H1>Download Ptplot<H1>" >> $(PTTMPME)/doc/download/index.htm
+	echo "<H1>Download Ptplot</H1>" >> $(PTTMPME)/doc/download/index.htm
 	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPME)/doc/download/index.htm
-	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/ptplot/download"><code>http://ptolemy.eecs.berkeley.edu/ptplot/download</code></a>' >> $(PTTMPME)/doc/download/index.htm
-	echo "<hr>" >> $(PTTMPME)/doc/download/index.htm
+	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
