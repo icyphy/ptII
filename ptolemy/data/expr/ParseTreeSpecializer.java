@@ -88,7 +88,6 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         excludedNames.addAll(node.getArgumentNameList());
         List oldExcludedNames = _excludedNames;
         _excludedNames = excludedNames;
-        //   _visitAllChildren(node);
         node.getExpressionTree().visit(this);
         _excludedNames = oldExcludedNames;
 

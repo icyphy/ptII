@@ -113,11 +113,14 @@ public class FunctionType extends StructuredType {
      */
     public Token convert(Token token) throws IllegalActionException {
         
-        //     if ( !isCompatible(token.getType())) {
-        throw new IllegalArgumentException(
-                Token.notSupportedConversionMessage(
-                        token, this.toString()));
-        //}
+        if ( !isCompatible(token.getType())) {
+            throw new IllegalArgumentException(
+                    Token.notSupportedConversionMessage(
+                            token, this.toString()));
+        }
+        // FIXME: This should actually return a new Function that includes the appropriate argument and return value conversions.
+        
+        return token;
         //   if(false) {
         /*FunctionToken functionToken = (FunctionToken)token;
         // The converted token has the same set of labels as the argument.
@@ -254,8 +257,7 @@ public class FunctionType extends StructuredType {
 
     /** Test if the argument type is compatible with this type.  The
      *  given type will be compatible with this type if it is
-     *  BaseType.UNKNOWN, or a FunctionType that contains at least as
-     *  many fields.
+     *  BaseType.UNKNOWN, or... 
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
@@ -273,7 +275,7 @@ public class FunctionType extends StructuredType {
         // Loop through all of the fields of this type...
         for(int i = 0; i < getArgCount(); i++) {
             // The given type cannot be losslessly converted to this type
-            // if it does not contain one of the fields of this type.
+            // if it does not contain the same number of arguments.
             Type argumentFieldTypeTerm = 
                 argumentFunctionType.getArgType(i);
             if (argumentFieldTypeTerm == null) {
@@ -281,8 +283,9 @@ public class FunctionType extends StructuredType {
                 return false;
             }
 
-            // The given type cannot be losslessly converted to this type
-            // if the individual fields are not compatible.
+            // The given function type cannot be losslessly converted
+            // to this type if the individual arguments are not
+            // compatible.
             Type thisFieldTypeTerm = getArgType(i);
             if (!argumentFieldTypeTerm.isCompatible(thisFieldTypeTerm)) {
                 return false;
