@@ -61,6 +61,7 @@ JSRCS = \
 	RequiredBlockDataFlowGraph.java \
 	SDFGToJHDLCircuit.java \
 
+#	DGToJHDLCircuit.java \
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

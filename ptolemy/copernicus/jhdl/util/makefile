@@ -56,6 +56,8 @@ JSRCS =	\
 	MapList.java \
 	HashListMap.java \
 	IntIOPort.java \
+	JHDLCircuitGraph.java \
+	JHDLTestbench.java \
 	JHDLUnsupportedException.java \
 	Label.java \
 	MergedControlFlowGraph.java \
@@ -63,7 +65,17 @@ JSRCS =	\
 	PtDirectedGraphToDotty.java \
 	SuperBlock.java \
 	SynthesisToDotty.java \
-	UniqueVector.java
+	UniqueVector.java \
+	ModelGraph.java
+
+
+#	PtolemyLogic.java
+#	PtolemyCellToJHDLCircuit.java \
+#	PtolemyAtomicCell.java \
+#	PtolemyCell.java \
+#	PtolemyCompositeCell.java \
+#	PtolemyLogicCell.java \
+#	PtolemyCompositeLogicCell.java \
 
 EXTRA_SRCS =	$(JSRCS)
 

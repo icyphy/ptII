@@ -29,6 +29,10 @@
 
 package ptolemy.copernicus.jhdl;
 
+import byucc.jhdl.base.Cell;
+import byucc.jhdl.base.HWSystem;
+import byucc.jhdl.Logic.Logic;
+
 import soot.*;
 import soot.jimple.*;
 import soot.jimple.toolkits.invoke.MethodCallGraph;
@@ -119,29 +123,43 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("\nCircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
+	//new ModelGraph(_model, options);
 
-        //////////////////////////////////////////////
-        // Step 1. Create a DirectedGraph that matches
-        //         the topology of the model
-        //////////////////////////////////////////////
-        DirectedGraph combinedGraph = _createModelGraph(_model);
+	//HWSystem hw = new HWSystem();
+	//JHDLTestbench jtb = new JHDLTestbench(hw);
 
-        //////////////////////////////////////////////
-        // Step 2. Create a DFG for each entity in the model.
-        //////////////////////////////////////////////
-        Map entityGraphMap = _createEntityGraphs(_model, options);
+	/*
+	//////////////////////////////////////////////
+	// Step 1. Create a DirectedGraph that matches
+	//         the topology of the model
+	//////////////////////////////////////////////
+	DirectedGraph combinedGraph = _createModelGraph(_model);
 
-        //////////////////////////////////////////////
-        // Step 3. Insert each DFG into the top-level graph
-        //////////////////////////////////////////////
-        _insertEntityGraphs(_model,combinedGraph,entityGraphMap);
+	//////////////////////////////////////////////
+	// Step 2. Create a DFG for each entity in the model.
+	//////////////////////////////////////////////
+	Map entityGraphMap = _createEntityGraphs(_model, options);
 
-        PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-        toDotty.writeDotFile(_outDir, _model.getName(), combinedGraph);
+	//////////////////////////////////////////////
+	// Step 3. Create top-level testbench
+	//////////////////////////////////////////////
+	HWSystem hw = new HWSystem();
+	JHDLTestbench _jtb = new JHDLTestbench(hw);
 
-        System.out.println("**************************************************");
-        System.out.println("*** END JHDL");
-        System.out.println("**************************************************");
+	//	Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
+
+	//////////////////////////////////////////////
+	// Step 3. Insert each DFG into the top-level graph
+	//////////////////////////////////////////////
+	_insertEntityGraphs(_model,combinedGraph,entityGraphMap);
+
+	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+	toDotty.writeDotFile(".", _model.getName(), combinedGraph);
+	*/
+
+ 	System.out.println("**************************************************");
+	System.out.println("*** END JHDL");
+	System.out.println("**************************************************");
     }
 
     /**
@@ -270,7 +288,7 @@ public class CircuitTransformer extends SceneTransformer {
 
         // Get the names of the class and entity
         String className =
-            ModelTransformer.getInstanceClassName(entity,options);
+	    ModelTransformer.getInstanceClassName(entity,options);
         String entityClassName = entity.getClass().getName();
 
         // skip some classes?
