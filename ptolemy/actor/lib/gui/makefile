@@ -73,9 +73,14 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'MatrixViewer$$MatrixAsTable.class'
+	'MatrixViewer$$MatrixAsTable.class' \
+	'Display$$1.class' \
+	'HistogramPlotter$$1.class' \
+	'MatrixViewer$$1.class' \
+	'Plotter$$1.class' \
+	'SketchedSource$$1.class'
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS= $(JSRCS:%.java=%.class)
 
 
 all: jclass

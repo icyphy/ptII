@@ -64,6 +64,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'SDFScheduler$$1.class' \
 	'SDFScheduler$$NamedObjComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

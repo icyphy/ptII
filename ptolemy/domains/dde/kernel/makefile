@@ -70,6 +70,7 @@ MISC_FILES =	$(DIRS) test #demo
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
+	'DDEDirector$$1.class' \
 	'DDEDirector$$CapacityComparator.class' \
 	'DDEDirector$$ReceiverCapacityComparator.class' \
 	'PrioritizedTimedQueue$$Event.class'

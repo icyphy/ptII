@@ -61,6 +61,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'DTDirector$$_DTActor.class' \
+	'DTDirector$$_DTIOPort.class' \
 	'DTDirector$$DTActor.class' \
 	'DTDirector$$DTIOPort.class'
 

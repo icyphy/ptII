@@ -61,6 +61,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'RTPReceiver$$1.class' \
 	'RTPReceiver$$Lock.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

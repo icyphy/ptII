@@ -66,6 +66,7 @@ MISC_FILES =	 $(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'DECQEventQueue$$1.class' \
 	'DECQEventQueue$$DECQComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

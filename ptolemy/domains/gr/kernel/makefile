@@ -64,9 +64,11 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'GRDirector$$1.class' \
 	'GRDirector$$_DD3DActor.class' \
 	'GRDirector$$_GRActor.class' \
 	'GRDirector$$_GRIOPort.class' \
+	'GRScheduler$$1.class' \
 	'GRScheduler$$_NamedObjComparator.class' \
 	'GRDirector$$DD3DIOPort.class'
 

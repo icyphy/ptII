@@ -71,6 +71,7 @@ MISC_FILES =	$(DIRS) javasound
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'AudioViewer$$1.class' \
 	'AudioViewer$$AudioViewerFilenameFilter.class' \
 	'AudioViewer$$PlayListener.class'
 
