@@ -86,6 +86,7 @@
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse"/>
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp"/>
 <entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource"/>
+<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 <entity name="Uniform" class="ptolemy.actor.lib.Uniform"/>
       </group>
   </configure>
@@ -110,7 +111,6 @@
 </entity>
 <!-- END sinks -->
 
-	    <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
             <input source="ptolemy/actor/lib/math.xml"/>
 
 <!-- BEGIN flow control -->
@@ -133,7 +133,6 @@
   </configure>
 </entity>
 <!-- END flow control -->
-	    <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
             <input source="ptolemy/actor/lib/logic/logic.xml"/>
             <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
             <input source="ptolemy/actor/lib/array.xml"/>
