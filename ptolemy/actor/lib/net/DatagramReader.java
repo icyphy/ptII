@@ -266,8 +266,17 @@ public class DatagramReader extends TypedAtomicActor {
         blockAwaitingDatagram.setTypeEquals(BaseType.BOOLEAN);
         blockAwaitingDatagram.setExpression("true");
 
+        defaultReturnAddress = new Parameter(this, "defaultReturnAddress");
+        defaultReturnAddress.setTypeEquals(BaseType.STRING);
+        defaultReturnAddress.setToken(new StringToken("localhost"));
+
+        defaultReturnSocketNumber = new Parameter(this, 
+	        "defaultReturnSocketNumber");
+        defaultReturnSocketNumber.setTypeEquals(BaseType.INT);
+        defaultReturnSocketNumber.setExpression("0");
+
         defaultOutput = new Parameter(this, "defaultOutput");
-        defaultOutput.setTypeEquals(BaseType.GENERAL);
+        //defaultOutput.setTypeEquals(BaseType.GENERAL);
         defaultOutput.setExpression("0");
 
         // Repeat has not been implemented.  However, I'd place it
@@ -305,61 +314,7 @@ public class DatagramReader extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The trigger input port.  The type of this port has been set to
-     *  GENERAL, permitting any token type to be accepted.  The
-     *  hasToken() and get(int) methods are called on this input, but
-     *  their contents are discarded.  The presence of a connection to
-     *  this input serves a purpose by causing the director to
-     *  schedule the firing of this actor at an appropriate place in
-     *  the sequence of firings of actors.  This is particularly
-     *  useful in the SDF domain.  Without a trigger input, the SDF
-     *  scheduler would be unable to schedule a firing of this actor
-     *  unless it can be scheduled as the first actor to be fired.
-     *  Thus, without this input, configurations in SDF would be
-     *  limited.  (@See ptolemy.actor.lib.Source for an archetypal
-     *  trigger input.)
-     */
-    public TypedIOPort trigger = null;
-
-    /** The default output.  This default token is broadcast when the
-     *  actor is fired, but no actual datagram data is available to
-     *  broadcast and <i>blockAwaitingDatagram</i> is false.  If
-     *  blocking were true, the actor would simply stall in fire()
-     *  until a datagram arrives.  Default is the integer 0.
-     */
-    public Parameter defaultOutput;
-
-    /** Encoding to expect of received datagrams.  This is a
-     *  string-valued attribute that defaults to "for_Ptolemy_parser".
-     *  This is a ChoiceStyle (i.e. drop-menu-select) parameter.
-     *  @see ptolemy.actor.gui.style.ChoiceStyle
-     *  The three options currently implemented are: "for_Ptolemy_parser",
-     *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
-     *  The first option allows reconstruction of any data type upon
-     *  reception.  The "for_Ptolemy_parser" setting is designed to be
-     *  used in partnership with a similarly configured DatagramWriter.
-     *  The other two options are for receiving
-     *  general data in raw form.  These formats are also convenient for
-     *  receiving arrays of bytes and integers respectively.  The former
-     *  are not received explicitly as bytes since the Byte type is
-     *  still under development in Ptolemy.  Conversion in this actor
-     *  between bytes and integers simply ignores the 24 high order bits 
-     *  of the integer.  For example, 511, 255, and -1 are treated as 
-     *  the same value under the "raw_low_bytes_of_integers" setting.
-     */
-    public StringAttribute encoding;
-
-
-    /** Whether to block in fire().  If fire() is called before the
-     *  datagram has arrived, the actor must either block awaiting the
-     *  datagram or use its <i>defaultOutput</i>.  This blocking
-     *  parameter controls which choice fire() will make.  This
-     *  parameter is useful for SDF models, where it is generally set
-     *  to true.  It has no effect in DE models unless the trigger
-     *  input has been connected.  Type is Boolean.  Default value is
-     *  true.
-     */
-    public Parameter blockAwaitingDatagram;
+    // Ports and parameters are in the same order hare as in the constructor.
 
     /** This port outputs the IP address portion of the received
      *  datagram packet.  The type of this output is String.  This is
@@ -389,21 +344,27 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
+    /** The trigger input port.  The type of this port has been set to
+     *  GENERAL, permitting any token type to be accepted.  The
+     *  hasToken() and get(int) methods are called on this input, but
+     *  their contents are discarded.  The presence of a connection to
+     *  this input serves a purpose by causing the director to
+     *  schedule the firing of this actor at an appropriate place in
+     *  the sequence of firings of actors.  This is particularly
+     *  useful in the SDF domain.  Without a trigger input, the SDF
+     *  scheduler would be unable to schedule a firing of this actor
+     *  unless it can be scheduled as the first actor to be fired.
+     *  Thus, without this input, configurations in SDF would be
+     *  limited.  (@See ptolemy.actor.lib.Source for an archetypal
+     *  trigger input.)
+     */
+    public TypedIOPort trigger = null;
+
     /** This actor's local socket (a.k.a. port) number.  <b>This is a
      *  system resource allocated to this actor.</b> No other actor
      *  with the same local socket number may run at the same time.
      */
     public Parameter localSocketNumber;
-
-    /** Boolean directive in case datagrams pile up.  Default is true.
-     *  If false, datagrams will queue up (mostly in the platform,
-     *  some in the actor).  The datagram used at each invocation of
-     *  fire will be the oldest in the queue.  On the other hand, if
-     *  <i>overwrite</i> is true, then minimal queuing will occur and
-     *  the most recent data will be used when fire() is called.
-     *  Older data will be discarded.
-     */
-    public Parameter overwrite;
 
     /** Length (in bytes) of each of the two packet buffers for
      *  receiving a datagram.  This length does not include the bytes
@@ -429,6 +390,74 @@ public class DatagramReader extends TypedAtomicActor {
      *  same socket.  This is undocumented in Java's documentation. 
      */
     public Parameter platformBufferLength;
+
+    /** Boolean directive in case datagrams pile up.  Default is true.
+     *  If false, datagrams will queue up (mostly in the platform,
+     *  some in the actor).  The datagram used at each invocation of
+     *  fire will be the oldest in the queue.  On the other hand, if
+     *  <i>overwrite</i> is true, then minimal queuing will occur and
+     *  the most recent data will be used when fire() is called.
+     *  Older data will be discarded.
+     */
+    public Parameter overwrite;
+
+    /** Whether to block in fire().  If fire() is called before the
+     *  datagram has arrived, the actor must either block awaiting the
+     *  datagram or use its <i>defaultOutput</i>.  This blocking
+     *  parameter controls which choice fire() will make.  This
+     *  parameter is useful for SDF models, where it is generally set
+     *  to true.  It has no effect in DE models unless the trigger
+     *  input has been connected.  Type is Boolean.  Default value is
+     *  true.
+     */
+    public Parameter blockAwaitingDatagram;
+
+    /** The default <i>returnAddress</i> output.  This token is
+     *  broadcast when the actor is fired, but no actual datagram
+     *  is available to broadcast and <i>blockAwaitingDatagram</i> is
+     *  false.  If blocking were true, the actor would simply stall in
+     *  fire() until a datagram arrives.  Type is string.  Default value
+     *  is "localhost".
+     *  */
+    public Parameter defaultReturnAddress;
+
+    /** The default <i>returnSocketNumber</i> output.  This token is
+     *  broadcast when the actor is fired, but no actual datagram
+     *  is available to broadcast and <i>blockAwaitingDatagram</i> is
+     *  false.  If blocking were true, the actor would simply stall in
+     *  fire() until a datagram arrives.  Type is integer.  Default
+     *  value is 0.
+     *  */
+    public Parameter defaultReturnSocketNumber;
+
+    /** The default output.  This default token is broadcast when the
+     *  actor is fired, but no actual datagram data is available to
+     *  broadcast and <i>blockAwaitingDatagram</i> is false.  If
+     *  blocking were true, the actor would simply stall in fire()
+     *  until a datagram arrives.  Type is defined by the expression
+     *  entered.  Default type & value is the integer 0.
+     */
+    public Parameter defaultOutput;
+
+    /** Encoding to expect of received datagrams.  This is a
+     *  string-valued attribute that defaults to "for_Ptolemy_parser".
+     *  This is a ChoiceStyle (i.e. drop-menu-select) parameter.
+     *  @see ptolemy.actor.gui.style.ChoiceStyle
+     *  The three options currently implemented are: "for_Ptolemy_parser",
+     *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
+     *  The first option allows reconstruction of any data type upon
+     *  reception.  The "for_Ptolemy_parser" setting is designed to be
+     *  used in partnership with a similarly configured DatagramWriter.
+     *  The other two options are for receiving
+     *  general data in raw form.  These formats are also convenient for
+     *  receiving arrays of bytes and integers respectively.  The former
+     *  are not received explicitly as bytes since the Byte type is
+     *  still under development in Ptolemy.  Conversion in this actor
+     *  between bytes and integers simply ignores the 24 high order bits 
+     *  of the integer.  For example, 511, 255, and -1 are treated as 
+     *  the same value under the "raw_low_bytes_of_integers" setting.
+     */
+    public StringAttribute encoding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -527,11 +556,23 @@ public class DatagramReader extends TypedAtomicActor {
 
 	    } // Close if (_encoding != encoding)
 
-        // In the case of <i>defaultOutput</i>, synchronize in ensure
+        // In the case of default outputs, synchronize in ensure
         // atomic copy from the parameter to the the private variable.
 
+        } else if (attribute == defaultReturnAddress) {
+             synchronized(_syncDefaultOutputs) {
+                _defaultReturnAddress = ((StringToken)
+                        defaultReturnAddress.getToken()).stringValue();
+            }
+
+         } else if (attribute == defaultReturnSocketNumber) {
+             synchronized(_syncDefaultOutputs) {
+                _defaultReturnSocketNumber = ((IntToken)
+                        defaultReturnSocketNumber.getToken()).intValue();
+            }
+
         } else if (attribute == defaultOutput) {
-             synchronized(_syncDefaultOutput) {
+             synchronized(_syncDefaultOutputs) {
                 _defaultOutputToken = defaultOutput.getToken();
 		// _defaultOutputToken==null when eser enters blank parameter!
 		if (false) System.out.println(_defaultOutputToken==null);
@@ -648,13 +689,14 @@ public class DatagramReader extends TypedAtomicActor {
             }
 
 
-	// Just set a flag here, so that before the next receive() call
-	// the new buffer size will be set.  Setting it here did not
+	// Just increment a flag here, so that before the next receive() call
+	// the new buffer size will be set.  Setting buffer here did not
 	// work because the calls to set the size and get the existing
 	// size both block if the socket is being received on.
+	// This flag is set to 1 in preinitialize().
         } else if (attribute == platformBufferLength && _socket != null) {
 	    synchronized(_syncBufferLength) {
-		_ChangeRequestedToPlatformBufferLength = true;
+		_ChangeRequestedToPlatformBufferLength++;
 	    }
 
         } else {
@@ -840,14 +882,13 @@ public class DatagramReader extends TypedAtomicActor {
 	    } else {
 		if (_debugging) _debug(
                         "Broadcast default outputs");
-		// Use this actor's IP address and socket number as the
-		// default return address and socket number values.
-		returnAddress.broadcast(new StringToken("localhost"));
-		returnSocketNumber.broadcast(
-                        new IntToken(_socket.getLocalPort()));
-		synchronized(_syncDefaultOutput) {
-		    // Ensure that any change to the default output parameter
+		synchronized(_syncDefaultOutputs) {
+		    // Ensure that any change to the default output parameters
 		    // occurs atomically with respect to its use here.
+		    returnAddress.broadcast(new StringToken(
+                            _defaultReturnAddress));
+		    returnSocketNumber.broadcast(new IntToken(
+                            _defaultReturnSocketNumber));
 		    output.broadcast(_defaultOutputToken);
 		}
 	    }
@@ -929,24 +970,8 @@ public class DatagramReader extends TypedAtomicActor {
                     " Failed to create a new socket: " + ex);
         }
 
-	// [Set and] get platform's buffer length.
-	try {
-	    int socketSize = _socket.getReceiveBufferSize();
-	    System.out.println("Pre-existing setting(platform)=" + socketSize);
-
-	    if (platformBufferLength.getToken() != null) {
-		_socket.setReceiveBufferSize(((IntToken)
-                        platformBufferLength.getToken()).intValue());
-	    }
-            platformBufferLength.setToken(new IntToken(
-                    _socket.getReceiveBufferSize()));
-
-	    System.out.println("New setting (platform)="
-                    + _socket.getReceiveBufferSize());
-	} catch (SocketException sex) {
-	    System.out.println("sex3" + sex.toString());
-	    //throw new IllegalActionException(this,sex.toString());
-	}
+	// Set flag so that thread will [Set and] get platform's buffer length.
+	_ChangeRequestedToPlatformBufferLength = 1;
 
         // Allocate & start a thread to read from the socket.
         _listenerThread = new ListenerThread();
@@ -1087,7 +1112,7 @@ public class DatagramReader extends TypedAtomicActor {
 
     // Synchronization objects.  Used only for synchronization.
     private Object _syncFireAndThread = new Object();
-    private Object _syncDefaultOutput = new Object();
+    private Object _syncDefaultOutputs = new Object();
     private Object _syncBufferLength = new Object();
     private Object _syncSocket = new Object();
 
@@ -1095,9 +1120,13 @@ public class DatagramReader extends TypedAtomicActor {
     private int _actorBufferLength;
     private boolean _overwrite;
     private boolean _blockAwaitingDatagram;
+
+    // Cashed copies of default outputs:
+    private String _defaultReturnAddress;
+    private int _defaultReturnSocketNumber;
     private Token _defaultOutputToken;
 
-    // Cached copy of <i>encoding</i> parameter and its drogues:
+    // Cached copy of <i>encoding</i> parameter and its derived quantities:
     private String _encoding = new String("");
     private boolean _decodeWithPtolemyParser;
     private boolean _decodeToIntegerArray;
@@ -1115,7 +1144,7 @@ public class DatagramReader extends TypedAtomicActor {
 
     // Misc.
     private int _packetsAlreadyAwaitingFire = 0;
-    private boolean _ChangeRequestedToPlatformBufferLength = false;
+    private int _ChangeRequestedToPlatformBufferLength;
 
     // System resources allocated: DatagramSocket and Thread to read it.
     private DatagramSocket _socket;
@@ -1163,8 +1192,8 @@ public class DatagramReader extends TypedAtomicActor {
 
 		// [Set and] get platform's buffer length.
 		synchronized(_syncBufferLength) {
-		    if (_ChangeRequestedToPlatformBufferLength) {
-			_ChangeRequestedToPlatformBufferLength = false;
+		    if (_ChangeRequestedToPlatformBufferLength > 0) {
+			_ChangeRequestedToPlatformBufferLength = -1;
 			try {
 			    // [Set].
 			    // Unless the platformBufferLength parameter
@@ -1181,6 +1210,10 @@ public class DatagramReader extends TypedAtomicActor {
 			    // parameter.  This allows a user to see
 			    // what buffer size settings are in place
 			    // in the underlying platform.
+			    // NOTE: The call below to setToken() results
+			    // in AttributeChanged() being called again.
+			    // This is why the flag is set to -1 above.
+			    // Doing so avoids an infinite sequence of calls.
 			    platformBufferLength.setToken(new IntToken(
                                     _socket.getReceiveBufferSize()));
 			} catch (SocketException sex) {
@@ -1249,7 +1282,7 @@ public class DatagramReader extends TypedAtomicActor {
                         // -> java.lang.NullPointerException
                         //throw new RuntimeException("-null ptr-");
 			// -> java.lang.RuntimeException: -null ptr-
-			//     at ptolemy.actor.lib.net.DatagramReader$ListenerThread.run(DatagramReceiver.java:935)
+			//     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
                     }
                 }
 
