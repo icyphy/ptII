@@ -1036,7 +1036,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
             try {
                 field = topClass.getDeclaredField(name);
-                return new TypeAndOwner(Type.createType(field.getType().getName()),
+                return new TypeAndOwner(
+                        Type.createType(field.getType().getName()), 
                         Type.createType(topClass.getName()));
             } catch (NoSuchFieldException e1) {
             }
@@ -1448,7 +1449,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param lastType The type from which the name is resolved. It is used as
      *   the scope for the name. If it is null, the name is resolved in the
      *   current scope.
-     *  @return The type and owner of the name. If the name cannot be found,
+     *  @return The type and owner of the name. If the name cannot be found, 
      *   <tt>null</tt> is returned.
      */
     private TypeAndOwner _resolveName(String name, Type lastType) {
