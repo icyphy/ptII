@@ -102,8 +102,7 @@ public class Test extends Sink {
     public Test(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        Token[] defaultEntries = new Token[1];
+         Token[] defaultEntries = new Token[1];
         defaultEntries[0] = new BooleanToken(true);
         ArrayToken defaultArray = new ArrayToken(defaultEntries);
         correctValues = new Parameter(this, "correctValues", defaultArray);
