@@ -57,6 +57,11 @@
         </entity>
         <entity name="ValidateMpdu" class="ptolemy.domains.wireless.lib.network.mac.ValidateMpdu">
         </entity>
+        <entity name="TxCoordination" class="ptolemy.domains.wireless.lib.network.mac.TxCoordination">
+        </entity>
+        <entity name="RxCoordination" class="ptolemy.domains.wireless.lib.network.mac.RxCoordination">
+        </entity>
+
     </entity>
 </entity>  
       </group>
