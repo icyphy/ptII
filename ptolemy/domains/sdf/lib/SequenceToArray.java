@@ -130,7 +130,7 @@ public class SequenceToArray extends SDFAtomicActor {
 	int length = input.getTokenConsumptionRate();
 	Token[] valueArray = new Token[length];
 
-	for (int i=0; i<length; i++) {
+	for (int i = 0; i < length; i++) {
 	    valueArray[i] = input.get(0);
 	}
         output.send(0, new ArrayToken(valueArray));
