@@ -75,8 +75,8 @@ public class UndoContext {
     /**
      *  Create a new UndoContext which may or may not need undo MoML generated
      *
-     * @param  undoableContext  Whether or not undo MoML is required for this
-     *      context
+     *  @param undoableContext Whether or not undo MoML is required for this
+     *  context
      */
     public UndoContext(boolean undoableContext) {
         _undoable = undoableContext;
@@ -91,7 +91,7 @@ public class UndoContext {
     /**
      *  Append some MoML to be appended after the undo MoML for child nodes
      *
-     * @param  undoMoML  The MoMl to be appended after any child nodes
+     *  @param undoMoML The MoMl to be appended after any child nodes
      */
     public void appendClosingUndoMoML(String undoMoML) {
         _closingUndoMoML.append(undoMoML);
@@ -101,7 +101,7 @@ public class UndoContext {
     /**
      *  Append some MoML to the current buffer.
      *
-     * @param  undoMoML  The undo MoML to append to the current buffer.
+     *  @param undoMoML The undo MoML to append to the current buffer.
      */
     public void appendUndoMoML(String undoMoML) {
         _undoMoML.append(undoMoML);
@@ -114,10 +114,9 @@ public class UndoContext {
      *  context should not modify the parent context, but with rename that is
      *  exactly what is required FIXME: use a better exception class
      *
-     * @param  newName        the value to give to the value of the name
-     *      attribute
-     * @exception  Exception  if there is currently no undo MoML at this level,
-     *      or if there is no name attribute presnet.
+     *  @param newName the value to give to the value of the name attribute.
+     *  @exception Exception if there is currently no undo MoML at
+     *  this level, or if there is no name attribute presnet.
      */
     public void applyRename(String newName) throws Exception {
         if (_undoMoML.length() == 0) {
@@ -151,12 +150,13 @@ public class UndoContext {
     }
 
     /**
-     *  First appends the contents of the children undo entry stack to this
-     *  elements undo MoML, followed by any closing MoML. Note that child
-     *  elements have their undo MoML appended in reverse order to that in which
-     *  they were parsed.
+     *  Generate the undo entry by processing children entries and the
+     *  closing undo MoML. First appends the contents of the children
+     *  undo entry stack to this elements undo MoML, followed by any
+     *  closing MoML. Note that child elements have their undo MoML
+     *  appended in reverse order to that in which they were parsed.
      *
-     * @return    Description of the Returned Value
+     *  @return the generated undo entry.
      */
     public String generateUndoEntry() {
         // First append the undo MoML for the children
@@ -176,25 +176,25 @@ public class UndoContext {
      *  this method does not append the MoML for children or any closing MoML
      *  that has been set.
      *
-     * @return    The UndoMoML value
+     *  @return The UndoMoML value.
      */
     public String getUndoMoML() {
         return _undoMoML.toString();
     }
 
     /**
-     *  Return whether or not this context has any undo MoML to be processed
+     *  Return whether or not this context has any undo MoML to be processed.
      *
-     * @return    Description of the Returned Value
+     *  @return true if this context has any undo MoML to be processed.
      */
     public boolean hasUndoMoML() {
         return _undoMoML.length() > 0;
     }
 
     /**
-     *  Get whether or not child nodes need to generate MoML
+     *  Return whether or not child nodes need to generate MoML.
      *
-     * @return    The ChildrenUndoable value
+     *  @return true if this context has undoable children.
      */
     public boolean hasUndoableChildren() {
         return _childrenUndoable;
@@ -202,25 +202,27 @@ public class UndoContext {
 
 
     /**
-     *  Tells if the current context is undoable or not
+     *  Tells if the current context is undoable or not.
      *
-     * @return    The Undoable value
+     *  @return true if this context is undoable.
      */
     public boolean isUndoable() {
         return _undoable;
     }
 
     /**
-     *  Generate and append undo MoML to move the current context. This is done
-     *  by generating a new entity element that makes the difference between the
-     *  passed in container and containee objects. <p>
+     *  Generate and append undo MoML to move the current
+     *  context. This is done by generating a new entity element that
+     *  makes the difference between the passed in container and
+     *  containee objects.
      *
-     *  For example, if the container has full name ".top" and the containee has
-     *  a full name ".top.a.b.c.d", then MoML to move down the model such as the
-     *  following is generated: <entity name="a.b.c" >
+     *  <p>For example, if the container has full name ".top" and the
+     *  containee has a full name ".top.a.b.c.d", then MoML to move
+     *  down the model such as the following is generated: <entity
+     *  name="a.b.c" >
      *
-     * @param  container  The container to move relative to
-     * @param  containee  The containee who is contained by the container
+     * @param container The container to move relative to
+     * @param containee The containee who is contained by the container
      */
     public void moveContextStart(NamedObj container,
             NamedObj containee) {
@@ -234,17 +236,14 @@ public class UndoContext {
         }
     }
 
-    /**
-     *  Generate and append undo MoML to move the current context. This is done
-     *  by generating a new entity element that makes the difference between the
-     *  passed in container and containee objects. <p>
+    /** Generate and append closing MoML for the current move.
      *
-     *  For example, if the container has full name ".top" and the containee has
-     *  a full name ".top.a.b.c.d", then MoML to move down the model such as the
-     *  following is generated: <entity name="a.b.c" >
+     *  <p>For example, if the containee is not already immediately
+     *  contained, and the container is an entity, the </entity>
+     *  is appended to the model.
      *
-     * @param  container  The container to move relative to
-     * @param  containee  The containee who is contained by the container
+     * @param container The container to move relative to.
+     * @param containee The containee who is contained by the container.
      */
     public void moveContextEnd(NamedObj container,
             NamedObj containee) {
@@ -266,6 +265,8 @@ public class UndoContext {
      * @param  entry  Description of Parameter
      */
     public void pushUndoEntry(String entry) {
+        // FIXME: Should we set _childrenUndoable = true here?
+        // If we push an undo child entry, then is it always undoable?
         _undoChildEntries.push(entry);
     }
 
@@ -287,6 +288,17 @@ public class UndoContext {
         _undoable = isUndoable;
     }
 
+    /** Return a string representation of this object */
+    public String toString() {
+        return "UndoContext: "
+            + (isUndoable() ? "are" : "are not") 
+            + " undoable and "
+            + (hasUndoableChildren() ? "has" : "does not have") 
+            + " undoable children\n"
+            + "undoMoML: " + getUndoMoML() + "\n"
+            + "closingUndoMoML: " + _closingUndoMoML.toString() + "\n";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -296,11 +308,12 @@ public class UndoContext {
      *  element name is needed to move down the hierarchy so that the containee
      *  can be referred to by an immediate name.
      *
-     * @param  container  Description of Parameter
-     * @param  containee  Description of Parameter
-     * @return            Description of the Returned Value
+     * @param container The container.
+     * @param containee The containee.
+     * @return the relative context.
      */
-    private String _getRelativeContext(NamedObj container, NamedObj containee) {
+    private String _getRelativeContext(NamedObj container,
+            NamedObj containee) { 
         // First get the full name of the containee relative to the
         // container
         String relativeName = containee.getName(container);
@@ -308,22 +321,23 @@ public class UndoContext {
         if (lastDotIndex == -1) {
             // already is immediately contained, so no extra context needed
             return null;
-        }
-        else {
+        } else {
             return relativeName.substring(0, lastDotIndex);
         }
     }
 
     /**
-     *  Return the MoML element name to use for a containing context for the
-     *  passed in NamedObj. This is used with the moveContextStart() method to
-     *  determine the type of containing element. The type of containing element
-     *  is used to move the context when relative names are used that go down
-     *  more than one level.
+     *  Return the MoML element name to use for a containing context
+     *  for the passed in NamedObj. This is used with the
+     *  moveContextStart() method to determine the type of containing
+     *  element. The type of containing element is used to move the
+     *  context when relative names are used that go down more than
+     *  one level.
      *
-     * @param  named  the object whose containing context needs to be determined
-     * @return        the MoML element name of the containing context, or null
-     *      if the argument was null
+     * @param named the object whose containing context needs to be
+     * determined.
+     * @return the MoML element name of the containing context, or null
+     * if the argument was null.
      */
     private String _getContainingContextType(NamedObj named) {
         if (named == null) {
@@ -332,17 +346,13 @@ public class UndoContext {
         Nameable container = named.getContainer();
         if (container instanceof Entity) {
             return "entity";
-        }
-        else if (container instanceof Port) {
+        } else if (container instanceof Port) {
             return "port";
-        }
-        else if (container instanceof Relation) {
+        } else if (container instanceof Relation) {
             return "relation";
-        }
-        else if (container instanceof Attribute) {
+        } else if (container instanceof Attribute) {
             return "property";
-        }
-        else {
+        } else {
             return null;
         }
     }
