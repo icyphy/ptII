@@ -48,7 +48,8 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 proc testJNI {modelbase} {
-    puts "Running $modelbase"
+    puts "Generating JNI for $modelbase" 
+    set parser [java::new ptolemy.moml.MoMLParser]
     # Read in the model
     set parser [java::new ptolemy.moml.MoMLParser]
 
@@ -57,7 +58,13 @@ proc testJNI {modelbase} {
 
     # Create the JNI files and compile them
     java::call jni.JNIUtilities generateJNI $toplevel
-    
+
+    runModel $modelbase
+}
+
+proc runModel {modelbase} {
+    puts "Running $modelbase"
+    set parser [java::new ptolemy.moml.MoMLParser]
     set namedObj [$parser parseFile "./$modelbase.xml"]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
@@ -68,9 +75,7 @@ proc testJNI {modelbase} {
     
     $toplevel setManager $manager
     $manager execute
-
 }
-
 
 ######################################################################
 ####
@@ -87,7 +92,7 @@ test meaningOfLife-1.1 {Run a simple JNI model} {
     puts "[exec make shared SHAREDBASE=meaningOfLife]"
     testJNI meaningOfLife
 } {}
-exit
+
 test meaningOfLife-1.2 {A native function that takes an int and a float } {
     # Create the shared library that has the code we want
     puts "Running 'make shared'"
