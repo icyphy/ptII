@@ -276,6 +276,22 @@ public class Schedule extends ScheduleElement {
 	return(_schedule.size());
     }
 
+    /**
+     * Output a string representation of this Schedule.
+     */
+    public String toString() {
+        String result = "Execute Schedule{\n";
+        Iterator i = iterator();
+        while(i.hasNext()) {
+            ScheduleElement e = (ScheduleElement)i.next();
+            result += e + "\n";
+        }
+        result += "}";
+        if(getIterationCount() > 1)
+            result += " " + getIterationCount() + " times";
+        return result;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
