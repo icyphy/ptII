@@ -109,7 +109,7 @@ public class NamedList implements Cloneable, Serializable {
         String newName = element.getName();
         if (newName == null) {
             throw new IllegalActionException(_container,
-                    _nullNameExceptionString);
+                    _NULL_NAME_EXCEPTION_STRING);
         }
         if( get(newName) == null ) {
             _namedlist.insertLast(element);
@@ -303,7 +303,7 @@ public class NamedList implements Cloneable, Serializable {
             throws IllegalActionException, NameDuplicationException {
         if( element.getName() == null ) {
             throw new IllegalActionException(_container,
-                    _nullNameExceptionString);
+                    _NULL_NAME_EXCEPTION_STRING);
         } else if (get(element.getName()) == null) {
             _namedlist.insertAt(index, element);
             return;
@@ -321,6 +321,6 @@ public class NamedList implements Cloneable, Serializable {
     private LinkedList _namedlist = new LinkedList();
 
     // Constant strings.
-    private static final String _nullNameExceptionString =
+    private static final String _NULL_NAME_EXCEPTION_STRING =
     "Attempt to add an object with a null name to a NamedList.";
 }
