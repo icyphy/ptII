@@ -86,8 +86,5 @@ install: all
 demo:
 	CLASSPATH="$(CLASSPATH)" appletviewer DiningPhilosophers.htm
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

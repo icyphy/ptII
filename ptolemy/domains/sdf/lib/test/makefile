@@ -98,8 +98,5 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 time: Time.class
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.lib.test.Time
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

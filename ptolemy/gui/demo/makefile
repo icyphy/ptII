@@ -77,8 +77,5 @@ demo:	all
 	CLASSPATH=$(CLASSPATH) appletviewer QueryApplet.htm
 	CLASSPATH=$(CLASSPATH) java ptolemy.gui.demo.FileChooserQuery
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

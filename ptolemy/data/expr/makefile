@@ -134,9 +134,6 @@ all:  $(OPTIONAL_JSRCS) $(JCLASS)
 install: $(PTCLASSJAR)
 
 
-depend:
-	@echo "no dependencies in this directory"
-
 $(OPTIONAL_JSRCS): PtParser.java MatrixParser.java
 
 # Uncomment this to work on the parser.

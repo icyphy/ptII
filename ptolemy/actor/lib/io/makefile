@@ -80,9 +80,6 @@ all: jclass
 install: jclass jars
 
 
-depend:
-	@echo "no dependencies in this directory"
-
 #demo: $(JCLASS)
 #	# Download the nqc program
 #	nqc -d tank.nqc

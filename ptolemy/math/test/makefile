@@ -114,8 +114,5 @@ test_jdmm:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleMatrixMath.tcl
 test_jsp: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) SignalProcessing.tcl
 	  $(JTCLSH) SignalProcessing.tcl
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -89,8 +89,5 @@ demo_applet: $(PTCLASSJAR)
 demo_application: $(PTCLASSJAR)
 	./NonlinearClientApplication
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

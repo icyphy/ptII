@@ -99,9 +99,6 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-depend:
-	@echo "no dependencies in this directory"
-
 # The -d $(ROOT) is necessary for the rmic that ships with JDK1.3
 
 CarInformationSubscriber_Stub.class: CarInformationSubscriber.java

@@ -124,9 +124,6 @@ all: ptinvoke
 install: all
 	-chmod a+x $(SHELL_FILES) $(BAT_FILES)
 
-depend:
-	@echo "no dependencies in this directory"
-
 demo: all
 
 ptinvoke: ptinvoke.in ../config.status

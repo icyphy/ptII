@@ -71,9 +71,6 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 docs: javadocs
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Include the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 

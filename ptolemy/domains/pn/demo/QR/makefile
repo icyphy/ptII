@@ -102,8 +102,5 @@ QRCompile.jar: $(JSRCS) $(JCLASS) makefile
 		$(ME)/$@ \
 		$(ME)/*.class)
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -79,9 +79,6 @@ install: jclass jars $(PTPACKAGE)Windows.jar
 	@echo "for hosts that might not have gcc installed"
 	cp $(PTPACKAGE).jar $(PTPACKAGE)Windows.jar $(ROOT)/lib
 
-depend:
-	@echo "no dependencies in this directory"
-
 clean: ptmatlab_clean
 
 # Get the rest of the rules

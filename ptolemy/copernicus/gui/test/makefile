@@ -101,8 +101,5 @@ compile_rampFileWriter:
 run_rampFileWriter:
 	(cd $(ROOT)/cg/rampFileWriter; \
 		"$(JAVA)" -classpath ../.. cg.rampFileWriter.CG_Main)
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

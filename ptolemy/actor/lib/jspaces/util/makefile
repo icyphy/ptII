@@ -92,8 +92,5 @@ install: jclass jars
 #	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
 #		ptolemy.actor.lib.jspaces.$(PTPACKAGE).ServiceFinderListener
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -70,9 +70,6 @@ all: jclass
 
 install: all
 
-depend:
-	@echo "no dependencies in this directory"
-
 demo: demo1 demo2 demo3 demo4 demo5
 demo1: CapabilitiesTest.class
 	$(JAVA) -classpath . CapabilitiesTest

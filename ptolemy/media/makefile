@@ -82,9 +82,6 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 
-depend:
-	@echo "no dependencies in this directory"
-
 sound:
 	$(JAVA) -classpath $(CLASSPATH) ptolemy.plot.apps.Sound
 

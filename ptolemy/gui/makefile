@@ -110,9 +110,6 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 
-depend:
-	@echo "no dependencies in this directory"
-
 exec: jclass
 	@echo "Running JTextAreaExec demo"
 	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.gui.JTextAreaExec

@@ -189,8 +189,5 @@ demo_momlsimple:
 	 "$(JAVA)" ptolemy.actor.gui.MoMLSimpleApplication \
 		$(ROOT)/ptolemy/actor/gui/test/test.xml
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

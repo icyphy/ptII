@@ -68,8 +68,5 @@ demo: jclass
 		-class ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
 		-iterations 50
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -74,9 +74,6 @@ OTHER_JARS = \
 
 all: jclass $(OTHER_JARS)
 install: all
-depend:
-	@echo "no dependencies in this directory"
-
 DSPApplication.jar: DSPApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)

@@ -94,8 +94,5 @@ test_jgraphical:
 	$(PTII)/bin/ptinvoke ptolemy.actor.gui.MoMLApplication HistogramPlotter.xml
 	$(PTII)/bin/ptinvoke ptolemy.actor.gui.MoMLApplication XYScope.xml
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

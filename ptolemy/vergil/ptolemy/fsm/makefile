@@ -130,8 +130,5 @@ vergil:
 vergildebug:
 	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE ptolemy.vergil.VergilApplication
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

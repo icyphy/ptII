@@ -79,9 +79,6 @@ all: jclass demosPtiny.htm
 install: all jars
 	@echo "nothing need be done for make install in this directory"
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 demosPtiny.htm: demos.htm

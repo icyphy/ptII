@@ -131,8 +131,5 @@ $(ROOT)/ptolemy/data/expr/UtilityFunctions.class:
 $(ROOT)/ptolemy/data/expr/FixPointFunctions.class:
 	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) FixPointFunctions.class)
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

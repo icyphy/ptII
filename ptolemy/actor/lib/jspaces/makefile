@@ -94,9 +94,6 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-depend:
-	@echo "no dependencies in this directory"
-
 Subscriber_Stub.class: Subscriber.java
 	"$(RMIC)" -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.actor.lib.$(PTPACKAGE).Subscriber

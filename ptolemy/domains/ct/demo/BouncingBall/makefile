@@ -85,8 +85,5 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" BouncingBall.xml
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

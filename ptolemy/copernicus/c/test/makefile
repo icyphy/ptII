@@ -90,9 +90,6 @@ PTJACL_JFLAG = -Xms132m -Xmx132m
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Useful rule for quickly testing
 ptjacl:
 	$(JTCLSH)

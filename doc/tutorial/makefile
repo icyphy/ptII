@@ -89,9 +89,6 @@ all: jclass
 install: jclass jars
 
 
-depend:
-	@echo "no dependencies in this directory"
-
 demo: all
 	appletviewer TutorialApplet1.htm
 	appletviewer TutorialApplet2.htm

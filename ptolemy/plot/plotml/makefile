@@ -83,9 +83,6 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 
-depend:
-	@echo "no dependencies in this directory"
-
 demo: all
 
 # Get the rest of the rules

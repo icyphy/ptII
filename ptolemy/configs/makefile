@@ -98,9 +98,6 @@ all: jclass
 install: jclass jars
 	@echo "nothing need be done for make install in this directory"
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 

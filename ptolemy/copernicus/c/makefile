@@ -80,9 +80,6 @@ all: jclass
 
 install: all
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Leave out the demo for now. Tests are in test/.
 # demo: jclass
 # (cd demo/SimpleAdd; $(MAKE) demo)

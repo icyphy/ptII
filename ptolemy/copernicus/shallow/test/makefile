@@ -92,9 +92,6 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-depend:
-	@echo "no dependencies in this directory"
-
 # 'make ptjacl' will start up jacl with the proper classpath
 ptjacl:
 	$(JTCLSH)

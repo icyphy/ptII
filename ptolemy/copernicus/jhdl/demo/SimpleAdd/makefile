@@ -68,9 +68,6 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-depend:
-	@echo "no dependencies in this directory"
-
 TARGETPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd.cg
 SOURCEPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
 MODEL = SimpleAddSystem

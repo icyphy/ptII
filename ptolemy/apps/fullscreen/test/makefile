@@ -105,8 +105,5 @@ demo: jclass
 		$(JAVA) -Dptolemy.ptII.dir=$(ROOT) ptolemy.apps.fullscreen.test.MultiBufferTest 2
 
 
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

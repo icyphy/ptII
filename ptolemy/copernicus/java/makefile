@@ -94,9 +94,6 @@ all: jclass
 
 install: all
 
-depend:
-	@echo "no dependencies in this directory"
-
 demo: compileDemo runDemo
 timeDemo: compileDemo timeOrthoCommDemo
 
