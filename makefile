@@ -134,7 +134,8 @@ KRUFT = \
 	vergilDSP.jnlp \
 	vergilHyVisual.jnlp \
 	vergilPtiny.jnlp \
-	vergilPtinySandbox.jnlp
+	vergilPtinySandbox.jnlp \
+	ptKeystore
 
 # Files to be removed by 'make distclean'
 DISTCLEAN_STUFF = \
