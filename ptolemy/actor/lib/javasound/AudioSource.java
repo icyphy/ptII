@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
