@@ -148,7 +148,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Transition tr;
         
         // only check transition during event generating phase.
-        if (isEventGeneratingPhase()) {
+        if (isFiringEventGeneratorsPhase()) {
             tr = _ctrl._chooseTransition(_st.preemptiveTransitionList());
         } else {
             tr = null;
@@ -198,7 +198,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _ctrl._readOutputsFromRefinement();
 
         // only check transition during event generating phase.
-        if (isEventGeneratingPhase()) {
+        if (isFiringEventGeneratorsPhase()) {
             // Note that the output actions associated with the transition
             // are executed.
             tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
@@ -803,8 +803,14 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public boolean isFiringEventGeneratorsPhase() {
         CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isFiringEventGeneratorsPhase();
+        Director exe = container.getExecutiveDirector();
+        // NOTE: Only CTDirector distinguish Continuous phase execution and 
+        // Discrete phase executions. 
+        if (exe instanceof CTGeneralDirector) {
+            return ((CTGeneralDirector)exe).isFiringEventGeneratorsPhase();
+        } else {
+            return true;
+        }
     }
 
     /* (non-Javadoc)
@@ -823,6 +829,15 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         CompositeActor container = (CompositeActor)getContainer();
         CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
         return exe.isFiringStateTransitionActorsPhase();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#getIterationBeginTime()
+     */
+    public Time getIterationBeginTime() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.getIterationBeginTime();
     }
 
 }
