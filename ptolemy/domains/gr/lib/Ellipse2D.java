@@ -45,7 +45,7 @@ after the figure has been displayed.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Ellipse2D extends RectangularFigure2D {
 
