@@ -36,6 +36,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -330,13 +331,39 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    // Identify the URI from which the model was read
 			    // by inserting an attribute into both the model
 			    // and the effigy.
-			    URIAttribute uri =
+			    URIAttribute uriAttribute =
                                 new URIAttribute(toplevel, "_uri");
-			    uri.setURI(new URI(input.toExternalForm()));
-
+			    URI inputURI = null;
+			    try {
+				inputURI = new URI(input.toExternalForm());
+			    } catch (java.net.URISyntaxException ex) {
+				// This is annoying, if the input has a space
+				// in it, then we cannot create a URI,
+				// but we could create a URL.
+				// If, under Windows, we call
+				// File.createTempFile(), then we are likely
+				// to get a pathname that has space.
+				// FIXME: Note that jar urls will barf if there
+				// is a %20 instead of a space.  This could
+				// cause problems in Web Start
+				String inputExternalFormFixed = StringUtilities
+				    .substitute(input.toExternalForm(),
+						" ", "%20");
+				try {
+				    inputURI = new URI(inputExternalFormFixed);
+				} catch (Exception ex2) {
+				    throw new Exception("Failed to generate "
+							+ "a URI from '"
+							+ input.toExternalForm()
+							+ "' and from '"
+							+ inputExternalFormFixed
+							+ "'", ex);
+				}
+			    }
+			    uriAttribute.setURI(inputURI);
 			    // This is used by TableauFrame in its
 			    //_save() method.
-			    effigy.uri.setURI(new URI(input.toExternalForm()));
+			    effigy.uri.setURI(inputURI);
 
 			    return effigy;
 			} else {
