@@ -40,9 +40,9 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** An object that encapsulates a type policy.
- *
- *  @author Jeff Tsay
- */
+@author Jeff Tsay
+@version $Id$
+*/
 public class TypePolicy implements JavaStaticSemanticConstants {
 
     public TypePolicy() {
@@ -64,7 +64,8 @@ public class TypePolicy implements JavaStaticSemanticConstants {
         return type;
     }
 
-    public TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
+    public TypeNode arithPromoteType(final TypeNode type1,
+            final TypeNode type2) {
         int kind1 = _typeID.kind(type1);
         int kind2 = _typeID.kind(type2);
 
@@ -128,7 +129,8 @@ public class TypePolicy implements JavaStaticSemanticConstants {
 
     /** Return true if TypeNameNodes tn1 and tn2 are identical. */
     public boolean compareTypeNames(TypeNameNode tn1, TypeNameNode tn2) {
-        return (JavaDecl.getDecl((NamedNode) tn1) == JavaDecl.getDecl((NamedNode) tn2));
+        return (JavaDecl.getDecl((NamedNode) tn1) ==
+                JavaDecl.getDecl((NamedNode) tn2));
     }
 
     /** Return true if two methods conflict, i.e. they have the same
@@ -186,17 +188,21 @@ public class TypePolicy implements JavaStaticSemanticConstants {
     public boolean isAssignableFromConstant(TypeNode type, ExprNode expr) {
         switch (_typeID.kind(type)) {
         case TypeIdentifier.TYPE_KIND_BYTE:
-            return ExprUtility.isIntConstant(expr, Byte.MIN_VALUE, Byte.MAX_VALUE);
+            return ExprUtility.isIntConstant(expr,
+                    Byte.MIN_VALUE, Byte.MAX_VALUE);
 
         case TypeIdentifier.TYPE_KIND_CHAR:
-            return ExprUtility.isIntConstant(expr, Character.MIN_VALUE, Character.MAX_VALUE);
+            return ExprUtility.isIntConstant(expr,
+                    Character.MIN_VALUE, Character.MAX_VALUE);
 
         case TypeIdentifier.TYPE_KIND_SHORT:
-            return ExprUtility.isIntConstant(expr, Short.MIN_VALUE, Short.MAX_VALUE);
+            return ExprUtility.isIntConstant(expr,
+                    Short.MIN_VALUE, Short.MAX_VALUE);
 
             // not in Titanium ..
         case TypeIdentifier.TYPE_KIND_INT:
-            return ExprUtility.isIntConstant(expr, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            return ExprUtility.isIntConstant(expr,
+                    Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
         return false;
     }
@@ -284,7 +290,8 @@ public class TypePolicy implements JavaStaticSemanticConstants {
 
     /** Return true iff type is a reference type. */
     public boolean isReferenceType(TypeNode type)  {
-        return ((type == NullTypeNode.instance) || (type instanceof TypeNameNode));
+        return ((type == NullTypeNode.instance) ||
+                (type instanceof TypeNameNode));
     }
 
 
@@ -368,7 +375,8 @@ public class TypePolicy implements JavaStaticSemanticConstants {
      *  comparison is made between references only, so this only works for
      *  primitive types (which are singletons).
      */
-    protected static final boolean _isOneOf(TypeNode type, TypeNode[] typeArray) {
+    protected static final boolean _isOneOf(TypeNode type,
+            TypeNode[] typeArray) {
         for (int i = 0; i < typeArray.length; i++) {
             if (typeArray[i] == type) {
                 return true;
@@ -381,8 +389,8 @@ public class TypePolicy implements JavaStaticSemanticConstants {
 
     protected static final TypeNode[] _ARITH_TYPES = new TypeNode[]
         { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
-              IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
-              DoubleTypeNode.instance };
+              IntTypeNode.instance, LongTypeNode.instance,
+              FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _FLOAT_TYPES = new TypeNode[]
         { FloatTypeNode.instance, DoubleTypeNode.instance };
@@ -391,42 +399,54 @@ public class TypePolicy implements JavaStaticSemanticConstants {
         { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
               IntTypeNode.instance, LongTypeNode.instance };
 
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BOOL = new TypeNode[]
-        { BoolTypeNode.instance };
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BOOL =
+        new TypeNode[] { BoolTypeNode.instance };
 
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BYTE = new TypeNode[]
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BYTE =
+        new TypeNode[]
         { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
-              IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
+              IntTypeNode.instance, LongTypeNode.instance,
+              FloatTypeNode.instance, DoubleTypeNode.instance };
+
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_CHAR =
+        new TypeNode[]
+        { ShortTypeNode.instance, CharTypeNode.instance, IntTypeNode.instance,
+              LongTypeNode.instance, FloatTypeNode.instance,
               DoubleTypeNode.instance };
 
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_CHAR = new TypeNode[]
-        { ShortTypeNode.instance, CharTypeNode.instance, IntTypeNode.instance,
-              LongTypeNode.instance, FloatTypeNode.instance, DoubleTypeNode.instance };
-
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_SHORT = new TypeNode[]
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_SHORT =
+        new TypeNode[]
         { ShortTypeNode.instance, IntTypeNode.instance, LongTypeNode.instance,
               FloatTypeNode.instance, DoubleTypeNode.instance };
 
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_INT = new TypeNode[]
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_INT =
+        new TypeNode[]
         { IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
               DoubleTypeNode.instance };
 
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_LONG = new TypeNode[]
-        { LongTypeNode.instance, FloatTypeNode.instance, DoubleTypeNode.instance };
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_LONG =
+        new TypeNode[]
+        { LongTypeNode.instance, FloatTypeNode.instance,
+              DoubleTypeNode.instance };
 
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_FLOAT = new TypeNode[]
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_FLOAT =
+        new TypeNode[]
         { FloatTypeNode.instance, DoubleTypeNode.instance };
 
-    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_DOUBLE = new TypeNode[]
+    protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_DOUBLE =
+        new TypeNode[]
         { DoubleTypeNode.instance };
 
     /** An uneven matrix of primitive types that may be assigned to a
      *  primitive type, the kind of which is the first array index.
      */
-    protected static final TypeNode[][] _TYPES_ASSIGNABLE_TO = new TypeNode[][]
+    protected static final TypeNode[][] _TYPES_ASSIGNABLE_TO =
+        new TypeNode[][]
         {
-            _TYPES_ASSIGNABLE_TO_BOOL, _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_SHORT,
-                _TYPES_ASSIGNABLE_TO_CHAR, _TYPES_ASSIGNABLE_TO_INT, _TYPES_ASSIGNABLE_TO_LONG,
+            _TYPES_ASSIGNABLE_TO_BOOL, _TYPES_ASSIGNABLE_TO_BYTE,
+                _TYPES_ASSIGNABLE_TO_SHORT,
+                _TYPES_ASSIGNABLE_TO_CHAR, _TYPES_ASSIGNABLE_TO_INT,
+                _TYPES_ASSIGNABLE_TO_LONG,
                 _TYPES_ASSIGNABLE_TO_FLOAT, _TYPES_ASSIGNABLE_TO_DOUBLE
                 };
 }
