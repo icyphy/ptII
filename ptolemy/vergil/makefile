@@ -54,6 +54,7 @@ PTAUXALLJARS = \
 		fsm/fsm.jar \
 		icon/icon.jar \
 		kernel/kernel.jar \
+		ptdb/ptdb.jar \
 		toolbox/toolbox.jar
 
 # All the .class files necessary to run a Vergil applet
