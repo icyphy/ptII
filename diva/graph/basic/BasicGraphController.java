@@ -31,7 +31,6 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
 import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.BasicEdgeController;
 import diva.graph.BasicNodeController;
 import diva.graph.EdgeCreator;

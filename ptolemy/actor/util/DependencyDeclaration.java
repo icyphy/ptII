@@ -29,14 +29,12 @@
 
 package ptolemy.actor.util;
 
+import java.util.List;
+
 import ptolemy.data.expr.Variable;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DependencyDeclaration

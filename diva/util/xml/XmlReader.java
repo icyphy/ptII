@@ -34,12 +34,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import diva.resource.DefaultBundle;
-import diva.util.LoggableOp;
-
 import com.microstar.xml.XmlException;
 import com.microstar.xml.XmlHandler;
 import com.microstar.xml.XmlParser;
+
+import diva.resource.DefaultBundle;
+import diva.util.LoggableOp;
 
 /**
  * An XmlReader reads a character stream and constructs the internal

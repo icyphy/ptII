@@ -32,10 +32,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.c;
 
+import java.io.IOException;
+
 import soot.Scene;
 import soot.SootClass;
-
-import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC

@@ -29,6 +29,11 @@ COPYRIGHTENDKEY
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 // Ptolemy imports.
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -40,11 +45,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// Philosopher in the Dining Philosophers demo.

@@ -37,9 +37,9 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.Enumeration;
 
-import diva.util.LoggableOp;
-
 import com.microstar.xml.XmlParser;
+
+import diva.util.LoggableOp;
 
 /**
  * Given a tree of XmlElements, an object of this class generates

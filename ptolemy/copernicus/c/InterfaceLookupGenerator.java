@@ -26,11 +26,11 @@
 
 package ptolemy.copernicus.c;
 
-import soot.SootClass;
-import soot.SootMethod;
-
 import java.util.HashMap;
 import java.util.Iterator;
+
+import soot.SootClass;
+import soot.SootMethod;
 
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceLookupGenerator

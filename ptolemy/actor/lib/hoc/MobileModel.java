@@ -27,26 +27,33 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.hoc;
 
-import ptolemy.actor.*;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-
-import java.util.Iterator;
-import java.io.IOException;
-import java.io.Writer;
-import java.io.StringWriter;
-import java.lang.reflect.Constructor;
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel

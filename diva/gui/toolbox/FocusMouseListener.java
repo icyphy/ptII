@@ -26,8 +26,8 @@
 package diva.gui.toolbox;
 
 import java.awt.Component;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * A mouse listener that requests focus for the source of any

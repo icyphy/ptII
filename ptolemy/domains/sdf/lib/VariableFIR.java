@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;

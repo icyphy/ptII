@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.lib;
 
+import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IORelation;
@@ -45,8 +47,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousTransferFunction

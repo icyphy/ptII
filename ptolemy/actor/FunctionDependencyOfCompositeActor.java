@@ -29,11 +29,11 @@
 
 package ptolemy.actor;
 
-import ptolemy.graph.DirectedGraph;
-import ptolemy.kernel.util.InternalErrorException;
-
 import java.util.Iterator;
 import java.util.List;
+
+import ptolemy.graph.DirectedGraph;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor

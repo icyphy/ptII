@@ -25,12 +25,13 @@
  */
 package diva.util.test;
 
-import diva.util.jester.*;
-import diva.util.xml.*;
+import java.util.TreeMap;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.util.*;
+import diva.util.jester.TestCase;
+import diva.util.jester.TestFailedException;
+import diva.util.jester.TestHarness;
+import diva.util.jester.TestSuite;
+import diva.util.xml.XmlElement;
 
 /**
  * A test suite for XmlElement

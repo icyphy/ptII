@@ -24,9 +24,11 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.toolbox;
-import diva.graph.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import diva.graph.GraphEvent;
+import diva.graph.GraphListener;
 
 /**
  * A logger of graph events.  Every event that is sent

@@ -29,6 +29,10 @@ COPYRIGHTENDKEY
 package ptolemy.chic;
 
 // Ptolemy imports
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -39,12 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
-
-// Chic imports
 import chic.ChicForPtolemy;
-
-// Java imports
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChicInvoker

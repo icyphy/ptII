@@ -28,8 +28,6 @@
 */
 package ptolemy.domains.gr.lib;
 
-import java.awt.geom.RoundRectangle2D;
-
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

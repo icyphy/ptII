@@ -28,12 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.gr.lib;
 
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.awt.Font;
 
 import javax.media.j3d.Font3D;
@@ -41,6 +35,12 @@ import javax.media.j3d.FontExtrusion;
 import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Text3D;
+
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextString3D

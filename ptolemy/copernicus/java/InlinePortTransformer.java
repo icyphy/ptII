@@ -43,7 +43,6 @@ import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
-
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.PhaseOptions;

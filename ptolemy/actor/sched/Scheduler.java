@@ -29,6 +29,9 @@ FIXME: Caching should move into StaticSchedulingDirector.
 
 package ptolemy.actor.sched;
 
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -40,9 +43,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler

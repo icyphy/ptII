@@ -31,6 +31,14 @@
 package ptolemy.apps.cacheAwareScheduler.kernel;
 
 // Ptolemy imports
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -41,12 +49,12 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.apps.cacheAwareScheduler.lib.ExperimentalActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFUtilities;
-import ptolemy.apps.cacheAwareScheduler.lib.ExperimentalActor;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -54,17 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Fraction;
 import ptolemy.math.ExtendedMath;
-
-// JAVA imports
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import ptolemy.math.Fraction;
 
 ////////////////////////////////////////////////////////////////////////////
 //// CacheAwareScheduler

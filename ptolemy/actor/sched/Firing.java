@@ -28,14 +28,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.sched;
 
-import ptolemy.actor.Actor;
-
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import ptolemy.actor.Actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// Firing

@@ -30,11 +30,9 @@
 
 package ptolemy.apps.cacheAwareScheduler.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;

@@ -28,22 +28,18 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.tree;
 
-import diva.canvas.Figure;
-import diva.graph.GraphController;
-import diva.gui.toolbox.JContextMenu;
-import diva.gui.toolbox.MenuFactory;
-
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.toolbox.*;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.tree.*;
+import javax.swing.tree.TreePath;
+
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
 //// PTreeMenuCreator

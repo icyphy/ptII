@@ -30,7 +30,6 @@ Review transferOutputs().
 package ptolemy.domains.hde.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;

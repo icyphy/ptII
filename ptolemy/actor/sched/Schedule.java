@@ -28,14 +28,14 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.sched;
 
-import ptolemy.actor.Actor;
-import ptolemy.kernel.util.InternalErrorException;
-
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import ptolemy.actor.Actor;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Schedule

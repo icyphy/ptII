@@ -48,9 +48,9 @@ import javax.swing.event.ListDataListener;
 
 import diva.gui.AppContext;
 import diva.gui.Application;
-import diva.gui.GUIUtilities;
-import diva.gui.DocumentFactory;
 import diva.gui.Document;
+import diva.gui.DocumentFactory;
+import diva.gui.GUIUtilities;
 import diva.gui.StoragePolicy;
 import diva.gui.View;
 import diva.gui.toolbox.ListDataModel;

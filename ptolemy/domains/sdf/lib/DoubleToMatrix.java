@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;

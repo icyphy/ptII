@@ -29,16 +29,16 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.dde.kernel;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper

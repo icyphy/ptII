@@ -24,9 +24,8 @@
                                         COPYRIGHTENDKEY
  */
 package diva.util.test;
-import diva.util.jester.*;
-
-import java.awt.*;
+import diva.util.jester.TestHarness;
+import diva.util.jester.TestSuite;
 
 
 /**

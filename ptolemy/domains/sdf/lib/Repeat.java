@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;

@@ -25,8 +25,8 @@
  */
 package diva.canvas.interactor;
 
-import diva.canvas.Site;
 import diva.canvas.Figure;
+import diva.canvas.Site;
 
 /**
  * A grab handle for manipulating figures and so on. Grab-handles

@@ -25,12 +25,11 @@
  */
 package diva.gui.toolbox;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 
 /**
  * A status bar for displaying at the bottom of typical applications.

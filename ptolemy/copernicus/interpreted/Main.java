@@ -27,17 +27,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.interpreted;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.MakefileWriter;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import soot.Pack;
 import soot.PackManager;
-import soot.Scene;
-import soot.Transform;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main

@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.util.NamedObj;
-
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -41,7 +39,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.UIManager;
+
+import ptolemy.kernel.util.NamedObj;
 
 /**
    A transferable object that contains a local JVM reference to a

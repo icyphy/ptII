@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.callgraph.*;
-
 import java.io.FileWriter;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,6 +35,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import soot.HasPhaseOptions;
+import soot.Hierarchy;
+import soot.PhaseOptions;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.CastExpr;
+import soot.jimple.InstanceOfExpr;
+import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.Edge;
+import soot.jimple.toolkits.callgraph.EdgePredicate;
+import soot.jimple.toolkits.callgraph.EntryPoints;
+import soot.jimple.toolkits.callgraph.Filter;
+import soot.jimple.toolkits.callgraph.ReachableMethods;
 
 
 //////////////////////////////////////////////////////////////////////////

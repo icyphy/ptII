@@ -37,7 +37,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.Entity;
-
 import soot.Body;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;

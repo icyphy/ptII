@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.moml;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;

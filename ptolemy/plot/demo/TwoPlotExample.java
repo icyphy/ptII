@@ -29,8 +29,6 @@ package ptolemy.plot.demo;
 
 // This class is not in the ptolemy.plot package so that it is a
 // more realistic example.
-import ptolemy.plot.Plot;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
@@ -40,6 +38,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// TwoPlotExample

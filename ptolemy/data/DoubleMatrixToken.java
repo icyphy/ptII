@@ -38,9 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
-import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.DoubleArrayMath;
-import ptolemy.math.LongMatrixMath;
+import ptolemy.math.DoubleMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken

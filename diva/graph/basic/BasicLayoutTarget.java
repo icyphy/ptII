@@ -25,20 +25,21 @@
  */
 package diva.graph.basic;
 
-import diva.graph.layout.LayoutTarget;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.canvas.Figure;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+
 import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
 import diva.canvas.GraphicsPane;
 import diva.canvas.ZList;
 import diva.canvas.connector.Connector;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.layout.LayoutTarget;
+import diva.util.Filter;
 import diva.util.FilteredIterator;
 import diva.util.ProxyIterator;
-import diva.util.Filter;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
-import java.util.Iterator;
 
 /**
  * The basic set of information necessary to layout a graph: a mapping

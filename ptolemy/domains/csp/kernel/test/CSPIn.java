@@ -1,12 +1,12 @@
 package ptolemy.domains.csp.kernel.test;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
 import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
 
 /**
  * An actor that performs a concurrent read on its two input ports, trying to read exactly one

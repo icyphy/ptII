@@ -29,15 +29,6 @@
 
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.WallClockTime;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -46,6 +37,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.WallClockTime;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// ButtonTime

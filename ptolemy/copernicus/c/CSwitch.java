@@ -31,13 +31,18 @@
 
 package ptolemy.copernicus.c;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Stack;
+
 import soot.ArrayType;
-import soot.PrimType;
 import soot.ByteType;
 import soot.IntType;
 import soot.Local;
 import soot.LongType;
+import soot.PrimType;
 import soot.RefType;
+import soot.Scene;
 import soot.ShortType;
 import soot.SootClass;
 import soot.SootField;
@@ -45,7 +50,6 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
-import soot.Scene;
 import soot.jimple.AddExpr;
 import soot.jimple.AndExpr;
 import soot.jimple.ArrayRef;
@@ -111,10 +115,6 @@ import soot.jimple.ThrowStmt;
 import soot.jimple.UshrExpr;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.XorExpr;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Stack;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSwitch

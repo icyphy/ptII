@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.gui;
 
-import ptolemy.util.StringUtilities;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +34,8 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.util.StringUtilities;
 
 /** Execute commands in a subprocess.  This class does not use swing,
     for a graphical interface, see the derived class {@link JTextAreaExec}.

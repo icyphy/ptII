@@ -29,6 +29,12 @@
 */
 package ptolemy.caltrop.ddi.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import caltrop.interpreter.ChannelID;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ExprEvaluator;
@@ -36,12 +42,6 @@ import caltrop.interpreter.InterpreterException;
 import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.environment.Environment;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// DataMapEnvironment

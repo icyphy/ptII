@@ -25,11 +25,10 @@
  */
 package diva.util.xml;
 
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * CompositeBuilder is a non-validating parser that uses other

@@ -37,8 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 
-import java.util.Arrays;
-
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken
 /**

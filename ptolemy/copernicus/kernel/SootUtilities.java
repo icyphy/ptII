@@ -27,6 +27,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.kernel;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -34,9 +41,7 @@ import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.util.StringUtilities;
-
 import soot.ArrayType;
-import soot.PrimType;
 import soot.Body;
 import soot.BooleanType;
 import soot.ByteType;
@@ -49,6 +54,7 @@ import soot.Local;
 import soot.LongType;
 import soot.Modifier;
 import soot.NullType;
+import soot.PrimType;
 import soot.RefType;
 import soot.Scene;
 import soot.ShortType;
@@ -98,13 +104,6 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.util.Chain;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// SootUtilities

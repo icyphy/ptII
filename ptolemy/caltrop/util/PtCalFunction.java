@@ -29,12 +29,9 @@
 */
 package ptolemy.caltrop.util;
 
-import caltrop.interpreter.Function;
-import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.List;
+import caltrop.interpreter.Function;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtCalFunction

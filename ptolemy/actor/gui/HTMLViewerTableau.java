@@ -27,15 +27,15 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.gui;
 
+import java.io.IOException;
+import java.net.URL;
+
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.io.IOException;
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewerTableau

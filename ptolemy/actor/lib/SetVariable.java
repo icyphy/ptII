@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
@@ -44,9 +47,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
-
-import java.util.List;
-import java.util.ArrayList;
 
 //////////////////////////////////////////////////////////////////////////
 //// SetVariable

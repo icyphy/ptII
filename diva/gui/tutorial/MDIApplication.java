@@ -33,7 +33,6 @@ package diva.gui.tutorial;
 import java.util.HashMap;
 
 import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
 
 import diva.gui.Document;
 import diva.gui.MDIContext;

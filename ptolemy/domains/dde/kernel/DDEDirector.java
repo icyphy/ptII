@@ -30,6 +30,12 @@
 
 package ptolemy.domains.dde.kernel;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.CompositeProcessDirector;
@@ -44,12 +50,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector

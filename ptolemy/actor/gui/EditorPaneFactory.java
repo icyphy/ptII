@@ -29,16 +29,16 @@ COPYRIGHTENDKEY
 package ptolemy.actor.gui;
 
 // Ptolemy imports.
+import java.awt.Component;
+import java.util.Iterator;
+
+import javax.swing.JLabel;
+
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-
-import java.awt.Component;
-import java.util.Iterator;
-
-import javax.swing.JLabel;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorPaneFactory

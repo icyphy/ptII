@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.kernel.attributes;
 
+import java.awt.Shape;
+import java.awt.geom.Line2D;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -35,9 +38,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.awt.Shape;
-import java.awt.geom.Line2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineAttribute

@@ -32,8 +32,6 @@ package ptolemy.data.type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-import java.util.List;
-
 //////////////////////////////////////////////////////////////////////////
 //// Typeable
 /**

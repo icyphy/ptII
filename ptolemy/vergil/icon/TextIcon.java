@@ -30,9 +30,6 @@ package ptolemy.vergil.icon;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.lang.ref.WeakReference;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Iterator;
 
 import javax.swing.SwingConstants;

@@ -27,13 +27,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.domains.fsm.kernel.Transition;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.LinkedList;
-import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RelationList

@@ -24,12 +24,15 @@
                                         COPYRIGHTENDKEY
  */
 package diva.canvas.test;
-import diva.util.jester.*;
-
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
-
 import javax.swing.JFrame;
+
+import diva.canvas.CanvasPane;
+import diva.canvas.JCanvas;
+import diva.canvas.toolbox.BasicCanvasPane;
+import diva.util.jester.TestCase;
+import diva.util.jester.TestFailedException;
+import diva.util.jester.TestHarness;
+import diva.util.jester.TestSuite;
 
 /**
  * A test suite for JCanvas. This is fairly basic, and is

@@ -37,23 +37,18 @@ import java.io.IOException;
 import javax.media.jai.RenderedOp;
 
 import ptolemy.actor.lib.Sink;
-import ptolemy.actor.parameters.IntRangeParameter;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
+import ptolemy.util.MessageHandler;
 
 import com.sun.media.jai.codec.ImageCodec;
-import com.sun.media.jai.codec.ImageEncoder;
 import com.sun.media.jai.codec.ImageEncodeParam;
+import com.sun.media.jai.codec.ImageEncoder;
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIWriter

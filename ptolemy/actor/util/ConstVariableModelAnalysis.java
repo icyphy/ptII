@@ -27,31 +27,30 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.util;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import ptolemy.graph.*;
-import ptolemy.actor.Manager;
-import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.CompositeActor;
-import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.actor.Manager;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.ParseTreeFreeVariableCollector;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Edge;
+import ptolemy.graph.Node;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstVariableModelAnalysis

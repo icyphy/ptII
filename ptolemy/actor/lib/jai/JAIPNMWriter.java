@@ -29,25 +29,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.jai;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import javax.media.jai.RenderedOp;
-
-import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import com.sun.media.jai.codec.ImageCodec;
-import com.sun.media.jai.codec.ImageEncoder;
 import com.sun.media.jai.codec.PNMEncodeParam;
 
 //////////////////////////////////////////////////////////////////////////

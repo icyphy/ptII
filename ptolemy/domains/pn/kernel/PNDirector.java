@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.pn.kernel;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.CompositeProcessDirector;
@@ -41,9 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector

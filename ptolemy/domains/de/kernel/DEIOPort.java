@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.kernel;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
@@ -38,9 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.HashSet;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEIOPort

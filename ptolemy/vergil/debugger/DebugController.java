@@ -27,7 +27,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.debugger;
 
-import diva.canvas.Figure;
+import java.util.Hashtable;
+
+import javax.swing.SwingUtilities;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Executable;
@@ -42,10 +44,7 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
-
-import java.util.Hashtable;
-
-import javax.swing.SwingUtilities;
+import diva.canvas.Figure;
 
 ////////////////////////////////////////////////////////////////////////
 //// DebugController

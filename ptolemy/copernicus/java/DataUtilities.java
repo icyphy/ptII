@@ -28,20 +28,21 @@ COPYRIGHTENDKEY
 package ptolemy.copernicus.java;
 
 
-import java.util.*;
-import ptolemy.graph.InequalityTerm;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-
 import soot.Local;
-import soot.PrimType;
 import soot.RefType;
 import soot.SootClass;
 import soot.SootField;

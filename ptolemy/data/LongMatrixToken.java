@@ -36,8 +36,6 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.math.ComplexMatrixMath;
-import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.LongArrayMath;
 import ptolemy.math.LongMatrixMath;
 

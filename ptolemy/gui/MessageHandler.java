@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 package ptolemy.gui;
 
 // ptolemy.gui.CancelException is deprecated, use ptolemy.util.CancelException.
-import ptolemy.util.CancelException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -29,11 +29,11 @@
 
 package ptolemy.actor;
 
+import java.util.Iterator;
+
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
-
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfAtomicActor

@@ -34,12 +34,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.util.Attribute;
 import soot.Body;
 import soot.BooleanType;
 import soot.FastHierarchy;

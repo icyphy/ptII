@@ -31,11 +31,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.compat;
 
-import ptolemy.plot.CmdLineArgException;
-import ptolemy.plot.Plot;
-import ptolemy.plot.PlotApplication;
-import ptolemy.plot.PlotBox;
-
 import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,6 +39,11 @@ import java.net.URL;
 import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
+
+import ptolemy.plot.CmdLineArgException;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotApplication;
+import ptolemy.plot.PlotBox;
 
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphApplication

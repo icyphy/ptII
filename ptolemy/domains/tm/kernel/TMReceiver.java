@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.tm.kernel;
 
+import java.util.LinkedList;
+
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -40,8 +42,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TMReceiver

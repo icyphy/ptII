@@ -31,9 +31,9 @@ package ptolemy.vergil.actor;
 import java.awt.event.ActionEvent;
 
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Instantiable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;

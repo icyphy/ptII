@@ -27,15 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import javax.media.j3d.Node;
+import javax.media.j3d.Shape3D;
+
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import javax.media.j3d.Node;
-import javax.media.j3d.Shape3D;
 
 import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;

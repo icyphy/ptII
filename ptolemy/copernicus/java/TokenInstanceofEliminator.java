@@ -36,7 +36,6 @@ import java.util.Set;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.type.BaseType;
-
 import soot.Body;
 import soot.BodyTransformer;
 import soot.HasPhaseOptions;

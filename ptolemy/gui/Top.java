@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.gui;
 
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Event;
@@ -61,6 +58,9 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
+
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Top

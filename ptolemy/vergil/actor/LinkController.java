@@ -30,6 +30,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.actor;
 
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.moml.Vertex;
+import ptolemy.vergil.kernel.Link;
+import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.Connector;
@@ -49,18 +60,6 @@ import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.gui.toolbox.MenuCreator;
-
-import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.Vertex;
-import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// LinkController

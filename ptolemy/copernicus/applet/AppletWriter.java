@@ -28,28 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.applet;
 
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.copernicus.kernel.Copernicus;
-import ptolemy.copernicus.kernel.MakefileWriter;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.expr.UtilityFunctions;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.util.ClassUtilities;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.StringUtilities;
-
-import soot.HasPhaseOptions;
-import soot.PhaseOptions;
-import soot.SceneTransformer;
-
-import java.net.URL;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -60,11 +38,32 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.copernicus.kernel.Copernicus;
+import ptolemy.copernicus.kernel.MakefileWriter;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.expr.UtilityFunctions;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
+import soot.SceneTransformer;
 
 /**
    A transformer that writes an applet version of a model.

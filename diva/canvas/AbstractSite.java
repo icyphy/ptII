@@ -27,11 +27,8 @@
 
 package diva.canvas;
 
-import diva.canvas.Site;
-import diva.canvas.TransformContext;
-import diva.canvas.Figure;
-import java.awt.geom.Point2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 /** An abstract implementation of Site. This class provides default
  * implementations of several methods in the Site interface, to

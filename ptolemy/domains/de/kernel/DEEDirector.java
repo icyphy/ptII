@@ -36,6 +36,7 @@ package ptolemy.domains.de.kernel;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FunctionDependency;

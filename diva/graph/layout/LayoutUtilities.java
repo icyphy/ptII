@@ -24,10 +24,11 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.layout;
-import diva.graph.GraphModel;
-import diva.graph.GraphUtilities;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+
+import diva.graph.GraphModel;
+import diva.graph.GraphUtilities;
 
 /**
  * Miscellaneous utility routines used in layout.

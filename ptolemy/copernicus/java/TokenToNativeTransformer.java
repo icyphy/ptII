@@ -38,13 +38,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.type.Typeable;
-
-import ptolemy.copernicus.kernel.*;
-
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import soot.ArrayType;
 import soot.Body;
 import soot.BooleanType;

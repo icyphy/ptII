@@ -24,14 +24,14 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.basic;
-import diva.graph.*;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.AbstractConnector;
 import diva.canvas.connector.ArcConnector;
+import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.StraightConnector;
-import diva.canvas.connector.Arrowhead;
+import diva.graph.EdgeRenderer;
 
 /**
  * A basic implementation of the EdgeRenderer interface.

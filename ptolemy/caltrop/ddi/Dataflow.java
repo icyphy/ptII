@@ -29,6 +29,14 @@
 */
 package ptolemy.caltrop.ddi;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import ptolemy.actor.TypedIOPort;
+import ptolemy.caltrop.actors.CalInterpreter;
+import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
+import ptolemy.kernel.util.IllegalActionException;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.InputPort;
 import caltrop.interpreter.SingleInputPort;
@@ -37,14 +45,6 @@ import caltrop.interpreter.ast.Action;
 import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.environment.Environment;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.caltrop.actors.CalInterpreter;
-import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
-import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// Dataflow

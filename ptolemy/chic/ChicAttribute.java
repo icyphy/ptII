@@ -29,7 +29,10 @@ package ptolemy.chic;
 
 // Ptolemy imports
 import ptolemy.actor.gui.style.TextStyle;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 
 // Java imports
 

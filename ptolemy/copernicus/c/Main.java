@@ -29,14 +29,9 @@
 package ptolemy.copernicus.c;
 
 // FIXME: clean up import list.
-import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.WatchDogTimer;
-import ptolemy.kernel.util.IllegalActionException;
-
 import soot.Pack;
 import soot.PackManager;
-import soot.Scene;
-import soot.Transform;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main

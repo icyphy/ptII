@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.fsm.kernel.test;
 
+import java.net.URL;
+
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
-
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// Compose

@@ -36,7 +36,6 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
-
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.NullType;

@@ -45,7 +45,6 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.filechooser.FileFilter;
 
-
 import diva.gui.AppContext;
 import diva.gui.ApplicationContext;
 import diva.gui.DefaultActions;

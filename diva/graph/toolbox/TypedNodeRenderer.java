@@ -24,10 +24,11 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.toolbox;
-import diva.canvas.Figure;
 import java.util.Hashtable;
-import diva.graph.NodeRenderer;
+
+import diva.canvas.Figure;
 import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
 
 /**
  * A NodeRenderer implementation which allows a user to add different

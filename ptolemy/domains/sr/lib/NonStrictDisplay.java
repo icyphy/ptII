@@ -28,14 +28,14 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.sr.lib;
 
+import javax.swing.text.BadLocationException;
+
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import javax.swing.text.BadLocationException;
 
 /**
    Display the values of the tokens arriving on the input channels along

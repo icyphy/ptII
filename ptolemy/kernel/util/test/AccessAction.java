@@ -30,10 +30,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.kernel.util.test;
 
+import java.util.List;
+
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.List;
 
 public class AccessAction {
     public AccessAction(Workspace workspace, long sleepBefore,

@@ -28,18 +28,19 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.joystick;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import java.io.IOException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-
-import java.io.IOException;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import com.centralnexus.input.JoystickListener;
 

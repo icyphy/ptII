@@ -28,12 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.graph.sched;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.ConcurrentModificationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Firing

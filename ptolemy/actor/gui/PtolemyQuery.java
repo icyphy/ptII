@@ -39,8 +39,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.SwingUtilities;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.IntRangeParameter;

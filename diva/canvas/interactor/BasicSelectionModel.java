@@ -25,11 +25,12 @@
  */
 package diva.canvas.interactor;
 
-import diva.canvas.Figure;
-import diva.canvas.interactor.Interactor;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-import java.util.*;
 import javax.swing.event.EventListenerList;
+
+import diva.canvas.Figure;
 
 /**
  * A basic implementation of the SelectionModel interface.

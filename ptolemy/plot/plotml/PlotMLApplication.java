@@ -31,16 +31,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.Plot;
-import ptolemy.plot.PlotApplication;
-import ptolemy.plot.PlotBox;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
+
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotApplication;
+import ptolemy.plot.PlotBox;
 
 import com.microstar.xml.XmlException;
 

@@ -27,6 +27,14 @@
 package ptolemy.copernicus.c;
 
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
+import soot.Hierarchy;
 import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
@@ -37,32 +45,14 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-import soot.Hierarchy;
-
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceOfExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.spark.SparkTransformer;
-
 import soot.jimple.toolkits.callgraph.CallGraph;
-import soot.jimple.toolkits.callgraph.CallGraphBuilder;
-import soot.jimple.toolkits.callgraph.TransitiveTargets;
-import soot.jimple.toolkits.callgraph.CHATransformer;
 import soot.jimple.toolkits.callgraph.Edge;
-
-import soot.jimple.spark.pag.PAG;
-
 import soot.options.SparkOptions;
-
-import soot.util.queue.QueueReader;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

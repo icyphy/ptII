@@ -28,10 +28,10 @@ package diva.gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
+
 import javax.swing.Action;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenuBar;
-
 import javax.swing.JRootPane;
 
 /**

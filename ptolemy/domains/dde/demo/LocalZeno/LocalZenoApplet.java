@@ -28,13 +28,34 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.dde.demo.LocalZeno;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.HashMap;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.PtolemyApplet;
+import ptolemy.actor.lib.gui.TimedPlotter;
+import ptolemy.data.DoubleToken;
+import ptolemy.domains.dde.kernel.DDEDirector;
+import ptolemy.domains.dde.lib.TimeAdvance;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.StraightConnector;
 import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
@@ -53,29 +74,6 @@ import diva.graph.basic.BasicGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
-
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.PtolemyApplet;
-import ptolemy.actor.lib.gui.TimedPlotter;
-import ptolemy.data.DoubleToken;
-import ptolemy.domains.dde.kernel.DDEDirector;
-import ptolemy.domains.dde.lib.TimeAdvance;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.util.HashMap;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoApplet

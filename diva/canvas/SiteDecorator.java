@@ -27,8 +27,6 @@
 
 package diva.canvas;
 
-import diva.canvas.Figure;
-import diva.canvas.TransformContext;
 import java.awt.geom.Point2D;
 
 /**

@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.fsm.kernel.test;
 
+import java.net.URL;
+import java.util.Iterator;
+
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.moml.MoMLParser;
-
-import java.net.URL;
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DeadlockStates

@@ -24,13 +24,13 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.layout;
-import diva.graph.GraphModel;
-
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Line2D;
-import java.util.Random;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
+
+import diva.graph.GraphModel;
 
 /**
  * A simple layout which places nodes on a grid using a cost function.

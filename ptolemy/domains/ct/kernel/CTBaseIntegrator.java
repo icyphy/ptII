@@ -28,8 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.actor.FunctionDependency;
-import ptolemy.actor.FunctionDependencyOfAtomicActor;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
@@ -41,9 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator

@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
+import java.io.IOException;
+
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -35,8 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.IOException;
 
 /**
    This actor reads tokens from any number of input channels and writes

@@ -28,7 +28,6 @@ package diva.canvas.connector;
 
 import diva.canvas.Figure;
 import diva.canvas.Site;
-import diva.canvas.connector.ConnectorTarget;
 
 /** An abstract implementation of the ConnectorTarget interface.  Most
  * connector targets do only basic filtering on a connector, by disallowing

@@ -27,8 +27,8 @@
 
 package diva.canvas.toolbox;
 
-import java.awt.Shape;
 import java.awt.Paint;
+import java.awt.Shape;
 
 /** A PathFigure is one that contains a single instance of
  *  Shape. The figure can have a fill with optional compositing (for

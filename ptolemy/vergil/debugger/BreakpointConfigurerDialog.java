@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.debugger;
 
+import java.awt.Frame;
+
 import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.vergil.basic.BasicGraphController;
-
-import java.awt.Frame;
 
 //////////////////////////////////////////////////////////////////////////
 //// BreakpointConfigurerDialog

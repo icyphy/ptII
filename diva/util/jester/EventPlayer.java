@@ -25,8 +25,8 @@
  */
 package diva.util.jester;
 
-import java.awt.event.*;
 import java.awt.Component;
+import java.awt.event.InputEvent;
 
 /**
  * EventPlayer uses the java.awt.robot API to inject streams of events

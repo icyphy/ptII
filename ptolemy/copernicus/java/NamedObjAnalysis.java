@@ -30,14 +30,20 @@ package ptolemy.copernicus.java;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
-import ptolemy.kernel.util.*;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.graph.CompleteUnitGraph;
+import ptolemy.kernel.util.NamedObj;
+import soot.Local;
+import soot.RefType;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.CastExpr;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.FieldRef;
+import soot.jimple.JimpleBody;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjAnalysis

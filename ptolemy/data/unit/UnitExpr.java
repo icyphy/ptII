@@ -30,8 +30,8 @@ package ptolemy.data.unit;
 
 import java.util.Iterator;
 import java.util.Vector;
+
 import ptolemy.actor.IOPort;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitExpr

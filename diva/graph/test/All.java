@@ -24,7 +24,8 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.test;
-import diva.util.jester.*;
+import diva.util.jester.TestHarness;
+import diva.util.jester.TestSuite;
 
 /**
  * All the tests in this directory.

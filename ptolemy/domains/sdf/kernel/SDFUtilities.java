@@ -28,42 +28,20 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.sdf.kernel;
 
-import java.util.*;
+import java.util.Comparator;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.util.ConstVariableModelAnalysis;
-import ptolemy.actor.util.DependencyDeclaration;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.Entity;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.ValueListener;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Fraction;
 
 ///////////////////////////////////////////////////////////
 //// SDFUtilities

@@ -27,11 +27,9 @@
 package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.domains.sdf.kernel.SDFDirector;
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 /**
    This actor is used to test the _writeAccessRequired method of

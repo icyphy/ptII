@@ -24,9 +24,10 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.layout;
-import diva.graph.GraphModel;
-import java.util.Iterator;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+
+import diva.graph.GraphModel;
 
 /**
  * A static random layout engine.  This class tries to be smart by

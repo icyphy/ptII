@@ -33,6 +33,8 @@ Also, review stop() method.
 
 package ptolemy.actor;
 
+import java.util.Iterator;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -44,8 +46,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director

@@ -35,13 +35,12 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;
-
 import soot.ArrayType;
 import soot.HasPhaseOptions;
-import soot.RefType;
 import soot.Local;
 import soot.PhaseOptions;
 import soot.PrimType;
+import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;

@@ -27,16 +27,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.MoMLParser;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,7 +37,13 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.event.HyperlinkEvent;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.StringAttribute;
 
 
 //////////////////////////////////////////////////////////////////////////

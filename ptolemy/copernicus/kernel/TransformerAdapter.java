@@ -27,17 +27,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.kernel;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import soot.BodyTransformer;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.jimple.JimpleBody;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Map;
 
 
 /**

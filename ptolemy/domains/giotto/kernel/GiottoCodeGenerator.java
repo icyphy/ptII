@@ -29,6 +29,12 @@ COPYRIGHTENDKEY
 package ptolemy.domains.giotto.kernel;
 
 // Ptolemy imports.
+import java.awt.Frame;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -52,13 +58,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.util.StringUtilities;
-
-import java.awt.Frame;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-
-import java.util.List;
-import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCodeGenerator

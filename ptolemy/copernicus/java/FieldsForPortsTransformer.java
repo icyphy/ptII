@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -41,7 +40,6 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;

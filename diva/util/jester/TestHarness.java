@@ -25,7 +25,7 @@
  */
 package diva.util.jester;
 
-import java.io.*;
+import java.io.PrintStream;
 
 /**
  * A test harness. A test harness is created by each test suite

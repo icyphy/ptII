@@ -26,6 +26,7 @@
 package diva.canvas.interactor;
 
 import java.util.Iterator;
+
 import diva.util.IteratorAdapter;
 import diva.util.NullIterator;
 

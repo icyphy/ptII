@@ -32,13 +32,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.c;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
 import soot.RefLikeType;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
-
-import java.util.HashSet;
-import java.util.Iterator;
 
 
 /**

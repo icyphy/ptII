@@ -24,11 +24,12 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.toolbox;
-import diva.graph.GraphListener;
-import diva.graph.GraphEvent;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
+
+import diva.graph.GraphEvent;
+import diva.graph.GraphListener;
 
 /**
  * A list of GraphListeners which is smart enough to call the correct

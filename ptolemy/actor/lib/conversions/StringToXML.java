@@ -29,10 +29,12 @@ COPYRIGHTENDKEY
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.*;
+import ptolemy.data.StringToken;
+import ptolemy.data.XMLToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 

@@ -25,12 +25,13 @@
  */
 package diva.gui;
 
+import java.awt.datatransfer.Clipboard;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
-import java.awt.datatransfer.Clipboard;
+import java.util.List;
+
 import javax.swing.Action;
 import javax.swing.event.ListDataListener;
-import java.util.List;
 
 /**
  * Application is an interface that captures the notion of a graphical

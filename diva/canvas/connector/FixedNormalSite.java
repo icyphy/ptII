@@ -27,8 +27,8 @@
 
 package diva.canvas.connector;
 
-import diva.canvas.SiteDecorator;
 import diva.canvas.Site;
+import diva.canvas.SiteDecorator;
 
 /** A site decorator that disallows changing the normal.  This is useful for
  * perimeter sites that stay at one point on a figure.  Normally connectors

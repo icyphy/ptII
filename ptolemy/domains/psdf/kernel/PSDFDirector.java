@@ -27,22 +27,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.psdf.kernel;
 
-import ptolemy.graph.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.SDFReceiver;
-import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-
-// ssb psdf-related imports
-import ptolemy.graph.sched.*;
-import synthesis.dif.psdf.*;
-
-import java.util.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// PSDFDirector

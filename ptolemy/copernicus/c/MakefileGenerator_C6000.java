@@ -25,11 +25,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import soot.SootClass;
-import soot.Scene;
-
 import java.util.HashSet;
 import java.util.Iterator;
+
+import soot.Scene;
+import soot.SootClass;
 
 //////////////////////////////////////////////////////////////////////////
 //// MakefileGenerator_C6000

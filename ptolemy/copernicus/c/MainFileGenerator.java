@@ -33,10 +33,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.c;
 
+import java.util.Iterator;
+
 import soot.SootClass;
 import soot.SootMethod;
-
-import java.util.Iterator;
 
 /** A C code generator for generating the c file containing the wrapper "main"
     method. This simply does some initialization and calls the main method of

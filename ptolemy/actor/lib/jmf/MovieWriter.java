@@ -29,28 +29,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.jmf;
 
-import ptolemy.actor.lib.Sink;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-
-import java.awt.Dimension;
 import java.awt.Image;
-
-import java.io.IOException;
 import java.io.File;
-
+import java.io.IOException;
 import java.net.MalformedURLException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -79,6 +61,19 @@ import javax.media.protocol.DataSource;
 import javax.media.protocol.FileTypeDescriptor;
 import javax.media.protocol.PullBufferDataSource;
 import javax.media.protocol.PullBufferStream;
+
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 //FIXME: This actor only works properly when a model containing this actor
 //       is run for the first time.  Vergil has to be reloaded each time

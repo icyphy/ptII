@@ -27,8 +27,6 @@
 
 package diva.canvas;
 
-import diva.canvas.Figure;
-import diva.canvas.TransformContext;
 import java.awt.geom.Point2D;
 
 /** A site represents a point on a figure. Sites are

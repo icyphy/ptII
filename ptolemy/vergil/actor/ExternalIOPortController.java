@@ -28,18 +28,16 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.actor;
 
-import diva.canvas.AbstractFigure;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.Site;
-import diva.canvas.connector.FixedNormalSite;
-import diva.canvas.connector.PerimeterSite;
-import diva.canvas.connector.TerminalFigure;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
-import diva.util.java2d.Polygon2D;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
@@ -52,17 +50,18 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.AttributeController;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.PerimeterSite;
+import diva.canvas.connector.TerminalFigure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
+import diva.util.java2d.Polygon2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExternalIOPortController

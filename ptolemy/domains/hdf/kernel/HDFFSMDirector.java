@@ -32,6 +32,9 @@
 
 package ptolemy.domains.hdf.kernel;
 
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -61,10 +64,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
-import java.util.List;
-import java.lang.String;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMDirector

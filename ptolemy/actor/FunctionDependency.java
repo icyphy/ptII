@@ -29,13 +29,13 @@
 
 package ptolemy.actor;
 
-import ptolemy.graph.DirectedGraph;
-import ptolemy.kernel.util.NamedObj;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import ptolemy.graph.DirectedGraph;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependency

@@ -28,12 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.toolbox;
 
-import diva.gui.GUIUtilities;
-
-import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.EditorFactory;
-import ptolemy.kernel.util.NamedObj;
-
 import java.awt.Event;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -41,6 +35,11 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.KeyStroke;
+
+import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.EditorFactory;
+import ptolemy.kernel.util.NamedObj;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConfigureAction

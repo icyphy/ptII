@@ -27,13 +27,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.gui;
 
-import diva.gui.GUIUtilities;
-
-import ptolemy.plot.Plot;
-import ptolemy.plot.PlotBox;
-import ptolemy.plot.PlotFormatter;
-import ptolemy.util.StringUtilities;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -51,6 +44,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotBox;
+import ptolemy.plot.PlotFormatter;
+import ptolemy.util.StringUtilities;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotTableauFrame

@@ -25,7 +25,7 @@
  */
 package diva.graph.basic;
 
-import diva.graph.*;
+import diva.graph.GraphPane;
 
 /**
  * A pane containing a bubble-and-arc editor.

@@ -30,7 +30,6 @@ package ptolemy.vergil.icon;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-
 import java.util.Iterator;
 
 import javax.swing.SwingConstants;

@@ -29,6 +29,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.dde.kernel;
 
+import java.util.Hashtable;
+import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
@@ -36,9 +39,6 @@ import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.Hashtable;
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEThread

@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.kernel.solver;
 
+import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
@@ -39,8 +41,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver

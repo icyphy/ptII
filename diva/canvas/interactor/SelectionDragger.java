@@ -29,8 +29,8 @@ package diva.canvas.interactor;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;

@@ -28,13 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.basic;
 
-import diva.gui.GUIUtilities;
-
-import ptolemy.actor.gui.Tableau;
-import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.moml.LibraryAttribute;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Toolkit;
@@ -50,6 +43,12 @@ import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
+
+import ptolemy.actor.gui.Tableau;
+import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.moml.LibraryAttribute;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedGraphFrame

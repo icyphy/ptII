@@ -28,11 +28,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.demo.Helicopter;
 
+import java.util.StringTokenizer;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.ModelPane;
 import ptolemy.actor.gui.PtolemyApplet;
-
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// HelicopterApplet

@@ -29,11 +29,7 @@ package ptolemy.domains.gr.lib;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.MediaTracker;
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.swing.ImageIcon;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.domains.gr.kernel.GRActor2D;

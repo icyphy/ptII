@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
+import java.util.TreeMap;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -36,8 +38,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.TreeMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// Sequencer

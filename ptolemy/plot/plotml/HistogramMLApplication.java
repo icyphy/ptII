@@ -31,10 +31,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.plotml;
 
+import javax.swing.JOptionPane;
+
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
-
-import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLApplication

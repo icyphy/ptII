@@ -29,13 +29,12 @@ package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
-import java.util.LinkedList;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 
 //////////////////////////////////////////////////////////////////////////

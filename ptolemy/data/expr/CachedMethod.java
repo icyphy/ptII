@@ -29,6 +29,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.data.expr;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Hashtable;
+import java.util.Iterator;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.type.ArrayType;
@@ -37,11 +42,6 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Hashtable;
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CachedMethod

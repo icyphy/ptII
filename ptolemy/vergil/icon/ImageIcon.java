@@ -31,10 +31,7 @@ package ptolemy.vergil.icon;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
-import java.lang.ref.WeakReference;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Iterator;
 
 import javax.swing.SwingUtilities;

@@ -28,14 +28,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor;
 
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-import ptolemy.graph.Edge;
-
 import java.util.HashMap;
 import java.util.Iterator;
-import java.lang.String;
+
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Edge;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
 
 
 ///////////////////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@
  */
 package diva.gui;
 import java.awt.datatransfer.Clipboard;
+
 import javax.swing.JComponent;
 
 /**

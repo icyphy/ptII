@@ -28,6 +28,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Hashtable;
+import java.util.Iterator;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.BooleanToken;
@@ -45,13 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Hashtable;
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassWrapper

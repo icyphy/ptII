@@ -28,16 +28,15 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.kernel;
 
-import ptolemy.actor.Manager;
-
-import soot.HasPhaseOptions;
-import soot.PhaseOptions;
-import soot.SceneTransformer;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import ptolemy.actor.Manager;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
+import soot.SceneTransformer;
 
 /**
    A transformer that calls System.exit() after a certain amount of time.

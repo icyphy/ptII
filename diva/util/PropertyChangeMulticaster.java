@@ -24,8 +24,11 @@
                                         COPYRIGHTENDKEY
  */
 package diva.util;
-import java.util.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A list of PropertyChangeListeners.

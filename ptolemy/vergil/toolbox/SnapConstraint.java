@@ -28,9 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.toolbox;
 
-import diva.canvas.interactor.PointConstraint;
-
 import java.awt.geom.Point2D;
+
+import diva.canvas.interactor.PointConstraint;
 
 /**
    This constraint ensures that a point is a multiple of a constant

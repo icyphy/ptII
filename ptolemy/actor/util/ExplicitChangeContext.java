@@ -28,15 +28,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.util;
 
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Nameable;
+import java.util.List;
 
-import java.util.*;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitChangeContext

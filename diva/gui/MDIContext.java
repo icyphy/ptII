@@ -27,7 +27,6 @@ package diva.gui;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.event.EventListenerList;
 
 /**
  * An app context that provides methods for multiple

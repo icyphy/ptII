@@ -28,8 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.comm;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.TypeAttribute;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;

@@ -28,43 +28,45 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.psdf.kernel;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.sched.*;
-import ptolemy.actor.util.ConstVariableModelAnalysis;
-import ptolemy.actor.util.DependencyDeclaration;
-import ptolemy.data.BooleanToken;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.Variable;
+import ptolemy.domains.sdf.kernel.BaseSDFScheduler;
+import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.graph.Edge;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
-import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Fraction;
-
-// FIXME: fixup import lists.
-import synthesis.dif.psdf.*;
-import ptolemy.graph.*;
+import synthesis.dif.psdf.PSDFAPGANStrategy;
+import synthesis.dif.psdf.PSDFEdgeWeight;
+import synthesis.dif.psdf.PSDFGraph;
+import synthesis.dif.psdf.PSDFGraphReader;
+import synthesis.dif.psdf.PSDFGraphs;
+import synthesis.dif.psdf.PSDFNodeWeight;
 
 ///////////////////////////////////////////////////////////
 //// PSDFScheduler

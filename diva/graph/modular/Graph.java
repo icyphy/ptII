@@ -24,9 +24,10 @@
                                         COPYRIGHTENDKEY
  */
 package diva.graph.modular;
-import diva.util.SemanticObjectContainer;
-import diva.util.PropertyContainer;
 import java.util.Iterator;
+
+import diva.util.PropertyContainer;
+import diva.util.SemanticObjectContainer;
 
 /**
  * A graph is an object that contains nodes and

@@ -30,8 +30,8 @@ package ptolemy.copernicus.java;
 
 import java.util.Map;
 
-import ptolemy.kernel.Entity;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.kernel.Entity;
 import soot.SootClass;
 
 //////////////////////////////////////////////////////////////////////////

@@ -41,7 +41,9 @@ import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
 
-import ptolemy.actor.corba.CoordinatorUtil.*;
+import ptolemy.actor.corba.CoordinatorUtil.Client;
+import ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
+import ptolemy.actor.corba.CoordinatorUtil._CoordinatorImplBase;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;

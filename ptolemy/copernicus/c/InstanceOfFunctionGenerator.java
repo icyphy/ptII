@@ -26,9 +26,9 @@
 
 package ptolemy.copernicus.c;
 
-import soot.SootClass;
-
 import java.util.Iterator;
+
+import soot.SootClass;
 
 //////////////////////////////////////////////////////////////////////////
 //// InstanceOfFunctionGenerator

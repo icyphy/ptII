@@ -37,7 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;

@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.plot;
 
-import ptolemy.util.StringUtilities;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -56,6 +54,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
+
+import ptolemy.util.StringUtilities;
 
 // TO DO:
 //   - Add a mechanism for combining two plots into one

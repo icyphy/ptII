@@ -28,6 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.kernel;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import soot.ArrayType;
 import soot.Body;
 import soot.BodyTransformer;
@@ -44,8 +50,6 @@ import soot.jimple.CastExpr;
 import soot.jimple.InstanceOfExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.JimpleBody;
-
-import java.util.*;
 
 /**
    A transformer that remove unnecessary casts and instanceof checks.

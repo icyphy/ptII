@@ -28,7 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.gr.lib;
 
-import diva.canvas.Figure;
+import java.awt.geom.Point2D;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -37,8 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.geom.Point2D;
+import diva.canvas.Figure;
 
 //////////////////////////////////////////////////////////////////////////
 //// Translate2D

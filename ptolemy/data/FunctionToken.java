@@ -36,8 +36,6 @@ import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-import java.util.List;
-
 //////////////////////////////////////////////////////////////////////////
 //// FunctionToken
 /**

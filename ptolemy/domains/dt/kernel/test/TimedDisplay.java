@@ -29,6 +29,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.dt.kernel.test;
 
+import java.awt.Container;
+
+import javax.swing.text.BadLocationException;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.SequenceActor;
@@ -37,10 +41,6 @@ import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Container;
-
-import javax.swing.text.BadLocationException;
 
 
 public class TimedDisplay extends Display implements Placeable, SequenceActor {

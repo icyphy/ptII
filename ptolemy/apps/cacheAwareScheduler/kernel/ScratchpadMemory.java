@@ -31,12 +31,9 @@
 package ptolemy.apps.cacheAwareScheduler.kernel;
 
 // Ptolemy imports
-import ptolemy.kernel.util.IllegalActionException;
-
-// JAVA Imports
-import java.util.Collection;
 import java.util.ArrayList;
-import java.util.Iterator;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////////////
 //// ScratchpadMemory

@@ -25,18 +25,19 @@
  */
 package diva.graph.basic;
 
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
-import diva.graph.GraphModel;
-import diva.canvas.Figure;
-import diva.canvas.CompositeFigure;
-import diva.canvas.toolbox.BasicFigure;
-import java.awt.Shape;
-import java.awt.Paint;
 import java.awt.Color;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
-import java.awt.geom.GeneralPath;
+
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeRenderer;
 
 /**
  * A factory which creates and returns a NodeFigure given a node input

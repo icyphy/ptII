@@ -29,13 +29,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.IllegalActionException;
-
-import ptolemy.graph.InequalityTerm;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// NestedScope

@@ -28,15 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
-import ptolemy.actor.Manager;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.csp.kernel.CSPDirector;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -47,6 +38,15 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.csp.kernel.CSPDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////
 //// DiningApplet

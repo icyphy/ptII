@@ -28,7 +28,6 @@
 */
 package ptolemy.domains.gr.lib;
 
-import ptolemy.data.DoubleToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

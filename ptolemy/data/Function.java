@@ -28,14 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.data;
 
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ParseTreeTypeInference;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.type.FunctionType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionToken

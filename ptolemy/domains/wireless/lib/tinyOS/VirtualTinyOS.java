@@ -36,8 +36,6 @@ import java.util.List;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib;
 
+import java.util.List;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -36,8 +38,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Previous

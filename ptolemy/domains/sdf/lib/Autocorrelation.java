@@ -31,7 +31,6 @@ package ptolemy.domains.sdf.lib;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -41,8 +40,8 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.MonotonicFunction;
+import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;

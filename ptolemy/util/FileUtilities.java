@@ -31,9 +31,9 @@ package ptolemy.util;
 // Note that classes in ptolemy.util do not depend on any
 // other ptolemy packages.
 
-import java.io.File;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;

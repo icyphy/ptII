@@ -32,12 +32,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 
 package diva.graph.tutorial;
-import diva.graph.JGraph;
+import javax.swing.SwingUtilities;
+
 import diva.graph.GraphPane;
-import diva.graph.basic.*;
+import diva.graph.JGraph;
+import diva.graph.basic.BasicGraphController;
+import diva.graph.basic.BasicGraphModel;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-import javax.swing.SwingUtilities;
 
 /**
  * This is the most basic tutorial, popping up an empty graph
