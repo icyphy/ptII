@@ -214,6 +214,11 @@ public class CompositeActorApplication {
                         synchronized(CompositeActorApplication.this) {
                             _openCount--;
                             CompositeActorApplication.this.notifyAll();
+			    // FIXME: is this right?  We need
+			    // to exit if all the windows are closed?
+			    if (_openCount == 0) {
+				System.exit(0);
+			    }
                         }
                     }
                 });
