@@ -70,8 +70,11 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         getContentPane().add(_query);
         _query.addCheckBox("check", "Check box", true);
         _query.setTextWidth(20);
+        _query.addSlider("mySlider", "My Slider", 0, -100, 100);
         _query.addLine("line", "Entry box", "default entry");
         _query.addDisplay("display", "Display", "displayed string");
+        _query.addSlider("slider", "Slider", 75);
+        _query.addSlider("slider2", "Slider 2", 50);
         _query.addQueryListener(this);
         _query.setBackground(_getBackground());
     }
