@@ -63,6 +63,7 @@ JSRCS = \
 	DifferentialSystem.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ContinuousSinewave.xml \
 	ctentities.xml \
 	dynamics.xml \
 	eventgenerators.xml \
