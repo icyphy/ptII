@@ -42,7 +42,11 @@ import collections.*;
 An icon is the graphical representation of a schematic entity.
 Icons are created by an IconLibrary in response to a request
 for an icon. Each icon is represented in an icon library
-XML files by the <icon> element.
+XML files by the <icon> element.   
+<!-- icon elements will be parsed into class Icon -->
+<!ELEMENT icon (description, entitytype, graphic*, parameter*, port*)>
+<!ATTLIST icon
+name ID #REQUIRED>
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -59,6 +63,7 @@ public class Icon extends XMLElement {
         graphics = (HashedMap) new HashedMap();
         entitytype = new EntityType();
         addChildElement(entitytype);
+        description = new XMLElement("description");
         setName("");
     }
 
@@ -74,6 +79,7 @@ public class Icon extends XMLElement {
         super("icon", attributes);
         graphics = (HashedMap) new HashedMap();
         entitytype = new EntityType();
+        description = new XMLElement("description");
         addChildElement(entitytype);
         if(!hasAttribute("name")) setName("");
     }
@@ -91,6 +97,7 @@ public class Icon extends XMLElement {
         super("icon", attributes);
         graphics = (HashedMap) new HashedMap();
         entitytype = et;
+        description = new XMLElement("description");
         addChildElement(entitytype);
         if(!hasAttribute("name")) setName("");
     }
@@ -146,6 +153,13 @@ public class Icon extends XMLElement {
     }
 
     /** 
+     * Return a long description string of the the Icons in thie Library.
+     */
+    public String getDescription() {
+        return description.getPCData();
+    }
+
+    /** 
      * Return the EntityType of this Icon
      */
     public EntityType getEntityType () {
@@ -185,10 +199,21 @@ public class Icon extends XMLElement {
         }
     }
 
+    /** 
+     * Set the string that contains the long description of this icon.
+     */
+    public void setDescription(String s) {
+        description.setPCData(s);
+    }
+  
+    /**
+     * Set the name of this Icon.
+     */
     public void setName(String name) {
         setAttribute("name", name);
     }
 
+    XMLElement description;
     EntityType entitytype;
     HashedMap graphics;
 
