@@ -46,7 +46,14 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	fsm
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		ia/ia.jar \
+		modal/modal.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Arc.java \
