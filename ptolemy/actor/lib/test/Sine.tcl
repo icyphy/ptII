@@ -52,6 +52,7 @@ test Sine-1.1 {test constructor and clone} {
 #### Test Sine in an SDF model
 #
 test Sine-2.1 {test with the default output values} {
+    # This tests the iterate() method of Sine.java.
     set e0 [sdfModel 5]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set init [getParameter $ramp init]
@@ -71,5 +72,34 @@ test Sine-2.1 {test with the default output values} {
     [$e0 getManager] execute
     ptclose [enumToTokenValues [$rec getRecord 0]] \
             {0.0 0.841 0.909 0.141 -0.757} \
+            0.001
+} {1}
+
+######################################################################
+#### Test Sine in CT model
+#
+test Sine-2.2 {test with the default output values} {
+    # This tests the fire() method of Sine.java.
+    set e1 [java::new ptolemy.actor.TypedCompositeActor]
+    set sin2 [java::cast ptolemy.actor.lib.Sine [$sinbase clone]]
+    set e1 [ctModel 5]
+    set ramp2 [java::new ptolemy.actor.lib.Ramp $e1 ramp2]
+    set init [getParameter $ramp2 init]
+    set step [getParameter $ramp2 step]
+    $init setExpression {0.0}
+    $step setExpression {1.0}
+    # Use clone of sin to make sure that is ok.
+    $sin2 setContainer $e1
+    set rec [java::new ptolemy.actor.lib.Recorder $e1 rec]
+    $e1 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] \
+       [java::field [java::cast ptolemy.actor.lib.Transformer $sin2] input]
+    $e1 connect \
+       [java::field \
+       [java::cast ptolemy.actor.lib.Transformer $sin2] output] \
+       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e1 getManager] execute
+    ptclose [enumToTokenValues [$rec getRecord 0]] \
+            {0.0 0.841471 0.9092974 0.14112 -0.7568025 -0.9589243 -0.2794155} \
             0.001
 } {1}
