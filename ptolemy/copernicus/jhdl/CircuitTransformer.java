@@ -68,6 +68,8 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.java.ActorTransformer;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitTransformer
@@ -124,183 +126,45 @@ public class CircuitTransformer extends SceneTransformer {
 	//////////////////////////////////////////////
 	DirectedGraph combinedGraph = _createModelGraph(_model);
 
-	/*
 	//////////////////////////////////////////////
-	// Step 2. Call 'CircuitAnalysis' on each actor
-	// in the model. CircuitAnalysis will create a DAG
-	// for each node - hash this graph with the node.
+	// Step 2. Create a DFG for each entity in the model.
 	//////////////////////////////////////////////
-        Set removeSet = new HashSet();
-	Map replaceMap = new HashMap();
-
-	for(Iterator cnodes=combinedGraph.nodes().iterator();
-	    cnodes.hasNext();) {
-
-	    Node cnode=(Node)cnodes.next();
-
-	    //Skip ports; only Entity's are expanded
-	    if (!(cnode.getWeight() instanceof Entity)) continue;
-
-	    // Get directed graph of entity (if null, don't replace)
-	    DirectedGraph operatorGraph =
-		_createEntityGraph((Entity) cnode.getWeight(), options);
-	    if (operatorGraph != null)
-		replaceMap.put(cnode,operatorGraph);
-
-	}
-
+	Map entityGraphMap = _createEntityGraphs(_model, options);
 
 	//////////////////////////////////////////////
-	// Step 3. Replace node in DAG with the DAG
-	// that was created by CircuitAnalysis
+	// Step 3. Insert each DFG into the top-level graph
 	//////////////////////////////////////////////
-	for (Iterator removeNodes = replaceMap.keySet().iterator();
-	     removeNodes.hasNext();){
+	_insertEntityGraphs(_model,combinedGraph,entityGraphMap);
 
-	    Node removeNode = (Node)removeNodes.next();
-
-	    combinedGraph.removeNode(removeNode);
-
-	    DirectedGraph operatorGraph = (DirectedGraph)replaceMap.get(removeNode);
-
-	    for(Iterator nodes = operatorGraph.nodes().iterator(); nodes.hasNext();) {
-		Node node = (Node)nodes.next();
-		combinedGraph.addNode(node);
-	    }
-
-	    for(Iterator edges = operatorGraph.edges().iterator(); edges.hasNext();) {
-		combinedGraph.addEdge((Edge)edges.next());
-	    }
-
-	}
-
-        // Remove all the nodes that were not required above.
-//          for(Iterator nodes = removeSet.iterator();
-//              nodes.hasNext();) {
-//  	    Node node = (Node)nodes.next();
-//              List predList = new LinkedList(combinedGraph.predecessors(node));
-//              for(Iterator preds = predList.iterator();
-//                  preds.hasNext();) {
-//                  Node pred = (Node)preds.next();
-//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(pred, node).toArray()[0]);
-//              }
-//              List succList = new LinkedList(combinedGraph.successors(node));
-//              for(Iterator succs = succList.iterator();
-//                  succs.hasNext();) {
-//                  Node succ = (Node)succs.next();
-//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(node, succ).toArray()[0]);
-//              }
-//              combinedGraph.removeNode(node);
-//          }
-
-
-	//  	System.out.println("Tails:");
-	//  	for (Iterator i=combinedGraph.getTails().iterator(); i.hasNext();){
-	//  	  System.out.println(i.next());
-	//  	}
-	//  	System.out.println("Heads:");
-	//  	for (Iterator i=combinedGraph.getHeads().iterator(); i.hasNext();){
-	//  	  System.out.println(i.next());
-	//  	}
-
-
-        // Remove all the loner nodes (not connected to any other node
-//  	removeSet=new HashSet();
-//  	Set loners=new HashSet();
-//  	loners.addAll(combinedGraph.sinkNodes());
-//  	loners.retainAll(combinedGraph.sourceNodes());
-//  	removeSet.addAll(loners);
-
-//          for(Iterator nodes = removeSet.iterator();
-//              nodes.hasNext();) {
-//  	    Node node = (Node)nodes.next();
-//              List predList = new LinkedList(combinedGraph.predecessors(node));
-//              for(Iterator preds = predList.iterator();
-//                  preds.hasNext();) {
-//                  Node pred = (Node)preds.next();
-//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(pred, node).toArray()[0]);
-//              }
-//              List succList = new LinkedList(combinedGraph.successors(node));
-//              for(Iterator succs = succList.iterator();
-//                  succs.hasNext();) {
-//                  Node succ = (Node)succs.next();
-//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(node, succ).toArray()[0]);
-//              }
-//              combinedGraph.removeNode(node);
-//          }
-
-
-	//////////////////////////////////////////////
-	// Step 4. Spit out the graph
-	//////////////////////////////////////////////
-	//PtDirectedGraphToDotty.writeDotFile(_outDir,model.getName(),combinedGraph);
-
-	//          // Write as a circuit.
-	//          try {
-	//              String targetPackage = Options.getString(options, "targetPackage");
-	//              String outDir = Options.getString(options, "outDir");
-	//              CircuitCreator.create(combinedGraph,
-	//                      outDir, targetPackage,
-	//                      "JHDL" + StringUtilities.sanitizeName(
-	//                              _model.getName()));
-	//          } catch (Exception ex) {
-	//              ex.printStackTrace();
-	//          }
-	*/
-
+	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        toDotty.writeDotFile(_outDir, _model.getName(), combinedGraph);
+	
  	System.out.println("**************************************************");
 	System.out.println("*** END JHDL");
 	System.out.println("**************************************************");
     }
 
-    protected DirectedGraph _createEntityGraph(Entity entity, Map options) {
-	String className =
-	    ActorTransformer.getInstanceClassName(entity,options);
-
-	String entityClassName = entity.getClass().getName();
-	// skip some classes
-	if (entityClassName.equals("ptolemy.actor.lib.Const") ||
-	    entityClassName.equals("ptolemy.actor.lib.FileWriter"))
-	    return null;
-
-	System.out.println("Creating graph for class "+className+
-			   " (entity="+entityClassName+")");
-	SootClass entityClass = Scene.v().loadClassAndSupport(className);
-
-	CircuitAnalysis analysis=null;
-	try {
-	    analysis =
-		new CircuitAnalysis(entity, entityClass);
-	} catch(IllegalActionException e) {
-            e.printStackTrace();
-	    throw new RuntimeException(e.toString());
-	}
-	DirectedGraph operatorGraph = analysis.getOperatorGraph();
-	return operatorGraph;
-    }
-
     /**
      * Create a DirectedGraph that matches the topology of the 
-     * origional model.
+     * origional model. This graph will have the following properties:
+     * - All entities in the model will have a node in the graph
+     * - All input/output ports associated with each entitty will have
+     *   a node in the graph (with appropriate edges)
+     * - All top-level input/output ports will have a node in the
+     *   graph (with appropriate edges)
      **/
     protected DirectedGraph _createModelGraph(CompositeActor model) {
 
 	System.out.println("1. Creating Graph of Model "+model.getName());
-	System.out.println("   RelationList size="+model.relationList().size());
-	
-	for (Iterator i=model.relationList().iterator();i.hasNext();) {
-	    Relation r = (Relation) i.next();
-	    System.out.println("   Relation="+r);
-	    for (Iterator j=r.linkedPortList().iterator();j.hasNext();) {
-		Port p = (Port) j.next();
-		System.out.println("    Port="+p+" numLinks="+p.numLinks()+
-				   " connectedPorts="+p.connectedPortList().size());
-	    }
-	}
 
         DirectedGraph combinedGraph = new DirectedGraph();
 
-        // Loop over all the actors in the model
+        // 1. Loop over all the actors in the model. For each actor,
+	//    add the following to the top-level graph:
+	//    - a Node in the graph for the entity
+	//    - a Node in the graph for each input and output
+	//      port of the entity
+	//    - appropriate edges between input/output ports and entity
 	System.out.println("   Add actors");
         for(Iterator i = model.entityList().iterator(); i.hasNext();) {
 
@@ -333,70 +197,401 @@ public class CircuitTransformer extends SceneTransformer {
 	    }
         }
 
-	// Connect top-level inputPorts to the ports of the connected
+	// 2. Connect top-level inputPorts to the ports of the connected
 	// actors
 	System.out.println("   Add top-level input ports");
 	for (Iterator inputPorts=model.inputPortList().iterator();
 	     inputPorts.hasNext();){
 	    IOPort port = (IOPort)inputPorts.next();
-  	    System.out.println("    Input Port = " + port + " numLinks="
-			       +port.numLinks() + " connectedPortList="+
-			       port.connectedPortList().size());
+  	    System.out.println("    Input Port = " + port + " inside sinks="
+			       + port.insideSinkPortList().size());
 	    combinedGraph.addNodeWeight(port);
-	    for(Iterator remoteports = port.connectedPortList().iterator();
-		remoteports.hasNext();) {
-		IOPort remotePort = (IOPort)remoteports.next();
-		System.out.println("remote port="+remotePort);
-		//combinedGraph.addEdge(port, remotePort);
+	    for(Iterator insideSinks = port.insideSinkPortList().iterator();
+		insideSinks.hasNext();) {
+		IOPort insideSink = (IOPort)insideSinks.next();
+		System.out.println("     remote port="+insideSink);
+		combinedGraph.addEdge(port, insideSink);
 	    }
 	}
 
-	// Connect top-level outputPorts to the ports of the connected
-	// actors
-	System.out.println("   Add top-level output ports");
-	for (Iterator outputPorts=model.outputPortList().iterator();
-	     outputPorts.hasNext();){
-	    IOPort port = (IOPort)outputPorts.next();
-	    System.out.println("    Output Port = " + port + " relations=" +
-			       port.numLinks());
-	    combinedGraph.addNodeWeight(port);
-	    for(Iterator remoteports = port.connectedPortList().iterator();
-		remoteports.hasNext();) {
-		IOPort remotePort = (IOPort)remoteports.next();
-		System.out.println("remote port="+remotePort);
-		//combinedGraph.addEdge(port, remotePort);
+	// 3. Iterate over all output ports and make connections in graph
+	// representing topology of model
+	System.out.println("   Add output connections");
+	for(Iterator i = model.entityList().iterator(); i.hasNext();) {	    
+            Entity entity = (Entity)i.next();
+	    for (Iterator outPorts = ((TypedAtomicActor)entity).outputPortList().iterator(); outPorts.hasNext();){
+		IOPort port = (IOPort) outPorts.next();
+		System.out.println("    Entity output Port="+port+
+				   " sinks="+port.sinkPortList().size());
+		// insideSinkPortList(), sinkPortList()
+		for (Iterator sinkPorts = port.sinkPortList().iterator();
+		     sinkPorts.hasNext();) {
+		    IOPort sinkPort = (IOPort) sinkPorts.next();
+		    System.out.println("     Sink Port="+sinkPort);
+
+		    if (!combinedGraph.containsNodeWeight(sinkPort)) {
+			combinedGraph.addNodeWeight(sinkPort);
+		    }
+		    combinedGraph.addEdge(port,sinkPort);
+		}
 	    }
 	}
-
-	// Add edges to the DAG to match the topology of the
-	// connections between individual actors
-	/*
-        for(Iterator entities = model.entityList().iterator();
-            entities.hasNext();) {
-            TypedAtomicActor actor = (TypedAtomicActor)entities.next();
-
-            for(Iterator ports = actor.outputPortList().iterator();
-                ports.hasNext();) {
-                IOPort port = (IOPort)ports.next();
-
-                for(Iterator remoteports = port.connectedPortList().iterator();
-                    remoteports.hasNext();) {
-                    IOPort remotePort = (IOPort)remoteports.next();
-                    combinedGraph.addEdge(port, remotePort);
-		    //                      removeSet.add(port);
-		    //                      removeSet.add(remotePort);
-                }
-            }
-        }
-	*/
-
+	
 	// Write out model
-	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-        toDotty.writeDotFile(_outDir, model.getName(), combinedGraph);
+	//PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        //toDotty.writeDotFile(_outDir, model.getName(), combinedGraph);
 	return combinedGraph;
     }
 
-    protected void _insertActorDAG(DirectedGraph graph) {
+    // This method will create a directed graph representing the
+    // dataflow of each entity in the model. The method will return
+    // a HashMap that associates an entity to a Directed Graph
+    protected Map _createEntityGraphs(CompositeActor model, Map options) {
+	List entityList = model.entityList();
+	Map entityMap = new HashMap(entityList.size());
+
+	for (Iterator i = entityList.iterator(); i.hasNext();) {
+	    
+	    Entity entity = (Entity) i.next();
+
+	    DirectedGraph entityGraph = _createEntityGraph(entity, options);
+	    
+	    entityMap.put(entity,entityGraph);
+	}
+
+	return entityMap;
+    }
+
+    // This method creates a directed graph for a single entity in the
+    // model. It calls IntervalBlockDirectedGraph to create the graph.
+    protected DirectedGraph _createEntityGraph(Entity entity, Map options) {
+
+	System.out.println("2. Creating Graph of Entity ");
+
+	// Get the names of the class and entity 
+	String className =
+	    ActorTransformer.getInstanceClassName(entity,options);
+	String entityClassName = entity.getClass().getName();
+
+	// skip some classes?
+//  	if (entityClassName.equals("ptolemy.actor.lib.Const") ||
+//  	    entityClassName.equals("ptolemy.actor.lib.FileWriter"))
+//  	    return null;
+
+	System.out.println("Creating graph for class "+className+
+			   " (entity="+entityClassName+")");
+	SootClass entityClass = Scene.v().loadClassAndSupport(className);
+
+	SootMethod method = entityClass.getMethodByName("fire");
+	DirectedGraph fireGraph=null;
+	try {
+	    fireGraph = new IntervalBlockDirectedGraph(method);
+	} catch(IllegalActionException e) {
+	    System.err.println("Error "+e);
+	    e.printStackTrace();
+	    System.exit(1);
+	}
+	
+	PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+	//	dgToDotty.writeDotFile(".", className,fireGraph);
+	dgToDotty.writeDotFile(".", "entity", fireGraph);
+
+	return fireGraph;
+
+    }
+
+    // This method will insert the directed graph for each actor into
+    // the top-level model
+    protected void _insertEntityGraphs(CompositeActor model, 
+				       DirectedGraph topGraph,
+				       Map entityGraphMap) {
+
+        for(Iterator i = model.entityList().iterator(); i.hasNext();) {
+	    Entity entity = (Entity) i.next();
+	    DirectedGraph entityGraph = 
+		(DirectedGraph) entityGraphMap.get(entity);
+	    _insertEntityGraph(topGraph,entity,entityGraph);
+	}
+    }
+
+    /**
+     * This method will insert the graph associated with the given
+     * entity into the top-level model graph.
+     **/
+    protected void _insertEntityGraph(DirectedGraph graph, Entity entity, 
+				      DirectedGraph entityGraph) {
+
+	System.out.println("3. Inserting Entity Graph ");
+
+	TypedAtomicActor actor = (TypedAtomicActor) entity;
+
+	// Clean up graph and identify ports in graph
+	Map portCallNodes = _getPortCallNodes(actor,entityGraph);
+			  
+	// Insert actor graph into top-level graph
+	graph.addGraph(entityGraph);
+
+	// Remove Node in graph representing entity
+	Node entityNode = graph.node(entity);
+	graph.removeNode(entityNode);
+
+	// Iterate through the ports of the entity and connect the
+	// entity graph port Nodes to the top-level port nodes
+	for (Iterator i=portCallNodes.keySet().iterator(); i.hasNext();) {
+	    IOPort port = (IOPort) i.next();  		
+	    Node topLevelPortNode = graph.node(port);
+	    
+	    // get the list of entity Nodes associated with this Port
+	    List nodeList = (List) portCallNodes.get(port);
+
+	    // iterate over all nodes in the list
+	    for (Iterator j = nodeList.iterator(); j.hasNext();) {
+		Node n = (Node) j.next();
+		if (port.isInput()) {
+		    graph.addEdge(topLevelPortNode,n);
+		} else {
+		    graph.addEdge(n,topLevelPortNode);
+		}
+	    }
+	}
+
+	/*
+
+	List inputPortList = actor.inputPortList();
+	List outputPortList = actor.outputPortList();
+
+	Map inputPortNodeMap = new HashMap(inputPortList.size());
+	Map outputPortNodeMap = new HashMap(outputPortList.size());
+	// Iterate over all actor input ports and obtain top-level
+	// node associated with this port
+	for (Iterator i=inputPortList.iterator();
+	     i.hasNext();) {
+	    IOPort port = (IOPort) i.next();  		
+	    // Identify the Node in the top-level graph associated
+	    // with this port
+	    Node portNode = graph.node(port);
+	    inputPortNodeMap.put(port,portNode);
+	}
+	// Iterate over all actor output ports and obtain top-level
+	// node associated with this port
+	for (Iterator i=outputPortList.iterator();
+	     i.hasNext();) {
+	    IOPort port = (IOPort) i.next();  		
+	    // Identify the Node in the top-level graph associated
+	    // with this port
+	    Node portNode = graph.node(port);
+	    outputPortNodeMap.put(port,portNode);
+	}
+
+	// Iterate over the input ports
+	for (Iterator i=inputPortNodeMap.keySet().iterator(); i.hasNext();) {
+	    IOPort inputport = (IOPort) i.next();
+
+
+	}
+
+	Map inputPorts = new HashMap();
+	Map outputPorts = new HashMap();
+
+	// 1. Identify ports in entity graph
+	// TODO: multiple calls to get in different control flow paths?
+	// - Assume homogoneous (need to think about how to connect
+	//   port calls for multi-rate ports)
+	// - Assume non-hierarchical (need to recursively build graph)
+	for (Iterator entityNodes = entityGraph.nodes().iterator();
+	     entityNodes.hasNext();) {
+	    Node node = (Node) entityNodes.next();
+	    Object weight = node.getWeight();
+
+	    // See if weight is of type virtualinvoke
+	    if (!(weight instanceof VirtualInvokeExpr))
+		continue;
+	    VirtualInvokeExpr expr = (VirtualInvokeExpr) weight;
+
+	    // See if the invoke calls the appropriate method
+	    String methodName = expr.getMethod().getName();
+	    System.out.println("   VirtualInvoke="+methodName);
+	    if (!methodName.equals("getInt") &&
+		!methodName.equals("sendInt"))
+		continue;
+	    
+	    FieldRef ref = _getFieldRef(entityGraph,node);
+	    SootField field = ref.getField();
+	    String portName = field.getName();
+
+	    if (methodName.equals("getInt")) {
+		inputPorts.put(portName,node);
+	    }
+	    if (methodName.equals("sendInt")) {
+		outputPorts.put(portName,node);
+	    }
+	}
+	*/
+
+	// 2. Add "in-between"
+	// 
+
+	// 3. 
+    }
+
+    // This method will identify all Nodes within the graph that
+    // are associated with Port calls for each IOPort in the actor.
+    // The key to the map is a IOPort and the Value is a List of
+    // Nodes
+    protected Map _getPortCallNodes(TypedAtomicActor actor,
+				    DirectedGraph entityGraph) {
+
+	Map portNodeMap = new HashMap(); 
+
+	// Create a mapping between port name and IOPort object
+	List inputPortList = actor.inputPortList();
+	List outputPortList = actor.outputPortList();
+	Map stringPortMap = new HashMap(inputPortList.size() + 
+					outputPortList.size());
+	for (Iterator i=inputPortList.iterator(); i.hasNext();) {
+	    IOPort port = (IOPort) i.next();
+	    String portName = port.getName();
+	    stringPortMap.put(portName,port);
+	    //System.out.println("Port="+portName+" is "+port);
+	}
+	for (Iterator i=outputPortList.iterator(); i.hasNext();) {
+	    IOPort port = (IOPort) i.next();
+	    String portName = port.getName();
+	    stringPortMap.put(portName,port);
+	    //System.out.println("Port="+portName+" is "+port);
+	}
+	
+	for (Iterator entityNodes = entityGraph.nodes().iterator();
+	     entityNodes.hasNext();) {
+	    Node node = (Node) entityNodes.next();
+	    Object weight = node.getWeight();
+
+	    // See if weight is of type virtualinvoke
+	    if (!(weight instanceof VirtualInvokeExpr))
+		continue;
+	    VirtualInvokeExpr expr = (VirtualInvokeExpr) weight;
+
+	    // See if the invoke calls the appropriate method
+	    String methodName = expr.getMethod().getName();
+	    //System.out.println("   VirtualInvoke="+methodName);
+	    if (!methodName.equals("getInt") &&
+		!methodName.equals("sendInt"))
+		continue;
+	    
+	    FieldRef ref = _getFieldRef(entityGraph,node);
+	    SootField field = ref.getField();
+	    String portName = field.getName();
+
+
+//    	    System.out.println("Found port node "+node+ " with methodname="+
+//    			       methodName + " portname="+portName);
+	    IOPort port = (IOPort) stringPortMap.get(portName);
+//  	    System.out.println("Found port call "+port);
+
+	    Node portNode=null;
+	    if (methodName.equals("getInt")) {
+		// "getInt" method call
+		portNode = (Node) entityGraph.successors(node).iterator().next();
+	    } else {
+		// "sendInt" method call
+		for (Iterator i = entityGraph.predecessors(node).iterator();
+		     i.hasNext();) {
+		    Node n = (Node) i.next(); 
+		    Edge e = (Edge) entityGraph.predecessorEdges(node,n).iterator().next();
+		    if (e.hasWeight())
+			portNode = n;
+		}
+	    }
+
+	    List nodeList = (List) portNodeMap.get(port);
+	    if (nodeList == null) {
+		nodeList = new Vector();
+		portNodeMap.put(port,nodeList);
+	    }
+	    nodeList.add(portNode);
+	}
+
+	/*
+	for (Iterator i=portNodeMap.keySet().iterator();i.hasNext();) {
+	    IOPort port = (IOPort) i.next();
+	    System.out.print("Port="+port);
+	    System.out.print(" nodes=");
+	    List l = (List) portNodeMap.get(port);
+	    for (Iterator j=l.iterator();j.hasNext();) {
+		Node n = (Node) j.next();
+		System.out.print(n+" ");
+	    }
+	    System.out.println();
+	}
+	*/
+
+	// Fix up graph (remove some garbage)
+	for (Iterator i = portNodeMap.keySet().iterator();i.hasNext();) {
+	    IOPort port = (IOPort) i.next();
+	    //System.out.println("Port="+port);
+	    if (port.isInput()) {
+		// inputs
+		List l = (List) portNodeMap.get(port);
+		for (Iterator j = l.iterator(); j.hasNext(); ) {
+		    Node node = (Node) j.next();
+		    Node predecessor = (Node) entityGraph.predecessors(node).iterator().next();
+		    _deleteLeafBranch(entityGraph,predecessor);
+		}
+	    } else {
+		// outputs
+		List l = (List) portNodeMap.get(port);
+		for (Iterator j = l.iterator(); j.hasNext(); ) {
+		    Node node = (Node) j.next();
+		    // find successors
+		    Node successor = 
+			(Node) entityGraph.successors(node).iterator().next();
+		    // remove edge from node to sucessor
+		    Edge e = (Edge) entityGraph.successorEdges(node,successor).iterator().next();
+		    entityGraph.removeEdge(e);
+		    // Remove branch
+		    _deleteLeafBranch(entityGraph,successor);
+		}
+	    }
+	}
+
+	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        toDotty.writeDotFile(".", "fixedentity", entityGraph);
+	
+	return portNodeMap;
+    }
+
+    protected void _deleteLeafBranch(DirectedGraph graph, Node node) {
+	Collection predecssors = graph.predecessors(node);
+	if (predecssors.size() == 1) {
+	    _deleteLeafBranch(graph,(Node) predecssors.iterator().next());
+	} 
+	//System.out.println("Deleting node="+node);
+	graph.removeNode(node);
+    }
+
+    /**
+     * A method invocation node  
+     *
+     **/
+    // From a invokevirtual node with a "getInt" or "sendInt" method
+    // name, find the predecessor node that refers to the Field from
+    // which this node is called. (weak)
+    protected FieldRef _getFieldRef(DirectedGraph graph, Node node) {
+	
+	// Find non-argument predecessor
+	Node predecessor = null;
+	for (Iterator i = graph.predecessors(node).iterator();
+	     i.hasNext();) {
+	    Node n = (Node) i.next(); 
+//  	    System.out.println("Node="+node+" pred="+n);
+	    Edge e = (Edge) graph.predecessorEdges(node,n).iterator().next();
+	    if (!e.hasWeight())
+		predecessor = n;
+	}
+	
+	Node fieldRefNode = (Node) graph.predecessors(predecessor).iterator().next();
+
+	return (FieldRef) fieldRefNode.getWeight();
     }
 
     public static void main(String args[]) {

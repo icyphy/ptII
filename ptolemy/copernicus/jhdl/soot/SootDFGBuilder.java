@@ -139,6 +139,13 @@ public class SootDFGBuilder extends SootASTVisitor {
 	return l;
     }
 
+    public Value processCastExpr(CastExpr val, Value op) {
+	Node castNode = _valueMap.getValueNode(val);
+	Node opNode = _valueMap.getValueNode(op);
+	_graph.addEdge(opNode,castNode);
+	return val;
+    }
+
     public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
 					 boolean left) {
 
@@ -160,6 +167,8 @@ public class SootDFGBuilder extends SootASTVisitor {
  	return ifr;
     }
 
+    // Note: processVirtualInvokeExpr & processSpecialInvokeExpr use the
+    // same code. Modify for code reuse.
     public Value processVirtualInvokeExpr(VirtualInvokeExpr ie,
 					  Value args[], Value base) {
 	Node invokeNode = _valueMap.getValueNode(ie);
@@ -171,6 +180,43 @@ public class SootDFGBuilder extends SootASTVisitor {
 	}
 	_graph.addEdge(baseNode,invokeNode);
 	return ie;
+    }
+    public Value processSpecialInvokeExpr(SpecialInvokeExpr ie,
+					  Value args[], Value base) {
+	if (ie.getMethod().getName().equals("<init>"))
+	    return processConstructorInvokeExpr(ie,args,base);
+	return null;
+	/*
+	System.out.println("SpecialInvoke="+ie+" method="+ie.getMethod().getName());
+	Node invokeNode = _valueMap.getValueNode(ie);
+	Node baseNode = _valueMap.getValueNode(base);
+	for(int i = 0; i < args.length; i++) {
+	    Node argNode = _valueMap.getValueNode(args[i]);
+	    //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
+	    _graph.addEdge(argNode,invokeNode,"arg"+i);
+	}
+	_graph.addEdge(baseNode,invokeNode);
+	return ie;
+	*/
+    }
+    public Value processConstructorInvokeExpr(SpecialInvokeExpr ie,
+					  Value args[], Value base) {
+	System.out.println("ConstructorInvoke="+ie+" method="+ie.getMethod().getName());
+	Node invokeNode = _valueMap.getValueNode(ie);
+	Node baseNode = _valueMap.getValueNode(base);
+	for(int i = 0; i < args.length; i++) {
+	    Node argNode = _valueMap.getValueNode(args[i]);
+	    //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
+	    _graph.addEdge(argNode,invokeNode,"arg"+i);
+	}
+
+	_graph.addEdge(invokeNode, baseNode, "constructor");
+	return ie;
+	
+    }
+
+    public Value processNewExpr(NewExpr ifr) {
+  	return ifr;
     }
 
     /**

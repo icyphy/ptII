@@ -29,7 +29,9 @@
 */
 
 package ptolemy.copernicus.jhdl.demo.SimpleAdd;
+
 import ptolemy.copernicus.jhdl.*;
+import ptolemy.copernicus.jhdl.util.IntIOPort;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -66,27 +68,23 @@ public class SimpleAdd extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	input1 = new TypedIOPort(this, "input1", true, false);
-	input1.setTypeEquals(BaseType.INT);
+	input1 = new IntIOPort(this, "input1", true, false);
+	input2 = new IntIOPort(this, "input2", true, false);
+	output = new IntIOPort(this, "output", false, true);
 
-	input2 = new TypedIOPort(this, "input2", true, false);
-	input2.setTypeEquals(BaseType.INT);
-
-	output = new TypedIOPort(this, "output", false, true);
-	output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** First integer input to be added. */
-    public TypedIOPort input1 = null;
+    public IntIOPort input1 = null;
 
     /** Second integer input to be added. */
-    public TypedIOPort input2 = null;
+    public IntIOPort input2 = null;
 
     /** Output port of type integer. */
-    public TypedIOPort output = null;
+    public IntIOPort output = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,15 +100,13 @@ public class SimpleAdd extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         //output.send(0,input1.get(0).add(input2.get(0)));
 	
-	IntToken t1 = (IntToken) input1.get(0);
-	IntToken t2 = (IntToken) input2.get(0);
-
-	int i1 = t1.intValue();
-	int i2 = t2.intValue();
+	int i1 = input1.getInt();
+	int i2 = input2.getInt();
 
 	int o = i1 + i2;
 
-	IntToken ot = new IntToken(o);
-        output.send(0,ot);
+	output.sendInt(o);
     }
+
+
 }

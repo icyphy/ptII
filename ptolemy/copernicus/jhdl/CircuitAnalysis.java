@@ -80,12 +80,6 @@ import ptolemy.copernicus.jhdl.util.MergedControlFlowGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitAnalysis
-/**
-
-@author Steve Neuendorffer and Ben Warlick
-@version $Id$
-@since Ptolemy II 2.0
-*/
 public class CircuitAnalysis {
     /** Construct a new analysis
      */

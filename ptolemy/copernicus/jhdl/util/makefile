@@ -55,6 +55,7 @@ JSRCS =	\
 	GraphToDotty.java \
 	MapList.java \
 	HashListMap.java \
+	IntIOPort.java \
 	JHDLUnsupportedException.java \
 	Label.java \
 	MergedControlFlowGraph.java \
