@@ -52,6 +52,10 @@ if {[info procs enumToFullNames] == "" } then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
+# NOTE:  All of the following tests use this director,
+# pretty much as a dummy.
+set director [java::new pt.actors.Director]
+
 ######################################################################
 ####
 # 
@@ -69,14 +73,14 @@ if {[info procs enumToFullNames] == "" } then {
 ####
 # 
 test IORelation-2.1 {Construct Relations} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     set r1 [java::new pt.actors.IORelation]
     set r2 [java::new pt.actors.IORelation $e1 R2]
     list [$r1 getFullName] [$r2 getFullName]
 } {. ..R2}
 
 test IORelation-2.2 {Construct Relations} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set r2 [java::new pt.actors.IORelation $e1 R2]
@@ -90,14 +94,14 @@ test IORelation-2.2 {Construct Relations} {
 ####
 # 
 test IORelation-3.1 {Test getWidth} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
     set r1 [java::new pt.actors.IORelation $e1 R1]
     $r1 getWidth
 } {1}
 
 test IORelation-3.2 {Test getWidth} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
     set r1 [java::new pt.actors.IORelation $e1 R1]
     $r1 setWidth 4
@@ -105,7 +109,7 @@ test IORelation-3.2 {Test getWidth} {
 } {4}
 
 test IORelation-3.3 {Test getWidth} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
     set r1 [java::new pt.actors.IORelation $e1 R1]
     $r1 setWidth 0
@@ -113,9 +117,9 @@ test IORelation-3.3 {Test getWidth} {
 } {1}
 
 test IORelation-3.4 {Test getWidth of a port} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set p1 [java::new pt.actors.IOPort $e2 P1]
     $p1 link $r1
@@ -124,9 +128,9 @@ test IORelation-3.4 {Test getWidth of a port} {
 } {{pt.kernel.IllegalActionException: .E1.R1 and .E1.E2.P1: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.4.1 {Test getWidth of a port} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set p1 [java::new pt.actors.IOPort $e2 P1]
     $p1 link $r1
@@ -136,9 +140,9 @@ test IORelation-3.4.1 {Test getWidth of a port} {
 } {4}
 
 test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set p1 [java::new pt.actors.IOPort $e2 P1]
     $r1 setWidth 0
@@ -147,9 +151,9 @@ test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
 } {{pt.kernel.IllegalActionException: .E1.E2.P1 and .E1.R1: Attempt to link a bus relation to a single port.}}
 
 test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set p1 [java::new pt.actors.IOPort $e2 P1]
     $r1 setWidth 0
@@ -159,10 +163,10 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
 } {1}
 
 test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E0
-    set e1 [java::new pt.kernel.CompositeEntity $e0 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e1 [java::new pt.actors.CompositeActor $e0 E1 [java::null]]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set r2 [java::new pt.actors.IORelation $e0 R2]
     set p1 [java::new pt.actors.IOPort $e2 P1]
@@ -175,10 +179,10 @@ test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
 } {{pt.kernel.IllegalActionException: ..E1.R1 and ..E1.E2.P1: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E0
-    set e1 [java::new pt.kernel.CompositeEntity $e0 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e1 [java::new pt.actors.CompositeActor $e0 E1 [java::null]]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set r2 [java::new pt.actors.IORelation $e0 R2]
     set p1 [java::new pt.actors.IOPort $e2 P1]
@@ -192,10 +196,10 @@ test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
 } {{pt.kernel.IllegalActionException: ..E1.R1 and ..E1.P2: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E0
-    set e1 [java::new pt.kernel.CompositeEntity $e0 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e1 [java::new pt.actors.CompositeActor $e0 E1 [java::null]]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set r1 [java::new pt.actors.IORelation $e1 R1]
     set r2 [java::new pt.actors.IORelation $e0 R2]
     set p1 [java::new pt.actors.IOPort $e2 P1]
@@ -226,10 +230,10 @@ test IORelation-3.11 {Test getWidth of a port with inferred relation width} {
 } {{pt.kernel.IllegalActionException: ..E1.P2 and ..E1.R4: Attempt to link a second bus relation with unspecified width to the inside of a port.}}
 
 test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E0
-    set e1 [java::new pt.kernel.CompositeEntity $e0 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e0 E2]
+    set e1 [java::new pt.actors.CompositeActor $e0 E1 [java::null]]
+    set e2 [java::new pt.actors.Actor $e0 E2]
     set r1 [java::new pt.actors.IORelation $e0 R1]
     $r1 setWidth 0
     set p1 [java::new pt.actors.IOPort $e1 P1]
@@ -243,14 +247,14 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
 
 test IORelation-3.13 {Resolve width through three levels} {
     # E0 contains E1 contains E2
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new pt.actors.CompositeActor [java::null] $director]
     $e1 setName E0
     set p0 [java::new pt.actors.IOPort $e0 P0]
     $p0 makeMultiport true
-    set e1 [java::new pt.kernel.CompositeEntity $e0 E1]
+    set e1 [java::new pt.actors.CompositeActor $e0 E1 [java::null]]
     set p1 [java::new pt.actors.IOPort $e1 P1]
     $p1 makeMultiport true
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set p2 [java::new pt.actors.IOPort $e2 P2]
     $p2 makeMultiport true
     set r0 [java::new pt.actors.IORelation]
@@ -276,10 +280,10 @@ test IORelation-3.13 {Resolve width through three levels} {
 #
 test IORelation-4.1 {Elaborate test system} {
     # Top container
-    set e0 [java::new pt.kernel.CompositeEntity]
-    $e1 setName E0
+    set e0 [java::new pt.actors.CompositeActor [java::null] $director]
+    $e0 setName E0
     # First level of the hierarchy
-    set e1 [java::new pt.kernel.CompositeEntity $e0 E1]
+    set e1 [java::new pt.actors.CompositeActor $e0 E1 [java::null]]
     set p2 [java::new pt.actors.IOPort $e1 P2]
     $p2 makeMultiport true
     set p3 [java::new pt.actors.IOPort $e1 P3]
@@ -287,13 +291,13 @@ test IORelation-4.1 {Elaborate test system} {
     set p4 [java::new pt.actors.IOPort $e1 P4]
     $p4 makeMultiport true
 
-    set e3 [java::new pt.kernel.CompositeEntity $e0 E3]
+    set e3 [java::new pt.actors.CompositeActor $e0 E3 [java::null]]
     set p5 [java::new pt.actors.IOPort $e3 P5]
     $p5 makeMultiport true
     set p6 [java::new pt.actors.IOPort $e3 P6]
 
-    set e6 [java::new pt.kernel.CompositeEntity $e0 E6]
-    set p7 [java::new pt.actors.IOPort $e1 P7]
+    set e6 [java::new pt.actors.Actor $e0 E6]
+    set p7 [java::new pt.actors.IOPort $e6 P7]
     $p7 makeMultiport true
     $p7 makeInput true
 
@@ -312,7 +316,7 @@ test IORelation-4.1 {Elaborate test system} {
     $p7 link $r4
 
     # Inside E1
-    set e2 [java::new pt.kernel.CompositeEntity $e1 E2]
+    set e2 [java::new pt.actors.Actor $e1 E2]
     set p1 [java::new pt.actors.IOPort $e2 P1]
     $p1 makeMultiport true
     $p1 makeOutput true
@@ -324,11 +328,11 @@ test IORelation-4.1 {Elaborate test system} {
     $p4 link $r1
     
     # Inside E3
-    set e4 [java::new pt.kernel.CompositeEntity $e3 E4]
+    set e4 [java::new pt.actors.Actor $e3 E4]
     set p8 [java::new pt.actors.IOPort $e4 P8]
     $p8 makeMultiport true
     $p8 makeInput true
-    set e5 [java::new pt.kernel.CompositeEntity $e3 E5]
+    set e5 [java::new pt.actors.Actor $e3 E5]
     set p9 [java::new pt.actors.IOPort $e5 P9]
     $p9 makeMultiport true
     $p9 makeInput true
@@ -371,19 +375,19 @@ test IORelation-5.1 {Test linkedDestinationPorts} {
     list \
             [enumToFullNames [$r1 linkedDestinationPorts]] \
             [enumToFullNames [$r1 linkedDestinationPorts $p4]]
-} {{..E1.P2 ..E1.P3 ..E1.P4} {..E1.P2 ..E1.P3}}
+} {{.E0.E1.P2 .E0.E1.P3 .E0.E1.P4} {.E0.E1.P2 .E0.E1.P3}}
 
 test IORelation-5.2 {Test linkedDestinationPorts} {
     list \
             [enumToFullNames [$r2 linkedDestinationPorts]] \
             [enumToFullNames [$r2 linkedDestinationPorts $p4]]
-} {{..E1.P2 ..E3.P5} {..E1.P2 ..E3.P5}}
+} {{.E0.E1.P2 .E0.E3.P5} {.E0.E1.P2 .E0.E3.P5}}
 
 test IORelation-5.3 {Test linkedDestinationPorts} {
     list \
             [enumToFullNames [$r3 linkedDestinationPorts]] \
             [enumToFullNames [$r3 linkedDestinationPorts $p5]]
-} {{..E1.P2 ..E3.P5 ..E3.P6} {..E1.P2 ..E3.P6}}
+} {{.E0.E1.P2 .E0.E3.P5 .E0.E3.P6} {.E0.E1.P2 .E0.E3.P6}}
 
 test IORelation-5.4 {Test linkedDestinationPorts} {
     list \
@@ -391,7 +395,7 @@ test IORelation-5.4 {Test linkedDestinationPorts} {
             [enumToFullNames [$r5 linkedDestinationPorts]] \
             [enumToFullNames [$r6 linkedDestinationPorts]] \
             [enumToFullNames [$r7 linkedDestinationPorts]]
-} {{..E1.P3 ..E1.P7} ..E3.E4.P8 ..E3.E5.P9 ..E3.E5.P9}
+} {{.E0.E1.P3 .E0.E6.P7} .E0.E3.E4.P8 .E0.E3.E5.P9 .E0.E3.E5.P9}
 
 ######################################################################
 ####
@@ -402,19 +406,19 @@ test IORelation-6.1 {Test linkedSourcePorts} {
     list \
             [enumToFullNames [$r1 linkedSourcePorts]] \
             [enumToFullNames [$r1 linkedSourcePorts $p4]]
-} {{..E1.E2.P1 ..E1.P2 ..E1.P3 ..E1.P4} {..E1.E2.P1 ..E1.P2 ..E1.P3}}
+} {{.E0.E1.E2.P1 .E0.E1.P2 .E0.E1.P3 .E0.E1.P4} {.E0.E1.E2.P1 .E0.E1.P2 .E0.E1.P3}}
 
 test IORelation-6.2 {Test linkedSourcePorts} {
     list \
             [enumToFullNames [$r2 linkedSourcePorts]] \
             [enumToFullNames [$r2 linkedSourcePorts $p4]]
-} {..E1.P2 ..E1.P2}
+} {.E0.E1.P2 .E0.E1.P2}
 
 test IORelation-6.3 {Test linkedSourcePorts} {
     list \
             [enumToFullNames [$r3 linkedSourcePorts]] \
             [enumToFullNames [$r3 linkedSourcePorts $p2]]
-} {..E1.P2 {}}
+} {.E0.E1.P2 {}}
 
 test IORelation-6.4 {Test linkedSourcePorts} {
     list \
@@ -422,7 +426,7 @@ test IORelation-6.4 {Test linkedSourcePorts} {
             [enumToFullNames [$r5 linkedSourcePorts]] \
             [enumToFullNames [$r6 linkedSourcePorts]] \
             [enumToFullNames [$r7 linkedSourcePorts]]
-} {..E1.P3 ..E3.P5 ..E3.P5 ..E3.P6}
+} {.E0.E1.P3 .E0.E3.P5 .E0.E3.P5 .E0.E3.P6}
 
 ######################################################################
 ####
