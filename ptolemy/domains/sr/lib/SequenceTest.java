@@ -60,29 +60,7 @@ present on a channel, the absence is ignored.  Subsequent iterations
 always succeed, so the actor can be used as a "power-up" test for
 a model, checking the first few iterations against some known results.
 <p>
-The input is a multiport.  If there is more than one channel connected
-to it, then each element of <i>correctValues</i> must itself be an
-ArrayToken, with length matching the number of channels.
-Suppose for example that the width of the input is one,
-and the first three inputs should be 1, 2, and 3.  Then you can
-set <i>correctValues</i> to
-<pre>
-    [1, 2, 3]
-</pre>
-or
-<pre>
-    [1; 2; 3]
-</pre>
-Either syntax is acceptable.
-Suppose instead that the input has width two, and the correct values
-in the first iteration are 1 on the first channel and 2 on the second.
-Then on the second iteration, the correct values are 3 on the first
-channel and 4 on the second.  Then you can set <i>correctValues</i> to
-<pre>
-    [1, 2; 3, 4]
-</pre>
-With this setting, no tests are performed after the first two iterations
-of this actor.
+Only single port inputs are supported.
 <p>
 The input values are checked in the postfire() method.  If an input value
 is absent, the absence is ignored.  If an input value is
@@ -150,26 +128,23 @@ public class SequenceTest extends Sink {
     }
 
     /** Read one token from each input channel and compare against
-     *  the value specified in <i>correctValues</i>.  If the iteration count
+     *  the value specified in <i>correctValues</i>.  If the token count
      *  is larger than the length of <i>correctValues</i>, then return
      *  immediately, declaring success on the test.
-     *  @exception IllegalActionException If an input is missing,
-     *   or if its value does not match the required value.
+     *  @exception IllegalActionException If an input does not match
+     *   the required value.
      */
     public boolean postfire() throws IllegalActionException {
-        int width = input.getWidth();
-        if (width != 1) {
+        if (input.getWidth() != 1) {
             throw new IllegalActionException(this,
-                    "Width of input is " + width
+                    "Width of input is " + input.getWidth()
                     + "but SequenceTest only supports a width of 1.");
         }
         if (_count >= ((ArrayToken)(correctValues.getToken())).length()) {
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
-            for (int i = 0; i < width; i++) {
-                if (input.hasToken(i)) {
-                    input.get(i);
-                }
+            if (input.hasToken(0)) {
+                input.get(0);
             }
             return true;
         }
@@ -181,20 +156,15 @@ public class SequenceTest extends Sink {
                     "Reference is an ArrayToken, "
                     + "but SequenceTest only supports a width of 1.");
         }
-        Token[] reference = new Token[1];
-        reference[0] = referenceToken;
 
-        // To extend this to work for multiports, there would be a for loop 
-        // here.
-        int i = 0;
-        if (input.hasToken(i)) {
-            Token token = input.get(i);
+        if (input.hasToken(0)) {
+            Token token = input.get(0);
             _count++;
             if (token instanceof DoubleToken) {
                 // Check using tolerance.
-                Token correctValue = reference[i];
                 try {
-                    double correct = ((DoubleToken)correctValue).doubleValue();
+                    double correct =
+                        ((DoubleToken)referenceToken).doubleValue();
                     double seen = ((DoubleToken)token).doubleValue();
                     double ok
                         = ((DoubleToken)(tolerance.getToken())).doubleValue();
@@ -208,14 +178,13 @@ public class SequenceTest extends Sink {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
                             + "Input is a double but correct value is not: "
-                            + correctValue.toString());
+                            + referenceToken.toString());
                 }
             } else if (token instanceof ComplexToken) {
                 // Check using tolerance.
-                Token correctValue = reference[i];
                 try {
                     Complex correct
-                        = ((ComplexToken)correctValue).complexValue();
+                        = ((ComplexToken)referenceToken).complexValue();
                     Complex seen
                         = ((ComplexToken)token).complexValue();
                     double ok
@@ -231,16 +200,15 @@ public class SequenceTest extends Sink {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
                             + "Input is complex but correct value is not: "
-                            + correctValue.toString());
+                            + referenceToken.toString());
                 }
             } else {
-                Token correctValue = reference[i];
-                BooleanToken result = token.isEqualTo(correctValue);
+                BooleanToken result = token.isEqualTo(referenceToken);
                 if (!result.booleanValue()) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
                             + "Value was: " + token
-                            + ". Should have been: " + correctValue);
+                            + ". Should have been: " + referenceToken);
                 }
             }
         }
