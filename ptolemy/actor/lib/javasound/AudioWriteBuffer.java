@@ -53,7 +53,7 @@ import java.io.IOException;
 This actor writes audio samples to a buffer and saves the buffer
 to a sound file on wrapup. In each iteration, if there is a token
 available on the <i>data</i> and <i>address</i> ports, then the
-data DoubleToken is written to the buffere location specified by
+data DoubleToken is written to the buffer location specified by
 the address IntToken. The valid address range is 0 to
 <i>bufferLength</i> -1. If an invalid address is specified, then
 the data value will be ignored and no data will be written.
@@ -170,7 +170,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
     /** The write mode to use. If this parameter is set to true, then
      *  a write to a buffer element overwrites the old value in the
      *  buffer. Otherwise, a write adds the new value to the old value
-     *  of the buffere element.
+     *  of the buffer element.
      */
     public Parameter overwrite;
 
@@ -275,7 +275,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 
     /** If there is a token available on the <i>data</i> and
      *  <i>address</i> ports, then the data DoubleToken is written
-     *  to the buffere location specified by the address IntToken.
+     *  to the buffer location specified by the address IntToken.
      *  The valid address range is 0 to <i>bufferLength</i> -1. If an
      *  invalid address is specified, then the data value will be
      *  ignored and no data will be written. The audio samples in the
