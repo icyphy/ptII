@@ -45,7 +45,9 @@ import java.lang.reflect.*;
 //// Manager
 /**
 A Manager is a domain-independant object that manages the execution of 
-a model.   Most often, methods in this object will be called by a 
+a model.   It provides several methods to control execution with: go() 
+blockingGo, pause, resume, terminate, and finish. 
+Most often, methods in this object will be called by a 
 graphical user interface.  However, it is possible to manually call 
 these methods from a java object, a java applet, or an interactive 
 prompt, such as TclBlend.   
@@ -55,10 +57,12 @@ model occur in a separate thread.   The Manager is responsible for creating
 and managing the java thread in which execution begins, although some 
 domains may spawn additional threads of their own.  
 
-@author Steve Neuendorffer, Mudit Goel, Edward A. Lee, Lukito Muliadi
+@author Steve Neuendorffer
+// Contributors: Mudit Goel, Edward A. Lee, Lukito Muliadi
 @version: $Id$
 */
-public class Manager extends NamedObj {
+
+public final class Manager extends NamedObj {
 
     /** Construct a manager in the default workspace with an empty string
      *  as its name. The manager is added to the list of objects in
@@ -73,7 +77,7 @@ public class Manager extends NamedObj {
      *  If the name argument is null, then the name is set to the empty
      *  string. The manager is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  @param name Name of this object.
+     *  @param name Name of this Manager.
      */
     public Manager(String name) {
        super(name);
@@ -87,118 +91,222 @@ public class Manager extends NamedObj {
      *  empty string. Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this director.
+     *  @param name Name of this Manager.
      */
     public Manager(Workspace workspace, String name) {
         super(workspace, name);
         _ExecutionListeners = new HashedSet();
     }
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add the ExecutionListener to the set of ExecutionListeners.
+     *  The ExecutionListener will be notified when the appropriate 
+     *  ExecutionEvents occur.
+     *  @param an ExecutionListener
+     */
+    public void addExecutionListener(ExecutionListener el) {
+        if(el == null) return;
+        _ExecutionListeners.include((Object) el);
+    }
+
+    /** Start a sequence of execution.   This method is a blocking version of
+     *  go(), intended for use with test scripts and batch mode runs.   Note
+     *  that this method is not synchronized because it would grab the whole
+     *  object until it finishes.   if you call this method, then just about
+     *  the only way to terminate execution is by having postfire return false.
+     */
+    public void blockingGo() {
+        blockingGo(-1);
+    }
+
+    /** This method is a blocking version of the go() method.  In actuality,
+     *  go is implemented by starting a ManagerExecutionThread that calls
+     *  back to this method.   This is made public for use with test scripts
+     *  and other batch mode processing.
+     *  It begins by calling initialize on its container, which is the
+     *  toplevel composite actor.   It then continually calls iterate based on
+     *  the variables _isRunning, _isPaused, and _iterations.  It finally 
+     *  calls wrapup on its container to clean up after the execution.
+     *  
+     *  @param iterations The number of toplevel iterations to run for.   
+     *  If iterations = -1, then execution will have no preset limit on the
+     *  number of iterations.
+     */
+    public void blockingGo(int iterations) {
+        CompositeActor container = ((CompositeActor)getContainer());
+               
+        // ensure that we only have one execution running.
+        synchronized(this) {
+            if(_isRunning) return;
+            _isRunning = true;
+            _isPaused = false;
+            _iteration = 0;
+        }
+
+        // Notify all the listeners that execution has started.
+        ExecutionEvent event = new ExecutionEvent(this);
+        Enumeration listeners = _ExecutionListeners.elements();
+        while(listeners.hasMoreElements()) {
+            ExecutionListener l = 
+                (ExecutionListener) listeners.nextElement();
+            l.executionStarted(event);
+        }
+
+        try {
+            try {
+                // Initialize the topology
+                container.initialize();
+                
+                // Call _iterate() until:
+                // _isRunning is set to false (presumably by stop())
+                // iteration limit is reached
+                // postfire() returns false.
+                while (_isRunning && 
+                        ((iterations < 0) || (_iteration++ < iterations)) 
+                        && _iterate())
+
+                    try {
+                        // if a pause has been requested
+                        if(_isPaused) {
+                            // Notify listeners that we are paused.
+                            event = 
+                                new ExecutionEvent(this,iterations);
+                            listeners = 
+                                _ExecutionListeners.elements();
+                            while(listeners.hasMoreElements()) {
+                                ExecutionListener l = 
+                                    (ExecutionListener) 
+                                    listeners.nextElement();
+                                l.executionPaused(event);
+                            }
+
+                            // suspend this thread until somebody wakes us up.
+                            _runningthread.wait();
+
+                            // Somebody woke us up, so notify all the 
+                            // listeners that we are resuming.
+                            event = 
+                                new ExecutionEvent(this,iterations);
+                            listeners = 
+                                _ExecutionListeners.elements();
+                            while(listeners.hasMoreElements()) {
+                                ExecutionListener l = 
+                                    (ExecutionListener) 
+                                    listeners.nextElement();
+                                l.executionResumed(event);
+                            }
+                        }
+                    }
+                    catch (InterruptedException e) {
+                        // We don't care if we were interrupted..
+                        // Just ignore.
+                    }
+            }
+            finally {
+                // if we are done, then always be sure to reset the flags.
+                _isRunning = false;
+                _isPaused = false;
+                
+                // try to wrapup the topology.
+                container.wrapup();
+
+                // notify all listeners that we have been stopped.
+                event = 
+                    new ExecutionEvent(this,iterations);
+                listeners = 
+                    _ExecutionListeners.elements();
+                while(listeners.hasMoreElements()) {
+                    ExecutionListener l = 
+                        (ExecutionListener) 
+                        listeners.nextElement();
+                    l.executionFinished(event);
+                }
+            }
+        }
+        catch (Exception e) {
+            // if any exceptions get up to this level, then we have to tell
+            // the gui by enscapsulating in an event.
+            event = new ExecutionEvent(this,iterations,e);
+            listeners = _ExecutionListeners.elements();
+            while(listeners.hasMoreElements()) {
+                ExecutionListener l = 
+                    (ExecutionListener) listeners.nextElement();
+                l.executionError(event);
+            }
+        }
+    }
+     
+    /** Set a flag to request that the thread in which execution is running 
+     *  complete by calling wrapup() and then terminating.   
+     *  This thread is synchronized so that it runs atomically with respect to 
+     *  the other methods in manager that control the ManagerExecutionThread.
+     *  This method is non-blocking.   
+     */
+    public synchronized void finish() {
+        _isRunning = false;
+        _isPaused = false;
+        if(_runningthread != null)
+            _runningthread.notify();
+    }
+
 
     /** Return the container, which is the composite actor for which this
      *  is the Manager.   This composite actor does not have a parent, and 
      *  contains the entire hierarchy for an execution.
      *  @return The CompositeActor that this Manager is responsible for.
      */
-    public Nameable getContainer() {
+       public Nameable getContainer() {
         return _container;
     }
-
-
+    
+    
     /** Start an execution that will run for an unspecified number of 
-     *  iterations.   This will normally be terminated by calling wrapup, 
-     *  terminate, or returning false in a postfire method.
+     *  iterations.   This will normally be terminated by calling finish, 
+     *  terminate, or returning false in a postfire method.   This method
+     *  is equivalent to calling go(-1).   This method is non-blocking.
      */
-    public void go() {
-        go(-1);
+    public synchronized void go() {
+        _startExecution(-1);
     }
 
     /** Start an execution that will run for no more than a specified
-     *  number of iterations.   The execution may be terminated early 
-     *  by calling abort, finish, or returning false in a postfire method.
-     *  This method starts a new ManagerExecutionThread which will call
-     *  back to this object in 'blockingGo'.
+     *  number of iterations.   The execution may be interrupted 
+     *  by calling finish, terminate, or returning false in a postfire method.
+     *  This method is non-blocking.   This method is synchronized to 
+     *  prevent interaction with simultaneous calls to finish, terminate, 
+     *  pause, and resume.
+     *  @param iterations The number of toplevel iterations to execute for.
+     *  If iterations = -1, then execution will have no preset limit on the
+     *  number of iterations.
      */
-     public synchronized void go(int iterations) {
-
-         if(_isRunning) return;
-         
-         _iterations = iterations;
-         // If the previous run hasn't totally finished yet, then be sure 
-         // it is good and dead before continuing.
-         if(_runningthread!=null) {
-             _runningthread.stop();
-             try {
-                 _runningthread.join();
-             }
-             catch (InterruptedException e) {
-                 // Well, if we bothered to kill it, then this should 
-                 // always get thrown, so just ignore it.
-             }
-             _runningthread = null;
-         }
-         _runningthread = new ManagerExecutionThread(this,iterations);
-         _runningthread.start();
-
-     }
-         
-    /** Invoke one iteration.  In this base class, one iteration consists of
-     *  exactly one invocation of prefire(), fire(), and postfire(), in that
-     *  order. If prefire() return false, then fire() and postfire() are not
-     *  invoked. In derived classes, there may be more than one invocation of
-     *  fire(). This method is read-synchronized on the workspace.
-     *  @return True if postfire() returns true.
-     *  @exception IllegalActionException If any of the called methods
-     *   throws it.
-     */
-    public boolean iterate(int iteration) throws IllegalActionException {
-        CompositeActor actor = (CompositeActor)getContainer();
-
-         ExecutionEvent event = new ExecutionEvent(this,iteration);
-         Enumeration listeners = _ExecutionListeners.elements();
-         while(listeners.hasMoreElements()) {
-             ExecutionListener l = 
-                 (ExecutionListener) listeners.nextElement();
-             l.executionIterationStarted(event);
-         }
-
-        // if mutations
-        try {
-            workspace().getWriteAccess();
-            //While mutations remain
-            //process mutations
-            //initialize new actors
-            //create receivers?
-        } 
-        finally {
-            workspace().doneWriting();
-        }
-        
-        try {
-            workspace().getReadAccess();
-            // Check types.
-	    // resolveTypes();
-
-            if (actor.prefire()) {
-                actor.fire();
-                return actor.postfire();
-            }
-            return false;
-        } finally {
-            workspace().doneReading();
-        }
+    public synchronized void go(int iterations) {
+        _startExecution(iterations);
     }
 
-    /** If not paused, then pause the simulation.
+    /** If an execution is currently running, then set a flag requesting that
+     *  execution pause at the next available opportunity between toplevel 
+     *  iterations.   When the pause flag is detected, the 
+     *  ManagerExecutionThread will suspend itself and issue the 
+     *  ExecutionPaused ExecutionEvent to all ExecutionListeners.
+     *  This thread is synchronized so that it runs atomically with respect to 
+     *  the other methods in manager that control the ManagerExecutionThread.
+     *  This call is non-blocking.
      */
     public synchronized void pause() {
         if(_isRunning) _isPaused = true;
     }
     
-    public void registerExecutionListener(ExecutionListener el) {
-        _ExecutionListeners.include((Object) el);
+    /** Remove the ExecutionListener to the set of ExecutionListeners.
+     *  The ExecutionListener will be no longer be notified when 
+     *  ExecutionEvents occur.
+     *  @param an ExecutionListener
+     */
+    public void removeExecutionListener(ExecutionListener el) {
+        if(el == null) return;
+        _ExecutionListeners.exclude((Object) el);
     }
 
     /** Check types on all the connections and resolve undeclared types.
@@ -271,7 +379,10 @@ public class Manager extends NamedObj {
 	}
     }
 
-    /** If paused, resume the currently paused simulation.
+    /** If running and paused, resume the currently paused simulation by 
+     *  turning off the paused flag and waking the ManagerExecutionThread up.
+     *  This thread is synchronized so that it runs atomically with respect to 
+     *  the other methods in manager that control the ManagerExecutionThread.
      */
     public synchronized void resume() {
         if(_isRunning && _isPaused) {
@@ -280,115 +391,19 @@ public class Manager extends NamedObj {
                 _runningthread.notify();
         }
     }
- 
-    public void blockingGo() {
-        blockingGo(-1);
-    }
-
-    /** This is the method that is called to actually perform the execution.
-     *  It begins by calling initialize on its container, which is the
-     *  toplevel composite actor.   It then continually calls iterate based on
-     *  the variables _isRunning, _isPaused, and _iterations.  It finally 
-     *  calls wrapup on its container to clean up after the execution.
-     *  This method may be called directly to provide 'batch mode' execution,
-     *  or it may be called by ManagerExecutionThread.
-     */
-    public void blockingGo(int iterations) {
-        CompositeActor container = ((CompositeActor)getContainer());
-        int count = 0;
-
-        // ensure that we only have one execution running.
-        synchronized(this) {
-            if(_isRunning) return;
-            _isRunning = true;
-            _isPaused = false;
-        }
-
-        ExecutionEvent event = new ExecutionEvent(this);
-        Enumeration listeners = _ExecutionListeners.elements();
-        while(listeners.hasMoreElements()) {
-            ExecutionListener l = 
-                (ExecutionListener) listeners.nextElement();
-            l.executionStarted(event);
-        }
-
-        try {
-            try {
-                container.initialize();
-                
-                while (_isRunning && 
-                        ((iterations < 0) || (count++ < iterations)) 
-                        && iterate(iterations))
-
-                    try {
-                        if(_isPaused) {
-                            event = 
-                                new ExecutionEvent(this,iterations);
-                            listeners = 
-                                _ExecutionListeners.elements();
-                            while(listeners.hasMoreElements()) {
-                                ExecutionListener l = 
-                                    (ExecutionListener) 
-                                    listeners.nextElement();
-                                l.executionPaused(event);
-                            }
-
-                            _runningthread.wait();
-
-                            event = 
-                                new ExecutionEvent(this,iterations);
-                            listeners = 
-                                _ExecutionListeners.elements();
-                            while(listeners.hasMoreElements()) {
-                                ExecutionListener l = 
-                                    (ExecutionListener) 
-                                    listeners.nextElement();
-                                l.executionResumed(event);
-                            }
-                        }
-                    }
-                    catch (InterruptedException e) {
-                        // We don't care if we were interrupted..
-                        // Just ignore.
-                    }
-            }
-            finally {
-                _isRunning = false;
-                _isPaused = false;
-
-                container.wrapup();
-                event = 
-                    new ExecutionEvent(this,iterations);
-                listeners = 
-                    _ExecutionListeners.elements();
-                while(listeners.hasMoreElements()) {
-                    ExecutionListener l = 
-                        (ExecutionListener) 
-                        listeners.nextElement();
-                    l.executionWrappedup(event);
-                }
-            }
-        }
-        catch (IllegalActionException e) {
-            event = new ExecutionEvent(this,iterations,e);
-            listeners = _ExecutionListeners.elements();
-            while(listeners.hasMoreElements()) {
-                ExecutionListener l = 
-                    (ExecutionListener) listeners.nextElement();
-                l.executionError(event);
-            }
-        }
-    }
 
     /** Terminate any currently executing simulation with extreme prejudice.  
      *  Kill the main execution thread and call terminate on the toplevel 
      *  container.   This should cause any actors to free up any resources 
-     *  they have allocated and directors should kill any threads they have 
+     *  they have allocated and Directors should kill any threads they have 
      *  created.   However, a consistant state is not guaraunteed.   The 
-     *  environment should probably be restarted before attemping any
-     *  further operations.
+     *  topology should probably be recreated before attemping any
+     *  further operations.   This is not synchronized because we want it to
+     *  happen as soon as possible, no matter what.
      */
     public void terminate() {
+
+        // kill the main thread and wait for it to die.
         if(_runningthread != null) { 
             _runningthread.stop();
             try {
@@ -401,8 +416,11 @@ public class Manager extends NamedObj {
             }
             _runningthread = null;
         }
+        // Terminate the entire hierarchy as best we can.
         CompositeActor container = ((CompositeActor)getContainer());
         container.terminate();
+
+        // notify all execution listeners that execution was terminated.
         ExecutionEvent event = new ExecutionEvent(this);
         Enumeration listeners = _ExecutionListeners.elements();
         while(listeners.hasMoreElements()) {
@@ -412,20 +430,94 @@ public class Manager extends NamedObj {
         _isRunning = false;
         _isPaused = false;
     }
-      
-    /** Stop any currently executing simulation and cleanup nicely.
-     */
-    public synchronized void wrapup() {
-        _isRunning = false;
-        _isPaused = false;
-        if(_runningthread != null)
-            _runningthread.notify();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private classes                   ////
+
+    private class ManagerExecutionThread extends Thread {
+        
+        /** Construct a thread that will call back to the Manager and 
+         *  Request a certain number of iterations of execution.
+         *
+         *  @param m The manager that created the ManagerExecutionThread
+         *  @param iterations The number of iterations to execute for     
+         */
+        public ManagerExecutionThread(Manager m, int iterations) {
+            super();
+            _manager = m;
+            _iterations = iterations;
+        }
+        
+        /** This thread makes a single call back to the blockingGo 
+         *  method of the Manager that it was created with.
+         */
+        public void run() {
+            _manager.blockingGo(_iterations);
+        }
+        
+        private Manager _manager;
+        private int _iterations;
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Make this director the Manager of the specified composite
+    /** Invoke one iteration.  An iteration consists of
+     *  invocations of prefire(), fire(), and postfire(), in that
+     *  order.  Prefire() will be called multiple times until it returns true. 
+     *  If prefire() return false, then fire() and postfire() are not
+     *  invoked.   Fire() will be called a single time.   If postfire()
+     *  returns false, then the execution should be terminated.
+     *  This method is read-synchronized on the workspace.
+     *
+     *  @return True if postfire() returns true.
+     *  @exception IllegalActionException If any of the called methods
+     *   throws it.
+     */
+    private boolean _iterate() throws IllegalActionException {
+        CompositeActor container = (CompositeActor)getContainer();
+        if (container == null) {
+            throw new InvalidStateException("Manager "+ getName() +
+                    " attempted execution with no topology to execute!");
+        }        
+        
+        ExecutionEvent event = new ExecutionEvent(this,_iteration);
+        Enumeration listeners = _ExecutionListeners.elements();
+        while(listeners.hasMoreElements()) {
+            ExecutionListener l = 
+                (ExecutionListener) listeners.nextElement();
+            l.executionIterationStarted(event);
+        }
+        
+        // Toplevel mutations will occur here.
+        
+        try {
+            workspace().getReadAccess();
+            
+	    try {
+                resolveTypes();
+            }
+            catch (TypeConflictException e) {
+                event = new ExecutionEvent(this,_iteration, e);
+                listeners = _ExecutionListeners.elements();
+                while(listeners.hasMoreElements()) {
+                    ExecutionListener l = 
+                        (ExecutionListener) listeners.nextElement();
+                    l.executionError(event);
+                }
+            }
+                
+            if (container.prefire()) {
+                container.fire();
+                return container.postfire();
+            }
+            return false;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Make this Manager the Manager of the specified composite
      *  actor.  This method should not be called directly.  Instead, call
      *  setManager of the CompositeActor class (or a derived class).
      *  If the argument is not the toplevel CompositeActor, then we throw
@@ -441,14 +533,41 @@ public class Manager extends NamedObj {
         }
     }
 
+    /** This method serves at the implementation for both go() and go(int).
+     *  Starts a new ManagerExecutionThread which will call
+     *  back to this object in 'blockingGo'.
+     */
+    private void _startExecution(int iterations) {
+         if(_isRunning) return;
+         
+         // If the previous run hasn't totally finished yet, then be sure 
+         // it is good and dead before continuing.
+         if(_runningthread!=null) {
+             _runningthread.stop();
+             try {
+                 _runningthread.join();
+             }
+             catch (InterruptedException e) {
+                 // Well, if we bothered to kill it, then this should 
+                 // always get thrown, so just ignore it.
+             }
+             _runningthread = null;
+         }
+         _runningthread = new ManagerExecutionThread(this,iterations);
+         _runningthread.start();
+
+     }
+         
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The toplevel CompositeActor that contains this Manager
+    private CompositeActor _container = null;
+
     private boolean _isRunning;
     private boolean _isPaused;
-    private int _iterations;
+    private int _iteration;
     private Thread _runningthread;
-    private CompositeActor _container = null;
     private HashedSet _ExecutionListeners;
 
 }
