@@ -856,12 +856,6 @@ public class Transition extends ComponentRelation {
             if (_exeDirectorIsHSDirector) {
                 // associate the relation list with the
                 // ParseTreeEvaluatorForGuardExpression
-                // FIXME: how to get the error tolerance
-                // If we limite the HSDirector only works under CT model
-                // or Modal Models, we can use the error tolerance from
-                // the top level CT director.
-                // Add a getErrorTolerance() method to the CTGeneralDirector
-                // class.
                 _parseTreeEvaluator = 
                     new ParseTreeEvaluatorForGuardExpression(_relationList,
                         errorTolerance);
