@@ -581,18 +581,18 @@ void unary() #void :
 {
    (
            <MINUS> element()
-           { jjtThis.isMinus = true;}
+           { jjtThis._isMinus = true;}
    ) #PtUnaryNode
 
  |  
    (
            <BOOL_NOT> element()
-           { jjtThis.isNot = true;} 
+           { jjtThis._isNot = true;} 
    ) #PtUnaryNode
  |  
    (
            <BITWISE_NOT> element()
-           { jjtThis.isBitwiseNot = true;} 
+           { jjtThis._isBitwiseNot = true;} 
    ) #PtUnaryNode
 
  |  element()
@@ -692,7 +692,7 @@ String tidied, x;
         "(" funcIf() ( 
             LOOKAHEAD( ")" "." )  (
                     // we're in a method call on the previous token 
-                  ")" "." <ID> {jjtThis.methodName = token.image; }
+                  ")" "." <ID> {jjtThis._methodName = token.image; }
                   "(" [ funcIf() ( "," funcIf()  )* ]  ")" )
           |            
             ")"
@@ -737,7 +737,7 @@ String tidied, x;
 
 void function() #PtFunctionNode :
 {}
-{    <ID> {jjtThis.funcName = token.image;} 
+{    <ID> {jjtThis._funcName = token.image;} 
     "(" [  funcIf() ( ","  funcIf()  )* ]  ")"
 }
 

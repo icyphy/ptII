@@ -96,13 +96,13 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                     // return new LongToken(tmp);
                 } else {
                     throw new IllegalArgumentException(
-                            "Cannot apply bitwise NOT \"~\" to  "
+                            "Cannot apply bitwise NOT \"~\" to  " +
                             "non-Integer type: " + result.toString());
                 }
             }
         } catch (Exception ex) {
             throw new IllegalArgumentException(
-                    "Invalid negation operation(!, ~, -) on "
+                    "Invalid negation operation(!, ~, -) on " +
                     childTokens[0].getClass().getName());
 
         }

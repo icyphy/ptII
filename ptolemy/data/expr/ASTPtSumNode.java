@@ -48,15 +48,16 @@ the parse tree.
 */
 public class ASTPtSumNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token _resolveNode()
+            throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if (num == 1) {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            String str = "Invalid state in sum node, number of children is";
-            str = str + "not equal to number of operators plus one";
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException(
+                    "Invalid state in sum node, number of children is " +
+                    "not equal to number of operators plus one");
         }
         ptolemy.data.Token result = childTokens[0];
         String op = "";
@@ -74,15 +75,16 @@ public class ASTPtSumNode extends ASTPtRootNode {
                 } else if (op.compareTo("-") == 0) {
                     result = result.subtract(childTokens[i]);
                 } else {
-                    String str = "Invalid concatenator in sum() production, ";
-                    throw new IllegalArgumentException(str + "check parser");
+                    throw new IllegalArgumentException(
+                            "Invalid concatenator in sum() production, " +
+                            "check parser");
                 }
             }
         } catch (Exception ex) {
-            String str = "Invalid operation " + op + " between ";
-            str = str + result.getClass().getName() + " and ";
-            str = str + childTokens[i].getClass().getName();
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException(
+                    "Invalid operation " + op + " between " +
+                    result.getClass().getName() + " and " +
+                    childTokens[i].getClass().getName());
         }
         return result;
     }

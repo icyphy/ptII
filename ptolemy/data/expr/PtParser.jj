@@ -894,7 +894,7 @@ void unary()       :
              jjtc001 = false;
            }
 /*@egen*/
-           { jjtn001.isMinus = true;}
+           { jjtn001._isMinus = true;}
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -932,7 +932,7 @@ void unary()       :
              jjtc002 = false;
            }
 /*@egen*/
-           { jjtn002.isNot = true;} 
+           { jjtn002._isNot = true;} 
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte002) {
      if (jjtc002) {
@@ -969,7 +969,7 @@ void unary()       :
              jjtc003 = false;
            }
 /*@egen*/
-           { jjtn003.isBitwiseNot = true;} 
+           { jjtn003._isBitwiseNot = true;} 
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte003) {
      if (jjtc003) {
@@ -1186,7 +1186,7 @@ String tidied, x;
         "(" funcIf() ( 
             LOOKAHEAD( ")" "." )  (
                     // we're in a method call on the previous token 
-                  ")" "." <ID> {jjtn006.methodName = token.image; }
+                  ")" "." <ID> {jjtn006._methodName = token.image; }
                   "(" [ funcIf() ( "," funcIf()  )* ]  ")" )
           |            
             ")"
@@ -1275,7 +1275,7 @@ void function()                 :
 /*@egen*/}
 {/*@bgen(jjtree) PtFunctionNode */
      try {
-/*@egen*/    <ID> {jjtn000.funcName = token.image;} 
+/*@egen*/    <ID> {jjtn000._funcName = token.image;} 
     "(" [  funcIf() ( ","  funcIf()  )* ]  ")"/*@bgen(jjtree)*/
      } catch (Throwable jjte000) {
        if (jjtc000) {

@@ -845,7 +845,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         element();
              jjtree.closeNodeScope(jjtn001, true);
              jjtc001 = false;
-             jjtn001.isMinus = true;
+             jjtn001._isMinus = true;
       } catch (Throwable jjte001) {
      if (jjtc001) {
        jjtree.clearNodeScope(jjtn001);
@@ -875,7 +875,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         element();
              jjtree.closeNodeScope(jjtn002, true);
              jjtc002 = false;
-             jjtn002.isNot = true;
+             jjtn002._isNot = true;
       } catch (Throwable jjte002) {
      if (jjtc002) {
        jjtree.clearNodeScope(jjtn002);
@@ -905,7 +905,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         element();
              jjtree.closeNodeScope(jjtn003, true);
              jjtc003 = false;
-             jjtn003.isBitwiseNot = true;
+             jjtn003._isBitwiseNot = true;
       } catch (Throwable jjte003) {
      if (jjtc003) {
        jjtree.clearNodeScope(jjtn003);
@@ -1079,7 +1079,7 @@ String tidied, x;
           jj_consume_token(43);
           jj_consume_token(44);
           jj_consume_token(ID);
-                                jjtn006.methodName = token.image;
+                                jjtn006._methodName = token.image;
           jj_consume_token(42);
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case MINUS:
@@ -1203,7 +1203,7 @@ String tidied, x;
   jjtree.openNodeScope(jjtn000);
     try {
       jj_consume_token(ID);
-           jjtn000.funcName = token.image;
+           jjtn000._funcName = token.image;
       jj_consume_token(42);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MINUS:

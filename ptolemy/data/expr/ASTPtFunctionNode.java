@@ -86,13 +86,13 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             // Have a recursive call to the parser.
             String exp = "";
             try {
-                if (parser == null) {
+                if (_parser == null) {
                     throw new InvalidStateException("ASTPtFunctionNode: " +
                             " recursive call to null parser.");
                 }
-                NamedList scope = parser.getScope();
+                NamedList scope = _parser.getScope();
                 exp = childTokens[0].stringValue();
-                ASTPtRootNode tree = parser.generateParseTree(exp, scope);
+                ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
                 return tree.evaluateParseTree();
             } catch (IllegalActionException ex) {
                 throw new IllegalArgumentException("ASTPtFunctionNode: " +
