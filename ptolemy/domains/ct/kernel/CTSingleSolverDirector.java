@@ -106,9 +106,8 @@ public class CTSingleSolverDirector extends CTDirector {
         this._initParameters();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
