@@ -1,6 +1,8 @@
 /* A labeled box for signal plots.
 
-@Author: Edward A. Lee
+@Author: Edward A. Lee and Christopher Hylands
+
+@Contributors:  William Wu
 
 @Version: $Id$
 
@@ -250,7 +252,8 @@ public class PlotBox extends Applet {
         int halflabelheight = labelheight/2;
 
         // Draw scaling annotation for x axis.
-        int ySPos = drawRect.y + drawRect.height - 5; // NOTE: 5 pixel padding on bottom.
+        // NOTE: 5 pixel padding on bottom.
+        int ySPos = drawRect.y + drawRect.height - 5; 
         if (_xExp != 0 && _xticks == null) {
             int xSPos = drawRect.x + drawRect.width - rightPadding;
             String superscript = Integer.toString(_xExp);
@@ -260,7 +263,8 @@ public class PlotBox extends Applet {
             xSPos -= lfm.stringWidth("x10");
             graphics.setFont(_labelfont);
             graphics.drawString("x10", xSPos, ySPos);
-            bottomPadding = (3 * labelheight)/2 + 5;  // NOTE: 5 pixel padding on bottom
+            // NOTE: 5 pixel padding on bottom
+            bottomPadding = (3 * labelheight)/2 + 5;
         }
         
         // NOTE: 5 pixel padding on the bottom.
@@ -269,7 +273,8 @@ public class PlotBox extends Applet {
         }
         
         // Compute the space needed around the plot, starting with vertical.
-        uly = drawRect.y + titley + 5;       // NOTE: padding of 5 pixels below title.
+        // NOTE: padding of 5 pixels below title.
+        uly = drawRect.y + titley + 5;
         // NOTE: 3 pixels above bottom labels.
         lry = drawRect.height-labelheight-bottomPadding-3; 
         int height = lry-uly;
@@ -279,7 +284,8 @@ public class PlotBox extends Applet {
         ///////////////////// vertical axis
 
         // Number of y tick marks.
-        int ny = 2 + height/(labelheight+10); // NOTE: subjective spacing factor.
+        // NOTE: subjective spacing factor.
+        int ny = 2 + height/(labelheight+10);
         // Compute y increment.
         double yStep=_roundUp((_yMax-_yMin)/(double)ny);
         
@@ -293,9 +299,10 @@ public class PlotBox extends Applet {
         // Meanwhile, find the width of the widest label.
         // The labels are quantized so that they don't have excess resolution.
         int widesty = 0;
-        // These do not get used unless ticks are automatic, but the compiler is
-        // not smart enough to allow us to reference them in two distinct conditional
-        // clauses unless they are allocated outside the clauses.
+        // These do not get used unless ticks are automatic, but the
+        // compiler is not smart enough to allow us to reference them
+        // in two distinct conditional clauses unless they are
+        // allocated outside the clauses.
         String ylabels[] = new String[ny];
         int ylabwidth[] = new int[ny];
         int ind = 0;
@@ -430,7 +437,8 @@ public class PlotBox extends Applet {
             // Assume a worst case of 4 characters and a period for each label.
             int maxlabelwidth = lfm.stringWidth("8.888");
         
-            int nx = 2 + width/(maxlabelwidth+5); // NOTE: 5 additional pixels between labels.
+            // NOTE: 5 additional pixels between labels.
+            int nx = 2 + width/(maxlabelwidth+5);
             // Compute x increment.
             double xStep=_roundUp((_xMax-_xMin)/(double)nx);
         
@@ -640,11 +648,11 @@ public class PlotBox extends Applet {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         _fillButton = new Button("fill");
         add(_fillButton);
-	}
+    }
 	
-	/**
-	 * Set the starting point for an interactive zoom box.
-	 */
+    /**
+     * Set the starting point for an interactive zoom box.
+     */
     public boolean mouseDown(Event evt, int x, int y) {
         // ignore if out of range
         if (y <= lry && y >= uly && x <= lrx && x >= ulx) {
@@ -655,64 +663,133 @@ public class PlotBox extends Applet {
         return false;
     }
     
-	/**
-	 * Set the starting point for an interactive zoom box.
-	 */
+    /**
+     * Set the starting point for an interactive zoom box.
+     * Return a boolean indicating whether or not we have dealt with
+     * the event.
+     */
     public boolean mouseDrag(Event evt, int x, int y) {
         boolean pointinside = y <= lry && y >= uly && x <= lrx && x >= ulx;
         // erase previous rectangle, if there was one.
         if ((_zoomx != -1 || _zoomy != -1) && pointinside) {
-            graphics.setXORMode(Color.white);
-            if (_zoomxn != -1 || _zoomyn != -1) {
-                int minx = Math.min(_zoomx, _zoomxn);
-                int maxx = Math.max(_zoomx, _zoomxn);
-                int miny = Math.min(_zoomy, _zoomyn);
-                int maxy = Math.max(_zoomy, _zoomyn);
-                graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+            // Ability to zoom out added by William Wu.
+            // If we are not already zooming, figure out whether we
+            // are zooming in or out.
+            if (_zoomin == false && _zoomout == false){
+                if (y < _zoomy) {
+                    _zoomout = true;
+                    // Draw reference box.
+                    graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
+                } else if (y > _zoomy) {
+                    _zoomin = true; 
+                }
             }
-            _zoomxn = x;
-            _zoomyn = y;
-            int minx = Math.min(_zoomx, _zoomxn);
-            int maxx = Math.max(_zoomx, _zoomxn);
-            int miny = Math.min(_zoomy, _zoomyn);
-            int maxy = Math.max(_zoomy, _zoomyn);
-            graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-            graphics.setPaintMode();
-            return true;
+
+            if (_zoomin == true){   
+                graphics.setXORMode(Color.white);
+                // Erase the previous box if necessary.
+                if (_zoomxn != -1 || _zoomyn != -1) {
+                    int minx = Math.min(_zoomx, _zoomxn);
+                    int maxx = Math.max(_zoomx, _zoomxn);
+                    int miny = Math.min(_zoomy, _zoomyn);
+                    int maxy = Math.max(_zoomy, _zoomyn);
+                    graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+                }
+                // Draw a new box if necessary.
+                if (y > _zoomy) {
+                    _zoomxn = x;
+                    _zoomyn = y;
+                    int minx = Math.min(_zoomx, _zoomxn);
+                    int maxx = Math.max(_zoomx, _zoomxn);
+                    int miny = Math.min(_zoomy, _zoomyn);
+                    int maxy = Math.max(_zoomy, _zoomyn);
+                    graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+                    graphics.setPaintMode();
+                    return true;
+                }
+            } else if (_zoomout == true){
+                graphics.setXORMode(Color.white);
+                // Erase previous box if necessary.
+                if (_zoomxn != -1 || _zoomyn != -1) {
+                    int x_diff = Math.abs(_zoomx-_zoomxn);
+                    int y_diff = Math.abs(_zoomy-_zoomyn);
+                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                           30+x_diff*2, 30+y_diff*2);
+                }
+                if (y < _zoomy){
+                    _zoomxn = x;
+                    _zoomyn = y;     
+                    int x_diff = Math.abs(_zoomx-_zoomxn);
+                    int y_diff = Math.abs(_zoomy-_zoomyn);
+                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                            30+x_diff*2, 30+y_diff*2);
+                    graphics.setPaintMode();
+                    return true;
+                }
+            }
         }
+        graphics.setPaintMode();
         return false;
     }
 
-	/**
-	 * Set the starting point for an interactive zoom box.
-	 */
+    /**
+     * Set the starting point for an interactive zoom box.
+     */
     public boolean mouseUp(Event evt, int x, int y) {
         // ignore if there hasn't been a drag, or if x,y is out of range
         boolean pointinside = y <= lry && y >= uly && x <= lrx && x >= ulx;
         boolean handled = false;
-        if (_zoomxn != -1 || _zoomyn != -1) {
-            // erase previous rectangle, if there was one.
-            int minx = Math.min(_zoomx, _zoomxn);
-            int maxx = Math.max(_zoomx, _zoomxn);
-            int miny = Math.min(_zoomy, _zoomyn);
-            int maxy = Math.max(_zoomy, _zoomyn);
-            graphics.setXORMode(Color.white);
-            graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-            graphics.setPaintMode();
-            // if in range, zoom
-            if (pointinside) {
-                double a = xMin + (_zoomx - ulx)/xscale;
-                double b = xMin + (x - ulx)/xscale;
-                if (a < b) setXRange(a, b);
-                else setXRange(b, a);
-                a = yMax - (_zoomy - uly)/yscale;
-                b = yMax - (y - uly)/yscale;
-                if (a < b) setYRange(a, b);
-                else setYRange(b, a);
-                drawPlot(true);
+        if (_zoomin == true){  
+            if (_zoomxn != -1 || _zoomyn != -1) {
+                // erase previous rectangle.
+                int minx = Math.min(_zoomx, _zoomxn);
+                int maxx = Math.max(_zoomx, _zoomxn);
+                int miny = Math.min(_zoomy, _zoomyn);
+                int maxy = Math.max(_zoomy, _zoomyn);
+                graphics.setXORMode(Color.white);
+                graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+                graphics.setPaintMode();
+                // if in range, zoom
+                if (pointinside) {
+                    double a = xMin + (_zoomx - ulx)/xscale;
+                    double b = xMin + (x - ulx)/xscale;
+                    if (a < b) setXRange(a, b);
+                    else setXRange(b, a);
+                    a = yMax - (_zoomy - uly)/yscale;
+                    b = yMax - (y - uly)/yscale;
+                    if (a < b) setYRange(a, b);
+                    else setYRange(b, a);
+                    drawPlot(true);
+                }
+                handled = true;
             }
+        } else if (_zoomout == true){
+            // Erase previous rectangle.
+            graphics.setXORMode(Color.white);
+            int x_diff = Math.abs(_zoomx-_zoomxn);
+            int y_diff = Math.abs(_zoomy-_zoomyn);
+            graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                    30+x_diff*2, 30+y_diff*2);
+            graphics.setPaintMode();
+            if (pointinside) {
+                // Calculate zoom factor.
+                double a = (double)(Math.abs(_zoomx - x)) / 30.0;
+                double b = (double)(Math.abs(_zoomy - y)) / 30.0;
+                double newx1 = xMax + (xMax - xMin) * a;
+                double newx2 = xMin - (xMax - xMin) * a;
+                if (newx1 > xTop) newx1 = xTop; 
+                if (newx2 < xBottom) newx2 = xBottom; 
+                double newy1 = yMax + (yMax - yMin) * b;
+                double newy2 = yMin - (yMax - yMin) * b;
+                if (newy1 > yTop) newy1 = yTop; 
+                if (newy2 < yBottom) newy2 = yBottom; 
+                setXRange(newx2, newx1);
+                setYRange(newy2, newy1);
+                drawPlot(true);
+            } 
             handled = true;
-       }
+        }
+        _zoomin = _zoomout = false;
         _zoomxn = _zoomyn = _zoomx = _zoomy = -1;
         return handled;
     }
@@ -1183,4 +1260,8 @@ public class PlotBox extends Applet {
     private int _zoomy = -1;
     private int _zoomxn = -1;
     private int _zoomyn = -1;
+
+    // Control whether we are zooming in or out.
+    private boolean _zoomin = false;
+    private boolean _zoomout = false;
 }
