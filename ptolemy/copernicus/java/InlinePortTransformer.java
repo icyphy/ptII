@@ -569,7 +569,7 @@ public class InlinePortTransformer extends SceneTransformer {
     }            
     
     // Create references in the given class to the appropriate SDF
-    // commununication buffers for each port in the given entity.
+    // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
     private void _createBufferReferences(
             Entity entity, SootClass entityClass,
