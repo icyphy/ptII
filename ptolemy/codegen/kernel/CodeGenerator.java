@@ -242,9 +242,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Generate variable declarations for referenced parameters.
-            CodeGeneratorHelper helper
+            CodeGeneratorHelper actorHelper
                 = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
-            HashSet parameterSet = helper.getReferencedParameter();
+            HashSet parameterSet = actorHelper.getReferencedParameter();
             if (parameterSet != null) {
                 Iterator parameters = parameterSet.iterator();
                 while (parameters.hasNext()) {
@@ -271,7 +271,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 if (inputPort.isMultiport()) {
                     code.append("[" + inputPort.getWidth() + "]");
                 }
-                int bufferSize = directorHelper.getBufferSize(inputPort);
+                int bufferSize = actorHelper.getBufferSize(inputPort);
+                //int bufferSize = directorHelper.getBufferSize(inputPort);
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
                 }
@@ -497,7 +498,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             isArrayType = true;
         }
         if (type.equals("boolean")) {
-            type = "bool";
+            type = "unsigned char";
         }
         code.append("static ");
         code.append(type);
