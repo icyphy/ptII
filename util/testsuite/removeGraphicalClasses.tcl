@@ -67,6 +67,7 @@ proc removeGraphicalClasses {parser} {
     #$filter put "ptolemy.domains.tm.kernel.TMDirector" [java::null]
     $filter put "ptolemy.domains.sr.lib.NonStrictDisplay" [java::null]
     $filter put "ptolemy.domains.tm.kernel.SchedulePlotter" [java::null]
+    $filter put "ptolemy.domains.wireless.lib.TerrainProperty" [java::null]
     # We don't build in the demo directory, SoundSensor should not be 
     # in the .xml file
     $filter put "ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor" [java::null]
