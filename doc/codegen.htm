@@ -9,11 +9,62 @@
 <h1>Code Generation</h1>
 Ptolemy II includes an experimental code generation implementation
 that was first developed my Jeff Tsay as part of his Masters project.
-<bold>FIXME: provide URL to paper, or include paper</bold>.
+(Jeff Tsay, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/" target="_top">A Code Generation Framework for Ptolemy II</a>," ERL Technical Report UCB/ERL No. M00/25, Dept. EECS, University of California, Berkeley, CA  94720, May 19, 2000.)
+
+
 <p>The codegen facility is not complete, but it is possible
 to generate Java code for SDF systems and run it.  Simple
 systems can be run on the Palm Pilot using 
 <a href="kvm.htm">kvm</a>.
+
+<h2>Initial Setup</h2
+Currently, the following steps are necessary to get codegen running.
+We hope to modify the codegen facility so that these steps are not necessary.
+
+<h3>Skeleton Files</h3>
+Currently, codegen uses skeleton files that include the type
+signature of the Java methods and fields.  The skeleton filenames
+end in <code>.jskel</code>, and can be thought of as a cache of the type signature of the methods and fields for a particular class.
+<p>Skeleton files are used for with the Java runtime and within Ptolemy II.
+
+<h4>Ptolemy II Skeleton Files</h4>
+To generate Ptolemy II skeleton files:
+<pre>
+   cd ptolemy/lang/java
+   make skeleton
+</pre>
+Note that we <b>don't</b> want to run Skeleton in any directory that contain
+actors, like actor/lib or domains/sdf/lib because the code generator
+needs to transform the code contained in actors.
+
+<p>If jskel files are present in actor.lib, then you will end up
+with the intialize() and fire() methods being declared native, which
+will result in errors like:
+<pre>
+cxh@maury 15% java -classpath ../.. cg.orthocom.CG_Main
+Exception in thread "main" java.lang.UnsatisfiedLinkError: initialize
+at cg.orthocom.CG_Main.main(CG_Main.java, Compiled Code)
+</pre>
+<h4>Java Runtime Skeleton Files</h4>
+The codegen facility also needs to read in skeleton files for
+the java.lang and sun packages that are included with the Java runtime.
+Unfortunately, we cannot redistribute these files.  Eventually, we
+hope to use reflection to make these files unnecessary.
+
+<p>Local users can download and install the Java Runtime skeleton files
+with:
+<pre>
+scp carson://users/ptII/vendors/sun/src/javasrc_2.zip
+</pre>
+and then unzip the file in <code>$PTII/vendors/sun/src</code>
+
+<p>Users without local access will need to generate skeleton files
+for all the classes in the java and sun packages. 
+<pre>
+cd $PTII/ptolemy/lang/java
+make javasrc_skeletons
+</pre>
+
 
 <h2>Demonstrations</h2>
 <h3>Print out the AST</h3>
@@ -127,7 +178,7 @@ generates
 <code>ptolemy/lang/java</code>
 
 <p> The original <code>byacc</code> source can be found at
-<a href="http://www.lincom-asg.com/~rjamison/byacc">http://www.lincom-asg.com/~rjamison/byacc</a>.  The top of JavaParser.java contains
+<a href="http://www.lincom-asg.com/~rjamison/byacc" target="_top">http://www.lincom-asg.com/~rjamison/byacc</a>.  The top of JavaParser.java contains
 a list of the modifications we have made.
 
 <p> Usually it is only necessary to build or run <code>ptbyacc</code>

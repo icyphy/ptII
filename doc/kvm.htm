@@ -12,37 +12,51 @@ and Handspring using the Java KVM or j2me_cldc facility.
 The Ptolemy II/Palm facility is extremely experimental, and is based
 on the <a href="codegen.htm">Ptolemy II Code Generation</a> facility
 
-<h2>Remote links</a>
+<h2>Remote links</h2>
 <menu>
 
 <li> <a href="http://java.sun.com/products/cldc/" target="_top">CLDC and the K Virtual Machine (KVM)</a>
-<A HREF="http://java.sun.com/products/kvm/wp/KVMwp.pdf" target="_top">KVM White paper</A>
-<li> <a href="http://java.sun.com/products/cldc/faqs.html">CLDC FAQ</a>
+<li> <a href="http://java.sun.com/products/kvm/wp/KVMwp.pdf" target="_top">KVM White paper</a>
+<li> <a href="http://java.sun.com/products/cldc/faqs.html" target="_top">CLDC FAQ</a>
 
-<li> <a href="http://www.sun.com/software/communitysource/j2me/download.html">Download j2me</a>
+<li> <a href="http://www.sun.com/software/communitysource/j2me/download.html" target="_top">Download j2me</a>
 
-<li> <a href="http://kvm.exnet.com/"><CODE>http://kvm.exnet.com/</CODE></a>KVM FAQ and bugs
+<li> <a href="http://kvm.exnet.com/" target="_top"><CODE>http://kvm.exnet.com/</CODE></a>KVM FAQ and bugs
 
-<li> <a href="http://webdev.apl.jhu.edu/~rbe/kvm">Robert Evans KVM Pages</a>
+<li> <a href="http://webdev.apl.jhu.edu/~rbe/kvm" target="_top">Robert Evans KVM Pages</a>
 Tutorial with sample code, links
 
-<li> <a href="http://www.trantor.de/kawt/">KAWT Project</a>
+<li> <a href="http://www.trantor.de/kawt/" target="_top">KAWT Project</a>
 An abstract window toolkit for the KVM 
 
-<li> <a href="http://www.billday.com/KVMArchive/index.html">Billday.com KVMArchive</a>
+<li> <a href="http://www.billday.com/KVMArchive/index.html" target="_top">Billday.com KVMArchive</a>
 </menu>
 
 <h3><a name="kvm_installation">Using the kvm with the Ptolemy II tree</a></h3>
 The Ptolemy II tree has hacks in it so that it can be used to build
 binaries to run on the Palm.
 <ol>
-<li> Download the
-<a href="http://www.sun.com/software/communitysource/j2me/download.html">j2me</a>
-and unzip it so it <CODE>$PTII/vendors/sun</CODE>.  This should
-create a directory named <CODE>$PTII/vendors/sun/j2me_cldc</CODE>
+<li> Download 
+<a href="http://www.sun.com/software/communitysource/j2me/download.html" target="_top">j2me</a>.  Note that you need to grab two files
+<dl>
+<dt><code>j2me_cldc-1_0-src-winsol.zip</code>
+<dd> The J2ME CLDC Reference implementation. 
+<dt><code>j2me_cldc-1_0-src-palm_overlay.zip</code>
+<dd> The PalmOS specific files
+</dl>
+<li> Unzip <code>j2me_cldc-1_0-src-winsol.zip</code> so it appears
+in <CODE>$PTII/vendors/sun</CODE>.  This should
+create a directory named <CODE>$PTII/vendors/sun/j2me_cldc</CODE>.
+
+<li> Unzip <code>j2me_cldc-1_0-src-palm_overlay.zip</code>
+from within <CODE>$PTII/vendors/sun/j2me_cldc</CODE>.
+Note that you will extract this file from within the directory
+that was just created by the previous step.  If you 
+are asked about overwriting any files, say 'yes'.
+
 
 <li> The
-<a href="http://www.palm.com/devzone/pose/pose.html">Palm OS Emulator (POSE)</a>
+<a href="http://www.palmos.com/dev/tech/tools/emulator/" target="_top">Palm OS Emulator (POSE)</a>
 can be used to run the KVM, but you need to have access to a Palm to
 download the ROM code, or join the Palm Solution Provider Program and
 snail mail a signed form back to them.
@@ -105,7 +119,7 @@ and Solaris.  Unfortunately, it looks like the emulator requires
 a version of Solaris later than 2.5.1, but the Windows version
 builds under Windows 2000.  The advantage of using kw or ku
 is that you need not have PalmOS hardware or Palm ROM images.
-<h3>Building kw under Windows</h3>
+<h3>Building <code>kvm.exe</code> under Windows</h3>
 <ol>
 <li>You will need Microsoft Visual C++.
 <li>You will need a zip binary such as
@@ -151,6 +165,8 @@ make codegen
 The Palm binary should appear as
 <code>$PTII/cg/ramp/CG_Main.prc</code>.  Download this binary
 to your emulator or hardware and run it.
+<li>This demo prints to stdout, to see the output run the
+KVMutil application on your Palm.
 </ol>
 
 
@@ -163,16 +179,13 @@ documentation of how the facility works.
 run the preverifier and then use the <code>.class</code>
 files from the <code>output</code> directory that are
 created by the preverifier.  If you use the
-<code>.class<./code> files that were created by
+<code>.class</code> files that were created by
 javac directly, then you may get verifier errors.
-
-
-
 
 
 <h2>KVM limitations</h2>
 <h3>doubles in the KVM</h3>
-<a href="http://java.sun.com/products/cldc/faqs.html"><code>http://java.sun.com/products/cldc/faqs.html</code> says
+<a href="http://java.sun.com/products/cldc/faqs.html"><code>http://java.sun.com/products/cldc/faqs.html</code></a> says
 <blockquote>
 Specifically, some features of larger Java virtual machine implementations, like double and long data types, are not supported. For more detail on
 specific differences, see the K virtual machine whitepaper at 
