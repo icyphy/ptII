@@ -284,6 +284,50 @@ public class InterfaceAutomaton extends FSMActor {
         return composition;
     }
 
+    /** Return a new InterfaceAutomaton that is the composition of the
+     *  specified InterfaceAutomaton and this one.
+     *  @param automaton An InterfaceAutomaton to compose with this one.
+     *  @param considerTransient True to indicate that transient states
+     *   should be treated different; false to indicate that transient
+     *   states are treated as regular ones.
+     *  @return An InterfaceAutomaton that is the composition.
+     *  @exception IllegalActionException If this automaton is not composable
+     *   with the argument.
+     */
+    // FIXME: This method has a lot of code duplication with compose().
+    // Only the _computeProduct() call is different. If transient states
+    // are introduced permanently, this method should replace compose().
+    public InterfaceAutomaton compose(
+            InterfaceAutomaton automaton, boolean considerTransient)
+            throws IllegalActionException {
+
+        this._check();
+        automaton._check();
+
+        // check composability
+        _checkComposability(automaton);
+
+        // compute the input, output, and internal transitions of the
+        // composition
+        _computeTransitionNamesInComposition(automaton);
+
+        // compute the product automaton
+        InterfaceAutomaton composition = _computeProduct(automaton,
+                                                         considerTransient);
+
+        // prune illegal states
+        _pruneIllegalStates();
+
+        // remove states unreacheable from the initial state.
+        composition._removeUnreacheableStates();
+
+        // Create ports for the composition.  Internal transition parameters
+        // were created automatically when the transition labels were set.
+        _createPorts(composition);
+
+        return composition;
+    }
+
     /** Return the unique maximal alternating simulation from the specified
      *  automaton to this automaton.
      *  Alternating simulation is a binary relation defined in the interface
@@ -1408,6 +1452,522 @@ public class InterfaceAutomaton extends FSMActor {
         }
     }
 
+    // Transient version:
+    // Compute the product of this automaton and the argument. Also store
+    // the illegal states found in the Set _illegalStates.
+    //
+    // Use frontier exploration. The frontier is represented by a HashMap
+    // frontier. The key is the name of the state in the product, the value
+    // is a Triple: stateInProduct, stateInThis, stateInArgument. The keys
+    // are used to easily check if a product state is in the frontier.
+    //
+    // init: product = (this.initialState x automaton.initialSate)
+    //       frontier = (this.initialState x automaton.initialSate,
+    //                   this.initialState, automaton.initialState)
+    // iterate: pick (remove) a state p x q from frontier;
+    //      if neither p nor q are transient {
+    //          pick a step pTr from p
+    //            (case 1) T is input for p:
+    //              (1A) T is input of product: add T to product
+    //              (1B) T is shared:
+    //                (1Ba) q has T output: add T to product as internal
+    //                      transition
+    //                (1Bb) q does not have T output: transition cannot happen
+    //                      in product. ignore
+    //            (case 2) T is output for p:
+    //              (2A) T is output of product: add T to product
+    //              (2B) T is shared:
+    //                (2Ba) q has T input: add T to product as internal
+    //                      transition
+    //                (2Bb) q does not have T input: mark p x q as illegal.
+    //                      stop exploring from p x q.
+    //            (case 3) T is internal for p: add T to product
+    //
+    //          The cases for a transition from q is almost symmetric,
+    //          but be careful not to add shared transition twice. In the code
+    //          below, shared transitions are added in the code that explores
+    //          the state with the input transition.
+    //      } else {
+    //          // one or both of p and q are transient
+    //          if (both p and q are transient)
+    //              throw exception
+    //          else if (p is transient)
+    //              pick a step qTr from p
+    //                (case 1) T is input for p:
+    //                  throw exception
+    //                (case 2) T is output for p:
+    //                  (2A) T is output of product: add T to product
+    //                  (2B) T is shared:
+    //                    (2Ba) q has T input: add T to product as internal
+    //                          transition
+    //                    (2Bb) q does not have T input: mark q x q as illegal
+    //                          stop exploring from p x q.
+    //                (case 3) T is internal for p: add T to product
+    //           } else {
+    //               // q is transient.
+    //               // This case is symmetric as above, omitted.
+    //           } 
+    //      } 
+    //
+    //          (after exploring all transitions from p and q), remove p x q
+    //          from frontier.
+    //
+    //          end when frontier is empty
+    //
+    private InterfaceAutomaton _computeProduct(InterfaceAutomaton automaton,
+                                                   boolean considerTransient)
+            throws IllegalActionException {
+        try {
+            // init
+            _illegalStates = new HashSet();
+            InterfaceAutomaton product = new InterfaceAutomaton();
+            product.setName(this.getName() + NAME_CONNECTOR
+                    + automaton.getName());
+            HashMap frontier = new HashMap();
+
+            // create initial state
+            State stateInThis = this.getInitialState();
+            State stateInArgument = automaton.getInitialState();
+            String name = stateInThis.getName() + NAME_CONNECTOR
+                + stateInArgument.getName();
+            State stateInProduct = new State(product, name);
+            product.initialStateName.setExpression(name);
+
+            Triple triple = new Triple(stateInProduct, stateInThis,
+                    stateInArgument);
+            frontier.put(name, triple);
+
+            // iterate
+            while ( !frontier.isEmpty()) {
+                // pick a state from frontier. It seems that there isn't an
+                // easy way to pick an arbitrary entry from a HashMap, except
+                // through Iterator
+                Iterator iterator = frontier.keySet().iterator();
+                name = (String)iterator.next();
+                triple = (Triple)frontier.remove(name);
+                stateInProduct = triple._stateInProduct;
+                stateInThis = triple._stateInThis;
+                stateInArgument = triple._stateInArgument;
+
+                boolean isStateInProductIllegal = false;
+
+                if ((!considerTransient) ||
+                    ((!_isTransient(stateInThis)) &&
+                    (!_isTransient(stateInArgument)))) {
+                    // extend frontier from state in this automaton
+                    ComponentPort outPort = stateInThis.outgoingPort;
+                    Iterator transitions =
+                                    outPort.linkedRelationList().iterator();
+                    while (transitions.hasNext() && !isStateInProductIllegal) {
+                        InterfaceAutomatonTransition transition =
+                            (InterfaceAutomatonTransition)transitions.next();
+
+                        State destinationInThis = transition.destinationState();
+
+                        // get transitionLabel, transitionName and relation name
+                        // for later use
+                        String transitionLabel = transition.getLabel();
+                        // remove ending "?", "!", or ";"
+                        String transitionName = transitionLabel.substring(0,
+                                transitionLabel.length()-1);
+
+                        // switch depending on type of transition
+                        int transitionType = transition.getType();
+                        if (transitionType ==
+                            InterfaceAutomatonTransition._INPUT_TRANSITION) {
+                            // case 1
+                            if (_inputNames.contains(transitionName)) {
+                                // case 1A. Add transition to product as input
+                                // transition
+                                State destinationInProduct = _addState(product,
+                                        destinationInThis, stateInArgument,
+                                        frontier);
+                                _addTransition(product,
+                                        this.getName(),
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
+                            } else {
+                                // case 1B. transition is shared in product
+                                String outName = transitionName + "!";
+                                State destinationInArgument =
+                                        _getDestinationState(stateInArgument,
+                                                             outName);
+                                if (destinationInArgument != null) {
+                                    // case 1Ba. q has T output. Add T to
+                                    // product as internal transition
+                                    State destinationInProduct = _addState(
+                                                        product,
+                                                        destinationInThis,
+                                                        destinationInArgument,
+                                                        frontier);
+                                    _addTransition(product,
+                                            this.getName() + NAME_CONNECTOR
+                                            + automaton.getName(),
+                                            stateInProduct,
+                                            destinationInProduct,
+                                            transitionName + ";");
+                                } else {
+                                    // case 1Bb. q does not have T output.
+                                    // Transition cannot happen, ignore.
+                                }
+                            }
+                        }
+                        else if (transitionType ==
+                            InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
+                            // case 2. T is output for p.
+                            if (_outputNames.contains(transitionName)) {
+                                // case 2A. T is output of product. Add T to
+                                // product as output transition
+                                State destinationInProduct = _addState(product,
+                                        destinationInThis, stateInArgument,
+                                        frontier);
+                                _addTransition(product,
+                                        this.getName(),
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
+                            } else {
+                                // case 2B. transition is shared in product
+                                String inName = transitionName + "?";
+                                State destinationInArgument =
+                                        _getDestinationState(stateInArgument,
+                                                             inName);
+                                if (destinationInArgument != null) {
+                                    // case 2Ba. q has T input. Need to add T
+                                    // to product as internal transition.
+                                    // However, to avoid adding this transition
+                                    // twice, leave the code that explores
+                                    // state q to add the transition
+                                } else {
+                                    // case 2Bb. q does not have T input.
+                                    // stateInProduct is illegal
+                                    _illegalStates.add(stateInProduct);
+                                    isStateInProductIllegal = true;
+                                }
+                            }
+                        } else if (transitionType ==
+                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
+                            // case 3. T is internal for p. Add T to product
+                            State destinationInProduct = _addState(product,
+                                    destinationInThis, stateInArgument,
+                                    frontier);
+                            _addTransition(product, this.getName(),
+                                    stateInProduct, destinationInProduct,
+                                    transitionLabel);
+                        } else {
+                            throw new InternalErrorException(
+                                    "InterfaceAutomaton._computeProduct: "
+                                    + "unrecognized transition type.");
+                        }
+                    } // end explore from state p
+
+                    // extend frontier from state in the argument automaton
+                    outPort = stateInArgument.outgoingPort;
+                    transitions = outPort.linkedRelationList().iterator();
+                    while (transitions.hasNext() && !isStateInProductIllegal) {
+                        InterfaceAutomatonTransition transition =
+                            (InterfaceAutomatonTransition)transitions.next();
+
+                        State destinationInArgument =
+                                                transition.destinationState();
+
+                        // get transitionLabel, transitionName and relation name
+                        // for later use
+                        String transitionLabel = transition.getLabel();
+                        // remove ending "?", "!", or ";"
+                        String transitionName = transitionLabel.substring(0,
+                                transitionLabel.length()-1);
+
+                        // switch depending on type of transition
+                        int transitionType = transition.getType();
+                        if (transitionType ==
+                            InterfaceAutomatonTransition._INPUT_TRANSITION) {
+                            // case 1
+                            if (_inputNames.contains(transitionName)) {
+                                // case 1A. Add transition to product as input
+                                // transition
+                                State destinationInProduct = _addState(product,
+                                        stateInThis, destinationInArgument,
+                                        frontier);
+                                _addTransition(product,
+                                        automaton.getName(),
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
+                            } else {
+                                // case 1B. transition is shared in product
+                                String outName = transitionName + "!";
+                                State destinationInThis = _getDestinationState(
+                                        stateInThis, outName);
+                                if (destinationInThis != null) {
+                                    // case 1Ba. p has T output. Add T to
+                                    // product as internal transition
+                                    State destinationInProduct = _addState(
+                                                product,
+                                                    destinationInThis,
+                                                    destinationInArgument,
+                                                    frontier);
+                                    _addTransition(product,
+                                            this.getName() + NAME_CONNECTOR
+                                            + automaton.getName(),
+                                            stateInProduct,
+                                            destinationInProduct,
+                                            transitionName + ";");
+                                } else {
+                                    // case 1Bb. p does not have T output.
+                                    // Transition cannot happen, ignore.
+                                }
+                            }
+                        }
+                        else if (transitionType ==
+                            InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
+                            // case 2. T is output for q.
+                            if (_outputNames.contains(transitionName)) {
+                                // case 2A. T is output of product. Add T to
+                                // product as output transition
+                                State destinationInProduct = _addState(product,
+                                        stateInThis, destinationInArgument,
+                                        frontier);
+                                _addTransition(product,
+                                        automaton.getName(),
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
+                            } else {
+                                // case 2B. transition is shared in product
+                                String inName = transitionName + "?";
+                                State destinationInThis = _getDestinationState(
+                                        stateInThis, inName);
+                                if (destinationInThis != null) {
+                                    // case 2Ba. p has T input. Need to add T
+                                    // to product as internal transition.
+                                    // However, to avoid adding this transition
+                                    // twice, leave the code that explores
+                                    // state p to add the transition
+                                } else {
+                                    // case 2Bb. p does not have T input.
+                                    // stateInProduct is illegal
+                                    _illegalStates.add(stateInProduct);
+                                    isStateInProductIllegal = true;
+                                }
+                            }
+                        } else if (transitionType ==
+                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
+                            // case 3. T is internal for q. Add T to product
+                            State destinationInProduct = _addState(product,
+                                    stateInThis, destinationInArgument,
+                                    frontier);
+                            _addTransition(product,
+                                    automaton.getName(),
+                                    stateInProduct, destinationInProduct,
+                                    transitionLabel);
+                        } else {
+                            throw new InternalErrorException(
+                                    "InterfaceAutomaton._computeProduct: "
+                                    + "unrecognized transition type.");
+                        }
+                    } // end explore from state q
+                } else {
+                    // one or both of stateInThis and stateInArgument are
+                    // transient
+                    if (_isTransient(stateInThis) &&
+                        _isTransient(stateInArgument)) {
+                        throw new IllegalActionException("Cannot compute "
+                                + "product since both states are transient: "
+                                + stateInThis.getName() + " and "
+                                + stateInArgument.getName());
+                    }
+
+                    if (_isTransient(stateInThis)) {
+                        // extend frontier from transient state in this
+                        // automaton
+                        ComponentPort outPort = stateInThis.outgoingPort;
+                            Iterator transitions =
+                                    outPort.linkedRelationList().iterator();
+                        while (transitions.hasNext() &&
+                               !isStateInProductIllegal) {
+                            InterfaceAutomatonTransition transition =
+                            (InterfaceAutomatonTransition)transitions.next();
+
+                            State destinationInThis =
+                                                transition.destinationState();
+
+                            // get transitionLabel, transitionName and
+                            // relation name for later use
+                            String transitionLabel = transition.getLabel();
+                            // remove ending "?", "!", or ";"
+                            String transitionName = transitionLabel.substring(
+                                            0, transitionLabel.length()-1);
+
+                            // switch depending on type of transition
+                            int transitionType = transition.getType();
+                            if (transitionType == InterfaceAutomatonTransition.
+                                                  _INPUT_TRANSITION) {
+                                // case 1
+                                throw new IllegalActionException("Transient "
+                                        + "state " + stateInThis.getName()
+                                        + " in " + getName() + " has input "
+                                        + "transition " + transitionLabel);
+                            } else if (transitionType ==
+                                                InterfaceAutomatonTransition.
+                                                _OUTPUT_TRANSITION) {
+                                // case 2. T is output for p.
+                                if (_outputNames.contains(transitionName)) {
+                                    // case 2A. T is output of product. Add T
+                                    // to product as output transition
+                                    State destinationInProduct = _addState(
+                                            product,
+                                            destinationInThis, stateInArgument,
+                                        frontier);
+                                    _addTransition(product,
+                                        this.getName(),
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
+                                } else {
+                                    // case 2B. transition is shared in product
+                                    String inName = transitionName + "?";
+                                    State destinationInArgument =
+                                        _getDestinationState(stateInArgument,
+                                                             inName);
+                                    if (destinationInArgument != null) {
+                                        // case 2Ba. q has T input. Add T to
+                                        // product as internal transition.
+                                        State destinationInProduct = _addState(
+                                                    product,
+                                                    destinationInThis,
+                                                    destinationInArgument,
+                                                    frontier);
+                                        _addTransition(product,
+                                            this.getName() + NAME_CONNECTOR
+                                                + automaton.getName(),
+                                            stateInProduct,
+                                            destinationInProduct,
+                                            transitionName + ";");
+                                    } else {
+                                        // case 2Bb. q does not have T input.
+                                        // stateInProduct is illegal
+                                        _illegalStates.add(stateInProduct);
+                                        isStateInProductIllegal = true;
+                                    }
+                                }
+                            } else if (transitionType ==
+                                        InterfaceAutomatonTransition.
+                                        _INTERNAL_TRANSITION) {
+                                // case 3. T is internal for p. Add T to product
+                                State destinationInProduct = _addState(product,
+                                            destinationInThis, stateInArgument,
+                                            frontier);
+                                _addTransition(product, this.getName(),
+                                    stateInProduct, destinationInProduct,
+                                    transitionLabel);
+                            } else {
+                                throw new InternalErrorException(
+                                        "InterfaceAutomaton._computeProduct: "
+                                        + "unrecognized transition type.");
+                            }
+                        } // end explore from transient state p
+                    } else {
+                        // stateInArgument is transient.
+                        // extend frontier from state in the argument automaton
+                        ComponentPort outPort = stateInArgument.outgoingPort;
+                        Iterator transitions =
+                                        outPort.linkedRelationList().iterator();
+                        while (transitions.hasNext() &&
+                               !isStateInProductIllegal) {
+                            InterfaceAutomatonTransition transition =
+                              (InterfaceAutomatonTransition)transitions.next();
+
+                            State destinationInArgument =
+                                                transition.destinationState();
+
+                            // get transitionLabel, transitionName and
+                            // relation name for later use
+                            String transitionLabel = transition.getLabel();
+                            // remove ending "?", "!", or ";"
+                            String transitionName = transitionLabel.substring(
+                                            0, transitionLabel.length()-1);
+
+                            // switch depending on type of transition
+                            int transitionType = transition.getType();
+                            if (transitionType ==
+                                        InterfaceAutomatonTransition.
+                                        _INPUT_TRANSITION) {
+                                throw new IllegalActionException("Transient "
+                                        + "state " + stateInArgument.getName()
+                                        + " in " + automaton.getName()
+                                        + " has input transition "
+                                        + transitionLabel);
+                            } else if (transitionType ==
+                                            InterfaceAutomatonTransition.
+                                        _OUTPUT_TRANSITION) {
+                                // case 2. T is output for q.
+                                if (_outputNames.contains(transitionName)) {
+                                    // case 2A. T is output of product. Add T to
+                                    // product as output transition
+                                    State destinationInProduct = _addState(
+                                            product,
+                                            stateInThis, destinationInArgument,
+                                            frontier);
+                                    _addTransition(product,
+                                        automaton.getName(),
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
+                                } else {
+                                    // case 2B. transition is shared in product
+                                    String inName = transitionName + "?";
+                                    State destinationInThis =
+                                        _getDestinationState(stateInThis,
+                                                             inName);
+                                    if (destinationInThis != null) {
+                                        // case 2Ba. p has T input. Add T
+                                        // to product as internal transition.
+                                        State destinationInProduct = _addState(
+                                                        product,
+                                                        destinationInThis,
+                                                        destinationInArgument,
+                                                        frontier);
+                                        _addTransition(product,
+                                                this.getName() + NAME_CONNECTOR
+                                                        + automaton.getName(),
+                                                stateInProduct,
+                                                destinationInProduct,
+                                                transitionName + ";");
+                                    } else {
+                                        // case 2Bb. p does not have T input.
+                                        // stateInProduct is illegal
+                                        _illegalStates.add(stateInProduct);
+                                        isStateInProductIllegal = true;
+                                    }
+                                }
+                            } else if (transitionType ==
+                                        InterfaceAutomatonTransition.
+                                        _INTERNAL_TRANSITION) {
+                                // case 3. T is internal for q. Add T to product
+                                State destinationInProduct = _addState(product,
+                                        stateInThis, destinationInArgument,
+                                        frontier);
+                                _addTransition(product,
+                                        automaton.getName(),
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
+                            } else {
+                                throw new InternalErrorException(
+                                    "InterfaceAutomaton._computeProduct: "
+                                    + "unrecognized transition type.");
+                            }
+                        } // end explore from transient state q
+                    }
+                } // finished processing one state in frontier
+            } // finished processing all states in frontier
+
+            return product;
+        } catch (NameDuplicationException exception) {
+            // FIXME: this can actually happen, although extremely unlikely.
+            // Eg. this automaton has states "X" and "Y_Z", the argument
+            // has "X_Y" and "Z". Do we need to worry about this?
+            throw new InternalErrorException(
+                    "InterfaceAutomaton._computeProduct: name in product "
+                    + "automaton clashes: " + exception.getMessage());
+        }
+    }
+
     // Compute the names of the input, output, and internal transitions of
     // the composition.  Set the results to _inputNames, _outputNames, and
     // _internalNames;
@@ -1557,6 +2117,17 @@ public class InterfaceAutomaton extends FSMActor {
             }
         }
         return null;
+    }
+
+    // Return true if the specified state is transient.
+    // FIXME: currently, a letter "t" in state name indicates the state is
+    // transient. This should probably be changed to an attribute in state.
+    private static boolean _isTransient(State state) {
+        String name = state.getName();
+        if (name.indexOf("t") == -1) {
+            return false;
+        }
+        return true;
     }
 
     // prune illegal states from the argument. Use frontier exploration.

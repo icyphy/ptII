@@ -56,9 +56,11 @@ public class Compose {
     /** Compose the interface automata in the argument array and write
      *  the MoML description for the composition to stdout.
      *  @param momls An array of MoML file names for InterfaceAutomaton.
+     *  @param considerTransient True to indicate to treat transient state
+     *   differently.
      *  @exception Exception If the automata cannot be composed.
      */
-    public Compose(String[] momls) throws Exception {
+    public Compose(String[] momls, boolean considerTransient) throws Exception {
         InterfaceAutomaton[] automata = new InterfaceAutomaton[momls.length];
         for (int i=0; i<momls.length; i++) {
             URL url = MoMLApplication.specToURL(momls[i]);
@@ -74,8 +76,8 @@ public class Compose {
         }
 
         InterfaceAutomaton composition = automata[0];
-	for (int i=1; i<momls.length; i++) {
-            composition = composition.compose(automata[i]);
+        for (int i=1; i<momls.length; i++) {
+            composition = composition.compose(automata[i], considerTransient);
         }
         System.out.println(composition.exportMoML());
     }
@@ -86,7 +88,16 @@ public class Compose {
      */
     public static void main (String[] args) {
         try {
-            new Compose(args);
+            boolean considerTransient = false;
+            String[] momls = args;
+            if (args[0].equals("-transient")) {
+                considerTransient = true;
+                momls = new String[args.length - 1];
+                for (int i=1; i<args.length; i++) {
+                    momls[i-1] = args[i];
+                }
+            }
+            new Compose(momls, considerTransient);
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
