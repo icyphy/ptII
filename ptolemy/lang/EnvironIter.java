@@ -68,6 +68,9 @@ public class EnvironIter implements Iterator {
         _mask = mask;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     public boolean hasNext() {
         //ApplicationUtility.trace("EnvironIter : hasNext for " + _name);
 
@@ -86,10 +89,12 @@ public class EnvironIter implements Iterator {
         return true;
     }
 
+    /** Return the next Decl. */ 
     public Object next() {
         return nextDecl();
     }
 
+    /** Return the next Decl. */
     public Decl nextDecl() {
 
         if (_declIter == null) {
@@ -125,10 +130,11 @@ public class EnvironIter implements Iterator {
         } while (true);
     }
 
+    /** Return the head of the Decls */
     public Decl head() {
         Decl retval = nextDecl();
 
-        // rewind back to valid Decl
+        // Rewind back to valid Decl.
         _declIter.previous();
 
         return retval;
@@ -225,6 +231,9 @@ public class EnvironIter implements Iterator {
         // Can't do this!!!
         throw new RuntimeException("remove() not supported on EnvironIter");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     protected Environ _nextEnviron;
     protected ListIterator _declIter;
