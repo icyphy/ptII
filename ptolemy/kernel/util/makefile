@@ -62,6 +62,7 @@ JSRCS = \
 	IllegalActionException.java \
 	InternalErrorException.java \
 	InvalidStateException.java \
+	LibraryMarkerAttribute.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \

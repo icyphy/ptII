@@ -75,7 +75,6 @@ public class Attribute extends NamedObj {
      *  if the container is null.
      *  Increment the version of the workspace.
      *  @param container The container.
-
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
