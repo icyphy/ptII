@@ -55,6 +55,7 @@ the second row, then the third, etc.
 actor.lib.VectorAssembler instead.
 
 @author Edward A. Lee
+@deprecated Use SequenceToMatrix instead.
 @version $Id$
 @since Ptolemy II 2.0
 */

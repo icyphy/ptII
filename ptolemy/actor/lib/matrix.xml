@@ -6,9 +6,9 @@
     <?moml
       <group>
 <doc>matrix actors</doc>
-<entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix"/>
-<entity name="MatrixToDouble" class="ptolemy.domains.sdf.lib.MatrixToDouble"/>
+<entity name="MatrixToSequence" class="ptolemy.domains.sdf.lib.MatrixToSequence"/>
 <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer"/>
+<entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix"/>
       </group>
     ?>
   </configure>

@@ -60,6 +60,7 @@ the second row, then the third, etc.
 actor.lib.VectorDisassembler instead.
 
 @author Edward A. Lee
+@deprecated Use MatrixToSequence instead.
 @version $Id$
 @since Ptolemy II 2.0
 */

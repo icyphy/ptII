@@ -72,12 +72,14 @@ JSRCS = \
 	LineCoder.java \
 	LMSAdaptive.java \
 	MatrixToDouble.java \
+	MatrixToSequence.java \
 	RaisedCosine.java \
 	Repeat.java \
 	SDFConverter.java \
 	SDFTransformer.java \
 	SampleDelay.java \
 	SequenceToArray.java \
+	SequenceToMatrix.java \
 	UpSample.java \
 	VariableFIR.java \
 	VariableLattice.java \
