@@ -118,7 +118,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
      *  In this base class, the method informs the director to invalidate
-     *  type resolution, if the directory is not null.
+     *  type resolution, if the director is not null.
      *  Thus, by default, attribute type changes cause type resolution to
      *  be redone at the next opportunity.
      *  If an actor does not allow attribute types to change, then it should
