@@ -34,6 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 #define _runtime_h
 
 #include "pccg.h"
+#include <string.h> /* Solaris needs this so that memcpy is defined. */
 #include "name_defs.h"
 #include "java/lang/Exception.h"
 #include <setjmp.h>
