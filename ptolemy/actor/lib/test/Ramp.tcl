@@ -215,15 +215,15 @@ test Ramp-2.7 {check types of the above model} {
 } {{({name:string, value:double})array} {({name:string, value:double})array}}
 
 
-test Ramp-3.1 {Run a CT model which will detect errors in Ramp.postfire} {
+test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
     set e0 [ctModel 5]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {0 1 2 3 4 5 6}
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.actor.sched.NotSchedulableException: .top.CTMultiSolverDirector: ptolemy.actor.lib.Recorder {.top.rec} is a successor of a discrete actor ptolemy.actor.lib.Ramp {.top.ramp}, but it is not a waveform generator.}}
 
 
