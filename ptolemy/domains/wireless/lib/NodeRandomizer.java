@@ -211,8 +211,9 @@ public class NodeRandomizer extends TypedAtomicActor {
         int dimensions = rangeValue.length();
         double[] randomLocation = new double[dimensions];
 
-        Iterator actors
-            = ((CompositeActor)getContainer()).deepEntityList().iterator();
+        CompositeActor container = (CompositeActor)getContainer();
+        StringBuffer changeMoML = new StringBuffer("<group>\n");
+        Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Entity node = (Entity)actors.next();
 
@@ -245,33 +246,31 @@ public class NodeRandomizer extends TypedAtomicActor {
                 }
                 randomLocation[i] = low + (_random.nextDouble())*(high - low);
             }
-            _setLocationOfNode(randomLocation, node);
+            changeMoML.append(
+                    _getLocationSetMoML(
+                            container, node, randomLocation));
         }
+        changeMoML.append("</group>");
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, container, changeMoML.toString());
+        container.requestChange(request);
     }
 
-    /** Set the location of the specified node.  This sets the _location
-     *  attribute, which is the location as used in Vergil, the visual editor.
-     *  Derived classes may override this to set the location differently.
-     *  The location is set by queueing a change request, so it may not take
-     *  effect immediately.
+    /** Return moml that will set the location of the specified node.
+     *  The moml should set the _location attribute, which is the
+     *  location as used in Vergil, the visual editor.  Derived
+     *  classes may override this to store the location differently.
      *  @param location The specified location.
      *  @param node The node for which to set the location.
      *  @exception IllegalActionException If the location attribute
-     *   cannot be set.
+     *  cannot be set.
      */
-    protected void _setLocationOfNode(double[] location, Entity node)
-            throws IllegalActionException {
-        // Do this as a MoML change request to ensure
-        // propagation.
-        MoMLChangeRequest request = new MoMLChangeRequest(this, node,
-                "<property name=\"_location\" "
-                + "class=\"ptolemy.kernel.util.Location\" "
-                + "value=\"["
-                + location[0]
-                + ", "
-                + location[1]
-                + "]\"/>");
-        node.requestChange(request);
+    protected String _getLocationSetMoML(
+            CompositeEntity container, Entity node,
+            double[] location) throws IllegalActionException {
+        return "<property name=\"" + node.getName(container) + "._location\" "
+            + "class=\"ptolemy.kernel.util.Location\" value=\"["
+            + location[0] + ", " + location[1] + "]\"/>\n";
     }
 
     ///////////////////////////////////////////////////////////////////
