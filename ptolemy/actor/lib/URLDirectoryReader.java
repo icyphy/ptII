@@ -196,7 +196,7 @@ public class URLDirectoryReader extends URLReader {
             _data = _list(_source, _endsWithValue);
             return super.prefire();
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex, "prefire() failed");
         }
     }
 
