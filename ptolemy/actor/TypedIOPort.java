@@ -233,16 +233,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
         try {
             _workspace.getReadAccess();
-            int compare = TypeLattice.compare(token.getType(),
-                    _resolvedType);
-            if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                throw new IllegalActionException(
-                        "Run-time type checking failed. Token type: "
-                        + token.getType().toString() + ", port: "
-                        + getFullName() + ", port type: "
-                        + getType().toString());
-            }
-
+            _checkType(token);
             farReceivers = getRemoteReceivers();
             if (farReceivers == null) {
                 return;
@@ -307,15 +298,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             // check types
             for (int i = 0; i < tokenArray.length; i++) {
                 token = tokenArray[i];
-                int compare = TypeLattice.compare(token.getType(),
-                        _resolvedType);
-                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new IllegalActionException(
-                            "Run-time type checking failed. Token type: "
-                            + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: "
-                            + getType().toString());
-                }
+                _checkType(token);
             }
             farReceivers = getRemoteReceivers();
             if (farReceivers == null) {
@@ -542,15 +525,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         try {
             try {
                 _workspace.getReadAccess();
-                int compare = TypeLattice.compare(token.getType(),
-                        _resolvedType);
-                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new IllegalActionException(
-                            "Run-time type checking failed. Token type: "
-                            + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: "
-                            + getType().toString());
-                }
+                _checkType(token);
 
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
@@ -645,15 +620,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 // check types
                 for (int i = 0; i < vectorLength; i++) {
                     token = tokenArray[i];
-                    int compare = TypeLattice.compare(token.getType(),
-                            _resolvedType);
-                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                        throw new IllegalActionException(
-                                "Run-time type checking failed. Token type: "
-                                + token.getType().toString() + ", port: "
-                                + getFullName() + ", port type: "
-                                + getType().toString());
-                    }
+                    _checkType(token);
                 }
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
@@ -740,15 +707,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         try {
             try {
                 _workspace.getReadAccess();
-                int compare = TypeLattice.compare(token.getType(),
-                        _resolvedType);
-                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new IllegalActionException(
-                            "Run-time type checking failed. Token type: "
-                            + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: "
-                            + getType().toString());
-                }
+                _checkType(token);
 
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
@@ -938,6 +897,25 @@ public class TypedIOPort extends IOPort implements Typeable {
                     " TypedIOPort requires TypedIORelation.");
         }
         super._checkLink((TypedIORelation)relation);
+    }
+
+    /** Check that the specified token is compatible with the
+     *  resolved type of this port.     * 
+     *  @param token The token to check.
+     *  @throws IllegalActionException If the specified token is
+     *   either incomparable to the resolved type or higher in the
+     *   type lattice.
+     */
+    protected void _checkType(Token token) throws IllegalActionException {
+        int compare = TypeLattice.compare(token.getType(),
+                _resolvedType);
+        if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException(
+                    "Run-time type checking failed. Token type: "
+                    + token.getType().toString() + ", port: "
+                    + getFullName() + ", port type: "
+                    + getType().toString());
+        }
     }
 
     /** Return a description of the object.  The level of detail depends
