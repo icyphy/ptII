@@ -6,7 +6,6 @@
     <?moml
       <group>
       <doc>PN Domain</doc>
-	<property name="ModelCompiler" class="ptolemy.domains.pn.kernel.ModelCompiler"/>
       </group>
     ?>
   </configure>
