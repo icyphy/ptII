@@ -167,7 +167,6 @@ test CompositeActor-6.1 {Invoke all the action methods} {
 	        [$stream toString] "\n" output
     list $output
 } {{Called preinitialize()
-Added attribute IODependence to .E0.E3.E5
 Called initialize()
 Called prefire()
 Prefire returns (from director) true
@@ -227,8 +226,6 @@ test CompositeActor-7.1 {Test clone and description} {
         {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.E3.E5.WORMDIR._iconDescription} attributes {
             }}
-        }}
-        {ptolemy.actor.IODependence {.E3.E5.IODependence} attributes {
         }}
     } ports {
     } entities {

@@ -2,7 +2,7 @@
 #
 # @Author: Haiyang Zheng
 #
-# @Version: $Id: IODependence.tcl,v 1.2 2003-08-23 19:22:10 cxh Exp $
+# @Version: IODependence.tcl,v 1.2 2003/08/23 19:22:10 cxh Exp
 #
 # @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
@@ -81,7 +81,7 @@ test IODependence-2.2 {Constructor tests after preinitialization} {
 	
     list    [expr {[$e1 getIODependence] == [java::null]}] \
             [expr {[$e2 getIODependence] == [java::null]}] 
-} {1 0}
+} {1 1}
 
 ######################################################################
 ####

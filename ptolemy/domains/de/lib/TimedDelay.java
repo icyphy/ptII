@@ -35,7 +35,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -71,12 +70,15 @@ actors.  Moreover, the event is queued to be processed in the next
 microstep, after all events at the current time with the current
 microstep. Thus, it is sometimes useful to think of this zero-valued
 delay as an infinitesimal delay.
+<p>
+The delay information is stored in an IODependence attribute.
 
+@see ptolemy.actor.IODependence
 @see ptolemy.domains.de.lib.VariableDelay
 @see ptolemy.domains.de.lib.Server
 @see ptolemy.domains.sdf.lib.SampleDelay
 
-@author Edward A. Lee, Lukito Muliadi
+@author Edward A. Lee, Lukito Muliadi, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -95,11 +97,6 @@ public class TimedDelay extends DETransformer {
         super(container, name);
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
-        input.delayTo(output);
-        
-        // construct the IODependence attribute 
-        _IODependence = new IODependence(this, "IODependence");
-        _IODependence.addInputPort(input).addToDelayToPorts(output);       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,11 +140,6 @@ public class TimedDelay extends DETransformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         TimedDelay newObject = (TimedDelay)super.clone(workspace);
-        try {
-            newObject.input.delayTo(newObject.output);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("Clone failed.");
-        }
         return newObject;
     }
 
@@ -177,6 +169,22 @@ public class TimedDelay extends DETransformer {
         return super.postfire();
     }
 
+    /** Create an IODependence attribute for this actor.
+     *  @exception IllegalActionException thrown by super class or
+     *  the IODependence constructor.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        try {
+            IODependence ioDependence = new IODependence(this, "_IODependence");
+            ioDependence.removeDependence(input, output);
+        } catch (NameDuplicationException e) {
+            // because the IODependence attribute is not persistent,
+            // and it is only created once in the preinitialize method,
+            // there should be no NameDuplicationException thrown.
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

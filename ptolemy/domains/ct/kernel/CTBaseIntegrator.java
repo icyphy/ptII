@@ -135,10 +135,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
                 new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
         _history = new History(this);
-
-        // construct the IODependence attribute 
-        _IODependence = new IODependence(this, "IODependence");
-        _IODependence.addInputPort(input).addToDelayToPorts(output);       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -353,6 +349,22 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return solver.integratorPredictedStepSize(this);
     }
 
+    /** Create an IODependence attribute for this actor.
+     *  @exception IllegalActionException thrown by super class or
+     *  the IODependence constructor.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        try {
+            IODependence ioDependence = new IODependence(this, "_IODependence");
+            ioDependence.removeDependence(input, output);
+        } catch (NameDuplicationException e) {
+            // because the IODependence attribute is not persistent,
+            // and it is only created once in the preinitialize method,
+            // there should be no NameDuplicationException thrown.
+        }
+    }
+    
     /** Setup the integrator to operate with the current ODE solver.
      *  This method checks whether
      *  there are enough auxiliary variables in the integrator for the

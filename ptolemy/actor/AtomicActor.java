@@ -181,7 +181,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  return The IODependence attribute.
      */
     public IODependence getIODependence() {
-        return (IODependence) getAttribute("IODependence");
+        return (IODependence) getAttribute("_IODependence");
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -533,9 +533,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-
-    // IODependence attribute
-    protected IODependence _IODependence;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

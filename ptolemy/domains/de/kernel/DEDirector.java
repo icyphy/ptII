@@ -40,7 +40,6 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IODependence;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.IODependence.IOInformation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -63,7 +62,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 
@@ -107,11 +105,15 @@ across the actor is zero. On the other hand, when DEIOPort is used,
 the delay across the actor can be declared to be non-zero by calling
 the delayTo() method on output ports.
 <p>
-Directed loops with no delay actors are not permitted; they would make it
+Directed loops with no delay are not permitted; they would make it
 impossible to assign priorities.  Such a loop can be broken by inserting
 an instance of the Delay actor.  If zero delay around the loop is
 truly required, then simply set the <i>delay</i> parameter of that
-actor to zero.
+actor to zero. The directed loops are based on the port connections
+rather than the actor connections because the port connections reflect
+the data flow more accurately. The information of port connections are
+stored in a nonpersistent attribute IODependence, which is constructed
+during run time.
 <p>
 Input ports in a DE model contain instances of DEReceiver.
 When a token is put into a DEReceiver, that receiver enqueues the
@@ -189,7 +191,7 @@ if it has been removed from the topology by the time the execution
 reaches that future time.  This may not always be the expected behavior.
 The Delay actor in the DE library behaves this way.
 
-@author Lukito Muliadi, Edward A. Lee, Jie Liu
+@author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 0.2
 @see DEReceiver
@@ -723,6 +725,10 @@ public class DEDirector extends Director {
      */
     public void invalidateSchedule() {
         _sortValid = -1;
+        IODependence ioDependence = ((Actor)getContainer()).getIODependence();
+        if (ioDependence != null) {
+            ioDependence.invalidate();
+        }
     }
 
     /** Return a new receiver of a type DEReceiver.
@@ -1350,11 +1356,50 @@ public class DEDirector extends Director {
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
         Nameable container = getContainer();
-
-        // If there is no container, there are no actors.
+        // If the container is not composite actor, 
+        // there are no actors.
         if (!(container instanceof CompositeActor)) return dag;
-
         CompositeActor castContainer = (CompositeActor)container;
+
+        // Get the IODependence attribute of the container of this 
+        // director. If there is no such attribute, construct one.
+        // The NameDuplicationException shouldn't happen, and is 
+        // discarded.
+        // FIXME: There is little help to use SigletonAttribute 
+        // insted of Attribute because the NameDuplicatoinException
+        // will have to be catched anyway.
+        IODependence ioDependence = castContainer.getIODependence();
+        try {
+            // When this method _constructDirectedGraph is called, 
+            // the ioDependence is either created or updated.
+            if (ioDependence == null) {
+                ioDependence = 
+                    new IODependence(castContainer, "_IODependence");
+            } else {
+                ioDependence.inferDependence();
+            } 
+        }catch (NameDuplicationException e) {
+            // do nothing.
+        }
+        
+        // FIXME: The following may be a very costly test. 
+        // -- from the comments of former implementation. 
+        // If the port based data flow graph contains directed
+        // loops, the model is invalid. An IllegalActionException
+        // is thrown with the names of the actors in the loop.
+        if (ioDependence.containsCyclicLoops()) {
+            Object[] cycleNodes = ioDependence.getCycleNodes();
+            StringBuffer names = new StringBuffer();
+            for (int i = 0; i < cycleNodes.length; i++) {
+                if (cycleNodes[i] instanceof Nameable) {
+                    if (i > 0) names.append(", ");
+                    names.append(((Nameable)cycleNodes[i])
+                        .getContainer().getFullName());
+                }
+            }
+            throw new IllegalActionException(this,
+                    "Found zero delay loop including: " + names.toString());
+        }
 
         // First, include all actors as nodes in the graph.
         // get all the contained actors.
@@ -1367,37 +1412,42 @@ public class DEDirector extends Director {
             dag.addNodeWeight(actors.next());
         }
 
-        // Next, create the directed edges by iterating again.
+        // Next, create the directed edges by iterating the actors again.
         actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            IODependence ioDependence = actor.getIODependence();
-            // get all the input ports in that actor
-            Iterator ports = actor.inputPortList().iterator();
-            while (ports.hasNext()) {
-                IOPort inputPort = (IOPort)ports.next();
+            // Get the IODependence attribute of current actor.
+            ioDependence = actor.getIODependence();
+            // The following check may not be necessary since the IODependence
+            // attribute is constructed before. However, we check
+            // it anyway. 
+            if (ioDependence == null) {
+                throw new IllegalActionException(this, "doesn't " +
+                    "contain a valid IODependence attribute.");
+            }
 
-                List delayPorts = null;
-                // Use IODependence instead of special DEIOPorts
-                // to figure self loops.
-                if (ioDependence != null) {
-                    IOInformation ioInfo = ioDependence.getInputPort(inputPort);
-                    delayPorts = ioInfo.getDelayToPorts();
-                }
+            // get all the input ports of the current actor
+            Iterator inputPorts = actor.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort)inputPorts.next();
 
-                // Find the successor of the port.
-                Iterator triggers = actor.outputPortList().iterator();
-                while (triggers.hasNext()) {
-                    IOPort outPort = (IOPort) triggers.next();
+                Set notDirectlyDependentPorts = 
+                    ioDependence.getNotDirectlyDependentPorts(inputPort);
 
-                    if (delayPorts != null && delayPorts.contains(outPort)) {
-                        // Skip this port since there is a declared delay.
+                // get all the output ports of the current actor.
+                Iterator outputPorts = actor.outputPortList().iterator();
+                while (outputPorts.hasNext()) {
+                    IOPort outputPort = (IOPort) outputPorts.next();
+
+                    if (notDirectlyDependentPorts != null && 
+                        notDirectlyDependentPorts.contains(outputPort)) {
+                        // Skip the port without direct dependence.
                         continue;
                     }
-                    // find the input ports connected to outPort
+                    // find the inside input ports connected to outputPort
                     Iterator inPortIterator =
-                        outPort.deepConnectedInPortList().iterator();
-                    int referenceDepth = outPort.depthInHierarchy();
+                        outputPort.deepConnectedInPortList().iterator();
+                    int referenceDepth = outputPort.depthInHierarchy();
                     while (inPortIterator.hasNext()) {
                         IOPort port = (IOPort)inPortIterator.next();
                         if (port.depthInHierarchy() < referenceDepth) {
@@ -1409,65 +1459,37 @@ public class DEDirector extends Director {
                             // of the destination port deeply contains
                             // source port.
                             if (((NamedObj)port.getContainer())
-                                    .deepContains(outPort)) {
+                                    .deepContains(outputPort)) {
                                 continue;
                             }
                         }
-                        Actor destination = (Actor)(port.getContainer());
-                        if (destination.equals(actor)) {
-                            List directFeedthroughOutputs = null;
-                            if (ioDependence != null) { 
-                                //FIXME: Here we assume that if there is no
-                                // IODependence attribute, all IOs are direct
-                                // feedthrough connected. 
-                                directFeedthroughOutputs = 
-                                    ioDependence.getInputPort(port).
-                                    getDirectFeedthroughPorts();
-                            } else {
-                                directFeedthroughOutputs =
-                                    destination.outputPortList();
-                            }
-                            
-                            if (directFeedthroughOutputs.contains(outPort)) {
-                                throw new IllegalActionException(this,
-                                    "Zero delay self-loop on actor: "
-                                    + ((Nameable)actor).getFullName());
-                            }
+                        
+                        Actor successor = (Actor)(port.getContainer());
+                        // If the destination is the same as the current 
+                        // actor, skip the destination.
+                        if (successor.equals(actor)) {
+                            continue;
                         }
-                        // create an arc from this actor to the successor.
-                        if (dag.containsNodeWeight(destination)) {
+
+                        // create an arc from the current actor to the successor.
+                        if (dag.containsNodeWeight(successor)) {
                             // 'contains' replaced with 'containsNodeWeight'
                             // Should not affect function since former has
                             // already been defined in Graph.java as latter.
-                            dag.addEdge(actor, destination);
+                            dag.addEdge(actor, successor);
                         } else {
                             // This happens if there is a
                             // level-crossing transition.
                             throw new IllegalActionException(this,
                                     "Level-crossing transition from "
                                     + ((Nameable)actor).getFullName() + " to "
-                                    + ((Nameable)destination).getFullName());
+                                    + ((Nameable)successor).getFullName());
                         }
                     }
                 }
             }
         }
-        // NOTE: The following may be a very costly test, which is why
-        // it is done at the end.  However, this means that we cannot
-        // report an actor in the directed cycle.  Probably DirectedGraph
-        // should be modified to enable such reporting.
-        if (!dag.isAcyclic()) {
-            Object[] cycleNodes = dag.cycleNodes();
-            StringBuffer names = new StringBuffer();
-            for (int i = 0; i < cycleNodes.length; i++) {
-                if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) names.append(", ");
-                    names.append(((Nameable)cycleNodes[i]).getFullName());
-                }
-            }
-            throw new IllegalActionException(this,
-                    "Found zero delay loop including: " + names.toString());
-        }
+        
         return dag;
     }
 

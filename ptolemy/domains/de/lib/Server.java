@@ -30,6 +30,7 @@
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.IODependence;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -101,8 +102,8 @@ public class Server extends DETransformer {
         newServiceTime = new DEIOPort(this, "newServiceTime", true, false);
         newServiceTime.setTypeEquals(BaseType.DOUBLE);
         output.setTypeAtLeast(input);
-        input.delayTo(output);
-        newServiceTime.delayTo(output);
+//        input.delayTo(output);
+//        newServiceTime.delayTo(output);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -201,6 +202,23 @@ public class Server extends DETransformer {
         return super.postfire();
     }
 
+    /** Create an IODependence attribute for this actor.
+     *  @exception IllegalActionException thrown by super class or
+     *  the IODependence constructor.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        try {
+            IODependence ioDependence = new IODependence(this, "_IODependence");
+            ioDependence.removeDependence(input, output);
+            ioDependence.removeDependence(newServiceTime, output);
+        } catch (NameDuplicationException e) {
+            // because the IODependence attribute is not persistent,
+            // and it is only created once in the preinitialize method,
+            // there should be no NameDuplicationException thrown.
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

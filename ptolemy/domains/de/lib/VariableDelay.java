@@ -47,19 +47,21 @@ import ptolemy.kernel.util.Workspace;
 //// VariableDelay
 /**
 This actor works exactly as the ptolemy.domains.de.lib.TimedDelay actor,
-except that the amount of time delayed is specified by a incoming
-token through the delay port, instead of a by a parameter.
+except that the amount of time delayed is specified by an incoming
+token through the delay port, instead of a parameter.
 
+@see ptolemy.actor.IODependence
 @see ptolemy.domains.de.lib.TimedDelay
 @see ptolemy.domains.de.lib.Server
 @see ptolemy.domains.sdf.lib.SampleDelay
-@author Jie Liu
+@author Jie Liu, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 1.0
 */
 public class VariableDelay extends DETransformer {
 
     /** Construct an actor with the specified container and name.
+     *  Specify the IODependence attribute of the input and output ports.
      *  @param container The composite actor to contain this one.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -73,15 +75,8 @@ public class VariableDelay extends DETransformer {
         defaultDelay = new Parameter(this,
                 "defaultDelay", new DoubleToken(1.0));
         defaultDelay.setTypeEquals(BaseType.DOUBLE);
-        input.delayTo(output);
         delay = new DEIOPort(this, "delay", true, false);
-        delay.delayTo(output);
         delay.setTypeEquals(BaseType.DOUBLE);
-
-        // construct the IODependence attribute 
-        _IODependence = new IODependence(this, "IODependence");
-        _IODependence.addInputPort(input).addToDelayToPorts(output);       
-        _IODependence.addInputPort(delay).addToDelayToPorts(output);       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,7 +111,6 @@ public class VariableDelay extends DETransformer {
                 throw new IllegalActionException(this,
                         "Cannot have negative delay.");
             } else {
-                //System.out.println(getName() + "set delay to " + newValue);
                 _delay = newValue;
             }
         } else {
@@ -134,12 +128,15 @@ public class VariableDelay extends DETransformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         VariableDelay newObject = (VariableDelay)super.clone(workspace);
-        try {
-            newObject.input.delayTo(newObject.output);
-            newObject.delay.delayTo(newObject.output);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("Clone failed.");
-        }
+//      FIXME:
+//      The following code is not necessary with the usage of IODependence.
+//      The code will be deleted after the IODependence matures enough.
+//        try {
+//            newObject.input.delayTo(newObject.output);
+//            newObject.delay.delayTo(newObject.output);
+//        } catch (IllegalActionException ex) {
+//            throw new InternalErrorException("Clone failed.");
+//        }
         return newObject;
     }
 
@@ -156,7 +153,6 @@ public class VariableDelay extends DETransformer {
             _currentInput = null;
         }
         if (delay.hasToken(0)) {
-            //System.out.println(getName() + "set delay to " + _delay);
             _delay = ((DoubleToken)delay.get(0)).doubleValue();
         }
     }
@@ -172,6 +168,24 @@ public class VariableDelay extends DETransformer {
             output.send(0, _currentInput, _delay);
         }
         return super.postfire();
+    }
+
+    /** Create an IODependence attribute for this actor.
+     *  @exception IllegalActionException thrown by super class or
+     *  the IODependence constructor.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        try {
+            // construct the IODependence attribute
+            IODependence ioDependence = new IODependence(this, "_IODependence");
+            ioDependence.removeDependence(input, output);       
+            ioDependence.removeDependence(delay, output);  
+        } catch (NameDuplicationException e) {
+            // because the IODependence attribute is not persistent,
+            // and it is only created once in the preinitialize method,
+            // there should be no NameDuplicationException thrown.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -31,6 +31,7 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.IODependence;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -74,7 +75,6 @@ public class Timer extends DETransformer {
     public Timer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.delayTo(output);
         input.setTypeEquals(BaseType.DOUBLE);
         value = new Parameter(this, "value", new BooleanToken(true));
         output.setTypeSameAs(value);
@@ -120,11 +120,14 @@ public class Timer extends DETransformer {
             throws CloneNotSupportedException {
         Timer newObject = (Timer)super.clone(workspace);
         newObject.output.setTypeSameAs(value);
-        try {
-            newObject.input.delayTo(newObject.output);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("Clone failed.");
-        }
+//      FIXME:
+//      The following code is not necessary with the usage of IODependence.
+//      The code will be deleted after the IODependence matures enough.
+//        try {
+//            newObject.input.delayTo(newObject.output);
+//        } catch (IllegalActionException ex) {
+//            throw new InternalErrorException("Clone failed.");
+//        }
         return newObject;
     }
 
@@ -157,6 +160,22 @@ public class Timer extends DETransformer {
         return super.postfire();
     }
 
+    /** Create an IODependence attribute for this actor.
+     *  @exception IllegalActionException thrown by super class or
+     *  the IODependence constructor.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        try {
+            IODependence ioDependence = new IODependence(this, "_IODependence");
+            ioDependence.removeDependence(input, output);
+        } catch (NameDuplicationException e) {
+            // because the IODependence attribute is not persistent,
+            // and it is only created once in the preinitialize method,
+            // there should be no NameDuplicationException thrown.
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

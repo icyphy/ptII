@@ -30,6 +30,7 @@
 
 package ptolemy.domains.fsm.demo.ABP;
 
+import ptolemy.actor.IODependence;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -72,8 +73,8 @@ public class DEMessageSource extends TypedAtomicActor {
         next = new DEIOPort(this, "next", true, false);
         next.setTypeEquals(BaseType.GENERAL);
         maxDelay = new Parameter(this, "maxDelay", new DoubleToken(0.5));
-        next.delayTo(request);
-        next.delayTo(output);
+//        next.delayTo(request);
+//        next.delayTo(output);
     }
 
 
@@ -142,6 +143,22 @@ public class DEMessageSource extends TypedAtomicActor {
 
     }
 
+    /** Create an IODependence attribute for this actor.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        try {
+            IODependence ioDependence = new IODependence(this, "_IODependence");
+            ioDependence.removeDependence(next, output);
+            ioDependence.removeDependence(next, request);
+        } catch (NameDuplicationException e) {
+            // because the IODependence attribute is not persistent,
+            // and it is only created once in the preinitialize method,
+            // there should be no NameDuplicationException thrown.
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
