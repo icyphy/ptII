@@ -71,17 +71,36 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      */
 
     public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
-        if(node.isConstant() && node.isEvaluated()) {
-            ptolemy.data.Token result = node.getToken();
-            if(result instanceof BooleanToken) {
-                if ( ( (BooleanToken) result).booleanValue()) {
-                    node.setToken(new DoubleToken(0.0));
-                    return;
-                }
+        throws IllegalActionException {
+
+        ptolemy.data.Token value = node.getToken();
+
+        // If the token is "true", we set the token as -1.0
+        // to indicate that refiring at the same time is necessary.
+        // By "the same time", we mean current time + time resolution.
+        // FIXME
+        /*
+                     if(value instanceof BooleanToken) {
+                         if ( ( (BooleanToken) value).booleanValue()) {
+                node.setToken(new DoubleToken(0.0));
+                return;
+            }
+                 }
+         */
+
+        // evaluate the leaf node.
+        super.visitLeafNode(node);
+
+        // If the token is "true", we set the token as 0.0
+        // to indicate the transition happens accurately.
+        value = node.getToken();
+
+        if(value instanceof BooleanToken) {
+            if ( ( (BooleanToken) value).booleanValue()) {
+                node.setToken(new DoubleToken(0.0));
+                return;
             }
         }
-        super.visitLeafNode(node);
     }
 
     /** Visit the logical node. The short-circuit evaluation is used here
