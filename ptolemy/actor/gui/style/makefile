@@ -54,6 +54,7 @@ JSRCS = \
 	CheckBoxStyle.java \
 	ChoiceStyle.java \
 	EditableChoiceStyle.java \
+	FileChooserStyle.java \
 	LineStyle.java \
 	ParameterEditorStyle.java \
 	StyleConfigurer.java
