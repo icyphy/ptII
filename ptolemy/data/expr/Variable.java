@@ -551,7 +551,7 @@ public class Variable extends Attribute
         return false;
     }
 
-    /** Force evaluation of this variable and its value dependents
+    /** Force evaluation of this variable and the value dependents
      *  of this variable.
      *  This method bypasses the lazy evaluation feature of this class
      *  by forcing eager evaluation.
