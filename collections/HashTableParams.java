@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * Base interface for hash table based collections.
- * Provides common ways of dealing with buckets and threshholds.
+ * Provides common ways of dealing with buckets and thresholds.
  * (It would be nice to share some of the code too, but this
  * would require multiple inheritance here.)
  * @author Doug Lea
