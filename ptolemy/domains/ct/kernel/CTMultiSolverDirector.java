@@ -431,9 +431,10 @@ public class CTMultiSolverDirector extends CTDirector {
         while(eventGenerators.hasNext()) {
             CTEventGenerator generator =
                 (CTEventGenerator) eventGenerators.next();
+            // NOTE: We need to call hasCurrentEvent on all event generators,
+            // since some event generator may relie on it.
             if(generator.hasCurrentEvent()) {
                 hasDiscreteEvents = true;
-                break;
             }
         }
         // Also check breakpoint table for explicit requests from discrete
