@@ -453,5 +453,21 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	-chmod a+x removeasd
 	./removeasd codeDocHyVisual
 
+# Doccheck is a doclet that checks for bugs
+# Location of the doccheck jar file, available from
+# http://java.sun.com/developer/earlyAccess/doccheck/
+DOCCHECKJAR =	$(PTII)/vendors/sun/doccheck1.2b2/doccheck.jar
+JDOCCHECKFLAG = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
+	-docletpath $(DOCCHECKJAR)
+
+doccheck: doccheck/index.html
+doccheck/index.html:
+	if [ ! -d doccheck ]; then mkdir -p doccheck; fi
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" \
+		"$(JAVADOC)" $(JDOCMEMORY) \
+			$(JDOCCHECKFLAG) \
+			-d doc/doccheck $(ALLPACKAGES) )
+
+
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
