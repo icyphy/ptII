@@ -47,7 +47,7 @@ Use setExpression() to define the value, as in for example
 @author Edward A. Lee
 @version $Id$
 */
-public class StringAttribute extends Attribute implements Settable {
+public class StringAttribute extends Attribute implements UserSettable {
 
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a
