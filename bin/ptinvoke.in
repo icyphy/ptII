@@ -109,7 +109,7 @@ ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
 # Optional jar file
-jarfile=
+jarfile="$ALL_JAR"
 
 # javaflag contains optional flags passed to java that may be
 # set by this script
@@ -123,7 +123,7 @@ jarfile=
 # To see what sort of properties are available, type
 # echo "source $PTII/util/testsuite/jdktools.tcl; jdkProperties; exit" | ptjacl
 #
-javaflag=""
+javaflag="$ALL_JFLAG"
 
 # Keep these alphabetical
 case `basename "$0"` in
