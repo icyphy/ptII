@@ -4,24 +4,17 @@ FIR filter test for Java to C Translation.
 @author Shuvra S. Bhattacharyya 
 @version $Id$
 
-To run this test, run the batch file bin\runme.bat (from this directory), or
-carry out the following steps:
+To run this test, run 
 
--- javac FIR.java
+    make demo
 
--- java ptolemy.copernicus.c.JavaToC .;C:\jdk1.3.1\jre\lib\rt.jar FIR -singleClass 
-(This should generate three files: FIR.c, FIR.h, and FIR.i.h)
+in this directory.
 
--- Run the following sequence of compilations:
-gcc -c FIR.c
-gcc -c FIRMain.c
-gcc -o firtest FIRMain.o FIR.o
-
--- Run 'firtest'
-
-The output will be that produced by a single invocation of the filter on the
-given data (as specified in FIRconfig.h). To change paramters of the filter,
-change corresponding values in FIRconfig.h, and recompile the .c files.
+This should generate three files: FIR.c, FIR.h, and FIR.i.h), and compile,
+link, and execute these.  The output will be that produced by a single
+invocation of the filter on the given data (as specified in FIRconfig.h). To
+change paramters of the filter, change corresponding values in FIRconfig.h, and
+recompile the .c files.
 
 A corresponding Ptolemy II model is provided in FIRtest.xml. This model drives
 an equivalent FIR filter with an equivalent input stream. Thus, one can compare
