@@ -50,7 +50,7 @@ one column) from the input port and send out individual DoubleTokens
 to the output port.
 If the width of the output port (say, <i>n</i>) is less than the number
 of rows (say <i>m</i>) in the input token, then the first <i>n<i>
-elements in the vector will be sent, and the rest is disgarded.
+elements in the vector will be sent, and the rest is discarded.
 If <i>n</i> is greater than <i>m<i>, then the last <i>n-m</i> channels
 in the output port will never send tokens out.
 

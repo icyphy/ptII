@@ -52,15 +52,23 @@ The linear state-space model implements a system whose behavior is defined by:
       y(k) = Cx(k) + Du(k)
       x(0) = x0
 </pre>
-where x is the state vector, u is the input vector, and y is the output
-vector. (Note that in Ptolemy II, vectors are double matrices with one column or one row.) The matrix coefficients must have the following characteristics:
+
+where x is the state vector, u is the input vector, and y is the
+output vector. (Note that in Ptolemy II, vectors are double matrices
+with one column or one row.) The matrix coefficients must have the
+following characteristics:
+
 <pre>
 A must be an n-by-n matrix, where n is the number of states.
 B must be an n-by-m matrix, where m is the number of inputs.
 C must be an r-by-n matrix, where r is the number of outputs.
 D must be an r-by-m matrix.
 </pre>
-For each firing, the actor accepts one input DoubleMatrixToken of dimension <i>m</i> x 1, and generates one output DoubleMatrixToken of dimenstion <i>r</i> x 1.
+
+For each firing, the actor accepts one input DoubleMatrixToken of
+dimension <i>m</i> x 1, and generates one output DoubleMatrixToken of
+dimension <i>r</i> x 1.
+
 <P>
 In addition to produce the output <i>y</i> though port <i>output</i>, the
 actor also produce the state values <i>x</i> though port <i>state</i>.
@@ -300,7 +308,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
                     "The number of rows of the B matrix should equal to "
                     + "the number of rows of the A matrix.");
         }
-        if (n ==1) {
+        if (n == 1) {
             _singleState = true;
             state.setTypeEquals(BaseType.DOUBLE);
         } else {

@@ -44,7 +44,7 @@ import ptolemy.actor.lib.Transformer;
 //// VectorAssembler
 /**
 On each firing, read exactly one token from each input port and assemble
-them into a DoubleMatricToken with one column. If there is no input token
+them into a DoubleMatrixToken with one column. If there is no input token
 at any channel of the input port, then the prefire() will return false.
 Note that the elements in the vector are not copied.
 
@@ -79,7 +79,7 @@ public class VectorAssembler extends Transformer {
     ////                         public methods                    ////
 
     /** Read one token from each input port, assemble them into a
-     *  DoubleMatricToken, and send the token to the output.
+     *  DoubleMatrixToken, and send the token to the output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
