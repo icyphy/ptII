@@ -505,11 +505,22 @@ runStaticDemo:
 	$(TARGETPACKAGE).StaticMain 
 # -iterations 50
 
+############################################################################
+# Rules to run the jode as a decompiler
+# Jode is a java decompiler.  It is useful for looking at the contents of 
+# class files.  It can be downloaded from 
+# http://jode.sourceforge.net/download.php
+#
+# Jode is full GPL, so we can't distribute it without making Ptolemy GPL'd
+#
+# Jode can be downloaded from
+# http://jode.sourceforge.net/download.php
 JODE=$(ROOT)/bin/jode
 # Class to disassemble
-DECOMPILERTARGETCLASS =		Main
+DECOMPILERTARGETCLASS =		CGModel$(MODEL)
 
-# Generate a .java file from a class file and recompile it
+# Generate a .java file from a class file and recompile it.
+# Jode
 jodeDecompile: jodeDecompileDemo jodeRecompileDemo jodeRunRecompiledDemo
 jodeDecompileDemo:
 	@echo "Convert .class file back to .java file, compile it, run it"
@@ -518,27 +529,33 @@ jodeDecompileDemo:
 	do \
 		echo "--- Decompiling $(DECOMPILERTARGETPACKAGE).$$class"; \
 		"$(JODE)" -d $(DECOMPILERTARGETPATH) $(DECOMPILERTARGETPACKAGE).$$class; \
+		relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
+		sh $(ROOT)/ptolemy/copernicus/shallow/test/jode2java \
+			$$relativetargetpath/$$class.java \
+				> jodeDecompile.java; \
+		mv jodeDecompile.java $$relativetargetpath/$$class.java; \
 	done
 
 jodeRecompileDemo:
+	relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
 	$(JAVAC) -classpath \
 		"$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
-		-d $(DECOMPILERTARGETPATH)/$(TARGETPATH) \
-		$(DECOMPILERTARGETPATH)/$(TARGETPATH)/$(DECOMPILERTARGETCLASS).java
+		-d $(DECOMPILERTARGETPATH)$$relativetargetpath \
+		$(DECOMPILERTARGETPATH)$$relativetargetpath/$(DECOMPILERTARGETCLASS).java
 
 jodeRunRecompiledDemo:
-	$(JAVA) -Xfuture -classpath "$(DECOMPILERTARGETPATH)" \
-		$(TARGETPACKAGE).$(DECOMPILERTARGETCLASS)
+	$(JAVA) -Xfuture -classpath "$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
+		ptolemy.actor.gui.CompositeActorApplication \
+		-class $(TARGETPACKAGE).CG$(MODEL)
 
-
-JAD=jad
+# Generate .java files from the snapshots
 jadDecompile:
 	$(JAD) -r -o -d $(TARGETPATH)/jad $(TARGETPATH)/*.class; \
 	for file in $(TARGETPATH)/jad/$(TARGETPATH)/*.jad; \
 	do \
 		echo "Fixing $$file"; \
 		javafile=`dirname $$file`/`basename $$file .jad`.java;\
-		sh ../shallow/test/jad2java $$file \
+		sh $(ROOT)/ptolemy/copernicus/shallow/test/jad2java $$file \
 				> $$javafile; \
 		echo "Compiling $$javafile"; \
 		$(JAVAC) -classpath "$(TARGETPATH)/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
