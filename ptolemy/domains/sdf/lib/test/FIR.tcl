@@ -96,6 +96,20 @@ test FIR-2.1 {Test FIR type exeception} {
     $tapParam setToken $fixArrayToken
 
     catch { [$e0 getManager] execute } msg
+
+    # Note, this order of the error message might be platform dependent
+    set containsException [regexp \
+	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:} \
+	    $msg]
+    set containsFIRclone [regexp \
+	    {.top.FIRclone.output: scalar} \
+	    $msg]
+    set containsRecInput [regexp \
+	    {.top.rec.input: scalar} \
+	    $msg]
+    list $containsException $containsFIRclone $containsRecInput
+} {1 1 1}
+
     list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
   .top.FIRclone.output: scalar
