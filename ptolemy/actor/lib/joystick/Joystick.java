@@ -35,6 +35,7 @@ import ptolemy.kernel.util.*;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
@@ -51,6 +52,8 @@ This actor reads data from a Joystick using the Joystick interface
 from 
 <a href="http://sourceforge.net/projects/javajoystick/" 
 target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>
+and generates output ranging between -1.0 and 1.0 on the <i>x</i>
+and <i>x</i> ports.
 
 <p>Currently, this actor will only work under Windows, though 
 the Joystick interface also supports Linux.
@@ -93,6 +96,9 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
 
 	deadZone = new Parameter(this, "deadZone", new DoubleToken("0.01"));
 
+	isPolling
+	    = new Parameter(this, "isPolling", new BooleanToken("true"));
+
 	pollingInterval
 	    = new Parameter(this, "pollingInterval", new IntToken("50"));
 
@@ -113,6 +119,12 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  DoubleToken of value 0.01
      */
     public Parameter deadZone;
+
+    /** Set to true if polling is used to access the Joystick, false if 
+     *  we use a JoystickListener.  The initial value is a BooleanToken
+     *  with value true.  
+     */
+    public Parameter isPolling;
 
     /** The polling interval in milliseconds of how often the
      *  JoystickListeners get notified of joystick events.  The default value
@@ -148,6 +160,20 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
             double deadZoneValue
                 = ((DoubleToken)deadZone.getToken()).doubleValue();
             _joy.setDeadZone(deadZoneValue);
+        } else if (attribute == isPolling) {
+	    boolean oldIsPollingValue = _isPollingValue;
+            _isPollingValue
+                = ((BooleanToken)isPolling.getToken()).booleanValue();
+		System.out.println("Joystick " + _isPollingValue + " " + oldIsPollingValue);
+
+	    // If necessary, add or remove this as a JoystickListener.
+	    if (_joy != null && _isPollingValue != oldIsPollingValue) {
+		if (!_isPollingValue) {
+		    _joy.addJoystickListener(this);
+		} else {
+		    _joy.removeJoystickListener(this);
+		}
+	    }
         } else if (attribute == pollingInterval && _joy != null) {
             int pollingIntervalValue
                 = ((DoubleToken)pollingInterval.getToken()).intValue();
@@ -157,15 +183,14 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
         }
     }
 
-    /* closes this JoyDriver by removing it from the JoystickListeners */
-    public void close() {
-    }
-
     /** Get the current location values from the joystick
      *  and generate a DoubleMatrixToken on the output. 
      */
     public synchronized void fire() throws IllegalActionException {
 	super.fire();
+	if (_isPollingValue) {
+	    _joy.poll();    
+	}
 	x.send(0, new DoubleToken (_joy.getX()));
 	y.send(0, new DoubleToken (_joy.getY()));
     }
@@ -198,8 +223,9 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
 
         _joy.setDeadZone(deadZoneValue);
 	_joy.setPollInterval(pollingIntervalValue);
-	_joy.addJoystickListener(this);
-
+	if (!_isPollingValue) {
+	    _joy.addJoystickListener(this);
+	}
 	if (_debugging){
 	    _debug("Joystick.initialize() end");
 	}
@@ -223,7 +249,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  @exception IllegalActionException Maybe thrown (?).
      */
     public void wrapup() throws IllegalActionException {
-	if (_joy != null) {
+	if (_joy != null && !_isPollingValue) {
 	    _joy.removeJoystickListener(this);
 	}
 	_joy = null;
@@ -232,7 +258,12 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Set from the isPolling parameter.  True if we call poll(), false
+    // if we add this as a listener. 
+    private boolean _isPollingValue;
+
     // The joystick
     private com.centralnexus.input.Joystick _joy;
+    
 }
 

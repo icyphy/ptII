@@ -7,14 +7,14 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 79, 815, 518}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -44,8 +44,63 @@ and jjstick.dll must bin your path.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 180.0">
         </property>
     </property>
+    <property name="deadZone" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 40.0">
+        </property>
+    </property>
+    <property name="isPolling" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 60.0">
+        </property>
+    </property>
+    <property name="pollingInterval" class="ptolemy.data.expr.Parameter" value="50">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 80.0">
+        </property>
+    </property>
     <entity name="Joystick" class="ptolemy.actor.lib.joystick.Joystick">
         <property name="deadZone" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="isPollingZone" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
         <property name="pollingInterval" class="ptolemy.data.expr.Parameter" value="50">
         </property>
@@ -67,9 +122,9 @@ and jjstick.dll must bin your path.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 384, 355}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -85,6 +140,18 @@ and jjstick.dll must bin your path.</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYScope</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="0.0"/>
+<yRange min="0.0" max="0.0"/>
+<default marks="pixels"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
