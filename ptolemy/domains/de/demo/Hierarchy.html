@@ -11,8 +11,12 @@ Demo of DE simulation applet</H1></CENTER>
 
 <H3>
 DE Simulation:</H3>
-The following applet demonstrates the use of hierarchy in Ptolemy II Discrete
-Event domain.
+The following applet demonstrates the hierachical composition of DE inside DE.
+Unlike the <a href="Adder.html">Adder applet</a>, the composition is an
+opaque one. This means that the outer director does not govern the execution
+of the actors inside the opaque composite actor. In fact, it is often
+desirable to have the inner domain completely different from the outer domain.
+This scheme provides us with a way to 'mix-and-match' model of computation.
 <P>
 You can interact with the applet by choosing the stop time of the simulation.
 <P>

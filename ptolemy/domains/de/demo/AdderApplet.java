@@ -78,12 +78,8 @@ public class AdderApplet extends Applet implements Runnable {
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
 
-        // The applet has two panels, stacked vertically
+        // Add the drawing panel for DELogicAnalyzer actor in the middle.
         setLayout(new BorderLayout());
-        Panel appletPanel = new Panel();
-        add(appletPanel, "Center");
-
-        // _la is the drawing panel for DELogicAnalyzer actor.
         LogicAnalyzer la = new LogicAnalyzer();
         la.setSize(new Dimension(550, 200));
         la.setTitle("Logic Analyzer");
@@ -94,7 +90,7 @@ public class AdderApplet extends Applet implements Runnable {
         la.addLegend(4, "Cin");
         la.addLegend(5, "RegS");
         //la.setXLabel("time");
-        appletPanel.add(la, "Center");
+        add(la, "Center");
         la.repaint();
 
         // Adding a control panel in the main panel.

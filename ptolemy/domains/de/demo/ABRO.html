@@ -14,10 +14,24 @@ DE Simulation:</H3>
 The following applet demonstrates the design of a threaded actor in Ptolemy
 II DE domain. The demo is taken from ABRO specification described in
 Esterel language primer. The specification is as follow:
-<BR>
-Emit an output O as soon as two inputs A and B have occured. Reset this
-behavior each time the input R occurs.
+<pre>
+	Emit an output O as soon as two inputs A and B have occured. 
+	Reset this behavior each time the input R occurs.
+</pre>
 <P>
+In this kind of specification, it is more natural to describe the actor by
+providing a run() method that describes the actor activity during its 
+livetime. Compare this to writing a fire() method that describes the change
+of state everytime the method is called. The main difference between these
+two schemes is that the first encodes the state in the position of the code,
+while the latter (usually) has explicit state variables that got modified
+whenever the fire() method is called.
+<p>
+Another advantage comes from the fact that the implementation permits 
+users to mix these two kinds of actors in a topology, arbitrarily. As far
+as the director knows, the threaded actor is just a regular actor. The 
+DEThreadActor base class in DE kernel provides that encapsulation.
+<p>
 You can interact with the applet by choosing the stop time of the simulation.
 <P>
 <BR>&nbsp;
