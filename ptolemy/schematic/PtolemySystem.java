@@ -67,6 +67,7 @@ the domain polymorphic actor packages are searched.
 
 @author Jie Liu, Lukito Muliadi
 @version $Id$
+@deprecated Use DomainLibrary instead.
 */
 public class PtolemySystem {
     /** Null constructor. The configuration file is loaded from some
