@@ -76,11 +76,13 @@ test SDFScheduler-3.1 {Test clone} {
 #
 test SDFScheduler-4.1 {Test setScheduler and getScheduler} {
     # NOTE: Uses the setup above
-    set d0 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w D1]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName E0
+    set d0 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e0 D1]
     $d0 setScheduler $s2
     set d1 [$s2 getContainer]
     list [$d0 getFullName] [$d1 getFullName] [$s2 getFullName]
-} {W.D1 W.D1 W.D1.Scheduler}
+} {W.E0.D1 W.E0.D1 W.E0.D1.Scheduler}
 
 ######################################################################
 ####
@@ -101,8 +103,8 @@ test SDFScheduler-4.2 {Test setValid and isValid} {
 # Tests 5.* test some simple scheduling tasks without hierarchy
 test SDFScheduler-5.1 {Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -123,8 +125,8 @@ test SDFScheduler-5.1 {Scheduling tests} {
 #
 test SDFScheduler-5.2 {Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -147,8 +149,8 @@ test SDFScheduler-5.2 {Scheduling tests} {
 #
 test SDFScheduler-5.3 {Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -173,8 +175,8 @@ test SDFScheduler-5.3 {Scheduling tests} {
 #
 test SDFScheduler-5.4 {Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -201,8 +203,8 @@ test SDFScheduler-5.4 {Scheduling tests} {
 # Tests 6.* test multirate scheduling without hierarchy.
 test SDFScheduler-6.1 {Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -267,8 +269,8 @@ test SDFScheduler-6.5 {Multirate Scheduling tests} {
 # Tests 7.* test multirate scheduling with hierarchy
 test SDFScheduler-7.1 {Multirate and Hierarchy Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -281,7 +283,7 @@ test SDFScheduler-7.1 {Multirate and Hierarchy Scheduling tests} {
     $p1 setInput 1
     set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
     $p2 setOutput 1
-    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w d5]
+    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $c1 Delay]
@@ -368,8 +370,8 @@ test SDFScheduler-7.5 {Multirate and Hierarchy Scheduling tests} {
 # Tests 8.* test multiport scheduling without hierarchy.
 test SDFScheduler-8.1 {input Multiport, Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -449,8 +451,8 @@ test SDFScheduler-8.5 {input Multiport, Multirate Scheduling tests} {
 
 test SDFScheduler-8.6 {input Multiport with no connections} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -467,10 +469,35 @@ test SDFScheduler-8.6 {input Multiport with no connections} {
     list $sched1
 } {Consumer}
 
+test SDFScheduler-8.7 {input Multiport with no connections - disconnected graph} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer1]
+    set port [java::field $a3 input] 
+    $port setMultiport true
+
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer2]
+    set port [java::field $a3 input] 
+    $port setMultiport true
+
+    $scheduler setValid false
+
+    set sched1 {}
+    catch {set sched1 [_testEnums schedule $scheduler]} s1
+    list $sched1 $s1 
+} {{Consumer1 Consumer2} {}} {Currently, this is treated as a disconnected graph.  It might be nice to make it fire the disconnected actor once per iteration}
+
 test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -548,8 +575,8 @@ test SDFScheduler-8.15 {output Multiport, Multirate Scheduling tests} {
 
 test SDFScheduler-8.16 {output Multiport with no connections} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -573,8 +600,8 @@ test SDFScheduler-8.16 {output Multiport with no connections} {
 # Tests 9.* test multiport, multirate scheduling with hierarchy
 test SDFScheduler-9.1 {Input Multirate and Hierarchy Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -587,7 +614,7 @@ test SDFScheduler-9.1 {Input Multirate and Hierarchy Scheduling tests} {
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
     $p1 setInput 1
     $p1 setMultiport true
-    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w d5]
+    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $c1 Consumer]
@@ -661,8 +688,8 @@ test SDFScheduler-9.5 {Input Multiport, Multirate, and Hierarchy Scheduling test
 
 test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -675,7 +702,7 @@ test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
     $p1 setOutput 1
     $p1 setMultiport true
-    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w d5]
+    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $c1 Ramp]
@@ -751,8 +778,8 @@ test SDFScheduler-9.15 {output Multiport, Multirate Scheduling tests} {
 # Tests 10.* test multiport scheduling without hierarchy.
 test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -773,8 +800,8 @@ test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
 
 test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $w Director]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
