@@ -55,7 +55,8 @@ if [ "`basename $0`" = "pxgraph" ]; then
     javastartupclass=ptolemy.plot.Pxgraph
 
 else
-    javastartupclass=ptolemy.plot.PlotApplication
+    #javastartupclass=ptolemy.plot.PlotApplication
+    javastartupclass=ptolemy.plot.plotml.PlotMLApplication
 fi
 
 windows=no
