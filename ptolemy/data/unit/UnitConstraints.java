@@ -85,9 +85,10 @@ public class UnitConstraints implements UnitPresentation {
      * @param relations The relations.
      */
     public UnitConstraints(
-            TypedCompositeActor model,
-            Vector entities,
-            Vector relations) throws IllegalActionException {
+        TypedCompositeActor model,
+        Vector entities,
+        Vector relations)
+        throws IllegalActionException {
         this();
         _model = model;
         _bindings = new Bindings(entities);
@@ -97,12 +98,12 @@ public class UnitConstraints implements UnitPresentation {
             Vector actorConstraints = new Vector();
             List unitsAttrs =
                 componentEntity.attributeList(
-                        ptolemy.data.unit.UnitAttribute.class);
+                    ptolemy.data.unit.UnitAttribute.class);
             for (int j = 0; j < unitsAttrs.size(); j++) {
                 UnitAttribute attr = (UnitAttribute) (unitsAttrs.get(j));
                 if (attr.getName().equals("_unitConstraints")) {
                     actorConstraints.addAll(
-                            attr.getUnitConstraints().getConstraints());
+                        attr.getUnitConstraints().getConstraints());
                 }
             }
             for (int j = 0; j < actorConstraints.size(); j++) {
@@ -141,17 +142,17 @@ public class UnitConstraints implements UnitPresentation {
                 }
             }
             if (inputPort != null
-                    && _bindings.bindingExists(
-                            inputPort.getName(
-                                    inputPort.getContainer().getContainer()))) {
+                && _bindings.bindingExists(
+                    inputPort.getName(
+                        inputPort.getContainer().getContainer()))) {
                 Iterator portsIterator = ports.iterator();
                 while (portsIterator.hasNext()) {
                     IOPort outPort = (IOPort) (portsIterator.next());
                     if ((outPort != inputPort)
-                            && (_bindings
-                                    .bindingExists(
-                                            outPort.getName(
-                                                    outPort.getContainer().getContainer())))) {
+                        && (_bindings
+                            .bindingExists(
+                                outPort.getName(
+                                    outPort.getContainer().getContainer())))) {
                         UnitExpr lhsUExpr = new UnitExpr(outPort);
                         UnitExpr rhsUExpr = new UnitExpr(inputPort);
                         UnitEquation uC = new UnitEquation(lhsUExpr, rhsUExpr);
@@ -180,11 +181,10 @@ public class UnitConstraints implements UnitPresentation {
         Solution solution = null;
         if (_debug) {
             System.out.println(
-                    "Constraints\n" + descriptiveForm() + "\\Constraints");
+                "Constraints\n" + descriptiveForm() + "\\Constraints");
         }
         Solution G =
             new Solution(_model, _bindings.variableLabels(), getConstraints());
-        G.setDebug(_debug);
         solution = G.completeSolution();
         return solution;
     }
@@ -222,13 +222,19 @@ public class UnitConstraints implements UnitPresentation {
         Vector solutions = null;
         if (_debug) {
             System.out.println(
-                    "Constraints\n" + descriptiveForm() + "\\Constraints");
+                "Constraints\n" + descriptiveForm() + "\\Constraints");
         }
         Solution G =
             new Solution(_model, _bindings.variableLabels(), getConstraints());
-        G.setDebug(_debug);
+        //G.setDebug(_debug);
         solutions = G.minimalSpanSolutions();
-        //G.annotateGraph();
+        if (_debug) {
+            System.out.println(G.headerInfo());
+            for (int i = 0; i < solutions.size(); i++) {
+                System.out.println(
+                    ((Solution) solutions.elementAt(i)).stateInfo());
+            }
+        }
         return solutions;
     }
 

@@ -123,14 +123,14 @@ public class Unit implements UnitPresentation {
             } else {
                 retv =
                     ((UnitTerm) (numerator.elementAt(0)))
-                    .getUnit()
-                    .getPrimaryLabel();
+                        .getUnit()
+                        .getPrimaryLabel();
 
                 for (int i = 1; i < numerator.size(); i++) {
                     retv += " "
                         + ((UnitTerm) (numerator.elementAt(i)))
-                        .getUnit()
-                        .getPrimaryLabel();
+                            .getUnit()
+                            .getPrimaryLabel();
                 }
             }
             if (denominator.size() > 0) {
@@ -138,8 +138,8 @@ public class Unit implements UnitPresentation {
                 for (int i = 0; i < denominator.size(); i++) {
                     retv += " "
                         + ((UnitTerm) (denominator.elementAt(i)))
-                        .getUnit()
-                        .getPrimaryLabel();
+                            .getUnit()
+                            .getPrimaryLabel();
                 }
             }
             return retv;
@@ -164,7 +164,6 @@ public class Unit implements UnitPresentation {
             return desc.substring(1);
         }
         // End up here if nothing works, so just return the formal description
-        //System.out.println("Unit.descriptiveForm had to use " + toString());
         return toString();
     }
 

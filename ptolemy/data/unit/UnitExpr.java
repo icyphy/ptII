@@ -56,7 +56,7 @@ public class UnitExpr implements UnitPresentation {
     public UnitExpr(IOPort ioPort) {
         UnitTerm uTerm = new UnitTerm();
         uTerm.setVariable(
-                ioPort.getContainer().getName() + "." + ioPort.getName());
+            ioPort.getContainer().getName() + "." + ioPort.getName());
         _uTerms.add(uTerm);
     }
 
@@ -102,7 +102,7 @@ public class UnitExpr implements UnitPresentation {
      */
     public Unit getSingleUnit() {
         if (_uTerms.size() == 1
-                && ((UnitTerm) _uTerms.elementAt(0)).isUnit()) {
+            && ((UnitTerm) _uTerms.elementAt(0)).isUnit()) {
             return ((UnitTerm) _uTerms.elementAt(0)).getUnit();
         }
         return null;
@@ -143,7 +143,9 @@ public class UnitExpr implements UnitPresentation {
         for (int i = 0; i < _uTerms.size(); i++) {
             UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
             if (unitTerm.isUnit()) {
-                reductionUnit = reductionUnit.multiplyBy(unitTerm.getUnit());
+                reductionUnit =
+                    reductionUnit.multiplyBy(
+                        unitTerm.getUnit().pow(unitTerm.getExponent()));
             } else {
                 newUTerms.add(unitTerm);
             }

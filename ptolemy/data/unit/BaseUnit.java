@@ -97,8 +97,6 @@ public class BaseUnit extends Parameter {
                 attributeList(UnitCategory.class).iterator();
             if (attributes.hasNext()) {
                 UnitCategory category = (UnitCategory)attributes.next();
-                //                 token = ptolemy.data.expr.UtilityFunctions.baseUnit(
-                //                         token, getName());
                 String name = getName();
                 UnitUtilities.registerUnitCategory(name);
                 int index =
