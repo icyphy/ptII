@@ -75,7 +75,7 @@ public class CGCSelect extends ClassicCGCActor {
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

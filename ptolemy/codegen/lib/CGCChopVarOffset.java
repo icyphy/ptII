@@ -58,7 +58,7 @@ noInternalState();
     public ClassicPort offsetCntrl;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

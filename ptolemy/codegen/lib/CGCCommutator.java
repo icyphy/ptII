@@ -75,7 +75,7 @@ public class CGCCommutator extends ClassicCGCActor {
      public Parameter blockSize;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

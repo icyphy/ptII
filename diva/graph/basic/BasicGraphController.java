@@ -118,7 +118,7 @@ public class BasicGraphController extends SimpleGraphController {
         ((NodeInteractor)getNodeController().getNodeInteractor()).addInteractor(_edgeCreator);
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// NodeCreator
 
     /** An inner class that places a node at the clicked-on point

@@ -73,7 +73,7 @@ noInternalState();
      public Parameter imag;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

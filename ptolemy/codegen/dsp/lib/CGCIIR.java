@@ -120,7 +120,7 @@ public class CGCIIR extends ClassicCGCActor {
     public Parameter state;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

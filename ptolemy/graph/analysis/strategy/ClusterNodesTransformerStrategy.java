@@ -124,7 +124,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** The computation associated with this strategy.
      *

@@ -400,7 +400,7 @@ public class Unit implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Set the labels of the Unit.
      * @param labels The labels.

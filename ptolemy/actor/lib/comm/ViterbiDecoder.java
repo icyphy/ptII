@@ -564,8 +564,8 @@ public class ViterbiDecoder extends Transformer {
         return super.postfire();
     }
 
-    //////////////////////////////////////////////////////////
-    ////            private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Calculate the parity given by the polynomial and the
      *  state of shift register.
@@ -685,7 +685,7 @@ public class ViterbiDecoder extends Transformer {
         return bit;
     }
 
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////           private parameters and variables           ////
 
     // Consumption rate of the input port.

@@ -91,7 +91,7 @@ public class CGCRaisedCosine extends CGCFIR {
     public Parameter square_root;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -413,7 +413,7 @@ public class JCanvas extends JComponent implements Printable {
     }
 
 
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// protected methods
 
     /** Process a mouse event. This method overrides the inherited
@@ -446,8 +446,8 @@ public class JCanvas extends JComponent implements Printable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Process a mouse event. This internal method is called
      * by both processMouseEvent() and processMouseMotionEvent().

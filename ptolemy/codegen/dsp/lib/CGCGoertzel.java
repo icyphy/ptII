@@ -101,7 +101,7 @@ public class CGCGoertzel extends CGCGoertzelBase {
     public Parameter negWnImag;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

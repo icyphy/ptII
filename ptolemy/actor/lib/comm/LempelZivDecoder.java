@@ -112,8 +112,8 @@ public class LempelZivDecoder extends Transformer {
         _decodeBook.add("");
     }
 
-    ////////////////////////////////////////////////////////////
-    ////                   private variables                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The Lempel-Ziv decode book.
     private LinkedList _decodeBook;

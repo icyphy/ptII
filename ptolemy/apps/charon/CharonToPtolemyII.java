@@ -79,7 +79,7 @@ public class CharonToPtolemyII {
     public static CharonProcessor charonProcessor;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     /** Print helpful usage message. */
     private static void _usage () {

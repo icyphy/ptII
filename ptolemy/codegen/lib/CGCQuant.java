@@ -84,7 +84,7 @@ public class CGCQuant extends ClassicCGCActor {
      public Parameter levels;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

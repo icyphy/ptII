@@ -517,7 +517,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         child.repaint();
     }
 
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// protected methods
 
     /** Dispatch a layer event up the tree. Proceed up the hierarchy

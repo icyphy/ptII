@@ -404,7 +404,7 @@ public class TxCoordination extends MACActorBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
 
     private RecordToken _createPacket(int subtype,int duration,int RA, int TA)

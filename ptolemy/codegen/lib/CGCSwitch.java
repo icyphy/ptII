@@ -78,7 +78,7 @@ trueOutput.setRelation(DF_true, &control);
     public ClassicPort falseOutput;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -131,7 +131,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Construct a dependency graph from a detailed dependency graph by
      *  excluding the internal ports. The returned graph has an abstract
@@ -184,7 +184,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     // Categorize the given list of actors into three kinds: sinks, sources,
     // and transformers.
@@ -358,7 +358,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     // The detailed dependency graph that includes both the ports of
     // this actor and the ports of all deeply contained opaque actors.

@@ -93,7 +93,7 @@ public class TextEditorForStringAttributes extends TextEditor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Override to query whether to apply the changes, if any.
      *  @return False if the user cancels on a apply query.

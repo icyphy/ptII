@@ -170,7 +170,7 @@ public class CGCFIR extends ClassicCGCActor {
     public Parameter tapSize;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

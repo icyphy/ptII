@@ -116,7 +116,7 @@ magnitudes). parameter with initial value "2.14".
      public Parameter index;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

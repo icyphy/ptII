@@ -2322,7 +2322,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Assert that the given boolean value, which describes the given

@@ -215,7 +215,7 @@ public class Line2D extends GRActor2D {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     private BasicFigure _figure;
 

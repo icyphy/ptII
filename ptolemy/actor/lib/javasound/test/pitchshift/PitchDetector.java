@@ -186,7 +186,7 @@ public class PitchDetector {
         return _outPitchArray;
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ///              private variables                        /////
 
     // Array to hold recent input. Note that the size of this

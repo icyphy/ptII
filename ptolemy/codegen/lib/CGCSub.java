@@ -79,7 +79,7 @@ noInternalState();
      public Parameter index;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

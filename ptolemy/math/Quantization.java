@@ -293,7 +293,7 @@ public abstract class Quantization implements Cloneable, Serializable {
     public abstract String toString();
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                 ////
+    ////                         private variables                 ////
 
     /** The overflow strategy. */
     protected Overflow _overflow = Overflow.GENERAL;

@@ -112,7 +112,7 @@ public class FloydWarshallTransitiveClosureStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                 ////
+    ////                         protected methods                 ////
 
     /** The computation associated with the Floyd-Warshall algorithm.
      *
@@ -151,7 +151,7 @@ public class FloydWarshallTransitiveClosureStrategy
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // A reference to the result of the computation to be shared between the
     // two protected methods.

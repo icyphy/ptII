@@ -116,7 +116,7 @@ noInternalState();
      public Parameter outputMagnitude;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -133,7 +133,7 @@ public class CGCFFTCx extends ClassicCGCActor {
     public Parameter fftSize;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -148,7 +148,7 @@ public class ClassDefinitionController extends ActorController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Draw the node at its location. This overrides the base class
      *  to highlight the actor to indicate that it is a class definition.
@@ -242,7 +242,7 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ConvertToInstanceAction
 
     // An action to convert a class to an instance.
@@ -306,7 +306,7 @@ public class ClassDefinitionController extends ActorController {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// CreateInstanceAction
 
     // An action to instantiate a class.
@@ -331,7 +331,7 @@ public class ClassDefinitionController extends ActorController {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// CreateSubclassAction
 
     // An action to subclass a class.

@@ -261,7 +261,7 @@ public class UnitTerm implements UnitPresentation {
     protected void _setType(int type) {
         _type = type;
     } ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
     private static final int _UNIT = 1;
     private static final int _UNITEXPR = 2;
     private static final int _VARIABLE = 3;

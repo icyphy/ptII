@@ -130,7 +130,7 @@ public class CGCIntegrator extends ClassicCGCActor {
      public Parameter state;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -237,8 +237,8 @@ public class HammingDecoder extends Transformer {
     }
 
 
-    //////////////////////////////////////////////////////////////
-    ////           private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Consumption rate of the input port.
     private Parameter _inputRate;

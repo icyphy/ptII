@@ -230,7 +230,7 @@ public class LifeCycleManager extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Run a complete execution of the contained model.  A complete
      *  execution consists of invocation of super.initialize(), repeated

@@ -446,7 +446,7 @@ public class MovieWriter extends Sink
     }
 
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       public inner class              ////
 
     private class ImageDataSource extends PullBufferDataSource {

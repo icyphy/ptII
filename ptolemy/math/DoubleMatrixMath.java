@@ -58,8 +58,8 @@ public class DoubleMatrixMath {
     // private constructor prevents construction of this class.
     private DoubleMatrixMath() {}
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                      public methods                             ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
@@ -1080,8 +1080,8 @@ public class DoubleMatrixMath {
         return true;
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                      protected methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.

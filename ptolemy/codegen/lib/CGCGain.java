@@ -71,7 +71,7 @@ noInternalState();
      public Parameter gain;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

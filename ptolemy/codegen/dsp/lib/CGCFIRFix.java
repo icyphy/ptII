@@ -264,7 +264,7 @@ public class CGCFIRFix extends CGCFix {
     public Parameter Accum;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

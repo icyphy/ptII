@@ -787,7 +787,7 @@ public class StringUtilities {
     public static String PREFERENCES_DIRECTORY = ".ptolemyII";
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                  ////
+    ////                         private variables                 ////
 
     /** Set to true if we print the cygwin warning in getProperty(). */
     private static boolean _printedCygwinWarning = false;

@@ -164,7 +164,7 @@ public class ExpressionFunction implements Function {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // The root of the expression tree.
     private ASTPtRootNode _exprRoot;

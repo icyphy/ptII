@@ -361,7 +361,7 @@ public class Location extends SingletonAttribute
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Propagate the value of this object to the
      *  specified object. The specified object is required
@@ -380,7 +380,7 @@ public class Location extends SingletonAttribute
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     /** Set the location without altering the modified status.
      *  @param location The location.

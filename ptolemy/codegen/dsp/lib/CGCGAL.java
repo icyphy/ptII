@@ -124,7 +124,7 @@ public class CGCGAL extends ClassicCGCActor {
     public Parameter e;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

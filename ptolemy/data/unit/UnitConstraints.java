@@ -165,7 +165,7 @@ public class UnitConstraints implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
+    ////                         public methods                    ////
 
     /** Add a UnitConstraint to the collection.
      * @param constraint The UnitConstraint to be added to the collection.
@@ -239,7 +239,7 @@ public class UnitConstraints implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                 private methods                           ////
+    ////                         private methods                   ////
 
     private void _debug(String msg) {
         if (_debug)
@@ -247,7 +247,7 @@ public class UnitConstraints implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
     private Bindings _bindings = null;
     private Vector _constraints = null;
     private boolean _debug = false;

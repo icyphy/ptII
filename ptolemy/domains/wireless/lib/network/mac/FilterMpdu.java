@@ -85,7 +85,7 @@ public class FilterMpdu extends MACActorBase {
         toProtocolControl.setTypeEquals(BaseType.GENERAL);
     }
 
-    /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         parameters                      ////
 
     /** Port receiving packets to be filtered.
@@ -101,8 +101,8 @@ public class FilterMpdu extends MACActorBase {
     public TypedIOPort toProtocolControl;
 
 
-    /////////////////////////////////////////////////////////////////
-    ////                         public methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Process input packets.
      *  @exception IllegalActionException If an error occurs reading

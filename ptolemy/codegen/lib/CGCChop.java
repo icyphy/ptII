@@ -139,7 +139,7 @@ noInternalState();
      public Parameter loLim;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

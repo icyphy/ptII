@@ -274,7 +274,7 @@ public class Expression extends TypedAtomicActor {
         _tokenMap = new HashMap();
     }
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     // Add a constraint to the type output port of this object.
     private void _setOutputTypeConstraint() {

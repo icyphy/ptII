@@ -173,7 +173,7 @@ public class FairDFDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     /**
      * Inform the director that the specified receiver has changed its state

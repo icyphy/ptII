@@ -126,7 +126,7 @@ public class CGCBiquad extends ClassicCGCActor {
     public Parameter state2;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

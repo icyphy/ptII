@@ -134,7 +134,7 @@ public class ExpressionToToken extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        inner classes                      ////
+    ////                         inner classes                     ////
 
     private class ExpressionScope extends ModelScope {
 

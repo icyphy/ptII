@@ -240,7 +240,7 @@ public class Exec extends TypedAtomicActor {
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Invoke a subprocess, read the <i>input</i> data (if any) and
      *  wait for the subprocess to terminate before sending any output
@@ -355,7 +355,7 @@ public class Exec extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     // Execute a command, set _process to point to the subprocess
     // and set up _errorGobbler and _outputGobbler to read data.

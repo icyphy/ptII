@@ -489,7 +489,7 @@ public class VergilApplication extends MoMLApplication {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     // Print out an error message and stack trace on stderr and then
     // display a dialog box.  This method is used as a fail safe

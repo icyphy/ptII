@@ -99,7 +99,7 @@ public class CharonProcessor {
   public static LinkedList modesList = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
   // Process the agent from the first elemnet of the agents list
   private void _constructor() throws IllegalActionException {

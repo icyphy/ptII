@@ -79,7 +79,7 @@ public class CGCSinc extends ClassicCGCActor {
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

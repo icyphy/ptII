@@ -221,7 +221,7 @@ public class Lattice extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     // Compute the filter, updating the caches, based on the current
     // values.

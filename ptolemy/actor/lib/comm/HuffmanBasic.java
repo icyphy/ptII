@@ -109,7 +109,7 @@ public class HuffmanBasic extends Transformer {
      */
     public TypedIOPort huffmanCodeBook;
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                  public inner classes                      ////
 
     /** A class that defines the node in binary tree that is used
@@ -262,8 +262,8 @@ public class HuffmanBasic extends Transformer {
         _parametersInvalid = true;
     }
 
-    //////////////////////////////////////////////////////////////
-    ////                     protected variables                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // The huffman code book.
     protected String[] _codeBook;
@@ -276,8 +276,8 @@ public class HuffmanBasic extends Transformer {
     protected double[] _pmf;
 
 
-    ////////////////////////////////////////////////////////////
-    ////                   private methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Find the node with the minimum probability value in the
      *  given linked list.

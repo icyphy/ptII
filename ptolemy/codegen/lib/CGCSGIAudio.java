@@ -47,7 +47,7 @@ public class CGCSGIAudio extends ClassicCGCActor {
     ////                     ports and parameters                  ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -73,7 +73,7 @@ noInternalState();
      public Parameter divisor;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -195,7 +195,7 @@ public class Solution {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
     /**
      * Annotates the model so that when it is displayed it will be color coded
      * and have tooltips that will convey various aspects of the solution.
@@ -866,7 +866,7 @@ public class Solution {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
     private static final int _UNKNOWN = -1;
     private static final int _CONSISTENT = 0;
     private static final int _INCONSISTENT = 1;
@@ -894,7 +894,7 @@ public class Solution {
     private static final DecimalFormat _vNumFormat = new DecimalFormat("00");
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner class                           ////
+    ////                         inner class                       ////
 
     /**
      * Class that represents an index in the P array.

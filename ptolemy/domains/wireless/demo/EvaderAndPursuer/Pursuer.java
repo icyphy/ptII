@@ -256,7 +256,7 @@ public class Pursuer extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
     private void _getWorkRange() throws IllegalActionException {
         ArrayToken rangeValue = (ArrayToken)workRange.getToken();
         int dimensions = rangeValue.length();
@@ -291,7 +291,7 @@ public class Pursuer extends TypedAtomicActor {
                 (yLocation<=_workRange[1][1]));
     }
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** The parent sensor node's location that it is moving toward to. */
     private double[] _parentLocation;

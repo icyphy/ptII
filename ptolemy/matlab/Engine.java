@@ -398,7 +398,7 @@ public class Engine {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     // Engine functions - native methods implemented in ptmatlab.cc.
     private native long ptmatlabEngOpen(String startCmd);

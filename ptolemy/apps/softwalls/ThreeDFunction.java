@@ -305,7 +305,7 @@ public class ThreeDFunction implements Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /**
      *  Return the approximate value of f(x, y, theta) using trilinear
@@ -466,7 +466,7 @@ public class ThreeDFunction implements Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     // Lower bound for each dimension.
     private double _xLowerBound,  _yLowerBound, _thetaLowerBound;
@@ -484,7 +484,7 @@ public class ThreeDFunction implements Serializable {
     private transient StringTokenizer _tokenizer = new StringTokenizer("");
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /**
      *  Takes in an angular value and returns the equivalant value in

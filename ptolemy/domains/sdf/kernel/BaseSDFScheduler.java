@@ -105,7 +105,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                 ////
+    ////                         public methods                    ////
 
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
@@ -374,7 +374,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     protected static final boolean VERBOSE = false;
 

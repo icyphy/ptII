@@ -53,7 +53,7 @@ public class Repeat extends CCodeGeneratorHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {

@@ -429,7 +429,7 @@ public class MetaEdgeController extends CompositeEntity
         return ef;
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// EdgeDropper
 
     /** An inner class that handles interactive changes to connectivity.

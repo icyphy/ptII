@@ -530,7 +530,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
     protected LinkedList _connectedNodes = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
     /** Icon indicating the communication region. */
     private EllipseAttribute _circle;
 

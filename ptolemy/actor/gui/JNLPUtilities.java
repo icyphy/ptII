@@ -240,7 +240,7 @@ public class JNLPUtilities {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     // Lookup a jarURLName as a resource.
     private static URL _lookupJarURL(String jarURLName) throws IOException {

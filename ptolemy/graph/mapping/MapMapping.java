@@ -94,7 +94,7 @@ public abstract class MapMapping implements Mapping {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     // The Map that this Mapping is based on.
     protected Map _map;

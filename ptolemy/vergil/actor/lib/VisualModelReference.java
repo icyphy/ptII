@@ -389,7 +389,7 @@ public class VisualModelReference
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // Possible values for openOnFiring.
     private static int _DO_NOT_OPEN = 0;

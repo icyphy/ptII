@@ -272,7 +272,7 @@ public class DataPump extends MACActorBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     private void _toBackoff(int kind) throws IllegalActionException {
         // send idle/busy event to the backoff block

@@ -71,7 +71,7 @@ noInternalState();
      public Parameter numSample;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

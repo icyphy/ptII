@@ -389,7 +389,7 @@ public class MACActorBase extends NetworkActorBase {
     public static final int mac_broadcast_addr = -1;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
     //the local varibles for the parameters of this actor.
     protected int _aSifsTime;
     protected int _aPreambleLength;

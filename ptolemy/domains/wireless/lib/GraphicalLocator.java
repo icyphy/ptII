@@ -161,7 +161,7 @@ public class GraphicalLocator extends Locator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** Icon indicating the communication region. */
     private EllipseAttribute _circle;

@@ -329,7 +329,7 @@ public class TerrainProperty extends TypedAtomicActor
         return center;
     }
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
     private WirelessChannel _channel;
     private int[] _xPoints, _yPoints;
     private EditorIcon _icon;

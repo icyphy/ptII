@@ -134,7 +134,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return the a new polygon with the given vertices.
      *  @return A new shape.

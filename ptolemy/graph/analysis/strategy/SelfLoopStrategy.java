@@ -91,7 +91,7 @@ public class SelfLoopStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compute the self-loop edges in the graph in the form of
      *  a collection. Each element of the collection is an {@link Edge}.

@@ -212,7 +212,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     protected ArrayToken _position;
     protected ArrayToken _axis;

@@ -195,7 +195,7 @@ public class MouseEventToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
     private MouseEvent _mouseEvent;
 
     private Type _type = new MouseEventType();

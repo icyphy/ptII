@@ -103,7 +103,7 @@ public class DependencyDeclaration extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     // The declared dependents.
     private List _dependents;

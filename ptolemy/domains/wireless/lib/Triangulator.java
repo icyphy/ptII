@@ -287,7 +287,7 @@ public class Triangulator extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private methods                        ////
+    ////                         private methods                   ////
 
     //  Check whether the calculated location and time of a sound event is
     //  consistent with the observations.

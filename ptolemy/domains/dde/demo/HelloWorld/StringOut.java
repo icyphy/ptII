@@ -74,7 +74,7 @@ public abstract class StringOut extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                   ////
+    ////                         public variables                  ////
 
     public TypedIOPort output;
     public TypedIOPort input;

@@ -192,7 +192,7 @@ public class Agent {
  }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
   /** Return the content of the agent.
    */

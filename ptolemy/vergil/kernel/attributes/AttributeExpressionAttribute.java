@@ -110,7 +110,7 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return the a new string that contains the expression of the
      *  referred to attribute.

@@ -64,7 +64,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
         attributeChanged(frequency);
     }
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                  Ports and Parameters                      ////
 
     /** The output port.
@@ -75,7 +75,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
      */
     public Parameter frequency;
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                          Public Methods                     ////
 
     /** Clone the actor into the specified workspace. This calls the

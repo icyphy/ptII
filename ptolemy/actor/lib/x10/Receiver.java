@@ -259,7 +259,7 @@ public class Receiver extends X10Interface {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** This is a linked list that stores any and all received commands from
      *  a registered </i>CommandListener<i>.

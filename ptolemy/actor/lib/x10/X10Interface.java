@@ -178,7 +178,7 @@ public class X10Interface extends TypedAtomicActor {
     public StringParameter serialPortName;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Prepare the x10 interface, specified by the <i>x10Interface</i>
      *  parameter. This is done in preinitialize() because that method

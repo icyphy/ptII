@@ -178,8 +178,8 @@ public class DeScrambler extends Transformer {
         return super.postfire();
     }
 
-    //////////////////////////////////////////////////////////////
-    ////                     private variables                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Record the state of the shift register.
     private int _shiftReg;

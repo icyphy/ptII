@@ -223,7 +223,7 @@ public class TaskCoordinator extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
     private void _initORB(String[] args) throws IllegalActionException{
@@ -270,7 +270,7 @@ public class TaskCoordinator extends Transformer {
     private Token _resultToken;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner class                ////
+    ////                         inner class                       ////
 
     private class Coordinator extends _CoordinatorImplBase{
         /**

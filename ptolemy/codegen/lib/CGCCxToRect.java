@@ -69,7 +69,7 @@ noInternalState();
     public ClassicPort imag;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

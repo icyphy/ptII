@@ -80,7 +80,7 @@ public class Bindings {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
+    ////                         public methods                    ////
 
     /**
      * Return true if the binding exists.

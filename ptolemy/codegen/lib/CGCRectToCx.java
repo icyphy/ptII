@@ -69,7 +69,7 @@ noInternalState();
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

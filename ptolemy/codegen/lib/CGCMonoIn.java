@@ -68,7 +68,7 @@ Output ranges from -1.0 to 1.0
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

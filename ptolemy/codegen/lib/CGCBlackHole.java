@@ -56,7 +56,7 @@ public class CGCBlackHole extends ClassicCGCActor implements CodeGeneratingActor
     public ClassicPort input;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

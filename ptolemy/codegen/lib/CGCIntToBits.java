@@ -75,7 +75,7 @@ noInternalState();
      public Parameter nBits;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

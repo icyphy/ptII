@@ -66,7 +66,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /** Do nothing. Subclasses may extend this method to generate the fire
      *  code of the associated component and append the code to the given
@@ -449,8 +449,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
 
-    /////////////////////////////////////////////////////////////
-    ////               private methods                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Return the channel number and offset given in a string.
      *  The result is an integer array of length 2. The first element
@@ -503,7 +503,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /** The associated component. */
     private NamedObj _component;

@@ -95,7 +95,7 @@ public class SinkNodeStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compute the sink nodes in the graph in the form of
      *  a collection. Each element of the collection is a {@link Node}.

@@ -265,7 +265,7 @@ public class ConnectorManipulator extends Manipulator {
         addGrabHandle(_tailHandle);
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// TargetHighlighter
 
     static class TargetHighlighter implements LayerMotionListener {

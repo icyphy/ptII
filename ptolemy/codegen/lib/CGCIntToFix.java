@@ -77,7 +77,7 @@ value (or minimum for negative magnitudes). parameter with initial value "".
      public Parameter OutputPrecision;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

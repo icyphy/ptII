@@ -133,7 +133,7 @@ public class CGCWaveForm extends ClassicCGCActor {
     public Parameter size;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -193,7 +193,7 @@ public class NodeRandomizer extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Randomly distribute the nodes in the model that contain a
      *  boolean valued parameter named "randomize" with value true.

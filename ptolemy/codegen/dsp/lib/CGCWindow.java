@@ -99,7 +99,7 @@ public class CGCWindow extends CGCWaveForm {
     public Parameter WindowParameters;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

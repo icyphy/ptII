@@ -87,7 +87,7 @@ noInternalState();
      public Parameter blockSize;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

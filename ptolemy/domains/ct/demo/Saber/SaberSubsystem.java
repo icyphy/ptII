@@ -400,8 +400,8 @@ public class SaberSubsystem extends TypedAtomicActor
         _innerStep = ((StringToken)paramInnerStep.getToken()).stringValue();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Parameter for the file name of the next list; the type is String;
      *  the default value is the empty string.
@@ -413,8 +413,8 @@ public class SaberSubsystem extends TypedAtomicActor
      */
     public Parameter paramInnerStep;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Override Entity addPort. Create parameters for each port.
      */

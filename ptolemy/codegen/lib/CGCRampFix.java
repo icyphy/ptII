@@ -122,7 +122,7 @@ The precision of this state is the precision of the accumulation. parameter with
      public Parameter ValuePrecision;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -221,7 +221,7 @@ public class CASDFComposite extends TypedCompositeActor {
    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public variables                    ////
+    ////                         public variables                  ////
 
     // The generated Cache Aware Schedule
     public Schedule cacheAwareSchedule;
@@ -238,7 +238,7 @@ public class CASDFComposite extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                    ////
+    ////                         private variables                 ////
 
     // The cache aware scheduler
     private CacheAwareScheduler _cacheAwareScheduler;

@@ -163,7 +163,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** The computation associated with this strategy.
      *

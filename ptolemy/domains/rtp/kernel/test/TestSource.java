@@ -59,14 +59,14 @@ public class TestSource extends Source {
         attributeChanged(frequency);
     }
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                          Parameters                        ////
 
     /** The execution frequency, in terms of Hz. Default is 2.0.
      */
     public Parameter frequency;
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                          Public Methods                     ////
 
     /** Once the frequency is updated, calculate the execution period.

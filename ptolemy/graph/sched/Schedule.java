@@ -721,7 +721,7 @@ public class Schedule extends ScheduleElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     /*  Get unique firing instances. Repeated firings generally
      *  occur in the iterator returned by

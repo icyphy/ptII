@@ -271,7 +271,7 @@ public class ImplicitSurface extends TypedAtomicActor {
 //     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     // Implicit Surface Function and its gradient functions
     private ThreeDFunction _surfaceFunction;

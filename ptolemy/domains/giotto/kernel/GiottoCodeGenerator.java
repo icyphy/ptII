@@ -130,7 +130,7 @@ public class GiottoCodeGenerator extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     private void _init()
             throws IllegalActionException, NameDuplicationException {

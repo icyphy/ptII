@@ -231,8 +231,8 @@ public class HammingCoder extends Transformer {
         output.broadcast(result, result.length);
     }
 
-    //////////////////////////////////////////////////////////////
-    ////           private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Consumption rate of the input port.
     private Parameter _inputRate;

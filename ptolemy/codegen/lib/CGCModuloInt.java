@@ -73,7 +73,7 @@ noInternalState();
      public Parameter modulo;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -169,7 +169,7 @@ public class TypeLattice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Return the result for the types that have the given two
      * indexes as hashes.

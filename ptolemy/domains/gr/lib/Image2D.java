@@ -87,7 +87,7 @@ public class Image2D extends GRActor2D {
     public TypedIOPort sceneGraphOut;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
 
     /** Create the imageFigure.

@@ -982,7 +982,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Assert that the given boolean value, which describes the given
      *  parse tree node, is true.  If it is false, then throw a new
@@ -1209,7 +1209,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // Temporary storage for the result of evaluating a child node.
     // This is protected so that derived classes can access it.

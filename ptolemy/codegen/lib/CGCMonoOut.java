@@ -78,7 +78,7 @@ Input ranges from -1.0 to 1.0
      public Parameter aheadLimit;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

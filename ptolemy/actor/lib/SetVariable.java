@@ -256,7 +256,7 @@ public class SetVariable extends TypedAtomicActor
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private void _setValue(Token value) throws IllegalActionException {
         Attribute variable = getModifiedVariable();

@@ -105,7 +105,7 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
      public Parameter OutputPrecision;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

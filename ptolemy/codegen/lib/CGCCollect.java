@@ -64,7 +64,7 @@ public class CGCCollect extends ClassicCGCActor {
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

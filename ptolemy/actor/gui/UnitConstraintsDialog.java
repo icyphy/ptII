@@ -271,7 +271,7 @@ public class UnitConstraintsDialog
         _enableApplyButton(false);
     }
     ///////////////////////////////////////////////////////////////////
-    //// private variables ////
+    ////                         private variables                 ////
     private JButton _addButton, _applyButton, _commitButton, _removeButton;
     private ListSelectionListener _rowSelectionListener =
     new ListSelectionListener() {

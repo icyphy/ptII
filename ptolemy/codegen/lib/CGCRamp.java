@@ -73,7 +73,7 @@ public class CGCRamp extends ClassicCGCActor implements CodeGeneratingActor {
     public Parameter value;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -114,7 +114,7 @@ public class CGCDTMFPostTest extends ClassicCGCActor {
     public Parameter secondToLast;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -75,7 +75,7 @@ public class CGCOrderTwoInt extends ClassicCGCActor {
     public ClassicPort lesser;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

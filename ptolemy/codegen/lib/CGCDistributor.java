@@ -72,7 +72,7 @@ public class CGCDistributor extends ClassicCGCActor {
      public Parameter blockSize;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

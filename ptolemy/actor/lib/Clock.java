@@ -397,7 +397,7 @@ public class Clock extends TimedSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Get the specified output value, checking the form of the values
      *  parameter.

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface ActorCodeGenerator extends ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Generate into the specified code stream the code associated
      *  with one firing of the container composite actor.

@@ -1330,7 +1330,7 @@ public class ModelTransformer extends SceneTransformer
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                         protected methods                 ////
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ModelTransformer.internalTransform("

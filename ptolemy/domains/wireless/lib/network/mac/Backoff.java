@@ -277,7 +277,7 @@ public class Backoff extends MACActorBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
     private int _generateRandom(int ccw) {
         double r = _random.nextDouble();
         return (int)Math.ceil(ccw * r);

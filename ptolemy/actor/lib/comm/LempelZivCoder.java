@@ -117,8 +117,8 @@ public class LempelZivCoder extends Transformer {
         _previousIndex = 0;
     }
 
-    ////////////////////////////////////////////////////////////
-    ////                   private variables                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The Lempel-Ziv code book.
     private LinkedList _codeBook;

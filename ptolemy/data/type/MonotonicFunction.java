@@ -46,8 +46,8 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public abstract class MonotonicFunction implements InequalityTerm {
 
-    ///////////////////////////////////////////////////////////////
-    ////                       public methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return null.
      *  @return null.

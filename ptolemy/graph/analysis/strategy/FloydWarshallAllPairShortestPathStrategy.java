@@ -162,7 +162,7 @@ public class FloydWarshallAllPairShortestPathStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compute the all pair shortest path of the graph in the form of
      *  two dimensional array (matrix).
@@ -235,7 +235,7 @@ public class FloydWarshallAllPairShortestPathStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Return the node before the end node on the shortest path from a starting
      *  node to an ending node. The first dimension is indexed by the
@@ -252,7 +252,7 @@ public class FloydWarshallAllPairShortestPathStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private ToDoubleMapping _edgeLengths;
     private int[][][] _predecessors;

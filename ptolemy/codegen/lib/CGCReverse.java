@@ -70,7 +70,7 @@ noInternalState();
      public Parameter N;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -65,7 +65,7 @@ public class CGCXYgraph extends CGCXgraph {
     public ClassicPort xInput;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -261,7 +261,7 @@ public class TimedDelay extends DETransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Current input.
      */

@@ -166,7 +166,7 @@ public class GradientAdaptiveLattice extends Lattice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     // Compute the filter, updating the caches, based on the current
     // values.  Extend the base class to adapt the reflection coefficients

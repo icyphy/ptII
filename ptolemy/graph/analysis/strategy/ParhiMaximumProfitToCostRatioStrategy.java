@@ -130,7 +130,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     // build a delay graph an use it as the application graph.
     // what result() returns is the iteration bound, and what cycle
@@ -287,7 +287,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /*  To compute the maximum cycle mean of the delay graph.
      *  Derived class may override this method in case that they need to do
@@ -334,7 +334,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private double[][] _firstOrderLongestPathMatrix;
     private List _delayCycle;

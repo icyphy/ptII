@@ -250,7 +250,7 @@ public class MatlabUtilities {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     // Initialize private variables.
     private static void _initialize() throws IllegalActionException {
@@ -308,7 +308,7 @@ public class MatlabUtilities {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // The matlab engine pointer that is returned by matlab.Engine.open
     // We cache this value so that each time we evaluate a Matlab

@@ -88,7 +88,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** The computation associated with the Floyd-Warshall algorithm.
      *
@@ -108,7 +108,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // The transitive closure analyzer used to check the existence of a cycle
     // in the associated graph.

@@ -69,7 +69,7 @@ public class MemoryAddress {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /** Check if the passed object is equal to this memory address
      *  object. If the actorId and token number of the passed objects
@@ -111,7 +111,7 @@ public class MemoryAddress {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
+    ////                         public variables                  ////
 
     // ID of the actor that produced this data token
     public int actorID;

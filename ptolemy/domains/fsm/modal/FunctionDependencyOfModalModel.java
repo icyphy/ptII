@@ -73,7 +73,7 @@ public class FunctionDependencyOfModalModel
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Get a list of refinements of the current state for function
      *  dependency calculation.

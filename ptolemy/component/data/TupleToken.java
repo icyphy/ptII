@@ -221,7 +221,7 @@ public class TupleToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
 
     /** An empty tuple token. */
     public static TupleToken VOID = new TupleToken(new Token[0]);

@@ -144,7 +144,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Test if the given identifier is valid.
      */
@@ -183,7 +183,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     protected ParserScope _scope;
     protected Set _set;

@@ -100,7 +100,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
     public TypedIOPort stop;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Initialize the cycle count and done flag.  This overrides the
      *  base class to indicate that the clock is not running yet.

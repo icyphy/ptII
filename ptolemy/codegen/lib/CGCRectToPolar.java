@@ -77,7 +77,7 @@ noInternalState();
     public ClassicPort phase;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

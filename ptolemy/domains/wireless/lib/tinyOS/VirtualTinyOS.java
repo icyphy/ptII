@@ -202,13 +202,13 @@ public class VirtualTinyOS extends TypedAtomicActor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     private native int signalTimerEvent();
     private native void initMote();
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                ////
+    ////                         private variables                 ////
     private boolean _hasTimer = false;
     private double _timerPeriod;
     private Time _scheduledTime;

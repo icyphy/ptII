@@ -61,7 +61,7 @@ public class UnitExpr implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods ////
+    ////                         public methods                    ////
 
     /** Add a UnitTerm to the expression.
      * @param uTerm The UnitTerm.
@@ -169,14 +169,14 @@ public class UnitExpr implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                     ////
+    ////                         protected methods                 ////
 
     protected void _setUTerms(Vector uTerms) {
         _uTerms = uTerms;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private methods                     ////
+    ////                         private methods                   ////
     private void _flatten() {
         if (_isFlat) {
             return;
@@ -199,7 +199,7 @@ public class UnitExpr implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
     boolean _isFlat = false;
     Vector _uTerms = new Vector();
 

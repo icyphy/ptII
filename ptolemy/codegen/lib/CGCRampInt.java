@@ -73,7 +73,7 @@ public class CGCRampInt extends ClassicCGCActor {
      public Parameter value;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

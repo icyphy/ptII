@@ -51,7 +51,7 @@ public class Sequence extends CCodeGeneratorHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -102,7 +102,7 @@ public class Sequence extends CCodeGeneratorHelper {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     protected String _codeBlock;
 

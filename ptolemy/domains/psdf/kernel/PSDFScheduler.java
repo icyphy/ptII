@@ -198,7 +198,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return the parameterized scheduling sequence.
      *  An exception will be thrown if the graph is not schedulable.
@@ -568,7 +568,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          inner classes                    ////
+    ////                         inner classes                     ////
 
     /** An actor firing with an iteration count that is determined by
      *  a symbolic expression.

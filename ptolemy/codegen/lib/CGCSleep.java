@@ -72,7 +72,7 @@ noInternalState();
      public Parameter interval;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

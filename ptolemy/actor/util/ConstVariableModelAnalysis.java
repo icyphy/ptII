@@ -250,7 +250,7 @@ public class ConstVariableModelAnalysis {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // Add the dependence information from the given attribute to the
     // dependence graph.

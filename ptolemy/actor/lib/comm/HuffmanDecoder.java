@@ -77,8 +77,8 @@ public class HuffmanDecoder extends HuffmanBasic {
         input.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    //////////////////////////////////////////////////////////////////
-    ////                   public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -135,8 +135,8 @@ public class HuffmanDecoder extends HuffmanBasic {
         _code = "";
     }
 
-    ////////////////////////////////////////////////////////////
-    ////                   private variables                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The current input string, concatenated by input booleans.
     private String _code = "";

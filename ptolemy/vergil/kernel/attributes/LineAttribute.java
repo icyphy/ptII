@@ -119,7 +119,7 @@ public class LineAttribute extends ShapeAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return a line.
      *  @return A line.

@@ -168,7 +168,7 @@ public abstract class ShapeAttribute extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return the default shape to use for this icon.
      *  Note that this is called in the constructor, so if you override

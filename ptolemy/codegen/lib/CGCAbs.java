@@ -64,7 +64,7 @@ public class CGCAbs extends ClassicCGCActor {
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -61,7 +61,7 @@ public class CGCFloor extends ClassicCGCActor {
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -197,6 +197,6 @@ public class FigureToken extends Token {
     public static final Type TYPE = new FigureType();
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
     private Figure _figure;
 }

@@ -79,7 +79,7 @@ public class CGCConstFix extends CGCFix {
      public Parameter OutputPrecision;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

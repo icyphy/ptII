@@ -155,7 +155,7 @@ public class CGCXMgraph extends ClassicCGCActor {
      public Parameter count;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

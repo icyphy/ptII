@@ -174,7 +174,7 @@ public class IntRangeParameter extends Parameter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /*  Set the token value and type of the variable, and notify the
      *  container that the value (and type, if appropriate) has changed.
@@ -220,7 +220,7 @@ public class IntRangeParameter extends Parameter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** Indicator that we are in the middle of a check, so skip
      *  circular dependency.

@@ -52,8 +52,8 @@ import ptolemy.moml.MoMLParser;
 */
 public class GRColorChanges implements MoMLFilter {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                         public methods                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Handle parameter name changes.
      *  @param container  The container for XML element.
@@ -156,8 +156,8 @@ public class GRColorChanges implements MoMLFilter {
         return results.toString();
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                         private variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Set of actors with parameter named "RGB Color" */
     private static HashSet _actorsWithRGBColor = new HashSet();

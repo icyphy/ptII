@@ -109,7 +109,7 @@ public class CGCGoertzelBase extends ClassicCGCActor {
     public Parameter state2;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

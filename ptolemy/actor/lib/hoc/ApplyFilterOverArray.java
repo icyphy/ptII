@@ -392,7 +392,7 @@ public class ApplyFilterOverArray
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
 
     private void _updateParameter(Token t) throws IllegalActionException {
@@ -427,13 +427,13 @@ public class ApplyFilterOverArray
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** The model. */
     protected NamedObj _model;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /** The manager currently managing execution. */
     private Manager _manager = null;

@@ -92,7 +92,7 @@ public class CGCRect extends ClassicCGCActor {
      public Parameter count;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

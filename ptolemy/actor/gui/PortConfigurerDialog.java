@@ -725,7 +725,7 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods ////
+    ////                         public methods                    ////
 
     /**
      * Notify the listener that a change has been successfully executed.
@@ -814,7 +814,7 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                      ////
+    ////                         protected methods                 ////
 
     /** Apply any changes that may have been made in the table.
      */
@@ -1240,7 +1240,7 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     // Create the MoML expression that represents the update.
     private String _createMoMLUpdate(
@@ -1718,7 +1718,7 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// private variables ////
+    ////                         private variables                 ////
 
     // List of names of columns that will be used for this target.
     private ArrayList _columnNames;

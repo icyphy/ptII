@@ -105,7 +105,7 @@ public class PTreeMenuCreator extends MouseAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Process a mousePressed or mouseReleased event.
      */

@@ -74,7 +74,7 @@ public class ScratchpadMemory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Adds a new memory address to the scratchpad memory.
      *
@@ -189,7 +189,7 @@ public class ScratchpadMemory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // The scratchpad memory space. The addresses present in scratchpad
     // are stored in this array.

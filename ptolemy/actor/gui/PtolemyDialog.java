@@ -177,7 +177,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                         protected methods                 ////
 
     protected void _cancel() {
         saveIfRequired();

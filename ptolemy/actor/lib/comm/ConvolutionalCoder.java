@@ -340,8 +340,8 @@ public class ConvolutionalCoder extends Transformer {
         return super.postfire();
     }
 
-    //////////////////////////////////////////////////////////
-    ////            private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Calculate the parities given by the polynomial array
      *  and the state of shift register.
@@ -364,8 +364,8 @@ public class ConvolutionalCoder extends Transformer {
         return parity;
     }
 
-    //////////////////////////////////////////////////////////////
-    ////           private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Consumption rate of the input port.
     private Parameter _inputRate;

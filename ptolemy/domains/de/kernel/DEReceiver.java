@@ -156,7 +156,7 @@ public class DEReceiver extends AbstractReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     /** Return the director that created this receiver.
      *  If this receiver is an inside receiver of

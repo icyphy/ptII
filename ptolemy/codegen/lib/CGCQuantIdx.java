@@ -56,7 +56,7 @@ Level of the quantization from 0 to N-1
     public ClassicPort stepNumber;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -62,7 +62,7 @@ import diva.gui.toolbox.JContextMenu;
 public class PortDialogFactory implements MenuItemFactory {
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods ////
+    ////                         public methods                    ////
 
     /**
      * Add an item to the given context menu that will open a dialog to add or
@@ -149,7 +149,7 @@ public class PortDialogFactory implements MenuItemFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// private variables ////
+    ////                         private variables                 ////
 
     /** The configuration. */
     private static String _configPorts = "Configure Ports";

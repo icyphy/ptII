@@ -108,7 +108,7 @@ test.  This ensures that the first test result will always be true. parameter wi
      public Parameter prevResult;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -70,7 +70,7 @@ public class CGCGGAL extends CGCGAL {
     public Parameter B;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

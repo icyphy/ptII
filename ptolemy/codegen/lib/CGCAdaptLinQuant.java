@@ -104,7 +104,7 @@ public class CGCAdaptLinQuant extends ClassicCGCActor {
      public Parameter bits;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

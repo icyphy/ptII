@@ -73,8 +73,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         setHandleInteractor(_resizer);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                        public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Make a persistent record of the new size by issuing a change request.
      *  @param e The mouse event.
@@ -185,7 +185,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         _resizer.setSnapResolution(resolution);
     }
 
-    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                         ////
 
     // FIXME: Instance used to work around Diva bug.
@@ -197,8 +197,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
     // The local instance of the resizer.
     private Resizer _resizer;
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         inner classes                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** An interactor class that changes the bounds of the child
      * figure and triggers a repaint.

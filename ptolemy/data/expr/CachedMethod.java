@@ -1148,7 +1148,7 @@ public class CachedMethod {
         private ArgumentConversion _conversion;
     }
 
-    //////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// BaseConvertCachedMethod
 
     /** A cached method that converts the object on which the method
@@ -1182,7 +1182,7 @@ public class CachedMethod {
         private ArgumentConversion _baseConversion;
     }
 
-    //////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ArrayMapCachedMethod
 
     /** A class representing the invocation of a scalar method on
@@ -1283,7 +1283,7 @@ public class CachedMethod {
         private boolean[] _reducedArgs;
     }
 
-    //////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// MatrixMapCachedMethod
 
     /** A class representing the invocation of a scalar method on

@@ -83,7 +83,7 @@ noInternalState();
      public Parameter phase;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -165,7 +165,7 @@ public class DataMapEnvironment implements Environment {
     private Map             _varNameToVarInfo; //String varName -> PortVarInfo
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     private Map _createNameToPortVarInfoMap(InputPattern [] inputPatterns) {
         Map result = new HashMap();

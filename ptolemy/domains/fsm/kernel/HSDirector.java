@@ -926,7 +926,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     // This method detects any events happened during one step size.
     private Transition _checkEvent(List transitionList) {

@@ -838,7 +838,7 @@ public class WirelessIOPort extends TypedIOPort {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return true if the port is inside wireless.
      *  @return True if the inside is wireless.

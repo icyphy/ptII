@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 public interface ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Generate into the specified code stream the code associated
      *  with initialization of the container composite actor.

@@ -275,7 +275,7 @@ public class TaskReceiver extends Source {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
     private void _initORB(String[] args) throws IllegalActionException{
@@ -348,7 +348,7 @@ public class TaskReceiver extends Source {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner class                ////
+    ////                         inner class                       ////
 
     /** this inner class implements the Client interface defined in
      * Coordinator.idl.

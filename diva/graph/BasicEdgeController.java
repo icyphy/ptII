@@ -376,7 +376,7 @@ public class BasicEdgeController implements EdgeController {
         return ef;
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// EdgeDropper
 
     /** An inner class that handles interactive changes to connectivity.

@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public abstract class EquationVisitor {
 
     ///////////////////////////////////////////////////////////////////
-    ////                             protected methods                ////
+    ////                         protected methods                 ////
 
     /** Visit a UnitEquation by visiting the left and right sides of the
      * equation.

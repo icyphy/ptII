@@ -127,7 +127,7 @@ public class ParkingClient extends TypedAtomicActor{
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private ParkingManager _parkingManager;
 

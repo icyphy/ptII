@@ -94,7 +94,7 @@ public class CGCImpulse extends ClassicCGCActor {
      public Parameter count;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

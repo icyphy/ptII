@@ -155,7 +155,7 @@ public class Scale extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     // Scale the given input token on the left by the given factor.
     private Token _scaleOnLeft(Token input, Token factor)

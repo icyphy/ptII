@@ -122,7 +122,7 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Construct a dependency graph. This method first constructs
      *  the default dependency graph, which asserts that each output

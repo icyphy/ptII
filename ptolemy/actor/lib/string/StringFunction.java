@@ -159,7 +159,7 @@ public class StringFunction extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Trim the leading and trailing whitespace from a string,
      *  convert a string to uppercase, or convert a string to lower

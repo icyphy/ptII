@@ -79,7 +79,7 @@ public class CGCPrinter extends ClassicCGCActor {
      public Parameter index;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

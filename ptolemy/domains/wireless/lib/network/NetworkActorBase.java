@@ -185,7 +185,7 @@ public class NetworkActorBase extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
     // The set for the timers to be processed when they are expried.
     protected HashSet _timersSet;
 

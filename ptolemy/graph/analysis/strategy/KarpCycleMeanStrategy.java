@@ -153,7 +153,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     protected Object _compute() {
         DirectedGraph[] graph = ((DirectedGraph)graph()).sccDecomposition();
@@ -180,7 +180,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     // Computes the MCM for one strongly connected component of the graph.
     // It uses the Karp's algorithm described in:
@@ -339,7 +339,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private boolean _maximumAnalysis = true;
     private ArrayList _nodesOnCycle = new ArrayList();

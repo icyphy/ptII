@@ -201,7 +201,7 @@ public class PlotApplet extends JApplet {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
 
     // Work around problem in Java 1.3.1_08 where if we create
     // 6 instances of a Plot applet then navigate forward then

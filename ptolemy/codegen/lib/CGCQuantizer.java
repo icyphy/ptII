@@ -81,7 +81,7 @@ Index of the closest value in the codebook
      public Parameter floatCodebook;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -348,7 +348,7 @@ public class Sensor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** Its parent's location. */
     private DoubleToken[] _parentLocation;

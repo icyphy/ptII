@@ -104,7 +104,7 @@ public class StatePair {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private State _first;
     private State _second;

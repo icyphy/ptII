@@ -94,7 +94,7 @@ public class CGCXscope extends CGCXgraph {
      public Parameter nTracesSoFar;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -200,7 +200,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return true if all of the children of this node are constant.
      */

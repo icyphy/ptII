@@ -156,7 +156,7 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Perform the graph analysis and return the resulting value.
      *  Upon entry, {@link #getCachedResult()} provides the result of the

@@ -173,7 +173,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** The computation associated with this analyzer.
      *
@@ -234,7 +234,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Return the predecessor array of this analyzer.
      *  The array is indexed by a node label and contains the predecessor
@@ -247,7 +247,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // The values associated to the edges, in this analyzer.
     private ToDoubleMapping _edgeLengths;

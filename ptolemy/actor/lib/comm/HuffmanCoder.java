@@ -77,8 +77,8 @@ public class HuffmanCoder extends HuffmanBasic {
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    //////////////////////////////////////////////////////////////////
-    ////                   public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -127,8 +127,8 @@ public class HuffmanCoder extends HuffmanBasic {
     }
 
 
-    ////////////////////////////////////////////////////////////
-    ////                   private methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Given a codeword, which should be a string of '0' and '1',
      *  converted it to a sequence of booleans and send them to the

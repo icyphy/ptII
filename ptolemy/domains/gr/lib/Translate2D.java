@@ -108,7 +108,7 @@ public class Translate2D extends GRTransform2D {
     public Parameter initialYTranslation;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Set the initial transform of the given figure.  This method is
      * invoked by this base class during the initialize() method.

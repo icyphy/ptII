@@ -379,7 +379,7 @@ public class FixMatrixToken extends MatrixToken {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of this Token.  It is assumed that

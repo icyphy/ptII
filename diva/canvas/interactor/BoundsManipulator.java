@@ -161,7 +161,7 @@ public class BoundsManipulator extends Manipulator {
         _dragInteractor = dragger;
     }
 
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Resizer
 
     /** An interactor class that changes the bounds of the child

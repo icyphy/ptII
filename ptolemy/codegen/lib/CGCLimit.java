@@ -83,7 +83,7 @@ public class CGCLimit extends ClassicCGCActor {
      public Parameter top;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

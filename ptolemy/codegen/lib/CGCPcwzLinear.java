@@ -88,7 +88,7 @@ public class CGCPcwzLinear extends ClassicCGCActor {
      public Parameter breakpoints;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -86,7 +86,7 @@ public class CGCDirichlet extends ClassicCGCActor {
     public Parameter N;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

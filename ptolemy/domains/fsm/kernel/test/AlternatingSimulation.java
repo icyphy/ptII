@@ -150,7 +150,7 @@ public class AlternatingSimulation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private static void _printUsageAndExit() {
         System.out.println("Usage: java ptolemy.domains.fsm.kernel."

@@ -94,7 +94,7 @@ public class FreeVariableModelAnalysis {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     // Recursively compute the set of free variables for all actors
     // deeply contained in the given model.

@@ -76,7 +76,7 @@ noInternalState();
     public ClassicPort y;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

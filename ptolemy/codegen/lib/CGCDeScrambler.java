@@ -92,7 +92,7 @@ bit sequence out (zero or one)
      public Parameter shiftReg;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

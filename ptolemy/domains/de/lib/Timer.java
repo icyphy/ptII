@@ -214,7 +214,7 @@ public class Timer extends DETransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The amount of delay.
      */

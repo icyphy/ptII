@@ -112,7 +112,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public StringParameter generatorPackage;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return a formatted comment containing the
      *  specified string. In this base class, the
@@ -308,7 +308,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
@@ -372,7 +372,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Given a port or parameter, append a string in the form
      *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
@@ -407,8 +407,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
 
 
-    //////////////////////////////////////////////////////////////////
-    ////                     private variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // A hash map that stores the code generator helpers associated
     // with the actors.

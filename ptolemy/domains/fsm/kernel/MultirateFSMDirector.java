@@ -74,8 +74,8 @@ public class MultirateFSMDirector extends FSMDirector {
         // TODO Auto-generated constructor stub
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                    public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return a new receiver of a type compatible with this director.
      *  This returns an instance of SDFReceiver.

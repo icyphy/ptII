@@ -109,7 +109,7 @@ public class CGCLMS extends CGCFIR {
     public Parameter saveTapsFile;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

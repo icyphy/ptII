@@ -61,7 +61,7 @@ Right channel.
     public ClassicPort right;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

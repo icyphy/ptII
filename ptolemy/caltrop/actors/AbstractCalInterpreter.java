@@ -248,7 +248,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     // Get the values of Ptolemy actor parameters and plug them into
     // the given environment.

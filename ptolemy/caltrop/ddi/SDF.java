@@ -175,7 +175,7 @@ public class SDF extends Dataflow {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Annotate the given list of TypedIOPorts with rate parameters
      * according to the given map.

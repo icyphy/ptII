@@ -360,7 +360,7 @@ public abstract class Rounding implements Cloneable, Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return true if intPart should be incremented to represent
      *  the rounded value of intPart + fracPart, which is positive.

@@ -188,7 +188,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return the a new shape given a new width and height. This class
      *  guarantees that the protected variables _centeredValue, _widthValue,
@@ -199,7 +199,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
     protected abstract Shape _newShape();
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** Most recently set value of the centered parameter. */
     protected boolean _centeredValue = false;

@@ -805,7 +805,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                  ////
+    ////                         protected variables               ////
 
     protected Set dataTypes;
     protected String _endLine = "\n";

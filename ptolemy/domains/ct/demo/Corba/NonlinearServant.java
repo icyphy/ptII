@@ -473,7 +473,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     private Double _input;
     private Double _output;

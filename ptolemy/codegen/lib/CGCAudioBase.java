@@ -124,7 +124,7 @@ public class CGCAudioBase extends ClassicCGCActor {
      public Parameter channels;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

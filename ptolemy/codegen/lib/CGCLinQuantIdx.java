@@ -113,7 +113,7 @@ high, low, and levels. parameter with initial value "1.0".
      public Parameter height;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

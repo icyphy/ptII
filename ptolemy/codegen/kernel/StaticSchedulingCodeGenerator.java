@@ -76,7 +76,7 @@ public class StaticSchedulingCodeGenerator
     ////                     parameters                            ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
@@ -209,7 +209,7 @@ public class StaticSchedulingCodeGenerator
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.

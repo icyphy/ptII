@@ -302,7 +302,7 @@ public class LiveSoundActor extends TypedAtomicActor
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** The number of channels.  Initialized from the channels parameter. */
     protected int _channels;

@@ -1206,8 +1206,8 @@ public class ComplexMatrixMath {
         return _zeroMatrix(new Complex[rows][columns], rows, columns);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                      protected methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.

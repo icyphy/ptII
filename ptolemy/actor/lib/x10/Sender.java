@@ -134,7 +134,7 @@ public class Sender extends X10Interface {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The address of a given module on the x10 network. */
     protected String _destination;

@@ -172,7 +172,7 @@ public class NonInterruptibleTimer extends Timer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     // Next time the server becomes free.
     private Time _nextTimeFree;

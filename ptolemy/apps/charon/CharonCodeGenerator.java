@@ -167,7 +167,7 @@ public class CharonCodeGenerator extends Attribute {
     public String generatedCode;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     /** Topology analysis and initialization.
      *

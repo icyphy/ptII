@@ -108,7 +108,7 @@ public class CGCParametricEq extends CGCBiquad {
     public Parameter bandwidth;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -510,7 +510,7 @@ public class PHY extends NetworkActorBase {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     private void _handleInterference() throws IllegalActionException
     {
@@ -579,7 +579,7 @@ public class PHY extends NetworkActorBase {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     //the local varibles for the parameters of this actor.
     protected int _aPreambleLength;

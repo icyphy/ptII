@@ -81,7 +81,7 @@ non-zero integer (not necessarily 1).
      public Parameter logic;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -94,7 +94,7 @@ public class  SourceNodeStrategy extends CachedStrategy
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compute the source nodes in the graph in the form of
      *  a collection. Each element of the collection is a {@link Node}.

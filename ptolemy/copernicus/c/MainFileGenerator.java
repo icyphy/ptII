@@ -56,7 +56,7 @@ public class MainFileGenerator extends CodeGenerator {
     public MainFileGenerator() {
         super();
     }
-    /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //////////        public methods      ///////////////
 
     /** Generate the code for a the wrapper "main" C function that calls

@@ -84,7 +84,7 @@ public class CGCGoertzelPower extends CGCGoertzelBase {
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

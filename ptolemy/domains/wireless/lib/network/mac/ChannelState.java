@@ -329,7 +329,7 @@ public class ChannelState extends MACActorBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     private void _updateNav() throws IllegalActionException {
 

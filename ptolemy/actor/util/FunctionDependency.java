@@ -183,7 +183,7 @@ public abstract class FunctionDependency extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Construct a complete dependency graph with all the
      *  ports of the associated actor as nodes and edges going from
@@ -276,13 +276,13 @@ public abstract class FunctionDependency extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** The dependency graph of the associated actor. */
     protected DirectedGraph _dependencyGraph;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     // The version of the FunctionDependency, which is synchronized
     // to the version of the workspace.

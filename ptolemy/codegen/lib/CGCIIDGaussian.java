@@ -83,7 +83,7 @@ public class CGCIIDGaussian extends ClassicCGCActor {
      public Parameter seed;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

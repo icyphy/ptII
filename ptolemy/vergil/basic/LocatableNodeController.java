@@ -177,7 +177,7 @@ public class LocatableNodeController extends BasicNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
 
     // Fourth argument makes this highlight transluscent, which enables
     // combination with other highlights.

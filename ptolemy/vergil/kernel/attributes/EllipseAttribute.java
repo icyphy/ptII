@@ -71,7 +71,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return a circle.
      *  @return A Circle.

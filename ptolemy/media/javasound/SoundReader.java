@@ -147,7 +147,7 @@ public class SoundReader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Return the number of audio channels. This method should
      *  be called while the file is open (i.e., before closeFile()

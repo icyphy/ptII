@@ -72,7 +72,7 @@ noInternalState();
      public Parameter threshold;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

@@ -653,7 +653,7 @@ public class ModelReference
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** If a derived class calls modelFileOrURL.update() in its fire()
      *  method prior to calling super.fire(), then it should set this
@@ -662,7 +662,7 @@ public class ModelReference
     protected boolean _alreadyReadInputs = false;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Iterate over input ports and read any available values into
      *  the referenced model parameters.
@@ -706,7 +706,7 @@ public class ModelReference
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Iterate over output ports and read any available values from
      *  the referenced model parameters and produce them on the outputs.
@@ -745,13 +745,13 @@ public class ModelReference
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                         protected variables               ////
 
     /** The model. */
     protected NamedObj _model;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // Possible values for executionOnFiring.
     private static int _DO_NOTHING = 0;

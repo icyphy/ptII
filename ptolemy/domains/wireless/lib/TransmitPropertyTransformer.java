@@ -375,7 +375,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Override the base class to not read any inputs.
      */
@@ -386,7 +386,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     protected void _writeOutputs() {}
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Return the location of the given WirelessIOPort.
      *  @param port A port with a location.
@@ -410,7 +410,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /** The wireless channel for the connected input port found in
      *  preinitialize().

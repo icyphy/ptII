@@ -206,7 +206,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     protected void _setAttributeName(String attributeName)
             throws IllegalActionException {

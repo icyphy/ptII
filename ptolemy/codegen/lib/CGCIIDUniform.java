@@ -83,7 +83,7 @@ public class CGCIIDUniform extends ClassicCGCActor {
      public Parameter seed;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

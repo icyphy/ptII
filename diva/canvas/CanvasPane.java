@@ -417,7 +417,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Helper method to initialize a layer when it is added to this
      * pane. Any subclass must be sure to call this whenever it
@@ -449,7 +449,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                   ////
+    ////                         private methods                   ////
 
     /**
      * set the model params for the range models.  This sets the min, max

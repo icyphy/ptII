@@ -79,7 +79,7 @@ public class CGCReciprocal extends ClassicCGCActor {
      public Parameter magLimit;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

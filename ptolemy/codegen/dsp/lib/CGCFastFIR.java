@@ -86,7 +86,7 @@ public class CGCFastFIR extends ClassicCGCActor {
     public Parameter tapSize;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

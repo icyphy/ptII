@@ -79,7 +79,7 @@ public class CGCFix extends ClassicCGCActor {
      public Parameter ck_cnt;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

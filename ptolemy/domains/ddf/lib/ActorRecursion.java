@@ -524,7 +524,7 @@ public class ActorRecursion extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                   ////
+    ////                         private variables                 ////
 
     // The composite actor to be cloned.
     private CompositeActor _recursionActor = null;

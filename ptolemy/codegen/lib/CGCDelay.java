@@ -70,7 +70,7 @@ public class CGCDelay extends ClassicCGCActor {
      public Parameter delay;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

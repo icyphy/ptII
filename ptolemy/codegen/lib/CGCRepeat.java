@@ -74,7 +74,7 @@ noInternalState();
      public Parameter numTimes;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

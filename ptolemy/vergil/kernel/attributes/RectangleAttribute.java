@@ -112,7 +112,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return the a new rectangle given a new width and height.
      *  @return A new shape.

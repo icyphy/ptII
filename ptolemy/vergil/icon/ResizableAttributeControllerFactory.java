@@ -90,7 +90,7 @@ public class ResizableAttributeControllerFactory
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        inner classes                      ////
+    ////                         inner classes                     ////
 
     /** Custom controller that uses a bounds manipulator to allow
      *  the user to resize the image.

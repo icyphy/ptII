@@ -393,7 +393,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     private void _addScopeExtendingAttribute()
             throws IllegalActionException {

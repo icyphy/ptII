@@ -142,7 +142,7 @@ public class ModelUtilities {
         return _getResult(model, resultLabels);
     }
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Iterate over the labelSet of the <i>args<i> argument and
      *  check whether the specified model has Attribute with the

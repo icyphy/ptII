@@ -49,7 +49,7 @@ abstract public class FloydWarshallStrategy extends CachedStrategy {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
 
     /** Basic computation performed by all the analysis implementing a

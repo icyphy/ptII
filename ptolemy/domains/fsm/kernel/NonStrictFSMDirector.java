@@ -117,7 +117,7 @@ public class NonStrictFSMDirector extends FSMDirector {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Get the enabled transition and the referred input ports in its
      *  outputActions. If they are not referred by the guard expressions,
@@ -293,7 +293,7 @@ public class NonStrictFSMDirector extends FSMDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                  ////
+    ////                         private variables                 ////
 
     // A flag indicates whether the receiver is a peek one or not.
     private boolean _consumeToken;

@@ -178,7 +178,7 @@ public class AngleProcessor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     private double _minAngle, _maxAngle;
 }

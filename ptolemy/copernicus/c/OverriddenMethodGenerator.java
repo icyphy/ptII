@@ -439,7 +439,7 @@ public class OverriddenMethodGenerator {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Returns the code for the body of a given overridden method. If a

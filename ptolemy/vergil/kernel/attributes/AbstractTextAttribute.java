@@ -212,7 +212,7 @@ public class AbstractTextAttribute extends Attribute {
     protected TextIcon _icon;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private boolean _inAttributeChanged = false;
 }

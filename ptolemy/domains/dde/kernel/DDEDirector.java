@@ -487,7 +487,7 @@ public class DDEDirector extends CompositeProcessDirector
     private Hashtable _initialTimeTable;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner class                           ////
+    ////                         inner class                       ////
 
     private class ReceiverCapacityComparator implements Comparator {
 

@@ -90,7 +90,7 @@ Right channel input Range: -1.0 to 1.0
      public Parameter homogeneous;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */

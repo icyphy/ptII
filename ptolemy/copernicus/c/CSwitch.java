@@ -1327,7 +1327,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                      ////
+    ////                         protected methods                 ////
 
     /** Generate code for a list of arguments from an invoke expression.
      *  @param expression The invoke expression.
@@ -1567,7 +1567,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
 
     // A stack of StringBuffers corresponding to code that has been generated
     // by this switch. The most recently-generated code is at the top of

@@ -189,6 +189,6 @@ public class CTReceiver extends Mailbox {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
     private SignalType _type;
 }

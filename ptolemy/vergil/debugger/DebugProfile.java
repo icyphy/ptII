@@ -56,8 +56,8 @@ public class DebugProfile {
         _firingEventTypes = new HashSet();
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the GraphController.
      *  @return The GraphController.
@@ -97,8 +97,8 @@ public class DebugProfile {
         _firingEventTypes.remove(type);
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Set of firing event types we want to break on.
     private HashSet _firingEventTypes;

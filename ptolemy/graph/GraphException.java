@@ -103,7 +103,7 @@ public class GraphException extends RuntimeException {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return a dump of an element ({@link Node}, {@link Edge},
      *  or weight) and the container graph suitable to be appended

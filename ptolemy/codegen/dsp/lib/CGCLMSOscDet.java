@@ -111,7 +111,7 @@ public class CGCLMSOscDet extends CGCLMS {
     public Parameter initialOmega;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      */
