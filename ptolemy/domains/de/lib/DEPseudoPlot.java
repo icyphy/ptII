@@ -45,8 +45,6 @@ A plotter for discrete-event signals.
 */
 public class DEPseudoPlot extends DEActor {
 
-    private static final boolean OUTPUT = false;
-
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
      *
@@ -121,7 +119,7 @@ public class DEPseudoPlot extends DEActor {
             //_rangeInitialized = true;
         }
 
-        double curTime =((DEDirector)getDirector()).getCurrentTime();
+        double curTime = ((DEDirector)getDirector()).getCurrentTime();
 
         int numEmptyChannel = 0;
 
@@ -205,6 +203,8 @@ public class DEPseudoPlot extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private static final boolean OUTPUT = false;
+
     //private Plot _plot;
 
     private double _yMin;
@@ -213,5 +213,4 @@ public class DEPseudoPlot extends DEActor {
     private boolean[] _firstPoint;
 
     private boolean _rangeInitialized = false;
-
 }
