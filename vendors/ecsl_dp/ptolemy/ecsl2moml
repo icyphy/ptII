@@ -354,11 +354,14 @@ $0 ~ /<entity/ {
        }
        # Remap names like In1 to input
        if (name ~ /^In[0-9]*$/) {
-           name="input"
+           oldName = name
+           name = "input"
+   
        }
 
        if (name ~ /^Out[0-9]*$/) {
-           name="output"
+           oldName = name
+           name = "output"
        }
 
        # Get the value of the dstLine field
@@ -410,6 +413,17 @@ $0 ~ /<entity/ {
            } else { 
                # The relation name has spaces in it, so this is a multiport
                print indent "    <property name=\"multiport\"/>"
+           }
+       }
+
+
+       if (class == "vendors.ecsl_dp.ptolemy.ECSLSum" \
+               && name == "input" ) {
+           # FIXME: Connect the first Input to minus, the second to plus
+           if (oldName == "In1") {
+               longName = containerStack[containerCount] ".plus"
+           } else if (oldName == "In2") {
+               longName = containerStack[containerCount] ".minus"
            }
        }
 
