@@ -74,7 +74,6 @@ a partial ordering. A method is considered
 to be "subordinate" with respect to a "dominant" method if the return value
 of the subordinate method is directly impacted by the return value of the
 dominant method. All state methods methods are subordinate to isActive().
-If isActive()
 
 
 @author John S. Davis II
@@ -112,22 +111,11 @@ public class BranchController implements Runnable {
                 return;
             }
             setActive(true);
-            // LinkedList threadList = new LinkedList();
             Branch branch = null;
             for( int i=0; i < _branches.size(); i++ ) {
                 branch = (Branch)_branches.get(i);
                 branch.run();
-                // threadList.add(branch);
-                // FIXME: should we optimize for a single branch?
             }
-                
-            /*
-            Iterator threads = threadList.iterator();
-            while( threads.hasNext() ) {
-                branch = (Branch)threads.next();
-                branch.run();
-            }
-            */
         }
     }
     
@@ -277,28 +265,6 @@ public class BranchController implements Runnable {
         return false;
     }
     
-    /** Restart this controller by resetting the branches that
-     *  it controls and setting flags so engagements can take
-     *  place. This method is synchronized and will notify any 
-     *  threads that are synchronized to this object.
-    public synchronized void restart() {
-	// _iterationIsOverCache = true;
-
-	// _engagements.clear();
-	_branchesBlocked = 0;
-
-	Branch branch = null;
-	Iterator branches = _branches.iterator();
-	while( branches.hasNext() ) {
-	    branch = (Branch)branches.next();
-	    branch.reset();
-	}
-	// _iterationIsOverCache = false;
-
-	notifyAll();
-    }
-     */
-
     /**
      */
     public void run() {

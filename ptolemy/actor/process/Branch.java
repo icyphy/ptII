@@ -175,7 +175,8 @@ public class Branch implements Runnable {
                 _consRcvr.put(token, this);
             }
         } catch( TerminateBranchException e ) {
-	    // Iteration is over
+            return;
+        } catch( TerminateProcessException e ) {
             return;
         }
     }

@@ -41,7 +41,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// ProcessDirector
+//// CompositeProcessDirector
 /**
 Base class of directors for the process oriented domains. It provides
 default implementations for methods that are common across such domains.
@@ -61,7 +61,7 @@ overridden in derived classes to get domain-specific behaviour. The
 implementations given here are trivial and suffice only to illustrate
 the approach that should be followed.
 <p>
-@author Mudit Goel, Neil Smyth, John S. Davis II
+@author John S. Davis II
 @version $Id$
 @see Director
 */
@@ -73,6 +73,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public CompositeProcessDirector() {
         super();
+        _blockedRcvrs = new LinkedList();
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -82,6 +83,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public CompositeProcessDirector(Workspace workspace) {
         super(workspace);
+        _blockedRcvrs = new LinkedList();
     }
 
     /** Construct a director in the given container with the given name.
@@ -99,6 +101,7 @@ public class CompositeProcessDirector extends ProcessDirector {
             throws IllegalActionException {
         super(container, name);
         _name = name;
+        _blockedRcvrs = new LinkedList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,9 +120,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CompositeProcessDirector newobj = (CompositeProcessDirector)super.clone(ws);
-        newobj._actorsActive = 0;
-        newobj._notDone = true;
-        newobj._actorThreadList = new LinkedList();
         return newobj;
     }
 
@@ -171,12 +171,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   of one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        /*
-	_notDone = true;
-	_actorsActive = 0;
-	_actorThreadList = new LinkedList();
-	_newActorThreadList = new LinkedList();
-        */
         CompositeActor container = ((CompositeActor)getContainer());
         if (container != null) {
             CompositeActor containersContainer =
@@ -188,15 +182,6 @@ public class CompositeProcessDirector extends ProcessDirector {
                     containersContainer.getDirector().getCurrentTime();
                 setCurrentTime(time);
             }
-
-            /*
-            // Creating threads for all actors;
-            Iterator actors = container.deepEntityList().iterator();
-            while( actors.hasNext() ) {
-                Actor actor = (Actor)actors.next();
-                actor.initialize();
-            }
-            */
         }
         
         super.initialize();
@@ -216,35 +201,6 @@ public class CompositeProcessDirector extends ProcessDirector {
         _outputControllerIsBlocked = _outputBranchController.isBlocked();
         
     }
-
-    /** Perform domain-specific initialization on the specified actor, if any.
-     *  In this base class, initialize a ProcessThread for each actor.
-     *  This is called by the initialize() method of the actor, and may be
-     *  called after the initialization phase of an execution.  In particular,
-     *  in the event of mutations during an execution that introduce new
-     *  actors, this method will be called as part of initializing the
-     *  new actors.
-     *  @exception IllegalActionException If the actor is not acceptable
-     *   to the domain.  Not thrown in this base class.
-    public void initialize(Actor actor) throws IllegalActionException {
-        // Reset the receivers.
-        Iterator ports = actor.inputPortList().iterator();
-        while( ports.hasNext() ) {
-            IOPort port = (IOPort)ports.next();
-            Receiver[][] rcvrs = port.getReceivers();
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    ((ProcessReceiver)rcvrs[i][j]).reset();
-                }
-            }
-        }
-
-        // Initialize threads
-        ProcessThread processThread = _getProcessThread(actor, this);
-        _actorThreadList.addFirst(processThread);
-        _newActorThreadList.addFirst(processThread);
-    }
-     */
 
     /** Return a new receiver of a type compatible with this director.
      *  In class, this returns an instance of MailboxBoundaryReceiver.
@@ -276,49 +232,22 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException  {
-        // Start Actor Threads
-        /*
-        Iterator threads = _newActorThreadList.iterator();
-        ProcessThread procThread = null;
-        threads = _newActorThreadList.iterator();
-        while (threads.hasNext()) {
-            procThread = (ProcessThread)threads.next();
-            procThread.start();
-        }
-        _newActorThreadList.clear();
-        */
-        
         /* FIXME
-        // (Re)Start BranchControllers 
-        Thread thread = null;
-        if( _inputBranchController.isBlocked() ) {
-            _inputBranchController.restart();
-        } else if( _inputBranchController.hasBranches() ) {
-            thread = new Thread(_inputBranchController);
-            thread.start();
-        }
-        if( _outputBranchController.isBlocked() ) {
-            _outputBranchController.restart();
-        } else if( _outputBranchController.hasBranches() ) {
-            thread = new Thread(_outputBranchController);
-            thread.start();
-        }
-        
-        System.out.println("PROCESSDIRECTOR.prefire() ending. "
-                + "_areActorsStopped() = " + _areActorsStopped());
+        System.out.println("PROCESSDIRECTOR.prefire() ending. ");
         */
         
         super.prefire();
         
         Thread thread = null;
-        if( _inputBranchController.hasBranches() ) {
+        if( _inputBranchController.hasBranches() && _onFirstIteration ) {
             thread = new Thread(_inputBranchController);
             thread.start();
         }
-        if( _outputBranchController.hasBranches() ) {
+        if( _outputBranchController.hasBranches() && _onFirstIteration ) {
             thread = new Thread(_outputBranchController);
             thread.start();
         }
+        _onFirstIteration = false;
         return true;
     }
 
@@ -330,15 +259,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  is guaranteed to return in finite time.
      */
     public void stopFire() {
- 	Iterator threads = _actorThreadList.iterator();
- 	while( threads.hasNext() ) {
-            // System.out.println("PROCESS THREADS.stopFire()");
- 	    ProcessThread thread = (ProcessThread)threads.next();
-
-	    // Call stopThread() on the threads first
- 	    thread.stopThread();
-	    thread.getActor().stopFire();
- 	}
+        super.stopFire();
     }
 
     /**
@@ -431,12 +352,9 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  This abrupt termination will not allow normal cleanup actions
      *  to be performed, and the model should be recreated after calling
      *  this method.
-     */
     //  Note: for now call Thread.stop() but should change to use
     //  Thread.destroy() when it is eventually implemented.
     public void terminate() {
-        // First need to invoke terminate on all actors under the
-        // control of this director.
         super.terminate();
         // Now stop any threads created by this director.
 	LinkedList list = new LinkedList();
@@ -447,6 +365,7 @@ public class CompositeProcessDirector extends ProcessDirector {
 	    ((Thread)threads.next()).stop();
         }
     }
+     */
 
     /** End the execution of the model under the control of this
      *  director. A flag is set in all the receivers that causes
@@ -467,136 +386,15 @@ public class CompositeProcessDirector extends ProcessDirector {
         // Kill all branch controllers
         stopInputBranchController();
         stopOutputBranchController();
-        /*
-        if( _inputBranchController != null ) {
-            _inputBranchController.deactivateBranches();
-        }
-        if( _outputBranchController != null ) {
-            _outputBranchController.deactivateBranches();
-        }
-        */
         
         if( _debugging ) _debug(_name+": finished deactivating branches");
         
         super.wrapup();
         
-
-        /*
-        if( _debugging ) _debug(_name+": finished restarting threads during wrapup");
-        
-	CompositeActor cont = (CompositeActor)getContainer();
-        Iterator actors = cont.deepEntityList().iterator();
-        Iterator actorPorts;
-        ProcessReceiver nextRec;
-        LinkedList recs = new LinkedList();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            actorPorts = actor.inputPortList().iterator();
-            while (actorPorts.hasNext()) {
-                IOPort port = (IOPort)actorPorts.next();
-                // Setting finished flag in the receivers.
-                Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.requestFinish();
-                        recs.addFirst(nextRec);
-                    }
-                }
-            }
-
-            // If this director is controlling a CompositeActor with
-            // output ports, need to set the finished flag
-            // there as well.
-            actorPorts  = cont.outputPortList().iterator();
-            while (actorPorts.hasNext()) {
-                IOPort port = (IOPort)actorPorts.next();
-                // Terminating the ports and hence the actor
-                Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.requestFinish();
-                        recs.addFirst(nextRec);
-                    }
-                }
-            }
-
-            // Now wake up all the receivers.
-            (new NotifyThread(recs)).start();
-        }
-        
-        if( _debugging ) _debug(_name+": finished all input/output branches.");
-        return;
-        */
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Add a thread to the list of threads in the model.
-     *  This list is used in case of abrupt termination of the model
-     *  @param thr The newly created thread
-    protected synchronized void _addNewThread(ProcessThread thr) {
-	_actorThreadList.addFirst(thr);
-    }
-     */
-
-    /** Return true if all of the threads containing actors 
-     *  controlled by this director have stopped due to a call
-     *  of stopFire(). Return true if this director controls
-     *  no actors. Override this method in subclasses to account
-     *  for possible deadlock situations due to additional flags
-     *  that are not present in this base class.
-     * @return True if all actors controlled by this thread 
-     *  have stopped; otherwise return false.
-    protected synchronized boolean _areActorsStopped() {
-	if( _actorsActive == 0 ) {
-	    return true;
-	} else if( _actorsStopped > 0 && _actorsStopped 
-		>= _actorsActive ) {
-	    return true;
-	}
-	return false;
-    }
-     */   
-
-    /** Return true if the count of active processes in the container is 0.
-     *  Otherwise return true. Derived classes must override this method to
-     *  return true to any other forms of deadlocks that they might introduce.
-     * @return true if there are no active processes in the container.
-     * @deprecated use isDeadlocked() instead.
-     */
-    protected synchronized boolean _checkForDeadlock() {
-        return (_actorsActive == 0);
-    }
-
-    /** Decrease by one the count of active processes under the control of
-     *  this director. 
-     *  This method should be called only when an active thread that was
-     *  registered using _increaseActiveCount() is terminated.
-     *  This count is used to detect deadlocks for termination and other
-     *  reasons.
-     */
-    protected synchronized void _decreaseActiveCount() {
-	_actorsActive--;
-        /*
-	if (_areActorsDeadlocked()) {
-	    //Wake up the director waiting for a deadlock
-	    notifyAll();
-	}
-        */
-	notifyAll();
-        // if( _debugging ) _debug(_name+": finishing _decreaseActiveCount()");
-    }
-
-    /** Return the number of active processes under the control of this
-     *  director.
-     * @return The number of active actors.
-     */
-    protected synchronized long _getActiveActorsCount() {
-	return _actorsActive;
-    }
 
     /** Create a new ProcessThread for controlling the actor that
      *  is passed as a parameter of this method. Subclasses are
@@ -614,14 +412,6 @@ public class CompositeProcessDirector extends ProcessDirector {
 	return new ProcessThread(actor, director);
     }
 
-    /** Return the number of processes stopped because of a call to the
-     *  stopfire method of the process.
-     * @return The number of stopped processes.
-    protected synchronized long _getStoppedProcessesCount() {
-	return _actorsStopped;
-    }
-     */
-
     /** Return true.
      *  In derived classes, override this method to obtain domain
      *  specific handling of deadlocks. It should return true if a
@@ -635,27 +425,6 @@ public class CompositeProcessDirector extends ProcessDirector {
 	return true;
     }
 
-    /** Increases the count of active actors in the composite actor
-     *  corresponding to this director by 1. This method should be
-     *  called when a new thread corresponding to an actor is started
-     *  in the model under the control of this director. This method
-     *  is required for detection of deadlocks.
-     *  The corresponding method _decreaseActiveCount should be called
-     *  when the thread is terminated.
-     */
-    synchronized void _increaseActiveCount() {
-	_actorsActive++;
-    }
-
-    /** Return true if the count of active processes in the container is 0.
-     *  Otherwise return true. Derived classes must override this method to
-     *  return true to any other forms of deadlocks that they might introduce.
-     * @return true if there are no active processes in the container.
-     */
-    protected synchronized boolean _areActorsDeadlocked() {
-        return (_actorsActive == 0);
-    }
-
     /** Return false.
      *  In derived classes, override this method to obtain domain
      *  specific handling of deadlocks. Return false if a
@@ -666,38 +435,79 @@ public class CompositeProcessDirector extends ProcessDirector {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
+        if( _areActorsExternallyBlocked() ) {
+            try {
+                while( !_inputBranchController.isBlocked() ) {
+                    wait();
+                }
+                // registerBlockedRcvrsWithContainer();
+                wait();
+            } catch( InterruptedException e ) {
+                // FIXME: Do Something
+            }
+            
+        }
+            
+        /*
+        if( _areActorsExternallyBlocked() ) {
+            while( !_outputBranchController.isBlocked() ) {
+                wait();
+            }
+        }
+        */
+        
 	return false;
     }
 
-    /** In subclasses, override this method to obtain domain
-     *  specific handling of deadlocks. 
+    /** 
      * @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _attemptToResolveDeadlock() throws IllegalActionException {
+    protected boolean _areActorsExternallyBlocked() {
+    	Iterator blockedRcvrIter = _blockedRcvrs.iterator();
+        while( blockedRcvrIter.hasNext() ) {
+            ProcessReceiver rcvr = (ProcessReceiver)blockedRcvrIter.next();
+            if( rcvr.isConnectedToBoundaryInside() ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
+        _blockedRcvrs.add(rcvr);
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorBlocked(LinkedList rcvrs) {
+        if( rcvrs == _blockedRcvrs ) {
+            return;
+        }
+        _blockedRcvrs.addAll(rcvrs);
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
+        _blockedRcvrs.remove(rcvr);
+        notifyAll();
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
+        Iterator rcvrIterator = rcvrs.iterator();
+        while( rcvrIterator.hasNext() ) {
+            ProcessReceiver rcvr = (ProcessReceiver)rcvrIterator.next();
+            _blockedRcvrs.remove(rcvr);
+        }
+        notifyAll();
     }
 
     /** 
@@ -747,23 +557,6 @@ public class CompositeProcessDirector extends ProcessDirector {
             _debug(_name + ": finished calling wakeDirThread.start()");
         }
     }
-
-//     /** 
-//      */
-//     protected synchronized void _controllerUnBlocked(BranchController cntlr) {
-//         /*
-//         if( !cntlr.isBlocked() ) {
-//             notifyAll();
-//         }
-//         */
-//         if( cntlr == _inputBranchController ) {
-//             _inputControllerIsBlocked = cntlr.isBlocked();
-//         }
-//         if( cntlr == _outputBranchController ) {
-//             _outputControllerIsBlocked = cntlr.isBlocked();
-//         }
-//         notifyAll();
-//     }
 
     /** JFIXME: This method can lead to deadlock
      */
@@ -832,26 +625,10 @@ public class CompositeProcessDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // Flag for determining when an iteration completes
-    // protected boolean _notDone = true;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Count of the number of processes that were started by this
-    // director but have not yet finished.
-    private long _actorsActive;
-
-    // The threads started by this director.
-    // FIXME
-    public LinkedList _actorThreadList;
-
-    //A copy of threads started since the last invocation of prefire().
-    private LinkedList _newActorThreadList;
-
-    // A count of the active actors controlled by
-    // this director that have been stopped
-    // private int _actorsStopped = 0;
+    private boolean _onFirstIteration = true;
     
     // The Branch Controllers of this director
     private BranchController _inputBranchController;
@@ -859,6 +636,8 @@ public class CompositeProcessDirector extends ProcessDirector {
     
     private boolean _inputControllerIsBlocked = true;
     private boolean _outputControllerIsBlocked = true;
+    
+    private LinkedList _blockedRcvrs;
     
     private Object _branchCntlrLock = new Object();
     
