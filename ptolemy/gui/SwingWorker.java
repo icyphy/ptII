@@ -42,7 +42,7 @@ Note that the API changed slightly in the 3rd version:
 You must now invoke start() on the SwingWorker after
 creating it.
 @author Sun Microsystems
-@version: $Id$
+@version $Id$
 @since Ptolemy II 2.0
  */
 public abstract class SwingWorker {

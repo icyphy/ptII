@@ -43,7 +43,7 @@ hierarchy of node objects. This class represents the leaf nodes of the
 tree.
 
 @author Neil Smyth
-@version$Id$
+@version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser

@@ -220,7 +220,7 @@ public class FeedBackDelay extends DDEActor {
     }
 
     /** Set the delay value of this actor.
-     * @params delay The delay value of this actor.
+     * @param delay The delay value of this actor.
      */
     public void setDelay(double delay) {
 	_delay = delay;

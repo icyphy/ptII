@@ -58,7 +58,7 @@ time).
 Actors in the DE domain are not required to use this port. If they use
 the base class, TypedIOPort, then the data they send is sent with zero delay.
 
-@authors Lukito Muliadi, Edward A. Lee, Jie Liu
+@author Lukito Muliadi, Edward A. Lee, Jie Liu
 @version $Id$
 @since Ptolemy II 0.2
 */

@@ -611,7 +611,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  @param index The zero based index of the page to be drawn.
      *  @param view A rectangle specifying the portion of the graph
      *   to print.
-     *  @returns PAGE_EXISTS if the page is rendered successfully, or
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
@@ -1323,7 +1323,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 //      //// SaveInLibraryAction
 
 //      // FIXME: The following needs quite a bit of work.
-//      // Changes to the library are not persistent.
+//      // Changes to the library are not persistent.*
 //      /** An action to save the current model in a library. */
 //      private class SaveInLibraryAction extends AbstractAction {
 
