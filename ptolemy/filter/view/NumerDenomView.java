@@ -41,8 +41,8 @@ import java.applet.*;
 /**
   A view that describe the filter as a transfer function.  It has
   scrollable panel thas displayed the transfer function
-@William Wu
-@version 0.1
+@author William Wu
+@version $Id$ 
 
 */
 public class NumerDenomView extends View{
