@@ -1,4 +1,4 @@
-/* A library of audio operations.
+/* A library of audio operations using the Java Sound API.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -48,8 +48,9 @@ import javax.media.sound.sampled.OutputChannel;
 import javax.media.sound.sampled.Mixer;
 import javax.media.sound.sampled.AudioUnavailableException;
 
-/** FIXME : Need to change the name of this class!!!
- *  Instances of this class represent streams of audio data 
+//////////////////////////////////////////////////////////////////////////
+//// NewAudio FIXME : Need to change the name of this class!!!
+/** Instances of this class represent streams of audio data 
  *  based on the new Java Sound API. The audio data may be retrieved 
  *  from a file, a URL, a byte array, a double array, or another 
  *  input stream. Currently the file formats that are available 
@@ -68,6 +69,7 @@ import javax.media.sound.sampled.AudioUnavailableException;
  * @version $Id$
  */
 
+
 public class NewAudio implements Runnable {
 
     /** Create a new instance initialized with the given double array.
@@ -75,41 +77,29 @@ public class NewAudio implements Runnable {
      *	and an AudioFormat which specified how the data should be
      *  proccessed. The array is assumed to have linear samples
      *	normalized between -1.0 and 1.0 .
-     *	@param doubleBuffer A double array containing the audio data. 
+     *	@param buffer A double array containing the audio data. 
      *	@param af The AudioFormat of the audio data.
      * 	@throws IOException If the audio data could not be converted 
      *	 to a usable format, or an I/O error occurs while the data is
      *   being converted. 
      */
-    public NewAudio(double[] doubleBuffer, AudioFormat af) throws IOException {
-	this(_doubleToByte(doubleBuffer, af), af);
+    public NewAudio(double[] buffer, AudioFormat af) throws IOException {
+	this(_doubleToByte(buffer, af), af);
     }
   
     /** Create a new instance initialized with the given byte array.
      *  The arguments are a byte array containing the audio data
      *  and an AudioFormat which specifies how the data should be
      *  processed. 	
-     *	@param byteBuffer A byte array containing the audio data.
+     *	@param buffer A byte array containing the audio data.
      *	@param af The AudioFormat of the audio data.
      * 	@throws IOException If the audio data could not be converted 
      *   to a usable format, or an I/O error occurs while the data is
      *   being converted.
      */
-    public NewAudio(byte[] byteBuffer, AudioFormat af) throws IOException {
-	this(new ByteArrayInputStream(byteBuffer), af, byteBuffer.length);
+    public NewAudio(byte[] buffer, AudioFormat af) throws IOException {
+	this(new ByteArrayInputStream(buffer), af, buffer.length);
     }  
- 
-    /** Create a new instance initialized with the given input stream. 
-     *  The instance is assumed to have unknown length.
-     *  @param is An input stream containing the audio data.
-     *  @param af The AudioFormat of the audio data.
-     *  @throws IOException if the audio data could not be converted 
-     *   to a usable format, or an I/O error occurs while the data is
-     *   being converted.
-     */
-    public NewAudio(InputStream is, AudioFormat af) throws IOException {
-	this(is, af, AudioStream.UNKNOWN_LENGTH);
-    }
   
     /** Create a new instance initialized with the given input stream
      *  and a given length.
@@ -122,7 +112,7 @@ public class NewAudio implements Runnable {
      */
     public NewAudio(InputStream is, AudioFormat af, long length) 
 	throws IOException {
-	this(new AudioStream(is, af, length));
+	_loadAsStream(new AudioStream(is, af, length));
     }
 
     /** Create a new instance initialized with the given audio stream.
@@ -136,33 +126,29 @@ public class NewAudio implements Runnable {
     }
 
     /** Create a new instance initialized with the audio data provided
-     *  by a file specified with the given String. The current file
+     *  by a file or URL specified with the given String. The current file
      *  types that can be parsed for audio data are AU, WAVE and AIFF.
-     *  @param fileName A String that specifies a file containing audio data.
+     *  @param pathName A String that specifies a file containing audio data.
      *  @throws IOException if the file does not exist, can't be parsed 
      *   for audio data, or some I/O error occurs while reading the file.
      */
-    public NewAudio(String fileName) throws IOException {
-	_loadAsFile(fileName);
+    public NewAudio(String pathName) throws IOException {
+	try {
+	    URL theurl = new URL(pathName);
+	    InputStream urlstream = theurl.openStream();
+	    if (urlstream == null) 
+		throw new IOException("Cannot open URL: " + pathName);
+	    else _loadAsStream(urlstream);
+	} catch (MalformedURLException e) {
+	    FileInputStream infile = new FileInputStream(pathName);
+	    if (infile == null) 
+		throw new IOException ("Cannot open file: " + pathName);
+	    else _loadAsStream(infile);
+	} 
     }
 
-    /** Create a new instance initialized either by a file or a URL. 
-     *  The arguments are a String that is either the name of a file
-     *  or URL, depending of the value of the boolean argument. If
-     *  the boolean argument is true, the String is the name of a file,
-     *  otherwise it the name of a URL.
-     *	@param fileOrURLName Either a file or URL containing audio data.
-     *	@param isFile A boolean that determines what the String is.
-     *	@throws IOException if the file does not exist, can't be 
-     *   parsed for audio data, or an I/O error occurs. 
-     *	@throws MalformedURLException if the given URL name is not valid. 
-     */
-    public NewAudio(String fileOrURLName, boolean isFile) 
-	throws MalformedURLException , IOException {
-	if (isFile) 
-	    _loadAsFile(fileOrURLName);
-	else _loadAsURL(fileOrURLName);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
      
     /** Return the current AudioStream.
      *	@return the current AudioStream. 
@@ -248,10 +234,12 @@ public class NewAudio implements Runnable {
     public void openPlayback() throws AudioUnavailableException {
 	OutputChannel channel = null;
 	if (_stream == null)
-	    throw new NullPointerException ("AudioStream is null, cannot start playback");
+	    throw new NullPointerException 
+		("AudioStream is null, cannot start playback");
 	if (_mixer == null) 
 	    _mixer = AudioSystem.getMixer(null);        
-	channel = _mixer.getOutputChannel(_stream.getFormat(), 16384);
+	channel = _mixer.getOutputChannel(_stream.getFormat(), 
+					  _OUTPUT_BUFFER_SIZE);
 	_target = channel;
 	_current = _stream;
     }
@@ -264,11 +252,14 @@ public class NewAudio implements Runnable {
     public void startPlayback() throws AudioUnavailableException {
 	openPlayback();
 	if (_pushThread != null)
-	    throw new NullPointerException ("Playback thread is not null, cannot start playback : " + _pushThread);
+	    throw new NullPointerException 
+		("Playback thread is not null, cannot start playback : ");
 	if (_current == null) 
-	    throw new NullPointerException ("InputStream not set, cannot start playback");
+	    throw new NullPointerException 
+		("InputStream not set, cannot start playback");
 	if (_target == null) 
-	    throw new NullPointerException ("OutputChannel not set, cannot start playback");
+	    throw new NullPointerException 
+		("OutputChannel not set, cannot start playback");
 	_stopping = false;
 	_stopped = false; 
 	_soundBuffer = new ByteArrayOutputStream();
@@ -311,7 +302,8 @@ public class NewAudio implements Runnable {
      */
     public void pausePlayback() {
 	if( _target == null ) 
-	    throw new NullPointerException ("OutputChannel not set, cannot pause");
+	    throw new NullPointerException 
+		("OutputChannel not set, cannot pause");
 	if( !_target.isPaused() ) 
 	    _target.pause();
     }
@@ -337,6 +329,10 @@ public class NewAudio implements Runnable {
      *  the Runnable Interface, so that the end user will not have 
      *  to this method. This method is a modified version of
      *  one used in a demo of the Java Sound API made by SUN.
+     *  @throws RuntimeException FIXME : if an I/O error occurs 
+     *   during playback. This is a hack because I can't throw
+     *   an IOException, and yet one must be thrown if there
+     *   is a I/O error.
      */
     public void run() {
 	byte[] dataArray = new byte[_target.getBufferSize()/2];
@@ -358,12 +354,14 @@ public class NewAudio implements Runnable {
 		bytesRemaining = bytesRead;
 		while ((bytesRemaining > 0) && !_stopping){
 		    bytesRemaining -= _target.write(dataArray, 0, bytesRead);
-		    if (getFormat().getEncoding() == Encoding.PCM_SIGNED_BIG_ENDIAN)
+		    if (getFormat().getEncoding() == 
+			Encoding.PCM_SIGNED_BIG_ENDIAN)
 			_soundBuffer.write(dataArray, 0 , bytesRead);
-		    else _soundBuffer.write(_reverse(dataArray, getFormat()), 0, bytesRead);
+		    else _soundBuffer.write(_reverse(dataArray, getFormat()),
+					    0, bytesRead);
 		}
 	    } catch (IOException ioe) {
-		break;
+		throw new RuntimeException (ioe.getMessage());
 	    }
 	}
 	_stopped = true;
@@ -383,6 +381,7 @@ public class NewAudio implements Runnable {
     /** Convert the audio data to the given audio format. Currently the
      *  only conversions that are available are from mu-law or a-law
      *  encoded data to linear encoded data that is either MSB or LSB.
+     *  Note : should this method be made private?
      *  @return true if the conversion was successful.
      */
     public boolean convert(AudioFormat af) {
@@ -404,6 +403,7 @@ public class NewAudio implements Runnable {
      *  of a sample will be doubled, but everything else about the 
      *  current AudioFormat (i.e sample rate, number of channels) will
      *  remain the same.
+     *  Note : should this method be made private?
      *  @return true if the conversion was successful.
      */
     public boolean convert(Encoding ae) {
@@ -424,22 +424,14 @@ public class NewAudio implements Runnable {
 	else af = new AudioFormat(ae, srate, ssize, channels, 
 				  fsize, frate);
 	return convert(af);
-    }
-    
-    /** Indicates in the constructor that the given String
-     *  is the name of a local file. 
-     */
-    public static final boolean IS_FILE = true;
-
-    /** Indicates in the constructor that the given String
-     *  is the name of a URL.
-     */
-    public static final boolean IS_URL = false;
-
+    } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Return true if the input encoding is a compressed encoding
+     *  and the output is not compressed, and false otherwise.
+     */
     private boolean _needToDoubleSampleSize(Encoding input, 
 					    Encoding output) {
 	return (((input == Encoding.ALAW) || 
@@ -448,37 +440,45 @@ public class NewAudio implements Runnable {
 		  (output == Encoding.ULAW)));
     }
 
+    /** Return true if the input encoding is not a compressed encoding
+     *  and the output encoding is compressed, and false otherwise.
+     *  Currently this method should never be used because it is
+     *  not possible to convert from a linear format back to mu-law
+     *  or a-law.
+     */
     private boolean _needToHalfSampleSize(Encoding input, 
 					  Encoding output) {
 	return _needToDoubleSampleSize(output, input);
     }
-       
-    private void _loadAsFile(String filename ) throws IOException {        
-	FileInputStream infile = new FileInputStream(filename);
-	if (infile == null) 
-	    throw new IOException ("Cannot open file: " + filename);
-	else _loadAsStream(infile);
-    }
 
-    private void _loadAsURL(String urlname ) 
-	throws MalformedURLException, IOException {
-	URL theurl = new URL(urlname);
-	InputStream urlstream = theurl.openStream();
-	if (urlstream == null) 
-	    throw new IOException("Cannot open URL: " + urlname);
-	else _loadAsStream(urlstream);
-    }
-
+    /** Load the given input stream as the current audio stream 
+     *  for playback. This method assumes that the audio data in 
+     *  the input stream conforms to one of the supported filetypes. 
+     *  If you wish to load an input stream that just contains raw 
+     *  data, it is better to accomplish this by turning the input 
+     *  stream into an audio stream, and then loading it. This method
+     *  will throw an IOException if either the input stream can't
+     *  we parsed into one of the known file formats, or the audio
+     *  data can't be extracted from the stream.
+     */
     private void _loadAsStream(InputStream is) throws IOException {
 	FileStream fs = AudioSystem.getFileStream(is);
 	if (fs == null)        
 	    throw new IOException("Unable to obtain audio data from file");
 	AudioStream as = AudioSystem.getAudioStream( fs );
 	if (as == null)
-	    throw new IOException("Unable to convert file data into audio data");
+	    throw new IOException
+		("Unable to convert file data into audio data");
 	_loadAsStream(as);
     }
 
+    /** Make the given stream the current audio stream for playback.
+     *  Since at this time, the Java Sound API can't playback in
+     *  mu-law or a-law format, the stream is first converted
+     *  to a linear format. This method will throw an IOException
+     *  if pass a null audio stream or it can't convert the
+     *  audio stream to a linear format for playback.
+     */
     private void _loadAsStream(AudioStream as) throws IOException {
 	if (as == null) 
 	    throw new IOException("Can't load empty audio stream");
@@ -487,11 +487,18 @@ public class NewAudio implements Runnable {
 	if (!converted)
 	    converted = convert(Encoding.PCM_SIGNED_LITTLE_ENDIAN);
 	if (!converted) 
-	    throw new IOException("Could not convert audio stream to linear format");        
+	    throw new IOException
+		("Could not convert audio stream to linear format");        
 	_byteBuffer = null;
 	_doubleBuffer = null;
     }
 
+    /** Refresh the byte array and double array buffers used by
+     *  getByteArray() and getDoubleArray() respectively. This
+     *  should not modify the audio stream. This method will
+     *  throw an IOException if an I/O error occurs while reading
+     *  from the audio stream into the byte array buffer.
+     */
     private void _refreshBuffer() throws IOException {
 	_byteBuffer = new byte[(int) _stream.getLength()];
 	AudioFormat af = _stream.getFormat();
@@ -501,6 +508,13 @@ public class NewAudio implements Runnable {
 	_byteToDouble(af);
     }
 
+    /** Transfer the audio data stored in the byte array buffer 
+     *  into the double array buffer so that every element in the 
+     *  double array will be a linear encoded sample normalized 
+     *  between -1.0 and 1.0 . The AudioFormat tells how many bytes 
+     *  per sample there are, and whether the bytes are stored in 
+     *  MSB or LSB order.
+     */
     private void _byteToDouble(AudioFormat af) {
 	long bits;
 	int i, j, index;
@@ -518,6 +532,11 @@ public class NewAudio implements Runnable {
 	}
     }
  
+    /** Transfer the audio data stored in the given double array into 
+     *  the given byte array. The AudioFormat tells how many bytes 
+     *  per sample there should be in the byte array, and whether the 
+     *  bytes should be stored in MSB or LSB order.
+     */
     private static byte[] _doubleToByte(double[] d, AudioFormat af) {
 	long bits;
 	int bytesPerSample = af.getSampleSizeInBits() / 8;
@@ -535,10 +554,20 @@ public class NewAudio implements Runnable {
 	return b;
     }
 
+   
+    /** Transfer the audio data stored in the double array buffer into 
+     *  the byte array buffer. The AudioFormat tells how many bytes 
+     *  per sample there should be in the byte array, and whether the 
+     *  bytes should be stored in MSB or LSB order.
+     */
     private void _doubleToByte(AudioFormat af) {
 	_byteBuffer = _doubleToByte(_doubleBuffer, af);
     }
 
+    /** Reverse the elements in the given byte array, such that
+     *  if they were in MSB order, they should now be LSB order,
+     *  and vice versa.
+     */
     private static byte[] _reverse(byte[] b, AudioFormat af) {
 	byte[] br = new byte[b.length];
 	int bytesPerSample = af.getSampleSizeInBits() / 8;
@@ -555,16 +584,57 @@ public class NewAudio implements Runnable {
   ///////////////////////////////////////////////////////////////////
   ////                         private members                   ////
 
+    // The mixer used to obtain an output channel
     private Mixer _mixer = null;
+
+    // The thread of exceution used for playback
     private Thread _pushThread = null;
+
+    // The current stream attached to the output channel
     private InputStream _current = null;
+    
+    // Stores the part of the audio stream that has already written
+    // to the output channel so that the audio data is never destroyed.
     private ByteArrayOutputStream _soundBuffer = new ByteArrayOutputStream();
+
+    // true if the current audio stream is stopped
     private boolean _stopped = false;
+    
+    // true if the current audio stream is in the process of stopping
     private boolean _stopping = false;
+
+    // true if the current audio stream is set to loop continuously
     private boolean _looping = false;
+
+    // the output channel to which audio data is written
     private OutputChannel _target = null;
+    
+    // the underlying audio stream to which all conversions are made
     private AudioStream _stream = null;
+
+    // the current byte array representation of the audio data. the
+    // AudioFormat of _stream specifies exactly how the bytes in
+    // this buffer represent audio data. This includes how many
+    // bytes are used per audio sample, and whether those bytes
+    // are stored in MSB or LSB order.
     private byte[] _byteBuffer = null;
+
+    // the current double array representation of the audio data. Each
+    // element in the double array is a linear encoded sampled 
+    // normalized between -1.0 and 1.0. This format is especially nice
+    // because it can be easily used with Ptolemy, and it does not
+    // have a specific byte representation as the byte array does,
+    // thus it could be used to convert between MSB and LSB, a
+    // functionality which Java Sound currently lacks.
     private double[] _doubleBuffer = null;
+
+    // The size of the buffer for the output channel. I pulled
+    // this figure from a Java Sound demo, and it seems to work
+    // ok. The only problem is that this causes the stopPlayback()
+    // method to take a ridiculous amount of time. If I lower
+    // this value, however, the sound quality for streams with 
+    // high sample rates degrades noticably because not enough data 
+    // can be stored on the buffer.
+    private static final int _OUTPUT_BUFFER_SIZE = 16384;
 
 }
