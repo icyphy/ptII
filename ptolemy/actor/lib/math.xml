@@ -25,6 +25,9 @@
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
   </entity>
 
+  <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
+  </entity>
+
   <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
