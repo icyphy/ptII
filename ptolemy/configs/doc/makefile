@@ -58,6 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	copyright.htm \
 	demos.htm \
 	demosPtiny.htm \
+	docs.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
 
