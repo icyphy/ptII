@@ -75,6 +75,7 @@ field is set once in the constructor and immutable afterwards.
 @see PlotBox
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class PlotTableauFrame extends TableauFrame {
 

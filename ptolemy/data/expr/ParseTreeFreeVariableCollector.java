@@ -46,6 +46,7 @@ function is valid in the scope of the expression.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.data.expr.ASTPtRootNode
 */
 

@@ -40,6 +40,7 @@ The operations that can be performed on tokens that have bitwise operations.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public interface BitwiseOperationToken {

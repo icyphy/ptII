@@ -49,6 +49,7 @@ attribute.  This style can be used with any Settable attribute.
 @see ParameterEditorStyle
 @author Zoltan Kemenczy, Research in Motion Ltd
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class TextStyle extends ParameterEditorStyle {

@@ -41,6 +41,7 @@ for simple use by the code generator.
 
 @author  Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class TokenUtilities {
 

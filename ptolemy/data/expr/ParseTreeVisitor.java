@@ -45,6 +45,7 @@ expression language.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.data.expr.ASTPtRootNode
 */
 

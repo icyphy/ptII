@@ -47,6 +47,7 @@ tokens.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class NamedConstantsScope implements ParserScope {

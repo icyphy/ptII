@@ -60,6 +60,7 @@ corresponding output port.
 @see TransitionRefinement
 @author David Hermann, Research In Motion Limited
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class TransitionRefinementPort extends RefinementPort {

@@ -64,6 +64,7 @@ requests,, as some of the same issues apply to undoing those changes.
 <p>
 @author  Neil Smyth
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class MoMLUndoChangeRequest extends ChangeRequest {
 

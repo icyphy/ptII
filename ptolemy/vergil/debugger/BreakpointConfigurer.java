@@ -59,6 +59,7 @@ postfire, iterate.
 
 @author Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class BreakpointConfigurer extends Query implements ChangeListener{

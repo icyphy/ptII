@@ -62,6 +62,7 @@ representing the desired relation width<p>
 
 @author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.actor.IORelation
 */
 

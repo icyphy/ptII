@@ -43,6 +43,7 @@ Highlight objects in magenta, rather than red or yellow.
 
 @author Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class DebugRenderer extends AnimationRenderer {
 

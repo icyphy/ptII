@@ -47,6 +47,7 @@ list until a mapping is found.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class NestedScope implements ParserScope {

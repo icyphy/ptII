@@ -56,6 +56,7 @@ actor selected.
 
 @author Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class BreakpointDialogFactory implements MenuItemFactory {
 

@@ -54,6 +54,7 @@ the object.  Otherwise, an instance of EditParametersDialog is created.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.actor.gui.EditParametersDialog
 */
 public class ConfigureAction extends FigureAction {

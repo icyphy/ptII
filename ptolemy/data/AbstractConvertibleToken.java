@@ -64,6 +64,7 @@ type-specific operations.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 
 */
 public abstract class AbstractConvertibleToken extends Token

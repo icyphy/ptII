@@ -37,6 +37,7 @@ package ptolemy.graph;
 
    @author Mingyung Ko
    @version $Id$
+   @since Ptolemy II 2.1
  */
 public class GraphTopologyException extends GraphException {
 

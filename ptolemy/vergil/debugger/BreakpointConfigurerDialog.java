@@ -49,6 +49,7 @@ dialog.
 
 @author Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class BreakpointConfigurerDialog extends ComponentDialog {
 

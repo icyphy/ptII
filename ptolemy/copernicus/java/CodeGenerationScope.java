@@ -44,6 +44,7 @@ An interface used by the expression code generator for identifier lookup.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.data.expr.ParserScope
 */
 

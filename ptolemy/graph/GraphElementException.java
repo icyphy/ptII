@@ -41,6 +41,7 @@ import ptolemy.graph.Node;
 
    @author Mingyung Ko, Shuvra S. Bhattacharyya
    @version $Id$
+   @since Ptolemy II 2.1
  */
 public class GraphElementException extends GraphException {
 

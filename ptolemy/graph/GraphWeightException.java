@@ -38,6 +38,7 @@ import ptolemy.graph.Graph;
 
     @author Mingyung Ko
     @version $Id$
+    @since Ptolemy II 2.1
  */
 public class GraphWeightException extends GraphException {
 

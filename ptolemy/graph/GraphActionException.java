@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
    @author Mingyung Ko
    @version $Id$
+   @since Ptolemy II 2.1
  */
 public class GraphActionException extends IllegalActionException {
 

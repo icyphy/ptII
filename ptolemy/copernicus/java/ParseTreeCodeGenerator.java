@@ -51,6 +51,7 @@ This class visits parse trees and generates soot instructions that evaluate the 
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.data.expr.ASTPtRootNode
 */
 

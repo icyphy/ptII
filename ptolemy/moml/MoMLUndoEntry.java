@@ -53,6 +53,7 @@ FIXME: this class may do well as an interface...
 <p>
 @author  Neil Smyth
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class MoMLUndoEntry  {
 

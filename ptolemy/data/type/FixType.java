@@ -50,6 +50,7 @@ the rounding and quantization techniques that are being applied.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class FixType extends StructuredType

@@ -43,6 +43,7 @@ exception that has been passed to it.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class BasicModelErrorHandler implements ModelErrorHandler {
 

@@ -59,6 +59,7 @@ import java.util.EmptyStackException;
  *
  * @author     Neil Smyth
  * @version    $Id$
+ * @since Ptolemy II 2.1
  */
 public class UndoInfoAttribute extends SingletonAttribute
          implements NotPersistent {

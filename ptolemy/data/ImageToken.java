@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
    library.
    @author James Yeh
    @version $Id$
+   @since Ptolemy II 2.1
  */
 
 public abstract class ImageToken extends Token {

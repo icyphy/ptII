@@ -53,6 +53,7 @@ exception, whereas the latter simply throws the exception.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.1
 */
 public interface ModelErrorHandler {
 

@@ -38,6 +38,7 @@ This class is used in the representation of alternating simulation.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class StatePair {

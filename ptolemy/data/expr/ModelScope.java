@@ -45,6 +45,7 @@ scopes for Ptolemy models.
 
 @author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.data.expr.PtParser
 */
 

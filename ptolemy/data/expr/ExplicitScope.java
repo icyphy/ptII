@@ -43,6 +43,7 @@ Variables in the scope.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class ExplicitScope implements ParserScope {

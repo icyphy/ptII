@@ -45,6 +45,7 @@ The inputs are read and checked in the postfire() method only.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class ThrowException extends Sink {

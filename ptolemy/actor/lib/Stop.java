@@ -74,6 +74,7 @@ the nondeterminism is acceptable, this actor can be used.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class Stop extends Sink {

@@ -46,6 +46,7 @@ the parse tree.  (the operator "^")
 
 @author Neil Smyth, Bart Kienhuis, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token

@@ -62,6 +62,7 @@ import java.util.EmptyStackException;
  *
  * @author     Neil Smyth
  * @version    $Id$
+ * @since Ptolemy II 2.1
  */
 public class UndoContext {
 

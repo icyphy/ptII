@@ -48,6 +48,7 @@ java ptolemy.domains.fsm.kernel.test.Project <first_automaton.xml> <second_autom
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class Project {

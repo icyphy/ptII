@@ -48,6 +48,7 @@ port must be set to the type of the expression that is expected.
 
 @author  Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class ExpressionToToken extends Converter {
 

@@ -55,6 +55,7 @@ pairs. This flag is optional.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 2.1
 */
 
 public class AlternatingSimulation {
