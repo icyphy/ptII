@@ -316,7 +316,7 @@ public class IOPort extends ComponentPort {
                     try {
                         Receiver[][] rr = getReceivers(r);
                         if (rr != null) {
-                            for (int i=0; i < rr.length; i++) {
+                            for (int i = 0; i < rr.length; i++) {
                                 _localReceivers[index++] = rr[i];
                             }
                         }
@@ -336,7 +336,7 @@ public class IOPort extends ComponentPort {
                     Receiver[][] rr = r.deepReceivers(this);
                     if (rr != null) {
                         int size = java.lang.Math.min(rr.length, width-index);
-                        for (int i=0; i < size; i++) {
+                        for (int i = 0; i < size; i++) {
                             if (rr[i] != null) {
                                 result[index++] = rr[i];
                             }
@@ -596,7 +596,7 @@ public class IOPort extends ComponentPort {
                 Enumeration relations = linkedRelations();
                 while(relations.hasMoreElements()) {
                     IORelation r = (IORelation) relations.nextElement();
-                    sum +=r.getWidth();
+                    sum += r.getWidth();
                 }
                 _width = sum;
             }

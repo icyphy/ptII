@@ -380,9 +380,9 @@ public class IORelation extends ComponentRelation {
 
         for (int i = 0; i < width; i++) {
             if(array1[i] == null) {
-                result[i]= array2[i];
+                result[i] = array2[i];
             } else if(array2[i] == null) {
-                result[i]= array1[i];
+                result[i] = array1[i];
             } else {
                 int m1 = array1[i].length;
                 int m2 = array2[i].length;
