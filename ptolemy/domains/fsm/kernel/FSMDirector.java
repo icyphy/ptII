@@ -320,7 +320,8 @@ public class FSMDirector extends Director {
         boolean result = true;
         if (_fireRefinement) {
             result = ctrl.currentState().getRefinement().postfire();
-            if (getContainer().getExecutiveDirector() != null) {
+            if (((CompositeActor)getContainer())
+               .getExecutiveDirector() != null) {
                 // Not at the top level, ignore the return value from 
                 // the current refinement.
                 result = true;
