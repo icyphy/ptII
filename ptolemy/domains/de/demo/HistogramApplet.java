@@ -171,7 +171,9 @@ public class HistogramApplet extends Applet implements Runnable {
 
             // Set up the directors
             _clock = new DEClock(topLevel, "Clock Bus", 1.0, 1.0);
-            _poisson = new DEPoisson(topLevel, "Poisson Bus", 1.0, 1.0);
+            _poisson = new DEPoisson(topLevel, "Poisson Bus");
+            _poisson.outputvalue.setToken(new DoubleToken(1.0));
+            _poisson.meantime.setToken(new DoubleToken(1.0));
             _localDirector = new DEDirector("DE Director");
             topLevel.setDirector(_localDirector);
             _manager = new Manager("Executive Director");
@@ -180,7 +182,9 @@ public class HistogramApplet extends Applet implements Runnable {
 
             // Create the actors.
             // The connections are created after appropriate source is chosen.
-            DEPoisson dePoisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);
+            DEPoisson dePoisson = new DEPoisson(topLevel, "Poisson");
+            dePoisson.outputvalue.setToken(new DoubleToken(-1.0));
+            dePoisson.meantime.setToken(new DoubleToken(1.0));
             DEWaitingTime deWaitingTime = new DEWaitingTime(topLevel, "Wait");
             DEPlot dePlot = new DEPlot(topLevel, "Plot", plot);
             String[] legends = {"Bus", "Passenger", "Wait time"} ;

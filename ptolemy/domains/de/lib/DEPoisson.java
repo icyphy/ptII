@@ -35,6 +35,11 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
+// FIXME: Delete these when infrastructure improves (see FIXME below).
+import java.util.Enumeration;
+import collections.LinkedList;
+import ptolemy.graph.Inequality;
+
 //////////////////////////////////////////////////////////////////////////
 //// DEPoisson
 /**
@@ -58,58 +63,35 @@ public class DEPoisson extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEPoisson(TypedCompositeActor container,
-            String name)
-            throws NameDuplicationException, IllegalActionException  {
-        this(container, name, new Token(), 0.1);
-    }
-
-    /** Construct a DEPoisson actor with the specified output tokens
-     *  and mean interarrival time.
-     *  @param container The composite actor that this actor belongs to.
-     *  @param name The name of this actor.
-     *  @param value The Token associated with the output events.
-     *  @param lambda The mean inter-arrival times.
-     *  @exception IllegalActionException If the entity cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
-    public DEPoisson(TypedCompositeActor container,
-            String name, Token value, double lambda)
+    public DEPoisson(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(Token.class);
-        _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
-        _value = new Parameter(this, "value", value);
+        meantime = new Parameter(this, "lambda", new DoubleToken(0.1));
+        outputvalue = new Parameter(this, "value");
     }
-
-
-    /** Constructor.
-     *  @param container The composite actor that this actor belongs to.
-     *  @param name The name of this actor.
-     *  @param value The value of the output events.
-     *  @param lambda The mean of the inter-arrival times.
-     *  @exception IllegalActionException If the entity cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     *  @deprecated Use other constructors instead.
-     */
-    public DEPoisson(TypedCompositeActor container,
-            String name, double value, double lambda)
-            throws NameDuplicationException, IllegalActionException  {
-        super(container, name);
-        output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(Token.class);
-        _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
-        _value = new Parameter(this, "value", new DoubleToken(value));
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports and parameters.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+	try {
+	    DEPoisson newobj = (DEPoisson)super.clone(ws);
+	    newobj.output = (TypedIOPort)newobj.getPort("output");
+	    newobj.outputvalue = (Parameter)newobj.getAttribute("outputvalue");
+	    newobj.meantime = (Parameter)newobj.getAttribute("meantime");
+	    return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
 
     /** Produce the initializer event that will cause the generation of
      *  the first event at time zero.
@@ -127,14 +109,32 @@ public class DEPoisson extends DEActor {
      */
     public void fire() throws IllegalActionException {
 
-        double lambda = ((DoubleToken)_lambda.getToken()).doubleValue();
+        double lambda = ((DoubleToken)meantime.getToken()).doubleValue();
 
 	// send a token via the output port.
-	output.broadcast(_value.getToken());
+	output.broadcast(outputvalue.getToken());
 
         // compute an exponential random variable.
         double exp = -Math.log((1-Math.random()))*lambda;
 	fireAfterDelay(exp);
+    }
+
+    /** Return the type constraint that the output type must be
+     *  greater than or equal to the type of the value parameter.
+     *  If the the value parameter has not been set, then it is
+     *  set to type BooleanToken with value <i>true</i>.
+     */
+    // FIXME: This should be simplified when infrastructure support improves.
+    public Enumeration typeConstraints() {
+	if (outputvalue.getToken() == null) {
+	    outputvalue.setToken(new BooleanToken(true));
+	}
+	LinkedList result = new LinkedList();
+	Class paramType = outputvalue.getToken().getClass();
+        Inequality ineq = new Inequality(new TypeTerm(paramType),
+                output.getTypeTerm());
+	result.insertLast(ineq);
+	return result.elements();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,12 +142,9 @@ public class DEPoisson extends DEActor {
 
     public TypedIOPort output;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
     // the mean inter-arrival time and value
-    private Parameter _lambda;
-    private Parameter _value;
+    public Parameter meantime;
+    public Parameter outputvalue;
 }
 
 

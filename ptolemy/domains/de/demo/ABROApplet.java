@@ -136,9 +136,15 @@ public class ABROApplet extends Applet {
             // ---------------------------------
             DEABRO abro = new DEABRO(sys, "ABRO");
 
-            DEPoisson a = new DEPoisson(sys, "A", 1.2, 1.0);
-            DEPoisson b = new DEPoisson(sys, "B", 1.3, 1.0);
-            DEPoisson r = new DEPoisson(sys, "R", 1.4, 3.0);
+            DEPoisson a = new DEPoisson(sys, "A");
+            a.outputvalue.setToken(new DoubleToken(1.2));
+            a.meantime.setToken(new DoubleToken(1.0));
+            DEPoisson b = new DEPoisson(sys, "B");
+            b.outputvalue.setToken(new DoubleToken(1.3));
+            b.meantime.setToken(new DoubleToken(1.0));
+            DEPoisson r = new DEPoisson(sys, "R");
+            r.outputvalue.setToken(new DoubleToken(1.4));
+            r.meantime.setToken(new DoubleToken(3.0));
 
             DEPlot plot = new DEPlot(sys, "Plot", panel);
 

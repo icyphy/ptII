@@ -31,6 +31,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
+import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClockSystem
@@ -58,7 +59,9 @@ public class ClockSystem {
 
         // Set up the actors and connections
         DEClock clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
-        DEPoisson poisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);
+        DEPoisson poisson = new DEPoisson(topLevel, "Poisson");
+        poisson.outputvalue.setToken(new DoubleToken(-1.0));
+        poisson.meantime.setToken(new DoubleToken(1.0));
         DEPlot plot = new DEPlot(topLevel, "Plot");
         topLevel.connect(clock.output, plot.input);
         topLevel.connect(poisson.output, plot.input);

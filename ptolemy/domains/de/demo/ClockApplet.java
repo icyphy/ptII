@@ -33,6 +33,7 @@ import java.awt.event.*;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.actor.*;
+import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.*;
@@ -89,7 +90,10 @@ public class ClockApplet extends Applet {
 
             // Set up the actors and connections
             DEClock clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
-            DEPoisson poisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);
+            DEPoisson poisson = new DEPoisson(topLevel, "Poisson");
+            poisson.outputvalue.setToken(new DoubleToken(-1.0));
+            poisson.meantime.setToken(new DoubleToken(1.0));
+
             DEWaitingTime waitingTime = new DEWaitingTime(topLevel, "Wait");
             DEPlot plot = new DEPlot(topLevel, "Plot", _plot);
             Relation r1 = topLevel.connect(clock.output, plot.input);

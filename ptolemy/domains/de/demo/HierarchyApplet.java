@@ -128,7 +128,9 @@ public class HierarchyApplet extends Applet {
 
             DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);
             DERamp ramp1 = new DERamp(blockA, "Ramp1", 0, 2);
-            DEPoisson poisson = new DEPoisson(blockA, "Poisson", 1.0, 0.5);
+            DEPoisson poisson = new DEPoisson(blockA, "Poisson");
+            poisson.outputvalue.setToken(new DoubleToken(1.0));
+            poisson.meantime.setToken(new DoubleToken(0.5));
 
             DEIOPort A1 = new DEIOPort(blockA, "A1", false, true);
             //A1.setDeclaredType(DoubleToken.class);
