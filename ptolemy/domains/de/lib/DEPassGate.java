@@ -97,7 +97,7 @@ public class DEPassGate extends DEActor {
                 // The following code might throw a NoTokenException.
                 gateToken=(DoubleToken)(gate.get(0));
                 
-		if (gateToken.getValue() == 0.0) {
+		if (gateToken.doubleValue() == 0.0) {
 		    // gate is closing (or closed)
 		    _gateOpen = false;
 
@@ -120,12 +120,12 @@ public class DEPassGate extends DEActor {
             // The following method call might throw a NoTokenException.
             gateToken = (DoubleToken)(gate.get(0));
             
-	    if (gateToken.getValue() != 0.0 && _gateOpen == false) {
+	    if (gateToken.doubleValue() != 0.0 && _gateOpen == false) {
 		// gate just reoopened.
 		_gateOpen = true;
 		output.broadcast(_lastToken);
 		return;
-	    } else if (gateToken.getValue() == 0 && _gateOpen == true) {
+	    } else if (gateToken.doubleValue() == 0 && _gateOpen == true) {
 		_gateOpen = false;
 		return;
 	    }
