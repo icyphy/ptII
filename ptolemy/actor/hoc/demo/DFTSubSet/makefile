@@ -52,9 +52,8 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
-	#DFTSubSet.htm \
-	#DFTSubSetVergil.htm
-
+	DFTSubSet.htm \
+	DFTSubSetVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,9 +73,10 @@ all: jclass
 
 install: all
 
-demo: demo_ptolemy demo_vergil
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer DFTSubSet.htm
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer DFTSubSet.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer DFTSubSetVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" DFTSubSet.xml

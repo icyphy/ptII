@@ -11,6 +11,8 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="DFTBlockLength">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -162,6 +164,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -345,6 +349,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -588,6 +594,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -787,6 +795,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -988,6 +998,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -1187,6 +1199,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -1388,6 +1402,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -1587,6 +1603,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -1788,6 +1806,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -1988,6 +2008,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -2187,6 +2209,8 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
