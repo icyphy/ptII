@@ -350,12 +350,12 @@ $(GENLOGDIR):
 # Use a non-gnu make here for testing purposes
 OTHERMAKE = /usr/ccs/bin/make
 
-# Remote location of Ptolemy II tree for testing
-REMOTE1HOME = /vol/tycho/tycho1/ptII
-REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
-
 # Host to run on
-REMOTE1HOST = tycho
+REMOTE1HOST = carson
+
+# Remote location of Ptolemy II tree for testing
+REMOTE1HOME = /vol/$(REMOTE1HOST)/$(REMOTE1HOST)1/cxh
+REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
 
 # Log file to save the results in
 REMOTE1LOG = $(GENLOGDIR)/remote1.out
@@ -378,6 +378,9 @@ remote1coverage: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	ssh $(REMOTE1HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		USER=$(USER) \
+		PTIIHOME=$(PTIIHOME) \
+		PTIIADM=$(PTIIADM) \
 		remote1nuke remote1ptiidist remote1configure \
 		remote1distclean \
 		remote1distjsall remote1distjsrestore remote1distjavadocs \
@@ -412,7 +415,7 @@ $(REMOTE1PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE1HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_FULL) .gz`)
+	(cd $(REMOTE1HOME); $(TAR) -zxf $(PTII_FULL) )
 
 remote1configure:
 	@echo "#"
@@ -509,9 +512,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
