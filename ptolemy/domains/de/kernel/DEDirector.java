@@ -257,7 +257,7 @@ public class DEDirector extends Director {
 
         boolean _timeHasNotAdvanced = true;
         while (true) {
-            Actor actorToFire = _getActorToFire();
+            Actor actorToFire = _dequeueEvents();
             if (actorToFire == null) {
                 // There is nothing more to do.
                 if (_debugging) _debug("No more events on the event queue.");
@@ -603,12 +603,12 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(Actor actor, double time, int depth)
             throws IllegalActionException {
 
-        int microstep = _microstep;
+        int microstep = 0;
         if (_startTime != Double.MAX_VALUE) {
             // At least one firing has occurred, so current time has
             // some meaning.
             if (time == getCurrentTime()) {
-                microstep++;
+                microstep = _microstep + 1;
             } else if ( time < getCurrentTime()) {
                 throw new IllegalActionException((Entity)actor,
                 "Attempt to queue an event in the past.");
@@ -668,7 +668,6 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(DEReceiver receiver, Token token,
             int depth) throws IllegalActionException {
 
-        int microstep = 0;
         if (_startTime == Double.MAX_VALUE) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination, "Attempt to queue an"
@@ -702,7 +701,7 @@ public class DEDirector extends Director {
     // stall the current thread by calling wait() on the _eventQueue
     // until there are events available.
     //
-    private Actor _getActorToFire() {
+    private Actor _dequeueEvents() {
         Actor actorToFire = null;
         DEEvent currentEvent = null, nextEvent = null;
         int currentDepth = 0;
