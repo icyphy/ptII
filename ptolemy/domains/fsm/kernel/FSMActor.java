@@ -33,6 +33,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
+import ptolemy.actor.IODependence;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
@@ -320,6 +321,13 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return the IODependence if there is one. 
+     *  return The IODependence attribute.
+     */
+    public IODependence getIODependence() {
+        return (IODependence) getAttribute("IODependence");
     }
 
     /** Return the Manager responsible for execution of this actor,
