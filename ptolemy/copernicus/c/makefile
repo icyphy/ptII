@@ -53,6 +53,7 @@ JSRCS = \
     Context.java \
     CSwitch.java \
     HeaderFileGenerator.java \
+    JavaToC.java \
 	Main.java
 
 EXTRA_SRCS =	$(JSRCS)
