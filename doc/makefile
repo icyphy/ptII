@@ -57,7 +57,8 @@ UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	codegen.htm \
 	authors.htm \
-	webStartHelp.htm
+	webStartHelp.htm \
+	whatsnew.htm
 
 EXTRA_SRCS = \
 	$(UI_FILES_TO_BE_JARED) \
