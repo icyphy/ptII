@@ -67,6 +67,8 @@
 # (6) The use of the "pure signal" type Token. The output of the clock and
 #     the trigger input of Ramp have type General (Token). 
 
+package require java
+
 proc printPortType {port} {
     set info "[$port getFullName]: ";
 
