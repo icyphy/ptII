@@ -11,6 +11,7 @@ tnameserv -ORBInitialPort 1050 &
 TPID=$!
 
 CLASSPATH=$PTII
+export CLASSPATH
 
 java ptolemy.domains.ct.demo.Corba.ModelServer -ORBInitialPort 1050 &
 MPID=$!
@@ -18,6 +19,6 @@ MPID=$!
 # Upon exit, kill these processes
 trap "echo killing $TPID $MPID; kill $TPID $MPID" 1 2 3 9 
 
-appletviewer SimpleCorbaDemo.htm
+appletviewer NonlinearClient.htm
 
 
