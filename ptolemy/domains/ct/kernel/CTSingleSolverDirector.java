@@ -371,7 +371,7 @@ public class CTSingleSolverDirector extends CTDirector {
     
     /** Clean old breakpoints in the breakpoint table, and adjust 
      *  the the current step size according to it.
-     *  @exception IllgalActionException Not thrown in this class,
+     *  @exception IllegalActionException Not thrown in this class,
      *      may be thrown by derived classes.
      */
     protected void _processBreakpoints() throws IllegalActionException {
