@@ -71,7 +71,6 @@ public interface ProcessReceiver extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Reset the local flags of this receiver. Use this method when
      *  restarting execution.
      */
