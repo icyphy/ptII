@@ -114,6 +114,33 @@ MISC_FILES = \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+JSRCS = \
+	Arrays.java \
+	BasicException.java \
+	Cases.java \
+	Clone.java \
+	CommandLine.java \
+	Exceptions.java \
+	FIR2.java \
+	FIRSingle.java \
+	GlobalExceptions.java \
+	HashSetTest.java \
+	InheritedException.java \
+	InnerField.java \
+	InnerLocal.java \
+	InstanceOfTest.java \
+	Interface1.java \
+	Interface1_Class1.java \
+	Interface1_Class2.java \
+	Interface1_Main.java \
+	LinkedListTest.java \
+	Linpack.java \
+	NestedExceptions.java \
+	PrintStreamTest.java \
+	RightShift.java \
+	Simple.java \
+	StringTest.java
+
 JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
