@@ -143,13 +143,6 @@ public class ModelCompiler extends Attribute {
             CompositeEntity container 
                 = (CompositeEntity)compositeActor.getContainer();
             
-            // FIXME: if the composite actor is at top level, group actors 
-            // by introducing a new layer of hierarchy.
-            if(container == null) {
-                return;
-            }
-            // Otherwise, preceed with the following code.
-            
             // Get the function dependency of the composite actor
             FunctionDependencyOfCompositeActor functionDependency
                 = ((FunctionDependencyOfCompositeActor)
@@ -161,59 +154,25 @@ public class ModelCompiler extends Attribute {
             
             // Get a list of subgraphs based on the dependency graph 
             List listOfSubgraphs = detailedDependencyGraph.subgraphs();
-            Object[] arrayOfSubgraphs = listOfSubgraphs.toArray();
-           
-            // Construct an array whose length is the number of the 
-            // subgraphs this compositeActor contains.
-            Collection[] inputPortsInSubgraphs 
-                = new Collection[listOfSubgraphs.size()];
             
             // If the number of subgraphs is 1, there is nothing to do.
             if (listOfSubgraphs.size() == 1) {
                 return;
             }
             
-            ///////////////////////////////////////////////////////////
-            // Iterate each input to figure which subgraph this input port
-            // belongs to.
-            Iterator inputPorts 
-                = compositeActor.inputPortList().iterator();
-            while(inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort)inputPorts.next();
-                // Iterate the subgraphs to find where this input port
-                // resides.
-                for (int i=0; i < arrayOfSubgraphs.length; i++) {
-                    DirectedGraph subgraph 
-                        = (DirectedGraph)arrayOfSubgraphs[i]; 
-                    if (subgraph.containsNodeWeight(inputPort)) {
-                        if (inputPortsInSubgraphs[i] == null) {
-                            inputPortsInSubgraphs[i] = new LinkedList();
-                        }
-                        inputPortsInSubgraphs[i].add(inputPort);
-                        // One input port can not be contained by multiple
-                        // subgraphs. So, we stop here and continue with 
-                        // a new input port.
-                        break;
-                    }
-                }
+            // FIXME: if the composite actor is at top level, group actors 
+            // by introducing a new layer of hierarchy.
+            if (container == null) {
+                //wrap up and return;
+                return;
             }
-            
-            // So far, all the inputs of the contained composite actor 
-            // are related to the subgraphs of the composite actor
-            // that contains this contained composite actor.
             
             ///////////////////////////////////////////////////////////
             // Decompose this composite actor with its dependency graph. 
             
-            // Iterate each subgraph to handle the input ports of 
-            // the contained composite actor. 
-            for (int i=0; i < inputPortsInSubgraphs.length; i++) {
-                Collection inputs = inputPortsInSubgraphs[i];
-                if (inputs == null) {
-                    // No input ports are associated with this subgraph.
-                    continue;
-                }
-                // clone the contained composite actor
+            // Create a sub-composite actor for each subgraph. 
+            for (int i=0; i < listOfSubgraphs.size(); i++) {
+                
                 TypedCompositeActor clone = 
                     (TypedCompositeActor)compositeActor.clone();
                 // NOTE: make the name of the composite actor unique.
@@ -236,13 +195,7 @@ public class ModelCompiler extends Attribute {
 //                }
                 
                 clone.setContainer(container);
-                
-                // convert the input ports into nodes
-                Collection inputNodes = detailedDependencyGraph.nodes(inputs);
-                // construct a subgraph that is connected with the input
-                // ports (directly or indirectly).
-                DirectedGraph subgraph =
-                    detailedDependencyGraph.connectedSubGraph(inputNodes);
+                DirectedGraph subgraph = (DirectedGraph)listOfSubgraphs.get(i);
                 
                 // remove all the entities whose ports are not included
                 // as nodes in the subgraph
@@ -319,6 +272,7 @@ public class ModelCompiler extends Attribute {
            }
             //remove this composite actor 
             compositeActor.setContainer(null);
+            // Construct function dependency graph for the new model.
             functionDependency = (FunctionDependencyOfCompositeActor)
                 ((CompositeActor)container).getFunctionDependency();
             functionDependency.getDetailedDependencyGraph();
