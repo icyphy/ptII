@@ -1,0 +1,109 @@
+#!/bin/sh
+# $Id$
+# Script to mail a message about the codegen nightly builds
+
+
+#mailto=ealtech
+#mailto=cxh
+#if [ $# -ne 1 ]; then
+#    echo "$0: Usage: $0 email-address"
+#    exit 4
+#fi
+mailto=$1
+
+ADMDIR=/users/ptII/adm
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+    ADMDIR=/home/bldmastr/ptII/adm
+fi
+
+# If you change the version number, then edit 
+# ptII/adm/bin/ptIInightly
+# ptII/adm/gen-xxx/makefile
+# buildmaster/web/adm/makefile
+GENVERSION=gen-3.1
+GENDIR=$ADMDIR/$GENVERSION
+cd $GENDIR
+
+
+# Generate the mail message
+#mailmsg=$ADMDIR/logs/ptIIcodegen_mail.txt
+mailmsg=$PTII/adm/logs/ptIIcodegen_mail.txt
+
+echo "`date`" > $mailmsg
+
+echo "" >> $mailmsg
+echo "Summary" >> $mailmsg
+echo "-------" >> $mailmsg
+echo "Deep codegen test results:" >> $mailmsg
+egrep '^Failed:' $GENDIR/logs/remote4.out >> $mailmsg
+echo "" >> $mailmsg
+echo "Shallow codegen test results:" >> $mailmsg
+egrep '^Failed:' $GENDIR/logs/remote5.out >> $mailmsg
+echo "" >> $mailmsg
+echo "To get the copernicus/java logs, do:" >> $mailmsg
+echo "    scp maury:/users/ptII/adm/gen-3.1/logs/remote4.out /tmp" >> $mailmsg
+echo "" >> $mailmsg
+echo "To get the copernicus/shallow logs, do:" >> $mailmsg
+echo "    scp maury:/users/ptII/adm/gen-3.1/logs/remote5.out /tmp" >> $mailmsg
+
+echo "" >> $mailmsg
+echo "The output below consists of the names of the models"  >> $mailmsg
+echo "that failed, followed by the two subsequent lines " >> $mailmsg
+echo "Failures that are similar are grouped together " >> $mailmsg
+echo "" >> $mailmsg
+
+# Shell proc that parses the log file for us.
+parseLog() {  
+
+awk '
+    sawFailed == 1   {
+			    sawFailed--
+			    errorMessage = firstLine "\n" $0
+			    errors[errorMessage] = errors[errorMessage] " " modelName
+	             } 		    
+      sawFailed == 2 {
+			    firstLine = $0
+			    sawFailed--
+		     }	    
+
+    $0  ~/ failed:$/ {
+			    # Print one lines
+			    sawFailed = 2
+			    # Print out only the model name after ptolemy/
+			    nf = split($4, f, "/")
+			    okToPrint = 0
+			    modelName = ""
+			    for (i = 1; i < nf; i++) {
+				if (okToPrint == 1) {
+				    modelName = modelName f[i] "/"
+				}
+				if (f[i] == "ptolemy") {
+				    okToPrint = 1
+				}    
+			    }
+			    modelName = modelName substr(f[nf], 1, length(f[nf])-1)
+	              }		    
+    END               {
+			for( error in errors) {
+			    files = errors[error]
+			    nf = split(files, f, " ")
+			    for(i = 1; i <= nf; i++) {
+				print f[i]
+			    }
+			    print error
+			    printf("\n")
+			}
+                       }' $1 >> $mailmsg
+}
+
+echo "" >> $mailmsg
+echo "Deep Codegen Details" >> $mailmsg
+echo "--------------------" >> $mailmsg
+parseLog  $GENDIR/logs/remote4.out
+
+echo "" >> $mailmsg
+echo "Shallow Codegen Details" >> $mailmsg
+echo "--------------------" >> $mailmsg
+parseLog  $GENDIR/logs/remote5.out
+
+#cat $mailmsg | /usr/ucb/Mail -s "Ptolemy II Codegen Nightly Build" $mailto
