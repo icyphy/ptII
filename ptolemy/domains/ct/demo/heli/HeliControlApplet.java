@@ -33,6 +33,8 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.lib.*;
+import ptolemy.domains.sc.kernel.*;
+import ptolemy.domains.sc.lib.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -40,13 +42,14 @@ import ptolemy.plot.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 ////  HeliControlApplet
 /**
 An applet that uses Ptolemy II DE domain.
 
-@author Jie Liu
+@author Jie Liu, Xiaojun Liu
 @version $Id$
 */
 public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
@@ -148,14 +151,11 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             // ---------------------------------
             // Create the composite actors.
             // ---------------------------------
+
             CTCompositeActor sub = new CTCompositeActor(sys, "Linearizers");
-            CTEmbeddedNRDirector subdir = 
-                new CTEmbeddedNRDirector("CTInnerDirector");
+            HSDirector hsdir = new HSDirector("HSDirector");
 
-            //subdir.setVERBOSE(true);
-            //subdir.setDEBUG(true);
-
-            sub.setDirector(subdir);
+            sub.setDirector(hsdir);
             TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
             subinPx.setInput(true);
             subinPx.setOutput(false);
@@ -187,6 +187,10 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
             subinD4Pz.setInput(true);
             subinD4Pz.setOutput(false);
+
+            TypedIOPort subinAction = new TypedIOPort(sub, "inputAction");
+            subinAction.setInput(true);
+            subinAction.setOutput(false);
             
             TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
             suboutVx.setInput(false);
@@ -194,34 +198,141 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
             suboutVz.setInput(false);
             suboutVz.setOutput(true);
-
-            // ---------------------------------
-            // Create the actors.
-            // ---------------------------------
-
-            // sub system
-            //CTButtonEvent button = new CTButtonEvent(sys, "Button");
-            HoverLinearizer hover = new HoverLinearizer(sub, "Hover");
-            CTZeroOrderHold hPx = new CTZeroOrderHold(sub, "HPx");
-            CTZeroOrderHold hDPx = new CTZeroOrderHold(sub, "HDPx");
-            CTZeroOrderHold hDDPx = new CTZeroOrderHold(sub, "HDDPx");
-            CTZeroOrderHold hD3Px = new CTZeroOrderHold(sub, "HD3Px");
-            CTZeroOrderHold hD4Px = new CTZeroOrderHold(sub, "HD4Px");
-            CTZeroOrderHold hPz = new CTZeroOrderHold(sub, "HPz");
-            CTZeroOrderHold hDPz = new CTZeroOrderHold(sub, "HDPz");
-            CTZeroOrderHold hDDPz = new CTZeroOrderHold(sub, "HDDPz");
-            CTZeroOrderHold hD3Pz = new CTZeroOrderHold(sub, "HD3Pz");
-            CTZeroOrderHold hD4Pz = new CTZeroOrderHold(sub, "HD4Pz");
             
-            
+            HSController hsctrl = new HSController(sub, "HSController");
+            hsdir.setController(hsctrl);
+
+            TypedIOPort hscInAct = new TypedIOPort(hsctrl, "inputAction");
+            hscInAct.setInput(true);
+            hscInAct.setOutput(false);
+            TypedIOPort hscInPz = new TypedIOPort(hsctrl, "inputPz");
+            hscInPz.setInput(true);
+            hscInPz.setOutput(false);
+
+            SCState hoverState = new SCState(hsctrl, "HoverState");
+            SCState accelState = new SCState(hsctrl, "AccelState");
+            SCState cruise1State = new SCState(hsctrl, "Cruise1State");
+            SCState climbState = new SCState(hsctrl, "ClimbState");
+            SCState cruise2State = new SCState(hsctrl, "Cruise2State");
+            hsctrl.setInitialState(hoverState);
+            CTCompositeActor linHover = _createLinearizer(sub, 0);
+            CTCompositeActor linAccel = _createLinearizer(sub, 1);
+            CTCompositeActor linCruise1 = _createLinearizer(sub, 2);
+            CTCompositeActor linClimb = _createLinearizer(sub, 3);
+            CTCompositeActor linCruise2 = _createLinearizer(sub, 4);
+            hoverState.setRefinement(linHover);
+            accelState.setRefinement(linAccel);
+            cruise1State.setRefinement(linCruise1);
+            climbState.setRefinement(linClimb);
+            cruise2State.setRefinement(linCruise2);
+            SCTransition tr1 = hsctrl.createTransition(hoverState, accelState);
+            tr1.setTriggerCondition("inputAction");
+            SCTransition tr2 = hsctrl.createTransition(accelState, cruise1State);
+            tr2.setTriggerCondition("(outputV >= 5.0) && (inputPz > -2.05) && (inputPz < -1.95)");
+            SCTransition tr3 = hsctrl.createTransition(cruise1State, climbState);
+            tr3.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (outputR > -0.01) && (outputR < 0.01)");
+            SCTransition tr4 = hsctrl.createTransition(climbState, cruise2State);
+            tr4.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (inputPz > -10.05) && (inputPz < -9.95)");
+
+            TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
+            TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
+            TypedIORelation rSubDDPx = new TypedIORelation(sub, "rSubDDPx");
+            TypedIORelation rSubD3Px = new TypedIORelation(sub, "rSubD3Px");
+            TypedIORelation rSubD4Px = new TypedIORelation(sub, "rSubD4Px");
+            TypedIORelation rSubPz = new TypedIORelation(sub, "rSubPz");
+            TypedIORelation rSubDPz = new TypedIORelation(sub, "rSubDPz");
+            TypedIORelation rSubDDPz = new TypedIORelation(sub, "rSubDDPz");
+            TypedIORelation rSubD3Pz = new TypedIORelation(sub, "rSubD3Pz");
+            TypedIORelation rSubD4Pz = new TypedIORelation(sub, "rSubD4Pz");
+            TypedIORelation rSubOutVx = new TypedIORelation(sub, "rSubOutVx");
+            TypedIORelation rSubOutVz = new TypedIORelation(sub, "rSubOutVz");
+            TypedIORelation rSubOutV = new TypedIORelation(sub, "rSubOutV");
+            TypedIORelation rSubOutR = new TypedIORelation(sub, "rSubOutR");
+
+            subinPx.link(rSubPx);
+            subinDPx.link(rSubDPx);
+            subinDDPx.link(rSubDDPx);
+            subinD3Px.link(rSubD3Px);
+            subinD4Px.link(rSubD4Px);
+            subinPz.link(rSubPz);
+            subinDPz.link(rSubDPz);
+            subinDDPz.link(rSubDDPz);
+            subinD3Pz.link(rSubD3Pz);
+            subinD4Pz.link(rSubD4Pz);
+            suboutVx.link(rSubOutVx);
+            suboutVz.link(rSubOutVz);
+
+            sub.connect(subinAction, hscInAct);
+            hscInPz.link(rSubPz);
+            Enumeration entities = sub.getEntities();
+            while(entities.hasMoreElements()) {
+                Entity ent = (Entity)entities.nextElement();
+                Port p = ent.getPort("inputPx");
+                if (p != null) {
+                    p.link(rSubPx);
+                }
+                p = ent.getPort("inputDPx");
+                if (p != null) {
+                    p.link(rSubDPx);
+                }
+                p = ent.getPort("inputDDPx");
+                if (p != null) {
+                    p.link(rSubDDPx);
+                }
+                p = ent.getPort("inputD3Px");
+                if (p != null) {
+                    p.link(rSubD3Px);
+                }
+                p = ent.getPort("inputD4Px");
+                if (p != null) {
+                    p.link(rSubD4Px);
+                }
+                p = ent.getPort("inputPz");
+                if (p != null) {
+                    p.link(rSubPz);
+                }
+                p = ent.getPort("inputDPz");
+                if (p != null) {
+                    p.link(rSubDPz);
+                }
+                p = ent.getPort("inputDDPz");
+                if (p != null) {
+                    p.link(rSubDDPz);
+                }
+                p = ent.getPort("inputD3Pz");
+                if (p != null) {
+                    p.link(rSubD3Pz);
+                }
+                p = ent.getPort("inputD4Pz");
+                if (p != null) {
+                    p.link(rSubD4Pz);
+                }
+                p = ent.getPort("outputVx");
+                if (p != null) {
+                    p.link(rSubOutVx);
+                }
+                p = ent.getPort("outputVz");
+                if (p != null) {
+                    p.link(rSubOutVz);
+                }
+                p = ent.getPort("outputV");
+                if (p != null) {
+                    p.link(rSubOutV);
+                }
+                p = ent.getPort("outputR");
+                if (p != null) {
+                    p.link(rSubOutR);
+                }
+            }
             // CTActors
+
+            CTButtonEvent button = new CTButtonEvent(sys, "Button");
+            sys.connect(button.output, subinAction);
 
             HelicopterActor heli = new HelicopterActor(sys, "Helicopter");
             ControllerActor ctrl = new ControllerActor(sys, "Controller");
             XZHigherDerivatives higher = new XZHigherDerivatives(sys, 
-                    "XZHigherDerivatives");
-
-            
+                    "XZHigherDerivatives");     
             
             CTIntegrator Px = new CTIntegrator(sys, "IntegratorPx");
             CTIntegrator DPx = new CTIntegrator(sys, "IntegratorDPx");
@@ -268,6 +379,20 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             TypedIORelation rA = new TypedIORelation(sys, "rA");
             TypedIORelation rVx = new TypedIORelation(sys, "rVx");
             TypedIORelation rVz = new TypedIORelation(sys, "rVz");
+
+            sub.getPort("outputVx").link(rVx);
+            sub.getPort("outputVz").link(rVz);
+            sub.getPort("inputPx").link(rPx);
+            sub.getPort("inputDPx").link(rDPx);
+            sub.getPort("inputDDPx").link(rDDPx);
+            sub.getPort("inputD3Px").link(rD3Px);
+            sub.getPort("inputD4Px").link(rD4Px);
+            
+            sub.getPort("inputPz").link(rPz);
+            sub.getPort("inputDPz").link(rDPz);
+            sub.getPort("inputDDPz").link(rDDPz);
+            sub.getPort("inputD3Pz").link(rD3Pz);
+            sub.getPort("inputD4Pz").link(rD4Pz);
 
             Px.output.link(rPx);
             DPx.output.link(rDPx);
@@ -344,46 +469,6 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             hover.inputD3Pz.link(rD3Pz);
             hover.inputD4Pz.link(rD4Pz);
             */
-            suboutVx.link(rVx);
-            suboutVz.link(rVz);
-            subinPx.link(rPx);
-            subinDPx.link(rDPx);
-            subinDDPx.link(rDDPx);
-            subinD3Px.link(rD3Px);
-            subinD4Px.link(rD4Px);
-            
-            subinPz.link(rPz);
-            subinDPz.link(rDPz);
-            subinDDPz.link(rDDPz);
-            subinD3Pz.link(rD3Pz);
-            subinD4Pz.link(rD4Pz);
-            
-            sub.connect(hPx.input, subinPx);
-            sub.connect(hDPx.input, subinDPx);
-            sub.connect(hDDPx.input, subinDDPx);
-            sub.connect(hD3Px.input, subinD3Px);
-            sub.connect(hD4Px.input, subinD4Px);
-            
-            sub.connect(hPz.input, subinPz);
-            sub.connect(hDPz.input, subinDPz);
-            sub.connect(hDDPz.input, subinDDPz);
-            sub.connect(hD3Pz.input, subinD3Pz);
-            sub.connect(hD4Pz.input, subinD4Pz);
-
-            sub.connect(hPx.output, hover.inputPx);
-            sub.connect(hDPx.output, hover.inputDPx);
-            sub.connect(hDDPx.output, hover.inputDDPx);
-            sub.connect(hD3Px.output, hover.inputD3Px);
-            sub.connect(hD4Px.output, hover.inputD4Px);
-            
-            sub.connect(hPz.output, hover.inputPz);
-            sub.connect(hDPz.output, hover.inputDPz);
-            sub.connect(hDDPz.output, hover.inputDDPz);
-            sub.connect(hD3Pz.output, hover.inputD3Pz);
-            sub.connect(hD4Pz.output, hover.inputD4Pz);
-
-            sub.connect(suboutVx, hover.outputVx);
-            sub.connect(suboutVz, hover.outputVz);
 
             //ctPlot.inputX.link(rPx);
             //ctPlot.inputY.link(rPz);
@@ -414,33 +499,6 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             solver2.setToken(token2);
             solver2.parameterChanged(null);
-
-            // sub dir parameters
-             initstep = 
-                (Parameter)subdir.getAttribute("InitialStepSize");
-            initstep.setExpression("0.01");
-            initstep.parameterChanged(null);
-
-             minstep =
-                (Parameter)subdir.getAttribute("MinimumStepSize");
-            minstep.setExpression("1e-6");
-            minstep.parameterChanged(null);
-            
-            solver1 =
-                (Parameter)subdir.getAttribute("BreakpointODESolver");
-            token1 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            solver1.setToken(token1);
-            solver1.parameterChanged(null);
-           
-            
-            solver2 =
-                (Parameter)subdir.getAttribute("ODESolver");
-            token2 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
-            solver2.setToken(token2);
-            solver2.parameterChanged(null);
-
 
             // CTActorParameters
             Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
@@ -486,13 +544,13 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             ymax.parameterChanged(null);
 
             // Setting up parameters.
-            _paramAlphaP = (Parameter)hover.getAttribute("AlphaP");
-            _paramAlphaV = (Parameter)hover.getAttribute("AlphaV");
-            _paramAlphaA = (Parameter)hover.getAttribute("AlphaA");
+            //_paramAlphaP = (Parameter)hover.getAttribute("AlphaP");
+            //_paramAlphaV = (Parameter)hover.getAttribute("AlphaV");
+            //_paramAlphaA = (Parameter)hover.getAttribute("AlphaA");
             _paramStopT = (Parameter)_dir.getAttribute("StopTime");
             //System.out.println(sys.description());
             System.out.println(_dir.getScheduler().description());
-            System.out.println(subdir.getScheduler().description());
+            //System.out.println(((CTDirector)sub.getDirector()).getScheduler().description());
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
@@ -529,6 +587,223 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
+
+    CTCompositeActor _createLinearizer(TypedCompositeActor container, 
+            int code)
+            throws NameDuplicationException, IllegalActionException {
+        CTCompositeActor sub = new CTCompositeActor(container, "dummy");
+        CTEmbeddedNRDirector subdir = 
+                new CTEmbeddedNRDirector("CTInnerDirector");
+
+        //subdir.setVERBOSE(true);
+        //subdir.setDEBUG(true);
+
+        sub.setDirector(subdir);
+        TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
+        subinPx.setInput(true);
+        subinPx.setOutput(false);
+        TypedIOPort subinDPx = new TypedIOPort(sub, "inputDPx");
+        subinDPx.setInput(true);
+        subinDPx.setOutput(false);
+        TypedIOPort subinDDPx = new TypedIOPort(sub, "inputDDPx");
+        subinDDPx.setInput(true);
+        subinDDPx.setOutput(false);
+        TypedIOPort subinD3Px = new TypedIOPort(sub, "inputD3Px");
+        subinD3Px.setInput(true);
+        subinD3Px.setOutput(false);
+        TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
+        subinD4Px.setInput(true);
+        subinD4Px.setOutput(false);
+            
+        TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
+        subinPz.setInput(true);
+        subinPz.setOutput(false);
+        TypedIOPort subinDPz = new TypedIOPort(sub, "inputDPz");
+        subinDPz.setInput(true);
+        subinDPz.setOutput(false);
+        TypedIOPort subinDDPz = new TypedIOPort(sub, "inputDDPz");
+        subinDDPz.setInput(true);
+        subinDDPz.setOutput(false);
+        TypedIOPort subinD3Pz = new TypedIOPort(sub, "inputD3Pz");
+        subinD3Pz.setInput(true);
+        subinD3Pz.setOutput(false);
+        TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
+        subinD4Pz.setInput(true);
+        subinD4Pz.setOutput(false);
+            
+        TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
+        suboutVx.setInput(false);
+        suboutVx.setOutput(true);
+        TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
+        suboutVz.setInput(false);
+        suboutVz.setOutput(true);
+
+        TypedIOPort suboutV = new TypedIOPort(sub, "outputV");
+        suboutV.setInput(false);
+        suboutV.setOutput(true);
+        TypedIOPort suboutR = new TypedIOPort(sub, "outputR");
+        suboutR.setInput(false);
+        suboutR.setOutput(true);
+
+        // ---------------------------------
+        // Create the actors.
+        // ---------------------------------
+
+        CTActor lin = null;
+        CTThresholdMonitor mon1 = null;
+        CTThresholdMonitor mon2 = null;
+        switch (code) {
+            case 0: // hover state
+                sub.setName("HoverCTSub");
+                lin = new HoverLinearizer(sub, "Hover");
+                break;
+            case 1: // acc state
+                sub.setName("AccelCTSub");
+                lin = new AccelerLinearizer(sub, "Accel");
+                mon1 = new CTThresholdMonitor(sub, "Mon1");
+                break;
+            case 2: // first cruise state
+                sub.setName("Cruise1CTSub");
+                lin = new CruiseLinearizer(sub, "Cruise1");
+                mon1 = new CTThresholdMonitor(sub, "Mon1");
+                mon2 = new CTThresholdMonitor(sub, "Mon2");
+                break;
+            case 3: // climb state
+                sub.setName("ClimbCTSub");
+                lin = new ClimbLinearizer(sub, "Climb");
+                mon1 = new CTThresholdMonitor(sub, "Mon1");
+                mon2 = new CTThresholdMonitor(sub, "Mon2");
+                break;
+            case 4: // second cruise state
+                sub.setName("Cruise2CTSub");
+                lin = new CruiseLinearizer(sub, "Cruise2");
+                Parameter param = (Parameter)lin.getAttribute("CPz");
+                param.setToken(new DoubleToken(-10.0));
+                param.parameterChanged(null);
+                param = (Parameter)lin.getAttribute("CVx");
+                param.setToken(new DoubleToken(0.005));
+                param.parameterChanged(null);
+                break;
+            default:
+                break;
+        }
+    
+        CTZeroOrderHold hPx = new CTZeroOrderHold(sub, "HPx");
+        CTZeroOrderHold hDPx = new CTZeroOrderHold(sub, "HDPx");
+        CTZeroOrderHold hDDPx = new CTZeroOrderHold(sub, "HDDPx");
+        CTZeroOrderHold hD3Px = new CTZeroOrderHold(sub, "HD3Px");
+        CTZeroOrderHold hD4Px = new CTZeroOrderHold(sub, "HD4Px");
+        CTZeroOrderHold hPz = new CTZeroOrderHold(sub, "HPz");
+        CTZeroOrderHold hDPz = new CTZeroOrderHold(sub, "HDPz");
+        CTZeroOrderHold hDDPz = new CTZeroOrderHold(sub, "HDDPz");
+        CTZeroOrderHold hD3Pz = new CTZeroOrderHold(sub, "HD3Pz");
+        CTZeroOrderHold hD4Pz = new CTZeroOrderHold(sub, "HD4Pz");
+            
+        sub.connect(hPx.input, subinPx);
+        sub.connect(hDPx.input, subinDPx);
+        sub.connect(hDDPx.input, subinDDPx);
+        sub.connect(hD3Px.input, subinD3Px);
+        sub.connect(hD4Px.input, subinD4Px);
+            
+        Relation rInPz = sub.connect(hPz.input, subinPz);
+        sub.connect(hDPz.input, subinDPz);
+        sub.connect(hDDPz.input, subinDDPz);
+        sub.connect(hD3Pz.input, subinD3Pz);
+        sub.connect(hD4Pz.input, subinD4Pz);
+
+        sub.connect(hPx.output, (ComponentPort)lin.getPort("inputPx"));
+        sub.connect(hDPx.output, (ComponentPort)lin.getPort("inputDPx"));
+        sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
+        sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
+        sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
+            
+        sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
+        sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
+        sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
+        sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
+        sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
+
+        sub.connect(suboutVx, (ComponentPort)lin.getPort("outputVx"));
+        sub.connect(suboutVz, (ComponentPort)lin.getPort("outputVz"));
+
+        Relation rV = sub.connect(suboutV, (ComponentPort)lin.getPort("outputV"));
+        Relation rR = sub.connect(suboutR, (ComponentPort)lin.getPort("outputR"));
+
+        // connect and set the monitors
+        Parameter p = null;
+        switch (code) {
+            case 1: // accel state
+                mon1.input.link(rInPz);
+                p = (Parameter)mon1.getAttribute("ThresholdWidth");
+                p.setToken(new DoubleToken(0.1));
+                p.parameterChanged(null);
+                p = (Parameter)mon1.getAttribute("ThresholdCenter");
+                p.setToken(new DoubleToken(-2.0));
+                p.parameterChanged(null);
+                break;
+            case 2: // first cruise state
+                mon1.input.link(rV);
+                p = (Parameter)mon1.getAttribute("ThresholdWidth");
+                p.setToken(new DoubleToken(0.2));
+                p.parameterChanged(null);
+                p = (Parameter)mon1.getAttribute("ThresholdCenter");
+                p.setToken(new DoubleToken(5.0));
+                p.parameterChanged(null);
+                mon2.input.link(rR);
+                p = (Parameter)mon2.getAttribute("ThresholdWidth");
+                p.setToken(new DoubleToken(0.02));
+                p.parameterChanged(null);
+                p = (Parameter)mon2.getAttribute("ThresholdCenter");
+                p.setToken(new DoubleToken(0.0));
+                p.parameterChanged(null);
+                break;
+            case 3: // climb state
+                mon1.input.link(rInPz);
+                p = (Parameter)mon1.getAttribute("ThresholdWidth");
+                p.setToken(new DoubleToken(0.1));
+                p.parameterChanged(null);
+                p = (Parameter)mon1.getAttribute("ThresholdCenter");
+                p.setToken(new DoubleToken(-10.0));
+                p.parameterChanged(null);
+                mon2.input.link(rV);
+                p = (Parameter)mon2.getAttribute("ThresholdWidth");
+                p.setToken(new DoubleToken(0.2));
+                p.parameterChanged(null);
+                p = (Parameter)mon2.getAttribute("ThresholdCenter");
+                p.setToken(new DoubleToken(5.0));
+                p.parameterChanged(null);
+                break;
+            default:
+                break;
+        }
+
+        // sub dir parameters
+        Parameter initstep = 
+                (Parameter)subdir.getAttribute("InitialStepSize");
+        initstep.setExpression("0.01");
+        initstep.parameterChanged(null);
+
+        Parameter minstep =
+                (Parameter)subdir.getAttribute("MinimumStepSize");
+        minstep.setExpression("1e-6");
+        minstep.parameterChanged(null);
+            
+        Parameter solver1 =
+                (Parameter)subdir.getAttribute("BreakpointODESolver");
+        Token token1 = new StringToken(
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+        solver1.setToken(token1);
+        solver1.parameterChanged(null);
+                      
+        Parameter solver2 =
+                (Parameter)subdir.getAttribute("ODESolver");
+        Token token2 = new StringToken(
+                "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+        solver2.setToken(token2);
+        solver2.parameterChanged(null);
+
+        return sub;
+    }
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -578,6 +853,9 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
                     Double tmp = Double.valueOf( _stopTimeBox.getText());
                     _paramStopT.setToken(new DoubleToken(tmp.doubleValue()));
                     _paramStopT.parameterChanged(null);
+
+System.out.println("Set stop time of simulation.");
+
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid stop time: " 
                             +ex.getMessage());

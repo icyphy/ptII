@@ -131,6 +131,18 @@ public class HoverLinearizer extends CTActor{
         outputVz.setOutput(true);
         outputVz.setMultiport(false);
         outputVz.setDeclaredType(DoubleToken.class);
+
+        outputV = new TypedIOPort(this, "outputV");
+        outputV.setInput(false);
+        outputV.setOutput(true);
+        outputV.setMultiport(false);
+        outputV.setDeclaredType(DoubleToken.class);
+
+        outputR = new TypedIOPort(this, "outputR");
+        outputR.setInput(false);
+        outputR.setOutput(true);
+        outputR.setMultiport(false);
+        outputR.setDeclaredType(DoubleToken.class);       
         
         String s = new String();
         for(int i = 0; i< 5; i++) {
@@ -170,6 +182,15 @@ public class HoverLinearizer extends CTActor{
                 _alphaP[2]*DDPx + _alphaP[3]*D3Px + _alphaP[4]*D4Px);
         double Vz = -1.0*(_alphaP[0]*(Pz-_cPz) + _alphaP[1]* DPz +
                 _alphaP[2]*DDPz + _alphaP[3]*D3Pz + _alphaP[4]*D4Pz);
+
+        double V = Math.sqrt(DPx*DPx + DPz*DPz);
+        double R = Math.PI/2.0;
+        if (DPx != 0.0) {
+            R = Math.atan(DPz/DPx);
+        }
+
+        outputV.broadcast(new DoubleToken(V));
+        outputR.broadcast(new DoubleToken(R));
 
         outputVx.broadcast(new DoubleToken(Vx));
         outputVz.broadcast(new DoubleToken(Vz));
@@ -241,7 +262,13 @@ public class HoverLinearizer extends CTActor{
      */
     public TypedIOPort outputVz;
 
+    /** Output port V
+     */
+    public TypedIOPort outputV;
 
+    /** output port R
+     */
+    public TypedIOPort outputR;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

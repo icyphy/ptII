@@ -83,7 +83,7 @@ public class ClimbLinearizer extends CTActor{
         inputD3Px.setMultiport(false);
         inputD3Px.setDeclaredType(DoubleToken.class);
 
-        inputD4Px = new TypedIOPort(this, "inputDPx");
+        inputD4Px = new TypedIOPort(this, "inputD4Px");
         inputD4Px.setInput(true);
         inputD4Px.setOutput(false);
         inputD4Px.setMultiport(false);
@@ -113,7 +113,7 @@ public class ClimbLinearizer extends CTActor{
         inputD3Pz.setMultiport(false);
         inputD3Pz.setDeclaredType(DoubleToken.class);
 
-        inputD4Pz = new TypedIOPort(this, "inputDPz");
+        inputD4Pz = new TypedIOPort(this, "inputD4Pz");
         inputD4Pz.setInput(true);
         inputD4Pz.setOutput(false);
         inputD4Pz.setMultiport(false);
@@ -131,6 +131,18 @@ public class ClimbLinearizer extends CTActor{
         outputVz.setOutput(true);
         outputVz.setMultiport(false);
         outputVz.setDeclaredType(DoubleToken.class);
+
+        outputV = new TypedIOPort(this, "outputV");
+        outputV.setInput(false);
+        outputV.setOutput(true);
+        outputV.setMultiport(false);
+        outputV.setDeclaredType(DoubleToken.class);
+
+        outputR = new TypedIOPort(this, "outputR");
+        outputR.setInput(false);
+        outputR.setOutput(true);
+        outputR.setMultiport(false);
+        outputR.setDeclaredType(DoubleToken.class);       
         
         String sV = new String();
         for(int i = 0; i< 4; i++) {
@@ -170,6 +182,15 @@ public class ClimbLinearizer extends CTActor{
                 _alphaV[2]*D3Px + _alphaV[3]*D4Px);
         double Vz = -1.0*(_alphaV[0]*(DPz-_cVz) + _alphaV[1]* DDPz +
                 _alphaV[2]*D3Pz + _alphaV[3]*D4Pz);
+
+        double V = Math.sqrt(DPx*DPx + DPz*DPz);
+        double R = Math.PI/2.0;
+        if (DPx != 0.0) {
+            R = Math.atan(DPz/DPx);
+        }
+
+        outputV.broadcast(new DoubleToken(V));
+        outputR.broadcast(new DoubleToken(R));
 
         outputVx.broadcast(new DoubleToken(Vx));
         outputVz.broadcast(new DoubleToken(Vz));
@@ -245,7 +266,13 @@ public class ClimbLinearizer extends CTActor{
      */
     public TypedIOPort outputVz;
 
+    /** Output port V
+     */
+    public TypedIOPort outputV;
 
+    /** output port R
+     */
+    public TypedIOPort outputR;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
