@@ -116,11 +116,11 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     # Link the .o files into the executable.
     eval exec gcc -o firSingle [glob *.o]
 
-    # Run the executable.
-    exec firSingle
-
-
-} {11.000000
+    # Run the executable, convert control-m to \n
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [exec firSingle] "\n" results
+    list $results
+} {{11.000000
 4.000000
 9.000000
 0.000000
@@ -129,5 +129,5 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
 0.000000
 0.000000
 0.000000
-0.000000}
+0.000000}}
 
