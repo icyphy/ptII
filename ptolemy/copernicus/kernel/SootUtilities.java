@@ -1698,7 +1698,7 @@ public class SootUtilities {
                     Stmt original = (Stmt)blockStmts.next();
                     blockStmts.remove();
                 }
-
+                body.getUnits().remove(iteratorDefinition);
 
                 // Find while loops.
                 // This code modified from WhileMatcher.
