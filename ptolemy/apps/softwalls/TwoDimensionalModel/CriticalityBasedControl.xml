@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CriticalityBasedControl" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CriticalityBasedControl2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 667]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[54, 177]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-6, -6]">
     </property>
     <property name="initial_x" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -55,7 +55,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="210.0, 95.0">
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 55.0">
         </property>
     </property>
     <property name="speed" class="ptolemy.data.expr.Parameter" value="0.1 /* miles/second */">
@@ -91,7 +91,7 @@
             <property name="_location" class="ptolemy.moml.Location" value="150.0, 205.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="405.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 130.0">
         </property>
         <port name="headingDot" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -318,7 +318,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 200.0">
+        <property name="_location" class="ptolemy.moml.Location" value="45.0, 140.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -335,7 +335,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="795.0, 170.0">
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 70.0">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -353,12 +353,12 @@
 <xLabel>x</xLabel>
 <yLabel>y</yLabel>
 <xRange min="0.0" max="1.8959571960077226"/>
-<yRange min="0.0" max="6.402804754520362"/>
+<yRange min="0.0" max="5.03280476527584"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="criticality" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="685.0, 250.0">
+        <property name="_location" class="ptolemy.moml.Location" value="385.0, 115.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[888, 731]">
         </property>
@@ -612,7 +612,7 @@
         <link port="AddSubtract.output" relation="relation14"/>
     </entity>
     <entity name="heading_transform" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="540.0, 260.0">
+        <property name="_location" class="ptolemy.moml.Location" value="235.0, 170.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -684,7 +684,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="685.0, 340.0">
+        <property name="_location" class="ptolemy.moml.Location" value="390.0, 215.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -697,13 +697,13 @@
 <title>Plane Heading</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>angle</yLabel>
-<xRange min="0.0" max="79.99999999999973"/>
+<xRange min="0.0" max="66.30000000000051"/>
 <yRange min="1.0888248427350984E-15" max="2.2582392217132035"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="malicious_pilot" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="245.0, 375.0">
+        <property name="_location" class="ptolemy.moml.Location" value="400.0, 275.0">
         </property>
         <property name="delta_heading" class="ptolemy.data.expr.Parameter" value="PI / 36">
         </property>
@@ -775,7 +775,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="885.0, 415.0">
+        <property name="_location" class="ptolemy.moml.Location" value="470.0, 70.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -788,13 +788,13 @@
 <title>Criticality (in Seconds to Wall)</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>time</yLabel>
-<xRange min="0.0" max="79.99999999999973"/>
+<xRange min="0.0" max="66.30000000000051"/>
 <yRange min="2.2477112265219086" max="21.718471805300318"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="bias_control" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="215.0, 520.0">
+        <property name="_location" class="ptolemy.moml.Location" value="490.0, 160.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -941,7 +941,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="630.0, 520.0">
+        <property name="_location" class="ptolemy.moml.Location" value="635.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -954,13 +954,13 @@
 <title>Pilot Control, Bias, and Combined (theta-dot)</title>
 <xLabel>time (sec)</xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="79.99999999999973"/>
+<xRange min="0.0" max="66.30000000000051"/>
 <yRange min="-0.3141592653589793" max="0.47123889803846897"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="410.0, 460.0">
+        <property name="_location" class="ptolemy.moml.Location" value="635.0, 210.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -979,7 +979,7 @@
         </property>
         <property name="top" class="ptolemy.data.expr.Parameter" value="heading_dot_max">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="530.0, 460.0">
+        <property name="_location" class="ptolemy.moml.Location" value="730.0, 210.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -990,52 +990,50 @@
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="460.0, 260.0">
-        </vertex>
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="630.0, 160.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="260.0, 110.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="585.0, 180.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="210.0, 120.0">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="610.0, 305.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="325.0, 170.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="355.0, 375.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="555.0, 275.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="800.0, 415.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="430.0, 115.0">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="355.0, 520.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="540.0, 160.0">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="580.0, 460.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="565.0, 305.0">
         </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="aircraft_dynamics.headingDot" relation="relation15"/>
     <link port="aircraft_dynamics.speed" relation="relation3"/>
     <link port="aircraft_dynamics.p_x" relation="relation7"/>
     <link port="aircraft_dynamics.p_y" relation="relation8"/>
-    <link port="aircraft_dynamics.heading" relation="relation6"/>
+    <link port="aircraft_dynamics.heading" relation="relation2"/>
     <link port="Const.output" relation="relation3"/>
     <link port="XYPlotter_Trajectory.inputX" relation="relation7"/>
     <link port="XYPlotter_Trajectory.inputY" relation="relation8"/>
     <link port="criticality.p_x" relation="relation7"/>
     <link port="criticality.heading" relation="relation9"/>
     <link port="criticality.criticality" relation="relation5"/>
-    <link port="heading_transform.in" relation="relation6"/>
+    <link port="heading_transform.in" relation="relation2"/>
     <link port="heading_transform.out" relation="relation9"/>
     <link port="TimedPlotter.input" relation="relation9"/>
     <link port="malicious_pilot.heading" relation="relation9"/>
