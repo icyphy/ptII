@@ -71,6 +71,7 @@ public class ExpressionApplet extends SDFApplet {
             // Create and configure expr
             Expression expr = new Expression(_toplevel, "expr");
             TypedIOPort exprinput = new TypedIOPort(expr,"input");
+            exprinput.setInput(true);
             expr.expression.setToken(new StringToken("3.0*input"));
 
             // Create and configure plotter
