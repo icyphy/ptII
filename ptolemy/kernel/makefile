@@ -1,9 +1,9 @@
-# Makefile for Java classes that Tycho uses
+# Makefile for Ptolemy II Java classes
 #
-# @Version: @(#)makefile	1.15 06/17/98
+# @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1996-1998 The Regents of the University of California.
+# @Copyright (c) 1996- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
