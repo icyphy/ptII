@@ -32,6 +32,7 @@ package ptolemy.actor.gui;
 
 // Ptolemy imports.
 import ptolemy.gui.CloseListener;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 
@@ -73,7 +74,7 @@ public class Configurer extends JPanel implements CloseListener {
     /** Construct a configurer for the specified object.
      *  @param object The object to configure.
      */
-    public Configurer(NamedObj object) {
+    public Configurer(final NamedObj object) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
@@ -97,24 +98,18 @@ public class Configurer extends JPanel implements CloseListener {
             }
         }
         if (!foundOne) {
-            // FIXME: I believe this is where we get an error if we
-            // try to edit parameters in an already executing model,
-            // unless the editor pane has already been created.  EAL.
-            try {
-                EditorPaneFactory editor = new EditorPaneFactory(object,
-                        object.uniqueName("editorFactory"));
-                Component pane = editor.createEditorPane();
-                add(pane);
-                if (pane instanceof CloseListener) {
-                    _closeListeners.add(pane);
-                }
-            } catch (NameDuplicationException ex) {
-                throw new InternalErrorException(ex.toString());
-            } catch (IllegalActionException ex) {
-                // This is thrown only if the object refuses to
-                // accept the attribute.  But there is no reason for
-                // an object to refuse this attribute.
-                throw new InternalErrorException(ex.toString());
+            // There is no attribute of class EditorPaneFactory.
+            // We cannot create one because that would have to be done
+            // as a mutation, something that is very difficult to do
+            // while constructing a modal dialog.  Synchronized interactions
+            // between the thread in which the manager performs mutations
+            // and the event dispatch thread prove to be very tricky,
+            // and likely lead to deadlock.  Hence, instead, we use
+            // the static method of EditorPaneFactory.
+            Component pane = EditorPaneFactory.createEditorPane(object);
+            add(pane);
+            if (pane instanceof CloseListener) {
+                _closeListeners.add(pane);
             }
         }
     }
@@ -138,6 +133,9 @@ public class Configurer extends JPanel implements CloseListener {
         // of updates occurs when the line loses focus.
         // That notification occurs some time after the
         // window is destroyed.
+        // FIXME: Unfortunately, this gets
+        // invoked before that notification occurs if the
+        // "X" is used to close the window.  Swing bug?
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Iterator entries = _originalValues.entrySet().iterator();
@@ -146,6 +144,11 @@ public class Configurer extends JPanel implements CloseListener {
                     Parameter param =
                         (Parameter)_object.getAttribute((String)entry.getKey());
                     param.setExpression((String)entry.getValue());
+                    // Force notification of listeners, unless value is
+                    // erroneous.
+                    try {
+                        param.getToken();
+                    } catch (IllegalActionException ex) {}
                 }
             }
         });

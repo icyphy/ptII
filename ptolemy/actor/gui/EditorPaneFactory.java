@@ -84,19 +84,19 @@ public class EditorPaneFactory extends Attribute {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        // Find a change handler for the PtolemyQuery by walking up the
-        // hierarchy until we find a composite entity.
-        Nameable handler = getContainer();
-        while (handler != null && !(handler instanceof CompositeEntity)) {
-            handler = handler.getContainer();
-        }
-        PtolemyQuery query = new PtolemyQuery((CompositeEntity)handler);
+        return createEditorPane((NamedObj)getContainer());
+    }
 
+    /** Return a new widget for configuring the specified object.
+     *  This can be used for objects that do not contain an instance
+     *  of EditorPaneFactory as an attribute.
+     *  @return A new widget for configuring the specified object.
+     */
+    public static Component createEditorPane(NamedObj object) {
+        PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(25);
 
-        NamedObj container = (NamedObj)getContainer();
-        Iterator params
-            = container.attributeList(Parameter.class).iterator();
+        Iterator params = object.attributeList(Parameter.class).iterator();
         boolean foundOne = false;
         while (params.hasNext()) {
             foundOne = true;
@@ -104,8 +104,7 @@ public class EditorPaneFactory extends Attribute {
 	    query.addStyledEntry(param);
         }
         if (!foundOne) {
-            // FIXME: Need a button to add parameters.
-            return new JLabel(container.getName() + " has no parameters.");
+            return new JLabel(object.getName() + " has no parameters.");
         }
         return query;
     }
