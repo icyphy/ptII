@@ -31,6 +31,7 @@
 
 package ptolemy.math;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.StringTokenizer;
@@ -56,7 +57,7 @@ having <i>n</i> bits.
 </ul>
 In both cases, the parentheses are optional.
 <p>
-The FixPoint class represents signed numbers in a sign-magnitude
+The FixPoint class represents signed numbers in a 2's complement
 format. As a consequence, a
 single bit is used to represent the sign of the number.
 Therefore, when a precision is
@@ -80,7 +81,7 @@ that its value is set in the constructor and cannot then be modified.
 @see FixPoint
 */
 
-public class Precision {
+public class Precision implements Cloneable, Serializable {
 
     /** Construct a Precision object based on the provided string. The
      *  string can describe the precision in either of the syntaxes
@@ -136,16 +137,9 @@ public class Precision {
                 _integerBits = first;
             }
             _fraction = _length - _integerBits;
-
-            if ( _integerBits == 0 ) {
+            if (_length <= 0) {
                 throw new IllegalArgumentException("Incorrect definition of " +
-                        "Precision. A FixPoint requires the use of at least " +
-                        "a single integer bit to represent the sign.");
-            }
-            if (_length <= 0 || _integerBits < 0 || _integerBits > _length) {
-                throw new IllegalArgumentException("Incorrect definition of " +
-                        "Precision. Do not use negative values or have an " +
-                        "integer part larger than the total length ");
+                        "Precision. Do not use negative total length ");
             }
     }
 
@@ -158,10 +152,9 @@ public class Precision {
      */
     public Precision(int length, int integerBits)
             throws IllegalArgumentException {
-	if (length <= 0 || integerBits < 0 || integerBits > length) {
+	if (length <= 0 ) {
 	    throw new IllegalArgumentException("Incorrect definition of " +
-                    "Precision. Do not use negative values or have an " +
-                    "integer part larger than the total length ");
+                    "Precision. Do not use negative total length ");
 	}
 	_length   = length;
 	_integerBits  = integerBits;
@@ -170,6 +163,13 @@ public class Precision {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return this, that is, return the reference to this object.
+     *  @return This Precision.
+     */
+    public Object clone() {
+        return this;
+    }
 
     /** Return true if the indicated object is an instance of Precision
      *  and the number of integer and fractional bits both match.
@@ -195,18 +195,14 @@ public class Precision {
      *  @return The maximum value obtainable for this precision.
      */
     public BigDecimal findMaximum() {
+        
         // FIXME: Why does this return a BigDecimal instead of a FixPoint?
         // Because it's intended for internal use.
         // It should be package friendly.
-        int ln = getNumberOfBits();
-        int ib = getIntegerBitLength();
-        BigDecimal tmp = new BigDecimal(_getTwoRaisedTo(ln - ib));
-        BigDecimal one = new BigDecimal( _one );
-        BigDecimal tmp2 = one.divide( tmp, 40, BigDecimal.ROUND_HALF_EVEN);
-        BigDecimal tmp1 =
-            new BigDecimal(_getTwoRaisedTo(ib-1)).subtract( tmp2 );
-        //System.out.println("Find Max: " + tmp1.doubleValue());
-        return tmp1;
+        BigInteger intValue = BigInteger.ZERO.setBit(_length - 1);
+        intValue = intValue.subtract(BigInteger.ONE);
+        double val = intValue.doubleValue() * Math.pow(0.5, _fraction);
+        return new BigDecimal(val);
     }
 
     /** Return the minimum obtainable value for this precision. When
@@ -220,10 +216,10 @@ public class Precision {
         // FIXME: Why does this return a BigDecimal instead of a FixPoint?
         // Because it's intended for internal use.
         // It should be package friendly.
-        int ib = getIntegerBitLength();
-        BigInteger tmp = _twoRaisedTo[ib-1].negate();
-        // System.out.println("Find Min: " + tmp.doubleValue());
-        return new BigDecimal(tmp);
+        BigInteger intValue = BigInteger.ZERO.setBit(_length - 1);
+        intValue = intValue.negate();
+        double val = intValue.doubleValue() * Math.pow(0.5, _fraction);
+        return new BigDecimal(val);
     }
 
     /** Return the number of bits representing the fractional part.
@@ -278,23 +274,6 @@ public class Precision {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Get the BigInteger which is the 2^exponent. If the value is
-     *  already calculated, return this cached value; otherwise calculate
-     *  the value.
-     *  @param number The exponent.
-     *  @return The BigInteger 2^exponent.
-     */
-    private BigInteger _getTwoRaisedTo(int number) {
-        if ( number < 128 ) {
-            return _twoRaisedTo[number];
-        } else {
-            return _two.pow( number );
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The total number of bits. */
@@ -305,30 +284,4 @@ public class Precision {
 
     /** The number of bits in the fractional part. */
     private int _fraction = 0;
-
-    /** An array with cashed values. */
-    private static BigInteger[] _twoRaisedTo = new BigInteger[129];
-
-    /** Static reference to the BigInteger representation of two. */
-    private static BigInteger _two = new BigInteger("2");
-
-    /** Static reference to the BigInteger representation of one. */
-    private static BigInteger _one  = new BigInteger("1");
-
-    ///////////////////////////////////////////////////////////////////
-    // static initializer
-    ///////////////////////////////////////////////////////////////////
-
-    /** Calculate the table containing 2^x, with 0 < x < 128. Purpose
-     *  is to speed up calculations involving calculating 2^x. The
-     *  table is calculated using BigDecimal, since this make the
-     *  transformation from string of bits to a double easier.
-     */
-    static {
-        BigInteger p2  = _one;;
-	for (int i = 0; i <= 128; i++) {
-	    _twoRaisedTo[i] = p2;
-	    p2 = p2.multiply( _two );
-	}
-    }
 }
