@@ -37,11 +37,6 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-# Load up Tcl procs to print out enums
-if {[info procs _testEnums] == "" } then { 
-    source [file join $TYCHO java pt kernel util test testEnums.tcl]
-}
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
