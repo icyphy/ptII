@@ -52,13 +52,29 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="9.0"/>
-<yRange min="0.0" max="9.899999999999999"/>
+<xRange min="1.7976931348623157E308" max="-4.9E-324"/>
+<yRange min="1.7976931348623157E308" max="-4.9E-324"/>
 </plot>?>
         </configure>
     </entity>
-    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+    <entity name="Expression0" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="newInput*2.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="285.0, 159.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="newInput" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ramp.output" relation="relation0"/>
-    <link port="plot.input" relation="relation0"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ramp.output" relation="relation1"/>
+    <link port="plot.input" relation="relation2"/>
+    <link port="Expression0.output" relation="relation2"/>
+    <link port="Expression0.newInput" relation="relation1"/>
 </entity>

@@ -30,10 +30,7 @@
 
 package ptolemy.codegen.saveasjava;
 
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.Port;
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
 import java.util.*;
@@ -134,6 +131,15 @@ class SaveAsJava {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Split the specified name at the last period, and return the
+     *  last part. If there is no period, return the original name.
+     *  @param name The string from which the suffix is to be extracted.
+     *  @return The extracted suffix.
+     */
+    protected static final String _extractSuffix(String name) {
+        return name.substring(name.lastIndexOf(".") + 1);
+    }
+
     /** Generate Java code that creates attributes, if necessary,
      *  and initializes them with their initial values.
      *  @param component The component with attributes.
@@ -145,11 +151,6 @@ class SaveAsJava {
         Iterator attributes = component.attributeList().iterator();
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
-
-            // FIXME: For now, creating new attributes always.
-            // Really should check to see whether the component has
-            // a public member whose name and type match the attribute,
-            // and if so, just set that.
 
             // First, check to see whether the attribute is persistent
             // by exporting MoML and seeing whether the result is empty.
@@ -223,6 +224,7 @@ class SaveAsJava {
                      + "(this, \""
                      + sanitizedName
                      + "\");\n";
+             code += _generatePorts(model);
              code += _generateAttributes(model);
         }
         if (!model.isAtomic()) {
@@ -252,12 +254,8 @@ class SaveAsJava {
                      Port port2 = (Port) ports.next();
                      code += _indent(3);
                      code += "connect ("
-                             + _name(port1.getContainer())
-                             + "."
                              + _name(port1)
                              + ", "
-                             + _name(port2.getContainer())
-                             + "."
                              + _name(port2)
                              + ");\n";
                  }
@@ -291,14 +289,48 @@ class SaveAsJava {
        
     }
 
-    /** Split the specified name at the last period, and return the
-     *  last part. If there is no period, return the original name.
-     *  @param name The string from which the suffix is to be extracted.
-     *  @return The extracted suffix.
+    /** Generate Java code that defines ports, if necessary.
+     *  Ports are defined if they are not public members of the specified
+     *  component.
+     *  @param component The component with ports.
+     *  @return The Java code defining ports for the specified
+     *   component.
      */
-     
-    protected static final String _extractSuffix(String name) {
-        return name.substring(name.lastIndexOf(".") + 1);
+    protected String _generatePorts(Entity component) {
+        StringBuffer result = new StringBuffer();
+        Iterator ports = component.portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+
+            // Create an instance of the port if there
+            // is no matching public member.
+            try {
+                // If the following succeeds, then there is a public
+                // field whose name matches that of the port.
+                component.getClass().getField(port.getName());
+                // Henceforth, refer to this attribute as
+                // containerName.portName.
+                _nameTable.put(port,
+                        _name(component)
+                        + "."
+                        + port.getName());
+            } catch (NoSuchFieldException ex) {
+                // Port does not appear as a public member.
+                String portClass = _getClassName(port);
+                String portName = _name(port);
+                result.append(_indent(3));
+                result.append(portClass);
+                result.append(" ");
+                result.append(portName);
+                result.append(" = new ");
+                result.append(portClass);
+                result.append("(this, \"");
+                result.append(port.getName());
+                result.append("\");");
+                result.append("\n");
+            }
+        }
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -356,8 +388,14 @@ class SaveAsJava {
         String name = (String)_nameTable.get(object);
         if(name == null) {
             NamedObj toplevel = ((NamedObj)object).toplevel();
+            String nameToSanitize;
+            if (object == toplevel) {
+                nameToSanitize = toplevel.getName();
+            } else {
+                nameToSanitize = ((NamedObj)object).getName(toplevel);
+            }
             // FIXME: Only replacing dots for now.
-            name = ((NamedObj)object).getName(toplevel).replace('.', '_');
+            name = nameToSanitize.replace('.', '_');
             _nameTable.put(object, name);
         }
         return name;
