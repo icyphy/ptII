@@ -311,7 +311,8 @@ public class SDFScheduler extends Scheduler implements ValueListener {
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable) {
-    //     for(Iterator variables = _rateVariables.iterator();
+        // FIXME: causes 
+        //for(Iterator variables = _rateVariables.iterator();
 //             variables.hasNext();) {
 //             Variable variable = (Variable)variables.next();
 //             variable.removeValueListener(this);
@@ -348,9 +349,11 @@ public class SDFScheduler extends Scheduler implements ValueListener {
         StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
+        /*
         // Check for rate parameters which are dynamic.
         ConstVariableModelAnalysis analysis =
             new ConstVariableModelAnalysis((Entity)toplevel());
+        Entity scheduleChangeContext = (Entity)toplevel();
         for(Iterator entities = model.deepEntityList().iterator();
             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
@@ -365,7 +368,8 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                     if(name.equals("tokenInitProduction") ||
                             name.equals("tokenProductionRate") ||
                             name.equals("tokenConsumptionRate")) {
-                        System.out.println("Warning: Port " + port.getFullName() + 
+                        System.out.println(
+                                "Warning: Port " + port.getFullName() + 
                                 " has rate parameter that may change.");
                         // The schedule depends on the rate parameter.
                         if(!_rateVariables.contains(variable)) {
@@ -375,14 +379,20 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                     }
                     Entity changeContext = 
                         analysis.getChangeContext(variable);
-                    if(!model.getFullName().startsWith(changeContext.getFullName())) {
+                    if(!model.getFullName().startsWith(
+                               changeContext.getFullName())) {
                         throw new IllegalActionException(
                                 "Rate parameter of port " + port.getFullName() 
                                 + " might change during execution of the model.");
+                    } else if(changeContext.getFullName().startsWith(
+                                      scheduleChangeContext.getFullName())) {
+                        // Save the change context;
+                        scheduleChangeContext = changeContext;
                     }
                 }
             }
         }
+         */
 
         int vectorizationFactor = 1;
         if (director instanceof SDFDirector) {
@@ -506,7 +516,7 @@ public class SDFScheduler extends Scheduler implements ValueListener {
 
         // Set the rate parameters of any external ports.
         _saveContainerRates(externalRates);
-
+                        
         // Set the schedule to be valid.
         setValid(true);
         _externalRates = externalRates;
@@ -1379,7 +1389,8 @@ public class SDFScheduler extends Scheduler implements ValueListener {
 
                 // Compute the width of relations connected to the inside.
                 // Wouldn't it be nice if IOPort did this?
-                Iterator relations = outputPort.insideRelationList().iterator();
+                Iterator relations =
+                    outputPort.insideRelationList().iterator();
                 int portInsideWidth = 0;
                 while (relations.hasNext()) {
                     IORelation relation = (IORelation)relations.next();
@@ -1670,7 +1681,8 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                             ((Integer)minimumBufferSizes.get(relation)).intValue();
                     _setOrCreate(relation, "bufferSize", bufferSize);
                     if (_debugging) {
-                        _debug("Adding bufferSize parameter to " + relation.getName() +
+                        _debug("Adding bufferSize parameter to "
+                                + relation.getName() +
                                 " with value " + bufferSize);
                     }
                 }
