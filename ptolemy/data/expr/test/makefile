@@ -51,7 +51,6 @@ JSRCS = AttributeChanged.java
 JSIMPLE_TESTS = \
 	Parameter.tcl \
 	PtParser.tcl \
-	SetParameter.tcl \
 	UtilityFunctions.tcl \
 	FixFunctions.tcl \
 	Variable.tcl
