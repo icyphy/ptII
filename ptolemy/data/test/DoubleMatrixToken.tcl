@@ -129,6 +129,14 @@ test DoubleMatrixToken-2.6 {Test multiplicative identity} {
 
 ######################################################################
 ####
+# 
+test DoubleMatrixToken-2.7 {Test createArray} {
+    set array [java::call ptolemy.data.MatrixToken createArray [$p one]]
+    $array toString
+} {{1.0, 0.0, 0.0, 1.0}}
+
+######################################################################
+####
 # Test addition of doubles to Token types below it in the lossless 
 # type hierarchy, and with other doubles.
 test DoubleMatrixToken-3.0 {Test adding DoubleMatrixToken to IntMatrixToken.} {

@@ -140,6 +140,14 @@ test ComplexMatrixToken-2.6 {Test multiplicative identity} {
 
 ######################################################################
 ####
+# 
+test ComplexMatrixToken-2.7 {Test createArray} {
+    set array [java::call ptolemy.data.MatrixToken createArray [$p one]]
+    $array toString
+} {{1.0 + 0.0i, 0.0 + 0.0i, 0.0 + 0.0i, 1.0 + 0.0i}}
+
+######################################################################
+####
 # Test addition of Complexs to Token types below it in the lossless 
 # type hierarchy, and with other Complexs.
 test ComplexMatrixToken-3.0 {Test adding ComplexMatrixToken to IntMatrixToken.} {

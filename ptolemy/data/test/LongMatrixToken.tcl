@@ -130,6 +130,14 @@ test LongMatrixToken-2.6 {Test multiplicative identity} {
 
 ######################################################################
 ####
+# 
+test LongMatrixToken-2.7 {Test createArray} {
+    set array [java::call ptolemy.data.MatrixToken createArray [$p one]]
+    $array toString
+} {{1L, 0L, 0L, 1L}}
+
+######################################################################
+####
 # Test addition of longs to Token types below it in the lossless 
 # type hierarchy, and with other longs.
 test LongMatrixToken-3.0 {Test adding longs.} {

@@ -78,6 +78,14 @@ test FixMatrixToken-2.6 {Test multiplicative identity} {
 ######################################################################
 ####
 # 
+test FixMatrixToken-2.7 {Test createArray} {
+    set array [java::call ptolemy.data.MatrixToken createArray [$p one]]
+    $array toString
+} {{fix(1.0,8,4), fix(0.0,8,4), fix(0.0,8,4), fix(1.0,8,4)}}
+
+######################################################################
+####
+# 
 test FixMatrixToken-3.0 {Test hashCode} {
     set p1 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.5, 4.2\], 8, 4)"]
     set p2 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.5, 4.2\], 8, 4)"]
