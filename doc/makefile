@@ -190,6 +190,17 @@ DIVAPACKAGES = \
 	diva.util.test \
 	diva.util.xml
 
+# Experimental packages that are not shipped
+EXPERIMENTALPACKAGES = \
+			ptolemy.domains.hdf.kernel \
+			ptolemy.domains.hdf.lib \
+			ptolemy.domains.nc.kernel \
+			ptolemy.domains.nc.lib \
+			ptolemy.domains.psdf.kernel \
+			ptolemy.domains.rtp.kernel \
+			ptolemy.domains.rtp.lib
+
+
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
 			ptolemy.actor.lib.javasound \
@@ -250,6 +261,7 @@ VISUALSENSEPACKAGES = \
 ALLPACKAGES =		$(COMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
 			$(DIVAPACKAGES) \
+			$(EXPERIMENTALPACKAGES) \
 			$(PTCOMM_PACKAGES) \
 			$(PTGR_PACKAGES) \
 			$(PTINYPACKAGES) \
@@ -289,17 +301,10 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.dde.lib \
 			ptolemy.domains.hde.kernel \
 			ptolemy.domains.hde.lib \
-			ptolemy.domains.hdf.kernel \
-			ptolemy.domains.hdf.lib \
 			ptolemy.domains.giotto.kernel \
-			ptolemy.domains.nc.kernel \
-			ptolemy.domains.nc.lib \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.kernel.event \
 			ptolemy.domains.petrinet.kernel \
-			ptolemy.domains.psdf.kernel \
-			ptolemy.domains.rtp.kernel \
-			ptolemy.domains.rtp.lib \
 			ptolemy.domains.sr.kernel \
 			ptolemy.domains.sr.lib \
 			ptolemy.domains.tm.kernel \
