@@ -91,6 +91,7 @@ OPTIONAL_FILES = \
 	'FSMGraphModel$$PortModel.class' \
 	'FSMGraphModel$$StateModel.class' \
 	'FSMGraphTableau$$Factory.class' \
+	'StateController$$1.class' \
 	'StateController$$LookInsideAction.class' \
 	'StateController$$StateRenderer.class' \
 	'TransitionController$$1.class' \

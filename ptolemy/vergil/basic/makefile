@@ -87,6 +87,7 @@ OPTIONAL_FILES = \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \
 	'BasicGraphController$$2.class' \
 	'BasicGraphFrame$$1.class' \
+	'BasicGraphFrame$$4.class' \
 	'BasicGraphFrame$$CopyAction.class' \
 	'BasicGraphFrame$$CutAction.class' \
 	'BasicGraphFrame$$ExecuteSystemAction.class' \
