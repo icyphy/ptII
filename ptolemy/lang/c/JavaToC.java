@@ -130,30 +130,6 @@ public class JavaToC {
         out.println(generatedCode.toString());
         out.close();
 
-        // Write out information about all class files that were parsed
-        // during processing of this compilation unit.
-        Collection compilationUnits = 
-                StaticResolution.allPass0ResolvedMap.values();
-        if (compilationUnits == null) 
-            System.out.println("No compilation unit nodes were generated " +
-                    "through static resolution\n");
-        Iterator compilationUnitIterator = compilationUnits.iterator();
-        System.out.println("Beginning of compilation unit dump.\n"); 
-        int unitNumber = 1;
-        while (compilationUnitIterator.hasNext()) {
-           CompileUnitNode unit = 
-                   (CompileUnitNode) compilationUnitIterator.next();
-           if (printAllASTs) {
-               System.out.println("Compilation unit #" + unitNumber++ + ":\n\n"); 
-               System.out.println(unit.toString() + "\n\n");
-           }
-           else {
-               System.out.println("Unit #" + unitNumber++ +
-                   ASTReflect.getFullyQualifiedName(unit)); 
-           }
-        } 
-        System.out.println("End of compilation unit dump. Total = "
-                + (unitNumber - 1) + ".\n");
 
     }
 }
