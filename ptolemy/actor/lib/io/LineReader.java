@@ -30,29 +30,29 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.io;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.io.BufferedReader;
-import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineReader
 /**
 This actor reads a file or URL, one line at a time, and outputs each line
 as a string.  The file or URL is specified using any form acceptable
-to FileAttribute. Before an end of file is reached, the <i>endOfFile</i>
+to FileParameter. Before an end of file is reached, the <i>endOfFile</i>
 output produces <i>false</i>.  In the iteration where the last line
 of the file is read and produced on the <i>output</i> port, this actor
 produces <i>true</i> on the <i>endOfFile</i> port. In that iteration,
@@ -82,7 +82,7 @@ of the file, the way to do this is to call initialize() during the run
 of the model.  This can be done, for example, using a modal model
 with a transition where reset is enabled.
 
-@see FileAttribute
+@see FileParameter
 @author  Edward A. Lee, Yuhong Xiong
 @version $Id$
 @since Ptolemy II 2.2
@@ -106,7 +106,7 @@ public class LineReader extends Source {
         endOfFile = new TypedIOPort(this, "endOfFile", false, true);
         endOfFile.setTypeEquals(BaseType.BOOLEAN);
 
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
 
         numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip",
                 new IntToken(0));
@@ -132,10 +132,10 @@ public class LineReader extends Source {
     public TypedIOPort endOfFile;
 
     /** The file name or URL from which to read.  This is a string with
-     *  any form accepted by FileAttribute.
-     *  @see FileAttribute
+     *  any form accepted by FileParameter.
+     *  @see FileParameter
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
     /** The number of lines to skip at the beginning of the file or URL.
      *  This parameter contains an IntToken, initially with value 0.
@@ -164,9 +164,10 @@ public class LineReader extends Source {
             // NOTE: We do not want to close the file if the file
             // has not in fact changed.  We check this by just comparing
             // name, which is not perfect...
+            String newFileOrURL = ((StringToken)fileOrURL.getToken()).stringValue();
             if (_previousFileOrURL != null
-                    && !fileOrURL.getExpression().equals(_previousFileOrURL)) {
-                _previousFileOrURL = fileOrURL.getExpression();
+                    && !newFileOrURL.equals(_previousFileOrURL)) {
+                _previousFileOrURL = newFileOrURL;
                 fileOrURL.close();
                 // Ignore if the fileOrUL is blank.
                 if (fileOrURL.getExpression().trim().equals("")) {

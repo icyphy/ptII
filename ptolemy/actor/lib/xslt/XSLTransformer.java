@@ -30,24 +30,29 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.xslt;
 
-import ptolemy.actor.lib.Transformer;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
 import javax.xml.transform.TransformerException;
+
 import org.w3c.dom.Document;
+
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.StringToken;
+import ptolemy.data.XMLToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// XSLTTransformer
 /**
 This actor reads an XSLT file and apply it to a dom tree. The file or
-URL is specified using any form acceptable to the FileAttribute class.
+URL is specified using any form acceptable to the FileParameter class.
 
 <p>Currently, this actor requires the 
 <a href="http://saxon.sourceforge.net/">Saxon</a> XSLT processor
@@ -83,17 +88,17 @@ public class XSLTransformer extends Transformer{
         //output.setMultiport(true);
         output.setTypeEquals(BaseType.STRING);
 
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The file name or URL from which to read.  This is a string with
-     *  any form accepted by FileAttribute.
-     *  @see FileAttribute
+     *  any form accepted by FileParameter.
+     *  @see FileParameter
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

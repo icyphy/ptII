@@ -46,10 +46,10 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -83,7 +83,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fileNameOrURL = new FileAttribute(this, "fileNameOrURL");
+        fileNameOrURL = new FileParameter(this, "fileNameOrURL");
 
         synchronizedPlay = new Parameter(this, "synchronizedPlay");
         synchronizedPlay.setTypeEquals(BaseType.BOOLEAN);
@@ -101,7 +101,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
     ////                     parameters and ports                  ////
 
     /** The file name or URL to read. */
-    public FileAttribute fileNameOrURL;
+    public FileParameter fileNameOrURL;
 
     /** The input port, which has type boolean.  A true input
      *  causes the sound to be played, and false input causes it

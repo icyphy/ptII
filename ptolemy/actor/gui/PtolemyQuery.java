@@ -55,7 +55,6 @@ import ptolemy.gui.CloseListener;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
@@ -192,8 +191,7 @@ public class PtolemyQuery extends Query
                             attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
-                } else if ((attribute instanceof FileParameter)
-                        || (attribute instanceof FileAttribute)) {
+                } else if (attribute instanceof FileParameter){
                     // Specify the directory in which to start browsing
                     // to be the location where the model is defined,
                     // if that is known.

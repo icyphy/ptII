@@ -31,26 +31,26 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
-import ptolemy.actor.lib.Sink;
-import ptolemy.actor.parameters.IntRangeParameter;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.media.jai.RenderedOp;
+
+import ptolemy.actor.lib.Sink;
+import ptolemy.actor.parameters.IntRangeParameter;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageEncoder;
@@ -62,14 +62,14 @@ import com.sun.media.jai.codec.JPEGEncodeParam;
    Write a javax.media.jai.RenderedOp to a specified JPEG file.
    <p>
    The file is specified by the <i>fileName</i> attribute
-   using any form acceptable to FileAttribute.
+   using any form acceptable to FileParameter.
    <p>
    If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
    then this actor will overwrite the specified file if it exists
    without asking.  If <i>true</i> (the default), then if the file
    exists, then this actor will ask for confirmation before overwriting.
 
-   @see FileAttribute
+   @see FileParameter
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
@@ -90,7 +90,7 @@ public class JAIJPEGWriter extends Sink {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
 
-        fileName = new FileAttribute(this, "fileName");
+        fileName = new FileParameter(this, "fileName");
 
         writeJFIFHeader = new Parameter(this, "writeJFIFHeader");
         writeJFIFHeader.setTypeEquals(BaseType.BOOLEAN);
@@ -146,10 +146,10 @@ public class JAIJPEGWriter extends Sink {
     ////                     ports and parameters                  ////
 
     /** The file name to which to write.  This is a string with
-     *  any form accepted by FileAttribute.
-     *  @see FileAttribute
+     *  any form accepted by FileParameter.
+     *  @see FileParameter
      */
-    public FileAttribute fileName;
+    public FileParameter fileName;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file

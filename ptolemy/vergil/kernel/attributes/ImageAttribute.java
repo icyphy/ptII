@@ -35,9 +35,9 @@ import java.awt.Toolkit;
 import java.net.URL;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -80,7 +80,7 @@ public class ImageAttribute extends Attribute {
         _icon = new ImageIcon(this, "_icon");
         _icon.setPersistent(false);
         
-        source = new FileAttribute(this, "source");
+        source = new FileParameter(this, "source");
         source.setExpression("$CLASSPATH/doc/img/ptIIplanetIcon.gif");
         
         scale = new Parameter(this, "scale");
@@ -102,7 +102,7 @@ public class ImageAttribute extends Attribute {
     /** The source image file. This is a file name or URL, where the default
      *  is "$CLASSPATH/doc/img/ptIIplanetIcon.gif".
      */
-    public FileAttribute source;
+    public FileParameter source;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

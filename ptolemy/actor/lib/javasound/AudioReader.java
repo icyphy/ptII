@@ -31,19 +31,18 @@
 
 package ptolemy.actor.lib.javasound;
 
+import java.io.IOException;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.media.javasound.SoundPlayback; // For javadoc
 import ptolemy.media.javasound.SoundReader;
-import ptolemy.media.javasound.SoundWriter; // For javadoc
-
-import java.io.IOException;
 
 
 /////////////////////////////////////////////////////////////////
@@ -101,7 +100,7 @@ public class AudioReader extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
         // We use voice.wav so that we can include the voice.wav file
         // in the jar file for use under Web Start.
         fileOrURL.setExpression(
@@ -116,10 +115,10 @@ public class AudioReader extends Source {
     ////                     ports and parameters                  ////
 
     /** The file name or URL from which to read.  This is a string with
-     *  any form accepted by FileAttribute.
-     *  @see FileAttribute
+     *  any form accepted by FileParameter.
+     *  @see FileParameter
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -139,9 +138,10 @@ public class AudioReader extends Source {
             // NOTE: We do not want to close the file if the file
             // has not in fact changed.  We check this by just comparing
             // name, which is not perfect...
+            String newFileOrURL = ((StringToken)fileOrURL.getToken()).stringValue();
             if (_previousFileOrURL != null
-                    && !fileOrURL.getExpression().equals(_previousFileOrURL)) {
-                _previousFileOrURL = fileOrURL.getExpression();
+                    && !newFileOrURL.equals(_previousFileOrURL)) {
+                _previousFileOrURL = newFileOrURL;
                 _openReader();
             }
         } else {
@@ -274,9 +274,10 @@ public class AudioReader extends Source {
                 _soundReader = new SoundReader(fileOrURL.asURL(),
                         getSamplesArraySize);
             } catch (IOException ex) {
+                String newFileOrURL = ((StringToken)fileOrURL.getToken()).stringValue();
                 throw new IllegalActionException(this, ex,
                         "Cannot open fileOrURL '"
-                        + fileOrURL.getExpression()
+                        + newFileOrURL
                         + "'.");
             }
             // Get the number of audio channels.

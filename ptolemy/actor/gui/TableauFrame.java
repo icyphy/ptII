@@ -29,16 +29,6 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.StatusBar;
-import ptolemy.gui.Top;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
-
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -56,6 +46,16 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+
+import ptolemy.data.expr.FileParameter;
+import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.gui.MessageHandler;
+import ptolemy.gui.StatusBar;
+import ptolemy.gui.Top;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// TableauFrame
@@ -245,10 +245,10 @@ public class TableauFrame extends Top {
 
             try {
                 Configuration configuration = getConfiguration();
-                FileAttribute aboutAttribute =
-                    (FileAttribute) configuration.getAttribute(
+                FileParameter aboutAttribute =
+                    (FileParameter) configuration.getAttribute(
                         "_about",
-                        FileAttribute.class);
+                        FileParameter.class);
                 URL doc;
                 if (aboutAttribute != null) {
                     doc = aboutAttribute.asURL();
@@ -507,18 +507,18 @@ public class TableauFrame extends Top {
     /** Display the help file given by the configuration, or if there is
      *  none, then the file specified by the public variable helpFile.
      *  To specify a default help file in the configuration, create
-     *  a FileAttribute named "_help" whose value is the name of the
+     *  a FileParameter named "_help" whose value is the name of the
      *  file.  If the specified file fails to open, then invoke the
      *  _about() method.
-     *  @see FileAttribute
+     *  @see FileParameter
      */
     protected void _help() {
         try {
             Configuration configuration = getConfiguration();
-            FileAttribute helpAttribute =
-                (FileAttribute) configuration.getAttribute(
+            FileParameter helpAttribute =
+                (FileParameter) configuration.getAttribute(
                     "_help",
-                    FileAttribute.class);
+                    FileParameter.class);
             URL doc;
             if (helpAttribute != null) {
                 doc = helpAttribute.asURL();

@@ -31,14 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jmf;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.net.URL;
 
 import javax.media.Buffer;
@@ -55,6 +47,14 @@ import javax.media.ResourceUnavailableEvent;
 import javax.media.control.FrameGrabbingControl;
 import javax.media.control.FramePositioningControl;
 import javax.media.protocol.DataSource;
+
+import ptolemy.actor.lib.Source;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// MovieReader
@@ -81,7 +81,7 @@ public class MovieReader extends Source implements ControllerListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,9 +89,9 @@ public class MovieReader extends Source implements ControllerListener {
 
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by File Attribute.
-     *  @see FileAttribute
+     *  @see FileParameter
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -30,22 +30,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.io;
 
+import java.io.File;
+import java.io.PrintWriter;
+
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.io.File;
-import java.io.PrintWriter;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineWriter
@@ -56,7 +56,7 @@ include any enclosing quotation marks in the output.
 If you need the enclosing quotation marks, use ExpressionWriter.
 <p>
 The file is specified by the <i>fileName</i> attribute
-using any form acceptable to FileAttribute.
+using any form acceptable to FileParameter.
 <p>
 If the <i>append</i> attribute has value <i>true</i>,
 then the file will be appended to. If it has value <i>false</i>,
@@ -68,7 +68,7 @@ then this actor will overwrite the specified file if it exists
 without asking.  If <i>true</i> (the default), then if the file
 exists, then this actor will ask for confirmation before overwriting.
 
-@see FileAttribute
+@see FileParameter
 @see ExpressionWriter
 @author  Edward A. Lee
 @version $Id$
@@ -91,7 +91,7 @@ public class LineWriter extends Sink {
         input.setTypeEquals(BaseType.STRING);
         input.setMultiport(false);
 
-        fileName = new FileAttribute(this, "fileName");
+        fileName = new FileParameter(this, "fileName");
         fileName.setExpression("System.out");
 
         append = new Parameter(this, "append");
@@ -122,11 +122,11 @@ public class LineWriter extends Sink {
     public Parameter append;
 
     /** The file name to which to write.  This is a string with
-     *  any form accepted by FileAttribute.  The default value is
+     *  any form accepted by FileParameter.  The default value is
      *  "System.out".
-     *  @see FileAttribute
+     *  @see FileParameter
      */
-    public FileAttribute fileName;
+    public FileParameter fileName;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
@@ -149,9 +149,10 @@ public class LineWriter extends Sink {
             throws IllegalActionException {
         if (attribute == fileName) {
             // Do not close the file if it is the same file.
+            String newFileName = ((StringToken)fileName.getToken()).stringValue();
             if (_previousFileName != null
-                    && !fileName.getExpression().equals(_previousFileName)) {
-                _previousFileName = fileName.getExpression();
+                    && !newFileName.equals(_previousFileName)) {
+                _previousFileName = newFileName;
                 fileName.close();
                 _writer = null;
             }

@@ -8,9 +8,9 @@ import javax.media.protocol.DataSource;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -28,10 +28,10 @@ public class StreamLoader extends Source {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
     }
 
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
     
     public void initialize() throws IllegalActionException {
         super.initialize();

@@ -32,19 +32,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.io.IOException;
 import java.net.URL;
 
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
+
+import ptolemy.actor.lib.Source;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.FileSeekableStream;
 
@@ -52,7 +52,7 @@ import com.sun.media.jai.codec.FileSeekableStream;
 //// JAIImageReader
 /**
 This actor reads an image from a file or a URL.  The file or URL is
-specified using any form acceptable to FileAttribute.  Supports BMP, FPX,
+specified using any form acceptable to FileParameter.  Supports BMP, FPX,
 GIF, JPEG, PNG, PBM, PGM, PPM, and TIFF file formats.
 
 @author James Yeh, Steve Neuendorffer
@@ -74,7 +74,7 @@ public class JAIImageReader extends Source {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL.setExpression("$CLASSPATH\\doc\\img\\PtolemyII.jpg");
     }
 
@@ -83,9 +83,9 @@ public class JAIImageReader extends Source {
 
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by File Attribute.
-     *  @see FileAttribute
+     *  @see FileParameter
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -29,10 +29,17 @@
 
 package ptolemy.actor.gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.ChangeRequest;
@@ -40,13 +47,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
@@ -182,8 +182,8 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     protected void _help() {
         try {
-            FileAttribute helpAttribute = (FileAttribute)getModel()
-                .getAttribute("_help", FileAttribute.class);
+            FileParameter helpAttribute = (FileParameter)getModel()
+                .getAttribute("_help", FileParameter.class);
             URL doc = helpAttribute.asURL();
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {

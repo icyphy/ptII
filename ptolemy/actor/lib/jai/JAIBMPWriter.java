@@ -30,23 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
-import ptolemy.actor.lib.Sink;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.media.jai.RenderedOp;
+
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.BMPEncodeParam;
 import com.sun.media.jai.codec.ImageCodec;
@@ -58,7 +58,7 @@ import com.sun.media.jai.codec.ImageEncoder;
 Write a javax.media.jai.RenderedOp to a specified BMP file.
 <p>
 The file is specified by the <i>fileName</i> attribute
-using any form acceptable to FileAttribute.
+using any form acceptable to FileParameter.
 <p>
 If the <i>storeTopDown</i> parameter has value true, then the data
 will be stored from the top on down.  Usually, bitmap files are stored
@@ -69,7 +69,7 @@ then this actor will overwrite the specified file if it exists
 without asking.  If <i>true</i> (the default), then if the file
 exists, then this actor will ask for confirmation before overwriting.
 
-@see FileAttribute
+@see FileParameter
 @author James Yeh
 @version $Id$
 @since Ptolemy II 3.0
@@ -88,7 +88,7 @@ public class JAIBMPWriter extends Sink {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        fileName = new FileAttribute(this, "fileName");
+        fileName = new FileParameter(this, "fileName");
 
         storeTopDown = new Parameter(this, "storeTopDown");
         storeTopDown.setTypeEquals(BaseType.BOOLEAN);
@@ -104,10 +104,10 @@ public class JAIBMPWriter extends Sink {
     ////                     ports and parameters                  ////
 
     /** The file name to which to write.  This is a string with
-     *  any form accepted by FileAttribute.
-     *  @see FileAttribute
+     *  any form accepted by FileParameter.
+     *  @see FileParameter
      */
-    public FileAttribute fileName;
+    public FileParameter fileName;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file

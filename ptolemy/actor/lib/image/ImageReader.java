@@ -1,4 +1,4 @@
-/* An actor that reads an image from a FileAttribute and outputs
+/* An actor that reads an image from a FileParameter and outputs
 an AWTImageToken.
 
 @Copyright (c) 2001-2003 The Regents of the University of California.
@@ -31,30 +31,30 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.image;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-
 import java.awt.Image;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 
+import ptolemy.actor.lib.Source;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
 /**
-This actor reads an Image from a FileAttribute, and outputs it as an
+This actor reads an Image from a FileParameter, and outputs it as an
 AWTImageToken.
 
 <p>FIXME: It would be nice if we could read images from stdin.
 
-@see FileAttribute
+@see FileParameter
 @see AWTImageToken
 @author  Christopher Hylands
 @version $Id$
@@ -80,7 +80,7 @@ public class ImageReader extends Source {
         //output.setMultiport(true);
         output.setTypeEquals(BaseType.OBJECT);
 
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
     }
 
 
@@ -89,9 +89,9 @@ public class ImageReader extends Source {
 
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by File Attribute.
-     *  @see FileAttribute
+     *  @see FileParameter
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
