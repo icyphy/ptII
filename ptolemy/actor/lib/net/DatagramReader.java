@@ -475,13 +475,15 @@ public class DatagramReader extends TypedAtomicActor {
                 if (_socket != null) {
                     // Verify presence & health of the thread.
                     if (_socketReadingThread == null) {
-                        throw new IllegalActionException(this, "thread==null");
+                        throw new IllegalActionException(this,
+                                "thread == null");
                     } else if (!_socketReadingThread.isAlive()){
-                        throw new IllegalActionException(this, "thread !Alive");
+                        throw new IllegalActionException(this,
+                                "thread is not Alive");
                     }
-                    int newSktNum = ((IntToken)
+                    int newSocketNumber = ((IntToken)
                             (localSocketNumber.getToken())).intValue();
-                    if (newSktNum != _socket.getLocalPort()) {
+                    if (newSocketNumber != _socket.getLocalPort()) {
                         synchronized(_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -489,8 +491,7 @@ public class DatagramReader extends TypedAtomicActor {
                                 try {
                                     _syncSocket.wait((long)444);
                                 } catch (InterruptedException ex) {
-                                    System.out.println("---!!!---");
-                                    throw new IllegalActionException(this,
+                                    throw new IllegalActionException(this, ex,
                                             "Interrupted while waiting");
                                 }
                                 // Either I've been notified that receive()
@@ -500,17 +501,18 @@ public class DatagramReader extends TypedAtomicActor {
                             }
                             _socket.close();
                             try {
-                                _socket = new DatagramSocket(newSktNum);
+                                _socket = new DatagramSocket(newSocketNumber);
                             }
                             catch (SocketException ex) {
-                                System.out.println("couldn't open new socket");
-                                throw new InternalErrorException(
-                                        KernelException.stackTraceToString(ex));
+                                throw new InternalErrorException(this, ex, 
+                                        "Couldn't open new socket number "
+                                        + newSocketNumber);
+
                             }
-                        } // Sync(_syncSocket)
+                        }
                     }
                 }
-            } // Sync(this)
+            }
 
             // In the case of <i>actorBufferLength</i>, simply cache
             // the parameter.  The thread used this value to set the
@@ -590,8 +592,8 @@ public class DatagramReader extends TypedAtomicActor {
                     _syncFireAndThread.wait();
                     _fireIsWaiting = false;
                 } catch (InterruptedException ex) {
-                    System.out.println(this + "!!fire()'s wait interrupted!!");
-                    throw new RuntimeException("!-!");
+                    throw new InternalErrorException(this, ex,
+                            "!!fire()'s wait interrupted!!");
                     // This finally block breaks Jode.
                 } finally {
                     if (_stopFire) {
@@ -640,8 +642,10 @@ public class DatagramReader extends TypedAtomicActor {
             //  of outputting the default, provided
             //  there is a previous output to repeat.)
 
-            // _defaultOutputToken==null when user has entered blank parameter.
-            // Take this as a directive to not broadcast a token in this case.
+            // _defaultOutputToken == null when user has entered blank
+            // parameter.  Take this as a directive to not broadcast a
+            // token in this case.
+
             if (_defaultOutputToken == null) {
                 if (_debugging) _debug(
                         "DO NOT Broadcast ANY output (blank default)");
@@ -698,7 +702,7 @@ public class DatagramReader extends TypedAtomicActor {
         }
         catch (SocketException ex) {
             throw new IllegalActionException(this, ex,
-                    " Failed to create a new socket on port " + portNumber);
+                    "Failed to create a new socket on port " + portNumber);
 
         }
 
@@ -850,8 +854,6 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
 
-        if (_debugging) _debug("WRAPUP IS CALLED");
-
         // FIXME - Look into whether I ought to make it null first
         // and then interrupt it (having made a copy of the pointer
         // to it).  Examples all do it the latter way.  Why?
@@ -859,17 +861,18 @@ public class DatagramReader extends TypedAtomicActor {
             _socketReadingThread.interrupt();
             _socketReadingThread = null;
         } else {
-            if (_debugging) _debug("socketReadingThread null at wrapup!?");
-            //throw new IllegalActionException(
-            //        "socketReadingThread null at wrapup!?");
+            if (_debugging) {
+                _debug("socketReadingThread null at wrapup!?");
+            }
         }
 
         if (_socket != null) {
             _socket.close();
             _socket = null;
         } else {
-            if (_debugging) _debug("Socket null at wrapup!?");
-            //throw new IllegalActionException("Socket null at wrapup!?");
+            if (_debugging) {
+                _debug("Socket null at wrapup!?");
+            }
         }
     }
 
@@ -975,7 +978,8 @@ public class DatagramReader extends TypedAtomicActor {
 //                                     _socket.getReceiveBufferSize()));
                         } catch (SocketException ex) {
                             System.out.println("Socket Ex." + ex.toString());
-                            //throw new IllegalActionException(this, sex.toString());
+                            // throw new IllegalActionException(this,
+                            // ex.toString());
                         } catch (IllegalActionException ex) {
                             System.out.println("getToken or setToken failed"
                                     + "on platformBufferSize" + ex.toString());
@@ -1033,7 +1037,9 @@ public class DatagramReader extends TypedAtomicActor {
                             //   System.out.println("foo");
                         }
                     } catch (NullPointerException ex) {
-                        if (_debugging) _debug("--!!--" + (_socket == null));
+                        if (_debugging) {
+                            _debug("--!!--" + (_socket == null));
+                        }
                         return;
                         // -> --!!--true
                         //System.out.println(ex.toString());
@@ -1082,9 +1088,7 @@ public class DatagramReader extends TypedAtomicActor {
                         try {
                             _syncFireAndThread.wait();
                         } catch (InterruptedException ex) {
-                            System.out.println("-!- interrupted");
-                            System.out.println(ex.toString());
-                            throw new RuntimeException("-interrupted-");
+                            throw new RuntimeException("-interrupted-", ex);
                         }
                     }
 
@@ -1126,8 +1130,8 @@ public class DatagramReader extends TypedAtomicActor {
                         getDirector().fireAtCurrentTime(
                                 DatagramReader.this);
                     } catch (IllegalActionException ex) {
-                        ex.printStackTrace();
-                        throw new RuntimeException("Exception caused by fireAt.");
+                        throw new RuntimeException("fireAtCurrentTime() "
+                                + "threw an exception", ex);
                     }
                 }
             }
