@@ -117,7 +117,7 @@ we can predict in advance that no write access will be needed.
 public final class Workspace implements Nameable, Serializable {
 
     private static final boolean DEBUG = false;
-    private static final boolean DEBUG1 = true;
+    private static final boolean DEBUG1 = false;
 
     /** Create a workspace with an empty string as its name.
      */
@@ -419,7 +419,7 @@ public final class Workspace implements Nameable, Serializable {
      *  It is meant to track changes in the topologies within the workspace.
      *  @return A non-negative long integer.
      */
-    public synchronized long getVersion() {
+    public synchronized final long getVersion() {
         return _version;
     }
 
