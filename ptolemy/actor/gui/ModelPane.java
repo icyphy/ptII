@@ -54,6 +54,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,7 @@ results of the execution.
 */
 public class ModelPane extends JPanel {
 
-    /** Construct a panel with the specified Ptolemy II model.
+    /** Construct a panel for interacting with the specified Ptolemy II model.
      *  @param model The model to control.
      */
     public ModelPane(CompositeActor model) {
@@ -91,6 +92,7 @@ public class ModelPane extends JPanel {
         _buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
 
         _goButton = new JButton("Go");
+        _goButton.setToolTipText("Execute the model");
         _goButton.setAlignmentX(LEFT_ALIGNMENT);
         _buttonPanel.add(_goButton);
         _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -99,7 +101,9 @@ public class ModelPane extends JPanel {
                 startRun();
             }
         });
+
         _stopButton = new JButton("Stop");
+        _stopButton.setToolTipText("Stop executing the model");
         _buttonPanel.add(_stopButton);
         _stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -145,6 +149,21 @@ public class ModelPane extends JPanel {
         if (_paramQuery != null) _paramQuery.setBackground(background);
         if (_directorQuery != null) _directorQuery.setBackground(background);
         if (_displays != null) _displays.setBackground(background);
+        if (_paramQuery != null) _paramQuery.setBackground(background);
+        if (_directorQuery != null) _directorQuery.setBackground(background);
+    }
+
+    /** Make the Go button the default button for the root pane.
+     *  You should call this after placing this pane in a container with
+     *  a root pane.
+     */
+    public void setDefaultButton() {
+        JRootPane root = getRootPane();
+        if (root != null) {
+            root.setDefaultButton(_goButton);
+            _goButton.setMnemonic(KeyEvent.VK_G);
+            _stopButton.setMnemonic(KeyEvent.VK_S);
+        }
     }
 
     /** Set the container for model displays.  This method sets the
@@ -233,7 +252,6 @@ public class ModelPane extends JPanel {
                                     directorSize.width,
                                     modelSize.height));
                         } else {
-System.out.println("Changing director size");
                             _directorQuery.setPreferredSize(new Dimension(
                                     modelSize.width,
                                     directorSize.height));

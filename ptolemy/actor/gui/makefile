@@ -58,6 +58,7 @@ JSRCS = \
 	MatrixViewer.java \
 	ModelFrame.java \
 	ModelPane.java \
+	MoMLApplet.java \
 	MoMLApplication.java \
 	ParameterEditor.java \
 	Placeable.java \

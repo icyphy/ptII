@@ -37,6 +37,8 @@ import ptolemy.data.expr.*;
 import ptolemy.gui.*;
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.Documentation;
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 /**
@@ -67,6 +69,10 @@ public class PtolemyQuery extends Query implements QueryListener {
      */
     public void attachParameter(Variable var, String entryName) {
 	_parameters.put(entryName, var);
+        String tip = Documentation.consolidate(var);
+        if (tip != null) {
+            setToolTip(entryName, tip);
+        }
     }
 
     /* Set the Variable to the value of the Query entry. This
@@ -76,7 +82,8 @@ public class PtolemyQuery extends Query implements QueryListener {
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
 	    // Set the variable.
-	    ((Variable)(_parameters.get(name))).setExpression(this.stringValue(name));
+	    ((Variable)(_parameters.get(name))).setExpression(
+                    this.stringValue(name));
 	}
 	
     }

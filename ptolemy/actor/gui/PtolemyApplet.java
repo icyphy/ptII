@@ -43,6 +43,7 @@ import javax.swing.JApplet;
 
 // Ptolemy imports
 import ptolemy.actor.*;
+import ptolemy.gui.BasicJApplet;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,10 +61,20 @@ controlling the background color.
 @author Edward A. Lee
 @version $Id$
 */
-public class PtolemyApplet extends JApplet implements ExecutionListener {
+public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Cleanup after execution of the model.  This method is called
+     *  by the browser or appletviewer to inform this applet that
+     *  it should clean up.
+     */
+    public void destroy() {
+        // Note: we used to call manager.terminate() here to get rid
+        // of a lingering browser problem
+        stop();
+    }
 
     /** Report that an execution error occurred.  This is
      *  called by the manager.
@@ -79,28 +90,7 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
      *  @param manager The manager in charge of the execution.
      */
     public void executionFinished(Manager manager) {
-        showStatus("Execution finished.");
-    }
-
-    /** Return generic applet information.
-     *  @return A string giving minimal information about Ptolemy II.
-     */
-    public String getAppletInfo() {
-        return "Ptolemy II applet.\n" +
-            "Ptolemy II comes from UC Berkeley, Department of EECS.\n" +
-            "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
-    }
-
-    /** Describe the applet parameters. Derived classes should override
-     *  this and append their own parameters.  The protected method
-     *  _concatStringArrays() is provided to make this easy to do.
-     *  @return An array describing the applet parameters.
-     */
-    public String[][] getParameterInfo() {
-        String pinfo[][] = {
-            {"background",    "#RRGGBB",    "color of the background"},
-        };
-        return pinfo;
+        report("execution finished.");
     }
 
     /** Initialize the applet. This method is called by the browser
@@ -116,16 +106,8 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
      *  background color is set to white.
      */
     public void init() {
-        // Process the background parameter.
-        _background = Color.white;
-        try {
-            String colorSpecification = getParameter("background");
-            if (colorSpecification != null) {
-                _background = Color.decode(colorSpecification);
-            }
-        } catch (Exception ex) {
-            report("Warning: background parameter failed: ", ex);
-        }
+        // The superclass processes the background parameter.
+        super.init();
         getRootPane().setBackground(_background);
         setBackground(_background);
         getContentPane().setBackground(_background);
@@ -150,39 +132,9 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
     public void managerStateChanged(Manager manager) {
         Manager.State newState = manager.getState();
         if (newState != _previousState) {
-            showStatus(manager.getState().getDescription());
+            report(manager.getState().getDescription());
             _previousState = newState;
         }
-    }
-
-    /** Report an exception.  This prints a message to the standard error
-     *  stream, followed by the stack trace, but displays on the screen
-     *  only the error message associated with the exception.
-     */
-    public void report(Exception ex) {
-        String msg = "Exception thrown by applet.";
-        System.err.println(msg);
-        ex.printStackTrace();
-        showStatus("Exception occurred.");
-
-        JOptionPane.showMessageDialog(this, ex.getMessage(),
-                "Ptolemy II Error Message", JOptionPane.ERROR_MESSAGE);
-    }
-
-    /** Report an exception with an additional message.
-     *  This prints a message to standard error, followed by the stack trace,
-     *  and pops up a window with the message and the message of the
-     *  exception.
-     */
-    public void report(String message, Exception ex) {
-        String msg = "Exception thrown by applet.\n" + message;
-        System.err.println(msg);
-        ex.printStackTrace();
-        showStatus("Exception occurred.");
-        JOptionPane.showMessageDialog(this,
-               message + "\n" + ex.getMessage(),
-               "Ptolemy II Error Message",
-               JOptionPane.ERROR_MESSAGE);
     }
 
     /** Start execution of the model. This method is called by the
@@ -218,37 +170,8 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
         }
     }
 
-
-    /** Cleanup after execution of the model.  This method is called
-     *  by the browser or appletviewer to inform this applet that
-     *  it should clean up.
-     */
-    public void destroy() {
-        // Note: we used to call manager.terminate() here to get rid
-        // of a lingering browser problem
-        stop();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Concatenate two parameter info string arrays and return the result.
-     *  This is provided to make it easy for derived classes to override
-     *  the getParameterInfo() method. The returned array has length equal
-     *  to the sums of the lengths of the two arguments, and containing
-     *  the arrays contained by the arguments.
-     *
-     *  @param first The first string array.
-     *  @param second The second string array.
-     *  @return A concatenated string array.
-     */
-    protected String[][] _concatStringArrays(
-            String[][] first, String[][] second) {
-        String[][] newInfo = new String[first.length + second.length][];
-        System.arraycopy(first, 0, newInfo, 0, first.length);
-        System.arraycopy(second, 0, newInfo, first.length, second.length);
-        return newInfo;
-    }
 
     /** Create run controls in a panel and return that panel.
      *  The argument controls how many buttons are
@@ -276,28 +199,6 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
         return panel;
     }
 
-    /** Get the background color as set by the "background" applet parameter.
-     *  This is protected so that derived classes can find out what the
-     *  background color is. Derived classes may wish to know the
-     *  color so they can match it in some of their components.
-     *  @deprecated Use the public method getBackground() instead.
-     */
-    protected Color _getBackground() {
-        return _background;
-    }
-
-    /** Get the stack trace and return as a string.
-     *  @param ex The exception for which we want the stack trace.
-     *  @return The stack trace.
-     */
-    protected String _getStackTrace(Exception ex) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        PrintWriter printWriter = new PrintWriter(stream);
-        ex.printStackTrace(printWriter);
-        printWriter.flush();
-        return stream.toString();
-    }
-
     /** Execute the model, if the manager is not currently executing.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -321,14 +222,6 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The background color as set by the "background" applet parameter.
-     *  This is protected so that derived classes can control what the
-     *  background color is.  The Applet base class does not provide
-     *  a getBackground() method.  Derived classes may wish to know the
-     *  color so they can match it in some of their components.
-     */
-    protected Color _background;
-
     /** The manager, created in the init() method. */
     protected Manager _manager;
 
@@ -338,7 +231,7 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
     protected boolean _setupOK = true;
 
     /** The top-level composite actor, created in the init() method. */
-    protected TypedCompositeActor _toplevel;
+    protected CompositeActor _toplevel;
 
     /** The workspace that the applet is built in. Each applet has
      *  it own workspace.

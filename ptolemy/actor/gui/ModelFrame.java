@@ -39,6 +39,7 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.gui.StatusBar;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.moml.Documentation;
 
 // Java imports
 import javax.swing.KeyStroke;
@@ -107,10 +108,12 @@ public class ModelFrame extends JFrame implements ExecutionListener {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(_pane, BorderLayout.CENTER);
 
+        // Make the go button the default.
+        _pane.setDefaultButton();
+
         // Set up the menus.
         _fileMenu.setMnemonic(KeyEvent.VK_F);
-        _editMenu.setMnemonic(KeyEvent.VK_E);
-        _specialMenu.setMnemonic(KeyEvent.VK_S);
+        _helpMenu.setMnemonic(KeyEvent.VK_H);
 
         // File menu
         JMenuItem[] fileMenuItems = {
@@ -145,23 +148,20 @@ public class ModelFrame extends JFrame implements ExecutionListener {
         }
         _menubar.add(_fileMenu);
 
-        // Edit menu
-        _menubar.add(_editMenu);
-
-        // Special menu
-        JMenuItem[] specialMenuItems = {
+        // Help menu
+        JMenuItem[] helpMenuItems = {
             new JMenuItem("About", KeyEvent.VK_A),
             new JMenuItem("Help", KeyEvent.VK_H),
         };
-        SpecialMenuListener sml = new SpecialMenuListener();
+        HelpMenuListener sml = new HelpMenuListener();
         // Set the action command and listener for each menu item.
-        for(int i = 0; i < specialMenuItems.length; i++) {
-            specialMenuItems[i].setActionCommand(
-                    specialMenuItems[i].getText());
-            specialMenuItems[i].addActionListener(sml);
-            _specialMenu.add(specialMenuItems[i]);
+        for(int i = 0; i < helpMenuItems.length; i++) {
+            helpMenuItems[i].setActionCommand(
+                    helpMenuItems[i].getText());
+            helpMenuItems[i].addActionListener(sml);
+            _helpMenu.add(helpMenuItems[i]);
         }
-        _menubar.add(_specialMenu);
+        _menubar.add(_helpMenu);
 
         setJMenuBar(_menubar);
 
@@ -186,7 +186,7 @@ public class ModelFrame extends JFrame implements ExecutionListener {
      *  @param manager The manager calling this method.
      */
     public synchronized void executionFinished(Manager manager) {
-        report("Execution finished.");
+        report("execution finished.");
     }
 
     /** Get the associated model.
@@ -281,14 +281,11 @@ public class ModelFrame extends JFrame implements ExecutionListener {
     /** @serial Menubar for this frame. */
     protected JMenuBar _menubar = new JMenuBar();
 
-    /** @serial Edit menu for this frame. */
-    protected JMenu _editMenu = new JMenu("Edit");
-
     /** @serial File menu for this frame. */
     protected JMenu _fileMenu = new JMenu("File");
 
-    /** @serial Special menu for this frame. */
-    protected JMenu _specialMenu = new JMenu("Special");
+    /** @serial Help menu for this frame. */
+    protected JMenu _helpMenu = new JMenu("Help");
 
     /** @serial Directory that contains the input file. */
     protected File _directory = null;
@@ -303,14 +300,14 @@ public class ModelFrame extends JFrame implements ExecutionListener {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "Ptolemy II model control panel.\n" +
+                "This is a control panel for a Ptolemy II model.\n" +
                 "By: Claudius Ptolemeus, ptolemy@eecs.berkeley.edu\n" +
                 "Version 1.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n" +
                 "Copyright (c) 1997-1999, " +
                 "The Regents of the University of California.",
-                "About Ptolemy", JOptionPane.INFORMATION_MESSAGE);
+                "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Close the window.
@@ -322,10 +319,15 @@ public class ModelFrame extends JFrame implements ExecutionListener {
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        // FIXME: Extract documentation on the model and its parameters.
-        JOptionPane.showMessageDialog(this,
-                "Ptolemy II model control panel.\n",
-                "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
+        String message = "Ptolemy II model.";
+        if (_model != null) {
+            String tip = Documentation.consolidate(_model);
+            if (tip != null) {
+                message = "Ptolemy II model:\n" + tip;
+            }
+        }
+        JOptionPane.showMessageDialog(this, message,
+                "About " + getTitle(), JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a new file.
@@ -378,8 +380,7 @@ public class ModelFrame extends JFrame implements ExecutionListener {
      */
     protected void _print() {
         PrinterJob job = PrinterJob.getPrinterJob();
-        // FIXME: I can't find any documentation on what classes implement
-        // Printable!!!!!!!!!!!!!!!!!!!!!!!!!!!  This one doesn't...
+        // FIXME: What classes implement Printable? This one doesn't...
         // job.setPrintable(_pane);
         if (job.printDialog()) {
             try {
@@ -479,7 +480,7 @@ public class ModelFrame extends JFrame implements ExecutionListener {
         }
     }
 
-    class SpecialMenuListener implements ActionListener {
+    class HelpMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();

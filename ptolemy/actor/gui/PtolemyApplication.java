@@ -215,7 +215,7 @@ public class PtolemyApplication implements ExecutionListener {
      *  @param ex The exception to report.
      */
     public void report(String message, Exception ex) {
-        String msg = "Exception thrown by applet.\n" + message + "\n"
+        String msg = "Exception thrown.\n" + message + "\n"
                 + ex.toString();
         System.err.println(msg);
         ex.printStackTrace();

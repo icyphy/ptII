@@ -115,18 +115,19 @@ public class MoMLApplication extends PtolemyApplication {
                 // processing absolute URLs this way.  Relative
                 // URLs are opened as ordinary files.
                 URL inurl = new URL(null, arg);
-// FIXME: This base doesn't look right...  should be parent directory?
+                // Strangely, the XmlParser does not want as base the
+                // directory containing the file, but rather the file itself.
                 base = inurl;
                 instream = inurl.openStream();
             } catch (MalformedURLException ex) {
                 File file = new File(arg);
                 instream = new FileInputStream(file);
 
-                // Need to do a song and dance to get the directory.
-                File absFile = new File(file.getAbsolutePath());
-                File directory = absFile.getParentFile();
-
-                base = new URL("file", null, directory.getAbsolutePath());
+                // Strangely, the XmlParser does not want as base the
+                // directory containing the file, but rather the file itself.
+                File directory = new File(file.getAbsolutePath());
+                // base = new URL("file", null, directory);
+                base = file.toURL();
             }
             _read(base, instream);
         } else {
