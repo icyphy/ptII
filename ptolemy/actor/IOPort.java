@@ -170,14 +170,9 @@ public class IOPort extends ComponentPort {
     public void broadcast(Token token)
 	    throws IllegalActionException, NoRoomException {
         try {
-            workspace().getReadAccess();
-            if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "broadcast: Tokens can only be sent from an " +
-                        "output port.");
-            }
+            _workspace.getReadAccess();
             Receiver farRecs[][] = getRemoteReceivers();
-            if(farRecs == null) {
+            if (farRecs == null) {
                 return;
             }
 
@@ -185,7 +180,7 @@ public class IOPort extends ComponentPort {
                 send(j, token);
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -302,7 +297,7 @@ public class IOPort extends ComponentPort {
      */
     public Enumeration deepConnectedInPorts() {
 	try {
-	    workspace().getReadAccess();
+	    _workspace.getReadAccess();
 	    LinkedList result = new LinkedList();
 
 	    Enumeration allPorts = deepConnectedPorts();
@@ -314,7 +309,7 @@ public class IOPort extends ComponentPort {
 	    }
 	    return result.elements();
 	} finally {
-	    workspace().doneReading();
+	    _workspace.doneReading();
 	}
     }
 
@@ -329,7 +324,7 @@ public class IOPort extends ComponentPort {
      */
     public Enumeration deepConnectedOutPorts() {
 	try {
-	    workspace().getReadAccess();
+	    _workspace.getReadAccess();
 	    LinkedList result = new LinkedList();
 
 	    for (Enumeration allPorts = deepConnectedPorts();
@@ -341,7 +336,7 @@ public class IOPort extends ComponentPort {
 	    }
 	    return result.elements();
 	} finally {
-	    workspace().doneReading();
+	    _workspace.doneReading();
 	}
     }
 
@@ -363,10 +358,10 @@ public class IOPort extends ComponentPort {
      *   no receivers have been created.
      */
     public Receiver[][] deepGetReceivers() throws IllegalActionException {
-        if (!isInput()) return new Receiver[0][0];
+        if (!isInput()) return _EMPTY_RECEIVER_ARRAY;
         int width = getWidth();
-        if (width <= 0) return new Receiver[0][0];
-        if (_insideReceiversVersion != workspace().getVersion()) {
+        if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
+        if (_insideReceiversVersion != _workspace.getVersion()) {
             // Cache is invalid.  Update it.
             _insideReceivers = new Receiver[width][0];
             int index = 0;
@@ -383,7 +378,7 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
-            _insideReceiversVersion = workspace().getVersion();
+            _insideReceiversVersion = _workspace.getVersion();
         }
         return _insideReceivers;
     }
@@ -413,36 +408,32 @@ public class IOPort extends ComponentPort {
             throws NoTokenException, IllegalActionException {
         Receiver[][] localRec;
         try {
-            workspace().getReadAccess();
-            if (!isInput()) {
-                throw new IllegalActionException(this,
-                        "get: Tokens can only be retrieved from " +
-                        "an input port.");
+            try {
+                _workspace.getReadAccess();
+                // Note that the getReceivers() method might throw an
+                // IllegalActionException if there's no director.
+                localRec = getReceivers();
+                if (localRec[channelindex] == null) {
+                    throw new NoTokenException(this,
+                    "get: no receiver at index: " + channelindex + ".");
+                }
+            } finally {
+                _workspace.doneReading();
             }
-            if (channelindex >= getWidth() || channelindex < 0) {
-                throw new IllegalActionException(this,
-                        "get: channel index is out of range.");
+            Token tt = null;
+            for (int j = 0; j < localRec[channelindex].length; j++) {
+                Token ttt = localRec[channelindex][j].get();
+                if (tt == null) tt = ttt;
             }
-            // Note that the getReceivers() method might throw an
-            // IllegalActionException if there's no director.
-            localRec = getReceivers();
-            if (localRec[channelindex] == null) {
-                throw new NoTokenException(this,
-                        "get: no receiver at index: " + channelindex + ".");
+            if (tt == null) {
+                throw new NoTokenException(this, "get: No token to return.");
             }
-        } finally {
-            workspace().doneReading();
+            return tt;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may be thrown if the port is not an input port.
+            throw new IllegalActionException(this,
+            "get: channel index is out of range.");
         }
-        Token tt = null;
-        for (int j = 0; j < localRec[channelindex].length; j++) {
-            Token ttt = localRec[channelindex][j].get();
-            if (tt == null) tt = ttt;
-        }
-        if (tt == null) {
-            throw new NoTokenException(this,
-                    "get: No token to return.");
-        }
-        return tt;
     }
 
     /** If the port is an opaque output port, return the receivers that
@@ -463,11 +454,11 @@ public class IOPort extends ComponentPort {
      */
     public Receiver[][] getInsideReceivers() throws IllegalActionException {
         try {
-            workspace().getReadAccess();
-            if (!isOutput() || !isOpaque()) return new Receiver[0][0];
+            _workspace.getReadAccess();
+            if (!isOutput() || !isOpaque()) return _EMPTY_RECEIVER_ARRAY;
 
             // Check to see whether cache is valid.
-            if (_localInsideReceiversVersion == workspace().getVersion()) {
+            if (_localInsideReceiversVersion == _workspace.getVersion()) {
                 return _localInsideReceivers;
             }
 
@@ -479,7 +470,7 @@ public class IOPort extends ComponentPort {
                 width += r.getWidth();
             }
 
-            if (width <= 0) return new Receiver[0][0];
+            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
 
             // Cache not valid.  Reconstruct it.
             _localInsideReceivers = new Receiver[width][0];
@@ -494,10 +485,10 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
-            _localInsideReceiversVersion = workspace().getVersion();
+            _localInsideReceiversVersion = _workspace.getVersion();
             return _localInsideReceivers;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -542,18 +533,18 @@ public class IOPort extends ComponentPort {
      */
     public Receiver[][] getReceivers() throws IllegalActionException {
         try {
-            workspace().getReadAccess();
-            if (!isInput()) return new Receiver[0][0];
+            _workspace.getReadAccess();
+            if (!isInput()) return _EMPTY_RECEIVER_ARRAY;
 
             if(isOpaque()) {
                 // Check to see whether cache is valid.
-                if (_localReceiversVersion == workspace().getVersion()) {
+                if (_localReceiversVersion == _workspace.getVersion()) {
                     return _localReceivers;
                 }
 
                 // Cache not valid.  Reconstruct it.
                 int width = getWidth();
-                if (width <= 0) return new Receiver[0][0];
+                if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
 
                 _localReceivers = new Receiver[width][0];
                 int index = 0;
@@ -567,14 +558,14 @@ public class IOPort extends ComponentPort {
                         }
 		    }
                 }
-                _localReceiversVersion = workspace().getVersion();
+                _localReceiversVersion = _workspace.getVersion();
                 return _localReceivers;
             } else {
                 // Transparent port.
                 return deepGetReceivers();
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -597,7 +588,7 @@ public class IOPort extends ComponentPort {
     public Receiver[][] getReceivers(IORelation relation)
             throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // Allow inside relations also to support opaque,
             // non-atomic entities.
             boolean insidelink = isInsideLinked(relation);
@@ -608,11 +599,11 @@ public class IOPort extends ComponentPort {
             }
             boolean opaque = isOpaque();
             if (!isInput() && !(opaque && insidelink && isOutput())) {
-                return new Receiver[0][0];
+                return _EMPTY_RECEIVER_ARRAY;
             }
 
             int width = relation.getWidth();
-            if (width <= 0) return new Receiver[0][0];
+            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
 
             Receiver[][] result = null;
             // If the port is opaque, return the local Receivers for the
@@ -620,7 +611,7 @@ public class IOPort extends ComponentPort {
             if(opaque) {
                 // If _localReceiversTable is null, then createReceivers()
                 // hasn't been called, so there is nothing to return.
-                if (_localReceiversTable == null) return new Receiver[0][0];
+                if (_localReceiversTable == null) return _EMPTY_RECEIVER_ARRAY;
 
                 if( _localReceiversTable.containsKey(relation) ) {
                     // Get the list of receivers for this relation.
@@ -638,7 +629,7 @@ public class IOPort extends ComponentPort {
                 // part corresponding to the IORelation
                 Receiver[][] insideReceivers = getReceivers();
                 if(insideReceivers == null) {
-                    return new Receiver[0][0];
+                    return _EMPTY_RECEIVER_ARRAY;
                 }
                 int insideWidth = insideReceivers.length;
                 int index = 0;
@@ -662,7 +653,7 @@ public class IOPort extends ComponentPort {
                 return result;
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -685,16 +676,16 @@ public class IOPort extends ComponentPort {
      */
     public Receiver[][] getRemoteReceivers() {
         try {
-            workspace().getReadAccess();
-            if (!isOutput()) return new Receiver[0][0];
+            _workspace.getReadAccess();
+            if (!isOutput()) return _EMPTY_RECEIVER_ARRAY;
 
             int width = getWidth();
-            if (width <= 0) return new Receiver[0][0];
+            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
 
             // For opaque port, try the cached _farReceivers
             // Check validity of cached version
             if(isOpaque() &&
-                    _farReceiversVersion == workspace().getVersion()) {
+                    _farReceiversVersion == _workspace.getVersion()) {
                 return _farReceivers;
             }
             // If not an opaque port or Cache is not valid.  Reconstruct it.
@@ -725,12 +716,12 @@ public class IOPort extends ComponentPort {
             }
             // For an opaque port, cache the result.
             if(isOpaque()) {
-                _farReceiversVersion = workspace().getVersion();
+                _farReceiversVersion = _workspace.getVersion();
                 _farReceivers = farReceivers;
             }
             return farReceivers;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -755,21 +746,21 @@ public class IOPort extends ComponentPort {
     public Receiver[][] getRemoteReceivers(IORelation relation)
             throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (!isInsideLinked(relation)) {
                 throw new IllegalActionException(this, relation,
                         "not linked from the inside.");
             }
 
-            if (!isOutput()) return new Receiver[0][0];
+            if (!isOutput()) return _EMPTY_RECEIVER_ARRAY;
 
             int width = relation.getWidth();
-            if (width <= 0) return new Receiver[0][0];
+            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
 
             // no cache used.
             Receiver[][] outsideReceivers = getRemoteReceivers();
             if(outsideReceivers == null) {
-                return new Receiver[0][0];
+                return _EMPTY_RECEIVER_ARRAY;
             }
             Receiver[][] result = new Receiver[width][];
             Enumeration insideRels = insideRelations();
@@ -789,7 +780,7 @@ public class IOPort extends ComponentPort {
             }
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -801,9 +792,10 @@ public class IOPort extends ComponentPort {
      */
     public int getWidth() {
         try {
-            workspace().getReadAccess();
-            if(_widthVersion != workspace().getVersion()) {
-                _widthVersion = workspace().getVersion();
+            _workspace.getReadAccess();
+            long version = _workspace.getVersion();
+            if(_widthVersion != version) {
+                _widthVersion = version;
                 int sum = 0;
                 Enumeration relations = linkedRelations();
                 while(relations.hasMoreElements()) {
@@ -814,7 +806,7 @@ public class IOPort extends ComponentPort {
             }
             return _width;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -831,21 +823,18 @@ public class IOPort extends ComponentPort {
      *   is out of range.
      */
     public boolean hasRoom(int channelindex) throws IllegalActionException {
-        if (!isOutput()) {
+        try {
+            Receiver[][] farRecs = getRemoteReceivers();
+            if (farRecs == null || farRecs[channelindex] == null) {
+                return false;
+            }
+            for (int j = 0; j < farRecs[channelindex].length; j++) {
+                if (!farRecs[channelindex][j].hasRoom()) return false;
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This might be thrown if the port is not an input port.
             throw new IllegalActionException(this,
-                    "hasRoom: Tokens can only be sent from an " +
-                    "output port.");
-        }
-        if (channelindex >= getWidth() || channelindex < 0) {
-            throw new IllegalActionException(this,
-                    "hasRoom: Channel index out of range.");
-        }
-        Receiver[][] farRecs = getRemoteReceivers();
-        if (farRecs == null || farRecs[channelindex] == null) {
-            return false;
-        }
-        for (int j = 0; j < farRecs[channelindex].length; j++) {
-            if (!farRecs[channelindex][j].hasRoom()) return false;
+            "hasRoom: channel index is out of range.");
         }
         return true;
     }
@@ -865,23 +854,20 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelindex) throws IllegalActionException {
-        if (!isInput()) {
+        try {
+            // The getReceivers() method throws an IllegalActionException if
+            // there's no director.
+            Receiver[][] recs = getReceivers();
+            if (recs == null || recs[channelindex] == null) {
+                return false;
+            }
+            for (int j = 0; j < recs[channelindex].length; j++) {
+                if (recs[channelindex][j].hasToken()) return true;
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This might be thrown if the port is not an input port.
             throw new IllegalActionException(this,
-                    "hasToken: Tokens can only be retrieved from " +
-                    "an input port.");
-        }
-        if (channelindex >= getWidth() || channelindex < 0) {
-            throw new IllegalActionException(this,
-                    "hasToken: Channel index out of range.");
-        }
-        // The getReceivers() method throws an IllegalActionException if
-        // there's no director.
-        Receiver[][] recs = getReceivers();
-        if (recs == null || recs[channelindex] == null) {
-            return false;
-        }
-        for (int j = 0; j < recs[channelindex].length; j++) {
-            if (recs[channelindex][j].hasToken()) return true;
+            "hasToken: channel index is out of range.");
         }
         return false;
     }
@@ -897,9 +883,10 @@ public class IOPort extends ComponentPort {
      *  @return True if the port is an input.
      */
     public boolean isInput() {
-        if (_insideinputversion != workspace().getVersion()) {
+        long version = _workspace.getVersion();
+        if (_insideinputversion != version) {
             try {
-                workspace().getReadAccess();
+                _workspace.getReadAccess();
                 // Check to see whether any port linked on the inside
                 // is an input.
                 Enumeration ports = deepInsidePorts();
@@ -908,9 +895,9 @@ public class IOPort extends ComponentPort {
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isInput()) _isinput = true;
                 }
-                _insideinputversion = workspace().getVersion();
+                _insideinputversion = version;
             } finally {
-                workspace().doneReading();
+                _workspace.doneReading();
             }
         }
         return _isinput;
@@ -937,9 +924,10 @@ public class IOPort extends ComponentPort {
      *  @return True if the port is an output.
      */
     public boolean isOutput() {
-        if (_insideoutputversion != workspace().getVersion()) {
+        long version = _workspace.getVersion();
+        if (_insideoutputversion != version) {
             try {
-                workspace().getReadAccess();
+                _workspace.getReadAccess();
                 // Check to see whether any port linked on the
                 // inside is an output.
                 Enumeration ports = deepInsidePorts();
@@ -948,9 +936,9 @@ public class IOPort extends ComponentPort {
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isOutput()) _isoutput = true;
                 }
-                _insideoutputversion = workspace().getVersion();
+                _insideoutputversion = version;
             } finally {
-                workspace().doneReading();
+                _workspace.doneReading();
             }
         }
         return _isoutput;
@@ -959,7 +947,12 @@ public class IOPort extends ComponentPort {
     /** Send the specified token to all receivers connected to the
      *  specified channel.  Tokens are in general immutable, so each receiver
      *  is given a reference to the same token and no clones are made.
-     *  If there are no receivers, then do nothing. The transfer is
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, or the channel index is out of
+     *  range, or the port is not an output port,
+     *  then just silently return.  This behavior makes it
+     *  easy to leave output ports unconnected when you are not interested
+     *  in the output.  The transfer is
      *  accomplished by calling the put() method of the remote receivers.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, then just return.
@@ -973,32 +966,27 @@ public class IOPort extends ComponentPort {
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param token The token to send
      *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException If the port is not an output or if
-     *   the index is out of range.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void send(int channelindex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farRec;
         try {
-            workspace().getReadAccess();
-            if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "send: Tokens can only be sent from an "+
-                        "output port.");
+            try {
+                _workspace.getReadAccess();
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farRec = getRemoteReceivers();
+                if (farRec == null || farRec[channelindex] == null) return;
+            } finally {
+                _workspace.doneReading();
             }
-            if (channelindex >= getWidth() || channelindex < 0) {
-                throw new IllegalActionException(this,
-                        "send: channel index is out of range.");
+            for (int j = 0; j < farRec[channelindex].length; j++) {
+                farRec[channelindex][j].put(token);
             }
-            // Note that the getRemoteReceivers() method doesn't throw
-            // any non-runtime exception.
-            farRec = getRemoteReceivers();
-            if (farRec == null || farRec[channelindex] == null) return;
-        } finally {
-            workspace().doneReading();
-        }
-        for (int j = 0; j < farRec[channelindex].length; j++) {
-            farRec[channelindex][j].put(token);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
         }
     }
 
@@ -1040,9 +1028,9 @@ public class IOPort extends ComponentPort {
         // atomic, we still need to obtain write access to be sure that
         // the change is not made in the middle of another read in another
         // thread.
-        workspace().getWriteAccess();
+        _workspace.getWriteAccess();
         _isinput = isinput;
-        workspace().doneWriting();
+        _workspace.doneWriting();
     }
 
     /** If the argument is true, make the port a multiport.
@@ -1063,9 +1051,9 @@ public class IOPort extends ComponentPort {
         // atomic, we still need to obtain write access to be sure that
         // the change is not made in the middle of another read in another
         // thread.
-        workspace().getWriteAccess();
+        _workspace.getWriteAccess();
         _ismultiport = ismultiport;
-        workspace().doneWriting();
+        _workspace.doneWriting();
     }
 
     /** If the argument is true, make the port an output port.
@@ -1083,9 +1071,9 @@ public class IOPort extends ComponentPort {
         // atomic, we still need to obtain write access to be sure that
         // the change is not made in the middle of another read in another
         // thread.
-        workspace().getWriteAccess();
+        _workspace.getWriteAccess();
         _isoutput = isoutput;
-        workspace().doneWriting();
+        _workspace.doneWriting();
     }
 
     /** Unlink the specified Relation. The receivers associated with
@@ -1097,13 +1085,13 @@ public class IOPort extends ComponentPort {
      */
     public void unlink(Relation relation) {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             super.unlink(relation);
             if (_localReceiversTable != null) {
                 _localReceiversTable.remove(relation);
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -1113,13 +1101,13 @@ public class IOPort extends ComponentPort {
      */
     public void unlinkAll() {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             super.unlinkAll();
             if (_localReceiversTable != null) {
                 _localReceiversTable.clear();
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -1181,7 +1169,7 @@ public class IOPort extends ComponentPort {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -1276,7 +1264,7 @@ public class IOPort extends ComponentPort {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -1478,6 +1466,10 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // To avoid creating this repeatedly, we use a single version.
+    private static final Receiver[][]
+             _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
 
     // Indicate whether the port is an input, an output, or both.
     // The value may be overridden in transparent ports, in that if

@@ -57,13 +57,13 @@ workspace.  To read-synchronize on its workspace, it uses the following
 code in a method:
 <pre>
     try {
-	workspace().getReadAccess();
+	_workspace.getReadAccess();
 	// ... code that reads
     } finally {
-	workspace().doneReading();
+	_workspace.doneReading();
     }
 </pre>
-We assume that the workspace() method returns the workspace, as for example
+We assume that the _workspace variable references the workspace, as for example
 in the NamedObj class. The getReadAccess() method suspends the thread if
 another thread is currently modifying the workspace, and otherwise
 returns immediately. Note that multiple readers can simultaneously have
@@ -77,10 +77,10 @@ To make changes in the workspace, a thread must write-synchronize
 using the following code:
 <pre>
     try {
-	workspace().getWriteAccess();
+	_workspace.getWriteAccess();
 	// ... code that writes
     } finally {
-	workspace().doneWriting();
+	_workspace.doneWriting();
     }
 </pre>
 Only one thread can be writing to the workspace at a time, and

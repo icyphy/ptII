@@ -364,10 +364,10 @@ test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
     set res8 [$p2 hasToken 0]
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8
 } {1 {ptolemy.kernel.util.IllegalActionException: ..E1.P1:
-hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: ..E2.P2:
-hasRoom: Tokens can only be sent from an output port.} 0 0 {ptolemy.kernel.util.IllegalActionException: ..E1.P1:
-hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: ..E2.P2:
-hasRoom: Tokens can only be sent from an output port.} 1}
+hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: ..E2.P2:
+hasRoom: channel index is out of range.} 0 0 {ptolemy.kernel.util.IllegalActionException: ..E1.P1:
+hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: ..E2.P2:
+hasRoom: channel index is out of range.} 1}
 
 test IOPort-9.2 {Check unlink and send to dangling relation} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -419,11 +419,12 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
 
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
-    catch {$p1 send 0 $token} msg1
+    catch {$p1 hasRoom 0} msg1
     catch {$p2 get 0} msg2
     list [$p2 getWidth] $msg1 $msg2
 } {1 {ptolemy.kernel.util.IllegalActionException: ..E1.P1:
-send: channel index is out of range.} {ptolemy.actor.NoTokenException: ..E2.P2: Attempt to get data from an empty mailbox.}}
+hasRoom: channel index is out of range.} {ptolemy.actor.NoTokenException: ..E2.P2:
+Attempt to get data from an empty mailbox.}}
 
 test IOPort-9.4 {Check loopback send} {
     set e0 [java::new ptolemy.actor.CompositeActor]

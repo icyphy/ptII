@@ -304,12 +304,12 @@ public class CompositeEntity extends ComponentEntity {
                     "Attempt to connect null port.");
         }
         if (port1.workspace() != port2.workspace() ||
-                port1.workspace() != workspace()) {
+                port1.workspace() != _workspace) {
             throw new IllegalActionException(port1, port2,
                     "Cannot connect ports because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             ComponentRelation ar = newRelation(relationname);
             if (_levelCrossingConnectAllowed) {
                 port1.liberalLink(ar);
@@ -329,7 +329,7 @@ public class CompositeEntity extends ComponentEntity {
             }
             return ar;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -341,7 +341,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration deepGetEntities() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             Enumeration enum = _containedEntities.elements();
             // Construct a linked list and then return an enumeration of it.
             LinkedList result = new LinkedList();
@@ -357,7 +357,7 @@ public class CompositeEntity extends ComponentEntity {
             }
             return result.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -374,7 +374,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Attribute getAttribute(String name) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // Check attributes and ports first.
             Attribute result = super.getAttribute(name);
             if (result == null) {
@@ -396,7 +396,7 @@ public class CompositeEntity extends ComponentEntity {
             }
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -409,7 +409,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public ComponentEntity getEntity(String name) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String[] subnames = _splitName(name);
             if (subnames[1] == null) {
                 return (ComponentEntity)_containedEntities.get(name);
@@ -426,7 +426,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -440,13 +440,13 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration getEntities() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // Copy the list so we can create a static enumeration.
             NamedList entitiesCopy = new NamedList(_containedEntities);
             Enumeration entities = entitiesCopy.elements();
             return entities;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -459,7 +459,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Port getPort(String name) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String[] subnames = _splitName(name);
             if (subnames[1] == null) {
                 return super.getPort(name);
@@ -473,7 +473,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -486,7 +486,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public ComponentRelation getRelation(String name) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String[] subnames = _splitName(name);
             if (subnames[1] == null) {
                 return (ComponentRelation)_containedRelations.get(name);
@@ -504,7 +504,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -517,13 +517,13 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration getRelations() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // Copy the list so we can create a static enumeration.
             NamedList relationsCopy = new NamedList(_containedRelations);
             Enumeration relations = relationsCopy.elements();
             return relations;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -560,11 +560,11 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             ComponentRelation rel = new ComponentRelation(this, name);
             return rel;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -574,10 +574,10 @@ public class CompositeEntity extends ComponentEntity {
      */
     public int numEntities() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _containedEntities.size();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -587,10 +587,10 @@ public class CompositeEntity extends ComponentEntity {
      */
     public int numRelations() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _containedRelations.size();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -601,7 +601,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public void removeAllEntities() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // Have to copy list to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
@@ -622,7 +622,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -633,7 +633,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public void removeAllRelations() {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             // Have to copy list to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
@@ -654,7 +654,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -719,7 +719,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -749,7 +749,7 @@ public class CompositeEntity extends ComponentEntity {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 

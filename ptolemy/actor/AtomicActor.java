@@ -151,14 +151,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public Manager getManager() {
 	try {
-	    workspace().getReadAccess();
+	    _workspace.getReadAccess();
 	    CompositeActor container = (CompositeActor)getContainer();
 	    if (container != null) {
 		return container.getManager();
 	    }
 	    return null;
 	} finally {
-	    workspace().doneReading();
+	    _workspace.doneReading();
 	}
     }
 
@@ -184,9 +184,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return An enumeration of input IOPort objects.
      */
     public Enumeration inputPorts() {
-        if(_inputPortsVersion != workspace().getVersion()) {
+        if(_inputPortsVersion != _workspace.getVersion()) {
             try {
-                workspace().getReadAccess();
+                _workspace.getReadAccess();
                 // Update the cache.
                 LinkedList inports = new LinkedList();
                 Enumeration ports = getPorts();
@@ -197,9 +197,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
                     }
                 }
                 _cachedInputPorts = inports;
-                _inputPortsVersion = workspace().getVersion();
+                _inputPortsVersion = _workspace.getVersion();
             } finally {
-                workspace().doneReading();
+                _workspace.doneReading();
             }
         }
         return _cachedInputPorts.elements();
@@ -219,7 +219,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             IOPort port = new IOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -228,7 +228,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
             throw new InternalErrorException(
                     "AtomicActor.newPort: Internal error: " + ex.getMessage());
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -253,9 +253,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return An enumeration of output IOPort objects.
      */
     public Enumeration outputPorts() {
-        if(_outputPortsVersion != workspace().getVersion()) {
+        if(_outputPortsVersion != _workspace.getVersion()) {
             try {
-                workspace().getReadAccess();
+                _workspace.getReadAccess();
                 _cachedOutputPorts = new LinkedList();
                 Enumeration ports = getPorts();
                 while(ports.hasMoreElements()) {
@@ -264,9 +264,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
                         _cachedOutputPorts.insertLast(p);
                     }
                 }
-                _outputPortsVersion = workspace().getVersion();
+                _outputPortsVersion = _workspace.getVersion();
             } finally {
-                workspace().doneReading();
+                _workspace.doneReading();
             }
         }
         return _cachedOutputPorts.elements();

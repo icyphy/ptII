@@ -128,8 +128,8 @@ public class ComponentRelation extends Relation {
      */
     public Enumeration deepLinkedPorts() {
         try {
-            workspace().getReadAccess();
-            if (_deeplinkedportsversion == workspace().getVersion()) {
+            _workspace.getReadAccess();
+            if (_deeplinkedportsversion == _workspace.getVersion()) {
                 // Cache is valid.  Use it.
                 return _deeplinkedports.elements();
             }
@@ -153,10 +153,10 @@ public class ComponentRelation extends Relation {
                     _deeplinkedports.appendElements(port.deepInsidePorts());
                 }
             }
-            _deeplinkedportsversion = workspace().getVersion();
+            _deeplinkedportsversion = _workspace.getVersion();
             return _deeplinkedports.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -191,19 +191,19 @@ public class ComponentRelation extends Relation {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && workspace() != container.workspace()) {
+        if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             CompositeEntity prevcontainer = (CompositeEntity)getContainer();
             if (prevcontainer == container) return;
             // Do this first, because it may throw an exception.
             if (container != null) {
                 container._addRelation(this);
                 if (prevcontainer == null) {
-                    workspace().remove(this);
+                    _workspace.remove(this);
                 }
             }
             _container = container;
@@ -213,9 +213,9 @@ public class ComponentRelation extends Relation {
             if (container == null) {
                 unlinkAll();
             }
-            workspace().incrVersion();
+            _workspace.incrVersion();
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 

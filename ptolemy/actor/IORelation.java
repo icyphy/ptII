@@ -164,7 +164,7 @@ public class IORelation extends ComponentRelation {
      */
     public Receiver[][] deepReceivers(IOPort except) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             Receiver[][] result = new Receiver[0][0];
             Enumeration inputs = linkedDestinationPorts(except);
             Receiver[][] recvrs = new Receiver[0][0];
@@ -198,7 +198,7 @@ public class IORelation extends ComponentRelation {
             }
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -256,7 +256,7 @@ public class IORelation extends ComponentRelation {
      */
     public Enumeration linkedDestinationPorts(IOPort except) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // NOTE: The result could be cached for efficiency, but
             // it would have to be cached in a hashtable indexed by the
             // except argument.  Probably not worth it.
@@ -275,7 +275,7 @@ public class IORelation extends ComponentRelation {
             }
             return resultPorts.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -303,7 +303,7 @@ public class IORelation extends ComponentRelation {
      */
     public Enumeration linkedSourcePorts(IOPort except) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // NOTE: The result could be cached for efficiency, but
             // it would have to be cached in a hashtable indexed by the
             // except argument.  Probably not worth it.
@@ -322,7 +322,7 @@ public class IORelation extends ComponentRelation {
             }
             return resultPorts.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -376,7 +376,7 @@ public class IORelation extends ComponentRelation {
      */
     public void setWidth(int width) throws IllegalActionException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             if(width == 0) {
                 // Check legitimacy of the change.
                 try {
@@ -401,7 +401,7 @@ public class IORelation extends ComponentRelation {
             }
             _width = width;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -455,7 +455,7 @@ public class IORelation extends ComponentRelation {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -474,7 +474,7 @@ public class IORelation extends ComponentRelation {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -528,7 +528,8 @@ public class IORelation extends ComponentRelation {
     // This method is not read-synchronized on the workspace, so the caller
     // should be.
     private int _inferWidth() {
-        if (workspace().getVersion() != _inferredWidthVersion) {
+        long version = _workspace.getVersion();
+        if (version != _inferredWidthVersion) {
             _inferredWidth = 1;
             Enumeration ports = linkedPorts();
             while(ports.hasMoreElements()) {
@@ -541,7 +542,7 @@ public class IORelation extends ComponentRelation {
                     if (diff > _inferredWidth) _inferredWidth = diff;
                 }
             }
-            _inferredWidthVersion = workspace().getVersion();
+            _inferredWidthVersion = version;
         }
         return _inferredWidth;
     }

@@ -69,10 +69,10 @@ test RectangularToPolar-1.1 {test 1} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute
-    list [enumToTokenValues [$rec1 getRecord 0]] \
-         [enumToTokenValues [$rec2 getRecord 0]]
-
-} {5.0 0.927}
+    set result [list [enumToTokenValues [$rec1 getRecord 0]] \
+         [enumToTokenValues [$rec2 getRecord 0]]]
+    ptclose $result {5.0 0.927}
+} {1}
 
 ######################################################################
 #### Test RectangularToPolar in an SDF model
@@ -115,11 +115,8 @@ test RectangularToPolar-1.2 {test 2: testing both PolarToRec and RecToPolar} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute
-    list [enumToTokenValues [$rec1 getRecord 0]] \
-         [enumToTokenValues [$rec2 getRecord 0]]
-
-} {3.000 4.0}
-
-
-
+    set result [list [enumToTokenValues [$rec1 getRecord 0]] \
+         [enumToTokenValues [$rec2 getRecord 0]]]
+    ptclose $result {3.000 4.0}
+} {1}
 

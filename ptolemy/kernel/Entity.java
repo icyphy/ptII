@@ -169,13 +169,13 @@ public class Entity extends NamedObj {
      */
     public Enumeration connectedPorts() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // This works by constructing a linked list and then enumerating it.
             // While this may seem costly, it means that the returned
             // enumeration is robust.  It will not be corrupted by changes
             // in the topology.
             // The linked list is cached for efficiency.
-            if (workspace().getVersion() != _connectedportsversion) {
+            if (_workspace.getVersion() != _connectedportsversion) {
                 // Cache is not valid, so update it.
                 _connectedports = new LinkedList();
                 Enumeration ports = _portList.elements();
@@ -184,11 +184,11 @@ public class Entity extends NamedObj {
                     Port port = (Port)ports.nextElement();
                     _connectedports.appendElements( port.connectedPorts() );
                 }
-                _connectedportsversion = workspace().getVersion();
+                _connectedportsversion = _workspace.getVersion();
             }
             return _connectedports.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -209,7 +209,7 @@ public class Entity extends NamedObj {
      */
     public Attribute getAttribute(String name) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             Attribute result = super.getAttribute(name);
             if (result == null) {
                 // Check ports.
@@ -223,7 +223,7 @@ public class Entity extends NamedObj {
             }
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -235,10 +235,10 @@ public class Entity extends NamedObj {
      */
     public Port getPort(String name) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return (Port)_portList.get(name);
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -249,10 +249,10 @@ public class Entity extends NamedObj {
      */
     public Enumeration getPorts() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _portList.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -263,10 +263,10 @@ public class Entity extends NamedObj {
      */
     public Enumeration linkedRelations() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // This method constructs a list and then enumerates it.
             // The list is cached for efficiency.
-            if (workspace().getVersion() != _linkedrelationsversion) {
+            if (_workspace.getVersion() != _linkedrelationsversion) {
                 // Cache is not valid.  Update it.
                 _linkedrelations = new LinkedList();
                 Enumeration ports = _portList.elements();
@@ -275,11 +275,11 @@ public class Entity extends NamedObj {
                     Port port = (Port)ports.nextElement();
                     _linkedrelations.appendElements( port.linkedRelations() );
                 }
-                _linkedrelationsversion = workspace().getVersion();
+                _linkedrelationsversion = _workspace.getVersion();
             }
             return _linkedrelations.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -300,11 +300,11 @@ public class Entity extends NamedObj {
     public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             Port port = new Port(this, name);
             return port;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -315,7 +315,7 @@ public class Entity extends NamedObj {
      */
     public void removeAllPorts() {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             // Have to copy _portList to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this a bug in in NamedList?
             NamedList portListCopy = new NamedList(_portList);
@@ -333,7 +333,7 @@ public class Entity extends NamedObj {
                 }
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -378,7 +378,7 @@ public class Entity extends NamedObj {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -400,7 +400,7 @@ public class Entity extends NamedObj {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 

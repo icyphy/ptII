@@ -162,10 +162,10 @@ public class Relation extends NamedObj {
      */
     public Enumeration linkedPorts() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _portList.getContainers();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -179,7 +179,7 @@ public class Relation extends NamedObj {
     public Enumeration linkedPorts(Port except) {
         // This works by constructing a linked list and then enumerating it.
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             LinkedList storedPorts = new LinkedList();
             Enumeration ports = _portList.getContainers();
 
@@ -190,7 +190,7 @@ public class Relation extends NamedObj {
             }
             return storedPorts.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -200,10 +200,10 @@ public class Relation extends NamedObj {
      */
     public int numLinks() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _portList.size();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -213,7 +213,7 @@ public class Relation extends NamedObj {
      */
     public void unlinkAll() {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             // NOTE: Do not just use _portList.unlinkAll() because then the
             // containers of the ports are not notified of the change.
             // Also, have to first copy the ports references, then remove
@@ -230,7 +230,7 @@ public class Relation extends NamedObj {
                 portArray[i].unlink(this);
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -265,7 +265,7 @@ public class Relation extends NamedObj {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -290,7 +290,7 @@ public class Relation extends NamedObj {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 

@@ -134,7 +134,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             TypedIOPort port = new TypedIOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -144,7 +144,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                     "TypedAtomicActor.newPort: Internal error: " +
 		    ex.getMessage());
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -186,7 +186,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      */
     public Enumeration typeConstraints()  {
 	try {
-	    workspace().getReadAccess();
+	    _workspace.getReadAccess();
 
 	    LinkedList result = new LinkedList();
 	    Enumeration inPorts = inputPorts();
@@ -230,7 +230,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	    return result.elements();
 
 	}finally {
-	    workspace().doneReading();
+	    _workspace.doneReading();
 	}
     }
 

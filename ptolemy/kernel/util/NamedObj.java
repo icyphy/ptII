@@ -240,7 +240,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *   cannot be cloned.
      */
     public Object clone() throws CloneNotSupportedException {
-        return clone(workspace());
+        return clone(_workspace);
     }
 
     /** Clone the object into the specified workspace. The new object is
@@ -265,7 +265,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         // a reference to the cloned object because we have only just
         // created it and have not returned the reference.
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             NamedObj newobj = (NamedObj)super.clone();
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
@@ -294,7 +294,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             }
             return newobj;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -311,10 +311,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public boolean deepContains(NamedObj inside) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // Start with the inside and check its containers in sequence.
             if (inside != null) {
-                if (workspace() != inside.workspace()) return false;
+                if (_workspace != inside._workspace) return false;
                 Nameable container = inside.getContainer();
                 while (container != null) {
                     if (container == this) {
@@ -325,7 +325,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             }
             return false;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -359,7 +359,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public Attribute getAttribute(String name) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (_attributes == null) {
                 // No attribute has been added to this NamedObj yet.
                 return null;
@@ -377,7 +377,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 }
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -387,14 +387,14 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public Enumeration getAttributes() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if  (_attributes == null) {
                 return (new NamedList()).elements();
             } else {
                 return _attributes.elements();
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -423,7 +423,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public String getFullName() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // NOTE: For improved performance, the full name could be cached.
             String fullName = getName();
             // Use a linked list to keep track of what we've seen already.
@@ -445,9 +445,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 visited.add(container);
                 container = container.getContainer();
             }
-            return workspace().getName() + "." + fullName;
+            return _workspace.getName() + "." + fullName;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -497,10 +497,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             "Cannot set a name with a period: " + name);
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             _name = name;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
         if (_debugging) {
             _debug("Changed name from", oldName, "to", getFullName());
@@ -586,7 +586,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     protected void _addAttribute(Attribute p)
             throws NameDuplicationException, IllegalActionException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             try {
                 if (_attributes == null) {
                     _attributes = new NamedList();
@@ -602,7 +602,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 _debug("Added attribute", p.getName(), "to", getFullName());
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -683,7 +683,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result = _getIndentPrefix(indent);
             if (bracket == 1 || bracket == 2) result += "{";
             if((detail & CLASSNAME) != 0) {
@@ -715,7 +715,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -740,14 +740,14 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     protected void _removeAttribute(Attribute param) {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             _attributes.remove((Nameable)param);
             if (_debugging) {
                 _debug("Removed attribute", param.getName(), "from",
                 getFullName());
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -776,6 +776,11 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
+    /** @serial The workspace for this object.
+     * This should be set by the constructor and never changed.
+     */
+    protected Workspace _workspace;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -792,9 +797,4 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
 
     /** @serial The Attributes attached to this object. */
     private NamedList _attributes;
-
-    /** @serial The workspace for this object.
-     * This should be set by the constructor and never changed.
-     */
-    private Workspace _workspace;
 }

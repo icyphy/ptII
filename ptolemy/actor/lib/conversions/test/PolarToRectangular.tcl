@@ -70,9 +70,9 @@ test PolarToRectangular-1.1 {test 1} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute
-    list [enumToTokenValues [$rec1 getRecord 0]] \
-         [enumToTokenValues [$rec2 getRecord 0]]
-
-} {-1.961 -2.270}
+    set result [list [enumToTokenValues [$rec1 getRecord 0]] \
+         [enumToTokenValues [$rec2 getRecord 0]]]
+    ptclose $result {-1.961 -2.270}
+} {1}
 
 

@@ -88,7 +88,7 @@ test SetParameter-3.0 {queue change with the manager} {
     enumToTokenValues [$rec getRecord 0]
 } {0.01 a}
 
-test SetParameter-3.0 {queue erroneous change with the manager} {
+test SetParameter-3.1 {queue erroneous change with the manager} {
     $m initialize
     $m iterate
     set c [java::new ptolemy.actor.event.SetParameter $e0 $value {x}]

@@ -46,7 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	
+	Time.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -76,7 +76,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple time
 
 test_java: jclass
 
@@ -87,7 +87,8 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-
+time: Time.class
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.lib.test.Time
 
 depend:
 	@echo "no dependencies in this directory"

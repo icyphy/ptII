@@ -182,10 +182,10 @@ public class ComponentPort extends Port {
      */
     public Enumeration deepConnectedPorts() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _deepConnectedPorts(null);
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -200,10 +200,10 @@ public class ComponentPort extends Port {
      */
     public Enumeration deepInsidePorts() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _deepInsidePorts(null);
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -215,7 +215,7 @@ public class ComponentPort extends Port {
      */
     public Enumeration insidePorts() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             LinkedList result = new LinkedList();
             Enumeration relations = insideRelations();
             while (relations.hasMoreElements()) {
@@ -224,7 +224,7 @@ public class ComponentPort extends Port {
             }
             return result.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -236,10 +236,10 @@ public class ComponentPort extends Port {
      */
     public Enumeration insideRelations() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _insideLinks.getContainers();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -250,12 +250,12 @@ public class ComponentPort extends Port {
     public boolean isDeeplyConnected(ComponentPort port) {
         if(port == null) return false;
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             // Call deepConnectedPort to refresh the cache.
             Enumeration dummy = deepConnectedPorts();
             return _deeplinkedports.includes(port);
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -302,12 +302,12 @@ public class ComponentPort extends Port {
     public void liberalLink(ComponentRelation relation)
             throws IllegalActionException {
         if (relation == null) return;
-        if (workspace() != relation.workspace()) {
+        if (_workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             if (_outside(relation.getContainer())) {
                 // An inside link
                 _linkInside(relation);
@@ -316,7 +316,7 @@ public class ComponentPort extends Port {
                 _link(relation);
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -342,12 +342,12 @@ public class ComponentPort extends Port {
                     "ComponentPort can only link to instances "+
                     "of ComponentRelation.");
         }
-        if (workspace() != relation.workspace()) {
+        if (_workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             Nameable container = getContainer();
             if (container != null) {
                 Nameable relcont = relation.getContainer();
@@ -359,7 +359,7 @@ public class ComponentPort extends Port {
             }
             liberalLink((ComponentRelation)relation);
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -369,10 +369,10 @@ public class ComponentPort extends Port {
      */
     public int numInsideLinks() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _insideLinks.size();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -402,12 +402,12 @@ public class ComponentPort extends Port {
      */
     public void unlink(Relation relation) {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             // Not sure whether it's an inside link, so unlink both.
             super.unlink(relation);
             _insideLinks.unlink(relation);
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -417,11 +417,11 @@ public class ComponentPort extends Port {
      */
     public void unlinkAll() {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             super.unlinkAll();
             _insideLinks.unlinkAll();
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -445,7 +445,7 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentPort objects.
      */
     protected Enumeration _deepConnectedPorts(LinkedList path) {
-        if (_deeplinkedportsversion == workspace().getVersion()) {
+        if (_deeplinkedportsversion == _workspace.getVersion()) {
             // Cache is valid.  Use it.
             return _deeplinkedports.elements();
         }
@@ -495,7 +495,7 @@ public class ComponentPort extends Port {
             }
         }
         _deeplinkedports = result;
-        _deeplinkedportsversion = workspace().getVersion();
+        _deeplinkedportsversion = _workspace.getVersion();
         path.removeFirst();
         return _deeplinkedports.elements();
     }
@@ -518,7 +518,7 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentPort objects.
      */
     protected Enumeration _deepInsidePorts(LinkedList path) {
-        if (_deeplinkedinportsversion == workspace().getVersion()) {
+        if (_deeplinkedinportsversion == _workspace.getVersion()) {
             // Cache is valid.  Use it.
             return _deeplinkedinports.elements();
         }
@@ -567,7 +567,7 @@ public class ComponentPort extends Port {
             }
         }
         _deeplinkedinports = result;
-        _deeplinkedinportsversion = workspace().getVersion();
+        _deeplinkedinportsversion = _workspace.getVersion();
         path.removeFirst();
         return _deeplinkedinports.elements();
     }
@@ -589,7 +589,7 @@ public class ComponentPort extends Port {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -614,7 +614,7 @@ public class ComponentPort extends Port {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -678,7 +678,7 @@ public class ComponentPort extends Port {
      */
     protected boolean _outside(Nameable entity) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             Nameable portcontainer = getContainer();
             while (entity != null) {
                 if (portcontainer == entity) return true;
@@ -686,7 +686,7 @@ public class ComponentPort extends Port {
             }
             return false;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 

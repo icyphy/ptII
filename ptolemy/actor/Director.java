@@ -654,7 +654,7 @@ public class Director extends NamedObj implements Executable {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -673,7 +673,7 @@ public class Director extends NamedObj implements Executable {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -689,7 +689,7 @@ public class Director extends NamedObj implements Executable {
 
         _container = cast;
         if (cast != null) {
-            workspace().remove(this);
+            _workspace.remove(this);
         }
     }
 

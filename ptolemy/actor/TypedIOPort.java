@@ -162,10 +162,10 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public Type getType() {
 	try {
-	    workspace().getReadAccess();
+	    _workspace.getReadAccess();
 	    return _resolvedType;
 	} finally {
-	    workspace().doneReading();
+	    _workspace.doneReading();
 	}
     }
 
@@ -191,20 +191,23 @@ public class TypedIOPort extends IOPort implements Typeable {
 	_typeListeners.removeOneOf(listener);
     }
 
-    /** Override the method in the super class to do type checking.
+    /** Send a token to the specified channel, checking the type
+     *  and converting the token if necessary.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, or the channel index is out of
+     *  range, or the port is not an output port,
+     *  then just silently return.  This behavior makes it
+     *  easy to leave output ports unconnected when you are not interested
+     *  in the output.
      *  If the type of the specified token is the type of this
      *  port, or the token can be converted to that type
      *  losslessly, the token is sent to all receivers connected to the
      *  specified channel. Otherwise, IllegalActionException is thrown.
      *  Before putting the token into the destination receivers, this
-     *  method also finds the type of the input TypedIOPort
-     *  containing the receivers, and tests if the token is an instance
-     *  of that type. If not, this method will convert the token to the
-     *  type of the input port. The conversion is done by calling the
-     *  convert() method on an instance of a token with the type
-     *  of the input port.
-     *  If the port is not connected to anything, or receivers have not been
-     *  created in the remote port, then just return.
+     *  method also checks the type of the remote input port,
+     *  and converts the token if necessary.
+     *  The conversion is done by calling the
+     *  convert() method of the type of the remote input port.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a put,
@@ -212,10 +215,9 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling put.
      *
-     *  @param channelindex The index of the channel, from 0 to width-1
-     *  @param token The token to send
-     *  @exception IllegalActionException If the port is not an output,
-     *   or if the index is out of range, or if the token to be sent cannot
+     *  @param channelindex The index of the channel, from 0 to width-1.
+     *  @param token The token to send.
+     *  @exception IllegalActionException If the token to be sent cannot
      *   be converted to the type of this port, or if the token is null.
      *  @exception NoRoomException If there is no room in the receiver.
      */
@@ -227,45 +229,42 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 	Receiver[][] farRec;
         try {
-            workspace().getReadAccess();
-            if (!isOutput()) {
-                throw new NoRoomException(this,
-                        "send: Tokens can only be sent from an output port.");
-            }
-            if (channelindex >= getWidth() || channelindex < 0) {
-                throw new NoRoomException(this,
-                        "send: channel index is out of range.");
-            }
-	    int compare = TypeLattice.compare(token.getType(), _resolvedType);
-	    if (compare == CPO.HIGHER ||
-                    compare == CPO.INCOMPARABLE) {
-		throw new IllegalArgumentException("Run-time type checking " +
-                        "failed. token type: " + token.getType().toString() +
-                        ", port: " + getFullName() + ", port type: " +
-                        getType().toString());
-	    }
+            try {
+                _workspace.getReadAccess();
+                int compare = TypeLattice.compare(token.getType(),
+                        _resolvedType);
+                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                    throw new IllegalArgumentException(
+                    "Run-time type checking failed. token type: "
+                    + token.getType().toString() + ", port: "
+                    + getFullName() + ", port type: " + getType().toString());
+                }
 
-	    // Note that the getRemoteReceivers() method doesn't throw
-            // any non-runtime exception.
-	    farRec = getRemoteReceivers();
-	    if (farRec == null || farRec[channelindex] == null) {
-		return;
-	    }
-        } finally {
-            workspace().doneReading();
-        }
-
-        for (int j = 0; j < farRec[channelindex].length; j++) {
-	    TypedIOPort port =
-                    (TypedIOPort)farRec[channelindex][j].getContainer();
-            Type farType = port.getType();
-
-	    if (farType.isEqualTo(token.getType())) {
-                farRec[channelindex][j].put(token);
-            } else {
-                Token newToken = farType.convert(token);
-                farRec[channelindex][j].put(newToken);
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farRec = getRemoteReceivers();
+                if (farRec == null || farRec[channelindex] == null) {
+                    return;
+                }
+            } finally {
+                _workspace.doneReading();
             }
+
+            for (int j = 0; j < farRec[channelindex].length; j++) {
+                TypedIOPort port =
+                        (TypedIOPort)farRec[channelindex][j].getContainer();
+                Type farType = port.getType();
+
+                if (farType.isEqualTo(token.getType())) {
+                    farRec[channelindex][j].put(token);
+                } else {
+                    Token newToken = farType.convert(token);
+                    farRec[channelindex][j].put(newToken);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
         }
     }
 
@@ -332,7 +331,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void setTypeEquals(Type type) {
 	try {
-	    workspace().getWriteAccess();
+	    _workspace.getWriteAccess();
 
 	    if (type instanceof BaseType) {
 	    	_declaredType = type;
@@ -369,7 +368,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    _resolvedType = _declaredType;
 
 	} finally {
-	    workspace().doneWriting();
+	    _workspace.doneWriting();
 	}
     }
 
@@ -434,7 +433,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -455,7 +454,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 

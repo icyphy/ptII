@@ -491,6 +491,7 @@ test Port-15.2 {Test for NameDuplicationException on setName} {
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: .A:
 already contains a port with the name P1.}}
+
 ######################################################################
 ####
 #

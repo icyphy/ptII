@@ -307,7 +307,7 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
 } {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.IDEN.output:
-hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3:
-hasToken: Tokens can only be retrieved from an input port.} 1 ptolemy.data.StringToken(foo)}
+hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3:
+hasToken: channel index is out of range.} 1 ptolemy.data.StringToken(foo)}
 
 #FIXME: test _removeEntity (using setContainer null).

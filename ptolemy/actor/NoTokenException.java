@@ -69,7 +69,7 @@ public class NoTokenException extends RuntimeException {
                 name = obj.getName();
             }
         }
-        _setMessage(name + ": " + detail);
+        _setMessage(name + ":\n" + detail);
     }
 
     ///////////////////////////////////////////////////////////////////

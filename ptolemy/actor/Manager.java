@@ -319,7 +319,7 @@ public final class Manager extends NamedObj implements Runnable {
     public synchronized void initialize()
             throws KernelException, IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
                 "The model is already running.");
@@ -347,7 +347,7 @@ public final class Manager extends NamedObj implements Runnable {
             // list of actors pending initialization.
             _actorsToInitialize.clear();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -383,7 +383,7 @@ public final class Manager extends NamedObj implements Runnable {
         }
         boolean result = true;
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if(_debugging)
                 _debug("Process change requests.");
             _processChangeRequests();
@@ -407,7 +407,7 @@ public final class Manager extends NamedObj implements Runnable {
             // Set the appropriate write access, because we're about to
             // go into an iteration.
             if (!_needWriteAccess()) {
-                workspace().setReadOnly(true);
+                _workspace.setReadOnly(true);
             }
             if(_debugging)
                 _debug("Prefire container.");
@@ -432,8 +432,8 @@ public final class Manager extends NamedObj implements Runnable {
                 if (result) _debug("Finish one iteration, returning true.");
                 else _debug("Finish one iteration, returning false.");
         } finally {
-            workspace().setReadOnly(false);
-            workspace().doneReading();
+            _workspace.setReadOnly(false);
+            _workspace.doneReading();
         }
         return result;
     }
@@ -539,7 +539,7 @@ public final class Manager extends NamedObj implements Runnable {
             return;
         }
 	try {
-	    workspace().getWriteAccess();
+	    _workspace.getWriteAccess();
             _setState(RESOLVING_TYPES);
             _debug("Resolving types.");
 
@@ -603,7 +603,7 @@ public final class Manager extends NamedObj implements Runnable {
 	    // this should not happen.
 	    throw new InternalErrorException(iae.getMessage());
 	} finally {
-	    workspace().doneWriting();
+	    _workspace.doneWriting();
 	}
     }
 
@@ -735,17 +735,20 @@ public final class Manager extends NamedObj implements Runnable {
      */
     protected void _makeManagerOf(CompositeActor ca) {
         if (ca != null) {
-            workspace().remove(this);
+            _workspace.remove(this);
         }
         _container = ca;
     }
 
-    /** Set the state of execution and notify listeners.
+    /** Set the state of execution and notify listeners if the state
+     *  actually changes.
      *  @param newstate The new state.
      */
     protected void _setState(State newstate) {
-        _state = newstate;
-        _notifyListenersOfStateChange();
+        if (_state != newstate) {
+            _state = newstate;
+            _notifyListenersOfStateChange();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -768,15 +771,12 @@ public final class Manager extends NamedObj implements Runnable {
     /*  Propagate the state change event to all the execution listeners.
      */
     private void _notifyListenersOfStateChange() {
-        String msg;
-        if (_state == ITERATING) {
-            msg = _state.getDescription() + " number "
-                + _iterationCount;
-        } else {
-            msg = _state.getDescription();
+        if (_debugging) {
+            String msg = _state.getDescription();
+            _debug(msg);
         }
-        _debug(msg);
         if (_executionListeners != null) {
+            String msg = _state.getDescription();
             Iterator listeners = _executionListeners.iterator();
             while(listeners.hasNext()) {
                 ExecutionListener listener =
@@ -793,11 +793,11 @@ public final class Manager extends NamedObj implements Runnable {
      *  directors.
      */
     private boolean _needWriteAccess() {
-        if (_writeAccessVersion == workspace().getVersion()) {
+        if (_writeAccessVersion == _workspace.getVersion()) {
             return _writeAccessNeeded;
         }
         _writeAccessNeeded = _container.getDirector().needWriteAccess();
-        _writeAccessVersion = workspace().getVersion();
+        _writeAccessVersion = _workspace.getVersion();
         return _writeAccessNeeded;
     }
 

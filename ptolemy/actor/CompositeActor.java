@@ -191,7 +191,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void fire() throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot fire a non-opaque actor.");
@@ -215,7 +215,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 }
             }
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -228,11 +228,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public Director getDirector() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (_director != null) return _director;
             return getExecutiveDirector();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -246,12 +246,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public Director getExecutiveDirector() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             CompositeActor container = (CompositeActor)getContainer();
             if (container != null) return container.getDirector();
             return null;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -267,13 +267,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public Manager getManager() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (_manager != null) return _manager;
             CompositeActor container = (CompositeActor)getContainer();
             if (container != null) return container.getManager();
             return null;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -292,7 +292,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void initialize() throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot fire a non-opaque actor.");
@@ -305,7 +305,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // not the executive director, because this is opaque.
             getDirector().initialize();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -317,8 +317,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public Enumeration inputPorts() {
         try {
-            workspace().getReadAccess();
-            if(_inputPortsVersion != workspace().getVersion()) {
+            _workspace.getReadAccess();
+            if(_inputPortsVersion != _workspace.getVersion()) {
                 // Update the cache.
                 LinkedList inports = new LinkedList();
                 Enumeration ports = getPorts();
@@ -329,11 +329,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     }
                 }
                 _cachedInputPorts = inports;
-                _inputPortsVersion = workspace().getVersion();
+                _inputPortsVersion = _workspace.getVersion();
             }
             return _cachedInputPorts.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -373,7 +373,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public Port newPort(String name)
             throws NameDuplicationException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             IOPort port = new IOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -383,7 +383,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     "CompositeActor.newPort: Internal error: " +
                     ex.getMessage());
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -416,11 +416,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             IORelation rel = new IORelation(this, name);
             return rel;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -432,8 +432,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public Enumeration outputPorts() {
         try {
-            workspace().getReadAccess();
-            if(_outputPortsVersion != workspace().getVersion()) {
+            _workspace.getReadAccess();
+            if(_outputPortsVersion != _workspace.getVersion()) {
                 _cachedOutputPorts = new LinkedList();
                 Enumeration ports = getPorts();
                 while(ports.hasMoreElements()) {
@@ -442,11 +442,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         _cachedOutputPorts.insertLast(p);
                     }
                 }
-                _outputPortsVersion = workspace().getVersion();
+                _outputPortsVersion = _workspace.getVersion();
             }
             return _cachedOutputPorts.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -465,7 +465,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public boolean postfire() throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot invoke postfire a non-opaque actor.");
@@ -474,7 +474,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // not the executive director, because this is opaque.
             return getDirector().postfire();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -494,7 +494,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public boolean prefire()
             throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot invoke prefire a non-opaque actor.");
@@ -502,7 +502,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             return getDirector().prefire();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -519,7 +519,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void preinitialize() throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             _createReceivers();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
@@ -529,7 +529,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // not the executive director, because this is opaque.
             getDirector().preinitialize();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -568,12 +568,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  classes if the director is not compatible.
      */
     public void setDirector(Director director) throws IllegalActionException {
-        if (director != null && workspace() != director.workspace()) {
+        if (director != null && _workspace != director.workspace()) {
             throw new IllegalActionException(this, director,
                     "Cannot set director because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             // If there was a previous director, we need to reset it.
             if (_director != null) _director._makeDirectorOf(null);
             if (director != null) {
@@ -581,7 +581,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
             _director = director;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -598,12 +598,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void setManager(Manager manager)
             throws IllegalActionException {
-        if (manager != null && workspace() != manager.workspace()) {
+        if (manager != null && _workspace != manager.workspace()) {
             throw new IllegalActionException(this, manager,
                     "Cannot set manager because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             if (getContainer() != null && manager != null) {
                 throw new IllegalActionException(this, manager,
                         "Cannot set the Manager of an actor "
@@ -617,7 +617,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _manager = manager;
             return;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -628,13 +628,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void stopFire() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (!isOpaque()) {
 		return;
             }
             getDirector().stopFire();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -656,7 +656,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot wrapup a non-opaque actor.");
@@ -665,7 +665,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // not the executive director, because this is opaque.
             getDirector().wrapup();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -777,7 +777,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -804,7 +804,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 

@@ -138,12 +138,12 @@ public class Attribute extends NamedObj {
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && workspace() != container.workspace()) {
+        if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
                         "Attempt to construct recursive containment " +
@@ -156,7 +156,7 @@ public class Attribute extends NamedObj {
             if (container != null) {
                 container._addAttribute(this);
                 if (prevcontainer == null) {
-                    workspace().remove(this);
+                    _workspace.remove(this);
                 }
             }
             _container = container;
@@ -164,7 +164,7 @@ public class Attribute extends NamedObj {
                 prevcontainer._removeAttribute(this);
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 

@@ -163,11 +163,11 @@ public class ComponentEntity extends Entity {
     public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             Port port = new ComponentPort(this, name);
             return port;
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -196,12 +196,12 @@ public class ComponentEntity extends Entity {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && workspace() != container.workspace()) {
+        if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             // NOTE: The following code is quite tricky.  It is very careful
             // to leave a consistent state even in the face of unexpected
             // exceptions.  Be very careful if modifying it.
@@ -213,7 +213,7 @@ public class ComponentEntity extends Entity {
             if (container != null) {
                 container._addEntity(this);
                 if (prevcontainer == null) {
-                    workspace().remove(this);
+                    _workspace.remove(this);
                 }
             }
             _container = container;
@@ -229,7 +229,7 @@ public class ComponentEntity extends Entity {
                 }
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 

@@ -161,7 +161,7 @@ public class Port extends NamedObj {
      */
     public Enumeration connectedPorts() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             LinkedList result = new LinkedList();
             Enumeration relations = linkedRelations();
             while (relations.hasMoreElements()) {
@@ -170,7 +170,7 @@ public class Port extends NamedObj {
             }
             return result.elements();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -194,10 +194,10 @@ public class Port extends NamedObj {
      */
     public boolean isLinked(Relation r) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _relationsList.isLinked(r);
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -208,10 +208,10 @@ public class Port extends NamedObj {
      */
     public Enumeration linkedRelations() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _relationsList.getContainers();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -236,12 +236,12 @@ public class Port extends NamedObj {
     public void link(Relation relation)
             throws IllegalActionException {
         if (relation == null) return;
-        if (workspace() != relation.workspace()) {
+        if (_workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             Nameable container = getContainer();
             if (container != null) {
                 if (container.getContainer() != relation.getContainer()) {
@@ -251,7 +251,7 @@ public class Port extends NamedObj {
             }
             _link(relation);
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -261,10 +261,10 @@ public class Port extends NamedObj {
      */
     public int numLinks() {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             return _relationsList.size();
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
@@ -292,19 +292,19 @@ public class Port extends NamedObj {
      */
     public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
-        if (entity != null && workspace() != entity.workspace()) {
+        if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             Entity prevcontainer = (Entity)getContainer();
             if (prevcontainer == entity) return;
             // Do this first, because it may throw an exception.
             if (entity != null) {
                 entity._addPort(this);
                 if (prevcontainer == null) {
-                    workspace().remove(this);
+                    _workspace.remove(this);
                 }
             }
             _container = entity;
@@ -315,7 +315,7 @@ public class Port extends NamedObj {
                 unlinkAll();
             }
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
     }
 
@@ -351,10 +351,10 @@ public class Port extends NamedObj {
      */
     public void unlink(Relation relation) {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             _relationsList.unlink(relation);
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
         Entity container = (Entity)getContainer();
         if (container != null) {
@@ -369,11 +369,11 @@ public class Port extends NamedObj {
      */
     public void unlinkAll() {
         try {
-            workspace().getWriteAccess();
+            _workspace.getWriteAccess();
             _relationsList.unlinkAll();
-            workspace().incrVersion();
+            _workspace.incrVersion();
         } finally {
-            workspace().doneWriting();
+            _workspace.doneWriting();
         }
         Entity container = (Entity)getContainer();
         if (container != null) {
@@ -401,7 +401,7 @@ public class Port extends NamedObj {
      */
     protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().getReadAccess();
+            _workspace.getReadAccess();
             String result;
             if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
@@ -426,7 +426,7 @@ public class Port extends NamedObj {
             if (bracket == 2) result += "}";
             return result;
         } finally {
-            workspace().doneReading();
+            _workspace.doneReading();
         }
     }
 
