@@ -84,117 +84,14 @@ Otherwise, the _toplevel member will be null.
 @author  Edward A. Lee
 @version $Id$
 */
-public class MoMLViewerApplet extends PtolemyApplet {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return applet information. If the top-level model element
-     *  contains a <i>doc</i> element, then the contents of that element
-     *  is included in the applet information.
-     *  @return A string giving information about the applet.
-     */
-    public String getAppletInfo() {
-        if (_toplevel != null) {
-            Documentation doc = (Documentation)_toplevel.getAttribute("_doc");
-            if (doc != null) {
-                return "MoML applet for Ptolemy II:\n" + doc.toString();
-            }
-        }
-        return "MoML applet for Ptolemy II.\n" +
-        "Ptolemy II comes from UC Berkeley, Department of EECS.\n" +
-        "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
-    }
-
-    /** Describe the applet parameters.
-     *  @return An array describing the applet parameters.
-     */
-    public String[][] getParameterInfo() {
-        String newinfo[][] = {
-            {"model", "", "URL for the MoML file"},
-            {"runControls", "", "Number of run controls to put on the screen"}
-        };
-        return _concatStringArrays(super.getParameterInfo(), newinfo);
-    }
-
+public class MoMLViewerApplet extends MoMLApplet {
     /** Create a MoML parser and parse a file.
      */
     public void init() {
-
-        // Do not call super.init() because it creates a toplevel
-        // manager.  Since we don't call it, we have to process the
-        // background parameter.
-
-        JPanel dataPanel = new JPanel();
-        getContentPane().add(dataPanel);
-
-        // Process the background parameter.
-        _background = Color.white;
-        try {
-            String colorSpecification = getParameter("background");
-            if (colorSpecification != null) {
-                _background = Color.decode(colorSpecification);
-            }
-        } catch (Exception ex) {
-            report("Warning: background parameter failed: ", ex);
-        }
-        getContentPane().setBackground(_background);
-
-        // Process the runControls parameter.
-        try {
-            String runControlsSpec = getParameter("runControls");
-            if (runControlsSpec != null) {
-                try {
-                    int numRunControls = Integer.parseInt(runControlsSpec);
-                    getContentPane().add(_createRunControls(numRunControls),
-                            BorderLayout.SOUTH);
-                } catch (NumberFormatException ex) {
-                    report("Warning: runControls parameter failed: ", ex);
-                }
-            }
-        } catch (Exception ex) {
-            report("Warning: runControls parameter failed: ", ex);
-        }
-        setBackground(_background);
-        try {
-            String modelURL = getParameter("model");
-            if (modelURL == null) {
-                throw new Exception(
-                        "MoML applet does not not specify a model parameter!");
-            }
-
-            JPanel panel = new JPanel();
-            dataPanel.add(panel, BorderLayout.NORTH);
-            // Specify that all Placeable entities be placed in the applet.
-            MoMLParser parser = new MoMLParser(null, panel);// getContentPane());
-            URL docBase = getDocumentBase();
-            URL xmlFile = new URL(docBase, modelURL);
-            _toplevel = null;
-            _manager = null;
-            NamedObj toplevel = parser.parse(docBase, xmlFile);
-            _workspace = toplevel.workspace();
-            if (toplevel instanceof TypedCompositeActor) {
-                _toplevel = (TypedCompositeActor)toplevel;
-                _manager = new Manager(_workspace, "manager");
-                _toplevel.setManager(_manager);
-                _manager.addExecutionListener(this);
-            }
-        } catch (Exception ex) {
-            if (ex instanceof XmlException) {
-                XmlException xmlEx = (XmlException)ex;
-                // FIXME: The file reported below is wrong... Why?
-                report("MoML exception on line " + xmlEx.getLine()
-                + ", column " + xmlEx.getColumn() + ", in entity:\n"
-                + xmlEx.getSystemId(), ex);
-            } else {
-                report("MoML applet failed:\n", ex);
-            }
-            _setupOK = false;
-        }
-        System.out.println("adding..");
+        super.init();
         JGraphViewer graphViewer = new JGraphViewer(_toplevel);
-        graphViewer.setMinimumSize(new Dimension(100, 100));
-        graphViewer.setPreferredSize(new Dimension(300, 200));
-        dataPanel.add(graphViewer, BorderLayout.SOUTH);
+        graphViewer.setMinimumSize(new Dimension(200, 100));
+        graphViewer.setPreferredSize(new Dimension(200, 100));
+        getContentPane().add(graphViewer, BorderLayout.NORTH);
     }
 }

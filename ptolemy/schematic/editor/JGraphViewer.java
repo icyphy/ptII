@@ -88,7 +88,7 @@ public class JGraphViewer extends JGraph {
      */
     public JGraphViewer (CompositeEntity entity) {
         super();
-	GraphPane pane = new GraphPane(new EditorGraphController(), 
+	GraphPane pane = new GraphPane(new ViewerGraphController(), 
 				       new EditorGraphImpl());
         setGraphPane(pane);
         GraphController controller = 
