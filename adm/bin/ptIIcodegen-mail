@@ -183,6 +183,10 @@ awk '
     			    sawTestGeneratedError=4
     			    errorLine2=""
                       }
+    $0  ~/WatchDogTime went off,/ {
+    			    sawTestGeneratedError=4
+    			    errorLine2=""
+                      }
     END               {
 			count = 1
 			for( error in errors) {
