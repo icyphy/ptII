@@ -30,7 +30,7 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.event.ChangeRequest;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
@@ -62,6 +62,7 @@ public class MoMLChangeRequest extends ChangeRequest {
              Object originator, MoMLParser parser, String request) {
         super(originator, request);
         _parser = parser;
+        _context = null;
     }
 
     /** Construct a mutation request to be executed in the specified context.
@@ -80,9 +81,8 @@ public class MoMLChangeRequest extends ChangeRequest {
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request) {
         super(originator, request);
-        _staticParser.reset();
         _parser = _staticParser;
-        _parser.setContext(context);
+        _context = context;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,11 +94,18 @@ public class MoMLChangeRequest extends ChangeRequest {
      *   while evaluating the request.
      */
     protected void _execute() throws Exception {
+        _parser.reset();
+        if (_context != null) {
+            _parser.setContext(_context);
+        }
         _parser.parse(getDescription());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The context in which to execute the request.
+    private NamedObj _context;
 
     // The parser given in the constructor.
     private MoMLParser _parser;
