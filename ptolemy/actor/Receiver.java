@@ -65,7 +65,7 @@ public interface Receiver {
     /** Get a token from this receiver. Note that the thrown exception
      *  is a runtime exception, therefore the caller is not required to
      *  catch it.
-     *  @exception EmptyReceiverException If there is no token.
+     *  @exception NoTokenException If there is no token.
      */
     public Token get() throws NoTokenException;
 
@@ -74,20 +74,26 @@ public interface Receiver {
 
     /** Return true if put() will succeed in accepting a token. 
      *  Returning true in this method should also guarantee that calling
-     *  the get() method will not result in an exception.
+     *  the put() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *    does not support this query.
      */
     public boolean hasRoom() throws IllegalActionException;
 
     /** Return true if get() will succeed in returning a token. 
      *  Returning true in this method should also guarantee that calling
-     *  the put() method will not result in an exception.
+     *  the get() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *    does not support this query.
      */
     public boolean hasToken() throws IllegalActionException;
 
     /** Put a token into this receiver. Note that the thrown exception
      *  is a runtime exception, therefore the caller is not required to
      *  catch it.
-     *  @exception FullReceiverException If the token cannot be put.
+     *  @exception NoRoomException If the token cannot be put.
      */
     public void put(Token t) throws NoRoomException;
 
