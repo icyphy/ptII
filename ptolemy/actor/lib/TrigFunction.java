@@ -35,6 +35,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.actor.lib.conversions.RectangularToPolar; // for javadoc 
+
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
@@ -93,12 +95,11 @@ The following functions in java.lang.Math are implemented elsewhere:
 
 @author Edward A. Lee
 @version $Id$
+@see ptolemy.actor.lib.conversions.RectangularToPolar
 @see AbsoluteValue
 @see MathFunction
 @see Scale
-@see conversions.RectangularToPolar
 */
-
 public class TrigFunction extends Transformer {
 
     /** Construct an actor with the given container and name.
