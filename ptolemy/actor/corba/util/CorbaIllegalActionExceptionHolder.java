@@ -7,7 +7,7 @@
 
 package ptolemy.actor.corba.util;
 public final class CorbaIllegalActionExceptionHolder
-     implements org.omg.CORBA.portable.Streamable{
+    implements org.omg.CORBA.portable.Streamable{
     //	instance variable
     public ptolemy.actor.corba.util.CorbaIllegalActionException value;
     //	constructors

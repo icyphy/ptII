@@ -307,16 +307,16 @@ public class Plotter extends TypedAtomicActor
         // NOTE: Cannot include xml spec in the header because processing
         // instructions cannot be nested in XML (lame, isn't it?).
         String header
-                = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+            = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
 	if(plot != null) {
 	    output.write(_getIndentPrefix(depth) + "<configure><?plotml\n"
-			 + header + "\n<plot>\n");
+                    + header + "\n<plot>\n");
 	    PrintWriter print = new PrintWriter(output);
 	    // The second (null) argument indicates that PlotML PUBLIC DTD
 	    // should be referenced.
 	    plot.writeFormat(print);
 	    output.write("</plot>?>\n"
-			 + _getIndentPrefix(depth) + "</configure>\n");
+                    + _getIndentPrefix(depth) + "</configure>\n");
 	}
     }
 

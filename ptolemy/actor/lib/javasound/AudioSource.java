@@ -270,17 +270,17 @@ public class AudioSource extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 	if(_debugging) _debug("AudioSource: attributeChanged() invoked on: " +
-			      attribute.getName());
+                attribute.getName());
 	//System.out.println("AudioSource: attributeChanged() invoked on: " +
 	//		      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
-	    ((IntToken)channels.getToken()).intValue();
+                ((IntToken)channels.getToken()).intValue();
 	    if (_channels < 1) {
 		throw new IllegalActionException(this,
-		    "Attempt to set channels parameter to an illegal " +
-		    "value of: " +  _channels + " . The value must be a " +
-                    "positive integer.");
+                        "Attempt to set channels parameter to an illegal " +
+                        "value of: " +  _channels + " . The value must be a " +
+                        "positive integer.");
 	    }
 	} else if (attribute == pathName) {
 	    // Nothing for now...
@@ -290,12 +290,12 @@ public class AudioSource extends Source {
 	    // Nothing for now...
 	} else if (attribute == bufferSize) {
 	    int intBufferSize =
-	    ((IntToken)bufferSize.getToken()).intValue();
+                ((IntToken)bufferSize.getToken()).intValue();
 	    if (intBufferSize < _getFactor) {
 		throw new IllegalActionException(this,
-		    "Attempt to set bufferSize parameter to an illegal " +
-		    "value of: " +  intBufferSize + " . The value must be " +
-                    "greater than " + _getFactor + ".");
+                        "Attempt to set bufferSize parameter to an illegal " +
+                        "value of: " +  intBufferSize + " . The value must be " +
+                        "greater than " + _getFactor + ".");
 	    }
 	    _getSampleSize = intBufferSize/_getFactor;
 	} else {
@@ -364,8 +364,8 @@ public class AudioSource extends Source {
 		    _audioInDoubleArray = _soundCapture.getSamples();
 		} catch (Exception ex) {
 		    throw new IllegalActionException(
-						     "Cannot capture audio: " +
-						     ex.getMessage());
+                            "Cannot capture audio: " +
+                            ex.getMessage());
 		}
 		_getSamplesArrayPointer = 0;
 		// Check that the read was successful
@@ -433,7 +433,7 @@ public class AudioSource extends Source {
 	} else if (returnVal == NOT_READY) {
 	    // This should never happen.
 	    throw new IllegalActionException(this, "Actor " +
-		          "is not ready to fire.");
+                    "is not ready to fire.");
 	} else if (returnVal == STOP_ITERATING) {
 	    return false;
 	}
@@ -452,8 +452,8 @@ public class AudioSource extends Source {
 		_soundCapture.stopCapture();
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
-		    "Cannot capture audio:\n" +
-		    ex.getMessage());
+                        "Cannot capture audio:\n" +
+                        ex.getMessage());
 	    }
 	}
     }
@@ -480,8 +480,8 @@ public class AudioSource extends Source {
 		_soundCapture.stopCapture();
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
-		    "Cannot capture audio:\n" +
-		    ex.getMessage());
+                        "Cannot capture audio:\n" +
+                        ex.getMessage());
 	    }
 	}
 	// Now initialize audio capture.
@@ -506,8 +506,8 @@ public class AudioSource extends Source {
 		_soundCapture.startCapture();
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
-		    "Cannot capture audio:\n" +
-		    ex.getMessage());
+                        "Cannot capture audio:\n" +
+                        ex.getMessage());
 	    }
         } else {
 	    // Load audio from a URL.
@@ -520,8 +520,8 @@ public class AudioSource extends Source {
 		_soundCapture.startCapture();
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
-		    "Cannot capture audio:\n" +
-		    ex.getMessage());
+                        "Cannot capture audio:\n" +
+                        ex.getMessage());
 	    }
             // Read the number of audio channels and set
             // parameter accordingly.

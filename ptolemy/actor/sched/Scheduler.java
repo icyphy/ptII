@@ -151,9 +151,9 @@ public class Scheduler extends NamedObj {
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
      */
-     public Schedule getSchedule() throws
+    public Schedule getSchedule() throws
             IllegalActionException, NotSchedulableException {
-	 try {
+        try {
             workspace().getReadAccess();
             StaticSchedulingDirector dir =
                 (StaticSchedulingDirector)getContainer();
@@ -173,7 +173,7 @@ public class Scheduler extends NamedObj {
         } finally {
             workspace().doneReading();
         }
-     }
+    }
 
     /** Return the scheduling sequence as an enumeration.
      *  For efficiency, this method returns a cached version of the schedule,

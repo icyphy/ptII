@@ -348,7 +348,7 @@ public class Effigy extends CompositeEntity {
      *   an acceptable class.
      */
     protected void _checkContainer(CompositeEntity container)
-             throws IllegalActionException {
+            throws IllegalActionException {
 	if(container != null
                 && !(container instanceof ModelDirectory)
                 && !(container instanceof Effigy)) {

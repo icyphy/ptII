@@ -158,16 +158,16 @@ public class Round extends Transformer {
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
         if (count > _resultArray.length) {
-	        _resultArray = new IntToken[count];
+            _resultArray = new IntToken[count];
         }
 
         if (input.hasToken(0, count)) {
 	    // NOTE: inArray.length may be > count, in which case
 	    // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
-	        for (int i = 0; i < count; i++) {
-		        double value = ((DoubleToken)(inArray[i])).doubleValue();
-		        _resultArray[i] = new IntToken(_doFunction(value));
+            for (int i = 0; i < count; i++) {
+                double value = ((DoubleToken)(inArray[i])).doubleValue();
+                _resultArray[i] = new IntToken(_doFunction(value));
             }
             output.send(0, _resultArray, count);
             return COMPLETED;

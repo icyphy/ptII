@@ -168,7 +168,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *   an acceptable class.
      */
     protected void _checkContainer(CompositeEntity container)
-             throws IllegalActionException {
+            throws IllegalActionException {
 	if(container != null
                 && !(container instanceof ModelDirectory)
                 && !(container instanceof PtolemyEffigy)) {
@@ -200,7 +200,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -235,9 +235,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
-         public Effigy createEffigy(
-                 CompositeEntity container, URL base, URL in)
-                 throws Exception {
+        public Effigy createEffigy(
+                CompositeEntity container, URL base, URL in)
+                throws Exception {
             // Create a blank effigy.
             PtolemyEffigy effigy = new PtolemyEffigy(
                     container, container.uniqueName("effigy"));
@@ -276,7 +276,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    // by inserting an attribute into both the model
 			    // and the effigy.
 			    URLAttribute url =
-				    new URLAttribute(toplevel, "_url");
+                                new URLAttribute(toplevel, "_url");
 			    url.setURL(in);
 
 			    // This is used by TableauFrame in its
@@ -294,7 +294,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // and report the error here.  Otherwise, we
                         // pass the error to the caller.
                         ModelDirectory dir = (ModelDirectory)
-                                effigy.topEffigy().getContainer();
+                            effigy.topEffigy().getContainer();
                         List effigies = dir.entityList(Effigy.class);
                         // Note that one of the effigies is the configuration
                         // itself, which does not prevent exiting the app.

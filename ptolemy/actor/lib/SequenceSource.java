@@ -91,7 +91,7 @@ public class SequenceSource extends Source implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Override the base class to determine which attribute is being
+    /** Override the base class to determine which attribute is being
      *  specified.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.

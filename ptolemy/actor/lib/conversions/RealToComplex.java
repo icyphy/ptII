@@ -104,7 +104,7 @@ public class RealToComplex extends TypedAtomicActor {
             double realValue = ((DoubleToken)real.get(0)).doubleValue();
             double imagValue = ((DoubleToken)imag.get(0)).doubleValue();
             ComplexToken token
-                    = new ComplexToken (new Complex(realValue, imagValue));
+                = new ComplexToken (new Complex(realValue, imagValue));
             output.broadcast(token);
         }
     }

@@ -82,7 +82,7 @@ public class RunTableau extends Tableau {
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-            "Cannot run a model that is not a CompositeActor.");
+                    "Cannot run a model that is not a CompositeActor.");
         }
 	CompositeActor actor = (CompositeActor)model;
 
@@ -128,7 +128,7 @@ public class RunTableau extends Tableau {
         ////                         protected methods                 ////
 
         /** Add a Debug menu.
-        */
+         */
         protected void _addMenus() {
             super._addMenus();
             JMenuItem[] debugMenuItems = {
@@ -182,8 +182,8 @@ public class RunTableau extends Tableau {
                             Effigy textEffigy = new TextEffigy(effigy,
                                     effigy.uniqueName("debug listener"));
                             DebugListenerTableau tableau =
-                                    new DebugListenerTableau(textEffigy,
-                                    textEffigy.uniqueName("debugListener"));
+                                new DebugListenerTableau(textEffigy,
+                                        textEffigy.uniqueName("debugListener"));
                             tableau.setDebuggable(debug);
                         }
                     } catch (KernelException ex) {
@@ -216,7 +216,7 @@ public class RunTableau extends Tableau {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -238,7 +238,7 @@ public class RunTableau extends Tableau {
 	    if(effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 RunTableau tableau =
-                        (RunTableau)effigy.getEntity("runTableau");
+                    (RunTableau)effigy.getEntity("runTableau");
                 if (tableau == null) {
                     tableau = new RunTableau(
                             (PtolemyEffigy)effigy, "runTableau");

@@ -110,7 +110,7 @@ public class TextEditorTableau extends Tableau {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -133,10 +133,10 @@ public class TextEditorTableau extends Tableau {
                 // First see whether the effigy already contains a
                 // TextEditorTableau with the appropriate name.
                 TextEditorTableau tableau =
-                        (TextEditorTableau)effigy.getEntity("textTableau");
+                    (TextEditorTableau)effigy.getEntity("textTableau");
                 if (tableau == null) {
                     tableau = new TextEditorTableau(
-                             (TextEffigy)effigy, "textTableau");
+                            (TextEffigy)effigy, "textTableau");
                 }
                 tableau.show();
                 return tableau;
@@ -160,13 +160,13 @@ public class TextEditorTableau extends Tableau {
                         // sense for the Effigy base class to have a method
                         // that gives a textual description of the data?
                         String moml = ((PtolemyEffigy)effigy)
-                                .getModel().exportMoML();
+                            .getModel().exportMoML();
                         textEffigy = TextEffigy.newTextEffigy(effigy, moml);
                     } else {
                         textEffigy = TextEffigy.newTextEffigy(effigy, url, url);
                     }
                     TextEditorTableau textTableau =
-                            (TextEditorTableau)createTableau(textEffigy);
+                        (TextEditorTableau)createTableau(textEffigy);
                     textTableau.setEditable(false);
                     if (url != null) {
                         textEffigy.identifier.setExpression(

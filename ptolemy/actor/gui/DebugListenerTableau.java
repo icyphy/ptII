@@ -133,7 +133,7 @@ public class DebugListenerTableau extends Tableau {
      *  output from an instance of Debuggable.
      */
     public static class DebugListenerFrame extends TextEditor
-	    implements DebugListener {
+        implements DebugListener {
 
 	/** Create a debug listener that displays messages in a top-level
 	 *  window.

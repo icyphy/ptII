@@ -434,16 +434,16 @@ public class MoMLApplication {
         URL inurl = specToURL(urlSpec);
         _parser = new MoMLParser();
         Configuration toplevel = (Configuration)
-                _parser.parse(inurl, inurl.openStream());
+            _parser.parse(inurl, inurl.openStream());
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
         ComponentEntity directory
-                = ((Configuration)toplevel).getEntity("directory");
+            = ((Configuration)toplevel).getEntity("directory");
         if (directory instanceof ModelDirectory) {
             PtolemyEffigy effigy
-                   = new PtolemyEffigy(
-                       (ModelDirectory)directory, toplevel.getName());
+                = new PtolemyEffigy(
+                        (ModelDirectory)directory, toplevel.getName());
             effigy.setModel(toplevel);
             effigy.identifier.setExpression(inurl.toExternalForm());
         }
@@ -470,14 +470,14 @@ public class MoMLApplication {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
+            ////                         protected variables                    ////
 
-    /** The command-line options that are either present or not. */
-    protected String _commandFlags[] = {
-        "-help",
-        "-test",
-        "-version",
-    };
+            /** The command-line options that are either present or not. */
+            protected String _commandFlags[] = {
+                "-help",
+                "-test",
+                "-version",
+            };
 
     /** The command-line options that take arguments. */
     protected String _commandOptions[][] = {

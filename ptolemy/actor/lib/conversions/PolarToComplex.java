@@ -105,9 +105,9 @@ public class PolarToComplex extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         if (magnitude.hasToken(0) && angle.hasToken(0)) {
             double magnitudeValue
-                    = ((DoubleToken)(magnitude.get(0))).doubleValue();
+                = ((DoubleToken)(magnitude.get(0))).doubleValue();
             double angleValue
-                    = ((DoubleToken) (angle.get(0))).doubleValue();
+                = ((DoubleToken) (angle.get(0))).doubleValue();
 
             double xValue = magnitudeValue * Math.cos(angleValue);
             double yValue = magnitudeValue * Math.sin(angleValue);

@@ -61,7 +61,7 @@ does nothing.
 @see RunTableau
 */
 public class PtExecuteApplication extends MoMLApplication
-        implements ExecutionListener {
+    implements ExecutionListener {
 
     /** Parse the specified command-line arguments, creating models
      *  and running them.
@@ -139,7 +139,7 @@ public class PtExecuteApplication extends MoMLApplication
     public List models() {
         LinkedList result = new LinkedList();
         ModelDirectory directory
-                = (ModelDirectory)_configuration.getEntity("directory");
+            = (ModelDirectory)_configuration.getEntity("directory");
         Iterator effigies = directory.entityList().iterator();
         while(effigies.hasNext()) {
             Effigy effigy = (Effigy)effigies.next();

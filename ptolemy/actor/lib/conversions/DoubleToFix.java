@@ -96,7 +96,7 @@ public class DoubleToFix extends Transformer {
      *   actor with this name.
      */
     public DoubleToFix(CompositeEntity container, String name)
-	throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
 	output.setTypeEquals(BaseType.FIX);

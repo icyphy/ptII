@@ -69,7 +69,7 @@ public class SpaceCleaner {
                             index.getPosition());
                 }
             }
-             while(true) {
+            while(true) {
                 TokenEntry token =
                     (TokenEntry)space.takeIfExists(
                             allToken, null, Long.MAX_VALUE);

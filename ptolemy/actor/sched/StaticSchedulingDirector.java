@@ -124,7 +124,7 @@ public class StaticSchedulingDirector extends Director {
 	    return newObject;
 	} catch (Exception ex) {
 	    throw new CloneNotSupportedException("Clone failed:" +
-						 ex.getMessage());
+                    ex.getMessage());
 	}
     }
 

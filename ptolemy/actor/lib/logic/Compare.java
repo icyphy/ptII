@@ -136,7 +136,7 @@ public class Compare extends TypedAtomicActor {
                 _comparison = _LE;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized comparison: " + comparisonName);
+                        "Unrecognized comparison: " + comparisonName);
             }
         } else {
             super.attributeChanged(attribute);

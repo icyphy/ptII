@@ -106,7 +106,7 @@ public class TextEditor extends TableauFrame {
     public void scrollToEnd() {
 	// Song and dance to scroll to the new line.
 	text.scrollRectToVisible(new Rectangle(
-	     new Point(0, text.getHeight())));
+                new Point(0, text.getHeight())));
     }
 
     ///////////////////////////////////////////////////////////////////

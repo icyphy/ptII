@@ -145,11 +145,11 @@ public class ProcessDirector extends Director {
 	    // This is new, 11/18/00, davisjs@eecs.berkeley.edu
             _notDone = _resolveDeadlock();
 	    /*
-            if( _areActorsDeadlocked() ) {
-                _notDone = _resolveDeadlock();
-            } else {
-		_notDone = true;
-	    }
+              if( _areActorsDeadlocked() ) {
+              _notDone = _resolveDeadlock();
+              } else {
+              _notDone = true;
+              }
             */
         }
     }
@@ -174,7 +174,7 @@ public class ProcessDirector extends Director {
         if (container instanceof CompositeActor) {
             // Creating threads for all actors;
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             while( actors.hasNext() ) {
                 Actor actor = (Actor)actors.next();
                 actor.initialize();
@@ -334,7 +334,7 @@ public class ProcessDirector extends Director {
 	Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             Iterator actorPorts;
             ProcessReceiver nextRec;
             LinkedList recs = new LinkedList();

@@ -99,7 +99,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   has a value that cannot be edited using this style.
      */
     public abstract void addEntry(PtolemyQuery query)
-	throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Override the base class to first check that the container is
      *  an instance of UserSettable.
@@ -116,7 +116,7 @@ public abstract class ParameterEditorStyle extends Attribute {
             throws IllegalActionException, NameDuplicationException {
         if (container != null && !(container instanceof UserSettable)) {
             throw new IllegalActionException(this, container,
-                "ParameterEditorStyle can only be contained by UserSettable.");
+                    "ParameterEditorStyle can only be contained by UserSettable.");
         }
         super.setContainer(container);
     }

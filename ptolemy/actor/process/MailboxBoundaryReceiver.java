@@ -73,7 +73,7 @@ controller.
 
 */
 public class MailboxBoundaryReceiver extends Mailbox
-	implements ProcessReceiver {
+    implements ProcessReceiver {
 
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
@@ -189,7 +189,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public boolean isConsumerReceiver() {
         if( isConnectedToBoundary() ) {
-             return true;
+            return true;
         }
     	return false;
     }

@@ -131,7 +131,7 @@ public class StockQuote extends Source {
 		if (st.sval.indexOf("No such ticker symbol") != -1) {
 		    // bad ticker
 		    throw new IllegalActionException(this, "StockQuote.fire:"
-			+ " bad ticker: " + tickerString);
+                            + " bad ticker: " + tickerString);
 		}
 		if (st.sval.startsWith(_matchString + tickerString)) {
 		    // found the line

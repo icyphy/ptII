@@ -149,11 +149,11 @@ public class ComplexToPolar extends TypedAtomicActor {
             Complex inputValue = ((ComplexToken)(input.get(0))).complexValue();
 
             double magnitudeValue = Math.sqrt(
-                inputValue.real * inputValue.real
-                + inputValue.imag * inputValue.imag);
+                    inputValue.real * inputValue.real
+                    + inputValue.imag * inputValue.imag);
 
             double angleValue = Math.atan2(
-                inputValue.imag, inputValue.real);
+                    inputValue.imag, inputValue.real);
 
             magnitude.broadcast(new DoubleToken (magnitudeValue));
             angle.broadcast(new DoubleToken (angleValue));

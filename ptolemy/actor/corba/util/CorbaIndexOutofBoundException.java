@@ -7,7 +7,7 @@
 
 package ptolemy.actor.corba.util;
 public final class CorbaIndexOutofBoundException
-	extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
+    extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
     //	instance variables
     public short index;
     //	constructors

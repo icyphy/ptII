@@ -72,7 +72,7 @@ public class BranchController implements Runnable {
      *  container.
      *
      *  @param container The parent actor that contains this object.
-    */
+     */
     public BranchController(CompositeActor container) {
         _parentActor = container;
         _parentName = ((Nameable)container).getName();

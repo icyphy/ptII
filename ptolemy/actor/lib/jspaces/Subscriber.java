@@ -125,7 +125,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     /** Update parameters.
      */
     public void attributeChanged(Attribute attr)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attr == blocking) {
             _blocking = ((BooleanToken)blocking.getToken()).booleanValue();
         }

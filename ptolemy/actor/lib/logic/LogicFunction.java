@@ -149,7 +149,7 @@ public class LogicFunction extends Transformer {
                 _negate = true;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized logic function: " + functionName);
+                        "Unrecognized logic function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);

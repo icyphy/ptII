@@ -156,7 +156,7 @@ public class StockServer extends TypedCompositeActor {
 	        String symbol = st.nextToken();
 	        StockQuote quote = new StockQuote(this, "quote" + numQuotes);
 	        Publisher publisher = new Publisher(this,
-						"publisher" + numQuotes);
+                        "publisher" + numQuotes);
 	        numQuotes++;
 
 	        TypedIORelation relation =

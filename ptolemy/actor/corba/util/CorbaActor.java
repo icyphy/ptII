@@ -9,33 +9,33 @@ package ptolemy.actor.corba.util;
 public interface CorbaActor
     extends org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity {
     void fire()
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     String getParameter(String paramName)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException;
     void initialize()
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     boolean hasData(String portName, short portIndex)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaUnknownPortException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaUnknownPortException;
     boolean hasParameter(String paramName)
-;
+            ;
     boolean hasPort(String portName, boolean isInput, boolean isOutput, boolean isMultiport)
-;
+            ;
     void setPortWidth(String portName, short width)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException;
     boolean postfire()
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     boolean prefire()
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     void setParameter(String paramName, String paramValue)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException, ptolemy.actor.corba.util.CorbaIllegalValueException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException, ptolemy.actor.corba.util.CorbaIllegalValueException;
     void stopFire()
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     void terminate()
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     void transferInput(String portName, short portIndex, String tokenValue)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaIllegalValueException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaIllegalValueException;
     String transferOutput(String portName, short portIndex)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
     void wrapup()
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 }

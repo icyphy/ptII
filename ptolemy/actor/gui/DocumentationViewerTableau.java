@@ -122,13 +122,13 @@ public class DocumentationViewerTableau extends Tableau {
                 // MoML file within which this attribute might be being
                 // defined.  Is there any way to do that?
                 URL toRead = getClass().getClassLoader().getResource(
-		    docName.replace('.', '/') + ".html");
+                        docName.replace('.', '/') + ".html");
                 ((HTMLViewer)getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                "Cannot find documentation for: " + docName +
-		"\n" + ex.toString() +
-		"\nTry Running \"make\" in ptII/doc.");
+                        "Cannot find documentation for: " + docName +
+                        "\n" + ex.toString() +
+                        "\nTry Running \"make\" in ptII/doc.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -146,7 +146,7 @@ public class DocumentationViewerTableau extends Tableau {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         DocumentationViewerTableau newObject =
-                 (DocumentationViewerTableau)super.clone(workspace);
+            (DocumentationViewerTableau)super.clone(workspace);
         newObject.dottedClass =
 	    (StringAttribute)newObject.getAttribute("dottedClass");
         return newObject;

@@ -110,8 +110,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
         String name = getContainer().getName();
 	List paramList = attributeList(UserSettable.class);
         UserSettable choices[]
-                = (UserSettable [])paramList.toArray(
-                new UserSettable[paramList.size()]);
+            = (UserSettable [])paramList.toArray(
+                    new UserSettable[paramList.size()]);
 	String values[] = new String[choices.length];
 	for(int i = 0; i < choices.length; i++) {
 	    values[i] = choices[i].getExpression();

@@ -107,7 +107,7 @@ public class Multiplexor extends Transformer {
         }
         if (!inRange) {
             throw new IllegalActionException(this,
-            "Select input is out of range: " + index + ".");
+                    "Select input is out of range: " + index + ".");
         }
     }
 

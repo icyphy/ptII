@@ -202,9 +202,9 @@ public abstract class TableauFrame extends Top {
                 try {
                     // No main welcome window.  Create one.
                     EffigyFactory effigyFactory = new HTMLEffigyFactory(
-                             directory.workspace());
+                            directory.workspace());
                     effigy = effigyFactory.createEffigy(
-                             directory, (URL)null, doc);
+                            directory, (URL)null, doc);
 
                     effigy.identifier.setExpression(doc.toExternalForm());
                     effigy.url.setURL(doc);
@@ -213,7 +213,7 @@ public abstract class TableauFrame extends Top {
                     try {
                         // Create a tableau if there is a tableau factory.
                         TableauFactory factory = (TableauFactory)
-                             getConfiguration().getEntity("tableauFactory");
+                            getConfiguration().getEntity("tableauFactory");
                         if (factory != null) {
                             Tableau tableau = factory.createTableau(effigy);
                             if (tableau == null) {
@@ -253,16 +253,16 @@ public abstract class TableauFrame extends Top {
             // is capable of creating blank effigies.
 	    final Configuration configuration = getConfiguration();
 	    EffigyFactory effigyFactory =
-                    (EffigyFactory)configuration.getEntity("effigyFactory");
+                (EffigyFactory)configuration.getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
 	    if(effigyFactory != null && directory != null) {
                 List factoryList =
-                       effigyFactory.entityList(EffigyFactory.class);
+                    effigyFactory.entityList(EffigyFactory.class);
 	        Iterator factories = factoryList.iterator();
                 while(factories.hasNext()) {
                     final EffigyFactory factory =
-                            (EffigyFactory)factories.next();
+                        (EffigyFactory)factories.next();
                     if (!factory.canCreateBlankEffigy()) continue;
                     canCreateBlank = true;
                     String name = factory.getName();
@@ -310,11 +310,11 @@ public abstract class TableauFrame extends Top {
                     _menubar.add(viewMenu);
                     ViewMenuListener vml = new ViewMenuListener();
                     Iterator factories =
-                            _factoryContainer.entityList(TableauFactory.class)
-                            .iterator();
+                        _factoryContainer.entityList(TableauFactory.class)
+                        .iterator();
                     while (factories.hasNext()) {
                         TableauFactory factory
-                                = (TableauFactory)factories.next();
+                            = (TableauFactory)factories.next();
                         String name = factory.getName();
                         JMenuItem item = new JMenuItem(name);
                         // The "action command" is available to the listener.
@@ -364,7 +364,7 @@ public abstract class TableauFrame extends Top {
                 effigy.setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(
-                    "Unable to set effigy container to null! " + ex);
+                        "Unable to set effigy container to null! " + ex);
             }
         }
         // Some of the effigies closed may have triggered other
@@ -379,7 +379,7 @@ public abstract class TableauFrame extends Top {
                 effigy.setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(
-                    "Unable to set effigy container to null! " + ex);
+                        "Unable to set effigy container to null! " + ex);
             }
         }
     }
@@ -408,7 +408,7 @@ public abstract class TableauFrame extends Top {
     protected void _read(URL url) throws Exception {
         if (_tableau == null) {
             throw new Exception("No associated Tableau!"
-            + " Can't open a file.");
+                    + " Can't open a file.");
         }
         // NOTE: Used to use for the first argument the following, but
         // it seems to not work for relative file references:
@@ -478,7 +478,7 @@ public abstract class TableauFrame extends Top {
                         // then ask if it's OK to discard the changes?
                         previousOpen.showTableaux();
                         String confirm = "Unsaved changes in " + file.getName()
-                        + ". OK to discard changes?";
+                            + ". OK to discard changes?";
                         // Show a MODAL dialog
                         int selected = JOptionPane.showOptionDialog(
                                 this,
@@ -572,7 +572,7 @@ public abstract class TableauFrame extends Top {
             CompositeEntity composite, NamedObj model) {
         if (composite != null) {
             Iterator effigies =
-                   composite.entityList(PtolemyEffigy.class).iterator();
+                composite.entityList(PtolemyEffigy.class).iterator();
             while (effigies.hasNext()) {
                 PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();
                 // First see whether this effigy matches.
@@ -650,7 +650,7 @@ public abstract class TableauFrame extends Top {
                 JMenuItem target = (JMenuItem)e.getSource();
                 String actionCommand = target.getActionCommand();
                 TableauFactory factory = (TableauFactory)
-                        _factoryContainer.getEntity(actionCommand);
+                    _factoryContainer.getEntity(actionCommand);
                 if (factory != null) {
                     Effigy tableauContainer = (Effigy)_tableau.getContainer();
                     try {

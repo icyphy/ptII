@@ -213,8 +213,8 @@ public class Tableau extends ComponentEntity {
 	    super.setContainer(container);
 	} else {
 	    throw new IllegalActionException(this, container,
-		"The container can only be set to an " +
-		"instance of Effigy");
+                    "The container can only be set to an " +
+                    "instance of Effigy");
 	}
     }
 

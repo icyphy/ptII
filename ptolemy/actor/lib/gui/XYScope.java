@@ -103,7 +103,7 @@ public class XYScope extends XYPlotter {
             throws IllegalActionException {
         if (attribute == persistence && plot != null) {
             int persValue =
-                    ((IntToken)persistence.getToken()).intValue();
+                ((IntToken)persistence.getToken()).intValue();
             plot.setPointsPersistence(persValue);
         } else {
             super.attributeChanged(attribute);

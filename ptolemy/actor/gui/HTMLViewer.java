@@ -66,7 +66,7 @@ The url that is viewed can be changed by calling the <i>setPage</i> method.
 */
 
 public class HTMLViewer extends TableauFrame
-        implements Printable, HyperlinkListener {
+    implements Printable, HyperlinkListener {
 
     /** Construct a blank viewer.
      */
@@ -149,7 +149,7 @@ public class HTMLViewer extends TableauFrame
         }
     }
 
-// FIXME: This should be handled in Top...
+    // FIXME: This should be handled in Top...
 
     /** Print the documentation to a printer.  The documentation will be
      *  scaled to fit the width of the paper, growing to as many pages as
@@ -177,7 +177,7 @@ public class HTMLViewer extends TableauFrame
         }
         AffineTransform at = new AffineTransform();
 	at.translate((int)format.getImageableX(),
-		     (int)format.getImageableY());
+                (int)format.getImageableY());
 	at.translate(0, -(format.getImageableHeight() * index));
 	at.scale(scale, scale);
 

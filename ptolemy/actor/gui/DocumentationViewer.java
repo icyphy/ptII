@@ -79,7 +79,7 @@ public class DocumentationViewer extends HTMLViewer {
 	String className = object.getClass().getName();
 	String docName = "doc.codeDoc." + className;
 	URL docURL = getClass().getClassLoader().getResource(
-            docName.replace('.', '/') + ".html");
+                docName.replace('.', '/') + ".html");
 	try {
 	    setPage(docURL);
 	} catch (IOException ex) {

@@ -65,7 +65,7 @@ public class SpaceFinder {
         try {
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(
-                    new RMISecurityManager());
+                        new RMISecurityManager());
             }
 
             System.out.println("java.security.policy=" +
@@ -87,20 +87,20 @@ public class SpaceFinder {
                 if (finder != null) System.out.println("Found Lookup Finder.");
                 return (JavaSpace)finder.find(locator, name);
                 /**
-                ServiceFinder finder = new ServiceFinder(JavaSpace.class);
-                while (true) {
-                    JavaSpace space =  (JavaSpace)finder.getObjects()[0];
-                    if (space == null) {
-                        System.err.println("Can't find JavaSpace. Trying...");
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException ex) {
-                            // ignore...
-                        }
-                    } else {
-                        return space;
-                    }
-                }
+                   ServiceFinder finder = new ServiceFinder(JavaSpace.class);
+                   while (true) {
+                   JavaSpace space =  (JavaSpace)finder.getObjects()[0];
+                   if (space == null) {
+                   System.err.println("Can't find JavaSpace. Trying...");
+                   try {
+                   Thread.sleep(10000);
+                   } catch (InterruptedException ex) {
+                   // ignore...
+                   }
+                   } else {
+                   return space;
+                   }
+                   }
                 */
             } else {
                 RefHolder rh = (RefHolder)Naming.lookup(name);
@@ -112,7 +112,7 @@ public class SpaceFinder {
 
         } catch (Exception ex) {
             throw new IllegalActionException("Cannot find JavaSpace. " +
-			ex.getClass().getName() + " " + ex.getMessage());
+                    ex.getClass().getName() + " " + ex.getMessage());
         }
     }
 

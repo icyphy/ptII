@@ -107,7 +107,7 @@ public class HTMLViewerTableau extends Tableau {
                 ((HTMLViewer)getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                "Cannot open URL: " + urlSpec + "\n" + ex.toString());
+                        "Cannot open URL: " + urlSpec + "\n" + ex.toString());
             }
         } else {
             super.attributeChanged(attribute);
@@ -134,7 +134,7 @@ public class HTMLViewerTableau extends Tableau {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -162,7 +162,7 @@ public class HTMLViewerTableau extends Tableau {
                 // First see whether the effigy already contains an
                 // HTMLViewerTableau.
                 HTMLViewerTableau tableau =
-                        (HTMLViewerTableau)effigy.getEntity("htmlTableau");
+                    (HTMLViewerTableau)effigy.getEntity("htmlTableau");
                 if (tableau == null) {
                     tableau = new HTMLViewerTableau(
                             (HTMLEffigy)effigy, "htmlTableau");

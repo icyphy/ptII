@@ -77,7 +77,7 @@ public class ProcessSink extends Sink {
             System.out.println(_name+": Get returned with no token");
         }
         /*
-        */
+         */
     }
 
     /**

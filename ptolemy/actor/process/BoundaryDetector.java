@@ -98,7 +98,7 @@ public class BoundaryDetector {
 		    // connected to the boundary port.
                     try {
                         Receiver[][] rcvrs =
-			        connectedPort.deepGetReceivers();
+                            connectedPort.deepGetReceivers();
                         for( int i = 0; i < rcvrs.length; i++ ) {
                             for( int j = 0; j < rcvrs[i].length; j++ ) {
                                 if( _rcvr == rcvrs[i][j] ) {
@@ -174,7 +174,7 @@ public class BoundaryDetector {
 		    // connected to the boundary port.
                     try {
                         Receiver[][] rcvrs =
-			        connectedPort.deepGetReceivers();
+                            connectedPort.deepGetReceivers();
                         for( int i = 0; i < rcvrs.length; i++ ) {
                             for( int j = 0; j < rcvrs[i].length; j++ ) {
                                 if( _rcvr == rcvrs[i][j] ) {

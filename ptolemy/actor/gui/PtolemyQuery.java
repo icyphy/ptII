@@ -117,10 +117,10 @@ public class PtolemyQuery extends Query
         boolean foundStyle = false;
         if (attribute instanceof NamedObj) {
             Iterator styles = ((NamedObj)attribute)
-                    .attributeList(ParameterEditorStyle.class).iterator();
+                .attributeList(ParameterEditorStyle.class).iterator();
             while (styles.hasNext() && !foundStyle) {
                 ParameterEditorStyle style =
-                        (ParameterEditorStyle)styles.next();
+                    (ParameterEditorStyle)styles.next();
                 try {
                     style.addEntry(this);
                     foundStyle = true;
@@ -191,7 +191,7 @@ public class PtolemyQuery extends Query
         // of NamedObj, but check to be sure.
         if (attribute instanceof NamedObj) {
             Attribute tooltipAttribute =
-                   ((NamedObj)attribute).getAttribute("tooltip");
+                ((NamedObj)attribute).getAttribute("tooltip");
             if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
                 setToolTip(entryName,
@@ -217,7 +217,7 @@ public class PtolemyQuery extends Query
 	// Check if the entry that changed is in the mapping.
 	if (_attributes.containsKey(name)) {
 	    final UserSettable attribute
-                    = (UserSettable)(_attributes.get(name));
+                = (UserSettable)(_attributes.get(name));
             if ( attribute == null ) {
                 // No associated attribute.
                 return;
@@ -242,14 +242,14 @@ public class PtolemyQuery extends Query
                 }
 		String moml = "<property name=\""
 		    + castAttribute.getName(parent)
-		    + "\" value=\""
-		    + StringUtilities.escapeForXML(stringValue(name))
-		    + "\"/>";
-		request = new MoMLChangeRequest(
-		        this,         // originator
-		        parent,       // context
-                        moml,         // MoML code
-                        null);        // base
+                        + "\" value=\""
+                        + StringUtilities.escapeForXML(stringValue(name))
+                            + "\"/>";
+                        request = new MoMLChangeRequest(
+                                this,         // originator
+                                parent,       // context
+                                moml,         // MoML code
+                                null);        // base
 	    } else {
 		// If the attribute is not a NamedObj, then we
 		// set its value directly.
@@ -286,7 +286,7 @@ public class PtolemyQuery extends Query
         String name = change.getDescription();
 	if (_attributes.containsKey(name)) {
 	    final UserSettable attribute
-                    = (UserSettable)(_attributes.get(name));
+                = (UserSettable)(_attributes.get(name));
 
             // Make a record of the successful attribute value change
             // in case some future change fails and the user chooses to revert.
@@ -335,7 +335,7 @@ public class PtolemyQuery extends Query
             }
             final String entryName = tmpEntryName;
             final UserSettable attribute
-                    = (UserSettable)_attributes.get(entryName);
+                = (UserSettable)_attributes.get(entryName);
             if (attribute != null) {
                 _query.addStyledEntry(attribute);
             } else {
@@ -358,7 +358,7 @@ public class PtolemyQuery extends Query
                     if (_dialog.buttonPressed().equals("Cancel")) {
                         if (_revertValue.containsKey(entryName)) {
                             String revertValue = (String)
-                                    _revertValue.get(entryName);
+                                _revertValue.get(entryName);
                             setAndNotify(((NamedObj)attribute).getName(),
                                     revertValue);
                         }
@@ -406,7 +406,7 @@ public class PtolemyQuery extends Query
                     // Get the list of entry names that the attribute
                     // is attached to.
                     List entryNameList = (List)
-                             _varToListOfEntries.get(attribute);
+                        _varToListOfEntries.get(attribute);
 
                     // For each entry name, call set() to update its
                     // value with the value of attribute

@@ -139,7 +139,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
     /** Update parameters.
      */
     public void attributeChanged(Attribute attr)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attr == blocking) {
             _blocking = ((BooleanToken)blocking.getToken()).booleanValue();
         }
@@ -371,9 +371,9 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                         while(!finished) {
                             System.out.println(getName() +
                                     " is trying to read entry: " +
-                                   ( _lastRead.getSerialNumber()+1));
+                                    ( _lastRead.getSerialNumber()+1));
                             TokenEntry entrytemp = new TokenEntry(_entryName,
-                                new Long(_lastRead.getSerialNumber()+1), null);
+                                    new Long(_lastRead.getSerialNumber()+1), null);
                             TokenEntry entry;
                             try{
                                 entry = (TokenEntry)_space.readIfExists(
@@ -387,23 +387,23 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                                 System.out.println(getName() +
                                         " read null from space");
                                 /* check min indecies
-                                IndexEntry indexmin ;
-                                try {
+                                   IndexEntry indexmin ;
+                                   try {
                                    indexmin = (IndexEntry)_space.read(
-                                        _minTemplate, null, Long.MAX_VALUE);
-                                } catch (Exception e) {
-                                    throw new InvalidStateException(_container,
-                                            "error reading space." +
-                                            e.getMessage());
-                                }
-                                if(_indexmin != null &&
-                                _lastRead.getSerialNumber() >=
-                                        indexmin.position.longValue()) {
-                                    finished = true;
-                                } else {
-                                    _lastRead.setSerialNumber(
-                                            indexmin.position.longValue());
-                                            }*/
+                                   _minTemplate, null, Long.MAX_VALUE);
+                                   } catch (Exception e) {
+                                   throw new InvalidStateException(_container,
+                                   "error reading space." +
+                                   e.getMessage());
+                                   }
+                                   if(_indexmin != null &&
+                                   _lastRead.getSerialNumber() >=
+                                   indexmin.position.longValue()) {
+                                   finished = true;
+                                   } else {
+                                   _lastRead.setSerialNumber(
+                                   indexmin.position.longValue());
+                                   }*/
                                 finished = true;
                             } else {
                                 System.out.println(getName() +

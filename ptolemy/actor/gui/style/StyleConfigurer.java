@@ -116,7 +116,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    // Get the current style.
 	    boolean foundOne = false;
 	    Iterator styles = ((NamedObj)param)
-                    .attributeList(ParameterEditorStyle.class).iterator();
+                .attributeList(ParameterEditorStyle.class).iterator();
 	    ParameterEditorStyle foundStyle = null;
 	    while (styles.hasNext()) {
 		foundOne = true;
@@ -129,14 +129,14 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    int count = 0;
 	    // Reduce the list of parameters
 	    for(int i = 0; i < parameterStyles.length; i++) {
-		 if(foundOne &&
-		    parameterStyles[i].getClass() == foundStyle.getClass()) {
-		     defaultIndex = count;
-		     if(foundStyle.acceptable(param)) {
-			 styleList.add(parameterStyles[i].getName());
-			 count++;
-		     }
-		 } else if(parameterStyles[i].acceptable(param)) {
+                if(foundOne &&
+                        parameterStyles[i].getClass() == foundStyle.getClass()) {
+                    defaultIndex = count;
+                    if(foundStyle.acceptable(param)) {
+                        styleList.add(parameterStyles[i].getName());
+                        count++;
+                    }
+                } else if(parameterStyles[i].acceptable(param)) {
 		    styleList.add(parameterStyles[i].getName());
 		    count++;
 		}
@@ -145,7 +145,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 		(String[])styleList.toArray(new String[count]);
 
 	    addChoice(param.getName(), param.getName(),
-		      styleArray, styleArray[defaultIndex]);
+                    styleArray, styleArray[defaultIndex]);
 	}
     }
 
@@ -202,12 +202,12 @@ public class StyleConfigurer extends Query implements QueryListener {
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
                     UserSettable param = (UserSettable)
-                            _object.getAttribute((String)entry.getKey());
+                        _object.getAttribute((String)entry.getKey());
                     try {
                         param.setExpression((String)entry.getValue());
                     } catch (IllegalActionException ex) {
                         throw new InternalErrorException(
-                        "Cannot restore style value!");
+                                "Cannot restore style value!");
                     }
                 }
             }

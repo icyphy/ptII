@@ -248,17 +248,17 @@ public class AudioSink extends Sink {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 	if(_debugging) _debug("AudioSink: attributeChanged() invoked on: " +
-			      attribute.getName());
+                attribute.getName());
 	//System.out.println("AudioSink: attributeChanged() invoked on: " +
 	//	      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
-	    ((IntToken)channels.getToken()).intValue();
+                ((IntToken)channels.getToken()).intValue();
 	    if (_channels < 1) {
 		throw new IllegalActionException(this,
-		    "Attempt to set channels parameter to an illegal " +
-		    "value of: " +  _channels + " . The value must be a " +
-                    "positive integer.");
+                        "Attempt to set channels parameter to an illegal " +
+                        "value of: " +  _channels + " . The value must be a " +
+                        "positive integer.");
 	    }
 	    // Check if we need to reallocate.
 	    if ((_inArray == null) || (_channels != _inArray.length)) {
@@ -278,12 +278,12 @@ public class AudioSink extends Sink {
 	    // Nothing for now...
 	} else if (attribute == bufferSize) {
 	    int intBufferSize =
-	    ((IntToken)bufferSize.getToken()).intValue();
+                ((IntToken)bufferSize.getToken()).intValue();
 	    if (intBufferSize < _putFactor) {
 		throw new IllegalActionException(this,
-		    "Attempt to set bufferSize parameter to an illegal " +
-		    "value of: " +  intBufferSize + " . The value must be " +
-                    "greater than " + _putFactor + ".");
+                        "Attempt to set bufferSize parameter to an illegal " +
+                        "value of: " +  intBufferSize + " . The value must be " +
+                        "greater than " + _putFactor + ".");
 	    }
 	    _putSampleSize = intBufferSize/_putFactor;
 	    for (int i = 0; i < _channels; i++) {
@@ -374,8 +374,8 @@ public class AudioSink extends Sink {
 		    _soundPlayback.putSamples(_audioPutArray);
 		} catch (Exception ex) {
 		    throw new IllegalActionException(
-				"Cannot playback audio:\n" +
-				ex.getMessage());
+                            "Cannot playback audio:\n" +
+                            ex.getMessage());
 		}
 		// Reset pointer to begining of array.
 		_curElement = 0;
@@ -397,7 +397,7 @@ public class AudioSink extends Sink {
 	} else if (returnVal == NOT_READY) {
 	    // This should never happen.
 	    throw new IllegalActionException(this, "Actor " +
-		          "is not ready to fire.");
+                    "is not ready to fire.");
 	} else if (returnVal == STOP_ITERATING) {
 	    return false;
 	}
@@ -427,13 +427,13 @@ public class AudioSink extends Sink {
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (_soundPlayback != null) {
-	     try {
-		 _soundPlayback.stopPlayback();
-	     } catch (IOException ex) {
-		 throw new IllegalActionException(
-		    "Cannot free audio resources:\n" +
-		    ex.getMessage());
-	     }
+            try {
+                _soundPlayback.stopPlayback();
+            } catch (IOException ex) {
+                throw new IllegalActionException(
+                        "Cannot free audio resources:\n" +
+                        ex.getMessage());
+            }
 	}
     }
 
@@ -456,13 +456,13 @@ public class AudioSink extends Sink {
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (_soundPlayback != null) {
-	     try {
-		 _soundPlayback.stopPlayback();
-	     } catch (IOException ex) {
-		 throw new IllegalActionException(
-		    "Cannot playback audio:\n" +
-		    ex.getMessage());
-	     }
+            try {
+                _soundPlayback.stopPlayback();
+            } catch (IOException ex) {
+                throw new IllegalActionException(
+                        "Cannot playback audio:\n" +
+                        ex.getMessage());
+            }
 	}
 	// Initialize audio playback.
 	String pathNameString =

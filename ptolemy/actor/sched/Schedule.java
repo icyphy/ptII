@@ -289,7 +289,7 @@ public class Schedule extends ScheduleElement {
 	public boolean hasNext() {
 	    if (_currentVersion != _scheduleVersion) {
 		throw new InvalidStateException(
-                  "Schedule structure changed while iterator is active.");
+                        "Schedule structure changed while iterator is active.");
 	    } else {
 		return(_currentElement <= _schedule.size());
 	    }
@@ -306,7 +306,7 @@ public class Schedule extends ScheduleElement {
 		throw new NoSuchElementException("No element to return.");
 	    } else if (_currentVersion != _scheduleVersion) {
 		throw new InvalidStateException(
-                  "Schedule structure changed while iterator is active.");
+                        "Schedule structure changed while iterator is active.");
 	    } else {
 		return _schedule.get(_currentElement++);
 	    }

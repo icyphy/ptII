@@ -108,7 +108,7 @@ public class TimedScope extends TimedPlotter {
             plot.setXRange(0.0, widthValue);
         } else if (attribute == persistence && plot != null) {
             double persValue =
-                    ((DoubleToken)persistence.getToken()).doubleValue();
+                ((DoubleToken)persistence.getToken()).doubleValue();
             plot.setXPersistence(persValue);
         } else {
             super.attributeChanged(attribute);

@@ -168,7 +168,7 @@ public class Configuration extends CompositeEntity {
             throws IllegalActionException {
         if (container != null) {
             throw new IllegalActionException(this,
-            "Configuration can only be at the top level of a hierarchy.");
+                    "Configuration can only be at the top level of a hierarchy.");
         }
     }
 

@@ -102,7 +102,7 @@ public class IndexEntry implements Entry {
      *  null, change it to contain 1.
      */
     public void increment() {
-	    position = new Long(getPosition()+1);
+        position = new Long(getPosition()+1);
     }
 }
 

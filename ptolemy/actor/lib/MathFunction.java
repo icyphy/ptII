@@ -228,8 +228,8 @@ public class MathFunction extends TypedAtomicActor {
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
 
-	    Token[] inArray1;
-	    Token[] inArray2;
+        Token[] inArray1;
+        Token[] inArray2;
 
         if (count > _resultArray.length) {
             _resultArray = new DoubleToken[count];

@@ -142,11 +142,11 @@ public class ProcessThread extends PtolemyThread {
             }
             _director._decreaseActiveCount();
 	    /*
-            String name = ((Nameable)_actor).getName();
-            System.out.println(name+": has called _decreaseActiveCount on "
-            + _director.getName() + "; there are "
-            + _director._getActiveActorsCount()+" active actors in "
-            + _director.getName() +".");
+              String name = ((Nameable)_actor).getName();
+              System.out.println(name+": has called _decreaseActiveCount on "
+              + _director.getName() + "; there are "
+              + _director._getActiveActorsCount()+" active actors in "
+              + _director.getName() +".");
 	    */
         }
     }

@@ -96,7 +96,7 @@ public class ModelDirectory extends CompositeEntity {
         while (entities.hasNext()) {
             Effigy entity = (Effigy)entities.next();
             StringAttribute id =
-                    (StringAttribute)entity.getAttribute("identifier");
+                (StringAttribute)entity.getAttribute("identifier");
             if (id != null) {
                 String idString = id.getExpression();
                 if (idString.equals(identifier)) return entity;
@@ -140,7 +140,7 @@ public class ModelDirectory extends CompositeEntity {
                         setContainer(null);
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
-                            "Cannot remove directory!");
+                                "Cannot remove directory!");
                     }
                 }
             }

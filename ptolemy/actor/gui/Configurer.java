@@ -142,7 +142,7 @@ public class Configurer extends JPanel implements CloseListener {
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
                     UserSettable param = (UserSettable)
-                            _object.getAttribute((String)entry.getKey());
+                        _object.getAttribute((String)entry.getKey());
                     try {
                         param.setExpression((String)entry.getValue());
                         // Force notification of listeners, unless value is

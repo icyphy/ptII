@@ -155,7 +155,7 @@ public class TextEffigy extends Effigy {
                 fout.write(_doc.getText(0, _doc.getLength()));
             } catch (BadLocationException ex) {
                 throw new IOException("Failed to get text from the docuemnt: "
-                + ex);
+                        + ex);
             }
             fout.close();
         }
@@ -215,9 +215,9 @@ public class TextEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
-         public Effigy createEffigy(
-                 CompositeEntity container, URL base, URL in)
-                 throws Exception {
+        public Effigy createEffigy(
+                CompositeEntity container, URL base, URL in)
+                throws Exception {
             // Create a new effigy.
             return newTextEffigy(container, base, in);
 	}

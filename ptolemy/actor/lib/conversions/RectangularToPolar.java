@@ -156,9 +156,9 @@ public class RectangularToPolar extends TypedAtomicActor {
             double yValue = ((DoubleToken) (y.get(0))).doubleValue();
 
             double magnitudeValue
-                   = Math.sqrt (xValue * xValue + yValue * yValue);
+                = Math.sqrt (xValue * xValue + yValue * yValue);
             double angleValue
-                   = Math.atan2(yValue, xValue);
+                = Math.atan2(yValue, xValue);
 
             magnitude.broadcast(new DoubleToken (magnitudeValue));
             angle.broadcast(new DoubleToken (angleValue));

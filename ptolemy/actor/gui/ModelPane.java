@@ -177,12 +177,12 @@ public class ModelPane extends JPanel {
         /* FIXME: Attempting to do the job that Java fails to do here
          * yields truly bizzare behavior, where the constructor returns null!
          *
-        java.awt.Component[] children = _displays.getComponents();
-        if (children != null) {
-            for (int i = 0; i < children.length; i++) {
-                children[i].setBackground(background);
-            }
-        }
+         java.awt.Component[] children = _displays.getComponents();
+         if (children != null) {
+         for (int i = 0; i < children.length; i++) {
+         children[i].setBackground(background);
+         }
+         }
         */
 
         if (_paramQuery != null) _paramQuery.setBackground(background);
