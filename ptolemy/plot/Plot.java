@@ -416,8 +416,12 @@ public class Plot extends PlotBox {
      *  variables _xBottom, _xTop, _yBottom, and _yTop are valid.
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
+     *  Note that this method is not synchronized, which is consistent
+     *  with swing's policy of unsynchronized writing to the screen.
+     *  Thus, this method should always be called from the event thread
+     *  when being used to write to the screen.
      */
-    public synchronized void fillPlot() {
+    public void fillPlot() {
         if (_xyInvalid) {
             // Recalculate the boundaries based on currently visible data
             _xBottom = Double.MAX_VALUE;
