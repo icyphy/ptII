@@ -57,6 +57,7 @@ JSRCS = \
 	BarGraph.java \
 	Display.java \
 	HistogramPlotter.java \
+	InteractiveShell.java \
 	MatrixViewer.java \
 	Plotter.java \
 	PlotterBase.java \
