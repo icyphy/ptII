@@ -91,18 +91,18 @@ public class ViewScreen extends GRActor implements Placeable {
         sceneGraphIn.setMultiport(true);
 
         horizontalResolution = new Parameter(this,
-                               "horizontalResolution",new IntToken(400));
+                "horizontalResolution",new IntToken(400));
         verticalResolution = new Parameter(this,
-                             "verticalResolution",new IntToken(400));
+                "verticalResolution",new IntToken(400));
         rotatable = new Parameter(this,
-                    "rotatable",new BooleanToken(true));
+                "rotatable",new BooleanToken(true));
         scalable = new Parameter(this,
-                   "scalable",new BooleanToken(false));
+                "scalable",new BooleanToken(false));
         translatable = new Parameter(this,
-                       "translatable",new BooleanToken(false));
+                "translatable",new BooleanToken(false));
         showAxes = new Parameter(this,"showAxes",new BooleanToken(false));
         iterationSynchronized = new Parameter(this,
-                       "iterationSynchronized",new BooleanToken(false));
+                "iterationSynchronized",new BooleanToken(false));
 
 
         _lastTransform = new Transform3D();
@@ -192,19 +192,19 @@ public class ViewScreen extends GRActor implements Placeable {
             simpleUniverse.getViewingPlatform().setNominalViewingTransform();
 
             /* FIXME: experimental code for changing views.
-            TransformGroup VPTG = new TransformGroup();
-            VPTG = simpleUniverse.getViewingPlatform()
-                   .getMultiTransformGroup().getTransformGroup(0);
-            Transform3D VPT3D = new Transform3D();
-            //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
-            //      new Point3d(0.0, 0.0, 0.0),
-            //      new Vector3d(0.0, 1.0, 0.0));
-            //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
-            //VPT3D.rotX(Math.PI/2.0);
-            VPT3D.rotX(Math.PI/2);
-            VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
+               TransformGroup VPTG = new TransformGroup();
+               VPTG = simpleUniverse.getViewingPlatform()
+               .getMultiTransformGroup().getTransformGroup(0);
+               Transform3D VPT3D = new Transform3D();
+               //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
+               //      new Point3d(0.0, 0.0, 0.0),
+               //      new Vector3d(0.0, 1.0, 0.0));
+               //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
+               //VPT3D.rotX(Math.PI/2.0);
+               VPT3D.rotX(Math.PI/2);
+               VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
 
-            VPTG.setTransform(VPT3D);
+               VPTG.setTransform(VPT3D);
             */
         }
     }
@@ -434,7 +434,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
     private boolean _isIterationSynchronized() throws IllegalActionException {
         return ((BooleanToken)
-                 iterationSynchronized.getToken()).booleanValue();
+                iterationSynchronized.getToken()).booleanValue();
     }
 
     private boolean _shouldShowAxes() throws IllegalActionException {
@@ -453,13 +453,13 @@ public class ViewScreen extends GRActor implements Placeable {
 
             }
             /* FIXME: experimental code for changing xforms
-            double[] db = new double[16];
+               double[] db = new double[16];
 
-            db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
-            db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
-            db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
-            db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
-            currXform.set(db);
+               db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
+               db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
+               db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
+               db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
+               currXform.set(db);
             */
 
             super.processStimulus(criteria);
@@ -475,27 +475,27 @@ public class ViewScreen extends GRActor implements Placeable {
         }
 
         /* FIXME experimental code for changing xforms
-        public void transformChanged(Transform3D transform) {
-            double[] db = new double[16];
+           public void transformChanged(Transform3D transform) {
+           double[] db = new double[16];
 
-            transform.get(db);
-            for(int i = 0; i < 16; i++) {
-                if (i%4 == 0) {
-                    System.out.println(" ");
-                }
-                System.out.print(" "+db[i]);
-            }
-            System.out.println(" ");
-            System.out.println("------------------------------"
-              + "---------------------------------");
-            db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
-            db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
-            db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
-            db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
-            Transform3D td = new Transform3D();
-            td.set(db);
-            //currXform.set(db);
-        }*/
+           transform.get(db);
+           for(int i = 0; i < 16; i++) {
+           if (i%4 == 0) {
+           System.out.println(" ");
+           }
+           System.out.print(" "+db[i]);
+           }
+           System.out.println(" ");
+           System.out.println("------------------------------"
+           + "---------------------------------");
+           db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
+           db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
+           db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
+           db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
+           Transform3D td = new Transform3D();
+           td.set(db);
+           //currXform.set(db);
+           }*/
 
         boolean stopped = false;
         ViewScreen _viewContainer;

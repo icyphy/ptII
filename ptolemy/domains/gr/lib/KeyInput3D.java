@@ -92,7 +92,7 @@ public class KeyInput3D extends GRActor {
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_root == null) {
             throw new IllegalActionException(
-                      "GR error: no ViewScreen actor");
+                    "GR error: no ViewScreen actor");
         } else {
             ViewScreen viewScreen = (ViewScreen) _root;
             viewScreen.addChild(_getNodeObject());

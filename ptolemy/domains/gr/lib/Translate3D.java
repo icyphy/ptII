@@ -74,11 +74,11 @@ public class Translate3D extends GRTransform {
 
 
         initialXTranslation = new Parameter(this,
-                                  "initialXTranslation", new DoubleToken(0.0));
+                "initialXTranslation", new DoubleToken(0.0));
         initialYTranslation = new Parameter(this,
-                                  "initialYTranslation", new DoubleToken(0.0));
+                "initialYTranslation", new DoubleToken(0.0));
         initialZTranslation = new Parameter(this,
-                                  "initialZTranslation", new DoubleToken(0.0));
+                "initialZTranslation", new DoubleToken(0.0));
 
     }
 
@@ -131,7 +131,7 @@ public class Translate3D extends GRTransform {
      *   can't be obtained
      */
     public void fire() throws IllegalActionException {
-    //  all state changes must be done in postfire()
+        //  all state changes must be done in postfire()
         super.fire();
         boolean applyTransform = false;
         double xOffset = _initialXTranslation;
@@ -188,19 +188,19 @@ public class Translate3D extends GRTransform {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _initialXTranslation = ((DoubleToken)
-                                  initialXTranslation.getToken()).doubleValue();
+                initialXTranslation.getToken()).doubleValue();
         _initialYTranslation = ((DoubleToken)
-                                  initialYTranslation.getToken()).doubleValue();
+                initialYTranslation.getToken()).doubleValue();
         _initialZTranslation = ((DoubleToken)
-                                  initialZTranslation.getToken()).doubleValue();
+                initialZTranslation.getToken()).doubleValue();
 
         transformNode = new TransformGroup();
         transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
         Transform3D transform = new Transform3D();
         transform.setTranslation(new Vector3d(_initialXTranslation,
-                                              _initialYTranslation,
-                                              _initialZTranslation));
+                _initialYTranslation,
+                _initialZTranslation));
         transformNode.setTransform(transform);
 
         _accumulatedX = 0.0;

@@ -76,7 +76,7 @@ public class Rotate3D extends GRTransform {
 
         angle.setTypeEquals(BaseType.DOUBLE);
         initialAngle = new Parameter(this, "initialAngle",
-                       new DoubleToken(0.0));
+                new DoubleToken(0.0));
 
         axisDirection = new Parameter(this, "axisDirection",
                 new DoubleMatrixToken(new double[][] {{ 0.0, 1.0, 0.0}} ));
@@ -139,10 +139,10 @@ public class Rotate3D extends GRTransform {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken)angle.get(0)).doubleValue();
                 double originalAngle = ((DoubleToken)
-                                      initialAngle.getToken()).doubleValue();
+                        initialAngle.getToken()).doubleValue();
 
                 DoubleMatrixToken axis = (DoubleMatrixToken)
-                                          axisDirection.getToken();
+                    axisDirection.getToken();
 
                 _xAxis = (float) axis.getElementAt(0, 0);
                 _yAxis = (float) axis.getElementAt(0, 1);
@@ -152,10 +152,10 @@ public class Rotate3D extends GRTransform {
                 if (_isAccumulating()) {
                     _accumulatedAngle = in + _accumulatedAngle;
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                                             _accumulatedAngle));
+                            _accumulatedAngle));
                 } else {
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                                             in + originalAngle));
+                            in + originalAngle));
                 }
                 _rotation.set(quat);
                 _middleRotate.setTransform(_rotation);
@@ -193,7 +193,7 @@ public class Rotate3D extends GRTransform {
         _baseZ = (float) pivot.getElementAt(0, 2);
 
         double originalAngle = ((DoubleToken)
-                                 initialAngle.getToken()).doubleValue();
+                initialAngle.getToken()).doubleValue();
 
         _accumulatedAngle = originalAngle;
 

@@ -111,7 +111,7 @@ public class Sphere3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         _containedNode = new Sphere(1.0f,
-                             Sphere.GENERATE_NORMALS, _appearance);
+                Sphere.GENERATE_NORMALS, _appearance);
         //Shape3D sphereShape = _containedNode.getShape();
         _scaler = new TransformGroup();
         _scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);

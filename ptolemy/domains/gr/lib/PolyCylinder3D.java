@@ -73,10 +73,10 @@ public class PolyCylinder3D extends GRShadedShape {
 
         super(container, name);
         polygon = new Parameter(this, "polygon",
-                   new DoubleMatrixToken(
-                   new double[][] {{0.0, 0.5,
-                                   -0.433, -0.25,
-                                    0.433, -0.25}}));
+                new DoubleMatrixToken(
+                        new double[][] {{0.0, 0.5,
+                                         -0.433, -0.25,
+                                         0.433, -0.25}}));
         thickness = new Parameter(this, "thickness", new DoubleToken(0.3));
     }
 
@@ -208,7 +208,7 @@ public class PolyCylinder3D extends GRShadedShape {
      */
     private float[] _getPolygon() throws IllegalActionException {
         DoubleMatrixToken matrixToken =
-                                   ((DoubleMatrixToken) polygon.getToken());
+            ((DoubleMatrixToken) polygon.getToken());
 
         int numberOfElements = matrixToken.getColumnCount()/2;
         float[] data = new float[numberOfElements*18];
@@ -241,7 +241,7 @@ public class PolyCylinder3D extends GRShadedShape {
      */
     private int _getVertexCount() throws IllegalActionException {
         DoubleMatrixToken matrixToken =
-                                   ((DoubleMatrixToken) polygon.getToken());
+            ((DoubleMatrixToken) polygon.getToken());
         int numberOfElements = matrixToken.getColumnCount()/2;
 
         return numberOfElements;
