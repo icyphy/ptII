@@ -41,7 +41,7 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// Environ
 /** An environment for declarations, which may be contained in another
-environment.
+environment.  Environs are used to implement scoping for declarations.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
@@ -72,9 +72,8 @@ public class Environ {
         _declList = declList;
     }
 
-    public Environ parent() {
-        return _parent;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Adds a mapping to the argument decl in this environment proper.
      *  This does not affect any Environs in which this is nested.
@@ -83,7 +82,31 @@ public class Environ {
         _declList.add(decl);
     }
 
-    /** copy the declList from env */
+    public EnvironIter allDecls() {
+        return lookupFirst(Decl.ANY_NAME, Decl.CG_ANY, false);
+    }
+
+    public EnvironIter allDecls(int mask) {
+        return lookupFirst(Decl.ANY_NAME, mask, false);
+    }
+
+    public EnvironIter allDecls(String name) {
+        return lookupFirst(name, Decl.CG_ANY, false);
+    }
+
+    public ListIterator allProperDecls() {
+        return _declList.listIterator();
+    }
+
+    public EnvironIter allProperDecls(int mask) {
+        return lookupFirst(Decl.ANY_NAME, mask, true);
+    }
+
+    public EnvironIter allProperDecls(String name) {
+        return lookupFirst(name, Decl.CG_ANY, true);
+    }
+
+    /** Copy the declList from env. */
     public void copyDeclList(Environ env) {
 	// FIXME: This is a little strange, but if two envs share a declList
 	// then copyDeclList will effectively set them to null
@@ -199,30 +222,6 @@ public class Environ {
         return new EnvironIter(parent, _declList.listIterator(), name, mask);
     }
 
-    public EnvironIter allDecls() {
-        return lookupFirst(Decl.ANY_NAME, Decl.CG_ANY, false);
-    }
-
-    public EnvironIter allDecls(int mask) {
-        return lookupFirst(Decl.ANY_NAME, mask, false);
-    }
-
-    public EnvironIter allDecls(String name) {
-        return lookupFirst(name, Decl.CG_ANY, false);
-    }
-
-    public ListIterator allProperDecls() {
-        return _declList.listIterator();
-    }
-
-    public EnvironIter allProperDecls(int mask) {
-        return lookupFirst(Decl.ANY_NAME, mask, true);
-    }
-
-    public EnvironIter allProperDecls(String name) {
-        return lookupFirst(name, Decl.CG_ANY, true);
-    }
-
     /** Return true if there is more than one matching Decl only
      *  in this Environ.
      */
@@ -241,10 +240,22 @@ public class Environ {
         return more[0];
     }
 
+    /** Return the parent Environ of this Environ. */
+    public Environ parent() {
+        return _parent;
+    }
+
+    /** Return a recursive String representation of this Environ. */
     public String toString() {
         return toString(true);
     }
 
+    /** Return a String representation of this Environ.  If the
+     *  recursive argument is true, then append string representations
+     *  of parent Environs as well.
+     *  @param recursive True if parent Environs are also traversed.
+     *  @return a possibly recursive String representation of this Environ.
+     */
     public String toString(boolean recursive) {
         ListIterator declItr = _declList.listIterator();
 
@@ -272,6 +283,12 @@ public class Environ {
         return retval.toString();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The parent of this Environ. */
     protected Environ _parent;
+
+    /** The list of Decls in this Environ. */
     protected List _declList;
 }
