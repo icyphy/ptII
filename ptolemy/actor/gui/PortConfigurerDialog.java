@@ -151,7 +151,11 @@ public class PortConfigurerDialog
         _portTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent mouseEvent) {
                 if ((VergilUtilities.macOSLookAndFeel()
-                    && mouseEvent.isPopupTrigger())
+                    && (mouseEvent.isPopupTrigger() 
+                    	|| (mouseEvent.getButton() == MouseEvent.BUTTON1 
+                    	    && ((mouseEvent.getModifiersEx() | java.awt.event.InputEvent.CTRL_DOWN_MASK)
+                    	       == java.awt.event.InputEvent.CTRL_DOWN_MASK))
+                    	       ))
                     || (!VergilUtilities.macOSLookAndFeel()
                         && mouseEvent.getButton() == MouseEvent.BUTTON3)) {
                     Point point = mouseEvent.getPoint();
