@@ -453,9 +453,13 @@ public class PlotBox extends Panel {
             ind = 0;
 
             double yTmpStart = yStart;
-            if (_ylog)
+            if (_ylog) {
                 yTmpStart = _gridStep(ygrid, ind, yStart, yStep, _ylog);
-
+                if (_debug == 5) 
+                    System.out.println("PlotBox: drawPlot: ind="+ind+
+                            " yStart="+yStart+" yStep="+yStep+
+                            " yTmpStart="+yTmpStart);
+            }
             for (double ypos=yTmpStart; ypos <= _ytickMax;
                  ypos = _gridStep(ygrid, ind, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
@@ -473,8 +477,9 @@ public class PlotBox extends Panel {
                     graphics.setColor(_foreground);
                 }
                 if (_debug == 5) 
-                    System.out.println("ypos = "+ypos+" ylabels["+ind+"] ="+
-                            ylabels[ind] );
+                    System.out.println("PlotBox: drawPlot: ypos = "+ypos+
+                            " _ytickMax="+_ytickMax+
+                            " ylabels["+ind+"] ="+ylabels[ind] );
 
                 // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
@@ -1437,7 +1442,7 @@ public class PlotBox extends Panel {
     ////                           protected variables                    ////
     
     // If non-zero, print out debugging messages.  Use setDebug() to set this.
-    protected int _debug = 0;
+    protected int _debug = 5;
     
     // The graphics context to operate in.  Note that printing will call
     // paint with a different graphics object, so we have to pass this
@@ -1651,11 +1656,16 @@ public class PlotBox extends Panel {
                 //gridBase += gridStep;
                 //pos += _roundUp(step);
                 if (_debug == 5)
-                    System.out.println("_gridStep: pos = "+pos+" _roundUp = "+
-                            _roundUp(step));
+                    System.out.println("PlotBox: _gridStep: pos = "+pos+
+                            " _roundUp("+step+") = "+_roundUp(step));
             }
             //return(gridBase + gridJuke[gridCurJuke]);
 
+            if (_debug == 5)
+                    System.out.println("PlotBox: _gridStep: pos="+pos+
+                            " ind="+ind+" step="+step+" "+" gridCurJuke="+
+                            gridCurJuke+" results="+_gridBase+"+"+
+                            ((Double)grid.elementAt(gridCurJuke)).doubleValue());
             return _gridBase + ((Double)grid.elementAt(gridCurJuke)).doubleValue();
         } else {
             return pos + step;
@@ -1710,7 +1720,7 @@ public class PlotBox extends Panel {
                 grid.addElement(new Double(log10(3.0)));
                 grid.addElement(new Double(log10(5.0)));
                 grid.addElement(new Double(log10(7.0)));
-	    } else {
+	    } else 
 		for (x = 1.0; x < 10.0 && (x+.5)/(x+.4) >= ratio; x += .5) {
 		    //gridJuke[gridNJuke++] = log10(x + .1);	gridJuke[gridNJuke++] = log10(x + .2);
                 gridNJuke++;                 gridNJuke++;
@@ -1771,7 +1781,8 @@ public class PlotBox extends Panel {
         }
         //gridNJuke = grid.size();
         if (_debug == 5 )
-            System.out.println("PrintBox: _initGrid: ratio = "+ratio+
+            System.out.println("PlotBox: _initGrid("+low+","+step+
+                    ": ratio = "+ratio+
                     "gridNJuke = "+gridNJuke+" gridCurJuke = "+gridCurJuke+
                     " grid.size()"+grid.size()+grid.toString());
         return grid;
