@@ -86,7 +86,7 @@ grep -v "<Dataflow" $tmpfile2 | grep -v "</Dataflow" > $tmpfile1
 
 # Convert <System ... or <ComponentSheet to <entity
 awk ' {
-    if ($0 ~ /<System/ || $0 ~ /<ComponentSheet/) {
+    if ($0 ~ /<System/ || $0 ~ /<ComponentSheet/ || $0 ~ /<Component/ ) {
        # Get the value of the name field
        nf = split($0, f, "\"")   
        for (i = 1; i <= nf; i++) {
@@ -174,7 +174,7 @@ awk ' {
            print indent "    </property>"
         }
 
-    } else if ($0 ~ /<\/System>/ || $0 ~ /<\/ComponentSheet>/) {
+    } else if ($0 ~ /<\/System>/ || $0 ~ /<\/ComponentSheet>/ || $0 ~ /<\/Component>/ ) {
        # FIXME: If we have <System ... />, then the indent might be wrong?
        print indent "</entity>"
     } else {
@@ -417,7 +417,7 @@ $0 ~ /<entity/ {
        }
 }
 {
-    if ($1 ~ /<OutputPort/ || $1 ~ /<InputPort/ || $1 ~ /<TriggerPort/) {
+    if ($1 ~ /<OutputPort/ || $1 ~ /<InputPort/ || $1 ~ /<TriggerPort/ || $1 ~ /<CInPort/ || $1 ~ /<COutPort/ ) {
        # Get the value of the name field
        name=""
        nf = split($0, f, "\"")   
