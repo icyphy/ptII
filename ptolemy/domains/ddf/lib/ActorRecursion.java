@@ -224,15 +224,18 @@ public class ActorRecursion extends TypedCompositeActor {
      *   cloned is not compatible with this actor.
      */
     private void _checkCompatibility() throws IllegalActionException {
-        if (!(getExecutiveDirector() instanceof DDFDirector))
+        if (!(getExecutiveDirector() instanceof DDFDirector)) {
             throw new IllegalActionException(this, "The executive Director " +
                     "must be DDFDirector.");
-        if (_recursionActor.inputPortList().size() != inputPortList().size() ||
-                _recursionActor.outputPortList().size() != outputPortList().size())
+        }
+        if (_recursionActor.inputPortList().size() != inputPortList().size()
+                || _recursionActor.outputPortList().size()
+                != outputPortList().size()) {
             throw new IllegalActionException(this, "The recursionActor " +
                     recursionActor.stringValue() + " must have the same " +
                     "number of input ports and same number of output " +
                     "ports as the actor to be replaced.");
+        }
         Iterator ports = portList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
@@ -252,10 +255,11 @@ public class ActorRecursion extends TypedCompositeActor {
                         "ports must be both input ports or output ports.");
             Type portType = port.getType();
             Type matchingPortType  = matchingPort.getType();
-            if (port.isInput() && !matchingPortType.isCompatible(portType))
-                throw new IllegalActionException(this, "The type of the port " +
-                        port.getName() + " of the actor " + getName() + " must " +
-                        "be the same or less than the matching port.");
+            if (port.isInput() && !matchingPortType.isCompatible(portType)) {
+                throw new IllegalActionException(this, "The type of the port "
+                        + port.getName() + " of the actor " + getName()
+                        + " must be the same or less than the matching port.");
+            }
             if (port.isOutput() && !portType.isCompatible(matchingPortType))
                 throw new IllegalActionException(this, "The type of the port " +
                         port.getName() + " of the actor " + getName() + " must " +
