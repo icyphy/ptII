@@ -150,3 +150,4 @@ public class PtolemyTypeVisitor extends TypeVisitor
 
     protected PtolemyTypePolicy _ptolemyTypePolicy;
     protected PtolemyTypeIdentifier _ptolemyTypeID;
+}

@@ -451,3 +451,5 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
     }
 
     protected CodeGeneratorClassFactory _factory = null;
+}
+

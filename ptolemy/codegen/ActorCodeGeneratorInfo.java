@@ -52,3 +52,5 @@ public class ActorCodeGeneratorInfo {
      *  of Parameters, whose names are keys.
      */
     public final Map parameterNameToTokenMap = new HashMap();
+}
+
