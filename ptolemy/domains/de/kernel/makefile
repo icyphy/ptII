@@ -70,7 +70,8 @@ MISC_FILES =	demo doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	
+OPTIONAL_FILES = \
+	'DECQDirector$$CQValue.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
