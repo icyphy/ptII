@@ -53,6 +53,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	MobileFunction.java \
 	MobileModel.java \
+	ModelReference.java \
 	MultiInstanceComposite.java
 
 OTHER_FILES_TO_BE_JARED = \
