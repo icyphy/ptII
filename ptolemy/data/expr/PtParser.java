@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
@@ -138,24 +139,17 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @param stringIn The expression to be parsed
      *  @exception IllegalActionException If the parse fails.
      *  @return The list of undefined variables.
-     *  @deprecated Use a visitor instead.
+     *  @deprecated Use a visitor with a ParseTreeFreeVariableCollector
+     *  instead.
      */
     public LinkedList getUndefinedList(String stringIn)
             throws IllegalActionException {
-        //debug = true;
-        String str = stringIn.replace('\n', ' ');
-        Reader reader = new StringReader(str);
-        this.ReInit(reader);
-        try {
-            // Parse the expression to obtain the parse tree
-            _undefined = new LinkedList();
-            ASTPtRootNode rootNode = start();
-            if (debug) rootNode.displayParseTree(" ");
-            return _undefined;
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
-        }
+        ASTPtRootNode rootNode = generateParseTree(stringIn);
+        ParseTreeFreeVariableCollector collector =
+            new ParseTreeFreeVariableCollector();
+
+        Set vars = collector.collectFreeVariables(rootNode);
+        return new LinkedList(vars);
     }
 
     /** Generates a parse tree from the given String. The root node is
@@ -173,7 +167,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         ASTPtRootNode rootNode;
         try {
             // Parse the expression to obtain the parse tree
-            _undefined = null;
             rootNode = start();
             if (debug) rootNode.displayParseTree(" ");
         } catch (ParseException x) {
@@ -309,10 +302,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  contains the java.lang.Math class.
      */
     private static List _classesSearched;
-
-    /* Keeps track of undefined variables if not null
-     */
-    private LinkedList _undefined;
 
   final public ASTPtRootNode start() throws ParseException {
  /*@bgen(jjtree) PtRootNode */
@@ -1443,18 +1432,11 @@ String tidied, x;
         // until the parse tree is evaluated.
         jjtn000._name = token.image;
 
-//FIXME: Constants shouldn't shadow other variables in scope.
+        //FIXME: Constants shouldn't shadow other variables in scope.
         if (Constants.get(token.image) != null) {
             // A named constant that is recognized by the parser.
             jjtn000._ptToken = Constants.get(token.image);
             jjtn000._isConstant = true;
-        } else {
-            // The ID is undefined...  We don't care until this is 
-            // actually evaluated, however.
-            if (_undefined != null) {
-                // System.out.println("Defining <" + token.image + ">");
-                _undefined.add(token.image);
-            }
         }
     } finally {
       if (jjtc000) {
@@ -1996,4 +1978,4 @@ String tidied, x;
     JJCalls next;
   }
 
-    }
+}
