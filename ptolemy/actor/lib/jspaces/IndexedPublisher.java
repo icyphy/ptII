@@ -153,7 +153,7 @@ public class IndexedPublisher extends Sink {
 	try {
 	    String name = ((StringToken)entryName.getToken()).stringValue();
 	    long time = ((LongToken)leaseTime.getToken()).longValue();
-            IndexEntry maxtemp= new IndexEntry(
+            IndexEntry maxtemp = new IndexEntry(
                     name, "maximum", null);
             // FIXME: This may introduce deadlock if maximum is lost
             // in the space.
