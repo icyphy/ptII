@@ -53,9 +53,21 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SROptimizedScheduler
 /**
-A scheduler the Synchronous Reactive (SR) domain.
+A scheduler the Synchronous Reactive (SR) domain.  This scheduler returns
+a static schedule for the graph.  The schedule guarantees that the values will
+converge to a fixed-point.
 <p>
-FIXME: Add comments.
+The recursive scheduling algorithm is due to Stephen Edwards, and is 
+described in his Ph.D. thesis.  First, a dependency graph is constructed, and 
+the strongly connected components (SCC) are determined.  A schedule for each 
+SCC is obtained by separating the sub-graph into a head and a tail, and then
+recursively applying this algorithm to both the head and the tail.  The 
+schedule for the SCC is (<i>TH</i>)<super><i>n</i></super><i>T</i> where 
+<i>H</i> and <i>T</i> are the schedules of the head and tail, respectively, and
+<i>n</i> is the number of nodes in the head and represents the number of
+repetitions of the parenthesized expression.  Finally, the schedules of the
+top-level SCCs are concatenated in topological order to obtain the schedule
+for the entire graph.
 
 @author Paul Whitaker
 @version $Id$
