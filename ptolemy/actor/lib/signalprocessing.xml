@@ -20,6 +20,13 @@
 <doc>FIR filter</doc>
 </entity>
 
+<entity name="IIR" class="ptolemy.actor.lib.IIR">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+<doc>IIR filter</doc>
+</entity>
+
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
