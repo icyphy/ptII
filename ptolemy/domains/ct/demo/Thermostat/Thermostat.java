@@ -297,7 +297,8 @@ public void init() {
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         ctDecDir.BreakpointODESolver.setToken(tok);
         tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");                 ctDecDir.ODESolver.setToken(tok);
+                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+        ctDecDir.ODESolver.setToken(tok);
         ctGain.factor.setToken(new DoubleToken(-1.0));
 
         // CT director parameters
