@@ -2,7 +2,7 @@
 #
 # @Authors: Rowland R Johnson (makefile only)
 #
-# @Version: $Id$
+# @Version: makefile,v 1.2 2004/04/03 00:39:59 cxh Exp
 #
 # @Copyright (c) 2002-2003 The Regents of the University of California.
 # All rights reserved.
@@ -70,7 +70,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
