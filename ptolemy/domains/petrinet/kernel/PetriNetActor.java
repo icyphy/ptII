@@ -94,12 +94,6 @@ Each node of <i>V</i> is called a <i>component</i> of the
 PetriNetActor <i>G</i>.
 
 A PetriNetActor is implemented as an extension of TypedCompositeActor.
-A Transition is also implemented as any TypedCompositeActor. The
-difference between these two different kinds of TypedCOmpositeActors
-is that the firing of a PetriNetActor is controlled by the top level
-container, while the firing of a Transition is controlled by the
-local director of the Transition, if there is one.
-
 The current file contains two main methods: fire() and prefire().
 More details of PetriNetActor can be found in PetriNetDirector.java.
 
@@ -166,7 +160,7 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     /** This method fires the PetriNetActor by calling the firing method
      *  of the director. It is assumed that the top level of the hierarchy
-     *  is PetiNetDirector.
+     *  is a PetiNetDirector.
      *  @exception IllegalActionException If director.fire() throws exception.
      *
      *
@@ -183,10 +177,9 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     }
 
-    /** This method tests whether the PetriNetActor contains any
-     *  enabled Transitions or not. If any of the components are
-     *  enabled Transitions, the method returns true,
-     *  otherwise returns false.
+    /** This method tests whether the PetriNetActor or its component
+     *  contains any enabled Transitions or not. If any of the components
+     *  is enabled, the method returns true, otherwise returns false.
      *
      *  @exception IllegalActionException If testReadyTransition
      *  throws exception.
