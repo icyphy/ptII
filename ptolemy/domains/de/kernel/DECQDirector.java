@@ -219,6 +219,8 @@ public class DECQDirector extends DEDirector {
      */
     public void fire() throws IllegalActionException {
 		
+        System.out.println("DE director fire() is called");
+
 	// Repeatedly fire the actor until it doesn't have any more filled 
 	// receivers. In the case of 'pure event' the actor is fired once.
 	// 
@@ -302,22 +304,20 @@ public class DECQDirector extends DEDirector {
      *  If there are multiple events on the queue with the same time
      *  stamp that are destined for the same actor, dequeue all of them,
      *  making them available in the input ports of the destination actor.
+     *  The firing actor may be fired repeatedly until all its
+     *  receivers are empty.
      *  If the time stamp is greater than the stop time, or there are no
      *  events on the event queue, then return false,
      *  which will have the effect of stopping the simulation.
      *
      *  @return True if there is an actor to fire.
      *  @exception IllegalActionException If the base class throws it.
-     *  @exception NameDuplicationException If the base class throws it.
      */
-    // FIXME: This isn't quite right in that it may put multiple simultaneous
-    // events into the same receiver.  Actors are unlikely to be written
-    // in such a way as to look for these.  Perhaps such actors need to
-    // be fired repeatedly?
-    public boolean prefire() throws IllegalActionException,
-            NameDuplicationException {
+    public boolean prefire() throws IllegalActionException {
 	// During prefire, new actor will be chosen to fire
-	// therefore, initialize _actorToFire field.
+	// therefore, initialize _actorToFire field to null.
+               
+        System.out.println("DE director prefire() is called");
 
         _actorToFire = null;
 	// Initialize the _filledReceivers field.
@@ -362,6 +362,7 @@ public class DECQDirector extends DEDirector {
 
                     if (_currentTime > _stopTime) {
 			// The stopping condition is met.
+                        _shouldPostfireReturnFalse = true;
 			return false;
 		    }
 
@@ -434,6 +435,11 @@ public class DECQDirector extends DEDirector {
 
                 _cQueue.put(event.key,event);
             }
+        }
+        if (_actorToFire == null) {
+            _shouldPostfireReturnFalse = true;
+        } else {
+            _shouldPostfireReturnFalse = false;
         }
         return _actorToFire != null;
     }

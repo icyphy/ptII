@@ -42,7 +42,6 @@ import java.util.Enumeration;
 //// DEDirector
 //
 /** Abstract base class for DE domain director. 
- 
  *
  *  @author Lukito Muliadi
  *  @version $Id$
@@ -53,7 +52,7 @@ import java.util.Enumeration;
 // The topological depth of the receivers are static and computed once
 // in the initialization() method. This means that mutations are not
 // currently supported.
-public abstract class DEDirector extends Director implements Runnable {
+public abstract class DEDirector extends Director {
 
     /** Construct a director with empty string as name in the
      *  default workspace.
@@ -175,6 +174,7 @@ public abstract class DEDirector extends Director implements Runnable {
      *  the director is run as a separate thread. Note that
      *  InvalidStateException is a runtime exception.
      */
+    /*
     public void run() throws InvalidStateException {
         try {
             super.go();
@@ -182,6 +182,18 @@ public abstract class DEDirector extends Director implements Runnable {
             throw new InvalidStateException(this,
                     "Execution failed: " + ex.getMessage());
         }
+    }
+    */
+
+    /**
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (_shouldPostfireReturnFalse) {
+            return false;            
+        } else {
+            return true;
+        }
+
     }
 
     /** Set the stop time of the simulation.
@@ -204,6 +216,13 @@ public abstract class DEDirector extends Director implements Runnable {
     // The current time of the simulation.
     // Firing actors may get the current time by calling getCurrentTime()
     protected double _currentTime = 0.0;
+    
+    // Set to true when it's time to end the simulation.
+    // e.g. The earliest time in the global event queue is greater than
+    // the stop time.
+    // FIXME: This is a hack :(
+    protected boolean _shouldPostfireReturnFalse = false;
+
 }
 
 
