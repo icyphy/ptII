@@ -16,6 +16,9 @@
   <entity name="Average" class="ptolemy.actor.lib.Average">
   </entity>
 
+  <entity name="Counter" class="ptolemy.actor.lib.Counter">
+  </entity>
+
   <entity name="DotProduct" class="ptolemy.domains.sdf.lib.DotProduct">
   </entity>
 
