@@ -69,8 +69,6 @@ public class Render extends PlotBox {
      *  @param colors The colors of the pixels in the vertical stripe.
      */
     public synchronized void addStripe(double x, int[] colors) {
-        // FIXME
-
 
         // Make a copy of the array given to addStripe().
 
@@ -104,8 +102,8 @@ public class Render extends PlotBox {
                     setGrid(false);
 
                     setTitle("Sample image");
-                    setXRange(-1.0, 1.0);
-                    setYRange(-1.0, 1.0);
+                    setXRange(0.0, 5.0);
+                    setYRange(0.0, 4000.0);
 
 
                     // I thought that this would remove the padding from the
@@ -114,19 +112,6 @@ public class Render extends PlotBox {
 //                     _bottomPadding = 0;
 //                     _rightPadding = 0;
 //                    _leftPadding = 0;
-
-//                     System.out.println();
-//                     System.out.println("_xlowgiven = " + _xlowgiven);
-//                     System.out.println("_xhighgiven = " + _xhighgiven);
-//                     System.out.println("_ylowgiven = " + _ylowgiven);
-//                     System.out.println("_yhighgiven = " + _yhighgiven);
-//                     System.out.println();
-//                     System.out.println("yhigh - ylow = " +
-//                                        (_yhighgiven - _ylowgiven));
-//                     System.out.println();
-//                     System.out.println("_height = " + _height);
-// 
-//                     System.out.println("_xMin = " + _xMin); 
 
                     // Create the stripes in data form (arrays).
                     int[] stripe1 = new int[10];
@@ -147,13 +132,10 @@ public class Render extends PlotBox {
                     
 
                     // Add the stripes to the data structure.
-                    for (int i = 1; i <= 500; i++) {
-                        addStripe((double)i - .5, stripe1);
-                        addStripe((double)i + .5, stripe2);
+                    for (int i = 1; i <= 5; i++) {
+                        addStripe((double)i - .33, stripe1);
+                        addStripe((double)i + .33, stripe2);
                     }
-
-                    // FIXME fill in.
-
                 }
             }
         };
@@ -164,17 +146,30 @@ public class Render extends PlotBox {
     /** Set the colormap.
     * The user needs to give a 3-by-256 integer array as a colormap.
     */
-
     public synchronized void setColormap(int[][] colormap){
         _colormap = colormap;
     }
 
+
+    // The thought here is to override setYRange() then just call the super method
+    // with slightly smaller ranges that take into account the extra padding that
+    // will be added.  The complications I foresee
+    // are the getYRange() method will have to be overridden as well, and the values
+    // might be a little off by having to multiply a smaller number by a padding
+    // factor to get the slightly larger desired size plot rectangle.  I left this
+    // unfinished because of the complications.
+    // Instead I uncommented some code in PlotBox that disallows padding if
+    // the ranges have been specified by the setYRange().
+    //    public synchronized void setYRange(double min, double max) {
+    //	      super.setYRange( ) 
+    //    }
+
     /** Get current colormap.
     */
-
     public synchronized int[][] getColormap() {
         return _colormap;
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -190,49 +185,15 @@ public class Render extends PlotBox {
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst);
 
-
-//        System.out.println();
-//        System.out.println("_xlowgiven = " + _xlowgiven);
-//        System.out.println("_xhighgiven = " + _xhighgiven);
-//        System.out.println("  _ylowgiven = " + _ylowgiven);
-//        System.out.println("       _yMin = " + _yMin);
-//        System.out.println(" _yhighgiven = " + _yhighgiven);
-//        System.out.println("       _yMax = " + _yMax);
-//        System.out.println();
-//        System.out.println("yhigh - ylow = " +
-//                           (_yhighgiven - _ylowgiven));
-//        System.out.println(" yMax - yMin = " +
-//                           (_yMax - _yMin));
-//        System.out.println();
-//        System.out.println("_height = " + _height);
-
-
-
-        ListIterator imageDataIterator = _imageData.listIterator(0);
-
-        double x = (double)_ulx + (double)((-1.1 - _xMin) * _xscale) + 1.0;
+        double x = (double)_ulx + (double)((_originalXlow - _xMin) * _xscale) + 1.0;
         //(_ulx + 1);
 
-//         System.out.println("The width of the area is " + (_xMax - _xMin) +
-//                            " units.");
-//         System.out.println("The width of the area is " +
-//                            ((_xMax - _xMin) * _xscale) +
-//                            " pixels according to the scaling factor.");
-//         System.out.println("But, the width is " +
-//                            (int)(_lrx - _ulx) +
-//                            " pixels according to the actual values.");
-//         System.out.println("The number of stripes to be rendered is " +
-//                            _imageData.size() + ".");
-//         System.out.println("Therefore, there are ~" +
-//                             (int)((_xMax - _xMin) * _xscale) /
-//                             _imageData.size()
-//                            + " pixels per stripe.");
-
-
-        double width = (double)(2.2 * _xscale) / (double)_imageData.size();
+        double width = (double)((_originalXhigh - _originalXlow) * _xscale) / 
+	    (double)_imageData.size();
         // divided by the
         // number of stripes (i.e _imageData.size())
 
+        ListIterator imageDataIterator = _imageData.listIterator(0);
 
         while (imageDataIterator.hasNext()) {
             int[] currentStripe = (int[])imageDataIterator.next();
@@ -257,6 +218,10 @@ public class Render extends PlotBox {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Draw the specified stripe.
@@ -276,9 +241,10 @@ public class Render extends PlotBox {
 
  
          // Draw the stripe one patch (data element) at a time.
-         double y = _lry - (int)((1.1 - _yMin) * _yscale) + 1; //(_uly + 1);
+         double y = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1; //(_uly + 1);
 
-         double height = (double)(2.2 * _yscale) / (double)length; 
+         double height = (double)((_originalYhigh - _originalYlow) * _yscale) / 
+	     (double)length; 
 
          for (int i = 0; i < length; i++) {
              _drawPatch(graphics, (int)x, (int)y, (int)width, (int)height,
@@ -315,6 +281,9 @@ public class Render extends PlotBox {
         graphics.fillRect(x, y, width, height);
 
     }
+
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -323,8 +292,6 @@ public class Render extends PlotBox {
 
     /** Stores the image data to be rendered. */
     private LinkedList _imageData = new LinkedList();
-
-
 
     /** The colormap used in rendering the image.
     */
@@ -348,3 +315,10 @@ public class Render extends PlotBox {
     // this (commenting it out) to see what i need to do.
 
 }
+
+
+
+
+
+
+
