@@ -94,7 +94,6 @@ import java.util.List;
    @version $Id$
    @since Ptolemy II 2.0
  */
-
 public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 
     /** Construct an actor with the given container and name.
