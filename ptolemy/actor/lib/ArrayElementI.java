@@ -68,7 +68,7 @@ public class ArrayElementI extends ArrayElement {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        indexPort = new TypedIOPort(this, "index", true, false);
+        indexPort = new TypedIOPort(this, "indexPort", true, false);
         indexPort.setTypeEquals(BaseType.INT);
     }
 
