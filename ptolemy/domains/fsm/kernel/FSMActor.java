@@ -1220,8 +1220,11 @@ public class FSMActor extends CompositeEntity
             if (_newIteration && channel == 0) {
                 //Token[][] a_of_p = new Token[width][portRate * _firingsPerIteration];
                 //_hdfArrays.put(port, a_of_p);
-                // List l_of_p = new LinkedList[width];
-                List l_of_p = new LinkedList();
+                List[] l_of_p = new LinkedList[width];
+                for (int i = 0; i < width; i ++) {
+                    l_of_p[i] = new LinkedList();
+                }
+                //List l_of_p = new LinkedList();
                 _hdfArrays.put(port, l_of_p);
             }
             //int index = portRate * _firingsSoFar;
@@ -1236,9 +1239,9 @@ public class FSMActor extends CompositeEntity
                     ") has ", token.toString());
                 }
                 // List[] l_of_p = (linkedList)_hdfArrays.get(port);
-                List l_of_p = (LinkedList)_hdfArrays.get(port);
+                List[] l_of_p = (LinkedList[])_hdfArrays.get(port);
                 //l_of_p[channel].add(0, token);
-                l_of_p.add(0, token);
+                l_of_p[channel].add(0, token);
                 //flag ++;
                 //if (index < portRate * (_firingsSoFar + 1)) {
                     // Set the value of tokens here.
@@ -1261,16 +1264,16 @@ public class FSMActor extends CompositeEntity
             //if (index == portRate * _firingsPerIteration && index > 0) {
               //  Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
               //List[] l_of_p = (LinkedList[])_hadArrays.get(port);
-            List l_of_p = (LinkedList)_hdfArrays.get(port);
+            List[] l_of_p = (LinkedList[])_hdfArrays.get(port);
             //int length = l_of_p[channel].size();
-            int length = l_of_p.size();
+            int length = l_of_p[channel].size();
             if (length > 0) {
                 Token[] a = new Token[length];
                 //a= (Token[])(l_of_p.toArray());
-                l_of_p.toArray(a);      
+                l_of_p[channel].toArray(a);      
                 shadowVariables[channel][0].setToken(BooleanToken.TRUE);
                 shadowVariables[channel][1].setToken(a[0]);
-                //shadowVariables[channel][2].setToken(new ArrayToken(l_of_p[channel]));
+                //shadowVariables[cha   nnel][2].setToken(new ArrayToken(l_of_p[channel]));
                 shadowVariables[channel][2].setToken(new ArrayToken(a));
             } else {
                 shadowVariables[channel][0].setToken(BooleanToken.FALSE);
