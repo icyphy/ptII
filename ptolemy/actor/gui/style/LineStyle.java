@@ -80,8 +80,8 @@ public class LineStyle extends ParameterEditorStyle {
 
     /** Return true if this style is acceptable for the given parameter.
      *  @param param The attribute that this annotates.
-     C     *  @return True.
-    */
+     *  @return True.
+     */
     public boolean acceptable(Settable param) {
 	return true;
     }

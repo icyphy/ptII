@@ -36,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterEditorStyle
@@ -62,6 +63,15 @@ public abstract class ParameterEditorStyle extends Attribute {
      */
     public ParameterEditorStyle() {
 	super();
+    }
+
+    /** Construct an attribute in the given workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public ParameterEditorStyle(Workspace workspace) {
+	super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.
@@ -114,10 +124,12 @@ public abstract class ParameterEditorStyle extends Attribute {
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof Settable)) {
-            throw new IllegalActionException(this, container,
-                    "ParameterEditorStyle can only be contained by Settable.");
-        }
+        
+        // We want this check, but here is not the place.
+        //     if (container != null && !(container instanceof Settable)) {
+        //    throw new IllegalActionException(this, container,
+        //            "ParameterEditorStyle can only be contained by Settable.");
+        // }
         super.setContainer(container);
     }
 }
