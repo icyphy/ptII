@@ -103,7 +103,7 @@ with the appropriate values.
   <tr><code>ptolemy.ptII.dir</code></tr>
  </tr>
  <tr>
-  <tr><code>$TMP</code></tr>
+  <tr><code>$TMPDIR</code></tr>
   <tr>The temporary directory</tr>
   <tr><code>java.io.tmpdir</code></tr>
  </tr>

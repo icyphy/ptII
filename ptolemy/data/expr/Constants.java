@@ -181,7 +181,7 @@ public class Constants {
                             StringUtilities.getProperty("ptolemy.ptII.dir")));
             // See also the ptolemy.ptII.dirAsURL property in StringUtilities.
 
-            _table.put("TMP",
+            _table.put("TMPDIR",
                     new StringToken(
                             StringUtilities.getProperty("java.io.tmpdir")));
         } catch (Exception e) {}

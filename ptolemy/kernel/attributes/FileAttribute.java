@@ -99,7 +99,7 @@ with the appropriate values
   <tr><code>ptolemy.ptII.dir</code></tr>
  </tr>
  <tr>
-  <tr><code>$TMP</code></tr>
+  <tr><code>$TMPDIR</code></tr>
   <tr>The temporary directory</tr>
   <tr><code>java.io.tmpdir</code></tr>
  </tr>
@@ -418,8 +418,8 @@ public class FileAttribute extends StringAttribute {
     ////                         private methods                   ////
 
     /** Return a string that is the current value of this attribute
-     *  with the strings "$CWD, "$HOME", "$PTII" and "$TMP" replaced by their
-     *  respective values.
+     *  with the strings "$CWD, "$HOME", "$PTII" and "$TMPDIR"
+     *  replaced by their respective values.
      *  @param string The string in which to do the substitution.
      *  @return A new string.
      */
@@ -441,9 +441,9 @@ public class FileAttribute extends StringAttribute {
                     "$PTII",
                     StringUtilities.getProperty("ptolemy.ptII.dir"));
         }
-        if (result.indexOf("$TMP") >= 0) {
+        if (result.indexOf("$TMPDIR") >= 0) {
             result = StringUtilities.substitute(result,
-                    "$TMP",
+                    "$TMPDIR",
                     StringUtilities.getProperty("java.io.tmpdir"));
         }
         return result;
