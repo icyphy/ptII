@@ -1,4 +1,4 @@
-/* Generate a visitor
+/* Generate a visitor class and nodes
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -63,7 +63,7 @@ http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/
    <li> nheader: nodes
    <li> iheader: interface that contains node IDS.
    <li> NamedNode I ITreeNode m NameNode getName m m void setName NameNode name m
-	generate interface NamedNode.java, derived from ITreeNode.
+	<br>generate interface NamedNode.java, derived from ITreeNode.
 	it has method getName, returning NameNode.
 	method definition is enclosed by "m" on both sides.
    <li> I means interface.
@@ -83,18 +83,6 @@ http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/
 @version $Id$
  */
 public class GenerateVisitor {
-
-    public static void main(String[] args) throws IOException {
-        if (args.length < 1) {
-            System.out.println("Usage : GenerateVisitor TypeNameListFile " +
-                    "[VisitorClassName] [BaseNodeName] [node path]");
-            return;
-        }
-
-        GenerateVisitor genVisitor = new GenerateVisitor(args);
-
-        genVisitor.generate();
-    }
 
     public GenerateVisitor(String[] args) throws IOException {
 
@@ -162,6 +150,9 @@ public class GenerateVisitor {
         // get header for classID's
         _classIDHeader = commonHeader + _readBlock("iheader");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the visitor class and the node class files */
     public void generate() throws IOException {
@@ -247,6 +238,21 @@ public class GenerateVisitor {
 
         _ofs.close();
     }
+
+    public static void main(String[] args) throws IOException {
+        if (args.length < 1) {
+            System.out.println("Usage : GenerateVisitor TypeNameListFile " +
+                    "[VisitorClassName] [BaseNodeName] [node path]");
+            return;
+        }
+
+        GenerateVisitor genVisitor = new GenerateVisitor(args);
+
+        genVisitor.generate();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     protected String _readBlock(String marker) throws IOException {
         if (_lastLine != null) {
@@ -574,8 +580,33 @@ public class GenerateVisitor {
         } while (_lastLine != null);
     }
 
-    private static final String _IDENT = "    ";
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
+    protected char _defaultPlacement = 'l';
+
+    protected FileWriter _ofs;
+    protected LineNumberReader _ifs;
+
+    protected LinkedList _typeList = new LinkedList();
+    protected LinkedList _parentTypeList = new LinkedList();
+    protected LinkedList _isConcreteList = new LinkedList();
+    protected LinkedList _isSingletonList = new LinkedList();
+    protected LinkedList _isInterfaceList = new LinkedList();
+    protected LinkedList _isInTreeList = new LinkedList();
+    protected LinkedList _methodListList = new LinkedList();
+    protected LinkedList _implListList = new LinkedList();
+
+    protected LinkedList _idStringList = new LinkedList();
+
+    protected String _visitorClassName;
+    protected String _baseNodeName;
+    protected String _nodeHeader;
+    protected String _visitorHeader;
+    protected String _classIDHeader;
+    protected String _nodePath;
+
+    protected String _lastLine;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -645,7 +676,7 @@ public class GenerateVisitor {
                     s = s.substring(3);
                 }  else {
 
-                    if ((defaultPlacement == 'l') && isJavaType(s)) {
+                    if ((defaultPlacement == 'l') && _isJavaType(s)) {
                         // make it a member if it's a Java type and we
                         // default to put it in a list
                         _varPlacements.addLast(new Character('m'));
@@ -1109,39 +1140,22 @@ public class GenerateVisitor {
         String _init;
     }
 
-    public static final boolean isPrimitiveType(String s) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static final boolean _isPrimitiveType(String s) {
         return (s.startsWith("int") || s.startsWith("char") ||
                 s.startsWith("long") || s.startsWith("byte") ||
                 s.startsWith("float") || s.startsWith("double") ||
                 s.startsWith("boolean"));
     }
 
-    public static final boolean isJavaType(String s) {
-        return (isPrimitiveType(s) || s.startsWith("String"));
+    private static final boolean _isJavaType(String s) {
+        return (_isPrimitiveType(s) || s.startsWith("String"));
     }
 
-    protected char _defaultPlacement = 'l';
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    protected FileWriter _ofs;
-    protected LineNumberReader _ifs;
-
-    protected LinkedList _typeList = new LinkedList();
-    protected LinkedList _parentTypeList = new LinkedList();
-    protected LinkedList _isConcreteList = new LinkedList();
-    protected LinkedList _isSingletonList = new LinkedList();
-    protected LinkedList _isInterfaceList = new LinkedList();
-    protected LinkedList _isInTreeList = new LinkedList();
-    protected LinkedList _methodListList = new LinkedList();
-    protected LinkedList _implListList = new LinkedList();
-
-    protected LinkedList _idStringList = new LinkedList();
-
-    protected String _visitorClassName;
-    protected String _baseNodeName;
-    protected String _nodeHeader;
-    protected String _visitorHeader;
-    protected String _classIDHeader;
-    protected String _nodePath;
-
-    protected String _lastLine;
+    private static final String _IDENT = "    ";
 }
