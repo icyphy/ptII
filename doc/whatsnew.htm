@@ -18,8 +18,7 @@
 hybrid systems semantics
 (Jie Liu, Parc, and Haiyang Zheng).
 
-<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">
-Component Interaction Domain</a>
+<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">Component Interaction Domain</a>
 (Yang Zhao, Xiaojun Liu) - The CI domain models systems that contain
 both data-driven and demand-driven styles of computation.
 
@@ -92,8 +91,7 @@ actor.
 
 <li>
 Python integration, with a
-<a href="codeDoc/ptolemy/actor/lib/python/PythonScript.html">
-PythonScript</a>
+<a href="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript</a>
 actor that permits definition of actors in Python (Xiaojun Liu).
 This uses
 <a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
@@ -161,10 +159,11 @@ provide concrete classes.
 
 <li> Interface to C actors using the Java Native Interface
 (Vincent Arnould, Thales, contributor: Christopher Hylands):
-The <a href="codeDoc/jni/package-summary.htm">jni</a>
+The <a href="codeDoc/jni/package-summary.html">jni</a>
 package contains a prototype of an interface between Ptolemy II actors
 and C code by using the Java Native Interface (JNI).
-
+ <br>The Interface to C actors works in the source distribution,
+it does not work in Web Start or the Windows installer.
 </ul>
 
 <h3>New Demonstrations</h3>
@@ -185,7 +184,7 @@ and C code by using the Java Native Interface (JNI).
 
 <li> <a href="../ptolemy/matlab/demo/MatlabCT/MatlabCT.xml">Matlab Continuous Time Demonstration</a>
 
-<li><a href="../ptolemy/hsif/demo/Thermostat/Thermostat.xml">HSIF Thermostat</a>.
+<li>HSIF Thermostat and Swimming Pool
 <br> This example shows a simple thermostat modeled as a hybrid system.
 The purpose of the example is to demonstrate the ability that HyVisual has
 to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
@@ -296,7 +295,7 @@ An actor that throws a model error when it receives a true token.
 An actor that reads expressions and parses them into tokens.
 
 
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/TokenToExpressions.html"><code>TokenToExpressions</code></a>
+<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/TokenToExpression.html"><code>TokenToExpression</code></a>
 <dd> (Steve Neuendorffer)
 An actor that converts tokens into expressions.
 
