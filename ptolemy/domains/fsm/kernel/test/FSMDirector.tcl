@@ -116,6 +116,7 @@ test FSMDirector-4.1 {test action methods} {
     [java::field $src step] setExpression "3"
     set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
 	[java::field $e1 directorClass] setExpression "ptolemy.domains.fsm.kernel.FSMDirector"
+	[java::field $e1 directorClass] validate
 #    The following commented statements were the way to construct
 #    a modal model before the ModalModel class was implemented.
 #    We use ModalModel class instead to avoid GraphConstructionException
