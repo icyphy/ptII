@@ -110,6 +110,8 @@ public class ODReceiver extends TimedQueueReceiver
      *  return null. If no tokens are available, either block until 
      *  data is available or until the system is terminated. Note: this
      *  method should return null only where it is explicitly shown.
+     FIXME: What about addReadBlock and removeReadBlock? Are they
+            called symmetrically?
      */
     public Token get() {
         // System.out.println("\nCall to ODReceiver.get()");
@@ -126,7 +128,17 @@ public class ODReceiver extends TimedQueueReceiver
         Token token = null; 
         
         synchronized(this) {
-            if( super.hasToken() ) {
+            if( _terminate ) {
+	      /*
+	        System.out.println("Get called during terminate");
+                director.addReadBlock(); 
+		notifyAll(); 
+		workspace.wait( this );
+	      */
+                throw new TerminateProcessException( getContainer(), "This "
+                        + "receiver has been terminated during get().");
+            }
+            if( super.hasToken() && !_terminate ) {
                 /*
                 if( name.equals("printer") ) {
                     System.out.println("\t"+name+" entered hasToken() block");
@@ -135,7 +147,8 @@ public class ODReceiver extends TimedQueueReceiver
                             +actor.getCurrentTime());
                 }
                 */
-                if( getRcvrTime() <= actor.getCurrentTime() ) {
+	        // FIXME: What if current time = -1.0??
+	        if( getRcvrTime() <= actor.getCurrentTime() ) {
                     if( actor.hasMinRcvrTime() ) {
                         token = super.get();
                         notifyAll(); // Wake up threads waiting to write.
@@ -148,15 +161,14 @@ public class ODReceiver extends TimedQueueReceiver
                     }
                     /*
                     if( name.equals("printer") ) {
-                        System.out.println(name+" reaached first null");
+                        System.out.println(name+" reached first null");
                     }
                     */
                     return null;
-                }
-                // FIXME: Will this point ever be reached? 
-                // System.out.println("Second null");
-                return null;
-            } else {
+		}
+		// Return null in case rcvrTime is no longer the lowest.
+		return null;
+            } else if( !_terminate ) {
                 director.addReadBlock();
                 while( !_terminate && !super.hasToken() ) {
                     /*
@@ -167,41 +179,7 @@ public class ODReceiver extends TimedQueueReceiver
                             + ") ODReceiver.get()");
                     */
                     
-                    //
-                    // JBEGIN: This is all for testing
-                    /*
-                    Enumeration portEnum = myPort.deepConnectedPorts();
-                    ODIOPort connectedPort = null;
-                    while( portEnum.hasMoreElements() ) {
-                        connectedPort = (ODIOPort)portEnum.nextElement();
-                        Receiver connectedRcvrs[][] 
-                                = connectedPort.getRemoteReceivers();
-                        for( int i=0; i < connectedRcvrs.length; i++ ) {
-                            for( int j=0; j < connectedRcvrs[i].length; j++ ) {
-                                // System.out.println("check for block");
-                                Receiver connRcvr = connectedRcvrs[i][j];
-                                if( connRcvr == this ) {
-                        	    System.out.println("\tBlocking on " 
-                                    + connectedPort.getContainer().getName());
-                                }
-                            }
-                        }
-                    }
-                    */
-                    // JEND
-                    //
-                    if( director.isDeadlocked() ) {
-                        System.out.println("System is deadlocked");
-                    }
-                    // notifyAll();
-                    /*
-                    System.out.println("Actor("
-                            + name.getName() + 
-                            ") preparing to wait. hasToken = "
-                            + super.hasToken() );
-                    */
-                    // FIXME: Will this work?? It might violate the 
-                    // synchronization hierarchy
+                    notifyAll();
                     workspace.wait( this );
                     /*
                     System.out.println("Actor: " 
@@ -215,8 +193,7 @@ public class ODReceiver extends TimedQueueReceiver
                 throw new TerminateProcessException( getContainer(), "This "
                         + "receiver has been terminated during get().");
             } else {
-                // ODActor actor = (ODActor)getContainer().getContainer();
-                if( getRcvrTime() <= actor.getCurrentTime() ) {
+	        if( getRcvrTime() <= actor.getCurrentTime() ) {
                     if( actor.hasMinRcvrTime() ) {
                         token = super.get();
                         notifyAll(); // Wake up threads waiting to write.
@@ -225,16 +202,12 @@ public class ODReceiver extends TimedQueueReceiver
                         token = super.get();
                         notifyAll(); // Wake up threads waiting to write.
                     }
-                }
+		}
                 director.removeReadBlock(); 
             }
             // FIXME: Will this point ever be reached?
         }
         
-        // This check is only for clarity.
-        if( token == null ) {
-            return null;
-        }
         return token;
     }
 
@@ -262,6 +235,7 @@ public class ODReceiver extends TimedQueueReceiver
     }
 
     /** Return true if the simultaneous pending event ignore flag is true.
+     FIXME: Make this package friendly
      */
     public boolean isSimultaneousIgnore() {
         return _simulIgnoreFlag;
@@ -274,18 +248,19 @@ public class ODReceiver extends TimedQueueReceiver
     public void put(Token token) {
         double currentTime;
         currentTime = ((ODActor)getContainer().getContainer()).getCurrentTime();
-        put( token, 0.0 );
+        put( token, currentTime );
     }
 
     /** Do a blocking write to the queue. Block if the queue is full. 
      *  Associate the given time stamp with the token. 
      *  @param token The token to put on the queue.
      *  @param time The time stamp of the token.
+     FIXME: What if receiver is full but we want to put a token with
+            timestamp = -1 inside??
      */
     public void put(Token token, double time) {
         // System.out.println("\nCall to ODReceiver.put()");
         // System.out.println("Previous queue size = " + getSize() );
-        
         
         // Cache values so that the synchronization hierarchy 
         // will not be violated
@@ -294,7 +269,17 @@ public class ODReceiver extends TimedQueueReceiver
         ODDirector director = (ODDirector)actor.getDirector();
         
         synchronized(this) {
+	  /*
+	    if( time == -1.0 ) {
+	        return;
+	    }
+	  */
+	    if( time > getCompletionTime() ) {
+	        time = -1.0;
+		token = null;
+	    }
             if( !super.hasRoom() ) {
+	        // No Room - Must Block.
                 director.addWriteBlock();
                 while( !_terminate && !super.hasRoom() ) {
                     /*
@@ -315,7 +300,8 @@ public class ODReceiver extends TimedQueueReceiver
                             " awakened after blocking in ODReceiver.get()");
                     */
                 }
-            } else if( !_terminate ) {
+	    } else if( !_terminate ) {
+	        // Never Blocked.
                 super.put(token, time);
                 notifyAll(); 
                 /*
@@ -325,12 +311,19 @@ public class ODReceiver extends TimedQueueReceiver
                         + "\n\treceiver hasToken() = "+super.hasToken() );
                 */
 		return;
-            } 
+		/*
+            } else {
+                super.put(token, time);
+		*/
+	    }
             
             if( _terminate ) {
+	        // Woke up from block. Terminate.
                 director.removeWriteBlock(); 
+                // super.put(token, time);
                 new TerminateProcessException( getContainer(), "" );
             } else {
+	        // Woke up from block. Do not terminate.
                 director.removeWriteBlock(); 
                 super.put(token, time);
                 notifyAll();
@@ -367,4 +360,5 @@ public class ODReceiver extends TimedQueueReceiver
 
     private boolean _simulIgnoreFlag = false;
     private boolean _terminate = false;
+
 }
