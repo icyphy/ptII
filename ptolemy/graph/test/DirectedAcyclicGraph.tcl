@@ -280,3 +280,30 @@ test DirectedAcyclicGraph-3.4 { reachable nodes on cyclic graph } {
     catch {$p compare $n1 $n2} msg
     list $msg
 } {{ptolemy.kernel.util.InvalidStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
+
+######################################################################
+####
+#
+test DirectedAcyclicGraph-4.1 { clone } {
+	set ag [java::new ptolemy.graph.DirectedAcyclicGraph]
+	set n1 [java::new ptolemy.graph.Node]
+	set n2 [java::new ptolemy.graph.Node]
+	set n3 [java::new ptolemy.graph.Node]
+	set e1 [java::new ptolemy.graph.Edge $n1 $n2]
+	set e2 [java::new ptolemy.graph.Edge $n2 $n3]
+	$ag addNode $n1
+	$ag addNode $n2
+	$ag addNode $n3
+	$ag addEdge $e1
+	$ag addEdge $e2
+	set clone [$ag clone]
+	set cg [java::cast ptolemy.graph.DirectedAcyclicGraph $clone]
+	set hasn1 [$cg containsNode $n1]
+	set hasn2 [$cg containsNode $n2]
+	set hasn3 [$cg containsNode $n3]
+	set hase1 [$cg containsEdge $e1]
+	set hase2 [$cg containsEdge $e2]
+	set equal [$cg equals $ag]
+	list $hasn1 $hasn2 $hasn3 $hase1 $hase2 $equal
+} {1 1 1 1 1 1}
+
