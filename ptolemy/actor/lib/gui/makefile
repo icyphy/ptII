@@ -100,7 +100,7 @@ OPTIONAL_FILES = \
 	'Plotter$$1.class' \
 	'PlotterBase$$1.class' \
 	'PlotterBase$$PlotWindowTableau.class' \
-	'PlotterBase$$PlotterPlotFrame.class
+	'PlotterBase$$PlotterPlotFrame.class' \
 	'SliderSource$$1.class' \
 	'SketchedSource$$1.class'
 
