@@ -197,16 +197,10 @@ public class KernelMain {
 	    VersionAttribute javaSpecificationVersionAttribute =
 		new VersionAttribute(javaSpecificationVersion);
 	    if ( javaSpecificationVersionAttribute.compareTo(new VersionAttribute("1.4")) >= 0) {
-		System.err.println("Won't work with Java specification '"
-                        + javaSpecificationVersion + "'");
-		throw new IllegalActionException("Soot does not work with "
-                        + " JDK 1.4. "
-                        + "java.specification.version"
-                        + " was '"
+		System.err.println("Warning, Soot 1.2.3 may not work with Java specification '"
                         + javaSpecificationVersion
-                        + "'");
+                        + "'. You may need to patch soot.");
 	    }
-
 	}
 
 
