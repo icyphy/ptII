@@ -32,7 +32,10 @@ package ptolemy.hsif;
 
 import ptolemy.util.XSLTUtilities;
 
+import java.io.FileWriter;
+import java.net.URL;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.w3c.dom.Document;
 
@@ -55,14 +58,15 @@ public class HSIFUtilities {
     private HSIFUtilities() {
     }
 
-    /**  Read in an HSIF file ,transform it into MoML and generate an output
+    /**  Read in an HSIF file, transform it into MoML and generate an output
      *	 file.
      *   @param input HSIF file to be read in
      *   @param output MoML filename to be generated.
      *   @throws Exception if there is a problem with the transformation.
      */
-    public static void HSIFToMoML(URL input, String output) throws Exception {
-        Document inputDocument = XSLTUtilities.parse(input.toString());
+    public static void HSIFToMoML(String input, String output)
+	throws Exception {
+        Document inputDocument = XSLTUtilities.parse(input);
 
         List transforms = new LinkedList();
 
@@ -73,9 +77,6 @@ public class HSIFUtilities {
         Document outputDocument =
             XSLTUtilities.transform(inputDocument, transforms);
 
-	String outputString = 
-
-	
 	FileWriter fileWriter = new FileWriter(output);
 	fileWriter.write(XSLTUtilities.toString(outputDocument));
 	fileWriter.close();

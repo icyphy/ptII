@@ -150,6 +150,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
         XSLTUtilities.transform("xsl/HSIF.xsl", "outputDocument_sl", output);
     }
 
+
     // Return true if the input file is a HSIF file.
     private static boolean _isHSIF(URL inputURL) throws IOException {
         BufferedReader reader = new BufferedReader(
