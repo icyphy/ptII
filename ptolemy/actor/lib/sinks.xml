@@ -16,12 +16,6 @@
 <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
 </entity>
 
-<entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
-</entity>
-
-<entity name="MatrixVisualizer" class="ptolemy.actor.lib.gui.MatrixVisualizer">
-</entity>
-
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder">
 </entity>
 
