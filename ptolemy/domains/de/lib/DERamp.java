@@ -122,10 +122,17 @@ public class DERamp extends TypedAtomicActor {
         input.setTypeEquals(Token.class);
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public TypedIOPort output;
+    public TypedIOPort input;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Describe me
+    /** FIXME: No comment here yet.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -176,8 +183,4 @@ public class DERamp extends TypedAtomicActor {
     private Token _stateToken;
     private Parameter _value;
     private Parameter _step;
-
-    // the ports.
-    public TypedIOPort output;
-    public TypedIOPort input;
 }

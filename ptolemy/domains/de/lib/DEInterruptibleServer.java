@@ -98,6 +98,12 @@ public class DEInterruptibleServer extends DEActor {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public DEIOPort output;
+    public DEIOPort input;
+    public DEIOPort interrupt;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -242,11 +248,6 @@ public class DEInterruptibleServer extends DEActor {
     private double _doneTime = 0.0;
     private double _busyUntil = Double.NEGATIVE_INFINITY;
     private Token _tokenBeingServed = null;
-
-    // the ports.
-    public DEIOPort output;
-    public DEIOPort input;
-    public DEIOPort interrupt;
 
     // Actor's parameters.
     private Parameter _minimumServiceTime;

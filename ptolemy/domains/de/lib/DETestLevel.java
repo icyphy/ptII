@@ -108,6 +108,11 @@ public class DETestLevel extends TypedAtomicActor {
 	_prev = threshold;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public TypedIOPort output;
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -154,8 +159,4 @@ public class DETestLevel extends TypedAtomicActor {
     private boolean _crossingsOnly;
     private double _threshold;
     private Parameter _paramTh;
-
-    // the ports.
-    public TypedIOPort output;
-    public TypedIOPort input;
 }
