@@ -115,13 +115,13 @@ public class FSMGraphController extends FSMViewerController {
        	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutPortAction);
 	diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
        	diva.gui.GUIUtilities.addToolBarButton(
-                   toolbar, _newInputMultiportAction);
+                toolbar, _newInputMultiportAction);
 	diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
        	diva.gui.GUIUtilities.addToolBarButton(
-                   toolbar, _newOutputMultiportAction);
+                toolbar, _newOutputMultiportAction);
 	diva.gui.GUIUtilities.addMenuItem(menu, _newInOutMultiportAction);
        	diva.gui.GUIUtilities.addToolBarButton(
-                   toolbar, _newInOutMultiportAction);
+                toolbar, _newInOutMultiportAction);
 
         // Add an item that adds new states.
         menu.addSeparator();
@@ -141,11 +141,11 @@ public class FSMGraphController extends FSMViewerController {
      */
     protected void _createControllers() {
 	_attributeController = new AttributeController(this,
-                 AttributeController.FULL);
+                AttributeController.FULL);
 	_portController = new PortController(this,
-                 AttributeController.FULL);
+                AttributeController.FULL);
 	_stateController = new FSMStateController(this,
-                 AttributeController.FULL);
+                AttributeController.FULL);
 	_transitionController = new FSMTransitionController(this);
     }
 
@@ -168,7 +168,7 @@ public class FSMGraphController extends FSMViewerController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor)_stateController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+            .addInteractor(_linkCreator);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -294,9 +294,9 @@ public class FSMGraphController extends FSMViewerController {
                         link, layer, tailSite, headSite);
 		// get the actual attach site.
 		tailSite = getEdgeController(link)
-                        .getConnectorTarget().getTailSite(c, source,
-                        event.getLayerX(),
-                        event.getLayerY());
+                    .getConnectorTarget().getTailSite(c, source,
+                            event.getLayerX(),
+                            event.getLayerY());
 		if(tailSite == null) {
 		    throw new RuntimeException("Invalid connector target: " +
                             "no valid site found for tail of new connector.");
@@ -310,7 +310,7 @@ public class FSMGraphController extends FSMViewerController {
 		Figure ef = getFigure(link);
 		getSelectionModel().addSelection(ef);
 		ConnectorManipulator cm =
-		        (ConnectorManipulator) ef.getParent();
+                    (ConnectorManipulator) ef.getParent();
 		GrabHandle gh = cm.getHeadHandle();
 		layer.grabPointer(event, gh);
             } catch (Exception ex) {
@@ -382,7 +382,7 @@ public class FSMGraphController extends FSMViewerController {
             String className = "ptolemy.domains.fsm.kernel.State";
             try {
                 LibraryAttribute attribute = (LibraryAttribute)toplevel
-                        .getAttribute("_library", LibraryAttribute.class);
+                    .getAttribute("_library", LibraryAttribute.class);
                 if (attribute != null) {
                     CompositeEntity library = attribute.getLibrary();
                     Entity prototype = library.getEntity("state");
@@ -408,7 +408,7 @@ public class FSMGraphController extends FSMViewerController {
             }
 
 	    ChangeRequest request =
-		    new MoMLChangeRequest(this, toplevel, moml) {
+                new MoMLChangeRequest(this, toplevel, moml) {
                 protected void _execute() throws Exception {
                     super._execute();
                     // Set the location of the icon.
@@ -420,7 +420,7 @@ public class FSMGraphController extends FSMViewerController {
 
                     NamedObj newObject = toplevel.getEntity(stateName);
                     Location location =
-			    (Location) newObject.getAttribute(locationName);
+                        (Location) newObject.getAttribute(locationName);
                     if (location == null) {
                         location = new Location(newObject, locationName);
                     }
