@@ -45,7 +45,7 @@ import ptolemy.kernel.util.InvalidStateException;
 /**
 A receiver for the RTP domain.  FIXME: Description of how this works.
 
-@author  Cristoph Meyer, Ben Horowitz, and Edward A. Lee
+@author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
 @version $Id$
 */
 public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
@@ -137,7 +137,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
                 "hierarchy not supported yet.");
     }
 
-    /** Bolcking read on the token. This method will not return until
+    /** Blocking read on the token. This method will not return until
      *  there is a new token be put into the receiver.
      *  @return A token.
      *  @exception NoTokenException Never thrown.

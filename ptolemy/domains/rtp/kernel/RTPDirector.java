@@ -142,9 +142,9 @@ public class RTPDirector extends ProcessDirector {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-        double tnow = getCurrentTime();
-        if (time > tnow) {
-            long delay = (long) (time - tnow);
+        double timeNow = getCurrentTime();
+        if (time > timeNow) {
+            long delay = (long) (time - timeNow);
             try {
                 if (_debugging) _debug("Sleep " + delay);
                 Thread.sleep(delay+ 5);
@@ -228,7 +228,7 @@ public class RTPDirector extends ProcessDirector {
     private long _realStartTime;
 
     // The anded result of the values returned by actors' postfire().
-    // private boolean _postfirereturns = true;
+    // private boolean _postFireReturns = true;
 
     // List of all receivers this director has created.
     // private LinkedList _receivers = new LinkedList();
