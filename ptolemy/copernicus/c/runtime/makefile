@@ -47,12 +47,13 @@ DIRS =
 
 
 EXTRA_SRCS =	$(JSRCS) \
-	array.c \
-	array.h \
+	name_defs.h \
 	pccg.h \
+	pccg_array.c \
+	pccg_array.h \
 	readme.txt \
-	runtime.c \
-	runtime.h
+	strings.c \
+	strings.h
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
