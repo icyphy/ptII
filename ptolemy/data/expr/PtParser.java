@@ -313,6 +313,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             //System.out.println("Initializing...");
             _alreadyInitialized = true;
             registerFunctionClass("java.lang.Math");
+            registerFunctionClass("java.lang.Double");
             registerFunctionClass("java.lang.String");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
