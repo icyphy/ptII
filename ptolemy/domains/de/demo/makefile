@@ -49,6 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	HierarchicalModel/HierarchicalModel.jar \
 	Inspection/Inspection.jar \
 	ModalModel/ModalModel.jar \
 	TimingParadox/TimingParadox.jar
