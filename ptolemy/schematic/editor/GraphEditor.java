@@ -33,7 +33,6 @@ package ptolemy.schematic.editor;
 import ptolemy.schematic.util.SchematicEntity;
 import ptolemy.schematic.util.IconLibrary;
 import ptolemy.schematic.util.EntityLibrary;
-import ptolemy.schematic.util.EntityTemplate;
 import ptolemy.schematic.util.PTMLObjectFactory;
 import ptolemy.schematic.util.SchematicGraphImpl;
 import diva.graph.*;
@@ -263,14 +262,14 @@ public class GraphEditor extends AbstractApplication {
 
         try {
             parseLibraries();
-            EntityTemplate template = 
-                _entityLibrary.findEntityTemplate("generic.ramp");
-	    //                _entityLibrary.findEntityTemplate("SDF.SaveImage");
+            SchematicEntity template = 
+                _entityLibrary.findEntity("generic.ramp");
+	    //                _entityLibrary.findEntity("SDF.SaveImage");
             SchematicEntity node = new SchematicEntity("test1", template);
             p3.addNode(node, 60, 50);
             
-	    template = _entityLibrary.findEntityTemplate("generic.recorder");
-	    //            template = _entityLibrary.findEntityTemplate("SDF.LoadImage");
+	    template = _entityLibrary.findEntity("generic.recorder");
+	    //            template = _entityLibrary.findEntity("SDF.LoadImage");
             node = new SchematicEntity("test2", template);
             p3.addNode(node, 60, 140);
         } catch (Exception ex) {

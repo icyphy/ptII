@@ -91,11 +91,12 @@ public class GraphDocument extends AbstractDocument {
         }
         String filename = getFile().getCanonicalPath();
 	URL urlbase = new URL("file:");// + System.getProperty("PTII"));
-	URL iconlibURL = new URL(urlbase,  filename);
+	URL schematicURL = new URL(urlbase,  filename);
 	    
-        System.out.println("Parsing " + iconlibURL);
+        System.out.println("Parsing " + schematicURL);
         Schematic schematic = 
-	    PTMLObjectFactory.parseSchematic(iconlibURL,
+	    PTMLObjectFactory.parseSchematic(schematicURL,
+		((GraphEditor)getApplication()).getIconLibrary(),
 		((GraphEditor)getApplication()).getEntityLibrary());
 
         Sheet s = new BasicSheet(this, "main", schematic);
