@@ -120,6 +120,11 @@ import java.util.Enumeration;
  *  execution when there are no more events, call
  *  stopWhenQueueIsEmpty() with argument <code>false</code>.
  *  <p>
+ *  The DE director has a single parameter, "stopTime".  The stop
+ *  time can be set using that parameter, or by directly calling
+ *  setStopTime().  If the stop time is not explicitly set, then it
+ *  defaults to Double.MAX_VALUE, resulting in a model that never stops.
+ *  <p>
  *  This director tolerates changes to the model during execution.
  *  The change should be queued with the director or manager using
  *  requestChange().  While invoking those changes, the method
@@ -201,6 +206,14 @@ public class DEDirector extends Director {
             _eventQueue.clear();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The stop time of the model.  This parameter must contain a
+     *  DoubleToken.  Its value defaults to Double.MaxValue.
+     */
+    public Parameter stopTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -372,7 +385,13 @@ public class DEDirector extends Director {
      *  @return The stop time of the execution.
      */
     public double getStopTime() {
-        return _stopTime;
+        try {
+            return ((DoubleToken)(stopTime.getToken())).doubleValue();
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(
+                    "Cannot read stopTime parameter:\n" +
+                    e.getMessage());
+        }
     }
 
     /** Invoke the initialize() method of each deeply contained actor,
@@ -490,8 +509,18 @@ public class DEDirector extends Director {
     /** Set the stop time for the execution.
      *  @param stopTime The new stop time.
      */
-    public void setStopTime(double stopTime) {
-        _stopTime = stopTime;
+    public void setStopTime(double time) {
+        try {
+            if (stopTime == null) {
+                stopTime = new Parameter(this, "stopTime");
+                stopTime.setTypeEquals(DoubleToken.class);
+            }
+            stopTime.setToken(new DoubleToken(time));
+        } catch (KernelException e) {
+            throw new InternalErrorException(
+                    "Cannot set stopTime parameter:\n" +
+                    e.getMessage());
+        }
     }
 
     /** Specify whether the simulation should be stopped when there are no
@@ -908,9 +937,6 @@ public class DEDirector extends Director {
     // to wait on the queue while some other threads might enqueue events in
     // it.
     private boolean _stopWhenQueueIsEmpty = true;
-
-    // The stop time.
-    private double _stopTime;
 
     // The set of actors that have returned false in their postfire() methods.
     // Events destined for these actors are discarded and the actors are
