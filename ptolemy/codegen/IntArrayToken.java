@@ -29,14 +29,13 @@
 
 */
 
-package ptolemy.data;
+package ptolemy.codegen;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.ArrayType;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
-//// ArrayToken
+//// IntArrayToken
 /**
 A token that contains an array of tokens.
 <p>This class is a temporary hack for getting codegen

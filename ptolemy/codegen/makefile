@@ -58,6 +58,8 @@ JSRCS = \
 	ActorCodeGeneratorInfo.java \
 	ActorTransformerVisitor.java \
 	CodeGeneratorClassFactory.java \
+	DoubleArrayToken.java \
+	IntArrayToken.java \
 	PtolemyTypeIdentifier.java \
 	PtolemyTypePolicy.java \
 	PtolemyTypeVisitor.java \
