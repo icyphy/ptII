@@ -299,6 +299,7 @@ public class GRDirector extends StaticSchedulingDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buildActorTable();
+        _iteration = 0;
     }
 
     /** Process the mutation that occurred.  Reset this director
@@ -374,7 +375,18 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _iteration = 0;
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null)
+            throw new IllegalActionException("Attempted to initialize " +
+                    "GR system with no scheduler");
+        // force the schedule to be computed.
+        if (_debugging) _debug("Computing schedule");
+        try {
+            Schedule sched = scheduler.getSchedule();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to compute schedule:");
+        }
     }
 
     /** Reset this director to an uninitialized state to prepare

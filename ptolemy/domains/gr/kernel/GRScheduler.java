@@ -43,9 +43,7 @@ import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /////////////////////////////////////////////////////////////////////
 //// GRScheduler
@@ -57,7 +55,7 @@ Scheduling is done by performing a topological sort on all the actors.
 
 @see ptolemy.actor.sched.Scheduler
 
-@author C. Fong
+@author C. Fong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -135,6 +133,7 @@ public class GRScheduler extends Scheduler {
         if (director == null) {
             return null;
         }
+        int referenceDepth = director.depthInHierarchy();
 
         // If there is no container, there are no actors
         CompositeActor container = (CompositeActor)(director.getContainer());
@@ -143,6 +142,7 @@ public class GRScheduler extends Scheduler {
         }
 
         CompositeActor castContainer = (CompositeActor) container;
+
         int count = 0;
 
         // First, include all actors as nodes in the graph.
@@ -160,23 +160,20 @@ public class GRScheduler extends Scheduler {
             Actor actor = (Actor) actors.next();
 
             // Find the successors of the actor
-            LinkedList successors = new LinkedList();
+            Set successors = new HashSet();
             Iterator outports = actor.outputPortList().iterator();
             while (outports.hasNext()) {
                 IOPort outPort = (IOPort) outports.next();
-                int referenceDepth = outPort.depthInHierarchy();
-                Iterator inPorts = 
-                    outPort.deepConnectedInPortList().iterator();
-                while (inPorts.hasNext()) {
-                    IOPort inPort = (IOPort)inPorts.next();
-                    if (inPort.depthInHierarchy() < referenceDepth) {
-                        // Skip this port... it's higher in the hierarchy.
+                Iterator sinkPorts = 
+                    outPort.sinkPortList().iterator();
+                while (sinkPorts.hasNext()) {
+                    IOPort sinkPort = (IOPort)sinkPorts.next();
+                    if (sinkPort.isOutput()) {
+                        // Skip this port, since its part of the container
                         continue;
                     }
-                    Actor post = (Actor)inPort.getContainer();
-                    if (!successors.contains(post)) {
-                        successors.addLast(post);
-                    }
+                    Actor sinkActor = (Actor)sinkPort.getContainer();
+                    successors.add(sinkActor);
                 }
             }
 
@@ -215,6 +212,11 @@ public class GRScheduler extends Scheduler {
             Firing firing = new Firing();
             schedule.add(firing);
             firing.setActor((Actor) sorted[counter]);
+        }
+
+        if (_debugging) {
+            _debug("Schedule is:");
+            _debug(schedule.toString());
         }
 
         setValid(true);
