@@ -52,6 +52,7 @@ SHELL_FILES = \
 	ptplot \
 	ptolemy \
 	pxgraph \
+	startjini.gui \
 	vergil 
 
 # DOS batch files
