@@ -389,6 +389,8 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/ddf/test/auto/controlled_kahnnet.xml \
 		ptolemy/domains/fsm/kernel/test/auto/booleanSelect.xml \
 		ptolemy/domains/fsm/kernel/test/auto/feedBackLoop.xml \
+		ptolemy/domains/fsm/test/auto/booleanSelect.xml \
+		ptolemy/domains/fsm/test/auto/feedBackLoop.xml \
 		ptolemy/domains/giotto \
 		ptolemy/domains/gr \
 		ptolemy/domains/hde \
