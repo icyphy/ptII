@@ -1,4 +1,4 @@
-/* This constructs a sequence of prime numbers based on Sieve of Erathsenes
+/* This constructs a sequence of prime numbers based on Sieve of Eratosthenes
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.

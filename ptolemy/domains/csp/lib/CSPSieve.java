@@ -1,5 +1,5 @@
 /* Sieve filtering out all multiples of a given number for 
-the Sieve of Erathsenes.
+the Sieve of Eratosthenes.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
