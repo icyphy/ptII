@@ -3,7 +3,7 @@
 # and prints the averages of the second and successive runs 
 
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Hylands, Steve Neuendorffer
 #
 # @Version: $Id$
 #
@@ -32,8 +32,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Lines look like
+# Alternate lines look like
 # 719 ms. Memory: 3520K Free: 2212K (63%)
+# GCStats: static: 160K staticRT: 3K totalStatic: 163K dynamicRT: 18532K
 
 
 awk 'BEGIN {min=99999999}
@@ -45,16 +46,17 @@ awk 'BEGIN {min=99999999}
 		    } else if ($1 > max) {
 			max = $1
 		    }
-		    memory=substr($4, 1, length($4)-1) + 0
-		    free=substr($6, 1, length($6)-1) + 0
-		    static=substr($9, 1, length($9)-1) + 0
-		    staticRT=substr($11, 1, length($11)-1) + 0
-		    dynamicRT=substr($13, 1, length($13)-1) + 0
+                    print $0
+                    getline
+                    print $0
+		    static=substr($3, 1, length($3)-1) + 0
+		    staticRT=substr($5, 1, length($5)-1) + 0
+		    totalStatic=substr($7, 1, length($7)-1) + 0
+                    dynamicRT=substr($9, 1, length($9)-1) + 0
 
-		    memorySum += memory
-		    freeSum += free
 		    staticSum += static
 		    staticRTSum += staticRT
+		    totalStaticSum += totalStatic
 		    dynamicRTSum += dynamicRT
 		}
 	    }
@@ -63,10 +65,9 @@ awk 'BEGIN {min=99999999}
 		    print description ": count == 0! Perhaps the output did not contain   \"ms. Memory\""
 		} else {
 		    timeAverage= int(sum/count+0.5)
-		    percentFree=int (((freeSum/count)+0.0)/((memorySum/count)+0.0) * 100.0 + 0.5)
+		
 		    print description ": Averages of second and succeeding " count-1 " runs:" 
-
-		    print description " ave: " timeAverage " ms. Memory: " memorySum/count "K Free: " freeSum/count "K ("  percentFree "%) Stat: " staticSum/count "K StatRT: " staticRTSum/count "K DynRT: " dynamicRTSum/count "K"
+		    print description " ave: " timeAverage " ms. Stat: " staticSum/count "K StatRT: " staticRTSum/count "K totalStatic: " totalStaticSum/count "K DynRT: " dynamicRTSum/count "K"
 	       }
 }' description="$1" -
 
