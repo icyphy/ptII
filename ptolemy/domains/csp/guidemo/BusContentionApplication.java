@@ -192,9 +192,9 @@ public class BusContentionApplication implements ActionListener {
     }
 
     /**
-     * Construct the graph widget with
-     * the default constructor (giving it an empty graph),
-     * and then set the model once the _window is showing.
+     * Construct the graph widget with the default constructor (giving 
+     * it an empty graph), and then set the model once the _window is 
+     * showing. Add control buttons to the _window.
      */
     public void displayGraph(JGraph g, GraphModel model) {
         _window = new BasicWindow("Basic Window"); 
@@ -349,22 +349,20 @@ public class BusContentionApplication implements ActionListener {
                     public void run () {
                         switch (state) {
                         case 1:
-                            figure.setFillPaint(Color.yellow);
+			    figure.setFillPaint(Color.yellow);
                             break;
                         
                         case 2:
-                            figure.setFillPaint(Color.green);
+                            figure.setFillPaint(Color.yellow);
                             break;
                         
                         case 3:
-                            figure.setFillPaint(Color.red);
-                            break;
-
-			/*
-                        case 4:
                             figure.setFillPaint(Color.green);
                             break;
-			*/
+
+                        case 4:
+                            figure.setFillPaint(Color.red);
+                            break;
 
                         default:
                             System.out.println("Unknown state: " + state);
