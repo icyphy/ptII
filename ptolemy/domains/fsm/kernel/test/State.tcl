@@ -105,10 +105,12 @@ test State-3.1 {test setting refinement} {
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 e2]
     set re0 [java::isnull [$s0 getRefinement]]
     [java::field $s0 refinementName] setExpression e1
-    set ref0 [java::cast ptolemy.kernel.Entity [$s0 getRefinement]]
+    set ar0 [$s0 getRefinement]
+    set ref0 [java::cast ptolemy.kernel.Entity [$ar0 get 0]]
     set re1 [$ref0 getFullName]
     [java::field $s0 refinementName] setExpression e2
-    set ref1 [java::cast ptolemy.kernel.Entity [$s0 getRefinement]]
+    set ar0 [$s0 getRefinement]
+    set ref1 [java::cast ptolemy.kernel.Entity [$ar0 get 0]]
     set re2 [$ref1 getFullName]
     [java::field $s0 refinementName] setExpression e3
     catch {$s0 getRefinement} msg

@@ -312,19 +312,25 @@ public class FSMDirector extends Director {
      */
     public double getNextIterationTime() {
         try {
-	    double result = Double.MAX_VALUE;
             Actor[] actors = getController().currentState().getRefinement();
 	    if (actors == null || actors.length == 0) {
 		return super.getNextIterationTime();
-	    }
+	    }	
+	    double result = Double.MAX_VALUE;
+	    boolean givenByRefinement = false;
 	    for (int i = 0; i < actors.length; ++i) {
 		if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
                     result = Math.min(result,
                             actors[i].getDirector().getNextIterationTime());
+		    givenByRefinement = true;
 		}
             }
-	    return result;
+	    if (givenByRefinement) {
+		return result;
+	    } else {
+		return super.getNextIterationTime();
+	    }
         } catch (IllegalActionException ex) {
             // No mode controller, return that given by the superclass.
         }
