@@ -339,7 +339,14 @@ public class KeyStoreActor extends TypedAtomicActor {
             throws IllegalActionException {
         System.out.println("Creating keystore " + keystoreFilename);
         String javaHomeProperty = "ptolemy.ptII.java.home";
-        String javaHome = StringUtilities.getProperty(javaHomeProperty);
+        String javaHome = null;
+        try {
+            javaHome = StringUtilities.getProperty(javaHomeProperty);
+        } catch (SecurityException ex) {
+            System.out.println("Warning: KeyStoreActor: Failed to get the "
+                    + "java home directory "
+                    + "(-sandbox always causes this): " + ex);
+        }
         if (javaHome == null || javaHome.length() == 0) {
             // Use java.home property if the ptolemy.ptII.java.home property
             // can not be read.  For example, MoMLSimpleApplication does not
