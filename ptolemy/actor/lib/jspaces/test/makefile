@@ -35,10 +35,7 @@ ME =		ptolemy/actor/lib/jspaces/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
-
-JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/lib
-JINI_JAR =	$(JINI_JAR_PATH)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/jini-ext.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/mahalo.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
