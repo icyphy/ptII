@@ -75,8 +75,11 @@ binomial</h3>
  <tt>y = binomial( k, n, p ) = Gamma.incompleteBeta( n-k, k+1, 1-p )</tt>.
  </p><p>
 
- All arguments must be positive,</p></dd><dd><dl>
-<dt><b>Parameters:</b></dt><dd><code>k</code> - end term.</dd><dd><code>n</code> - the number of trials.</dd><dd><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).</dd>
+ All arguments must be positive,</p>
+<p><b>Parameters:</b>
+<br><code>k</code> - end term.
+<br><code>n</code> - the number of trials.
+<br><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).
 </blockquote>
    The above description of binomial() is
    <a href="doc-files/colt-copyright.htm">copyrighted</a>. 

@@ -63,7 +63,13 @@ import ptolemy.kernel.util.PtolemyThread;
 public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     /** Construct an actor with the specified container and name.
      *  There is one parameter which is the full class name of
-     *  a Ptolemy actor. No ports.
+     *  a Ptolemy actor. This actor has no ports.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
     public TMCompositeFacade(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -157,6 +163,10 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
         }
     }
 
+    /** Transfer inputs from the ports.
+     *  @exception IllegalActionException If the director throws it
+     *  while transferring inputs.
+     */   
     protected synchronized void _transferInputs() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
 
@@ -166,6 +176,10 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
         }
     }
 
+    /** Transfer outputs from the ports.
+     *  @exception IllegalActionException If the director throws it
+     *  while transferring outputs
+     */   
     protected synchronized void _transferOutputs()
             throws IllegalActionException {
         // Use the executive director to transfer outputs.

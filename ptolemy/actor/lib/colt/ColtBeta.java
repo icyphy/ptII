@@ -73,7 +73,7 @@ beta</h3>
 
  The complemented function is
 
- <tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;</dd>
+ <tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;
 </blockquote>
    The above description of beta() is
    <a href="doc-files/colt-copyright.htm">copyrighted</a>. 

@@ -64,7 +64,7 @@ public class Arc {
     }
 
     /** Return the tail of this link.   This will be the icon of a state.
-     *  @param return The tail of this link.
+     *  @return The tail of this link.
      *  @see #setTail(Object)
      */
     public Object getTail() {
