@@ -297,23 +297,33 @@ public class HDFDirector extends SDFDirector {
         // everything has fixed port rates. This is more efficient.
         CompositeActor container = (CompositeActor)getContainer();
         ChangeRequest request =
-            new ChangeRequest(this, "choose transition") {
+            new ChangeRequest(this, "reschedule") {
             protected void _execute() throws KernelException {
-                
+                getSchedule();
+                CompositeActor container = (CompositeActor)getContainer();
+                Director director = container.getDirector();
+                if (_debugInfo) {
+                    System.out.println(director.getFullName() +
+                    " request exed: get new HDF schedule");
+                }
+                Director exeDirector = container.getExecutiveDirector();
             }
         };
-        request.setPersistent(false);
-        container.requestChange(request);
+        //setDeferChangeRequests(true);
+        /*
         getSchedule();
+        CompositeActor container = (CompositeActor)getContainer();
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null
             || ((! (exeDirector instanceof SDFDirector))
-               && (! (exeDirector instanceof HDFFSMDirector))
-               && (! (exeDirector instanceof HDFDirector)))) {
+                 && (! (exeDirector instanceof HDFFSMDirector))
+                 && (! (exeDirector instanceof HDFDirector)))) {
             //getSchedule();
             _directorFiringsPerIteration = 1;
             updateFiringsPerIteration(1);
-        }
+        }*/
+        request.setPersistent(false);
+        container.requestChange(request); 
         return super.postfire();
     }
 
@@ -485,6 +495,7 @@ public class HDFDirector extends SDFDirector {
     private List _outputPortList;
     private int _cacheSize = 100;
 
+    private boolean _debugInfo = false;
     // Number of firings per global iteration
     // of the current director.
     private int _directorFiringsPerIteration = 1;
