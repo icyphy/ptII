@@ -298,6 +298,7 @@ public class IntToken extends ScalarToken {
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
+
     /** Return a new Token whose value is the value of the argument token
      *  modulo the value of this token.
      *  Type resolution also occurs here, with the returned Token
@@ -313,7 +314,6 @@ public class IntToken extends ScalarToken {
         int result = tmp.intValue() %  _value;
         return new IntToken(result);
     }
-
 
     /** Return a new Token whose value is the value of this Token
      *  multiplied with the value of the argument Token.
