@@ -111,7 +111,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         if(_debug) System.out.println(
                 "input flow = " + in.effectSet());
         
-        out.setEffectFlow(in1);
+        out.setEffectFlow(in);
   
         // A method that is a context class is assumed to have side effects,
         // since we can't get it's method body.  Note that we could do better
