@@ -185,22 +185,22 @@ public class Chop extends SDFTransformer {
         if (attribute == numberToRead
                 || attribute == numberToWrite
                 || attribute == offset) {
-            nRead = ((IntToken)numberToRead.getToken()).intValue();
-            nWrite = ((IntToken)numberToWrite.getToken()).intValue();
+            _numberToRead = ((IntToken)numberToRead.getToken()).intValue();
+            _numberToWrite = ((IntToken)numberToWrite.getToken()).intValue();
             offsetValue = ((IntToken)offset.getToken()).intValue();
             usePast = ((BooleanToken)usePastInputs.getToken()).booleanValue();
 
-            if (nRead <= 0) {
+            if (_numberToRead <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid numberToRead: " + nRead);
+                        "Invalid numberToRead: " + _numberToRead);
             }
-            if (nWrite <= 0) {
+            if (_numberToWrite <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid numberToWrite: " + nRead);
+                        "Invalid numberToWrite: " + _numberToRead);
             }
 
-            input.setTokenConsumptionRate(nRead);
-            output.setTokenProductionRate(nWrite);
+            input.setTokenConsumptionRate(_numberToRead);
+            output.setTokenProductionRate(_numberToWrite);
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -209,22 +209,22 @@ public class Chop extends SDFTransformer {
             // NOTE: The following computation gets repeated when each of
             // these gets set, but it's a simple calculation, so we live
             // with it.
-            // The variables hiLimit and loLimit indicate the range of
+            // The variables _highLimit and _lowLimit indicate the range of
             // output indexes that come directly from the input block
             // that is read.
-            hiLimit = offsetValue + nRead - 1;
-            if (hiLimit >= nWrite) hiLimit = nWrite - 1;
+            _highLimit = offsetValue + _numberToRead - 1;
+            if (_highLimit >= _numberToWrite) _highLimit = _numberToWrite - 1;
 
             if (offsetValue >= 0) {
-                loLimit = offsetValue;
-                inidx = 0;
+                _lowLimit = offsetValue;
+                _inputIndex = 0;
             } else {
-                loLimit = 0;
-                inidx = -offsetValue;
+                _lowLimit = 0;
+                _inputIndex = -offsetValue;
             }
 
             if (attribute == numberToWrite) {
-                buffer = new Token[nWrite];
+                buffer = new Token[_numberToWrite];
             }
             if (attribute == offset || attribute == usePastInputs) {
                 if (offsetValue > 0) {
@@ -242,14 +242,14 @@ public class Chop extends SDFTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        int inputIndex = inidx;
+        int inputIndex = _inputIndex;
         int pastBufferIndex = 0;
-        Token[] inBuffer = input.get(0, nRead);
+        Token[] inBuffer = input.get(0, _numberToRead);
         Token zero = inBuffer[0].zero();
-        for (int i = 0; i < nWrite; i++) {
-            if (i > hiLimit) {
+        for (int i = 0; i < _numberToWrite; i++) {
+            if (i > _highLimit) {
                 buffer[i] = zero;
-            } else if (i < loLimit) {
+            } else if (i < _lowLimit) {
                 if (usePast) {
                     if (pastNeedsInitializing) {
                         // Fill past buffer with zeros.
@@ -272,35 +272,28 @@ public class Chop extends SDFTransformer {
             // Copy input buffer into past buffer.  Have to be careful
             // here because the buffer might be longer than the
             // input window.
-            int startCopy = nRead - offsetValue;
+            int startCopy = _numberToRead - offsetValue;
             int length = pastBuffer.length;
             int destination = 0;
             if (startCopy < 0) {
                 // Shift older data.
-                destination = pastBuffer.length - nRead;
-                System.arraycopy(pastBuffer, nRead,
+                destination = pastBuffer.length - _numberToRead;
+                System.arraycopy(pastBuffer, _numberToRead,
                         pastBuffer, 0, destination);
                 startCopy = 0;
-                length = nRead;
+                length = _numberToRead;
             }
             System.arraycopy(inBuffer, startCopy, pastBuffer,
                     destination, length);
         }
-        output.send(0, buffer, nWrite);
+        output.send(0, buffer, _numberToWrite);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    int hiLimit, inidx, loLimit, nRead, nWrite, offsetValue;
-    Token[] buffer, pastBuffer;
-    boolean usePast, pastNeedsInitializing;
+    private int _highLimit, _inputIndex, _lowLimit;
+    private int _numberToRead, _numberToWrite, offsetValue;
+    private Token[] buffer, pastBuffer;
+    private boolean usePast, pastNeedsInitializing;
 }
-
-
-
-
-
-
-
-
