@@ -48,7 +48,7 @@ to FileAttribute.  If an end of file is reached, then prefire() and
 postfire() will both return false.
 
 @see ExpressionWriter
-@see FileAttribute
+@see ptolemy.kernel.attribute.FileAttribute
 @author  Edward A. Lee
 @version $Id$
 */
