@@ -907,34 +907,22 @@ public class CTScheduler extends Scheduler {
                 // set the signal type to all the receivers in the port.
                 if (((port.getContainer() != CTScheduler.this.getContainer()
                         .getContainer()) && port.isInput())) {
-                    try {
-                        Receiver[][] receivers = port.getReceivers();
-                        for (int i = 0; i < receivers.length; i++) {
-                            for (int j = 0; j < receivers[i].length; j++) {
-                                ((CTReceiver)receivers[i][j])
-                                    .setSignalType(type);
-                            }
+                    Receiver[][] receivers = port.getReceivers();
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            ((CTReceiver)receivers[i][j])
+                            .setSignalType(type);
                         }
-                    } catch (IllegalActionException ex) {
-                        // This should never happen.
-                        throw new NotSchedulableException(getContainer(),
-                                ex.getMessage());
                     }
                 }
                 if ((port.getContainer() == CTScheduler.this.getContainer()
                         .getContainer()) &&  port.isOutput()) {
-                    try {
-                        Receiver[][] receivers = port.getInsideReceivers();
-                        for (int i = 0; i < receivers.length; i++) {
-                            for (int j = 0; j < receivers[i].length; j++) {
-                                ((CTReceiver)receivers[i][j])
-                                    .setSignalType(type);
-                            }
+                    Receiver[][] receivers = port.getInsideReceivers();
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            ((CTReceiver)receivers[i][j])
+                            .setSignalType(type);
                         }
-                    } catch (IllegalActionException ex) {
-                        // This should never happen.
-                        throw new NotSchedulableException(getContainer(),
-                                ex.getMessage());
                     }
                 }
                 Entity actor = (Entity)port.getContainer();
