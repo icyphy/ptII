@@ -66,7 +66,9 @@ JSRCS = \
 	DoubleMatrix.java \
 	DoubleMatrixToken.java \
 	DoubleToken.java \
+	IntMatrix.java \
 	IntParam.java \
+	IntMatrixToken.java \
 	IntToken.java \
 	LongToken.java \
 	Matrix.java \
