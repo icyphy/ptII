@@ -61,7 +61,7 @@ public class PtolemyThread extends Thread {
 
     // FIXME: What kind of constructors should I provide here ? Should I
     // provide all constructors from Thread class ?
-
+    
     /** Construct a new PtolemyThread object. This constructor has the
      *  same effect as PtolemyThread(null, null, <i>gname</i>), where 
      *  <i>gname</i> is a newly generated name. Automatically generated 
@@ -81,6 +81,35 @@ public class PtolemyThread extends Thread {
         super(target);
     }
     
+    /** Construct a new PtolemyThread object. This constructor has the 
+     *  same effect as Thread(null, target, name)
+     *  @param target The object whose run method is called.
+     *  @param name The name of the new thread.
+     *
+     */
+    public PtolemyThread(Runnable target, String name) {
+        super(target, name);
+    }
+
+    /** Construct a new PtolemyThread object. This constructor has the 
+     *  same effect as Thread(null, null, name)
+     *  @param name The name of the new thread.
+     */
+    public PtolemyThread(String name) {
+        super(name);
+    }
+
+    /** Construct a new PtolemyThread object. This constructor has the 
+     *  same effect as PtolemyThread(group, target, gname), where gname is a 
+     *  newly generated name. Automatically generated names are of
+     *  the form "Thread-"+n, where n is an integer. 
+     *  @param group The thread group
+     *  @param target The object whose run method is called.
+     */
+    public PtolemyThread(ThreadGroup group, Runnable target) {
+        super(group, target);
+    }
+
     /** Construct a new PtolemyThread object so that it has target as 
      *  its run object, has the specified name as its name, and belongs 
      *  to the thread group referred to by group.
@@ -92,6 +121,15 @@ public class PtolemyThread extends Thread {
      */
     public PtolemyThread(ThreadGroup group, Runnable target, String name) {
         super(group, target, name);
+    }
+
+    /** Construct a new PtolemyThread object. This constructor has the same 
+     *  effect as PtolemyThread(group, null, name).
+     *  @param group The thread group.
+     *  @param name The name of the new thread.
+     */
+    public PtolemyThread(ThreadGroup group, String name) {
+        super(group, name);
     }
 
 
