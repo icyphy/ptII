@@ -1048,8 +1048,10 @@ ptiny.xml: ptII.xml ptiny.xsl
 # rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtiny
 unixPtiny.xml: ptiny.xml
 	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
+	    -e 's@\\designdoc\\doc\\design\\@designdoc/doc/design@' \
 	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
 	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/linux/@' \
 	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
 	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
 	    -e 's@ptiny\\copyright@ptiny/copyright@' \
@@ -1065,8 +1067,10 @@ build_unixPtiny: unixPtiny.xml
 # rm unixPtII.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtII
 unixPtII.xml: ptII.xml
 	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
+	    -e 's@\\designdoc\\doc\\design\\@designdoc/doc/design@' \
 	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
 	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/linux/@' \
 	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
 	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
 	    -e 's@ptiny\\copyright@ptiny/copyright@' \
