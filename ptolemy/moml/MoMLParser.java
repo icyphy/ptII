@@ -54,8 +54,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.InstantiationException;
 import java.lang.IllegalAccessException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.StringReader;
 import java.net.URL;
 
 // XML imports.
@@ -152,7 +154,11 @@ public class MoMLParser extends HandlerBase {
      *  @param length The number of characters available.
      */
     public void charData(char[] chars, int offset, int length) {
-        _currentCharData.append(chars, offset, length);
+        // If we haven't initialized _currentCharData, then we don't
+        // care about character data, so we ignore it.
+        if (_currentCharData != null) {
+            _currentCharData.append(chars, offset, length);
+        }
     }
 
     /** End the document.  In this implementation, do nothing.
@@ -272,6 +278,43 @@ public class MoMLParser extends HandlerBase {
         return _toplevel;
     }
 
+    /** Parse the given stream, using the specified url as the base
+     *  to expand any external references within the MoML file.
+     *  That is, relative URLs are interpreted relative to the
+     *  first argument. For example, it might be the document
+     *  base of an applet.
+     *  A variety of exceptions might be thrown if the parsed
+     *  data does not represent a valid MoML file.
+     *  @param base The base URL for relative references, or null if
+     *   not known.
+     *  @param reader The reader from which to read XML.
+     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @throws Exception If the parser fails.
+     */
+    public NamedObj parse(URL base, Reader reader) throws Exception {
+        _parser.setHandler(this);
+        _base = base;
+        if (base == null) {
+            _parser.parse(null, null, reader);
+        } else {
+            _parser.parse(base.toExternalForm(), null, reader);
+        }
+        return _toplevel;
+    }
+
+    /** Parse the given string, which contains MoML
+     *  (it does not need to include the "&lt;?xml ... &gt;"
+     *  element nor the DOCTYPE specification).
+     *  A variety of exceptions might be thrown if the parsed
+     *  data does not represent valid MoML data.
+     *  @param input The string from which to read MoML.
+     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @throws Exception If the parser fails.
+     */
+    public NamedObj parse(String input) throws Exception {
+        return parse(null, new StringReader(input));
+    }
+
     /** Resolve an external entity.  This method returns null,
      *  which has the effect of defering to &AElig;lfred for
      *  resolution of the URI.  Derived classes may return a
@@ -305,6 +348,7 @@ public class MoMLParser extends HandlerBase {
      *   in constructing the model.
      */
     public void startElement(String elementName) throws XmlException {
+        _currentElement = elementName;
         try {
             // NOTE: The elements are alphabetical below...
             // NOTE: I considered using reflection to invoke a set of
@@ -819,6 +863,9 @@ public class MoMLParser extends HandlerBase {
 
     // The relation for the currently active connection.
     private ComponentRelation _currentConnection;
+
+    // The latest element seen by startElement.
+    private String _currentElement;
 
     // List of top-level entities imported via import element.
     private List _imports;
