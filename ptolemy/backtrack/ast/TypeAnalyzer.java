@@ -62,6 +62,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ConditionalExpression;
 import org.eclipse.jdt.core.dom.EnhancedForStatement;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
@@ -236,13 +237,13 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.setType(node, Type.BOOLEAN);
     }
 
-   /** Propagate the type of the cast class to this node.
-    *
-    *  @param node The node to be visited.
-    */
-   public void endVisit(CastExpression node) {
-       Type.propagateType(node, node.getType());
-   }
+    /** Propagate the type of the cast class to this node.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(CastExpression node) {
+        Type.propagateType(node, node.getType());
+    }
 
     /** Visit a literal node and set its type to be the same type as the
      *  literal.
@@ -254,146 +255,160 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     /** Propagate the type of the instantiated class to this node.
-    *
-    *  @param node The node to be visited.
-    */
-   public void endVisit(ClassInstanceCreation node) {
-       Type.propagateType(node, node.getName());
-   }
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(ClassInstanceCreation node) {
+        Type.propagateType(node, node.getName());
+    }
 
-   /** Visit a conditional expression node and set its type to be
-    *  the type that is compatible with both the then expression and
-    *  the else expression.
-    *
-    *  @param node The node to be visited.
-    */
-   public void endVisit(ConditionalExpression node) {
-       Type type1 = Type.getType(node.getThenExpression());
-       Type type2 = Type.getType(node.getElseExpression());
+    /** Visit a conditional expression node and set its type to be
+     *  the type that is compatible with both the then expression and
+     *  the else expression.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(ConditionalExpression node) {
+        Type type1 = Type.getType(node.getThenExpression());
+        Type type2 = Type.getType(node.getElseExpression());
 
-       Type commonType = Type.getCommonType(type1, type2);
-       try {
-           if (commonType == null &&
-                   type1.compatibility(type2, _state.getClassLoader()) >= 0)
-               commonType = type2;
-       } catch (ClassNotFoundException e) {
-       }
+        Type commonType = Type.getCommonType(type1, type2);
+        try {
+            if (commonType == null &&
+                    type1.compatibility(type2, _state.getClassLoader()) >= 0)
+                commonType = type2;
+        } catch (ClassNotFoundException e) {
+        }
 
-       try {
-           if (commonType == null &&
-                   type2.compatibility(type1, _state.getClassLoader()) >= 0)
-               commonType = type1;
-       } catch (ClassNotFoundException e) {
-       }
+        try {
+            if (commonType == null &&
+                    type2.compatibility(type1, _state.getClassLoader()) >= 0)
+                commonType = type1;
+        } catch (ClassNotFoundException e) {
+        }
 
-       if (commonType == null)
-           throw new UnknownASTException();
+        if (commonType == null)
+            throw new UnknownASTException();
 
-       Type.setType(node, commonType);
-   }
+        Type.setType(node, commonType);
+    }
 
-   /** End the visit of an enhanced for statement and close the scope
-    *  opened by the previous visit function.
-    *
-    *  @param node The node to be visited.
-    */
-   public void endVisit(EnhancedForStatement node) {
-       _closeScope();
-   }
+    /** End the visit of an enhanced for statement and close the scope
+     *  opened by the previous visit function.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(EnhancedForStatement node) {
+        _closeScope();
+    }
 
-   /** Visit a field declaration and set its type to be the same as the
-    *  declared type.
-    *
-    *  @param node The node to be visited.
-    */
-   public void endVisit(FieldDeclaration node) {
-       Type.propagateType(node, node.getType());
-   }
+    /** Visit a field access node, resolve it in the current scope, and set
+     *  its type to be the type of field referred to.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(FieldAccess node) {
+        Expression expression = node.getExpression();
+        SimpleName name = node.getName();
+        Type owner = Type.getType(expression);
+        Type nodeType = _resolveName(name.getIdentifier(), owner);
+
+        Type.setType(node, nodeType);
+    }
+
+    /** Visit a field declaration and set its type to be the same as the
+     *  declared type.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(FieldDeclaration node) {
+        Type.propagateType(node, node.getType());
+    }
    
-   /** End the visit of a for statement and close the scope opened by
-    *  the previous visit function.
-    *
-    *  @param node The node to be visited.
-    */
-   public void endVisit(ForStatement node) {
-       _closeScope();
-   }
+    /** End the visit of a for statement and close the scope opened by
+     *  the previous visit function.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(ForStatement node) {
+        _closeScope();
+    }
 
-   /** End the visit of an importation declaration and record the
-    *  imported class or package in the class loader. If a class is
-    *  imported, it is loaded immediately and put in a hash table to
-    *  enable fast class lookup.
-    *
-    *  @param node The node to be visited.
-    */
-   public void endVisit(ImportDeclaration node) {
-       String importName = node.getName().toString();
-       if (node.isOnDemand())
-           _state.getClassLoader().importPackage(importName);
-       else {
-           _state.getClassLoader().importClass(importName);
-           _importClass(importName);
-       }
-   }
+    /** End the visit of an importation declaration and record the
+     *  imported class or package in the class loader. If a class is
+     *  imported, it is loaded immediately and put in a hash table to
+     *  enable fast class lookup.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(ImportDeclaration node) {
+        String importName = node.getName().toString();
+        if (node.isOnDemand())
+            _state.getClassLoader().importPackage(importName);
+        else {
+            _state.getClassLoader().importClass(importName);
+            _importClass(importName);
+        }
+    }
 
-   /** Visit an infix expression and compute the type for it.
-   *
-   *  @param node The node to be visited.
-   */
-   public void endVisit(InfixExpression node) {
-      InfixExpression.Operator operator = node.getOperator();
-      Expression leftHand = node.getLeftOperand();
-      Expression rightHand = node.getRightOperand();
-      List extendedOps = node.extendedOperands();
-      Type type = null;
+    /** Visit an infix expression and compute the type for it.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(InfixExpression node) {
+        InfixExpression.Operator operator = node.getOperator();
+        Expression leftHand = node.getLeftOperand();
+        Expression rightHand = node.getRightOperand();
+        List extendedOps = node.extendedOperands();
+        Type type = null;
 
-      if (operator.equals(InfixExpression.Operator.PLUS) ||
-          operator.equals(InfixExpression.Operator.MINUS) ||
-          operator.equals(InfixExpression.Operator.TIMES) ||
-          operator.equals(InfixExpression.Operator.DIVIDE) ||
-          operator.equals(InfixExpression.Operator.REMAINDER) ||
-          operator.equals(InfixExpression.Operator.LEFT_SHIFT) ||
-          operator.equals(InfixExpression.Operator.RIGHT_SHIFT_SIGNED) ||
-          operator.equals(InfixExpression.Operator.RIGHT_SHIFT_UNSIGNED) ||
-          operator.equals(InfixExpression.Operator.AND) ||
-          operator.equals(InfixExpression.Operator.OR) ||
-          operator.equals(InfixExpression.Operator.XOR)) {
+        if (operator.equals(InfixExpression.Operator.PLUS) ||
+            operator.equals(InfixExpression.Operator.MINUS) ||
+            operator.equals(InfixExpression.Operator.TIMES) ||
+            operator.equals(InfixExpression.Operator.DIVIDE) ||
+            operator.equals(InfixExpression.Operator.REMAINDER) ||
+            operator.equals(InfixExpression.Operator.LEFT_SHIFT) ||
+            operator.equals(InfixExpression.Operator.RIGHT_SHIFT_SIGNED) ||
+            operator.equals(InfixExpression.Operator.RIGHT_SHIFT_UNSIGNED) ||
+            operator.equals(InfixExpression.Operator.AND) ||
+            operator.equals(InfixExpression.Operator.OR) ||
+            operator.equals(InfixExpression.Operator.XOR)) {
           
-          type = Type.getCommonType(Type.getType(leftHand), 
-                  Type.getType(rightHand));
-          Iterator extendedIter = extendedOps.iterator();
-          while (type != null && extendedIter.hasNext())
-              type = Type.getCommonType(type, 
-                      Type.getType((Expression)extendedIter.next()));
+            type = Type.getCommonType(Type.getType(leftHand), 
+                    Type.getType(rightHand));
+            Iterator extendedIter = extendedOps.iterator();
+            while (type != null && extendedIter.hasNext())
+                type = Type.getCommonType(type, 
+                        Type.getType((Expression)extendedIter.next()));
           
-      } else if (operator.equals(InfixExpression.Operator.LESS) ||
-              operator.equals(InfixExpression.Operator.LESS_EQUALS) ||
-              operator.equals(InfixExpression.Operator.GREATER) ||
-              operator.equals(InfixExpression.Operator.GREATER_EQUALS) ||
-              operator.equals(InfixExpression.Operator.CONDITIONAL_AND) ||
-              operator.equals(InfixExpression.Operator.CONDITIONAL_OR) ||
-              operator.equals(InfixExpression.Operator.EQUALS) ||
-              operator.equals(InfixExpression.Operator.NOT_EQUALS))
-          type = Type.BOOLEAN;
-      else
-          throw new UnknownASTException();
+        } else if (operator.equals(InfixExpression.Operator.LESS) ||
+                operator.equals(InfixExpression.Operator.LESS_EQUALS) ||
+                operator.equals(InfixExpression.Operator.GREATER) ||
+                operator.equals(InfixExpression.Operator.GREATER_EQUALS) ||
+                operator.equals(InfixExpression.Operator.CONDITIONAL_AND) ||
+                operator.equals(InfixExpression.Operator.CONDITIONAL_OR) ||
+                operator.equals(InfixExpression.Operator.EQUALS) ||
+                operator.equals(InfixExpression.Operator.NOT_EQUALS))
+            type = Type.BOOLEAN;
+        else
+            throw new UnknownASTException();
 
-      if (type == null)
-          throw new UnknownASTException();
+        if (type == null)
+            throw new UnknownASTException();
 
-      Type.setType(node, type);
-  }
+        Type.setType(node, type);
+    }
 
-  /** Visit an <tt>instanceof</tt> expression and set its type to
-   *  be boolean.
-   *
-   *  @param node The node to be visited.
-   */
-  public void endVisit(InstanceofExpression node) {
-      Type.setType(node, Type.BOOLEAN);
-  }
+    /** Visit an <tt>instanceof</tt> expression and set its type to
+     *  be boolean.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(InstanceofExpression node) {
+        Type.setType(node, Type.BOOLEAN);
+    }
 
-  /** Visit a literal node and set its type to be the same type as the
+    /** Visit a literal node and set its type to be the same type as the
      *  literal.
      *
      *  @param node The node to be visited.
