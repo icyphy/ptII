@@ -407,8 +407,23 @@ public class Copernicus {
             Map substituteMap,
             String outputFileName)
             throws FileNotFoundException, IOException {
-	BufferedReader inputFile =
-	    new BufferedReader(new FileReader(inputFileName));
+	BufferedReader inputFile;
+	try {
+	    inputFile =
+		new BufferedReader(new FileReader(inputFileName));
+	} catch (IOException ex) {
+	    // Try it as a resource
+	    URL inputFileURL =
+		Thread.currentThread().getContextClassLoader()
+		.getResource(inputFileName);
+	    if (inputFileURL == null) {
+		throw ex;
+	    }
+	    inputFile =
+		new BufferedReader(new InputStreamReader(inputFileURL
+							 .openStream()));
+	}
+
 	PrintWriter outputFile =
 	    new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
 	String inputLine;
