@@ -265,7 +265,9 @@ public class RTOSDirector extends Director {
                 _interruptQueue.take();
                 Actor actor = interruptEvent.actor();
                 if (actor != null) {
+                    // ATTN: Received an interrupt
                     if (actor.prefire()) {
+                        // ATTN: Produce interrupt event.
                         actor.fire();
                         if(!actor.postfire()) {
                             _disableActor(actor);
@@ -306,10 +308,14 @@ public class RTOSDirector extends Director {
                     // If the actor is the container of this director,
                     // then the event is at the output boundary.
                     // Remove the event and look at the next event.
+                    // ATTN: For the prefire(), the task is triggered
+                    // but not ready.
                     _eventQueue.take();
                     event = null;
                     // Return to the while loop.
                 } else {
+                    // ATTN: The task is triggered and ready to run.
+                    // ATTN: produce task start event.
                     // Determine the processing time.
                     double processingTime = ((DoubleToken)
                             defaultTaskExecutionTime.getToken()).doubleValue();
@@ -336,6 +342,7 @@ public class RTOSDirector extends Director {
                                 " has processing time 0, so processed.");
                         // This event  can be processed immediately.
                         _eventQueue.take();
+                        //ATTN: The task is finished immediately.
                         actor.fire();
                         if (!actor.postfire()) {
                             _disableActor(actor);
@@ -412,6 +419,7 @@ public class RTOSDirector extends Director {
         if (time <= ((DoubleToken)stopTime.getToken()).doubleValue()) {
             // create an interrupt event.
             DEEvent interruptEvent = new DEEvent(actor, time, 0, 0);
+            //ATTN: request an interrupt in the future.
             _interruptQueue.put(interruptEvent);
         }
     }
@@ -495,6 +503,8 @@ public class RTOSDirector extends Director {
                         (_outsideTime - getCurrentTime()), 
                         " from processing time of event",
                         event.toString());
+                //ATTN: Reduce the processing time of the actor by
+                // the time progressed.
                 event.timeProgress(_outsideTime - getCurrentTime());
                 // Finish the tasks if it ends at this time.
                 // We do it here to ensure that it is done before
@@ -502,6 +512,7 @@ public class RTOSDirector extends Director {
                 if (Math.abs(event.processingTime()) < 1e-10) {
                     if(_debugging) _debug(getName(),
                             "finish processing ", event.toString());
+                    //ATTN: Finished a task.
                     _eventQueue.take();
                     Actor actor = event.actor();
                     actor.fire();
@@ -644,7 +655,8 @@ public class RTOSDirector extends Director {
                     "defaultTaskExecutionTime", new DoubleToken(0.0));
             defaultTaskExecutionTime.setTypeEquals(BaseType.DOUBLE);
             
-            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime",
+            synchronizeToRealTime = new Parameter(this, 
+                    "synchronizeToRealTime",
                     new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
