@@ -220,7 +220,7 @@ public abstract class ODESolver extends NamedObj {
     /** If the specified actor has not be prefired() in the current
      *  iteration, then prefire() it.
      *  @param actor The actor to prefire().
-     *  @throws IllegalActionException If the actor returns false.
+     *  @exception IllegalActionException If the actor returns false.
      */
     protected void _prefireIfNecessary(Actor actor)
             throws IllegalActionException {
