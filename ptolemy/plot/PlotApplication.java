@@ -178,7 +178,7 @@ public class PlotApplication extends PlotFrame {
                 "PlotApplication class\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu " +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.1, Build: $Id$\n\n"+
+                "Version 3.1p1, Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
                 "Copyright (c) 1997-1999, " +
@@ -238,7 +238,7 @@ public class PlotApplication extends PlotFrame {
                 _test = true;
                 continue;
             } else if (arg.equals("-version")) {
-                System.out.println("Version 3.1, Build $Id$");
+                System.out.println("Version 3.1p1, Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.equals("-width")) {

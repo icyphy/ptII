@@ -165,7 +165,7 @@ public class LogicAnalyzerFrame extends Frame {
                 "Ptolemy plot frame\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.1, Build: $Id$\n\n"+
+                "Version 3.1p1, Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
