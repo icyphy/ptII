@@ -463,6 +463,15 @@ test PtParser-10.1 {Test that functions can access registered classes.
     list $value1 $value2
 } {ptolemy.data.IntToken(1) ptolemy.data.DoubleToken(0.5)}
 
+test PtParser-10.2 {Test for reasonable error messages on type problems} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set v1 [java::new ptolemy.data.expr.Variable $e v1]
+    $v1 setExpression "cos(1)"
+    catch {$v1 getToken} msg
+    list $msg
+} {{java.lang.IllegalArgumentException: Error evaluating expression.
+Function cos(1) cannot be executed with given arguments.}}
+
 ######################################################################
 ####
 test PtParser-11.0 {Test constants} {
