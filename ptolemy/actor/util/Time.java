@@ -107,7 +107,7 @@ public class Time implements Comparable {
      *  @return a integer as -1, 0, or 1.
      */
     public int compareTo(Object time) {
-        return compareTo((Time) time);;
+        return compareTo((Time) time);
     }
 
     /** Return -1, 0, or 1 if this time object is less than, equal to, or 
