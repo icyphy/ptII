@@ -49,28 +49,25 @@ FIXME: If more than receiver or sender were alowed, what would this mean?
 Is the synchronization below provable? Or is it just reasoned?
 
 @author Neil Smyth
-@version $Id$
+@version @(#)CSPReceiver.java	1.4 08/28/98
 
 */
 
 public class CSPReceiver implements Receiver {
   
-  /** FIXME: look at CTReceiver, PNReceiver for choice of constructors
-     */
-
     /** Construct a CSPReceiver with no container.
      */
     public CSPReceiver() {
-        System.out.println("new CSPReceiver");
-	_container = new IOPort();
+      //System.out.println("new receiver: thread " + Thread.currentThread().getName());
+      //_container = new IOPort();
     }
 
     /** Construct a CSPReceiver with the specified container.
      *  @param container The container.
      */
     public CSPReceiver(IOPort container) {
-        System.out.println("new CSPReceiver");
-        _container = container;
+       System.out.println("new receiver");
+     _container = container;
     }
 
 
@@ -110,8 +107,8 @@ public class CSPReceiver implements Receiver {
 	tmp = _token;
 	notifyAll();
       }
-    } catch (Exception ex) {
-      System.out.println(ex.getClass().getName() + " :" + ex.getMessage());
+    } catch (InterruptedException ex) {
+      System.out.println("get interrupted: " + ex.getMessage());
       /* FIXME */ 
     }
     return tmp;
@@ -146,8 +143,8 @@ public class CSPReceiver implements Receiver {
 	notifyAll();
 	return;
       }
-    } catch (Exception ex) { 
-      System.out.println(ex.getClass().getName() + " :" + ex.getMessage());
+    } catch (InterruptedException ex) { 
+      System.out.println("put interrupted :" + ex.getMessage());
       // FIXME: what should be done here?
     }
   }
@@ -191,9 +188,15 @@ public class CSPReceiver implements Receiver {
   public boolean isPutWaiting() {
     return _putWaiting;
   }
-  
+  /** Set the container of this CSPReceiver to the specified IOPort.
+   *  FIXME: what needs to be done if it already has a container?
+   *  FIXME: a null argument should remove it from the IOPort it 
+   *  currently belongs to.
+   *  @param parent The IOPort this receiver is to be contained by.
+   */
   public void setContainer(IOPort parent) {
     //FIXME: look at PN code to see what goes here
+    _container = parent;
   }
 
  /** Set a flag so that a conditional send branch knows whether or
@@ -224,15 +227,24 @@ public class CSPReceiver implements Receiver {
         _simulationTerminated = true;
     }
 
+  public String toString() {
+    return "CSPReceiver: container is " + getContainer().getName();
+  }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
     
     /** This method wraps the wait() call on the CSPReceiver object 
      *  so that if the simulation has terminated, then a 
      *  TerminateProcessException should be thrown.
+     *  @exception TerminatedProcessException Thrown if the actor to 
+     *   which this receiver belongs has been terminated while still 
+     *   running i.e it was not allowed to run to completion.
      */
-    protected synchronized void _checkAndWait() throws InterruptedException {
+    protected synchronized void _checkAndWait() throws 
+      TerminateProcessException, InterruptedException {
         if (_simulationTerminated) {
+	  System.out.println("Receiver is terminated: " + getContainer().getName());
             throw new TerminateProcessException(getContainer().getName() + ": simulation terminated");
         }
         wait();

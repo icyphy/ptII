@@ -67,7 +67,7 @@ FIXME: find a better place to place thread group creation.
 <p>
 
 @author Neil Smyth
-@version $Id$
+@version @(#)CSPDirector.java	1.3 08/28/98
 @see ptolemy.actor.Director;
 
 */
@@ -144,6 +144,7 @@ public class CSPDirector extends Director {
    */
   public void actorStopped() {
      try {
+       System.out.println("actor stopped");
       workspace().getReadAccess();
       _actorsAlive--;
       if (_simulationTerminated) {
@@ -198,23 +199,95 @@ public class CSPDirector extends Director {
   public ThreadGroup getProcessGroup() {
     return _processGroup;
   }
+  /** If this is the local director of the container, then invoke the fire
+     *  methods of all its deeply contained actors.  Otherwise, invoke the
+     *  fire() method of the container.  In general, this may be called more
+     *  than once in the same iteration, where an iteration is defined as one
+     *  invocation of prefire(), any number of invocations of fire(),
+     *  and one invocation of postfire().
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @exception CloneNotSupportedException If the fire() method of the
+     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the fire() method of the
+     *   container or one of the deeply contained actors throws it.
+     */
+    public void fire()
+            throws CloneNotSupportedException, IllegalActionException {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            if (!_executivedirector) {
+                // This is the local director.
+                Enumeration allactors = container.deepGetEntities();
+                while (allactors.hasMoreElements()) {
+                    Actor actor = (Actor)allactors.nextElement();
+                    actor.fire();
+                }
+		System.out.println("invoked fire methods of all actors, now wait for the simulation to terminate: " + getName());
+		try {
+		  while (!_simulationTerminated) {
+		    // a HORRIBLE hack, waits until all processes are 
+		    // stopped to invoke their postfire methods.
+		    Thread.currentThread().sleep(2000);
+		  }
+		} catch (InterruptedException ex) {
+		  System.out.println("Local cspDirector interrupted while waiting for firing to finish");
+		}
+            } else {
+                // This is the executive director.
+                container.fire();
+            }
+        }
+    }
 
-  
+
+  /** Invoke one iteration.  In the CSP domain, one iteration consists of
+     *  exactly one invocation of prefire(), fire(), and postfire(), in that
+     *  order. If prefire() return false, then fire() and postfire() are not
+     *  invoked. This method is not read-synchronized on the workspace for csp.
+     *
+     *  @return True if postfire() returns true.
+     *  @exception CloneNotSupportedException If any of the called methods
+     *   throws it.
+     *  @exception IllegalActionException If any of the called methods
+     *   throws it.
+     *  @exception NameDuplicationException If the prefire() method throws
+     *   it (while performing mutations).
+     */
+    public boolean iterate()
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
+        try {
+	  workspace().getReadAccess();
+            System.out.println("About to invoke prefire methods: " + getName());
+	    if (prefire()) {
+	      System.out.println("about to invoke fire methods: " + getName());
+                fire();
+		System.out.println("About to invoke postfire methods: " + getName());
+                return postfire();
+            }
+            return false;
+        } finally {
+	  workspace().doneReading();
+        }
+    }
+
     /** Return a new receiver of a type compatible with this director.
      *  In the CSP domain, we use CSPReceivers.
      *  @return A new CSPReceiver.
      */
     public Receiver newReceiver() {
-        System.out.println("creating a new receiver in CSPDirector");
-        return new CSPReceiver();
+      return new CSPReceiver();
     }
 
   /** The action to terminate all actors due to a deadlock, or when a 
    *  UI deides to terminate a simulation prematurely
    */
   public void terminateSimulation() {
-      System.out.println("about to terminate simulation");
-    synchronized(workspace()) {
+    System.out.println("about to terminate simulation");
+    try {
+      workspace().getReadAccess();
       _simulationTerminated = true;
       
       CSPCompositeActor cont = (CSPCompositeActor)getContainer();
@@ -226,16 +299,15 @@ public class CSPDirector extends Director {
               // the method in the CSPActor should set a flag in each receiver 
               // & notifyAll thread waiting on the lock for that receiver.
               actor.terminate();
-              System.out.println("CSPDirector: terminating simulation");
-          } catch (IllegalActionException ex) {
-              System.out.println("CSPDirector: unable to terminate all actors");
+              System.out.println("CSPDirector: terminating actor " + actor.getName());
+          } catch (Exception ex) {
+	    System.out.println("CSPDirector: unable to terminate all actors");
+	    //FIXME: should not catch general exception
           }
       }
-      workspace().notifyAll();
-      // now wake up fire
-      synchronized(this) {
-	notifyAll();
-      }
+      
+    } finally {
+      workspace().doneReading();
     }
   }
 

@@ -47,7 +47,7 @@ conditional rendezvous construct gets followed.
 FIXME: add longer description.
 
 @author Neil Smyth
-@version $Id$
+@version @(#)CSPActor.java	1.5 08/28/98
 */
 
 public class CSPActor extends AtomicActor implements Runnable {
@@ -279,13 +279,23 @@ public class CSPActor extends AtomicActor implements Runnable {
 
   /** In CSP, the initilaize method creates the thread to run the actor in.
    *  The thread is started in the fire method.
+   *  FIXME: I've added a hack here so that all the ports have getReceivers 
+   *  called on them before the threads are started. This is to make 
+   *  sure all the receivers are created _before_ the simulation is started.
    */
   public void initialize() 
        throws CloneNotSupportedException, IllegalActionException {
            CSPDirector director = (CSPDirector)getDirector();
 	 _myThread = new Thread( director.getProcessGroup(), this, getName());
-         System.out.println("Created thread for " + getName() + "not started");
+         System.out.println("Created thread for " + getName() + ", not started");
 	 director.actorStarted();
+	 Enumeration inputports = inputPorts();
+	 while (inputports.hasMoreElements()) {
+	   IOPort inport = (IOPort)inputports.nextElement();
+	   inport.getReceivers();
+	   System.out.println("Created receivers in: " + inport.getName());
+	 }
+	 
   }
 
   /** Release the calling branches status as the first branch to
@@ -314,14 +324,17 @@ public class CSPActor extends AtomicActor implements Runnable {
    */
   public void run() {
     try {
-      //System.out.println("In run method for " + getName() + ", about to call _run method of derived class");
       _run(); //what would be a better name for this method?
+      ((CSPDirector)getDirector()).terminateSimulation();
     } catch (TerminateProcessException ex) {
-      // return with appropriate message
       System.out.println("Actor terminated by exception: " + getName());
+    } catch (Exception ex) {
+      System.out.println("Exception caught in run method of CSPActor: " + ex.getClass().getName() + ", : " + ex.getMessage() + ": " + getName());
+      // FIXME: should nor catch general exception
     } finally {
       // put this here so that always gets called as thread finishes
       // NICE, as do not have to rely on programmer!! 
+      //System.out.println("Actor finished: " + getName());
       ((CSPDirector)getDirector()).actorStopped();
     }
   }
@@ -358,14 +371,21 @@ public class CSPActor extends AtomicActor implements Runnable {
     Enumeration inports = inputPorts();
     while (inports.hasMoreElements()) {
       IOPort port = (IOPort)inports.nextElement();
-      /*Receiver[][] receivers = port.getReceivers();
-      for (int i=0; i < receivers.length; i++) {
-	if (receivers[i].length > 1) {
+      if (port.isInput()) {
+	Receiver[][] receivers = port.getReceivers();
+	for (int i=0; i < receivers.length; i++) {
+	  if (receivers[i].length > 1) {
 	  System.out.println("Error: more than one receiver on CSP input channel");
+	  }
+	  CSPReceiver rec = (CSPReceiver)receivers[i][0];
+	  System.out.println("Terminating receiver: " + rec.toString());
+	  
+	  rec.setSimulationTerminated();
+	  synchronized(rec) {
+	    rec.notifyAll();
+	  }
 	}
-	((CSPReceiver)receivers[i][0]).setSimulationTerminated();
       }
-      */
     }
   }
 
