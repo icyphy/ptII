@@ -123,6 +123,10 @@ public class SignatureVerifier extends SignatureActor {
      *  if the signature does not properly verify.
      */
     public void fire() throws IllegalActionException {
+        // super.fire() should be called before accessing _signature
+        // so that we handle any updates of _signature made necessary
+        // by attribute changes.
+        super.fire();
         if (publicKey.hasToken(0)) {
             ObjectToken objectToken = (ObjectToken)publicKey.get(0);
             _publicKey = (PublicKey)objectToken.getValue();
@@ -150,7 +154,6 @@ public class SignatureVerifier extends SignatureActor {
             // output the data
             output.send(0, inputToken);
         }
-        super.fire();
     }
 
     ///////////////////////////////////////////////////////////////////

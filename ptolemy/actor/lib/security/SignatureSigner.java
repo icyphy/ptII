@@ -125,6 +125,10 @@ public class SignatureSigner extends SignatureActor {
      *  throws it, or if there is a problem cryptographic configuration.
      */
     public void fire() throws IllegalActionException {
+        // super.fire() should be called before accessing _signature
+        // so that we handle any updates of _signature made necessary
+        // by attribute changes.
+        super.fire();
         if (privateKey.hasToken(0)) {
             ObjectToken objectToken = (ObjectToken)privateKey.get(0);
             _privateKey = (PrivateKey)objectToken.getValue();
@@ -148,7 +152,6 @@ public class SignatureSigner extends SignatureActor {
                         "Problem sending data");
             }
         }
-        super.fire();
     }
 
     ///////////////////////////////////////////////////////////////////
