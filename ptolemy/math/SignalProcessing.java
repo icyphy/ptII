@@ -434,7 +434,7 @@ public class SignalProcessing {
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
 
-        double[] imag = ComplexArrayMath.imagParts(x);
+        double[] imagx = ComplexArrayMath.imagParts(x);
         double[] imagimagX = FFTImagOut(imagx, order);
 
         realrealX = DoubleArrayMath.add(realrealX, imagimagX);
