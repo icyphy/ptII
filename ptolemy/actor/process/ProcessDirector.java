@@ -38,7 +38,9 @@ import ptolemy.actor.*;
 import ptolemy.data.*;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+// import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessDirector
@@ -201,9 +203,9 @@ public class ProcessDirector extends Director {
             */
 
             // Creating threads for all actors;
-            Enumeration allActors = container.deepGetEntities();
-            while (allActors.hasMoreElements()) {
-                Actor actor = (Actor)allActors.nextElement();
+            Iterator actors = (Iterator)container.deepEntityList();
+            while( actors.hasNext() ) {
+                Actor actor = (Actor)actors.next();
                 actor.initialize();
             }
         }
@@ -234,8 +236,8 @@ public class ProcessDirector extends Director {
                 
         // Initialize threads
         ProcessThread processThread = _getProcessThread(actor, this);
-        _threadList.insertFirst(processThread);
-        _newthreads.insertFirst(processThread);
+        _threadList.addFirst(processThread);
+        _newthreads.addFirst(processThread);
     }
 
     /** Return false if the model has reached a deadlock and can
@@ -257,12 +259,12 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException  {
-        Enumeration threads = _newthreads.elements();
+        Iterator threads = _newthreads.iterator();
         ProcessThread thread = null;
 	if( _areAllThreadsStopped() ) {
-	    threads = _threadList.elements();
-	    while( threads.hasMoreElements() ) {
-		thread = (ProcessThread)threads.nextElement();
+	    threads = _threadList.iterator();
+	    while( threads.hasNext() ) {
+		thread = (ProcessThread)threads.next();
 		thread.restartThread();
 		synchronized(thread) {
 		    thread.notifyAll();
@@ -272,9 +274,9 @@ public class ProcessDirector extends Director {
 		}
 	    }
 	} else {
-            threads = _newthreads.elements();
-            while (threads.hasMoreElements()) {
-                thread = (ProcessThread)threads.nextElement();
+            threads = _newthreads.iterator();
+            while (threads.hasNext()) {
+                thread = (ProcessThread)threads.next();
 		thread.start();
 	    }
 	    _newthreads.clear();
@@ -298,13 +300,13 @@ public class ProcessDirector extends Director {
 	try {
 	    // Obtaining a list of all actors in this compositeActor
 	    CompositeActor cont = (CompositeActor)getContainer();
-	    Enumeration allMyActors = cont.deepGetEntities();
+            Iterator actors = (Iterator) cont.deepEntityList();
 	    Enumeration actorPorts;
 	    ProcessReceiver nextRec;
 
-	    while (allMyActors.hasMoreElements()) {
+	    while (actors.hasNext()) {
 		// Obtaining all the ports of each actor
-		Actor actor = (Actor)allMyActors.nextElement();
+		Actor actor = (Actor)actors.next();
 		actorPorts = actor.inputPorts();
 		while (actorPorts.hasMoreElements()) {
 		    IOPort port = (IOPort)actorPorts.nextElement();
@@ -314,7 +316,7 @@ public class ProcessDirector extends Director {
 			for (int j = 0; j < receivers[i].length; j++) {
 			    nextRec = (ProcessReceiver)receivers[i][j];
 			    nextRec.requestPause(true);
-			    _pausedReceivers.insertFirst(receivers[i][j]);
+			    _pausedReceivers.addFirst(receivers[i][j]);
 			}
 		    }
 		}
@@ -323,7 +325,7 @@ public class ProcessDirector extends Director {
 	    // If this director is controlling a CompositeActor with
 	    // output ports, need to set the finished flag
 	    // there as well.
-	    // FIXME: is this the best way to set these flags.
+	    // NOTE: is this the best way to set these flags.
 	    actorPorts  = cont.outputPorts();
 	    while (actorPorts.hasMoreElements()) {
 		IOPort port = (IOPort)actorPorts.nextElement();
@@ -333,7 +335,7 @@ public class ProcessDirector extends Director {
 		    for (int j = 0; j < receivers[i].length; j++) {
 			nextRec = (ProcessReceiver)receivers[i][j];
 			nextRec.requestPause(true);
-			_pausedReceivers.insertFirst(receivers[i][j]);
+			_pausedReceivers.addFirst(receivers[i][j]);
 		    }
 		}
 	    }
@@ -365,13 +367,13 @@ public class ProcessDirector extends Director {
     public void resume() {
 	LinkedList copy = new LinkedList();
 	synchronized(this) {
-	    copy.appendElements(_pausedReceivers.elements());
+	    copy.addAll(_pausedReceivers);
 	    _pausedReceivers.clear();
 	    _actorsPaused = 0;
 	}
-	Enumeration receivers = copy.elements();
-	while (receivers.hasMoreElements()) {
-	    ProcessReceiver rec = (ProcessReceiver)receivers.nextElement();
+	Iterator receivers = copy.iterator();
+	while (receivers.hasNext()) {
+	    ProcessReceiver rec = (ProcessReceiver)receivers.next();
             rec.requestPause(false);
 	}
         // Now wake up all the receivers.
@@ -386,9 +388,9 @@ public class ProcessDirector extends Director {
      *  is guaranteed to return in finite time.
      */
     public void stopFire() {
- 	Enumeration threads = _threadList.elements();
- 	while( threads.hasMoreElements() ) {
- 	    ProcessThread thread = (ProcessThread)threads.nextElement();
+ 	Iterator threads = _threadList.iterator();
+ 	while( threads.hasNext() ) {
+ 	    ProcessThread thread = (ProcessThread)threads.next();
 
 	    // Call stopThread() on the threads first
  	    thread.stopThread();
@@ -409,11 +411,11 @@ public class ProcessDirector extends Director {
         super.terminate();
         // Now stop any threads created by this director.
 	LinkedList list = new LinkedList();
-	list.appendElements(_threadList.elements());
+	list.addAll(_threadList);
 	_threadList.clear();
-        Enumeration threads = list.elements();
-        while (threads.hasMoreElements()) {
-	    ((Thread)threads.nextElement()).stop();
+        Iterator threads = list.iterator();
+        while (threads.hasNext()) {
+	    ((Thread)threads.next()).stop();
         }
     }
 
@@ -434,23 +436,23 @@ public class ProcessDirector extends Director {
 	// First wake up threads if they are stopped.
         ProcessThread thread = null;
 	if( _areAllThreadsStopped() ) {
-	    Enumeration threads = _threadList.elements();
-	    while( threads.hasMoreElements() ) {
+	    Iterator threads = _threadList.iterator();
+	    while( threads.hasNext() ) {
 		if( _threadsStopped > 0 ) {
 		    _threadsStopped--;
 		}
-		thread = (ProcessThread)threads.nextElement();
+		thread = (ProcessThread)threads.next();
 		thread.restartThread();
 	    }
 	}
 
 	CompositeActor cont = (CompositeActor)getContainer();
-        Enumeration allMyActors = cont.deepGetEntities();
+        Iterator actors = (Iterator)cont.deepEntityList();
         Enumeration actorPorts;
         ProcessReceiver nextRec;
         LinkedList recs = new LinkedList();
-        while (allMyActors.hasMoreElements()) {
-            Actor actor = (Actor)allMyActors.nextElement();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
             actorPorts = actor.inputPorts();
             while (actorPorts.hasMoreElements()) {
                 IOPort port = (IOPort)actorPorts.nextElement();
@@ -460,7 +462,7 @@ public class ProcessDirector extends Director {
                     for (int j = 0; j < receivers[i].length; j++) {
                         nextRec = (ProcessReceiver)receivers[i][j];
                         nextRec.requestFinish();
-                        recs.insertFirst(nextRec);
+                        recs.addFirst(nextRec);
                     }
                 }
             }
@@ -477,7 +479,7 @@ public class ProcessDirector extends Director {
                     for (int j = 0; j < receivers[i].length; j++) {
                         nextRec = (ProcessReceiver)receivers[i][j];
                         nextRec.requestFinish();
-                        recs.insertFirst(nextRec);
+                        recs.addFirst(nextRec);
                     }
                 }
             }
@@ -496,7 +498,7 @@ public class ProcessDirector extends Director {
      *  @param thr The newly created thread
      */
     protected synchronized void _addNewThread(ProcessThread thr) {
-	_threadList.insertFirst(thr);
+	_threadList.addFirst(thr);
     }
 
     /** Determine if all of the threads containing actors controlled
