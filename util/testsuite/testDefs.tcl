@@ -563,12 +563,16 @@ proc diffText {texta textb} {
 # the training flag is set
 #java::call System setProperty ptolemy.ptII.isRunningNightlyBuild true
 
+# To test out the WatchDog, try:
+# make JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+
 set isRunningNightlyBuild \
    [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
 
 if {"$isRunningNightlyBuild" == "true"} {
-   set timeOutSeconds 10
-   puts "testDefs.tcl: nightly build, so setting time out to $timeOutSeconds"
-   java::new util.testsuite.WatchDog [expr timeOutSeconds * 1000]
+   set timeOutSeconds 600
+   puts "testDefs.tcl: nightly build, so setting time out to\
+	$timeOutSeconds seconds"
+   java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
 }
 
