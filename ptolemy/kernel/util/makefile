@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Attribute.java \
 	CrossRefList.java \
+	Debuggable.java \
 	DebugListener.java \
 	KernelException.java \
 	IllegalActionException.java \

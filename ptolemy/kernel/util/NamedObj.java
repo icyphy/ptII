@@ -95,7 +95,8 @@ description.
 @version $Id$
 */
 
-public class NamedObj implements Nameable, Serializable, Cloneable {
+public class NamedObj implements Nameable, Debuggable, 
+                                 Serializable, Cloneable {
 
     /** Construct an object in the default workspace with an empty string
      *  as its name. The object is added to the list of objects in
