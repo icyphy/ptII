@@ -54,6 +54,7 @@ JSRCS = \
 	CommandLineTransformer.java \
 	ConstantLoopUnroller.java \
 	ConstVariableModelAnalysis.java \
+	DataUtilities.java \
 	DeadObjectEliminator.java \
 	ExceptionEliminator.java \
 	ExpressionCreator.java \
@@ -62,6 +63,8 @@ JSRCS = \
 	FieldsForPortsTransformer.java \
 	FieldOptimizationTransformer.java \
 	FreeVariableModelAnalysis.java \
+	FSMCreator.java \
+	GenericAtomicActorCreator.java \
 	GiottoPortInliner.java \
 	HSPortInliner.java \
 	InlineDirectorTransformer.java \

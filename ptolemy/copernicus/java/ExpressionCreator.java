@@ -79,7 +79,8 @@ public class ExpressionCreator implements AtomicActorCreator {
      *  necessary.  The given entity is assumed to be an expression actor.
      */
     public SootClass createAtomicActor(
-            Entity actor, String newClassName, Map options) {
+            Entity actor, String newClassName, 
+            ConstVariableModelAnalysis constAnalysis, Map options) {
         Expression entity = (Expression)actor;
         SootClass entityClass = PtolemyUtilities.actorClass;
 
@@ -104,11 +105,11 @@ public class ExpressionCreator implements AtomicActorCreator {
 
             // Populate...
             // Initialize attributes that already exist in the class.
-            ModelTransformer._createAttributes(body, entity, thisLocal,
+            ModelTransformer.createAttributes(body, entity, thisLocal,
                     entity, thisLocal, entityInstanceClass, tempCreatedSet);
 
             // Create and initialize ports
-            ModelTransformer._initializePorts(body, thisLocal, entity,
+            ModelTransformer.createPorts(body, thisLocal, entity,
                     thisLocal, entity, entityInstanceClass, tempCreatedSet);
 
             // return void
@@ -202,7 +203,7 @@ public class ExpressionCreator implements AtomicActorCreator {
                 entity.getAttribute("expression");
             String expression = expressionAttribute.getExpression();
 
-            Local local = ModelTransformer._generateExpressionCode(
+            Local local = DataUtilities.generateExpressionCode(
                     entity, entityInstanceClass, expression,
                     nameToField, nameToType, body);
 
@@ -243,7 +244,7 @@ public class ExpressionCreator implements AtomicActorCreator {
 
             Stmt insertPoint = Jimple.v().newReturnVoidStmt();
             body.getUnits().add(insertPoint);
-            ModelTransformer._initializeAttributesBefore(body, insertPoint,
+            ModelTransformer.initializeAttributesBefore(body, insertPoint,
                     entity, body.getThisLocal(),
                     entity, body.getThisLocal(),
                     entityInstanceClass);
@@ -254,7 +255,7 @@ public class ExpressionCreator implements AtomicActorCreator {
         // Remove super calls to the executable interface.
         // FIXME: This would be nice to do by inlining instead of
         // special casing.
-        ModelTransformer._implementExecutableInterface(entityInstanceClass);
+        ModelTransformer.implementExecutableInterface(entityInstanceClass);
         
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
@@ -262,7 +263,7 @@ public class ExpressionCreator implements AtomicActorCreator {
 
         // Inline all methods in the class that are called from
         // within the class.
-        ModelTransformer._inlineLocalCalls(entityInstanceClass);
+        ModelTransformer.inlineLocalCalls(entityInstanceClass);
 
         // Remove the __CGInit method.  This should have been
         // inlined above.
