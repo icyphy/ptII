@@ -40,11 +40,11 @@ import ptolemy.actor.gui.PtolemyQuery;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ChoiceStyle
+//// EditableChoiceStyle
 /**
 This attribute annotates a parameter to suggest an interactive
-mechanism for editing that uses an uneditable combobox menu.
-For an editable combobox, use EditableChoiceStyle instead.
+mechanism for editing that uses an editable combobox menu.
+For an uneditable combobox, use the ChoiceStyle class instead.
 The EditorPaneFactory class observes the
 presence of this attribute to guide construction of an interactive
 parameter editor.
@@ -54,14 +54,14 @@ parameter editor.
 @version $Id$
 */
 
-public class ChoiceStyle extends ParameterEditorStyle {
+public class EditableChoiceStyle extends ParameterEditorStyle {
 
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
      *  Increment the version number of the workspace.
      */
-    public ChoiceStyle() {
+    public EditableChoiceStyle() {
 	super();
     }
 
@@ -74,7 +74,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ChoiceStyle(NamedObj container, String name)
+    public EditableChoiceStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -112,7 +112,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
 	   
        	String defaultChoice = param.stringRepresentation();
 
-        query.addChoice(name, name, values, defaultChoice);
+        query.addChoice(name, name, values, defaultChoice, true);
 	query.attachParameter(param, name);
     }
 }
