@@ -75,12 +75,8 @@ import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.debugger.*;
-import ptolemy.vergil.debugger.domains.sdf.*;
 import ptolemy.vergil.ptolemy.*;
 
-/**
-***
- */
 //////////////////////////////////////////////////////////////////////////
 //// DebuggerUI
 /**
@@ -118,7 +114,7 @@ public class DebuggerUI extends JFrame
     String newline = "\n";
     int response;
     JMenuBar menuBar;
-    JButton go, rsm, end, stop, step, stepIn, stepOut, mstep, quit;
+    JButton rsm, end, stop, step, stepIn, stepOut, mstep, quit;
     JMenu breakpointMenu, watcherMenu;
     public boolean putCmd = false;
     
@@ -129,14 +125,9 @@ public class DebuggerUI extends JFrame
 
     
     /** Constructor
-     * @see ptolemy.vergil.debugger.MMI.DebuggerUI#DebuggerUI(Pdb pdb)
-     * @param pdb : a reference to the instance of the debugger
      */    
-    public DebuggerUI(Pdb pdb) {
-	_pdb = pdb;
-	_application = _pdb.getVergil();
-
-
+    public DebuggerUI(DbgController controller) {
+	_controller = controller;
 	JMenuItem menuItem;
 	JToolBar toolBar;
 
@@ -148,8 +139,8 @@ public class DebuggerUI extends JFrame
 	});
 
 	///////////////////////////////////////////////////////////////////////
-        //Add regular components (buttons, scrollpane,...) to the window, using the default     
-        //BorderLayout.
+        //Add regular components (buttons, scrollpane,...) 
+	//to the window, using the default BorderLayout.
   
         //Create the menu bar.
         menuBar = new JMenuBar();
@@ -165,19 +156,24 @@ public class DebuggerUI extends JFrame
         addButtons(toolBar); 
 
         //Lay out the content pane.
-        JPanel contentPane = new JPanel();
-        contentPane.setLayout(new BorderLayout());
-        contentPane.setPreferredSize(new Dimension(400, 100));
-	contentPane.add(toolBar, BorderLayout.NORTH);
-        contentPane.add(scrollPane, BorderLayout.CENTER);
-        setContentPane(contentPane);
-	setLocation(550,0);
+	getContentPane().setLayout(new BorderLayout());
+	getContentPane().add(toolBar, BorderLayout.NORTH);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
+	setLocation(450,0);
     
-	// Disable all buttons except GO
-	disableAllButtons();
-	enableButton(1);
-	enableButton(9);
-
+	final JFrame packframe = this;
+	Action packer = new AbstractAction() {
+	    public void actionPerformed(ActionEvent event) {
+		packframe.getContentPane().doLayout();
+		packframe.repaint();
+		packframe.pack();
+	    }
+	};
+	javax.swing.Timer timer =
+	    new javax.swing.Timer(200, packer);
+	timer.setRepeats(false);
+	timer.start();
+	
        	//////////////////////////////////////////////////////////
         //Build the Breakpoint menu.
 	///////////////////////////////////////////////////////// 
@@ -203,7 +199,8 @@ public class DebuggerUI extends JFrame
 			    JFrame editFrame = new BrkptEditor(brkpt);
 			    displayResult("Breakpoint successfully added on " 
 					  + actor.getFullName() +" !");
-		    } else displayResult (" Pas d'actor pour le constructeur de brkpt ??!!");
+		    } else displayResult ("An actor must be selected before " +
+					  "adding a breakpoint.");
 		    enableMenu();
 		}
 	    });
@@ -215,7 +212,9 @@ public class DebuggerUI extends JFrame
 		public void actionPerformed(ActionEvent e) {
 		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
-			DisplayList list = new DisplayList((Actor)actor, DebuggerUI.this, DisplayList.EDIT_B);
+			DisplayList list = 
+			    new DisplayList((Actor)actor, DebuggerUI.this, 
+					    DisplayList.EDIT_B);
 		    }
 		}
 	    }); 
@@ -279,6 +278,7 @@ public class DebuggerUI extends JFrame
 		}
 	    }); 
         watcherMenu.add(menuItem);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -294,13 +294,11 @@ public class DebuggerUI extends JFrame
     }
     
      /** Does nothing
-     * @see ptolemy.vergil.debugger.MMI.DebuggerUI#actionPerformed(ActionEvent e)
      * @param e an action event
      */
     public void actionPerformed(ActionEvent e) {}
     
      /** Return the command entered
-     * @see ptolemy.vergil.debugger.MMI.DebuggerUI#getuserCommand()
      * @return a reference on the command string
      */  
     public String getuserCommand() {
@@ -308,7 +306,6 @@ public class DebuggerUI extends JFrame
     }
     
     /** Does nothing
-     * @see ptolemy.vergil.debugger.MMI.DebuggerUI#itemStateChanged(ItemEvent e)
      * @param e an item event
      */
     public void itemStateChanged(ItemEvent e) {}
@@ -317,12 +314,11 @@ public class DebuggerUI extends JFrame
     //Several methods to enable and disable buttons and menus
     /////////////////////////////////////////////////////////
     /** Disable the button 
-     * @see ptolemy.vergil.debugger.MMI.DebuggerUI#disableButton(int index)
      * @param index : index of the button (in the creation order)
      */
     public void disableButton(int index) {
 	switch(index){
-	case 1: go.setEnabled(false); break;
+	    //	case 1: go.setEnabled(false); break;
 	case 2: rsm.setEnabled(false); break;
 	case 3: end.setEnabled(false); break;
 	case 4: stop.setEnabled(false); break;
@@ -336,13 +332,12 @@ public class DebuggerUI extends JFrame
     }
 
     /** Enable a button
-     * @see ptolemy.vergil.debugger.MMI.DebuggerUI#enableButton(int index)
      * @param index : index of the button (in the creation order)
      */
     public void enableButton(int index) {
 	switch(index){
-	case 1: go.setEnabled(true); 
-	    break;
+	    //	case 1: go.setEnabled(true); 
+	    // break;
 	case 2: rsm.setEnabled(true); 
 	    break;
 	case 3: end.setEnabled(true); 
@@ -367,7 +362,7 @@ public class DebuggerUI extends JFrame
      * @see ptolemy.vergil.debugger.MMI.DebuggerUI#disableAllButtons()
      */
     public void disableAllButtons() {
-	go.setEnabled(false);
+	//	go.setEnabled(false);
 	rsm.setEnabled(false);
 	end.setEnabled(false);
 	stop.setEnabled(false);
@@ -382,7 +377,7 @@ public class DebuggerUI extends JFrame
      * @see ptolemy.vergil.debugger.MMI.DebuggerUI#enableAllButtons()
      */
     public void enableAllButtons() {
-	go.setEnabled(true);
+	//	go.setEnabled(true);
 	rsm.setEnabled(true);
 	end.setEnabled(true);
 	stop.setEnabled(true);
@@ -431,120 +426,15 @@ public class DebuggerUI extends JFrame
 
     /** Creates the buttons that implement the functionality tools of
      * the debugger.
-     * @see ptolemy.vergil.debugger.MMI.DebuggerUI#addButtons(JToolBar toolBar)
      * @param toolBar : Frame's toolbar
      */
     protected void addButtons(JToolBar toolBar) {
 	JButton button = null;
 	
 	//Go button
-	go = new JButton("GO");
-	go.setMnemonic(KeyEvent.VK_G);
-	go.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    displayResult("Action for GO button :");
-		    //		    disableMenu();
-		    enableAllButtons();
-		    //disableButton(1);
-		    JFrame _executionFrame = null;
-		    PtolemyDocument d =
-			(PtolemyDocument) _application.getCurrentDocument();
-		    if (d == null) {
-			return;
-		    }
-		    try {
-			CompositeActor toplevel =
-			    (CompositeActor) d.getModel();
+	//	go = new JButton("GO");	
+	//toolBar.add(go);
 
-
-			// FIXME there is alot of code in here that is similar
-			// to code in MoMLApplet and MoMLApplication.  I think
-			// this should all be in ModelPane.
-			// FIXME set the Director.  This is a hack, but it's the
-			// Simplest hack.
-			Director dir = toplevel.getDirector();
-			if(dir == null) {
-			    ptolemy.vergil.debugger.domains.sdf.SDFDbgDirector director =
-				new ptolemy.vergil.debugger.domains.sdf.SDFDbgDirector(
-										       toplevel.workspace());
-			    //		    _entityLibrary.getEntity(
-			    //	(String)_directorComboBox.getSelectedItem());
-			    toplevel.setDirector(director);
-			    director.addDebuggingListener(_pdb.getDbgController());
-			    director.iterations.setExpression("25");
-			} else if ((dir instanceof ptolemy.domains.sdf.kernel.SDFDirector) || (dir instanceof ptolemy.vergil.debugger.domains.sdf.SDFDbgDirector)) {
-			    ptolemy.vergil.debugger.domains.sdf.SDFDbgDirector director =
-				new ptolemy.vergil.debugger.domains.sdf.SDFDbgDirector(
-										       toplevel.workspace());
-			    //		    _entityLibrary.getEntity(
-			    //	(String)_directorComboBox.getSelectedItem());
-			    toplevel.setDirector(director);
-			    director.addDebuggingListener(_pdb.getDbgController());
-			    director.iterations.setExpression("25");
-			} else if (dir instanceof ptolemy.domains.pn.kernel.PNDirector) {
-			} else if (dir instanceof ptolemy.domains.de.kernel.DEDirector) {
-			} else if (dir instanceof ptolemy.domains.csp.kernel.CSPDirector) {
-			} else if (dir instanceof ptolemy.domains.dde.kernel.DDEDirector) {
-			} else if (dir instanceof ptolemy.domains.fsm.kernel.FSMDirector) {
-			}
-			
-			// Create a manager.
-			Manager manager = toplevel.getManager();
-			if(manager == null) {
-			    manager =
-				new Manager(toplevel.workspace(), "Manager");
-			    toplevel.setManager(manager);
-			    //manager.addExecutionListener(new VergilExecutionListener(application));
-			}
-			
-			if(_executionFrame != null) {
-			    _executionFrame.getContentPane().removeAll();
-			} else {
-			    _executionFrame = new JFrame();
-			}
-			
-			ModelPane modelPane = new ModelPane(toplevel);
-			_executionFrame.getContentPane().add(modelPane,
-							     BorderLayout.NORTH);
-			// Create a panel to place placeable objects.
-			JPanel displayPanel = new JPanel();
-			displayPanel.setLayout(new BoxLayout(displayPanel,
-							     BoxLayout.Y_AXIS));
-			modelPane.setDisplayPane(displayPanel);
-			
-			// Put placeable objects in a reasonable place
-			for(Iterator i = toplevel.deepEntityList().iterator();
-			    i.hasNext();) {
-			    Object o = i.next();
-			    if(o instanceof Placeable) {
-				((Placeable) o).place(
-						      displayPanel);
-			    }
-			}
-			
-			if(_executionFrame != null) {
-			    _executionFrame.setVisible(true);
-			}
-			
-			final JFrame packframe = _executionFrame;
-			Action packer = new AbstractAction() {
-				public void actionPerformed(ActionEvent event) {
-				    packframe.getContentPane().doLayout();
-				    packframe.repaint();
-				    packframe.pack();
-				}
-			    };
-			javax.swing.Timer timer =
-			    new javax.swing.Timer(200, packer);
-			timer.setRepeats(false);
-			timer.start();
-		    } catch (Exception ex) {
-			_application.showError("Execution Failed", ex);
-		    }
-		}
-	    });
-	toolBar.add(go);
-	
 	//Resume button
 	rsm = new JButton("RSM");
 	rsm.setMnemonic(KeyEvent.VK_R);
@@ -553,7 +443,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="resume";
 			displayResult("Command entered = resume");
-			_pdb.getDbgController().commandEntered();
+			_controller.commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -574,8 +464,8 @@ public class DebuggerUI extends JFrame
 	// DbgController                                       //
 			_cmd = "microstep";
 			displayResult("Command entered = end");
-			_pdb.getDbgController().notFinished = false;
-			_pdb.getDbgController().commandEntered();
+			_controller.notFinished = false;
+			_controller.commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -596,7 +486,7 @@ public class DebuggerUI extends JFrame
 			
 		    //_cmd ="stop";
 		    //displayResult("Command entered = stop");
-		    //_pdb.getDbgController().cmdNotEntered = false;
+		    //_controller.cmdNotEntered = false;
 		    //}
 		    //else {
 		    //displayResult("Wait a minute !!!");
@@ -615,7 +505,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="step";
 			displayResult("Command entered = step");
-			_pdb.getDbgController().commandEntered();
+			_controller.commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -633,7 +523,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="stepin";
 			displayResult("Command entered = Step in");
-			_pdb.getDbgController().commandEntered();
+			_controller.commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -650,7 +540,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="stepout";
 			displayResult("Command entered = Step Out");
-			_pdb.getDbgController().commandEntered();
+			_controller.commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -668,7 +558,7 @@ public class DebuggerUI extends JFrame
 		    if (putCmd) {
 			_cmd ="microstep";
 			displayResult("Command entered = Micro Step");
-			_pdb.getDbgController().commandEntered();
+			_controller.commandEntered();
 		    }
 		    else {
 			displayResult("Wait a minute !!!");
@@ -703,8 +593,8 @@ public class DebuggerUI extends JFrame
     private NamedObj getSelectedActor() {
 	NamedObj selectedActor = null;
 	try {
-	    PtolemyDocument d = (PtolemyDocument) _application.getCurrentDocument();
-	    JGraph g = (JGraph) _application.getView(d);
+	    PtolemyDocument d = (PtolemyDocument) VergilApplication.getInstance().getCurrentDocument();
+	    JGraph g = (JGraph) VergilApplication.getInstance().getView(d);
 	    GraphPane graphPane = g.getGraphPane();
 	    GraphController controller = 
 		(GraphController) graphPane.getGraphController();
@@ -737,8 +627,96 @@ public class DebuggerUI extends JFrame
     
     //////////////////////////////////////////////////////////
     //               Private Variables                      //
-    private Pdb _pdb;
-    private String _cmd; // store the user command
-    private VergilApplication _application;
 
+    private String _cmd; // store the user command
+    private DbgController _controller;
 }
+
+/*
+	go = new JButton("GO");
+	go.setMnemonic(KeyEvent.VK_G);
+	go.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    displayResult("Action for GO button :");
+		    //		    disableMenu();
+		    enableAllButtons();
+		    //disableButton(1);
+		    JFrame _executionFrame = null;
+		    PtolemyDocument d =
+			(PtolemyDocument) VergilApplication.getInstance().getCurrentDocument();
+		    if (d == null) {
+			return;
+		    }
+		    try {
+			CompositeActor toplevel =
+			    (CompositeActor) d.getModel();
+
+
+			// FIXME there is alot of code in here that is similar
+			// to code in MoMLApplet and MoMLApplication.  I think
+			// this should all be in ModelPane.
+			// FIXME set the Director.  This is a hack, but it's the
+			// Simplest hack.
+			Director dir = toplevel.getDirector();
+			if(dir != null) {
+			    dir.addDebugListener(_controller);
+			} 
+			
+			// Create a manager.
+			Manager manager = toplevel.getManager();
+			if(manager == null) {
+			    manager =
+				new Manager(toplevel.workspace(), "Manager");
+			    toplevel.setManager(manager);
+			    //manager.addExecutionListener(new VergilExecutionListener(application));
+			}
+			
+			if(_executionFrame != null) {
+			    _executionFrame.getContentPane().removeAll();
+			} else {
+			    _executionFrame = new JFrame();
+			}
+			
+			ModelPane modelPane = new ModelPane(toplevel);
+			_executionFrame.getContentPane().add(modelPane,
+							     BorderLayout.NORTH);
+			// Create a panel to place placeable objects.
+			JPanel displayPanel = new JPanel();
+			displayPanel.setLayout(new BoxLayout(displayPanel,
+							     BoxLayout.Y_AXIS));
+			modelPane.setDisplayPane(displayPanel);
+			
+			// Put placeable objects in a reasonable place
+			for(Iterator i = toplevel.deepEntityList().iterator();
+			    i.hasNext();) {
+			    Object o = i.next();
+			    if(o instanceof Placeable) {
+				((Placeable) o).place(displayPanel);
+			    }
+			}
+			
+			if(_executionFrame != null) {
+			    _executionFrame.setVisible(true);
+			}
+			
+			final JFrame packframe = _executionFrame;
+			Action packer = new AbstractAction() {
+				public void actionPerformed(ActionEvent event) {
+				    packframe.getContentPane().doLayout();
+				    packframe.repaint();
+				    packframe.pack();
+				}
+			    };
+			javax.swing.Timer timer =
+			    new javax.swing.Timer(200, packer);
+			timer.setRepeats(false);
+			timer.start();
+		    } catch (Exception ex) {
+			VergilApplication.getInstance().showError("Execution Failed", ex);
+		    }
+		}
+	    });
+	toolBar.add(go);
+*/
+
+

@@ -34,19 +34,20 @@ import javax.swing.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.debugger.MMI.*;
 
 ////////////////////////////////////////////////////////////////////////
 //// DbgController
 /**
-   DbgController is the class that analyses and modifies the ExecState
-   of any Director that calls it test method. Its method waitUserCommand
-   allows him to wait for an entry by the user, in collaboration with 
-   DebuggerUI.
-
+DbgController is the class that analyses and modifies the ExecState
+of any Director that calls it test method. Its method waitUserCommand
+allows him to wait for an entry by the user, in collaboration with 
+DebuggerUI.
+   
 @author SUPELEC team B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
 */
-public class DbgController implements DebuggingListener {
+public class DbgController implements DebugListener {
 
     ////////////////////////////////////////////////////////
     //                Public variables                    //
@@ -67,14 +68,49 @@ public class DbgController implements DebuggingListener {
      * debugger.
      * @param pdb A reference to the debugger.
      */
-    public DbgController(Pdb pdb) {
-	_pdb = pdb;
+    public DbgController() {
 	notFinished = true;
 	stepInPause = false;
+    	_mmi = new DebuggerUI(this);
+    	_mmi.setTitle("Pdb");
+    	_mmi.setSize(450, 260);
+    	_mmi.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a reference to the UI
+     * @see ptolemy.vergil.debugger.Pdb#getDebuggerUI()
+     * @return a reference to the UI
+     */
+    public DebuggerUI getDebuggerUI() {
+	return _mmi;
+    }
+
+    /** Ignore string messages.
+     */
+    public void message(String string) {
+    }
+
+    /**
+     * Ignore debug events that aren't firing events
+     */   
+    public void event(DebugEvent debugEvent) {
+	System.out.println("event = " + debugEvent);
+	if(debugEvent instanceof FiringEvent) {
+	    FiringEvent event = (FiringEvent) debugEvent;
+	    if(event.getType() == FiringEvent.PREFIRE) {
+		prefireEvent(event.getActor());
+	    } else if(event.getType() == FiringEvent.FIRE) {
+		fireEvent(event.getActor());
+	    } else if(event.getType() == FiringEvent.POSTFIRE) {
+		postfireEvent(event.getActor());
+	    } else if(event.getType() == FiringEvent.POSTPOSTFIRE) {
+		postpostfireEvent(event.getActor());
+	    }
+	}
+    }
 
     /** 
      * Notify the DebuggingListener that actor is going to be prefired.
@@ -83,18 +119,18 @@ public class DbgController implements DebuggingListener {
     public void prefireEvent(Actor actor) {
 	if (notFinished) {
 	    //Refresh the Value of the ExecState
-	    _state.setnextMethod("prefire");
-	    _pdb.getDebuggerUI().displayResult("Before prefiring " + 
+	    _method = "prefire";
+	    _mmi.displayResult("Before prefiring " + 
 		 ((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint) 
 		((NamedObj) actor).getAttribute("prefire");
 	    if(breakpoint != null && breakpoint.evaluateCondition()) {
-		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		waitUserCommand(_state);		
+		_mmi.displayResult("Breakpoint encountered!");
+		waitUserCommand();		
 	    }
 
 	    //Analyse the ExecState
-	    test(_state);
+	    test();
 	}
     }
 
@@ -104,33 +140,33 @@ public class DbgController implements DebuggingListener {
     public void fireEvent(Actor actor) {
 	if (notFinished) {
 	    //Refresh the Value of ExecState
-	    _state.setnextMethod("fire");
-	    _pdb.getDebuggerUI().displayResult("Before firing " + 
+	    _method = "fire";
+	    _mmi.displayResult("Before firing " + 
 		((Nameable) actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint) 
 		((NamedObj) actor).getAttribute("fire");
 	    if(breakpoint != null && breakpoint.evaluateCondition()) {
-		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		waitUserCommand(_state);
+		_mmi.displayResult("Breakpoint encountered!");
+		waitUserCommand();
 	    }
 	    
 	    // Will hide the stepin button in the interface if the 
 	    // actor is not an opaque composite atomic.
 	    ComponentEntity entity = (ComponentEntity) actor;
 	    if (!entity.isAtomic() && entity.isOpaque()) {
-		_pdb.getDebuggerUI().enableButton(6);
+		_mmi.enableButton(6);
 	    } else {
-		_pdb.getDebuggerUI().disableButton(6);
+		_mmi.disableButton(6);
 	    }
 
-	    test(_state);
+	    test();
 
 	    // stepInPause can be true only if isAtomic is 
 	    // true because the button Step In
 	    // cannot be used if actor is atomic 
 	    if (stepInPause) {
 		stepInPause = false;
-		_state.setdbgCommand("pause");
+		_command = "pause";
 	    }
 	}			
     }
@@ -142,16 +178,16 @@ public class DbgController implements DebuggingListener {
     public void postfireEvent(Actor actor) {
 	if (notFinished) {
 	    //Refresh the ExecState
-	    _state.setnextMethod("postfire");
-	    _pdb.getDebuggerUI().displayResult("Before postfiring " + 
+	    _method = "postfire";
+	    _mmi.displayResult("Before postfiring " + 
 		((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("postfire");
 	    if (breakpoint != null && breakpoint.evaluateCondition()) {
-		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		waitUserCommand(_state);		    	       
+		_mmi.displayResult("Breakpoint encountered!");
+		waitUserCommand();		    	       
 	    }
-	    test(_state);
+	    test();
 	}
     }
 
@@ -164,22 +200,22 @@ public class DbgController implements DebuggingListener {
 
 	if (notFinished) {
 	    // Refresh ExecState
-	    _state.setnextMethod("postpostfire");
-	    _pdb.getDebuggerUI().displayResult("After postfiring " + 
+	    _method = "postpostfire";
+	    _mmi.displayResult("After postfiring " + 
 		       ((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("postpostfire");
 	    if (breakpoint != null && breakpoint.evaluateCondition()) {
-		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		waitUserCommand(_state);
+		_mmi.displayResult("Breakpoint encountered!");
+		waitUserCommand();
 	    }
 
-	    test(_state);
+	    test();
 
 	    // After a composite is postpostfired, then pause execution.
 	    if (actor instanceof CompositeActor &&
-		_state.getdbgCommand() == "stepout") {
-		_state.setdbgCommand("pause");
+		_command == "stepout") {
+		_command = "pause";
 	    }
 	}
     }
@@ -194,28 +230,25 @@ public class DbgController implements DebuggingListener {
      * user choose one.  
      * @param state The execution state of the calling director.
      */
-    public void test(ExecState state) {
+    public void test() {
 
-	 method = state.getnextMethod();
-	 command = state.getdbgCommand();
-	
-	if (method != "fire") {
+	if (_method != "fire") {
 	    /* signal to MMI that stepin forbidden */
 	}
 
-	if (command == "pause") {
-	    waitUserCommand(state);
-	    test(state);
-	} else if (command == "step" && method == "postfire") {
-	    state.setdbgCommand("pause");
-	} else if (command == "microstep") {
-	    state.setdbgCommand("pause");
-	} else if (command == "stepin") {
-	    if(method == "fire") {
+	if (_command == "pause") {
+	    waitUserCommand();
+	    test();
+	} else if (_command == "step" && _method == "postfire") {
+	    _command = "pause";
+	} else if (_command == "microstep") {
+	    _command = "pause";
+	} else if (_command == "stepin") {
+	    if(_method == "fire") {
 		stepInPause = true;
-		state.setdbgCommand("pause");
+		_command = "pause";
 	    } else {
-		_pdb.getDebuggerUI().displayResult("Error : Can't step in here");    
+		_mmi.displayResult("Error : Can't step in here");    
 	    }
 	}
     }
@@ -226,7 +259,7 @@ public class DbgController implements DebuggingListener {
      * the DebuggerUI for a more effective comprehension. 
      * @param state The execution state of the calling director.
      */
-    public synchronized void waitUserCommand(ExecState directorState) {
+    public synchronized void waitUserCommand() {
 	Iterator watchers = watcherList.elementList().iterator();
 	while (watchers.hasNext()) {
 	    ActorWatcher watcher = (ActorWatcher)watchers.next();
@@ -234,16 +267,16 @@ public class DbgController implements DebuggingListener {
 	}
 
 	_commandNotEntered = true;
-	_pdb.getDebuggerUI().displayResult("Please, enter a command.");       
+	_mmi.displayResult("Please, enter a command.");       
 	while (_commandNotEntered) {
-	    _pdb.getDebuggerUI().putCmd = true;
+	    _mmi.putCmd = true;
 	    try {
 		wait();
 	    } catch (InterruptedException ex) {
 	    }
 	}
-	_pdb.getDebuggerUI().putCmd = false;
-	directorState.setdbgCommand(_pdb.getDebuggerUI().getuserCommand());
+	_mmi.putCmd = false;
+	_command = _mmi.getuserCommand();
     }
 
     /**
@@ -257,15 +290,14 @@ public class DbgController implements DebuggingListener {
 
     ////////////////////////////////////////////////////////
     //                Private variables                   //
-    private Pdb _pdb;
-    private String method;
-    private String command;
+    private String _method = "";
+    private String _command = "go";
 
     //Boolean that allows to synchronize DbgController and DebuggerUI.
     private boolean _commandNotEntered = true;
 
-    // The current Execution state.
-    private ExecState _state = new ExecState();
+    // a link to DebuggerUI 
+    private DebuggerUI _mmi;
 }
 
     

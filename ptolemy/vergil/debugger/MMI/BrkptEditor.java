@@ -81,7 +81,7 @@ public class BrkptEditor extends JFrame implements ActionListener {
 	textPanel.setBorder(new TitledBorder("Condition ="));
 	
 	//Text field
-	textField = new JTextField(_brkpt.condition.getExpression(), 20);
+	textField = new JTextField(_brkpt.getExpression(), 20);
 	textField.addActionListener(this);
 	
 	textPanel.add(textField);
@@ -189,7 +189,7 @@ public class BrkptEditor extends JFrame implements ActionListener {
 	String condition = textField.getText();
 	try {
 	    _brkpt.setName(_selectedMethod);
-	    _brkpt.setCondition(condition);	    
+	    _brkpt.setExpression(condition);	    
 	} catch (NullPointerException ex) {
 	    System.out.println(ex.getMessage());
 	} catch (IllegalActionException ex) {

@@ -40,43 +40,17 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.*;
+import ptolemy.vergil.debugger.*;
+import ptolemy.vergil.ptolemy.*;
 
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.graph.*;
-import diva.graph.layout.*;
-import diva.graph.model.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.RelativeBundle;
 import java.util.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileWriter;
-import java.net.URL;
-
-import java.awt.Component;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.*;
-import java.awt.geom.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.pn.kernel.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.domains.fsm.kernel.FSMDirector;
+import javax.swing.Action;
+import javax.swing.AbstractAction;
+import javax.swing.JMenu;
+import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// DebuggerModule
@@ -84,14 +58,12 @@ import ptolemy.domains.fsm.kernel.FSMDirector;
 A modular Vergil package for the debugger
 @author SUPELEC team
 @version $Id$
-@see DebuggerModule
-@see ptolemy.vergil.debugger.DebuggerModule
 */
 public class DebuggerModule implements Module {
 
-    /** Constructor
-     * @see ptolemy.vergil.debugger.DebuggerModule#DebuggerModule(VergilApplication application)
-     * @param application : a reference to the current Vergil application
+    /** 
+     * Construct a new module with a reference to the given application.
+     * @param application A reference to the current Vergil application.
      */
     public DebuggerModule(VergilApplication application) {
 	_application = application;
@@ -101,28 +73,48 @@ public class DebuggerModule implements Module {
         menuDebugger.setMnemonic('E');
         _application.addMenu(menuDebugger);
 
-        action = new AbstractAction ("Start Debugger") {
+        action = new AbstractAction ("Start Debugging") {
 		public void actionPerformed(ActionEvent e) {
-		    _debuggerFrame = new Pdb(_application);
+		    Action executeAction = 
+		    _application.getAction("Execute System");
+		    executeAction.actionPerformed(e);
+		    
+		    System.out.println("debug");
+		    PtolemyDocument d =
+		    (PtolemyDocument) _application.getCurrentDocument();
+		    if (d == null) {
+			System.out.println("current doc is null");
+			return;
+		    }
+		    try {
+			System.out.println("current doc is not null");
+			CompositeActor toplevel =
+                        (CompositeActor) d.getModel();
+			Director dir = toplevel.getDirector();
+			DbgController controller = new DbgController();
+
+			dir.addDebugListener(controller);
+		    } catch (Exception ex) {
+		    }
 		}
 	    };
-	_application.addMenuItem(menuDebugger, action, 'S',
+	_application.addMenuItem(menuDebugger, action, 'D',
 				 "Create debugger panel");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the application that contains this module.
-     * @see ptolemy.vergil.debugger.DebuggerModule#getApplication()
+    /** 
+     * Return the application that contains this module.
      * @return the vergil application that contains this module
      */	
     public Application getApplication() {
         return _application;
     }
 
-    /** Return null.
-     * @see ptolemy.vergil.debugger.DebuggerModule#getModuleResources()
+    /** 
+     * Return the resources that this module uses.
      * @return null
      */
     public RelativeBundle getModuleResources() {
@@ -134,7 +126,4 @@ public class DebuggerModule implements Module {
 
     // The application that this package is associated with.
     private VergilApplication _application;
-
-    // debugger
-    private Pdb _debuggerFrame;
 }

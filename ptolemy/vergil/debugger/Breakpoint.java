@@ -36,15 +36,16 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// Breakpoint
 /**
-This class implements a breakpoint.  The Breakpoint contains a condition
-which enables the breakpoint when it evaluates to true.  Note that 
-this class does not actually halt execution.  Instead, the DebugController
-inspects for its presence in an Actor and acts accordingly.
+This class implements a breakpoint.  A breakpoint is essentially a boolean
+variable that wishes to pause execution when it evaluates to true.  Note that 
+this class does not actually halt execution.  Instead, an instance of the
+DebugController class inspects for its presence in an actor 
+and acts accordingly.
 
 @author SUPELEC team and Steve Neuendorffer
 @version $Id$
 */
-public class Breakpoint extends Attribute {
+public class Breakpoint extends Variable {
    
     /** Construct a new breakpoint in the given actor, with the given name.
      * @param actor The actor that contains the breakpoint.
@@ -62,25 +63,11 @@ public class Breakpoint extends Attribute {
 	    throw new IllegalActionException("Breakpoints can only be " +
 					     "contained by Actors");
 	
-	condition = new Parameter(this, "condition");
-	condition.setExpression("true");
+	setExpression("true");
     }
-
-    //////////////////////////////////////////////////////////////////
-    // Public members
-
-    // Contain the boolean expression
-    public Parameter condition;
 
     /////////////////////////////////////////////////////////////////
     //  Public methods
-
-    /** Set the boolean condition that will be evaluated
-     * @param expr the expression to evaluate
-     */
-    public void setCondition(String expr) {
-	condition.setExpression(expr);
-    }
 
     /** Evaluate the boolean expression of the breakpoint and 
      * returns the boolean value. 
@@ -89,7 +76,7 @@ public class Breakpoint extends Attribute {
     public boolean evaluateCondition() {
 	boolean returnValue = true;
 	try {
-	    returnValue = ((BooleanToken)condition.getToken()).booleanValue();
+	    returnValue = ((BooleanToken)getToken()).booleanValue();
 	} catch (IllegalActionException ex) {
 	    System.out.println("Can't evaluate condition !!!");
 	}

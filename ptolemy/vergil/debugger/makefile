@@ -16,18 +16,13 @@ include $(CONFIG)
 #PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = Breakpoint.java \
-	ExecState.java \
 	Watchers.java \
 	ActorWatcher.java \
-	DebuggingListener.java \
 	DbgController.java \
-	DbgDirector.java \
 	DebuggerModule.java \
-	domains/sdf/SDFDbgDirector.java \
 	MMI/DisplayList.java \
 	MMI/BrkptEditor.java \
-	MMI/DebuggerUI.java \
-	Pdb.java 
+	MMI/DebuggerUI.java
 
 EXTRA_SRCS = \
 	$(JSRCS)

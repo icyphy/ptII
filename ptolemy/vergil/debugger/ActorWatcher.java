@@ -89,7 +89,6 @@ public class ActorWatcher implements Nameable, Watchers {
     /** Refresh all elements that display a value. This method is called
      * each time the user has to enter a command : he can eventually 
      * decide what to do depending on the displayed values
-     * @see ptolemy.vergil.debugger#refresh()
      */
     public void refresh() {
 	Iterator attributes;
