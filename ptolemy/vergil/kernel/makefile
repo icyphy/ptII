@@ -50,14 +50,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AnimationRenderer.java \
+	AttributeNodeModel.java \
+	AttributeController.java \
+	CompositeEntityModel.java \
 	DebugRenderer.java \
 	Link.java \
-	RenameDialogFactory.java \
 	PortDialogFactory.java \
-	AttributeNodeModel.java \
-	CompositeEntityModel.java \
+	PortLocationDialogFactory.java \
 	RelationController.java \
-	AttributeController.java \
+	RenameDialogFactory.java \
+	SetIconAction.java
 
 EXTRA_SRCS =	$(JSRCS)
 

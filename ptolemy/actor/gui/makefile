@@ -102,6 +102,8 @@ JSRCS = \
 	PlotTableauFrame.java \
 	PortConfigurer.java \
 	PortConfigurerDialog.java \
+	PortLocationConfigurer.java \
+	PortLocationDialog.java \
 	PtExecuteApplication.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
