@@ -307,7 +307,7 @@ public class RecordType extends StructuredType {
     /** Test if the specified type is a substitution instance of this
      *  type.  One record is a substitution instance of another if they
      *  have fields with the same names and each field of the given type is
-     *  a substitution instance of the correpsonding field in this type.
+     *  a substitution instance of the corresponding field in this type.
      *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
      *  @see Type#isSubstitutionInstance
