@@ -49,7 +49,8 @@ JSRCS = \
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
-	QueryApplet.htm
+	QueryApplet.htm \
+	ShowRawDocumentApplet.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
