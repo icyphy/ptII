@@ -32,8 +32,8 @@
 ME =		ptolemy/domains
 
 # Domains we do not ship
-EXPERIMENTAL_DOMAINS = \
-		hdf nc pbo rtp 
+EXPERIMENTAL_DOMAINS = 
+		#hdf nc pbo rtp 
 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
