@@ -63,21 +63,21 @@ public class RegenerateCode {
         }
 
         for (int f = 0; f < files; f++) {
-            JavaParser p = new JavaParser();
+            JavaParser javaParser = new JavaParser();
 
             try {
-                p.init(args[f + fileStart]);
+                javaParserinit(args[f + fileStart]);
 
             } catch (Exception e) {
                 System.err.println("error opening input file " + args[f + fileStart]);
                 System.err.println(e.toString());
             }
 
-            //p.yydebug = debug;
+            javaParser.yydebug = debug;
 
-            p.yyparse();
+            javaParser.yyparse();
 
-            CompileUnitNode ast = p.getAST();
+            CompileUnitNode ast = javaParser.getAST();
 
             String codeString = (String) ast.accept(new JavaCodeGenerator());
 
