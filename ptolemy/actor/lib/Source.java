@@ -40,7 +40,7 @@ import ptolemy.data.Token;
 Base class for simple data sources.  This class provides an output port
 and a trigger input port, both exposed as public variables.  The trigger
 port is a multiport of type Token, meaning that you can connect anything
-to it without imposing any type constaints on what you connect to it.
+to it without imposing any type constraints on what you connect to it.
 The purpose of the trigger input is to (optionally) supply events that
 cause the actor to fire.  For some domains, such as SDF and CT, this is
 entirely unnecessary, as the actor will fire whether inputs are supplied

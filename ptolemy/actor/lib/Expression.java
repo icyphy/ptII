@@ -66,7 +66,7 @@ such as AddSubtract, MultiplyDivide, and Sine.  However, those actors
 will be more efficient, and sometimes more convenient to use.
 <p>
 NOTE: There are a number of limitations in the current implementation.
-First, the type constaints on the ports are the default, that input
+First, the type constraints on the ports are the default, that input
 ports must have type that be losslessly converted to the type of the
 output.  The type constraints have nothing to do with the expression.
 This is a severe limitation, but removing it depends on certain
