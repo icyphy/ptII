@@ -895,7 +895,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @param port The port to remove shadow variables for.
      */
     protected void _removeInputVariables(IOPort port) {
-        Variable[][] shadowVariables = (Variable[][])_inputVariableMap.get(port);
+        Variable[][] shadowVariables =
+            (Variable[][])_inputVariableMap.get(port);
         if (shadowVariables == null) {
             return;
         }
@@ -935,25 +936,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             _buildConnectionMaps();
         }
         _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
-    }
-
-    /** Set the input variables for channels that are connected to an
-     *  output port of the refinement of current state.
-     *  @exception IllegalActionException If a value variable cannot take
-     *   the token read from its corresponding channel.
-     */
-    protected void _setInputsFromRefinement()
-            throws IllegalActionException {
-        Iterator inPorts = inputPortList().iterator();
-        while (inPorts.hasNext() && !_stopRequested) {
-            IOPort p = (IOPort)inPorts.next();
-            int width = p.getWidth();
-            for (int channel = 0; channel < width; ++channel) {
-                if (_isRefinementOutput(p, channel)) {
-                    _setInputVariables(p, channel);
-                }
-            }
-        }
     }
 
     /** Set the value of the shadow variables for input ports of this actor.
@@ -1018,6 +1000,25 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         } else {
             shadowVariables[channel][0].setUnknown(true);
             shadowVariables[channel][1].setUnknown(true);
+        }
+    }
+
+    /** Set the input variables for channels that are connected to an
+     *  output port of the refinement of current state.
+     *  @exception IllegalActionException If a value variable cannot take
+     *   the token read from its corresponding channel.
+     */
+    protected void _setInputsFromRefinement()
+            throws IllegalActionException {
+        Iterator inPorts = inputPortList().iterator();
+        while (inPorts.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort)inPorts.next();
+            int width = p.getWidth();
+            for (int channel = 0; channel < width; ++channel) {
+                if (_isRefinementOutput(p, channel)) {
+                    _setInputVariables(p, channel);
+                }
+            }
         }
     }
 
