@@ -35,15 +35,30 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// RcvrTimeTriple
 /**
-A data structure for storing a receiver along with its rcvrTime and priority.
+A RcvrTimeTriple is a data structure for storing a receiver along with its 
+rcvrTime and priority. RcvrTimeTriples are used by ODActors to order
+incoming events according to time stamps. Each ODActor has a RcvrTimeTriple
+associated with each receiver it owns. In situations where multiple 
+receivers of an ODActor have simultaneous events, the priority of the
+RcvrTimeTriples are used to determine order.
 
 @author John S. Davis II 
 @version @(#)RcvrTimeTriple.java	1.9	11/17/98
+@see ptolemy.domains.od.kernel.Event
+@see ptolemy.domains.od.kernel.ODReceiver
+@see ptolemy.domains.od.kernel.ODActor
 
 */
+
 public class RcvrTimeTriple extends NamedObj {
 
-    /** 
+    /** Construct a RcvrTimeTriple with a TimeQueueReceiver, a
+     *  rcvr time and a priority. The rcvr time must be greater 
+     *  than or equal to any previous rcvr times associated with
+     *  the TimedQueueReceiver.
+     * @param rcvr The TimedQueueReceiver associated with this RcvrTimeTriple
+     * @param rcvrTime The time associated with this RcvrTimeTriple
+     * @param priority The priority associated with this RcvrTimeTriple
      */
     public RcvrTimeTriple(TimedQueueReceiver rcvr, double rcvrTime, 
             int priority ) {
@@ -60,42 +75,53 @@ public class RcvrTimeTriple extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /** Return the TimedQueueReceiver of this RcvrTimeTriple.
+     * @return TimedQueueReceiver The TimedQueueReceiver of this 
+     *  RcvrTimeTriple.
      */
     public TimedQueueReceiver getReceiver() {
         return _rcvr;
     }
 
-    /** 
+    /** Return the priority of this RcvrTimeTriple.
+     * @return int The priority of this RcvrTimeTriple.
      */
     public int getPriority() {
         return _priority;
     }
 
-    /** 
+    /** Set the priority of this RcvrTimeTriple.
+     * @param priority The priority associated with this RcvrTimeTriple
      */
     public void setPriority( int priority ) {
         _priority = priority;
     }
 
-    /** 
+    /** Return the time of this RcvrTimeTriple.
+     * @return double The time of this RcvrTimeTriple.
      */
     public double getTime() {
         return _rcvrTime;
     }
 
-    /**  FIXME: Do I need this method?
+    /** Set the time of this RcvrTimeTriple. The time must be greater 
+     *  than or equal to any previous rcvr times associated with
+     *  the TimedQueueReceiver. 
+     * @param time The time associated with this RcvrTimeTriple
+     * @exception IllegalActionException If the specified time is less than
+     *  previously set rcvr times and is not equal to -1. 
      */
     public void setTime( double time ) throws IllegalActionException {
         if( time < _rcvrTime && time != -1 ) {
             throw new IllegalActionException( getContainer(), 
-                    "Rcvr times must be monotonically non-decreasing.");
+                    "###\n"
+                    +
+                    "Error! Rcvr times must be monotonically non-decreasing!\n"
+                    +
+                    "###\n");
         }
         _rcvrTime = time;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
