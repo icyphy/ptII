@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jai/demo
 
-DIRS =		AdaptiveMedian ImageReconstruction
+DIRS =		AdaptiveMedian ImageReconstruction VQSequenceDisplay
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -50,7 +50,8 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	AdaptiveMedian/AdaptiveMedian.jar \
-	ImageReconstruction/ImageReconstruction.jar
+	ImageReconstruction/ImageReconstruction.jar \
+	VQSequenceDisplay/VQSequenceDisplay.jar 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
