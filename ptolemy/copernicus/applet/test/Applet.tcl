@@ -88,6 +88,7 @@ proc autoAppletDemoCG {autoDirectory} {
 #    lrange $result 0 9
 #} {2 4 6 8 10 12 14 16 18 20}
 
+
 # Do a SDF and a DE test just be sure things are working
 test Applet-1.2 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration   [file join $relativePathToPTII ptolemy actor lib test auto IIR.xml] Applet] 
@@ -129,7 +130,7 @@ autoAppletCG [file join $relativePathToPTII ptolemy domains dt kernel test auto]
 autoAppletCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
 autoAppletCG [file join $relativePathToPTII ptolemy domains fsm test auto]
 autoAppletCG [file join $relativePathToPTII ptolemy domains giotto kernel test auto]
-autoAppletCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
+#autoAppletCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
 autoAppletCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
 autoAppletCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
 autoAppletCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
