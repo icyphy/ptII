@@ -427,7 +427,7 @@ public class ViewScreen extends GRActor3D
             _frame = new JFrame("ViewScreen");
             _frame.show();
             _frame.validate();
-            _frame.setSize(horizontalDimension+50,verticalDimension);
+            _frame.setSize(horizontalDimension+50, verticalDimension);
             _container = _frame.getContentPane();
         }
         // Set the frame to be visible.
