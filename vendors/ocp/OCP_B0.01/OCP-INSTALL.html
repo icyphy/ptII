@@ -1,0 +1,242 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en]C-CCK-MCD Boeing Kit  (WinNT; I) [Netscape]">
+   <title>Building and Installing TAO</title>
+<!-- TAO-INSTALL.html,v 1.60 1999/09/23 07:20:44 nanbor Exp -->
+<link rev=made href="mailto:schmidt@cs.wustl.edu">
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#000FFF" vlink="#FF0F0F">
+
+<hr>
+<center>
+<h3>
+<b><font size=+2>Building and Installing the OCP</font></b></h3></center>
+The following table summarizes the platforms that are supported by the
+OCP or currently in work.
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<tr VALIGN=TOP>
+<td><b>Fully supported</b></td>
+
+<td><a href="#Windows_NT">Windows NT</a> (MSVC 6.0) and <a href="#VxWorks">VxWorks</a>
+(Greenhills)</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><b>Partially supported (RTARM must be disabled)</b></td>
+
+<td><a href="#Linux">Redhat Linux</a> (5.x, 6.x),&nbsp; SunOS 5.x</td>
+</tr>
+
+<tr VALIGN=TOP BGCOLOR="#AFAFAF">
+<td><b>In Work</b></td>
+
+<td>IRIX 6.X, VxWorks (GNU)</td>
+</tr>
+</table>
+
+<p>
+<hr>
+<h3>
+<a NAME="Windows_NT"></a>On Windows NT</h3>
+
+<h4>
+Installing the OCP Source</h4>
+The OCP has been provided as a zipped file for Windows platforms.&nbsp;
+Copy the file to the desired build location which will be referred to in
+the following sections as OCP_ROOT.&nbsp; (i.e. C:\SEC\OCP\)
+<p>Copying the file for Windows platforms:
+<br>&nbsp;
+<ul>
+<li>
+Use Windows Explorer, My Computer or equivalent means to copy the file
+from the CDROM to the destination directory (OCP_ROOT)</li>
+</ul>
+
+<p><br>Use WinZip or a similar program to extract the archived file under
+the destination directory preserving the relative directory.
+<br>&nbsp;
+<h4>
+Setting up the environment</h4>
+The OCP requires the following environment variables:
+<p><b>OCP_ROOT, ACE_ROOT, TAO_ROOT </b>and<b> TAO_IDL_PREPROCESSOR.</b>
+<p>Use Settings -> Control Panel -> System -> Environment to set the environment
+variables as follows:
+<p>OCP_ROOT = Destination directory (i.e. C:\SEC\OCP)
+<br>ACE_ROOT = %OCP_ROOT%\Cofp\Infrastructure\PlatformServices\ACE_wrappers_Full
+<br>TAO_ROOT = %ACE_ROOT%\TAO
+<br>TAO_IDL_PREPROCESSOR<b>=</b>c:/Program Files/Microsoft Visual Studio/VC98/bin/cl.exe&nbsp;
+(i.e. this is the default location of the CPP,&nbsp; enter the installation
+location for your CPP if not the default)
+<br>PATH=%PATH%;%OCP_ROOT%\Cofp\_Libfiles;%OCP_ROOT%\..\ObjectSpace\ToolKit\Lib
+<p>After setting the environment variables, reboot to ensure that the environment
+variables take effect.
+<br><img SRC="Env.gif" HSPACE=100 VSPACE=50 BORDER=0 height=466 width=410>
+<h4>
+Building the OCP</h4>
+Follow the process below to build the OCP:
+<ol>
+<li>
+Build the OCP.</li>
+
+<ul>
+<li>
+Open the <i>OCP.dsw</i> workspace in the <i>$OCP_ROOT</i> directory.</li>
+
+<li>
+Make the <i>OCP</i> project the activate project and select <u>B</u>uild
+-> <u>R</u>ebuild All</li>
+</ul>
+</ol>
+<b>Building the OCP Examples</b>
+<p>Follow the process below to build the OCP Examples:
+<ol>
+<li>
+Build the Examples.</li>
+
+<ul>
+<li>
+Make the <i>Examples</i> project the activate project and select <u>B</u>uild
+-> <u>R</u>ebuild All</li>
+</ul>
+</ol>
+<b>Building the ASTD Tests</b>
+<p>Follow the process below to build the ASTD Tests:
+<ol>
+<li>
+Build the <i>ASTDTest </i>executable.</li>
+
+<ul>
+<li>
+Open the <i>ASTDTest.dsw</i> workspace in the <i>$OCP_ROOT\Cofp\Infrastructure\_Test\InfrastructureUtilities\ASTD</i>
+directory.</li>
+
+<li>
+Make the <i>ASTDTest</i> project the activate project and select <u>B</u>uild
+-> <u>R</u>ebuild All</li>
+</ul>
+</ol>
+
+<h3>
+<blink><font color="#CC0000">*** NOTES ***</font></blink></h3>
+
+<ol>
+<li>
+The current beta lacks the Control's specific API.&nbsp; This will be added
+at a later date.&nbsp; The Control's Specific API will provide the user
+interface to the OCP from the Control's designer perspective.</li>
+</ol>
+
+<p><br>
+<hr>
+<h3>
+<a NAME="Linux"></a>On Redhat Linux</h3>
+
+<h4>
+Installing the OCP Source</h4>
+The OCP has been provided as a tarred gzipped file for Unix platforms.&nbsp;
+Copy the file to the desired build location which will be referred to in
+the following sections as OCP_ROOT.&nbsp; (i.e. /usr/local/SEC/OCP_Build1_Beta)
+<p>Use a terminal window to copy the file: (For example)
+<p><i>$cp /mnt/cdrom/OCP.tar.gz /usr/local/SEC/OCP_Build1_Beta/</i>
+<p>Use gunzip to unzip the archive.
+<p><i>$gunzip OCP.tar.gz</i>
+<br><i>$tar xvf OCP.tar</i>
+<h4>
+Setting up the environment</h4>
+The OCP requires the following environment variables:
+<p><b>OCP_ROOT, ACE_ROOT, and TAO_ROOT.</b>
+<p>These environment variable can be set automatically by changing the
+the OCP_ROOT directory and executing the setup_sec_linux shell script.
+<p><i>$cd /usr/local/SEC/OCP_Build1_Beta</i>
+<br><i>$source setup_sec_linux</i>
+<br>&nbsp;
+<h4>
+Building the OCP</h4>
+Follow the process below to build the OCP:
+<ol>
+<li>
+Change to the OCP_ROOT directory.</li>
+
+<ul>
+<li>
+$cd $OCP_ROOT</li>
+</ul>
+
+<li>
+&nbsp;Make the OCP</li>
+
+<ul>
+<li>
+make</li>
+</ul>
+</ol>
+<b>Building the OCP Examples</b>
+<p>Follow the process below to build the OCP Examples:
+<ul>
+<li>
+Change to the Examples directory.</li>
+
+<ul>
+<li>
+$cd $OCP_ROOT/OCP/Infrastructure/Examples</li>
+</ul>
+
+<li>
+&nbsp;Make the Examples</li>
+
+<ul>
+<li>
+make</li>
+
+<li>
+</li>
+</ul>
+</ul>
+
+<h3>
+<blink><font color="#CC0000">*** NOTES ***</font></blink></h3>
+
+<ol>
+<li>
+The Real-Time Adaptive Resource Manager (RTARM) component does not run
+on Linux currently.&nbsp; In order to use the RTARM, you must run the Windows
+NT build</li>
+
+<li>
+The current beta lacks the Control's specific API.&nbsp; This will be added
+at a later date.&nbsp; The Control's Specific API will provide the user
+interface to the OCP from the Control's designer perspective.</li>
+
+<li>
+The OCP spawns Real-Time threads (SCHED_FIFO).&nbsp; This capability requires
+root privileges on Linux.</li>
+
+<li>
+The OCP compiles with the EGCS compiler that ships with Redhat 6.1.&nbsp;
+(EGCS 1.1.2)</li>
+</ol>
+
+<hr>
+<h3>
+<a NAME="VxWorks"></a>On VxWorks Linux</h3>
+
+<h3>
+<blink><font color="#CC0000">*** This section is under construction ***</font></blink></h3>
+&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><font size=-1>Last Modified:&nbsp;<!--#config timefmt="%b %d, %Y" --><!--#echo var="LAST_MODIFIED"-->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Information Owner: <a href="mailto:brian.r.mendel@boeing.com">Brian Mendel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Maintained by <a href="mailto:brian.r.mendel@boeing.com">Brian Mendel</a></font>
+</body>
+</html>
