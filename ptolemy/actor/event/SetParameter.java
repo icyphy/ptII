@@ -74,6 +74,12 @@ public class SetParameter extends ChangeRequest {
      *   rejects the expression.
      */
     public void execute() throws ChangeFailedException {
+        String originalExpression;
+        try {
+            originalExpression = _parameter.getToken().toString();
+        } catch (Exception ex) {
+            originalExpression = _parameter.getExpression();
+        }
         try {
             _parameter.setExpression(_expression);
             // Force evaluation of the expression to ensure validity,
@@ -81,6 +87,7 @@ public class SetParameter extends ChangeRequest {
             // value.
             _parameter.getToken();
         } catch (IllegalActionException ex) {
+            _parameter.setExpression(originalExpression);
             throw new ChangeFailedException(this, ex);
         }
     }
