@@ -116,6 +116,9 @@ OPTIONAL_FILES = \
 	'EditablePlot$$EditMouseListener.class' \
 	'EditablePlot$$ModifyListener.class' \
 	'EditablePlot$$UndoListener.class' \
+	'Histogram$$1.class' \
+	'Plot$$1.class' \
+	'Plot$$2.class' \
 	'PlotFrame$$1.class' \
 	'PlotFrame$$2.class' \
 	'PlotFrame$$FormatListener.class' \
