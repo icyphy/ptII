@@ -626,7 +626,7 @@ public class DirectedGraph extends Graph {
             Iterator nodes = nodes().iterator();
             while (nodes.hasNext()) {
                 Node node = (Node)nodes.next();
-                if (inputEdgeCount(node) == 0) {
+                if (outputEdgeCount(node) == 0) {
                     _sinkNodes.add(node);
                 }
             }
