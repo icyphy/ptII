@@ -624,7 +624,7 @@ public class NamedObj implements
      *  @return A MoML description, or an empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public final String exportMoML() {
         try {
@@ -648,7 +648,7 @@ public class NamedObj implements
      *  @return A MoML description, or the empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public final String exportMoML(String name) {
         try {
@@ -676,7 +676,7 @@ public class NamedObj implements
      *  @param output The stream to write to.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public final void exportMoML(Writer output) throws IOException {
         exportMoML(output, 0);
@@ -695,7 +695,7 @@ public class NamedObj implements
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
         exportMoML(output, depth, getName());
@@ -741,7 +741,7 @@ public class NamedObj implements
      *  @exception IOException If an I/O error occurs.
      *  @see #clone(Workspace)
      *  @see #isPersistent()
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
@@ -1327,7 +1327,7 @@ public class NamedObj implements
      *  changed) and cannot have its name or container changed.
      *  By default, instances of NamedObj are not inherited objects.
      *  @param inherited True to mark this object as an inherited object.
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public final void setDerived(boolean inherited) {
         _isInherited = inherited;
@@ -1374,7 +1374,7 @@ public class NamedObj implements
      *  @exception NameDuplicationException Not thrown in this base class.
      *   May be thrown by derived classes if the container already contains
      *   an object with this name.
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
