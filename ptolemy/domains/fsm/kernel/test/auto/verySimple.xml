@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="verySimple" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
@@ -11,15 +11,23 @@
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="76.0, 33.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 33.0">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
     </property>
     <entity name="fsm actor0" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State 0">
+        </property>
+        <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
@@ -28,7 +36,7 @@
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
           </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="165.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 115.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -40,13 +48,13 @@
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="385.0, 169.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 169.0">
             </property>
         </port>
         <entity name="State 0" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="132.00000000000009, 248.8125">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="132.00000000000009, 248.8125">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -56,7 +64,7 @@
         <entity name="State 1" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="227.00000000000009, 153.8125">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="227.00000000000009, 153.8125">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -66,7 +74,7 @@
         <entity name="state" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="322.0000000000001, 248.8125">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="322.0000000000001, 248.8125">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -90,6 +98,8 @@
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
@@ -107,6 +117,8 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -126,6 +138,8 @@
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="false">
@@ -143,6 +157,8 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
@@ -162,6 +178,8 @@
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </relation>
         <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="false">
@@ -179,6 +197,8 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
         <link port="State 0.incomingPort" relation="relation3"/>
@@ -199,7 +219,9 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 115.0">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 115.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

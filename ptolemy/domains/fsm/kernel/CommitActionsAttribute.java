@@ -42,6 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
 
@@ -108,23 +109,29 @@ to variables and parameters contained by the FSM actor.
 public class CommitActionsAttribute
     extends AbstractActionsAttribute implements CommitAction {
 
+   /** Construct an action in the specified workspace with an empty
+     *  string as a name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public CommitActionsAttribute(Workspace workspace) {
+        super(workspace);
+    }
+
     /** Construct an action with the given name contained
      *  by the specified transition. The <i>transition</i> argument must not
      *  be null, or a NullPointerException will be thrown. This action will
      *  use the workspace of the transition for synchronization and
      *  version counts. If the name argument is null, then the name is
-     *  set to the empty string. A variable for expression evaluation is
-     *  created in the transition. The name of the variable is obtained
-     *  by prepending an underscore to the name of this action.
+     *  set to the empty string.
      *  This increments the version of the workspace.
      *  @param transition The transition that contains this action.
      *  @param name The name of this action.
      *  @exception IllegalActionException If the action is not of an
-     *   acceptable class for the container, or if the name contains
-     *   a period.
+     *   acceptable class for the container.
      *  @exception NameDuplicationException If the transition already
-     *   has an attribute with the name or that obtained by prepending
-     *   an underscore to the name.
+     *   has an attribute with the name.
      */
     public CommitActionsAttribute(Transition transition, String name)
             throws IllegalActionException, NameDuplicationException {

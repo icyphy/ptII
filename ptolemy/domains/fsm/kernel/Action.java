@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,6 +64,16 @@ CommitAction marker interface.
 */
 public abstract class Action extends StringAttribute {
 
+    /** Construct an action in the specified workspace with an empty
+     *  string as a name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public Action(Workspace workspace) {
+        super(workspace);
+    }
+    
     /** Construct an action with the given name contained by the
      *  specified transition. The transition argument must not be
      *  null, or a NullPointerException will be thrown. This action

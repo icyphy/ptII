@@ -64,15 +64,17 @@ import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// Transition
 /**
-A Transition has a source state and a destination state. A transition has
-a guard expression and a trigger expression. Both expressions should evaluate
-to a boolean value. The trigger of a transition must be true whenever the
-guard is true. A transition is enabled and can be taken when its guard is true.
-A transition is triggered and must be taken when its trigger is true.
-<p>
-A transition can contain actions. The way to specify actions is to give
-value to the <i>outputActions</i> parameter and the <i>setActions</i>
-parameter.
+A Transition has a source state and a destination state. A
+transition has a guard expression and a trigger expression. Both
+expressions should evaluate to a boolean value. The trigger of a
+transition must be true whenever the guard is true. A transition is
+enabled and can be taken when its guard is true.  A transition is
+triggered and must be taken when its trigger is true.  
+
+<p> A transition can contain actions. The way to specify actions is
+to give value to the <i>outputActions</i> parameter and the
+<i>setActions</i> parameter.
+
 The value of these parameters is a string of the form:
 <pre>
      <i>command</i>; <i>command</i>; ...
@@ -87,13 +89,13 @@ For the <i>outputActions</i> parameter, <i>destination</i> is either
 </pre>
 or
 <pre>
-     <i>portName</i>(<i>channelNumber</i>)
-</pre>
-Here, <i>portName</i> is the name of a port of the FSM actor,
-If no <i>channelNumber</i> is given, then the value
-is broadcast to all channels of the port.
-<p>
-For the <i>setActions</i> parameter, <i>destination</i> is
+   <i>portName</i>(<i>channelNumber</i>)
+   </pre>
+   Here, <i>portName</i> is the name of a port of the FSM actor,
+   If no <i>channelNumber</i> is given, then the value
+   is broadcast to all channels of the port.
+   <p>
+   For the <i>setActions</i> parameter, <i>destination</i> is
 <pre>
      <i>variableName</i>
 </pre>
@@ -149,6 +151,20 @@ note that this feature is still under development.
 */
 public class Transition extends ComponentRelation {
 
+    /** Construct a transition in the given workspace with an empty string
+     *  as a name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version of the workspace.
+     *  @param workspace The workspace for synchronization and version
+     *  tracking.
+     */
+    public Transition(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        _init();
+    }
+
     /** Construct a transition with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown. This transition will use the
@@ -161,82 +177,15 @@ public class Transition extends ComponentRelation {
      *  @exception NameDuplicationException If the name coincides with
      *   any relation already in the container.
      */
-    public Transition(FSMActor container, String name)
+    public Transition(FSMActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
-                super(container, name);
-                guardExpression = new StringAttribute(this, "guardExpression");
-                outputActions = new OutputActionsAttribute(this, "outputActions");
-                setActions = new CommitActionsAttribute(this, "setActions");
-                exitAngle = new Parameter(this, "exitAngle");
-                exitAngle.setVisibility(Settable.NONE);
-                exitAngle.setExpression("PI/5.0");
-                exitAngle.setTypeEquals(BaseType.DOUBLE);
-                gamma = new Parameter(this, "gamma");
-                gamma.setVisibility(Settable.NONE);
-                gamma.setExpression("0.0");
-                gamma.setTypeEquals(BaseType.DOUBLE);
-                reset = new Parameter(this, "reset");
-                reset.setTypeEquals(BaseType.BOOLEAN);
-                reset.setToken(BooleanToken.FALSE);
-                preemptive = new Parameter(this, "preemptive");
-                preemptive.setTypeEquals(BaseType.BOOLEAN);
-                preemptive.setToken(BooleanToken.FALSE);
-                triggerExpression = new StringAttribute(this, "triggerExpression");
-                triggerExpression.setVisibility(Settable.NONE);
-                _guard = new Variable(this, "_guard");
-                // Make the variable lazy since it will often have
-                // an expression that cannot be evaluated.
-                _guard.setLazy(true);
-                _guard.setTypeEquals(BaseType.BOOLEAN);
-
-                // Depending on whether the director is FSM director
-                // or HSDirector, we configure the Transitions with 
-                // different ParseTreeEvaluators.
-
-                TypedCompositeActor modalModel = (TypedCompositeActor) container.getContainer();                
-                
-                // If the executive director is HSDirector, 
-                if (modalModel != null && 
-                      modalModel.getDirector() instanceof HSDirector) {                
-                    
-                    _exeDirectorIsHSDirector = true;
-                    
-                    // construct a relation list for the transition;
-                    _relationList = new RelationList(this, "relationList");
-           
-                    // associate the relation list with the
-                    // ParseTreeEvaluatorForGuardExpression
-            
-                    // FIXME: how to get the error tolerance
-                    // If we limite the HSDirector only works under CT model
-                    // or Modal Models, we can use the error tolerance from
-                    // the top level CT director.
-                                          
-                    _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
-                            _relationList, 1e-4);
-                            
-                    // Register the guard expression with the above parse
-                    // tree evaluator
-                    _guard.setParseTreeEvaluator( 
-                            (ParseTreeEvaluator) _parseTreeEvaluator);
-                } else {
-                    _exeDirectorIsHSDirector = false;
-                }
-                
-                // If the executive director is FSMDirector, do nothing.
-                
-                _trigger = new Variable(this, "_trigger");
-                // Make the variable lazy since it will often have
-                // an expression that cannot be evaluated.
-                _trigger.setLazy(true);
-                _trigger.setTypeEquals(BaseType.BOOLEAN);
-                // add refinement name parameter
-                refinementName = new StringAttribute(this, "refinementName");
+        super(container, name);
+        _init();
             }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
+    
     /** Attribute the exit angle of a visual rendition.
      *  This parameter contains a DoubleToken, initially with value PI/5.
      *  It must lie between -PI and PI.  Otherwise, it will be truncated
@@ -702,6 +651,83 @@ public class Transition extends ComponentRelation {
         } finally {
             workspace().doneReading();
         }
+    }
+    
+    // Initialize the variables of this transition.
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
+        guardExpression = new StringAttribute(this, "guardExpression");
+        outputActions = new OutputActionsAttribute(this, "outputActions");
+        setActions = new CommitActionsAttribute(this, "setActions");
+        exitAngle = new Parameter(this, "exitAngle");
+        exitAngle.setVisibility(Settable.NONE);
+        exitAngle.setExpression("PI/5.0");
+        exitAngle.setTypeEquals(BaseType.DOUBLE);
+        gamma = new Parameter(this, "gamma");
+        gamma.setVisibility(Settable.NONE);
+        gamma.setExpression("0.0");
+        gamma.setTypeEquals(BaseType.DOUBLE);
+        reset = new Parameter(this, "reset");
+        reset.setTypeEquals(BaseType.BOOLEAN);
+        reset.setToken(BooleanToken.FALSE);
+        preemptive = new Parameter(this, "preemptive");
+        preemptive.setTypeEquals(BaseType.BOOLEAN);
+        preemptive.setToken(BooleanToken.FALSE);
+        triggerExpression = new StringAttribute(this, "triggerExpression");
+        triggerExpression.setVisibility(Settable.NONE);
+        _guard = new Variable(this, "_guard");
+        // Make the variable lazy since it will often have
+        // an expression that cannot be evaluated.
+        _guard.setLazy(true);
+        _guard.setTypeEquals(BaseType.BOOLEAN);
+        
+        _exeDirectorIsHSDirector = false;
+        
+        // Depending on whether the director is FSM director
+        // or HSDirector, we configure the Transitions with 
+        // different ParseTreeEvaluators.
+        
+        CompositeEntity container = (CompositeEntity) getContainer();
+        
+        // If the executive director is HSDirector, 
+        if (container != null) {
+            TypedCompositeActor modalModel =
+                (TypedCompositeActor)container.getContainer();
+            if(modalModel.getDirector() instanceof HSDirector) {
+            
+                // FIXME: This is wrong...  what if the director changes?
+                _exeDirectorIsHSDirector = true;
+                
+                // construct a relation list for the transition;
+                _relationList = new RelationList(this, "relationList");
+                
+                // associate the relation list with the
+                // ParseTreeEvaluatorForGuardExpression
+                
+                // FIXME: how to get the error tolerance
+                // If we limite the HSDirector only works under CT model
+                // or Modal Models, we can use the error tolerance from
+                // the top level CT director.
+                
+                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
+                        _relationList, 1e-4);
+                
+                // Register the guard expression with the above parse
+                // tree evaluator
+                _guard.setParseTreeEvaluator( 
+                        (ParseTreeEvaluator) _parseTreeEvaluator);
+            }
+        }
+        
+        // If the executive director is FSMDirector, do nothing.
+                
+        _trigger = new Variable(this, "_trigger");
+        // Make the variable lazy since it will often have
+        // an expression that cannot be evaluated.
+        _trigger.setLazy(true);
+        _trigger.setTypeEquals(BaseType.BOOLEAN);
+        // add refinement name parameter
+        refinementName = new StringAttribute(this, "refinementName");
     }
 
     // Update the cached lists of actions.
