@@ -93,7 +93,9 @@ reset a receiver to have unknown status.
 @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRReceiver extends AbstractReceiver implements StateReceiver {
+
     /** Construct an SRReceiver with unknown state and the given director.
+     *  @param director The director of this receiver.
      */
     public SRReceiver(SRDirector director) {
         super();
@@ -171,8 +173,10 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
      *  @exception IllegalArgumentException If the argument is not positive.
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
+     *  @return True if the receiver can accept a token.
      */
-    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasRoom(int numberOfTokens)
+            throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
                     "hasRoom() requires a positive argument.");
@@ -350,14 +354,16 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private boolean _lastKnownStatus;
     private Token _cachedToken;
 
-    // A flag indicating whether this receiver has known state.  A receiver
-    // has known state if the token in the receiver is known or if the
-    // receiver is known not to contain a token.
+    /** A flag indicating whether this receiver has known state.  A receiver
+     * has known state if the token in the receiver is known or if the
+     * receiver is known not to contain a token.
+     */
     private boolean _known;
 
-    // The director of this receiver.
+    /** The director of this receiver. */
     private SRDirector _director;
 }

@@ -35,10 +35,11 @@ import ptolemy.graph.analysis.strategy.MirrorTransformerStrategy;
 //// MirrorTransformation
 
 /**
-   A mirror transformations on graphs. Creates a mirror of this graph in the form
-   of the type of the associated graph.  The mirror and original graphs are
-   isomorphic(of same topology). However, node and edge objects of the mirror are
-   newly created and therefore not "equal" to those of the original graph.
+   A mirror transformations on graphs. Creates a mirror of this graph
+   in the form of the type of the associated graph.  The mirror and
+   original graphs are isomorphic(of same topology). However, node and
+   edge objects of the mirror are newly created and therefore not
+   "equal" to those of the original graph.
    <p>
    To relate nodes and edges from the original and the mirrored graph
    the {@link #transformedVersionOf} and {@link #originalVersionOf} methods are
@@ -46,10 +47,10 @@ import ptolemy.graph.analysis.strategy.MirrorTransformerStrategy;
    Labels can also be used to relate mirror and original
    nodes(edges).
    <p>
-   In the {@link #cloneWeight} method, users can also specify whether to clone node
-   and edge weights. For non cloneable
-   weights a {@link java.lang.CloneNotSupportedException} will be thrown by
-   the virtual machine.
+   In the {@link #cloneWeight} method, users can also specify whether
+   to clone node and edge weights. For non cloneable weights a {@link
+   java.lang.CloneNotSupportedException} will be thrown by the virtual
+   machine.
 
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (shahrooz)
@@ -125,6 +126,8 @@ public class MirrorTransformation extends Analysis {
      *  In this method, users can also specify whether to clone node and
      *  edge weights.
      *
+     *  @param graph The graph.
+     *  @param cloneWeights True if the weights will also be cloned.
      *  @return The mirror graph.
      */
     public Graph mirror(Graph graph, boolean cloneWeights) {

@@ -94,6 +94,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
     /** Return the single source-node (start node) of this analyzer.
      *
      *  @return Return the starting node of this analyzer.
+     *  @see #setStartNode(Node)
      */
     public Node getStartNode() {
         return ((SingleSourceLongestPathAnalyzer) analyzer()).getStartNode();
@@ -103,6 +104,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  form of an ordered list.
      *
      *  @param endNode The ending node of the path.
+     *  @return The longest path from "startNode" to "endNode".
      */
     public List path(Node endNode) {
         return ((SingleSourceLongestPathAnalyzer) analyzer()).path(endNode);
@@ -113,6 +115,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  using {@link #setStartNode}.
      *
      *  @param endNode The ending node of the path.
+     *  @param The length of the longest path.
      */
     public double pathLength(Node endNode) {
         return ((SingleSourceLongestPathAnalyzer) analyzer()).pathLength(endNode);
@@ -121,6 +124,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
     /** Set the start-node of this analysis to the given node.
      *
      *  @param startNode The given node.
+     *  @see #getStartNode()
      */
     public void setStartNode(Node startNode) {
         ((SingleSourceLongestPathAnalyzer) analyzer()).setStartNode(startNode);

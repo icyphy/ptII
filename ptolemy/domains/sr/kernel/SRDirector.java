@@ -476,13 +476,19 @@ public class SRDirector extends StaticSchedulingDirector {
 
     /** React to the change in receiver status by incrementing the count of
      *  known receivers.
+     *  @param receiver This parameter is ignored, in this method we do
+     *  not make use of the value of the receiver itself; instead we
+     *  increment an internal counter.
      */
     public void receiverChanged(Receiver receiver) {
         // In this implementation, we do not make use of the receiver itself.
         _currentNumberOfKnownReceivers++;
     }
 
-    /** (non-Javadoc)
+    /** Return an array of suggested directors to be used with
+     *  ModalModel. Each director is specified by its full class
+     *  name.  The first director in the array will be the default
+     *  director used by a modal model.
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
