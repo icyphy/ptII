@@ -161,8 +161,19 @@ JINI_LIB =	$(JINI_DIR)/lib
 # because we end up with a classpath with an empty element ::
 JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar
 
+# Location of the Matlab directory.  The matlab binary will be
+# found at $(MATLAB_DIR)/bin/matlab
+MATLAB_DIR = 	@MATLAB_DIR@
+
+# Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
+PTCC =	$(PTCC)
+
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
+
+# Set to dlltool if dlltool was found and used in
+# $PTII/ptolemy/matlab/makefile.
+PTDLLTOOL = @PTDLLTOOL@
 
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
@@ -219,6 +230,10 @@ PTLEGO_DIR =	@PTLEGO_DIR@
 # the Java Communications API and Lejos was found
 PTLEJOS_DIR =	@PTLEJOS_DIR@
 
+# Set to matlab and used in $PTII/ptolemy/makefile if
+# matlab was found.
+PTMATLAB_DIR =	@PTMATLAB_DIR@
+
 # Set to rtos and used in
 # $PTII/ptolemy/domains/makefile if java.util.Timer was found
 PTRTOS_DIR = @PTRTOS_DIR@
@@ -242,4 +257,4 @@ INSTALL =		$(ROOT)/config/install-sh -c
 INSTALL_PROGRAM =	${INSTALL}
 INSTALL_DATA =		${INSTALL} -m 644
 
-MATLAB_DIR = 	@MATLAB_DIR@
+
