@@ -39,9 +39,16 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * This class determines the dominators of each Block within a CFG.
  * The key of each entry in this hashMap is a node within a
- * DirectedGraph. The Values of the HashMap are Vectors that contain
- * references to dominating nodes.
-
+ * DirectedAcyclicCFG. The Values of the HashMap are Vectors that contain
+ * references to dominating nodes. <p>
+ *
+ * This class will also compute the immediate dominator for each
+ * Node in the graph. <p>
+ * 
+ * Note that this class can determine the post dominators (and
+ * immediate post dominators) instead of the
+ * dominators if necessary.
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
@@ -49,6 +56,12 @@ import ptolemy.kernel.util.IllegalActionException;
 
 public class DominatorHashMap extends HashMap {
 
+    /**
+     * @param g A control-flow graph of the method of interest
+     * @param postDominates If true, a HashMap of the post dominators
+     * will be created. If false, a HashMap of the dominators will
+     * be created.
+     **/
     public DominatorHashMap(DirectedAcyclicCFG g, boolean postDominates) throws IllegalActionException {
 	super(g.nodeCount());
 	_graph = g;
@@ -58,23 +71,31 @@ public class DominatorHashMap extends HashMap {
 	_computeImmediateDominators();
     }
 
+    /**
+     * Determine the dominators of the CFG. The postDominates parameter
+     * is false (i.e. compute dominators, not post dominators).
+     **/
     public DominatorHashMap(DirectedAcyclicCFG g) throws IllegalActionException {
 	this(g,false);
     }
 
-    public Vector getDominators(Node n) {
+    /**
+     * Returns a Vector containing all dominators of Node n.
+     **/
+    public List getDominators(Node n) {
 	return (Vector) get(n);
     }
     
     /** Returns true if Node d dominates Node n **/
     public boolean dominates(Node d, Node n) {
-	Vector dominates = getDominators(n);
+	List dominates = getDominators(n);
 	if (dominates.contains(d))
 	    return true;
 	else
 	    return false;
     }
 
+    /** Returns the immediate dominator of Node n **/
     public Node getImmediateDominator(Node n) {
 	Object o = _immediateDominators.get(n);
 	if (o != null)
@@ -82,26 +103,6 @@ public class DominatorHashMap extends HashMap {
 	else
 	    return null;
     }
-
-    /*
-    // Is node n1 deeper in topological order than n2?
-    public boolean deeperDominator(Node n1, Node n2) {
-	System.out.println("Node "+_graph.nodeString(n1)+
-			   " dd="+
-			   _sortedNodes.indexOf(getDeepestDominator(n1))
-			   +" Node "+
-			   _graph.nodeString(n2)+" dd="+
-			   _sortedNodes.indexOf(getDeepestDominator(n2)));
-						
-	return _sortedNodes.indexOf(getDeepestDominator(n1)) >
-	    _sortedNodes.indexOf(getDeepestDominator(n2));
-    }
-
-    public boolean equalDeepestDominator(Node n1, Node n2) {
-	return _sortedNodes.indexOf(getDeepestDominator(n1)) ==
-	    _sortedNodes.indexOf(getDeepestDominator(n2));
-    }
-    */
 
     public HashMap immediateDominators() {
 	return _immediateDominators;
@@ -197,9 +198,9 @@ public class DominatorHashMap extends HashMap {
 	    _root = _graph.source();
 	}
 
-	_sortedNodes = _graph.topologicalSort();
+	Collection sortedNodes = _graph.attemptTopologicalSort(_graph.nodes());
 	if (_postDominates)
-	    _sortedNodes = _reverseList(_sortedNodes);
+	    sortedNodes = _reverseList(sortedNodes);
 
 	int graphSize = _graph.nodeCount();
 
@@ -225,8 +226,11 @@ public class DominatorHashMap extends HashMap {
 	do {
 	    changed = false;
 	    // Fastest if you start at top of graph
-	    for (Iterator i=_sortedNodes.iterator(); i.hasNext();) {
+	    //for (int i=0;i<sortedNodes.length;i++) {
+	    //Node n = (Node) sortedNodes[i];
+	    for (Iterator i=sortedNodes.iterator();i.hasNext();) {
 		Node n = (Node) i.next();
+
 		if (n==_root)
 		    continue;
 //    		System.out.println("Dominators for block "+
@@ -282,7 +286,16 @@ public class DominatorHashMap extends HashMap {
 
     }
     
-    protected List _reverseList(List l) {
+    /*
+    protected Object[] _reverseList(Object [] ol) {
+	int len = ol.length;
+	Object[] o = new Object[len];
+	for (int i=0;i<ol.length;i++)
+	    o[i]=ol[len-i-1];
+	return o;
+    }
+    */
+    protected Collection _reverseList(Collection l) {
 	Vector v = new Vector(l.size());
 	for (Iterator i=l.iterator();i.hasNext();) {
 	    v.add(0,i.next());
@@ -308,7 +321,6 @@ public class DominatorHashMap extends HashMap {
     }
  
     protected DirectedAcyclicCFG _graph;
-    protected List _sortedNodes;
     protected boolean _postDominates;
     protected Node _root;
     protected HashMap _immediateDominators;

@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Collection;
 import java.util.Vector;
 import java.util.HashMap;
+import java.util.Map;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
@@ -100,7 +101,7 @@ public class IntervalChain {
 	return _next;
     }
 
-    public HashMap getChildren() {
+    public Map getChildren() {
 	return _children;
     }
 
@@ -375,9 +376,13 @@ public class IntervalChain {
 		if (DEBUG) System.out.print(" special");
 		Vector nodes = new Vector();
 		boolean addMode=false;
-		for (Iterator search = _graph.topologicalSort().iterator();
-		     search.hasNext();) {
-		    Node n = (Node) search.next();
+//  		Object sort[] = _graph.topologicalSort();
+//  		for (int i=0;i<sort.length;i++) {
+//  		    Node n = (Node) sort[i];
+		Collection sort = _graph.attemptTopologicalSort(_graph.nodes());
+		for (Iterator i=sort.iterator();i.hasNext();) {
+		    Node n = (Node) i.next();
+
 		    if (n==immediatePostDominator)
 			// don't add ipd
 			addMode = false;
@@ -450,7 +455,7 @@ public class IntervalChain {
 	}
 	_graph.addEdge(newNode, ipd);
 	//System.out.println(_graph);
-	_graph.update();
+	// _graph.update();
 	//System.out.println(_graph);
 	return newNode;
     }
@@ -480,12 +485,15 @@ public class IntervalChain {
 	return null;
     }
 
-    public static IntervalChain _main(String args[]) {
+    public static IntervalChain createIntervalChain(String args[],
+						    boolean writeGraphs) {
 	IntervalChain ic=null;
 	try {
-	    DominatorCFG _cfg = DominatorCFG._main1(args);
+	    DominatorCFG _cfg = 
+		DominatorCFG.createDominatorCFG(args,writeGraphs);
 	    ic = new IntervalChain(_cfg);
-  	    ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("interval",_cfg);
+	    if (writeGraphs)
+		ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("interval",_cfg);
 	    
 	} catch (IllegalActionException e) {
 	    System.err.println(e);
@@ -495,7 +503,7 @@ public class IntervalChain {
     }
 
     public static void main(String args[]) {
-	IntervalChain ic = _main(args);
+	IntervalChain ic = createIntervalChain(args,true);
 	System.out.println("IntervalChain=\n"+ic);
     }
 

@@ -324,6 +324,69 @@ public class test1 extends TypedAtomicActor {
 	return b;
     }
 
+
+    /** Used to test serial combining (one fork) with field member **/
+    public int method37(int a) {
+	int d = 4;
+	if (a > 5) {
+	    e = a * 2;
+	    e *= 4;
+	    e += 3;
+	}
+	e += d;
+	return d;
+    }
+
+    public int method37a(int a) {
+	int d = 4;
+	if (a > 5) {
+	    d = a * 2;
+	}
+	d += a;
+	return d;
+    }
+
+    /** Used to test serial combining (one fork) with field member **/
+    public int method37xx(int a) {
+	int d = 4;	
+	e += a;
+	if (a > 5) {
+	    e = a * 2 + e;
+	}
+	return d;
+    }
+
+    /** e is not used before block **/
+    public int method37_1(int a) {
+	int d = 4;	
+	if (a > 5) {
+	    e = a * 2 + e;
+	}
+	return d;
+    }
+
+    /** e is not used before block **/
+    public int method37_2(int a) {
+	int d = 4;	
+	e = d;
+	if (a > 5) {
+	    e = a * 2 + e;
+	}
+	return d;
+    }
+
+    /** e is not used before block **/
+    public int method37_3(int a) {
+	int d = 4;	
+	e = d;
+	if (a > 5) {
+	    e = a * 2 + e;
+	} else {
+	    e = a * d - e;
+	}
+	return d;
+    }
+
     /* Simple method with one basic block and one operation */
     public int hwgen1(int a, int b) {
 	int c = a + b;

@@ -41,6 +41,8 @@ import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
+import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
+
 import soot.Body;
 import soot.Unit;
 import soot.jimple.IfStmt;
@@ -82,10 +84,12 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	_init();
     }
 
+    /*
     public void update() throws IllegalActionException {
 	super.update();
 	_init();
     }
+    */
 
     public boolean dominates(Node d, Node n) {
 	return _dominators.dominates(d,n);
@@ -115,17 +119,22 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	_postDominators = new DominatorHashMap(this,true);
     }
 
-    public static DominatorCFG _main1(String args[]) {
-	soot.SootMethod testMethod = getSootMethod(args);
+    public static DominatorCFG createDominatorCFG(String args[],
+						  boolean writeGraphs) {
+	soot.SootMethod testMethod = BlockDataFlowGraph.getSootMethod(args);
 	DominatorCFG _cfg=null;
 	try {
 	    ConditionalControlCompactor.compact(testMethod);
 	    soot.Body body = testMethod.retrieveActiveBody();
 	    BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	    ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
+	    if (writeGraphs) {
+		ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
+		BlockDataFlowGraph graphs[] = 
+		    BlockDataFlowGraph.getBlockDataFlowGraphs(args);
+	    }
 	    _cfg = new DominatorCFG(bbgraph);
-
-  	    ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile(testMethod.getName(),_cfg);
+	    if (writeGraphs)
+		ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile(testMethod.getName(),_cfg);
 	} catch (IllegalActionException e) {
 	    System.err.println(e);
 	    System.exit(1);
@@ -134,7 +143,7 @@ public class DominatorCFG extends DirectedAcyclicCFG {
     }
 
     public static void main(String args[]) {
-	DominatorCFG dcfg = _main1(args);
+	DominatorCFG dcfg = createDominatorCFG(args,true);
     }
 
     protected DominatorHashMap _dominators;

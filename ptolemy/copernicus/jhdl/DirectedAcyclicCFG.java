@@ -36,8 +36,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
+import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -57,9 +57,16 @@ import soot.toolkits.graph.Block;
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicCFG
 /**
- * This class will take a Soot block and create a DirectedGraph.
+ * This class will take a Soot Body and create a DirectedAcyclicGraph
+ * of the corresponding control-flow graph. The Nodes of this graph
+ * are all weighted with a Soot Block.
  *
-
+ * This class will also keep track of the single source Node (i.e. the
+ * entry Block of the Soot Body) and will identify the exit sink
+ * Node. A single sink Node will be created if there are multiple
+ * exit points for this CFG.
+ *
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
@@ -80,22 +87,18 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	_createGraph(bbg);
     }
 
+    /**
+     * Return the source Node of the CFG.
+     **/
     public Node source() {
 	return _source;
     }
 
+    /**
+     * Return the sink Node of the CFG.
+     **/
     public Node sink() {
 	return _sink;
-    }
-
-    public List topologicalSort() {
-	return _sortedNodes;
-    }
-    
-    /** Returns true if Node n1 is deeper than n2 in the 
-     * Topological Sort **/
-    public boolean deeper(Node n1, Node n2) {
-	return (_sortedNodes.indexOf(n1) > _sortedNodes.indexOf(n2));
     }
 
     /**
@@ -120,20 +123,11 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	// Copy edges. Iterate through each Node in the graph and
 	// copy edges to its successors.
 	//
-	// In the process of adding edges, search for the roots and
-	// successors.
-	Vector sources = new Vector(nodeCount());
-	Vector sinks = new Vector(nodeCount());
 	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
 	    Block block=(Block)blocks.next();
 	    Node nb = node(block);
 
 	    List succs = block.getSuccs();
-	    if (succs.size() == 0)
-		sinks.add(nb);
-	    List preds = block.getPreds();
-	    if (preds.size() == 0)
-		sources.add(nb);
 	    //Get successors to this block and add an edge to graph for 
 	    //each one.
 	    for (Iterator successors=succs.iterator(); successors.hasNext();){
@@ -142,18 +136,20 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	    }
 	}
 
-	// Identify source
+	// Identify single source and single sink
+	Collection sources = sourceNodes();
 	if (sources.size() == 0)
 	    throw new IllegalActionException("There is no source Node");
 	if (sources.size() > 1)
 	    throw new IllegalActionException("There are more than one source nodes");
-	_source = (Node) sources.get(0);
+	_source = (Node) sources.iterator().next();
 
 	// Identify sink
+	Collection sinks = sinkNodes();
 	if (sinks.size() == 0)
 	    throw new IllegalActionException("There are no sinks");
 	if (sinks.size() == 1) {
-	    _sink = (Node) sinks.get(0);
+	    _sink = (Node) sinks.iterator().next();
 	} else {
 	    _sink = addNodeWeight("sink");
 	    for (Iterator i=sinks.iterator();i.hasNext();) {
@@ -161,14 +157,6 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 		addEdge(n,_sink);
 	    }
 	}
-
-	// Obtain a topological sort of the graph 
-	update();
-
-    }
-
-    public void update() throws IllegalActionException {
-	_sortedNodes = (List) attemptTopologicalSort(nodes());
     }
 
     public String nodeString(Node n) {
@@ -184,31 +172,8 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	return "";
     }
 
-    public static soot.SootMethod getSootMethod(String args[]) {
-	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
-	String methodname = "method1";
-	if (args.length > 0)
-	    classname = args[0];
-	if (args.length > 1)
-	    methodname = args[1];
-	
-	soot.SootClass testClass = 
-	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
-	if (testClass == null) {
-	    System.err.println("Class "+classname+" not found");
-	    System.exit(1);
-	}
-	System.out.println("Loading class "+classname+" method "+methodname);
-	if (!testClass.declaresMethodByName(methodname)) {
-	    System.err.println("Method "+methodname+" not found");
-	    System.exit(1);
-	}
-
-	return testClass.getMethodByName(methodname);
-    }
-
     public static DirectedAcyclicCFG _main(String args[]) {
-	soot.SootMethod testMethod = getSootMethod(args);
+	soot.SootMethod testMethod = BlockDataFlowGraph.getSootMethod(args);
 	DirectedAcyclicCFG _cfg=null;
 	try {
 	    ConditionalControlCompactor.compact(testMethod);
@@ -229,9 +194,19 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	_main(args);
     }
 
+    /**
+     * The BriefBlockGraph that was used as the template for this Graph.
+     **/
     protected BriefBlockGraph _bbgraph;
-    protected List _sortedNodes;
+
+    /**
+     * The single entry Node of the graph.
+     **/
     protected Node _source;
+
+    /**
+     * The single exit Node of the graph.
+     **/
     protected Node _sink;
 
 }
