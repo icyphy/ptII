@@ -38,7 +38,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.util.StringUtilities;
 import ptolemy.data.*;
 
 import java.io.BufferedReader;
@@ -52,7 +51,6 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 
@@ -563,8 +561,7 @@ public class UtilityFunctions {
             if (_matrixParser == null) {
                 _matrixParser = new MatrixParser( System.in );
             }
-
-            _matrixParser.ReInit( fin );
+            MatrixParser.ReInit( fin );
             k = _matrixParser.readMatrix( );
 
             if ( column == -1 ) {
@@ -682,6 +679,26 @@ public class UtilityFunctions {
         }
         return arrayToken;
     }
+
+	/** Return the sum of the elements in the specified array.
+	 *  This method is polymorphic in that it can sum any array
+	 *  whose elements support addition.
+	 *  @param array An array.
+	 * 	@returns The sum of the elements of the array.
+	 *  @exception IllegalActionException If the length of the array is zero,
+	 * 	 or if the array elements do not support addition.
+	 */
+	public static final Token sum(ArrayToken array) throws IllegalActionException {
+		if (array == null || array.length() < 1) {
+			throw new IllegalActionException(
+                    "sum() function cannot be applied to an empty array");
+		}
+		Token result = array.getElement(0);
+		for (int i = 1; i < array.length(); i++) {
+			result = result.add(array.getElement(i));
+		}
+		return result;
+	}
 
     /** Return the approximate number of bytes used by current objects
      *        and available for future object allocation.
