@@ -160,8 +160,10 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	    }
 	    */
 	    _cfg = new DominatorCFG(bbgraph);
-	    if (writeGraphs)
-		ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile(testMethod.getName(),_cfg);
+	    if (writeGraphs) {
+		PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+                toDotty.writeDotFile(".", testMethod.getName(),_cfg);
+            }
 	} catch (IllegalActionException e) {
 	    System.err.println(e);
 	    System.exit(1);

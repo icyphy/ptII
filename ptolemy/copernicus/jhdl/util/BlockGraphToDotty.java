@@ -18,16 +18,10 @@ public class BlockGraphToDotty extends GraphToDotty {
 
     /**
      * Return a string which contains the BlockGraph in dotty form
-     */
-    public static String convert(BlockGraph g){
-	return convert(g, "NoTitle");
-    }
-
-    /**
-     * Return a string which contains the BlockGraph in dotty form
      * @param ename Title of the graph
      */
-    public static String convert(BlockGraph g, String ename){
+    public String convert(Object graph, String ename){
+        BlockGraph g = (BlockGraph)graph;
 
 	//Code copied from buildMapForBlock() in Block.java
 	//Method is private so I couldn't get at it without
@@ -79,17 +73,4 @@ public class BlockGraphToDotty extends GraphToDotty {
 	sb.append("}\r\n");
 	return sb.toString();
     }
-
-    public static void writeDotFile(String basename, BlockGraph g) {
-	String filename = validFileName(basename) + ".dot";
-	System.out.println("Writing "+filename);
-	try {
-	    FileWriter dotFile=new FileWriter(filename);
-	    dotFile.write(convert(g,basename));
-	    dotFile.close();
-	} catch (IOException e){
-	    System.out.println(e);
-	}
-    }
-
 }

@@ -661,20 +661,22 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	soot.Body body = testMethod.retrieveActiveBody();
 
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("cfg",bbgraph);
+	BlockGraphToDotty toDotty = new BlockGraphToDotty();
+        toDotty.writeDotFile(".","cfg", bbgraph);
 	List blockList=bbgraph.getBlocks();
 	BlockDataFlowGraph graphs[] = new BlockDataFlowGraph[blockList.size()];
+        PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
 	for (int blockNum=0; blockNum < blockList.size(); blockNum++){
 	    Block block=(Block)blockList.get(blockNum);
-	    BlockDataFlowGraph dataFlowGraph=null;
+	    BlockDataFlowGraph dataFlowGraph = null;
 	    try {
-		dataFlowGraph=new BlockDataFlowGraph(block);
+		dataFlowGraph = new BlockDataFlowGraph(block);
 		graphs[blockNum] = dataFlowGraph;
 	    } catch (JHDLUnsupportedException e) {
 		e.printStackTrace();
 		throw new RuntimeException();
 	    }
-	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+blockNum,
+	    dgToDotty.writeDotFile(".","bbgraph" + blockNum,
 						dataFlowGraph);
 	}
 	return graphs;

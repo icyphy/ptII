@@ -38,6 +38,7 @@ import java.util.Map;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
+import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -617,9 +618,10 @@ public class IntervalChain {
 	    DominatorCFG _cfg =
 		DominatorCFG.createDominatorCFG(args,writeGraphs);
 	    ic = new IntervalChain(_cfg);
-	    if (writeGraphs)
-		ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("interval",_cfg);
-
+	    if (writeGraphs) {
+                PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+                toDotty.writeDotFile(".", "interval",_cfg);
+            }
 	} catch (IllegalActionException e) {
 	    System.err.println(e);
 	    System.exit(1);

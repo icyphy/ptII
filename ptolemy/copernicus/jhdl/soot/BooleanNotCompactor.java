@@ -204,7 +204,8 @@ public class BooleanNotCompactor {
 	soot.toolkits.graph.CompleteUnitGraph unitGraph =
 	    new soot.toolkits.graph.CompleteUnitGraph(body);
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("beforegraph",bbgraph);
+	BlockGraphToDotty toDotty = new BlockGraphToDotty();
+        toDotty.writeDotFile(".", "beforegraph", bbgraph);
 	try {
 	    ConditionalControlCompactor.compact(testMethod);
 	    compact(testMethod);
@@ -212,7 +213,7 @@ public class BooleanNotCompactor {
 	    System.err.println(e);
 	}
 	bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("aftergraph",bbgraph);
+	toDotty.writeDotFile(".", "aftergraph", bbgraph);
 
     }
 

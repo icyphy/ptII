@@ -157,7 +157,8 @@ public class CircuitAnalysis {
 
 
 
-	SynthesisToDotty.writeDotFile(GraphToDotty.validFileName(entity.getName()),
+	SynthesisToDotty toDotty = new SynthesisToDotty();
+        toDotty.writeDotFile(".", GraphToDotty.validFileName(entity.getName()),
 				      fire_graph);
 
 

@@ -127,9 +127,9 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	    }
 	}
  	if (!isAcyclic()) {
- 	    System.err.println(PtDirectedGraphToDotty.convert(this,"this"));
-             System.out.println("Warning! Graph has feedback");
-             //    throw new IllegalActionException("Feedback currently not supported");
+ 	    System.err.println(_toDotty.convert(this, "this"));
+            System.out.println("Warning! Graph has feedback");
+            //    throw new IllegalActionException("Feedback currently not supported");
  	}
     }
 
@@ -181,7 +181,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	soot.Body body = testMethod.retrieveActiveBody();
 
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
+        _toDotty.writeDotFile(".", "bbgraph", bbgraph);
 	try {
 	    MergedControlFlowGraph bcfg = new MergedControlFlowGraph(body);
 	} catch (IllegalActionException e) {
@@ -190,6 +190,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	}
     }
 
+    private static ptolemy.copernicus.jhdl.util.BlockGraphToDotty _toDotty =
+    new ptolemy.copernicus.jhdl.util.BlockGraphToDotty();
     protected BriefBlockGraph _bbgraph;
-
 }

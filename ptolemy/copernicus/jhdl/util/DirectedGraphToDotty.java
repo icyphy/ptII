@@ -46,16 +46,10 @@ public class DirectedGraphToDotty extends GraphToDotty {
 
     /**
      * Return a string which contains the DirectedGraph in dotty form
-     */
-    public static String convert(DirectedGraph g){
-	return convert(g, "NoTitle");
-    }
-
-    /**
-     * Return a string which contains the DirectedGraph in dotty form
      * @param ename Title of the graph
      */
-    public static String convert(DirectedGraph g, String ename){
+    public String convert(Object graph, String ename) {
+        DirectedGraph g = (DirectedGraph)graph;
 	int count=0;
 	HashMap hm=new HashMap();
 	StringBuffer sb = new StringBuffer();
@@ -81,6 +75,4 @@ public class DirectedGraphToDotty extends GraphToDotty {
 	sb.append("}\r\n");
 	return sb.toString();
     }
-
-
 }

@@ -517,7 +517,8 @@ public class IntervalDFG extends BlockDataFlowGraph {
 //  	for (int i = 0;i<graphs.length;i++)
 //  	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+i,
 //  						graphs[i]);
-	PtDirectedGraphToDotty.writeDotFile("merge",im);
+	PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+        dgToDotty.writeDotFile(".", "merge", im);
     }
 
     protected IntervalChain _ic;

@@ -49,18 +49,10 @@ public class SynthesisToDotty extends GraphToDotty {
 
     /**
      * Return a string which contains the DirectedGraph in dotty form
-     */
-    public static String convert(DirectedGraph g){
-	return convert(g, "NoTitle");
-    }
-
-    private static String bigHack;
-
-    /**
-     * Return a string which contains the DirectedGraph in dotty form
      * @param ename Title of the graph
      */
-    public static String convert(DirectedGraph g, String ename){
+    public String convert(Object graph, String ename) {
+        DirectedGraph g = (DirectedGraph)graph;
 	int count=0;
 	subCount=0;
 
@@ -153,9 +145,7 @@ public class SynthesisToDotty extends GraphToDotty {
 	return sb.toString();
     }
 
-    private static int subCount;
-
-    protected static String subGraph(SuperBlock b, String cluster_num){
+    protected String subGraph(SuperBlock b, String cluster_num){
 
 	HashMap hm=new HashMap();
 	StringBuffer sb = new StringBuffer();
@@ -200,15 +190,6 @@ public class SynthesisToDotty extends GraphToDotty {
 	return sb.toString();
     }
 
-    public static void writeDotFile(String basename, DirectedGraph g) {
-	String filename = validFileName(basename) + ".dot";
-	System.out.println("Writing "+filename);
-	try {
-	    FileWriter dotFile=new FileWriter(filename);
-	    dotFile.write(convert(g,basename));
-	    dotFile.close();
-	} catch (IOException e){
-	    System.out.println(e);
-	}
-    }
+    private String bigHack;
+    private int subCount;
 }

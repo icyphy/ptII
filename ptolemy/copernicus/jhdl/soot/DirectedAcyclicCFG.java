@@ -56,6 +56,9 @@ import soot.SootMethod;
 import soot.toolkits.graph.BriefBlockGraph;
 import soot.toolkits.graph.Block;
 
+import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
+import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
+
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicCFG
 /**
@@ -182,10 +185,13 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	    ConditionalControlCompactor.compact(testMethod);
 	    soot.Body body = testMethod.retrieveActiveBody();
 	    BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	    ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
+	    BlockGraphToDotty toDotty = new BlockGraphToDotty();
+            toDotty.writeDotFile(".", "bbgraph", bbgraph);
 	    _cfg = new DirectedAcyclicCFG(bbgraph);
 
-  	    ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile(testMethod.getName(),_cfg);
+            PtDirectedGraphToDotty dgToDotty = 
+                new PtDirectedGraphToDotty();
+            dgToDotty.writeDotFile(".", testMethod.getName(), _cfg);
 	} catch (IllegalActionException e) {
 	    System.err.println(e);
 	    System.exit(1);

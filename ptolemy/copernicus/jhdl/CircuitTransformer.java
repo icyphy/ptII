@@ -98,7 +98,7 @@ public class CircuitTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return super.getDeclaredOptions() + " targetPackage outDir";
     }
 
     /**
@@ -106,6 +106,10 @@ public class CircuitTransformer extends SceneTransformer {
      * 2.
      **/
     protected void internalTransform(String phaseName, Map options) {
+        System.out.println("CircuitTransformer.internalTransform("
+                + phaseName + ", " + options + ")");
+
+        _outDir = Options.getString(options, "outDir");
 
 	System.out.println("**************************************************");
 	System.out.println("*** START JHDL");
@@ -227,7 +231,7 @@ public class CircuitTransformer extends SceneTransformer {
 	//////////////////////////////////////////////
 	// Step 4. Spit out the graph
 	//////////////////////////////////////////////
-	//PtDirectedGraphToDotty.writeDotFile(_model.getName(),combinedGraph);
+	//PtDirectedGraphToDotty.writeDotFile(_outDir,model.getName(),combinedGraph);
 
 	//          // Write as a circuit.
 	//          try {
@@ -344,7 +348,8 @@ public class CircuitTransformer extends SceneTransformer {
         }
 
 	// Write out model
-	PtDirectedGraphToDotty.writeDotFile("model",combinedGraph);
+	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        toDotty.writeDotFile(_outDir, "model", combinedGraph);
 	return combinedGraph;
     }
 
@@ -371,5 +376,5 @@ public class CircuitTransformer extends SceneTransformer {
     }
 
     private CompositeActor _model;
-
+    private String _outDir;
 }

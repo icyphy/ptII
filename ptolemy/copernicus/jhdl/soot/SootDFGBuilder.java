@@ -189,11 +189,12 @@ public class SootDFGBuilder extends SootASTVisitor {
 	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
 	SootBlockDirectedGraph graphs[] =
 	    new SootBlockDirectedGraph[blocks.length];
-	for (int i = 0 ; i < blocks.length; i++) {
+        PtDirectedGraphToDotty dgToDotty = 
+            new PtDirectedGraphToDotty();
+        for (int i = 0 ; i < blocks.length; i++) {
 	    try {
 		graphs[i] = createGraph(blocks[i]);
-		PtDirectedGraphToDotty.writeDotFile("bbgraph"+i,
-						    graphs[i]);
+                dgToDotty.writeDotFile(".", "bbgraph"+i, graphs[i]);
 	    } catch (SootASTException e) {
 		//System.err.println(e);
 		e.printStackTrace();
@@ -209,10 +210,12 @@ public class SootDFGBuilder extends SootASTVisitor {
 	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
 	SootBlockDirectedGraph graphs[] =
 	    new SootBlockDirectedGraph[blocks.length];
-	for (int i = 0 ; i < blocks.length; i++) {
+	PtDirectedGraphToDotty dgToDotty = 
+            new PtDirectedGraphToDotty();
+        for (int i = 0 ; i < blocks.length; i++) {
 	    try {
 		graphs[i] = createGraph(blocks[i]);
-		PtDirectedGraphToDotty.writeDotFile("bgraph"+i,graphs[i]);
+                dgToDotty.writeDotFile(".", "bgraph" + i, graphs[i]);
 	    } catch (SootASTException e) {
 		//System.err.println(e);
 		e.printStackTrace();
@@ -233,3 +236,4 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     protected ValueMap _valueMap;
 }
+    

@@ -291,7 +291,8 @@ public class ConditionalControlCompactor {
 	soot.toolkits.graph.CompleteUnitGraph unitGraph =
 	    new soot.toolkits.graph.CompleteUnitGraph(body);
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("beforegraph",bbgraph);
+	BlockGraphToDotty toDotty = new BlockGraphToDotty();
+        toDotty.writeDotFile(".", "beforegraph",bbgraph);
 	try {
 	    //	    compactConditionalControl(testMethod);
 	    compact(testMethod);
@@ -299,7 +300,7 @@ public class ConditionalControlCompactor {
 	    System.err.println(e);
 	}
 	bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("aftergraph",bbgraph);
+	toDotty.writeDotFile(".", "aftergraph",bbgraph);
 
 	// create dataflow for each block
 	List blockList=bbgraph.getBlocks();
@@ -311,8 +312,9 @@ public class ConditionalControlCompactor {
 	    } catch (JHDLUnsupportedException e) {
 		System.err.println(e);
 	    }
-	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+blockNum,
-						dataFlowGraph);
+	    PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+            dgToDotty.writeDotFile(".", "bbgraph" + blockNum,
+                    dataFlowGraph);
 	}
 
     }

@@ -5,8 +5,10 @@
 # @author Christopher Hylands
 # @version $Id$
 #
-@java@
- -Xfuture -classpath "@classPath@"
- "@javaPtIIProperty@"
- ptolemy.actor.gui.CompositeActorApplication
- -class @targetPackage@.Main
+#@java@
+# -Xfuture -classpath "@classPath@"
+# "@javaPtIIProperty@"
+# ptolemy.actor.gui.CompositeActorApplication
+# -class @targetPackage@.Main
+
+ls @ptIIUserDirectory@/@targetPath@

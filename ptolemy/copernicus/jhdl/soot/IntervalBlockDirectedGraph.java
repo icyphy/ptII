@@ -86,8 +86,8 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 	if (DEBUG) {
 	    String filename = new String(toShortString()+"graph");
-	    PtDirectedGraphToDotty.writeDotFile(filename,this);
-;
+	    PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+            dgToDotty.writeDotFile(".",filename,this);
 	}
 
     }
@@ -442,8 +442,10 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	    System.err.println(e);
 	    System.exit(1);
 	}
-	if (writeGraphs)
-	    PtDirectedGraphToDotty.writeDotFile("merge",ibdg);
+	if (writeGraphs) {
+	    PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+            dgToDotty.writeDotFile(".", "merge",ibdg);
+        }
 	return ibdg;
     }
 

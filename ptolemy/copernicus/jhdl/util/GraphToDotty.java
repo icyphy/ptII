@@ -38,17 +38,15 @@ public abstract class GraphToDotty {
 
     public static final String MYEOL = "\n";
 
-    public static String convert(DirectedGraph g, String ename) {
-	return null;
-    }
+    public abstract String convert(Object g, String ename);
 
     /**
      * Print a .dot file header
      **/
     public static String header(String creatorName, String graphName) {
 	StringBuffer sb = new StringBuffer();
-	sb.append("//Dotfile created by "+creatorName+"\r\n");
-	sb.append("digraph "+graphName+" {\r\n");
+	sb.append("//Dotfile created by " + creatorName + "\r\n");
+	sb.append("digraph " + graphName + " {\r\n");
 	sb.append("\tsize=\"8,11\"\r\n");
 	sb.append("\t// Vertices\r\n");
 	return sb.toString();
@@ -100,11 +98,12 @@ public abstract class GraphToDotty {
 
     public static String validFileName(String basename) {
 	byte bbytes[] = basename.getBytes();
-	byte nbytes[] = new byte[bbytes.length];
+        //	byte nbytes[] = new byte[bbytes.length];
 	if (!((bbytes[0] >= 'a' && bbytes[0] <= 'z') ||
 	      (bbytes[0] >= 'A' && bbytes[0] <= 'Z')))
 	    bbytes[0] = 'A';
-	for (int i=0;i<bbytes.length;i++) {
+        // Colons are valid in DOS filenames...
+        /*	for (int i=0;i<bbytes.length;i++) {
 	    switch(bbytes[i]) {
 	    case ':':
 		nbytes[i] = '_';
@@ -113,22 +112,20 @@ public abstract class GraphToDotty {
 		nbytes[i] = bbytes[i];
 		break;
 	    }
-	}
-	return new String(nbytes);
+                }*/
+	return new String(bbytes);
     }
 
-    /*
-    public static void writeDotFile(String basename, DirectedGraph g) {
-	String filename = validFileName(basename) + ".dot";
-	System.out.println("Writing "+filename);
+    public void writeDotFile(
+            String dirName, String basename, Object graph) {
+	String filename = dirName + "/" + validFileName(basename) + ".dot";
+	System.out.println("Writing " + filename);
 	try {
-	    FileWriter dotFile=new FileWriter(filename);
-	    dotFile.write(convert(g,basename));
+	    FileWriter dotFile = new FileWriter(filename);
+	    dotFile.write(convert(graph, basename));
 	    dotFile.close();
 	} catch (IOException e){
 	    System.out.println(e);
 	}
     }
-    */
-
 }
