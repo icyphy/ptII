@@ -64,94 +64,40 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
-	@echo "To run all demo, run 'make demo'"
+	@echo "To run the demos, run 'make demo'"
+
 install: all
 
-demo: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) \
-	$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
-	 -class ptolemy.kvm.demo.ramp.RampSystem -iterations 10
+# demo_interpreted and codegen rules are defined in $PTII/mk/kvm.mk
+demo:
+	$(MAKE) demo_interpreted
+	$(MAKE) codegen
 
 depend:
 	@echo "no dependencies in this directory"
 
-# FIXME: we can't ship these
-JAVASRC_STUBS=$(PTII)/vendors/sun/src
+# Makefile variables necessary for KVM
 
-codegen: generate_codegen compile_codegen preverify ramp.prc run_codegen 
-generate_codegen:
-	@if [ ! -d "$(JAVASRC_STUBS)" ]; then \
-		echo "Warning $(JAVASRC_STUBS) does not exist"; \
-	fi
-	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
-	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-	-class  ptolemy.kvm.demo.ramp.RampSystem \
-	-iterations 500 \
-	-outdir $(ROOT) -outpkg cg.ramp
-run_codegen: 	
-	(cd $(ROOT)/cg/ramp; \
-		$(JAVA) -classpath ../.. cg.ramp.CG_Main)
+# Classpath to the source system we are generating code for.
+SOURCE_SYSTEM_CLASS =	 ptolemy.kvm.demo.ramp.RampSystem
 
-J2ME_CLDC = $(PTII)/vendors/sun/j2me_cldc
-#J2ME_CLDC = /j2me_cldc
+# Number of iterations.
+ITERATIONS =	10
 
+# Output package name for generated code, which also
+# determines the directory relative to PTII where the
+# code will appear.
+OUTPKG =	cg.ramp
 
+# Location of the OUTPKG directory.
+OUTPKG_DIR =	cg/ramp
 
-compile_codegen: $(ROOT)/cg/ramp/CG_Main.class
-$(ROOT)/cg/ramp/CG_Main.class: $(ROOT)/cg/ramp/CG_Main.java
-	(cd $(ROOT)/cg/ramp; \
-	javac -g:none -verbose \
-		-bootclasspath $(J2ME_CLDC)/bin/api/classes  \
-		-classpath ../.. \
-		CG_Main.java)
+# The relative path from OUTPKG to $PTII.
+OUTPKG_ROOT =	../..
 
-preverify:
-	(cd $(ROOT)/cg/ramp; \
-	echo `pwd`; \
-	for class in *.class; do \
-	echo $$class ; \
-	$(J2ME_CLDC)/bin/preverify \
-		-classpath "$(J2ME_CLDC)/bin/api/classes$(CLASSPATHSEPARATOR)../.." \
-		$(ME)/`basename $$class .class`; \
-	done)
-
-
-ramp.prc: $(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.class
-	(cd $(ROOT)/cg/ramp; \
-	java -classpath $(J2ME_CLDC)/tools/palm/src \
-	 palm.database.MakePalmApp \
-	-v -v \
-	-version "1.0" \
-	-bootclasspath $(J2ME_CLDC)/bin/api/classes  \
-	-classpath ../.. \
-	cg.ramp.CG_Main)
-
-$(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.class: \
-		$(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.java
-	(cd $(J2ME_CLDC)/tools/palm/src/palm/database; javac *.java)
-
-run:
-	(cd $(ROOT)/cg/ramp; \
-	java -verbose:class \
-		-Xint \
-		-Xbootclasspath/p:$(J2ME_CLDC)/bin/api/classes \
-		-classpath ../.. \
-		cg.ramp.CG_Main)
-
-javap_all:
-	(cd $(ROOT)/cg/ramp; \
-	javap -classpath $PTII `ls -1 *.class | awk '{s=substr($0,1,length($0)-6); print "cg.ramp."s}' `)
-
-fix:
-	(cd $(ROOT)/cg/ramp; \
-	for files in *.java; do \
-		sed 's@\(import ptolemy.*;\)@//\1@' $$files > tmp; \
-		diff $$files  tmp; \
-		cp tmp $$files; \
-	done)
-
-kvm:
-	$(J2ME_CLDC)/kvm/VmWin/build/kvm.exe -classpath "$(J2ME_CLDC)/api/classes\;./output" cg.ramp.CG_Main
+# Get rules for KVM
+include $(ROOT)/mk/kvm.mk
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
