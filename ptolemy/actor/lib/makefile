@@ -74,6 +74,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AddSubtract.java \
 	AbsoluteValue.java \
+	Accumulator.java \
 	ArrayAppend.java \
 	ArrayElement.java \
 	ArrayExtract.java \
@@ -89,6 +90,7 @@ JSRCS = \
 	Const.java \
 	Counter.java \
 	CurrentTime.java \
+	Differential.java \
 	DoubleReader.java \
 	DB.java \
 	Discard.java \

@@ -13,10 +13,16 @@
   <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
   </entity>
 
+  <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+  </entity>
+
   <entity name="Average" class="ptolemy.actor.lib.Average">
   </entity>
 
   <entity name="Counter" class="ptolemy.actor.lib.Counter">
+  </entity>
+
+  <entity name="Differential" class="ptolemy.actor.lib.Differential">
   </entity>
 
   <entity name="DotProduct" class="ptolemy.domains.sdf.lib.DotProduct">
