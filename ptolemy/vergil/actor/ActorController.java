@@ -155,6 +155,13 @@ public class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
 
+        
+        // "Configure Arguments", used by JNI
+        //if (access == FULL) {
+        //    _menuFactory.addMenuItemFactory(new jni.ArgumentDialogFactory());
+        //}
+
+
         // The filter for the layout algorithm of the ports within this
         // entity. This returns true only if the argument is a Port
         // and the parent implements Locatable.
