@@ -625,6 +625,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseAssignStmt(AssignStmt stmt) {
         stmt.getRightOp().apply(this);
         stmt.getLeftOp().apply(this);
+        StringBuffer code = new StringBuffer();
 
         String castType = CNames.typeNameOf(stmt.getLeftOp().getType());
         if (stmt.getLeftOp().getType() instanceof ArrayType) {
@@ -637,11 +638,20 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 CNames.typeNameOf(stmt.getRightOp().getType()));
         }
 
-
-
         // castType makes sure values on left and right are compatible
         // also prevents gcc warnings.
-        _push(_pop().append(" = (" + castType + ")").append(_pop()));
+        code = _pop().append(" = (" + castType + ")").append(_pop());
+
+        // If the right hand side is a newExpr, assign the correct class to
+        // the variable on the left-hand-side.
+        if (stmt.getRightOp() instanceof NewExpr) {
+            stmt.getLeftOp().apply(this);
+            // The &V is so that we get the name of the class structure.
+            code.append(";\n    " + _pop() + "->class = &V"
+                    + CNames.typeNameOf(stmt.getLeftOp().getType()));
+        }
+
+        _push(code);
 
     }
 
@@ -910,11 +920,20 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     protected void _generateInstanceInvokeExpression(
             InstanceInvokeExpr expression) {
+
+        SootMethod method = expression.getMethod();
+        StringBuffer code = new StringBuffer();
+
+
         expression.getBase().apply(this);
         StringBuffer instanceName = _pop();
-        StringBuffer code = new StringBuffer(instanceName
-                +"->class->methods."
-                + CNames.methodNameOf(expression.getMethod()));
+
+
+        // We're using the class pointer only for abstract methods.
+        // We don't do this if the instance is an array.
+        code = new StringBuffer(instanceName
+                    +"->class->methods."
+                    + CNames.methodNameOf(method));
 
         String cast = new String();
 

@@ -89,6 +89,7 @@ public class CodeFileGenerator extends CodeGenerator {
         // Add runtime include files.
         _context.addIncludeFile("<setjmp.h>");
         _context.addIncludeFile("<stdlib.h>");
+        _context.addIncludeFile("<stdio.h>");
         _context.addIncludeFile("\"pccg_runtime.h\"");
 
         if (!_context.getSingleClassMode()) {
@@ -245,6 +246,8 @@ public class CodeFileGenerator extends CodeGenerator {
             }
         }
 
+        /* FIXME: Remove this code. It should be implemented in
+          MainFileGenerator.
         // Invoke the static initializer method for the class if it exists.
         SootMethod initializer;
         if ((initializer = MethodListGenerator.getClassInitializer(source))
@@ -254,6 +257,7 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append(_indent(1) +
                             CNames.functionNameOf(initializer) + "();\n");
         }
+        */
 
         // Set up the superclass pointer.
         code.append("\n" + _indent(1) + argumentReference +

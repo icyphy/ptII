@@ -52,12 +52,12 @@ import soot.VoidType;
     the body of the method has not been defined, then it simply generates a
     stub for the method.
 
-    The native method code is stored in a directory (NATIVE_LIB). However,
+    The native method code is stored in a directory (nativeLib). However,
     this does not contain any body code for the methods. The body codes for
-    methods are stored in the directory NATIVE_BODY_LIB. If a method's body
-    code exists in NATIVE_BODY_LIB, then its code in NATIVE_LIB will just
+    methods are stored in the directory nativeBodyLib. If a method's body
+    code exists in nativeBodyLib, then its code in nativeLib will just
     have a #include for the file containing the body code. If the method's
-    body code does not exist in NATIVE_BODY_LIB, then its code in NATIVE_LIB
+    body code does not exist in nativeBodyLib, then its code in nativeLib
     will be a stub.
 
     @author Ankush Varma
@@ -67,11 +67,11 @@ public class NativeMethodGenerator {
 
      /** The location of the native library methods.
       */
-     public static final String NATIVE_LIB = "natives/";
+     public static final String nativeLib = "natives/";
 
      /** The location of the hand-coded native library method bodies.
       */
-    public static final String NATIVE_BODY_LIB = "../native_bodies/";
+    public static final String nativeBodyLib = "../runtime/native_bodies/";
 
 
 
@@ -84,7 +84,7 @@ public class NativeMethodGenerator {
      */
     public static String getCode(SootMethod method) {
         // File where the code for this method should be.
-        String fileName = NATIVE_LIB + fileContainingCodeFor(method);
+        String fileName = nativeLib + fileContainingCodeFor(method);
         String code;
 
         if (!FileHandler.exists(fileName)) {
@@ -119,7 +119,7 @@ public class NativeMethodGenerator {
         String cReturnType = CNames.typeNameOf(method.getReturnType());
 
         // Add a #include if the method body exists.
-        if (FileHandler.exists(NATIVE_BODY_LIB
+        if (FileHandler.exists(nativeBodyLib
                     + fileContainingCodeFor(method))) {
 
             code.append(_indent(1) + "#include \""
@@ -141,14 +141,14 @@ public class NativeMethodGenerator {
         code.append("}\n");
 
         // Create the directory for the native library if none exists.
-        if (!FileHandler.exists(NATIVE_LIB)) {
-            File nativesDir = new File(NATIVE_LIB);
+        if (!FileHandler.exists(nativeLib)) {
+            File nativesDir = new File(nativeLib);
             nativesDir.mkdirs();
         }
 
         // Write out to the File with the appropriate name.
         // Make sure an existing file is never overwritten.
-        String fileName =  NATIVE_LIB + fileContainingCodeFor(method);
+        String fileName =  nativeLib + fileContainingCodeFor(method);
         if (!FileHandler.exists(fileName)) {
             FileHandler.write(fileName, code.toString());
         }

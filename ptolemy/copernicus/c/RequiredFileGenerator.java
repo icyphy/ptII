@@ -112,7 +112,7 @@ public class RequiredFileGenerator {
 
 
             // Generate only the required .c files.
-            Iterator i = getRequiredClasses(classPath, className).iterator();
+            Iterator i = getRequiredClasses().iterator();
             while (i.hasNext()) {
                 String nextClassName=((SootClass)i.next()).getName();
 
@@ -131,9 +131,7 @@ public class RequiredFileGenerator {
     /** Returns the set of all required classes.
      *  @return The set of all required Classes.
      */
-    public static Collection getRequiredClasses(String classPath, String
-            className) {
-        //_compute(classPath, className);
+    public static Collection getRequiredClasses() {
         return (Collection) _requiredClasses;
     }
 
@@ -205,14 +203,11 @@ public class RequiredFileGenerator {
     }
 
 
-    /** The set of methods we get from
-     * Scene.v.getTransitiveTargetsOf(sootMethod) used in _compute is not
-     * sufficient. Methods called using getSpecialInvokeExpression are not
-     * included in this. Neither are class structure initialization and
-     * clinit() methods. Therefore, we need to add methods called like
-     * this(and their transitive closures) to the tree also.
-     *  FIXME: Perhaps we can do away with getTransitiveTargetsOf()
-     *  completely and use only this method?
+    /** Add one more "layer" of methods and classes in the
+     *  breadth-first-search for required method and classes. If a class
+     *  is required, its "clinit" and "init" methods are all required. If a
+     *  method is required, its class is automatically required.
+     *
      *  @return Whether further growth in the tree is possible.
      */
     private static void _growRequiredTree() {
@@ -443,7 +438,9 @@ public class RequiredFileGenerator {
             if (FileHandler.exists(fileName+".c")) {
                 if(verbose) System.out.println( "\texists:"+fileName+".c");
             }
-            else {
+            //else
+            // FIXME: Now c files are always overwritten.
+            {
                 code = cGenerator.generate(sootClass);
                 FileHandler.write(fileName+".c", code);
                 if(verbose) System.out.println( "\tcreated: "

@@ -61,7 +61,8 @@ public class MakeFileGenerator {
 
         code.append("#Standard variables\n");
         code.append("RUNTIME = ../runtime\n");
-        code.append("NATIVE_BODIES = ../native_bodies\n");
+        code.append("NATIVE_BODIES ="
+                + NativeMethodGenerator.nativeBodyLib + "\n");
         // Overridden bodies.
         code.append("OVER_BODIES = "
                 + OverriddenMethodGenerator.overriddenBodyLib
@@ -81,8 +82,7 @@ public class MakeFileGenerator {
                 + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n"
                 + "\t" + className + "_main.c\\\n");
 
-        Iterator i = RequiredFileGenerator.getRequiredClasses(classPath,
-                className).iterator();
+        Iterator i = RequiredFileGenerator.getRequiredClasses().iterator();
 
         while (i.hasNext()) {
             String name = _classNameToMakeFileName(

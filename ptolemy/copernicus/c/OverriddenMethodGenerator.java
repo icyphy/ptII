@@ -44,7 +44,8 @@ import soot.Type;
     methods to be replaced with pre-defined C code. This may be done for
     platform-specificness, correctness or performance considerations.
 
-    @author Ankush Varma @version $Id$
+    @author Ankush Varma 
+    @version $Id$
 */
 
 public class OverriddenMethodGenerator {
@@ -52,7 +53,7 @@ public class OverriddenMethodGenerator {
     /** The directory containing the location of the bodies of overridden
      * methods.
      */
-    public static String overriddenBodyLib = "../over_bodies/";
+    public static String overriddenBodyLib = "../runtime/over_bodies/";
 
     /** Checks if the method is overridden.
      *
