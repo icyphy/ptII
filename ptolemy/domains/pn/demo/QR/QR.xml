@@ -6,8 +6,6 @@
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </property>
-    <property name="notation" class="ptolemy.vergil.ptolemy.CompaanNotation">
-    </property>
     <property name="Antennas" class="ptolemy.data.expr.Parameter" value="16">
         <doc>The number of Antennas from which data is read.</doc>
     </property>
