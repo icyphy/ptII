@@ -112,20 +112,6 @@ public class TextEditor extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Open a dialog with basic information about this window.
-     */
-    protected void _about() {
-        JOptionPane.showMessageDialog(this,
-                "Simple Ptolemy II text editor and viewer.\n" +
-                "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n" +
-                "Version $Id$\n\n"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n" +
-                "Copyright (c) 1997-2000, " +
-                "The Regents of the University of California.",
-                "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
-    }
-
     /** Clear the current contents.  First, check to see whether
      *  the contents have been modified, and if so, then prompt the user
      *  to save them.  A return value of false

@@ -187,6 +187,61 @@ public abstract class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Override the base class to open the intro.htm splash window.
+     */
+    protected void _about() {
+        // NOTE: We take some care here to ensure that this window is
+        // only opened once.
+        ModelDirectory directory = getDirectory();
+        if (directory != null) {
+            URL doc = getClass().getClassLoader().getResource(
+                    "ptolemy/configs/intro.htm");
+            // Check to see whether the model is already open.
+            Effigy effigy = directory.getEffigy(doc.toExternalForm());
+            if (effigy == null) {
+                try {
+                    // No main welcome window.  Create one.
+                    EffigyFactory effigyFactory = new HTMLEffigy$Factory(
+                             directory.workspace());
+                    effigy = effigyFactory.createEffigy(
+                             directory, (URL)null, doc);
+
+                    effigy.identifier.setExpression(doc.toExternalForm());
+                    effigy.url.setURL(doc);
+                    // If this fails, we do not want the effigy
+                    // in the directory.
+                    try {
+                        // Create a tableau if there is a tableau factory.
+                        TableauFactory factory = (TableauFactory)
+                             getConfiguration().getEntity("tableauFactory");
+                        if (factory != null) {
+                            Tableau tableau = factory.createTableau(effigy);
+                            if (tableau == null) {
+                                throw new Exception("Can't create Tableau.");
+                            }
+                            // The first tableau is a master.
+                            tableau.setMaster(true);
+                            // NOTE: This size is the same as what's in
+                            // the welcome window XML files in configs.
+                            tableau.size.setExpression("600x280");
+                            tableau.show();
+                            return;
+                        }
+                    } catch (Exception ex) {
+                        // Remove effigy.
+                        effigy.setContainer(null);
+                    }
+                } catch (Exception ex) {}
+            } else {
+                // Model already exists.
+                effigy.showTableaux();
+                return;
+            }
+        }
+        // Don't report any errors.  Just use the default.
+        super._about();
+    }
+
     /** Add a View menu and items to the File:New menu
      *  if a tableau was given in the constructor.
      */

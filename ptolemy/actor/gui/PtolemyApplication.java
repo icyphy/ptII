@@ -118,7 +118,8 @@ public class PtolemyApplication extends MoMLApplication {
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl.openStream());
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
-        doc.identifier.setExpression(inurl.toExternalForm());
+	URL idurl = specToURL("ptolemy/configs/intro.htm");
+        doc.identifier.setExpression(idurl.toExternalForm());
         return configuration;
     }
 

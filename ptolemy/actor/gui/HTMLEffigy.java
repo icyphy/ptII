@@ -77,6 +77,13 @@ public class HTMLEffigy extends Effigy {
      */
     public static class Factory extends EffigyFactory {
 
+	/** Create a factory in the specified workspace.
+	 *  @param workspace The workspace.
+	 */
+	public Factory(Workspace workspace) {
+	    super(workspace);
+	}
+
 	/** Create a factory with the given name and container.
 	 *  @param container The container.
 	 *  @param name The name.

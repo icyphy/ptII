@@ -108,6 +108,18 @@ public abstract class PtolemyFrame extends TableauFrame {
 	return _defaultIconImage;
     }
 
+    /** Display more detailed information than given by _about().
+     */
+    protected void _help() {
+        try {
+            URL doc = getClass().getClassLoader().getResource(
+                    "ptolemy/configs/doc/basicHelp.htm");
+            getConfiguration().openModel(null, doc, doc.toExternalForm());
+        } catch (Exception ex) {
+            _about();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

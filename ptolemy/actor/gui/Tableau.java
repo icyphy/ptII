@@ -276,6 +276,7 @@ public class Tableau extends ComponentEntity {
         JFrame frame = getFrame();
         if (frame != null) {
             if (!frame.isVisible()) {
+                _setSize();
                 frame.pack();
                 if (frame instanceof Top) {
                     ((Top)frame).centerOnScreen();
@@ -308,7 +309,12 @@ public class Tableau extends ComponentEntity {
                 int x = Integer.decode(xSpec).intValue();
                 int y = Integer.decode(ySpec).intValue();
                 // NOTE: As usual with swing, it's not obvious what the
-                // right way to do this is.
+                // right way to do this is. The sequence below seems to
+                // mostly work, however, when the packer first runs, it
+                // ignores all this.  This means that centerOnScreen
+                // as called in show() doesn't quite work.  Please complain
+                // to Sun about their incredibly lame packers.
+                _frame.setSize(x,y);
                 _frame.getRootPane().setPreferredSize(new Dimension(x,y));
                 _frame.getContentPane().setSize(x,y);
             }

@@ -89,7 +89,7 @@ public class HTMLViewer extends TableauFrame
     public URL getPage() {
         return pane.getPage();
     }
- 
+
     /** React to a hyperlink being clicked on in the rendered HTML.
      *  This method opens the hyperlink URL in a new window, using
      *  the configuration.  This means that hyperlinks can reference

@@ -35,6 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -57,6 +58,13 @@ or they might themselves be aggregates of instances of EffigyFactory.
 @see Effigy
 */
 public class EffigyFactory extends CompositeEntity {
+
+    /** Create a factory in the specified workspace.
+     *  @param workspace The workspace.
+     */
+    public EffigyFactory(Workspace workspace) {
+        super(workspace);
+    }
 
     /** Create a factory with the given name and container.
      *  @param container The container.
