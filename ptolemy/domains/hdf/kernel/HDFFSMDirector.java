@@ -50,13 +50,11 @@ import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.ddf.kernel.DDFDirector;
 import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
@@ -74,6 +72,13 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMDirector
 /**
+   This director extends FSMDirector by supporting production and
+   consumption of multiple tokens on a port in a firing and by
+   restricting the 
+   
+   FIXME: Refactor into two directors, with the base class
+   MultirateFSMDirector supporting multirate.
+   
    An HDFFSMDirector governs the execution of a finite state machine
    (FSM) in a heterochronous dataflow (HDF) or synchronous dataflow
    (SDF) model according to the *charts [1] semantics. *charts is a
@@ -81,10 +86,24 @@ import ptolemy.kernel.util.Workspace;
    semantics for composing hierarchical FSMs with various concurrency
    models.
    <p>
+   This director is used with a modal model that consumes and produces
+   any number of tokens on its ports. The number of tokens consumed
+   and produced is determined by the refinement of the current state.
+   FIXME: Figure out what it actually does and what it should do.
+
    The subset of *charts that this class supports is HDF inside FSM
    inside HDF, SDF inside FSM inside HDF, and SDF inside FSM inside SDF.
-   This class must be used as the director of an FSM when the FSM refines
-   an HDF or SDF composite actor, unless all the ports rates are always 1.
+   This class must be used as the director of an FSM or ModalModel
+   when the FSM refines
+   an HDF or SDF composite actor, unless all the ports rates are always 1,
+   in which case, the base class FSMDirector can be used. This director
+   can also be used in an FSM or ModalModel in DDF.
+   <p>
+   This director assumes that every state has exactly one refinement, with one
+   exception. A state may have no refinement if upon being entered, it has
+   an outgoing transition with a guard that is true. This will be treated as a
+   "transient state," in that the FSM will progress through that state
+   to the next state until it encounters a state with a refinement.
    <p>
    <b>Usage</b>
    <p>
@@ -180,6 +199,10 @@ public class HDFFSMDirector extends FSMDirector {
     public State chooseStateTransition(State state)
             throws IllegalActionException {
 
+        // FIXME: This should allow preemptive transitions
+        // out of states with no refinement.  Fix code and
+        // documentation above.
+        
         FSMActor controller = getController();
         State destinationState;
         Transition transition =
@@ -222,28 +245,28 @@ public class HDFFSMDirector extends FSMDirector {
         return destinationState;
     }
 
-   /** Choose the next intransient state given the current state.
+   /** Choose the next non-transient state given the current state.
     * @param currentState The current state.
     * @throws IllegalActionException If a transient state is reached
     *  but no further transition is enabled.
     */
     public void chooseTransitions(State currentState) 
-        throws IllegalActionException {
-            State state = chooseStateTransition(currentState);
-            Actor[] actors = state.getRefinement();
-            Transition transition;
-            while (actors == null) {
-                super.postfire();
-                state = chooseStateTransition(state);
-                transition = _getLastChosenTransition();
-                if (transition == null)
-                    throw new IllegalActionException(this,
-                        "Reached a transient state" +
-                        " without enabled transition.");
-                actors = (transition.destinationState()).getRefinement();
+            throws IllegalActionException {
+        State state = chooseStateTransition(currentState);
+        Actor[] actors = state.getRefinement();
+        Transition transition;
+        while (actors == null) {
+            super.postfire();
+            state = chooseStateTransition(state);
+            transition = _getLastChosenTransition();
+            if (transition == null) {
+                throw new IllegalActionException(this,
+                		"Reached a state without a refinement: "
+                        + state.getName());
             }
+            actors = (transition.destinationState()).getRefinement();
+        }
     }
-
 
     /** Set the values of input variables in the mode controller.
      *  If the refinement of the current state of the mode controller
@@ -261,23 +284,27 @@ public class HDFFSMDirector extends FSMDirector {
         State currentState = controller.currentState();
         _lastIntransientState = currentState;
         Actor[] actors = currentState.getRefinement();
+        
+        // NOTE: Paranoid coding.
+        if (actors == null || actors.length != 1) {
+        	throw new IllegalActionException(this,
+                    "Current state is required to have exactly one refinement: "
+                    + currentState.getName());
+        }
 
-        //if (actors != null) {
-            for (int i = 0; i < actors.length; ++ i) {
-                if (_stopRequested) break;
-                if (actors[i].prefire()) {
-                    actors[i].fire();
-                    actors[i].postfire();
-                }
+        for (int i = 0; i < actors.length; ++ i) {
+            if (_stopRequested) break;
+            if (actors[i].prefire()) {
+                actors[i].fire();
+                actors[i].postfire();
             }
-        //}
+        }
 
         _readOutputsFromRefinement();
 
-        if (_embeddedInSDF) {
+        if (!_embeddedInHDF) {
             chooseTransitions(currentState);
-        }
-        if (_sendRequest && !_embeddedInSDF) {
+        } else if (_sendRequest) {
             ChangeRequest request =
                 new ChangeRequest(this, "choose a transition") {
                     protected void _execute() throws KernelException, 
@@ -293,21 +320,20 @@ public class HDFFSMDirector extends FSMDirector {
         return;
     }
 
-    /**
-     * Return the change context being made explicit.  This class
-     * overrides the implementation in the FSMDirector base class to
-     * report that HDF models only make state transitions between
-     * toplevel iterations.
+    /** Return the change context being made explicit.  This class
+     *  overrides the implementation in the FSMDirector base class to
+     *  report that HDF models only make state transitions between
+     *  toplevel iterations.
      */
     public Entity getContext() {
         // Set the flag indicating whether we're in an SDF model or
         // not.
         try {
-            _getHighestFSM();
+            _getEnclosingDomainActor();
         } catch (IllegalActionException ex) {
-            // Ignore.
+            throw new InternalErrorException(ex);
         }
-        if(_embeddedInSDF) {
+        if(!_embeddedInHDF) {
             return super.getContext();
         } else {
             return (Entity)toplevel();
@@ -348,42 +374,45 @@ public class HDFFSMDirector extends FSMDirector {
             super.initialize();
             _sendRequest = true;
             controller.setNewIteration(_sendRequest);
+            // NOTE: The following will throw an exception if
+            // the state does not have a refinement, so after
+            // this call, we can assume the state has a refinement.
             currentState = transientStateTransition();
             TypedActor[] curRefinements = currentState.getRefinement();
-            //if (curRefinements != null) {
-                // FIXME
-                TypedCompositeActor curRefinement =
-                    (TypedCompositeActor)(curRefinements[0]);
-                Director refinementDir = curRefinement.getDirector();
-                if (refinementDir instanceof HDFFSMDirector) {
-                    refinementDir.initialize();
-                } else if (refinementDir instanceof HDFDirector) {
-                    Scheduler refinmentSched = ((StaticSchedulingDirector)
-                            refinementDir).getScheduler();
-                    refinmentSched.setValid(false);
-                    ((HDFDirector)refinementDir).getSchedule();
-                } else if (refinementDir instanceof SDFDirector) {
-                    Scheduler refinmentSched = ((StaticSchedulingDirector)
-                            refinementDir).getScheduler();
-                    refinmentSched.setValid(true);
-                    ((SDFScheduler)refinmentSched).getSchedule();
-                } else {
-                    // Invalid director.
-                    throw new IllegalActionException(this,
-                            "Only HDF, SDF, or HDFFSM director is " +
-                            "allowed in the refinement");
-                }
-                _updateInputTokenConsumptionRates(curRefinement);
-                _updateOutputTokenProductionRates(curRefinement);
-                // Tell the upper level scheduler that the current schedule
-                // is no longer valid.
-                CompositeActor hdfActor = _getHighestFSM();
-                Director director = hdfActor.getExecutiveDirector();
-                ((StaticSchedulingDirector)director).invalidateSchedule();
-            //} else {
-            //    throw new IllegalActionException(this,
-            //            "current refinement is null.");
-            //}
+            if (curRefinements.length > 1) {
+                throw new IllegalActionException(this,
+                        "Multiple refinements are not supported."
+                        + " Found multiple refinements in: "
+                        + currentState.getName());
+            }
+            TypedCompositeActor curRefinement =
+                (TypedCompositeActor)(curRefinements[0]);
+            Director refinementDir = curRefinement.getDirector();
+            if (refinementDir instanceof HDFFSMDirector) {
+                refinementDir.initialize();
+            } else if (refinementDir instanceof HDFDirector) {
+                Scheduler refinmentSched = ((StaticSchedulingDirector)
+                        refinementDir).getScheduler();
+                refinmentSched.setValid(false);
+                ((HDFDirector)refinementDir).getSchedule();
+            } else if (refinementDir instanceof SDFDirector) {
+                Scheduler refinmentSched = ((StaticSchedulingDirector)
+                        refinementDir).getScheduler();
+                refinmentSched.setValid(true);
+                ((SDFScheduler)refinmentSched).getSchedule();
+            } else {
+                // Invalid director.
+                throw new IllegalActionException(this,
+                        "Only HDF, SDF, or HDFFSM director is " +
+                        "allowed in the refinement");
+            }
+            _updateInputTokenConsumptionRates(curRefinement);
+            _updateOutputTokenProductionRates(curRefinement);
+            // Tell the upper level scheduler that the current schedule
+            // is no longer valid.
+            CompositeActor hdfActor = _getEnclosingDomainActor();
+            Director director = hdfActor.getExecutiveDirector();
+            ((StaticSchedulingDirector)director).invalidateSchedule();
         }
     }
 
@@ -456,7 +485,7 @@ public class HDFFSMDirector extends FSMDirector {
         _updateInputTokenConsumptionRates(actor);
         _updateOutputTokenProductionRates(actor);
 
-        CompositeActor hdfActor = _getHighestFSM();
+        CompositeActor hdfActor = _getEnclosingDomainActor();
         Director director = hdfActor.getExecutiveDirector();
         if (director instanceof HDFDirector) {
             ((HDFDirector)director).invalidateSchedule();
@@ -487,16 +516,12 @@ public class HDFFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor)getContainer();
         TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
         
-        //if (currentRefinement == null) {
-        //    throw new IllegalActionException(this,
-        //            "Can't postfire because current refinement is null.");
-        //}
+        // NOTE: We have already checked that there is exactly
+        // one refinement of the current state.
 
-        // FIXME
-        //boolean postfireReturn = currentRefinement.postfire();
         boolean postfireReturn = currentRefinement[0].postfire();
 
-        if (_sendRequest && !_embeddedInSDF) {
+        if (_sendRequest && _embeddedInHDF) {
             _sendRequest = false;
             ChangeRequest request =
                 new ChangeRequest(this, "make a transition") {
@@ -508,7 +533,7 @@ public class HDFFSMDirector extends FSMDirector {
             request.setPersistent(false);
             container.requestChange(request);
         }
-        if (_embeddedInSDF) {
+        if (!_embeddedInHDF) {
             makeStateTransition();
         }
 
@@ -534,7 +559,7 @@ public class HDFFSMDirector extends FSMDirector {
     public void preinitialize() throws IllegalActionException {
         _sendRequest = true;
         _reinitialize = false;
-        _getHighestFSM();
+        _getEnclosingDomainActor();
 
         FSMActor controller = getController();
         State initialState = controller.getInitialState();
@@ -712,11 +737,10 @@ public class HDFFSMDirector extends FSMDirector {
         return trans;
     }
     
-    
     /** Get the current state. If it does not have any refinement,
-     *  consider it as a transient state and make state transition
-     *  until an intransient state (state that has refinement) is
-     *  found. Set that intransient state to be the current state
+     *  consider it as a transient state and make a state transition
+     *  until a state with a refinement is
+     *  found. Set that non-transient state to be the current state
      *  and return it.
      * @throws IllegalActionException If a transient state is reached
      *  while no further transition is enabled.
@@ -735,7 +759,7 @@ public class HDFFSMDirector extends FSMDirector {
             if (lastChosenTransition == null) {
                 throw new IllegalActionException(this,
                     "Reached a transient state " +
-                    "without enabled transition.");
+                    "without an enabled transition.");
             }
             else {
                 currentRefinements = currentState.getRefinement();
@@ -830,45 +854,35 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
     /** If the container of this director does not have an
-     *  HDFFSMDirector as its executive director, then return it.
+     *  HDFFSMDirector as its executive director, then return the container.
      *  Otherwise, move up the hierarchy until we reach a container
      *  actor that does not have an HDFFSMDirector director for its
-     *  executive director.
+     *  executive director, and return that container.
      *  @exception IllegalActionException If the top-level director
-     *  is an HDFFSMDirector.
+     *   is an HDFFSMDirector. This director is intended for use only
+     *   inside some other domain.
      */
-    private CompositeActor _getHighestFSM()
+    private CompositeActor _getEnclosingDomainActor()
             throws IllegalActionException {
         // Keep moving up towards the toplevel of the hierarchy until
         // we find either an SDF or HDF executive director or we reach
         // the toplevel composite actor.
         CompositeActor container = (CompositeActor)getContainer();
         Director director = container.getExecutiveDirector();
-        boolean foundValidDirector = false;
-        while (foundValidDirector == false) {
-            if (director == null) {
-                // We have reached the toplevel without finding a
-                // valid director.
-                throw new IllegalActionException(this,
-                        "This model is not a refinement of an SDF or " +
-                        "an HDF model.");
-            } else if (director instanceof HDFDirector) {
-                foundValidDirector = true;
-            } else if (director instanceof SDFDirector ||
-                       director instanceof DDFDirector ||
-                       director instanceof GiottoDirector) {
-                foundValidDirector = true;
-                // FIXME
-                // THis flag actually should indicate any director
-                // that allows state transition between arbitrary firings.
-                _embeddedInSDF = true;
-            } else {
+        while (director != null) {
+        	if (director instanceof HDFDirector) {
+                _embeddedInHDF = true;
+                return container;
+            } else if (director instanceof HDFFSMDirector) {
                 // Move up another level in the hierarchy.
                 container = (CompositeActor)(container.getContainer());
                 director = container.getExecutiveDirector();
+            } else {
+                return container;
             }
         }
-        return container;
+        throw new IllegalActionException(this,
+                "This director must be contained within another domain.");
     }
 
     /** Extract the token consumption rates from the input
@@ -1065,10 +1079,12 @@ public class HDFFSMDirector extends FSMDirector {
     // An FSM in HDF can only send one request per global iteration.
     private boolean _sendRequest;
 
-    // A flag indicatiing whether this FSM is embedded in SDF.
-    // FIXME: It should function as a flag indicating whether
-    // state transition can be made between arbitrary firings.
-    private boolean _embeddedInSDF = false;
+    /** A flag indicating whether this FSM is embedded in HDF.
+     *  If the flag is true, the transitions are not allowed
+     *  between arbitrary firings. They are allowed only between
+     *  iterations.
+     */
+    private boolean _embeddedInHDF = false;
 
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
