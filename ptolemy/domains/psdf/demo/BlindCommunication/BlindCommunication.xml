@@ -4,9 +4,9 @@
 <entity name="BlindCommunication" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 113, 874, 590}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 18, 880, 639}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 481]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 530]">
     </property>
     <property name="order" class="ptolemy.data.expr.Parameter" value="11">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -54,12 +54,18 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{329.5, 240.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{332.5, 265.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of a blind communication system.&#10;The AudioReader reads an input PSK signal and &#10;executes a sequence of signal analyses to determine&#10;the carrier, baud rate, and number of phase states.&#10;The resampler computes an unknown number of output samples, &#10;preventing static scheduling of the toplevel model.&#10;Normally, since the amount of processed data changed, the &#10;PhaseStatesEstimator model would also be a process network.&#10;In this model the PhaseStatesEstimator can be quasi-statically scheduled&#10;using the Parameterized Synchronous Dataflow domain.&#10;&#10;Author: Stephen Neuendorffer&#10;Data and Algorithms provided by&#10;Southwest Research Institute.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AudioReader reads an input PSK signal and executes a sequence of &#10;signal analyses to determine the carrier, baud rate, and number of phase states.&#10;The resampler computes an unknown number of output samples, preventing &#10;static scheduling of the toplevel model.  Since the amount of processed &#10;data changes, the PhaseStatesEstimator model cannot be a synchronous &#10;dataflow model. In this model the PhaseStatesEstimator is quasi-statically &#10;scheduled using the Parameterized Synchronous Dataflow domain.&#10;&#10;Author: Stephen Neuendorffer&#10;Data and Algorithms provided by&#10;Southwest Research Institute.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 315.0">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of a blind communication receiver&#10;that illustrates the use of the &#10;parameterized synchronous dataflow domain.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 240.0">
         </property>
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
@@ -105,6 +111,16 @@
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 667]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 333.5}">
+        </property>
+        <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model estimates the carrier of the incoming signal and&#10;converts the signal down to base band by multiplying it with&#10;the estimated carrier signal.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 355.0">
+            </property>
         </property>
         <port name="baseband signal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -158,13 +174,26 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="356.0, 302.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 300.0">
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
             <port name="in" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
             </port>
             <port name="carrierAngle" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
             </port>
         </entity>
         <entity name="PlotSpectrumWithCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -200,6 +229,8 @@
         </entity>
         <entity name="RegenerateCarrier" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0:(frequency*(2*PI/samplingFrequency)):(2^order - 1)*(frequency*(2*PI/samplingFrequency))].toArray()">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -216,7 +247,7 @@
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="2^order">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 310.0">
             </property>
         </entity>
         <entity name="PlotSpectrumWithoutCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -232,7 +263,7 @@
             </property>
             <property name="xUnit" class="ptolemy.data.expr.Parameter" value="samplingFrequency/(2.0^order)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="651.0, 302.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="650.0, 300.0">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -257,20 +288,8 @@
             </property>
             <property name="order" class="ptolemy.data.expr.Parameter" value="order">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="576.0, 302.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 300.0">
             </property>
-            <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-            </entity>
-            <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
-            </entity>
-            <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
-            </entity>
-            <entity name="DB" class="ptolemy.actor.lib.DB">
-            </entity>
-            <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-            </entity>
-            <entity name="Scale" class="ptolemy.actor.lib.Scale">
-            </entity>
         </entity>
         <entity name="SmoothedPeriodogram" class="ptolemy.domains.sdf.lib.SmoothedPeriodogram">
             <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
@@ -285,22 +304,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 100.0">
             </property>
-            <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-            </entity>
-            <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
-            </entity>
-            <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
-            </entity>
-            <entity name="DB" class="ptolemy.actor.lib.DB">
-            </entity>
-            <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-            </entity>
-            <entity name="Autocorrelation" class="ptolemy.domains.sdf.lib.Autocorrelation">
-            </entity>
-            <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
-            </entity>
-            <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-            </entity>
         </entity>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="34.99998474121094, 199.99999237060547">
@@ -321,7 +324,7 @@
             </vertex>
         </relation>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="515.9999771118164, 301.99998474121094">
+            <vertex name="vertex1" value="514.9999923706055, 299.99998474121094">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -370,7 +373,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 70.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 50.0">
             </property>
         </property>
         <property name="indexOffset" class="ptolemy.data.expr.Parameter" value="roundToInt(ceil(frequencyOffset * 2^order / samplingFrequency))">
@@ -387,16 +390,16 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 90.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 70.0">
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 60.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 2, 1036, 668}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 2, 1036, 668}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 559]">
         </property>
@@ -404,9 +407,15 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
+        <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model estimates the baud rate of the incoming base band signal&#10;using the spectrum resulting from a non-linear filtering operation,&#10;in this case, the absolute value.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 295.0">
+            </property>
+        </property>
         <port name="baudRate" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 270.0">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
@@ -415,7 +424,7 @@
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 240.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 140.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="complex">
             </property>
@@ -429,40 +438,34 @@
             </property>
             <property name="offset" class="ptolemy.data.expr.Parameter" value="-indexOffset">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 250.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 150.0">
             </property>
         </entity>
         <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 140.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 230.0">
             </property>
         </entity>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
             <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="(2^(order-1))-indexOffset">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 150.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 240.0">
             </property>
         </entity>
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
             <property name="order" class="ptolemy.data.expr.Parameter" value="order">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 250.0">
-            </property>
-        </entity>
-        <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-            <property name="taps" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 250.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 150.0">
             </property>
         </entity>
         <entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 250.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 150.0">
             </property>
         </entity>
         <entity name="AbsoluteValue2" class="ptolemy.actor.lib.AbsoluteValue">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 250.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 150.0">
             </property>
         </entity>
-        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <entity name="ConvertBinAndOffsetToFrequency" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="frequencyOffset + in*samplingFrequency/(2^order)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -471,7 +474,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 270.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -483,37 +486,39 @@
             </port>
         </entity>
         <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 165.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 260.0">
             </property>
         </entity>
         <entity name="ComplexToPolar" class="ptolemy.actor.lib.conversions.ComplexToPolar">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 240.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 140.0">
+            </property>
+        </entity>
+        <entity name="Differential" class="ptolemy.actor.lib.Differential">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 150.0">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="135.0, 140.0">
+            <vertex name="vertex1" value="135.0, 230.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="640.0, 175.0">
+            <vertex name="vertex1" value="640.0, 270.0">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="165.0, 250.0">
+            <vertex name="vertex1" value="160.0, 150.0">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="305.0, 175.0">
+            <vertex name="vertex1" value="305.0, 270.0">
             </vertex>
         </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="280.0, 250.0">
+            <vertex name="vertex1" value="275.0, 150.0">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -521,6 +526,8 @@
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="baudRate" relation="relation5"/>
         <link port="input" relation="relation3"/>
@@ -532,18 +539,18 @@
         <link port="SequenceToArray.output" relation="relation12"/>
         <link port="FFT.input" relation="relation"/>
         <link port="FFT.output" relation="relation4"/>
-        <link port="FIR.input" relation="relation13"/>
-        <link port="FIR.output" relation="relation11"/>
         <link port="PhaseUnwrap.input" relation="relation9"/>
         <link port="PhaseUnwrap.output" relation="relation13"/>
-        <link port="AbsoluteValue2.input" relation="relation11"/>
+        <link port="AbsoluteValue2.input" relation="relation6"/>
         <link port="AbsoluteValue2.output" relation="relation"/>
-        <link port="Expression.output" relation="relation5"/>
-        <link port="Expression.in" relation="relation10"/>
+        <link port="ConvertBinAndOffsetToFrequency.output" relation="relation5"/>
+        <link port="ConvertBinAndOffsetToFrequency.in" relation="relation10"/>
         <link port="ArrayMaximum.input" relation="relation12"/>
         <link port="ArrayMaximum.index" relation="relation10"/>
         <link port="ComplexToPolar.input" relation="relation3"/>
         <link port="ComplexToPolar.angle" relation="relation9"/>
+        <link port="Differential.input" relation="relation13"/>
+        <link port="Differential.output" relation="relation6"/>
     </entity>
     <entity name="Carrier Estimate" class="ptolemy.actor.lib.MonitorValue">
         <property name="value" class="ptolemy.data.expr.Parameter" value="-199.21875">
@@ -559,7 +566,7 @@
         </property>
     </entity>
     <entity name="Resampler" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 140.0">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 750, 459}, maximized=false}">
         </property>
@@ -569,31 +576,53 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{267.5, 80.0}">
         </property>
+        <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These actors subsample the incoming signal according to the given baud rate.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 120.0">
+            </property>
+        </property>
         <port name="baseband signal" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, -20.0">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <port name="baud rate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 60.0">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <port name="resampled signal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, -20.0">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="outputSamples" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 60.0">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
-        <entity name="Generate resampling signal" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 120.0">
+        <entity name="GenerateResamplingSignal" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 60.0">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 95.0">
+                </property>
+            </property>
+            <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a sequence of boolean values that are true&#10;at the given baud rate and false otherwise. A true value&#10;is output on the first execution.&#10;&#10;Note: This model generates one sample at a time in order to &#10;improve interactivity of signal plots for large input datasets.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 270.0">
                 </property>
             </property>
             <port name="baud rate" class="ptolemy.actor.TypedIOPort">
@@ -603,7 +632,7 @@
             </port>
             <port name="resampling signal" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 160.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 180.0">
                 </property>
             </port>
             <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -611,7 +640,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 215.0">
                 </property>
             </entity>
-            <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <entity name="IncrementPhase" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(previous + baud) % samplingFrequency">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -629,7 +658,7 @@
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+            <entity name="IdentifyBaudSamples" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="phase &lt; baud">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -665,15 +694,15 @@
             <link port="resampling signal" relation="relation4"/>
             <link port="SampleDelay.input" relation="relation3"/>
             <link port="SampleDelay.output" relation="relation2"/>
-            <link port="Expression.output" relation="relation3"/>
-            <link port="Expression.baud" relation="relation5"/>
-            <link port="Expression.previous" relation="relation2"/>
-            <link port="Expression2.output" relation="relation4"/>
-            <link port="Expression2.phase" relation="relation3"/>
-            <link port="Expression2.baud" relation="relation5"/>
+            <link port="IncrementPhase.output" relation="relation3"/>
+            <link port="IncrementPhase.baud" relation="relation5"/>
+            <link port="IncrementPhase.previous" relation="relation2"/>
+            <link port="IdentifyBaudSamples.output" relation="relation4"/>
+            <link port="IdentifyBaudSamples.phase" relation="relation3"/>
+            <link port="IdentifyBaudSamples.baud" relation="relation5"/>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, -10.0">
             </property>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
@@ -681,13 +710,13 @@
             </property>
             <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 60.0">
             </property>
         </entity>
         <entity name="CountTrues" class="ptolemy.domains.sdf.lib.CountTrues">
             <property name="blockSize" class="ptolemy.data.expr.Parameter" value="2^order">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 60.0">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -701,15 +730,15 @@
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="275.0, 120.0">
+            <vertex name="vertex1" value="275.0, 60.0">
             </vertex>
         </relation>
         <link port="baseband signal" relation="relation2"/>
         <link port="baud rate" relation="relation5"/>
         <link port="resampled signal" relation="relation3"/>
         <link port="outputSamples" relation="relation6"/>
-        <link port="Generate resampling signal.baud rate" relation="relation4"/>
-        <link port="Generate resampling signal.resampling signal" relation="relation7"/>
+        <link port="GenerateResamplingSignal.baud rate" relation="relation4"/>
+        <link port="GenerateResamplingSignal.resampling signal" relation="relation7"/>
         <link port="BooleanSwitch.input" relation="relation2"/>
         <link port="BooleanSwitch.control" relation="relation7"/>
         <link port="BooleanSwitch.trueOutput" relation="relation3"/>
@@ -721,45 +750,11 @@
     <entity name="PhaseStatesEstimator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
         </property>
-        <property name="frequencyOffset" class="ptolemy.data.expr.Parameter" value="30.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 505.0">
-            </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
         </property>
-        <property name="indexOffset" class="ptolemy.data.expr.Parameter" value="roundToInt(ceil(frequencyOffset * 2^order / samplingFrequency))">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 525.0">
-            </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 667]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 2, 666, 459}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[451, 350]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 160.0">
         </property>
         <property name="lowWrap" class="ptolemy.data.expr.Parameter" value="-7*pi/8">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -775,7 +770,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 505.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 60.0">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.LineStyle">
             </property>
@@ -794,14 +789,14 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 525.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 80.0">
             </property>
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{312.3131578947368, 214.8052631578947}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{495.3131578947368, 373.3052631578947}">
         </property>
         <property name="inputCount" class="ptolemy.actor.parameters.PortParameter" value="127">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -831,6 +826,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 85.0">
             </property>
         </property>
+        <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model estimates the number of phase states of the incoming &#10;resampled signal by computing a histogram of the phase differences&#10;and applying some thresholds.  In this model reconfiguration of&#10;the inputCount parameter (and the number of samples consumed by the histogram)&#10;occurs just before the beginning of each execution of the schedule.&#10;Hence, the model is locally synchronous and can be quasi-statically scheduled.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 430.0">
+            </property>
+        </property>
         <port name="inputCount" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 80.0">
@@ -842,7 +843,7 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 300.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 360.0">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
@@ -858,50 +859,12 @@
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-            <property name="taps" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 145.0">
-            </property>
-        </entity>
         <entity name="ComplexToPolar" class="ptolemy.actor.lib.conversions.ComplexToPolar">
             <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 135.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </port>
-        </entity>
-        <entity name="wrap" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="((input-lowWrap)%(highWrap-lowWrap) +(highWrap-lowWrap)) % (highWrap-lowWrap) + lowWrap">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 145.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                    </property>
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-                </property>
-            </port>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                 </property>
             </port>
         </entity>
@@ -914,7 +877,7 @@
             </property>
             <property name="inputCount" class="ptolemy.actor.parameters.PortParameter" value="inputCount">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="244.5, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="219.5, 285.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -943,11 +906,11 @@
             </property>
             <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative linear">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 310.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 370.0">
             </property>
         </entity>
         <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 300.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 360.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -958,20 +921,48 @@
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="270">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="339.5, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="314.5, 285.0">
             </property>
         </entity>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
             <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="270">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 305.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 365.0">
             </property>
         </entity>
-        <entity name="FIR2" class="ptolemy.domains.sdf.lib.FIR">
+        <entity name="MovingAverage" class="ptolemy.domains.sdf.lib.FIR">
             <property name="taps" class="ptolemy.data.expr.Parameter" value="repeat(11,1.0/11)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="454.5, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 285.0">
             </property>
+        </entity>
+        <entity name="Differential" class="ptolemy.actor.lib.Differential">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 145.0">
+            </property>
+        </entity>
+        <entity name="Wrap" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="((input-lowWrap)%(highWrap-lowWrap) +(highWrap-lowWrap)) % (highWrap-lowWrap) + lowWrap">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 205.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+            </port>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -981,28 +972,24 @@
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="170.0, 180.0">
+            <vertex name="vertex1" value="150.0, 230.0">
             </vertex>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="output" relation="relation5"/>
         <link port="samples" relation="relation3"/>
-        <link port="FIR.input" relation="relation9"/>
-        <link port="FIR.output" relation="relation12"/>
         <link port="ComplexToPolar.input" relation="relation3"/>
         <link port="ComplexToPolar.angle" relation="relation9"/>
-        <link port="wrap.output" relation="relation11"/>
-        <link port="wrap.input" relation="relation12"/>
         <link port="ComputeHistogram.input" relation="relation11"/>
         <link port="ComputeHistogram.output" relation="relation7"/>
         <link port="ArrayPeakSearch.input" relation="relation8"/>
@@ -1013,8 +1000,12 @@
         <link port="ArrayToSequence.output" relation="relation4"/>
         <link port="SequenceToArray.input" relation="relation10"/>
         <link port="SequenceToArray.output" relation="relation8"/>
-        <link port="FIR2.input" relation="relation4"/>
-        <link port="FIR2.output" relation="relation10"/>
+        <link port="MovingAverage.input" relation="relation4"/>
+        <link port="MovingAverage.output" relation="relation10"/>
+        <link port="Differential.input" relation="relation9"/>
+        <link port="Differential.output" relation="relation"/>
+        <link port="Wrap.output" relation="relation11"/>
+        <link port="Wrap.input" relation="relation"/>
     </entity>
     <entity name="Sample Count" class="ptolemy.actor.lib.MonitorValue">
         <property name="value" class="ptolemy.data.expr.Parameter" value="255">
@@ -1026,7 +1017,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 215.0">
         </property>
     </entity>
     <entity name="Phase states" class="ptolemy.actor.lib.MonitorValue">
@@ -1039,27 +1030,33 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 165.0">
         </property>
     </entity>
     <entity name="Plot Phase Difference" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 270.0">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 225.0">
             </property>
         </property>
-        <port name="port_9" class="ptolemy.actor.TypedIOPort">
+        <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model plots the phase difference between successive input samples.&#10;Plotting the phase difference for communication systems such as this &#10;often results in more meaningful plots than the absolute phase, since&#10;there are inevitable estimation errors.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 390.0">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 335.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 285.0">
             </property>
         </port>
         <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="642.5, 335.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="567.5, 285.0">
             </property>
         </entity>
         <entity name="ComplexToPolar" class="ptolemy.actor.lib.conversions.ComplexToPolar">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="537.5, 335.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 285.0">
             </property>
         </entity>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
@@ -1071,7 +1068,7 @@
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="707.5, 335.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="680.0, 285.0">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1089,7 +1086,7 @@
         <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
             <property name="taps" class="ptolemy.data.expr.Parameter" value="{1.0,-1.0}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="592.5, 395.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 340.0">
             </property>
         </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1104,7 +1101,7 @@
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port_9" relation="relation9"/>
+        <link port="input" relation="relation9"/>
         <link port="PolarToCartesian.magnitude" relation="relation7"/>
         <link port="PolarToCartesian.angle" relation="relation11"/>
         <link port="PolarToCartesian.x" relation="relation4"/>
@@ -1134,13 +1131,13 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="385.0, 145.0">
+        <vertex name="vertex1" value="385.0, 150.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="395.0, 155.0">
+        <vertex name="vertex1" value="395.0, 170.0">
         </vertex>
     </relation>
     <link port="AudioReader.output" relation="relation"/>
@@ -1164,5 +1161,5 @@
     <link port="PhaseStatesEstimator.samples" relation="relation9"/>
     <link port="Sample Count.input" relation="relation7"/>
     <link port="Phase states.input" relation="relation4"/>
-    <link port="Plot Phase Difference.port_9" relation="relation9"/>
+    <link port="Plot Phase Difference.input" relation="relation9"/>
 </entity>
