@@ -47,6 +47,7 @@ TCL_SRCS = \
 	description.tcl \
 	enums.tcl \
 	init.tcl \
+	tclshrc.tcl \
 	testDefs.tcl \
 	testEnums.tcl
 
