@@ -73,7 +73,7 @@ public class DEPlot extends DEActor {
 
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setDeclaredType(Token.class);
         input.setMultiport(true);
 
         _plot = plot;
@@ -129,42 +129,24 @@ public class DEPlot extends DEActor {
             _rangeInitialized = true;
         }
 
+        double curTime = ((DECQDirector)getDirector()).getCurrentTime();
+
         int numEmptyChannel = 0;
 
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
-                double curTime =((DECQDirector)getDirector()).getCurrentTime();
+
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
-                    DoubleToken curToken = null;
-                    curToken = (DoubleToken)input.get(i);
-                    double curValue = curToken.doubleValue();
-
-                    // update the y range
-                    boolean yRangeChanged = false;
-                    if (curValue < _yMin) {
-                        yRangeChanged = true;
-                        _yMin = curValue;
+                    Token curToken = input.get(i);
+                    
+                    if (curToken instanceof DoubleToken) {
+                        _processDoubleToken(i, curTime, (DoubleToken)curToken);
+                    } else {
+                        _processPureToken(i, curTime, curToken);
                     }
-                    if (curValue > _yMax) {
-                        yRangeChanged = true;
-                        _yMax = curValue;
-                    }
-                    if (yRangeChanged) {
-                        _plot.setYRange(_yMin, _yMax);
-                        _plot.repaint();
-                    }
-
-                    // add the point
-                    if (DEBUG) {
-                        System.out.print(this.getFullName() + ":");
-                        System.out.println("Dataset = " + i +
-                                ", CurrentTime = " + curTime +
-                                ", CurrentValue = " + curValue + ".");
-                    }
-                    _plot.addPoint(i, curTime, curValue, false);
                 }
             } else {
                 // Empty channel. Ignore
@@ -210,6 +192,85 @@ public class DEPlot extends DEActor {
     public double getYMax() {
         return _yMax;
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Process input tokens that are instances of DoubleToken.
+     *  
+     * @param channel The channel number
+     * @param curTime The current time of the simulation
+     * @param token The input token that is an instance of DoubleToken
+     */	
+    protected void _processDoubleToken(int channel, 
+            double curTime, 
+            DoubleToken token) {
+        
+        double curValue = token.doubleValue();
+
+        // update the y range
+        boolean yRangeChanged = false;
+        if (curValue < _yMin) {
+            yRangeChanged = true;
+            _yMin = curValue;
+        }
+        if (curValue > _yMax) {
+            yRangeChanged = true;
+            _yMax = curValue;
+        }
+        if (yRangeChanged) {
+            _plot.setYRange(_yMin, _yMax);
+            _plot.repaint();
+        }
+
+        // add the point
+        if (DEBUG) {
+            System.out.print(this.getFullName() + ":");
+            System.out.println("Dataset = " + channel +
+                    ", CurrentTime = " + curTime +
+                    ", CurrentValue = " + curValue + ".");
+        }
+        _plot.addPoint(channel, curTime, curValue, false);
+        
+    }
+
+    /** Process pure token, i.e. typeless token.
+     *  
+     * @param channel The channel number
+     * @param curTime The current time of the simulation
+     * @param token The input token
+     */	
+    protected void _processPureToken(int channel, 
+            double curTime, 
+            Token token) {
+        
+        double curValue = channel;
+
+        // update the y range
+        boolean yRangeChanged = false;
+        if (curValue < _yMin) {
+            yRangeChanged = true;
+            _yMin = curValue;
+        }
+        if (curValue > _yMax) {
+            yRangeChanged = true;
+            _yMax = curValue;
+        }
+        if (yRangeChanged) {
+            _plot.setYRange(_yMin, _yMax);
+            _plot.repaint();
+        }
+
+        // add the point
+        if (DEBUG) {
+            System.out.print(this.getFullName() + ":");
+            System.out.println("Dataset = " + channel +
+                    ", CurrentTime = " + curTime +
+                    ", CurrentValue = " + curValue + ".");
+        }
+        _plot.addPoint(channel, curTime, curValue, false);
+        
+    }   
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

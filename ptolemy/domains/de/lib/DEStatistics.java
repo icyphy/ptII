@@ -72,7 +72,9 @@ public class DEStatistics extends DEActor {
         input = new DEIOPort(this, "data input", true, false);
         input.setDeclaredType(DoubleToken.class);
         demand = new DEIOPort(this, "demand", true, false);
+        demand.setDeclaredType(Token.class);
         reset = new DEIOPort(this, "reset", true, false);
+        reset.setDeclaredType(Token.class);
 
 	// Assert priorities
         input.before(demand);
