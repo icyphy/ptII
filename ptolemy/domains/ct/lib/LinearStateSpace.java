@@ -1,4 +1,4 @@
-/* State space model in the CT domain.
+/* Linear state space model in the CT domain.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.data.type.BaseType;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTStateSpace
+//// LienarStateSpace
 /**
 The State-Space model implements a system whose behavior is defined by:
 <pre>
@@ -74,7 +74,7 @@ takes over the control of the actors contained by this actor.
 @version $Id$
 @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
-public class CTStateSpace extends TypedCompositeActor {
+public class LinearStateSpace extends TypedCompositeActor {
 
     /** Construct the composite actor with a name and a container.
      *  This constructor creates the ports, parameters, and the icon.
@@ -84,7 +84,7 @@ public class CTStateSpace extends TypedCompositeActor {
      * this name.
      * @exception IllegalActionException If there was an internal problem.
      */
-    public CTStateSpace(CompositeEntity container, String name)
+    public LinearStateSpace(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);

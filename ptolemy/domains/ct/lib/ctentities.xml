@@ -14,7 +14,7 @@
 </entity>
 <entity name="ContinuousFransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
 </entity>
-<entity name="StateSpace" class="ptolemy.domains.ct.lib.CTStateSpace">
+<entity name="LinearStateSpace" class="ptolemy.domains.ct.lib.LinearStateSpace">
 </entity>
 <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
 </entity>

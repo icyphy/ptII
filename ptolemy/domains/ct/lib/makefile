@@ -56,7 +56,7 @@ JSRCS = \
 	ZeroCrossingDetector.java \
 	ZeroOrderHold.java \
 	ContinuousTransferFunction.java \
-	CTStateSpace.java
+	LinearStateSpace.java
 
 
 EXTRA_SRCS =	$(JSRCS)
