@@ -363,8 +363,9 @@ test ParseTreeEvaluator-13.2 {Test record construction.} {
 ####
 # Test eval
 test ParseTreeEvaluator-14.0 {Test eval inference.} {
-    list [theTest "eval(\"1+1\")" ]
-} {2}
+    list [theTest "eval(\"1+1\")" ] \
+         [theTest {eval("[1.0, 2.0; 3.0, 4.0]")}]
+ } {2 {[1.0, 2.0; 3.0, 4.0]}}
 
 ######################################################################
 ####
@@ -410,9 +411,21 @@ test ParseTreeEvaluator-18.2 {Test various matrix ops} {
          [theTest {[1, 2; 3, 4]+[2, 2; 2, 2]}] \
          [theTest {[1, 2; 3, 4]-[2, 2; 2, 2]}] \
          [theTest {[1, 2; 3, 4]^2}] \
-         [theTest {[1, 2; 3, 4]==[2, 2; 2, 2]}]
-} {{[6, 6; 14, 14]} {[3, 4; 5, 6]} {[-1, 0; 1, 2]} {[7, 10; 15, 22]} false}
+         [theTest {[1, 2; 3, 4]==[2, 2; 2, 2]}] \
+         [theTest {[1, 2; 3, 4]!=[2, 2; 2, 2]}]
+} {{[6, 6; 14, 14]} {[3, 4; 5, 6]} {[-1, 0; 1, 2]} {[7, 10; 15, 22]} false true}
 
+####################################################################
+  
+test ParseTreeEvaluator-19.1 {Test various array ops} {
+    list [theTest {{1, 2}*{2, 2}}] \
+         [theTest {{1, 2}+{2, 2}}] \
+         [theTest {{1, 2}-{2, 2}}] \
+         [theTest {{1, 2}^2}] \
+         [theTest {{1, 2}=={2, 2}}] \
+         [theTest {{1, 2}!={2, 2}}] \
+         [theTest {{1, 2}%{2, 2}}]
+ } {{{2, 4}} {{3, 4}} {{-1, 0}} {{1, 4}} false true {{1, 0}}}
 
 ####################################################################
 

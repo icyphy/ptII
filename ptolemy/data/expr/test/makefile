@@ -49,6 +49,7 @@ JSRCS = AttributeChanged.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	Functions.tcl \
 	Parameter.tcl \
 	ParseTreeEvaluator.tcl \
 	ParseTreeTypeInference.tcl \
