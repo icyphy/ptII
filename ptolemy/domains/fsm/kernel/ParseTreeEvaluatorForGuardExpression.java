@@ -168,7 +168,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // the discrete variables and do not evaluate it when it is
         // not present.
         // This is not the best solution, we should use the signalType
-        // attribute to differentiate the signals. Unfortunately, the
+        // attribute to distinguish the signal types. Unfortunately, the
         // signalType is not passed along as the type system does.
         // That is future work.
         String nodeName = node.getName();
