@@ -30,12 +30,16 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Ptolemy II bed, see /users/cxh/ptII/doc/coding/testing.html for more information.
+# Ptolemy II bed, see $PTII/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
+
+if {[info procs sootCodeGeneration] == "" } then { 
+    source [file join $PTII util testsuite codegen.tcl]
+}
 
 if {[string compare test [info procs autoShallowCG]] == 1} then {
     source sootShallowCodeGeneration.tcl
@@ -43,6 +47,21 @@ if {[string compare test [info procs autoShallowCG]] == 1} then {
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
+
+# Generate code for all the xml files in a directory.
+proc autoShallowCG {autoDirectory} {
+    foreach file [glob $autoDirectory/*.xml] {
+	puts "---- testing $file"
+	#set time [java::new Long [java::call System currentTimeMillis]]
+	test "Auto" "Automatic test in file $file" {
+	    set elapsedTime [time {sootCodeGeneration $file}]
+	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
+	    list {}
+	} {{}}
+	java::call System gc
+	#puts "[java::call ptolemy.actor.Manager timeAndMemory [$time longValue]]"
+    }
+}
 
 ######################################################################
 ####
