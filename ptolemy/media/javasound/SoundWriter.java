@@ -54,7 +54,7 @@ stereo files are supported.
 <b>Usage</b>
 <p>
 The path to the sound file to write is given as a constructor
-parameter, along with parameters that specifiy the desired
+parameter, along with parameters that specify the desired
 audio format. The constructor also takes an array length
 parameter, which is explained below.
 <p>
@@ -149,8 +149,8 @@ public class SoundWriter {
      *  be written to the sound file specified in the constructor
      *  when the closeFile() method is invoked.
      *  <p>
-     *  The samples should be in the range (-1,1). Samples that are
-     *  outside ths range will be hard-clipped so that they fall
+     *  The samples should be in the range (-1, 1). Samples that are
+     *  outside this range will be hard-clipped so that they fall
      *  within this range.
      *  @param putSamplesArray A two dimensional array containing
      *  the samples to play or write to a file. The first index
@@ -169,11 +169,7 @@ public class SoundWriter {
      */
     public void putSamples(double[][] putSamplesArray) throws
             IllegalStateException {
-	//System.out.println("SoundWriter: putSamples(): invoked");
 	if (_isAudioWriterActive == true) {
-
-	    //System.out.println("SoundWriter: putSamples(): file");
-
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
@@ -231,7 +227,6 @@ public class SoundWriter {
      *  can be invoked.
      */
     private void _initializeAudio() {
-	//System.out.println("SoundWriter: _startPlaybackToFile() invoked");
 	// FIXME: Performance is not great when the incoming audio
 	// samples are being captured in real-time, possibly
 	// due to resizing of the ArrayList.
@@ -259,7 +254,6 @@ public class SoundWriter {
      *  no more calls to putSamples() are required.
      */
     private void _stopPlaybackToFile() throws IOException {
-	//System.out.println("SoundWriter: _stopPlaybackToFile() invoked.");
 	int size =  _toFileBuffer.size();
 	byte[] audioBytes = new byte[size];
 	for (int i = 0; i < size; i++) {
@@ -322,8 +316,8 @@ public class SoundWriter {
     /* Convert a double array of audio samples into a byte array of
      * audio samples in linear signed pcm big endian format. The
      * samples contained in <i>doubleArray</i> should be in the
-     * range (-1,1). Samples outside this range will be hard clipped
-     * to the range (-1,1).
+     * range (-1, 1). Samples outside this range will be hard clipped
+     * to the range (-1, 1).
      * @param doubleArray Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
