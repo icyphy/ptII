@@ -177,7 +177,7 @@ public class SigmaDelta extends TypedCompositeActor {
              new ptolemy.domains.de.lib.Delay(this, "delay");
          delay.delay.setToken(new DoubleToken(0.02));
          FIR fir = new FIR(this, "fir");
-         fir.taps.setExpression("[0.7, 0.3]");
+         fir.taps.setExpression("{0.7, 0.3}");
          Quantizer quan = new Quantizer(this, "Quantizer");
          Average accumulator = new Average(this, "accumulator");
          Sampler sampler = new Sampler(this, "sampler");
@@ -185,7 +185,7 @@ public class SigmaDelta extends TypedCompositeActor {
          double[][] offs = {{0.0}};
          clk.offsets.setToken(new DoubleMatrixToken(offs));
          clk.period.setToken(new DoubleToken(1.0));
-         clk.values.setExpression("[true]");
+         clk.values.setExpression("{true}");
          
          TimedPlotter dePlot = new TimedPlotter(this, "DEPlot");
          dePlot.plot = new Plot();
@@ -201,8 +201,8 @@ public class SigmaDelta extends TypedCompositeActor {
          
          FIR mav = new FIR(this, "MAV");
          mav.taps.setExpression(
-                 "[0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
-                 + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]");
+                 "{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
+                 + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
          
          // DE connections.
          Relation dr0 = this.connect(subout,  delay.input);

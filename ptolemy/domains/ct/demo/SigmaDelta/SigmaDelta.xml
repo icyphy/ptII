@@ -279,7 +279,7 @@
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="[0.7, 0.3]">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.7, 0.3}">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -341,7 +341,7 @@
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[true]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -380,7 +380,7 @@
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="[0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
