@@ -61,15 +61,26 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	carmodel.xml \
+	CarGUI.xml \
+	DEplotConfigure.xml \
 	LeadingCar.xml \
 	FollowingCar.xml \
-	Monitor.xml
+	Monitor.xml \
+	plotConfigure.xml \
+	policy.all 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'CTSubscriber$$NotifyHandler.class' \
+	CTSubscriber_Skel.class \
+	'CarInformationSubscriber$$NotifyHandler.class' \
+	CarInformationSubscriber_Skel.class \
+	'DERealTimeSubscriber$$NotifyHandler.class' \
+	DERealTimeSubscriber_Skel.class
+
 
 STUB_JCLASS = \
 	CarInformationSubscriber_Stub.class \
