@@ -1110,7 +1110,7 @@ public class CompositeEntity extends ComponentEntity {
                     throw new InternalErrorException(this, ex,
                             "Failed to update _createdBy");
                 }
-             }
+            }
         }
         super._exportMoMLContents(output, depth);
 
