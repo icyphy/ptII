@@ -232,7 +232,7 @@ public class PNRDMainController extends AtomicActor {
 	    createEncoders();
 	    //writeTo(_signalOut, signal);
 	    _signalOut.broadcast(signal);
-	    System.out.println("writitn after whatedver");
+	    System.out.println("write it after whatever");
 	    
 	    // select the best block size.
 	    ObjectToken infoArrayToken = null;
