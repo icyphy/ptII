@@ -88,8 +88,8 @@ Otherwise, unpredictable behavior may result.
 <p>In discussions of complexity, <em>n</em> and <em>e</em> refers to the number
 of graph nodes and edges, respectively.
 
-@author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu, Ming-Yung Ko,
-Shahrooz Shahparnia
+@author Shuvra S. Bhattacharyya, Ming-Yung Ko,
+Fuat Keceli, Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.graph.Edge
