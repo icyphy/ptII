@@ -300,7 +300,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  match.
      */
     public void preinitialize() throws IllegalActionException {
-        super.initialize();
+        super.preinitialize();
         DoubleMatrixToken a = (DoubleMatrixToken)A.getToken();
         int n = a.getRowCount();
         DoubleMatrixToken b = (DoubleMatrixToken)B.getToken();
