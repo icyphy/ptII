@@ -213,21 +213,17 @@ public class PNDirector extends BasePNDirector {
 	    throws IllegalActionException {
 	boolean urgentmut;
         Workspace worksp = workspace();
-	System.out.println("In the fire method again");
 	synchronized (this) {
 	    while (!_checkForDeadlock() && !_urgentMutations) {
-		//System.out.println("Waiting with mutations = "+_urgentMutations);
 		worksp.wait(this);
 	    }
 	    urgentmut = _urgentMutations;
 	    //_urgentMutations = false;
 	}
-	System.out.println("mut ="+urgentmut);
 	if (urgentmut) {
 	    pause();
             try {
                 _processTopologyRequests();
-		System.out.println("Performed mutations");
 		synchronized(this) {
 		    _mutationBlockCount = 0;
 		    _urgentMutations = false;
@@ -243,7 +239,6 @@ public class PNDirector extends BasePNDirector {
 	    //_notdone = !_handleDeadlock();
 	    _handleDeadlock();
 	}
-        //System.out.println("Done firing");
     }
 
     /** Add a topology change request to the request queue and suspend the 
@@ -289,9 +284,6 @@ public class PNDirector extends BasePNDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _checkForDeadlock() {
-	System.out.println("rb="+_readBlockCount+" wb="+_writeBlockCount+
-		" mb="+_mutationBlockCount+" aa="+_getActiveActorsCount());
-	
 	if (_readBlockCount + _writeBlockCount + _mutationBlockCount
 		>= _getActiveActorsCount()) {
 	    return true;
@@ -347,17 +339,11 @@ public class PNDirector extends BasePNDirector {
 	}
 	//Resume the paused actors
 	resume();
-	//_urgentMutations = false;
-	//Resume the actors paused on mutations
-	//synchronized(this) {
-	//notifyAll();
-	//}
 	Enumeration threads = threadlist.elements();
 	//Starting threads;
 	while (threads.hasMoreElements()) {
 	    ProcessThread pnt = (ProcessThread)threads.nextElement();
 	    pnt.start();
-	    System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
 	}
     }
 
