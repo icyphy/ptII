@@ -134,8 +134,6 @@ public class SequenceScope extends SequencePlotter {
         int widthValue = ((IntToken)width.getToken()).intValue();
         plot.setXRange(0.0, xunit*widthValue);
         plot.setWrap(true);
-        // Default marks style is consistent with scope style.
-        plot.setMarksStyle("pixels");
         int persValue = ((IntToken)persistence.getToken()).intValue();
         plot.setPointsPersistence(persValue);
         plot.repaint();
