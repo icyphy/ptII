@@ -53,7 +53,7 @@ This class supports only the subset that applies to the PlotBox base class.
 It ignores all other elements in the DTD.
 The class contains an instance of the Microstar &AElig;lfred XML
 parser and implements callback methods to interpret the parsed XML.
-The way to use this class is to contruct it with a reference to
+The way to use this class is to construct it with a reference to
 a PlotBox object and then call its parse() method.
 
 @author Edward A. Lee
