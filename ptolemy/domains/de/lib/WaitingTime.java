@@ -100,6 +100,14 @@ public class WaitingTime extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear the list of waiters.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void begin() throws IllegalActionException {
+        super.begin();
+        _waiting.removeAllElements();
+    }
+
     /** If this firing is triggered by an event at waitee, then output
      *  the waiting time for each prior event arrival at waiter since the
      *  last arrival of waitee.  If there is no event at waitee, then record
@@ -128,18 +136,6 @@ public class WaitingTime extends TypedAtomicActor
             }
             _waiting.removeAllElements();
         }
-    }
-
-    /** Clear the list of waiters.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        try{
-            super.initialize();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
-        _waiting.removeAllElements();
     }
 
     ///////////////////////////////////////////////////////////////////
