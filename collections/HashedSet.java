@@ -86,7 +86,7 @@ public class HashedSet extends    UpdatableSetImpl
 /**
  * Implements collections.HashTableParams.buckets.
  * Time complexity: O(1).
- * @see collections.HashTableParams#buckets.
+ * @see collections.HashTableParams#buckets
 **/
 
   public synchronized int buckets() {
@@ -96,7 +96,7 @@ public class HashedSet extends    UpdatableSetImpl
 /**
  * Implements collections.HashTableParams.buckets.
  * Time complexity: O(n).
- * @see collections.HashTableParams#buckets.
+ * @see collections.HashTableParams#buckets
 **/
 
   public synchronized void buckets(int newCap)
