@@ -76,7 +76,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="77.7890625, 117.40625">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 17, 865, 673}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 17, 865, 680}}">
     </property>
     <entity name="1:giotto" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 200.0">
@@ -230,6 +230,8 @@
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
             </property>
+            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 355.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -244,6 +246,8 @@
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4,6,8,10}">
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+            </property>
+            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 115.0">
             </property>
@@ -329,6 +333,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -340,9 +346,11 @@
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false,false,false,false,true,false,false,false,true,false,false,false,true,false,false,false,true,false,false,false,true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,false,true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 285.0">
         </property>
