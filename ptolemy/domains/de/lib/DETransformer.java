@@ -32,6 +32,8 @@ package ptolemy.domains.de.lib;
 
 import ptolemy.domains.de.kernel.*;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.TimedActor;
+import ptolemy.actor.lib.SequenceActor;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +49,8 @@ Thus, all the facilities of those classes are available.
 @version $Id$
 */
 
-public abstract class DETransformer extends DEActor {
+public abstract class DETransformer extends DEActor
+        implements SequenceActor, TimedActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

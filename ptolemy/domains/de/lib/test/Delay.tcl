@@ -71,12 +71,19 @@ test Delay-2.1 {test with the default delay value} {
     enumToStrings [$rec getTimeRecord]
 } {1.0 2.0 3.0}
 
-test Delay-3.1 {test with the zero delay} {
+test Delay-3.1 {test with zero delay} {
     set delayAmount [java::field $delay delay]
     $delayAmount setExpression "0.0"
     [$e0 getManager] execute
     enumToStrings [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0}
+
+test Delay-3.2 {test with negative delay} {
+    set delayAmount [java::field $delay delay]
+    $delayAmount setExpression "-1.0"
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .top.delay: Cannot have negative delay.}}
 
 test Delay-4.1 {test a self loop with the zero delay} {
     set e0 [deModel 3.0]

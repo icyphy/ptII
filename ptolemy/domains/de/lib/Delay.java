@@ -32,8 +32,6 @@ import ptolemy.domains.de.lib.DETransformer;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.TypedCompositeActor;
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,8 +65,7 @@ delay as an infinitessimal delay.
 @author Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
-public class Delay extends DETransformer
-        implements SequenceActor, TimedActor {
+public class Delay extends DETransformer {
 
     /** Construct an actor with the specified container and name.
      *  @param container The composite actor to contain this one.
@@ -97,6 +94,23 @@ public class Delay extends DETransformer
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the attribute is <i>delay</i>, then check that the value
+     *  is non-negative.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == delay) {
+            if (((DoubleToken)(delay.getToken())).doubleValue() < 0.0) {
+                throw new IllegalActionException(this,
+                "Cannot have negative delay.");
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter.

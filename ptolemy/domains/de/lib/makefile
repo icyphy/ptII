@@ -52,6 +52,7 @@ JSRCS = \
 	Delay.java \
 	DETransformer.java \
 	Sampler.java \
+	Server.java \
 	WaitingTime.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -51,6 +51,7 @@ JSRCS = SimpleDelay.java
 JSIMPLE_TESTS = \
 	Delay.tcl \
 	Sampler.tcl \
+	Server.tcl \
 	SimpleDelay.tcl \
 	WaitingTime.tcl
 
