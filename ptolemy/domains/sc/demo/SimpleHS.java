@@ -109,18 +109,20 @@ public class SimpleHS {
  
 
             // the FSM controller
-            SCController ctrl = new SCController(hs, "Controller");
+            HSController ctrl = new HSController(hs, "Controller");
             SCState ctrlInc = new SCState(ctrl, "Increasing");
             SCState ctrlDec = new SCState(ctrl, "Decreasing");
             ctrl.setInitialState(ctrlInc);
             SCTransition ctrlTr1 = 
                     ctrl.createTransition(ctrlInc, ctrlDec);
             ctrlTr1.setTriggerEvent("output");
-            HSInit hsinit1 = new HSInit(ctrlTr1, "Integrator", "output");
+            ctrlTr1.setInitEntry(true);
+            HSInit hsinit1 = new HSInit(ctrlTr1, "Integrator", "state");
             SCTransition ctrlTr2 = 
                     ctrl.createTransition(ctrlDec, ctrlInc);            
             ctrlTr2.setTriggerEvent("output");
-            HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "output");
+            ctrlTr2.setInitEntry(true);
+            HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
 
             // the hybrid system director
             HSDirector hsdir = new HSDirector("HSDirector");
@@ -263,7 +265,7 @@ public class SimpleHS {
             minStep.setExpression("1e-3");
             minStep.parameterChanged(null);
             Parameter bpsol = (Parameter)ctIncDir.getAttribute("BreakpointODESolver");
-            StringToken tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+            StringToken tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             bpsol.setToken(tok);
             bpsol.parameterChanged(null);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
@@ -283,7 +285,7 @@ public class SimpleHS {
             minStep.setExpression("1e-3");
             minStep.parameterChanged(null);
             bpsol = (Parameter)ctDecDir.getAttribute("BreakpointODESolver");
-            tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+            tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             bpsol.setToken(tok);
             bpsol.parameterChanged(null);
             dfsol = (Parameter)ctDecDir.getAttribute("ODESolver");
@@ -304,6 +306,9 @@ public class SimpleHS {
             initStep.parameterChanged(null);
             minStep = (Parameter)dedir.getAttribute("MinimumStepSize");
             minStep.setExpression("1e-3");
+            minStep.parameterChanged(null);
+            minStep = (Parameter)dedir.getAttribute("MaximumStepSize");
+            minStep.setExpression("0.07");
             minStep.parameterChanged(null);
             bpsol = (Parameter)dedir.getAttribute("BreakpointODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
