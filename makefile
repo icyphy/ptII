@@ -120,7 +120,8 @@ OPTIONAL_FILES = \
 KRUFT = \
 	vergil.jnlp \
 	vergilDSP.jnlp \
-	vergilPtiny.jnlp
+	vergilPtiny.jnlp \
+	vergilPtinySandbox.jnlp
 
 # Files to be removed by 'make distclean'
 DISTCLEAN_STUFF = \
