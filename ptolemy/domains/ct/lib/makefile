@@ -52,6 +52,7 @@ JSRCS = \
 	CTIntegrator.java \
 	CTPeriodicSampler.java \
 	CTSaberSubsys.java \
+	CTSquareWave.java \
 	CTThresholdMonitor.java \
 	CTZeroCrossingDetector.java \
 	CTZeroOrderHold.java \
