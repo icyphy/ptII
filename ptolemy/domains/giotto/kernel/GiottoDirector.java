@@ -40,6 +40,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.*;
 import ptolemy.actor.NoTokenException;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
@@ -146,6 +147,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
     /** Code generation file name. */
     public Parameter filename;
 
+    /** synchronized to realtime */
+    public Parameter sync;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -799,9 +802,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	    //In ptolemy model, for simulation, we need double
 	    double periodValue =
-                ((DoubleToken)period.getToken()).doubleValue();
-	    // however, for giotto code, we need integer
-	    //System.out.println((new Double(periodValue)).intValue());
+                ((DoubleToken)period.getToken()).doubleValue() * 1000;
+	    // however, for giotto code, we need integer and its unit is ms ...
+	    // System.out.println("period is " + (new Double(periodValue)).intValue());
 
 	    int actorFreq = 0;
 	    int actFreq = 0;
@@ -1135,78 +1138,85 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    receiver.reset();
 	}
 
-	 // if the director directs several sdf actors and those actors
-	 // have loop connections, we have to initialize the inputs of sdf actors.
+    }
 
-	    //System.out.println("Initializing.. ");
-	    CompositeActor compositeActor =
-		(CompositeActor) (getContainer());
+     public void initialize() throws IllegalActionException {
+	super.initialize();
 
-	    //System.out.println(compositeActor.getName());
+	// if the director directs several sdf actors and those actors
+	// have loop connections, we have to initialize the inputs of sdf actors.
 
-	    List actorList = compositeActor.deepEntityList();
+	//System.out.println("Initializing.. ");
+	CompositeActor compositeActor =
+	    (CompositeActor) (getContainer());
 
-	    ListIterator actors = actorList.listIterator();
+	//System.out.println(compositeActor.getName());
 
-	    //System.out.println("actorList size is " + actorList.size());
+	List actorList = compositeActor.deepEntityList();
+
+	ListIterator actors = actorList.listIterator();
+
+	//System.out.println("actorList size is " + actorList.size());
 
 
-	    while (actors.hasNext()) {
+	while (actors.hasNext()) {
 
-	        Actor actor = (Actor) actors.next();
+	    Actor actor = (Actor) actors.next();
 
-		// here we give a very simple criteria that we will initialize
-		// the input of SDF actors;
-		// however, we should first decide if there is loop for SDF
-		// actors, which may be the only situation to need initialization.
-		// Also, for SDF domain, will it be general idea that we always
-		// assign some default value to the output port?
-		// This may need the dubble-buffer reveivers.
-		//System.out.println(actor.getDirector().getName());
-		if (!actor.getDirector().getName().equals("SDF Director")) {
-		    continue;
-		}
-		List outputPortList = actor.outputPortList();
+	    // here we give a very simple criteria that we will initialize
+	    // the input of SDF actors;
+	    // however, we should first decide if there is loop for SDF
+	    // actors, which may be the only situation to need initialization.
+	    // Also, for SDF domain, will it be general idea that we always
+	    // assign some default value to the output port?
+	    // This may need the dubble-buffer reveivers.
+	    //System.out.println(actor.getDirector().getName());
+	    if (!actor.getDirector().getName().equals("SDF Director")) {
+		continue;
+	    }
+	    List outputPortList = actor.outputPortList();
 
-		Enumeration outputPorts =
-		    Collections.enumeration(outputPortList);
+	    Enumeration outputPorts =
+		Collections.enumeration(outputPortList);
 
-		while (outputPorts.hasMoreElements()) {
-		    IOPort port = (IOPort) outputPorts.nextElement();
+	    while (outputPorts.hasMoreElements()) {
+		IOPort port = (IOPort) outputPorts.nextElement();
 
-		    Receiver[][] insideReceivers = port.getRemoteReceivers();
+		Receiver[][] insideReceivers = port.getRemoteReceivers();
 
-		    //System.out.println(port.getName() + " " + insideReceivers.length);
+		//System.out.println(port.getName() + " " + insideReceivers.length);
 
-		    for (int i = 0; i < port.getWidth(); i++) {
-		        try {
-			    Token t = new Token();
-			    Parameter defaultValuePara = (Parameter) ((NamedObj) port).getAttribute("defaultValue");
-			    t = (Token) defaultValuePara.getToken();
+		for (int i = 0; i < port.getWidth(); i++) {
+		    try {
+			Token t = new Token();
+			Parameter defaultValuePara = (Parameter) ((NamedObj) port).getAttribute("defaultValue");
+			t = (Token) defaultValuePara.getToken();
 
-			    if (insideReceivers != null &&
-				insideReceivers[i] != null) {
-				if(_debugging) _debug(getName(),
-						      "transferring input from " + port.getName());
-				for (int j = 0; j < insideReceivers[i].length; j++) {
-				    insideReceivers[i][j].put(t);
-				    ((GiottoReceiver)insideReceivers[i][j]).update();
-				}
+			if (insideReceivers != null &&
+			    insideReceivers[i] != null) {
+			    if(_debugging) _debug(getName(),
+						  "transferring input from " + port.getName());
+			    for (int j = 0; j < insideReceivers[i].length; j++) {
+				insideReceivers[i][j].put(t);
+				((GiottoReceiver)insideReceivers[i][j]).update();
 			    }
-
-			} catch (NoTokenException ex) {
-				// this shouldn't happen.
-				throw new InternalErrorException(
-								 "Director.transferInputs: Internal error: " +
-								 ex.getMessage());
 			}
 
+		    } catch (NoTokenException ex) {
+			    // this shouldn't happen.
+			    throw new InternalErrorException(
+							     "Director.transferInputs: Internal error: " +
+							     ex.getMessage());
 		    }
+
 		}
-
-
 	    }
-    }
+
+
+	}
+
+
+     }
 
     /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the model
@@ -1312,9 +1322,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    filename.setTypeEquals(BaseType.STRING);
 	    filename.setExpression("\"ptolemy.giotto\"");
 
-
-
-
+	    sync = new Parameter(this, "synchronized");
+	    sync.setToken(new BooleanToken(false));
 
 	} catch (KernelException ex) {
 	    throw new InternalErrorException(
@@ -1373,6 +1382,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 //        System.out.println("What is currentTime " + currentTime + " ************ " + _minTimeStep);
 
 	setCurrentTime(currentTime + _minTimeStep);
+
+	_synchronizeToRealTime = ((BooleanToken) sync.getToken()).booleanValue();
 
 	if (_synchronizeToRealTime) {
 	    long elapsedTime = System.currentTimeMillis()
@@ -1474,7 +1485,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
     // Specify whether the director should wait for elapsed real time to
     // catch up with model time.
-    private boolean _synchronizeToRealTime = true;
+    private boolean _synchronizeToRealTime = false;
 
     // The real time at which the last unit has been invoked.
     private long _realStartTime = 0;
