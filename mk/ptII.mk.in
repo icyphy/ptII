@@ -205,6 +205,13 @@ PTLEGO_DIR =	@PTLEGO_DIR@
 # the Java Communications API and Lejos was found
 PTLEJOS_DIR =	@PTLEJOS_DIR@
 
+# Set to rtos and used in
+# $PTII/ptolemy/domains/makefile if java.util.Timer was found
+PTRTOS_DIR = @PTRTOS_DIR@
+
+# Set to soot and used in $PTII/ptolemy/apps/makefile if Soot was found
+PTSOOT_DIR = @PTSOOT_DIR@
+
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
 PTTINI_DIR =	@PTINI_DIR@
