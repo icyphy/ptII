@@ -64,7 +64,7 @@ test Add-1.1 {use default value} {
     set rampOut [java::cast ptolemy.actor.TypedIOPort [$ramp getPort Output]]
 
     #create const
-    set const [java::new ptolemy.actor.lib.Const $e0 Const]
+    set const [java::new ptolemy.actor.lib.Const $e0 Const 1]
     set constOut [java::cast ptolemy.actor.TypedIOPort [$const getPort Output]]
 
 
@@ -113,7 +113,7 @@ test Add-1.2 {fire the above topology} {
 
     set t [$sink getToken]
     list [$t toString]
-} {ptolemy.data.IntToken(0)}
+} {ptolemy.data.IntToken(1)}
 
 ######################################################################
 ####
@@ -126,7 +126,7 @@ test Add-1.3 {fire once more} {
 
     set t [$sink getToken]
     list [$t toString]
-} {ptolemy.data.IntToken(1)}
+} {ptolemy.data.IntToken(2)}
 
 ######################################################################
 ####
@@ -166,7 +166,7 @@ test Add-2.2 {fire twice} {
     set t2 [$sink getToken]
 
     list [$t1 toString] [$t2 toString]
-} {ptolemy.data.DoubleToken(0.5) ptolemy.data.DoubleToken(1.5)}
+} {ptolemy.data.DoubleToken(1.5) ptolemy.data.DoubleToken(2.5)}
 
 ######################################################################
 ####
