@@ -1658,10 +1658,10 @@ testMatrixMatrixScalar within $types
 
 set types [list \
         [list Complex ptolemy.math.Complex complex {1}] \
-  	[list Double double double {0}] \
-  	[list Float float float {0}] \
-  	[list Integer int int {0}] \
-  	[list Long long long {0}]]
+  	[list Double double double {1}] \
+  	[list Float float float {1}] \
+  	[list Integer int int {1}] \
+  	[list Long long long {1}]]
 
 testArrayMathArrayArrayArray within $types
 
@@ -1669,11 +1669,29 @@ testArrayMathArrayArrayArray within $types
 ####
 ##  *MatrixMath Test out boolean within(xxx[][], xxx[][], xxx[][])
 
-# FIXME: no boolean within(Complex[][], Complex[][], Complex[][])
+# FIXED (FIXME): no boolean within(Complex[][], Complex[][], Complex[][])
+
 set types [list \
+	[list Complex ptolemy.math.Complex complex {1}] \
 	[list Double double double {1}] \
 	[list Float float float {1}] \
 	[list Integer int int {1}] \
 	[list Long long long {1}]]
 
 testMatrixMatrixMatrix within $types
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
