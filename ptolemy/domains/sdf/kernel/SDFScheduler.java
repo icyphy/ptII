@@ -720,7 +720,7 @@ public class SDFScheduler extends Scheduler {
                     else if(!presentFiring.equals(desiredFiring))
                         throw new NotSchedulableException("No solution " +
                                 "exists for the balance equations.\n" +
-                                "Graph is not" +
+                                "Graph is not " +
                                 "consistent under the SDF domain");
                 }
                 catch (NoSuchElementException e) {

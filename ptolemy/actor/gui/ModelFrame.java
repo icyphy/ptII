@@ -93,10 +93,13 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     public ModelFrame(CompositeActor model, Tableau tableau) {
         super(model, tableau);
 
-        // Create first with no model to avoid duplicating work when
-        // we next call setModel().
         _pane = new ModelPane(model);
         getContentPane().add(_pane, BorderLayout.CENTER);
+
+        Manager manager = model.getManager();
+        if (manager != null) {
+            manager.addExecutionListener(this);
+        }
 
         // Make the go button the default.
         _pane.setDefaultButton();
@@ -160,8 +163,6 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     public void setModel(CompositeActor model) {
         super.setModel(model);
         if (model != null) {
-            // This is called in a base class constructor, before
-            // this variable has been set. Hence the test against null.
             if (_pane != null) _pane.setModel(model);
             Manager manager = model.getManager();
             if (manager != null) {
