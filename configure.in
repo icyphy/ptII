@@ -278,12 +278,12 @@ if "$JAVAC" confTest.java ; then
 
     AC_MSG_CHECKING([the value of the java.version Property ])
     # Older versions of cygwin might not have env, but 1.1 does
-    if env CLASSPATH=$PTII/config "$JAVA" confTest > /dev/null; then
+    if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
 	# Run it again and get the results
-	JVERSION=`CLASSPATH=$PTII/config "$JAVA" confTest`
+	JVERSION=`CLASSPATH="$PTII/config" "$JAVA" confTest`
 	AC_MSG_RESULT($JVERSION)
     else	
-	AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVA confTest failed.
+	AC_MSG_ERROR(['CLASSPATH="$PTII/config" "$JAVA" confTest failed.
 If java fails, then you will not be able to run Ptolemy II.
 This could be because your PTII variable is set incorrectly.
 Under Cygwin, try setting PTII in the control panel 
@@ -296,7 +296,7 @@ and then rerun
 See $PTII/doc/install.htm for details.'])
    fi
 else
-   AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVAC confTest.java failed.
+   AC_MSG_ERROR(['CLASSPATH="$PTII/config" "$JAVAC" confTest.java failed.
 If javac fails, then you will not be able to compile Ptolemy II.
 This could be because your PTII variable is set incorrectly.
 Under Cygwin, try setting PTII in the control panel 
@@ -720,17 +720,17 @@ else
 	AC_MSG_RESULT([$PTJACL_JAR])
 	AC_MSG_CHECKING([for how to run jacl with "$JAVA"])
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
+	if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
 		AC_MSG_RESULT(ok)
 		PTJACL_DIR=ptjacl
 	else
-		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell failed])
+		AC_MSG_RESULT([CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell failed])
 		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
-		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
+		if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
 			AC_MSG_RESULT(ok)
 		else
-			AC_MSG_RESULT(['CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell' failed,
-	use 'CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell'
+			AC_MSG_RESULT(['CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell' failed,
+	use 'CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell'
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error.])
 		fi
@@ -1011,17 +1011,17 @@ else
 	if "$JAVAC" MatlabRootDirectory.java ; then
 	    AC_MSG_RESULT(ok)
 	    AC_MSG_CHECKING([the value of the Matlab root directory ])
-	    if env CLASSPATH=$PTII/config "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
+	    if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
 		# Run it again and get the results
-		MATLAB_DIR=`CLASSPATH=$PTII/config "$JAVA" MatlabRootDirectory "$MATLAB"`
+		MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
 		AC_MSG_RESULT('$MATLAB_DIR')
 	    else	
-		AC_MSG_WARN(['CLASSPATH=$PTII/config $JAVA MatlabRootDirectory "$MATLAB" failed.
+		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB" failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 
 	    fi
 	else
-	    AC_MSG_WARN(['CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
+	    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC SystemJar.java failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 	fi
 	cd "$startdir"
@@ -1147,16 +1147,16 @@ else
     if "$JAVAC" SystemJar.java ; then
 	AC_MSG_RESULT(ok)
 	AC_MSG_CHECKING([the value of the java.home property ])
-	if env CLASSPATH=$PTII/config "$JAVA" SystemJar > /dev/null; then
+	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
-	    JAVA_SYSTEM_JAR=`CLASSPATH=$PTII/config "$JAVA" SystemJar`
+	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
    	    AC_MSG_RESULT('$JAVA_SYSTEM_JAR')
 	else	
-	    AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVA SystemJar failed.
+	    AC_MSG_ERROR(['CLASSPATH="$PTII/config" "$JAVA" SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'])
         fi
     else
-	AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
+	AC_MSG_ERROR(['cd "$srcdir/config"; "$JAVAC" SystemJar.java failed.
     Classes that use Soot will compile, but will fail to run.'])
     fi
     cd "$startdir"
