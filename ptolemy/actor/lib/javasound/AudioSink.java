@@ -351,7 +351,6 @@ public class AudioSink extends Sink {
      */
     public int iterate(int count) throws IllegalActionException {
 	if(_debugging) _debug("iterate(count) with count = " + count);
-	//System.out.println("AudioSink: iterate(count) with count = " + count);
 	for (int j = 0; j < _channels; j++) {
 	    if (input.hasToken(j, count)) {
 		// NOTE: inArray[j].length may be > count, in which case
@@ -386,8 +385,8 @@ public class AudioSink extends Sink {
 		    _soundPlayback.putSamples(_audioPutArray);
 		} catch (Exception ex) {
 		    throw new IllegalActionException(
-						     "Cannot playback audio:\n" +
-						     ex.getMessage());
+				"Cannot playback audio:\n" +
+				ex.getMessage());
 		}
 		// Reset pointer to begining of array.
 		_curElement = 0;

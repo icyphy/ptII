@@ -371,7 +371,6 @@ public class AudioSource extends Source {
 		try {
 		    // Read in audio data.
 		    _audioInDoubleArray = _soundCapture.getSamples();
-		    //System.out.println("AudioSource: iterate(): Invoking getSamples() and getting this many samples: " + _audioInDoubleArray[0].length);
 		} catch (Exception ex) {
 		    throw new IllegalActionException(
 						     "Cannot capture audio: " +
@@ -455,20 +454,16 @@ public class AudioSource extends Source {
      */
     public void wrapup() throws IllegalActionException {
 	if(_debugging) _debug("AudioSource: wrapup(): invoked");
-	//System.out.println("AudioSource: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundCapture != null) {
 	    try {
-		//System.out.println("AudioSource: wrapup(): shuting down audio.");
 		_soundCapture.stopCapture();
-		//System.out.println("AudioSource: wrapup(): shuting down audio succeeded.");
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
 		    "Cannot capture audio:\n" +
 		    ex.getMessage());
 	    }
 	}
-	//System.out.println("AudioSource: wrapup(): returning now...");
     }
 
     ///////////////////////////////////////////////////////////////////
