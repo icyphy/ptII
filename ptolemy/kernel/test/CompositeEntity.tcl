@@ -66,29 +66,30 @@ test CompositeEntity-1.1 {Get information about an instance \
 } {{
   class:         pt.kernel.CompositeEntity
   fields:        
-  methods:       {addParam pt.data.Param} {allowLevelCrossingConnect boo
-    lean} clone {connect pt.kernel.ComponentPort pt.kernel.
-    ComponentPort} {connect pt.kernel.ComponentPort pt.kern
-    el.ComponentPort java.lang.String} connectedPorts {deep
-    Contains pt.kernel.ComponentEntity} deepGetEntities {de
-    scription int} {equals java.lang.Object} getClass getCo
-    ntainer getEntities {getEntity java.lang.String} getFul
-    lName getName {getParam java.lang.String} getParams {ge
-    tPort java.lang.String} getPorts {getRelation java.lang
-    .String} getRelations hashCode isAtomic linkedRelations
-     {newPort java.lang.String} {newRelation java.lang.Stri
-    ng} notify notifyAll numEntities numRelations removeAll
-    Entities removeAllPorts removeAllRelations {removeParam
-     java.lang.String} {setContainer pt.kernel.CompositeEnt
-    ity} {setName java.lang.String} toString wait {wait lon
-    g} {wait long int} workspace
+  methods:       {addParameter pt.data.Parameter} {allowLevelCrossingCon
+    nect boolean} clone {clone pt.kernel.Workspace} {connec
+    t pt.kernel.ComponentPort pt.kernel.ComponentPort} {con
+    nect pt.kernel.ComponentPort pt.kernel.ComponentPort ja
+    va.lang.String} connectedPorts {deepContains pt.kernel.
+    ComponentEntity} deepGetEntities {description int} {equ
+    als java.lang.Object} getClass getContainer getEntities
+     {getEntity java.lang.String} getFullName getName {getP
+    arameter java.lang.String} getParameters {getPort java.
+    lang.String} getPorts {getRelation java.lang.String} ge
+    tRelations hashCode isAtomic linkedRelations {newPort j
+    ava.lang.String} {newRelation java.lang.String} notify 
+    notifyAll numEntities numRelations removeAllEntities re
+    moveAllPorts removeAllRelations {removeParameter java.l
+    ang.String} {setContainer pt.kernel.CompositeEntity} {s
+    etName java.lang.String} toString wait {wait long} {wai
+    t long int} workspace
     
   constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
     mpositeEntity pt.kernel.Workspace}
     
-  properties:    atomic class container entities fullName name params po
-    rts relations
+  properties:    atomic class container entities fullName name parameter
+    s ports relations
     
   superclass:    pt.kernel.ComponentEntity
     

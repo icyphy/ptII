@@ -67,19 +67,20 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       {addParam pt.data.Param} clone connectedPorts {descript
-    ion int} {equals java.lang.Object} getClass getContaine
-    r getFullName getName {getParam java.lang.String} getPa
-    rams {getPort java.lang.String} getPorts hashCode linke
-    dRelations {newPort java.lang.String} notify notifyAll 
-    removeAllPorts {removeParam java.lang.String} {setName 
-    java.lang.String} toString wait {wait long} {wait long 
-    int} workspace
+  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
+    .Workspace} connectedPorts {description int} {equals ja
+    va.lang.Object} getClass getContainer getFullName getNa
+    me {getParameter java.lang.String} getParameters {getPo
+    rt java.lang.String} getPorts hashCode linkedRelations 
+    {newPort java.lang.String} notify notifyAll removeAllPo
+    rts {removeParameter java.lang.String} {setName java.la
+    ng.String} toString wait {wait long} {wait long int} wo
+    rkspace
     
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
     t.kernel.Entity pt.kernel.Workspace java.lang.String}
     
-  properties:    class container fullName name params ports
+  properties:    class container fullName name parameters ports
     
   superclass:    pt.kernel.NamedObj
     

@@ -61,18 +61,19 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedObj
   fields:        
-  methods:       {addParam pt.data.Param} clone {description int} {equal
-    s java.lang.Object} getClass getContainer getFullName g
-    etName {getParam java.lang.String} getParams hashCode n
-    otify notifyAll {removeParam java.lang.String} {setName
-     java.lang.String} toString wait {wait long} {wait long
-     int} workspace
+  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
+    .Workspace} {description int} {equals java.lang.Object}
+     getClass getContainer getFullName getName {getParamete
+    r java.lang.String} getParameters hashCode notify notif
+    yAll {removeParameter java.lang.String} {setName java.l
+    ang.String} toString wait {wait long} {wait long int} w
+    orkspace
     
   constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String
     } {pt.kernel.NamedObj pt.kernel.Workspace java.lang.Str
     ing}
     
-  properties:    class container fullName name params
+  properties:    class container fullName name parameters
     
   superclass:    java.lang.Object
     
@@ -124,11 +125,11 @@ test NamedObj-2.3 { Check names with dots} {
 # FIXME:  test addParam, removeParam, getParam, getParams
 # test NamedObj-3.1 {Experiment with Parameters} {
 #     set n [java::new pt.kernel.NamedObj]
-#     set a1 [java::new pt.data.Param A1 1]
-#     set a2 [java::new pt.data.Param A2 2]
-#     $n addParam $a1
-#     set result [enumToFullNames [$n getParams]]
-# } {{first param} 42 {second param} -4}
+#     set a1 [java::new pt.data.Parameter A1 1]
+#     set a2 [java::new pt.data.Parameter A2 2]
+#     $n addParameter $a1
+#     set result [enumToFullNames [$n getParameters]]
+# } {{first parameter} 42 {second parameter} -4}
 
 ######################################################################
 ####
@@ -211,24 +212,24 @@ test NamedObj-7.1 {Test clone} {
 ######################################################################
 ####
 # 
-test NamedObj-8.1 {Test params} {
+test NamedObj-8.1 {Test Parameters} {
     set n [java::new pt.kernel.Workspace "N"]
     set a [java::new pt.kernel.NamedObj $n "A" ]
-    set p [java::new {pt.data.Param pt.kernel.NamedObj java.lang.String java.lang.String} $a "P" 1]
-    $a addParam $p
-    set c [$a getParam "P"]
+    set p [java::new {pt.data.Parameter pt.kernel.NamedObj java.lang.String java.lang.String} $a "P" 1]
+    $a addParameter $p
+    set c [$a getParameter "P"]
     expr {$c == $p}
 } {1}
 
 # NOTE: Builds on previous example.
-test NamedObj-8.2 {Test params} {
-    set q [java::new {pt.data.Param pt.kernel.NamedObj java.lang.String java.lang.String} $a "Q" 2]
-    $a addParam $q
-    enumToFullNames [$a getParams]
+test NamedObj-8.2 {Test Parameters} {
+    set q [java::new {pt.data.Parameter pt.kernel.NamedObj java.lang.String java.lang.String} $a "Q" 2]
+    $a addParameter $q
+    enumToFullNames [$a getParameters]
 } {N.A.P N.A.Q}
 
 # NOTE: Builds on previous example.
-test NamedObj-8.3 {Test params} {
-    $a removeParam P
-    enumToFullNames [$a getParams]
+test NamedObj-8.3 {Test Parameters} {
+    $a removeParameter P
+    enumToFullNames [$a getParameters]
 } {N.A.Q}

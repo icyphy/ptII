@@ -62,14 +62,14 @@ test NamedList-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedList
   fields:        
-  methods:       {_getIndexOf java.lang.String} {append pt.kernel.Nameab
-    le} {equals java.lang.Object} first {get java.lang.Stri
-    ng} getClass getElements hashCode {includes pt.kernel.N
-    ameable} {insertAfter java.lang.String pt.kernel.Nameab
-    le} {insertBefore java.lang.String pt.kernel.Nameable} 
-    last notify notifyAll {prepend pt.kernel.Nameable} {rem
-    ove java.lang.String} {remove pt.kernel.Nameable} remov
-    eAll size toString wait {wait long} {wait long int}
+  methods:       {append pt.kernel.Nameable} clone {equals java.lang.Obj
+    ect} first {get java.lang.String} getClass getElements 
+    hashCode {includes pt.kernel.Nameable} {insertAfter jav
+    a.lang.String pt.kernel.Nameable} {insertBefore java.la
+    ng.String pt.kernel.Nameable} last notify notifyAll {pr
+    epend pt.kernel.Nameable} {remove java.lang.String} {re
+    move pt.kernel.Nameable} removeAll size toString wait {
+    wait long} {wait long int}
     
   constructors:  pt.kernel.NamedList {pt.kernel.NamedList pt.kernel.Name
     able} {pt.kernel.NamedList pt.kernel.NamedList}

@@ -62,21 +62,22 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 } {{
   class:         pt.kernel.ComponentEntity
   fields:        
-  methods:       {addParam pt.data.Param} clone connectedPorts {descript
-    ion int} {equals java.lang.Object} getClass getContaine
-    r getFullName getName {getParam java.lang.String} getPa
-    rams {getPort java.lang.String} getPorts hashCode isAto
-    mic linkedRelations {newPort java.lang.String} notify n
-    otifyAll removeAllPorts {removeParam java.lang.String} 
-    {setContainer pt.kernel.CompositeEntity} {setName java.
-    lang.String} toString wait {wait long} {wait long int} 
-    workspace
+  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
+    .Workspace} connectedPorts {description int} {equals ja
+    va.lang.Object} getClass getContainer getFullName getNa
+    me {getParameter java.lang.String} getParameters {getPo
+    rt java.lang.String} getPorts hashCode isAtomic linkedR
+    elations {newPort java.lang.String} notify notifyAll re
+    moveAllPorts {removeParameter java.lang.String} {setCon
+    tainer pt.kernel.CompositeEntity} {setName java.lang.St
+    ring} toString wait {wait long} {wait long int} workspa
+    ce
     
   constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
     mponentEntity pt.kernel.Workspace}
     
-  properties:    atomic class container fullName name params ports
+  properties:    atomic class container fullName name parameters ports
     
   superclass:    pt.kernel.Entity
     

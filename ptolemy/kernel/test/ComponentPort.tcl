@@ -66,25 +66,25 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       {addParam pt.data.Param} clone connectedPorts deepConne
-    ctedPorts deepInsidePorts {description int} {equals jav
-    a.lang.Object} getClass getContainer getFullName getNam
-    e {getParam java.lang.String} getParams hashCode inside
-    Ports insideRelations {isDeeplyConnected pt.kernel.Comp
-    onentPort} {isInsideLinked pt.kernel.Relation} {isLinke
-    d pt.kernel.Relation} isOpaque {liberalLink pt.kernel.C
-    omponentRelation} {link pt.kernel.Relation} linkedRelat
-    ions notify notifyAll numInsideLinks numLinks {removePa
-    ram java.lang.String} {setContainer pt.kernel.Entity} {
-    setName java.lang.String} toString {unlink pt.kernel.Re
-    lation} unlinkAll wait {wait long} {wait long int} work
-    space
+  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
+    .Workspace} connectedPorts deepConnectedPorts deepInsid
+    ePorts {description int} {equals java.lang.Object} getC
+    lass getContainer getFullName getName {getParameter jav
+    a.lang.String} getParameters hashCode insidePorts insid
+    eRelations {isDeeplyConnected pt.kernel.ComponentPort} 
+    {isInsideLinked pt.kernel.Relation} {isLinked pt.kernel
+    .Relation} isOpaque {liberalLink pt.kernel.ComponentRel
+    ation} {link pt.kernel.Relation} linkedRelations notify
+     notifyAll numInsideLinks numLinks {removeParameter jav
+    a.lang.String} {setContainer pt.kernel.Entity} {setName
+     java.lang.String} toString {unlink pt.kernel.Relation}
+     unlinkAll wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String} {pt.kernel.Compon
     entPort pt.kernel.Workspace}
     
-  properties:    class container fullName name opaque params
+  properties:    class container fullName name opaque parameters
     
   superclass:    pt.kernel.Port
     

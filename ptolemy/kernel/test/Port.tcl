@@ -67,20 +67,21 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {addParam pt.data.Param} clone connectedPorts {descript
-    ion int} {equals java.lang.Object} getClass getContaine
-    r getFullName getName {getParam java.lang.String} getPa
-    rams hashCode {isLinked pt.kernel.Relation} isOpaque {l
-    ink pt.kernel.Relation} linkedRelations notify notifyAl
-    l numLinks {removeParam java.lang.String} {setContainer
-     pt.kernel.Entity} {setName java.lang.String} toString 
-    {unlink pt.kernel.Relation} unlinkAll wait {wait long} 
-    {wait long int} workspace
+  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
+    .Workspace} connectedPorts {description int} {equals ja
+    va.lang.Object} getClass getContainer getFullName getNa
+    me {getParameter java.lang.String} getParameters hashCo
+    de {isLinked pt.kernel.Relation} isOpaque {link pt.kern
+    el.Relation} linkedRelations notify notifyAll numLinks 
+    {removeParameter java.lang.String} {setContainer pt.ker
+    nel.Entity} {setName java.lang.String} toString {unlink
+     pt.kernel.Relation} unlinkAll wait {wait long} {wait l
+    ong int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}
     
-  properties:    class container fullName name opaque params
+  properties:    class container fullName name opaque parameters
     
   superclass:    pt.kernel.NamedObj
     

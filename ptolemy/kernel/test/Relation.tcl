@@ -62,19 +62,20 @@ test Relation-1.1 {Get information about an instance of Relation} {
 } {{
   class:         pt.kernel.Relation
   fields:        
-  methods:       {addParam pt.data.Param} clone {description int} {equal
-    s java.lang.Object} getClass getContainer getFullName g
-    etName {getParam java.lang.String} getParams hashCode l
-    inkedPorts {linkedPorts pt.kernel.Port} notify notifyAl
-    l numLinks {removeParam java.lang.String} {setName java
-    .lang.String} toString unlinkAll wait {wait long} {wait
-     long int} workspace
+  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
+    .Workspace} {description int} {equals java.lang.Object}
+     getClass getContainer getFullName getName {getParamete
+    r java.lang.String} getParameters hashCode linkedPorts 
+    {linkedPorts pt.kernel.Port} notify notifyAll numLinks 
+    {removeParameter java.lang.String} {setName java.lang.S
+    tring} toString unlinkAll wait {wait long} {wait long i
+    nt} workspace
     
   constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
     } {pt.kernel.Relation pt.kernel.Workspace java.lang.Str
     ing}
     
-  properties:    class container fullName name params
+  properties:    class container fullName name parameters
     
   superclass:    pt.kernel.NamedObj
     
