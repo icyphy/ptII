@@ -433,7 +433,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // now that we have anonymous classes, we should visit the body
         TreeNode block = node.getBody();
 
-        if (block != AbsentTreeNode.instance) {
+        if ((block != null) && (block != AbsentTreeNode.instance)) {
             LinkedList childArgs = new LinkedList();
             childArgs.addLast(NullTypeNode.instance); // enclosing class decl
             childArgs.addLast(NullTypeNode.instance); // enclosing class scope
