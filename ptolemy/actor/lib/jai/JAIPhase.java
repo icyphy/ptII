@@ -47,14 +47,15 @@ import ptolemy.kernel.util.NameDuplicationException;
    image inputted has an even number of bands, where each pair of bands
    (0 and 1, 2 and 3, etc.) correspond to a real-imaginary pair.
 
-   <p>The output of this actor may not be suitable for display because of the
-   high resolution of the data.  To display or save the output of this
-   image, use the {@link JAIDataConvert} actor to cast the data to an appropriate
-   type (for instance, byte).  For images with non-floating point data,
-   the theoretical output range of -pi to pi, gets mapped to 0 to
-   MAX_VALUE, where MAX_VALUE is the largest representable number of the
-   data type.  If the input is floating point data, then it returns the
-   value given by java.lang.math.atan2().
+   <p>The output of this actor may not be suitable for display because
+   of the high resolution of the data.  To display or save the output
+   of this image, use the {@link JAIDataConvert} actor to cast the
+   data to an appropriate type (for instance, byte).  For images with
+   non-floating point data, the theoretical output range of -pi to pi,
+   gets mapped to 0 to MAX_VALUE, where MAX_VALUE is the largest
+   representable number of the data type.  If the input is floating
+   point data, then it returns the value given by
+   java.lang.math.atan2().
 
    @see JAIDataConvert
    @author James Yeh

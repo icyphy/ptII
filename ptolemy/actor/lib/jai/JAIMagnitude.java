@@ -47,10 +47,10 @@ import ptolemy.kernel.util.NameDuplicationException;
    image inputted has an even number of bands, where each pair of bands
    (0 and 1, 2 and 3, etc.) correspond to a real-imaginary pair.
 
-   <p> The output of this actor may not be suitable for display because of the
-   high resolution of the data.  To display or save the output of this
-   image, use the {@link JAIDataConvert} actor to cast the data to an appropriate
-   type (for instance, byte).
+   <p> The output of this actor may not be suitable for display
+   because of the high resolution of the data.  To display or save the
+   output of this image, use the {@link JAIDataConvert} actor to cast
+   the data to an appropriate type (for instance, byte).
 
    @see JAIDataConvert
    @author James Yeh

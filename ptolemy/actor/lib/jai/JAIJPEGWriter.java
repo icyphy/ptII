@@ -132,8 +132,9 @@ public class JAIJPEGWriter extends JAIWriter {
         jpegEncodeParameters.setWriteJFIFHeader(
                 ((BooleanToken)writeJFIFHeader.getToken()).booleanValue());
         jpegEncodeParameters.setQuality(0.01f * quality.getCurrentValue());
-        jpegEncodeParameters.setRestartInterval(((IntToken)restartInterval
-                                                        .getToken()).intValue());
+        jpegEncodeParameters.setRestartInterval(
+                ((IntToken)restartInterval
+                        .getToken()).intValue());
 
         _imageEncodeParam = jpegEncodeParameters;
         return super.postfire();
