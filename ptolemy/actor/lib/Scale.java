@@ -157,7 +157,7 @@ public class Scale extends Transformer {
     // port and a parameter.
     // The function value is determined by:
     // f(portType, paramType) =
-    //     UNKNOWN,                  if portType=UNKNOWN
+    //     UNKNOWN,                  if portType = UNKNOWN
     //     LUB(portType, paramType), if portType is a BaseType
     //     {f(elemType(portType), paramType)}, if portType is an array type.
     //
