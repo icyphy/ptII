@@ -50,9 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DDESink.java \
-	DDEPipe.java \
 	DDEDoubleFork.java \
-	TimeAdvance.java 
+	TimeAdvance.java \
+	Wire.java 
 
 
 EXTRA_SRCS =	$(JSRCS)
