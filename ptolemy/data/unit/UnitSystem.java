@@ -155,7 +155,7 @@ public class UnitSystem extends ScopeExtendingAttribute {
     }
 
     /** Return a string representation of the UnitSystem.
-     *  @returns A string representation of the UnitSystem
+     *  @return A string representation of the UnitSystem
      *  @since Ptolemy II 2.1
      */
     public /*static*/ String toString() {
