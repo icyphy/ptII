@@ -1,4 +1,5 @@
-/* Generate discrete events by periodically sampling a CT signal.
+/* Generate discrete events by sampling a CT signal whenever there 
+   is a trigger.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -57,9 +58,6 @@ public class CTTriggeredSampler extends Transformer
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  The actor can be either dynamic, or not.  It must be set at the
-     *  construction time and can't be changed thereafter.
-     *  A dynamic actor will produce a token at its initialization phase.
      *
      *  @param CompositeActor The subsystem that this actor is lived in
      *  @param name The actor's name
@@ -77,13 +75,13 @@ public class CTTriggeredSampler extends Transformer
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
         // The trigger input has a generic type.
-        // trigger.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port for triggering.
+    /** The input port for triggering. The port has a generic type.
+     *  Only the presents of a token matters.
      */
     public TypedIOPort trigger;
 
@@ -91,7 +89,7 @@ public class CTTriggeredSampler extends Transformer
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
+     *  base class and then sets the port types.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
@@ -103,31 +101,32 @@ public class CTTriggeredSampler extends Transformer
             (CTTriggeredSampler)super.clone(workspace);
         newObject.input.setMultiport(true);
         newObject.output.setMultiport(true);
-        newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
-    /** Emit the current event, which has the token of the latest input
-     *  token.
+    /** Emit the current events, which are the tokens of the latest input
+     *  tokens if a trigger input is present.
+     *  @exception IllegalActionException If the hasToken() query failed
+     *  or tokens cannot be sent from the output.
      */
-    public void emitCurrentEvents() {
-        try {
-            if (trigger.hasToken(0)) {
-                trigger.get(0);
-                for (int i = 0;
-                     i < Math.min(input.getWidth(), output.getWidth());
-                     i++) {
-                    if(input.hasToken(i)) {
-                        output.send(i, input.get(i));
-                    }
+    public void emitCurrentEvents() throws IllegalActionException {
+        if (trigger.hasToken(0)) {
+            trigger.get(0);
+            for (int i = 0;
+                 i < Math.min(input.getWidth(), output.getWidth());
+                 i++) {
+                if(input.hasToken(i)) {
+                    output.send(i, input.get(i));
                 }
             }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException("Token mismatch.");
         }
     }
 
     /** Return true if there is a trigger event.
+     *  If the hasToken() query on the trigger input throws an exception
+     *  then throw an InternalErrorException.
+     *  @return True if there is a token in the trigger port.
      */
     public boolean hasCurrentEvent() {
         try {

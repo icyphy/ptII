@@ -1,4 +1,4 @@
-/* Monitor integration steps so that the threshold is not crossed in one step.
+/* Monitor integration steps so that a threshold is not crossed in one step.
 
  Copyright (c) 1999-2001 The Regents of the University of California.
  All rights reserved.
@@ -41,15 +41,18 @@ import ptolemy.actor.lib.TimedActor;
 //////////////////////////////////////////////////////////////////////////
 //// ThresholdMonitor
 /**
-Monitor integration steps so that the threshold is not crossed in one step.
-This actor has one input port, but no output port. If functionality is
-solely devoted to controlling the integration step size. It has two
-parameters "thresholdWidth" and "thresholdCenter", which have default
-value 1e-2 and 0, respectively.
+Monitor integration steps so that a threshold is never crossed in one step.
+The threshold is defined as a <i>thresholdCenter</i> and a 
+<i>thresholdWidth</i>. The actor monitors the input
+value and controls the integration step size such that the input does
+not cross the threshold in one step. In stead, the input will be in the
+threshold at at least one time instance. When ever the input is in
+the threshold, it outputs a true token, otherwise, it output
+a false token.This actor refines step sizes by bisection. 
+
 @author  Jie Liu
 @version $Id$
 */
-//FIXME: need to use the new parameter mechanism.
 
 public class ThresholdMonitor extends TypedAtomicActor
     implements CTStepSizeControlActor, TimedActor{
@@ -59,7 +62,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      *  NullPointerException will be thrown.
      *
      *  @param container The subsystem that this actor is lived in
-     *  @param name The actor's name
+     *  @param name The name of the actor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If name coincides with
@@ -95,8 +98,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      */
     public TypedIOPort input;
 
-    /** The output port, single port with type boolean. The output is true
-     *  if the input is in the threshold.
+    /** The output port, single port with type boolean. 
      */
     public TypedIOPort output;
 
@@ -111,10 +113,9 @@ public class ThresholdMonitor extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Update the parameter if they have been changed.
-     *  The new parameter will be used only after this method is called.
+    /** Update local caches if the attributes have been changed.
      *  @exception IllegalActionException If there is no token in the
-     *  parameter.
+     *  the attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -131,8 +132,9 @@ public class ThresholdMonitor extends TypedAtomicActor
         }
     }
 
-    /** Consume the current input.
-     *  @exception IllegalActionException If there is no input token.
+    /** Consume the current input. If the input is in the threshold, 
+     *  then output true, otherwise output false.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         _debug("Monitor" + getFullName() + " fired.");
@@ -144,7 +146,7 @@ public class ThresholdMonitor extends TypedAtomicActor
         }
     }
 
-    /** Setup the internal variables so that there is no history.
+    /** Initialize the execution.
      *  @exception IllegalActionException If thrown by the super class.
      */
     public void initialize() throws IllegalActionException {
@@ -153,7 +155,7 @@ public class ThresholdMonitor extends TypedAtomicActor
     }
 
     /** Return true if this step did not cross the threshold.
-     *  @return True if this step did not cross the threshold.
+     *  @return True if this step is accurate.
      */
     public boolean isThisStepAccurate() {
         if (!_first) {
@@ -170,8 +172,8 @@ public class ThresholdMonitor extends TypedAtomicActor
         return true;
     }
 
-    /** Return true always. Make this input the history.
-     *  @return True always.
+    /** Make this input to be the history input and return true.
+     *  @return True.
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();

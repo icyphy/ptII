@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -42,12 +42,14 @@ import ptolemy.actor.lib.Transformer;
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOrderHold
 /**
-An actor that converts event into continuous signal. This class act
+An actor that converts events into continuous signals. This actor acts
 as the zero order hold. It consume the token when the consumeCurrentEvent()
-is called. This value will be hold and emitted every time it is
-fired, until the next consumeCurrentEvent() is called. This actor has one
-single input port of type DoubleToken, one single output port of type
-DoubleToken, and no parameter.
+is called. This value will be hold and emitted every time the actor is
+fired, until the next consumeCurrentEvent() is called. If nothing has
+been consumed from the starting of execution, a zero token of resolved
+type will be sent. This actor has one
+single input port, one single output, and no parameter. The ports are
+data type polymorphic.
 
 @author Jie Liu
 @version $Id$
@@ -73,17 +75,13 @@ public class ZeroOrderHold extends Transformer
     public ZeroOrderHold(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // FIXME: Are they always DOUBLE?
-        //input.setTypeEquals(BaseType.DOUBLE);
-        //output.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeAtLeast(input);
+        output.setTypeSameAs(input);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
+    /** Clone the actor into the specified workspace. 
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
@@ -92,16 +90,13 @@ public class ZeroOrderHold extends Transformer
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         ZeroOrderHold newObject = (ZeroOrderHold)super.clone(workspace);
-        // newObject.input.setTypeEquals(BaseType.DOUBLE);
-        // newObject.output.setTypeEquals(BaseType.DOUBLE);
-        newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
-
     /** consume the input event if there is any. This event will be
-     *  hold for further firings until this method is called for the
-     *  next time. If there is no input event, do nothing and
+     *  hold for further firings until this method is called again.
+     *  If there is no input event, do nothing and
      *  the old token will be held.
      */
     public void consumeCurrentEvents() throws IllegalActionException{
@@ -114,12 +109,12 @@ public class ZeroOrderHold extends Transformer
         }
     }
 
-    /** Output a DoubleToken of the last event token.
-     *  @exception IllegalActionException If the token cannot be
-     *  broadcasted.
+    /** Output the latest token consumed from the consumeCurrentEvents()
+     *  call.
+     *  @exception IllegalActionException If the token cannot be sent.
      */
     public void fire() throws IllegalActionException{
-        output.broadcast(_lastToken);
+        output.send(0, _lastToken);
     }
 
     /** Initialize token. If there is no input, the initial token is

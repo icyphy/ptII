@@ -43,6 +43,7 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 
 import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// DifferentialSystem
@@ -58,9 +59,9 @@ where x is the state vector, u is the input vector, and y is the output
 vector, t is the time. Users must give the name of the variables
 by filling in parameters
 <P>
-The actor, upon creation, has no input and no output. Users must
-manually create the inputs/outputs, and fill in their name in the
-<i>inputVariableNames</i>/<i>outputVariableNames</i> parameters.
+The actor, upon creation, has no input and no output. Upon filling
+in the names in the <i>inputVariableNames</i> and 
+<i>outputVariableNames</i> parameters, the ports will be created.
 The name of the state variables are manually added by filling in
 the <i>stateVariableNames</i> parameter.
 <P>
@@ -69,7 +70,7 @@ If there are <i>n</i> state variables <i>x</i><sub>1</sub>, ...
 <i>x</i><sub>n</sub>,
 then users must create <i>n</i> additional parameters, one
 for each state equation. And the parameters must be named as:
-"<i>d_x</i><sub>1</sub>", ..., "<i>d_x</i><sub>n</sub>" respectively.
+"<i>x</i><sub>1</sub>_dot", ..., "<i>x</i><sub>n</sub>_dot" respectively.
 Similarly, if the output ports have name <i>y</i><sub>1</sub>, ...,
 <i>y</i><sub>r</sub>, then users must create additional <i>r</i>
 parameters for output maps. These parameters should be named
@@ -101,10 +102,6 @@ public class DifferentialSystem extends TypedCompositeActor {
         empty[0] = new StringToken("");
         stateVariableNames = new Parameter(this, "stateVariableNames",
                 new ArrayToken(empty));
-        inputVariableNames = new Parameter(this, "inputVariableNames",
-                new ArrayToken(empty));
-        outputVariableNames = new Parameter(this, "outputVariableNames",
-                new ArrayToken(empty));
         initialStates = new Parameter(this, "initialStates");
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
@@ -135,30 +132,19 @@ public class DifferentialSystem extends TypedCompositeActor {
      */
     public Parameter stateVariableNames;
 
-    /** The names of the input variables, in an array of strings.
-     *  The default is  an ArrayToken of an empty String.
-     */
-    public Parameter inputVariableNames;
-
-    /** The names of the output variables, in an array of strings.
-     *  The default is  an ArrayToken of an empty String.
-     */
-    public Parameter outputVariableNames;
-
     /** The initial condition for the state variables. This must be
      *  a vector (double matrix with only one row) whose
-     *  The default value is empty.
+     *  default value is empty.
      */
     public Parameter initialStates;
 
     //////////////////////////////////////////////////////////////////////
     ////                      public methods                          ////
 
-    /** If the argument is <i>A, B, C, D</i> or <i>initialState</i>
-     *  parameters, check that they are indeed matrices and vectors,
-     *  and request for initialization from the director if there is one.
-     *  Other sanity checks like the dimensions of the matrices will
-     *  be done in the preinitialize() method.
+    /** If the argument is the <i>initialState</i>
+     *  parameters, check that it is a row vector;
+     *  Other sanity checks, like whether a differential euqation matches
+     *  a state variable name, are done in preintialize() and run time. 
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
@@ -175,7 +161,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             }
             // Changes of the initialStates parameter are ignored after
             // the execution.
-        } else if (attribute instanceof Parameter) {
+        }else if (attribute instanceof Parameter) {
             // Change of other parameters triggers reinitialization.
             super.attributeChanged(attribute);
             _requestInitialization();
@@ -207,10 +193,10 @@ public class DifferentialSystem extends TypedCompositeActor {
 
         ArrayToken stateNames = (ArrayToken)stateVariableNames.getToken();
         int n = stateNames.length();
-        ArrayToken inputNames = (ArrayToken)inputVariableNames.getToken();
-        int m = inputNames.length();
-        ArrayToken outputNames = (ArrayToken)outputVariableNames.getToken();
-        int r = outputNames.length();
+        int m = inputPortList().size();
+        int r = outputPortList().size();
+        DoubleMatrixToken initial = (DoubleMatrixToken)
+            initialStates.getToken();
 
         try {
             _workspace.getWriteAccess();
@@ -226,13 +212,16 @@ public class DifferentialSystem extends TypedCompositeActor {
                 states[i] = ((StringToken)stateNames.getElement(i)).
                     stringValue().trim();
                 integrators[i] = new Integrator(this, states[i]);
+                integrators[i].initialState.setToken(
+                        initial.getElementAsToken(0,i));
                 stateRelations[i] = new TypedIORelation(this,
                         "relation_" + states[i]);
+                
                 integrators[i].output.link(stateRelations[i]);
                 // One Expression per integrator.
-                equations[i] = new Expression(this, "d_" + states[i]);
+                equations[i] = new Expression(this, states[i] + "_dot");
                 equations[i].expression.setExpression(((StringToken)
-                        ((Parameter)getAttribute("d_" + states[i])).
+                        ((Parameter)getAttribute(states[i] + "_dot")).
                         getToken()).stringValue());
                 //FIXME: Why should I set type here?
                 equations[i].output.setTypeEquals(BaseType.DOUBLE);
@@ -241,25 +230,32 @@ public class DifferentialSystem extends TypedCompositeActor {
             // Inputs
             String[] inputs = new String[m];
             IORelation[] inputRelations = new IORelation[m];
-            for(int j = 0; j < m; j++) {
-                inputs[j] = ((StringToken)inputNames.getElement(j)).
-                    stringValue().trim();
-                inputRelations[j] = new TypedIORelation(this,
-                        "relation_" + inputs[j]);
-                getPort(inputs[j]).link(inputRelations[j]);
+            Iterator inputPorts = inputPortList().iterator();
+            int inputIndex = 0;
+            while (inputPorts.hasNext()) {
+                inputs[inputIndex] = ((NamedObj)inputPorts.next()).getName();
+                inputRelations[inputIndex] = new TypedIORelation(this,
+                        "relation_" + inputs[inputIndex]);
+                getPort(inputs[inputIndex]).link(inputRelations[inputIndex]);
+                inputIndex++;
             }
             // Outputs and output expressions.
             String[] outputs = new String[r];
             Expression[] maps = new Expression[r];
-            for(int l = 0; l < r; l++) {
-                outputs[l] = ((StringToken)outputNames.getElement(l)).
-                    stringValue().trim();
-                maps[l] = new Expression(this, "output_" + outputs[l]);
+            int outIndex = 0;
+            Iterator outputPorts = outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                outputs[outIndex] = ((NamedObj)outputPorts.next()).getName();
+                maps[outIndex] = new Expression(this, "output_" + 
+                        outputs[outIndex]);
 
-                maps[l].expression.setExpression(((StringToken)((Parameter)
-                        getAttribute(outputs[l])).getToken()).stringValue());
-                maps[l].output.setTypeEquals(BaseType.DOUBLE);
-                connect(maps[l].output, (TypedIOPort)getPort(outputs[l]));
+                maps[outIndex].expression.setExpression(((StringToken)
+                        ((Parameter)getAttribute(outputs[outIndex])).
+                        getToken()).stringValue());
+                maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
+                connect(maps[outIndex].output, 
+                        (TypedIOPort)getPort(outputs[outIndex]));
+                outIndex++;
             }
             // Connect state feedback expressions.
             for(int i = 0; i < n; i++) {
@@ -326,10 +322,12 @@ public class DifferentialSystem extends TypedCompositeActor {
         }
     }
 
-    /** Wrapup.
+    /** Set the opaqueness to true and wrapup.
+     *  @exception IllegalActionException If there is no director.
      */
     public void wrapup() throws IllegalActionException {
         _opaque = true;
+        super.wrapup();
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -355,7 +353,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                         + "name should not be an empty string.");
             }
             // Check state equations.
-            String equation = "d_" + name;
+            String equation = name + "_dot";
             if(getAttribute(equation) == null) {
                  throw new IllegalActionException(this, "Please add a "
                          + "parameter with name \""
@@ -363,43 +361,17 @@ public class DifferentialSystem extends TypedCompositeActor {
             }
         }
 
-        // Check input names.
-        ArrayToken inputNames = (ArrayToken)inputVariableNames.getToken();
-        int m = inputNames.length();
-        // Note there could be no input.
-        // Check if any of the input variable names is an empty string,
-        // and also that there is an input port with the same name.
-        for(int j = 0; j < m; j++) {
-            String name = (((StringToken)inputNames.getElement(j)).
-                stringValue()).trim();
-            if(name.equals("")) {
-                throw new IllegalActionException(this, "A input variable "
-                        + "name should not be an empty string.");
-            }
-            if(getPort(name) == null ||
-                    !((IOPort)getPort(name)).isInput()) {
-                throw new IllegalActionException(this, "There must be "
-                        + "an input port with name " + name);
-            }
-        }
-
         // Check output names.
-        ArrayToken outputNames = (ArrayToken)outputVariableNames.getToken();
-        int r = outputNames.length();
-        // Note there could be no output.
-        // Check if any of the output variable names is an empty string,
+        Iterator outputPorts = outputPortList().iterator();   
+        // Note there could be no output. If there are outputs,
+        // check if any of the output variable names is an empty string,
         // and also that there is an output port with the same name.
-        for(int l = 0; l < r; l++) {
-            String name = (((StringToken)outputNames.getElement(l)).
-                stringValue()).trim();
+        while(outputPorts.hasNext()) {
+            TypedIOPort output = (TypedIOPort)outputPorts.next();
+            String name = output.getName().trim();
             if(name.equals("")) {
                 throw new IllegalActionException(this, "A output variable "
                         + "name should not be an empty string.");
-            }
-            if(getPort(name) == null ||
-                    !((IOPort)getPort(name)).isOutput()) {
-                throw new IllegalActionException(this, "There must be "
-                        + "an output port with name " + name);
             }
             // Check output maps.
             if(getAttribute(name) == null) {
@@ -413,7 +385,7 @@ public class DifferentialSystem extends TypedCompositeActor {
     /** Set this composite actor to opaque and request for reinitialization
      *  from the director if there is one.
      */
-    protected void _requestInitialization() {
+    private void _requestInitialization() {
         // Set this composite to opaque.
         _opaque = true;
         // Request for initialization.

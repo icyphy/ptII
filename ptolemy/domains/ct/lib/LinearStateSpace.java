@@ -57,7 +57,7 @@ The State-Space model implements a system whose behavior is defined by:
      x(0) = x0
 </pre>
 where x is the state vector, u is the input vector, and y is the output
-vector. The matrix coefficients must have these characteristics:
+vector. The matrix coefficients must have the following characteristics:
 <pre>
 A must be an n-by-n matrix, where n is the number of states.
 B must be an n-by-m matrix, where m is the number of inputs.
@@ -69,7 +69,8 @@ through a multi-input port and a multi-output port. The widths of the
 ports must match the number of rows and columns in corresponding
 matrices, otherwise, an exception will be thrown.
 <P>
-This actor works like a higher-order function. Upon preinitialization,
+This actor works like a higher-order function. It is opaque after 
+construction or the change of parameters. Upon preinitialization,
 the actor will create a subsystem using integrators, adders, and
 scales. After that, the actor becomes transparent, and the director
 takes over the control of the actors contained by this actor.
@@ -250,7 +251,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  create a continuous-time subsystem that implement the model,
      *  preinitialize all the actors in the subsystem,
      *  and set the opaqueness of this actor to true.
-     *  This method need the write access on the workspace.
+     *  This method needs the write access on the workspace.
      *  @exception IllegalActionException If there is no CTDirector,
      *  or any contained actors throw it in its preinitialize() method.
      *
@@ -376,7 +377,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         }
     }
 
-    /** Return the executive director, regardless what isOpaque returns.
+    /** Return the executive director, regardless what isOpaque() returns.
+     *  @return the executive director.
      */
     public Director getDirector() {
         if (_opaque) {
@@ -386,14 +388,17 @@ public class LinearStateSpace extends TypedCompositeActor {
         }
     }
 
-    /** Wrapup.
+    /** Set the opaqueness back to true and call the wrapup() method
+     *  of the super class. 
+     *  @exception IllegalActionException If there is no director.
      */
     public void wrapup() throws IllegalActionException {
         _opaque = true;
+        super.wrapup();
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////                      private variables                       ////
+    ////                      private methods                         ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -443,7 +448,7 @@ public class LinearStateSpace extends TypedCompositeActor {
     /** Set this composite actor to opaque and request for reinitialization
      *  from the director if there is one.
      */
-    protected void _requestInitialization() {
+    private void _requestInitialization() {
         // Set this composite to opaque.
         _opaque = true;
         // Request for initialization.
@@ -453,11 +458,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         }
     }
 
-
     //////////////////////////////////////////////////////////////////////
     ////                      private variables                       ////
     // opaqueness.
     private boolean _opaque;
-
-
 }

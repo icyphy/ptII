@@ -49,19 +49,15 @@
     <entity name="DifferentialSystem0" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;x1&quot;, &quot;x2&quot;]">
         </property>
-        <property name="inputVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;u&quot;]">
-        </property>
-        <property name="outputVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;y&quot;]">
-        </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="256.0, 168.0">
         </property>
-        <property name="d_x1" class="ptolemy.data.expr.Parameter" value="&quot;sin(x2+x1)+u&quot;">
+        <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="&quot;sin(x2+x1)+u&quot;">
         </property>
-        <property name="d_x2" class="ptolemy.data.expr.Parameter" value="&quot;u-1.0&quot;">
+        <property name="x2_dot" class="ptolemy.data.expr.Parameter" value="&quot;u-1.0&quot;">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="&quot;x1&quot;">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="&quot;x1+x2&quot;">
         </property>
         <port name="u" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -91,7 +87,7 @@
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1051623, 0.2627819, 0.4478448, 0.6923497, 0.9180126, 1.148626, 1.3429355, 1.5216084, 1.5461637, 1.5584447, 1.5645855, 1.567656, 1.5691913, 1.5707265}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.1886983,1.3768637,1.5537528,1.7245374,1.8926281,2.0606199,2.2312549,2.4085155,2.6005658,2.7040121,2.753334,2.7774008,2.7892869,2.7951932,2.7981372,2.7996069,2.8003412,2.8010751}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>

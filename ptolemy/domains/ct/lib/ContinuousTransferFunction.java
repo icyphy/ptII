@@ -315,10 +315,12 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         }
     }
 
-    /** Wrapup.
+    /** Set the opaqueness to true and wrapup.
+     *  @exception IllgalActionException If there is no director.
      */
     public void wrapup() throws IllegalActionException {
         _opaque = true;
+        super.wrapup();
     }
 
     //////////////////////////////////////////////////////////////////////
