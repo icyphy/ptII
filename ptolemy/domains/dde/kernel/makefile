@@ -1,6 +1,6 @@
 # Makefile for the Java classes used to implement the Ptolemy DDE domain kernel
 #
-# @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
