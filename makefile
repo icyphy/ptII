@@ -166,6 +166,15 @@ configure: configure.in
 	@echo "this problem."
 	autoconf
 
+# This requires that the CVS directory be present and takes
+# quite awhile to update
+ChangeLog:
+	if [ -d CVS ]; then \
+		./util/testsuite/cvs2cl; \
+	else \
+		echo "CVS directory not present, so we can't update $@"; \
+	fi
+
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk
 
