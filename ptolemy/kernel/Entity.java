@@ -161,7 +161,7 @@ public class Entity extends NamedObj {
             if (workspace().getVersion() != _connectedportsversion) {
                 // Cache is not valid, so update it.
                 _connectedports = new LinkedList();
-                Enumeration ports = _portList.getElements();
+                Enumeration ports = _portList.elements();
 
                 while( ports.hasMoreElements() ) {
                     Port port = (Port)ports.nextElement();
@@ -198,7 +198,7 @@ public class Entity extends NamedObj {
     public Enumeration getPorts() {
         try {
             workspace().getReadAccess();
-            return _portList.getElements();
+            return _portList.elements();
         } finally {
             workspace().doneReading();
         }
@@ -217,7 +217,7 @@ public class Entity extends NamedObj {
             if (workspace().getVersion() != _linkedrelationsversion) {
                 // Cache is not valid.  Update it.
                 _linkedrelations = new LinkedList();
-                Enumeration ports = _portList.getElements();
+                Enumeration ports = _portList.elements();
 
                 while( ports.hasMoreElements() ) {
                     Port port = (Port)ports.nextElement();
@@ -267,7 +267,7 @@ public class Entity extends NamedObj {
             // Have to copy _portList to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this a bug in in NamedList?
             NamedList portListCopy = new NamedList(_portList);
-            Enumeration ports = portListCopy.getElements();
+            Enumeration ports = portListCopy.elements();
 
             while (ports.hasMoreElements()) {
                 Port port = (Port)ports.nextElement();

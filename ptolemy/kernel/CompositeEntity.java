@@ -315,7 +315,7 @@ public class CompositeEntity extends ComponentEntity {
     public Enumeration deepGetEntities() {
         try {
             workspace().getReadAccess();
-            Enumeration enum = _containedEntities.getElements();
+            Enumeration enum = _containedEntities.elements();
             // Construct a linked list and then return an enumeration of it.
             LinkedList result = new LinkedList();
 
@@ -361,7 +361,7 @@ public class CompositeEntity extends ComponentEntity {
             workspace().getReadAccess();
             // Copy the list so we can create a static enumeration.
             NamedList entitiesCopy = new NamedList(_containedEntities);
-            Enumeration entities = entitiesCopy.getElements();
+            Enumeration entities = entitiesCopy.elements();
             return entities;
         } finally {
             workspace().doneReading();
@@ -394,7 +394,7 @@ public class CompositeEntity extends ComponentEntity {
             workspace().getReadAccess();
             // Copy the list so we can create a static enumeration.
             NamedList relationsCopy = new NamedList(_containedRelations);
-            Enumeration relations = relationsCopy.getElements();
+            Enumeration relations = relationsCopy.elements();
             return relations;
         } finally {
             workspace().doneReading();
@@ -471,7 +471,7 @@ public class CompositeEntity extends ComponentEntity {
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
             NamedList entitiesCopy = new NamedList(_containedEntities);
-            Enumeration entities = entitiesCopy.getElements();
+            Enumeration entities = entitiesCopy.elements();
 
             while (entities.hasMoreElements()) {
                 ComponentEntity entity =
@@ -503,7 +503,7 @@ public class CompositeEntity extends ComponentEntity {
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
             NamedList relationsCopy = new NamedList(_containedRelations);
-            Enumeration relations = relationsCopy.getElements();
+            Enumeration relations = relationsCopy.elements();
 
             while (relations.hasMoreElements()) {
                 ComponentRelation relation =

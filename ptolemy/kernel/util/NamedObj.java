@@ -340,9 +340,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         try {
             workspace().getReadAccess();
             if  (_attributes == null) {
-                return (new NamedList()).getElements();
+                return (new NamedList()).elements();
             } else {
-                return _attributes.getElements();
+                return _attributes.elements();
             }
         } finally {
             workspace().doneReading();
