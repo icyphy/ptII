@@ -2826,15 +2826,22 @@ AC_SUBST(PTBOOST_INCLUDE)
 # Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
 AC_SUBST(PTCALTROP_DIR)
 
-# Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
-AC_SUBST(PTCOPERNICUS_DIR)
-
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 AC_SUBST(PTCC)
+
+# Set to chic and used in $PTII/ptolemy/makefile if chic was found.
+AC_SUBST(PTCHIC_DIR)
 
 # PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
 # if the CaffeineMark Java Benchmark kit is found
 AC_SUBST(PTCM_DIR)
+
+# Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
+AC_SUBST(PTCOLT_DIR)
+
+# Ptolemy II packages that use COLT
+# PTCOLT_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTCOLT_PACKAGES)
 
 # PTCOMM_DIR is set to comm and used in 
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
@@ -2845,11 +2852,8 @@ AC_SUBST(PTCOMM_DIR)
 # PTCOMM_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTCOMM_PACKAGES)
 
-# Set to chic and used in $PTII/ptolemy/makefile if chic was found.
-AC_SUBST(PTCHIC_DIR)
-
-# Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
-AC_SUBST(PTCOLT_DIR)
+# Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
+AC_SUBST(PTCOPERNICUS_DIR)
 
 # PTDOCLETS_DIR is set to doclets and used in 
 # $PTII/doc if tools.jar can be found.
