@@ -180,9 +180,15 @@ public class ODFThread extends ProcessThread {
         return triple.getTime();
     }
 
-    /**
+    /** Return the active ODFReceiver with the oldest rcvrTime of all 
+     *  ODFReceivers contained in the actor that this ODFThread controls.
+     * @return ODFReceiver Return the oldest active ODFReceiver managed by
+     *  this ODFThread.
      */
     public synchronized ODFReceiver getFirstRcvr() {
+	if( _rcvrTimeList.size() == 0 ) {
+	    return null;
+	}
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
 	return (ODFReceiver)triple.getReceiver();
     }
@@ -328,10 +334,12 @@ public class ODFThread extends ProcessThread {
 	}
 
         //
-        // First Order Input Ports According To Priority
+        // First Order Ports 
         //
         while( enum.hasMoreElements() ) {
-            IOPort port = (IOPort)enum.nextElement();
+	    listOfPorts.insertLast( (IOPort)enum.nextElement() ); 
+	    /*
+            IOPort port = (IOPort)enum.nextElement(); 
             boolean portNotInserted = true;
             if( listOfPorts.size() == 0 ) {
                 listOfPorts.insertAt( 0, port );
@@ -355,6 +363,7 @@ public class ODFThread extends ProcessThread {
                 listOfPorts.insertLast(port);
                 portNotInserted = false;
             }
+	    */
         }
 
         //
@@ -365,7 +374,6 @@ public class ODFThread extends ProcessThread {
         int currentPriority = 0;
         while( cnt < listOfPorts.size() ) {
             IOPort port = (IOPort)listOfPorts.at(cnt);
-            // ODFIOPort port = (ODFIOPort)listOfPorts.at(cnt);
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
@@ -392,7 +400,7 @@ public class ODFThread extends ProcessThread {
     public void setRcvrList() throws IllegalActionException {
         Actor actor = (Actor)getActor();
 	Enumeration enum = actor.inputPorts();
-	if( !enum.hasMoreElements() ) {
+	if( enum.hasMoreElements() ) {
             return;
 	}
         while( enum.hasMoreElements() ) {
