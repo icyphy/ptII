@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -41,14 +41,14 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Fraction
 /**
-A Fraction class.  Fractions are immutable and maintained in lowest terms, 
+A fraction class.  Fractions are immutable and maintained in lowest terms, 
 with a positive denominator.
 
 @author Stephen Neuendorffer
 @version $Id$
 */
 public class Fraction {
-    /** Create a new fraction.   Default Value = 0
+    /** Create a new fraction with the value zero.
      */
     public Fraction() {
         _num = 0;
@@ -56,7 +56,7 @@ public class Fraction {
 	_simplify();
     }
 
-    /** Create a new fraction.   Default Value = i;
+    /** Create a new fraction with the value i/1
      */
     public Fraction(int i) {
         _num = i;
@@ -64,7 +64,7 @@ public class Fraction {
 	_simplify();
     }
 
-    /** Create a new Fraction.   Default Value = Numerator/Denominator;
+    /** Create a new fraction with the value Numerator/Denominator
      */
     public Fraction(int Numerator, int Denominator) {
                 if(Denominator == 0)
@@ -76,7 +76,7 @@ public class Fraction {
 	_simplify();
     }
 
-    /** Create a new Fraction.   Default value = Fraction;
+    /** Create a new fraction with the same value as the given fraction.
      */
     public Fraction(Fraction f) {
         _num = f._num;
@@ -112,7 +112,7 @@ public class Fraction {
         return f;
     }
 
-    /** Subtract The given fraction from this fraction.
+    /** Subtract the given fraction from this fraction.
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction subtract(Fraction b) {
@@ -121,7 +121,7 @@ public class Fraction {
         return f;
     }
 
-    /** Negate a Fraction.
+    /** Find the additive inverse of this fraction.
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction negate() {
@@ -129,7 +129,7 @@ public class Fraction {
         return f;
     }
 
-    /** Invert a Fractions.
+    /** Find the multiplicative inverse of this fraction.
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction inverse() {
@@ -137,15 +137,16 @@ public class Fraction {
         return f;
     }
 
-    /** Does this fraction have the same value as the given fraction?
-     *  The Fractions are already in lowest terms, so we just compare the
-     *  numerator and denominator
+    /** Compare this fraction with the given fraction
+     *  @return True if the fractions are equal.
      */
     public boolean equals(Fraction b) {
+        // The Fractions are already in lowest terms, so we just compare the
+        // numerator and denominator
         return ((_num == b._num) && (_den == b._den));
     }
 
-    /** Convert the fraction to a readable string
+    /** Convert the fraction to a readable string.
      */
     public String toString() {
         StringBuffer s = new StringBuffer();
@@ -156,13 +157,13 @@ public class Fraction {
         return s.toString();
     }
 
-    /** Return the Numerator
+    /** Return the numerator of this fraction.
      */
     public int getNumerator() {
         return _num;
     }
 
-    /** Return the Denominator
+    /** Return the denominator of this fraction.
      */
     public int getDenominator() {
         return _den;
@@ -175,7 +176,6 @@ public class Fraction {
      *  GCD of their absolute values.
      */
     //FIXME: should these go someplace better?
-
     public static int gcd(int u, int v) {
         int t;
         if(u < 0) u = -u;
@@ -187,7 +187,7 @@ public class Fraction {
         return v;
     }
 
-    /** Finds the least common multiple of two integers
+    /** Finds the least common multiple of two integers. 
      */
     public static int lcm(int u, int v) {
         int gcd = gcd(u, v);
@@ -212,6 +212,4 @@ public class Fraction {
 
     private int _num;
     private int _den;
-
-
 }
