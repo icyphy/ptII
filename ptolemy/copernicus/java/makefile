@@ -128,7 +128,7 @@ WATCH_DOG_TIMEOUT =     600000
 # Number of Iterations to run the generated code for.
 ITERATIONS =		200
 ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
-compileDeepDemo: $(JCLASS)
+compileDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
@@ -181,7 +181,7 @@ runSnapshots:
 		-Xfuture -classpath "$(CLASSPATH)" \
 		$(TARGETPACKAGE).Main | tail -1 
 
-runDeepDemo:
+runDemo:
 	@echo "Run the deep model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
