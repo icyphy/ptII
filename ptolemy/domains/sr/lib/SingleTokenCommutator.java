@@ -48,13 +48,8 @@ and writes one token to an output channel.  If there is no token on
 the input, then it will not produce a token on the output.  In the
 next iteration of this actor, it will read the next channel.
 
-<<<<<<< SingleTokenCommutator.java
-@author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands,Jim Armstrong
+@author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands, Jim Armstrong
 @version $Id$
-=======
-@author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands
-@version $Id$
->>>>>>> 1.4
 @since Ptolemy II 2.0
 */
 public class  SingleTokenCommutator   extends Transformer
