@@ -31,8 +31,7 @@
 
 ME =		ptolemy/actor/lib/python/demo
 
-# Ptolemnizer does not have a makefile?
-DIRS =		PythonScale
+DIRS =		Ptolemnizer PythonScale
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -50,9 +49,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	PythonScale/PythonScale.jar
-
-#	Ptolemnizer/Ptolemnizer.jar
+	PythonScale/PythonScale.jar \
+	Ptolemnizer/Ptolemnizer.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
