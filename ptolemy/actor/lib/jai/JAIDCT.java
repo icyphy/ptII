@@ -70,6 +70,9 @@ public class JAIDCT extends Transformer {
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Fire this actor.
      *  Output the discrete cosine transform of the inputted image.
