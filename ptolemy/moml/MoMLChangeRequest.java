@@ -23,21 +23,25 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (bart@eecs.berkeley.edu)
 
 */
 
 package ptolemy.moml;
 
 import ptolemy.kernel.event.ChangeRequest;
-import ptolemy.kernel.event.ChangeFailedException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLChangeRequest
 /**
-A mutation request specified in MoML.
+A mutation request specified in MoML.  This class provides the preferred
+mechanism for implementing mutations on a model while it is executing.
+To use it, create an instance of this class, specifying MoML code as
+an argument to the constructor.  Then queue the instance of this class
+with a composite entity by calling its requestChange() method.
 
 @author  Edward A. Lee
 @version $Id$
@@ -45,50 +49,52 @@ A mutation request specified in MoML.
 public class MoMLChangeRequest extends ChangeRequest {
 
     /** Construct a mutation request for the specified parser.
+     *  The originator is the source of the change request.
+     *  A listener to changes will probably want to check the originator
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  Alternatively, it can call waitForCompletion().
+     *  @param originator The originator of the change request.
      *  @param parser The parser to execute the request.
      *  @param request The mutation request in MoML.
      */
-    public MoMLChangeRequest(MoMLParser parser, String request) {
-        // NOTE: The first argument below is supposed to be the originator,
-        // a Nameable object.  However, there seems to be no reasonable
-        // originator in this case.  Perhaps the base class should offer
-        // a constructor that does not require this argument?
-        // The second argument is a description of the change request.
-        super(null, request);
+    public MoMLChangeRequest(
+             Object originator, MoMLParser parser, String request) {
+        super(originator, request);
         _parser = parser;
     }
 
-    /** Construct a mutation request for the specified top-level entity.
-     *  This method creates a new parser to handle the request.
-     *  @param toplevel The top-level entity to change.
+    /** Construct a mutation request to be executed in the specified context.
+     *  The context is typically a Ptolemy II container, such as an entity,
+     *  within which the objects specified by the MoML code will be placed.
+     *  This method resets and uses a parser that is a static member
+     *  of this class.
+     *  A listener to changes will probably want to check the originator
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  Alternatively, it can call waitForCompletion().
+     *  @param originator The originator of the change request.
+     *  @param context The context in which to execute the MoML.
      *  @param request The mutation request in MoML.
      */
-    public MoMLChangeRequest(NamedObj toplevel, String request) {
-        // NOTE: The first argument below is supposed to be the originator,
-        // a Nameable object.  However, there seems to be no reasonable
-        // originator in this case.  Perhaps the base class should offer
-        // a constructor that does not require this argument?
-        // The second argument is a description of the change request.
-        super(null, request);
-        _parser = new MoMLParser();
-        _parser.setToplevel(toplevel);
+    public MoMLChangeRequest(
+            Object originator, NamedObj context, String request) {
+        super(originator, request);
+        _staticParser.reset();
+        _parser = _staticParser;
+        _parser.setContext(context);
     }
 
-
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected methods                 ////
 
     /** Execute the change by evaluating the request using the
      *  specified parser.
-     *  @exception ChangeFailedException If an exception is thrown
+     *  @exception Exception If an exception is thrown
      *   while evaluating the request.
      */
-    public void execute() throws ChangeFailedException {
-        try {
-	    _parser.parse(getDescription());
-        } catch (Exception ex) {
-            throw new ChangeFailedException(this, ex);
-        }
+    protected void _execute() throws Exception {
+        _parser.parse(getDescription());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,4 +102,7 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // The parser given in the constructor.
     private MoMLParser _parser;
+
+    // A generic parser to use if no parser is specified.
+    private static MoMLParser _staticParser = new MoMLParser();
 }
