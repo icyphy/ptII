@@ -74,6 +74,8 @@ public class TreeTableau extends Tableau {
 	TreeFrame frame = new TreeFrame(entity);
 	frame.setBackground(BACKGROUND_COLOR);
 	setFrame(frame);
+        // Give a reasonable default size.
+        size.setExpression("300x500");
 	frame.setTableau(this);
 	frame.pack(); 
 	frame.centerOnScreen();
