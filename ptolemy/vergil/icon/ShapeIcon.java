@@ -161,6 +161,11 @@ public class ShapeIcon extends DynamicEditorIcon {
      *   upper left.
      */
     public void setCentered(boolean centered) {
+        // Avoid calling swing if things haven't actually changed.
+        if(_centered == centered) {
+            return;
+        }
+
         _centered = centered;
 
         // Update the shapes of all the figures that this icon has
@@ -186,7 +191,12 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  @param fillColor The fill color to use.
      */
     public void setFillColor(Color fillColor) {
-        _fillColor = fillColor;
+        // Avoid calling swing if things haven't actually changed.
+        if(_fillColor != null && _fillColor.equals(fillColor)) {
+            return;
+        }
+
+         _fillColor = fillColor;
 
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
@@ -211,6 +221,11 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  @param lineColor The line color to use.
      */
     public void setLineColor(Color lineColor) {
+        // Avoid calling swing if things haven't actually changed.
+        if(_lineColor != null && _lineColor.equals(lineColor)) {
+            return;
+        }
+
         _lineColor = lineColor;
 
         // Update the shapes of all the figures that this icon has
@@ -236,6 +251,11 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  @param lineWidth The line width to use.
      */
     public void setLineWidth(float lineWidth) {
+        // Avoid calling swing if things haven't actually changed.
+        if(_lineWidth == lineWidth) {
+            return;
+        }
+
         _lineWidth = lineWidth;
 
         // Update the shapes of all the figures that this icon has
