@@ -50,14 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test InvalidStateException-2.1 {Create a InvalidStateException} {
-    set pe [java::new pt.kernel.util.InvalidStateException]
-    list [$pe getMessage] [$pe getLocalizedMessage]
-} {{Serious internal error!} {Serious internal error!}}
-
-######################################################################
-####
-#
 test InvalidStateException-3.1 {Create a InvalidStateException with a \
 	detail message} {
     set pe [java::new {pt.kernel.util.InvalidStateException String} \
@@ -90,37 +82,6 @@ test InvalidStateException-3.3 {Create a InvalidStateException with a detail \
 ######################################################################
 ####
 #
-test InvalidStateException-4.1 {Create a InvalidStateException with a \
-	Nameable that has no name} {
-    set n1 [java::new pt.kernel.util.NamedObj]
-    set pe [java::new {pt.kernel.util.InvalidStateException \
-	    pt.kernel.util.Nameable} $n1]
-    list [$pe getMessage]
-} {{.: Serious internal error!}}
-
-######################################################################
-####
-#
-test InvalidStateException-4.2 {Create a InvalidStateException with a \
-	NamedObj that has a name} {
-    set n1 [java::new pt.kernel.util.NamedObj "My NamedObj"]
-    set pe [java::new {pt.kernel.util.InvalidStateException \
-	    pt.kernel.util.Nameable} $n1]
-    list [$pe getMessage]
-} {{.My NamedObj: Serious internal error!}}
-
-######################################################################
-####
-#
-test InvalidStateException-4.3 {Create a InvalidStateException with a null NamedObj} {
-    set pe [java::new {pt.kernel.util.InvalidStateException pt.kernel.util.Nameable} \
-	    [java::null]]
-    list [$pe getMessage]
-} {{Serious internal error!}}
-
-######################################################################
-####
-#
 test InvalidStateException-5.1 {Create a InvalidStateException with a NamedObj \
 	that has no name and a detail string} {
     set n1 [java::new pt.kernel.util.NamedObj]
@@ -137,59 +98,6 @@ test InvalidStateException-5.2 {Create a InvalidStateException with a NamedObj \
     set pe [java::new {pt.kernel.util.InvalidStateException pt.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
 } {{.My NamedObj: Detail String}}
-
-######################################################################
-####
-#
-test InvalidStateException-6.1 {Create a InvalidStateException with an unamed NamedObj \
-	and an unamed NamedObj} {
-    set n1 [java::new pt.kernel.util.NamedObj]
-    set n2 [java::new pt.kernel.util.NamedObj]
-    set pe [java::new \
-	    {pt.kernel.util.InvalidStateException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
-	    $n1 $n2]
-    list [$pe getMessage]
-} {{. and .: Serious internal error!}}
-
-######################################################################
-####
-#
-test InvalidStateException-6.2 {Create a InvalidStateException with a named NamedObj \
-	and an unamed NamedObj} {
-    set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
-    set n2 [java::new pt.kernel.util.NamedObj]
-    set pe [java::new \
-	    {pt.kernel.util.InvalidStateException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
-	    $n1 $n2]
-    list [$pe getMessage]
-} {{.NamedObj 1 and .: Serious internal error!}}
-
-######################################################################
-####
-#
-test InvalidStateException-6.3 {Create a InvalidStateException with an unamed NamedObj \
-	and a named NamedObj} {
-    set n1 [java::new pt.kernel.util.NamedObj]
-    set n2 [java::new pt.kernel.util.NamedObj "NamedObj 2"]
-    set pe [java::new \
-	    {pt.kernel.util.InvalidStateException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
-	    $n1 $n2]
-    list [$pe getMessage]
-} {{. and .NamedObj 2: Serious internal error!}}
-
-######################################################################
-####
-#
-test InvalidStateException-6.4 {Create a InvalidStateException with a named NamedObj \
-	and a named NamedObj} {
-    set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
-    set n2 [java::new pt.kernel.util.NamedObj "NamedObj 2"]
-    set pe [java::new \
-	    {pt.kernel.util.InvalidStateException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
-	    $n1 $n2]
-    list [$pe getMessage]
-} {{.NamedObj 1 and .NamedObj 2: Serious internal error!}}
-
 
 ######################################################################
 ####
