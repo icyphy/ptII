@@ -113,6 +113,11 @@ test KeyToken-4.2 {equals(): Two Keys are not likely to have the same encoding} 
 # 
 test KeyToken-4.3 {equals(): Different Algorithms} {
     # uses 1.1 above
+
+    source $PTII/util/testsuite/enums.tcl
+    set s [java::call java.security.Security getAlgorithms "Cipher"]
+    puts "Available Ciphers: [listToStrings $s]"
+
     set keyGenerator4 [java::call javax.crypto.KeyGenerator getInstance "AES"]
     set secureRandom4 [java::new java.security.SecureRandom]
     $keyGenerator4 {init int java.security.SecureRandom} 128 $secureRandom4
