@@ -138,27 +138,25 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      * @throws IllegalActionException
      */
     protected void _constructDependencyGraph() {
+        // First, construct the detailed dependency graph
+        _constructDetailedDependencyGraph();
+        // get associated actor
+        Actor actor = (Actor)getContainer();
+        
         Attribute attribute = getContainer().getAttribute("Atomic");
         if (attribute != null) { 
             super._constructDependencyGraph();
         } else {
-            // First, construct the detailed dependency graph
-            _constructDetailedDependencyGraph();
-            
-            // get associated actor
-            Actor actor = (Actor)getContainer();
-        
             // Initialize the dependency graph
             _dependencyGraph = 
                 _constructDisconnectedDependencyGraph();
-
             // add an edge from input to output 
             // if the output depends on the input
             Iterator inputs = actor.inputPortList().listIterator();
             while (inputs.hasNext()) {
                 IOPort inputPort = (IOPort) inputs.next();
                 Collection reachableOutputs =
-                    _detailedDependencyGraph.reachableNodes(
+                _detailedDependencyGraph.reachableNodes(
                             _detailedDependencyGraph.node(inputPort));
                 Iterator outputs = actor.outputPortList().listIterator();
                 while (outputs.hasNext()) {
