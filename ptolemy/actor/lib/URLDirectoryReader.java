@@ -40,9 +40,16 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// URLDirectoryReader
@@ -186,7 +193,27 @@ public class URLDirectoryReader extends URLReader {
      *  @exception IllegalActionException If the source is a malformed
      *  URL
      */
-    private String [] _list(String source) throws IllegalActionException{
+    private String [] _list(String source) throws IllegalActionException {
+	try {
+	    // First try to handle source as a URL and parse the
+	    // html results returned.
+	    return _listFileOrURL(source);
+	} catch (Exception ex) {
+	    // If parsing the html failed, try accessing the file
+	    // using File.list().
+	    return _listFile(source);
+	}
+    }
+
+    /** Return files and directories contained in the source url.
+     *  The source url must be a String using the "file:" protocol.
+     *  @return An array containing the files and subdirectories in
+     *  the source URL.
+     *  @exception IllegalActionException If the source does not have 
+     *  the file: protocol, or if the source is neither a file
+     *  nor a directory, or if there is some other problem.
+     */
+    private String [] _listFile(String source) throws IllegalActionException {
 	try {
 	    URL sourceURL = new URL(source);
 
@@ -211,6 +238,106 @@ public class URLDirectoryReader extends URLReader {
 	    throw new IllegalActionException("Could not open '" + source
 					     + "' :" + ex);
 	}
+    }
+
+    /** Return files and directories contained in the source url.
+     *  This method attempts to parse the html results returned by
+     *  reading a URL connection, so the parsing may fail.  If the URL
+     *  uses the http: protocol, then the remote webserver
+     *  configuration determines whether it is possible to read the
+     *  contents of a directory.  Usually, the server has to have
+     *  directory listing enabled, and the default html file 
+     *  (index.htm, index.html, default.htm etc. ) must not be present.
+     *
+     *  @return An array containing the files and subdirectories in
+     *  the source URL.
+     *  @exception IllegalActionException If the source does not have 
+     *  the file: protocol, or if the source is neither a file
+     *  nor a directory, or if there is some other problem.  */
+    private static String [] _listFileOrURL(String source)
+	throws MalformedURLException, IOException {
+	URL url = new URL(source);
+	URLConnection urlConnection = url.openConnection();
+	String contentType = urlConnection.getContentType();
+	if (!contentType.startsWith("text/html") 
+	    && !contentType.startsWith("text/plain") ) {
+	    throw new RuntimeException("Could not parse '" + source
+				       + "', it is not \"text/html\", "
+				       + "or \"text/plain\", it is: "
+				       + urlConnection.getContentType());
+	} 
+	BufferedReader in =
+	    new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+	if (!contentType.startsWith("text/plain")
+	    && !urlConnection.getURL().toString().endsWith("/")) {
+	    // text/plain urls need not end with /, but
+	    // text/html urls _must_ end with / since the web server
+	    // will rewrite them for us.
+	    throw new RuntimeException("Could not parse '" + source
+				       + "', it does not end with '/'");
+
+	}
+
+	if (!source.endsWith("/")) {
+	    source += "/";
+	}
+
+
+	// Parse the contents in a haphazard fashion.
+	// The idea is that we look for the <BODY> line and
+	// then looks for lines that contain HREF
+	// If we find a line like HREF="foo">foo, then we report
+	// foo as being a file.
+	// A more robust way would be to use a spider, see
+	// http://www.acme.com/java/software/WebList.html
+	List resultsList = new LinkedList();
+	String line;
+	String target = null;
+	boolean sawBody = false, sawHREF = false;
+	while ((line = in.readLine()) != null) {
+	    line = line.trim();
+	    if (line.startsWith("<BODY")
+		|| line.startsWith("<body")) {
+		sawBody = true;
+	    } else {
+		if (sawBody) {
+		    StringTokenizer tokenizer =
+			new StringTokenizer(line, "<\" >=");
+		    while (tokenizer.hasMoreTokens()) {
+			String token = tokenizer.nextToken();
+			if (token.compareToIgnoreCase("HREF") == 0) {
+			    sawHREF = true;
+			    target = null;
+			} else {
+			    if (sawHREF) {
+				if (target == null) {
+				    // Here, we should check that target
+				    // is a relative pathname.
+				    target = token;
+				} else {
+				    // Check to see if the token is
+				    // the same as the last token.
+				    if (token.compareTo(target) != 0) {
+					sawHREF = false;
+				    } else {
+					// If we were really brave, we
+					// could try opening a connection
+					// here to verify that the target
+					// exists.
+					resultsList.add(source
+							+ target);
+					sawHREF = false;
+				    }
+				}
+			    }
+			}
+		    }
+		}
+	    }
+	}
+	in.close();
+	String [] results = new String[resultsList.size()];
+	return (String [])(resultsList.toArray(results));
     }
 
     ///////////////////////////////////////////////////////////////////
