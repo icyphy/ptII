@@ -14,7 +14,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[364, 275]">
     </property>
     <entity name="model reference" class="ptolemy.vergil.actor.lib.ModelReference">
-        <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="ReferencedModel.xml">
+        <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="ReferencedModel.xml">
         </property>
         <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute">
             <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">

@@ -52,11 +52,11 @@ import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -225,7 +225,7 @@ public class ModelReference
         super(container, name);
 
         // FIXME: Need a way to specify a filter for the file browser.
-        modelFileOrURL = new FileAttribute(this, "modelFileOrURL");
+        modelFileOrURL = new FileParameter(this, "modelFileOrURL");
 
         // Create the openOnFiring parameter.
         openOnFiring = new StringAttribute(this, "openOnFiring");
@@ -293,7 +293,7 @@ public class ModelReference
 
     /** The file name or URL of the model that this actor represents.
      */
-    public FileAttribute modelFileOrURL;
+    public FileParameter modelFileOrURL;
 
     /** The value of this string attribute determines what open
      *  happens when the fire() method is invoked.  The recognized
