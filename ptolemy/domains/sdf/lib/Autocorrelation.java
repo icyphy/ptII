@@ -140,7 +140,8 @@ public class Autocorrelation extends SDFTransformer {
 	// Set the output type to be an ArrayType.
         // This is refined further by the typeConstraintList method.
 	output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
+        output.setMultiport(true);
+        
         attributeChanged(numberOfInputs);
     }
 
