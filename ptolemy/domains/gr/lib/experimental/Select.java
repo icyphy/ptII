@@ -98,22 +98,6 @@ public class Select extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        Select newObject = (Select) super.clone(workspace);
-        newObject.input = (TypedIOPort) newObject.getPort("input");
-        newObject.output = (TypedIOPort) newObject.getPort("output");
-        newObject.select = (TypedIOPort) newObject.getPort("select");
-        return newObject;
-    }
-
     /** Read a token from the select port and each channel of the input port,
      *  and output the token on the selected channel.
      *

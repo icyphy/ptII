@@ -99,23 +99,6 @@ public class GRTransform extends GRActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRTransform newObject = (GRTransform)super.clone(workspace);
-        newObject.sceneGraphIn  = (TypedIOPort) newObject.getPort("sceneGraphIn");
-        newObject.sceneGraphOut = (TypedIOPort) newObject.getPort("sceneGraphOut");
-        return newObject;
-    }
-
-
     public void makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
         for(int i=0;i<width;i++) {

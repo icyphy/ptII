@@ -88,20 +88,6 @@ public class Cylinder3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Cylinder3D newObject = (Cylinder3D)super.clone(workspace);
-        newObject.radius = (Parameter)newObject.getAttribute("radius");
-        newObject.height = (Parameter)newObject.getAttribute("height");
-        return newObject;
-    }
-
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D Cylinder.
      *  @return the Java3D Cylinder

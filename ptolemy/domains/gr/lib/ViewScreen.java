@@ -95,20 +95,6 @@ public class ViewScreen extends GRActor implements Placeable {
     public Parameter translatable;
     public Parameter showAxes;
 
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ViewScreen newObject = (ViewScreen) super.clone(workspace);
-        newObject.sceneGraphIn = (TypedIOPort) newObject.getPort("sceneGraphIn");
-        newObject.scale = (Parameter) newObject.getAttribute("horizontal resolution");
-        newObject.scale = (Parameter) newObject.getAttribute("vertical resolution");
-        newObject.scale = (Parameter) newObject.getAttribute("scale");
-        newObject.rotatable = (Parameter) newObject.getAttribute("allow model rotation");
-        newObject.scalable = (Parameter) newObject.getAttribute("allow model zooming");
-        newObject.translatable = (Parameter) newObject.getAttribute("allow model translation");
-        newObject.showAxes = (Parameter) newObject.getAttribute("show axes");
-        return newObject;
-    }
-
-
     public void place(Container container) {
         GraphicsConfiguration config =
             SimpleUniverse.getPreferredConfiguration();

@@ -118,24 +118,6 @@ public class Translate3D extends GRTransform {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Translate3D newObject = (Translate3D)super.clone(workspace);
-        newObject.xTranslate = (TypedIOPort) newObject.getPort("xTranslate");
-        newObject.yTranslate = (TypedIOPort) newObject.getPort("yTranslate");
-        newObject.zTranslate = (TypedIOPort) newObject.getPort("zTranslate");
-        newObject.initialXTranslation = (Parameter)newObject.getAttribute("xTranslation");
-        newObject.initialYTranslation = (Parameter)newObject.getAttribute("yTranslation");
-        newObject.initialZTranslation = (Parameter)newObject.getAttribute("zTranslation");
-        return newObject;
-    }
-
     /** Check the input ports for translation inputs.  Convert the translation
      *  tokens into a Java3D transformation.
      *  @exception IllegalActionException If the value of some parameters can't

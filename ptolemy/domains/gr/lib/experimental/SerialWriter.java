@@ -35,13 +35,8 @@ public class SerialWriter extends TypedAtomicActor {
 
     public TypedIOPort input;
 
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SerialWriter newObject = (SerialWriter) super.clone();
-        newObject.input = (TypedIOPort) getPort("input");
-        return newObject;
-    }
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void initialize() throws IllegalActionException {
         try {

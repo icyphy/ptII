@@ -123,25 +123,11 @@ public class Rotate3D extends GRTransform {
         _bottomTranslate.addChild(node);
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Rotate3D newObject = (Rotate3D)super.clone(workspace);
-        newObject.angle = (TypedIOPort) newObject.getPort("angle");
-        newObject.initialAngle = (Parameter) newObject.getAttribute("initialAngle");
-        newObject.axisDirection = (Parameter) newObject.getAttribute("axis direction");
-        newObject.pivotLocation = (Parameter) newObject.getAttribute("pivot location");
-        return newObject;
-    }
-
-    /** Change the rotation angle depending on the value given in the input port
+    /** Change the rotation angle depending on the value given in the
+     *  input port.
+     *
      *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+     *   be obtained.
      */
     public void fire() throws IllegalActionException {
         if (angle.getWidth() != 0) {

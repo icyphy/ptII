@@ -77,13 +77,6 @@ public class Loader3D extends GRShadedShape {
 
     public Parameter filename;
 
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Loader3D newObject = (Loader3D)super.clone(workspace);
-        return newObject;
-    }
-
-
-
 
     public Node getNodeObject() {
         return (Node) obj.getSceneGroup();

@@ -106,21 +106,6 @@ public class PolyCylinder3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PolyCylinder3D newObject = (PolyCylinder3D)super.clone(workspace);
-        newObject.polygon = (Parameter) newObject.getAttribute("polygon");
-        newObject.thickness = (Parameter) newObject.getAttribute("thickness");
-        return newObject;
-    }
-
-
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a generalized polygonal cylinder.
      *  @return the generalized polygonal cylinder
