@@ -1088,18 +1088,30 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         _debug(node);
 
- 
+        // Get the free variables of the function definition.  These
+        // will be turned into constructor arguments of the class
+        // representing the function closure.  This takes the role of 
+        // Specialization of parse trees.
+        ParseTreeFreeVariableCollector collector = 
+            new ParseTreeFreeVariableCollector();
+        List freeVariableList = new LinkedList(
+                collector.collectFreeVariables(node));
+        Collections.sort(freeVariableList);
+        System.out.println("freeVariableList = " + freeVariableList);
+
+        // Infer the type of the function.
         ParseTreeTypeInference inference = new ParseTreeTypeInference();
         inference.inferTypes(node, _scope);
-        FunctionType type = (FunctionType)node.getType();
+        FunctionType functionType = (FunctionType)node.getType();
 
-        ASTPtRootNode cloneTree;
+        ASTPtRootNode cloneTree = 
+            (ASTPtRootNode)node.getExpressionTree();//.clone();
 
-        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        cloneTree = specializer.specialize(node.getExpressionTree(),
-                node.getArgumentNameList(), _scope);
+//         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
+//         cloneTree = specializer.specialize(node.getExpressionTree(),
+//                 node.getArgumentNameList(), _scope);
         
-       // Generate a new Function class
+        // Generate a new Function class
         SootClass functionClass = 
             new SootClass("Function_" + (_functionCount ++), 
                     Modifier.PUBLIC);
@@ -1108,9 +1120,34 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         functionClass.setApplicationClass();
         functionClass.addInterface(PtolemyUtilities.functionInterface);
         
-        // Create the (empty) constructor.
+        // Construct the scope, starting with free variables that are
+        // represented by constructor arguments and stored in fields
+        // of the closure.
+        Map nameToLocal = new HashMap();
+        Map nameToType = new HashMap();
+        
+        // A list of types corresponding to the Soot type for every
+        // freeVariable
+        List argumentSootTypes = new LinkedList();
+        for(Iterator freeVariables = freeVariableList.iterator();
+            freeVariables.hasNext();) {
+            String freeVariable = (String)freeVariables.next();
+            ptolemy.data.type.Type type = _scope.getType(freeVariable);
+            Type sootType = PtolemyUtilities.getSootTypeForTokenType(type);
+            SootField field =
+                new SootField(freeVariable, sootType, Modifier.PUBLIC);
+            functionClass.addField(field);
+            argumentSootTypes.add(sootType);
+            nameToLocal.put(freeVariable, field);
+            nameToType.put(freeVariable, type);
+        }
+
+        // Create the constructor.  The constructor takes one argument
+        // for every free variable of the function closure that is not
+        // bound to a formal argument.
         SootMethod functionConstructor = 
-            new SootMethod("<init>", Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
+            new SootMethod("<init>", argumentSootTypes,
+                    VoidType.v(), Modifier.PUBLIC);
         functionClass.addMethod(functionConstructor);
         {
             JimpleBody body = Jimple.v().newBody(functionConstructor);
@@ -1122,6 +1159,20 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                     body.getThisLocal(),
                                     PtolemyUtilities.objectConstructor, 
                                     Collections.EMPTY_LIST)));
+            // Read the parameters to the closure constructor.
+            int i = 0;
+            for(Iterator freeVariables = freeVariableList.iterator();
+                freeVariables.hasNext();) {
+                String freeVariable = (String)freeVariables.next();
+                Local local = body.getParameterLocal(i);
+                SootField field = (SootField)nameToLocal.get(freeVariable);
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newInstanceFieldRef(
+                                        body.getThisLocal(), field), local));
+                i ++;
+            }
+
             body.getUnits().add(Jimple.v().newReturnVoidStmt());
         }
         // Create the apply method.
@@ -1142,8 +1193,6 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             // Loop over all the arguments and populate the map from
             // identifier to local.
-            Map nameToLocal = new HashMap();
-            Map nameToType = new HashMap();
             List list = node.getArgumentNameList();
             Local paramLocal = body.getParameterLocal(0);
             int count = 0;
@@ -1186,8 +1235,9 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             JimpleBody body = Jimple.v().newBody(getNumberOfArgumentsMethod);
             getNumberOfArgumentsMethod.setActiveBody(body);
             body.insertIdentityStmts();
-            body.getUnits().add(Jimple.v().newReturnStmt(
-                                        IntConstant.v(type.getArgCount())));
+            body.getUnits().add(
+                    Jimple.v().newReturnStmt(
+                            IntConstant.v(functionType.getArgCount())));
         }
        
         // Create the isCongruent method.
@@ -1196,15 +1246,51 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             argTypes.add(RefType.v(PtolemyUtilities.functionInterface));
            
             SootMethod isCongruentMethod = 
-                new SootMethod("isCongruentMethod", argTypes, BooleanType.v(), Modifier.PUBLIC);
+                new SootMethod("isCongruent", argTypes, BooleanType.v(), Modifier.PUBLIC);
             functionClass.addMethod(isCongruentMethod);
             
             JimpleBody body = Jimple.v().newBody(isCongruentMethod);
             isCongruentMethod.setActiveBody(body);
             body.insertIdentityStmts();
             // Never congruent
+            // FIXME: really this should compare the string values.
             body.getUnits().add(Jimple.v().newReturnStmt(
                                         IntConstant.v(0)));
+        }
+
+        // Create the toString method.
+        {
+            SootMethod toStringMethod = 
+                new SootMethod("toString", Collections.EMPTY_LIST,
+                        RefType.v("java.lang.String"), Modifier.PUBLIC);
+            functionClass.addMethod(toStringMethod);
+            
+            JimpleBody body = Jimple.v().newBody(toStringMethod);
+            toStringMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            
+            StringBuffer buffer = new StringBuffer("(function(");
+            int n = node.getArgumentNameList().size();
+            for (int i = 0; i < n; i++) {
+                if (i > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append((String)node.getArgumentNameList().get(i));
+                ptolemy.data.type.Type argType = node.getArgumentTypes()[i];
+                if (argType != BaseType.GENERAL) {
+                    buffer.append(":");
+                    buffer.append(argType.toString());
+                }
+            }
+            buffer.append(") ");
+            // FIXME: really this should include runtime references to f and g.
+            ParseTreeWriter writer = new ParseTreeWriter();
+            String string = writer.printParseTree(node.getExpressionTree());
+            buffer.append(string);
+            buffer.append(")");
+            
+            body.getUnits().add(Jimple.v().newReturnStmt(
+                                        StringConstant.v(buffer.toString())));
         }
 
         // Now instantiate the function class.
@@ -1212,18 +1298,27 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 RefType.v(PtolemyUtilities.functionTokenClass));
         _body.getLocals().add(resultFunctionLocal);
 
+        // Build a list of args for the instantiation.
+        List argList = new ArrayList();
+        for(Iterator freeVariables = freeVariableList.iterator();
+            freeVariables.hasNext();) {
+            String freeVariable = (String)freeVariables.next();
+            Local local = _scope.getLocal(freeVariable);
+            argList.add(local);
+        }
         _units.insertBefore(Jimple.v().newAssignStmt(
                 resultFunctionLocal, Jimple.v().newNewExpr(
                         RefType.v(functionClass))), 
                 _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
                 Jimple.v().newSpecialInvokeExpr(resultFunctionLocal,
-                       functionConstructor)),
+                       functionConstructor, argList)),
                 _insertPoint);
  
         // The type of the function being created.
         Local resultTypeLocal = 
-            PtolemyUtilities.buildConstantTypeLocal(_body, _insertPoint, type);
+            PtolemyUtilities.buildConstantTypeLocal(_body, _insertPoint, 
+                    functionType);
         Local resultLocal = Jimple.v().newLocal("result" ,
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(resultLocal);
@@ -1235,7 +1330,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
                 Jimple.v().newSpecialInvokeExpr(resultLocal,
-                        PtolemyUtilities.functionTokenConstructor, resultFunctionLocal, resultTypeLocal)),
+                        PtolemyUtilities.functionTokenConstructor, 
+                        resultFunctionLocal, resultTypeLocal)),
                 _insertPoint);
         
         _nodeToLocal.put(node, resultLocal);

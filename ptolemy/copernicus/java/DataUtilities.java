@@ -153,7 +153,7 @@ public class DataUtilities {
             throw new IllegalActionException("The ID " + name +
                     " does not have a value");
         }
-
+        
         public Local getLocal(String name)
                 throws IllegalActionException {
             Local thisLocal = _body.getThisLocal();
