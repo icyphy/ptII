@@ -359,7 +359,6 @@ bldmastrcoverage:
 		remote1distjsall \
 		remote1distjsrestore \
 		remote1build \
-		remote1distnonjsall \
 		remote1jnlp
 
 # Remove the remote dist
