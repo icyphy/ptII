@@ -81,8 +81,8 @@ test Distributor-2.1 {run with a single output} {
 
 test Distributor-3.1 {run with two outputs} {
     set dir [$e0 getDirector]
-    $dir addDebugListener \
-            [java::new ptolemy.kernel.util.StreamListener]
+    #$dir addDebugListener \
+    #        [java::new ptolemy.kernel.util.StreamListener]
     set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]   
     set r2 [$e0 connect \
             $out1 \

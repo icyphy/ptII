@@ -90,8 +90,8 @@ test Commutator-4.1 {run with mutations} {
     $m addChangeListener \
             [java::new ptolemy.kernel.util.StreamChangeListener]
     set dir [$e0 getDirector]
-    $dir addDebugListener \
-            [java::new ptolemy.kernel.util.StreamListener]
+    #$dir addDebugListener \
+    #        [java::new ptolemy.kernel.util.StreamListener]
     $m initialize
     $m iterate
     set c1 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
