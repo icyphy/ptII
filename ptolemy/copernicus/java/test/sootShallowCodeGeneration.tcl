@@ -71,9 +71,6 @@ proc sootShallowCodeGeneration {modelPath} {
     # Strip off the leading .
     set modelName [string range [$toplevel getFullName] 1 end]
 
-    # Get rid of any spaces in the name
-    set modelName [java::call ptolemy.copernicus.kernel.SootUtilities sanitizeName $modelName]
-
     if {"$model" != "$modelName"} {
 	puts stderr "WARNING: model name and file name do not match\n\
 		'$modelPath'\n defines a model named\n\
@@ -84,6 +81,9 @@ proc sootShallowCodeGeneration {modelPath} {
 	puts stderr "WARNING: model name was empty, defaulting to file name"
 	set modelName $model
     }
+    # Get rid of any spaces in the name
+    set modelName [java::call ptolemy.copernicus.kernel.SootUtilities \
+	    sanitizeName $modelName]
 
     if {[string range $modelPath 0 2] == "../"} {
 	# Ugh.  Strip off the first ../ because we are cd'ing up one level.
@@ -136,7 +136,7 @@ proc sootShallowCodeGenerationBuiltin {model} {
     set toplevel [$main readInModel $model]
     $main initialize $toplevel
     $main addTransforms
-    set modelName ptolemy.copernicus.java.test.cg.[$toplevel getName]
+    set modelName ptolemy.copernicus.java.test.cg.CG[$toplevel getName]
 
     # Make a stab at getting the iterations
     set director [$toplevel getDirector]
