@@ -161,26 +161,18 @@ public class InstanceEqualityEliminator extends SceneTransformer
                                 rightMustAliases);
                         if(debug) System.out.println("left maybe aliases = " + 
                                 leftMaybeAliases);
-                        if(debug) System.out.println("right maybe aliases = " + 
-                                rightMaybeAliases);
+                        if(debug) System.out.println("right maybe aliases = " 
+                                + rightMaybeAliases);
 
-                        // Utter hack... Should be:
-                        // Why doesn't alias analysis return the right things?
-                        // if(mustAliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
-                        Set intersection = leftMustAliases;
-                        intersection.retainAll(rightMustAliases);
-                        if(!intersection.isEmpty()) {
+                        if(leftMustAliases.contains(right) &&
+                           rightMustAliases.contains(left)) {
                             if(debug) System.out.println("instances are equal");
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
                         } else {
                             // If either set of maybe aliases is unknown, then we can do nothing.
                             if(leftMaybeAliases != null && rightMaybeAliases != null) {
-                                intersection = leftMaybeAliases;
-                                leftMaybeAliases.retainAll(rightMaybeAliases);
-                                // If the two sets of aliases have nothing in common, 
-                                // then the two object references cannot be equal.
-                                if(intersection.isEmpty()) {
+                                if(!leftMaybeAliases.contains(right) && !rightMaybeAliases.contains(left)) {
                                     if(debug) System.out.println("instances are not equal");
                                     // Replace with operands that can be statically evaluated.
                                     binop.getOp1Box().setValue(IntConstant.v(0));
