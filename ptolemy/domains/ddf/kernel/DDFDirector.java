@@ -86,12 +86,14 @@ import ptolemy.kernel.util.Workspace;
    number of tokens on their output arcs are fired. A user can treat several 
    such basic iterations as a single iteration by adding a parameter with 
    name "requiredFiringsPerIteration" to an actor (which is often a sink
-   actor or an actor connected to output port of a composite actor this
-   director is embedded in) and specifying the number of times this actor 
-   must be fired in a single iteration. If the value of the parameter 
+   actor or an actor directly connected to output port of the composite actor 
+   this director is embedded in) and specifying the number of times this 
+   actor must be fired in a single iteration. If the value of the parameter 
    runUntilDeadlock is a BooleanToken with value true, one single iteration 
-   consists of repeating the basic iteration until deadlock. Note this 
-   option is available only when this director is not on the top level. 
+   consists of repeating the basic iteration until deadlock is reached which 
+   is the status of the model where all active actors are unable to fire 
+   because their firing rules are not satisfied. Note runUntilDeadlock can 
+   be set to true only when this director is not on the top level. 
    <p>
    The algorithm implementing one basic iteration goes like this:
    <pre>
@@ -176,6 +178,13 @@ public class DDFDirector extends Director {
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
+    
+    /** A Parameter representing maximum capacity of each receiver controlled
+     *  by this director. This is an integer that defaults to 0, which means
+     *  the queue in each receiver is unbounded. To specify bounded queues, 
+     *  set this to a positive integer. 
+     */ 
+    public Parameter maximumReceiverCapacity;
 
     /** A parameter representing whether one iteration consists of
      *  repeated basic iteration until deadlock. If this parameter is
@@ -636,13 +645,44 @@ public class DDFDirector extends Director {
         return _ENABLED_NOT_DEFERRABLE;
     }
 
+    /** Check the number of tokens queued in each downstream receiver
+     *  connected to the actor in the argument and throw 
+     *  IllegalActionException if any exceeds maximum receiver capacity. 
+     *  @param actor Each downstream receiver connected to this actor 
+     *   is checked against maximum receiver capacity.
+     *  @exception IllegalActionException If any downstream receiver 
+     *   connected to this actor exceeds maximum receiver capacity. 
+     */
+    protected void _checkDownstreamReceiverCapacity(Actor actor) 
+            throws IllegalActionException {
+        int maximumCapacity
+            = ((IntToken)maximumReceiverCapacity.getToken()).intValue();
+        if (maximumCapacity > 0) {
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)outputPorts.next();
+                Receiver[][] Receivers = outputPort.getRemoteReceivers();
+                for(int i = 0; i < Receivers.length; i++)
+                    for(int j = 0; j < Receivers[i].length; j++) {
+                        SDFReceiver receiver = (SDFReceiver)Receivers[i][j];
+                        if (receiver.size() > maximumCapacity) {
+                            throw new IllegalActionException(this,
+                                    "Receiver size exceeds the maximum " +
+                                    "capacity in port " + 
+                                    receiver.getContainer().getFullName());
+                        }
+                    }
+            }
+        }
+    }
+    
     /** Iterate the actor once. Increment the firing number for it.
      *  Update the enabling status for each connected actor as well
      *  as itself.
      *  @param actor The actor to be fired.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
      *  @exception IllegalActionException If any called method throws
-     *  IllegalActionException or actor is not ready.
+     *   IllegalActionException or actor is not ready.
      */
     protected int _fireActor(Actor actor) throws IllegalActionException {
         if (_debugging) {
@@ -662,6 +702,8 @@ public class DDFDirector extends Director {
                     "is not ready to fire.");
         }
 
+        _checkDownstreamReceiverCapacity(actor);
+        
         // At least one actor has been fired in this basic iteration.
         _firedOne = true;
 
@@ -917,13 +959,20 @@ public class DDFDirector extends Director {
     }
 
     /** Initialize the object. In this case, we give the DDFDirector
-     *  an iterations parameter with default value zero and a
-     *  runUntilDeadlock parameter with default value false.
+     *  an iterations parameter with default value zero, 
+     *  a maximumReceiverCapacity parameter with default value zero
+     *  and a runUntilDeadlock parameter with default value false.
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
-        iterations = new Parameter(this, "iterations", new IntToken(0));
+        iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
+        iterations.setToken(new IntToken(0));
+        
+        maximumReceiverCapacity 
+            = new Parameter(this, "maximumReceiverCapacity");
+        maximumReceiverCapacity.setTypeEquals(BaseType.INT);
+        maximumReceiverCapacity.setToken(new IntToken(0));
 
         runUntilDeadlock = new Parameter(this, "runUntilDeadlock");
         runUntilDeadlock.setTypeEquals(BaseType.BOOLEAN);
