@@ -129,7 +129,7 @@ public class TestLevel extends TypedAtomicActor {
 	    if (_prev <= _threshold && inputValue > _threshold) {
 		output.broadcast(new DoubleToken(1.0));
 	    } else if (_prev >= _threshold && inputValue < _threshold) {
-		output.broadcast(new DoubleToken(0.0));
+		output.broadcast(new DoubleToken(-1.0));
 	    }
 	    _prev = inputValue;
 
@@ -137,7 +137,7 @@ public class TestLevel extends TypedAtomicActor {
 	    if (inputValue > _threshold) {
 		output.broadcast(new DoubleToken(1.0));
 	    } else {
-		output.broadcast(new DoubleToken(0.0));
+		output.broadcast(new DoubleToken(-1.0));
 	    }
 	    _prev = inputValue;
 	}
