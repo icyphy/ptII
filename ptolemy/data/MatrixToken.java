@@ -101,8 +101,7 @@ public abstract class MatrixToken extends Token {
      *  @param column The column index of the desired element.
      *  @return A token containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained matrix.
+     *   row or column number is outside the range of the matrix.
      */
     public abstract Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException;
