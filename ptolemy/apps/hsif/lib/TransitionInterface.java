@@ -32,6 +32,7 @@ package ptolemy.apps.hsif.lib;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -92,7 +93,7 @@ public class TransitionInterface extends Attribute {
      *  @param name The name of this object.
      *  @exception IllegalActionException If the name has a period.
      */
-    public TransitionInterface(CompositeEntity container, String name)
+    public TransitionInterface(Transition container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }

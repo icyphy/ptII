@@ -73,7 +73,10 @@ all: jclass
 include $(ROOT)/mk/ptcommon.mk
 
 demo:
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII poolExample.xml
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII poolExample.xml > bar.xml
+
+pool: 
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII pool.xml > bar.xml
 
 sundemo:
 	$(JAVA) -classpath ".;$(CLASSPATH)" DOMEcho poolExample.xml

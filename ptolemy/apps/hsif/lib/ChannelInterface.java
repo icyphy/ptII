@@ -136,9 +136,27 @@ public class ChannelInterface extends Attribute {
         }
     }
 
+    public void setInput(boolean input) {
+        _input = input;
+	_output = !input;
+    }
+
+    public void setOutput(boolean output) {
+        _input = !output;
+	_output = output;
+    }
+
+    public String getType() {
+        if (_input) return "input";
+	if (_output) return "output";
+	return "unknown";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
 private String _dst = "";
 private String _src = "";
+private boolean _input = false;
+private boolean _output = false;
 }

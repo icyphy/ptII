@@ -61,6 +61,7 @@ import ptolemy.actor.lib.Assertion;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Expression;
 import ptolemy.actor.TypeAttribute;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -205,6 +206,8 @@ public class DOMEcho {
 
 	Workspace workspace = ws;
 	NamedObj container = no;
+	boolean composite = false;
+	boolean modalModel = false;
 
 	// Indent to the current level before printing anything
         outputIndentation();
@@ -247,9 +250,10 @@ public class DOMEcho {
 			    FSMActor fsmActor = ((FSMDirector)((ModalModel) refinement.getContainer()).getDirector()).getController();
 			    fsmActor.initialStateName.setExpression(refinement.getName());
 			}
-		    } else if (attName.equals("Invariant")) {
+		    } else if (attName.equals("Expr")) {
+			System.out.println("Expr: " + cData);
 			Assertion assertion = (Assertion) container.getContainer();
-			assertion.assertion.setExpression(cData);
+			    assertion.assertion.setExpression(cData);
 		    }
 		} else {
 		}
@@ -304,6 +308,7 @@ public class DOMEcho {
 			new CTMixedSignalDirector((TypedCompositeActor) container, "CT Director");
 		    }
 		    workspace = null;
+		    composite = true;
 		    String id = "";
 		    for (int i = 0; i < atts.getLength(); i++) {
 			Node att = atts.item(i);
@@ -317,6 +322,7 @@ public class DOMEcho {
 		    Parameter IDParameter = new Parameter(container, "id");
 		    IDParameter.setToken(new StringToken(id));
 		} else if (nodeName.equals("model")) {
+		    composite = true;
 		    String id = "";
 		    for (int i = 0; i < atts.getLength(); i++) {
 			Node att = atts.item(i);
@@ -328,6 +334,7 @@ public class DOMEcho {
 				new DEDirector((TypedCompositeActor) container, "DE Director");
 			    } else if (nodeKind.equals("HybridAutomaton")) {
 				container = new ModalModel((TypedCompositeActor) container, "modalModel");
+				modalModel = true;
 			    } else if (nodeKind.equals("DiscreteState")) {
 				FSMActor fsmActor = ((FSMDirector) ((ModalModel) container).getDirector()).getController();;
 				new State(fsmActor, "NameToBeConfigured");
@@ -393,15 +400,15 @@ public class DOMEcho {
 				container = new TypedIORelation((CompositeEntity) container, null);
 			    } else if (nodeKind.equals("OutputChannel")) {
 				if (container instanceof ModalModel) {
-					container = (ModalPort) ((ModalModel) container).newPort("modalPort");
-					((ModalPort) container).setOutput(true);
+				    container = (ModalPort) ((ModalModel) container).newPort("modalPort");
+				    ((ModalPort) container).setOutput(true);
 				} else {
 				    container = new TypedIOPort((ComponentEntity) container, null, false, true);
 				}
 			    } else if (nodeKind.equals("InputChannel")) {
 				if (container instanceof ModalModel) {
-					container = (ModalPort) ((ModalModel) container).newPort("modalPort");
-					((ModalPort) container).setInput(true);
+				    container = (ModalPort) ((ModalModel) container).newPort("modalPort");
+				    ((ModalPort) container).setInput(true);
 				} else {
 				    container = new TypedIOPort((ComponentEntity) container, null, true, false);
 				}
@@ -411,6 +418,7 @@ public class DOMEcho {
 				container = new Expression((CompositeEntity) container, null);
 				// FIXME			  
 			    } else if (nodeKind.equals("FlowEquation")) {
+				new Integrator((CompositeEntity) container, "ToBeConfigured");
 				container = new Expression((CompositeEntity) container, null);
 				// FIXME			    
 			    }
@@ -427,6 +435,7 @@ public class DOMEcho {
 		    IDParameter.setToken(new StringToken(id));
 
 		} else if (nodeName.equals("attribute")) {
+		    NamedObj namedObj = container;
 		    for (int i = 0; i < atts.getLength(); i++) {
 			Node att = atts.item(i);
 			String attName = att.getNodeName();
@@ -451,13 +460,15 @@ public class DOMEcho {
 			    } else if (nodeKind.equals("UpdateAction")) {
 				container = new Attribute(container, nodeKind);
 			    } else if (nodeKind.equals("InitialState")) {
-				container = new Attribute(container, nodeKind);
+				container= new Attribute(container, nodeKind);
 			    } else if (nodeKind.equals("EntryAction")) {
-				container = new Attribute(container, nodeKind);
+				container= new Attribute(container, nodeKind);
 			    } else if (nodeKind.equals("ExitAction")) {
-				container = new Attribute(container, nodeKind);
+				container= new Attribute(container, nodeKind);
+			    } else if (nodeKind.equals("Var")) {
+				container= new Attribute(container, nodeKind);
 			    } else if (nodeKind.equals("Expr")) {
-				container = new Attribute(container, nodeKind);
+				container= new Attribute(container, nodeKind);
 			    }
 			}
 			echo(att, workspace, container);
@@ -470,25 +481,44 @@ public class DOMEcho {
 			    String nodeKind = att.getNodeValue();
 			    if (nodeKind.equals("Transition")) {
 				FSMActor fsmActor = ((FSMDirector)((ModalModel)container).getDirector()).getController();
-				container = new Transition(fsmActor, null);
+				container = new Transition(fsmActor, "transition");
+				new TransitionInterface((Transition) container, "transitionConnection");
+				echo(att, workspace, (Transition) container);
 			    } else if (nodeKind.indexOf("Channel") != -1) {
 				container = new ChannelInterface((TypedCompositeActor)container, null);
+				if (nodeKind.equals("OutputToChannel")) {
+				    ((ChannelInterface) container).setOutput(true);
+				} else if (nodeKind.equals("ChannelToInput")) {
+				    ((ChannelInterface) container).setInput(true);
+				}
+				echo(att, workspace, (ChannelInterface) container);
 			    }
 			}
-			echo(att, workspace, container);
 		    }
 		} else if (nodeName.equals("connpoint")) {
+		    String role = "";
 		    for (int i = 0; i < atts.getLength(); i++) {
 			Node att = atts.item(i);
 			String attName = att.getNodeName();
-			String role = "";
 			if (attName.equals("role")) {
 			    role = att.getNodeValue();
 			} else if (attName.equals("target")) {
-			    if (role.equals("src")) {
-				((ChannelInterface)container).setSrc(att.getNodeValue());
-			    } else if (role.equals("dst")) {
-				((ChannelInterface)container).setDst(att.getNodeValue());
+			    if (container instanceof ChannelInterface) {
+				if (role.equals("src")) {
+				    ((ChannelInterface)container).setSrc(att.getNodeValue());
+				} else if (role.equals("dst")) {
+				    ((ChannelInterface)container).setDst(att.getNodeValue());
+				}
+			    } else if (container instanceof Transition) {
+				ListIterator tis = ((Transition) container).attributeList(TransitionInterface.class).listIterator();
+				while (tis.hasNext()) {
+				    TransitionInterface ti = (TransitionInterface) tis.next();
+				    if (role.equals("src")) {
+					ti.setSrc(att.getNodeValue());
+				    } else if (role.equals("dst")) {
+					ti.setDst(att.getNodeValue());
+				    }
+				}    
 			    }
 			}
 		    }
@@ -529,6 +559,7 @@ public class DOMEcho {
 			    container.setName(stateName);
 			    State state = (State) fsmActor.getEntity("NameToBeConfigured");
 			    state.setName(stateName);
+			    state.refinementName.setExpression(stateName);
 			} else {
 			    if (workspace != null) {
 				workspace.setName(n.getNodeValue());
@@ -550,7 +581,7 @@ public class DOMEcho {
 			String value = n.getNodeValue();
 			System.out.println("--- value field content: " + value);
 
-			if (container instanceof Attribute && !(container instanceof Parameter)) {
+			if ((container instanceof Attribute) && !(container instanceof Parameter)) {
 			    System.out.println("Attribute value text");
 			    String attName = container.getName();
 			    if (attName.equals("Guard")) {
@@ -579,13 +610,33 @@ public class DOMEcho {
 			    } else if (attName.equals("Invariant")) {
 				Assertion assertion = (Assertion) container.getContainer();
 				assertion.assertion.setExpression(value);
+			    } else if (attName.equals("Var")) {
+				Expression expression = (Expression) container.getContainer();
+				Refinement refinement = (Refinement) expression.getContainer();
+				TypedIORelation relation = new TypedIORelation(refinement, value);
+				ListIterator integrators = refinement.entityList(Integrator.class).listIterator();
+				while (integrators.hasNext()) {
+				    Integrator integrator = (Integrator) integrators.next();
+				    if (integrator.getName().equals("ToBeConfigured")) {
+					integrator.setName(value);
+				    }
+				}
+			    } else if (attName.equals("Expr")) {
+				TypedAtomicActor taa = (TypedAtomicActor) container.getContainer();
+				if (taa instanceof Expression) {
+				    ((Expression) taa).expression.setExpression(value);
+				} else if (taa instanceof Assertion) {
+				    ((Assertion) taa).assertion.setExpression(value);
+				}
 			    }
 			} else {
 			    System.out.println("NOT Attribute value text");
-			    if (value.equals("Controlled") || value.equals("Observable")) {
+			    if (value.equals("Controlled")) {
 				((TypedIOPort) container).setOutput(true);
 			    } else if (value.equals("Input")) {
 				((TypedIOPort) container).setInput(true);
+			    } else if (value.equals("Observable")) {
+				((TypedIOPort) container).setOutput(true);
 			    } else {
 				((Parameter) container).setExpression(value);
 			    }
@@ -599,16 +650,16 @@ public class DOMEcho {
 		printlnCommon(n);
 		break;
 	    }
-
+	    
 	} catch (Exception e) {
 	    System.out.println(" something wrong " + e.getMessage());
 	}
-
+	
 	// Print children if any
 	indent++;
 	for (Node child = n.getFirstChild(); child != null;
 	     child = child.getNextSibling()) {
-
+	    
 	    if (child.getNodeName().equals("regnode")) {
 		// no position information is necessary
 	    } else {
@@ -617,6 +668,112 @@ public class DOMEcho {
 
 	}
 	indent--;
+
+	if (modalModel && composite) {
+	    System.out.println(" Now the container is " + container.getFullName() + " modalModel");
+	} else if (composite){
+	    System.out.println(" Now the container is " + container.getFullName() + " composite");
+	}
+	
+	// handle connections
+
+	if (composite) {
+	    try {
+		if (modalModel) {	
+		    ModalController controller = (ModalController) ((FSMDirector)((TypedCompositeActor) container).getDirector()).getController();
+		    ListIterator transitions = controller.relationList().listIterator();
+		    System.out.println(((TypedCompositeActor) container).relationList().size());
+		    while (transitions.hasNext()) {
+			Transition transition = (Transition) transitions.next();
+			System.out.println(transition.getName()); // + transition.attributeList().size());
+			ListIterator connections = transition.attributeList(TransitionInterface.class).listIterator();
+			while (connections.hasNext()) {
+			    TransitionInterface connection = (TransitionInterface) connections.next();
+			    String srcID = connection.getSrc();
+			    String dstID = connection.getDst();
+
+			    ListIterator refinements = ((TypedCompositeActor) container).entityList(Refinement.class).listIterator();
+			    while (refinements.hasNext()) {
+				Refinement refinement = (Refinement) refinements.next();
+				String refinementID = ((StringToken) ((Parameter) refinement.getAttribute("id")).getToken()).stringValue();
+				String refinementName = refinement.getName();
+				System.out.println("refinementID " + refinementID + " src --> dst " + srcID + " --> " + dstID);
+
+				ListIterator states = controller.entityList(State.class).listIterator();
+				while (states.hasNext()) {
+				    State state = (State) states.next();
+				    if (state.getName().equals(refinementName)) {
+					if (refinementID.equals(srcID)) {
+					    state.outgoingPort.link(transition);
+					} 
+					if (refinementID.equals(dstID)) {
+					    state.incomingPort.link(transition);
+					}
+				    }
+				}
+			    }
+			}
+		    }
+		} else if (container instanceof Refinement) {
+		} else {
+		    ListIterator channels = ((TypedCompositeActor) container).relationList().listIterator();
+		    //System.out.println(((TypedCompositeActor) container).relationList().size());
+		    while (channels.hasNext()) {
+			TypedIORelation channel = (TypedIORelation) channels.next();
+			String channelID = ((StringToken) ((Parameter) channel.getAttribute("id")).getToken()).stringValue();
+			ListIterator connections = ((TypedCompositeActor) container).attributeList(ChannelInterface.class).listIterator();
+			while (connections.hasNext()) { 
+			    ChannelInterface connection = (ChannelInterface) connections.next();
+			    String srcID = connection.getSrc();
+			    String dstID = connection.getDst();
+			    
+				//System.out.println("channelID " + channelID + " src --> dst " + srcID + " --> " + dstID);
+			    
+			    if (connection.getType().equals("output")) {
+				if (dstID.equals(channelID)) {
+				// search the TypedIOPort with the same ID with srcID
+				    ListIterator entities = ((TypedCompositeActor) container).entityList(TypedCompositeActor.class).listIterator();
+				    //System.out.println("entities number " + ((TypedCompositeActor) container).entityList(TypedCompositeActor.class).size());
+				    while (entities.hasNext()) {
+					TypedCompositeActor entity = (TypedCompositeActor) entities.next();
+					ListIterator outputs = entity.outputPortList().listIterator();
+					while (outputs.hasNext()) {
+					    TypedIOPort output = (TypedIOPort) outputs.next();
+					    String outputID = ((StringToken) ((Parameter) output.getAttribute("id")).getToken()).stringValue();
+					    if (outputID.equals(srcID)) {
+						// FIXME has to check if there are multi connections
+						output.link(channel);
+						// System.out.println("Connecting ... " + srcID + " --> " + dstID);
+					    }
+					}
+				    }
+				}
+			    } else if (connection.getType().equals("input")) {
+				if (srcID.equals(channelID)) {
+				// search the TypedIOPort with the same ID with dstID
+				    ListIterator entities = ((TypedCompositeActor) container).entityList(TypedCompositeActor.class).listIterator();
+				    while (entities.hasNext()) {
+					TypedCompositeActor entity = (TypedCompositeActor) entities.next();
+					ListIterator inputs = entity.inputPortList().listIterator();
+					while (inputs.hasNext()) {
+					    TypedIOPort input = (TypedIOPort) inputs.next();
+					    String inputID = ((StringToken) ((Parameter) input.getAttribute("id")).getToken()).stringValue();
+					    if (inputID.equals(dstID)) {
+						// FIXME has to check if there are multi connections
+						input.link(channel);
+						// System.out.println("Connecting ... " + srcID + " --> " + dstID);
+					    }
+					}
+				    }
+				}
+			    }
+			}
+		    }
+		}
+	    } catch (IllegalActionException e) {
+		System.out.println("Connection error: " + e.getMessage());
+	    }
+	}
     }
 
     // Error handler to report errors and warnings

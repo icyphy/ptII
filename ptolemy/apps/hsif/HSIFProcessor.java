@@ -113,7 +113,7 @@ public class HSIFProcessor {
 	    _parser();
 
 	    System.out.println("constructing models....");
-	    //    _constructor();
+	    //	    _constructor();
 
 
 	    System.out.println("writing output file....");
@@ -132,18 +132,12 @@ public class HSIFProcessor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
 
-    /*  // Process the agent from the first elemnet of the agents list
-	private void _constructor() throws IllegalActionException {
-	System.out.println(dhnasList.size());
-	if(DNHAsList.size() > 0) {
-	DNHA dnha = (DNHA) dnhasList.get(0);
+    // Process the agent from the first elemnet of the agents list
+    /*    private void _constructor() throws IllegalActionException {
 	_topLevel = dnha.constructor(new Workspace());
-	} else {
-	throw new IllegalActionException(" Not a good HSIF file! ");
-	}
-	}
-
+    }
     */
+    
 
     // Export the model into MoML file.
     private void _writer() throws IOException {

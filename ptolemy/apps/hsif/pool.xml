@@ -116,33 +116,6 @@
 							</regnode>
 						</regnode>
 					</regnode>
-					<atom id="id-0066-0000001d" kind="IntegerVariable" role="IntegerVariableLocal" relid="0xf">
-						<name>low</name>
-						<regnode name="PartRegs">
-							<value></value>
-							<regnode name="Composition">
-								<value></value>
-								<regnode name="Position" isopaque="yes">
-									<value>178,122</value>
-								</regnode>
-							</regnode>
-						</regnode>
-						<attribute kind="Kind">
-							<value>Controlled</value>
-						</attribute>
-						<attribute kind="MaxValue">
-							<value>10</value>
-						</attribute>
-						<attribute kind="MinValue">
-							<value>0</value>
-						</attribute>
-						<attribute kind="InitialMinValue" status="meta">
-							<value>0</value>
-						</attribute>
-						<attribute kind="InitialMaxValue" status="meta">
-							<value>0</value>
-						</attribute>
-					</atom>
 					<connection id="id-0068-00000002" kind="Transition" role="Transition" relid="0xc">
 						<name>off_TurnOn</name>
 						<regnode name="autorouterPref" isopaque="yes">
@@ -186,72 +159,6 @@ high := pumpHigh</value>
 						<connpoint role="dst" target="id-0065-00000004"/>
 						<connpoint role="src" target="id-0065-00000005"/>
 					</connection>
-					<atom id="id-0066-0000001f" kind="IntegerVariable" role="IntegerVariableLocal" relid="0x11">
-						<name>high</name>
-						<regnode name="PartRegs">
-							<value></value>
-							<regnode name="Composition">
-								<value></value>
-								<regnode name="Position" isopaque="yes">
-									<value>80,122</value>
-								</regnode>
-							</regnode>
-						</regnode>
-						<attribute kind="Kind">
-							<value>Controlled</value>
-						</attribute>
-						<attribute kind="MaxValue">
-							<value>1e+007</value>
-						</attribute>
-						<attribute kind="MinValue">
-							<value>0</value>
-						</attribute>
-						<attribute kind="InitialMinValue" status="meta">
-							<value>0</value>
-						</attribute>
-						<attribute kind="InitialMaxValue" status="meta">
-							<value>0</value>
-						</attribute>
-					</atom>
-					<atom id="id-0066-00000007" kind="OutputChannel" role="OutputChannel" relid="0x1">
-						<name>toggle</name>
-						<regnode name="PartRegs">
-							<value></value>
-							<regnode name="Composition">
-								<value></value>
-								<regnode name="Position" isopaque="yes">
-									<value>653,205</value>
-								</regnode>
-							</regnode>
-						</regnode>
-					</atom>
-					<atom id="id-0066-00000008" kind="RealVariable" role="RealVariableLocal" relid="0x4">
-						<name>timer</name>
-						<regnode name="PartRegs">
-							<value></value>
-							<regnode name="Composition">
-								<value></value>
-								<regnode name="Position" isopaque="yes">
-									<value>235,35</value>
-								</regnode>
-							</regnode>
-						</regnode>
-						<attribute kind="Kind">
-							<value>Observable</value>
-						</attribute>
-						<attribute kind="MaxValue">
-							<value>10</value>
-						</attribute>
-						<attribute kind="MinValue">
-							<value>0</value>
-						</attribute>
-						<attribute kind="InitialMinValue" status="meta">
-							<value>0</value>
-						</attribute>
-						<attribute kind="InitialMaxValue" status="meta">
-							<value>0</value>
-						</attribute>
-					</atom>
 					<model id="id-0065-00000005" kind="DiscreteState" role="DiscreteState" relid="0x3" childrelidcntr="0x3">
 						<name>transientMode</name>
 						<regnode name="PartRegs">
@@ -350,7 +257,7 @@ high := pumpHigh</value>
 						<attribute kind="ExitAction">
 							<value>timer := 0</value>
 						</attribute>
-						<atom id="id-0066-00000013" kind="FlowEquation" role="FlowEquation" relid="0x3">
+					        <atom id="id-0066-00000013" kind="FlowEquation" role="FlowEquation" relid="0x3">
 							<name>timer_eqn</name>
 							<regnode name="PartRegs">
 								<value></value>
@@ -380,7 +287,7 @@ high := pumpHigh</value>
 								</regnode>
 							</regnode>
 							<attribute kind="Expr">
-								<value><![CDATA[(level >= low) and (level <= high)]]></value>
+								<value><![CDATA[(level >= low) && (level <= high)]]></value>
 							</attribute>
 						</atom>
 						<atom id="id-0066-0000000c" kind="FlowEquation" role="FlowEquation" relid="0x1">
@@ -402,6 +309,126 @@ high := pumpHigh</value>
 							</attribute>
 						</atom>
 					</model>
+				<atom id="id-0066-00000024" kind="RealVariable" role="RealVariableGlobal" relid="0x6">
+					<name>level</name>
+					<regnode name="PartRegs">
+						<value></value>
+						<regnode name="Composition">
+							<value></value>
+							<regnode name="Position" isopaque="yes">
+								<value>396,49</value>
+							</regnode>
+						</regnode>
+					</regnode>
+					<attribute kind="Kind">
+						<value>Controlled</value>
+					</attribute>
+					<attribute kind="MaxValue" status="meta">
+						<value>0</value>
+					</attribute>
+					<attribute kind="MinValue" status="meta">
+						<value>0</value>
+					</attribute>
+					<attribute kind="InitialMinValue" status="meta">
+						<value>0</value>
+					</attribute>
+					<attribute kind="InitialMaxValue" status="meta">
+						<value>0</value>
+					</attribute>
+				</atom>
+					<atom id="id-0066-0000001d" kind="IntegerVariable" role="IntegerVariableLocal" relid="0xf">
+						<name>low</name>
+						<regnode name="PartRegs">
+							<value></value>
+							<regnode name="Composition">
+								<value></value>
+								<regnode name="Position" isopaque="yes">
+									<value>178,122</value>
+								</regnode>
+							</regnode>
+						</regnode>
+						<attribute kind="Kind">
+							<value>Input</value>
+						</attribute>
+						<attribute kind="MaxValue">
+							<value>10</value>
+						</attribute>
+						<attribute kind="MinValue">
+							<value>0</value>
+						</attribute>
+						<attribute kind="InitialMinValue" status="meta">
+							<value>0</value>
+						</attribute>
+						<attribute kind="InitialMaxValue" status="meta">
+							<value>0</value>
+						</attribute>
+					</atom>
+					<atom id="id-0066-0000001f" kind="IntegerVariable" role="IntegerVariableLocal" relid="0x11">
+						<name>high</name>
+						<regnode name="PartRegs">
+							<value></value>
+							<regnode name="Composition">
+								<value></value>
+								<regnode name="Position" isopaque="yes">
+									<value>80,122</value>
+								</regnode>
+							</regnode>
+						</regnode>
+						<attribute kind="Kind">
+							<value>Input</value>
+						</attribute>
+						<attribute kind="MaxValue">
+							<value>1e+007</value>
+						</attribute>
+						<attribute kind="MinValue">
+							<value>0</value>
+						</attribute>
+						<attribute kind="InitialMinValue" status="meta">
+							<value>0</value>
+						</attribute>
+						<attribute kind="InitialMaxValue" status="meta">
+							<value>0</value>
+						</attribute>
+					</atom>
+					<atom id="id-0066-00000007" kind="OutputChannel" role="OutputChannel" relid="0x1">
+						<name>toggle</name>
+						<regnode name="PartRegs">
+							<value></value>
+							<regnode name="Composition">
+								<value></value>
+								<regnode name="Position" isopaque="yes">
+									<value>653,205</value>
+								</regnode>
+							</regnode>
+						</regnode>
+					</atom>
+					<atom id="id-0066-00000008" kind="RealVariable" role="RealVariableLocal" relid="0x4">
+						<name>timer</name>
+						<regnode name="PartRegs">
+							<value></value>
+							<regnode name="Composition">
+								<value></value>
+								<regnode name="Position" isopaque="yes">
+									<value>235,35</value>
+								</regnode>
+							</regnode>
+						</regnode>
+						<attribute kind="Kind">
+							<value>Controlled</value>
+						</attribute>
+						<attribute kind="MaxValue">
+							<value>10</value>
+						</attribute>
+						<attribute kind="MinValue">
+							<value>0</value>
+						</attribute>
+						<attribute kind="InitialMinValue" status="meta">
+							<value>0</value>
+						</attribute>
+						<attribute kind="InitialMaxValue" status="meta">
+							<value>0</value>
+						</attribute>
+					</atom>
 					<atom id="id-0066-0000001e" kind="IntegerVariable" role="IntegerVariableLocal" relid="0x10">
 						<name>rate</name>
 						<regnode name="PartRegs">
@@ -414,7 +441,7 @@ high := pumpHigh</value>
 							</regnode>
 						</regnode>
 						<attribute kind="Kind">
-							<value>input</value>
+							<value>Input</value>
 						</attribute>
 						<attribute kind="MaxValue" status="meta">
 							<value>0</value>
@@ -544,8 +571,35 @@ high := INF</value>
 						<connpoint role="dst" target="id-0065-00000006"/>
 						<connpoint role="src" target="id-0065-00000006"/>
 					</connection>
+				<atom id="id-0066-00000025" kind="RealVariable" role="RealVariableGlobal" relid="0x6">
+					<name>level</name>
+					<regnode name="PartRegs">
+						<value></value>
+						<regnode name="Composition">
+							<value></value>
+							<regnode name="Position" isopaque="yes">
+								<value>396,49</value>
+							</regnode>
+						</regnode>
+					</regnode>
+					<attribute kind="Kind">
+						<value>Input</value>
+					</attribute>
+					<attribute kind="MaxValue" status="meta">
+						<value>0</value>
+					</attribute>
+					<attribute kind="MinValue" status="meta">
+						<value>0</value>
+					</attribute>
+					<attribute kind="InitialMinValue" status="meta">
+						<value>0</value>
+					</attribute>
+					<attribute kind="InitialMaxValue" status="meta">
+						<value>0</value>
+					</attribute>
+				</atom>
 					<atom id="id-0066-0000001a" kind="BooleanVariable" role="BooleanVariableLocal" relid="0x4">
-						<name>toggle</name>
+						<name>swim</name>
 						<regnode name="PartRegs">
 							<value></value>
 							<regnode name="Composition">
@@ -575,33 +629,6 @@ high := INF</value>
 						</regnode>
 					</atom>
 				</model>
-				<atom id="id-0066-00000004" kind="RealVariable" role="RealVariableGlobal" relid="0x6">
-					<name>level</name>
-					<regnode name="PartRegs">
-						<value></value>
-						<regnode name="Composition">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>396,49</value>
-							</regnode>
-						</regnode>
-					</regnode>
-					<attribute kind="Kind">
-						<value>Observable</value>
-					</attribute>
-					<attribute kind="MaxValue" status="meta">
-						<value>0</value>
-					</attribute>
-					<attribute kind="MinValue" status="meta">
-						<value>0</value>
-					</attribute>
-					<attribute kind="InitialMinValue" status="meta">
-						<value>0</value>
-					</attribute>
-					<attribute kind="InitialMaxValue" status="meta">
-						<value>0</value>
-					</attribute>
-				</atom>
 				<atom id="id-0066-00000017" kind="IntegerParameter" role="IntegerParameterGlobal" relid="0xb">
 					<name>pumpLow</name>
 					<regnode name="PartRegs">
