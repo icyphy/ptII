@@ -40,7 +40,8 @@ DIRS = 		doc jnlp style test $(PTJACL_DIR)
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# PlotTableauFrame.java requires diva.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
