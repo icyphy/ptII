@@ -335,6 +335,17 @@ public class Plot extends PlotBox {
         }
     }
 
+    /** Clear the plot of data points in the specified dataset.
+     *  This calls repaint() to request an update of the display.
+     *  @param dataset The dataset to clear.
+     */
+    public synchronized void clear(int dataset) {
+        _checkDatasetIndex(dataset);
+        Vector points = (Vector)_points.elementAt(dataset);
+        points.clear();
+        repaint();
+    }
+
     /** Erase the point at the given index in the given dataset.  If
      *  lines are being drawn, also erase the line to the next points
      *  (note: not to the previous point).  The point is not checked to
@@ -999,7 +1010,6 @@ public class Plot extends PlotBox {
         this.addYTick("0", 0);
         this.addYTick("PI/2", Math.PI/2);
         this.addYTick("PI", Math.PI);
-        this.setNumSets(10);
         this.setMarksStyle("none");
         this.setImpulses(true);
 
