@@ -281,9 +281,8 @@ public class Expression extends TypedAtomicActor {
             // FIXME: Have to initialize with a token since vergil
             // evaluates variables at start-up.  This needs to be a double
             // so that expressions that use java.Math work.
-            Variable variable = new Variable(this, portName);
-            variable.setToken(new Token());
-            //, new DoubleToken(1.0));
+            Variable variable = 
+                new Variable(this, portName, new DoubleToken(1.0));
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
