@@ -69,7 +69,6 @@ JSRCS = \
 	Director.java \
 	Executable.java \
 	FIFOQueue.java \
-	FlowPort.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
