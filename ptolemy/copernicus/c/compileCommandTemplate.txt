@@ -8,9 +8,8 @@
 @java@ @jvmSize@
  -classpath @classPath@
  "@javaPtIIProperty@"
- ptolemy.copernicus.shallow.Main @modelPath@ -d @ptIIUserDirectory@
+ "--debug"
+ ptolemy.copernicus.c.Main @modelPath@ -d @ptIIUserDirectory@
  -p wjtp.watchDog time:@watchDogTimeout@
- -p wjtp.mt targetPackage:@targetPackage@
- -p wjtp.writeJimple1 outDir:@ptIIUserDirectory@/@targetPath/jimple1
- -p wjtp.writeJimple2 outDir:@ptIIUserDirectory@/@targetPath/jimple2
+ -p wjtp.snapshot1 outdir:@targetPath@
  @compileOptions@
