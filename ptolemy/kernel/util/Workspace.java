@@ -95,21 +95,25 @@ public class Workspace implements Nameable, Serializable {
     }
 
     /** Return a description of the object.
-     *  @param verbose The level of verbosity.
+     *  @param verbosity The level of verbosity.
      */
-    public String description(int verbose){
+    public String description(int verbosity){
         String results = new String();
-        switch (verbose) {
+        switch (verbosity) {
         case pt.kernel.Nameable.CONTENTS:
         case pt.kernel.Nameable.CONNECTIONS:
+        case pt.kernel.Nameable.LIST_CONTENTS:
+        case pt.kernel.Nameable.LIST_CONNECTIONS:
             CollectionEnumeration enum = elements();
             while (enum.hasMoreElements()) {
                 NamedObj namedObj = (NamedObj) enum.nextElement();
-                results = results.concat(namedObj.description(verbose));
+                results = results.concat(namedObj.description(verbosity));
             }
             return results;
         case pt.kernel.Nameable.PRETTYPRINT:
             return description(CONTENTS) + description(CONNECTIONS);
+        case pt.kernel.Nameable.LIST_PRETTYPRINT:
+            return description(LIST_CONTENTS) + description(LIST_CONNECTIONS);
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

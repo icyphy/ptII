@@ -216,40 +216,18 @@ public class ComponentPort extends Port {
     }
 
     /** Return a description of the object
-     *  @param verbose The level of verbosity.
+     *  @param verbosity The level of verbosity.
      */
-    public String description(int verbose){
+    public String description(int verbosity){
         String results = new String();
-        switch (verbose) {
+        switch (verbosity) {
+        case pt.kernel.Nameable.LIST_CONTENTS:
+            return toString();
         case pt.kernel.Nameable.CONTENTS:
-            // Note that the results of description(CONTENTS) in
-            // pt.kernel.ComponentPort may the name of a Relation more
-            // than once. 
-            //
-            // The reason is that each CompositePort is connected to a
-            // Relation, so we report the Relation for each port.  If
-            // two CompositePorts are connected to a Relation, then
-            // the relation is returned twice. 
-            //
-            // The fix for this would be to modify all of the
-            // description(PRETTYPRINT) code so that it
-            // post-processes the description(CONTENTS)
-            // output and removed any duplicate Relations.
-
-            results = toString() + "\n";
-            Enumeration enum = getInsideRelations();
-            while (enum.hasMoreElements()) {
-                Relation relation = (Relation)enum.nextElement();
-                results = results.concat(relation.description(verbose));
-            }
-            enum = getLinkedRelations();
-            while (enum.hasMoreElements()) {
-                Relation relation = (Relation)enum.nextElement();
-                results = results.concat(relation.description(verbose));
-            }
-            return results;
+            return toString() + "\n";
+        case pt.kernel.Nameable.LIST_CONNECTIONS:
         case pt.kernel.Nameable.CONNECTIONS:
-            enum = getInsideRelations();
+            Enumeration enum = getInsideRelations();
             while (enum.hasMoreElements()) {
                 Relation relation = (Relation)enum.nextElement();
                 results = results.concat(toString() + " link "
@@ -264,6 +242,8 @@ public class ComponentPort extends Port {
             return results;
         case pt.kernel.Nameable.PRETTYPRINT:
             return description(CONTENTS) + description(CONNECTIONS);
+        case pt.kernel.Nameable.LIST_PRETTYPRINT:
+            return description(LIST_CONTENTS) + description(LIST_CONNECTIONS);
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

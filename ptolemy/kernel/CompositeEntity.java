@@ -320,25 +320,76 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Return a description of the object.
-     *  @param verbose The level of verbosity.
+     *  @param verbosity The level of verbosity.
      */
-    public String description(int verbose){
+    public String description(int verbosity){
         String results = new String();
-        switch (verbose) {
-        case pt.kernel.Nameable.CONTENTS:
-        case pt.kernel.Nameable.CONNECTIONS:
-            // Get the name and ports for this CompositeEntity.
-            results = results.concat(super.description(verbose));
+        String prefix = new String();
+        //results = results.concat("# CompositeEntity:" + toString() + " " + verbosity+"\n");
+        switch (verbosity) {
+        case pt.kernel.Nameable.LIST_CONTENTS:
+            results = results.concat(" { " + toString() + " }\n");
 
-            // Get the name and ports for the CompositeEntities inside.
-            Enumeration enum = getEntities();
+            // Get the name and ports for this CompositeEntity.
+            Enumeration enum = getPorts();
+            while (enum.hasMoreElements()) {
+                Port port = (Port)enum.nextElement();
+                results = results.concat("   { " +
+                        port.description(verbosity) + " }\n");
+            }
+
+            // Get the Relations inside.
+            enum = getRelations();
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                results = results.concat("    { " +
+                        relation.description(verbosity) + " }\n");
+            }
+
+            // Get the CompositeEntities inside.
+            enum = getEntities();
             while (enum.hasMoreElements()) {
                 ComponentEntity entity = (ComponentEntity)enum.nextElement();
-                results = results.concat(entity.description(verbose));
+                results = results.concat(" { " +
+                        entity.description(verbosity) + " }\n");
             }
+            return results;
+        case pt.kernel.Nameable.CONTENTS:
+            results = results.concat(toString() + "\n");
+        case pt.kernel.Nameable.CONNECTIONS:
+        case pt.kernel.Nameable.LIST_CONNECTIONS:
+            // Get the name and ports for this CompositeEntity.
+            enum = getPorts();
+            while (enum.hasMoreElements()) {
+                Port port = (Port)enum.nextElement();
+                results = results.concat(port.description(verbosity));
+            }
+
+            // Get the Relations inside.
+            enum = getRelations();
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                results = results.concat(relation.description(verbosity));
+            }
+
+            // Get the CompositeEntities inside.
+            enum = getEntities();
+            while (enum.hasMoreElements()) {
+                ComponentEntity entity = (ComponentEntity)enum.nextElement();
+                if (verbosity ==  pt.kernel.Nameable.LIST_CONTENTS) {
+                    results = results.concat(" { " +
+                            entity.description(verbosity) + " } ");
+                } else {
+                    results = results.concat(entity.description(verbosity));
+                }
+            }
+            if (verbosity ==  pt.kernel.Nameable.LIST_CONTENTS)
+                results = results.concat(" } \n");
             return results;
         case pt.kernel.Nameable.PRETTYPRINT:
             return description(CONTENTS) + description(CONNECTIONS);
+        case pt.kernel.Nameable.LIST_PRETTYPRINT:
+            return description(LIST_CONTENTS) + description(LIST_CONNECTIONS);
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

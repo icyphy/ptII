@@ -129,22 +129,34 @@ public class Entity extends NamedObj {
     }
 
     /** Return a description of the object.
-     *  @param verbose The level of verbosity.
+     *  @param verbosity The level of verbosity.
      */
-    public String description(int verbose){
+    public String description(int verbosity){
         String results = new String();
-        switch (verbose) {
-        case pt.kernel.Nameable.CONTENTS:
-            results = toString() + "\n";
-        case pt.kernel.Nameable.CONNECTIONS:
+        switch (verbosity) {
+        case pt.kernel.Nameable.LIST_CONTENTS:
+            results = results.concat(" { " + toString() + " }\n");
             Enumeration enum = getPorts();
             while (enum.hasMoreElements()) {
                 Port port = (Port)enum.nextElement();
-                results = results.concat(port.description(verbose));
+                results = results.concat("   { " +
+                        port.description(verbosity) + " }\n");
+            }
+            return results;
+        case pt.kernel.Nameable.CONTENTS:
+            results = results.concat(toString() + "\n");
+        case pt.kernel.Nameable.LIST_CONNECTIONS:
+        case pt.kernel.Nameable.CONNECTIONS:
+            enum = getPorts();
+            while (enum.hasMoreElements()) {
+                Port port = (Port)enum.nextElement();
+                results = results.concat(port.description(verbosity));
             }
             return results;
         case pt.kernel.Nameable.PRETTYPRINT:
             return description(CONTENTS) + description(CONNECTIONS);
+        case pt.kernel.Nameable.LIST_PRETTYPRINT:
+            return description(LIST_CONTENTS) + description(LIST_CONNECTIONS);
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

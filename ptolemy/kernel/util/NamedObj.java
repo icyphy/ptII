@@ -124,16 +124,19 @@ public class NamedObj implements Nameable, Serializable {
     ////                         public methods                           ////
 
     /** Return a description of the object.
-     *  @param verbose The level of verbosity.
+     *  @param verbosity The level of verbosity.
      */
-    public String description(int verbose){
-        switch (verbose) {
+    public String description(int verbosity){
+        switch (verbosity) {
         case pt.kernel.Nameable.PRETTYPRINT:
         case pt.kernel.Nameable.CONTENTS:
+        case pt.kernel.Nameable.LIST_PRETTYPRINT:
             return toString() + "\n";
         case pt.kernel.Nameable.CONNECTIONS:
+        case pt.kernel.Nameable.LIST_CONNECTIONS:
             // NamedObjs do not have connections, so we don't return anything.
             return "";
+        case pt.kernel.Nameable.LIST_CONTENTS:
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

@@ -53,9 +53,9 @@ public interface Nameable {
     ////                         public methods                          ////
 
     /** Return a description of the object.
-     *  @param verbose The level of verbosity.
+     *  @param verbosity The level of verbosity.
      */
-    public String description(int verbose);
+    public String description(int verbosity);
 
     /** Return the container. */
     public Nameable getContainer();
@@ -100,4 +100,28 @@ public interface Nameable {
      * between those objects.
      */ 
     public static final int PRETTYPRINT = 3;
+
+    /**
+     * The description() method returns the type and names of this
+     * object and all the objects it refers to along with the connections
+     * between those objects in a list format with elements separated
+     * by curly brackets.
+     */ 
+    public static final int LIST_CONTENTS = 4;
+
+    /**
+     * The description() method returns the type and names of this
+     * object and all the objects it refers to along with the connections
+     * between those objects in a list format with elements separated
+     * by curly brackets
+     */ 
+    public static final int LIST_CONNECTIONS = 5;
+
+    /**
+     * The description() method returns the type and names of this
+     * object and all the objects it refers to along with the connections
+     * between those objects in list format with elements separated
+     * by curly brackets.
+     */ 
+    public static final int LIST_PRETTYPRINT = 6;
 }

@@ -115,22 +115,27 @@ public class Port extends NamedObj {
     ////                         public methods                           ////
 
     /** Return a description of the object
-     *  @param verbose The level of verbosity.
+     *  @param verbosity The level of verbosity.
      */
-    public String description(int verbose){
+    public String description(int verbosity){
         String results = new String();
-        switch (verbose) {
+        switch (verbosity) {
         case pt.kernel.Nameable.CONTENTS:
-            results = toString() + "\n";
+            results = results.concat(toString() + "\n");
+            return results;
         case pt.kernel.Nameable.CONNECTIONS:
             Enumeration enum = getLinkedRelations();
             while (enum.hasMoreElements()) {
                 Relation relation = (Relation)enum.nextElement();
-                results = results.concat(relation.description(verbose));
+                results = results.concat(relation.description(verbosity));
             }
             return results;
         case pt.kernel.Nameable.PRETTYPRINT:
             return description(CONTENTS) + description(CONNECTIONS);
+        case pt.kernel.Nameable.LIST_PRETTYPRINT:
+            return description(LIST_CONTENTS) + description(LIST_CONNECTIONS);
+        case pt.kernel.Nameable.LIST_CONTENTS:
+        case pt.kernel.Nameable.LIST_CONNECTIONS:
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();
