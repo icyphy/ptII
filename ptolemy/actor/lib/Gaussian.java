@@ -104,9 +104,9 @@ public class Gaussian extends RandomSource {
     /** Generate the first random number.
      *  @exception IllegalActionException If the superclass throws it.
      */
-    public void initialize() throws IllegalActionException {
-    	_generateRandomNumber();
+    public void initialize() throws IllegalActionException {   	
         super.initialize();
+        _generateRandomNumber();
     }
 
     /** Calculate the next random number.
