@@ -75,8 +75,8 @@ if [ -z "$TYCHO" ]; then
     export TYCHO
 fi
 
-if [ ! -f $TYCHO/java/ptplot/ptplot.zip ]; then 
-    echo "$0: Warning, $TYCHO/java/ptplot/ptplot.zip does not exist"
+if [ ! -f $TYCHO/java/ptplot/ptplot.jar ]; then 
+    echo "$0: Warning, $TYCHO/java/ptplot/ptplot.jar does not exist"
     echo "  Perhaps you need to install ptplot or edit the variables in $0?"
 fi
 
