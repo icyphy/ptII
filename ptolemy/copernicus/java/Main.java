@@ -118,16 +118,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
                 JimpleWriter.v()));
 
-        // Find all the classes that are reachable from the model
-        // and make them library classes, allowing us to analyze
-        // their bodies later on.
-        // There is a tradeoff here between memory usage and 
-        // analysis power...  It is possible that limiting this 
-        // could greatly improve memory efficiency, with a likely 
-        // tradeoff of less powerful optimizations later.
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.rlc",
-        //                ReachableLibraryCollector.v()));
-        
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));

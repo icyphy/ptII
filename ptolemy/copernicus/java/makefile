@@ -61,7 +61,6 @@ JSRCS = \
 	InlineTokenTransformer.java \
 	Main.java \
 	ModelTransformer.java \
-	ReachableLibraryCollector.java \
 	TokenInstanceofEliminator.java \
 	TokenToNativeTransformer.java \
 	TokenTypeAnalysis.java \
