@@ -159,6 +159,7 @@ OTHER_FILES_TO_BE_JARED = \
 	filtering.xml \
 	flowcontrol.xml \
 	math.xml \
+	matrix.xml \
 	signalprocessing.xml \
 	sinks.xml \
 	sources.xml \
