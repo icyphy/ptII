@@ -45,8 +45,15 @@ DOC_CODEDOC_JAR =
 # So, we copy the jar files to a different directory and then sign
 # them.
 SIGNED_DIR =		signed
-SIGNED_LIB_JARS =	$(SIGNED_DIR)/lib/diva.jar \
+
+# NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
+# include it in ALL_JNLP_JARS
+NATIVE_SIGNED_LIB_JARS = $(SIGNED_DIR)/lib/matlabWindows.jar 
+
+SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
+			$(SIGNED_DIR)/lib/diva.jar \
 			$(SIGNED_DIR)/lib/jasminclasses.jar \
+			$(SIGNED_DIR)/lib/matlab.jar \
 			$(SIGNED_DIR)/lib/sootclasses.jar
 
 # Web Start can load jars either eagerly or lazily.
@@ -122,7 +129,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/rtos/demo/demo.jar \
-	ptolemy/domains/sr/demo/demo.jar
+	ptolemy/domains/sr/demo/demo.jar \
+	$(SIGNED_DIR)/lib/matlab.jar
+
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
@@ -136,13 +145,22 @@ FULL_JNLP_JARS = \
 
 #########
 
-# All the JNLP Jar files, hopefully without duplicates so that 
-# we don't sign jars twice.
-ALL_JNLP_JARS = \
+# All the JNLP Jar files except the application jars,
+# hopefully without duplicates so that  we don't sign jars twice.
+ALL_NON_APPLICATION_JNLP_JARS = \
+	$(NATIVE_SIGNED_LIB_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS)
+
+
+# All the jar files, include the application jars
+ALL_JNLP_JARS = \
+	$(ALL_NON_APPLICATION_JNLP_JARS) \
+	$(DSP_MAIN_JAR) \
+	$(PTINY_MAIN_JAR) \
+	$(FULL_MAIN_JAR)
 
 # Script to update a *.jnlp file with the proper jar files
 MKJNLP =		$(PTII)/bin/mkjnlp
@@ -151,8 +169,8 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergil.jnlp 
 
-jnlp_all: $(JNLPS) $(SIGNED_LIB_JARS) jnlp_sign
-jnlps: $(JNLPS)
+jnlp_all: $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
+jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
 	rm -f $(JNLPS)
 
@@ -255,7 +273,7 @@ vergil.jnlp: vergil.jnlp.in
 
 
 jnlp_sign: $(JNLPS) $(KEYSTORE)
-	set $(ALL_JNLP_JARS); \
+	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		echo "# Signing '$$x'."; \
 		"$(PTJAVA_DIR)/bin/jarsigner" \
@@ -267,19 +285,35 @@ jnlp_sign: $(JNLPS) $(KEYSTORE)
 
 # Jar files that we copy befor signing so as to avoid problems with cvs
 # Each of the jar files below should be listed in $(SIGNED_LIB_JARS)
-$(SIGNED_DIR)/lib:
+$(SIGNED_DIR)/lib/diva.jar: lib/diva.jar
 		if [ ! -d $(SIGNED_DIR)/lib ]; then \
 			mkdir -p $(SIGNED_DIR)/lib; \
 		fi
+		cp $< $@
 
-$(SIGNED_DIR)/lib/diva.jar: $(SIGNED_DIR)/lib lib/diva.jar
-		cp lib/diva.jar $@
+$(SIGNED_DIR)/lib/jasminclasses.jar: lib/jasminclasses.jar
+		if [ ! -d $(SIGNED_DIR)/lib ]; then \
+			mkdir -p $(SIGNED_DIR)/lib; \
+		fi
+		cp $< $@
 
-$(SIGNED_DIR)/lib/jasminclasses.jar: $(SIGNED_DIR)/lib lib/jasminclasses.jar
-		cp lib/jasminclasses.jar $@
+$(SIGNED_DIR)/lib/matlab.jar: lib/matlab.jar
+		if [ ! -d $(SIGNED_DIR)/lib ]; then \
+			mkdir -p $(SIGNED_DIR)/lib; \
+		fi
+		cp $< $@
 
-$(SIGNED_DIR)/lib/sootclasses.jar: $(SIGNED_DIR)/lib lib/sootclasses.jar
-		cp lib/diva.jar $@
+$(SIGNED_DIR)/lib/matlabWindows.jar: lib/matlabWindows.jar
+		if [ ! -d $(SIGNED_DIR)/lib ]; then \
+			mkdir -p $(SIGNED_DIR)/lib; \
+		fi
+		cp $< $@
+
+$(SIGNED_DIR)/lib/sootclasses.jar: lib/sootclasses.jar
+		if [ ! -d $(SIGNED_DIR)/lib ]; then \
+			mkdir -p $(SIGNED_DIR)/lib; \
+		fi
+		cp $< $@
 
 
 

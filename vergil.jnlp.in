@@ -26,6 +26,9 @@
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
+  <resources os="Windows">
+  	<nativelib href="signed/lib/matlabWindows.jar"/>
+  </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.FullApplication"/>
   <!-- Need to deal with Java 3D -->
 </jnlp>
