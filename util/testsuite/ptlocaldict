@@ -149,6 +149,7 @@ JDOC
 JDOCFLAG
 JFLAG
 Jacl
+Janneck
 Jarvis
 Java
 Javadoc
@@ -158,17 +159,21 @@ Javaworld
 Jens
 Jie
 Jini
+Joern
 KRUFT
 Kachina
+Kees
 Khoros
 Kienhuis
 Kirchhoff's
+Kirsch
 Kluwer
 Kobe
 Koo
 Korn
 Kubota
 Kupferman
+Lavagno
 LOG
 Lego
 Lemkin
@@ -177,6 +182,7 @@ Levitan
 Linux
 Liu
 Lotos
+Luciano
 Lukito
 Lustre
 MAKEARCH
@@ -238,6 +244,7 @@ Pino
 Plugin
 Postfire
 Prioritized
+Ptolemaeus
 Ptplot
 Pxgraph
 Qadeer
@@ -270,11 +277,13 @@ Scriptics
 Shang
 Shankar
 Shilman
+Shuvra
 Simulink
 Sinegen
 Sinopoli
 Smyth
 Solaris
+Soonhoi
 Sparc
 Statecharts
 Stefani
@@ -283,6 +292,7 @@ TAN
 TU
 Tarskian
 Tcl
+Thales
 Tobias
 Toplevel
 Toplogy
@@ -302,6 +312,7 @@ Vlissides
 Voigt
 Walrand
 Warzee
+Willink
 Weblint
 Website
 WiNeS
@@ -315,6 +326,7 @@ Y
 Yelick
 Yuhong
 Yylex
+Zamora
 Zeno
 acos
 alink
@@ -356,6 +368,7 @@ charset
 checkbox
 checkjunk
 chf
+chmod
 chown
 classid
 classname
@@ -369,6 +382,7 @@ combobox
 commapi
 containees
 controlpanel
+csh
 cshrc
 csp
 css
@@ -376,6 +390,7 @@ ct
 ctsay
 cvs
 cxh
+cygdrive
 cygnus
 cygwin
 cygwin32
