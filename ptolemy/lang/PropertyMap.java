@@ -46,7 +46,7 @@ import java.util.HashMap;
 A class on which to base objects that have properties.
 A property is an arbitrary object that is associated with the object
 by a key.
-@author Jeff Tsay
+@author Jeff Tsay and Shuvra S. Bhattacharyya 
 @version $Id$
  */
 public class PropertyMap implements Cloneable {
@@ -155,7 +155,15 @@ public class PropertyMap implements Cloneable {
      *  nodes, after accept() is called on all of them by
      *  TNLManip.traverseList().
      */
-    public static final Integer CHILD_RETURN_VALUES_KEY = new Integer(-2);
+    public static final Integer CHILD_RETURN_VALUES_KEY = new Integer(-3);
+
+    /** The key that retrieves the return value of a tree node
+     *  when it was last traversed as an element of a "hierarchical" tree
+     *  node (a list of nodes). Such return values are not accessible
+     *  through CHILD_RETURN_VALUES_KEY due to the way in which 
+     *  hierarchical tree nodes are processed during traversal.
+     */
+    public static final Integer RETURN_VALUE_AS_ELEMENT_KEY = new Integer(-2);
 
     /** The key that retrieves indicating a numbering. */
     public static final Integer NUMBER_KEY = new Integer(-1);
