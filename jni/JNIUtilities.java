@@ -312,15 +312,15 @@ public class JNIUtilities {
                 + actor.getName()
                 + ".java");
         // Create the .h file.
-        execCommands.add("javah -d jni/jni" + nativeLibrary
+        execCommands.add("javah -d jni/" + interNativeLibrary
                 + " jni.jni"
                 + nativeLibrary
                 + ".Jni"
                 + actor.getName());
 
         // Create the shared library.
-        execCommands.add("make -C jni/jni" + nativeLibrary + " -f " 
-                + "Jnijni" + nativeLibrary + ".mk");
+        execCommands.add("make -C jni/" + interNativeLibrary + " -f " 
+                + "Jni" + interNativeLibrary + ".mk");
 
 
         StreamExec javaExec = new StreamExec();
@@ -1052,7 +1052,7 @@ public class JNIUtilities {
 		    + "\t\t-fno-exceptions \\\n"
 		    + "\t\t-Wl,--add-stdcall-alias -shared \\\n"
 		    + "\t\t-L" + libraryPath + " -l" + nativeLibrary + " \\\n"
-		    + "\t\t -o Jnijni" + nativeLibrary
+		    + "\t\t -o Jni" + interNativeLibrary
 		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX) \\\n"
 		    + "\t\tjni" + actor.getName() + ".cpp\n\n"
                     + "# Get the rest of the rules\n"
