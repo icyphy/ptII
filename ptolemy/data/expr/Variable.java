@@ -312,7 +312,7 @@ public class Variable extends Attribute
     /** If setTypeEquals() has been called, then return the type specified
      *  there. Otherwise, return BaseType.UNKNOWN.
      *  @return The declared type of this variable.
-     *  @see setTypeEquals(Type)
+     *  @see #setTypeEquals(Type)
      *  @see BaseType
      */
     public Type getDeclaredType() {
