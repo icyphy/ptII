@@ -41,7 +41,8 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Fraction
 /**
-A Fraction class.  Yes, it works just the way you'd expect.
+A Fraction class.  Fractions are immutable and maintained in lowest terms, 
+with a positive denominator.
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -85,21 +86,6 @@ public class Fraction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Set the Numerator of an existing Fraction
-     */
-    /*   public void setNumerator(int Numerator) {
-        _num = Numerator;
-    }
-    */
-    /** Set the Denominator of an existing Fraction
-     */
-    /*public void setDenominator(int Denominator) {
-                if(Denominator == 0)
-                    throw new ArithmeticException("Illegal Fraction: " +
-                            "cannot Divide by zero");
-                _den = Denominator;
-		}*/
 
     /** Multiply this fraction by the given fraction.
      *  @return The answer as another fraction in lowest terms.
@@ -152,11 +138,10 @@ public class Fraction {
     }
 
     /** Does this fraction have the same value as the given fraction?
-     *  The Fractions are compared in lowest terms.
+     *  The Fractions are already in lowest terms, so we just compare the
+     *  numerator and denominator
      */
     public boolean equals(Fraction b) {
-	_simplify();
-        b._simplify();
         return ((_num == b._num) && (_den == b._den));
     }
 
@@ -186,12 +171,15 @@ public class Fraction {
     public static Fraction ZERO = new Fraction(0, 1);
 
     /** Implement Euclid's method for finding the Greatest Common Divisor of
-     *  two numbers
+     *  two numbers.  If the numbers are negative, then we compute the
+     *  GCD of their absolute values.
      */
-    // FIXME: These should be moved to the Math Package
+    //FIXME: should these go someplace better?
 
     public static int gcd(int u, int v) {
         int t;
+        if(u < 0) u = -u;
+        if(v < 0) v = -v;
         while(u > 0) {
             if(u < v) { t = u; u = v; v = t; }
             u = u - v;

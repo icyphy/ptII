@@ -43,15 +43,16 @@ if {[string compare test [info procs test]] == 1} then {
 ####################################################################
 test Fraction-1.1 {constructors} {
     set c0 [java::new ptolemy.math.Fraction]
-    set c1 [{java::new ptolemy.math.Fraction int} 5]
+    set c1 [java::new {ptolemy.math.Fraction int} 5]
     set c2 [java::new ptolemy.math.Fraction 5 -3]
     catch {[java::new ptolemy.math.Fraction 5 0]} s1
-    set c3 [{java::new ptolemy.math.Fraction ptolemy.math.Fraction} $c1]
+    set c3 [java::new {ptolemy.math.Fraction ptolemy.math.Fraction} $c1]
     set c4 [java::new ptolemy.math.Fraction 5 -15]
     set c5 [java::new ptolemy.math.Fraction 15 -3]
+    set c6 [java::new ptolemy.math.Fraction 0 5]
     list [$c0 toString] [$c1 toString] [$c2 toString] $s1 [$c3 toString] \
-	    [$c4 toString] [$c5 toString]
-} {}
+	    [$c4 toString] [$c5 toString] [$c6 toString]
+} {0/1 5/1 -5/3 {java.lang.ArithmeticException: Illegal Fraction: cannot Divide by zero} 5/1 -1/3 -5/1 0/1}
 
 test Fraction-1.2 {getNumerator and getDenominator} {
     set n0 [$c0 getNumerator]
@@ -63,90 +64,90 @@ test Fraction-1.2 {getNumerator and getDenominator} {
     set n3 [$c3 getNumerator]
     set d3 [$c3 getDenominator]
     list $n0 $d0 $n1 $d1 $n2 $d2 $n3 $d3
-} {}
+} {0 1 5 1 -5 3 5 1}
 
 ####################################################################
 test Fraction-2.3 {add} {
-    set c01 [add $c0 $c1]
-    set c12 [add $c1 $c2]
-    set c23 [add $c2 $c3]
-    set c34 [add $c3 $c4]
-    set c45 [add $c4 $c5]
-    set c50 [add $c5 $c0]
+    set c01 [$c0 add $c1]
+    set c12 [$c1 add $c2]
+    set c23 [$c2 add $c3]
+    set c34 [$c3 add $c4]
+    set c45 [$c4 add $c5]
+    set c50 [$c5 add $c0]
     list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
 	    [$c45 toString] [$c50 toString]
-} {)
+} {5/1 10/3 10/3 14/3 -16/3 -5/1}
 
 ####################################################################
 test Fraction-2.4 {multiply} {
-    set c01 [multiply $c0 $c1]
-    set c12 [multiply $c1 $c2]
-    set c23 [multiply $c2 $c3]
-    set c34 [multiply $c3 $c4]
-    set c45 [multiply $c4 $c5]
-    set c50 [multiply $c5 $c0]
+    set c01 [$c0 multiply $c1]
+    set c12 [$c1 multiply $c2]
+    set c23 [$c2 multiply $c3]
+    set c34 [$c3 multiply $c4]
+    set c45 [$c4 multiply $c5]
+    set c50 [$c5 multiply $c0]
     list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
 	    [$c45 toString] [$c50 toString]
-} {)
+} {0/1 -25/3 -25/3 -5/3 5/3 0/1}
 
 ####################################################################
 test Fraction-2.5 {divide} {
-    set c01 [divide $c0 $c1]
-    set c12 [divide $c1 $c2]
-    set c23 [divide $c2 $c3]
-    set c34 [divide $c3 $c4]
-    set c45 [divide $c4 $c5]
-    set c50 [divide $c5 $c0]
+    set c01 [$c0 divide $c1]
+    set c12 [$c1 divide $c2]
+    set c23 [$c2 divide $c3]
+    set c34 [$c3 divide $c4]
+    set c45 [$c4 divide $c5]
+    catch {[set c50 [$c5 divide $c0]]} s1
     list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
-	    [$c45 toString] [$c50 toString]
-} {)
+	    [$c45 toString] $s1
+} {0/1 -3/1 -1/3 -15/1 1/15 {java.lang.ArithmeticException: Illegal Fraction: cannot Divide by zero}}
 
 ####################################################################
 test Fraction-2.6 {subtract} {
-    set c01 [subtract $c0 $c1]
-    set c12 [subtract $c1 $c2]
-    set c23 [subtract $c2 $c3]
-    set c34 [subtract $c3 $c4]
-    set c45 [subtract $c4 $c5]
-    set c50 [subtract $c5 $c0]
+    set c01 [$c0 subtract $c1]
+    set c12 [$c1 subtract $c2]
+    set c23 [$c2 subtract $c3]
+    set c34 [$c3 subtract $c4]
+    set c45 [$c4 subtract $c5]
+    set c50 [$c5 subtract $c0]
     list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
 	    [$c45 toString] [$c50 toString]
-} {)
+} {-5/1 20/3 -20/3 16/3 14/3 -5/1}
 
 ####################################################################
 test Fraction-2.7 {equals} {
     set c6 [java::new ptolemy.math.Fraction -1 3]
-    set c01 [equals $c0 $c1]
-    set c12 [equals $c1 $c2]
-    set c23 [equals $c2 $c3]
-    set c34 [equals $c3 $c4]
-    set c45 [equals $c4 $c5]
-    set c46 [equals $c4 $c6]
-    list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
-	    [$c45 toString] [$c46 toString]
-} {)
+    set c01 [$c0 {equals ptolemy.math.Fraction} $c1]
+    set c12 [$c1 {equals ptolemy.math.Fraction} $c2]
+    set c23 [$c2 {equals ptolemy.math.Fraction} $c3]
+    set c34 [$c3 {equals ptolemy.math.Fraction} $c4]
+    set c45 [$c4 {equals ptolemy.math.Fraction} $c5]
+    set c46 [$c4 {equals ptolemy.math.Fraction} $c6]
+    list $c01 $c12 $c23 $c34 $c45 $c46
+} {0 0 0 0 0 1}
 
 ####################################################################
 test Fraction-2.8 {inverse} {
-    set c01 [inverse $c0]
-    set c12 [inverse $c1]
-    set c23 [inverse $c2]
-    set c34 [inverse $c3]
-    set c45 [inverse $c4]
-    set c56 [inverse $c5]
-    list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
+    catch {[set c01 [$c0 inverse]]} s1
+    set c12 [$c1 inverse]
+    set c23 [$c2 inverse]
+    set c34 [$c3 inverse]
+    set c45 [$c4 inverse]
+    set c56 [$c5 inverse]
+    list $s1 [$c12 toString] [$c23 toString] [$c34 toString] \
 	    [$c45 toString] [$c56 toString]
-} {)
+} {{java.lang.ArithmeticException: Illegal Fraction: cannot Divide by zero} 1/5 -3/5 1/5 -3/1 -1/5}
 
 ####################################################################
 test Fraction-2.9 {negate} {
-    set c01 [negate $c0]
-    set c12 [negate $c1]
-    set c23 [negate $c2]
-    set c34 [negate $c3]
-    set c45 [negate $c4]
-    set c56 [negate $c5]
+    set c01 [$c0 negate]
+    set c12 [$c1 negate]
+    set c23 [$c2 negate]
+    set c34 [$c3 negate]
+    set c45 [$c4 negate]
+    set c56 [$c5 negate]
     list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
 	    [$c45 toString] [$c56 toString]
-} {}
+} {0/1 -5/1 5/3 -5/1 1/3 5/1}
+
 
