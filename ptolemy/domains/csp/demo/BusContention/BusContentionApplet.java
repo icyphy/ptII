@@ -48,7 +48,9 @@ import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.gui.*;
 import ptolemy.domains.csp.kernel.*;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -56,6 +58,8 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 //////////////////////////////////////////////////////////////////////////
 //// BusContentionApplet
@@ -110,19 +114,18 @@ public class BusContentionApplet extends CSPApplet {
 
 	getContentPane().setLayout( new BorderLayout(5, 5) );
 
-	// Panel for controls and plotter
-	Panel topPanel = new Panel();
-	topPanel.setSize( new Dimension(600, 50) );
-
 	// The '3' argument specifies a 'go', 'stop' and 'layout' buttons.
-	topPanel.add( _createRunControls(3), BorderLayout.NORTH );
-	getContentPane().add( topPanel, BorderLayout.NORTH );
+	getContentPane().add( _createRunControls(3), BorderLayout.NORTH );
 
 	constructPtolemyModel();
 
 	_divaPanel = new JPanel( new BorderLayout() );
+        _divaPanel.setBorder(new TitledBorder(
+                new LineBorder(Color.black, 1, true), "Animation"));
+        _divaPanel.setBackground(_getBackground());
 	_divaPanel.setSize( new Dimension(600, 350) );
 	_divaPanel.setBackground( getBackground() );
+	_jgraph.setBackground(_getBackground());
 	getContentPane().add( _divaPanel, BorderLayout.CENTER );
 
         _model = constructDivaGraph();
@@ -134,8 +137,7 @@ public class BusContentionApplet extends CSPApplet {
 		    displayGraph(_jgraph, finalModel);
 		}
 	    });
-        }
-        catch(Exception ex) {
+        } catch(Exception ex) {
             ex.printStackTrace();
             System.exit(0);
         }

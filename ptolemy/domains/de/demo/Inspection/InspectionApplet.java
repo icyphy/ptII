@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
@@ -32,6 +32,7 @@ package ptolemy.domains.de.demo.Inspection;
 
 import java.awt.event.*;
 import java.util.Enumeration;
+import javax.swing.BoxLayout;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -129,6 +130,9 @@ public class InspectionApplet extends DEApplet implements QueryListener {
     public void init() {
         super.init();
         try {
+            getContentPane().setLayout(
+                    new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
             _query = new Query();
             _query.setBackground(_getBackground());
             _query.addLine("busmean", "Bus mean interarrival time", "1.0");
@@ -137,11 +141,8 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _query.addCheckBox("regular", "Regular bus arrivals", false);
             _query.addDisplay("average",
                 "Average waiting time of passengers", "");
-            getContentPane().add(_query);
             _query.addQueryListener(this);
-
-            // The 2 argument requests a go and stop button.
-            getContentPane().add(_createRunControls(2));
+            getContentPane().add(_query);
 
             if (_regular) {
                 // Create regular bus source.
@@ -182,16 +183,15 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             // Create and configure plotter
             _eventplot = new TimedPlotter(_toplevel, "plot");
             _eventplot.place(getContentPane());
+            _eventplot.plot.setBackground(_getBackground());
             _eventplot.plot.setGrid(false);
             _eventplot.plot.setTitle("Events");
             _eventplot.plot.addLegend(0, "Bus");
-            _eventplot.plot.addLegend(1, "Passenger");
+            _eventplot.plot.addLegend(1, "Passengers");
             _eventplot.plot.addLegend(2, "Wait Time");
             _eventplot.plot.setXLabel("Time");
-            _eventplot.plot.setYLabel("Wait time");
             _eventplot.plot.setXRange(0.0, _getStopTime());
             _eventplot.plot.setYRange(0.0, 4.0);
-            _eventplot.plot.setSize(450, 200);
             _eventplot.plot.setConnected(false);
             _eventplot.plot.setImpulses(true);
             _eventplot.plot.setMarksStyle("dots");
@@ -200,13 +200,13 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             // Create and configure histogram
             _histplot = new HistogramPlotter(_toplevel, "histplot");
             _histplot.place(getContentPane());
+            _histplot.histogram.setBackground(_getBackground());
             _histplot.histogram.setGrid(false);
             _histplot.histogram.setTitle("Histogram of Waiting Times");
             _histplot.histogram.setXLabel("Waiting Time");
-            _histplot.histogram.setYLabel("Passengers");
             _histplot.histogram.setXRange(0.0, 6.0);
             _histplot.histogram.setYRange(0.0, 20.0);
-            _histplot.histogram.setSize(450, 200);
+            _histplot.histogram.addLegend(0, "Passengers");
             _histplot.histogram.setBinWidth(0.2);
             _histplot.fillOnWrapup.setToken(new BooleanToken(false));
 
@@ -222,6 +222,10 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             average.input.link(rel3);
             _toplevel.connect(average.output, _recorder.input);
             _initCompleted = true;
+
+            // The 2 argument requests a go and stop button.
+            getContentPane().add(_createRunControls(2));
+
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
