@@ -63,14 +63,5 @@ public interface TypedActor extends Actor {
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() throws IllegalActionException;
-
-    /** Return the type constraints of this actor.
-     *  The constraints is an enumeration of inequalities.
-     *  @return an enumeration of Inequality.
-     *  @exception IllegalActionException If type conflict is detected
-     *   during static type checking.
-     *  @see ptolemy.graph.Inequality
-     *  @deprecated Use typeConstraintList() instead.
-     */
-    public Enumeration typeConstraints() throws IllegalActionException;
 }
+
