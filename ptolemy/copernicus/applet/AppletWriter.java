@@ -346,12 +346,20 @@ public class AppletWriter extends SceneTransformer {
 		     "ptolemy/domains/ct/ct.jar");
         classMap.put("diva.graph.GraphController",
                      "lib/diva.jar");
+
 	// First, we search for the jar file, then we try
 	// getting the class as a resource.
 	// FIXME: we don't handle the case where there are no
 	// individual jar files because the user did not run 'make install'.
 
 	HashSet jarFilesThatHaveBeenCopied = new HashSet();
+
+	// Add jar files that are contained in ptsupport.jar.
+	// FIXME: we could open ptsupport.jar here and get the complete
+	// list of directories.  Instead, we get the primary offenders.
+	jarFilesThatHaveBeenCopied.add("ptolemy/actor/actor.jar");
+	jarFilesThatHaveBeenCopied.add("ptolemy/actor/lib/lib.jar");
+
         Iterator classNames = classMap.keySet().iterator();
         while (classNames.hasNext()) {
             String className = (String)classNames.next();
