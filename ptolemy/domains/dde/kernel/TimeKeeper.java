@@ -318,6 +318,13 @@ public class TimeKeeper {
         return triple.getTime();
     }
 
+    /** Return the number of active channels associated with
+     *  this time keeper. 
+    public int getNumberOfActiveChannels() {
+    	_rcvrTimeList.size();
+    }
+     */
+    
     /** Return the current value of the output time associated with
      *  this time keeper and, after so doing, set the output time to
      *  a new value that is equivalent to this time keeper's current time.
@@ -402,6 +409,9 @@ public class TimeKeeper {
      * @params rcvr The receiver that is causing this method to be invoked.
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
+        String actorName = ((Nameable)_actor).getName();
+        System.out.println("Actor: " + actorName + " called "
+        	+ "sendOutNullTokens.");
         if( rcvr.isInsideBoundary() ) {
             if( _actor.getExecutiveDirector() instanceof DDEDirector ){
                 IOPort port = (IOPort)rcvr.getContainer();
@@ -461,6 +471,8 @@ public class TimeKeeper {
 		    }
 		}
             }
+            System.out.println("Actor: " + actorName + " called "
+        	    + "sendOutNullTokens.");
             return;
         }
     }
@@ -600,6 +612,22 @@ public class TimeKeeper {
 	if( _rcvrTimeList == null ) {
 	    return;
 	}
+	if( _ignoredReceivers ) {
+	    RcvrTimeTriple triple;
+	    DDEReceiver rcvr;
+	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
+	        triple = (RcvrTimeTriple)_rcvrTimeList.at(i);
+		rcvr = (DDEReceiver)triple.getReceiver();
+		if( rcvr.getRcvrTime() ==
+			TimedQueueReceiver.IGNORE ) {
+		    rcvr.removeIgnoredToken();
+                    rcvr._ignoreNotSeen = true;
+		}
+	    }
+	    _ignoredReceivers = false;
+	}
+        
+        /*
 	_searchingForIgnoredTokens = true;
 	if( _ignoredReceivers ) {
 	    RcvrTimeTriple triple;
@@ -615,6 +643,7 @@ public class TimeKeeper {
 	    _ignoredReceivers = false;
 	}
 	_searchingForIgnoredTokens = false;
+        */
     }
 
     /** Update the list of TimedQueueReceivers.

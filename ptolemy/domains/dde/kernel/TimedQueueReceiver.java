@@ -175,6 +175,7 @@ public class TimedQueueReceiver {
             TimeKeeper timeKeeper =
                 ((DDEThread)thread).getTimeKeeper();
 
+            /*
 	    if( !isInsideBoundary() && !isOutsideBoundary() ) {
 		if( !timeKeeper.searchingForIgnoredTokens() ) {
 		    timeKeeper.setSearchForIgnoredTokens( true );
@@ -186,6 +187,14 @@ public class TimedQueueReceiver {
 	    } else if( !isInsideBoundary() ) {
 		timeKeeper.updateRcvrList(this);
 	    }
+            */
+	    if( !isInsideBoundary() && !isOutsideBoundary() ) {
+		timeKeeper.updateIgnoredReceivers();
+	    	timeKeeper.updateRcvrList(this);
+	    } else if( !isInsideBoundary() ) {
+		timeKeeper.updateIgnoredReceivers();
+		timeKeeper.updateRcvrList(this);
+            }
         }
 
 
@@ -220,6 +229,85 @@ public class TimedQueueReceiver {
      */
     public IOPort getContainer() {
         return _container;
+    }
+
+    /** Take the the oldest token off of the queue and return it.
+     *  If the queue is empty, throw a NoTokenException. If there are
+     *  other tokens left on the queue after this removal, then set
+     *  the receiver time of this receiver to equal that of the next
+     *  oldest token. Update the TimeKeeper that manages this
+     *  TimedQueueReceiver. If there are any receivers in the
+     *  TimeKeeper with receiver times of TimedQueueReceiver.IGNORE,
+     *  remove the first token from these receivers.
+     * @exception NoTokenException If the queue is empty.
+     */
+    public void removeIgnoredToken() {
+        if( getRcvrTime() != TimedQueueReceiver.IGNORE ) {
+            return;
+        }
+        // Get the a token and set all relevant 
+        // local time parameters
+        Event event = (Event)_queue.take();
+        if (event == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get token from an empty "
+                    + "TimedQueueReceiver.");
+        }
+        event.getToken();
+        if( _queue.size() > 0 ) {
+            Event nextEvent = (Event)_queue.get(0);
+            _rcvrTime = nextEvent.getTime();
+        }
+        
+        // Set relevant TimeKeeper time parameters
+        // based on whether this receiver is contained
+        // in a boundary port or not.
+	Thread thread = Thread.currentThread();
+        try {
+            if( thread instanceof DDEThread ) {
+                TimeKeeper timeKeeper =
+                        ((DDEThread)thread).getTimeKeeper();
+            
+                if( isInsideBoundary() ) {
+                    /*
+                    timeKeeper.setOutputTime( event.getTime() );
+                    */
+                    return;
+                } 
+                
+                else if( isOutsideBoundary() ) {
+                    /*
+                    timeKeeper.setCurrentTime( event.getTime() );
+                    */
+                } 
+                
+                else {
+                    /*
+                    timeKeeper.setCurrentTime( event.getTime() );
+                    */
+                    timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
+                }
+            }
+        } catch( IllegalActionException e ) {
+            // FIXME: Do Something
+        }
+        
+	// Set the receiver time if value is still IGNORE
+	if( getRcvrTime() == TimedQueueReceiver.IGNORE ) {
+	    if( thread instanceof DDEThread ) {
+                TimeKeeper timeKeeper =
+                        ((DDEThread)thread).getTimeKeeper();
+		setRcvrTime( timeKeeper.getCurrentTime() );
+	    }
+	}
+        
+        // Call updateRcvrList() even if _queue.size() == 0,
+        // so that the triple is no longer in front.
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+            timeKeeper.updateRcvrList(this);
+        }
     }
 
     /** Return the last time of this receiver. The last time is
@@ -421,6 +509,18 @@ public class TimedQueueReceiver {
             throw new NoRoomException (getContainer(),
                     "Queue is at capacity. Cannot insert token.");
         }
+        
+        /*
+        Thread thread = Thread.currentThread();
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+            	    (DDEThread)thread). getTimeKeeper();
+            if( getRcvrTime() = INACTIVE ) {
+                if( timeKeeper.getNextTime() == IGNORE ) {
+                }
+            }
+        }
+        */
     }
 
     /** Set the queue capacity of this receiver.
