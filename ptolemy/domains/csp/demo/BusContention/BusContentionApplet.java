@@ -286,7 +286,7 @@ public class BusContentionApplet extends CSPApplet {
      */
     public void displayGraph(JGraph g, GraphModel model) {
 	_divaPanel.add( g, BorderLayout.NORTH );
-	g.setPreferredSize( new Dimension(600,300) );
+	g.setPreferredSize( new Dimension(600,400) );
 
         // Make sure we have the right renderers and then 
 	// display the graph
@@ -407,7 +407,9 @@ public class BusContentionApplet extends CSPApplet {
                     }
                 });
             }
-            catch (Exception e) {}
+            catch (Exception e) {
+		e.printStackTrace();
+	    }
         }
     }
 
