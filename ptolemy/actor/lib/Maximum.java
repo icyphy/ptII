@@ -74,6 +74,7 @@ public class Maximum extends TypedAtomicActor {
         maximumValue = new TypedIOPort(this, "maximumValue", false, true);
         maximumValue.setMultiport(true);
         maximumValue.setTypeAtMost(BaseType.SCALAR);
+	maximumValue.setTypeAtLeast(input);
 
         channelNumber = new TypedIOPort(this, "channelNumber", false, true);
         channelNumber.setMultiport(true);
