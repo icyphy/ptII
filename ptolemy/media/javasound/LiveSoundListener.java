@@ -31,14 +31,15 @@
 
 package ptolemy.media.javasound;
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //// LiveSoundListener
 /**
-This interface is implemented by objects that are interested in being kept
-informed about changes in the audio parameters of LiveSound.
-The listeners register their interest through the
-addLiveSoundListener() method of LiveSound, and are informed of the changes by receiving
-instances of the LiveSoundEvent in the liveSoundChanged() method.
+This interface is implemented by objects that are interested 
+in being kept informed about changes in the audio parameters 
+of LiveSound. The listeners register their interest through the
+addLiveSoundListener() method of LiveSound, and are informed of 
+the changes by receiving instances of the LiveSoundEvent in the 
+liveSoundChanged() method.
 
 @author Brian K. Vogel
 @version $Id$
