@@ -45,11 +45,11 @@ evaluation. The first line in the file determines the data type
 of the output. All other lines must contain expressions that
 evaluate to the same type or a subtype, or a run-time type error will occur.
 The file or URL is specified using any form acceptable
-to FileAttribute.  If an end of file is reached, then prefire() and
+to FileParameter.  If an end of file is reached, then prefire() and
 postfire() will both return false.
 
 @see ExpressionWriter
-@see ptolemy.kernel.attributes.FileAttribute
+@see ptolemy.data.expr.FileParameter
 @author  Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.2
