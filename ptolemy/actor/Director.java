@@ -771,6 +771,9 @@ public class Director extends Attribute implements Executable {
      *  @see IOPort#transferOutputs
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling transferOutputs on port: " + port.getFullName());
+        }
         return port.transferOutputs();
     }
 
