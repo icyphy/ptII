@@ -708,6 +708,13 @@ public class Variable extends Attribute
         _isLazy = lazy;
     }
 
+    /** Set a new parseTreeEvaluator.
+     *  @param parseTreeEveluator The new parseTreeEvaluator used by this variable.
+     */
+    public void setParseTreeEvaluator(ParseTreeEvaluator parseTreeEvaluator) {
+        _parseTreeEvaluator = parseTreeEvaluator;
+    }
+
     /** Put a new token in this variable and notify the container and
      *  and value listeners. If an expression had been
      *  previously given using setExpression(), then that expression
@@ -1673,7 +1680,7 @@ public class Variable extends Attribute
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
             Variable result = getScopedVariable(
-                    Variable.this, 
+                    Variable.this,
                     (NamedObj)Variable.this.getContainer(), name);
 
             // FIXME: use _variablesDependentOn as a cache.
@@ -1703,7 +1710,7 @@ public class Variable extends Attribute
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
             Variable result = getScopedVariable(
-                    Variable.this, 
+                    Variable.this,
                     (NamedObj)Variable.this.getContainer(), name);
             if (result != null) {
                 return result.getType();
