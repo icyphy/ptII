@@ -32,7 +32,8 @@ package ptolemy.data.type;
 
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.Token;
-import ptolemy.graph.*;
+import ptolemy.graph.CPO;
+import ptolemy.graph.DirectedAcyclicGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeLattice
