@@ -29,7 +29,7 @@ Contents
 	</menu>
 </menu>
 
-<h2><a href="#vergil">Troubleshooting Vergil</a></h2>
+<h2><a name="#vergil">Troubleshooting Vergil</a></h2>
 <dl>
 <dt> The user interface appears to be frozen, but windows are redrawn.
 
@@ -80,8 +80,9 @@ problems. Please send email to
 find errors or can suggest additions to this page.
 
 <H3><A NAME="jdk">Java version</A></H3>
-The applets on these pages require JDK 1.2 (JDK stands for the
+The applets on these pages require JDK 1.2.2 or later (JDK stands for the
 Java Development Kit).
+(See the <a href="install.htm#java">Java section</a> of the installation page for details)
 
 <h3><a name="plugin">The Java Plugin</a></h3>
 The
@@ -108,10 +109,15 @@ JDK <a href="#appletviewer">Appletviewer</a>
 
 <H3><a name="Diagnosing problems">Diagnosing problems</a></H3>
 
-The Java plugin includes a console window which can be enabled by going
+The Java plugin includes a console window which reports errors.
+ <p>Under JDK1.2.2, the console window can be enabled by going
 to the <CODE>Start</CODE> menu -&gt; <CODE>Program</CODE> -&gt;
  <CODE>Java Plugin Control Panel</CODE>
 and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
+ <p>Under JDK1.3, the control panel is at
+<CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt; 
+<CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE>
+
  <p>Note that the JDK1.2 Plugin console is different than
 the Netscape or IE Java console.
 
@@ -211,13 +217,16 @@ the <CODE>Reload</CODE> button will reload any Java
 
 <li> Restart your browser.
 
- <li>Verify that the Plugin Control Panel menu choice is present
- <br>Under  <CODE>Start</CODE> -&gt; <CODE>Programs</CODE> -&gt;
+ <li>Verify that the Plugin Control Panel menu choice is present.
+ <br>JDK1.2: Look for   <CODE>Start</CODE> -&gt; <CODE>Programs</CODE> -&gt;
 you should have a <CODE>Java Plugin Control Panel</CODE> menu choice
 listed in the upper section near the Accessories section.
   <br>If the <CODE>Java Plugin Control Panel</CODE>
  menu choice is not present, then
 you may need to install or reinstall the Java plugin.
+ <br>JDK1.3: Look for
+<CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt; 
+<CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE> 
 
  <li> Look for an error message in the Java console.
 See <a href="#Diagnosing problems">Diagnosing problems</a> above.
@@ -226,7 +235,10 @@ See <a href="#Diagnosing problems">Diagnosing problems</a> above.
  <br>In Netscape, go to help->About plugins, or type in
 <a href="about:plugins"><CODE>about:plugins </CODE></a>
 into the Location entry widget.
-The JDK1.2 plugin should be listed.  If it is not reinstall the plugin.
+
+The JDK1.2 or JDK1.3 plugin should be listed.  If it is not reinstall
+the plugin.
+
 If the plugin is not listed after reinstalling, then remove and reinstall
 Netscape.
 
