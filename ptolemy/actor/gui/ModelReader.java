@@ -88,7 +88,7 @@ public class ModelReader extends CompositeEntity {
      *   is malformed in some way.
      */
     public Effigy read(URL base, URL in) throws Exception {
-        MoMLParser parser = new MoMLParser(new Workspace(), null);
+        MoMLParser parser = new MoMLParser();
         NamedObj toplevel = parser.parse(base, in.openStream());
         // Create a proxy for the model.
         PtolemyEffigy proxy = new PtolemyEffigy(workspace());

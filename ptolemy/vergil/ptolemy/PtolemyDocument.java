@@ -151,7 +151,7 @@ public class PtolemyDocument extends AbstractDocument
 	VergilApplication.ClassReloadingService service = 
 	    VergilApplication.getInstance().classReloadingService;
 	service.resetClassLoader();
-	MoMLParser parser = new MoMLParser(new Workspace(), null, 
+	MoMLParser parser = new MoMLParser(new Workspace(), 
 					   service.getClassLoader());
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(getFile().toURL(),

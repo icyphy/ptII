@@ -138,7 +138,7 @@ public class QR extends PNApplet implements QueryListener {
 
             _initCompleted = true;
 
-            System.out.println(_toplevel.exportMoML());
+            // System.out.println(_toplevel.exportMoML());
 
             // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));

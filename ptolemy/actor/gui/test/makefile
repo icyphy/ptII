@@ -57,8 +57,7 @@ JSIMPLE_TESTS = \
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
-
-#	PtolemyApplication.tcl
+	PtolemyApplication.tcl
 
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) \

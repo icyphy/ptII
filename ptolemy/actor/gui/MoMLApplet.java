@@ -34,7 +34,7 @@ package ptolemy.actor.gui;
 import java.net.URL;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.Enumeration;
+import java.util.Iterator;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -145,14 +145,8 @@ public class MoMLApplet extends PtolemyApplet {
                 throw new Exception(
                         "MoML applet does not not specify a model parameter!");
             }
-            // Create a panel to place placeable objects.
-            JPanel displayPanel = new JPanel();
-            displayPanel.setLayout(new BoxLayout(displayPanel,
-                    BoxLayout.Y_AXIS));
-            displayPanel.setBackground(_background);
-
             // Specify that all Placeable entities be placed in the applet.
-            MoMLParser parser = new MoMLParser(null, displayPanel);
+            MoMLParser parser = new MoMLParser();
             URL docBase = getDocumentBase();
             URL xmlFile = new URL(docBase, modelURL);
             _toplevel = null;
@@ -165,10 +159,29 @@ public class MoMLApplet extends PtolemyApplet {
                 _toplevel.setManager(_manager);
                 _manager.addExecutionListener(this);
                 ModelPane pane = new ModelPane(_toplevel);
+                pane.setBackground(_background);
+
+                // Create a panel to place placeable objects.
+                JPanel displayPanel = new JPanel();
+                displayPanel.setLayout(new BoxLayout(displayPanel,
+                        BoxLayout.Y_AXIS));
+                displayPanel.setBackground(_background);
+
                 pane.setDisplayPane(displayPanel);
+
+		// Put placeable objects in the display panel.
+		Iterator entities = _toplevel.deepEntityList().iterator();
+                while (entities.hasNext()) {
+		    Object entity = entities.next();
+		    if(entity instanceof Placeable) {
+			((Placeable) entity).place(displayPanel);
+		    }
+		}
+
                 getContentPane().add(pane);
                 pane.setDefaultButton();
-                pane.setBackground(_background);
+                validate();
+                repaint();
             }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {

@@ -172,7 +172,7 @@ public class PtExecuteApplication extends MoMLApplication
     protected Configuration _createDefaultConfiguration() throws Exception {
         URL inurl = specToURL(
                 "ptolemy/configurations/runConfiguration.xml");
-        MoMLParser parser = new MoMLParser(new Workspace(), null);
+        MoMLParser parser = new MoMLParser();
         _configuration = (Configuration)parser.parse(inurl, inurl.openStream());
         return _configuration;
     }

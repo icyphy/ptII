@@ -303,8 +303,7 @@ public class MoMLApplication {
                     } else {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
-                        MoMLParser parser = new MoMLParser(
-                                new Workspace(), null);
+                        MoMLParser parser = new MoMLParser();
                         NamedObj toplevel = parser.parse(
                                 base, inurl.openStream());
                         if (toplevel instanceof Configuration) {

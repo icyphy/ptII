@@ -181,21 +181,6 @@ public class MoMLParser extends HandlerBase {
      *  @param workspace The workspace into which to place entities.
      */
     public MoMLParser(Workspace workspace) {
-        this(workspace, null);
-    }
-
-    /** Construct a parser that creates entities
-     *  in the specified workspace, and if any of these entities implements
-     *  the Placeable interface, then places the entity in the specified
-     *  panel.  If the workspace argument is null, then
-     *  create a new workspace with an empty name.
-     *  If the panel argument is null, then entities implementing Placeable
-     *  are not placed.  Classes will be 
-     *  created using the classloader that created this class.
-     *  @param workspace The workspace into which to place entities.
-     *  @param panel The panel into which to place Placeable entities.
-     */
-    public MoMLParser(Workspace workspace, Container panel) {
 	super();
         if (workspace == null) {
             // NOTE: Workspace has no name, to ensure that full names
@@ -204,25 +189,18 @@ public class MoMLParser extends HandlerBase {
             workspace = new Workspace();
         }
         _workspace = workspace;
-        _panel = panel;	
     }
 
-    /** Construct a parser that creates entities
-     *  in the specified workspace, and if any of these entities implements
-     *  the Placeable interface, then places the entity in the specified
-     *  panel.  If the workspace argument is null, then
-     *  create a new workspace with an empty name.
-     *  If the panel argument is null, then entities implementing Placeable
-     *  are not placed.  Classes will be 
+    /** Construct a parser that creates entities in the specified workspace.
+     *  If the workspace argument is null, then
+     *  create a new workspace with an empty name. Classes will be 
      *  created using the classloader that created this class.
      *  @param workspace The workspace into which to place entities.
-     *  @param panel The panel into which to place Placeable entities.
      *  @param loader The class loader that will be used to create classes,
      *  or null if the the bootstrap class loader is to be used.
      */
-    public MoMLParser(Workspace workspace, Container panel,
-		      ClassLoader loader) {
-	this(workspace, panel);
+    public MoMLParser(Workspace workspace, ClassLoader loader) {
+	this(workspace);
 	_classLoader = loader;
     }
 
@@ -279,18 +257,7 @@ public class MoMLParser extends HandlerBase {
      *  guaranteed that this will be the last method called in the XML
      *  parsing process. As a consequence, it is guaranteed that all
      *  dependencies between parameters used in the XML description
-     *  are resolved. This fact is used in the place method, allowing the
-     *  use of parameter values to change the visual rendition of an
-     *  placeable object.
-     *  <p>
-     *  After ensuring that all parameters have been evaluated, this
-     *  method places all objects that implement the Placeable interface
-     *  in the panel given to the constructor, if one was given.  There
-     *  is one exception, however.  This method avoids checking the
-     *  contained entities in any instance of TypedActorLibrary, because
-     *  that class exists specifically to defer evaluation of its contents.
-     *  It would defeat its purpose if we examined its contents.
-     *  @see Placeable
+     *  are resolved.
      *  @see TypedActorLibrary
      *  @exception CancelException If an error occurs parsing one of the
      *   parameter values, and the user clicks on "cancel" to cancel the
@@ -311,8 +278,6 @@ public class MoMLParser extends HandlerBase {
                 + ex.getMessage());
             }
         }
-
-        _placePlaceables(_toplevel);
     }
 
     /** End an element. This method pops the current container from
@@ -657,7 +622,7 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(entityName,
                         "No name for element \"deleteEntity\"");
                 NamedObj deletedEntity = _deleteEntity(entityName);
-                if (_panel != null && deletedEntity instanceof Placeable) {
+                if (deletedEntity instanceof Placeable) {
                     // FIXME: remove and revalidate graphical container.
                     // This seems to require an extension to the Placeable
                     // interface.
@@ -802,7 +767,7 @@ public class MoMLParser extends HandlerBase {
                 // Read external model definition in a new parser,
                 // rather than in the current context.
                 MoMLParser newParser =
-		    new MoMLParser(_workspace, null, _classLoader);
+		    new MoMLParser(_workspace, _classLoader);
                 NamedObj reference = _parse(newParser, base, source);
 
                 if (_imports == null) {
@@ -836,7 +801,7 @@ public class MoMLParser extends HandlerBase {
                 // Read external file in the current context, but with
                 // a new parser.
                 MoMLParser newParser =
-		    new MoMLParser(_workspace, null, _classLoader);
+		    new MoMLParser(_workspace, _classLoader);
                 newParser.setContext(_current);
                 newParser._propagating = _propagating;
                 _parse(newParser, base, source);
@@ -1681,27 +1646,6 @@ public class MoMLParser extends HandlerBase {
         return parser.parse(xmlFile, xmlFile.openStream());
     }
 
-    // Place all objects contained by the specified one in the panel
-    // given in the constructor, if one was given, but avoid examining
-    // any objects of type TypedActorLibrary.
-    private void _placePlaceables(Object object) {
-        if ((object instanceof CompositeEntity)
-                && !(object instanceof TypedActorLibrary)) {
-            CompositeEntity container = (CompositeEntity)object;
-            // Get the list of all actors for this model
-            List actorList = container.entityList();
-            Iterator entities = actorList.iterator();        
-            // Walk through the model
-            while(entities.hasNext()) {
-                Object contained = entities.next();
-                if ( contained instanceof Placeable && _panel != null) {
-                    ((Placeable)contained).place(_panel);
-                }
-                _placePlaceables(contained);
-            }
-        }
-    }
-
     // If an object is deleted from a container, and this is not the
     // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
@@ -2065,9 +2009,6 @@ public class MoMLParser extends HandlerBase {
 
     // The stack of name spaces.
     private Stack _namespaces = new Stack();
-
-    // The graphical container into which to place Placeable entities.
-    private Container _panel;
 
     // A list of parameters specified in property tags.
     private List _paramsToParse = new LinkedList();

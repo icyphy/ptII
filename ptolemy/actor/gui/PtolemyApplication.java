@@ -104,7 +104,7 @@ public class PtolemyApplication extends MoMLApplication {
     protected Configuration _createDefaultConfiguration() throws Exception {
         URL inurl = specToURL(
                 "ptolemy/configurations/runPanelConfiguration.xml");
-        MoMLParser parser = new MoMLParser(new Workspace(), null);
+        MoMLParser parser = new MoMLParser();
         NamedObj toplevel = parser.parse(inurl, inurl.openStream());
         return (Configuration)toplevel;
     }
@@ -118,7 +118,7 @@ public class PtolemyApplication extends MoMLApplication {
     protected Configuration _createEmptyConfiguration() throws Exception {
         URL inurl = specToURL(
                 "ptolemy/configurations/runBlankConfiguration.xml");
-        MoMLParser parser = new MoMLParser(new Workspace(), null);
+        MoMLParser parser = new MoMLParser();
         NamedObj toplevel = parser.parse(inurl, inurl.openStream());
         return (Configuration)toplevel;
     }
