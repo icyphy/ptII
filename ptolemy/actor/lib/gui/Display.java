@@ -98,7 +98,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////        public variables and parameters                    ////
 
-    /** The horizontal size of the display, in columnss. This contains
+    /** The horizontal size of the display, in columns. This contains
      *  an integer, and defaults to 40.
      */
     public Parameter columnsDisplayed;
