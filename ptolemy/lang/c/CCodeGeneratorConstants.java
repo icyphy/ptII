@@ -63,10 +63,18 @@ public interface CCodeGeneratorConstants extends JavaStaticSemanticConstants {
     public static final Integer INDENTATION_TRANSITION_KEY = 
             new Integer(RESERVED_JAVA_PROPERTIES + 2);
 
+    /** The key that gives the name to be used for the corresponding object
+     *  in generated C code. For example, methods must be renamed
+     *  to distinguish multiple versions with different parameter
+     *  type signatures. C Name properties are String-valued.
+     */
+    public static final Integer C_NAME_KEY = 
+            new Integer(RESERVED_JAVA_PROPERTIES + 3);
+    
     /** The number of properties reserved for static resolution of Java,
      *  and C Code generation.  This number can be used to 
      *  start numbering extended properties.
      */
     public static final int RESERVED_C_PROPERTIES = 
-            INDENTATION_TRANSITION_KEY.intValue() + 1;
+            C_NAME_KEY.intValue() + 1;
 }
