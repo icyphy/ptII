@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ct/demo
 
-DIRS = 		Lorenz SigmaDelta SquareWave StickyBall Thermostat
+DIRS = 		Lorenz SigmaDelta  StickyBall Thermostat
 
 # Root of the Java directory
 ROOT =		../../../..
