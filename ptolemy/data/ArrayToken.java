@@ -182,16 +182,10 @@ public class ArrayToken extends Token {
 	return new ArrayToken(oneValArray);
     }
 
-    /** Return a String representing of the value of this token.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-	return toString();
-    }
-
-    /** Return a String representing of the value of this token.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  @return A String beginning with "array[" that contains expressions 
+     *  for every element in the array separated by commas, ending with "]".
      */
     public String toString() {
 	String s = "array[";

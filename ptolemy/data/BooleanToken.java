@@ -296,14 +296,6 @@ public class BooleanToken extends Token {
         return TRUE;
     }
 
-    /** Return the value contained in this token as a String.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-        return toString();
-    }
-
     /** Return this token minus the argument.  For booleans, subtraction
      *  is defined by addition (which is logical exclusive or).  Thus, if
      *  <i>c</i> = <i>a</i> - <i>b</i> then <i>c</i> is defined so that
@@ -341,8 +333,9 @@ public class BooleanToken extends Token {
         return addReverse(leftArg);
     }
 
-    /** Return the value contained in this token as a String.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  @return A String formed using java.lang.Boolean.toString().
      */
     public String toString() {
         return (new Boolean(_value)).toString();

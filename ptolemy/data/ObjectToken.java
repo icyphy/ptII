@@ -116,24 +116,19 @@ public class ObjectToken extends Token {
         return _value;
     }
 
-    /** Return the string description of the object.  If there is no such
-     *  object, then return a description of the token.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-	return toString();
-    }
-
-    /** Return the string description of the object.  If there is no such
-     *  object, then return a description of the token.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  The returned syntax looks like a function call to a one argument method
+     *  named "object".  The argument is the string representation of the
+     *  contained object, or the string "null" if the object is null.  Notice
+     *  that this syntax is not currently parseable by the expression language.
+     *  @return A String representing the object.
      */
     public String toString() {
         if (_value != null) {
-            return _value.toString();
+            return "object(" + _value.toString() + ")";
         } else {
-            return super.toString();
+            return "object(null)";
         }
     }
 

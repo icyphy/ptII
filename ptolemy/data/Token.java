@@ -244,9 +244,8 @@ public class Token implements Serializable {
     }
 
     /** Return a description of the token as a string.
-     *  In this base class, we return the fully qualified class name.
-     *  @return A description of this object as a String.
-     *  @deprecated Use toString() instead.
+     *  @return A description of this token.
+     *  @deprecated Use the toString method instead.
      */
     public String stringValue() {
         return toString();
@@ -283,9 +282,11 @@ public class Token implements Serializable {
                 + this.getClass().getName() + ".");
     }
 
-    /** Return the String "present" to indicate that an event is present.
-     *  This method should be overridden in the derived classes to
-     *  return the data in the token as a String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  This method should be overriden by derived classes.
+     *  In this base class, return the String "present" to indicate
+     *  that an event is present.
      *  @return The String "present".
      */
     public String toString() {

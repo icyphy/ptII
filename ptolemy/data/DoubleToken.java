@@ -424,15 +424,6 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(1.0);
     }
 
-    /** Return the value contained in this Token as a String.
-     *  This method uses java.text.NumberFormat to format the number.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-        return toString();
-    }
-
     /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token.
      *  Type resolution also occurs here, with the returned Token type
@@ -482,9 +473,9 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(result);
     }
 
-    /** Return the value contained in this Token as a String.
-     *  This method uses java.text.NumberFormat to format the number.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  @return A String created using java.text.NumberFormat
      */
     public String toString() {
         NumberFormat nf = NumberFormat.getNumberInstance();

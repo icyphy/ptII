@@ -403,14 +403,6 @@ public class LongToken extends ScalarToken {
         return new LongToken(1);
     }
 
-    /** Return the value contained in this Token as a String.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-        return toString();
-    }
-
     /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token.
      *  Type resolution also occurs here, with the returned Token type
@@ -460,8 +452,9 @@ public class LongToken extends ScalarToken {
         return new LongToken(result);
     }
 
-    /** Return the value contained in this Token as a String.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  @return A String formed using java.lang.Long.toString().
      */
     public String toString() {
         return Long.toString(_value);

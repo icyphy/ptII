@@ -65,6 +65,7 @@ public class StringToken extends Token {
         } else {
             _value = new String("");
         }
+        _toString = "\"" + _value + "\"";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,12 +83,13 @@ public class StringToken extends Token {
     public Token add(Token token) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
         try {
-            if (typeInfo == CPO.HIGHER) {
-                StringToken tmp = (StringToken)this.convert(token);
-                String result = _value + tmp.toString();
+            if (token instanceof StringToken) {
+                String result = 
+                    _value + ((StringToken)token).stringValue();
                 return new StringToken(result);
-            } else if (token instanceof StringToken) {
-                String result = _value + ((StringToken)token).toString();
+            } else if (typeInfo == CPO.HIGHER) {
+                StringToken tmp = (StringToken)this.convert(token);
+                String result = _value + tmp.stringValue();
                 return new StringToken(result);
             } else if (typeInfo == CPO.LOWER) {
                 return token.addReverse(this);
@@ -113,7 +115,7 @@ public class StringToken extends Token {
     public Token addReverse(ptolemy.data.Token token)
 	    throws IllegalActionException {
         StringToken tmp = (StringToken)this.convert(token);
-        String result = tmp.toString() + _value;
+        String result = tmp.stringValue() + _value;
         return new StringToken(result);
     }
 
@@ -173,7 +175,7 @@ public class StringToken extends Token {
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof StringToken) {
-            if ( _value.compareTo(token.toString()) == 0) {
+            if ( toString().compareTo(token.toString()) == 0) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -186,19 +188,22 @@ public class StringToken extends Token {
         }
     }
 
-    /** Return the value of this Token as a String.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
+    /** Return the string that this token contains.  Note that this is 
+     *  different than the toString method, which returns a string expression
+     *  that has double quotes around it.
+     *  @return The contained string.
      */
     public String stringValue() {
-        return toString();
+        return _value;
     }
 
-    /** Return the value of this Token as a String.
+    /** Return the value of this Token as a string.  The string will begin
+     *  and end with double quotes, indicating a string constant in the 
+     *  expression language.
      *  @return A String.
      */
     public String toString() {
-        return _value;
+        return _toString;
     }
 
     /** Return a StringToken containing an empty string, which is considered
@@ -211,5 +216,8 @@ public class StringToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // The string contained in this token.
     private String _value;
+    // The string contained in this token, with double quotes on either side.
+    private String _toString;
 }

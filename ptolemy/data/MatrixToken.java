@@ -158,20 +158,14 @@ public abstract class MatrixToken extends Token {
 		 "not supported on " + getClass().getName() + " objects.");
     }
 
-    /** Return a String representing the value of this token.
-     *  The syntax is that understood by the parser in the data.expr
-     *  package.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-	return toString();
-    }
-
-    /** Return a String representing the value of this token.
-     *  The syntax is that understood by the parser in the data.expr
-     *  package.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  The expression starts and ends with a square bracket.  The matrix is 
+     *  scanned starting from the upper left and proceeding across each row.  
+     *  Each element in the row is separated by a comma, and the end of a row
+     *  is represented by a semicolon.  The value of each element is obtained
+     *  using its toString method.
+     *  @return A String representing a matrix similar to Matlab.
      */
     public String toString() {
         int rowCount = getRowCount();
@@ -196,10 +190,12 @@ public abstract class MatrixToken extends Token {
      */
     protected static final int DO_COPY = 0; 
     
-    /** A constant indicating to constructors not to copy the contents of an argument 
-     *  2-D array, but instead to just copy the pointer to the matrix. The contents
-     *  of the input 2-D array should NOT be modified after construction of an
-     *  instance of MatrixToken, if the property of immutability is to be preserved.
+    /** A constant indicating to constructors not to copy the contents 
+     *  of an argument 2-D array, but instead to just copy the 
+     *  pointer to the matrix. The contents of the input 2-D array 
+     *  should NOT be modified after construction of an
+     *  instance of MatrixToken, if the property of immutability is 
+     *  to be preserved.
      */
     protected static final int DO_NOT_COPY = 1;
 }

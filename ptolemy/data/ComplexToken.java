@@ -378,14 +378,6 @@ public class ComplexToken extends ScalarToken {
         return new ComplexToken(new Complex(1.0));
     }
 
-    /** Return the value contained in this Token as a String.
-     *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-	return toString();
-    }
-
     /** Return a new Token whose value is the value of the argument token
      *  subtracted by the value of this token. The type of the
      *  specified token must be such that either it can be converted
@@ -442,8 +434,9 @@ public class ComplexToken extends ScalarToken {
         return new ComplexToken(result);
     }
 
-    /** Return the value contained in this Token as a String.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  @return A String formed using java.lang.Complex.toString().
      */
     public String toString() {
         return _value.toString();

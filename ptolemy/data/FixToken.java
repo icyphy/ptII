@@ -61,15 +61,15 @@ public class FixToken extends ScalarToken {
     }
 
     /** Construct a FixToken with a value given as a String and a
-	precision given as a String. Since FixToken has a finite
-	number uses a finite number of bits to represent a value the
-	supplied value is rounded to the nearest value possible given the
-	precision, thereby introducing quantization errors.
-	@param pre the precision of the FixToken.
-	@param value the value of the FixToken.
-	@exception IllegalArgumentException If the format of the precision
-	string is incorrect
-    */
+     *  precision given as a String. Since FixToken has a finite
+     *  number uses a finite number of bits to represent a value the
+     *  supplied value is rounded to the nearest value possible given the
+     *  precision, thereby introducing quantization errors.
+     *  @param pre the precision of the FixToken.
+     *  @param value the value of the FixToken.
+     *  @exception IllegalArgumentException If the format of the precision
+     *  string is incorrect
+     */
     public FixToken(double value, String pre)
             throws IllegalArgumentException {
         try {
@@ -81,14 +81,15 @@ public class FixToken extends ScalarToken {
     }
 
     /** Construct a FixToken with a value given as a String and a
-	precision given as a String. Since FixToken has a finite
-	number uses a finite number of bits to represent a value, the
-	supplied value is rounded to the nearest value possible given
-	the precision, thereby introducing quantization errors.
-	@param precision String giving the precision of the FixToken
-	@param value Double value of the FixToken
-	@exception IllegalArgumentException If the format of the
-	precision string is incorrect */
+     *  precision given as a String. Since FixToken has a finite
+     *  number uses a finite number of bits to represent a value, the
+     *  supplied value is rounded to the nearest value possible given
+     *  the precision, thereby introducing quantization errors.
+     *  @param precision String giving the precision of the FixToken
+     *  @param value Double value of the FixToken
+     *  @exception IllegalArgumentException If the format of the
+     *  precision string is incorrect 
+     */
     public FixToken(double value, int numberOfBits, int integerBits)
             throws IllegalArgumentException {
         try {
@@ -457,8 +458,13 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
-    /** Return the value contained in this Token as a String.
-     *  @return A String.
+    /** Return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  @return A String representing a function call to the static function 
+     *  "fix".  The first argument is the decimal value, the second is the 
+     *  total number of bits and the third is the number of bits for the
+     *  integer portion.  For more information about these arguments, see 
+     *  the three argument constructor. 
      */
     public String toString() {
         Precision precision = _value.getPrecision();
@@ -471,10 +477,9 @@ public class FixToken extends ScalarToken {
      *  same precision as the current FixToken.
      *  @return A new Token containing the additive identity.
      */
-    public Token zero()
-        {
-            return new FixToken( 0.0, _value.getPrecision().toString() );
-        }
+    public Token zero() {
+        return new FixToken( 0.0, _value.getPrecision().toString() );
+    }
 
     /** Print the content of this FixToken: Debug Function */
     public void print() {
