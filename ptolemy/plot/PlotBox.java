@@ -297,7 +297,25 @@ public class PlotBox extends Applet {
             for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                String yl = Double.toString(Math.floor(ypos*1000.0+0.5)*0.001);
+                // NOTE: The following clever solution doesn't always work:
+                String yfull = Double.toString(Math.floor(ypos*1000.0+0.5)*0.001);
+                // ... so we have to patch up the solution...
+                // This method just copies digits up to the third after the decimal point.
+                // However, for numbers near zero, if the above yields something in
+                // scientific notation, this fails too.  We really need printf!!
+                // FIXME: add printf when java people finally realize they have to have it.
+                int point = yfull.indexOf('.');
+                if (point < 0) {
+                    ylabels[ind] = yfull;
+                } else {
+                    int endpoint = point+4;
+                    if (endpoint < yfull.length()) {
+                        ylabels[ind] = yfull.substring(0,endpoint);
+                    } else {
+                        ylabels[ind] = yfull;
+                    }
+                }
+                String yl = ylabels[ind];
                 ylabels[ind] = yl;
                 int lw = lfm.stringWidth(yl);
                 ylabwidth[ind++] = lw;
