@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ABP" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Receiver" class="ptolemy.actor.TypedCompositeActor">
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -17,6 +17,8 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="73.0, 38.0">
+        </property>
     </property>
     <property name="forwardLossRate" class="ptolemy.data.expr.Parameter" value="0.3">
     </property>
@@ -24,8 +26,14 @@
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
     <entity name="MessageSource" class="ptolemy.domains.fsm.demo.ABP.DEMessageSource">
         <property name="maxDelay" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="127.0, 135.0">
         </property>
         <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
@@ -38,6 +46,8 @@
         </port>
     </entity>
     <entity name="Timer" class="ptolemy.domains.fsm.demo.ABP.DETimer">
+        <property name="_location" class="ptolemy.moml.Location" value="91.0, 340.0">
+        </property>
         <port name="expired" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
         </port>
@@ -51,6 +61,8 @@
         <property name="maximumDelay" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="forwardLossRate">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 184.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -106,7 +118,7 @@
             </property>
             <property name="pmf" class="ptolemy.data.expr.Parameter" value="[(1.0 - lossProbability) , lossProbability]">
             </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="[0, 1]">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -146,6 +158,8 @@
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="backwardLossRate">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="394.0, 333.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -200,7 +214,7 @@
             </property>
             <property name="pmf" class="ptolemy.data.expr.Parameter" value="[(1.0 - lossProbability) , lossProbability]">
             </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="[0, 1]">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -240,6 +254,8 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="507.0, 77.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -249,19 +265,12 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Events</title>
-
 <xLabel>Time</xLabel>
-
 <yLabel>Events</yLabel>
-
-<xRange min="0.0" max="100.0"/>
-
-<yRange min="0.0" max="12.0"/>
-
+<xRange min="11.532453010062133" max="98.02841197277658"/>
+<yRange min="0.0" max="13.0"/>
 <noGrid/>
-
 <default connected="no" marks="dots" stems="yes"/>
-
 </plot>?>
         </configure>
     </entity>
@@ -269,6 +278,8 @@
         <property name="SenderDirector" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="175.0, 217.0">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -359,6 +370,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
             </relation>
             <relation name="ctrlTr2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="error_isPresent">
@@ -366,6 +379,8 @@
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
             </relation>
             <link port="Connecting.outgoingPort" relation="ctrlTr1"/>
@@ -376,7 +391,7 @@
         <entity name="Connect" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
             </property>
-	    <property name="count" class="ptolemy.data.expr.Variable" value="0">
+            <property name="count" class="ptolemy.data.expr.Parameter" value="5">
             </property>
             <port name="request" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -452,6 +467,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="conTr1Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
                     </property>
@@ -478,6 +495,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="conTr2Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
                     </property>
@@ -498,6 +517,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="conTr3Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
                     </property>
@@ -512,6 +533,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="conTr4Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
                     </property>
@@ -525,6 +548,8 @@
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="conTr5Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
@@ -551,6 +576,8 @@
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="conTr6Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
@@ -587,9 +614,9 @@
         <entity name="Send" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0">
             </property>
-	    <property name="trying" class="ptolemy.data.expr.Variable" value="false">
+            <property name="trying" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-	    <property name="msg" class="ptolemy.data.expr.Variable" value="0">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="9">
             </property>
             <port name="msgIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -649,6 +676,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="sendTr1Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
                     </property>
@@ -687,6 +716,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="sendTr2Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
                     </property>
@@ -712,6 +743,8 @@
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="sendTr3Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
@@ -739,6 +772,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="sendTr4Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1.0">
                     </property>
@@ -764,6 +799,8 @@
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="sendTr5Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
@@ -803,6 +840,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="sendTr6Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
                     </property>
@@ -829,6 +868,8 @@
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
                 <property name="sendTr7Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
                     </property>
@@ -854,6 +895,8 @@
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="sendTr8Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1.0">
@@ -937,23 +980,37 @@
     <entity name="Receiver" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="433.0, 229.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+        </property>
         <port name="pktIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="459.5, 360.0">
             </property>
         </port>
         <port name="ack" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 90.0">
+            </property>
         </port>
         <port name="msgOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 180.0">
+            </property>
         </port>
         <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="140.0, 225.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -963,6 +1020,8 @@
         <entity name="S0" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 270.0">
+            </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -970,6 +1029,8 @@
         </entity>
         <entity name="S1" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -982,6 +1043,8 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
             </property>
             <property name="recTr1Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
@@ -996,6 +1059,8 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
             </property>
             <property name="recTr2Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
@@ -1017,6 +1082,8 @@
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+            </property>
             <property name="recTr3Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
                 </property>
@@ -1030,6 +1097,8 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
             </property>
             <property name="recTr4Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
@@ -1051,6 +1120,8 @@
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+            </property>
             <property name="recTr5Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
                 </property>
@@ -1064,6 +1135,8 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
             </property>
             <property name="recTr6Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
@@ -1094,6 +1167,8 @@
     <relation name="request" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="msgIn" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" class="ptolemy.moml.Vertex" value="32.0, 82.0">
+        </vertex>
     </relation>
     <relation name="pktOut" class="ptolemy.actor.TypedIORelation">
     </relation>

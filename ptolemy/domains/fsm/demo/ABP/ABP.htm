@@ -2,12 +2,12 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Protocol Modeling with Hierarchical FSM's and Discrete Events</tile>
+<title>Protocol Modeling with Hierarchical FSM's and the Discrete Event Domain</tile>
 </title>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Protocol Modeling with Hierarchical FSM's and Discrete Events</h1>
+<h1>Protocol Modeling with Hierarchical FSM's and the Discrete Event Domain</h1>
 <p>
 <center>
 <!-- The HTML below is for the Java Plugin.  The first
@@ -51,11 +51,10 @@
 </center>
 <p>
 This model demonstrates the use of the discrete event (DE) domain
-combined with and hierarchical finite state machines (FSM's)
-to model the alternating bit protocol (ABP). The ABP [2]
-is a popular mechanism for achieving reliable, ordered delivery
-of messages over channels with unreliable delivery and variable delay.
-The top level of the model, which operates in the DE domain,
+and hierarchical finite state machines (FSM's) to model the alternating
+bit protocol (ABP). ABP [2] is a simple mechanism for achieving reliable,
+ordered delivery of messages over channels with unreliable delivery and
+variable delay. The top level of the model, which operates in the DE domain,
 is shown below:
 <CENTER>
 <P><IMG SRC="img/ABPModel.gif" ></CENTER>
@@ -65,7 +64,7 @@ The components in the model include:
 <B>Message source. </B>
 This is a DE atomic actor with a parameter <I>MaxDelay</I>.
 After execution starts, it will wait for a random delay uniformly
-distributed between zero and <I>MaxDelay</I>, and then send a <I>request</I>
+distributed between <I>0</I> and <I>MaxDelay</I>, and then send a <I>request</I>
 to the sender. When it receives a <I>next</I> from the sender, it will
 again wait for a random delay uniformly distributed between <I>0</I> and
 <I>MaxDelay</I>, and then send a new <I>msgIn</I> with sequence number

@@ -1,0 +1,252 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="ConnectComponent" extends="ptolemy.domains.fsm.kernel.FSMActor">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
+    </property>
+    <property name="count" class="ptolemy.data.expr.Parameter" value="3">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 265]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 168]">
+    </property>
+    <port name="request" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="35.0, 117.0">
+        </property>
+    </port>
+    <port name="connected" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="550.0, 141.0">
+        </property>
+    </port>
+    <port name="error" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="535.25, 196.0">
+        </property>
+    </port>
+    <port name="ack" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="25.0, 175.0">
+        </property>
+    </port>
+    <port name="pktOut" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="537.0, 33.0">
+        </property>
+    </port>
+    <port name="setTimer" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="544.0, 87.0">
+        </property>
+    </port>
+    <port name="expired" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="33.0, 57.0">
+        </property>
+    </port>
+    <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="99.0, 38.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="Wait" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="259.0, 109.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="Success" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="437.0, 43.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="Fail" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="439.0, 182.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="conTr1" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="request_isPresent">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="conTr1Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
+            </property>
+        </property>
+        <property name="conTr1Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
+            </property>
+        </property>
+        <property name="conTr1Act3" class="ptolemy.domains.fsm.kernel.SetVariable">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5">
+            </property>
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="count">
+            </property>
+        </property>
+    </relation>
+    <relation name="conTr2" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : 0) == -1">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="conTr2Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="connected">
+            </property>
+        </property>
+        <property name="conTr2Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1.0">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
+            </property>
+        </property>
+    </relation>
+    <relation name="conTr3" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; count == 0">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="conTr3Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="error">
+            </property>
+        </property>
+    </relation>
+    <relation name="conTr4" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) != -1 &amp;&amp; expired_isPresent &amp;&amp; count == 0">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="conTr4Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="error">
+            </property>
+        </property>
+    </relation>
+    <relation name="conTr5" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; count != 0">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="conTr5Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
+            </property>
+        </property>
+        <property name="conTr5Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
+            </property>
+        </property>
+        <property name="conTr5Act3" class="ptolemy.domains.fsm.kernel.SetVariable">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="count - 1">
+            </property>
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="count">
+            </property>
+        </property>
+    </relation>
+    <relation name="conTr6" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) != -1 &amp;&amp; expired_isPresent &amp;&amp; count != 0">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="conTr6Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
+            </property>
+        </property>
+        <property name="conTr6Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5.0">
+            </property>
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="setTimer">
+            </property>
+        </property>
+        <property name="conTr6Act3" class="ptolemy.domains.fsm.kernel.SetVariable">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="count - 1">
+            </property>
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="count">
+            </property>
+        </property>
+    </relation>
+    <link port="Init.outgoingPort" relation="conTr1"/>
+    <link port="Wait.incomingPort" relation="conTr1"/>
+    <link port="Wait.incomingPort" relation="conTr5"/>
+    <link port="Wait.incomingPort" relation="conTr6"/>
+    <link port="Wait.outgoingPort" relation="conTr2"/>
+    <link port="Wait.outgoingPort" relation="conTr3"/>
+    <link port="Wait.outgoingPort" relation="conTr4"/>
+    <link port="Wait.outgoingPort" relation="conTr5"/>
+    <link port="Wait.outgoingPort" relation="conTr6"/>
+    <link port="Success.incomingPort" relation="conTr2"/>
+    <link port="Fail.incomingPort" relation="conTr3"/>
+    <link port="Fail.incomingPort" relation="conTr4"/>
+</class>

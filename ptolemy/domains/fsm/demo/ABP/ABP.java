@@ -309,7 +309,7 @@ public class ABP extends TypedCompositeActor {
         conTr6Act3.variableName.setExpression("count");
         conTr6Act3.expression.setExpression("count - 1");
         // create the local variable
-        Variable conCount = new Variable(connect, "count");
+        Parameter conCount = new Parameter(connect, "count");
         conCount.setTypeEquals(BaseType.INT);
         conCount.setToken(new IntToken(0));
         // set connect to be ctrlConnecting's refinement
@@ -506,10 +506,10 @@ public class ABP extends TypedCompositeActor {
         sendTr8Act3.variableName.setExpression("trying");
         sendTr8Act3.expression.setExpression("false");
         // create the local variables
-        Variable sendFlag = new Variable(send, "trying");
+        Parameter sendFlag = new Parameter(send, "trying");
         sendFlag.setTypeEquals(BaseType.BOOLEAN);
         sendFlag.setToken(BooleanToken.FALSE);
-        Variable msgCount = new Variable(send, "msg");
+        Parameter msgCount = new Parameter(send, "msg");
         msgCount.setTypeEquals(BaseType.INT);
         msgCount.setToken(new IntToken(0));
         // set to be ctrlSending's refinement
