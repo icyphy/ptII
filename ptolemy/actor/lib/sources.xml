@@ -60,8 +60,15 @@
 </entity>
 
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
+<rendition class="ptolemy.vergil.toolbox.XMLIcon">
+<configure>
+<![CDATA[
+	<xmlgraphic>
+	<rectangle coords="0 0 60 40" fill="white"/>
+	<polygon coords="10 30 50 10 50 30" fill="blue"/>
+	</xmlgraphic>
+]]>
+</configure>
 </rendition>
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
