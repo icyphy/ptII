@@ -31,8 +31,8 @@
 package ptolemy.domains.sc.demo;
 
 import ptolemy.actor.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.domains.de.lib.*;
+//import ptolemy.domains.de.kernel.*;
+//import ptolemy.domains.de.lib.*;
 import ptolemy.domains.sc.kernel.*;
 import ptolemy.domains.sc.lib.*;
 import ptolemy.domains.ct.kernel.*;
@@ -70,6 +70,8 @@ public class SimpleHS {
             CTMixedSignalDirector dedir = new CTMixedSignalDirector("CTTopLevelDirector");
             sys.setDirector(dedir);
 
+            dedir.setVERBOSE(true);
+
             // a DE clock
             //DEClock clk = new DEClock(sys, "Clock");
             //Parameter intv = (Parameter)clk.getAttribute("interval");
@@ -93,9 +95,9 @@ public class SimpleHS {
             TypedIOPort hsin = (TypedIOPort)hs.newPort("input");
             hsin.setInput(true);
             hsin.setDeclaredType(DoubleToken.class);
-            TypedIOPort hsout = (TypedIOPort)hs.newPort("output");
-            hsout.setOutput(true);
-            hsout.setDeclaredType(DoubleToken.class);
+            //TypedIOPort hsout = (TypedIOPort)hs.newPort("output");
+            //hsout.setOutput(true);
+            //hsout.setDeclaredType(DoubleToken.class);
             TypedIOPort hsst = (TypedIOPort)hs.newPort("state");
             hsst.setOutput(true);
             hsst.setDeclaredType(DoubleToken.class);
@@ -129,7 +131,7 @@ public class SimpleHS {
             CTIntegrator ctIncI = new CTIntegrator(ctInc, "Integrator");
             CTZeroCrossingDetector ctIncD = new CTZeroCrossingDetector(ctInc, "ZD");
             GeneralFunctionActor ctIncGF = new GeneralFunctionActor(ctInc, "GF");
-            CTPeriodicalSampler ctIncS = new CTPeriodicalSampler(ctInc, "Sample");
+            //CTPeriodicalSampler ctIncS = new CTPeriodicalSampler(ctInc, "Sample");
             TypedIOPort ctIncGFi = (TypedIOPort)ctIncGF.newPort("in");
             ctIncGFi.setInput(true);
             ctIncGFi.setDeclaredType(DoubleToken.class);
@@ -159,12 +161,13 @@ public class SimpleHS {
             ctIncD.trigger.link(ctIncR2);
             ctIncTr.link(ctIncR2);
             ctInc.connect(ctIncD.output, ctIncOut);
-            ctInc.connect(ctIncS.output, ctIncSt);
+            //ctInc.connect(ctIncS.output, ctIncSt);
             TypedIORelation ctIncR1 = (TypedIORelation)ctInc.newRelation("CTIncR1");
             ctIncI.output.link(ctIncR1);
-            ctIncS.input.link(ctIncR1);
+            //ctIncS.input.link(ctIncR1);
             ctIncD.input.link(ctIncR1);
             ctIncGFi.link(ctIncR1);
+            ctIncSt.link(ctIncR1);
             CTMixedSignalDirector ctIncDir = new CTMixedSignalDirector("CTIncDir");
             ctInc.setDirector(ctIncDir);
 
@@ -175,7 +178,7 @@ public class SimpleHS {
             CTGain ctGain = new CTGain(ctDec, "Gain");
             CTZeroCrossingDetector ctDecD = new CTZeroCrossingDetector(ctDec, "ZD");
             GeneralFunctionActor ctDecGF = new GeneralFunctionActor(ctDec, "GF");
-            CTPeriodicalSampler ctDecS = new CTPeriodicalSampler(ctDec, "Sample");
+            //CTPeriodicalSampler ctDecS = new CTPeriodicalSampler(ctDec, "Sample");
             TypedIOPort ctDecGFi = (TypedIOPort)ctDecGF.newPort("in");
             ctDecGFi.setInput(true);
             ctDecGFi.setDeclaredType(DoubleToken.class);
@@ -206,12 +209,13 @@ public class SimpleHS {
             ctDecD.trigger.link(ctDecR2);
             ctDecTr.link(ctDecR2);
             ctDec.connect(ctDecD.output, ctDecOut);
-            ctDec.connect(ctDecS.output, ctDecSt);
+            //ctDec.connect(ctDecS.output, ctDecSt);
             TypedIORelation ctDecR1 = (TypedIORelation)ctDec.newRelation("CTDecR1");
             ctDecI.output.link(ctDecR1);
-            ctDecS.input.link(ctDecR1);
+            //ctDecS.input.link(ctDecR1);
             ctDecD.input.link(ctDecR1);
             ctDecGFi.link(ctDecR1);
+            ctDecSt.link(ctDecR1);
             CTMixedSignalDirector ctDecDir = new CTMixedSignalDirector("CTDecDir");
             ctDec.setDirector(ctDecDir);
 
@@ -224,7 +228,7 @@ public class SimpleHS {
             ctIncIn.link(hsr1);
             ctDecIn.link(hsr1);
             TypedIORelation hsr2 = (TypedIORelation)hs.newRelation("HSr2");
-            hsout.link(hsr2);
+            //hsout.link(hsr2);
             ctIncOut.link(hsr2);
             ctDecOut.link(hsr2);
             TypedIORelation hsr3 = (TypedIORelation)hs.newRelation("HSr3");
@@ -239,7 +243,7 @@ public class SimpleHS {
             // connect the top level system
             //sys.connect(clk.output, ramp.input);
             sys.connect(ramp.output, hsin);
-            sys.connect(hsout, plot.input);
+            //sys.connect(hsout, plot.input);
             sys.connect(hsst, plot.input);
             sys.connect(hstr, plot.input);
 
@@ -265,9 +269,9 @@ public class SimpleHS {
             dfsol.setToken(tok);
             dfsol.parameterChanged(null);
 
-            Parameter sp = (Parameter)ctIncS.getAttribute("SamplePeriod");
-            sp.setExpression("0.1");
-            sp.parameterChanged(null);
+            //Parameter sp = (Parameter)ctIncS.getAttribute("SamplePeriod");
+            //sp.setExpression("0.1");
+            //sp.parameterChanged(null);
 
             // CT director parameters
             initStep = (Parameter)ctDecDir.getAttribute("InitialStepSize");
@@ -285,9 +289,9 @@ public class SimpleHS {
             dfsol.setToken(tok);
             dfsol.parameterChanged(null);
 
-            sp = (Parameter)ctDecS.getAttribute("SamplePeriod");
-            sp.setExpression("0.1");
-            sp.parameterChanged(null);
+            //sp = (Parameter)ctDecS.getAttribute("SamplePeriod");
+            //sp.setExpression("0.1");
+            //sp.parameterChanged(null);
             Parameter gain = (Parameter)ctGain.getAttribute("Gain");
             gain.setExpression("-1.0");
             gain.parameterChanged(null);
