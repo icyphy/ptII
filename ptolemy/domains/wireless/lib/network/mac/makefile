@@ -50,6 +50,10 @@ JSRCS = \
 	ChannelState.java \
 	FilterMpdu.java \
 	ValidateMpdu.java \
+      RxCoordination.java \
+      TxCoordination.java \
+      Backoff.java \
+      DataPump.java \
 	MACActorBase.java
 
 OTHER_FILES_TO_BE_JARED = \

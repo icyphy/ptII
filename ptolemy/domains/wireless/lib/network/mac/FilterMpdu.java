@@ -125,7 +125,7 @@ public class FilterMpdu extends MACActorBase {
             int dNav = intFieldValue(pdu, "durId");
             int src =misc;
             // code for broadcast
-            if (intFieldValue(pdu, "Addr1") == MAC_BROADCAST_ADDR) {
+            if (intFieldValue(pdu, "Addr1") == mac_broadcast_addr) {
                 RecordToken msgout = new RecordToken(
                         RxIndicateMessageFields,
                         new Token[] {

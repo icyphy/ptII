@@ -200,7 +200,7 @@ public class DataPump extends MACActorBase {
                             
                             _pdu = (RecordToken)(_inputMessage.get("pdu")); 
                             _toBackoff(Busy);
-                            int length = ((IntToken)_pdu.get("length")).intValue();
+                            int length = ((IntToken)_pdu.get("Length")).intValue();
                             int rate = ((IntToken)_inputMessage.get("rate")).intValue();
                             Token[] value = {new IntToken(TxStart),
                                              new IntToken(length),

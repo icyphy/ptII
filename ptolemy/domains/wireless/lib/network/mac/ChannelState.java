@@ -324,6 +324,7 @@ public class ChannelState extends MACActorBase {
                        +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
                 if (tNew > _NavTimer.expirationTime) {
                     _NavTimer.expirationTime = tNew;
+                    tNavEnd=tNew;
                     //curSrc=((SetNavMsg *)msg)->src;
                     _curSrc=((IntToken)_inputMessage.get("src")).intValue();
                 }
@@ -336,6 +337,7 @@ public class ChannelState extends MACActorBase {
              case ClearNav:
 		        // force the state transition to the corresponding noNav states
                 _NavTimer.expirationTime = _currentTime;
+                tNavEnd=_currentTime;
                 _curSrc=nosrc;
              break;
       
@@ -345,6 +347,7 @@ public class ChannelState extends MACActorBase {
     private boolean _setNav() throws IllegalActionException {
         double expirationTime =  ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
                    +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
+        tNavEnd=expirationTime;
         if(expirationTime > _currentTime) {
 	        _NavTimer=setTimer(NavTimeOut,expirationTime);
             return true;

@@ -165,7 +165,7 @@ public class Backoff extends MACActorBase {
             case No_Backoff:
               switch (_messageType){
                   case Backoff:
-                      _mBkIP = true;
+                      mBkIP = true;
                       _cnt = ((IntToken)_inputMessage.get("cnt")).intValue();
                       if (_cnt<0) {
                           int ccw = ((IntToken)_inputMessage.get("ccw")).intValue();
@@ -261,7 +261,7 @@ public class Backoff extends MACActorBase {
     private void _backoffDone(int cnt) throws IllegalActionException {
         Token[] value = {new IntToken(BkDone), new IntToken(_cnt)};
         toProtocol.send(0, new RecordToken(BackoffDoneMsgFields, value));
-        _mBkIP=false;
+        mBkIP=false;
         _state = No_Backoff;
     }
 
@@ -284,7 +284,7 @@ public class Backoff extends MACActorBase {
     private int _slotCnt;
     private int _cnt; 
     private int _status; 
-    private boolean _mBkIP;
+
     
     private Timer _BackoffTimer;
     // timer types

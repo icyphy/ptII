@@ -208,6 +208,14 @@ public class MACActorBase extends NetworkActorBase {
      *  necessary.
      */
     public Parameter dotllRTSThreshold;
+
+    // remote variables
+    /** The time that NAV ends or reservation ends.
+     */
+    public static double tNavEnd;
+    /** The flag indicating whether backoff is in progress.
+     */
+    public static boolean mBkIP;
  
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -382,7 +390,7 @@ public class MACActorBase extends NetworkActorBase {
         }
     }
 
-    public static final int MAC_BROADCAST_ADDR = -1;
+    public static final int mac_broadcast_addr = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
@@ -420,16 +428,28 @@ public class MACActorBase extends NetworkActorBase {
     protected static final String[] CSMsgFields={"kind"};
     
     // the value for the pdu field is a record with fields as DataPacket's fields.
-    protected static final String[] TxRequestMsgFields = {"kind", "pdu", "rate", "channel"};
+    protected static final String[] TxRequestMsgFields = {"kind", "pdu", "rate"};
     protected static final String[] TxConfirmMsgFields = {"kind"}; 
     
-    protected static final String[] DataPacketFields = {"kind", "name", "protocolVer", "Type", "Subtype",
+    protected static final String[] DataPacket = {"protocolVer", "Type", "Subtype",
             "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
-            "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4"};
+            "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4", 
+            "payload","Length"};
             
-    protected static final String[] BackoffDoneMsgFields = {"kind", "cnt"};
-    
-    
+    protected static final String[] AckPacket = {"protocolVer", "Type", "Subtype",
+            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
+            "orderBit", "FCS", "durId", "RA","Length"};
+
+    protected static final String[] RtsPacket = {"protocolVer", "Type", "Subtype",
+            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
+            "orderBit", "FCS", "durId", "RA", "TA","Length"};
+
+    protected static final String[] BackoffDoneMsgFields = {"kind","cnt"};   
+    protected static final String[] getBackoffMsgFields = {"kind","ccw", "cnt"};
+    protected static final String[] GotCtsMsgFields = {"kind","endRx"};
+
+
+
 
   
     // message types  
@@ -477,11 +497,15 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int  Rts            = 11;
     protected static final int  ControlType    = 1;
     protected static final int  DataType       = 2;
-    protected static final int  GotAck         = 1;
+    protected static final int  GotAckMsg      = 1;
     protected static final int  GotCts         = 2;
     protected static final int  ControlCh      = 0;
     protected static final int  DataCh         = 1;
     protected static final int  NoError        = 0;
     protected static final int  Error          = 1;
     protected static final int  UNKNOWN        = -1;
+    protected static final int  appl_interest_msg = 100;
+    protected static final int  appl_data_msg  = 101;
+    protected static final int  netw_interest_msg = 200;
+    protected static final int  netw_data_msg  = 201;
 }
