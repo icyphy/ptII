@@ -170,7 +170,9 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version 1.0, Build $Id$");
+            System.out.println("Version "
+                    + VersionAttribute.CURRENT_VERSION 
+                    + ", Build $Id$");
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
         } else if (arg.equals("")) {
