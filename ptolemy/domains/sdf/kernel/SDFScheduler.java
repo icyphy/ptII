@@ -550,11 +550,11 @@ public class SDFScheduler extends Scheduler {
                 Director containedDirector =
                     ((CompositeActor) a).getDirector();
                 if(containedDirector instanceof StaticSchedulingDirector) {
-                    Scheduler containedscheduler = 
+                    Scheduler containedScheduler = 
                         ((StaticSchedulingDirector) containedDirector)
                         .getScheduler();
                     try {
-                        containedscheduler.schedule();
+                        containedScheduler.schedule();
                     } catch (IllegalActionException e) {
                         // This should never happen.
                         throw new InternalErrorException(e.getMessage());
