@@ -102,7 +102,7 @@ public class DiningApplet extends Applet
         CSPPhilosopher p1 = new CSPPhilosopher(univ, "Aristotle");
         CSPPhilosopher p2 = new CSPPhilosopher(univ, "Plato");
         CSPPhilosopher p3 = new CSPPhilosopher(univ, "Sartre");
-        CSPPhilosopher p4 = new CSPPhilosopher(univ, "DesCatres");
+        CSPPhilosopher p4 = new CSPPhilosopher(univ, "Descartes");
         CSPPhilosopher p5 = new CSPPhilosopher(univ, "Socrates");
 
         _philosophers[0] = p1;

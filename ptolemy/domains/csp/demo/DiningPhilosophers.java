@@ -105,7 +105,7 @@ public class DiningPhilosophers {
             CSPPhilosopher p1 = new CSPPhilosopher(univ, "Aristotle");
             CSPPhilosopher p2 = new CSPPhilosopher(univ, "Plato");
             CSPPhilosopher p3 = new CSPPhilosopher(univ, "Sartre");
-            CSPPhilosopher p4 = new CSPPhilosopher(univ, "DesCatres");
+            CSPPhilosopher p4 = new CSPPhilosopher(univ, "Descartes");
             CSPPhilosopher p5 = new CSPPhilosopher(univ, "Socrates");
 
             CSPChopstick f1 = new CSPChopstick(univ, "Chopstick1");
