@@ -1,6 +1,6 @@
 /* Starts all the processes and handles deadlocks
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c)  The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,7 +37,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector 
 /** 
-Handles deadlocks and creates Processes corresponding to all PN stars
+Handles deadlocks and creates Processes corresponding to all PN actors
 
 @author Mudit Goel
 @version $Id$
@@ -78,13 +78,13 @@ public class PNDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-//     public boolean canContinue() {
-// 	return !(_terminate || _mutate || _pause); 
-//     }
-
+    /** This decreases the number of active threads in the compositeActor by 1.
+     *  This method should be called only when an active thread that was 
+     *  registered using increaseActiveCount() is terminated
+     */
     public synchronized  void decreaseActiveCount() {
 	_activeActorsCount--;	    
-	System.out.println("decreasing active count");
+	//System.out.println("decreasing active count");
 	_checkForDeadlock();
         _checkForPause();
     }
@@ -94,43 +94,16 @@ public class PNDirector extends Director {
      */
     public void fire()
 	    throws IllegalActionException {
+                while (!_handleDeadlock());
     }
 
-    //FIXME: How do you let the number of iterations to the sub-galaxies
-    /** This invokes initialize()
-     *  @param iterations This argument is ignored in PN.
-     *  @exception IllegalActionException If thrown by initialize()
-     *  @exception NameDuplicationException This should not be thrown in PN
-     */
-    public void go(int iterations)
-            throws IllegalActionException, NameDuplicationException {
-        CompositeActor container = ((CompositeActor)getContainer());
-	if (container != null) {
-	    initialize();
-	    //I cannot call initialize here as the simulations are sync on
-	    //iterate and NOT on go. SO in subsytems, as I would only be 
-	    //calling iterate, I would not be able to call handledeadlock
-	    //FIXME: Should it wait? Because now it returns immediately 
-	    //after creating and starting threads
-	    //while (!_handleeadlock());
-	    //I donot call handledeadlock as no check if it is an executive
-	    //director
-	}
-    }        
-    
-
-    /** If this is the local director of its container, invoke the initialize()
-     *  methods of all its deeply contained actors.  If this is the executive
-     *  director of its container, then invoke the initialize() method of the
-     *  container.
+    /** This invokes the initialize() methods of all its deeply contained actors.
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. It may produce output data.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception CloneNotSupportedException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the initialize() method of the
      *   container or one of the deeply contained actors throws it.
      */
@@ -143,50 +116,60 @@ public class PNDirector extends Director {
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement(); 
                 actor.createReceivers();
-                PNThread pnt = new PNThread(actor);
+                PNThread pnt = new PNThread(actor, this);
                 _threadlist.insertFirst(pnt);
                 increaseActiveCount();
             }
-            Enumeration threads = _threadlist.elements();
-            //Starting threads;
-            while (threads.hasMoreElements()) {
-                PNThread pnt = (PNThread)threads.nextElement();
-                //increaseActiveCount();
-                pnt.start();
-            }
+            // Enumeration threads = _threadlist.elements();
+//             //Starting threads;
+//             while (threads.hasMoreElements()) {
+//                 PNThread pnt = (PNThread)threads.nextElement();
+//                 //increaseActiveCount();
+//                 pnt.start();
+//             }
         }
-        while (!_handleDeadlock());
     }
 
+    /** This method should be called when a new thread corresponding to an actor
+     *  is started in a simulation. This method is required for detection of
+     *  deadlocks. The corresponding method decreaseActiveCount should be called 
+     *  when the thread is terminated.
+     */
     public synchronized void increaseActiveCount() {
 	_activeActorsCount++;
     }
 
+    /** This method increases the number of paused threads and checks if the 
+     *  entire simulation is paused. 
+     */
     public void paused() {
         _pausedcount++;
         _checkForPause();
     }
 
-    public LinkedList setPause(boolean pause) throws IllegalActionException {
+    /** This method iterates through the set of actors in the compositeActor and 
+     *  sets the pause flag of all the receivers.
+     *  @return The set of LinkedLists that are being paused.
+     *  @exception IllegalActionException Might be thrown by a called method.
+     */
+    public LinkedList setPause() throws IllegalActionException {
 	workspace().getReadAccess();
 	try {
-	    // Obtaining all stars in the current galaxy 
+	    // Obtaining a list of all actors in this compositeActor 
 	    LinkedList pausedreceivers = new LinkedList();
 	    Enumeration allStars =
 		((CompositeEntity)getContainer()).deepGetEntities();
 	    while (allStars.hasMoreElements()) {
-		// Obtaining all the ports of each star 
+		// Obtaining all the ports of each actor 
 		Enumeration starPorts =
 		    ((Entity)(allStars.nextElement())).getPorts();
 		while (starPorts.hasMoreElements()) {
 		    IOPort port = (IOPort)starPorts.nextElement();
-		    // Terminating the ports and hence the star
 		    if(port.isInput()) {
-			//FIXME: Get all receivers
 			Receiver[][] receivers = port.getReceivers();
 			for (int i=0; i<receivers.length; i++) {
 			    for (int j=0; j<receivers[i].length; j++) {
-				((PNQueueReceiver)receivers[i][j]).setPause(pause);
+				((PNQueueReceiver)receivers[i][j]).setPause(true);
 				pausedreceivers.insertFirst(receivers[i][j]);
 			    }
 			}
@@ -199,31 +182,19 @@ public class PNDirector extends Director {
 	}
     }
 
-    public void setResume(LinkedList pausedreceivers) {
-	Enumeration receivers = pausedreceivers.elements();
+    /** This resumes all the receivers in the list being passed as an argument
+     *  @param pausedreceivers This is the list of receivers whose pause flag
+     *  was set to true in the setPause() method
+     */
+    public void setResume() {
+	Enumeration receivers = _pausedRecs.elements();
 	while (receivers.hasMoreElements()) {
 	    PNQueueReceiver receiver = (PNQueueReceiver)receivers.nextElement();
-	    receiver.setPause(false);
+            receiver.setPause(false);
 	}
+        _pausedRecs.clear();
+        _pausedcount= 0;
     }
-
-    //FIXME: Should be called only if director is Executive
-    //Should already have read access to the workspace
-//     public boolean iterate()
-// 	    throws IllegalActionException, NameDuplicationException {
-// 	if (isExecutiveDirector()) {
-// 	    CompositeActor container = ((CompositeActor)getContainer());
-// 	    if (container.prefire()) {
-// 		container.fire();
-// 		return container.postfire();
-// 	    }
-// 	    return false;
-// 	} else {
-// 	    throw new IllegalActionException(this, "iterate() can be called" +
-// 		    " on the PNDirector only if the director is an executive" +
-// 		    " director.");
-// 	}
-//     } 
 
     //FIXME: Should it always return true?
     /** Does nothing for PN */
@@ -236,6 +207,14 @@ public class PNDirector extends Director {
     //FIXME: Should it always return true?
     public boolean prefire() 
 	    throws IllegalActionException  {
+        Enumeration threads = _threadlist.elements();
+        //Starting threads;
+        while (threads.hasMoreElements()) {
+            PNThread pnt = (PNThread)threads.nextElement();
+            //increaseActiveCount();
+            pnt.start();
+        }
+        _threadlist.clear();
         return true;
     }
 
@@ -244,7 +223,15 @@ public class PNDirector extends Director {
      *  @return A new PNReceiver.
      */
     public Receiver newReceiver() {
-        return new PNQueueReceiver();
+        PNQueueReceiver rec =  new PNQueueReceiver();
+        try {
+            //rec.setCapacity(-1);
+        } catch (Exception e) {
+            //This exception should never be thrown, as size of queue should 
+            //be 0, and capacity should be set to a non-negative number
+            throw new InternalErrorException(e.toString());
+        }
+        return rec;
     }
 
     /** Add a mutation object to the mutation queue. These mutations
@@ -261,13 +248,11 @@ public class PNDirector extends Director {
 	try {
 	    // The private member is created only if mutation is being used.
 	    super.queueMutation(mutation);
-	    _pausedRecs = setPause(true);
+	    _pausedRecs = setPause();
 	    synchronized(this) {
 		_urgentMutations = true;
-		//setPause(true);
 		notifyAll();
 	    } 
-	    //setPause(true);
 	} catch (IllegalActionException e) {
 	    System.err.println(e.toString());
 	}
@@ -293,50 +278,6 @@ public class PNDirector extends Director {
 	return;
     }
 
-    /** The action to terminate all actors under control of this local 
-     *  director because a real deadlock has occured or the UI has ordered
-     *  the simulation to be terminated prematurely.
-     *  <p>
-     */
-    //public void terminate() {
-        //System.out.println("about to terminate simulation");
-	// This is the local director.
-    //try {
-    //    workspace().getReadAccess();
-	    //This should normally not happen
-    //    if (_terminate) {
-		// simulation has already been terminated!
-    //	return;
-    //    }
-    //    _terminate = true;
-    //    CompositeActor cont = (CompositeActor)getContainer();
-    //    Enumeration threads = _threadlist.elements();
-	    //FIXME: Probably should get receivers and terminate them
-    //    while (threads.hasMoreElements()) {
-    //	PNThread pnt = (PNThread)threads.nextElement();
-    //	pnt.terminate();
-    //    }
-	    //  Enumeration allMyActors = cont.deepGetEntities(); 
-	    // 	    while (allMyActors.hasMoreElements()) {
-	    // ComponentEntity entity =
-	    //   (ComponentEntity)allMyActors.nextElement();
-	    //try {
-	    //  if (entity.isAtomic()) {
-	    // 			((Actor)entity).terminate();
-	    // 		    } else {
-	    // 			((CompositeActor)entity).terminate();
-	    // 		    }
-	    //removeEntity(entity);
-	    //} catch (IllegalActionException ex) {
-	    //throw new InvalidStateException(this, entity,
-	    //"Inconsistent container relationship!");
-	    //}
-	    //}    
-    //	} finally {
-    //    workspace().doneReading();
-    //	}
-    //}
-    
     /** This terminates all the actors in the corresponding CompositeActor
      */
     public void wrapup() throws IllegalActionException {
@@ -388,10 +329,6 @@ public class PNDirector extends Director {
         }
 	//System.out.println("Calling super.mutations");
 	boolean mut = super._performMutations();
-	//synchronized(this) {
-	// _urgentMutations = false;
-	//}
-	//System.out.println("Done mutations");
 	return mut;
     }
 
@@ -405,34 +342,36 @@ public class PNDirector extends Director {
     //This is not synchronized and thus should be called from a synchronized
     //method
     private synchronized void _checkForDeadlock() {
-	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" **************************");
 	if (_readBlockCount + _writeBlockCount >= _activeActorsCount) {
 	    _deadlock = true;
+            //System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" **************************");
+            
 	    //FIXME: Who should the notify go on?
 	    notifyAll();
 	}
 	return;
     }
 
+    //Check if all threads are either blocked or paused
     private synchronized void _checkForPause() {
 	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_pausedcount);
 	if (_readBlockCount + _writeBlockCount + _pausedcount >= _activeActorsCount) {
 	    _paused = true;
-	    //FIXME: Who should the notify go on?
+            //_pausedcount = 0;
             notifyAll();
 	}
 	return;
     }
     
-    // Finds and returns the port with the smallest write capacity 
+    // Finds the QueueReceiver with the smallest write capacity 
     // that is blocked on a write.
     private void _incrementLowestWriteCapacityPort() {
-        //System.out.println("Incrementing capacity");    
+        System.out.println("Incrementing capacity");    
         //FIXME: Should this be synchronized
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
 	Enumeration receps = _writeblockedQs.elements();
-	//System.out.println("Enumeration receos done");
+	System.out.println("Enumeration receos done");
 	while (receps.hasMoreElements()) {
 	    PNQueueReceiver queue = (PNQueueReceiver)receps.nextElement();
 	    if (smallestCapacity == -1) {
@@ -445,24 +384,30 @@ public class PNDirector extends Director {
 		//smallestCapacityRecep = flowqueue;
 	    }
 	}
+        System.out.println("I am here");
         try {
             if (smallestCapacityQueue.capacity() <= 0) { 
                 smallestCapacityQueue.setCapacity(1);
+                //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to 1");
             } else { 
 	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.capacity()+1);
+                //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to "+(smallestCapacityQueue.capacity()+1) );
             }
 	    //_readblockedQs.remove((PNPort)smallestCapacityRecep.getContainer());
 	    //FIXME: Wont this alwas be true?? Check it out
 	    //if ((PNInPort)(smallestCapacityRecep.getContainer()).isWritePending()) {
 	    writeUnblock(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
-	    smallestCapacityQueue.notifyAll();
-	    //}
+            synchronized(smallestCapacityQueue) {
+                System.out.println("Notifying ........ All");
+                smallestCapacityQueue.notifyAll();
+            }
         } catch (IllegalActionException e) {
 	    System.err.println("Exception: " + e.toString());
 	    //Should not be thrown as this exception is thrown 
             //only if port is not an input port, checked above
         }
+        System.out.println("returning");
         return;
     }
 
@@ -513,8 +458,10 @@ public class PNDirector extends Director {
                     // NOTE: Should type resolution be done here?
                     // Initialize any new actors
                     //Creates receivers and then starts up threads for all
-                    //System.out.println("Initializing new actors");
+                        //System.out.println("Initializing new actors");
 	 	    _pnActorListener.initializeNewActors();
+                    //_pausedcount = 0;
+                    //setResume(_pausedRecs);
 	        }
             } catch (NameDuplicationException nde) {
                 // FIXME: this is just to get this thing to compile
@@ -522,29 +469,29 @@ public class PNDirector extends Director {
                         nde.getMessage());
             }
 	    //System.out.println("Done mutations");
-	    //setPause(false);
-	    setResume(_pausedRecs);
+	    //setResume(_pausedRecs);
+            
 	    //}
 	    //_urgentMutations = false;
 	    return false;
 	}
-	if (writebl==0 && deadl) {
-	    //_terminate = true;
-	    _terminateAll();
-	    System.out.println("real deadlock. Everyone would be erased");
-	    return true;
-	}
-	else {
-	    // it's an artificial deadlock
-	    System.out.println("Artificial deadlock");
-	    _deadlock = false;
-	    // find the input port with lowest capacity queue
-	    // that is blocked on a write and increment it's capacity
-	    _incrementLowestWriteCapacityPort();
-	}
-	return false;
+        if (writebl==0 && deadl) {
+            //_terminate = true;
+            _terminateAll();
+            System.out.println("real deadlock. Everyone would be erased");
+            return true;
+        } else {
+            //its an artificial deadlock;
+            System.out.println("Artificial deadlock");
+            _deadlock = false;
+            // find the input port with lowest capacity queue;
+            // that is blocked on a write and increment its capacity;
+            _incrementLowestWriteCapacityPort();
+            //System.out.println("Incrementing capacity done");
+        }
+        return false;
     }
-    
+        
     // Terminates all stars and hence the simulation 
     private void _terminateAll() throws IllegalActionException {
 	try {
