@@ -138,8 +138,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="49.0, 30.0">
@@ -160,8 +158,6 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -278,8 +274,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="51.0, 150.0">
@@ -350,8 +344,6 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -446,8 +438,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="56.0, 283.0">
@@ -519,8 +509,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="57.0, 354.0">
@@ -541,8 +529,6 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -692,8 +678,6 @@
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="radius" class="ptolemy.data.expr.Parameter" value="0.40">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -965,8 +949,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="488.0, 135.0">
@@ -1035,8 +1017,6 @@
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="6.0">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
             </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1121,8 +1101,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="_location" class="ptolemy.moml.Location" value="487.0, 289.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
@@ -1202,8 +1180,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="49.0, 30.0">
@@ -1224,8 +1200,6 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1342,8 +1316,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="51.0, 150.0">
@@ -1414,8 +1386,6 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1510,8 +1480,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="56.0, 283.0">
@@ -1583,8 +1551,6 @@
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="57.0, 354.0">
@@ -1605,8 +1571,6 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1756,8 +1720,6 @@
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="radius" class="ptolemy.data.expr.Parameter" value="0.40">
-                </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
