@@ -111,7 +111,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
 
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        	PropertyConfigurator.configure(System.getProperties());
+                PropertyConfigurator.configure(System.getProperties());
             //if (configDir.hasToken()) {
             //String Dir = ((StringToken)configDir.getToken()).stringValue();
             //} else {
@@ -138,58 +138,58 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
             try {
                netPeerGroup = PeerGroupFactory.newNetPeerGroup();
             } catch (PeerGroupException ex) {
-			System.out.println("Error: cannot locate net peer group.\n"
-					+ ex.getMessage());
+                        System.out.println("Error: cannot locate net peer group.\n"
+                                        + ex.getMessage());
             }
 
-		// load the peer group adv for actor exchange
-		String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
-		if (groupAdvFileName == null) {
-			System.out.println("Error: property undefined - GroupAdvFileName.\n");
-		}
-		PeerGroupAdvertisement groupAdv = null;
-		try {
-			groupAdv = (PeerGroupAdvertisement)
-					AdvertisementFactory.newAdvertisement(
-							XML_MIME_TYPE,
-							new FileInputStream(Dir + "/" + groupAdvFileName));
-		} catch (FileNotFoundException ex) {
-			System.out.println("Error: cannot find group adv file.\n"
-					+ ex.getMessage());
-		} catch (IOException ex) {
-			System.out.println("Error: reading group adv file.\n"
-					+ ex.getMessage());
-		}
+                // load the peer group adv for actor exchange
+                String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
+                if (groupAdvFileName == null) {
+                        System.out.println("Error: property undefined - GroupAdvFileName.\n");
+                }
+                PeerGroupAdvertisement groupAdv = null;
+                try {
+                        groupAdv = (PeerGroupAdvertisement)
+                                        AdvertisementFactory.newAdvertisement(
+                                                        XML_MIME_TYPE,
+                                                        new FileInputStream(Dir + "/" + groupAdvFileName));
+                } catch (FileNotFoundException ex) {
+                        System.out.println("Error: cannot find group adv file.\n"
+                                        + ex.getMessage());
+                } catch (IOException ex) {
+                        System.out.println("Error: reading group adv file.\n"
+                                        + ex.getMessage());
+                }
                 System.out.println("peer groupAdv: " + groupAdvFileName);
                 System.out.println("success before instantiate peer group");
-		// instantiate the peer group for actor exchange
-		try {
-			_group = netPeerGroup.newGroup(groupAdv);
-		} catch (PeerGroupException ex) {
-			System.out.println("Error: cannot instantiate peer group.\n"
-					+ ex.getMessage());
-		}
+                // instantiate the peer group for actor exchange
+                try {
+                        _group = netPeerGroup.newGroup(groupAdv);
+                } catch (PeerGroupException ex) {
+                        System.out.println("Error: cannot instantiate peer group.\n"
+                                        + ex.getMessage());
+                }
 
-		// join the peer group for actor exchange
-		// no authentication is done here
-		// modeled after JoinDemo from JXTA Examples
-		StructuredDocument identityInfo = null;
-		try {
-			AuthenticationCredential authCred =
-					new AuthenticationCredential(_group, null, identityInfo);
-			MembershipService membershipService = _group.getMembershipService();
-			_authenticator = membershipService.apply(authCred);
-			if (_authenticator.isReadyForJoin()) {
-				_credential = membershipService.join(_authenticator);
-				System.out.println("Info: join group successful.");
-				_credential.getDocument(XML_MIME_TYPE).sendToStream(System.out);
-			} else {
-				System.out.println("Error: unable to join group.");
-			}
-		} catch (Exception ex) {
-			System.out.println("Error: failure in authentication.\n"
-					+ ex.getMessage());
-		}
+                // join the peer group for actor exchange
+                // no authentication is done here
+                // modeled after JoinDemo from JXTA Examples
+                StructuredDocument identityInfo = null;
+                try {
+                        AuthenticationCredential authCred =
+                                        new AuthenticationCredential(_group, null, identityInfo);
+                        MembershipService membershipService = _group.getMembershipService();
+                        _authenticator = membershipService.apply(authCred);
+                        if (_authenticator.isReadyForJoin()) {
+                                _credential = membershipService.join(_authenticator);
+                                System.out.println("Info: join group successful.");
+                                _credential.getDocument(XML_MIME_TYPE).sendToStream(System.out);
+                        } else {
+                                System.out.println("Error: unable to join group.");
+                        }
+                } catch (Exception ex) {
+                        System.out.println("Error: failure in authentication.\n"
+                                        + ex.getMessage());
+                }
                 _discoveryService = _group.getDiscoveryService();
                 _discoveryService.addDiscoveryListener(this);
 
@@ -232,7 +232,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
 
 
     public void fire() throws IllegalActionException {
-	super.fire();
+        super.fire();
         try {
             if ( trigQuery.hasToken(0)) {
                 Token token = trigQuery.get(0);
@@ -244,7 +244,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
                 // - no attribute/value matching
                 // - each response contains at most 5 peers
                 _discoveryService.getRemoteAdvertisements(null,
-					DiscoveryService.PEER, null, null, 5);
+                                        DiscoveryService.PEER, null, null, 5);
 
                 System.out.println("Send actor query message...");
                 _actorQueryMessage.setQueryId(_actorQueryMessage.getQueryId() + 1);
@@ -273,41 +273,41 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
          return super.postfire();
      }
 
-	/**
-	 * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
-	 */
-	public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-		throws
-			NoResponseException,
-			ResendQueryException,
-			DiscardQueryException,
-			IOException {
-		System.out.println("Got query from " + query.getSrc()
-				+ " " + query.getQueryId());
-		System.out.println("Query is:\n" + query.getQuery());
-		if (_actorQueryResponse == null) {
-			throw new DiscardQueryException();
-		}
-		System.out.println("Send query response...");
-		_actorQueryResponse.setQueryId(query.getQueryId());
-		return _actorQueryResponse;
-	}
+        /**
+         * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
+         */
+        public ResolverResponseMsg processQuery(ResolverQueryMsg query)
+                throws
+                        NoResponseException,
+                        ResendQueryException,
+                        DiscardQueryException,
+                        IOException {
+                System.out.println("Got query from " + query.getSrc()
+                                + " " + query.getQueryId());
+                System.out.println("Query is:\n" + query.getQuery());
+                if (_actorQueryResponse == null) {
+                        throw new DiscardQueryException();
+                }
+                System.out.println("Send query response...");
+                _actorQueryResponse.setQueryId(query.getQueryId());
+                return _actorQueryResponse;
+        }
 
-	/**
-	 * @see net.jxta.resolver.QueryHandler#processResponse(ResolverResponseMsg)
-	 */
-	public void processResponse(ResolverResponseMsg response) {
+        /**
+         * @see net.jxta.resolver.QueryHandler#processResponse(ResolverResponseMsg)
+         */
+        public void processResponse(ResolverResponseMsg response) {
         String responseString = response.getResponse();
         _inToken = new StringToken(responseString);
-		System.out.println("Got response:\n" + response.getResponse());
-	}
+                System.out.println("Got response:\n" + response.getResponse());
+        }
 
-	/**
-	 * @see net.jxta.discovery.DiscoveryListener#discoveryEvent(DiscoveryEvent)
-	 */
-	public void discoveryEvent(DiscoveryEvent event) {
-		// copied from JXTA Examples - PeerDiscovery
-		System.out.println("Process discovery event...");
+        /**
+         * @see net.jxta.discovery.DiscoveryListener#discoveryEvent(DiscoveryEvent)
+         */
+        public void discoveryEvent(DiscoveryEvent event) {
+                // copied from JXTA Examples - PeerDiscovery
+                System.out.println("Process discovery event...");
 
         DiscoveryResponseMsg response = event.getResponse();
 
@@ -321,12 +321,12 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
                     AdvertisementFactory.newAdvertisement(
                             XML_MIME_TYPE, is);
             System.out.println(" [  Got a Discovery Response ["
-            		+ response.getResponseCount() + " elements] from peer: "
-            		+ responderAdv.getName() + " ]");
+                            + response.getResponseCount() + " elements] from peer: "
+                            + responderAdv.getName() + " ]");
         } catch (java.io.IOException e) {
             // bogus peer, skip this message alltogether.
             System.out.println("Warning: cannot parse remote peer's advertisement.\n"
-            		+ e.getMessage());
+                            + e.getMessage());
             return;
         }
 
@@ -343,36 +343,36 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
 
                 // create an advertisement object from each element
                 newAdv = (PeerAdvertisement)
-                		AdvertisementFactory.newAdvertisement(
-                				XML_MIME_TYPE,
-                				new ByteArrayInputStream(str.getBytes()));
+                                AdvertisementFactory.newAdvertisement(
+                                                XML_MIME_TYPE,
+                                                new ByteArrayInputStream(str.getBytes()));
                 System.out.println(" Peer name = " + newAdv.getName());
             } catch (java.io.IOException e) {
                 // got a bad response. continue to the next response
                 System.out.println("Warning: cannot parse response element.\n"
-                		+ e.getMessage());
+                                + e.getMessage());
                 continue;
             }
 
         } // end while
-	}
+        }
      ///////////////////////////////////////////////////////////////////
      ////                         private members                   ////
 
     private Properties _properties;
-	private PeerGroup _group;
-	private DiscoveryService _discoveryService;
-	private ResolverService _resolverService;
-	private Authenticator _authenticator;
-	private Credential _credential;
-	private Timer _peerDiscoveryTimer;
-	private Timer _actorQueryTimer;
-	private ResolverQueryMsg _actorQueryMessage;
-	private ResolverResponseMsg _actorQueryResponse;
-	private String _CONFIG_FILE = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/Peer.properties";
+        private PeerGroup _group;
+        private DiscoveryService _discoveryService;
+        private ResolverService _resolverService;
+        private Authenticator _authenticator;
+        private Credential _credential;
+        private Timer _peerDiscoveryTimer;
+        private Timer _actorQueryTimer;
+        private ResolverQueryMsg _actorQueryMessage;
+        private ResolverResponseMsg _actorQueryResponse;
+        private String _CONFIG_FILE = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/Peer.properties";
         private String _actorListFileName;
-	private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
-	private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
+        private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
+        private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
 
     private ptolemy.data.Token _inToken = null;
 
