@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
 
@@ -72,7 +72,7 @@ import javax.swing.SwingUtilities;
  *  This is how you create a shared plot.  That same instance of
  *  EditablePlot can be used by another actor, such as SequencePlotter,
  *  to display data.  Be sure to set the <i>dataset</i> parameter
- *  of this actor or the <i>dataset</i> parameter of the
+ *  of this actor or the <i>startingDataset</i> parameter of the
  *  other actor so that they do not use the same dataset numbers.
  *
  *  @author  Edward A. Lee
@@ -233,10 +233,16 @@ public class SketchedSource extends Source
             if (_container instanceof EditablePlot) {
                 plot = (EditablePlot)_container;
             } else {
-                plot = new EditablePlot();
+                if (plot == null) {
+                    plot = new EditablePlot();
+                }
                 _container.add(plot);
                 plot.setButtons(true);
-                plot.setBackground(_container.getBackground());
+		// java.awt.Component.setBackground(color) says that
+		// if the color "parameter is null then this component
+		// will inherit the  background color of its parent."
+                //plot.setBackground(_container.getBackground());
+                plot.setBackground(null);
             }
         }
         // Set the default signal value in the plot.
@@ -299,8 +305,12 @@ public class SketchedSource extends Source
     private void _setInitialTrace() throws IllegalActionException {
         if (plot == null) return;
         int set = ((IntToken)dataset.getToken()).intValue();
-        plot.clear(set);
         int len = ((IntToken)length.getToken()).intValue();
+        // If the values haven't changed, return.
+        if (set == _previousSet && len == _previousLen) return;
+        _previousSet = set;
+        _previousLen = len;
+        plot.clear(set);
         boolean connected = false;
         for(int i = 0; i < len; i++) {
             plot.addPoint(set, (double)i, 0.0, connected);
@@ -322,9 +332,15 @@ public class SketchedSource extends Source
     // Frame into which plot is placed, if any.
     private transient PlotFrame _frame;
 
-    /** Zero token. */
-    private DoubleToken _zero = new DoubleToken(0.0);
-
     // Flag indicating that the place() method has been called at least once.
     private boolean _placeCalled = false;
+
+    // Previous value of dataset parameter.
+    private int _previousSet;
+
+    // Previous value of length parameter.
+    private int _previousLen;
+
+    /** Zero token. */
+    private DoubleToken _zero = new DoubleToken(0.0);
 }
