@@ -89,13 +89,16 @@ OPTIONAL_FILES = \
 WPUBLISH_OUTPUT_DIR = Output
 DESIGNDOC =	/users/ptII/doc/design/src
 
-all: $(WPUBLISH_OUTPUT_DIR)/introduction.html
+all: $(WPUBLISH_OUTPUT_DIR) $(WPUBLISH_OUTPUT_DIR)/introduction.html
 install: all
+
+$(WPUBLISH_OUTPUT_DIR):
+	if [ ! -d $@ ]; then echo "Creating $@"; mkdir $@; fi
+
 design.pdf: $(wildcard $(DESIGNDOC)/*.fm)
 	-chmod g+w $^
 	rm -f $@
 	fmprint2pdf $(DESIGNDOC)/design.book
-
 
 # Copy over chars for the title
 CHARS=	alpha.gif \
