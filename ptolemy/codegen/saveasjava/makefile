@@ -76,6 +76,9 @@ demo: jclass
 	CLASSPATH="$(CLASSPATH)" "$(JAVAC)" rampFileWriter.java
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication -class rampFileWriter -iterations 5 
 
+demo_vergil: jclass
+	vergil test/rampFileWriter.xml
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
