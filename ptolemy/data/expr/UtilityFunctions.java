@@ -137,73 +137,75 @@ public class UtilityFunctions {
             throws IllegalActionException 
         {
 
+            DoubleMatrixToken returnMatrix = null;
+            
             File fileT = new File(filename);
-            // System.out.println("Trying to open file: " + fileT.toString());
-
             FileReader fin = null;
-
+                
             // Vector containing the matrix
             Vector k = null;
-
+                
             // Parameters for the Matrix
             int row = -1;
             int column = -1;
-            
+                
             // Matlab Matrices always start at 1 instead of 0.
             int posRow = 1;
             int posColumn = 1;
             double[][] mtr = null;
-
-            try {
+                            
+            if (fileT.exists()) {
             
-                if (fileT.exists()) {
-                
+                try {
                     // Open the matrix file
                     fin = new FileReader(fileT);
-                    // Read the file and convert it into a matrix
-                    mp.ReInit( fin );
-                    k = mp.readMatrix( );
-
-                    if ( column == -1 ) {
-                        // The column size of the matrix
-                        column = k.size();
-                    }
-
-                    Iterator i = k.iterator();
-                    while( i.hasNext() ) {
-                        Vector l = (Vector) i.next();                    
-                        if ( row == -1 ) { 
-                                // the row size.
-                            row = l.size();                        
-                                // create a new matrix definition
-                            mtr = new double[column+1][row+1];
-                        } else {
-                            if ( row != l.size() ) {
-                                throw new  IllegalActionException(" The Row" +
-                                        " size needs to be the same for all" +
-                                        " rows");
-                            }
-                        }                    
-                        Iterator j = l.iterator();
-                        while( j.hasNext() ) {
-                            Double s = (Double) j.next();
-                            mtr[posColumn][posRow++] = s.doubleValue();
-                        }
-                        posRow=1;
-                        posColumn++;
-                    }
-
-                    // Vectors have now become obsolete, data is stored
-                    // in double[][].
-                    k.removeAll(k);
-
+                } catch (FileNotFoundException e) {
+                    throw new IllegalActionException("FIle Not FOUND");
                 }
-            } catch (FileNotFoundException e) {
-                throw new IllegalActionException("File not found:\n" + 
-                        e.toString() );
+                    
+
+                // Read the file and convert it into a matrix
+                mp.ReInit( fin );
+                k = mp.readMatrix( );
+                    
+                if ( column == -1 ) {
+                    // The column size of the matrix
+                    column = k.size();
+                }
+
+                Iterator i = k.iterator();
+                while( i.hasNext() ) {
+                    Vector l = (Vector) i.next();                    
+                    if ( row == -1 ) { 
+                                // the row size.
+                        row = l.size();                        
+                                // create a new matrix definition
+                        mtr = new double[column+1][row+1];
+                    } else {
+                        if ( row != l.size() ) {
+                            throw new  IllegalActionException(" The Row" +
+                                    " size needs to be the same for all" +
+                                    " rows");
+                        }
+                    }                    
+                    Iterator j = l.iterator();
+                    while( j.hasNext() ) {
+                        Double s = (Double) j.next();
+                        mtr[posColumn][posRow++] = s.doubleValue();
+                    }
+                    posRow=1;
+                    posColumn++;
+                }
+
+                // Vectors have now become obsolete, data is stored
+                // in double[][].
+                k.removeAll(k);
+                returnMatrix =  new DoubleMatrixToken(mtr);
+            } else {
+                throw new IllegalActionException("ReadMatrix: File " + 
+                        filename + " not Found");
             }
-        
-            DoubleMatrixToken returnMatrix =  new DoubleMatrixToken(mtr);
+            
             return returnMatrix;      
         }
 

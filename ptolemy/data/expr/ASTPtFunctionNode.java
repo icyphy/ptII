@@ -79,6 +79,7 @@ FIXME: add note about function argument types and the return type.
 @see java.lang.Math
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
+
     protected String _funcName;
     protected boolean _isArrayRef;
 
@@ -91,7 +92,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     }
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalActionException {
+            throws IllegalActionException 
+        {
         int args = jjtGetNumChildren();
         if (_isArrayRef) {
             int row = 0;
@@ -214,35 +216,18 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             // we ignore it and keep looking.
             try {
                 Method method = nextClass.getMethod(_funcName, argTypes);
-                // Then we invoke it, and report errors.
-                try {
-                    // System.out.println("ASTPtFunctionNode: Method:" +
-                    //        method +
-                    //        " nextClass: " + nextClass +
-                    //        " argValues: " + argValues);
-                    result = method.invoke(nextClass, argValues);
-                    foundMethod = true;
-                } catch (Exception  ex) {
-                    // FIXME: really, we should probably be throwing
-                    // an exception here, but we would like to keep
-                    // trying if we get an exception, and we would
-                    // like to have an idea why the error occurred.
-                    // One potential solution would be to save the
-                    // exception and continue looking for methods
-                    // and if we did not find a method that worked
-                    // then throw the exception.
-                    System.out.println("Invocation of method " + _funcName +
-                            " in " + nextClass.getName() + " threw: " + ex);
-                    ex.printStackTrace();
-                }
-            } catch (Exception  ex) {
-                // FIXME: a lot of exceptions get caught here, perhaps
-                // want to specify each of them separately?
-                //System.out.println("Method " + _funcName + " not found in " +
-                //        nextClass.getName() + ": " + ex);
-                //ex.printStackTrace();
+                result = method.invoke(nextClass, argValues);
+                foundMethod = true;
+            } catch (NoSuchMethodException ex) {
+                // Do nothing, we haven't found the correct function
+            } catch (InvocationTargetException ex) {
+                // get the exception produced by the invoked function
+                throw new IllegalActionException(
+                        ex.getTargetException().getMessage());
+            } catch (Exception ex)  {                
+                new IllegalActionException(ex.getMessage());
             }
-
+ 
             if (foundMethod) {
                 if (result instanceof ptolemy.data.Token) {
                     return (ptolemy.data.Token)result;
@@ -268,7 +253,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                             " not a valid type: boolean, complex, fixpoint" +
                             " double, int, long  and String, or a Token.");
                 }
-            }
+            } 
         }
         // If reach here it means the function was not found on the
         // search path.
@@ -283,6 +268,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         throw new IllegalActionException("ASTFunction Function " + _funcName
                 + "( " + sb + " ) cannot be executed with given arguments.");
     }
+   
 
     public ASTPtFunctionNode(int id) {
         super(id);
@@ -299,4 +285,5 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     public static Node jjtCreate(PtParser p, int id) {
         return new ASTPtFunctionNode(p, id);
     }
+
 }
