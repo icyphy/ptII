@@ -29,7 +29,6 @@
 */
 package ptolemy.domains.fsm.kernel;
 
-//FIXME: replace * with individual classes.
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.ASTPtLeafNode;
@@ -171,7 +170,6 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         String nodeName = node.getName();
         String discreteVariableName = "";
         if (nodeName != null) {
-            //System.out.println("leaf node: " + nodeName);
             int variableNameEndIndex = nodeName.indexOf("_isPresent");
             if (variableNameEndIndex != -1) {
                 discreteVariableName = nodeName.substring(0,
@@ -209,17 +207,13 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         if (((BooleanToken) result).booleanValue()) {
             _relationType = 1;
             if (_absentDiscreteVariables.contains(discreteVariableName)) {
-                //System.out.println("Found a discrete variable is present: "
-                //                    + discreteVariableName);
                 // remove the discrete variable from the absent discrete variables list
                 _absentDiscreteVariables.remove(discreteVariableName);
             }
         } else {
             _relationType = 2;
             if (!_absentDiscreteVariables.contains(discreteVariableName)) {
-                //System.out.println("Found a discrete variable is not present: "
-                //                    + discreteVariableName);
-                // add the discrete variable from the absent discrete variables list
+                // add the discrete variable into the absent discrete variables list
                 _absentDiscreteVariables.add(discreteVariableName);
             }
         }
@@ -342,26 +336,19 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         ptolemy.data.Token rightToken = tokens[1];
 
         ptolemy.data.Token result;
-        // For equal or not equal comparison, the numerical error
-        // has to be considered.
+        
         if (operator.kind == PtParserConstants.EQUALS ||
                 operator.kind == PtParserConstants.NOTEQUALS) {
+            // If the operator is about equal or notEqual relations,
             if (operator.kind == PtParserConstants.EQUALS) {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance);
             } else {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance).not();
             }
-            if ((leftToken instanceof BooleanToken) &&
-                    (rightToken instanceof BooleanToken)) {
-                // handle the relations like x == true
-                if (((BooleanToken) result).booleanValue()) {
-                    _relationType = 1;
-                } else {
-                    _relationType = 2;
-                }
-                _difference = 0.0;
-            } else {
-                // handle the relations like x == 2.0
+            // If the left and right tokens are scalars.
+            if ((leftToken instanceof ScalarToken) &&
+                    (rightToken instanceof ScalarToken)) {
+                 // handle the relations like x == 2.0
                 ScalarToken difference = (ScalarToken) leftToken.subtract(
                         rightToken);
                 if ( ( (BooleanToken) result).booleanValue()) {
@@ -376,8 +363,17 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                     }
                 }
                 _difference = difference.doubleValue();
-            }
+             } else {
+                 // handle the relations like x == true or x == "string"
+                 if (((BooleanToken) result).booleanValue()) {
+                     _relationType = 1;
+                 } else {
+                     _relationType = 2;
+                 }
+                 _difference = 0.0;
+             } 
         } else {
+            // If the operator is not about equal or notEqual relations.
             if (!((leftToken instanceof ScalarToken) &&
                     (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException(
