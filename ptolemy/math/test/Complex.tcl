@@ -47,10 +47,12 @@ test Complex-1.1 {constructors} {
     set c0 [java::new ptolemy.math.Complex]
     set c1 [java::new ptolemy.math.Complex -0.5]
     set c2 [java::new ptolemy.math.Complex 2.0 -3.0]
-    list "[$c0 toString]\n[$c1 toString]\n[$c2 toString]"
+    set c3 [java::new ptolemy.math.Complex -2.0 -3.0]
+    list "[$c0 toString]\n[$c1 toString]\n[$c2 toString]\n[$c3 toString]"
 } {{0.0 + 0.0i
 -0.5 + 0.0i
-2.0 - 3.0i}}
+2.0 - 3.0i
+-2.0 - 3.0i}}
 
 ####################################################################
 test Complex-2.1 {magnitude} {
@@ -361,3 +363,12 @@ test Complex-16.1.1 {roots} {
     # Uses 16.1 above
     epsilonDiff [[$c11 get 1] toString] {4.329780281177466E-17 + 0.7071067811865475i}
 } {}
+
+####################################################################
+test Complex-16.2 {roots with n = 0, which should throw an exceptoin} {
+    set c2 [java::new ptolemy.math.Complex 2.0 -3.0]
+    catch {$c1 roots 0} errMsg
+    set errMsg
+} {java.lang.IllegalArgumentException: Complex.roots(): n must be greater than or equal to one.}
+
+
