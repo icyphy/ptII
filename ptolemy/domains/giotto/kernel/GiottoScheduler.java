@@ -32,9 +32,10 @@ package ptolemy.domains.giotto.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.sched.NotSchedulableException;
-import ptolemy.actor.sched.StaticSchedulingDirector;
+//import ptolemy.actor.sched.Scheduler;
+//import ptolemy.actor.sched.NotSchedulableException;
+//import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.sched.*;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
@@ -159,10 +160,10 @@ public class GiottoScheduler extends Scheduler {
      *  synchronized on the workspace.
      *
      *  @return An enumeration of the scheduling sequence.
-     *  @exception NotSchedulableException If the CompositeActor is not
+     *  @exception NotSchedulableException If the fiCompositeActor is not
      *   schedulable.
      */
-    protected Enumeration _schedule() throws NotSchedulableException {
+    protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director =
             (StaticSchedulingDirector) getContainer();
 
@@ -188,13 +189,18 @@ public class GiottoScheduler extends Scheduler {
 
 	    int frequency = getFrequency(actor);
 
-	    // Compute schedule represented by a tree.
-	    List scheduleList = _treeSchedule(actorList.listIterator(),
+            // Compute schedule represented by a tree.
+	    Schedule schedule = _treeSchedule(actorList.listIterator(),
 					      DEFAULT_GIOTTO_FREQUENCY,
 					      frequency);
 
+            /* instead of return a Enumeration, we return a Schedule
+
 	    // Return a shallow enumeration over the top list.
 	    return Collections.enumeration(scheduleList);
+            */
+
+            return schedule;
 	}
     }
 
@@ -211,24 +217,30 @@ public class GiottoScheduler extends Scheduler {
      *  @exception NotSchedulableException If the CompositeActor is not
      *   schedulable.
      */
-    private List _treeSchedule(ListIterator iterator,
+
+
+    private Schedule _treeSchedule(ListIterator iterator,
 			       int lastFrequency, int frequency)
 	throws NotSchedulableException {
-	// This list contains all actors with frequency 'frequency'.
-	List sameFrequencyList = new LinkedList();
+	// This schedule contains all firings made of actor with frequency 'frequency'.
+	Schedule sameFrequencySchedule = new Schedule();
 
-	// This list is actually a tree.
+	// This schedule is actually a tree.
 	// It contains all 'sameFrequencyList' lists with strictly
 	// higher frequencies than 'frequency'.
-	List higherFrequencyList = null;
+
+	Schedule higherFrequencySchedule = new Schedule();
 
 	while (iterator.hasNext()) {
 	    Actor actor = (Actor) (iterator.next());
 
 	    int actorFrequency = getFrequency(actor);
 
-	    if (actorFrequency == frequency)
-		sameFrequencyList.add(actor);
+	    if (actorFrequency == frequency) {
+                Firing firing = new Firing();
+                firing.setActor(actor);
+                sameFrequencySchedule.add(firing);
+            }
 	    else if (actorFrequency > frequency) {
 		// We reached the first actor with a strictly higher frequency
 		// than all actors before. Prepare for recursive call.
@@ -239,7 +251,7 @@ public class GiottoScheduler extends Scheduler {
 		// Recursive call where 'lastFrequency' becomes current
                 // 'frequency'
 		// and 'frequency' becomes the frequency of the current actor.
-		higherFrequencyList =
+		higherFrequencySchedule =
                     _treeSchedule(iterator, frequency, actorFrequency);
 
 		// Redundant break because recursive call
@@ -253,7 +265,7 @@ public class GiottoScheduler extends Scheduler {
 
 	// This is actually a tree.
 	// It will be the result of this method.
-	List scheduleList = new LinkedList();
+	Schedule scheduleSchedule = new Schedule();
 
 	// Assumption: frequency >= lastFrequency
 	if ((frequency%lastFrequency) == 0) {
@@ -262,13 +274,13 @@ public class GiottoScheduler extends Scheduler {
 	    // Length of scheduleList will be even!
 
 	    for (int i = 1; i <= currentFrequency; i++) {
-		scheduleList.add(sameFrequencyList);
-		scheduleList.add(higherFrequencyList);
+		scheduleSchedule.add(sameFrequencySchedule);
+                scheduleSchedule.add(higherFrequencySchedule);
 	    }
 	} else
 	    throw new NotSchedulableException("Frequencies not harmonic!");
 
-	return scheduleList;
+	return scheduleSchedule;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -286,6 +298,7 @@ public class GiottoScheduler extends Scheduler {
        compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater
        than A2's frequency.
     */
+
     private class GiottoActorComparator implements Comparator {
 
 	///////////////////////////////////////////////////////////////////

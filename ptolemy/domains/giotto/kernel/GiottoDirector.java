@@ -33,8 +33,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.*;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -156,13 +155,15 @@ public class GiottoDirector extends StaticSchedulingDirector {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
         if (container != null) {
-            Enumeration giottoSchedule = getScheduler().schedule();
+            /* change Enumeration into Schedule */
+            Schedule giottoSchedule = getScheduler().getSchedule();
 
 	    if (_debugging)
 		_debug("Giotto director firing!");
 
 	    _realStartTime = System.currentTimeMillis();
 
+            /* have to see how to _fire(Schedule) */
 	    _postFireReturns = _fire(giottoSchedule);
         } else
 	    throw new IllegalActionException(this, "Has no container!");
@@ -306,22 +307,25 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @see GiottoScheduler
      *  @return true iff all actors postfire method returned true.
      */
-    private boolean _fire(Enumeration schedule)
+    private boolean _fire(Schedule schedule)
             throws IllegalActionException {
 
 	boolean postfire = true;
 
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
+        // schedule has to make iterator to call hasNext() or next()
+        Iterator scheduleIterator = schedule.iterator();
+
 	if (schedule != null)
-	    while (schedule.hasMoreElements()) {
-		List sameFrequencyList = (List) schedule.nextElement();
+	    while (scheduleIterator.hasNext()) {
+		Schedule sameFrequencySchedule = (Schedule) scheduleIterator.next();
 
-		Enumeration sameFrequency =
-                    Collections.enumeration(sameFrequencyList);
+                Iterator sameFreqIterator = sameFrequencySchedule.iterator();
 
-		while (sameFrequency.hasMoreElements()) {
-		    Actor actor = (Actor) sameFrequency.nextElement();
+		while (sameFreqIterator.hasNext()) {
+
+                    Actor actor = ((Firing) sameFreqIterator.next()).getActor();
 
 		    double currentTime = getCurrentTime();
 
@@ -353,14 +357,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		// Assumption: schedule has even number of elements.
 
-		List higherFrequencyList = (List) schedule.nextElement();
+		Schedule higherFrequencySchedule = (Schedule) scheduleIterator.next();
 
-		if (higherFrequencyList != null) {
-		    Enumeration higherFrequency =
-                        Collections.enumeration(higherFrequencyList);
+		if (higherFrequencySchedule.size() != 0) {
+                    //   Enumeration higherFrequency = Collections.enumeration(higherFrequencyList);
 
 		    // Recursive call.
-		    postfire = _fire(higherFrequency) && postfire;
+		    postfire = _fire(higherFrequencySchedule) && postfire;
 		} else {
 		    // Update time for every invocation of the most frequent
                     // tasks which are stored at the bottom of the tree.
@@ -371,10 +374,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    // What is the highest frequency?
 		    // We look it up in the first actor.
 		    // Assumption: sameFrequencyList is non-empty.
-		    Actor actor = (Actor) sameFrequencyList.get(0);
+		    Actor actor = ((Firing) sameFrequencySchedule.get(0)).getActor();
 
 		    int maxFrequency =
                         GiottoScheduler.getFrequency(actor);
+
 
 		    setCurrentTime(currentTime + (periodValue / maxFrequency));
 
@@ -410,15 +414,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    }
 		}
 
-		sameFrequency = Collections.enumeration(sameFrequencyList);
 
-		while (sameFrequency.hasMoreElements()) {
-		    Actor actor = (Actor) sameFrequency.nextElement();
+                sameFreqIterator = sameFrequencySchedule.iterator();
+
+		while (sameFreqIterator.hasNext()) {
+		    Actor actor = ((Firing) sameFreqIterator.next()).getActor();
 
 		    if (_debugging)
 			_debug("Updating " + ((NamedObj)actor).getFullName());
 
-		    List outputPortList = actor.outputPortList();
+ 		    List outputPortList = actor.outputPortList();
 
 		    Enumeration outputPorts =
                         Collections.enumeration(outputPortList);
