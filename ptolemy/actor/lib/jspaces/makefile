@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/jspaces
 
-DIRS = 		util demo
+DIRS = 		util demo test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -64,7 +64,8 @@ JSRCS = \
 	Subscriber.java \
 	TokenEntry.java 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	README.txt
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,7 +74,11 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc 
+	doc \
+	'IndexedSubscriber$$LastRead.class' \
+	'IndexedSubscriber$$NotifyHandler.class' \
+	'Subscriber$$NotifyHandler.class' \
+	Subscriber_Skel.class
 
 STUB_JCLASS = \
 	Subscriber_Stub.class
