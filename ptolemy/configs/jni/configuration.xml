@@ -29,6 +29,11 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <entity name="Graph Editor" class="jni.ThalesGraphTableau$Factory"/>
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+      </entity>
+    </entity>
     <input source="ptolemy/configs/jni/jniGraphEffigyFactory.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
@@ -47,7 +52,16 @@
 
   <!-- Main default library. -->
   <input source="ptolemy/configs/basicLibrary.xml"/>
-   
-  <!-- JNI Library -->
-  <input source="jni/jni.xml"/>
+
+  <!-- Modifications to the library. -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">   
+   <entity name="jni" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <group>
+        <input source="jni/jni.xml"/>
+      </group>
+    </configure>
+   </entity>
+  </entity>
+
 </entity>
