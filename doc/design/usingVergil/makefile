@@ -55,7 +55,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	index.htm \
 	expressions.htm \
-	expression.pdf \
 	usingVergil.pdf
 
 EXTRA_SRCS = \
