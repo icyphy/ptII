@@ -45,9 +45,7 @@ A base class for Ptolemy applications. This class has a create() method,
 which is called to create the base model components typically used in
 Ptolemy applications. This class also provides methods for reporting
 errors and exceptions.
-
-actor; it provides a mechanism for reporting
-errors and exceptions. This class makes no use of any gui features.
+Note that this class makes no use of any gui features.
 
 @author Brian K. Vogel. This class is based on code written by Edward A. Lee
 @version $Id$
