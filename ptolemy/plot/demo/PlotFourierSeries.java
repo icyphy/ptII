@@ -39,7 +39,7 @@ import java.applet.Applet;
  * @author Edward A. Lee
  * @version $Id$
  */
-public class PlotFourierSeries extends Plot {
+public class PlotFourierSeries extends PlotApplet {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
@@ -48,7 +48,7 @@ public class PlotFourierSeries extends Plot {
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotFourierSeries 1.0: Demo of Plot.\n" +
+        return "PlotFourierSeries 1.1: Demo of PlotApplet.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
             "$Id$";
     }
@@ -58,35 +58,35 @@ public class PlotFourierSeries extends Plot {
      */
     public void init () {
         super.init();
-        
-        setTitle("Fourier Series Approximation to a Square Wave");
-        setXRange(0,400);
-        setNumSets(11);
-        setMarksStyle("none");
-        addLegend(0, "ideal");
-        addLegend(1, "1 sinusoid");
+
+        _myPlot.setTitle("Fourier Series Approximation to a Square Wave");
+        _myPlot.setXRange(0,400);
+        _myPlot.setNumSets(11);
+        _myPlot.setMarksStyle("none");
+        _myPlot.addLegend(0, "ideal");
+        _myPlot.addLegend(1, "1 sinusoid");
         for (int j=2; j <= 10; j++) {
-            addLegend(j, j + " sinusoids");
+            _myPlot.addLegend(j, j + " sinusoids");
         }
         
         boolean first = true;
-        addPoint(0, 0.0, 0.0, false);
+        _myPlot.addPoint(0, 0.0, 0.0, false);
         for (int i=0; i <= 400; i++) {
             double approximation = 0.0;
             for (int j=1; j <= 10; j++) {
                 double sig = 4.0*Math.sin(i*2.0*Math.PI*(2*j-1)/400.0)/
                        (Math.PI*(2*j-1));
                 approximation += sig;
-                addPoint(j,(double)i, approximation, !first);
+                _myPlot.addPoint(j,(double)i, approximation, !first);
             }
             first = false;
             if (i <= 200) {
-                addPoint(0,(double)i, 1.0, true);
+                _myPlot.addPoint(0,(double)i, 1.0, true);
             }
             if (i >= 200) {
-                addPoint(0,(double)i, -1.0, true);
+                _myPlot.addPoint(0,(double)i, -1.0, true);
             }
         }
-        addPoint(0, 400.0, 0.0, true);
-    }
+        _myPlot.addPoint(0, 400.0, 0.0, true); 
+   }
 }
