@@ -175,12 +175,14 @@ public class OrderedMerge extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Get the next input port. 
-     *  @return next input port.  
+    /** Return the port that this actor will read from on the next
+     *  invocation of the fire() method. This will be null before the
+     *  first invocation of initialize().
+     *  @return The next input port.  
      */
-    // This method is Added by Gang Zhou so that DDFOrderedMerge 
-    // can inherit this class.
     protected TypedIOPort _getNextPort() {
+        // This method is Added by Gang Zhou so that DDFOrderedMerge 
+        // can extend this class.
         return _nextPort;
     }
 
