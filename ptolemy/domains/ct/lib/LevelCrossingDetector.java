@@ -33,6 +33,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEventGenerator;
@@ -52,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
    An event detector that converts continuous signals to discrete events when
    the continuous signal crosses a level threshold.
    <p>
-   This actor has a parameter <i>direction</i>. This parameter
+   The <i>direction</i> parameter
    can constrain the actor to detect only rising or falling transitions.
    It has three possible values, "rising", "falling", and "both", where
    "both" is the default.
@@ -102,6 +103,20 @@ public class LevelCrossingDetector extends TypedAtomicActor
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
 
+        // By default, this director detects both directions of leve crossings.
+        direction = new StringParameter(this, "direction");
+        direction.setExpression("both");
+        _detectRisingCrossing = true;
+        _detectFallingCrossing = true;
+        
+        direction.setTypeEquals(BaseType.STRING);
+        direction.addChoice(
+                new StringToken("both").toString());
+        direction.addChoice(
+                new StringToken("falling").toString());
+        direction.addChoice(
+                new StringToken("rising").toString());
+
         defaultEventValue = new Parameter(this, "defaultEventValue",
                 new DoubleToken(0.0));
         
@@ -116,37 +131,22 @@ public class LevelCrossingDetector extends TypedAtomicActor
         _errorTolerance = (double) 1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
-
-        // By default, this director detects both directions of leve crossings.
-        direction = new Parameter(this, 
-                "direction", 
-                new StringToken("both"));
-        _detectRisingCrossing = true;
-        _detectFallingCrossing = true;
-        
-        direction.setTypeEquals(BaseType.STRING);
-        direction.addChoice(
-                new StringToken("both").toString());
-        direction.addChoice(
-                new StringToken("falling").toString());
-        direction.addChoice(
-                new StringToken("rising").toString());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /** A parameter that can be used to limit the detected level crossings
-     *  to rising or falling. There are three choices: "falling", "rising", and 
-     *  "both". The default value is "both".
-     */
-    public Parameter direction;
 
     /** A parameter that specifies the value of output events
      *  if the <i>useEventValue</i> parameter is checked. By default,
      *  it contains a DoubleToken of 0.0.
      */
     public Parameter defaultEventValue;
+
+    /** A parameter that can be used to limit the detected level crossings
+     *  to rising or falling. There are three choices: "falling", "rising", and 
+     *  "both". The default value is "both".
+     */
+    public StringParameter direction;
 
     /** The parameter of error tolerance of type double. By default,
      *  it contains a DoubleToken of 1e-4.
@@ -193,8 +193,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
             }
             _errorTolerance = tolerance;            
         } else if (attribute == direction) {
-            String crossingDirections = ((StringToken) 
-                    direction.getToken()).stringValue();
+            String crossingDirections = direction.stringValue();
             if (crossingDirections.equalsIgnoreCase("falling")) {
                 _detectFallingCrossing = true;
                 _detectRisingCrossing = false;
@@ -205,8 +204,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 _detectFallingCrossing = true;
                 _detectRisingCrossing = true;
             } else {
-                throw new IllegalActionException("Unknown direction for" +
-                        " detecting level crossings: " + crossingDirections);
+                throw new IllegalActionException("Unknown direction: "
+                        + crossingDirections);
             }
         } else if (attribute == level) {
             _level = ((DoubleToken) level.getToken()).doubleValue();
