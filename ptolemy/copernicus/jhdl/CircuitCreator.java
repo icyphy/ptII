@@ -33,9 +33,13 @@ import java.io.*;
 import java.util.*;
 import soot.util.*;
 import soot.toolkits.graph.*;
+//////////////////////////////////////////////////////////////////////////
+//// CircuitCreator
 /**
 
 @author Steve Neuendorffer and Ben Warlick
+@version $Id$
+@since Ptolemy II 2.0
 */
 public class CircuitCreator {
 

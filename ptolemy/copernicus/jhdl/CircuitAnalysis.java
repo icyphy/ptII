@@ -67,10 +67,13 @@ import ptolemy.graph.*;
 import ptolemy.copernicus.kernel.*;
 import ptolemy.copernicus.java.*;
 
-
-
+//////////////////////////////////////////////////////////////////////////
+//// CircuitAnalysis
 /**
 
+@author Steve Neuendorffer and Ben Warlick
+@version $Id$
+@since Ptolemy II 2.0
 */
 public class CircuitAnalysis {
     /** Construct a new analysis

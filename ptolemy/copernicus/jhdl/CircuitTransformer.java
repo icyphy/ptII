@@ -69,9 +69,15 @@ import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.java.ActorTransformer;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// CircuitTransformer
 /**
+A transformer that removes unnecessary fields from classes.
 @author Steve Neuendorffer and Ben Warlick
+@version $Id$
+@since Ptolemy II 2.0
 */
+
 public class CircuitTransformer extends SceneTransformer {
     /** Construct a new transformer
      */
@@ -144,7 +150,8 @@ public class CircuitTransformer extends SceneTransformer {
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
 
-                for (Iterator remoteports = port.connectedPortList().iterator();
+                for (Iterator remoteports =
+                         port.connectedPortList().iterator();
                      remoteports.hasNext();) {
                     IOPort remotePort = (IOPort)remoteports.next();
                     combinedGraph.addEdge(port, remotePort);
@@ -162,7 +169,8 @@ public class CircuitTransformer extends SceneTransformer {
             for (Iterator preds = combinedGraph.getPredsOf(node).iterator();
                  preds.hasNext();) {
                 Object pred = preds.next();
-                for (Iterator succs = combinedGraph.getSuccsOf(node).iterator();
+                for (Iterator succs =
+                         combinedGraph.getSuccsOf(node).iterator();
                      succs.hasNext();) {
                     Object succ = succs.next();
                     combinedGraph.addEdge(pred, succ);

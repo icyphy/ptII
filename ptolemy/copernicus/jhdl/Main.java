@@ -55,6 +55,14 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
 import soot.dava.*;
 import soot.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// Main
+/**
+
+@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
+@version $Id$
+@since Ptolemy II 2.0
+*/
 public class Main extends KernelMain {
 
     ///////////////////////////////////////////////////////////////////

@@ -33,6 +33,14 @@ package ptolemy.copernicus.jhdl;
 // exist, and having this import present causes errors in the javadoc output.
 //import ptolemy.actor.Port;
 
+//////////////////////////////////////////////////////////////////////////
+//// CircuitNode
+/**
+
+@author Michael Wirthlin
+@version $Id$
+@since Ptolemy II 2.0
+*/
 public class CircuitNode {
     public CircuitNode(Object obj){
 	_internal=obj;
