@@ -100,6 +100,55 @@ test StringUtilities-2.2 {abbreviate null string} {
     java::call ptolemy.util.StringUtilities abbreviate [java::null]
 } {<Unnamed>}
 
+test StringUtilities-2.5.1 {ellipsis short string of 4 chars} {
+    java::call ptolemy.util.StringUtilities ellipsis "123456" 4
+} {1...}
+
+test StringUtilities-2.5.2 {ellipsis 11 lines} {
+    java::call ptolemy.util.StringUtilities ellipsis \
+	    "line 1 \n\
+	    line 2 \n\
+	    line 3 \n\
+	    line 4 \n\
+	    line 5 \n\
+	    line 6 \n\
+	    line 7 \n\
+	    line 8 \n\
+	    line 9 \n\
+	    line 10 \n\
+	    line 11 \n" 3000
+} {line 1 
+ line 2 
+ line 3 
+ line 4 
+ line 5 
+ line 6 
+ line 7 
+ line 8 
+ line 9 
+ line 10 
+...}
+
+
+
+test StringUtilities-2.5.1 {ellipsis 11 lines, but only 30 chars} {
+    java::call ptolemy.util.StringUtilities ellipsis \
+	    "line 1 \n\
+	    line 2 \n\
+	    line 3 \n\
+	    line 4 \n\
+	    line 5 \n\
+	    line 6 \n\
+	    line 7 \n\
+	    line 8 \n\
+	    line 9 \n\
+	    line 10 \n\
+	    line 11 \n" 30
+} {line 1 
+ line 2 
+ line 3 
+ ...}
+
 test StringUtilities-3.1 {create a preferences directory} {
     set dir [java::call ptolemy.util.StringUtilities preferencesDirectory]
     file isdirectory $dir	
