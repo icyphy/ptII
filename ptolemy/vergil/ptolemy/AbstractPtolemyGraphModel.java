@@ -197,7 +197,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      *  executed.  Subclasses will override this to update internal data
      *  structures that may be cached.
      */
-    protected void _update() {
+    protected boolean _update() {
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -222,9 +223,6 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	 *  @param change The change that has been executed.
 	 */
 	public void changeExecuted(ChangeRequest change) {
-            // update the graph model.
-            _update();
-
 	    // Ignore anything that comes from this graph model.
 	    // the other methods take care of issuing the graph event in
 	    // that case.
@@ -232,12 +230,15 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 return;
             }
 
-            // Otherwise notify any graph listeners
-            // that the graph might have
-            // completely changed.
-            dispatchGraphEvent(new GraphEvent(
-                    AbstractPtolemyGraphModel.this,
-                    GraphEvent.STRUCTURE_CHANGED, getRoot()));
+            // update the graph model.
+            if(_update()) {            
+                // Notify any graph listeners
+                // that the graph might have
+                // completely changed.
+                dispatchGraphEvent(new GraphEvent(
+                        AbstractPtolemyGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
+            }
         }
 
         /** Notify the listener that the change has failed with the
@@ -246,18 +247,18 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
          *  @param exception The exception that was thrown.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
-            // update the graph model.
-            _update();
-
             // Report it if it has not been reported.
             if (!change.isErrorReported()) {
                 change.setErrorReported(true);
                 MessageHandler.error("Change failed", exception);
             }
-            dispatchGraphEvent(new GraphEvent(
-                    AbstractPtolemyGraphModel.this,
-                    GraphEvent.STRUCTURE_CHANGED,
-                    getRoot()));
+            // update the graph model.
+            if(_update()) {
+                dispatchGraphEvent(new GraphEvent(
+                        AbstractPtolemyGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED,
+                        getRoot()));
+            }
         }
     }
 
