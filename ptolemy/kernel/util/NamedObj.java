@@ -677,27 +677,29 @@ public class NamedObj implements Nameable, Debuggable,
                         + "/xml/dtd/MoML_1.dtd\">\n");
             }
         }
+    
         output.write(_getIndentPrefix(depth)
                 + "<"
                 + momlElement
                 + " name=\""
                 + name
                 + template);
+    
         if (getMoMLInfo().source != null) {
             output.write(" source=\"" + getMoMLInfo().source + "\">\n");
         } else {
             output.write(">\n");
         }
 
-//          if (depth == 0) {
-//              // Add the version.
-//              output.write(_getIndentPrefix(depth+1)
-//                      + "<property name=\"_createdBy\" " 
-//                      + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-//                      + "value=\""
-//                      + VersionAttribute.CURRENT_VERSION.getExpression()
-//                      + "\"/>\n");
-//  	}
+        if (depth == 0 && getContainer() == null) {
+            // Add the version.
+            output.write(_getIndentPrefix(depth+1)
+                    + "<property name=\"_createdBy\" " 
+                    + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+                    + "value=\""
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + "\"/>\n");
+  	}
 
 
         if (getMoMLInfo().deferTo == null) {
