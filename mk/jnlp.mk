@@ -246,9 +246,11 @@ $(KEYSTORE):
 
 # vergil*.jnlp is for Web Start.  For jar signing to work with Web Start,
 # Web Start: DSP version of Vergil - No sources or build env.
+# In the sed statement, we use # instead of % as a delimiter in case
+# PTII_LOCALURL has spaces in it that get converted to %20
 vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
-	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
-		-e 's%@PTVERSION@%$(PTVERSION)%' \
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
@@ -273,8 +275,8 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
 vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
-	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
-		-e 's%@PTVERSION@%$(PTVERSION)%' \
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
@@ -300,8 +302,8 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 
 # Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
 vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
-	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
-		-e 's%@PTVERSION@%$(PTVERSION)%' \
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
@@ -327,8 +329,8 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
 vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
-	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
-		-e 's%@PTVERSION@%$(PTVERSION)%' \
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
