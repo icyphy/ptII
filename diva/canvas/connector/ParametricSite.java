@@ -36,7 +36,7 @@ import diva.canvas.Figure;
  * A site that locates itself in a figure at a location
  * in X and Y that is some percentage of the bounding box
  * of the figure.  So as the figure grows, the site relocates
- * itself proportinally.
+ * itself proportionally.
  *
  * @version        $Id$
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
