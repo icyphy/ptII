@@ -39,7 +39,6 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.plot.*;
 import ptolemy.vergil.MoMLViewerApplet;
 
 import java.awt.BorderLayout;
