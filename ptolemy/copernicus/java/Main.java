@@ -372,6 +372,11 @@ public class Main extends KernelMain {
         //                                               TypeSpecializer.v(_toplevel)));
         
         Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.tie",
+                        new TransformerAdapter(
+                                TokenInstanceofEliminator.v())));
+    
+        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));
                     

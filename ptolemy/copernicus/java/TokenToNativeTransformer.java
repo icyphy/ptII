@@ -144,9 +144,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
             }
             List classList = new LinkedList();
             classList.addAll(Scene.v().getApplicationClasses());
-            // In places where we have
+
             updateTokenTypes(classList, depth, unsafeLocalSet, debug);
-       
+           
             // Inline all methods on tokens that have the given depth.
             for (Iterator classes = Scene.v().getApplicationClasses().iterator();
                  classes.hasNext();) {
@@ -154,7 +154,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             
                 inlineTokenMethods(entityClass, depth, unsafeLocalSet, debug);
             }
-            // Create replacement fields for all token fields in the given class with the given depth.
+
+            updateTokenTypes(classList, depth, unsafeLocalSet, debug);
+
+            // Create replacement fields for all token fields in the
+            // given class with the given depth.
             for (Iterator classes = Scene.v().getApplicationClasses().iterator();
                  classes.hasNext();) {
                 SootClass entityClass = (SootClass)classes.next();
@@ -231,6 +235,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
+                TypeAssigner.v().transform(
+                        body, _phaseName + ".ta", "");
+
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
                         body, _phaseName + ".tie", unsafeLocalSet,
                         true);                    

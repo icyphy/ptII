@@ -201,7 +201,9 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 if (SootUtilities.derivesFrom(baseClass,
                         PtolemyUtilities.tokenClass)) {
                     if (methodName.equals("one") ||
-                            methodName.equals("zero")) {
+                            methodName.equals("zero") ||
+                            methodName.equals("not") ||
+                            methodName.equals("bitwiseNot")) {
                         // The returned type must be equal to the type
                         // we are calling the method on.
                         out.put(leftOp, in.get(r.getBase()));
@@ -214,7 +216,10 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                             methodName.equals("divide") ||
                             methodName.equals("divideReverse") ||
                             methodName.equals("modulo") ||
-                            methodName.equals("moduloReverse")) {
+                            methodName.equals("moduloReverse") ||
+                            methodName.equals("bitwiseAnd") ||
+                            methodName.equals("bitwiseOr") ||
+                            methodName.equals("bitwiseXor")) {
 //                         System.out.println("methodName = " + methodName);
 //                         System.out.println("r.getBase() = " + r.getBase());
 //                         System.out.println("r.getArg(0) = " + r.getArg(0));
