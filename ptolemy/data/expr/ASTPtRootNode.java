@@ -102,7 +102,7 @@ public class ASTPtRootNode implements Node {
             } catch (Exception ex) {
                 throw new IllegalArgumentException(
                         "Error evaluating expression.\n" +
-                        ex.getMessage());
+                        ex.toString());
             }
             return _ptToken;
         }
