@@ -19,6 +19,8 @@
     <property name="y" value="0.0"/>
   </property>
   <property name="polygon" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+    <property name="width" value="35"/>
+    <property name="height" value="20"/>
     <property name="vertices" value="{0.0, 0.0, 20.0, 0.0, 5.0, 20.0, -15.0, 20.0}"/>
     <property name="centered" value="true"/>
     <property name="fillColor" value="{1.0, 1.0, 1.0, 1.0}"/>

@@ -144,23 +144,24 @@ public class PolygonAttribute extends FilledShapeAttribute {
         try {
             ArrayToken verticesValue = (ArrayToken)vertices.getToken();
             int length = verticesValue.length();
-            int[] xPoints = new int[length];
-            int[] yPoints = new int[length];
-            int xMax = Integer.MIN_VALUE;
-            int xMin = Integer.MAX_VALUE;
-            int yMax = Integer.MIN_VALUE;
-            int yMin = Integer.MAX_VALUE;
+            
+            // Keep computations in double as long as possible.
+            double[] xPoints = new double[length/2];
+            double[] yPoints = new double[length/2];
+            double xMax = Double.NEGATIVE_INFINITY;
+            double xMin = Double.POSITIVE_INFINITY;
+            double yMax = Double.NEGATIVE_INFINITY;
+            double yMin = Double.POSITIVE_INFINITY;
             
             // Scaling.
             double width = _widthValue;
             double height = _heightValue;
             
-            for (int i = 0; i < length; i = i + 2) {
-                double x = ((DoubleToken)verticesValue.getElement(i)).doubleValue();
-                double y = ((DoubleToken)verticesValue.getElement(i + 1)).doubleValue();
-                int j = i/2;
-                xPoints[j] = (int)(Math.round(x * width/100.0));
-                yPoints[j] = (int)(Math.round(y * height/100.0));
+            // First, read vertex values and find the bounds.
+            for (int j = 0; j < length/2; j++) {
+                xPoints[j] = ((DoubleToken)verticesValue.getElement(2*j)).doubleValue();
+                yPoints[j] = ((DoubleToken)verticesValue.getElement(2*j + 1)).doubleValue();
+                
                 if (xPoints[j] > xMax) {
                     xMax = xPoints[j];
                 }
@@ -174,15 +175,32 @@ public class PolygonAttribute extends FilledShapeAttribute {
                     yMin = yPoints[j];
                 }
             }
+            
+            // Next, scale to width and height.
+            double scaleX = _widthValue/(xMax - xMin);
+            double scaleY = _heightValue/(yMax - yMin);
+            for (int j = 0; j < length/2; j++) {
+                xPoints[j] *= scaleX;
+                yPoints[j] *= scaleY;
+            }
+            
+            // Finally, correct if centered, and convert to int.
+            int[] xInt = new int[length/2];
+            int[] yInt = new int[length/2];
             if (_centeredValue) {
-                int xOffset = (xMin - xMax)/2;
-                int yOffset = (yMin - yMax)/2;
+                double xOffset = (xMin - xMax)/2;
+                double yOffset = (yMin - yMax)/2;
                 for (int i = 0; i < length/2; i++) {
-                    xPoints[i] += xOffset;
-                    yPoints[i] += yOffset;
+                    xInt[i] = (int)Math.rint(xPoints[i] + xOffset);
+                    yInt[i] = (int)Math.rint(yPoints[i] + yOffset);;
+                }
+            } else {
+                for (int i = 0; i < length/2; i++) {
+                    xInt[i] = (int)Math.rint(xPoints[i]);
+                    yInt[i] = (int)Math.rint(yPoints[i]);;
                 }
             }
-            return new Polygon(xPoints, yPoints, length/2);
+            return new Polygon(xInt, yInt, length/2);
         } catch (IllegalActionException e) {
             // This should not occur because attributeChanged()
             // has accessed the token of vertices.
