@@ -276,7 +276,8 @@ public class ComponentPort extends Port {
         }
     }
 
-    /**
+    /** Return true the the given port is deeply connected with this port.
+     *  @return True if the given port is deeply connected.
      */
     public boolean isDeeplyConnected(ComponentPort port) {
         if(port == null) return false;
@@ -286,7 +287,14 @@ public class ComponentPort extends Port {
             return _deeplinkedports.includes(port);
         }
     }
-            
+    
+    /** Return true if the given relation is linked from inside.
+     *  @return True if the given relation is linked from inside.
+     */
+    public boolean isInsideLinked(Relation relation) {
+        return _insideLinks.isLinked(relation);
+    }
+    
     /** Link this port with a relation.  The only constraints are
      *  that the port and the relation share the same workspace, and
      *  that the relation be of a compatible type (ComponentRelation).
