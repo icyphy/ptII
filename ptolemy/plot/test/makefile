@@ -72,7 +72,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jgraphical
+tests:: $(EXTRA_SRCS) jclass test_java #test_jgraphical
+all_tests: tests test_jgraphical
 
 all: jclass
 install: jclass
