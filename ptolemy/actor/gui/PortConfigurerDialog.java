@@ -1096,19 +1096,22 @@ public class PortConfigurerDialog
                     updates.put(ColumnNames.COL_NAME, Boolean.FALSE);
                 }
 
+                // NOTE: Assumes default value is false.
                 if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
                     updates.put(ColumnNames.COL_SHOW_NAME,
                             (Boolean) portInfo.get(ColumnNames.COL_SHOW_NAME));
                 }
 
+                // NOTE: Assumes default value is false.
                 if (_columnNames.contains(ColumnNames.COL_HIDE)) {
                     updates.put(ColumnNames.COL_HIDE,
                             (Boolean) portInfo.get(ColumnNames.COL_HIDE));
                 }
 
+                // FIXME: should we compare against "unknown" instead of ""?
                 if (_columnNames.contains(ColumnNames.COL_TYPE)) {
-                    String _type = (String) portInfo.get(ColumnNames.COL_TYPE);
-                    if (!_type.equals("")) {
+                    String type = (String) portInfo.get(ColumnNames.COL_TYPE);
+                    if (!type.equals("")) {
                         updates.put(ColumnNames.COL_TYPE, Boolean.TRUE);
                         _portTableModel.fireTableDataChanged();
                     } else {
@@ -1124,6 +1127,16 @@ public class PortConfigurerDialog
                         _portTableModel.fireTableDataChanged();
                     } else {
                         updates.put(ColumnNames.COL_DIRECTION, Boolean.FALSE);
+                    }
+                }
+
+                if (_columnNames.contains(ColumnNames.COL_UNITS)) {
+                    String unit = (String) portInfo.get(ColumnNames.COL_UNITS);
+                    if (!unit.equals("")) {
+                        updates.put(ColumnNames.COL_UNITS, Boolean.TRUE);
+                        _portTableModel.fireTableDataChanged();
+                    } else {
+                        updates.put(ColumnNames.COL_UNITS, Boolean.FALSE);
                     }
                 }
                 
