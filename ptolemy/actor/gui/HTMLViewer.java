@@ -56,7 +56,14 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 //// HTMLViewer
 /**
 This class is a toplevel frame that can view HTML documents.
-It supports printing and will save the text to a .html file.
+This class supports hyperlinks, and has a particular feature to
+force hyperlinks to be opened in a browser.  To do that, specify
+a hyperlink by giving a fragment (also called a reference) as "in_browser".
+For example, the following URL will be opened in a browser:
+<pre>
+ &lt;a href="http://ptolemy.eecs.berkeley.edu#in_browser"&gt;
+</pre>
+This class supports printing and will save the text to a .html file.
 The url that is viewed can be changed by calling the <i>setPage</i> method.
 
 @author Steve Neuendorffer and Edward A. Lee
@@ -103,16 +110,31 @@ public class HTMLViewer extends TableauFrame
         } else if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             URL newUrl = event.getURL();
 
-            if (event instanceof HTMLFrameHyperlinkEvent) {
+            // NOTE: It would be nice to use target="_browser" or some
+            // such, but this doesn't work. Targets aren't
+            // seen unless the link is inside a frame,
+            // regrettably.  An alternative might be to
+            // use the "userInfo" part of the URL,
+            // defined at http://www.ncsa.uiuc.edu/demoweb/url-primer.html
+            boolean useBrowser = false;
+            String ref = newUrl.getRef();
+            if (ref != null) {
+                useBrowser = ref.equals("in_browser");
+            }
+            if (!useBrowser && event instanceof HTMLFrameHyperlinkEvent) {
                 // For some bizarre reason, when a link is within a frame,
                 // it needs to be handled differently than if its not in
                 // a frame.
                 HTMLFrameHyperlinkEvent frameHyperlinkEvent =
                     (HTMLFrameHyperlinkEvent)event;
                 String target = frameHyperlinkEvent.getTarget();
+                if (target.equals("_browser")) {
+                    useBrowser = true;
+                } else if (!target.equals("_blank")
+                        && !target.equals("_top")) {
                 // If the target is "_blank" or "_top", then we want to open
                 // in a new window, so we defer to the below.
-                if (!target.equals("_blank") && !target.equals("_top")) {
+
                     HTMLDocument doc = (HTMLDocument)pane.getDocument();
                     try {
                         doc.processHTMLFrameHyperlinkEvent(frameHyperlinkEvent);
@@ -138,8 +160,16 @@ public class HTMLViewer extends TableauFrame
             // target...
             try {
                 if (configuration != null) {
-                    configuration.openModel(
-                            newUrl, newUrl, newUrl.toExternalForm());
+                    if (useBrowser && BrowserEffigy.staticFactory != null) {
+                        configuration.openModel(
+                                newUrl,
+                                newUrl,
+                                newUrl.toExternalForm(),
+                                BrowserEffigy.staticFactory);
+                    } else {
+                        configuration.openModel(
+                                newUrl, newUrl, newUrl.toExternalForm());
+                    }
                 } else {
                     // If there is no configuration, open in the same window.
                     pane.setPage(newUrl);
