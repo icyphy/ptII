@@ -95,14 +95,14 @@ public class PtolemyTypePolicy extends TypePolicy {
             if ((kind2 != PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN) &&
                     (kind2 != PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN) &&
                     (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN)) {
-                throw new RuntimeError("moreSpecificTokenKind() : kind1 = IntToken, kind2 = " +
+                throw new RuntimeException("moreSpecificTokenKind() : kind1 = IntToken, kind2 = " +
                         kind2);
             }
             return kind2;
 
         case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
             if (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN) {
-                throw new RuntimeError("moreSpecificTokenKind() : kind1 = DoubleToken, kind2 = " +
+                throw new RuntimeException("moreSpecificTokenKind() : kind1 = DoubleToken, kind2 = " +
                         kind2);
             }
             return PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN;
@@ -111,14 +111,14 @@ public class PtolemyTypePolicy extends TypePolicy {
             if ((kind2 != PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN) &&
                     (kind2 != PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN) &&
                     (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN)) {
-                throw new RuntimeError("moreSpecificTokenKind() : kind1 = IntMatrixToken, kind2 = " +
+                throw new RuntimeException("moreSpecificTokenKind() : kind1 = IntMatrixToken, kind2 = " +
                         kind2);
             }
             return kind2;
 
         case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
             if (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN) {
-                throw new RuntimeError("moreGeneralTokenKind() : kind1 = DoubleMatrixToken, kind2 = " +
+                throw new RuntimeException("moreGeneralTokenKind() : kind1 = DoubleMatrixToken, kind2 = " +
                         kind2);
             }
             return PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN;
@@ -132,7 +132,7 @@ public class PtolemyTypePolicy extends TypePolicy {
         case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
             if (kind2 != PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN) {
-                throw new RuntimeError("moreGeneralTokenKind() : kind1 = " + kind1 +
+                throw new RuntimeException("moreGeneralTokenKind() : kind1 = " + kind1 +
                         " kind2 = " + kind2);
             }
             return PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN;
@@ -145,13 +145,13 @@ public class PtolemyTypePolicy extends TypePolicy {
             // types that are already as general as possible
         case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN: // change this when we change the type lattice
-            throw new RuntimeError("moreGeneralTokenKind() : kind1 = " + kind1 +
+            throw new RuntimeException("moreGeneralTokenKind() : kind1 = " + kind1 +
                     " kind2 = " + kind2);
 
         default:
-            throw new RuntimeError("moreGeneralTokenKind() : kind unknown :  " + kind1);
+            throw new RuntimeException("moreGeneralTokenKind() : kind unknown :  " + kind1);
         }
-        return TypeIdentifier.TYPE_KIND_UNKNOWN;
+        //return TypeIdentifier.TYPE_KIND_UNKNOWN;
     }
 
     protected final PtolemyTypeIdentifier _ptTypeID;

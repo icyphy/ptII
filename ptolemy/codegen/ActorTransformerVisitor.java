@@ -143,7 +143,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
                 return node;
             } else {
-                throw new RuntimeError("found parameter field, but no associated token");
+                throw new RuntimeException("found parameter field, but no associated token");
             }
         } else if (_typeID.isSupportedPortKind(kind)) {
             Object retval = _portFieldDeclNode(node, args);
@@ -205,7 +205,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // allow only one constructor
 
         if (_constructorCount++ > 1) {
-            throw new RuntimeError("more than one constructor found in actor " +
+            throw new RuntimeException("more than one constructor found in actor " +
                     _actorInfo.actor.getName());
         }
 
@@ -224,8 +224,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitThisConstructorCallNode(ThisConstructorCallNode node, LinkedList args) {
-        throw new RuntimeError("this() constructor call found in actor");
-        return null;
+        throw new RuntimeException("this() constructor call found in actor");
+        // return null;
     }
 
     public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
@@ -546,9 +546,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     break;
 
                 case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-                    throw new RuntimeError("toString() on fix matrix not " +
+                    throw new RuntimeException("toString() on fix matrix not " +
                             "supported yet");
-                    break;
+                    //break;
 
                 case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
@@ -581,7 +581,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                             break;
 
                         default:
-                            throw new RuntimeError("unknown kind to call " +
+                            throw new RuntimeException("unknown kind to call " +
                                     "toString() / stringValue()");
                         }
 
@@ -1030,7 +1030,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             }
 
         case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-            throw new RuntimeError("tokenToExprNode not supported on ObjectToken");
+            throw new RuntimeException("tokenToExprNode not supported on ObjectToken");
 
         case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
             {
@@ -1062,10 +1062,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             }
 
         default:
-            throw new RuntimeError("tokenToExprNode() not supported on token class " +
+            throw new RuntimeException("tokenToExprNode() not supported on token class " +
                     token.getClass().getName());
         }
-        return null;
+        //return null;
     }
 
     /** Transform the class declaration of an actor port. When this method is
@@ -1288,8 +1288,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             return new IntLitNode("-777777");
         }
 
-        throw new RuntimeError("unexpected type for _dummyValue() : " + type);
-        return null;
+        throw new RuntimeException("unexpected type for _dummyValue() : " + type);
+        // return null;
     }
 
     /** Given a list of TypeNameNodes that are the types of exceptions,
@@ -1446,9 +1446,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
-            throw new RuntimeError("found one() method call on unsupported token kind " +
+            throw new RuntimeException("found one() method call on unsupported token kind " +
                     accessedObjKind);
-            return null;
+            // return null;
 
         case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
@@ -1464,9 +1464,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     TNLManip.addFirst(accessedObj));
 
         default:
-            throw new RuntimeError("found zero() method call on unknown token kind " +
+            throw new RuntimeException("found zero() method call on unknown token kind " +
                     accessedObjKind);
-            return null;
+            // return null;
         }
     }
 
@@ -1628,8 +1628,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     (TypeNameNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone());
 
         case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-            throw new RuntimeError("found zero() method call on ObjectToken");
-            return null;
+            throw new RuntimeException("found zero() method call on ObjectToken");
+            // return null;
 
         case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
             return new StringLitNode("");
@@ -1648,9 +1648,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     TNLManip.addFirst(accessedObj));
 
         default:
-            throw new RuntimeError("found zero() method call on unknown token kind " +
+            throw new RuntimeException("found zero() method call on unknown token kind " +
                     accessedObjKind);
-            return null;
+            // return null;
         }
     }
 

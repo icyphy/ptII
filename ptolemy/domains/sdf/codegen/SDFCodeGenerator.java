@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.codegen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -58,8 +59,8 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// SDFCodeGenerator
 /** A code generator for SDF.
- *
- *  @author Jeff Tsay
+@author Jeff Tsay, Christopher Hylands
+@version $Id$
  */
 public class SDFCodeGenerator extends CompositeActorApplication
     implements JavaStaticSemanticConstants {
@@ -69,6 +70,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
     }
 
     public void generateCode() throws IllegalActionException {
+        // We print elapsed time statistics during code generation
+        // Note that this is different than printing stats at runtime.
+        long startTime = new Date().getTime();
         if (_outputDirectoryName == null) {
             throw new RuntimeException("output directory was not specified " +
                     "with the -outdir option");
@@ -145,7 +149,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 _actorInfoMap.put(actor, actorInfo);
 
                 //System.out.println("actor " + actor + " fires " +
-                        actorInfo.totalFirings + " time(s).");
+                //        actorInfo.totalFirings + " time(s).");
 
             }  else {
                 if (actor != lastActor) {
@@ -163,12 +167,18 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         Iterator actorItr = _actorSet.iterator();
 
-        System.out.println("SDFCodeGenerator: Starting to accumulate " +
-                "class info");
+        System.out.println("***SDFCodeGenerator: Starting to accumulate " +
+                "class info ---" +
+                (System.currentTimeMillis() - startTime) + " ms");
+
         ActorCodeGenerator actorCodeGen =
             new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName,
                     _outputPackageName);
-        System.out.println("SDFCodeGenerator: Done accumulating class info");
+        System.out.println("\n***SDFCodeGenerator: " +
+                "Done accumulating class info ---" +
+                (System.currentTimeMillis() - startTime) + " ms");
+
+        System.out.println("***SDFCodeGenerator: pass1");
 
         LinkedList renamedSourceList = new LinkedList();
 
@@ -182,6 +192,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
             String renamedSource = actorCodeGen.pass1(actorInfo);
             renamedSourceList.addLast(renamedSource);
         }
+
+        System.out.println("\n***SDFCodeGenerator: pass2 ---" +
+                (System.currentTimeMillis() - startTime) + " ms");
 
         actorItr = _actorSet.iterator();
         Iterator renamedSourceItr = renamedSourceList.iterator();
@@ -198,6 +211,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         _generateMainClass();
 
+        System.out.println("\n***SDFCodeGenerator: pass3 ---" +
+                (System.currentTimeMillis() - startTime) + " ms");
         renamedSourceItr = renamedSourceList.iterator();
 
         while (renamedSourceItr.hasNext()) {
@@ -205,6 +220,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             actorCodeGen.pass3(renamedSource);
         }
+        System.out.println("\n***SDFCodeGenerator: done " +
+                (System.currentTimeMillis() - startTime) + " ms");
+
     }
 
     /** The top-level main() method. Create an SDF code generator using the
@@ -224,7 +242,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
     }
 
-    /** Generate or don't generate statistics such as elapsed time */
+    /** Set to true if statistics such as elapsed time are printed
+     *  at runtime by the generated Java code
+     */
     public void setGenerateStatistics(boolean generateStatistics) {
 	_generateStatistics = generateStatistics;
     }
@@ -768,7 +788,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
 
                 //System.out.println("connected buffers for port " + 
-                 port.getName() + " of actor " + actor.getName());
+                //  port.getName() + " of actor " + actor.getName());
                 for (int ch = 0; ch < inputWidth; ch++) {
                     //System.out.println("ch " + ch + ": " + bufferNames[ch]);
                 }

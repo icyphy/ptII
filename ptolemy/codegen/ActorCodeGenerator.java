@@ -107,13 +107,14 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         File sourceFile = SearchPath.NAMED_PATH.openSource(actorClass.getName());
 
         if (sourceFile == null) {
-            throw new RuntimeError("source code not found for " +
+            throw new RuntimeException("source code not found for " +
                     "actor " + actor);
         }
 
         String filename = sourceFile.toString();
 
-        System.out.println("pass1() : filename = " + filename);
+        System.out.println("ActorCodeGenerator.pass1() : filename = " +
+                filename);
 
         // make a list of the compile unit node and compile unit nodes that
         // contain superclasses
@@ -155,10 +156,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         _rewriteSources(unitList, renamedClassNameList);
 
-        System.out.println("ActorCodeGenerator.pass1(): returning " +
-				 _outputPackageName + "." +
-	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
-				      '.'));
+        //System.out.println("ActorCodeGenerator.pass1(): returning " +
+        //        _outputPackageName + "." +
+        //        StringManip.partAfterLast((String) renamedClassNameList.
+        //                getLast(), '.'));
 
         return _outputPackageName + "." +
 	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
@@ -174,14 +175,14 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
 
         if (sourceFile == null) {
-            throw new RuntimeError("regenerated source code not found for " +
+            throw new RuntimeException("regenerated source code not found for " +
                     "entity " + actorInfo.actor + " in source file " + sourceName);
         }
 
         String filename = sourceFile.toString();
 
-        System.out.println("pass2() : sourceName = " + sourceName +
-                ", filename = " + filename);
+        System.out.println("ActorCodeGenerator.pass2(): sourceName = " +
+                sourceName + " filename = " + filename);
 
         LinkedList[] listArray =
             _makeUnitList(filename, StringManip.unqualifiedPart(sourceName));
@@ -189,7 +190,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         LinkedList unitList = listArray[0];
 
         //System.out.println("pass2() : unitList has length " +
-                unitList.size());
+        //        unitList.size());
 
         Iterator unitItr = unitList.iterator();
 
@@ -229,13 +230,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
 
         if (sourceFile == null) {
-            throw new RuntimeError("regenerated source code not found for " +
+            throw new RuntimeException("regenerated source code not found for " +
                     "source file " + sourceName);
         }
 
         String filename = sourceFile.toString();
 
-        System.out.println("pass3() : sourceName = " + sourceName +
+        System.out.println("ActorCodeGenerator.pass3(): sourceName = " +
                 ", filename = " + filename + ".java");
 
         // save the old type personality
@@ -291,12 +292,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    String className = (String)classNameItr.next();
 
 	    System.out.println("ActorCodeGenerator.pass3(): " + 
-			       "about to call loadFile on " +className);
+			       " openSource(" +className +")");
 
 	    File file = SearchPath.NAMED_PATH.openSource(className);
 
 
-	    // Don't use reflection here, we want to read the file back in
+	    // Don't use reflection here, we want to read the file back in,
+            // it probably is not yet compiled.
             unitNode = 
 		StaticResolution.loadFile(file, 2);
              
@@ -329,10 +331,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             //    System.err.println("Warning: failed to invalidate source filename: "                        + filename);
             //}
 	    String className = (String) classNameItr.next();
-            System.out.println("ActorCodeGenerator._invalidate" +
-				      "CompileUnit: invalidating source " +
-				      "filename: " + className + " pass: " +
-				      passNumber);
+            //System.out.println("ActorCodeGenerator._invalidate" +
+	    //			      "CompileUnit: invalidating source " +
+	    //			      "filename: " + className + " pass: " +
+	    //			      passNumber);
 
             if (!StaticResolution.invalidateCompileUnit(className, passNumber)) {
                 System.err.println("Warning: failed to invalidate source filename: "                        + className);
@@ -379,7 +381,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                     actorInfo.parameterNameToTokenMap.put(param.getName(),
                             param.getToken());
                 } catch (IllegalActionException iae) {
-                    throw new RuntimeError(
+                    throw new RuntimeException(
                             "couldn't get token value for parameter " + param.getName());
                 }
             }
@@ -420,7 +422,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                     (superDecl == null)) { // just to be sure
 
                 //System.out.println("_makeUnitList() : super class = " +
-                        superDecl + " stopping.");
+                //        superDecl + " stopping.");
 
                 return new LinkedList[] { nodeList, classNameList };
 
@@ -430,13 +432,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
                 if (_typeID.isSupportedActorKind(superKind)) {
                     //System.out.println("_makeUnitList() : super class = " +
-                            superDecl + " stopping.");
+                    //        superDecl + " stopping.");
 
                     return new LinkedList[] { nodeList, classNameList };
                 }
 
                 //System.out.println("_makeUnitList() : super class = " +
-                        superDecl + ", continuing. Kind = " + superKind);
+                //        superDecl + ", continuing. Kind = " + superKind);
 
 		// FIXME: should this be . or File.separatorChar
                 fileName = superDecl.fullName(File.separatorChar);
@@ -508,7 +510,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             String newClassName = "CG_" +  className + "_" + actorName;
 
             //System.out.println("changing classname from " + className +
-                    " to " + newClassName);
+            //        " to " + newClassName);
 
             // add the mapping from the old class name to the new class name
             renameMap.put(className, newClassName);
@@ -544,8 +546,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 				    partAfterLast((String)classNameItr.next(),
 						  '.'));
             filenameList.add(filename);
-	    System.out.println("ActorCodeGenerator._rewriteSources(): " +
-			       filename);
+	    //System.out.println("ActorCodeGenerator._rewriteSources(): " +
+	    //		       filename);
         }
 
         JavaCodeGenerator.writeCompileUnitNodeList(unitList, filenameList);
