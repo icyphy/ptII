@@ -110,7 +110,8 @@ public class DDEThread extends ProcessThread {
 			    }
 			} catch( TerminateProcessException e ) {
 			    String name = ((Nameable)actor).getName();
-			    System.out.println(name+":  Shoulda done nothing");
+			    System.out.println(name +
+                                    ":  Should have done nothing");
 			    // Do nothing since we are ending
 			}
 		    }
