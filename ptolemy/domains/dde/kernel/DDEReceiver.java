@@ -64,7 +64,7 @@ token is available.
 This class assumes that valid time stamps have non-negative values. In
 other words, simulation time starts at 0.0 or later. At the conclusion 
 of a simulation run the receiver time is set to INACTIVE. Prior to the
-beginning of a simulation run, the reciever time is set to NOTSTARTED.
+beginning of a simulation run, the receiver time is set to NOTSTARTED.
 
 
 @author John S. Davis II
