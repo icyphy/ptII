@@ -81,7 +81,7 @@ public class MobileModel extends TypedCompositeActor {
      *  use the default workspace.
      *  @param workspace The workspace that will list the actor.
      */
-    public MobileModel (Workspace workspace)
+    public MobileModel(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
@@ -90,6 +90,8 @@ public class MobileModel extends TypedCompositeActor {
         defaultValue = new Parameter(this, "defaultValue",
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
+        // FIXME: constructors that call setTypeAtLeast should have
+        // a clone() method.
         output.setTypeAtLeast(defaultValue);
         new Director(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
@@ -105,7 +107,7 @@ public class MobileModel extends TypedCompositeActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MobileModel (CompositeEntity container, String name)
+    public MobileModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
@@ -123,14 +125,44 @@ public class MobileModel extends TypedCompositeActor {
     ////                         public variables                  ////
     //public Parameter modelURL;
 
+    // FIXME: Need documentation 
     public TypedIOPort input, modelString, output;
 
+    // FIXME: Need documentation.  What is the type and initial value
     public Parameter defaultValue;
 
+    // FIXME: why is is this public?
     public MoMLParser parser;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Save the model here if there is a new model to apply. and then call
+     *  super.fire().
+     *  @exception IllegalActionException If there is no director, or if
+     *  the director's fire() method throws it, or if the actor is not
+     *  opaque.
+     */
+    public void fire() throws IllegalActionException  {
+        if (_debugging) {
+            _debug("Invoking fire");
+        }
+        for (int i = 0; i < modelString.getWidth(); i++) {
+            if (modelString.hasToken(i)) {
+                StringToken str = null;
+                try {
+                    str = (StringToken) modelString.get(0);
+                    //URL url = new URL(str.stringValue());
+                    _model = (CompositeActor) parser.parse(str.stringValue());
+                    break;
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Problem parsing " + str.stringValue());
+                }
+            }
+        }
+        super.fire();
+    }
 
     /** Initialize this actor. create a new moml parser for passing
      *  the applied model to it.
@@ -148,56 +180,24 @@ public class MobileModel extends TypedCompositeActor {
             parser = new MoMLParser();
             parser.setMoMLFilters(BackwardCompatibility.allFilters());
             parser.addMoMLFilter(new RemoveGraphicalClasses());
-            //when no model applied, output the default value.
+
+            // When no model applied, output the default value.
             Const constActor = new Const(this, "Const");
             constActor.value.setExpression(defaultValue.getToken().toString());
             connect(input, constActor.trigger);
             connect(constActor.output, output);
 
-        }catch (Exception ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "initialize() failed");
         }
         //connect(input, output);
         super.initialize();
     }
 
-    /** Save the model here if there is a new model to apply. and then call
-     *  super.fire().
-     *  @exception IllegalActionException If there is no director, or if
-     *  the director's fire() method throws it, or if the actor is not
-     *  opaque.
+    /** Return true.
      */
-    public void fire() throws IllegalActionException  {
-        if (_debugging) {
-            _debug("Invoking fire");
-        }
-        for (int i = 0; i < modelString.getWidth(); i++) {
-            if (modelString.hasToken(i)) {
-                try {
-                    StringToken str = (StringToken) modelString.get(0);
-                    //URL url = new URL(str.stringValue());
-                    _model = (CompositeActor) parser.parse(str.stringValue());
-                    break;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new IllegalActionException(this, ex.getMessage());
-                }
-            }
-        }
-        super.fire();
-    }
-
-    /** Return true if the actor either of its input port has token.
-     *  @exception IllegalActionException Not thrown in this baseclass.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Invoking prefire");
-        }
-        if (input.hasToken(0) || modelString.hasToken(0)) {
-            return true;
-        }
-        return false;
+    public boolean isOpaque() {
+        return true;
     }
 
     /** Update the model here to achieve consistency.
@@ -215,9 +215,13 @@ public class MobileModel extends TypedCompositeActor {
                     delete,          // MoML code
                     null);
             requestChange(removeRequest);
-            //add the entity represented by the new model string.
-            //FIXME: the reason I do the change by two change request is because
-            //when I tried to group them in one, I got a parser error...
+
+            // Add the entity represented by the new model string.
+
+            // FIXME: the reason I do the change by two change request
+            // is because when I tried to group them in one, I got a
+            // parser error...
+
             MoMLChangeRequest request = new MoMLChangeRequest(
                     this,            // originator
                     this,          // context
@@ -225,20 +229,24 @@ public class MobileModel extends TypedCompositeActor {
                     null);
             requestChange(request);
             //connect the model.
-            StringBuffer moml = new StringBuffer("<group>");
-            moml.append("<relation name=\"newR1\" class=\"ptolemy.actor.TypedIORelation\">");
-            moml.append("</relation>");
-            moml.append("<relation name=\"newR2\" class=\"ptolemy.actor.TypedIORelation\">");
-            moml.append("</relation>");
-            moml.append("<link port=\"input\" relation=\"newR1\"/>");
-            moml.append("<link port=\"" + _model.getName() + ".input\" relation=\"newR1\"/>");
-            moml.append("<link port=\"" + _model.getName() + ".output\" relation=\"newR2\"/>");
-            moml.append("<link port=\"output\" relation=\"newR2\"/>");
-            moml.append("</group>");
+            String moml = "<group>\n"
+                    + "<relation name=\"newR1\" "
+                    + "class=\"ptolemy.actor.TypedIORelation\">\n"
+                    + "</relation>\n"
+                    + "<relation name=\"newR2\" "
+                    + "class=\"ptolemy.actor.TypedIORelation\">\n"
+                    + "</relation>\n"
+                    + "<link port=\"input\" relation=\"newR1\"/>\n"
+                    + "<link port=\"" + _model.getName()
+                    + ".input\" relation=\"newR1\"/>\n"
+                    + "<link port=\"" + _model.getName()
+                    + ".output\" relation=\"newR2\"/>\n"
+                    + "<link port=\"output\" relation=\"newR2\"/>\n"
+                    + "</group>";
             MoMLChangeRequest request2 = new MoMLChangeRequest(
                     this,            // originator
                     this,          // context
-                    moml.toString(), // MoML code
+                    moml, // MoML code
                     null);
             requestChange(request2);
             if (_debugging) {
@@ -249,10 +257,17 @@ public class MobileModel extends TypedCompositeActor {
         return super.postfire();
     }
 
-    /** Return true.
+    /** Return true if the actor either of its input port has token.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean isOpaque() {
-        return true;
+    public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Invoking prefire");
+        }
+        if (input.hasToken(0) || modelString.hasToken(0)) {
+            return true;
+        }
+        return false;
     }
 
     /** Clean up tha changes that have been made.
@@ -298,21 +313,23 @@ public class MobileModel extends TypedCompositeActor {
      *  of its entities and relations.
      *  @param actor The composite actor.
      */
-    private String _requestToRemoveAll (CompositeActor actor) {
+    private String _requestToRemoveAll(CompositeActor actor) {
         StringBuffer delete = new StringBuffer("<group>");
         Iterator entities = actor.entityList().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
             delete.append("<deleteEntity name=\"" + entity.getName()
                     + "\" class=\"" + entity.getClass().getName() + "\"/>");
-            //System.out.println("the name of the entity is: " + entity.getName());
+            // System.out.println("the name of the entity is: "
+            // + entity.getName());
         }
         Iterator relations = actor.relationList().iterator();
         while (relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
             delete.append("<deleteRelation name=\"" + relation.getName()
                     + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
-            //System.out.println("the name of the relations is: " + relation.getName());
+            // System.out.println("the name of the relations is: "
+            // + relation.getName());
         }
         delete.append("</group>");
         return delete.toString();
