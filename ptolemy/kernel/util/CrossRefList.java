@@ -61,7 +61,7 @@ public final class CrossRefList {
      *  @exception IllegalActionException Argument is null.
      */
     public CrossRefList(Object container) 
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (container == null) {
             throw new IllegalActionException(
                     "Attempt to create CrossRefList with a null container.");
@@ -80,7 +80,7 @@ public final class CrossRefList {
      *  @exception IllegalActionException Second argument is null.
      */
     public CrossRefList(Object container, CrossRefList originalList)
-    throws IllegalActionException {
+            throws IllegalActionException {
         this(container);
         _duplicate(originalList);
     }
@@ -122,7 +122,7 @@ public final class CrossRefList {
      *  Time complexity: O(1).
      */
     public synchronized void link(CrossRefList farList) 
-    throws IllegalActionException {
+            throws IllegalActionException {
         if(farList == this)
             throw new IllegalActionException("illegal link-back");
 
@@ -197,7 +197,7 @@ public final class CrossRefList {
      *  Time complexity: O(n).
      */
     private synchronized void _duplicate(CrossRefList modelToCopy) 
-    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: Technically, this will not always prevent deadlock, since
         // grabbing the lock on "this" is not atomic with grabbing the lock
         // on the modelToCopy.  This method should instead grab a lock on a
@@ -326,7 +326,7 @@ public final class CrossRefList {
          *  @exception java.util.NoSuchElementException Exhausted enumeration.  
          */
         public Object nextElement()
-        throws NoSuchElementException {
+                throws NoSuchElementException {
             if(_enumeratorVersion != _listVersion) {
                 throw new CorruptedEnumerationException();
             }
