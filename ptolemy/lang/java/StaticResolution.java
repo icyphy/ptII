@@ -218,8 +218,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
             if ((categories & CG_USERTYPE) != 0) {
                 System.err.println("Warning: ambiguous reference to " +
-					name.getIdent() +
-					", using most specific one.");
+                        name.getIdent() + 
+                        // " in " + 
+                        //((currentPackage == null) ?
+                        //        "?" : currentPackage.fullName()) +
+                        //"." +
+                        //((currentClass == null) ? 
+                        //        "?" : currentClass.toString()) +
+                        ", using most specific one.");
 
             } else {
                 throw new RuntimeException("ambiguous reference to " +
@@ -767,7 +773,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             throw new RuntimeException(message);
         }
 
-        JavaDecl d = (JavaDecl) possibles.head();
+        JavaDecl d = (JavaDecl) possibles.peek();
         name.setProperty(DECL_KEY, d);
 
         //System.out.println("_findPossibles for " + nameString(name) + " ok");

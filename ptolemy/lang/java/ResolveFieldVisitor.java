@@ -501,7 +501,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
     public MethodDecl resolveCall(ScopeIterator methods, List args) {
 
-        Decl aMethod = methods.head();
+        Decl aMethod = methods.peek();
         Decl d;
 
         LinkedList types = new LinkedList();

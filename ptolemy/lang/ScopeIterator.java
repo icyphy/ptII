@@ -129,16 +129,6 @@ public class ScopeIterator implements Iterator {
         } while (true);
     }
 
-    /** Return the head of the Decls */
-    public Decl head() {
-        Decl retval = nextDecl();
-
-        // Rewind back to valid Decl.
-        _declIter.previous();
-
-        return retval;
-    }
-
     /** Return true if there is more than one matching Decl that
      *  can be reached.
      */
@@ -222,6 +212,16 @@ public class ScopeIterator implements Iterator {
         }
     }
 
+
+    /** Return the first Decl without advancing the iterator */
+    public Decl peek() {
+        Decl retval = nextDecl();
+
+        // Rewind back to valid Decl.
+        _declIter.previous();
+
+        return retval;
+    }
 
     /** Throw a RuntimeException, because we do not support the optional
      *  remove() method of the Iterator interface.
