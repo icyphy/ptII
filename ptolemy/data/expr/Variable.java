@@ -1327,6 +1327,10 @@ public class Variable extends Attribute
      */
     protected final void _parseIfNecessary() throws IllegalActionException {
         if (!_parseTreeValid) {
+            if(_currentExpression == null) {
+                throw new IllegalActionException(this, 
+                        "Empty expression cannot be parsed!");
+            }
             PtParser parser = new PtParser();
             if(isStringMode()) {
                 // Different parse rules for String mode parameters.
