@@ -139,8 +139,16 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
                     "Failed to initialize CAL actor environment.");
         }
         _ddi = _getDDI(env);
+        boolean isLegal;
+        // FIXME: use exeception to return reasonable error message.
+        try {
+            isLegal = _ddi.isLegalActor();
+        } catch (RuntimeException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Actor is not a valid " + _ddi.getName() + " actor.");
+        }
         if (!_ddi.isLegalActor()) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "Actor is not a valid " + _ddi.getName() + " actor.");
         }
         _ddi.setupActor();

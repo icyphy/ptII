@@ -181,13 +181,16 @@ public class DataflowActorInterpreter {
                 ((InputPort)(inputPortMap.get(inputPattern
                                      .getPortname()))).getChannel(0);
             if (inputPattern.getRepeatExpr() == null) {
-                if (!channel.hasAvailable(inputPattern.getVariables().length))
+                if (!channel.hasAvailable(inputPattern.getVariables().length)) {
+                    // System.out.println("Not enough inputs:" + inputPattern.getVariables().length);
                     return false;
+                }
             } else {
                 int repeatVal = context.intValue(env
                         .get(new EnvironmentKey(inputPattern.getPortname())));
                 if (!channel.hasAvailable(
                             inputPattern.getVariables().length * repeatVal)) {
+                    // System.out.println("Not enough repeated inputs:" + inputPattern.getVariables().length * repeatVal);
                     return false;
                 }
             }
@@ -197,6 +200,7 @@ public class DataflowActorInterpreter {
         for (int i = 0; i < guards.length; i++) {
             final Object g = eval.evaluate(guards[i]);
             if (! context.booleanValue(g))  {
+                // System.out.println("guard not satisfied:" + guards[i]);
                 return false;
             }
         }

@@ -102,16 +102,16 @@ public class Dataflow extends AbstractDDI implements DDI {
         return portMap;
     }
 
-    private TypedAtomicActor _ptActor;
-    private Actor _actor;
-    private Action [] _actions;
-    private Context _context;
-    private Environment _env;
-    private Set _currentStateSet;
-    private DataflowActorInterpreter _actorInterpreter;
-    private Map _inputPorts;
-    private Map _outputPorts;
-	private Action _lastFiredAction;
+    protected TypedAtomicActor _ptActor;
+    protected Actor _actor;
+    protected Action [] _actions;
+    protected Context _context;
+    protected Environment _env;
+    protected Set _currentStateSet;
+    protected DataflowActorInterpreter _actorInterpreter;
+    protected Map _inputPorts;
+    protected Map _outputPorts;
+    protected Action _lastFiredAction;
 
 
     public boolean isLegalActor() {
@@ -150,7 +150,7 @@ public class Dataflow extends AbstractDDI implements DDI {
                 _selectAction();
             }
             if (_actorInterpreter.currentAction() != null) {
-				_lastFiredAction = _actorInterpreter.currentAction();
+                _lastFiredAction = _actorInterpreter.currentAction();
                 _actorInterpreter.actionStep();
                 _actorInterpreter.actionComputeOutputs();
                 _actorInterpreter.actionClear(); // sets .currentAction() to null
@@ -159,6 +159,9 @@ public class Dataflow extends AbstractDDI implements DDI {
             throw new IllegalActionException(null, ex,
                     "Could not fire CAL actor '" + _actor.getName() + "'");
         }
+    }
+
+    public void preinitialize() throws IllegalActionException {
     }
 
     /**
@@ -189,11 +192,11 @@ public class Dataflow extends AbstractDDI implements DDI {
         return -1;
     }
 
-    private int  _selectInitializer() {
+    protected int _selectInitializer() {
         Action [] actions = _actor.getInitializers();
         for (int i = 0; i < actions.length; i++) {
             // Note: could we perhaps reuse environment?
-        	_rollbackInputChannels();
+            _rollbackInputChannels();
             _actorInterpreter.actionSetup(actions[i]);
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
@@ -205,12 +208,17 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
 
+    /**
+     * In SDF, selecting which initializer to fire is already done in
+     * preinitialize().
+     * @exception IllegalActionException
+     */
     public void initialize() throws IllegalActionException {
-    	
     	if (_actor.getScheduleFSM() == null) {
-    		_currentStateSet = null;
+            _currentStateSet = null;
     	} else {
-    		_currentStateSet = Collections.singleton(_actor.getScheduleFSM().getInitialState());
+            _currentStateSet = Collections.singleton(
+                    _actor.getScheduleFSM().getInitialState());
     	}
     	
         try {
@@ -255,11 +263,15 @@ public class Dataflow extends AbstractDDI implements DDI {
         }
     }
 
+    /**
+     * Postfire this actor.
+     */
     public boolean postfire() throws IllegalActionException {
-    	_currentStateSet = computeNextStateSet(_currentStateSet, _lastFiredAction);
+    	_currentStateSet = 
+            computeNextStateSet(_currentStateSet, _lastFiredAction);
     	_commitInputChannels();
     	_lastFiredAction = null;
-        return false;
+        return true;
     }
 
     /**
@@ -286,9 +298,6 @@ public class Dataflow extends AbstractDDI implements DDI {
         }
     }
 
-    public void preinitialize() throws IllegalActionException {
-    }
-    
     private boolean  isEligibleAction(Action a) {
     	QID tag = a.getTag();
     	if (tag != null && _currentStateSet != null) {

@@ -37,6 +37,7 @@ import java.util.Map;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.caltrop.actors.CalInterpreter;
 import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
 import ptolemy.data.IntToken;
@@ -76,16 +77,16 @@ import caltrop.interpreter.util.Utility;
    This plugin also adds attributes containing rate information to the
    ports of the actor.
 
-   @author Christopher Chang 
+   @author Christopher Chang, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class SDF extends AbstractDDI implements DDI {
+public class SDF extends Dataflow {
 
     /**
-     * Create an <tt>SDF</tt>
+     * Create an new SDF DDI.
      * @param ptActor The instance of {@link ptolemy.actor.Actor
      * ptolemy.actor.Actor} that the plugin will be associated with.
      * @param actor The abstract syntax tree of the CAL source.
@@ -94,48 +95,9 @@ public class SDF extends AbstractDDI implements DDI {
      */
     public SDF(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
-        _ptActor = ptActor;
-        _actor = actor;
-        _actions = PriorityUtil.prioritySortActions(_actor);
-        _context = context;
-        _env = env;
+        super(ptActor, actor, context, env);
         _eval = new ExprEvaluator(_context,  _env);
-        _actionRates = new ActionRateSignature[_actions.length];
-        _initializerRates =
-            new ActionRateSignature[_actor.getInitializers().length];
-        _inputPorts = createPortMap(_actor.getInputPorts(), true);
-        _outputPorts = createPortMap(_actor.getOutputPorts(), false);
-        _actorInterpreter = new DataflowActorInterpreter(_actor, _context,
-                _env, _inputPorts, _outputPorts);
     }
-
-    private Map createPortMap(PortDecl [] ports, boolean isInput) {
-        Map portMap = new HashMap();
-        for (int i = 0; i < ports.length; i++) {
-            String name = ports[i].getName();
-            TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
-            if (isInput) {
-                portMap.put(name, new SingleInputPort(name,
-                                    new DFInputChannel(port, 0)));
-            } else {
-                portMap.put(name, new SingleOutputPort(name,
-                                    new DFOutputChannel(port, 0)));
-            }
-        }
-        return portMap;
-    }
-
-    private TypedAtomicActor _ptActor;
-    private Actor _actor;
-    private Action [] _actions;
-    private Context _context;
-    private Environment _env;
-    private ExprEvaluator _eval;
-    private ActionRateSignature [] _actionRates;
-    private ActionRateSignature [] _initializerRates;
-    private DataflowActorInterpreter _actorInterpreter;
-    private Map _inputPorts;
-    private Map _outputPorts;
 
     /**
      * In SDF, an actor is legal if:
@@ -149,15 +111,44 @@ public class SDF extends AbstractDDI implements DDI {
      * a legal SDF actor.
      */
     public boolean isLegalActor() {
-    	// FIXME: Strictly speaking, we should allow priority in SDF actors,
-    	// under certain conditions (i.e the resulting actor should remain
-    	// an SDF actor, of course). So we need to do the corresponding analysis.
-    	// Until then, we simply disallow priority clauses in SDF actors.
-        if (atLeastOneUnguardedAction()
-                && checkActionRates() && checkInitializers()
-				&& !PriorityUtil.hasPriorityOrder(_actor))
+        try {
+            if (!_atLeastOneUnguardedAction()) {
+                throw new RuntimeException("No unguarded action!");
+            }
+            
+            _actionRates = _computeActionRates(_actions);        
+            
+            // Check that the rates are actually equal.
+            if (!_allEqual(_actionRates)) {
+                throw new RuntimeException("Action rates are not equal!");
+            }
+            
+            _initializerRates = _computeActionRates(_actor.getInitializers());
+            
+            if (!_checkInitializerGuards()) {
+                throw new RuntimeException("Initializers are guarded!");
+            }
+            
+            if (PriorityUtil.hasPriorityOrder(_actor)) {
+                // FIXME: Strictly speaking, we should allow priority in
+                // SDF actors, under certain conditions (i.e the resulting
+                // actor should remain an SDF actor, of course). So we
+                // need to do the corresponding analysis.  Until then, we
+                // simply disallow priority clauses in SDF actors.
+                throw new RuntimeException("Has priorities!");
+            }
             return true;
-        return false;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * Get the name of this DDI.
+     * @return "SDF".
+     */
+    public String getName() {
+        return "SDF";
     }
 
     /**
@@ -170,77 +161,41 @@ public class SDF extends AbstractDDI implements DDI {
      */
     public void setupActor() {
         // use the 0th element because the rates are all the same.
-        annotatePortsWithRates(_ptActor.inputPortList(),
+        _annotatePortsWithRates(_ptActor.inputPortList(),
                 _actionRates[0].getInputRates(),  "tokenConsumptionRate");
-        annotatePortsWithRates(_ptActor.outputPortList(),
+        _annotatePortsWithRates(_ptActor.outputPortList(),
                 _actionRates[0].getOutputRates(),  "tokenProductionRate");
-        annotatePortsWithInitProductionRates();
-        _ptActor.getDirector().invalidateSchedule();
-    }
-
-    /*
-      1. figure out which initializer to fire (if we've gotten this
-      far, rates and guards are both statically computable)
-      2. annotate ports with the correct rates.
-    */
-
-    private void annotatePortsWithInitProductionRates() {
         int i = _selectInitializer();
-        if (i != -1)
-            annotatePortsWithRates(_ptActor.outputPortList(),
+        if (i != -1) {
+            _annotatePortsWithRates(_ptActor.outputPortList(),
                     _initializerRates[i].getOutputRates(),
                     "tokenInitProduction");
-        return;
+        }
+        _ptActor.getDirector().invalidateSchedule();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
-    /**
-     * Get the name of this <tt>SDF</tt>.
-     * @return The name of this <tt>SDF</tt>.
+    /** Annotate the given list of TypedIOPorts with rate parameters
+     * according to the given map.
      */
-    public String getName() {
-        return "SDF";
-    }
-
-    private void annotatePortsWithRates(List ioPorts, Map rateMap, String varName) {
-        for (Iterator iterator = ioPorts.iterator(); iterator.hasNext();) {
-            IOPort ioPort = (IOPort) iterator.next();
-            Object o = ioPort.getAttribute(varName);
-            if (o != null) {
-                if (o instanceof Variable) {
-                    try {
-                        ((Variable) o).setContainer(null);
-                    } catch (Exception e) {
-                        throw new DDIException("In IOPort " + ioPort.getName()
-                                + " couldn't clear Variable "
-                                + ((Variable) o).getName());
-                    }
-                } else {
-                    throw new DDIException("IOPort " + ioPort.getName()
-                            + " contains An attribute named " + varName
-                            + " that is not a Variable... "
-                            + "this shouldn't happen.");
-                }
-            }
-
+    private void _annotatePortsWithRates(
+            List ports, Map rateMap, String varName) {
+        for (Iterator iterator = ports.iterator(); iterator.hasNext();) {
+            IOPort port = (IOPort) iterator.next();
             try {
-                new Parameter(ioPort, varName,
-                        new IntToken(((Integer) rateMap
-                                             .get(ioPort.getName())).intValue()));
-            } catch (IllegalActionException ex) {
-                throw new DDIException("This shouldn't happen"
-                        + "ioPort can definitely hold a "
-                        + "variable, and it's guaranteed to be non-null",
-                        ex);
-
-            } catch (NameDuplicationException ex2) {
-                throw new DDIException("This shouldn't happen, "
-                        + "as this method is the only thing attaching "
-                        + "Variables to ports", ex2);
+                DFUtilities.setIfNotDefined(port, varName, 
+                        ((Integer) rateMap.get(port.getName())).intValue());
+            } catch (Exception e) {
+                throw new DDIException("Failed to set " + varName + 
+                        " of port " + port.getFullName());
             }
         }
     }
 
-    private boolean atLeastOneUnguardedAction() {
+    // Return true if at least one action does not have a guard.
+    private boolean _atLeastOneUnguardedAction() {
         for (int i = 0; i < _actions.length; i++) {
             Action action = _actions[i];
             if (action.getGuards().length == 0)
@@ -249,79 +204,28 @@ public class SDF extends AbstractDDI implements DDI {
         return false;
     }
 
-    private boolean checkActionRates() {
-        if (!computeActionRates())
-            return false;
-        if (!checkEqualRates())
-            return false;
-        return true;
-    }
-
-    private boolean checkInitializers() {
-        if (!computeInitializerRates())
-            return false;
-        if (!checkInitializerGuards())
-            return false;
-        return true;
-    }
-
-    private boolean checkInitializerGuards() {
+    // Return true if initializer guards can be computed statically.
+    private boolean _checkInitializerGuards() {
         Action [] initializers = _actor.getInitializers();
         for (int i = 0; i < initializers.length; i++) {
             Action initializer = initializers[i];
             Expression [] guards = initializer.getGuards();
             for (int j = 0; j < guards.length; j++) {
-                if (!isStaticallyComputable(guards[j], initializer))
+                if (!_isStaticallyComputable(guards[j], initializer))
                     return false;
             }
         }
         return true;
     }
 
-    /**
-     * Verify that the rates of each action are statically computable,
-     * and if so, compute them, storing the results in _actionRates.
-     * @return
-     */
-    private boolean computeActionRates() {
-        for (int i = 0; i < _actions.length; i++) {
-            Action action =  _actions[i];
-            ActionRateSignature ars = new ActionRateSignature();
-
-            InputPattern [] inputPatterns = action.getInputPatterns();
-            for (int j = 0; j < inputPatterns.length; j++) {
-                InputPattern inputPattern = inputPatterns[j];
-                Expression repeatExpr = inputPattern.getRepeatExpr();
-                int repeatVal = computeRepeatExpr(repeatExpr, action);
-                if (repeatVal == -1)
-                    return false;
-                ars.addInputRate(inputPattern.getPortname(),
-                        inputPattern.getVariables().length * repeatVal);
-            }
-
-            OutputExpression [] outputexps = action.getOutputExpressions();
-            for (int j = 0; j < outputexps.length; j++) {
-                OutputExpression outputexp = outputexps[j];
-                Expression repeatExpr = outputexp.getRepeatExpr();
-                int repeatVal = computeRepeatExpr(repeatExpr, action);
-                if (repeatVal == -1)
-                    return false;
-                ars.addOutputRate(outputexp.getPortname(),
-                        outputexp.getExpressions().length * repeatVal);
-            }
-            _actionRates[i] = ars;
-        }
-        return true;
-    }
-
-    /**
-     * Verify that the rates of each action are statically computable,
-     * and if so, compute them, storing the results in _actionRates.
-     * @return
-     */
-    private boolean computeInitializerRates() {
-        Action [] actions = _actor.getInitializers();
-
+    // For each action in the given set of actions, compute its rate
+    // signature.  Throw an Exception if any action has a rate which
+    // cannot be statically computed.
+    private ActionRateSignature[] _computeActionRates(Action[] actions) 
+            throws Exception {
+        ActionRateSignature[] signatures =
+            new ActionRateSignature[actions.length];
+        
         for (int i = 0; i < actions.length; i++) {
             Action action =  actions[i];
             ActionRateSignature ars = new ActionRateSignature();
@@ -330,9 +234,7 @@ public class SDF extends AbstractDDI implements DDI {
             for (int j = 0; j < inputPatterns.length; j++) {
                 InputPattern inputPattern = inputPatterns[j];
                 Expression repeatExpr = inputPattern.getRepeatExpr();
-                int repeatVal = computeRepeatExpr(repeatExpr, action);
-                if (repeatVal == -1)
-                    return false;
+                int repeatVal = _computeExpression(repeatExpr, action);
                 ars.addInputRate(inputPattern.getPortname(),
                         inputPattern.getVariables().length * repeatVal);
             }
@@ -341,93 +243,82 @@ public class SDF extends AbstractDDI implements DDI {
             for (int j = 0; j < outputexps.length; j++) {
                 OutputExpression outputexp = outputexps[j];
                 Expression repeatExpr = outputexp.getRepeatExpr();
-                int repeatVal = computeRepeatExpr(repeatExpr, action);
-                if (repeatVal == -1)
-                    return false;
+                int repeatVal = _computeExpression(repeatExpr, action);
                 ars.addOutputRate(outputexp.getPortname(),
                         outputexp.getExpressions().length * repeatVal);
             }
-            _initializerRates[i] = ars;
+            signatures[i] = ars;
         }
-        return true;
+        return signatures;
     }
 
-    /**
-     * Compute the value of a repeat expression. If this is not
-     * statically possible, return -1.
-     *
-     * <p>In order for the repeat expression to be statically computable,
-     * its value must only depend on global variables or actor
-     * parameters. In other words, any free variables in a repeat
-     * expression cannot be bound by action state variables, port
-     * variables, or actor state variables.
-     * @param repeatExpr
-     * @param action
-     * @return
-     */
-    private int computeRepeatExpr(Expression repeatExpr, Action action) {
+    // Statically compute the value of the given repeat expression. If
+    // this is not possible, throw an exception.  <p>In order for the
+    // repeat expression to be statically computable, its value must
+    // only depend on global variables or actor parameters. In other
+    // words, any free variables in a repeat expression cannot be
+    // bound by action state variables, port variables, or actor state
+    // variables.
+    private int _computeExpression(Expression repeatExpr, Action action) 
+            throws Exception {
         if (repeatExpr == null) {
             return 1;
         } else {
-            if (!isStaticallyComputable(repeatExpr, action))
-                return -1;
-
-            int value;
-            try {
-                value = this._context.intValue(_eval.evaluate(repeatExpr));
-            } catch (InterpreterException ie) {
-                return -1;
+            if (!_isStaticallyComputable(repeatExpr, action)) {
+                throw new Exception(
+                        "The expression '" + repeatExpr + 
+                        "' cannot be statically computed.");
             }
+            
+            int value = _context.intValue(_eval.evaluate(repeatExpr));
             return value;
         }
     }
 
+    // Return true if the given expression is statically computable.
     // Assumes free variable annotater has been run on the AST.
-    private boolean isStaticallyComputable(Expression expr, Action action) {
+    private boolean _isStaticallyComputable(Expression expr, Action action) {
         if (expr == null)
             return true;
         List freeVars = (List) expr.getAttribute(AttributeKeys.KEYFREEVAR);
         for (Iterator iterator = freeVars.iterator(); iterator.hasNext();) {
             String name = (String) iterator.next();
-            if (isBoundByPortVar(name, action) ||
-                    isIn(name, action.getDecls()) ||
-                    isIn(name, _actor.getStateVars()))
+            if (_isBoundByPortVar(name, action) ||
+                    _isIn(name, action.getDecls()) ||
+                    _isIn(name, _actor.getStateVars()))
                 return false;
         }
         return true;
     }
 
-    private static boolean isBoundByPortVar(String name, Action action) {
+    private static boolean _isBoundByPortVar(String name, Action action) {
         InputPattern [] inputPatterns = action.getInputPatterns();
         for (int i = 0; i < inputPatterns.length; i++) {
-            if (isIn(name, inputPatterns[i].getVariables()))
+            if (_isIn(name, inputPatterns[i].getVariables()))
                 return true;
         }
         return false;
     }
 
-    private static boolean isIn(String name, String [] names) {
+    private static boolean _isIn(String name, String [] names) {
         for (int i = 0; i < names.length; i++) {
-            if (name == names[i])
+            if (name.equals(names[i])) {
                 return true;
+            }
         }
         return false;
     }
 
-    private static boolean isIn(String name, Decl [] decls) {
+    private static boolean _isIn(String name, Decl [] decls) {
         for (int i = 0; i < decls.length; i++) {
-            if (name == decls[i].getName())
+            if (name.equals(decls[i].getName())) {
                 return true;
+            }
         }
         return false;
     }
 
-
-    private boolean checkEqualRates() {
-        return allEqual(_actionRates);
-    }
-
-    private static boolean allEqual(Object [] objs) {
+    private static boolean _allEqual(Object [] objs) {
         if (objs.length <= 1)
             return true;
         Object standard = objs[0];
@@ -439,153 +330,12 @@ public class SDF extends AbstractDDI implements DDI {
         return true;
     }
 
-    /**
-     * Executes the selected action on the first {@link #fire()
-     * fire()} call. On successive calls, it rolls back previous state
-     * changes, selects a new action and executes it.
-     *
-     * <p> <b>Note: Is this correct behavior? What is the contract
-     * between the result of prefire() and successive calls to
-     * fire()?</b>
-     *
-     * @exception IllegalActionException If an error occurs during the
-     * interpretation of the action.
-     */
-    public void fire() throws IllegalActionException {
-        // FIXMELATER: state transition and potentially rollback
-        try {
-            if (_actorInterpreter.currentAction() == null) {
-                // This point is reached iff this is not the first fire()
-                // call of this iteration.
-                // Hence we could put rollback work here.
+    ///////////////////////////////////////////////////////////////////
+    ////                        private members                    ////
 
-            	_rollbackInputChannels();
-                _selectAction();
-            }
-            if (_actorInterpreter.currentAction() != null) {
-                _actorInterpreter.actionStep();
-                _actorInterpreter.actionComputeOutputs();
-                _actorInterpreter.actionClear();
-            }
-        } catch (Exception e) {
-            throw new IllegalActionException(_ptActor, e,
-                    "Could not fire CAL actor '" + _actor.getName() + "': "
-                    + e.getMessage());
-        }
-    }
-
-    /**
-     * _selectAction picks an action for which the actor interpreter
-     * evaluates the guard to true. Note that this does not
-     * necessarily mean that <em>all</em> preconditions for firing are
-     * satisfied---the amount of "prechecking" depends on the model of
-     * computation ddi. (FIXMELATER)
-     *
-     * @return The action number that was selected, a value <0 if no
-     * action was selected.
-     */
-    private int  _selectAction() {
-        for (int i = 0; i < _actions.length; i++) {
-            // Note: could we perhaps reuse environment?
-            _actorInterpreter.actionSetup(_actions[i]);
-            if (_actorInterpreter.actionEvaluatePrecondition()) {
-                return i;
-            } else {
-                _actorInterpreter.actionClear();
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * In SDF, selecting which initializer to fire is already done in
-     * preinitialize().
-     * @exception IllegalActionException
-     */
-    public void initialize() throws IllegalActionException {
-        _rollbackInputChannels();
-        try {
-            if (_actorInterpreter.currentAction() != null) {
-                _actorInterpreter.actionStep();
-                _actorInterpreter.actionComputeOutputs();
-                _actorInterpreter.actionClear();
-            }
-        }
-        catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Could not fire initializer "
-                    + "in CAL actor '"
-                    + _actor.getName() + "': " + ex.getMessage());
-        }
-    }
-
-    private int  _selectInitializer() {
-        Action [] actions = _actor.getInitializers();
-        for (int i = 0; i < actions.length; i++) {
-            // Note: could we perhaps reuse environment?
-            _actorInterpreter.actionSetup(actions[i]);
-            if (_actorInterpreter.actionEvaluatePrecondition()) {
-                return i;
-            } else {
-                _actorInterpreter.actionClear();
-            }
-        }
-        return -1;
-    }
-
-    private void  _commitInputChannels() {
-        for (Iterator iterator = _inputPorts.values().iterator();
-             iterator.hasNext();) {
-            InputPort inputPort = (InputPort) iterator.next();
-            for (int i = 0; i < inputPort.width(); i++) {
-                DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
-                c.commit();
-            }
-        }
-    }
-
-    private void  _rollbackInputChannels() {
-        for (Iterator iterator = _inputPorts.values().iterator();
-             iterator.hasNext();) {
-            InputPort inputPort = (InputPort) iterator.next();
-            for (int i = 0; i < inputPort.width(); i++) {
-                DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
-                c.rollback();
-            }
-        }
-    }
-
-
-    public boolean postfire() throws IllegalActionException {
-    	_commitInputChannels();
-        return true;
-    }
-
-    /**
-     * Select a firable action among the actions of the actor, if possible.
-     *
-     * @return True, if an action could be selected.
-     * @exception IllegalActionException If an error occurred during
-     * the action selection.
-     */
-    public boolean prefire() throws IllegalActionException {
-        try {
-            _selectAction();
-//            if (_actorInterpreter.currentAction() != null)
-//                return true;
-//            else
-//                return _ptActor.superPrefire();
-            return true;
-        } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Error during action selection in actor '"
-                    + _actor.getName() + "': " + ex.getMessage());
-        }
-    }
-
-    public void preinitialize() throws IllegalActionException {
-        // FIXME: why does this not call super()?
-    }
+    private ExprEvaluator _eval;
+    private ActionRateSignature [] _actionRates;
+    private ActionRateSignature [] _initializerRates;
 
     private static class ActionRateSignature {
         public boolean equals(Object o) {
@@ -593,9 +343,9 @@ public class SDF extends AbstractDDI implements DDI {
                 return true;
             } else {
                 if (o instanceof ActionRateSignature) {
-                    return this.inputRates.equals(((ActionRateSignature)o)
+                    return inputRates.equals(((ActionRateSignature)o)
                             .inputRates) &&
-                        this.outputRates.equals(((ActionRateSignature)o)
+                        outputRates.equals(((ActionRateSignature)o)
                                 .outputRates);
                 } else {
                     return false;
@@ -607,10 +357,10 @@ public class SDF extends AbstractDDI implements DDI {
         }
 
         public void addInputRate(String portname, int rate) {
-            this.inputRates.put(portname, new Integer(rate));
+            inputRates.put(portname, new Integer(rate));
         }
         public void addOutputRate(String portname, int rate) {
-            this.outputRates.put(portname, new Integer(rate));
+            outputRates.put(portname, new Integer(rate));
         }
 
         public Map getInputRates() {

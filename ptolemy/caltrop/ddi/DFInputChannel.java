@@ -43,15 +43,26 @@ import caltrop.interpreter.InputChannel;
    @author J&#246;rn W. Janneck 
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
+   @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
 class DFInputChannel implements InputChannel {
 
+    public DFInputChannel(TypedIOPort port, int channel) {
+        this.port = port;
+        this.channel = channel;
+        this.buffer = new ArrayList();
+        this.tokensRead = 0;
+    }
+    
+    /** Get the given token from this input channel.  If necessary,
+     * consume tokens from the associated Ptolemy input port to make
+     * the given token available.
+     */
     public Object get(int n) {
         int m = n - buffer.size() + 1;
         if (m <= 0) {
-        	tokensRead = Math.max(tokensRead, n + 1);
+            tokensRead = Math.max(tokensRead, n + 1);
             return buffer.get(n);
         }
         try {
@@ -61,29 +72,40 @@ class DFInputChannel implements InputChannel {
             for (int i = 0; i < m; i++) {
                 buffer.add(port.get(channel));
             }
-        	tokensRead = Math.max(tokensRead, n + 1);
+            tokensRead = Math.max(tokensRead, n + 1);
             return buffer.get(n);
         } catch (IllegalActionException e) {
             throw new CalIOException("Could not read tokens.", e);
         }
     }
 
+    /** Commit reads of this channel.  Any tokens read since the last
+     * invocation of the rollback method are lost andd no longer
+     * available for reading.
+     */
     public void commit() {
     	assert tokensRead <= buffer.size();
 
-    	if (tokensRead == buffer.size())
-    		buffer.clear();
-    	else {
-    		for (int i = 0; i < tokensRead; i++)
+    	if (tokensRead == buffer.size()) {
+            buffer.clear();
+    	} else {
+            for (int i = 0; i < tokensRead; i++) {
     	    	buffer.remove(0);
+            }
     	}
     	tokensRead = 0;
     }
     
+    /** Rollback any reads from this channel, allowing the tokens to
+     * be read again.
+     */
     public void rollback() {
     	tokensRead = 0;
     }
 
+    /** Return true if the given number of tokens are available to be
+     * immediately read from the channel.
+     */
     public boolean hasAvailable(int n) {
         int m = n - buffer.size();
         if (m <= 0)
@@ -99,15 +121,6 @@ class DFInputChannel implements InputChannel {
         }
     }
     
-
-
-    public DFInputChannel(TypedIOPort port, int channel) {
-        this.port = port;
-        this.channel = channel;
-        this.buffer = new ArrayList();
-        this.tokensRead = 0;
-    }
-
     public String toString() {
         return "(DFInputChannel " + channel + " at " + port.toString() + ")";
     }

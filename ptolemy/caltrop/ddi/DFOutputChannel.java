@@ -42,11 +42,19 @@ import caltrop.interpreter.OutputChannel;
    @author J&#246;rn W. Janneck 
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
+   @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
 class DFOutputChannel implements OutputChannel {
 
+    public DFOutputChannel(TypedIOPort port, int channel) {
+        this.port = port;
+        this.channel = channel;
+    }
+
+    /** Send the given object (which is assumed to be a token in this
+     * implementation) from the associated TypedIOPort port.
+     */
     public void put(Object a) {
         try {
             port.send(channel, (Token)a);
@@ -57,13 +65,6 @@ class DFOutputChannel implements OutputChannel {
         } catch (ClassCastException ex) {
             throw new CalIOException("Token not of valid token type.", ex);
         }
-    }
-
-    //
-
-    public DFOutputChannel(TypedIOPort port, int channel) {
-        this.port = port;
-        this.channel = channel;
     }
 
     public String toString() {
