@@ -1,6 +1,6 @@
 $Id$
 
-Here are some tips for setup and run Jini and JavaSpaces
+Here are some tips for setting up and run Jini and JavaSpaces
 
 1) You must set your environment variable $PTII properly. 
 
