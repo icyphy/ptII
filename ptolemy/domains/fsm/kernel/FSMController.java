@@ -824,10 +824,10 @@ public class FSMController extends CompositeEntity implements TypedActor {
     protected FSMState _currentState = null;
 
     /** @serial The initial state. */
-    FSMState _initialState = null;
+    protected FSMState _initialState = null;
 
     /** @serial The list of initial transitions. */
-    LinkedList _initialTransitions = null;
+    protected LinkedList _initialTransitions = null;
 
     /** @serial The input status variable list. */
     protected VariableList _inputStatusVars = null;
@@ -836,17 +836,17 @@ public class FSMController extends CompositeEntity implements TypedActor {
     protected VariableList _inputValueVars = null;
 
     /** @serial The local variable list. */
-    VariableList _localVariables = null;
+    protected VariableList _localVariables = null;
 
     /** @serial The transition to be taken when change state. */
     protected FSMTransition _takenTransition = null;
 
     // From AtomicActor, should keep consistent.
     // Cached lists of input and output ports.
-    private transient long _inputPortsVersion = -1;
-    private transient LinkedList _cachedInputPorts;
-    private transient long _outputPortsVersion = -1;
-    private transient LinkedList _cachedOutputPorts;
+    protected transient long _inputPortsVersion = -1;
+    protected transient LinkedList _cachedInputPorts;
+    protected transient long _outputPortsVersion = -1;
+    protected transient LinkedList _cachedOutputPorts;
 
 
 }
