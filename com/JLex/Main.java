@@ -3578,9 +3578,12 @@ class CAlloc
  **************************************************************/
 public class Main
 {
-    /***************************************************************
-                                                                    Function: main
-    **************************************************************/
+    /**
+     *  Invoke the lexical analyzer on a file.
+     *  @param arg[] Arguments to JLex.  One and only one argument is
+     *  required: The bame of the file to be processed.
+     *  @exception IOException If there are problems processing the file.
+     */
     public static void main
     (
             String arg[]
