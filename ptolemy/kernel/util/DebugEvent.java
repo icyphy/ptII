@@ -34,7 +34,7 @@ package ptolemy.kernel.util;
 //// DebugEvent
 /**
 An interface for events that can be used for debugging.  These events will
-generally be subclassed to create events with more meaning (such as 
+generally be subclassed to create events with more meaning (such as
 a FiringEvent).
 
 @author  Steve Neuendorffer

@@ -204,7 +204,7 @@ public class NamedObj implements Nameable, Debuggable,
     /** Add a change listener.  If there is a container, then
      *  delegate to the container.  Otherwise, add the listener
      *  to the list of change listeners in this object. Each listener
-     *  will be notified of the execution (or failure) of each 
+     *  will be notified of the execution (or failure) of each
      *  change request that is executed via the requestChange() method.
      *  Note that in this implementation, only the top level of a
      *  hierarchy executes changes, which is why this method delegates
@@ -770,10 +770,10 @@ public class NamedObj implements Nameable, Debuggable,
         return;
     }
 
-    /** Request that given change request be executed.   In this base 
+    /** Request that given change request be executed.   In this base
      *  class, defer the change request to the container, if there is one.
      *  If there is no container, then execute the request immediately.
-     *  In other words, the request will get passed up to the top level 
+     *  In other words, the request will get passed up to the top level
      *  of the hierarchy and then executed.  Subclasses can override
      *  this to queue the change request and execute it at an appropriate time.
      *  Change listeners will be notified of success (or failure) or the
