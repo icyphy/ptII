@@ -152,7 +152,7 @@ test Entity-4.0 {Connect Entities} {
     set print [java::new pt.kernel.Entity "Print"]
     set out [java::new pt.kernel.Port "Ramp out"]
     set in [java::new pt.kernel.Port "Print in"]
-    set arc [java::new pt.kernel.test.RelationTest "Arc"]
+    set arc [java::new pt.kernel.Relation "Arc"]
 
     # Connect
     $out setEntity $ramp
