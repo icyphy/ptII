@@ -38,6 +38,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -59,64 +60,61 @@ import javax.comm.SerialPortEventListener;
 //////////////////////////////////////////////////////////////////////////
 //// SerialComm
 /**
-Sends and receive bytes via the serial port.  The choice of serial port and
-baud rate to use are made by parameters.  If the specified serial port
-is not successfully opened, then another one will automatically be
-chosen if available.
+Send and receive bytes via the serial port.  The serial port and
+baud rate are specified by parameters.
+<p>
+This actor requires that the Java comm API be installed.
+The comm API comes from http://java.sun.com/products/javacomm/
+To install the comm API on a Windows machine:
+<ul>
+<li> place the win32com.dll in $JDK\jre\bin directory. 
+<li> make sure the win32com.dll is executable.
+<li> Place the comm.jar in $JDK\jre\lib\ext. 
+<li> Place the javax.comm.properties in $JDK\jre\lib . 
+</ul>
+where $JDK is the location of your Java development kit.
 
-<p>Currently, this actor will only work under Windows, though in
-principle it could be made to work on any platform that supports
-the Java Comm api.
+<p>This actor can be used in most domains, but the parameters must
+be chosen carefully to match the domain semantics.  This actor sets
+up a listener to the serial port, and when input data appears on the
+serial port, it calls fireAtCurrentTime() on the director.  This
+behavior is useful in the DE domain, for example (although you will
+likely have to set the <i>stopWhenQueueIsEmpty</i> parameter of the
+director false).
 
-<p>If you get the following error on the console:
- Error loading win32com: java.lang.UnsatisfiedLinkError:
- no win32com in java.library.path
-Then you need to copy the win32com.dll file to some additional directory,
-such as c:\jdk1.3\bin.
+<p> Some domains, however, such as SDF, ignore the fireAtCurrentTime()
+call.  Such domains, will typically fire this actor when its outputs
+are needed. Consequently, for use in such domains, you will likely
+want to set the <i>blocking</i> parameter of this actor to true.
+When this parameter is true, the fire() method blocks until there
+is serial port data available.
 
-<p>This actor is designed for use in DE and SDF.  By default, this actor
-does not block in fire().  When fired, if no data is available on the
-serial port, then no token is produced.  However, when using this actor in
-SDF, you may want to experiment with the <i>blocking</i> parameter.
-Setting this true has the actor block in fire() ultil data arrives.
+<p>The inputs and outputs of this actor are unsigned byte arrays.
+The <i>minimumOutputSize</i> parameter specifies the minimum number of
+bytes that are produced on the output in each firing.  The
+<i>maximumOutputSize</i> parameter specifies the maximum number
+of bytes that are produced on the output on each firing. If these
+two numbers are equal, then when a firing produces data, it will
+always produce the same amount of data.  Otherwise, the amount
+of data produced is nondeterministic.
 
-<p>Bytes to be sent must enter the actor as an array of integers.
-The lowest order byte from each integer is used.  (Negative numbers
-are treated as though 256 has been just added enough times to make them
-non-negative.)  Likewise, bytes received are broadcast out of the actor
-as an integer array of which only the low bytes carry data.  This
-actor makes no guarantee as to the contents of the other three bytes
-of the integer.
+<p>The <i>discardOldData</i> parameter, if true, indicates
+that the fire() method may discard bytes.  In particular, if
+there are more than <i>maximumOutputSize</i> bytes available
+on the serial port, then all but the most recent <i>maximumOutputSize</i>
+will be discarded.
 
-<p>This actor fulfills the SerialPortEventListener interface.
-This means that when serial events (such as DATA_AVAILABLE) occur,
-the serialEvent() method gets called.  The serialEvent()
-method calls the director's fireAtCurrentTime() method, triggering
-a call to fire().
+<p>For example, if you wish for this actor to produce only the
+most recent byte read on the serial port each time it fires,
+set <i>discardOldData</i> to true, <i>blocking</i> to true,
+and both <i>minimumOutputSize</i> and <i>maximumOutputSize</i>
+to 1.
 
-<p>By the time fire() executes, there may be several bytes of available
-data.  This is primarily because the UART only signals the software every
-8 bytes or so.  These are packaged by fire() into an array of integers
-(one int per byte) and broadcast.
+<p> If after firing there are additional data available on the
+input port, then the fire() method will call fireAtCurrentTime()
+on the director before returning.
 
-<p>The fire() method's reading of serial data is also governed by the
-<i>blocking</i>, <i>threshold</i>, and <i>truncation</i> parameters.
-Fire() first tests to see if there are at least <i>threshold</i> bytes
-of data available.  If so, it reads them, or the <i>truncation</i>
-most recent bytes, whichever is fewer.  (Or all the bytes, regardless
-of how many, if <i>truncation</i> is set to zero.)  If fewer than
-<i>threshold</i> bytes are available, then if <i>blocking</i> is false
-it will not read any data, but if <i>blocking</i> is true it will wait
-until at least <i>threshold</i> bytes are available.
-
-<p>Because the DATA_AVAILABLE event typically occurs every 8 bytes,
-continuous data arriving at 115200 baud can wake up the actor 1440
-times per second!  This is to often to be calling fireAt*() on
-the director of a DE model.  Thus, after the first fireAtCurrentTime()
-call, the serialEvent() callback only notifys the fire() method
-(in case it is awaiting additional data to meet its <i>threshold</i>)
-and does not call fireAt*() again until the actor has completed a
-firing since the last time fireAt*() was called.
+<p> This actor currently works only under Windows.
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
@@ -127,9 +125,6 @@ public class SerialComm extends TypedAtomicActor
     implements SerialPortEventListener {
 
     /** Construct a SerialComm actor with the given container and name.
-     *  Construct the serialPortName and baudRate parameters.  Initialize
-     *  baudRate to 19200.  Initialize serialPortName to one element of
-     *  the enumeration given by a .getPortIdentifiers() call.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -149,83 +144,101 @@ public class SerialComm extends TypedAtomicActor
         dataReceived.setOutput(true);
         dataReceived.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        serialPortName = new Parameter(this, "serialPortName",
-                new StringToken("<UNKNOWN>"));
-        serialPortName.setTypeEquals(BaseType.STRING);
+        serialPortName = new StringParameter(this, "serialPortName");
+        // Enumerate the available ports.
+        Enumeration ports = CommPortIdentifier.getPortIdentifiers();
+        String defaultChoice = null;
+        while (ports.hasMoreElements()) {
+            CommPortIdentifier identifier =
+                    (CommPortIdentifier) ports.nextElement();
+            if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                String value = identifier.getName();
+                serialPortName.addChoice(value);
+                if (defaultChoice == null) {
+                    defaultChoice = value;
+                }
+            }
+        }
+        if (defaultChoice == null) {
+            defaultChoice = "no ports available";
+            serialPortName.addChoice(defaultChoice);
+        }
+        serialPortName.setExpression(defaultChoice);
 
         baudRate = new Parameter(this, "baudRate");
         baudRate.setTypeEquals(BaseType.INT);
-        baudRate.setToken(new IntToken(19200));
-
-        threshold = new Parameter(this, "threshold");
-        threshold.setTypeEquals(BaseType.INT);
-        threshold.setToken(new IntToken(1));
-
-        truncation = new Parameter(this, "truncation");
-        truncation.setTypeEquals(BaseType.INT);
-        truncation.setToken(new IntToken(0));
+        baudRate.setToken(new IntToken(9600));
+        // FIXME: Should find the available values. How?
 
         blocking = new Parameter(this, "blocking");
         blocking.setTypeEquals(BaseType.BOOLEAN);
-        blocking.setToken(new BooleanToken(false));
+        blocking.setToken(BooleanToken.FALSE);
 
-        if (false) System.out.println("<>1<>");
-        Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
-        while (allPorts.hasMoreElements()) {
-            if (false) System.out.println("<>2<>");
-            CommPortIdentifier id = (CommPortIdentifier)allPorts.nextElement();
-            if (id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                serialPortName.setToken(new StringToken(id.getName()));
-                break;
-            }
-        }
-        if (false) System.out.println("<>3<>");
+        minimumOutputSize = new Parameter(this, "minimumOutputSize");
+        minimumOutputSize.setTypeEquals(BaseType.INT);
+        minimumOutputSize.setToken(new IntToken(1));
+        
+        maximumOutputSize = new Parameter(this, "maximumOutputSize");
+        maximumOutputSize.setTypeEquals(BaseType.INT);
+        maximumOutputSize.setExpression("MaxInt");
+
+        discardOldData = new Parameter(this, "discardOldData");
+        discardOldData.setTypeEquals(BaseType.BOOLEAN);
+        discardOldData.setToken(BooleanToken.FALSE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The port that receives data to be sent via the serial port.
-     *  This port has type integer array.  Each integer in the array is
-     *  truncated to its least significant byte and output on the serial
-     *  port.
+    /** The baud rate of the serial port, such as 9600 (the default),
+     *  19200, or 115200, for the serial port.  This has
+     *  type integer and defaults to 9600.
+     */
+    public Parameter baudRate;
+    
+    /** Indicator of whether fire method is blocking.  If true, fire()
+     *  waits until <i>minimumOutputSize</i> bytes have arrived.
+     *  The type is boolean with default false.
+     */
+    public Parameter blocking;
+
+    /** The input port for data to be sent to the serial port.
+     *  This port has type unsigned byte array.
      */
     public TypedIOPort dataToSend;
 
-    /** The port that sends data that has been received via the serial port.
-     *  This port has type integer array.  All data available on the serial
-     *  port is output in an integer array, one byte per integer.
+    /** The output port for data that has been received by the serial port.
+     *  This port has type unsigned byte array.
      */
     public TypedIOPort dataReceived;
 
-    /** The name, such as "COM2", of the serial port used.  This
-     *  parameter has string type and by default contains the string
-     *  corresponding to the name of the first available serial port.
+    /** Indicator of whether to discard old data. If this is true,
+     *  then the fire() method will read all available data, but produce
+     *  no more than <i>maximumOutputSize</i> bytes on the output,
+     *  discarding the rest.  This is a boolean that defaults to false.
      */
-    public Parameter serialPortName;
+    public Parameter discardOldData;
+        
+    /** The maximum number of bytes produced in each firing on the output.
+     *  This is an integer that defaults to MaxInt. It is required to be
+     *  at least as large as <i>minimumOutputSize</i>
+     */
+    public Parameter maximumOutputSize;
 
-    /** The baud rate, such as 115200, for the serial port.  This has
-     *  type integer and must be one of the following values:
-     *  FIXME find the values.  The default value is 19200.
+    /** The minimum number of bytes that will be read from the serial
+     *  port and produced on the output.  This is required to be a
+     *  strictly positive integer, and it defaults to 1.
      */
-    public Parameter baudRate;
+    public Parameter minimumOutputSize;
 
-    /** The threshold, default value 1, for reading data from the
-     *  serial port.  Data will not be read until threshold is
-     *  reached or surpassed.
+    /** Attribute giving the serial port to use. This is a string with
+     *  the default being the first serial port listed by the
+     *  javax.comm.CommPortIdentifier class.  If there are no serial
+     *  ports available (meaning probably that the javax.comm package
+     *  is not installed properly), then the value of the string will
+     *  be "no ports available".
      */
-    public Parameter threshold;
-
-    /** The truncation cut.  When reading, older bytes are discarded
-     *  until <i>truncation</i> or fewer remain.  Caveat: If this
-     *  parameter equals 0, than no data is discarded.
-     */
-    public Parameter truncation;
-
-    /** Whether fire methof is blocking.  If true, fire waits until
-     *  <i>threshold</i> bytes have arrived.  Type is boolean.
-     */
-    public Parameter blocking;
+    public StringParameter serialPortName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -255,64 +268,83 @@ public class SerialComm extends TypedAtomicActor
             // its baud rate, then it is desirable to be able to quickly
             // change one's own baud rate so as to catch the reply at the
             // new rate.
-        } else if (attribute == threshold) {
-            _threshold = ((IntToken)threshold.getToken()).intValue();
-        } else if (attribute == truncation) {
-            _truncation = ((IntToken)truncation.getToken()).intValue();
+        } else if (attribute == minimumOutputSize) {
+            _minimumOutputSize = ((IntToken)minimumOutputSize.getToken()).intValue();
+            if (_minimumOutputSize < 1) {
+                throw new IllegalActionException(this,
+                "minimumOutputSize is required to be strictly positive.");
+            }
+        } else if (attribute == maximumOutputSize) {
+            _maximumOutputSize = ((IntToken)maximumOutputSize.getToken()).intValue();
+            if (_maximumOutputSize < 1) {
+                throw new IllegalActionException(this,
+                "maximumOutputSize is required to be strictly positive.");
+            }
+        } else if (attribute == discardOldData) {
+            _discardOldData = ((BooleanToken)discardOldData.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Transfers data between the Ptolemy model and the built in
-     *  buffers associated with the serial port.  Actual serial
-     *  input and output occur right before or right after fire().
-     *  For example, serial output occurs in response to the .flush()
-     *  call below.  This data written to the serial port out to the
-     *  serial hardware.  The .flush() method does not wait for the
-     *  hardware to complete the transmission, as this might take
-     *  many milliseconds (roughly 1mS for every 10 bytes at 115200
-     *  baud).
+    /** If input data is available at the serial port, read it and
+     *  produce it as a byte array at the output port of this actor;
+     *  if a token is available at the input port of this actor,
+     *  consume it and send the bytes contained by this token to the
+     *  serial port.  If <i>blocking</i> is true, then before doing
+     *  either of these, stall the calling thread until there is
+     *  data available at the serial port.  The <i>minimumOutputSize</i>
+     *  specifies the minimum number of bytes that must be available. 
      *  <p>
-     *  This fire() method checks for either or both of the following
-     *  conditions.  Data may have been received and is available in
-     *  the serial port.  A Token may have been received by this actor.
-     *  If at least 1 byte is available, broadcast it.
-     *  If an integer-array token is available, take a byte out
-     *  of each integer and send the byte stream to the serial port.
+     *  Before returning, if data is sent to the serial port, this
+     *  method calls flush(). However, the flush() method does not
+     *  wait for the hardware to complete the transmission, as this
+     *  might take many milliseconds (roughly 1mS for every 10 bytes
+     *  at 115200 baud). Consequently, the data will not have been
+     *  completely produced on the serial port when this returns.
+     *  <p>
+     *  If data is still available on the serial port when this returns,
+     *  then before returning it calls fireAtCurrentTime() on the director.
+     * 
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public synchronized void fire() throws IllegalActionException {
         try {
             InputStream in = _serialPort.getInputStream();
-            int bytesAvailable;
-            // Note: This needs _threshold to be at least 1.
-            while ((bytesAvailable = in.available()) < _threshold
-                    && _blocking) {
+            int bytesAvailable = 0;
+            // NOTE: This needs _minimumOutputSize to be at least 1.
+            while ((bytesAvailable = in.available()) < _minimumOutputSize
+                    && _blocking && !_stopRequested && !_stopFireRequested) {
                 try{
                     wait();
                 } catch (InterruptedException ex) {
-                    throw new IllegalActionException(this,"wait interrupted");
+                    throw new IllegalActionException(this,
+                    "Thread interrupted waiting for serial port data.");
                 }
             }
 
-            //(moved to finally clause)_directorFiredAtAlready = false;
-
-            if (bytesAvailable >= _threshold) {
-                // Read only if the at least desired amount of data is present.
-                if (_truncation != 0 && bytesAvailable > _truncation) {
-                    // Attempt to skip excess bytes if more than _truncation.
-                    // Reduce bytesAvailable by the actual number skipped.
+            if (bytesAvailable >= _minimumOutputSize) {
+                // Read only if at least desired amount of data is present.
+                if (_discardOldData && bytesAvailable > _maximumOutputSize) {
+                    // Skip excess bytes.
                     bytesAvailable -= (int)in.skip((long)
-                            (bytesAvailable-_truncation));
+                            (bytesAvailable - _maximumOutputSize));
                 }
-                byte[] dataBytes = new byte[bytesAvailable];
-                in.read(dataBytes, 0, bytesAvailable);
-                Token[] dataTokens = new Token[bytesAvailable];
-                for (int j = 0; j < bytesAvailable; j++) {
+                int outputSize = bytesAvailable;
+                if (outputSize > _maximumOutputSize) {
+                    outputSize = _maximumOutputSize;
+                }
+                byte[] dataBytes = new byte[outputSize];
+                in.read(dataBytes, 0, outputSize);
+                Token[] dataTokens = new Token[outputSize];
+                for (int j = 0; j < outputSize; j++) {
                     dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
                 }
                 dataReceived.broadcast(new ArrayToken(dataTokens));
+                
+                if (in.available() >= _minimumOutputSize) {
+                    getDirector().fireAtCurrentTime(this);
+                }
             }
 
             if (dataToSend.getWidth() > 0 && dataToSend.hasToken(0)) {
@@ -320,41 +352,36 @@ public class SerialComm extends TypedAtomicActor
                 OutputStream out = _serialPort.getOutputStream();
                 for (int j = 0; j < dataArrayToken.length(); j++) {
                     UnsignedByteToken dataToken =
-                        (UnsignedByteToken)dataArrayToken.getElement(j);
+                           (UnsignedByteToken)dataArrayToken.getElement(j);
                     out.write(dataToken.byteValue());
                 }
                 out.flush();
             }
 
         } catch (IOException ex) {
-            throw new IllegalActionException(this, "I/O error: " +
-                    ex.getMessage());
+            throw new IllegalActionException(this, ex, "I/O error.");
         } finally {
             _directorFiredAtAlready = false;
         }
     }
 
-    /** [Pre]initialize does the resource allocation for this actor.
-     *  Specifically, it opens the serial port (setting the baud rate
-     *  and other communication settings) and then activates the
+    /** Perform resource allocation for this actor.
+     *  Specifically, open the serial port (setting the baud rate
+     *  and other communication settings) and then activate the
      *  serial port's event listening resource, directing events to the
-     *  serialEvent() method of this actor.  (serialEvent() is the
-     *  required name for this method.  It is required since this actor
-     *  implements SerialPortEventListener.  It is not explicitly named in
-     *  the calls to .addEventListener() and .notifyOnDataAvailable()
-     *  below.)
+     *  serialEvent() method of this actor.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         _directorFiredAtAlready = false;
         try {
 
             String serialPortNameValue =
-                ((StringToken)(serialPortName.getToken())).stringValue();
+                    ((StringToken)(serialPortName.getToken())).stringValue();
             CommPortIdentifier portID =
-                CommPortIdentifier.getPortIdentifier(serialPortNameValue);
-            _serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
+                    CommPortIdentifier.getPortIdentifier(serialPortNameValue);
+            _serialPort = (SerialPort) portID.open("Ptolemy", 2000);
             // The 2000 above is 2000mS to open the port, otherwise time out.
 
             int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
@@ -366,87 +393,60 @@ public class SerialComm extends TypedAtomicActor
 
             _serialPort.addEventListener(this);
             _serialPort.notifyOnDataAvailable(true);
-            _serialPort.notifyOnDSR(true);//DataSetReady isDSR
-            _serialPort.notifyOnCTS(true);//ClearToSend isCTS
-            _serialPort.notifyOnCarrierDetect(true);//isCD
-            _serialPort.notifyOnRingIndicator(true);//isRI
+            _serialPort.notifyOnDSR(true); // DataSetReady isDSR
+            _serialPort.notifyOnCTS(true); // ClearToSend isCTS
+            _serialPort.notifyOnCarrierDetect(true); // isCD
+            _serialPort.notifyOnRingIndicator(true); // isRI
             // Direct serial events on this port to my serialEvent() method.
+            
+            _stopFireRequested = false;
 
         } catch (Exception ex) {
-            // Maybe the port was the problem, _debug() the available ports.
-            if (_debugging) _debug("Enumerating available ports."
-                    + "  Testing which, if any, are serial ports. {");
-            Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
-            while (allPorts.hasMoreElements()) {
-                CommPortIdentifier id = (CommPortIdentifier)
-                    allPorts.nextElement();
-                if (_debugging) {
-                    _debug("    {");
-                    _debug("        id.toString() = " + id.toString());
-                    _debug("        id.getName() = " + id.getName());
-                    _debug("        id.getPortType() = " + id.getPortType());
-                    _debug("        (id.getPortType() == "
-                            + " CommPortIdentifier.PORT_SERIAL) = "
-                            + (id.getPortType() ==
-                                    CommPortIdentifier.PORT_SERIAL));
-                    _debug("    }");
-                }
-            }
-            if (_debugging) _debug("}");
-
-            throw new IllegalActionException(this,
-                    "Communication port initialization failed: "
-                    + " for available ports, 'listen' to actor & rerun "
-                    + ex);
+            
+            throw new IllegalActionException(this, ex,
+                    "Communication port initialization failed.");
         }
     }
 
-
     /** React to an event from the serial port.  This is the one and
      *  only method required to implement SerialPortEventListener
-     *  (which this class implements).
-     *
-     *  <p>Call the director's fireAtCurrentTime() method when new data
-     *  is available.  By the requirement of serialEvent() implementing
-     *  SerialPortEventListener, no exceptions can be thrown.
-     *  However, runtime exceptions are always permitted anyway.  Thus
-     *  KernelRuntimeException is permitted.
+     *  (which this class implements).  This method calls
+     *  fireAtCurrentTime() of the director if sufficient input
+     *  data is available on the serial port.
      */
     public synchronized void serialEvent(SerialPortEvent e) {
-        if (false) {
-            if (e.getEventType() == SerialPortEvent.CD) {
-                System.out.println("+++CD+++");
-            }
-            if (e.getEventType() == SerialPortEvent.CTS) {
-                System.out.println("+++CTS+++");
-            }
-            if (e.getEventType() == SerialPortEvent.RI) {
-                System.out.println("+++RI+++");
-            }
-            if (e.getEventType() == SerialPortEvent.DSR) {
-                System.out.println("+++DSR+++");
-            }
-        }
-
         try {
             if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-                //if (e.getEventType() == SerialPortEvent.RI && !_serialPort.isRI()) {
                 if (!_directorFiredAtAlready) {
                     _directorFiredAtAlready = true;
-                    getDirector().fireAtCurrentTime(this);
+                    InputStream in = _serialPort.getInputStream();
+                    if (in.available() >= _minimumOutputSize) {
+                        getDirector().fireAtCurrentTime(this);
+                    }
                 }
                 notifyAll();
             }
         } catch (Exception ex) {
-            // This class implements
-            // javax.comm.SerialPortEventListener, which defines
-            // serialEvent() so we can't throw an
-            // IllegalActionException here.  Thus we throw a
-            // RuntimeException instead.
-            throw new KernelRuntimeException(this,
-                    "serialEvent's call to fireAtCurrentTime() failed: "
-                    + ex);
+            // This will only occur if the model is not running.
+            throw new KernelRuntimeException(this, null,
+                    ex,
+                    "Failure calling fireAtCurrentTime() from the event listener.");
         }
+    }
+    
+    /** Override the base class to stop waiting for input data.
+     */
+    public synchronized void stop() {
+        super.stop();
+        notifyAll();
+    }
+
+    /** Override the base class to stop waiting for input data.
+     */
+    public synchronized void stopFire() {
+        super.stopFire();
+        _stopFireRequested = true;
+        notifyAll();
     }
 
     /** Close the serial port.
@@ -457,33 +457,40 @@ public class SerialComm extends TypedAtomicActor
      */
     public void wrapup() throws IllegalActionException {
         if (_serialPort != null) {
+            // Strangely, this _must_ be called before closing the port.
+            _serialPort.removeEventListener();
             _serialPort.close();
-            _serialPort = null;  //FIXME Is this necessary?
+            _serialPort = null;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
+    // The serial port.
     private SerialPort _serialPort;
 
-    // Threshold for reading serial port data.  Don't read unless.
+    // Threshold for reading serial port data.  Don't read unless
     // at least this many bytes are available.
-    private int _threshold;
+    private int _maximumOutputSize;
+    
+    // Threshold for reading serial port data.  Don't read unless
+    // at least this many bytes are available.
+    private int _minimumOutputSize;
 
-    // Truncation cut for older data.  Bytes older than the most
-    // recent <i>truncation</i> bytes are skipped.  Exception:
-    // If <i>truncation</i> == 0, than nothing is skipped.
-    private int _truncation;
+    // Indicator to discard older data.
+    private boolean _discardOldData;
 
-    // Whether this actor is blocking (Vs non-blocking).
+    // Whether this actor is blocking.
     private boolean _blocking;
 
-    // True iff fireAtCurrentTime() has been called on the direcror
-    // but either director has not yet fired this actor, or it has
+    // True if fireAtCurrentTime() has been called on the direcror
+    // but either the director has not yet fired this actor, or it has
     // been fired but fire() has not completed.  Could be in wait().
     private boolean _directorFiredAtAlready;
+    
+    // Indicator that stopFire() has been called.
+    private boolean _stopFireRequested = false;
 
     // Required for accessing the serial port.
     // Somehow the .initialize() call must do something crucial.

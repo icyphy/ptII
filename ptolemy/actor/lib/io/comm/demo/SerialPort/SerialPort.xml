@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SerialPort" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -101,6 +101,8 @@ male serial port:
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -211,6 +213,8 @@ male serial port:
             <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+    </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -219,6 +223,8 @@ male serial port:
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;U&quot;}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 185.0">
@@ -238,6 +244,8 @@ male serial port:
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -245,7 +253,29 @@ male serial port:
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
+    <entity name="SerialComm" class="ptolemy.actor.lib.io.comm.SerialComm">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+        </property>
+        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="9600">
+        </property>
+        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="minimumOutputSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="maximumOutputSize" class="ptolemy.data.expr.Parameter" value="MaxInt">
+        </property>
+        <property name="discardOldData" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 225.0">
+        </property>
+        <port name="dataToSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="dataReceived" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -255,39 +285,19 @@ male serial port:
             <property name="output"/>
         </port>
     </entity>
-    <entity name="SerialComm" class="ptolemy.actor.lib.io.comm.SerialComm">
-        <property name="serialPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM1&quot;">
-        </property>
-        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="19200">
-        </property>
-        <property name="threshold" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="truncation" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 230.0">
-        </property>
-        <port name="dataToSend" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="dataReceived" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="285.0, 185.0">
         </vertex>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Clock.output" relation="relation4"/>
+    <link port="Clock.output" relation="relation"/>
     <link port="Display.input" relation="relation5"/>
-    <link port="Display.input" relation="relation"/>
-    <link port="StringToIntArray.input" relation="relation4"/>
-    <link port="StringToIntArray.output" relation="relation5"/>
+    <link port="Display.input" relation="relation2"/>
     <link port="SerialComm.dataToSend" relation="relation5"/>
-    <link port="SerialComm.dataReceived" relation="relation"/>
+    <link port="SerialComm.dataReceived" relation="relation2"/>
+    <link port="StringToUnsignedByteArray.input" relation="relation"/>
+    <link port="StringToUnsignedByteArray.output" relation="relation5"/>
 </entity>
