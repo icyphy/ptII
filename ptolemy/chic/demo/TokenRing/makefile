@@ -34,7 +34,7 @@ ME =		ptolemy/chic/demo/TokenRing
 DIRS = 		
 
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
