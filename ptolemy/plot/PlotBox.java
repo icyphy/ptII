@@ -2395,16 +2395,22 @@ public class PlotBox extends Panel {
         public void mouseExited(MouseEvent event) {
         }
         public void mousePressed(MouseEvent event) {
-            PlotBox.this._zoomStart(event.getX(), event.getY());
+            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
+                PlotBox.this._zoomStart(event.getX(), event.getY());
+            }
         }
         public void mouseReleased(MouseEvent event) {
-            PlotBox.this._zoom(event.getX(), event.getY());
+            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
+                PlotBox.this._zoom(event.getX(), event.getY());
+            }
         }
     }
 
     public class DragListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent event) {
-            PlotBox.this._zoomBox(event.getX(), event.getY());
+            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
+                PlotBox.this._zoomBox(event.getX(), event.getY());
+            }
         }
         public void mouseMoved(MouseEvent event) {
         }
@@ -2483,8 +2489,10 @@ public class PlotBox extends Panel {
             switch(keycode) {
             case KeyEvent.VK_CONTROL:
                 _control = false;
+                break;
             case KeyEvent.VK_SHIFT:
                 _shift = false;
+                break;
             default:
                 // None
             }
