@@ -5180,7 +5180,7 @@ echo "$as_me: WARNING: Failed to find PTII/vendors/sun/jxta/jxta.jar
 fi
 
 if test -z "$PTJXTA_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|vendors/sun/jxta/"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|vendors/sun/jxta/|ptolemy/actor/lib/jxta/|ptolemy/moml/jxta/|"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxta.jar\"/> \
