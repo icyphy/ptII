@@ -49,8 +49,7 @@ import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -151,4 +150,134 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+
+    // Evaluate the given parse tree in the scope of the the model
+    // being scheduled, resolving "::" scoping syntax inside the
+    // model.
+    private Token _evaluateExpressionInModelScope(ASTPtRootNode node)
+            throws IllegalActionException {
+        if (_parseTreeEvaluator == null) {
+            _parseTreeEvaluator = new ParseTreeEvaluator();
+        }      
+        if (_parserScope == null) {
+            _parserScope = new ScheduleScope();
+        } 
+        Token result = _parseTreeEvaluator.evaluateParseTree(
+                node, _parserScope);
+        return result;
+    }
+
+    private class SymbolicFiring extends Firing {
+        /** Construct a firing with the given actor.  The given actor
+         *  is assumed to fire the number of times determined by
+         *  evaluating the given expression.  Expression will probably
+         *  be something like
+         *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
+         *  a::out::tokenProductionRate)"
+         *  @param actor The actor in the firing.
+         */
+        public SymbolicFiring(Actor actor, String expression)
+                throws IllegalActionException {
+            super(actor);
+            PtParser parser = new PtParser();
+            _parseTree = parser.generateParseTree(expression);
+        }
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+        
+        /** Return the current iteration count of this firing.
+         */
+        public int getIterationCount() {
+            try {
+                IntToken token = (IntToken)
+                    _evaluateExpressionInModelScope(_parseTree);
+                return token.intValue();
+            } catch (Exception ex) {
+                // FIXME: this isn't very nice.
+                throw new RuntimeException(ex.getMessage());
+            }
+        }
+        private ASTPtRootNode _parseTree;
+    }
+
+    /** Scope implementation with local caching. */
+    private class ScheduleScope extends ModelScope {
+        
+        /** Construct a scope consisting of the variables
+         *  of the container of the the enclosing instance of
+         *  Variable and its containers and their scope-extending
+         *  attributes.
+         */
+        public ScheduleScope() {
+        }
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.Token get(String name)
+                throws IllegalActionException {
+            NamedObj reference = (CompositeActor)
+                PSDFScheduler.this.getContainer();
+            Variable result;
+            if(name.indexOf("::") != -1) {
+                String insideName = name.replaceAll("::", ".");
+                result = (Variable)reference.getAttribute(insideName);
+            } else {
+                result = getScopedVariable(
+                        null,
+                        reference,
+                        name);
+            }
+
+            if (result != null) {
+                return result.getToken();
+            } else {
+                return null;
+            }
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            NamedObj reference = (CompositeActor)
+                PSDFScheduler.this.getContainer();
+            Variable result;
+            if(name.indexOf("::") != -1) {
+                String insideName = name.replaceAll("::", ".");
+                result = (Variable)reference.getAttribute(insideName);
+            } else {
+                result = getScopedVariable(
+                        null,
+                        reference,
+                        name);
+            }
+
+            if (result != null) {
+                return result.getType();
+            } else {
+                return null;
+            }
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of variable names within the scope.
+         */
+        public Set identifierSet() {
+            NamedObj reference = (CompositeActor)
+                PSDFScheduler.this.getContainer();
+            return getAllScopedVariableNames(null, reference);
+        }
+    }
+    private ParseTreeEvaluator _parseTreeEvaluator;
+    private ParserScope _parserScope;
 }
