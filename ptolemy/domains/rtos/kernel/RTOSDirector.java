@@ -1,4 +1,4 @@
-/* Real Time Operating System Director
+/* Real Time Operating System domain director.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -47,24 +47,18 @@ import java.util.TimerTask;
 import java.util.HashSet;
 import java.util.Set;
 
-//FIXME: -- Need to support use real time (for pure event).
-//       -- Need to fully support disabled actors.
-//       -- Need to implement transferInput and transfer time.
-
-
+//FIXME: -- Need to fully support disabled actors.
 
 //////////////////////////////////////////////////////////////////////////
 //// RTOSDirector
 /**
-FIXME: Need to update documents.
 
-A director that implements a priority-based nonpreemptive scheduling
-model of computation. This model of computation is sometimes seen in
+A director that implements a priority-based multitasking 
+model of computation. This model of computation is usually seen in
 real-time operating systems.
 <P>
-This director is an extension of the DEDirector. It uses piorities
-rather than time stamps to sort events. All events go to a priority
-queue and are sorted in the queue. At any given time, events with
+This director uses a global priority queue to sort events that triggers
+actors (tasks). Events are sorted based on the At any given time, events with
 the highest priority is dequeued from the event queue and the destination
 actor is fired. The priority of an event is the priority of its
 destination port. The priority of an input port is specified by

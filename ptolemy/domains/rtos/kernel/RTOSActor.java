@@ -35,6 +35,8 @@ import ptolemy.actor.Actor;
 //// RTOSActor
 /**
 An interface that add a method getExecutionTime() to the Actor interface.
+This allows actors estimate its execution time on a per iteration basis,
+and may be an input-dependent manner.
 @author Jie Liu
 @version $Id$
 
@@ -44,7 +46,8 @@ public interface RTOSActor extends Actor {
     /** Return the execution time for this iteration. This method
      *  will be called by the RTOSDirector after the prefire() method
      *  is called. The reason for this method is to allow the actor
-     *  to determine/estimate its execution time based on the inputs
+     *  to determine/estimate its execution time on a per iteration
+     *  basis.
      */
     public double getExecutionTime();
 }

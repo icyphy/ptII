@@ -1,4 +1,4 @@
-/* Real Time Operating System Receiver
+/* RTOS domain Receiver.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -48,18 +48,12 @@ import ptolemy.data.IntToken;
 
 import java.util.LinkedList;
 
-//import ptolemy.actor.*;
-//import ptolemy.domains.de.kernel.*;
-//import ptolemy.kernel.util.*;
-//import ptolemy.data.*;
-//import ptolemy.data.expr.Parameter;
-
 //////////////////////////////////////////////////////////////////////////
 //// RTOSReceiver
 /**
-The receiver for the RTOS domain. This receiver extends the DEReciever.
-However, instead of attaching a time stamp to the received token before
-sending it to the event queue, it attaches the priority of the token.
+The receiver for the RTOS domain. This receiver contains a FIFO queue.
+Upon receiving a token, it attaches the priority of the token and
+queue the event with the director.
 The priority of a received token is determined in the following order:
 <UL>
 <li> If the container of the receiver has a parameter named <i>priority</i>
@@ -70,7 +64,7 @@ has a <i>priority</i> parameter, then the priority equals to the value
 of the <i>priority<i> of the actor.
 <li> If neither the container nor the container of the container of this
 reciever has the <i>priority</i> parameter, then the priority of the
-token is the default priority, which is 5.0.
+token is the default priority, which is 5.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
@@ -83,46 +77,12 @@ public class RTOSReceiver extends AbstractReceiver {
 	super();
     }
 
-    /** Construct an empty RTOSReceiver with the specified container.
-     *  @param container The container.
-     *  @exception IllegalActionException If the container does
-     *   not accept this receiver.
-     
-    public RTOSReceiver(IOPort container) throws IllegalActionException {
-        super(container);
-        try {
-            container.workspace().getReadAccess();
-            Actor actor = (Actor)container.getContainer();
-            if (actor != null) {
-                Director dir;
-                if ( (container.isOutput()) &&
-                        (actor instanceof CompositeActor) &&
-                        ((CompositeActor)actor).isOpaque()) {
-                    dir = actor.getDirector();
-                } else {
-                    dir = actor.getExecutiveDirector();
-                }
-                if (dir != null) {
-                    if (dir instanceof RTOSDirector) {
-                        _director = (RTOSDirector)dir;
-                    } else {
-                        throw new InternalErrorException(getContainer() + 
-                                " Does not have a RTOSDirector.");
-                    }
-                }
-            }
-        } finally {
-            container.workspace().doneReading();
-        } 
-        
-        }*/
-
     ////////////////////////////////////////////////////////////////////////
     ////                     public methods                             ////
 
     /** Get a token from the receiver.  The token returned is one that
-     *  was put in the receiver with a time stamp equal to or earlier than
-     *  the current time.  Note that there might be multiple such
+     *  was put in the receiver that is ready for process.
+     *  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
      *  respect to the put() method. If there is no such token, throw an
      *  exception. This method is synchronized since the actor may not
@@ -144,13 +104,13 @@ public class RTOSReceiver extends AbstractReceiver {
      *  an output port of an opaque composite actor,
      *  then the director will be the local director
      *  of the container of its port. Otherwise, it's the executive
-     *  director of the container of its port.Note that
+     *  director of the container of its port. Note that
      *  the director returned is guaranteed to be non-null.
      *  This method is read synchronized on the workspace.
-     *  @return An instance of DEDirector.
+     *  @return An instance of RTOSDirector that creates this receiver.
      *  @exception IllegalActionException If there is no container port, or
      *   if the port has no container actor, or if the actor has no director,
-     *   or if the director is not an instance of DEDirector.
+     *   or if the director is not an instance of RTOSDirector.
      */
     public RTOSDirector getDirector() throws IllegalActionException {
         IOPort port = (IOPort)getContainer();
@@ -227,7 +187,7 @@ public class RTOSReceiver extends AbstractReceiver {
      *  must put the token back into this receiver using the _triggerEvent()
      *  protected method in order for the token to become available to
      *  the get() method.  By default, this token will be enqueued by
-     *  the director with the default priority -- 5.0.
+     *  the director with the default priority -- 5.
      *  However, by setting a <i>priority</i> parameter to the container
      *  of this receiver, or the container's container, 
      *  you can enqueue the event with any priority.
@@ -261,9 +221,7 @@ public class RTOSReceiver extends AbstractReceiver {
     ////                         protected methods                 ////
 
     /** Make a token available to the get() method.
-     *  Normally, only a director will call this method. It calls it
-     *  when current time matches the time stamp of the token, i.e.
-     *  when the delay specified by setDelay() has elapsed.
+     *  Normally, only a director will call this method.
      *  @param token The token to make available to get().
      */
     protected void _triggerEvent(Token token) {

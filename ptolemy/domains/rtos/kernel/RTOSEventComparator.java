@@ -32,16 +32,21 @@ package ptolemy.domains.rtos.kernel;
 
 import ptolemy.actor.util.CQComparator;
 
-/** A comparator for RTOS events. All parameters are fixed.
- *  
- *  @author Jie Liu
- *  @version $Id$
- */
+//////////////////////////////////////////////////////////////////////////
+//// RTOSEventComparator
+/** 
+A comparator for RTOS events. This class extends CQComparator so that
+it can be used by CalendarQueue. This class ignores all the configuration
+parameters in CQComparator. Only the default parameters are used.
+
+@author Jie Liu
+@version $Id$
+*/
 
 public class RTOSEventComparator implements CQComparator {
 
-    /** Compare the two argument for order. Return a negative integer,
-     *  zero, or a positive integer if the first argument is less than,
+    /** Compare the two argument for order. Return -1, 0, or 1
+     *  if the first argument is less than,
      *  equal to, or greater than the second.
      *  Both arguments must be instances of RTOSEvent or a
      *  ClassCastException will be thrown.  The compareTo() method
@@ -49,10 +54,10 @@ public class RTOSEventComparator implements CQComparator {
      *
      * @param object1 The first event.
      * @param object2 The second event.
-     * @return A negative integer, zero, or a positive integer if the first
+     * @return -1, 0, or 1 if the first
      *  argument is less than, equal to, or greater than the second.
      * @exception ClassCastException If one of the arguments is not
-     *  an instance of DEEvent.
+     *  an instance of RTOSEvent.
      */
     public final int compare(Object object1, Object object2) {
         return((RTOSEvent) object1).compareTo(object2);
@@ -60,7 +65,7 @@ public class RTOSEventComparator implements CQComparator {
 
     /** Given an event, return the virtual index of
      *  the bin that should contain the event.
-     *  If the argument is not an instance of DEEvent, then a
+     *  If the argument is not an instance of RTOSEvent, then a
      *  ClassCastException will be thrown.  Only the priority
      *  of the arguments is used.  The quantity returned is the
      *  quantized piority, i.e. the
