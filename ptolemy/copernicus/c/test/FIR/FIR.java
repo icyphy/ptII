@@ -61,7 +61,7 @@ public class FIR {
     }
 
     /** Configure the FIR filter with a specified number of taps, tap
-     *  values, delay line storage, interploation value, decimation value,
+     *  values, delay line storage, interpolation value, decimation value,
      *  and decimation phase.
      *  @param numberOfTaps The number of taps.
      *  @param taps The tap values.
