@@ -244,34 +244,32 @@ public class ASTReflect {
      *  If a class is not found, return null.
      */
     public static ClassDeclNode lookupClassDeclNode(String name) {
-      try {
-          // The classname was something like java.lang.Object
-          return ASTClassDeclNode(Class.forName(name));
-      } catch (ClassNotFoundException e) {
-          // The classname was something like Object, so
-          // we search the loaded packages.
-          // FIXME: we could try optimizing this so we
-          // look in java.lang first, which is where
-          // vast majority of things will be found.
-          Package packages[] = Package.getPackages();
-          for(int i = 0; i < packages.length; i++) {
-              String qualifiedName =
-                  new String(packages[i].getName() + "." + name);
-              try {
-                  return ASTClassDeclNode(Class.forName(qualifiedName));
-              } catch (ClassNotFoundException ee) {
-                  // Keep searching the packages.
-              }
-
-		if (myClass != null) {
-		    break;
-		}
+        try {
+            // The classname was something like java.lang.Object
+            return ASTClassDeclNode(Class.forName(name));
+        } catch (ClassNotFoundException e) {
+            // The classname was something like Object, so
+            // we search the loaded packages.
+            // FIXME: we could try optimizing this so we
+            // look in java.lang first, which is where
+            // vast majority of things will be found.
+            Package packages[] = Package.getPackages();
+            for(int i = 0; i < packages.length; i++) {
+                String qualifiedName =
+                    new String(packages[i].getName() + "." + name);
+                try {
+                    return ASTClassDeclNode(Class.forName(qualifiedName));
+                } catch (ClassNotFoundException ee) {
+                    // Keep searching the packages.
+                }
 	    } 
+	    // FIXME: We need to do this part
+	    throw new RuntimeException("ASTReflect.lookupClassDeclNode(): " +
+				       "Could not find class '" + name + 
+				       "'. The package of this class has " +
+				       "not yet been loaded, so we need to " +
+				       "look in the searchPath");
 	}
-	if (myClass == null) {
-	    return null;
-	}
-	return ASTClassDeclNode(myClass);
     }
 
 

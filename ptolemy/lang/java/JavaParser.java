@@ -255,7 +255,7 @@ static short[] read_short_table(String filename, int size)
     }
     rafOut.close();
   } catch (IOException e) {
-    throw new RuntimeException("could not write binary table to " +
+    System.err.println("could not write binary table to " +
                                filename + ".bin : " + e);
   }
 
