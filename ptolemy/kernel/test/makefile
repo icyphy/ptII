@@ -60,7 +60,6 @@ JSIMPLE_TESTS = \
 	IntParam.tcl \
 	NamedObj.tcl \
 	NamedObjList.tcl \
-	ParamList.tcl \
 	Port.tcl \
 	PortList.tcl \
 	Relation.tcl
