@@ -63,7 +63,7 @@ and return an instance of Token.  The expression language identifies
 the appropriate method to use by using reflection, matching the
 types of the arguments.
 
-@author  Neil Smyth, Christopher Hylands, Bart Kienhuis, Edward A. Lee
+@author  Neil Smyth, Christopher Hylands, Bart Kienhuis, Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -680,37 +680,56 @@ public class UtilityFunctions {
         return arrayToken;
     }
 
-	/** Return the sum of the elements in the specified array.
-	 *  This method is polymorphic in that it can sum any array
-	 *  whose elements support addition.
-	 *  @param array An array.
-	 * 	@returns The sum of the elements of the array.
-	 *  @exception IllegalActionException If the length of the array is zero,
-	 * 	 or if the array elements do not support addition.
-	 */
-	public static final Token sum(ArrayToken array) throws IllegalActionException {
-		if (array == null || array.length() < 1) {
-			throw new IllegalActionException(
+    /** Return the sum of the elements in the specified array.
+     *  This method is polymorphic in that it can sum any array
+     *  whose elements support addition.
+     *  @param array An array.
+     *  @returns The sum of the elements of the array.
+     *  @exception IllegalActionException If the length of the
+     * array is zero, or if the array elements do not support
+     * addition.
+     */
+    public static final Token sum(ArrayToken array)
+            throws IllegalActionException {
+        if (array == null || array.length() < 1) {
+            throw new IllegalActionException(
                     "sum() function cannot be applied to an empty array");
-		}
-		Token result = array.getElement(0);
-		for (int i = 1; i < array.length(); i++) {
-			result = result.add(array.getElement(i));
-		}
-		return result;
-	}
-
+        }
+        Token result = array.getElement(0);
+        for (int i = 1; i < array.length(); i++) {
+            result = result.add(array.getElement(i));
+        }
+        return result;
+    }
+    
     /** Return the approximate number of bytes used by current objects
-     *        and available for future object allocation.
+     *  and available for future object allocation.
      *  @return The total number of bytes used by the JVM.
      *  @see #freeMemory()
      */
     public static LongToken totalMemory() {
         return new LongToken(Runtime.getRuntime().totalMemory());
     }
+    
+    /** Evaluate the given string as an expression in the expression
+     *  language.  Instead of returning the resulting value, return a
+     *  trace of the evaluation, including such useful information as
+     *  what registered method is actually invoked.
+     *  @param string The string to be parsed and evaluated.
+     *  @return A string representing an evaluating trace.
+     */
+    public static String traceEvaluation(String string) 
+            throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode parseTree = parser.generateParseTree(string);
+        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+        return evaluator.traceParseTreeEvaluation(parseTree, null).toString();
+    }
 
-    /** Return a double zero matrix with the given number of rows and columns.
-     *  @return The zero matrix with the given number of rows and columns.
+    /** Return a double zero matrix with the given number of rows and
+     *  columns.
+     *  @return The zero matrix with the given number of rows and
+     *  columns.
      */
     public static DoubleMatrixToken zeroMatrix(int rows, int columns) {
         double[][] mtr = new double[rows][columns];

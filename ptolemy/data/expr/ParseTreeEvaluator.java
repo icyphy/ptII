@@ -98,6 +98,38 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         return _evaluatedChildToken;
     }
 
+    /** Trace the evaluation of the parse tree with the specified root
+     *  node using the specified scope to resolve the values of
+     *  variables.
+     *  @param node The root of the parse tree.
+     *  @param scope The scope for evaluation.
+     *  @return The trace of the evaluation.
+     *  @exception IllegalActionException If an error occurs during
+     *   evaluation.
+     */
+    public String traceParseTreeEvaluation(
+            ASTPtRootNode node, ParserScope scope)
+            throws IllegalActionException {
+        _scope = scope;
+        _trace = new StringBuffer();
+        _depth = 0;
+        _traceEnter(node);
+        try {
+            // Evaluate the value of the root node.
+            node.visit(this);
+            _traceLeave(node);
+        } catch (Exception ex) {
+            // If an exception occurs, then bind the exception into
+            // the trace and return the trace.
+            _trace(ex.toString());
+        }
+        _scope = null;
+        // Return the trace.
+        String trace = _trace.toString();
+        _trace = null;
+        return trace;
+    }
+
     /** Construct an ArrayToken that contains the tokens from the
      *  children of the specified node.
      *  @param node The specified node.
@@ -1103,7 +1135,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+        _traceEnter(child);
         child.visit(this);
+        _traceLeave(child);
         return _evaluatedChildToken;
     }
 
@@ -1167,27 +1201,21 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param argValues An array of argument values.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    protected static ptolemy.data.Token _functionCall(String functionName,
+    protected ptolemy.data.Token _functionCall(String functionName,
             Type[] argTypes, Object[] argValues)
             throws IllegalActionException {
         CachedMethod method = CachedMethod.findMethod(functionName,
                 argTypes, CachedMethod.FUNCTION);
         if (method.isValid()) {
+            if(_trace != null) {
+                _trace("Invoking " + method.methodDescription());
+                _trace("as " + method);
+            }
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
         } else {
-            // If we reach this point it means the function was not found on
-            // the search path.
-            StringBuffer buffer = new StringBuffer();
-            for (int i = 0; i < argValues.length; i++) {
-                if (i == 0) {
-                    buffer.append(argValues[i].toString());
-                } else {
-                    buffer.append(", " + argValues[i].toString());
-                }
-            }
-            throw new IllegalActionException("No matching function: " +
-                    functionName + "( " + buffer + " ).");
+            throw new IllegalActionException("No function found matching " + 
+                    method.toString());
         }
     }
 
@@ -1198,28 +1226,64 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param argValues An array of argument values.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    protected static ptolemy.data.Token _methodCall(String methodName,
+    protected ptolemy.data.Token _methodCall(String methodName,
             Type[] argTypes, Object[] argValues)
             throws IllegalActionException {
         CachedMethod method = CachedMethod.findMethod(methodName,
                 argTypes, CachedMethod.METHOD);
         if (method.isValid()) {
+            if(_trace != null) {
+                _trace("Invoking " + method.methodDescription());
+                _trace("as " + method);
+            }
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
         } else {
-            // If we reach this point it means the function was not found on
-            // the search path.
-            StringBuffer buffer = new StringBuffer();
-            for (int i = 0; i < argValues.length; i++) {
-                if (i == 0) {
-                    buffer.append(argValues[i].toString());
-                } else {
-                    buffer.append(", " + argValues[i].toString());
-                }
-            }
-            throw new IllegalActionException("No matching function " +
-                    methodName + "( " + buffer + " ).");
+            throw new IllegalActionException("No method found matching " + 
+                    method.toString());
         }
+    }
+
+    /** Add a record to the current trace corresponding to the start
+     *  of the evaluation of the given node.  If the trace is null, then
+     *  do nothing.
+     */
+    protected void _traceEnter(ASTPtRootNode node) {
+        if(_trace != null) {
+            for(int i = 0; i < _depth; i++) {
+                _trace.append("  ");
+            }
+            _trace.append("Entering node " + node.getClass().getName() + "\n");
+            _depth++;
+        }
+    }
+
+    /** Add a record to the current trace corresponding to the completion
+     *  of the evaluation of the given node.  If the trace is null, then
+     *  do nothing.
+     */
+    protected void _traceLeave(ASTPtRootNode node) {
+        if(_trace != null) {
+            _depth--;
+            for(int i = 0; i < _depth; i++) {
+                _trace.append("  ");
+            }
+            _trace.append("Node " + node.getClass().getName() +
+                    " evaluated to " + _evaluatedChildToken + "\n");
+        }
+    }
+    
+    /** Add a record to the current trace corresponding to the given message.
+     *  If the trace is null, do nothing.
+     */
+    protected void _trace(String string) {
+         if(_trace != null) {
+             for(int i = 0; i < _depth; i++) {
+                 _trace.append("  ");
+             }
+             _trace.append(string);
+             _trace.append("\n");
+         }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1227,8 +1291,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     // Temporary storage for the result of evaluating a child node.
     // This is protected so that derived classes can access it.
-    protected ptolemy.data.Token _evaluatedChildToken;
+    protected ptolemy.data.Token _evaluatedChildToken = null;
     
-    private ParserScope _scope;
-    private ParseTreeTypeInference _typeInference;
+    private ParserScope _scope = null;
+    private ParseTreeTypeInference _typeInference = null;
+    private StringBuffer _trace = null;
+    private int _depth = 0;
 }

@@ -201,6 +201,16 @@ public class CachedMethod {
         _cachedMethods.clear();
     }
     
+    /** Return a verbose description of the cached method being invoked
+     */
+    public String methodDescription() {
+        if(isValid()) {
+            return _method.toString();
+        } else {
+            return "INVALID METHOD!!!";
+        }
+    }
+    
     /** Return true if the argument is an instance of CachedMethod
      *  that represents the same method or function as this instance.
      *  Note that if this returns true, then both this instance and
@@ -442,10 +452,10 @@ public class CachedMethod {
      */
     public ptolemy.data.Token invoke(Object[] argValues)
             throws IllegalActionException {
-        // System.out.println("invoking " + toString() + " on:");
-        // for (int i = 0; i < argValues.length; i++) {
-        //     System.out.println("arg " + i + " = " + argValues[i]);
-        // }
+    //     System.out.println("invoking " + getMethod().toString() + " on:");
+//         for (int i = 0; i < argValues.length; i++) {
+//             System.out.println("arg " + i + " = " + argValues[i]);
+//         }
 
         Object result = null;
 
@@ -1135,6 +1145,13 @@ public class CachedMethod {
             _reducedArgs = reducedArgs;
         }
 
+        /** Return an appropriate description of the method being invoked.
+         */
+        public String methodDescription() {
+            return "ArrayMapped{" +
+                _cachedMethod.methodDescription() + "}";
+        }
+
         /** Invoke the method represented by this CachedMethod.  This
          *  implements any conversions necessary to turn token arguments
          *  into other arguments, and to convert the result back into
@@ -1228,6 +1245,13 @@ public class CachedMethod {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
+        }
+
+        /** Return an appropriate description of the method being invoked.
+         */
+        public String methodDescription() {
+            return "MatrixMapped{" +
+                _cachedMethod.methodDescription() + "}";
         }
 
         /** Run method represented by this cachedMethod.  This
