@@ -46,7 +46,7 @@ import java.util.Iterator;
 public class MakeFileGenerator {
     /** Dummy constructor
      */
-    public void MakeFileGenerator() {
+    public MakeFileGenerator() {
     }
 
     /** Finds the filename corresponding to this class.
