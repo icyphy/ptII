@@ -59,11 +59,12 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	ASTPtBitwiseOpNode.java \
 	ASTPtFunctionNode.java \
+	ASTPtLeafNode.java \
 	ASTPtLogicalNode.java \
 	ASTPtMiscNode.java \
 	ASTPtProductNode.java \
 	ASTPtRelationalNode.java \
-	ASTPtSimpleNode.java \
+	ASTPtRootNode.java \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java 
 
