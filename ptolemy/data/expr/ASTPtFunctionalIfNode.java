@@ -71,13 +71,13 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
         // first of which is of type BooleanToken.
         ptolemy.data.Token test = childTokens[0];
         if ( !(test instanceof BooleanToken)) {
-            String str = "Functional-If must branch on a boolean: ";
-            str = str + test.toString();
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException(
+                    "Functional-If must branch on a boolean: " +
+                    test.toString());
         } else if ( num != 3) {
-            String str = "Functional-If must must have three children: ";
-            str = str + test.toString();
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException(
+                    "Functional-If must must have three children: " +
+                    test.toString());
         }
         // construct appears ok
         boolean value = ((BooleanToken)test).booleanValue();

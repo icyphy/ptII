@@ -73,8 +73,9 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         if (_param != null) {
             _ptToken = _param.getToken();
         } else if (_ptToken == null) {
-            String str = "in a leaf node, either _ptToken or _param ";
-            throw new IllegalArgumentException(str+ "must be non-null");
+            throw new IllegalArgumentException(
+                    "In a leaf node, either _ptToken or _param " +
+                    "must be non-null");
         }
         return _ptToken;
     }

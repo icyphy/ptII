@@ -55,8 +55,8 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            String str = "Not enough/too many operators for number";
-            throw new IllegalArgumentException(str + " of children");
+            throw new IllegalArgumentException(
+                    "Not enough/too many operators for number of children");
         }
         boolean values[] = new boolean[num];
         int i = 0;
@@ -66,8 +66,8 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
 		   ((ptolemy.data.BooleanToken)childTokens[i]).booleanValue();
             }
         } catch (Exception ex) {
-            String str = "Could not convert " + childTokens[i].toString();
-            throw new IllegalArgumentException(str + "to a Boolean");
+            throw new IllegalArgumentException("Could not convert " +
+                    childTokens[i].toString() + "to a Boolean");
         }
         boolean result = values[0];
         for (i = 0; i<_lexicalTokens.size(); i++) {
@@ -79,8 +79,8 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
             } else if ( x.image.equalsIgnoreCase("||") ) {
                 result = (result || values[i+1]);
             } else {
-                String str = "operator on booleans: " + x.image + "illegal";;
-                throw new IllegalArgumentException(str + ", check parse tree");
+                throw new IllegalArgumentException("operator on booleans: " +
+                        x.image + " are illegal, check parse tree");
             }
         }
         return new ptolemy.data.BooleanToken(result);

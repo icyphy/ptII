@@ -58,8 +58,9 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
             throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if ( (num != 2) ||  (_lexicalTokens.size() != 1) ) {
-            String str = "A relational node needs two children and ";
-            throw new IllegalArgumentException(str + "one operator.");
+            throw new IllegalArgumentException(
+                    "A relational node needs two children and " +
+                    "one operator.");
         }
         ptolemy.data.Token result = childTokens[0];
         Token x = (Token)_lexicalTokens.take();
@@ -86,16 +87,17 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
                 } else if (x.image.compareTo("<") == 0) {
                     if (a < b) res = true;
                 } else {
-                    String str = "invalid operator " + x.image + " in ";
-                    throw new IllegalArgumentException(str +"relational node");
+                    throw new IllegalArgumentException("invalid operator " +
+                            x.image + " in relational node");
                 }
                 return new ptolemy.data.BooleanToken(res);
             }
         } catch (Exception ex) {
-            String str = "Invalid operation " + x.image + " between ";
-            str = str + childTokens[0].getClass().getName() + " and ";
-            str = str + childTokens[1].getClass().getName();
-            throw new IllegalArgumentException(str + ": " + ex.getMessage());
+            throw new IllegalArgumentException(
+                    "Invalid operation " + x.image + " between " +
+                    childTokens[0].getClass().getName() + " and " +
+                    childTokens[1].getClass().getName() +
+                    ": " + ex.getMessage());
         }
     }
 

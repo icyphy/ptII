@@ -57,8 +57,8 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            String str = "Not enough/too many operators for number";
-            throw new IllegalArgumentException(str + " of children");
+            throw new IllegalArgumentException(
+                    "Not enough/too many operators for number of children");
         }
         ptolemy.data.Token result = childTokens[0];
         boolean isBoolean = false;
@@ -76,6 +76,8 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                 op = ((Token)x).image;
                 if (isBoolean) {
                     if ( !(childTokens[i] instanceof BooleanToken) ) {
+                        // FIXME: Should this really throw just an exception
+                        // without any detail?
                         throw new Exception();
                     }
                     boolean arg1 = ((BooleanToken)result).booleanValue();
@@ -86,6 +88,8 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                     } else if (op.equals("|")) {
                         result = new BooleanToken(arg1 | arg2);
                     } else {
+                        // FIXME: Should this really throw just an exception
+                        // without any detail?
                         throw new Exception();
                     }
                 } else {
@@ -93,6 +97,8 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                     // integer types are long and int
                     if ( !((result instanceof IntToken) ||
                             (childTokens[i] instanceof LongToken)) ) {
+                        // FIXME: Should this really throw just an exception
+                        // without any detail?
                         throw new IllegalArgumentException();
                     }
                     if ( (result instanceof LongToken) ||
@@ -106,6 +112,8 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                         } else if (op.equals("^")) {
                             result = new LongToken(arg1 ^ arg2);
                         } else {
+                            // FIXME: Should this really throw just an
+                            // exception without any detail?
                             throw new IllegalArgumentException();
                         }
                     } else {
@@ -118,6 +126,8 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                         } else if (op.equals("^")) {
                             result = new IntToken(arg1 ^ arg2);
                         } else {
+                            // FIXME: Should this really throw just an
+                            // exception without any detail?
                             throw new Exception();
                         }
                     }
@@ -125,10 +135,10 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
             }
             return result;
         } catch (Exception ex) {
-            String str = "Invalid operation " + op + " between ";
-            str = str + result.getClass().getName() + " and ";
-            str = str + childTokens[i].getClass().getName();
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException(
+                    "Invalid operation " + op + " between " +
+                    result.getClass().getName() + " and " +
+                    childTokens[i].getClass().getName());
         }
     }
 

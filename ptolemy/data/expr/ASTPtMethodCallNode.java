@@ -79,8 +79,8 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
 
         try {
             if (_methodName == null) {
-                String msg = "Invalid method call: " + _methodName;
-                throw new IllegalArgumentException(msg);
+                throw new IllegalArgumentException("Invalid method call: " +
+                        _methodName);
             }
             // we have a valid method call!!
             // The first child is the token on which to invoke the method
@@ -106,8 +106,8 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                 if (result instanceof ptolemy.data.Token) {
                     return (ptolemy.data.Token)result;
                 } else {
-                    String str = "Method calls on Token must return a Token";
-                    throw new IllegalArgumentException(str);
+                    throw new IllegalArgumentException(
+                            "Method calls on Token must return a Token");
                 }
             } catch (Exception ex) {
                 StringBuffer sb = new StringBuffer();
@@ -118,10 +118,11 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                         sb.append(", " + argValues[i].toString());
                     }
                 }
-                String str = "Function " + _methodName + "(" + sb + ") cannot";
-                str += " be executed with given arguments, on ptTokens of ";
-                str += "type " + childTokens[0].getClass().getName() + ": ";
-                throw new IllegalArgumentException(str + ex.getMessage());
+                throw new IllegalArgumentException(
+                        "Function " + _methodName + "(" + sb + ") cannot" +
+                        " be executed with given arguments, on ptTokens of " +
+                        "type " + childTokens[0].getClass().getName() + ": " +
+                        ex.getMessage());
             }
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage());

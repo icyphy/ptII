@@ -84,9 +84,9 @@ public class ASTPtRootNode implements Node {
         int numChildren = jjtGetNumChildren();
         if (numChildren == 0) {
             // leaf node, should not be here
-            String str = "Encountered a node with no children that is ";
-            str += "not a leaf node";
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException(
+                    "Encountered a node with no children that is " +
+                    "not a leaf node");
         } else {
             childTokens = new ptolemy.data.Token[numChildren];
             for (int i = 0; i<numChildren; i++) {
@@ -201,11 +201,13 @@ public class ASTPtRootNode implements Node {
             throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         if (num > 1) {
-            String str = "Node has several children, this method ";
-            throw new IllegalArgumentException(str + "should be overridden!");
+            throw new IllegalArgumentException(
+                    "Node has several children, this method " +
+                    "should be overridden!");
         } else if (num == 0) {
-            String str = "Node has no children, this method ";
-            throw new IllegalArgumentException(str + "should be overridden!");
+            throw new IllegalArgumentException(
+                    "Node has no children, this method " +
+                    "should be overridden!");
         }
         return childTokens[0];
     }
