@@ -18,6 +18,31 @@
   <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
 
+  <!-- An entity giving alternative state refinements for modal models. -->
+  <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Continuous Time Refinement"
+            class="ptolemy.vergil.fsm.modal.Refinement">
+      <property name="Refinement Solver"
+                class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+      </property>
+    </entity>
+    <entity name="State Machine Refinement"
+            class="ptolemy.vergil.fsm.modal.ModalController">
+    </entity>               
+  </entity>
+
+  <!-- An entity giving alternative transition refinements for modal models. -->
+  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Default Refinement"
+            class="ptolemy.vergil.fsm.modal.Refinement">
+      <property name="Refinement Director (SDF)"
+                class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+      </property>
+    </entity>
+  </entity>
+
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
   <!-- These are searched in the order listed here, until one of -->
