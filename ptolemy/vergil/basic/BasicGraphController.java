@@ -51,6 +51,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
@@ -467,7 +468,7 @@ public abstract class BasicGraphController
                     // FIXME: Is there a more reasonable base directory
                     // to give for the second argument?
                     URL sourceURL =
-                        StringUtilities.stringToURL(
+                        FileUtilities.nameToURL(
                             source,
                             null,
                             target.getClass().getClassLoader());
