@@ -449,11 +449,13 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    link.setTail(null);
 		    link.setRelation(null);
 		    // and queue a new change request to clean up the model
-		    ChangeRequest request = 
+                    // Note: JDK1.2.2 requires that this variable not be
+                    // called request or we get a compile error.
+		    ChangeRequest requestChange = 
 			new MoMLChangeRequest(FSMGraphModel.this, 
 					      getToplevel(),
 					      failmoml.toString());
-		    getToplevel().requestChange(request);
+		    getToplevel().requestChange(requestChange);
 		}
 		
 		public void changeExecuted(ChangeRequest change) {
@@ -535,11 +537,13 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    link.setTail(null);
 		    link.setRelation(null);
 		    // and queue a new change request to clean up the model
-		    ChangeRequest request = 
+                    // Note: JDK1.2.2 requires that this variable not be
+                    // called request or we get a compile error.
+		    ChangeRequest requestChange = 
 			new MoMLChangeRequest(FSMGraphModel.this, 
 					      getToplevel(),
 					      failmoml.toString());
-		    getToplevel().requestChange(request);
+		    getToplevel().requestChange(requestChange);
 		}
 		
 		public void changeExecuted(ChangeRequest change) {
