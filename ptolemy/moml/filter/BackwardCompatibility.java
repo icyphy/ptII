@@ -82,6 +82,7 @@ public class BackwardCompatibility {
         _filterList = new LinkedList();
         _filterList.add(new AddEditorFactory());
         _filterList.add(new AddIcon());
+        _filterList.add(new ClassChanges());
         _filterList.add(new HideAnnotationNames());
         _filterList.add(new PortNameChanges());
         _filterList.add(new PropertyClassChanges());
