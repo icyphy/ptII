@@ -6,7 +6,7 @@ exec tclsh "$0" "$@"
 #
 # @Author: Christopher Hylands (cxh@eecs.berkeley.edu)
 #
-# @Version: @(#)html2ps	1.16	04/02/99
+# @Version: @(#)html2ps	1.17	08/25/99
 #
 # @Copyright (c) 1996-1998 The Regents of the University of California.
 # All rights reserved.
@@ -276,9 +276,10 @@ proc html2ps {filelist} {
 # at the front of the list of files in that directory.
 # 
 # A good way to find html directories is:
-# find . \( -name html_library -o -name -o -name adm -o -name codeDoc -o -name devel -o -name itclhtml \) -prune -o -name "*.html" -exec dirname {} \; | sort -u
+# find . \( -name html_library -o -name -o -name adm -o -name codeDoc -o -name devel -o -name itclhtml \) -prune -o -name "*.htm*" -exec dirname {} \; | sort -u
 #
 proc htmlByDir {htmldirlist} {
+
     global filesSeen
 
     if {[llength $htmldirlist] == 0 } {
@@ -346,7 +347,7 @@ proc htmlLinks {htmlfile {depth 0} {dagfd {}} {recurse 1}} {
 	# Only search tags that we have not seen, are .html files
 	# and are not codeDoc files
 	if { [lsearch $filesSeen $tag] == -1 && \
-		[file extension $tag] == ".html" && \
+		[regexp [file extension $tag] ".htm"] && \
 		[file readable $tag] && \
 		![regexp $codeDocRegexp $tag] } {
 	    if { $dagfd != {}} {
@@ -580,3 +581,6 @@ proc html2psProcessArgs {} {
 if {$tcl_interactive != 1 } {
 	html2psProcessArgs
 }
+
+
+
