@@ -130,7 +130,8 @@ test IllegalActionException-6.1 {Create a IllegalActionException with an \
 	unamed NamedObj and an unamed NamedObj} {
     set n1 [java::new ptolemy.kernel.util.NamedObj]
     set n2 [java::new ptolemy.kernel.util.NamedObj]
-    set pe [java::new ptolemy.kernel.util.IllegalActionException \
+    set pe [java::new {ptolemy.kernel.util.IllegalActionException \
+	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
 } {{. and .}}
@@ -142,7 +143,8 @@ test IllegalActionException-6.2 {Create a IllegalActionException with a \
 	named NamedObj and an unamed NamedObj} {
     set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj]
-    set pe [java::new ptolemy.kernel.util.IllegalActionException \
+    set pe [java::new {ptolemy.kernel.util.IllegalActionException \
+	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
 } {{.NamedObj 1 and .}}
@@ -154,7 +156,8 @@ test IllegalActionException-6.3 {Create a IllegalActionException with an \
 	unamed NamedObj and a named NamedObj} {
     set n1 [java::new ptolemy.kernel.util.NamedObj]
     set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
-    set pe [java::new ptolemy.kernel.util.IllegalActionException \
+    set pe [java::new {ptolemy.kernel.util.IllegalActionException \
+	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
 } {{. and .NamedObj 2}}
@@ -166,7 +169,8 @@ test IllegalActionException-6.4 {Create a IllegalActionException with a \
 	named NamedObj and a named NamedObj} {
     set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
-    set pe [java::new ptolemy.kernel.util.IllegalActionException \
+    set pe [java::new {ptolemy.kernel.util.IllegalActionException \
+	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
 } {{.NamedObj 1 and .NamedObj 2}}
