@@ -77,10 +77,13 @@ public class DEFIRfilter extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // set the parameters.
-        double[][] taps2d = new double[1][];
-        taps2d[0]=taps;
-         
-        _taps = new Parameter(this, "taps", new DoubleMatrixToken(taps2d));
+        //double[][] taps2d = new double[1][];
+        //taps2d[0]=taps;
+        String tapString  =  new String();
+        for (int i = 0; i < taps.length; i++) {
+            tapString = tapString + (new Double(taps[i])).toString() + " ";
+        }
+        _paramTaps = new Parameter(this, "taps", new StringToken(tapString));
         _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
         // create an output port
         output = new DEIOPort(this, "output", false, true);
@@ -108,18 +111,12 @@ public class DEFIRfilter extends DEActor {
             String taps)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        StringTokenizer stokens = new StringTokenizer(taps);
-        int index = 0;
-        double[] dtaps = new double[stokens.countTokens()];
-        while(stokens.hasMoreTokens()) {
-            String valueToken = stokens.nextToken();
-            dtaps[index++] = (new Double(valueToken)).doubleValue();
-        }
+        
         // set the parameters.
-        double[][] taps2d = new double[1][];
-        taps2d[0]=dtaps;
+        //double[][] taps2d = new double[1][];
+        //taps2d[0]=dtaps;
          
-        _taps = new Parameter(this, "taps", new DoubleMatrixToken(taps2d));
+        _paramTaps = new Parameter(this, "taps", new StringToken(taps));
         _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
 
         // create an output port
@@ -139,8 +136,17 @@ public class DEFIRfilter extends DEActor {
      */
     public void initialize() throws IllegalActionException {
 
-        // Empty the taps.
+        // clean  the taps.
         _tapContents = new double[0];
+        // load parameters
+        String taps = ((StringToken)_paramTaps.getToken()).stringValue();
+        StringTokenizer stokens = new StringTokenizer(taps);
+        int index = 0;
+        _taps = new double[stokens.countTokens()];
+        while(stokens.hasMoreTokens()) {
+            String valueToken = stokens.nextToken();
+            _taps[index++] = (new Double(valueToken)).doubleValue();
+        }
     }
 
 
@@ -154,10 +160,11 @@ public class DEFIRfilter extends DEActor {
         
         if (input.hasToken(0)) {
             double newdata = ((DoubleToken)input.get(0)).doubleValue();
-            // figure out the number of taps.
-            DoubleMatrixToken tapsToken = (DoubleMatrixToken)_taps.getToken();
-            int numTaps = tapsToken.getColumnCount();
-
+            //figure out the number of taps.
+            //DoubleMatrixToken tapsToken = (DoubleMatrixToken)_taps.getToken();
+            //int numTaps = tapsToken.getColumnCount();
+       
+            int numTaps = _taps.length;
             // check if the number of taps match to the contentTaps length.
             // If not, then create a new contentTaps with the appropriate
             // length and values.
@@ -173,17 +180,16 @@ public class DEFIRfilter extends DEActor {
                     }
                 }
             }
-
             // shift the content by 1.
             for (int i = numTaps-1; i >= 1; i--) {
                 _tapContents[i] = _tapContents[i-1];
             }
             _tapContents[0] = newdata;
-            
+        
             // calculate the output.
             double sum = 0;
             for (int i = 0; i < numTaps; i++) {
-                sum = sum + _tapContents[i]*tapsToken.getElementAt(0, i);
+                sum = sum + _tapContents[i]*_taps[i];
             }
             _delay = ((DoubleToken)_paramDelay.getToken()).doubleValue();
             // broadcast the output.
@@ -212,7 +218,8 @@ public class DEFIRfilter extends DEActor {
     // have regular C++ comments.
 
     // The value of the filter taps.
-    private Parameter _taps;
+    private Parameter _paramTaps;
+    private double[] _taps;
     
     // The content of the filter taps.
     private double[] _tapContents = new double[0];
