@@ -6154,7 +6154,7 @@ PTMESCAL_DIR=
 MESCAL_USER_DIR="$PTII/mescal"
 if test -d "$MESCAL_USER_DIR"; then
    PTMESCAL_DIR=mescal
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|**/devel/|mescal/apps/|mescal|views|memory|registerfile/|mescal/views/simulation/model/probe/|mescal/xml2hmdes/"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|**/devel/|mescal/apps/|mescal/totem/domains/meta/codegen/|mescal|views|memory|registerfile/|mescal/views/simulation/model/probe/|mescal/xml2hmdes/"
 
 fi
 
