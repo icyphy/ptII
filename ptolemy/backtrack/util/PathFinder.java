@@ -1,4 +1,4 @@
-/* A tool to create class paths for customized class loading.
+/* A tool for path searching and class path creation.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -34,8 +34,9 @@ import java.io.FileFilter;
 //////////////////////////////////////////////////////////////////////////
 //// PathFinder
 /**
-   A tool to set up customized class paths from which class are loaded
-   with {@link LocalClassLoader}.
+   A tool to search paths and set up class paths. It provides functions to
+   search paths for certain files, and set up customized class paths from
+   which class can be loaded with {@link LocalClassLoader}.
  
    @author Thomas Feng
    @version $Id$
@@ -44,6 +45,49 @@ import java.io.FileFilter;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class PathFinder {
+    
+    /** Get all the Java source files in a path.
+     * 
+     *  @param path The path to be searched.
+     *  @param subdirs If <tt>true</tt>, sub-directories of the path are
+     *   also searched.
+     *  @return All the Java files found. If no Java file is found, an
+     *   array with 0 element is returned.
+     */
+    public static File[] getJavaFiles(String path, boolean subdirs) {
+        File file = new File(path);
+        String postfix = ".java";
+        if (file.isFile())
+            if (file.getName().endsWith(postfix))
+                return new File[] {file};
+            else
+                return new File[0];
+        else if (!subdirs)
+            return file.listFiles(new PostfixFilter(".java"));
+        else {
+            File[] Directories = file.listFiles(new DirectoryFilter());
+            File[][] filesInSubdirs = new File[Directories.length][];
+            int nTotal = 0;
+            for (int i = 0; i < Directories.length; i++) {
+                filesInSubdirs[i] = getJavaFiles(Directories[i].getPath(), true);
+                nTotal += filesInSubdirs[i].length;
+            }
+            
+            File[] files =  file.listFiles(new PostfixFilter(".java"));
+            nTotal += files.length;
+            
+            File[] result = new File[nTotal];
+            int pos = 0;
+            for (int i = 0; i < filesInSubdirs.length; i++) {
+                int length = filesInSubdirs[i].length;
+                System.arraycopy(filesInSubdirs[i], 0, result, pos, length);
+                pos += length;
+            }
+            System.arraycopy(files, 0, result, pos, files.length);
+            
+            return result;
+        }
+    }
 
     /** Return the class paths containing the root of the Ptolemy tree, 
      *  and the Jar files in sub-directories <tt>lib/</tt>, 
@@ -63,7 +107,7 @@ public class PathFinder {
         for (int i = 0; i < subdirs.length; i++) {
             files[i] = 
                 new File(PTII + "/" + subdirs[i]).listFiles(
-                        new JarFileFilter()
+                        new PostfixFilter(".jar")
                 );
             totalNumber += files[i].length;
         }
@@ -89,16 +133,49 @@ public class PathFinder {
      *  @since Ptolemy II 4.1
      *  @Pt.ProposedRating Red (tfeng)
      */
-    static class JarFileFilter implements FileFilter {
+    public static class PostfixFilter implements FileFilter {
+        
+        /** Construct a filter.
+         * 
+         *  @param postfix
+         */
+        PostfixFilter(String postfix) {
+            _postfix = postfix;
+        }
 
         /** Accept only files with names ending with "<tt>.jar</tt>".
          *
-         *  @param pathname The full name of a file.
+         *  @param pathname The file to be inspected.
          *  @return <tt>true</tt> if the file has "<tt>.jar</tt>"
          *   postfix.
          */
-        public boolean accept(File pathname) {
-            return pathname.getName().endsWith(".jar");
+        public boolean accept(File file) {
+            return file.getName().endsWith(_postfix);
+        }
+        
+        private String _postfix;
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //// DirectoryFilter
+    /**
+       Filter out all the files in a directory, except for sub-directories.
+       
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
+    public static class DirectoryFilter implements FileFilter {
+        
+        /** Accept only directories.
+         * 
+         *  @param pathname The file to be inspected.
+         *  @return <tt>true</tt> if the file corresponds to a directory.
+         */
+        public boolean accept(File file) {
+            return file.isDirectory();
         }
     }
 }
