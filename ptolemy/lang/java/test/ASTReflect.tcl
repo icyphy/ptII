@@ -713,7 +713,7 @@ test ASTReflect-3.1 {check out fields} {
 #
 test ASTReflect-4.1 {check out innerclasses} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
-    set astList [java::call ptolemy.lang.java.ASTReflect innerClassesASTList $class]
+    set astList [java::call ptolemy.lang.java.ASTReflect innerClassesOrInterfacesASTList $class]
     lcompare [listToStrings $astList] \
 {{ {ClassDeclNode { 
   {Interfaces  {}} 
@@ -1598,7 +1598,7 @@ test ASTReflect-14.1 {check out } {
     set class [ java::call Class forName "ptolemy.lang.java.test.InnerIFace"]
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
     lcompare [$ast toString] \
-{{CompileUnitNode { 
+{ {CompileUnitNode { 
   {DefTypes { 
    {ClassDeclNode { 
     {Interfaces  {}} 
@@ -1629,7 +1629,7 @@ test ASTReflect-14.1 {check out } {
       {ConstructorCall {SuperConstructorCallNode { 
                         {Args  {}} 
                       }}} 
-    }}     {ClassDeclNode { 
+    }}     {InterfaceDeclNode { 
       {Interfaces  {}} 
       {Members { 
        {MethodDeclNode { 
@@ -1678,12 +1678,6 @@ test ASTReflect-14.1 {check out } {
                                    }}} 
                        }}} 
            }}} 
-      {SuperClass {TypeNameNode { 
-                   {Name {NameNode { 
-                          {Ident } 
-                          {Qualifier {AbsentTreeNode {leaf}}} 
-                        }}} 
-                 }}} 
     }}}} 
     {Modifiers 0} 
     {Name {NameNode { 
