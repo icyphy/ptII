@@ -182,8 +182,13 @@ install: all jars \
 		$(RENDERJAR)
 	(cd ../../bin; $(MAKE) install)
 
+
+# PlotBox uses PlotFormatter which uses ptolemy.gui.Query and other classes
+PTOLEMYGUIFILES = ptolemy/gui/*.class
+
 # Class files used in all applets and applications
 BASECLASSFILES = \
+		$(PTOLEMYGUIFILES) \
 		$(ME)/CmdLineArgException.class \
 		$(ME)/EPSGraphics.class \
 		$(ME)/Histogram.class \
@@ -292,7 +297,6 @@ $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 		$(BASECLASSFILES) \
 		$(APPLICATIONCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
-		ptolemy/gui/*.class \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
             )
