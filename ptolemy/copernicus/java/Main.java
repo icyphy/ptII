@@ -53,6 +53,7 @@ import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.toolkits.scalar.UnusedLocalEliminator;
@@ -151,9 +152,15 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffpt",
                         FieldsForPortsTransformer.v(toplevel)));
-
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
+        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ls",
+                        new TransformerAdapter(LocalSplitter.v())));
+         Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ls",
+                        new TransformerAdapter(LocalNameStandardizer.v())));
+         _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
@@ -163,7 +170,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ib",
                         InvocationBinder.v()));
-
+        
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -176,7 +183,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.iat",
                         InlineParameterTransformer.v(toplevel)));
-
+        
         // Remove equality checks, which arise from inlining attributeChanged.
         //  Scene.v().getPack("wjtp").add(
         //                 new Transform("wjtp.ta",
@@ -349,7 +356,7 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-       
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(

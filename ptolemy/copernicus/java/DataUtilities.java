@@ -285,8 +285,9 @@ public class DataUtilities {
             if (result != null) {
                 return result.getType();
             } else {
-                throw new IllegalActionException(
-                        "The ID " + name + " is undefined.");
+                return null;
+                //  throw new IllegalActionException(
+                //         "The ID " + name + " is undefined.");
             }
         }
         public Set identifierSet() {

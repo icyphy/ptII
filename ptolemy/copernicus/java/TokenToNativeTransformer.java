@@ -567,10 +567,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
             // actually invoked.
             List methodList;
             if (value instanceof SpecialInvokeExpr) {
-                SootMethod invokedMethod = hierarchy.resolveSpecialDispatch(
+                SootMethod targetMethod = hierarchy.resolveSpecialDispatch(
                         (SpecialInvokeExpr)r, method);
                 methodList = new LinkedList();
-                methodList.add(invokedMethod);
+                methodList.add(targetMethod);
             } else {
                 methodList =
                     //      invokeGraph.getTargetsOf((Stmt)unit);
@@ -695,6 +695,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 }
                 SootMethod inlinee = (SootMethod)r.getMethod();
                 SootClass declaringClass = inlinee.getDeclaringClass();
+                Type returnType = inlinee.getReturnType();
+
                 // These methods contain a large amount of
                 // code, which greatly slows down further
                 // inlining.  The code should also contain
@@ -707,7 +709,15 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
                     box.setValue(StringConstant.v("Token Exception"));
                 } else if (SootUtilities.derivesFrom(declaringClass,
-                        PtolemyUtilities.tokenClass)) {
+                        PtolemyUtilities.tokenClass) ||
+                           ((returnType instanceof RefType) &&
+                                   SootUtilities.derivesFrom(
+                                          ((RefType)returnType).getSootClass(),
+                                          PtolemyUtilities.tokenClass))) {
+                    // Note that we make sure to inline method like
+                    // UtilityFunctions.gaussian, which returns a
+                    // DoubleMatrixToken.
+               
                     declaringClass.setLibraryClass();
                     if (!inlinee.isAbstract() &&
                             !inlinee.isNative()) {

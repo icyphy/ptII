@@ -269,8 +269,8 @@ public class ConstVariableModelAnalysis {
                             Variable scopeVariable =
                                 ModelScope.getScopedVariable(
                                         variable, variable, name);
-                            // Free variables must be not constants.
-                            if (scopeVariable == null ||
+                            // Free variables are assumed to be constants.
+                            if (scopeVariable != null &&
                                     _notConstantVariableSet.contains(scopeVariable)) {
                                 isNotConstant = true;
                             }
