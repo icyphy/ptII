@@ -166,17 +166,13 @@ public class PNSieve extends PNActor {
             // Inform a listener about the mutation
             public void update(MutationListener listener) {
                 CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
-                listener.addEntity(container, newSieve);
-                //listener.addPort(PNSieve.this, _output);
-                //Disconnected
                 listener.unlink(relation, _output);
-                //_output.unlink(PNOutPort);
-                //Connect PLotter again
+                listener.addEntity(container, newSieve);
                 listener.link(relation, outport);
-                //outport.link(relation);
                 listener.addRelation(container, newRelation);
                 listener.link(newRelation, input);
                 listener.link(newRelation, _output);
+                listener.done();
             }
         };
 
