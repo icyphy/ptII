@@ -250,8 +250,7 @@ PTINYPACKAGES = \
 			$(HYVISUALPACKAGES) \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
-			ptolemy.domains.pn.kernel \
-			ptolemy.domains.pn.lib \
+			ptolemy.domains.pn.kernel
 
 # Packages for the SUPERB classes
 #SUPERBPACKAGES = \
