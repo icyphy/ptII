@@ -198,33 +198,33 @@ test SRReceiver-3.1 {Try to put a null} {
 ######################################################################
 ####
 #
-test SRReceiver-4.1 {put after setAbsent} {
+test SRReceiver-4.1 {put after clear} {
 
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
     set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
-    $receiver setAbsent
+    $receiver clear
     set token [java::new ptolemy.data.StringToken foo]
     catch {$receiver {put ptolemy.data.Token} $token} result1
 
     list $result1
 } {{ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot transition from an absent state to a present state.}}
 
-test SRReceiver-4.2 {setAbsent after put} {
+test SRReceiver-4.2 {clear after put} {
 
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
     set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
     set token [java::new ptolemy.data.StringToken foo]
     $receiver {put ptolemy.data.Token} $token
-    catch {$receiver setAbsent} result1
+    catch {$receiver clear} result1
     list $result1
 } {{ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot transition from a present state to an absent state.}}
 
 
-test SRReceiver-4.2 {setAbsent, then get} {
+test SRReceiver-4.2 {clear, then get} {
 
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
     set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
-    $receiver setAbsent
+    $receiver clear
     catch {$receiver get} result1
     list $result1
 } {{ptolemy.actor.NoTokenException: Attempt to get data from an empty mailbox.}}
