@@ -41,6 +41,9 @@ ME =		java/pt/kernel
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+DIRS = 		test doc
+
+# Used to build zip files
 JPACKAGE = 	pt/kernel
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
