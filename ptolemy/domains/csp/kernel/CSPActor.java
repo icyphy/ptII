@@ -151,7 +151,7 @@ public class CSPActor extends AtomicActor {
         synchronized(_getInternalLock()) {
             _branchesBlocked++;
             // System.out.println(getName() + ": number of blocked branches is " +
-                    //   _branchesBlocked + ", alive is " + _branchesActive);
+            //   _branchesBlocked + ", alive is " + _branchesActive);
             if (_branchesBlocked == _branchesStarted) {
                 System.out.println(getName() + ": all branches are blocked.");
                 // Note: acquiring a second lock, need to be careful.
@@ -172,10 +172,10 @@ public class CSPActor extends AtomicActor {
         synchronized(_getInternalLock()) {
             _branchesActive--;
             System.out.println(getName() + ": branch failed: " +
-                      branchNumber);
+                    branchNumber);
             if (_branchesActive == 0) {
                 System.out.println(getName() + ": Last branch finished, " +
-                       "waking up chooseBranch");
+                        "waking up chooseBranch");
                 _getInternalLock().notifyAll();
             }
         }
@@ -339,7 +339,7 @@ public class CSPActor extends AtomicActor {
             // Now wake up all the receivers.
             NotifyThread obj = new NotifyThread(tmp);
             synchronized(obj) {
-                (new Thread(obj)).start();
+                obj.start();
                 obj.wait();
             }
             // when there are no more active branches, branchFailed
@@ -394,20 +394,31 @@ public class CSPActor extends AtomicActor {
     }
 
     /** Delay until the director advances time. If the simulation is 
-    *  not timed do nothing.
-    *  FIXME: time not implemented yet.
-    */
+     *  not timed do nothing.
+     *  FIXME: time not implemented yet.
+     */
     public void delay() {
-        return;
+        delay(0.0);
     }
 
     /** Delay the director advances time delta amount. If the simulation is 
-    *  not timed do nothing.
-    *  FIXME: time not implemented yet.
-    *  @param The delta time to delay this actor by.
-    */
+     *  not timed do nothing.
+     *  FIXME: time not implemented yet.
+     *  @param The delta time to delay this actor by.
+     */
     public void delay(double delta) {
-        return;
+        try {
+            synchronized(_getInternalLock()) {
+                _delayed = true;
+                ((CSPDirector)getDirector()).actorDelayed(delta, this);
+                while(_delayed) {
+                    _getInternalLock().wait();
+                }
+            }
+        } catch (InterruptedException ex) {
+            throw new TerminateProcessException("CSPActor interrupted " + 
+                    "while delayed." );
+        }
     }
 
     /** The token returned by a successful ConditionalReceive is stored in
@@ -475,12 +486,19 @@ public class CSPActor extends AtomicActor {
      }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         protected variables                    ////
+
+    // Flag indicating this actor is delayed. It needs to be accessible 
+    // by the director.
+    protected boolean _delayed = false;
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
     /* Internal lock used to for controlling conditional rendezvous
      * constructs.
      */
-    private Object _getInternalLock() {
+    protected Object _getInternalLock() {
         return _internalLock;
     }
 
@@ -522,9 +540,6 @@ public class CSPActor extends AtomicActor {
     // method waits on it so it knows when a branch has succeeded and when
     // the last branch it created has died.
     private Object _internalLock = new Object();
-
-    // Flag indicating the simulation has been terminated
-    // private boolean _simulationTerminated = false;
 
     // Contains the ID of the branch that successfully rendezvoused.
     private int _successfulBranch = -1;
