@@ -18,7 +18,7 @@ if [ ! -x "$ptIIlang" ]; then
     echo 3
 fi
 
-destinationSubdir=ptolemy/domains/sdf/cgc
+destinationSubdir=ptolemy/codegen
 destination=$PTII/$destinationSubdir;
 if [ ! -d $destination ]; then
     mkdir -p $destination
@@ -51,15 +51,15 @@ do
   fi
 done
 
-cat > $PTII/$destinationSubdir/cgc.xml <<EOF4
+cat > $PTII/$destinationSubdir/codegen.xml <<EOF4
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SDF CGC Actors" class="ptolemy.moml.EntityLibrary">
+<entity name="Dataflow CGC Actors" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-      <doc>SDF CGC Actors</doc>
+      <doc>Dataflow CGC Actors</doc>
 
 EOF4
 
@@ -70,7 +70,7 @@ do
     destinationDirectory=$PTII/$destinationSubdir/$dir
     fixclassic $destinationDirectory/*.java
 
-    echo "	    <input source=\"$destinationSubdir/$dir/index.xml\"/>" >> $PTII/$destinationSubdir/cgc.xml
+    echo "	    <input source=\"$destinationSubdir/$dir/index.xml\"/>" >> $PTII/$destinationSubdir/codegen.xml
 
     # README.txt
 cat > $destinationDirectory/README.txt <<EOF2
@@ -109,7 +109,7 @@ EoF1
 
 
 cat >$destinationDirectory/makefile <<EOF
-# Makefile for Ptolemy II SDF CGC actors imported from Ptolemy Classic
+# Makefile for Ptolemy II Dataflow CGC actors imported from Ptolemy Classic
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -143,7 +143,7 @@ cat >$destinationDirectory/makefile <<EOF
 ME =            $destinationSubdir/$dir
 
 # Rule for index.xml uses this
-TITLE = 	"SDF CGC ${subdir}Actors"
+TITLE = 	"Dataflow CGC ${subdir}Actors"
 
 DIRS =		demo test    	
 
@@ -191,9 +191,13 @@ EOF
 
     # Run make
     (cd $destinationDirectory; make -k)
+    echo "$destinationDirectory: Number of .java files created:"
+    (cd $destinationDirectory; ls -1 *.java | wc -l)    
+    echo "$destinationDirectory: Number of .class files created:"
+    (cd $destinationDirectory; ls -1 *.class | wc -l)    
 done
 
-cat >> $PTII/$destinationSubdir/cgc.xml <<EOF5
+cat >> $PTII/$destinationSubdir/codegen.xml <<EOF5
       </group>
     ?>
   </configure>

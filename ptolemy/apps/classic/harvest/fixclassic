@@ -1,6 +1,8 @@
 #!/bin/sh
 # $Id$
-# Script to harvest fix
+# fixclassic - a script that does a half hearted attempt at converting
+#  Ptolemy Classic .c code to .java code.  fixclassic is called by
+#  the harvest script.
 
 if [ $# -lt 1 ]; then
     destinationSubdir=ptolemy/codegen
@@ -16,6 +18,7 @@ do
     echo "$actor: superclass = $superclass"
     cat $actor |
        sed -e s@${superclass}::@super.@g \
+	   -e 's@super.setup()@super.generateInitializeCode()@g' \
 	   -e 's@//# line [0-9]*.*$@@' \
            -e 's@[ 	]*StringList \([a-z_0-9A-Z]*\) = \(".*"\);$@StringBuffer \1 = new StringBuffer(\2);@' \
 	   -e 's@[ 	]*{[	 ]*StringList \([a-z_0-9A-Z]*\); \([a-z_0-9A-Z]*\) <<[	 ]*$@{ StringBuffer \1 = new StringBuffer(); \2.append(@' \
@@ -41,13 +44,14 @@ do
 	   -e 's@\(i>1."complex temp;":"/.Unit gain - no multiplication required./"\)@(\1)@' \
 	   -e 's@(int)sizeof(int)@/*sizeof(int)*/ 16 @g' \
 	   -e 's@(unsigned int)sizeof(int)@/*(unsigned int)sizeof(int)*/ 16 @g' \
-	   -e 's@(unsigned int)(sizeof(int)@/*(unsigned int)(sizeof(int)*/ 16 @g' \
-	   -e 's@if (((IntToken)((\([a-z_0-9A-Z]*\)).getToken())).intValue()) {@if (((IntToken)((\1).getToken())).intValue() == 1) { // FIXME \1 should be a Boolean@' \
-	   -e 's@if (!((IntToken)((\([a-z_0-9A-Z]*\)).getToken())).intValue()) {@if (((IntToken)((\1).getToken())).intValue() == 0) { // FIXME \1 should be a Boolean@' \
+	   -e 's@(unsigned int)(sizeof(int)@/*(unsigned int)(sizeof(int)*/ ( 16 @g' \
+	   -e 's@if (((IntToken)((\([a-z_0-9A-Z]*\)).getToken())).intValue())@if (((IntToken)((\1).getToken())).intValue() == 1) // FIXME \1 should be a Boolean@' \
+	   -e 's@if (!((IntToken)((\([a-z_0-9A-Z]*\)).getToken())).intValue()) @if (((IntToken)((\1).getToken())).intValue() == 0) // FIXME \1 should be a Boolean@' \
 	   -e 's@public void  generateInitializeCode() {@public void  generateInitializeCode() throws IllegalActionException {@' \
 	   -e 's@strcasecmp(\([a-z_0-9A-Z]*\), \(["a-z_0-9A-Z]*\)) == 0@\1.equalsIgnoreCase(\2)@' \
 	   -e 's@strcmp(\([a-z_0-9A-Z]*\), \(["a-z_0-9A-Z]*\)) == 0@\1.equals(\2)@' \
 	   -e 's@((String)s)@(s.toString())@' \
+           -e 's@\(^[ 	]\)*addFixedPointSupport()@\1 //addFixedPointSupport@' \
            > $actor.tmp
 
     # FIXME: fix the package
