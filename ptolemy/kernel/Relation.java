@@ -123,7 +123,7 @@ public class Relation extends NamedObj {
      *  This method is synchronized on the workspace.
      *  @return An Enumeration of Port objects.
      */	
-    public Enumeration getLinkedPorts() {
+    public Enumeration linkedPorts() {
         synchronized(workspace()) {
             return _portList.getLinks();
         }
@@ -134,7 +134,7 @@ public class Relation extends NamedObj {
      *  @param except Do not return this Port in the Enumeration 
      *  @return An Enumeration of Port objects.
      */	
-    public Enumeration getLinkedPortsExcept(Port except) {
+    public Enumeration linkedPortsExcept(Port except) {
         // This works by constructing a linked list and then enumerating it.
         synchronized(workspace()) {
             LinkedList storedPorts = new LinkedList();
