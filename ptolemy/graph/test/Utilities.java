@@ -1,4 +1,4 @@
-/** Utilties for testing graphs.
+/** Utilities for testing graphs.
 
  Copyright (c) 2001-2002 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Utilities
 /**
-Utilties for testing graphs.
+Utilities for testing graphs.
 This class provides utilities, in the form of static methods, for testing
 graphs.
 
