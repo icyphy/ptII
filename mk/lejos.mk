@@ -59,7 +59,7 @@
 #JAVA_VERBOSE =	-verbose:class
 #MAKEPALMAPP_VERBOSE = -v -v
 
-LEJOSFIRMDL=$(LEJOS_DIR)/bin/lejosfirmdl
+FIRMDL=$(LEJOS_DIR)/bin/lejosfirmdl
 HOSTLEJOS=$(LEJOS_DIR)/bin/emu-lejos
 RCXLEJOS=$(LEJOS_DIR)/bin/lejos
 UPLOADER=$(LEJOS_DIR)/bin/lejosrun
