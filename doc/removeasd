@@ -12,7 +12,8 @@ filenames=/tmp/removeasd.filenames
 find $1 -name "*.html" -print > $filenames
 for file in `cat $filenames`
 do
-  egrep -q 'function asd\(\)' $file
+  # Solaris egrep does not have -q
+  grep -q 'function asd\(\)' $file
   status=$?
   if [ $status -eq 0 ]; then
       echo $file
