@@ -1,0 +1,61 @@
+<!ELEMENT plot (
+	dataset |
+	noColor |
+	noGrid |
+	title |
+	wrap |
+	xLabel |
+	xLog |
+	xRange |
+	xTicks |
+	yLabel |
+	yLog |
+	yRange |
+	yTicks)*>
+
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
