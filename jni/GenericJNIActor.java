@@ -47,8 +47,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.Workspace;
 
-import ptolemy.gui.MessageHandler;
-
 import ptolemy.util.StringUtilities;
 
 import java.io.File;
@@ -540,10 +538,11 @@ public class GenericJNIActor extends TypedAtomicActor {
 		} else if (typ.equals("class [I")) {
 		    int siz = ((ArrayToken) tok).arrayValue().length;
 		    int[] tab = new int[siz];
-		    for (int j = 0; j < siz; j++)
+		    for (int j = 0; j < siz; j++) {
 			tab[j] = (int) ((IntToken) (((ArrayToken) tok)
-						    .arrayValue()[j]))
+                                .arrayValue()[j]))
 			    .intValue();
+                    }
 		    //(int[])((ArrayToken)tok).arrayValue();
 		    args.add((Object)tab);
 		} else {
@@ -640,7 +639,9 @@ public class GenericJNIActor extends TypedAtomicActor {
                     typ = (String) field.getType().toString();
                 } catch (NoSuchFieldException e) {
                     try {
-			MessageHandler.warning("No return typ!");
+			throw new IllegalActionException(this, e,
+                                "No return type field '_"
+                                + port.getName() + "'");
                     } catch (Exception ex2) {
                         getDirector().stop();
                     }
@@ -682,8 +683,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                         typ = (String) field.getType().toString();
                     } catch (Exception e) {
                         try {
-                            MessageHandler.warning(
-                                    "No " + port.getName() + " field !");
+                            throw new IllegalActionException(this, e,
+                                    "No '+" + port.getName() + "' field !");
                         } catch (Exception ex2) {
                             getDirector().stop();
                         }
@@ -691,44 +692,68 @@ public class GenericJNIActor extends TypedAtomicActor {
                 }
                 if (typ.equals("boolean")) {
                     try {
-                        port.send(
-                                0,
+                        port.send(0,
                                 (Token) new BooleanToken(field.getBoolean(obj)));
                     } catch (IllegalAccessException ex) {
-                        MessageHandler.error("Not castable!", ex);
+                        throw new IllegalActionException(this, ex,
+                                "Type '" + typ + "' is not castable");
                     }
                 } else if (typ.equals("double")) {
                     try {
                         port.send(0,
                                 (Token) new DoubleToken(field.getDouble(obj)));
                     } catch (IllegalAccessException ex) {
-                        MessageHandler.error("Not castable!", ex);
+                        throw new IllegalActionException(this, ex,
+                                "Type '" + typ + "' is not castable");
                     }
                 } else if (typ.equals("int")) {
                     try {
                         port.send(0,
                                 (Token) new IntToken( field.getInt(obj)));
                     } catch (IllegalAccessException ex) {
-                        MessageHandler.error("Not castable!", ex);
+                        throw new IllegalActionException(this, ex,
+                                "Type '" + typ + "' is not castable");
                     }
                 } else if (typ.equals("char")) {
                     try {
-                        port.send(0,
-                                (Token) new UnsignedByteToken((char)field.getChar(obj)));
+                        port.send(0, (Token) new UnsignedByteToken((char)field
+                                .getChar(obj)));
                     } catch (IllegalAccessException ex) {
-                        MessageHandler.error("Not castable!", ex);
+                        throw new IllegalActionException(this, ex,
+                                "Type '" + typ + "' is not castable");
                     }
                 } else if (typ.equals("class [I")) {
                     try {
                         int[] tab = (int[])field.get(obj);
-                        Token[] toks =  new Token[((int[])field.get(obj)).length];
-                        for(int j = 0; j<((int[])field.get(obj)).length ; j++)
+                        Token[] toks =  new Token[((int[])field.get(obj))
+                                .length];
+                        for(int j = 0; j<((int[])field.get(obj)).length ; j++) 
                             toks[j] = new IntToken(((int[])field.get(obj))[j]);
                         port.send(0, new ArrayToken(toks));
                     } catch (IllegalAccessException ex) {
-                        MessageHandler.error("Not castable!", ex); }
+                        throw new IllegalActionException(this, ex,
+                                "Type '" + typ + "' is not castable");
+                    }
+                }  else if (typ.equals("class [D")) {
+                    try {
+                        double[] tab = (double[])field.get(obj);
+                        Token[] toks =  new Token[((double[])field.get(obj))
+                                .length];
+                        for(int j = 0; j<((double[])field.get(obj)).length;
+                            j++) {
+                            toks[j] = new DoubleToken(((double[])field
+                                    .get(obj))[j]);
+                          }
+                         port.send(0, new ArrayToken(toks));
+                    } catch (IllegalAccessException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Type '" + typ + "' is not castable");
+                    }
                 } else {
-                    System.out.println("The outtype is not convertible "
+                    // FIXME: for char[] and boolean[], there is
+                    // no corresponding Token type.
+                    System.out.println("The outtype '" + typ
+                            + "' is not convertible "
                             + "with Ptolemy II types.");
                 }
             }
