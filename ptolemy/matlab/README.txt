@@ -1,8 +1,8 @@
 ptolemy/matlab/README.txt
 Version: $Id$
 
-This directory contains the Ptolemy II Matlab Interface written by
-Zoltan Kemenczy of Research in Motion Limited.
+This directory contains the Ptolemy II Matlab Interface for Windows
+written by Zoltan Kemenczy of Research in Motion Limited.
 
 Christopher Hylands wrote the notes below, so any mistakes are his.
 
