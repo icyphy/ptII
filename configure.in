@@ -145,17 +145,17 @@ if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
 	AC_MSG_RESULT([  You have the right java in your path,
     $PTJAVA_DIR/bin/java = "$JAVA"])
     else
-	AC_MSG_WARN([$PTJAVA_DIR/bin/java is not
-    the same as $JAVA.
-    Perhaps $JAVA is in your path before
-    $PTJAVA_DIR/bin/java?
+	AC_MSG_WARN(['$PTJAVA_DIR/bin/java' is not
+    the same as '$JAVA'.
+    Perhaps '$JAVA' is in your path before
+    '$PTJAVA_DIR/bin/java'?
     If you have problems later, be sure that you don't have a mismatch
     in JDK versions.])
 	JAVA="$PTJAVA_DIR/bin/java"
     fi
 else
     AC_MSG_ERROR([
-  Cannot find $PTJAVA_DIR/bin/java.
+  Cannot find '$PTJAVA_DIR/bin/java'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable.]) 
 fi
 
@@ -168,21 +168,29 @@ if test -f "$PTJAVA_DIR/bin/javac"; then
     AC_MSG_RESULT($PTJAVA_DIR/bin/javac)
     AC_MSG_CHECKING([that you have the right javac in your path.])
     AC_PATH_PROG(JAVAC, javac)
+    if test -x "$JAVAC"; then 
+	AC_MSG_RESULT([$CMD_PATH])
+    else
+	AC_MSG_WARN([Failed to find the 'javac' command in your path.
+        This is not necessarily a problem, since
+	'$PTJAVA_DIR/bin/javac' was found, but if you have problems,
+	then you may want to adjust your path])
+    fi
     if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
         AC_MSG_RESULT([  You have the right javac in your path,
-	 $PTJAVA_DIR/bin/javac = $JAVAC])
+	 "$PTJAVA_DIR/bin/javac" = "$JAVAC"])
     else
-        AC_MSG_WARN([$PTJAVA_DIR/bin/javac is not
-	 the same as $JAVAC.
-	 Perhaps $JAVAC is in your path
-	 before $PTJAVA_DIR/bin/javac?
+        AC_MSG_WARN(['$PTJAVA_DIR/bin/javac' is not
+	 the same as '$JAVAC'.
+	 Perhaps '$JAVAC' is in your path
+	 before '$PTJAVA_DIR/bin/javac'?
 	 If you have problems later, be sure that you don't have a mismatch
 	 in JDK versions.])
 	JAVAC="$PTJAVA_DIR/bin/javac"
     fi
 else
     AC_MSG_ERROR([
-  Cannot find $PTJAVA_DIR/bin/javac.
+  Cannot find '$PTJAVA_DIR/bin/javac'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable.])
 fi
 
