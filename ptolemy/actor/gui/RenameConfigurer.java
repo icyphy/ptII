@@ -125,7 +125,16 @@ public class RenameConfigurer extends Query
             moml.append(newName);
             moml.append("\"/>");
             // Remove or show name.
-            boolean showName = booleanValue("Show name");
+            boolean showName = false;
+            if (!(_object instanceof Port)) {
+                // FIXME: There is a bug in diva that results in the
+                // port name being displayed twice if Show Name is selected.
+                // John Reekie thinks it is because there is one too many
+                // Listeners.  So for Ptolemy II 2.0.2, we comment
+                // this out so that if the object is a port, we 
+                // do not show the name.
+                showName = booleanValue("Show name");
+            }
             if (_object instanceof Port) {
                 if (showName) {
                     moml.append("<property name=\"_showName\" "
