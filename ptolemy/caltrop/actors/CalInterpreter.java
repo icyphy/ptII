@@ -350,7 +350,7 @@ public class CalInterpreter extends TypedAtomicActor {
         if (container != null
                 && container.getEntity(_actor.getName()) != this) {
             this.setName(((CompositeEntity) this.getContainer())
-                    + uniqueName(_actor.getName()));
+                         .uniqueName(_actor.getName()));
         }
         _attachActorIcon(_actor.getName());
     }
