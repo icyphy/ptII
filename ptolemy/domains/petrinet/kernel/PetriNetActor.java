@@ -188,9 +188,9 @@ public class PetriNetActor extends TypedCompositeActor  {
     public boolean prefire() throws IllegalActionException {
 
         PetriNetDirector director = (PetriNetDirector) getDirector();
-        TypedCompositeActor pnActor = (TypedCompositeActor) this;
+        TypedCompositeActor actor = (TypedCompositeActor) this;
 
-        LinkedList componentList = director.findTransitions(pnActor);
+        LinkedList componentList = director.findTransitions(actor);
         Iterator components = componentList.iterator();
         while (components.hasNext()) {
             Nameable componentActor = (Nameable) components.next();
