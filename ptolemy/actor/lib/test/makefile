@@ -60,6 +60,7 @@ JSIMPLE_TESTS = \
 	DiscreteRandomSource.tcl \
 	Distributor.tcl \
 	DB.tcl \
+	Exit.tcl \
 	Expression.tcl \
 	Gaussian.tcl \
 	Interpolator.tcl \
