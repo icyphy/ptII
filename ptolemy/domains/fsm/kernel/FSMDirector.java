@@ -402,8 +402,6 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             IllegalActionException exception)
             throws IllegalActionException {
 
-        if (!exception.getMessage().trim().startsWith("AssertionModelError")) throw exception;
-
 	FSMActor fsm = getController();
         fsm._setInputsFromRefinement();
         State st = fsm.currentState();
