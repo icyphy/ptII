@@ -31,9 +31,7 @@ package pt.actor;
 import pt.kernel.*;
 import pt.kernel.util.*;
 import pt.kernel.mutation.*;
-import pt.data.*;
 
-import collections.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,7 +123,7 @@ public class StaticSchedulingDirector extends Director{
              throws IllegalActionException, NotScheduleableException {
         if(_scheduler == null) {
             throw new IllegalActionException(this, 
-                " has no scheduler.")
+                " has no scheduler.");
         }
         if(scheduleValid()) {
             return _cachedschedule;
@@ -147,7 +145,7 @@ public class StaticSchedulingDirector extends Director{
         try {
             workspace().getWriteAccess();
             // If there was a previous director, we need to reset it.
-            if (_scheduler != null) _scheduler._makeDirectorOf(null);
+            if (_scheduler != null) _scheduler._makeSchedulerOf(null);
             if (scheduler != null) {
                 scheduler._makeSchedulerOf(this);
             }
@@ -170,7 +168,7 @@ public class StaticSchedulingDirector extends Director{
              throws IllegalActionException {
         if(_scheduler == null) {
             throw new IllegalActionException(this, 
-                " has no scheduler.")
+                " has no scheduler.");
         }
         _schedulevalid = valid;
     }
@@ -182,9 +180,9 @@ public class StaticSchedulingDirector extends Director{
     public boolean scheduleValid() throws IllegalActionException {
         if(_scheduler == null) {
             throw new IllegalActionException(this, 
-                " has no scheduler.")
+                " has no scheduler.");
         }
-        return _scheduleValid;
+        return _schedulevalid;
     }
         
     ////////////////////////////////////////////////////////////////////////
@@ -210,26 +208,11 @@ public class StaticSchedulingDirector extends Director{
     }   
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    /** Description */
-    protected int _aprotectedvariable;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
-
-    // Private methods should not have doc comments, they should
-    // have regular C++ comments.
-    private int _APrivateMethod() {
-        return 1;
-    }
-
-    ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private Scheduler _scheduler;
-    private boolean schedulevalid = false;
+    private boolean _schedulevalid = false;
     private Enumeration _cachedschedule;
 }

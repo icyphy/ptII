@@ -31,10 +31,7 @@ package pt.actor;
 
 import pt.kernel.*;
 import pt.kernel.util.*;
-import pt.kernel.mutation.*;
-import pt.data.*;
 
-import collections.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,7 +66,7 @@ public class Scheduler extends NamedObj{
      *  Increment the version number of the workspace.
      *  @param name Name of this object.
      */
-    public Schedule(String name) {
+    public Scheduler(String name) {
         super(name);
     }
 
@@ -105,6 +102,7 @@ public class Scheduler extends NamedObj{
      *  override this method and add their scheduling algorithms here.
      *  If the scheduler has no container, or the contained 
      *  StaticSchedulingDirector has no container, return null.
+     *  This method read synchronize the workspace.
      * @see pt.kernel.CompositeEntity#deepGetEntities()
      * @return An Enumeration of the deeply contained atomic entities
      *  in the firing order.
@@ -113,15 +111,21 @@ public class Scheduler extends NamedObj{
      *  by the derived scheduler.
      */	
     public Enumeration schedule() throws NotScheduleableException {
-        StaticSchedulingDirector dir = (StaticSchedulingDirector)getContainer();
-        if( dir == null) {
-            return null;
+        try {
+            workspace().getReadAccess();
+            StaticSchedulingDirector dir =
+                (StaticSchedulingDirector)getContainer();
+            if( dir == null) {
+                return null;
+            }
+            CompositeActor ca = (CompositeActor)(dir.getContainer());
+            if( ca == null) {
+                return null;
+            }
+            return ca.deepGetEntities();
+        } finally {
+            workspace().doneReading();
         }
-        CompositeActor ca = (CompositeActor)(dir.getContainer());
-        if( ca == null) {
-            return null;
-        }
-        return ca.deepGetEntities();
     }
 
     ////////////////////////////////////////////////////////////////////////
