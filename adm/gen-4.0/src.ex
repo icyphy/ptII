@@ -179,6 +179,7 @@ ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/VergilApplet.java
+ptolemy/vergil/debugger/demo2
 ptolemy/vergil/graph
 ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 updateMoMLFiles.xml
