@@ -32,7 +32,6 @@ package ptolemy.copernicus.c;
 
 // FIXME: clean up import list.
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.java.ActorTransformer;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;

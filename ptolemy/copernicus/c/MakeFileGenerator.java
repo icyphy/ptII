@@ -154,7 +154,7 @@ public class MakeFileGenerator {
 
         // Library generation.
         code.append("$(LIB_FILE): $(LIB_OBJECTS)\n");
-        code.append("\tar r $(LIB_FILE) $(LIB_OBJECTS)\n");
+        code.append("\tar cr $(LIB_FILE) $(LIB_OBJECTS)\n");
         code.append("\tranlib $(LIB_FILE)\n");
 
         // Other targets.
