@@ -57,7 +57,7 @@ name, along with a graphical representation.
 public class EditorIcon extends Icon {
 
     /**
-     * Create a new icon with the name "EditorIcon" in the given container. 
+     * Create a new icon with the name "_icon" in the given container. 
      * By default, the icon contains no graphic
      * representations.
      */
@@ -67,7 +67,7 @@ public class EditorIcon extends Icon {
     }
 
     /**
-     * Create a new icon with the name "EditorIcon" in the given container. 
+     * Create a new icon with the name "_icon" in the given container. 
      * By default, the icon contains no graphic
      * representations.
      */
@@ -93,7 +93,6 @@ public class EditorIcon extends Icon {
 	
 	label.translateTo(backBounds.getX(),backBounds.getY());
         ((CompositeFigure)figure).add(label);
-	//label.update();
         return figure;
     }
 
@@ -101,8 +100,12 @@ public class EditorIcon extends Icon {
      * Create the background figure based on this icon.
      */
     public Figure createBackgroundFigure() {
-        Figure figure = new BasicRectangle(-10, -10, 20, 20, Color.green);
-        return figure;
+	return _createDefaultBackgroundFigure();
+    }
+
+    protected Figure _createDefaultBackgroundFigure() {
+	// FIXME better default.
+	return new BasicRectangle(-10, -10, 20, 20, Color.green);
     }
 }
 

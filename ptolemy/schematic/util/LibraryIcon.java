@@ -48,19 +48,19 @@ import diva.canvas.toolbox.*;
 /**
 
 An icon is the graphical representation of a schematic entity.
-Icons are stored hierarchically in icon libraries.   Every icon has a 
-name, along with a graphical representation.
+Some generic icons are stored in icon libraries to serve as generic templates.
+This icon references such an icon as its pattern. 
 
-This icon is for those based on XML.  If the icon is never configured, then
-it will have a default figure.
+If the icon is never configured, then it will use a default figure for its
+pattern.
 
-@author Steve Neuendorffer, John Reekie
+@author Steve Neuendorffer
 @version $Id$
 */
 public class LibraryIcon extends PatternIcon implements Configurable {
 
     /**
-     * Create a new icon with the name "Icon" in the given container.
+     * Create a new icon with the name "_ccon" in the given container.
      * By default, the icon contains no graphic
      * representations.
      */
@@ -70,11 +70,12 @@ public class LibraryIcon extends PatternIcon implements Configurable {
     }
 
     /**
-     * Create a new icon with the name "EditorIcon" in the given container. 
+     * Create a new icon with the name "_icon" in the given container. 
      */
     public LibraryIcon (NamedObj container, String name) 
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	_iconName = "";
     }
 
     /** Configure the object with data from the specified input stream.
@@ -97,9 +98,19 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	}
 	String name = new String(b, 0, bytesread);
 	System.out.println(name);
-	// FIXME get the name from the input stream.
         IconLibrary library = LibraryIcon.getIconLibrary();
-	setPattern((EditorIcon)library.findIcon(name));
+	EditorIcon icon = (EditorIcon)library.findIcon(name);
+	// if it is found
+	if(icon != null) {
+	    setPattern(icon);
+	    _iconName = name;
+	}
+    }
+
+    /** Return the name of this icon's name in the icon library.
+     */
+    public String getIconName() {
+	return _iconName;
     }
 
     /**
@@ -135,15 +146,19 @@ public class LibraryIcon extends PatternIcon implements Configurable {
         return result;
     }
 
+    /** Return the root icon library from which to search for icons.
+     */
     public static IconLibrary getIconLibrary() {
 	return _iconLibrary;
     }
 
-    public static void setIconLibrary(IconLibrary library) {
+    /** Set the root icon library from which to search for icons.
+     */
+     public static void setIconLibrary(IconLibrary library) {
 	_iconLibrary = library;
     }
 
     private static IconLibrary _iconLibrary;
-
+    private String _iconName;
 }
 

@@ -47,7 +47,8 @@ import diva.canvas.toolbox.*;
 //// PatternIcon
 /**
 This icon represents an icon with a similar look to another icon (its
-'pattern').  
+'pattern').  This is useful for using an icon in more than one place, while
+keeping a reference to it's original, in case the original is changed.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -55,7 +56,7 @@ This icon represents an icon with a similar look to another icon (its
 public class PatternIcon extends EditorIcon {
 
     /**
-     * Create a new icon with the name "Icon" in the given container.
+     * Create a new icon with the name "_icon" in the given container.
      */
     public PatternIcon (NamedObj container) 
             throws NameDuplicationException, IllegalActionException {
@@ -72,10 +73,14 @@ public class PatternIcon extends EditorIcon {
 
     /**
      * Create a background figure based on this icon.  The background figure
-     * will be painted with each graphic element that this icon contains.
+     * will be painted with each graphic element that this icon contains.  
+     * In this class, return the   
      */
     public Figure createBackgroundFigure() {
-        return _pattern.createBackgroundFigure();
+	if(_pattern == null) 
+	    return _createDefaultBackgroundFigure();
+	else
+	    return _pattern.createBackgroundFigure();
     }
 
     public Icon getPattern() {
