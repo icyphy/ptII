@@ -28,21 +28,14 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel.solver;
 
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.BreakpointODESolver;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTDynamicActor;
-import ptolemy.domains.ct.kernel.CTSchedule;
-import ptolemy.domains.ct.kernel.CTScheduler;
 import ptolemy.domains.ct.kernel.ODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -110,66 +103,6 @@ public class DerivativeResolver extends ODESolver
         }
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
-     */
-    public void fireDynamicActors() throws IllegalActionException {
-        _debug(getFullName() + ": resolveState().");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        
-        // configure step sizes 
-        dir.setCurrentStepSize(0.0);
-        dir.setSuggestedNextStepSize(dir.getInitialStepSize());
-        
-        Iterator actors = 
-            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug(getFullName() + " Refiring..." + ((Nameable)next).getName());
-            next.fire();
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
-     */
-    public void fireStateTransitionActors() throws IllegalActionException {
-        _debug(getFullName() + ": resolveState().");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        
-        Iterator actors = schedule.get(
-                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _prefireIfNecessary(next);
-            _debug(getFullName() + " Firing..."+
-                    ((Nameable)next).getName());
-            next.fire();
-        }
-        
-        this._setConverged(true);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -207,8 +140,7 @@ public class DerivativeResolver extends ODESolver
      *  @param integrator The integrator of that calls this method.
      *  @return True always.
      */
-    public boolean integratorIsAccurate(CTBaseIntegrator
-            integrator) {
+    public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         return true;
     }
 
@@ -233,48 +165,48 @@ public class DerivativeResolver extends ODESolver
      *  May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug(getFullName() + ": resolveState().");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        
-        // configure step sizes 
-        dir.setCurrentStepSize(0.0);
-        dir.setSuggestedNextStepSize(dir.getInitialStepSize());
-        
-        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).
-            actorIterator();
-        while (actors.hasNext()) {
-            CTDynamicActor next = (CTDynamicActor)actors.next();
-            _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
-            next.emitTentativeOutputs();
-        }
-        actors = schedule.get(
-                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _prefireIfNecessary(next);
-            _debug(getFullName() + " Firing..."+
-                    ((Nameable)next).getName());
-            next.fire();
-        }
-        // FIXME: The following may not be necessary.
-        // Since the current step size is 0.0.
-        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug(getFullName() + " Refiring..."+
-                    ((Nameable)next).getName());
-            next.fire();
-        }
+//        _debug(getFullName() + ": resolveState().");
+//        CTDirector dir = (CTDirector)getContainer();
+//        if (dir == null) {
+//            throw new IllegalActionException( this,
+//                    " must have a CT director.");
+//        }
+//        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+//        if (scheduler == null) {
+//            throw new IllegalActionException( dir,
+//                    " must have a director to fire.");
+//        }
+//        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+//        
+//        // configure step sizes 
+//        dir.setCurrentStepSize(0.0);
+//        dir.setSuggestedNextStepSize(dir.getInitialStepSize());
+//        
+//        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).
+//            actorIterator();
+//        while (actors.hasNext()) {
+//            CTDynamicActor next = (CTDynamicActor)actors.next();
+//            _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
+//            next.emitTentativeOutputs();
+//        }
+//        actors = schedule.get(
+//                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+//        while (actors.hasNext()) {
+//            Actor next = (Actor)actors.next();
+//            _prefireIfNecessary(next);
+//            _debug(getFullName() + " Firing..."+
+//                    ((Nameable)next).getName());
+//            next.fire();
+//        }
+//        // FIXME: The following may not be necessary.
+//        // Since the current step size is 0.0.
+//        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+//        while (actors.hasNext()) {
+//            Actor next = (Actor)actors.next();
+//            _debug(getFullName() + " Refiring..."+
+//                    ((Nameable)next).getName());
+//            next.fire();
+//        }
         return true;
     }
 

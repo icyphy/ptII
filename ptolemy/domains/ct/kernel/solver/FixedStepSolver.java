@@ -31,6 +31,7 @@ package ptolemy.domains.ct.kernel.solver;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.ODESolver;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,6 +69,39 @@ public abstract class FixedStepSolver extends ODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Fire dynamic actors. 
+     *  @throws IllegalActionException If thrown in the super class or 
+     *  the model time can not be set.
+     */
+    public void fireDynamicActors() throws IllegalActionException {
+        // First assume that the current step size is accurate.
+        // If any dynamic actor finds the current step size not accurate,
+        // the converged status is set to false. 
+        _setConverged(true);
+        super.fireDynamicActors();
+        CTDirector dir = (CTDirector)getContainer();
+        if (getRoundCount() == 0) {
+            dir.setModelTime(
+                dir.getModelTime().add(dir.getCurrentStepSize()));
+        }
+    }
+
+    /** Return 0 to indicate that no history information is needed by
+     *  this solver.
+     *  @return 0.
+     */
+    public int getHistoryCapacityRequirement() {
+        return 0;
+    }
+
+    /** Return 1 to indicate that an integrator under this solver needs
+     *  one auxiliary variable.
+     *  @return 1.
+     */
+    public int getIntegratorAuxVariableCount() {
+        return 1;
+    }
 
     /** Return true always, since no error control is performed.
      *  @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isThisStepAccurate

@@ -28,21 +28,15 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel.solver;
 
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTSchedule;
-import ptolemy.domains.ct.kernel.CTScheduler;
 import ptolemy.domains.ct.kernel.ODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -108,32 +102,14 @@ public class ExplicitRK23Solver extends ODESolver {
         }
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
+    /** Fire dynamic actors. 
+     *  @throws IllegalActionException If thrown in the super class or the
+     *  model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {
-        _debug(getFullName() + ": firing dynamic actors to emit tentative states.");
+        super.fireDynamicActors();
         CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a scheduler to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        Iterator actors;
-        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug(getFullName() + " firing..."+
-                    ((Nameable)next).getName());
-            next.fire();
-        }
-        // FIXME: why is the current time changed here?
+        // NOTE: why is the current model time changed here?
         // Some state transition actors may be some functions 
         // defined on the current time, such as the CurrentTime actor.            
         Time iterationBeginTime = dir.getIterationBeginTime();
@@ -143,83 +119,11 @@ public class ExplicitRK23Solver extends ODESolver {
     }
 
 
-    /** Fire one round to resolve the states of the system.
-     *  @throws IllegalActionException If the model does not contain a director
-     *  or a scheduler.
-     */
-    public void fireOneRound() throws IllegalActionException {
-        _debug(getFullName() + ": firing one round to resolve states.");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a scheduler to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        Iterator actors;
-        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        Time iterationBeginTime = dir.getIterationBeginTime();
-        double currentStepSize = dir.getCurrentStepSize();
-
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug(getFullName() + " firing..."+
-                    ((Nameable)next).getName());
-            next.fire();
-        }
-        // FIXME: why is the current time changed here?
-        // Some state transition actors may be some functions 
-        // defined on the current time, such as the CurrentTime actor.            
-        dir.setModelTime(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
-        actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
-            actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _prefireIfNecessary(next);
-            _debug(getFullName(), " firing... ",
-                    ((Nameable)next).getName());
-            next.fire();
-        }
-        incrementRoundCount();
-        if (getRoundCount() == _timeInc.length) {
-            _setConverged(true);
-            // enforce the current iteration stops at the expected time
-            // specially for the breakpoints.
-            dir.setModelTime(dir.getIterationEndTime());
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
+    /** Fire state transition actors. 
+     *  @throws IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
-        _debug(getFullName() 
-            + ": firing state transition actors to resolve states.");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a scheduler to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        Iterator actors;
-        actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
-            actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _prefireIfNecessary(next);
-            _debug(getFullName(), " firing... ",
-                    ((Nameable)next).getName());
-            next.fire();
-        }
+        super.fireStateTransitionActors();
         incrementRoundCount();
         if (getRoundCount() == _timeInc.length) {
             resetRoundCount();
@@ -230,7 +134,7 @@ public class ExplicitRK23Solver extends ODESolver {
             // [0.5, 0.75, 1.0] as the time increment array. We may not
             // need the following statement. However, it is still here 
             // just to make sure that time goes where we expected.
-            //dir.setModelTime(dir.getIterationEndTime());
+            // dir.setModelTime(dir.getIterationEndTime());
         }
     }
 

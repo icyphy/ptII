@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel;
 
+import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
@@ -116,18 +118,46 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. In this class, this method is abstract. 
-     *  Derived classes need to implement the details.
-     *  @exception IllegalActionException Now thrown in this class.
+    /** Fire dynamic actors. 
+     *  @exception IllegalActionException If schedule can not be found or
+     *  dynamic actors throw it from their fire() methods.
      */
-    public abstract void fireDynamicActors() throws IllegalActionException;
+    public void fireDynamicActors() throws IllegalActionException {
+        if (_debugging) {
+            _debug(getFullName() + " firing dynamic actors ...");
+        }
+        CTSchedule schedule = _getSchedule();
+        Iterator actors = 
+            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            if (_debugging) {
+                _debug("  firing..." + ((Nameable)next).getName());
+            }
+            next.fire();
+        }
+    }
 
-    /** Fire state transition actors. In this class, this method is abstract. 
-     *  Derived classes need to implement the details.
-     *  @exception IllegalActionException Now thrown in this class.
+    /** Fire state transition actors. 
+     *  @exception IllegalActionException If schedule can not be found or
+     *  state transition actors throw it from their fire() methods.
      */
-    public abstract void fireStateTransitionActors() 
-        throws IllegalActionException;
+    public void fireStateTransitionActors() throws IllegalActionException {
+        if (_debugging) {
+            _debug(getFullName() + " firing state transition actors ...");
+        }
+        CTSchedule schedule = _getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _prefireIfNecessary(next);
+            if (_debugging) {
+                _debug("  firing..." + ((Nameable)next).getName());
+            }
+            next.fire();
+        }
+    }
 
     /** Return the director that contains this solver.
      *  @return the director that contains this solver.
@@ -223,6 +253,24 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Get the current schedule. 
+     *  @throws IllegalActionException If this solver is not contained by
+     *  a director, or the director does not have a scheduler.
+     */
+    protected CTSchedule _getSchedule() throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        return (CTSchedule)scheduler.getSchedule();
+    }
+    
     /** Make this solver the solver of the given Director. This method
      *  should only be called by CT directors, when they instantiate solvers 
      *  according to the ODESolver parameters.
@@ -268,6 +316,14 @@ public abstract class ODESolver extends NamedObj {
      */
     protected void _setConverged(boolean converged) {
         _isConverged = converged;
+    }
+
+    /** Vote for whether a fixed point has reached. The final result
+     *  is the <i>and</i> of all votes.
+     *  @param converged True if vote for converge.
+     */
+    protected void _voteForConverged(boolean converged) {
+        _setConverged(isConverged() && converged);
     }
 
     ///////////////////////////////////////////////////////////////////

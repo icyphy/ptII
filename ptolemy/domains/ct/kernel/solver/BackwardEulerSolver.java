@@ -28,19 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel.solver;
 
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTDynamicActor;
-import ptolemy.domains.ct.kernel.CTSchedule;
-import ptolemy.domains.ct.kernel.CTScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,86 +90,15 @@ public class BackwardEulerSolver extends FixedStepSolver {
         }
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
-     */
-    public void fireDynamicActors() throws IllegalActionException {
-        // First assume that the current step size is accurate.
-        // If any dynamic actor finds the current step size not accurate,
-        // the converged status is set to false. 
-        _setConverged(true);
-        
-        _debug(getFullName() + ": fire dynamic actors.");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-
-        Iterator actors = schedule.get(
-                CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            CTDynamicActor next = (CTDynamicActor)actors.next();
-            _debug(getFullName(), " firing ", ((Nameable)next).getName());
-            next.fire();
-        }
-         
-        if (getRoundCount() == 0) {
-            dir.setModelTime(
-                dir.getModelTime().add(dir.getCurrentStepSize()));
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
-     */
-    public void fireStateTransitionActors() throws IllegalActionException {
-        _debug(getFullName() + ": fire state transition actors.");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-
-        Iterator actors = schedule.get(
-                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug(getFullName(), " firing ", ((Nameable)next).getName());
-            next.fire();
-        }
-        incrementRoundCount();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 0 to indicate that no history information is needed by
-     *  this solver.
-     *  @return 0.
+    /** Fire state transition actors. 
+     *  @throws IllegalActionException If thrown in the super class.
      */
-    public int getHistoryCapacityRequirement() {
-        return 0;
-    }
-
-    /** Return 1 to indicate that an integrator under this solver needs
-     *  one auxiliary variable.
-     *  @return 1.
-     */
-    public int getIntegratorAuxVariableCount() {
-        return 1;
+    public void fireStateTransitionActors() throws IllegalActionException {
+        super.fireStateTransitionActors();
+        incrementRoundCount();
     }
 
     /** Provide the fire() method for the integrator under this solver.
@@ -225,16 +147,6 @@ public class BackwardEulerSolver extends FixedStepSolver {
             return false;
         }
         return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Vote on whether states have converged.
-     *  @param converged True if vote for convergence.
-     */
-    private void _voteForConverged(boolean converged) {
-        _setConverged(isConverged() && converged);
     }
 
     ///////////////////////////////////////////////////////////////////
