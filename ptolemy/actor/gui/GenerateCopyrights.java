@@ -104,6 +104,11 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/python/copyright.htm");
 
 
+        _addIfPresent(copyrightsMap,
+                "ptolemy.copernicus.kernel.KernelMain"
+                "ptolemy/copernicus/kernel/soot-license.html");
+
+
         // Now generate the HTML
 
         String ptIICopyright = _findURL("ptolemy/configs/doc/copyright.htm");
