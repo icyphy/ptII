@@ -85,7 +85,7 @@ demo_interpreted: $(PTCLASSJAR)
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS)
 
-codegen: generate_sdf_code compile_codegen preverify build_prc run_codegen waba
+codegen: generate_sdf_code compile_codegen build_prc run_codegen waba
 
 # FIXME: JAVASRC_SKELETON_DIR needs to go away.
 # It is the location of the java sources and the .skel files
@@ -119,9 +119,8 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
 	@echo "# Compiling codegen waba *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
+	CLASSPATH="$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(WABA_CLASSES)" \
 	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
-		-bootclasspath $(WABA_CLASSES)  \
-		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
 
 # Compile the non-codegen waba code in $(PTII)/$(OUTPKG)
@@ -131,32 +130,40 @@ compile_waba:
 	@echo "# Compiling non-codegen waba *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
+	CLASSPATH="$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(WABA_CLASSES)" \
 	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
-		-bootclasspath $(WABA_CLASSES)  \
-		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
 
 
 
 # Create a Palm binary from the class files in 
 # $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
-#   Note that to build a Palm binary, you should first run the preverifier
-#   and then use the .class files from the output directory that are
-#   created by the preverifier.  If you use the class files that were
-#   created by javac directly, then you may get verifier errors.
-build_prc: $(WABA_DIR)/tools/palm/src/palm/database/MakePalmApp.class
+# Waba Extras at http://www.cygnus.uwa.edu.au/~rnielsen/wextras/
+# has java implementations of warp and exegen
+WEXTRAS_DIR=$(PTII)/vendors/misc/waba/wextras130
+build_prc: 
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
 	@echo "# $(PTII)/$(OUTPKG_DIR)"
 	@echo "###################################"
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-	$(WARP) c /q $(OUTPKG_MAIN_CLASS) *.class
-	$(EXEGEN) /q /i icon.bmp \
-		$(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS)
+	(cd $(ROOT); \
+	CLASSPATH=$(WEXTRAS_DIR)/src \
+		$(JAVA) wababin/Warp c $(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS) $(OUTPKG_DIR)/*.class; \
+	CLASSPATH=$(WEXTRAS_DIR)/src \
+		$(JAVA)	wababin/Exegen \
+		$(OUTPKG_MAIN_CLASS) \
+		$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS) \
+		$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS) \
+		)
+
+foo:
+	#$(WARP) c /q $(OUTPKG_MAIN_CLASS) *.class; \
+	#$(EXEGEN) /q \
+	#	$(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS)
 
 run_codegen: 	
 	(cd $(ROOT)/$(OUTPKG_DIR); \
-		CLASSPATH=$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(WABA_CLASSES)
+	CLASSPATH="$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(WABA_CLASSES)" \
 		$(JAVA) waba.applet.Applet $(OUTPKG).$(OUTPKG_MAIN_CLASS))
 
 clean_codegen: clean
