@@ -62,6 +62,7 @@ import diva.canvas.event.MouseFilter;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
 import diva.canvas.interactor.SelectionModel;
+import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.ActionInteractor;
 
@@ -223,10 +224,11 @@ public class KernelGraphFrame extends GraphFrame {
  	_controller.getEntityPortController().setMenuFactory(
                 new PortContextMenuFactory(_controller));
         // FIXME: entity ports don't use a NodeInteractor.
-        /*_addDoubleClickInteractor((NodeInteractor)
-               _controller.getEntityPortController().getNodeInteractor(),
-                doubleClickInteractor);
+        /** CompositeInteractor interactor = (CompositeInteractor)
+            _controller.getAttributeController().getNodeInteractor();
+        interactor.addInteractor(doubleClickInteractor);
         */
+
   	_controller.getPortController().setMenuFactory(
                 new PortContextMenuFactory(_controller));
         _addDoubleClickInteractor((NodeInteractor)
