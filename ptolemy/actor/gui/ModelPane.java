@@ -442,7 +442,6 @@ public class ModelPane extends JPanel implements CloseListener {
         }
         // place the placeable objects in the model
         _displays = new JPanel();
-        _displays.setBackground(null);
 
         add(_displays);
         _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
