@@ -187,7 +187,7 @@ public class VideoCamera extends Source implements ControllerListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        CaptureDeviceManager captureManager = new CaptureDeviceManager();
+        /*CaptureDeviceManager captureManager = */ new CaptureDeviceManager();
         // FIXME: Format should be a parameter?
         // FIXME: This one too (look below)
         VideoFormat format = new YUVFormat();
@@ -333,7 +333,7 @@ public class VideoCamera extends Source implements ControllerListener {
          */
 
         synchronized void accessFrame(Buffer frame) {
-            long t = (long)(frame.getTimeStamp()/10000000f);
+            // long t = (long)(frame.getTimeStamp()/10000000f);
             //VideoFormat videoFormat = (VideoFormat)frame.getFormat();
             //BufferToImage bufferToImage = new BufferToImage(videoFormat);
 
@@ -458,7 +458,6 @@ public class VideoCamera extends Source implements ControllerListener {
     // The java.awt.Image that we are producing
     private Buffer _bufferNew;
     private boolean _newFrame = false;
-    private Thread _busyFlag = null;
     // The video processor.
     Processor _processor;
     PreAccessCodec CameraCodec;
