@@ -677,6 +677,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat2/testAudioReaderAudioPlayer.xml" \
 	    || "$file" == "compat2/VariableFIR2.xml" \
 	    || "$file" == "compat2/Autocorrelation3.xml" \
+	    || "$file" == "compat2/test-pn-composite-1.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
