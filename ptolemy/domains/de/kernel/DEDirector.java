@@ -140,6 +140,44 @@ public abstract class DEDirector extends Director {
       super.fire();
     }
 
+    /** Schedule an actor to be fired after the specified delay.
+     *
+     *  @param actor The scheduled actor to fire.
+     *  @param delay The scheduled time to fire.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    public void fireAfterDelay(Actor actor, double delay)
+            throws IllegalActionException {
+        // Check if the actor is in the composite actor containing this
+        // director. FIXME.
+
+        // If this actor has input ports, then the depth is set to be
+        // one higher than the max depth of the input ports.
+        // If this actor has no input ports, then the depth is set to
+        // to be zero.
+        long maxdepth = -1;
+        Enumeration iports = actor.inputPorts();
+        while (iports.hasMoreElements()) {
+            IOPort p = (IOPort) iports.nextElement();
+            Receiver[][] r = p.getReceivers();
+            if (r == null) continue;
+            DEReceiver rr = (DEReceiver) r[0][0];
+            if (rr._depth > maxdepth) {
+                maxdepth = rr._depth;
+            }
+        }
+        this.enqueueEvent(actor, delay, maxdepth+1);
+    }
+    
+    /** Schedule an actor to be fired at the specified time.
+     *  @param actor The scheduled actor to fire.
+     *  @param time The scheduled time to fire.
+     *  @exception IllegalActionException If the specified time is in the past.
+     */
+    public void fireAt(Actor actor, double time) throws IllegalActionException {
+        fireAfterDelay(actor, time - getCurrentTime());
+    }
+
     /** Return the current time of the simulation. Firing actors that need to
      *  know the current time (e.g. for calculating the time stamp of the
      *  delayed outputs) call this method.

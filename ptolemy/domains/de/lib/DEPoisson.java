@@ -81,7 +81,7 @@ public class DEPoisson extends DEActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         double curTime = getCurrentTime();
-	refireAfterDelay(0.0-curTime);
+	fireAfterDelay(0.0-curTime);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -97,7 +97,7 @@ public class DEPoisson extends DEActor {
 
         // compute an exponential random variable.
         double exp = -Math.log((1-Math.random()))*lambda;
-	refireAfterDelay(exp);
+	fireAfterDelay(exp);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -86,7 +86,7 @@ public class DEClock extends DEActor {
         double curTime = getCurrentTime();
         // The delay parameter maybe negative, but it's permissible in the
         // director because the start time is not initialized yet.
-	refireAfterDelay(0.0-curTime);
+	fireAfterDelay(0.0-curTime);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -96,7 +96,7 @@ public class DEClock extends DEActor {
     public void fire()
             throws IllegalActionException {
         output.broadcast(_value.getToken());
-	refireAfterDelay(((DoubleToken)_interval.getToken()).doubleValue());
+	fireAfterDelay(((DoubleToken)_interval.getToken()).doubleValue());
     }
 
     ///////////////////////////////////////////////////////////////////

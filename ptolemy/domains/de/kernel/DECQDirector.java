@@ -344,35 +344,6 @@ public class DECQDirector extends DEDirector {
 
     }
 
-    /**
-     *
-     *  @param delay The delay, relative to the current time.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public void fireAfterDelay(Actor actor, double delay)
-            throws IllegalActionException {
-        // Check if the actor is in the composite actor containing this
-        // director. FIXME.
-
-
-        // If this actor has input ports, then the depth is set to be
-        // one higher than the max depth of the input ports.
-        // If this actor has no input ports, then the depth is set to
-        // to be zero.
-        long maxdepth = -1;
-        Enumeration iports = actor.inputPorts();
-        while (iports.hasMoreElements()) {
-            IOPort p = (IOPort) iports.nextElement();
-            Receiver[][] r = p.getReceivers();
-            if (r == null) continue;
-            DEReceiver rr = (DEReceiver) r[0][0];
-            if (rr._depth > maxdepth) {
-                maxdepth = rr._depth;
-            }
-        }
-        this.enqueueEvent(actor, delay, maxdepth+1);
-    }
-
     /** Return the next future time of the next iterations. This means
      *  simultaneous iterations will be skipped, and only look at the next
      *  future time stamp (i.e. not equal to the current time).
@@ -805,7 +776,7 @@ public class DECQDirector extends DEDirector {
         double nextRefire = sortkey.timeStamp();
 
         // enqueue a refire for the container of this director.
-        ((CompositeActor)getContainer()).getExecutiveDirector().fireAfterDelay((Actor)getContainer(), nextRefire - getCurrentTime());
+        ((CompositeActor)getContainer()).getExecutiveDirector().fireAt((Actor)getContainer(), nextRefire);
 
     }
 

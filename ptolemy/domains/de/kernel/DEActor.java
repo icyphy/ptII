@@ -104,7 +104,7 @@ public class DEActor extends TypedAtomicActor {
      *  @param delay The delay, relative to the current time.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public void refireAfterDelay(double delay) throws IllegalActionException {
+    public void fireAfterDelay(double delay) throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	// FIXME: the depth is equal to zero ???
         // If this actor has input ports, then the depth is set to be

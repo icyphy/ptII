@@ -206,8 +206,6 @@ CLOCK_CLASSFILES = \
 	ptolemy/kernel/Entity.class \
 	ptolemy/kernel/Port.class \
 	ptolemy/kernel/Relation.class \
-	ptolemy/kernel/mutation/Mutation.class \
-	ptolemy/kernel/mutation/MutationListener.class \
 	ptolemy/kernel/util/Attribute.class \
 	'ptolemy/kernel/util/CrossRefList$$CrossRef.class' \
 	'ptolemy/kernel/util/CrossRefList$$CrossRefEnumeration.class' \
