@@ -120,9 +120,8 @@ public class DEXORGate extends DEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
-    // the ports.
     public DEIOPort output;
     public DEIOPort input1;
     public DEIOPort input2;
