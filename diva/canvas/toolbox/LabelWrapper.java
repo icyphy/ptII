@@ -42,7 +42,7 @@ import diva.canvas.Figure;
 /** A LabelWrapper is a figure that attaches a label to some other figure.
  * The location at which the label is attached can (in this class) be
  * set to the center or to any of the four edges or corners of the
- * boundig box. (Maybe later we'll figure out a way to have the label
+ * bounding box. (Maybe later we'll figure out a way to have the label
  * locate at a site.) In addition, the anchor and padding attributes
  * of the figure itself can be used to adjust the label location relative
  * to the anchoring point on the main figure.
