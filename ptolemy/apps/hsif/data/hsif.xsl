@@ -80,7 +80,7 @@
             </xsl:call-template>
         </xsl:for-each>
 
-        <!-- Global varaibles are mapped into I/O ports -->
+        <!-- Global variables are mapped into I/O ports -->
         <xsl:for-each select="IntegerVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.actor.TypedIOPort'"/>

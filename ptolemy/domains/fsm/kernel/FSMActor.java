@@ -885,7 +885,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  expression evaluation errors in dependent variables because
      *  those are lazy.
      *  @see #_createInputVariables(IOPort port)
-     *  @param port The port to remove shadow varaibles for.
+     *  @param port The port to remove shadow variables for.
      */
     protected void _removeInputVariables(IOPort port) {
         Variable[][] shadowVariables = (Variable[][])_inputVariableMap.get(port);
