@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/odf
 
-DIRS =		kernel lib demo
+DIRS =		# kernel #lib #demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
