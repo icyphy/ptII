@@ -475,6 +475,12 @@ public class ProcessDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    // Flag for determining when an iteration completes
+    protected boolean _notdone = true;
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Count of the number of processes that were started by this 
@@ -486,7 +492,6 @@ public class ProcessDirector extends Director {
     private long _actorsPaused = 0;
 
     //private boolean _deadlock = false;
-    private boolean _notdone = true;
 
     // The receivers that were paused when a pause was repuested.
     private LinkedList _pausedReceivers = new LinkedList();
