@@ -752,7 +752,11 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	if(foundLink != null) return;
 
 	List linkedPortList = relation.linkedPortList();
-	if(linkedPortList.size() != 2) {
+	if(linkedPortList.size() < 2) {
+	    throw new GraphException("A transition was found connecting less "
+                    + "than two states.");
+	}
+	if(linkedPortList.size() > 2) {
 	    throw new GraphException("A transition was found connecting more "
                     + "than two states.");
 	}
