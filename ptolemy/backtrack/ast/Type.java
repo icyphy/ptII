@@ -337,6 +337,18 @@ public class Type {
     public String getName() {
         return _fullName;
     }
+    
+    /** Get the owner associated with an AST node, if it is resolved
+     *  as a field or method. The owner is the type that the field or
+     *  method belongs to.
+     *  
+     *  @param node The node with an owner associated with it.
+     *  @return The owner. <tt>null</tt> if the node is not a class
+     *   member or there is no owner associated with it.
+     */
+    public static Type getOwner(ASTNode node) {
+        return (Type)node.getProperty("owner");
+    }
 
     /** Get the type associated with an AST node.
      *
@@ -384,7 +396,16 @@ public class Type {
         return PRIMITIVE_TYPES.containsKey(typeName);
     }
 
-    /** Copy the type annotation from a type to another.
+    /** Copy the owner annotation from a node to another.
+     *
+     *  @param nTo The node whose owner is updated.
+     *  @param nFrom The node whose owner is fetched.
+     */
+    public static void propagateOwner(ASTNode nTo, ASTNode nFrom) {
+        setOwner(nTo, getType(nFrom));
+    }
+
+    /** Copy the type annotation from a node to another.
      *
      *  @param nTo The node whose type is updated.
      *  @param nFrom The node whose type is fetched.
@@ -427,19 +448,22 @@ public class Type {
         throw new ClassNotFoundException(newName);
     }
 
-    /** Remove the type associated with a node.
-     *
-     *  @param node The node associated with a type.
+    /** Set the owner associated with an AST node, if it is resolved
+     *  as a field or method. The owner is the type that the field or
+     *  method belongs to.
+     *  
+     *  @param node The node with an owner associated with it.
+     *  @param owner The type of the owner.
+     *  @see #setOwner(ASTNode, Type)
      */
-    public static void removeType(ASTNode node) {
-        node.setProperty("type", null);
+    public static void setOwner(ASTNode node, Type owner) {
+        node.setProperty("owner", owner);
     }
 
-    /** Get the type object associated with a node.
+    /** Set the type object associated with a node.
      *
      *  @param node The node associated with a type.
-     *  @param type The type associated with the node. If no type
-     *   is associated with the node, <tt>null</tt> is returned.
+     *  @param type The type associated with the node.
      *  @see #getType(ASTNode)
      */
     public static void setType(ASTNode node, Type type) {
