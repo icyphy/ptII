@@ -575,7 +575,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
     public void setCurrentTime(double newTime) throws IllegalActionException {
         _currentTime = newTime;
     }
-
+    
     /** Transfer data from the input port of the container to the ports
      *  connected to the inside of the input port and on the mode controller
      *  or the refinement of its current state. This method will transfer
@@ -663,6 +663,8 @@ public class FSMDirector extends Director implements ModelErrorHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    // FIXME: Alphabetize the following, and add javadoc comments.
 
     // Build for each state of the mode controller the map from input
     // ports of the modal model to the local receivers when the mode
@@ -759,6 +761,24 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         }
     }
 
+    /** Return the enabled transition among the given list of transitions.
+     *  Throw an exception if there is more than one transition enabled.
+     *
+     *  @param transitionList A list of transitions.
+     *  @return An enabled transition, or null if none is enabled.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled, or if thrown by any choice action contained
+     *   by the enabled transition, or if there is no controller.
+     */
+    protected Transition _chooseTransition(List transitionList)
+            throws IllegalActionException {
+        if (_controller != null) {
+            return _controller._chooseTransition(transitionList);
+        } else {
+            throw new IllegalActionException(this, "No controller!");
+        }
+    }
+    
     /** Return the receivers contained by ports connected to the inside
      *  of the given input port and on the mode controller or the
      *  refinement of its current state.
@@ -773,6 +793,66 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             _buildLocalReceiverMaps();
         }
         return (Receiver[][])_currentLocalReceiverMap.get(port);
+    }
+    
+    /** Return the last chosen transition.
+     *  @return The last chosen transition, or null if there has been none.
+     */
+    protected Transition _getLastChosenTransition() {
+        if (_controller != null) {
+            return _controller._lastChosenTransition;
+        } else {
+            return null;
+        }
+    }
+    
+    /** Set the current state of this actor.
+     *  @param state The state to set.
+     *  @exception IllegalActionException If there is no controller.
+     */
+    protected void _setCurrentState(State state) throws IllegalActionException {
+        if (_controller != null) {
+            _controller._currentState = state;
+        } else {
+            throw new IllegalActionException(this, "No controller!");
+        }
+    }
+
+    /** Set the map from input ports to boolean flags indicating whether a
+     *  channel is connected to an output port of the refinement of the
+     *  current state. This method is called by HDFFSMDirector.
+     *
+     *  @exception IllegalActionException If the refinement specified
+     *   for one of the states is not valid, or if there is no controller.
+     */
+    protected void _setCurrentConnectionMap() throws IllegalActionException {
+        if (_controller != null) {
+            _controller._setCurrentConnectionMap();
+        } else {
+            throw new IllegalActionException(this, "No controller!");
+        }
+    }
+    
+    /** Set the value of the shadow variables for input ports of the controller
+     *  actor that are defined by output ports of the refinement.
+     *  @exception IllegalActionException If a shadow variable cannot take
+     *   the token read from its corresponding channel (should not occur).
+     */
+    protected void _setInputsFromRefinement() throws IllegalActionException {
+        if (_controller != null) {
+            _controller._setInputsFromRefinement();
+        }
+    }
+    
+    /** Set the value of the shadow variables for input ports of the controller
+     *  actor.
+     *  @exception IllegalActionException If a shadow variable cannot take
+     *   the token read from its corresponding channel (should not occur).
+     */
+    protected void _setInputVariables() throws IllegalActionException {
+        if (_controller != null) {
+            _controller._setInputVariables();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
