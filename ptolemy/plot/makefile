@@ -183,6 +183,9 @@ BASECLASSFILES = \
 		$(ME)/PlotDataException.class \
 		$(ME)/PlotPoint.class \
 		'$(ME)/Plot$$Format.class' \
+		'$(ME)/Plot/PlotFormatter$$1.class' \
+		'$(ME)/Plot/PlotFormatter$$2.class' \
+		'$(ME)/Plot/PlotFormatter.class' \
 		'$(ME)/PlotBox$$CommandListener.class' \
 		'$(ME)/PlotBox$$DragListener.class' \
 		'$(ME)/PlotBox$$ZoomListener.class' \
@@ -313,24 +316,24 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)
 	@echo "Copy over xml stuff"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/com
-	cp -r $(PTII)/com/microstar $(PTII)/com/makefile \
+	cp -r "$(PTII)/com/microstar" "$(PTII)/com/makefile" \
 		$(PTTMPDIR)/$(PTDIST)/com
 	@echo "Copy over gui stuff"
-	cp -r $(PTII)/ptolemy/gui $(PTTMPDIR)/$(PTDIST)/ptolemy
+	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
 	#
 	# Setting up top level doc directory
 	#
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/img
-	cp -r $(PTII)/doc/banner.htm \
-		$(PTII)/doc/contentsheader.htm \
-		$(PTII)/doc/default.css \
-		$(PTII)/doc/footer.htm \
-		$(PTII)/doc/mainheader.htm \
-		$(PTII)/doc/toc.css \
+	cp -r "$(PTII)/doc/banner.htm" \
+		"$(PTII)/doc/contentsheader.htm" \
+		"$(PTII)/doc/default.css" \
+		"$(PTII)/doc/footer.htm" \
+		"$(PTII)/doc/mainheader.htm" \
+		"$(PTII)/doc/toc.css" \
 		 $(PTTMPDIR)/$(PTDIST)/doc
-	cp -r $(PTII)/doc/img/ptIIplanetIcon.gif \
-		$(PTII)/doc/img/ptIIbanner3.gif \
-		$(PTII)/doc/img/prev.gif \
+	cp -r "$(PTII)/doc/img/ptIIplanetIcon.gif" \
+		"$(PTII)/doc/img/ptIIbanner3.gif" \
+		"$(PTII)/doc/img/prev.gif" \
 		$(PTTMPDIR)/$(PTDIST)/doc/img
 	# Create a file in the top level doc directory that points to
 	# the real docs
@@ -365,3 +368,31 @@ fixtmpdist:
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
+
+isj:
+	echo "Setting up for installshield"
+	rm -rf $(PTTMPDIR)/installshield
+	mkdir -p \
+		$(PTTMPDIR)/installshield/doc/$(PTDIST)/ptolemy/plot \
+		$(PTTMPDIR)/installshield/src/ \
+		$(PTTMPDIR)/installshield/runtime/$(PTDIST)/ptolemy/plot/plotml
+	cp -r $(PTTMPDIR)/$(PTDIST) $(PTTMPDIR)/installshield/src
+	@echo "Setup doc dir"
+	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/doc \
+		$(PTTMPDIR)/installshield/doc/$(PTDIST)
+	mv 	$(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/doc \
+		$(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/demo \
+		$(PTTMPDIR)/installshield/doc/$(PTDIST)/ptolemy/plot
+	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/copyright.txt \
+		$(PTTMPDIR)/installshield/src/$(PTDIST)/ptplot.ico \
+		$(PTTMPDIR)/installshield/runtime/$(PTDIST) 
+	@echo "Copy .jar files to runtime dir"
+	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); tar -cf - `find . -name "*.jar" -print`) | ( cd $(PTTMPDIR)/installshield/runtime/$(PTDIST); tar -xf -)
+	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/plotml/*.dtd \
+		$(PTTMPDIR)/installshield/runtime/$(PTDIST)/ptolemy/plot/plotml
+	@echo "Remove the .jar and .class files from the src dir"
+	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); \
+		find . \( -name "*.class" -o -name "*.jar" \) -exec rm {} \;)
+	@echo "Cleanup META-INF dirs etc"
+	(cd $(PTTMPDIR)/installshield/; \
+		find . \( -name "META-INF" -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
