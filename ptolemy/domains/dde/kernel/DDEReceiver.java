@@ -322,9 +322,21 @@ public class DDEReceiver extends TimedQueueReceiver
      *  whether this receiver is scheduled for termination. Resetting
      *  the termination flag will make sure that this receiver is not
      *  scheduled for termination.
+     *  FIXME
      */
     public void reset() {
 	_terminate = false;
+    	_readPending = false;
+    	_writePending = false;
+    	_ignoreNotSeen = true;
+        clearRcvr();
+        Director director = 
+                ((Actor)getContainer().getContainer()).getDirector();
+        String name =  
+                ((Nameable)getContainer().getContainer()).getName();
+        System.out.println(name+":  Reset called with time = 0.0");
+        setRcvrTime( 0.0 );
+        // setRcvrTime( director.getCurrentTime() );
     }
 
     /**
