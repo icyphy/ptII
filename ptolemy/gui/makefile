@@ -94,8 +94,10 @@ OPTIONAL_FILES = \
 	'Query$$CheckBoxListener.class' \
 	'Query$$LineListener.class' \
 	'Query$$QueryActionListener.class' \
+	'Query$$QueryFileChooser.class' \
 	'Query$$QueryFocusListener.class' \
 	'Query$$QueryItemListener.class' \
+	'Query$$QueryScrollPane.class' \
 	'Query$$SliderListener.class' \
 	'SwingWorker$$1.class' \
 	'SwingWorker$$2.class' \
