@@ -9,6 +9,14 @@ are tests running?
 
 add SRDirector and sr.lib to vergil library
 
+move clone functionality
+remove period parameter - inherit time from outside director
+SR in SR (to make the inner actor strict, use an inner director)
+FSM composite actor in SR
+global resets, UI activity, reflex game
+
+find second reader
+
 -------------------------------------------------------------------------------
 
 Issues:
