@@ -158,7 +158,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The sample variance is computed as follows :
      *  <p>
      *  <pre>
-     *  variance<sub>sample</sub> = (sum(X<sup>2</sup>) - (sum(X) / N)<sup>2</sup>) / (N - 1)
+     *  variance<sub>sample</sub> = 
+     *       (sum(X<sup>2</sup>) - (sum(X) / N)<sup>2</sup>) / (N - 1)
      *  </pre>
      *  <p>
      *
@@ -171,9 +172,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         if (sample && (array.length < 2)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.DoubleArrayStat.variance() : sample variance and " +
-                    "standard deviation of an array of length less than 2 are not " +
-                    "defined.");
+                    "ptolemy.math.DoubleArrayStat.variance() : " +
+                    "sample variance and standard deviation of an array " +
+                    "of length less than 2 are not defined.");
         }
 
         double ex2 = 0.0;
@@ -462,7 +463,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         Random random = new Random();
         double[] retval = new double[N];
 
-        for (int i = 0; i < N; i+=2) {
+        for (int i = 0; i < N; i += 2) {
             do {
                 v1 = 2.0 * random.nextDouble() - 1.0;
                 v2 = 2.0 * random.nextDouble() - 1.0;
