@@ -8,8 +8,14 @@
 <!--vergilDocs-->
 <h2>Limitations</h2>
 Version 2.0 has a number of limitations.
+
 <h3>Release Limitations</h3>
 <menu>
+
+<li> Code generation does not work in the Ptolemy 2.0 Web Edition.
+The problem is that some of the code generation facility requires
+that the <CODE>PTII</CODE> environment variable be set.
+
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 untar this file with a checksum error because the pathnames are longer
@@ -35,14 +41,6 @@ in floating point numbers.
 
 </menu>
 
-<h3>Limitations in the PN Domain</h3>
-The PN domain documents that it locally handles mutations.  However, this
-is currently not true in the implementation.  For the basic PN model, this
-doesn't really matter, since mutations happen pretty much the same as they
-would otherwise.  (i.e. they are non-deterministic in when they execute) 
-However, for timed PN models, there is actually some expressiveness
-lost, since timed PN models can locally execute mutations deterministically.
-
 <h3>Limitations in the FSM Domain</h3>
 
 The FSM domain is still fairly preliminary, and is likely to change
@@ -51,6 +49,18 @@ nontrivial FSM models using Vergil.  Hierarchical models are particularly
 difficult to build, and will be handled quite differently in the next
 version.  We cannot assure that FSM models that are constructed with
 this release will work with future releases.
+
+<h3>Limitations in the GR Domain</h3>
+Some of the demos do not work.
+
+<h3>Limitations in the PN Domain</h3>
+The PN domain documents that it locally handles mutations.  However, this
+is currently not true in the implementation.  For the basic PN model, this
+doesn't really matter, since mutations happen pretty much the same as they
+would otherwise.  (i.e. they are non-deterministic in when they execute) 
+However, for timed PN models, there is actually some expressiveness
+lost, since timed PN models can locally execute mutations deterministically.
+
 
 <h3>Limitations in the SDF Domain</h3>
 There are currently two bugs in the SDF Domain.  Both are bugs in the scheduler that can be fairly easily avoided.
@@ -69,8 +79,9 @@ up mostly of code that is rated "red", meaning that both the APIs
 and the implementations are likely to change.
 There are quite a few limitations.
 <menu>
+<li> If I right click on a port and select Customize Name and then select
+Show Name, the name appears twice.
 <li>No undo mechanism.
-<li>Incomplete printing support.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
 <li>Cannot have more than one vertex in a connection.
@@ -86,7 +97,6 @@ There are quite a few limitations.
 
 <h3>Missing Domains</h3>
 <menu>
-<li>Synchronous/reactive.
 <li>Boolean and integer dataflow.
 <li>Dynamic dataflow
 </menu>
