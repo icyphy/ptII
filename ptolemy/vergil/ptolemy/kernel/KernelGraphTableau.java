@@ -103,6 +103,9 @@ public class KernelGraphTableau extends Tableau {
 	 *  in the given model effigy.  If this factory cannot create a tableau
 	 *  for the given effigy (perhaps because the effigy is not of the
 	 *  appropriate subclass) then return null.
+         *  It is the responsibility of callers of this method to check the
+         *  return value and call show().
+	 *
 	 *  @param effigy The model effigy.
 	 *  @return A new KernelGraphTableau, if the effigy is a
 	 *  PtolemyEffigy, or null otherwise.
@@ -118,7 +121,8 @@ public class KernelGraphTableau extends Tableau {
                     tableau = new KernelGraphTableau(
                             (PtolemyEffigy)effigy, "graphTableau");
                 }
-                tableau.show();
+		// Don't call show() here, it is called for us in
+		// TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
 	    } else {
 		return null;
