@@ -70,7 +70,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Evaluate the parse tree with the specified root node.
      *  @param node The root of the parse tree.
-     *  @returns The result of evaluation.
+     *  @return The result of evaluation.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
@@ -82,7 +82,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
      *  @param scope The scope for evaluation.
-     *  @returns The result of evaluation.
+     *  @return The result of evaluation.
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
