@@ -119,6 +119,23 @@ with and without the external packages and to have the external
 packages in different locations.  External packages are usually installed in 
 <CODE>ptII/vendors</CODE>, which we do not distribute.
 
+<p>Packages that are large or have restricted copyrights (such as GPL)
+should go into <code>ptII/vendors</code>.
+
+<p>Large packages should optionally be placed in a separate repository
+and a directory in <code>$PTII/vendors</code> should be created
+that contains a <code>README.txt</code> file that describes how
+to obtain the package (either by download or by using cvs).
+<br>For example, JHDL is a large package that is used 
+by the code generator.
+<br> <code>$PTII/vendors/jhdl/README.txt</code> would desribe how to
+get JHDL.  In this case, it says to use <code>cvs</code> so
+that <code>$PTII/vendors/jhdl/ptjhdllib</code> is created.
+<br> <code>$PTII/configure</code> would then be modified to 
+look <code>$PTII/vendors/jhdl/ptjhdllib</code> for the pieces that it
+needs.
+
+
 <h3>Build-time considerations</h3>
 
 During development, we use GNU autoconf to read in
