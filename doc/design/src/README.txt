@@ -5,8 +5,14 @@ To create a PDF File
 2. Select Edit -> Update Book (In frame 5.5, this was File->Generate/Update)
 3. After generating the toc and idx, edit the idx and
    move the first index entry for the UML symbol - to below the header.
+   Open up usingVergil.fm and remove the cross-reference target
+   in the chapter title.  If you do not, then when you generate pdf,
+   the TOC in the pdf file will say '2 2 Using Vergil' instead
+   of '2 Using Vergil'
 4. Select File->Print Book
    Select 'Print Only to File' and select a file ending in .ps
+      The reason we print to a file is so that we can later 
+      tweak the parameters in Distiller
    Select 'Generate Acrobat Data'
    Hit the "PDF Setup" button, then turn off
        'Create Named Destinations for All Paragraphs"
@@ -26,7 +32,7 @@ fixes the printing problems with chapter 3, with no noticable increase
 in file size.
 
 BTW, in Distiller, If you also turn off compression of images, the
-file size increases from about 3.7M to about 8M.  So don't do that!
+file size increases by about 2x.  So don't do that!
 
 Then open the Postscript file with File->Open
 
@@ -90,6 +96,17 @@ Sizes for Ptolemy II 2.0.1 design doc, Frame 6, Acrobat Distiller 4.0.5:
   600 dpi, downsampling: average/300 for color and greyscale images    5.677Mb
   medium color and greyscale image quality
   resampling off
+
+Note that we also include separate pdfs of the Plot and Using Vergil chapters.
+$PTII/ptolemy/plot/doc/plot.pdf
+$PTII/doc/design/usingVergil/usingVergil.pdf
+The procedure for generating these files is similar to printing
+the entire book
+
+An html version of the UsingVergil chapter can be found at 
+$PTII/doc/design/usingVergil/index.htm
+To generate this file, do
+
 
 Figures
 -------
