@@ -233,6 +233,7 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq \
 			ptolemy.hsif \
+			ptolemy.matlab \
 			ptolemy.media.javasound \
 			ptolemy.util \
 			ptolemy.vergil.fsm.modal
@@ -327,7 +328,6 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.graph.analysis \
 			ptolemy.gui \
 			ptolemy.math \
-			ptolemy.matlab \
 			ptolemy.media \
 			ptolemy.moml \
 			ptolemy.moml.filter \
