@@ -390,11 +390,15 @@ public class AudioSource extends SDFAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	//System.out.println("AudioSource: initialize(): invoked");
-        if (((StringToken)source.getToken()).toString().equals("URL")) {
+	if(_debugging) _debug("AudioSource: initialize(): invoked");
+	//String sourceStr = ((StringToken)source.getToken()).toString();
+	String sourceStr = ((StringToken)source.getToken()).stringValue();
+	if(_debugging) _debug("AudioSource: source = " + sourceStr);
+	//System.out.println("AudioSource: source = " + sourceStr2);
+        if (sourceStr.equals("URL")) {
             // Load audio from a URL.
             String theURL =
-                ((StringToken)pathName.getToken()).toString();
+                ((StringToken)pathName.getToken()).stringValue();
             _soundCapture = new SoundCapture(theURL,
                     _productionRate);
 	    try {
@@ -411,7 +415,7 @@ public class AudioSource extends SDFAtomicActor {
             _channels = _soundCapture.getChannels();
             channels.setToken(new IntToken(_channels));
 
-        } else if (((StringToken)source.getToken()).toString().equals("mic")) {
+        } else if (sourceStr.equals("mic")) {
 
             int sampleRateInt =
                 ((IntToken)sampleRate.getToken()).intValue();
@@ -437,9 +441,13 @@ public class AudioSource extends SDFAtomicActor {
 		    ex.getMessage());
 	    }
         } else {
-            throw new IllegalActionException("Parameter " +
+            throw new IllegalActionException(this.getFullName() +
+		    ": Parameter " +
                     source.getFullName() +
-                    " is not set to a valid string.");
+                    " is not set to a valid string." +
+                    " Valid choices are \"speaker\" or " +
+                    "\"file\". The invalid parameter was:" +
+		    sourceStr + ".");
         }
 
 
@@ -452,7 +460,7 @@ public class AudioSource extends SDFAtomicActor {
      *  in the capturing process and close any open sound files.
      */
     public void wrapup() throws IllegalActionException {
-	//System.out.println("AudioSource: wrapup(): invoked");
+	if(_debugging) _debug("AudioSource: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundCapture != null) {
 	    try {

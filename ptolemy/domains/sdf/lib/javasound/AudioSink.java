@@ -123,6 +123,7 @@ public class AudioSink extends SDFAtomicActor {
     public AudioSink(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	if(_debugging) _debug("AudioSink: Constructor invoked");
         input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
 	input.setMultiport(true);
@@ -297,12 +298,14 @@ public class AudioSink extends SDFAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	//System.out.println("AudioSink: initialize(): invoked");
-	if (((StringToken)sink.getToken()).toString().equals("file")) {
+	if(_debugging) _debug("AudioSink: initialize(): invoked");
+	//String sinkStr = ((StringToken)sink.getToken()).toString();
+	String sinkStr = ((StringToken)sink.getToken()).stringValue();
+	if (sinkStr.equals("file")) {
 	    // Write audio data to a file.
-	    //System.out.println("AudioSink: initialize(): playback to file");
+	    if(_debugging) _debug("AudioSink: initialize(): playback to file");
 	    String pathNameString =
-		((StringToken)pathName.getToken()).toString();
+		((StringToken)pathName.getToken()).stringValue();
 	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
 	    int sampleSizeInBitsInt =
                 ((IntToken)sampleSizeInBits.getToken()).intValue();
@@ -316,10 +319,10 @@ public class AudioSink extends SDFAtomicActor {
                     bufferSizeInt,
                     _consumptionRate);
 	    //} else if (((StringToken)sink.getToken()).toString() == "speaker") {
-	} else if (((StringToken)sink.getToken()).toString().equals("speaker")) {
+	} else if (sinkStr.equals("speaker")) {
 	
 	    // Send audio data to the speaker.
-	    //System.out.println("AudioSink: initialize(): playback to speaker");
+	    if(_debugging) _debug("AudioSink: initialize(): playback to speaker");
             int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
             int sampleSizeInBitsInt =
                 ((IntToken)sampleSizeInBits.getToken()).intValue();
@@ -339,7 +342,7 @@ public class AudioSink extends SDFAtomicActor {
                     " is not set to a valid string." +
                     " Valid choices are \"speaker\" or " +
                     "\"file\". The invalid parameter was:" +
-		    ((StringToken)sink.getToken()).toString() + ".");
+		    sinkStr + ".");
 	}
 
 	try {
@@ -378,7 +381,7 @@ public class AudioSink extends SDFAtomicActor {
     /** Close the specified file, if any.
      */
     public void wrapup() throws IllegalActionException {
-	//System.out.println("AudioSink: wrapup(): invoked");
+	if(_debugging) _debug("AudioSink: wrapup(): invoked");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (_soundPlayback != null) {
