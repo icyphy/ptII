@@ -96,7 +96,7 @@ OPTIONAL_FILES =  \
 	$(OPTIONAL_JSRCS) \
 	PtParser.jj
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class) $(OPTIONAL_JSRCS:%.java=%.class)
 
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
@@ -108,11 +108,11 @@ docs: javadocs
 depend:
 	@echo "no dependencies in this directory"
 
-PtParser :  sources PtParser.jjt
+PtParser :  PtParser.jjt
 	rm -f PtParser.jj
 	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
 	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
-	CLASSPATH=$(CLASSPATH) $(JAVAC) *.java
+	# CLASSPATH=$(CLASSPATH) $(JAVAC) *.java
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
