@@ -221,7 +221,6 @@ public class Display extends Sink implements Placeable {
     public void place(Container container) {
         _container = container;
         if (_container == null) {
-            System.out.println("Container is null");
             // place the text area in its own frame.
             // FIXME: This probably needs to be a PtolemyFrame, when one
             // exists, so that the close button is dealt with, etc.
