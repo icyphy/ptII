@@ -58,7 +58,7 @@ public class Iterations {
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");
         DEDirector director = new DEDirector(toplevel, "director");
-        // director.addDebugListener(new StreamListener());
+        //director.addDebugListener(new StreamListener());
         Manager manager = new Manager(w, "manager");
         toplevel.setManager(manager);
 
@@ -69,11 +69,11 @@ public class Iterations {
         toplevel.connect(source1.output, source2.input);
         toplevel.connect(source2.output, _recorder.input);
 
+        director.startTime.setToken(new DoubleToken(0.0));
         director.stopTime.setToken(new DoubleToken(1000.0));
         manager.initialize();
         manager.iterate();
         manager.iterate();
-        // manager.iterate();
         manager.wrapup();
     }
 
