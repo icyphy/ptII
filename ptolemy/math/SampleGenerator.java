@@ -32,6 +32,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
+/**
+@author Jeff Tsay
+@version $Id$
+*/
 public interface SampleGenerator {
 
     /** Generate a sample of the waveform at a specified time.
