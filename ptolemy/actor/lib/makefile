@@ -156,11 +156,15 @@ OTHER_FILES_TO_BE_JARED = \
 	Sinewave.xml \
 	TimedSine.xml \
 	array.xml \
+	booleanflowcontrol.xml \
 	communications.xml \
 	filtering.xml \
 	flowcontrol.xml \
 	math.xml \
 	matrix.xml \
+	random.xml \
+	realtime.xml \
+	io.xml \
 	signalprocessing.xml \
 	sinks.xml \
 	sources.xml \

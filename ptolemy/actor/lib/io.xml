@@ -1,0 +1,48 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="io" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Actors that read and write to the file system or network.</doc>
+
+      <entity name="DatagramReceiver"
+              class="ptolemy.actor.lib.net.DatagramReceiver">
+          <property name="encoding">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+              <property name="for_Ptolemy_parser" 
+                     value="for_Ptolemy_parser"
+                     class="ptolemy.kernel.util.StringAttribute"/>
+              <property name="raw_integers_little_endian" 
+                     value="raw_integers_little_endian"
+                     class="ptolemy.kernel.util.StringAttribute"/>
+              <property name="raw_low_bytes_of_integers" 
+                     value="raw_low_bytes_of_integers"
+                     class="ptolemy.kernel.util.StringAttribute"/>
+            </property>
+         </property>
+      </entity>
+
+      <entity name="DatagramSender"
+              class="ptolemy.actor.lib.net.DatagramSender"/>
+
+      <entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
+        <doc>Read in doubles from either stdin or a URL</doc>
+      </entity>
+
+      <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <doc>Write out tokens to a file or stdout</doc>
+      </entity>
+
+      <entity name="URLDirectoryReader"
+              class="ptolemy.actor.lib.URLDirectoryReader">
+         <doc>Read a directory and output each file or subdirectory</doc>
+      </entity>
+
+
+
+      </group>
+    ?>
+  </configure>
+</entity>

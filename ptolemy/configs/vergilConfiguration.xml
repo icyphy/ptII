@@ -72,17 +72,14 @@
       <configure>
         <?moml
           <group>
+            <input source="ptolemy/domains/domains.xml"/>
             <input source="ptolemy/configs/automataLibrary.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/comm/comm.xml"/>
-	    <!-- GR depends on the 3D graphics package of Java being present-->            <input source="ptolemy/domains/gr/gr.xml"/>
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
             <input source="ptolemy/actor/lib/matrix.xml"/>
-	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
-            <input source="ptolemy/domains/sr/lib/srentities.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
-	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
           </group>
         ?>
       </configure>

@@ -7,10 +7,6 @@
       <group>
 <doc>Domain-polymorphic sources</doc>
 
-<entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
-<doc>Create a sequence of bernoulli random variables</doc>
-</entity>
-
 <entity name="Clock" class="ptolemy.actor.lib.Clock">
 <doc>Create a generalized square wave</doc>
 </entity>
@@ -24,34 +20,6 @@
 </entity>
 
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-</entity>
-
-<entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
-    <property name="encoding">
-        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="for_Ptolemy_parser" 
-                     value="for_Ptolemy_parser"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="raw_integers_little_endian" 
-                     value="raw_integers_little_endian"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="raw_low_bytes_of_integers" 
-                     value="raw_low_bytes_of_integers"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-        </property>
-    </property>
-</entity>
-
-<entity name="DiscreteRandomSource"
-        class="ptolemy.actor.lib.DiscreteRandomSource">
-</entity>
-
-<entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
-<doc>Read in doubles from either stdin or a URL</doc>
-</entity>
-
-<entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-<doc>Create a sequence of gaussian random variables</doc>
 </entity>
 
 <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
@@ -81,14 +49,6 @@ which is not always present -->
 </entity>
 
 <entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine"/>
-
-<entity name="URLDirectoryReader" class="ptolemy.actor.lib.URLDirectoryReader">
-<doc>Read a directory and output each file or subdirectory</doc>
-</entity>
-
-<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-<doc>Create a sequence of uniformly distributed random numbers</doc>
-</entity>
 
 <entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
 <doc>Create a sequence of tokens with increasing value</doc>

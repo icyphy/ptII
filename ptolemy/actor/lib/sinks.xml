@@ -8,12 +8,8 @@
 <doc>Domain-polymorphic sinks</doc>
 
 <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
-<entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender"/>
 <entity name="Discard" class="ptolemy.actor.lib.Discard"/>
 <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
-<entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
-<doc>Write out tokens to a file or stdout</doc>
-</entity>
 <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
 <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter"/>
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder"/>
