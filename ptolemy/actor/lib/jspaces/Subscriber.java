@@ -122,25 +122,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>output</code>
-     *  variable to equal the new port.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Subscriber newobj = (Subscriber)super.clone(ws);
-        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-        newobj.blocking = (Parameter)newobj.getAttribute("blocking");
-        newobj.defaultToken = (Parameter)newobj.getAttribute("defaultToken");
-        return newobj;
-    }
-
-    /** update parameters.
+    /** Update parameters.
      */
     public void attributeChanged(Attribute attr)
         throws IllegalActionException {

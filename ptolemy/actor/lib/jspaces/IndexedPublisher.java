@@ -115,23 +115,6 @@ public class IndexedPublisher extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-            throws CloneNotSupportedException {
-        IndexedPublisher newobj = (IndexedPublisher)super.clone(ws);
-        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-        newobj.startingSerialNumber =
-            (Parameter)newobj.getAttribute("startingSerialNumber");
-        newobj.leaseTime = (Parameter)newobj.getAttribute("leaseTime");
-        return newobj;
-    }
-
     /** Find the JavaSpaces according to the jspaceName parameter.
      *  Write the minimum and maximum index token.
      *  At the beginning, the minimum index is larger than maximum by 1,
