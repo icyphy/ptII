@@ -23,7 +23,7 @@
         </property>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 70.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {297, 120, 801, 610}, maximized = false}">
@@ -37,7 +37,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple example illustrates modeling terrain effects. The TerrainProperty&#10;models some obstacle which blocks the communication from the Sender &#10;to the Receiver if the communication path between them intersects with&#10;the terrain shape. When you run this model, the sender will emit a signal&#10;every second from time 0.0 to time 37.0. The Receiver will move around &#10;the Sender and measure the received power. It then plots the received &#10;power on timed plot if it is greater than 0.0. The plot shows that the &#10;receiver can only receive the signal (with power value larger than 0) &#10;when it is not shadowed by the terrain model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 305.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,7 +45,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 470.0]">
         </property>
     </property>
     <entity name="TerrainChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
@@ -53,11 +53,11 @@
         </property>
         <property name="powerPropagationFactor" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 65.0]">
         </property>
     </entity>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 200.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -174,7 +174,7 @@ if the received power is greater than 0.0.</text></svg></configure>
             </property>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[cos(x)*100 + 130, sin(y)*100 + 185]">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[cos(x)*100 + 155, sin(y)*100 + 200]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -307,7 +307,7 @@ if the received power is greater than 0.0.</text></svg></configure>
         <link port="Expression2.power" relation="relation3"/>
     </entity>
     <entity name="Sender" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 200.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -367,7 +367,7 @@ if the received power is greater than 0.0.</text></svg></configure>
     <entity name="TerrainProperty" class="ptolemy.domains.wireless.lib.TerrainProperty">
         <property name="xyPoints" class="ptolemy.data.expr.Parameter" value="{{0,0}, {0,100}, {20,100}, {20, 0}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 190.0]">
         </property>
     </entity>
 </entity>
