@@ -39,7 +39,6 @@ import ptolemy.moml.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.Token;
 import ptolemy.data.ObjectToken;
-import ptolemy.vergil.toolbox.EditorIcon;
 
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;

@@ -55,12 +55,12 @@ be created.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class XMLIcon extends EditorIcon {
+public class XMLIcon extends EditorIcon implements ValueListener {
 
-    /**
-     * Create a new icon with the given name in the given container.
-     * By default, the icon contains no graphic
-     * representations.
+    /** Create a new icon with the given name in the given container.
+     *  By default, the icon contains no graphic representations.
+     *  @param container The container for this attribute.
+     *  @param name The name of this attribute.
      */
     public XMLIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -72,9 +72,9 @@ public class XMLIcon extends EditorIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Create a background figure based on this icon.  The background figure
-     * will be painted with each graphic element that this icon contains.
+    /** Create a background figure based on this icon.  The background figure
+     *  will be painted with each graphic element that this icon contains.
+     *  @return A figure for this icon.
      */
     public Figure createBackgroundFigure() {
         // Get the description
@@ -83,27 +83,24 @@ public class XMLIcon extends EditorIcon {
         // to the other overhead involved here, so I'm going to keep the code
         // simple.
         NamedObj container = (NamedObj)getContainer();
-        if(_description != null) {
-            // FIXME  This listener should set _paintedList to null.
-            //        _description.removeValueListener(_updateListener);
-        }
         SingletonConfigurableAttribute description =
             (SingletonConfigurableAttribute)container.getAttribute(
                     "_iconDescription");
-        if(_description != description) {
-            _description = description;
-            try {
-                _updatePaintedList();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                _paintedList = null;
-            }
+        if(_description != null && _description != description) {
+            // Remove this as a listener if there was a previous description.
+            _description.removeValueListener(this);
+        }
+        _description = description;
+        try {
+            _updatePaintedList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            _paintedList = null;
         }
         if(_description != null) {
-            // FIXME
-            // _description.addValueListener(_updateListener);
+            // Listen for changes in value to the icon description.
+            _description.addValueListener(this);
         }
-
         if(_paintedList == null) {
        	    return _createDefaultBackgroundFigure();
         } else {
@@ -111,11 +108,19 @@ public class XMLIcon extends EditorIcon {
         }
     }
 
-    /**
-     * Return the painted list
-     * contained by this icon.
+    /** Return the painted list contained by this icon.
+     *  @return The painted list contained by this icon.
      */
     public PaintedList paintedList() {
+        // FIXME: Is this update appropriate?  EAL
+        if (_paintedList == null) {
+            try {
+                _updatePaintedList();
+            } catch (Exception ex) {
+                // If we fail, then we'll just get a default figure.
+                _paintedList = null;
+            }
+        }
         return _paintedList;
     }
 
@@ -124,9 +129,24 @@ public class XMLIcon extends EditorIcon {
      */
     public String toString() {
         String str = super.toString() + "(";
-
+        // FIXME: Something is missing here.
         return str + ")";
     }
+
+    /** React to the fact that the value of an attribute named
+     *  "_iconDescription" contained by the same container has changed
+     *  value by redrawing the figure.
+     *  @param settable The object that has changed value.
+     */
+    public void valueChanged(Settable settable) {
+        if (((Nameable)settable).getName().equals("_iconDescription")) {
+            _recreateFigure();
+            _paintedList = null;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
 
     /** Return a description of the object.  Lines are indented according to
      *  to the level argument using the protected method _getIndentPrefix().
@@ -154,17 +174,11 @@ public class XMLIcon extends EditorIcon {
         return result;
     }
 
-    /** Configure the icon with XML data.  The XML data is given by
-     *  either a URL (the <i>source</i> argument), or by text
-     *  (the <i>text</i> argument), or both.
-     *  @param base The base relative to which references within the input
-     *   are found, or null if this is not known, or there is none.
-     *  @param source The input source, which specifies a URL, or null
-     *   if none.
-     *  @param text Configuration information given as text, or null if
-     *   none.
-     *  @exception Exception If the stream cannot be read or its syntax
-     *   is incorrect.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Update the painted list of the icon based on the SVG data
+     *  in the associated "_iconDescription" parameter, if there is one.
      */
     private void _updatePaintedList() throws Exception {
         // create a new list because the PaintedList we had before
@@ -185,6 +199,9 @@ public class XMLIcon extends EditorIcon {
 
         _paintedList = SVGParser.createPaintedList(root);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
     // The list of painted objects contained in this icon.
     private PaintedList _paintedList;

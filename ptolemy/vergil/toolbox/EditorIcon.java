@@ -185,6 +185,13 @@ public class EditorIcon extends Attribute {
 	return new BasicRectangle(0, 0, 60, 40, Color.white, 1);
     }
 
+    /** Recreate the figure.  Call to cause createIcon() to call
+     *  createBackgroundFigure() to obtain a new figure.
+     */
+    protected void _recreateFigure() {
+        _iconCache = null;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 

@@ -558,8 +558,8 @@ public class Type extends MoMLViewerApplet
                             + "class=\"ptolemy.kernel.util"
                             + ".SingletonConfigurableAttribute\">"
                             + "<configure><svg><text x=\"20\" "
-                            + "style=\"font-size:12; font-family:sanserif; "
-                            + "fill:black\" y=\"20\">"
+                            + "style=\"font-size:14; font-family:sanserif; "
+                            + "fill:red\" y=\"20\">"
                             + typeString
                             + "</text></svg></configure></property>";
 

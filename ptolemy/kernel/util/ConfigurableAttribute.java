@@ -35,6 +35,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,7 +60,7 @@ is optional), followed by the text "xxx".
 */
 
 public class ConfigurableAttribute
-    extends Attribute implements Configurable {
+    extends Attribute implements Configurable, Settable {
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
@@ -96,6 +99,19 @@ public class ConfigurableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a listener to be notified when the value of this attribute changes.
+     *  If the listener is already on the list of listeners, then do nothing.
+     *  @param listener The listener to add.
+     */
+    public void addValueListener(ValueListener listener) {
+        if (_valueListeners == null) {
+            _valueListeners = new LinkedList();
+        }
+        if (!_valueListeners.contains(listener)) {
+            _valueListeners.add(listener);
+        }
+    }
+
     /** Configure the object with data from the specified input source
      *  (a URL) and/or textual data.  The input source, if any, is assumed
      *  to contain textual data as well.  Note that the URL is not read
@@ -112,13 +128,8 @@ public class ConfigurableAttribute
         _base = base;
         _source = source;
         _text = text;
-/* FIXME: triggers null pointer exception in GRActor
-        // Notify the container that the attribute has changed.
-        NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            container.attributeChanged(this);
-        }
-*/
+        // FIXME: Do we really want to call this right away?
+        validate();
     }
 
     /** Return the base specified in the most recent call to the
@@ -128,6 +139,18 @@ public class ConfigurableAttribute
      */
     public URL getBase() {
         return _base;
+    }
+
+    /** Return the the result of calling value().
+     *  @return The value, or a description of the exception if one is thrown.
+     *  @see #value()
+     */
+    public String getExpression() {
+        try {
+            return value();
+        } catch (Exception ex) {
+            return ex.toString();
+        }
     }
 
     /** Return the source specified in the most recent call to the
@@ -145,6 +168,79 @@ public class ConfigurableAttribute
      */
     public String getText() {
         return _text;
+    }
+
+    /** Get the visibility of this attribute, as set by setVisibility().
+     *  The visibility is set by default to NONE.
+     *  @return The visibility of this attribute.
+     */
+    public Settable.Visibility getVisibility() {
+        return _visibility;
+    }
+
+    /** Remove a listener from the list of listeners that is
+     *  notified when the value of this attribute changes.  If no such listener
+     *  exists, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeValueListener(ValueListener listener) {
+        if (_valueListeners != null) {
+            _valueListeners.remove(listener);
+        }
+    }
+
+    /** Set the value of the string attribute and notify the container
+     *  of the value of this attribute by calling attributeChanged(),
+     *  and notify any listeners that have
+     *  been registered using addValueListener().  This is the same
+     *  as calling configure with a null base and source, passing
+     *  the argument as text.
+     *  @param expression The text to configure the attribute with.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to the container.
+     */
+    public void setExpression(String expression) throws IllegalActionException {
+        try {
+            configure(null, null, expression);
+        } catch (IllegalActionException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new InternalErrorException("Unexpected exception: " + ex);
+        }
+    }
+
+    /** Set the visibility of this attribute.  The argument should be one
+     *  of the public static instances in Settable.
+     *  @param visibility The visibility of this attribute.
+     */
+    public void setVisibility(Settable.Visibility visibility) {
+        _visibility = visibility;
+    }
+
+    /** Validate any instances of Settable that this attribute may contain.
+     *  Notify listeners that the value of this attribute has changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to the container.
+     */
+    public void validate() throws IllegalActionException {
+        // Validate contained attributes, if any.
+        Iterator attributes = attributeList(Settable.class).iterator();
+        while(attributes.hasNext()) {
+            Settable attribute = (Settable)attributes.next();
+            attribute.validate();
+        }
+        // Notify the container that the attribute has changed.
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            container.attributeChanged(this);
+        }
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                listener.valueChanged(this);
+            }
+        }
     }
 
     /** Return the value given by the configure tag.  This is the text
@@ -216,9 +312,15 @@ public class ConfigurableAttribute
     // The base specified in the configure() method.
     private URL _base;
 
+    // Listeners for changes in value.
+    private List _valueListeners;
+
     // The URL from which configure data is read.
     private String _source;
 
     // The text in the body of the configure.
     private String _text;
+
+    // The visibility of this attribute, which defaults to NONE;
+    private Settable.Visibility _visibility = Settable.NONE;
 }
