@@ -750,6 +750,12 @@ public class Manager extends NamedObj implements Runnable {
         }
         _setState(WRAPPING_UP);
 
+	// Process all change requests. If the model reaches this wrap up
+	// state due to the occurrence of an exception during execution,
+	// some change requests may be pending. If these requests
+	// are not processed, they will be left to the next execution.
+        _processChangeRequests();
+
         // Wrap up the topology
         _container.wrapup();
 
