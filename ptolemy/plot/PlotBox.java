@@ -180,7 +180,7 @@ public class PlotBox extends Panel {
      *  @param label The label for the tick mark.
      *  @param position The position on the X axis.
      */
-    public void addXTick (String label, double position) {
+    public void addXTick(String label, double position) {
         if (_xticks == null) {
             _xticks = new Vector();
             _xticklabels = new Vector();
@@ -197,7 +197,7 @@ public class PlotBox extends Panel {
      *  @param label The label for the tick mark.
      *  @param position The position on the Y axis.
      */
-    public void addYTick (String label, double position) {
+    public void addYTick(String label, double position) {
         if (_yticks == null) {
             _yticks = new Vector();
             _yticklabels = new Vector();
@@ -212,7 +212,7 @@ public class PlotBox extends Panel {
      *  is false, do nothing.
      *  @param axes If true, clear the axes parameters.
      */
-    public synchronized void clear (boolean axes) {
+    public synchronized void clear(boolean axes) {
         _xBottom = Double.MAX_VALUE;
         _xTop = - Double.MAX_VALUE;
         _yBottom = Double.MAX_VALUE;
@@ -251,7 +251,7 @@ public class PlotBox extends Panel {
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
      */
-    public synchronized void fillPlot () {
+    public synchronized void fillPlot() {
         _setXRange(_xBottom, _xTop);
         _setYRange(_yBottom, _yTop);
         repaint();
@@ -290,7 +290,7 @@ public class PlotBox extends Panel {
      *  This method is deprecated.  Use read() instead.
      *  @deprecated
      */
-    public String getDataurl () {
+    public String getDataurl() {
         return _filespec;
     }
 
@@ -298,7 +298,7 @@ public class PlotBox extends Panel {
      *  This method is deprecated.  Use read() instead.
      *  @deprecated
      */
-    public URL getDocumentBase () {
+    public URL getDocumentBase() {
         return _documentBase;
     }
 
@@ -561,7 +561,7 @@ public class PlotBox extends Panel {
     /** Set the background color.
      *  @param background The background color.
      */
-    public void setBackground (Color background) {
+    public void setBackground(Color background) {
         _background = background;
         super.setBackground(_background);
     }
@@ -569,7 +569,7 @@ public class PlotBox extends Panel {
     /** Set the foreground color.
      *  @param foreground The foreground color.
      */
-    public void setForeground (Color foreground) {
+    public void setForeground(Color foreground) {
         _foreground = foreground;
         super.setForeground(_foreground);
     }
@@ -580,7 +580,7 @@ public class PlotBox extends Panel {
      *  in the derived class Plot.
      *  @deprecated
      */
-    public void setBinary (boolean binary) {
+    public void setBinary(boolean binary) {
         _binary = binary;
     }
 
@@ -588,7 +588,7 @@ public class PlotBox extends Panel {
      *  This method is deprecated.  Use read() instead.
      *  @deprecated
      */
-    public void setDataurl (String filespec) {
+    public void setDataurl(String filespec) {
         _filespec = filespec;
     }
 
@@ -596,14 +596,14 @@ public class PlotBox extends Panel {
      *  This method is deprecated.  Use read() instead.
      *  @deprecated
      */
-    public void setDocumentBase (URL documentBase) {
+    public void setDocumentBase(URL documentBase) {
         _documentBase = documentBase;
     }
 
     /** Control whether the grid is drawn.
      *  @param grid If true, a grid is drawn.
      */
-    public void setGrid (boolean grid) {
+    public void setGrid(boolean grid) {
         _grid = grid;
     }
 
@@ -612,14 +612,14 @@ public class PlotBox extends Panel {
      *  java.awt.Font.decode().
      *  @param name A font name.
      */
-    public void setLabelFont (String name) {
+    public void setLabelFont(String name) {
         _labelfont = Font.decode(name);
     }
 
     /** Set the title of the graph.
      *  @param title The title.
      */
-    public void setTitle (String title) {
+    public void setTitle(String title) {
         _title = title;
     }
 
@@ -628,7 +628,7 @@ public class PlotBox extends Panel {
      *  java.awt.Font.decode().
      *  @param name A font name.
      */
-    public void setTitleFont (String name) {
+    public void setTitleFont(String name) {
         _titlefont = Font.decode(name);
         _titleFontMetrics = getFontMetrics(_titlefont);
     }
@@ -636,14 +636,14 @@ public class PlotBox extends Panel {
     /** Set the label for the X (horizontal) axis.
      *  @param label The label.
      */
-    public void setXLabel (String label) {
+    public void setXLabel(String label) {
         _xlabel = label;
     }
 
     /** Specify whether the X axis is drawn with a logarithmic scale.
      *  @param xlog If true, logarithmic axis is used.
      */
-    public void setXLog (boolean xlog) {
+    public void setXLog(boolean xlog) {
         _xlog = xlog;
     }
 
@@ -654,7 +654,7 @@ public class PlotBox extends Panel {
      *  @param min The left extent of the range.
      *  @param max The right extent of the range.
      */
-    public void setXRange (double min, double max) {
+    public void setXRange(double min, double max) {
         _xRangeGiven = true;
         _xlowgiven = min;
         _xhighgiven = max;
@@ -664,14 +664,14 @@ public class PlotBox extends Panel {
     /** Set the label for the Y (vertical) axis.
      *  @param label The label.
      */
-    public void setYLabel (String label) {
+    public void setYLabel(String label) {
         _ylabel = label;
     }
 
     /** Specify whether the Y axis is drawn with a logarithmic scale.
      *  @param ylog If true, logarithmic axis is used.
      */
-    public void setYLog (boolean ylog) {
+    public void setYLog(boolean ylog) {
         _ylog = ylog;
     }
 
@@ -682,7 +682,7 @@ public class PlotBox extends Panel {
      *  @param min The bottom extent of the range.
      *  @param max The top extent of the range.
      */
-    public void setYRange (double min, double max) {
+    public void setYRange(double min, double max) {
         _yRangeGiven = true;
         _ylowgiven = min;
         _yhighgiven = max;
@@ -1214,7 +1214,7 @@ public class PlotBox extends Panel {
 
         if (_title != null) {
             graphics.setFont(_titlefont);
-            int titlex = _ulx + 
+            int titlex = _ulx +
                 (width - _titleFontMetrics.stringWidth(_title))/2;
             graphics.drawString(_title, titlex, titley);
         }
@@ -1269,7 +1269,7 @@ public class PlotBox extends Panel {
      *  Everything else is ignored. Return true if the line is recognized.
      *  @param line A line of text.
      */
-    protected boolean _parseLine (String line) {
+    protected boolean _parseLine(String line) {
         // If you modify this method, you should also modify write()
 
         // We convert the line to lower case so that the command
@@ -1532,7 +1532,7 @@ public class PlotBox extends Panel {
      * If the number is not an integer, then print only the fractional
      * components.
      */
-    private String _formatLogNum (double num, int numfracdigits) {
+    private String _formatLogNum(double num, int numfracdigits) {
         String results;
         int exponent = (int)num;
 
@@ -1569,10 +1569,10 @@ public class PlotBox extends Panel {
     /*
      * Return a string for displaying the specified number
      * using the specified number of digits after the decimal point.
-     * NOTE: java.text,NumberFormat is only present in JDK1.1
+     * NOTE: java.text.NumberFormat is only present in JDK1.1
      * We use this method as a wrapper so that we can cache information.
      */
-    private String _formatNum (double num, int numfracdigits) {
+    private String _formatNum(double num, int numfracdigits) {
         if (_numberFormat == null) {
             // Cache the number format so that we don't have to get
             // info about local language etc. from the OS each time.
@@ -1664,8 +1664,9 @@ public class PlotBox extends Panel {
                     // Using == on doubles is bad if the numbers are close,
                     // but not exactly equal.
                     if (Math.abs(
-                            ((Double)oldgrid.elementAt(oldgridi)).doubleValue() -
-                            logval) > 0.00001) {
+                            ((Double)oldgrid.elementAt(oldgridi)).doubleValue()
+                            - logval)
+                            > 0.00001) {
                         grid.addElement(new Double(logval));
                     }
                 } else {
@@ -1756,7 +1757,7 @@ public class PlotBox extends Panel {
      * given number.  No number larger than 15 is returned (if
      * more than 15 digits are required, 15 is returned).
      */
-    private int _numFracDigits (double num) {
+    private int _numFracDigits(double num) {
         int numdigits = 0;
         while (numdigits <= 15 && num != Math.floor(num)) {
             num *= 10.0;
@@ -1770,7 +1771,7 @@ public class PlotBox extends Panel {
      * given number.  No number larger than 15 is returned (if
      * more than 15 digits are required, 15 is returned).
      */
-    private int _numIntDigits (double num) {
+    private int _numIntDigits(double num) {
         int numdigits = 0;
         while (numdigits <= 15 && (int)num != 0.0) {
             num /= 10.0;
@@ -1787,7 +1788,7 @@ public class PlotBox extends Panel {
      * interpret the parsed string to specify the tick labels on the x axis.
      * Otherwise, do the y axis.
      */
-    private void _parsePairs (String line, boolean xtick) {
+    private void _parsePairs(String line, boolean xtick) {
         int start = 0;
         boolean cont = true;
         while (cont) {
@@ -1843,7 +1844,7 @@ public class PlotBox extends Panel {
      * Internal implementation of setXRange, so that it can be called when
      * autoranging.
      */
-    private void _setXRange (double min, double max) {
+    private void _setXRange(double min, double max) {
         // If values are invalid, try for something reasonable.
         if (min > max) {
             min = -1.0;
@@ -1875,7 +1876,7 @@ public class PlotBox extends Panel {
      * Internal implementation of setYRange, so that it can be called when
      * autoranging.
      */
-    private void _setYRange (double min, double max) {
+    private void _setYRange(double min, double max) {
         // If values are invalid, try for something reasonable.
         if (min > max) {
             min = -1.0;
@@ -2180,7 +2181,7 @@ public class PlotBox extends Panel {
     }
 
     public class ZoomListener implements MouseListener {
-        public void mouseClicked (MouseEvent event) {
+        public void mouseClicked(MouseEvent event) {
         }
         public void mouseEntered(MouseEvent event) {
         }
@@ -2195,7 +2196,7 @@ public class PlotBox extends Panel {
     }
 
     public class DragListener implements MouseMotionListener {
-        public void mouseDragged (MouseEvent event) {
+        public void mouseDragged(MouseEvent event) {
             PlotBox.this._zoomBox(event.getX(), event.getY());
         }
         public void mouseMoved(MouseEvent event) {
