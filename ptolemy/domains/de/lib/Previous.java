@@ -98,12 +98,12 @@ public class Previous extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_previous != null) {
             output.send(0, _previous);
-            _previous = null;
         }
         if (input.hasToken(0)) {
-            _previous = input.get(0);
+            _tempPrevious = input.get(0);
         }
     }
 
@@ -114,8 +114,19 @@ public class Previous extends Transformer {
         super.initialize();
         // Note that this might be null, if it has not been set.
         _previous = initialValue.getToken();
+        _tempPrevious = null;
     }
 
+    /** Update the state of the actor.
+     *  @throws IllegalActionException Not thrown in this method, possibly
+     *  from the super class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _previous = _tempPrevious;
+        _tempPrevious = null;
+        return super.postfire();
+    }
+    
     /** Override the method in the base class so that the type
      *  constraint for the <i>initialValue</i> parameter will be set
      *  if it contains a value.
@@ -143,9 +154,22 @@ public class Previous extends Transformer {
         return typeConstraints;
     }
 
+    /** Reset the state variables.
+     *  @throws IllegalActionException Not thrown in this method, possibly
+     *  from the super class.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _tempPrevious = null;
+        _previous = null;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Previous input.
     private Token _previous;
+    
+    // Temporary previous input.
+    private Token _tempPrevious;
 }
