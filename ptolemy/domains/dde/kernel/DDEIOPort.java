@@ -177,7 +177,10 @@ public class DDEIOPort extends TypedIOPort {
 	    ddeThread = (DDEThread)thread;
 	    currentTime = ddeThread.getTimeKeeper().getCurrentTime();
 	}
-        if( sendTime < currentTime ) {
+        if( sendTime < currentTime && 
+		sendTime != TimedQueueReceiver.IGNORE &&
+		sendTime != TimedQueueReceiver.INACTIVE ) {
+	    // FIXME: Am I sure about INACTIVE
             throw new IllegalActionException( this, "Time values in "
                     + "the past are not allowed.");
 	}
