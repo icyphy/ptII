@@ -698,6 +698,10 @@ public class GiottoCodeGenerator extends Attribute {
                         generateCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
+                
+                // end the model execution.
+                manager.stop();
+                manager.wrapup();
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
                         "Cannot generate code. Perhaps outside Vergil?");
