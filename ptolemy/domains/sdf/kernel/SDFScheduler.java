@@ -62,13 +62,13 @@ they all depend on the output of another actor.  This situation is
 known as <i>deadlock</i>.  Deadlock must be prevented in SDF by manually
 inserting delay actors, which represent initial tokens on each
 relation.  Such delay actors are responsible for creating tokens
-during initialization that will prevent deadlock.  Delay actors must
-set their <i>tokenInitProduction</i> parameters to represent the number of
+during initialization that will prevent deadlock.  These actors
+set the <i>tokenInitProduction</i> parameter of their output ports
+to represent the number of
 tokens they will create during initialization.  The SDFScheduler uses
-the tokenInitProduction parameter to break the dependency in a cyclic
-graph.
+this parameter to break the dependency in a cyclic
+graph.  
 <p>
-
 Note that this scheduler only ensures that the number of firings is
 minimal.  Most notably, it does not attempt to minimize the size of
 the buffers that are associated with each relation.  The resulting
@@ -94,6 +94,7 @@ is somewhat conservative in this respect.
 
 @see ptolemy.actor.sched.Scheduler
 @see ptolemy.domains.sdf.kernel.SDFIOPort
+@see ptolemy.domains.sdf.lib.SampleDelay
 
 @author Stephen Neuendorffer and Brian Vogel
 @version $Id$
@@ -153,177 +154,197 @@ public class SDFScheduler extends Scheduler {
     }
 
     /** Get the number of tokens that are consumed
-     *  on the given port.  If the actor is not an
-     *  input port, then return 0.  Otherwise, return the value of
-     *  the port's "tokenConsumptionRate" Parameter.   If the parameter
-     *  does not exist, then assume the actor is homogeneous and return a
-     *  rate of 1.
+     *  on the given port.  If the port is not an
+     *  input port, then return zero.  Otherwise, return the value of
+     *  the port's <i>tokenConsumptionRate</i> parameter.   If the parameter
+     *  does not exist, then assume the actor is homogeneous and return one.
+     *  @return The number of tokens the scheduler believes will be consumed
+     *  from the given input port during each firing.
      *  @exception IllegalActionException If the tokenConsumptionRate
-     *   parameter has an invalid expression.
+     *  parameter has an invalid expression.
      */
-    public static int getTokenConsumptionRate(IOPort p)
+    public static int getTokenConsumptionRate(IOPort port)
             throws IllegalActionException {
-        if(p.isInput()) {
-            Parameter param =
-                (Parameter)p.getAttribute("tokenConsumptionRate");
-            if(param == null) {
+        if(!port.isInput()) {
+            return 0;
+        } else {
+            Parameter parameter =
+                (Parameter)port.getAttribute("tokenConsumptionRate");
+            if(parameter == null) {
                 return 1;
             } else {
-                Token token = param.getToken();
+                Token token = parameter.getToken();
                 if(token instanceof IntToken) {
                     return ((IntToken)token).intValue();
                 } else {
                     throw new IllegalActionException("Parameter "
-                            + param.getFullName() + " was expected "
+                            + parameter.getFullName() + " was expected "
                             + "to contain an IntToken, but instead "
                             + "contained a " + token.getType() + ".");
                 }
             }
-        } else
-            return 0;
+        }
     }
 
     /** Get the number of tokens that are produced on the given port
-     *  during initialization.  If the actor is not an
-     *  output port, then return 0.  Otherwise, return the value of
-     *  the port's "tokenInitProduction" Parameter.   If the parameter
+     *  during initialization.  If the port is not an
+     *  output port, then return zero.  Otherwise, return the value of
+     *  the port's <i>tokenInitProduction</i> parameter.   If the parameter
      *  does not exist, then assume the actor is zero-delay and return
-     * a value of zero.
-     * @exception IllegalActionException If the tokenInitProduction
+     *  a value of zero.
+     *  @return The number of tokens the scheduler believes will be produced
+     *  from the given output port during initialization.
+     *  @exception IllegalActionException If the tokenInitProduction
      *  parameter has an invalid expression.
      */
-    public static int getTokenInitProduction(IOPort p)
+    public static int getTokenInitProduction(IOPort port)
             throws IllegalActionException {
-        if(p.isOutput()) {
-            Parameter param =
-                (Parameter)p.getAttribute("tokenInitProduction");
-            if(param == null) {
+        if(!port.isOutput()) {
+            return 0;
+        } else {
+            Parameter parameter =
+                (Parameter)port.getAttribute("tokenInitProduction");
+            if(parameter == null) {
                 return 0;
             } else {
-                Token token = param.getToken();
+                Token token = parameter.getToken();
                 if(token instanceof IntToken) {
                     return ((IntToken)token).intValue();
                 } else {
                     throw new IllegalActionException("Parameter "
-                            + param.getFullName() + " was expected "
+                            + parameter.getFullName() + " was expected "
                             + "to contain an IntToken, but instead "
                             + "contained a " + token.getType() + ".");
                 }
             }
-        } else
-            return 0;
+        } 
     }
 
     /** Get the number of tokens that are produced
-     *  on the given port.  If the actor is not an
-     *  output port, then return 0.  Otherwise, return the value of
-     *  the port's "tokenProductionRate" Parameter.  If the parameter
+     *  on the given port.  If the port is not an
+     *  output port, then return zero.  Otherwise, return the value of
+     *  the port's <i>tokenProductionRate</i> parameter.  If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
-     *  rate of 1.
+     *  rate of one.
+     *  @return The number of tokens the scheduler believes will be produced
+     *  from the given output port during each firing.
      *  @exception IllegalActionException If the tokenProductionRate
      *  parameter has an invalid expression.
      */
-    public static int getTokenProductionRate(IOPort p)
+    public static int getTokenProductionRate(IOPort port)
             throws IllegalActionException {
-        if(p.isOutput()) {
-            Parameter param =
-                (Parameter)p.getAttribute("tokenProductionRate");
-            if(param == null) {
+        if(!port.isOutput()) {
+            return 0;
+        } else {
+            Parameter parameter =
+                (Parameter)port.getAttribute("tokenProductionRate");
+            if(parameter == null) {
                 return 1;
             } else {
-                Token token = param.getToken();
+                Token token = parameter.getToken();
                 if(token instanceof IntToken) {
                     return ((IntToken)token).intValue();
                 } else {
                     throw new IllegalActionException("Parameter "
-                            + param.getFullName() + " was expected "
+                            + parameter.getFullName() + " was expected "
                             + "to contain an IntToken, but instead "
                             + "contained a " + token.getType() + ".");
                 }
             }
-        } else
-            return 0;
+        } 
     }
 
-    /** Set the tokenConsumptionRate parameter of the given port
-     *  to the given rate.  The port is assumedly an input port.
+    /** Set the <i>tokenConsumptionRate</i> parameter of the given port
+     *  to the given rate.  If no parameter exists, then create a new one.
+     *  The port is assumed to be an input port.
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenConsumptionRate(IOPort port, int rate)
             throws IllegalActionException {
-        if(rate < 0) throw new IllegalActionException(
-                "tokenConsumptionRate cannot be set to " + rate
-                + " which is negative");
-        Parameter param = (Parameter)
-            port.getAttribute("tokenConsumptionRate");
+        if(rate < 0) {
+            throw new IllegalActionException(
+                    "The tokenConsumptionRate of the port " + port
+                    + " cannot be set to " + rate
+                    + " which is negative.");
+        }
+        Parameter parameter = 
+            (Parameter)port.getAttribute("tokenConsumptionRate");
         try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
+            if(parameter != null) {
+                parameter.setToken(new IntToken(rate));
             } else {
-                param = new Parameter(port, "tokenConsumptionRate",
+                parameter = new Parameter(port, "tokenConsumptionRate",
                         new IntToken(rate));
             }
         } catch (Exception exception) {
             // This should never happen.
-            // e might be NameDuplicationException, but we already
+            // Might be NameDuplicationException, but we already
             // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
+            // Might be IllegalActionException, but we've already
             // checked the error conditions
             throw new InternalErrorException(exception.getMessage());
         }
     }
 
-    /** Set the tokenInitProduction parameter of the given port to
-     *  the given rate.  The port is assumedly an output port.
-     *  @exception IllegalActionException If the production is negative.
+    /** Set the <i>tokenInitProduction</i> parameter of the given port to
+     *  the given rate.  If no parameter exists, then create a new one.
+     *  The port is assumed to be an output port.
+     *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenInitProduction(IOPort port, int rate)
             throws IllegalActionException {
-        if(rate < 0) throw new IllegalActionException(
-                "tokenInitProduction cannot be set to " + rate
-                + " which is negative");
-        Parameter param = (Parameter)
-            port.getAttribute("tokenInitProduction");
+        if(rate < 0) {
+            throw new IllegalActionException(
+                    "The tokenInitProduction of the port " + port
+                    + " cannot be set to " + rate
+                    + " which is negative.");  
+        }
+        Parameter parameter =
+            (Parameter)port.getAttribute("tokenInitProduction");
         try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
+            if(parameter != null) {
+                parameter.setToken(new IntToken(rate));
             } else {
-                param = new Parameter(port, "tokenInitProduction",
+                parameter = new Parameter(port, "tokenInitProduction",
                         new IntToken(rate));
             }
         } catch (Exception exception) {
             // This should never happen.
-            // e might be NameDuplicationException, but we already
+            // Might be NameDuplicationException, but we already
             // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
+            // Might be IllegalActionException, but we've already
             // checked the error conditions
             throw new InternalErrorException(exception.getMessage());
         }
     }
 
-    /** Set the tokenProductionRate parameter of the given port
-     *  to the given rate.  The port is assumedly an output port.
+    /** Set the <i>tokenProductionRate</i> parameter of the given port
+     *  to the given rate.  If no parameter exists, then create a new one.
+     *  The port is assumed to be an output port.
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenProductionRate(IOPort port, int rate)
             throws IllegalActionException {
-        if(rate < 0) throw new IllegalActionException(
-                "tokenInitProduction cannot be set to " + rate
-                + " which is negative.");
-        Parameter param = (Parameter)
-            port.getAttribute("tokenProductionRate");
+       if(rate < 0) {
+            throw new IllegalActionException(
+                    "The tokenProductionRate of the port " + port
+                    + " cannot be set to " + rate
+                    + " which is negative.");  
+        }
+        Parameter parameter =
+            (Parameter)port.getAttribute("tokenProductionRate");
         try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
+            if(parameter != null) {
+                parameter.setToken(new IntToken(rate));
             } else {
-                param = new Parameter(port, "tokenProductionRate",
+                parameter = new Parameter(port, "tokenProductionRate",
                         new IntToken(rate));
             }
         } catch (Exception exception) {
             // This should never happen.
-            // e might be NameDuplicationException, but we already
+            // Might be NameDuplicationException, but we already
             // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
+            // Might be IllegalActionException, but we've already
             // checked the error conditions
             throw new InternalErrorException(exception.getMessage());
         }
@@ -344,139 +365,134 @@ public class SDFScheduler extends Scheduler {
      *  not contain a positive integer.
      *  </ul>
      *
-     * @return A Schedule of the deeply contained opaque entities
+     *  @return A schedule of the deeply contained opaque entities
      *  in the firing order.
-     * @exception NotScheduleableException If the CompositeActor is not
-     *  schedulable.
+     *  @exception NotScheduleableException If the rates specified for
+     *  the model imply that the model is not statically schedulable.
+     *  @exception IllegalActionException If the rate parameters
+     *  of the model are not correct, or the computed rates for 
+     *  external ports are not correct.
      */
-    protected Schedule _getSchedule() throws NotSchedulableException {
+    protected Schedule _getSchedule() 
+            throws NotSchedulableException, IllegalActionException {
         StaticSchedulingDirector dir = 
             (StaticSchedulingDirector)getContainer();
         
         int vectorizationFactor = 1;
         if(dir instanceof SDFDirector) {
-            try {
-                SDFDirector director = (SDFDirector)dir;
-                Token token = director.vectorizationFactor.getToken();
-                vectorizationFactor = ((IntToken)token).intValue();
-            } catch (IllegalActionException exception) {
-                throw new NotSchedulableException(this,
-                        "The supplied vectorizationFactor is invalid:" +
-                        exception);
-            }
+            SDFDirector director = (SDFDirector)dir;
+            Token token = director.vectorizationFactor.getToken();
+            vectorizationFactor = ((IntToken)token).intValue();
         } 
         if(vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
-                    "The supplied vectorizationFactor is invalid " +
-                    "Valid values consist of positive integers. " +
-                    "The supplied value was: " + vectorizationFactor);
+                    "The supplied vectorizationFactor must be " +
+                    "a positive integer. " +
+                    "The given value was: " + vectorizationFactor);
         }    
-        CompositeActor container = (CompositeActor)(dir.getContainer());
+        CompositeActor container = (CompositeActor)dir.getContainer();
         
-        // A linked list containing all the actors
-        LinkedList AllActors = new LinkedList();
-        Iterator entities = container.deepEntityList().iterator();
-
-        while(entities.hasNext()) {
-            ComponentEntity a = (ComponentEntity)entities.next();
-
-            // Fill AllActors with the list of things that we can schedule
+        // A linked list containing all the actors.
+        LinkedList actorList = new LinkedList();
+        // Populate it.
+        for(Iterator entities = container.deepEntityList().iterator();
+            entities.hasNext();) {
+            ComponentEntity entity = (ComponentEntity)entities.next();
+            
+            // Fill actorList with the list of things that we can schedule
             // FIXME: What if other things can be scheduled than actors?
-            if(a instanceof Actor) AllActors.addLast(a);
+            if(entity instanceof Actor) {
+                actorList.addLast(entity);
+            }
         }
-
-        // First solve the balance equations
-        Map firings = null;
-
+    
         // externalRates maps from external 
         // ports to the number of tokens that that port 
-        // will produce or consume each firing.  
+        // will produce or consume in each firing.  
         // It gets populated with the fractional production ratios
         // and is used in the end to set final rates on external ports.
         // This map is initialized to zero.
         Map externalRates = new TreeMap(new NamedObjComparator());
         
         // Initialize externalRates to zero.
-        Iterator enumPorts = container.portList().iterator();
-        while(enumPorts.hasNext()) {
-            IOPort port = (IOPort) enumPorts.next();
+        for(Iterator ports = container.portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
             externalRates.put(port, Fraction.ZERO);
         }
         
         // An association between all the relations in a simulation and 
         // and array of the maximum number of tokens that are ever 
         // waiting on that relation.
-	Map maxBufferSize = new TreeMap(new NamedObjComparator());
+	Map minimumBufferSize = new TreeMap(new NamedObjComparator());
 
         // Initialize the buffer size of each relation to zero.
-        Iterator relations = container.relationList().iterator();
-        while(relations.hasNext()) {
+        for(Iterator relations = container.relationList().iterator();
+            relations.hasNext();) {
             Relation relation = (Relation)relations.next();
-            maxBufferSize.put(relation, new Integer(0));
+            minimumBufferSize.put(relation, new Integer(0));
+        }
+  
+        // First solve the balance equations
+        Map firings =
+            _solveBalanceEquations(container, actorList, externalRates);
+        
+        if(_debugging) {
+            _debug("Firing Ratios: " +  firings.toString());
         }
         
-        try {
-            firings =
-                _solveBalanceEquations(container, AllActors, externalRates);
-
-	    List deadActors = new LinkedList();
-	    // now remove all actors that get fired 0 times.
-	    Iterator allActor = AllActors.iterator();
-	    while (allActor.hasNext()) {
-		ComponentEntity anActor = (ComponentEntity)allActor.next();
-		// Remove this actor from the firing sequence if it will
-		// not be fired.
-		Fraction theFiring = (Fraction)firings.get(anActor);
-		if(_debugging) {
-                    _debug("actor name: " + anActor.getName());
-                    _debug("has firings value: " + 
-                            theFiring.getNumerator());
-                }
-		if (theFiring.getNumerator() == 0) {
-                    if(_debugging) {
-                        _debug("and will be removed because" +
-                                " it is not being fired.");
-                    }
-		    deadActors.add(anActor);
-		}
-	    }
-
-	    // Now remove the dead actors.
-	    Iterator removeIt = deadActors.iterator();
-	    while (removeIt.hasNext()) {
-		ComponentEntity actorToRemove = 
-		    (ComponentEntity)removeIt.next();
-                if(_debugging) {
-                    _debug("Removing actor : " + 
-                            actorToRemove.getName() + 
-                            " from the schedule");
-                }
-		firings.remove(actorToRemove);
-		// remove the actor from the list of all actors, as
-		// well.
-		AllActors.remove(actorToRemove);
-	    }
+        // A list that contains actors that do not fire.
+        List deadActorList = new LinkedList();
+        // Populate deadActorList.
+        for(Iterator actors = actorList.iterator();
+            actors.hasNext();) {
+            ComponentEntity actor = (ComponentEntity)actors.next();
+            // Remove this actor from the firing sequence if it will
+            // not be fired.
+            Fraction firing = (Fraction)firings.get(actor);
             if(_debugging) {
-                _debug("theFiring string: " +  firings.toString());
+                _debug("Actor " + actor.getName() +
+                        "fires " + firing.getNumerator() + 
+                        " times.");
             }
-
-        } catch (IllegalActionException ex) {
-            throw new NotSchedulableException(this, "Check expression of "
-                    + "rate and initial production parameters:\n"
-                    + ex.getMessage() + ".");
+            if (firing.getNumerator() == 0) {
+                if(_debugging) {
+                    _debug("and will be removed because "
+                            + "it is not being fired.");
+                }
+                deadActorList.add(actor);
+            }
         }
-
+        
+        // Now remove the dead actors from the firings map and from 
+        // the list of actors that are being scheduled.
+        for(Iterator deadActors = deadActorList.iterator();
+            deadActors.hasNext();) {
+            ComponentEntity deadActor =
+                (ComponentEntity)deadActors.next();
+            if(_debugging) {
+                _debug("Removing actor " + deadActor.getName() + 
+                        " that does not fire from the schedule");
+            }
+            firings.remove(deadActor);
+            actorList.remove(deadActor);
+        }
+      
+        // Normalize the number of firings for each actor using the
+        // vectorizationFactor. 
         _normalizeFirings(vectorizationFactor, firings, externalRates);
 
+        // Set the firing vector.
         _setFiringVector(firings);
 
         if (_debugging) {
-            _debug("Firing Vector:");
+            _debug("Normalized Firing Counts:");
             _debug(firings.toString());
         }
 
         // Schedule all the actors using the calculated firings.
-        Schedule result = _scheduleConnectedActors(maxBufferSize, AllActors);
+        Schedule result = 
+            _scheduleConnectedActors(minimumBufferSize, actorList);
 
         _setFiringVector(firings);
         
@@ -485,20 +501,20 @@ public class SDFScheduler extends Scheduler {
             _debug(firings.toString());
         }
 
-        _setBufferSizes(maxBufferSize);
+        // Set parameters on each relation that contain the maximum 
+        // buffer sizes necessary during execution.
+        _setBufferSizes(minimumBufferSize);
 
-        try {
-            _setContainerRates(externalRates);
-        } catch (IllegalActionException ex) {
-            throw new NotSchedulableException(this, "Check expression of "
-                    + "rate and initial production parameters.");
-        }
-
+        // Set the rate parameters of any external ports.
+        _setContainerRates(externalRates);
+        
+        // Set the schedule to be valid.
         setValid(true);
         return result;
     }
 
-    /** Initialize the local data members of this object.  */
+    /** Initialize the local data members of this object.  
+     */
     protected void _localMemberInitialize() {
         _firingVector = new TreeMap(new NamedObjComparator());
         _firingVectorValid = true;
@@ -514,12 +530,15 @@ public class SDFScheduler extends Scheduler {
      *  relation. (equivalent to a non-deterministic merge)
      *  </ul>
      *
-     * @return An Enumeration of the deeply contained opaque entities
+     *  @return An enumeration of the deeply contained opaque entities
      *  in the firing order.
-     * @exception NotScheduleableException If the CompositeActor is not
+     *  @exception NotScheduleableException If the CompositeActor is not
      *  schedulable.
+     *  @exception IllegalActionException If the rate parameters
+     *  of the model are not correct, or the computed rates for 
      */
-    protected Enumeration _schedule() throws NotSchedulableException {
+    protected Enumeration _schedule() 
+            throws NotSchedulableException, IllegalActionException{
         final Iterator schedule = _getSchedule().actorIterator();
         return new Enumeration() {
             public boolean hasMoreElements() {
@@ -534,62 +553,71 @@ public class SDFScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
-    /** Count the number of inputports in the Actor that must be
+    /** Count the number of input ports in the given actor that must be
      *  fulfilled before the actor can fire.  Ports that are connected
      *  to actors that we are not scheduling right now are assumed to
      *  be fulfilled.  Ports that have more tokens waiting on each of
      *  their channels than their input consumption rate are also
      *  already fulfilled.  All other ports are considered to be
      *  unfulfilled.
-     *  @param a The actor
-     *  @param unscheduledactors The set of actors that we are scheduling.
+     *  @param actor The actor
+     *  @param actorList The list of actors that we are scheduling.
      *  @param waitingTokens The Map of tokens currently waiting on all the
      *  input ports.
-     *  @return The number of unfulfilled inputs of a.
+     *  @return The number of unfulfilled inputs of the given actor.
      *  @exception IllegalActionException If any called method throws it.
      */
-    private int _countUnfulfilledInputs(Actor a,
+    private int _countUnfulfilledInputs(Actor actor,
             LinkedList actorList, Map waitingTokens)
             throws IllegalActionException {
-	if (_debugging)
-            _debug("counting unfulfilled inputs for " +
-                    ((Entity) a).getFullName());
-        Iterator ainputPorts = a.inputPortList().iterator();
+	if (_debugging) {
+            _debug("Counting unfulfilled inputs for " +
+                    ((Entity) actor).getFullName());
+        }
+        int count = 0;
+        for(Iterator inputPorts = actor.inputPortList().iterator();
+            inputPorts.hasNext();) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+	    if (_debugging) {
+                _debug("Checking input " +
+                        inputPort.getFullName());
+            }
 
-	int inputCount = 0;
-	while(ainputPorts.hasNext()) {
-	    IOPort ainputPort = (IOPort) ainputPorts.next();
-	    if (_debugging) _debug("checking input " +
-                    ainputPort.getFullName());
+ 	    int threshold = getTokenConsumptionRate(inputPort);
+	    if (_debugging) {
+                _debug("Threshold = " + threshold);
+            }
 
- 	    int threshold =
-		getTokenConsumptionRate(ainputPort);
-	    if (_debugging) _debug("Threshold = " + threshold);
-	    int[] tokens =
-		(int []) waitingTokens.get(ainputPort);
+	    int[] tokens = (int []) waitingTokens.get(inputPort);
 
+            // Loop over all the channels.  If one of the channels is
+            // not fulfilled, then the port is not fulfilled, so
+            // increment the count of unfulfilled ports.
 	    boolean isFulfilled = true;
-	    int channel;
-	    for(channel = 0;
-		channel < ainputPort.getWidth() && isFulfilled;
+            for(int channel = 0;
+		channel < inputPort.getWidth();
 		channel++) {
 		if (_debugging) {
                     _debug("Channel = " + channel);
                     _debug("Waiting Tokens = " + tokens[channel]);
                 }
 
-		if(tokens[channel] < threshold)
-		    isFulfilled = false;
+		if(tokens[channel] < threshold) {
+                    isFulfilled = false;
+                    break;
+                }
 	    }
-	    if(!isFulfilled)
-		inputCount++;
+	    if(!isFulfilled) {
+		count++;
+            }
 	}
-	return inputCount;
+	return count;
     }
 
-    /** Return the number of firings associated with the Actor.   The
-     *  number of firings is stored in the _firingVector Map, indexed
+    /** Return the number of firings associated with the given entity.   The
+     *  number of firings is stored in the _firingVector map, indexed
      *  by the entity.
+     *  @param entity One of the actors we are scheduling.
      */
     private int _getFiringCount(Entity entity) {
         return ((Integer) _firingVector.get(entity)).intValue();
@@ -600,6 +628,8 @@ public class SDFScheduler extends Scheduler {
      *  rate, or if the port is an output, then return its production rate.
      *  @exception NotSchedulableException If the port is both an input and
      *  an output, or is neither an input nor an output.
+     *  @exception IllegalActionException If a rate does not contain a
+     *  valid expression.
      */
     private int _getRate(IOPort port) 
             throws NotSchedulableException, IllegalActionException {
@@ -612,7 +642,6 @@ public class SDFScheduler extends Scheduler {
         } else if(port.isOutput()) {
             return getTokenProductionRate(port);
         } else {
-            // FIXME IS THIS RIGHT?
             throw new NotSchedulableException(port,
                     "Port is neither an input and an output, which is not"
                     + " allowed in SDF.");
@@ -621,93 +650,111 @@ public class SDFScheduler extends Scheduler {
 
     /** Normalize fractional firing ratios into a firing vector that
      *  corresponds to a single SDF iteration.   Multiply all of the
-     *  fractions by the GCD of their denominators and by the given 
+     *  fractions by the least common multiple (LCM)
+     *  of their denominators and by the given 
      *  vectorizationFactor.  This factor is normally the 
      *  integer value of the vectorizationFactor parameter of the 
-     *  director.
+     *  director.  Also multiply the production and consumption rates
+     *  of the external ports of the model by the same amount.
      *
      *  @param vectorizationFactor An integer scaling factor to multiply
      *  the firing vector by.
      *  @param firings Map of firing ratios to be normalized.
      *  @param externalRates Map of token production rates that will
      *  be scaled along with the firings map.
-     *  @exception InternalErrorException If the calculated GCD does not
+     *  @exception InternalErrorException If the calculated LCM does not
      *  normalize all of the fractions.
      */
     private void _normalizeFirings(int vectorizationFactor, 
             Map firings, Map externalRates) {
-        Iterator unnormalizedFirings = firings.values().iterator();
         int lcm = 1;
 
         if (_debugging) _debug("Normalizing Firings");
-        // First find the lcm of all the denominators
-        while(unnormalizedFirings.hasNext()) {
-            Fraction f = (Fraction) unnormalizedFirings.next();
-            int den = f.getDenominator();
-            lcm = Fraction.lcm(lcm, den);
+        if (_debugging) _debug("vectorizationFactor = " + vectorizationFactor);
+
+        // First find the lcm of all the denominators of all the 
+        // computed firings.
+        for(Iterator unnormalizedFirings = firings.values().iterator();
+            unnormalizedFirings.hasNext();) {
+            Fraction fraction = (Fraction)unnormalizedFirings.next();
+            int denominator = fraction.getDenominator();
+            lcm = Fraction.lcm(lcm, denominator);
         }
 
         if (_debugging) _debug("lcm = " + (new Integer(lcm)).toString());
-        if (_debugging) _debug("vectorizationFactor = " + vectorizationFactor);
 
         Fraction lcmFraction = new Fraction(lcm * vectorizationFactor);
     
-        Iterator actors = firings.keySet().iterator();
-        // now go back through and multiply by the lcm we just found, which
+        // Go back through and multiply by the lcm we just found, which
         // should normalize all the fractions to integers.
-        while(actors.hasNext()) {
+        for(Iterator actors = firings.keySet().iterator();
+            actors.hasNext();) {
             Object actor = actors.next();
-            if (_debugging) _debug("normalizing Actor " +
-                    ((ComponentEntity) actor).getName());
-            Fraction reps = (Fraction) firings.get(actor);
-            reps = reps.multiply(lcmFraction);
-            if(reps.getDenominator() != 1)
+            if (_debugging) {
+                _debug("Normalizing Actor " +
+                        ((ComponentEntity) actor).getName());
+            }
+            Fraction repetitions = (Fraction)firings.get(actor);
+            repetitions = repetitions.multiply(lcmFraction);
+            if(repetitions.getDenominator() != 1) {
                 throw new InternalErrorException(
                         "Failed to properly perform " +
                         "fraction normalization");
-            firings.put(actor, new Integer(reps.getNumerator()));
+            }
+            firings.put(actor, new Integer(repetitions.getNumerator()));
         }
 
-        Iterator ports = externalRates.keySet().iterator();
-        while(ports.hasNext()) {
+        // Go through the ports and normalize the external production
+        // and consumption rates by the same factor.
+        for(Iterator ports = externalRates.keySet().iterator();
+            ports.hasNext();) {
             Object port = ports.next();
-            if (_debugging) _debug("normalizing Rate for " +
-                    ((ComponentPort) port).getName());
-            Fraction reps = (Fraction) externalRates.get(port);
-            reps = reps.multiply(lcmFraction);
-            if(reps.getDenominator() != 1)
+            if (_debugging) {
+                _debug("Normalizing Rate for " +
+                        ((ComponentPort) port).getName());
+            }
+            Fraction rate = (Fraction) externalRates.get(port);
+            rate = rate.multiply(lcmFraction);
+            if(rate.getDenominator() != 1) {
                 throw new InternalErrorException(
                         "Failed to properly perform " +
                         "fraction normalization");
-            externalRates.put(port, new Integer(reps.getNumerator()));
+            }
+            externalRates.put(port, new Integer(rate.getNumerator()));
         }            
     }
 
     /** Propagate the number of fractional firings decided for this actor
-     *  through the specified port.   Set and verify the fractional
-     *  firing for each Actor that is connected to this port.
-     *  Any actors that we calculate their firing vector for the first time
-     *  are moved from remainingActors to pendingActors.
+     *  through the specified port.  Compute the fractional
+     *  firing ratio for each actor that is connected to the given port.
+     *  If we have not previously computed the ratio for an
+     *  actor, then store the value in the given map of firing ratios and move
+     *  the actor from the remainingActors list to the pendingActors list.
+     *  If the value has been previously computed and is not the same,
+     *  then the model is not schedulable and an exception will be thrown.
      *  Note that ports directly contained by the given container are
      *  handled slightly differently from other ports.  Most importantly,
-     *  Their rates are propagated to ports they are connected to on the
+     *  their rates are propagated to ports they are connected to on the
      *  inside, as opposed to ports they are connected to on the outside.
      *
      *  @param container The actor that is being scheduled.
      *  @param currentPort The port that we are propagating from.
-     *  @param firings The current Map of fractional firings for each
-     *  Actor.
+     *  @param firings The current Map of fractional firing ratios for each
+     *  actor.  This map will be updated if the ratio for any actor
+     *  has not been previously computed.
      *  @param externalRates A map from external ports of container to 
-     *  the fractional rates of that port.  This will be further populated
+     *  the fractional rates of that port.  This will be updated
      *  during this method.
      *  @param remainingActors The set of actors that have not had their
      *  fractional firing set.  This will be updated during this method.
      *  @param pendingActors The set of actors that have had their rate
-     *  set, but have not been propagated onwards.
-
-     *  @exception NotSchedulableException If the CompositeActor is not
+     *  set, but have not been propagated onwards.  This will be updated
+     *  during this method.
+     *
+     *  @exception NotSchedulableException If the model is not
      *  schedulable.
-     *  @exception IllegalActionException If any called method throws it.
+     *  @exception IllegalActionException If the expression for a 
+     *  rate parameter is not valid.
      */
     private void _propagatePort(CompositeActor container, 
             IOPort currentPort,
@@ -720,7 +767,7 @@ public class SDFScheduler extends Scheduler {
         ComponentEntity currentActor =
             (ComponentEntity) currentPort.getContainer();
 
-        // First check to make sure that this Port is not connected to
+        // First check to make sure that this port is not connected to
         // any other output ports on the outside.  
         // This results in a non-deterministic merge and is illegal.
         // Do not do this test for output ports where we are propagating
@@ -732,7 +779,6 @@ public class SDFScheduler extends Scheduler {
             // Make sure any connected output ports are connected on
             // the inside.
             while(connectedPorts.hasNext()) {
-
                 IOPort connectedPort = (IOPort) connectedPorts.next();
 
                 // connectPort might be connected on the inside to the
@@ -749,14 +795,14 @@ public class SDFScheduler extends Scheduler {
                         && connectedPort.getContainer() == container) {
                     throw new NotSchedulableException(
                             currentPort, connectedPort,
-                            "Output port drives the same relation as " +
-                            "the external input port. " +
+                            "Output port drives the same relation " +
+                            "as the external input port. " +
                             "This is not legal in SDF.");
                 }
             }
         }
 
-        // Next check to make sure that if this Port is an external
+        // Next check to make sure that if this port is an external
         // input port, then it does not drive the same relation as some
         // other output port or some other external input port.
         // This results in a non-deterministic merge and is illegal.
@@ -766,7 +812,6 @@ public class SDFScheduler extends Scheduler {
             // Make sure any connected output ports are connected on
             // the inside.
             while(connectedPorts.hasNext()) {
-
                 IOPort connectedPort = (IOPort) connectedPorts.next();
 
                 // connectPort might be connected on the inside to the
@@ -784,165 +829,154 @@ public class SDFScheduler extends Scheduler {
                        && connectedPort.getContainer() == container) {
                     throw new NotSchedulableException(
                             currentPort, connectedPort,
-                            "External input port drives the same relation as " +
-                            "another external input port. " +
+                            "External input port drives the same relation " +
+                            "as another external input port. " +
                             "This is not legal in SDF.");
                 }
             }
         }
 
-
         // Get the rate of this port.
         int currentRate = _getRate(currentPort);
 
-        // Rate may be zero for HDF
-        if(currentRate >= 0) {
-            // Propagate to anything that this port is connected to.  For
-            // external ports, this is anything that is connected on the 
-            // inside.  For ports of actors that are being scheduled, this is 
-            // anything that is connected on the outside.
-            Iterator connectedPorts;
-            if(currentPort.getContainer() == container) {
-                // Find all the ports that are deeply connected to 
-                // current port on the inside.
-                // NOTE that deepInsidePortList() is not sufficient, 
-                // since it will only return currentPort, since it is opaque.
-                List deepInsidePorts = new LinkedList();
-                Iterator insidePorts = 
-                    currentPort.insidePortList().iterator();
-                while(insidePorts.hasNext()) {
-                    IOPort p = (IOPort)insidePorts.next();
-                    deepInsidePorts.addAll(p.deepInsidePortList());
-                }
-                connectedPorts = deepInsidePorts.iterator();
-            } else {
-                connectedPorts = 
-                    currentPort.deepConnectedPortList().iterator();
+        // port rates of less than zero are not valid.
+        if(currentRate < 0) {
+        }
+            
+        // Propagate to anything that this port is connected to.  For
+        // external ports, this is anything that is connected on the 
+        // inside.  For ports of actors that are being scheduled, this is 
+        // anything that is connected on the outside.
+        Iterator connectedPorts;
+        if(currentPort.getContainer() == container) {
+            // Find all the ports that are deeply connected to 
+            // current port on the inside.
+            // NOTE that deepInsidePortList() is not sufficient, 
+            // since it will only return currentPort, since it is opaque.
+            List deepInsidePorts = new LinkedList();
+            for(Iterator insidePorts = currentPort.insidePortList().iterator();
+                insidePorts.hasNext();) {
+                IOPort port = (IOPort)insidePorts.next();
+                deepInsidePorts.addAll(port.deepInsidePortList());
             }
+            connectedPorts = deepInsidePorts.iterator();
+        } else {
+            connectedPorts = currentPort.deepConnectedPortList().iterator();
+        }
 
-            // For ever port we are connected to.
-            while(connectedPorts.hasNext()) {
-                IOPort connectedPort =
-                    (IOPort) connectedPorts.next();
-
-                ComponentEntity connectedActor =
-                    (ComponentEntity) connectedPort.getContainer();
-
-                if (_debugging) 
-                    _debug("Propagating " + currentPort
-                            + " to " + connectedActor.getName());
-
-                int connectedRate = _getRate(connectedPort);
-
-                // currentFiring is the firing ratios that we've already
-                // calculated for currentactor
-                Fraction currentFiring =
-                    (Fraction) firings.get(currentActor);
-
-                // Compute the firing ratio that we think connected actor
-                // should have, based on its connection to currentActor
-		Fraction desiredFiring;
-                // HDF actors might have zero rates...
-                if ((currentRate == 0) && (connectedRate > 0)) {
-		    // the current port of the current actor has a rate
-		    // of 0, and the current connected port of the
-		    // connected actor has a positive integer rate.
-		    // therefore, we must set the firing count of
-		    // the connected actor to 0 so that it will
-		    // not appear in the final static schedule.
-		    desiredFiring = Fraction.ZERO;
-		} else if ((currentRate > 0) && (connectedRate == 0)) {
-		    // the current port of the current actor has a 
-		    // positive integer rate, and the current
-		    // connected port of the connected actor has
-		    // rate of 0. therefore, we set the firing
-		    // count of the current actor to 0 so that
-		    // it will not appear in the final static schedule.
-		    currentFiring = Fraction.ZERO;
-		    // update the entry in the firing table.
-		    firings.put(currentActor, currentFiring);
-		    
-		    // Set the firing count of the connected actor to
-		    // be 1.
-		    desiredFiring = new Fraction(1);
-		} else if ((currentRate == 0) && (connectedRate == 0)) {
-		    // Give the connected actor the same rate as the
-		    // current actor.
-		    desiredFiring = currentFiring;
-		} else {
-		    // Both the rates are non zero, so we can just do the
-                    // regular actor propagation.
-		    desiredFiring = currentFiring.multiply(
-                            new Fraction(currentRate, connectedRate));
-		}
-
-                // Now, compare the firing ratio that was computed before
-                // with what we just determined.
-                // This should be either 0, or equal to desiredFiring.
-                try {
-		    Fraction minusOne = new Fraction(-1);
-
-                    // The firing that we computed previously, or null
-                    // if the port is an external port, or minusOne if
-                    // we have not computed the rate for this actor yet.
-                    Fraction presentFiring =
-                        (Fraction) firings.get(connectedActor);
-                    if(_debugging) 
-                        _debug("presentFiring of connectedActor " 
-                                + connectedActor + " = " + presentFiring);
-                    if(presentFiring == null) {
-                        // We've gotten out to an external port.
-                        // Temporarily create the entry in the firing table.
-                        // This is possibly rather fragile.
-                        firings.put(connectedActor, desiredFiring);
-
-                        // Compute the external rate for this port.
-                        Fraction rate = currentFiring.multiply(
-                                new Fraction(currentRate, 1));
-                        Fraction previousRate = 
-                            (Fraction) externalRates.get(connectedPort);
-                        if(previousRate.equals(Fraction.ZERO)) {
-                            externalRates.put(connectedPort, rate);
-                        } else if(!rate.equals(previousRate)) {
-                            // The rates don't match.
-                            throw new NotSchedulableException("No solution " +
-                                    "exists for the balance equations.\n" +
-                                    "Graph is not " +
-                                    "consistent under the SDF domain " +
-                                    "detected on external port " + 
-                                    connectedPort.getFullName());
-                        }
-                        _propagatePort(container, connectedPort, firings,
-                                externalRates, remainingActors, pendingActors);
-                        firings.remove(connectedActor);
-                    } else if(presentFiring.equals(minusOne)) {
-                        // So we are propagating here for the first time.
-                        // Create the entry in the firing table.
-                        firings.put(connectedActor, desiredFiring);
-                        // Remove them from remainingActors.
-                        remainingActors.remove(connectedActor);
-                        // and add them to the pendingActors.
-                        pendingActors.addLast(connectedActor);
-                        
-                    } else if(!presentFiring.equals(desiredFiring))
-                        // So we've already propagated here, but the
-                        // firings don't match.
-                        throw new NotSchedulableException("No solution " +
-                                "exists for the balance equations.\n" +
-                                "Graph is not " +
-                                "consistent under the SDF domain");
+        // For every port we are connected to.
+        while(connectedPorts.hasNext()) {
+            IOPort connectedPort = (IOPort)connectedPorts.next();
+            
+            ComponentEntity connectedActor =
+                (ComponentEntity) connectedPort.getContainer();
+            
+            if (_debugging) {
+                _debug("Propagating " + currentPort
+                        + " to " + connectedActor.getName());
+            }
+            
+            int connectedRate = _getRate(connectedPort);
+            
+            // currentFiring is the firing ratio that we've already
+            // calculated for currentActor
+            Fraction currentFiring =
+                (Fraction) firings.get(currentActor);
+            
+            // Compute the firing ratio that we think connected actor
+            // should have, based on its connection to currentActor
+            Fraction desiredFiring;
+            // HDF actors might have zero rates...
+            if ((currentRate == 0) && (connectedRate > 0)) {
+                // The current port of the current actor has a rate
+                // of 0, and the current connected port of the
+                // connected actor has a positive integer rate.
+                // therefore, we must set the firing count of
+                // the connected actor to 0 so that it will
+                // not appear in the final static schedule.
+                desiredFiring = Fraction.ZERO;
+            } else if ((currentRate > 0) && (connectedRate == 0)) {
+                // The current port of the current actor has a 
+                // positive integer rate, and the current
+                // connected port of the connected actor has
+                // rate of 0. therefore, we set the firing
+                // count of the current actor to 0 so that
+                // it will not appear in the final static schedule.
+                currentFiring = Fraction.ZERO;
+                // Update the entry in the firing table.
+                firings.put(currentActor, currentFiring);
+                
+                // Set the firing count of the connected actor to
+                // be 1.
+                desiredFiring = new Fraction(1);
+            } else if ((currentRate == 0) && (connectedRate == 0)) {
+                // Give the connected actor the same rate as the
+                // current actor.
+                desiredFiring = currentFiring;
+            } else {
+                // Both the rates are non zero, so we can just do the
+                // regular actor propagation.
+                desiredFiring = currentFiring.multiply(
+                        new Fraction(currentRate, connectedRate));
+            }
+            
+            // Now, compare the firing ratio that was computed before
+            // with what we just determined.
+            // This should be either 0, or equal to desiredFiring.
+          
+            // The firing that we computed previously, or null
+            // if the port is an external port, or _minusOne if
+            // we have not computed the rate for this actor yet.
+            Fraction presentFiring = (Fraction)firings.get(connectedActor);
+            if(_debugging) {
+                _debug("presentFiring of connectedActor " 
+                        + connectedActor + " = " + presentFiring);
+            }
+            if(presentFiring == null) {
+                // We've gotten out to an external port.
+                // Temporarily create the entry in the firing table.
+                // This is possibly rather fragile.
+                firings.put(connectedActor, desiredFiring);
+                
+                // Compute the external rate for this port.
+                Fraction rate = currentFiring.multiply(
+                        new Fraction(currentRate, 1));
+                Fraction previousRate = 
+                    (Fraction) externalRates.get(connectedPort);
+                if(previousRate.equals(Fraction.ZERO)) {
+                    externalRates.put(connectedPort, rate);
+                } else if(!rate.equals(previousRate)) {
+                    // The rates don't match.
+                    throw new NotSchedulableException("No solution " +
+                            "exists for the balance equations.\n" +
+                            "Graph is not " +
+                            "consistent under the SDF domain " +
+                            "detected on external port " + 
+                            connectedPort.getFullName());
                 }
-                catch (NoSuchElementException e) {
-                    throw new InternalErrorException("SDFScheduler: " +
-                            "connectedActor " +
-                            ((ComponentEntity) connectedActor).getName() +
-                            "does not appear in the firings Map");
-                }
-
-                if (_debugging) {
-                    _debug("New Firing: ");
-                    _debug(firings.toString());
-                }
+                _propagatePort(container, connectedPort, firings,
+                        externalRates, remainingActors, pendingActors);
+                firings.remove(connectedActor);
+            } else if(presentFiring.equals(_minusOne)) {
+                // So we are propagating here for the first time.
+                // Create the entry in the firing table.
+                firings.put(connectedActor, desiredFiring);
+                // Remove them from remainingActors.
+                remainingActors.remove(connectedActor);
+                // and add them to the pendingActors.
+                pendingActors.addLast(connectedActor);
+                
+            } else if(!presentFiring.equals(desiredFiring)) {
+                // So we've already propagated here, but the
+                // firings don't match.
+                throw new NotSchedulableException("No solution " +
+                        "exists for the balance equations.\n" +
+                        "Graph is not " +
+                        "consistent under the SDF domain");
+            }
+            if (_debugging) {
+                _debug("New Firing: ");
+                _debug(firings.toString());
             }
         }
     }
@@ -955,6 +989,10 @@ public class SDFScheduler extends Scheduler {
      *  actor has sufficient tokens on its inputs to fire.   Note that no
      *  claim is made that this is an optimal solution in any other sense.
      *
+     *  @param minimumBufferSize A map from relation to an Integer
+     *  representing the minimum size buffer necessary for the computed
+     *  schedule.  Thie map will be populated during the execution of this
+     *  method.
      *  @param actorList The actors that need to be scheduled.
      *  @return An instance of the Schedule class, indicating the order
      *  in which actors should fire.
@@ -963,7 +1001,7 @@ public class SDFScheduler extends Scheduler {
      *  inconsistent internal state, or detects a graph that cannot be
      *  scheduled.
      */
-    private Schedule _scheduleConnectedActors(Map maxBufferSize,
+    private Schedule _scheduleConnectedActors(Map minimumBufferSize,
             LinkedList actorList)
             throws NotSchedulableException {
 
@@ -971,65 +1009,73 @@ public class SDFScheduler extends Scheduler {
         LinkedList readyToScheduleActorList = new LinkedList();
         // A linked list that will contain our new schedule.
         Schedule newSchedule = new Schedule();
-
-        // An association between all the input ports in a simulation and an
-	// array of the number of tokens waiting on each relation of that port
-	Map waitingTokens = new TreeMap(new NamedObjComparator());
         
+        // An association between each actor and the number of firings
+        // for that actor that remain to be simulated.
         Map firingsRemainingVector = new TreeMap(new NamedObjComparator());
+
+        // Initialized the firingsRemainingVector to the current
+        // firing vector.
         firingsRemainingVector.putAll(_firingVector);
 
+        // A list of all that actors that we have not yet completely scheduled.
 	LinkedList unscheduledActorList = new LinkedList();
 	unscheduledActorList.addAll(actorList);
 
+        // An association between all the input ports in a simulation and an
+	// array of the number of tokens waiting on each relation of that port.
+	Map waitingTokens = new TreeMap(new NamedObjComparator());
         try {
-	    // Initialize the waitingTokens
+	    // Initialize waitingTokens
             // at all the input ports to zero
-	    Iterator schedulableEntities = actorList.iterator();
-	    while(schedulableEntities.hasNext()) {
-		Actor a = (Actor)schedulableEntities.next();
+            for(Iterator actors = actorList.iterator();
+                actors.hasNext();) {
+		Actor actor = (Actor)actors.next();
 
-		Iterator ainputports = a.inputPortList().iterator();
-		while(ainputports.hasNext()) {
-		    IOPort ainputport = (IOPort) ainputports.next();
-		    int[] tokenCount = new int[ainputport.getWidth()];
-                    for(int channel = 0; channel < tokenCount.length;
+		for(Iterator inputPorts = actor.inputPortList().iterator();
+                    inputPorts.hasNext();) {
+		    IOPort inputPort = (IOPort) inputPorts.next();
+		    int[] tokenCount = new int[inputPort.getWidth()];
+                    for(int channel = 0; 
+                        channel < tokenCount.length;
 			channel++) {
                         tokenCount[channel] = 0;
                     }
-		    waitingTokens.put(ainputport, tokenCount);
+		    waitingTokens.put(inputPort, tokenCount);
                 }
             }
 
 	    // simulate the creation of initialization tokens (delays).
-	    schedulableEntities = actorList.iterator();
-	    while(schedulableEntities.hasNext()) {
-		Actor a = (Actor)schedulableEntities.next();
+	    for(Iterator actors = actorList.iterator();
+                actors.hasNext();) {
+		Actor actor = (Actor)actors.next();
 
-		Iterator aoutputports = a.outputPortList().iterator();
-		while(aoutputports.hasNext()) {
-		    IOPort aOutputPort = (IOPort) aoutputports.next();
-		    int count = getTokenInitProduction(aOutputPort);
-                    if (_debugging) _debug("Simulating " + count
-                            + " tokens created on " + aOutputPort);
+		Iterator outputPorts = actor.outputPortList().iterator();
+		while(outputPorts.hasNext()) {
+		    IOPort outputPort = (IOPort) outputPorts.next();
+		    int count = getTokenInitProduction(outputPort);
+                    if (_debugging) {
+                        _debug("Simulating " + count
+                                + " tokens created on " + outputPort);
+                    }
 		    if(count > 0) {
-			_simulateTokensCreated(aOutputPort,
+			_simulateTokensCreated(outputPort,
                                 count,
                                 actorList,
                                 readyToScheduleActorList,
                                 waitingTokens,
-                                maxBufferSize);
+                                minimumBufferSize);
 		    }
 		}
             }
 
             // Simulate a large number of tokens created on each
             // external input port.
-            StaticSchedulingDirector dir =
+            StaticSchedulingDirector director = 
                 (StaticSchedulingDirector)getContainer();
-            CompositeActor ca = (CompositeActor)(dir.getContainer());
-            Iterator inputPorts = ca.inputPortList().iterator();
-            while(inputPorts.hasNext()) {
+            CompositeActor container = (CompositeActor)director.getContainer();
+            for(Iterator inputPorts = container.inputPortList().iterator();
+                inputPorts.hasNext();) {
                 IOPort port = (IOPort)inputPorts.next();
                 _simulateExternalInputs(port, 
                         actorList, 
@@ -1038,69 +1084,79 @@ public class SDFScheduler extends Scheduler {
 
 	    // Fill readyToScheduleActorList with all the actors that have
 	    // no unfulfilled input ports, and are thus ready to fire.
-	    schedulableEntities = actorList.iterator();
-	    while(schedulableEntities.hasNext()) {
-		Actor a = (Actor)schedulableEntities.next();
+	    for(Iterator actors = actorList.iterator();
+                actors.hasNext();) {
+		Actor actor = (Actor)actors.next();
 
-		int inputCount = _countUnfulfilledInputs(a, actorList,
+		int inputCount = _countUnfulfilledInputs(actor, actorList,
                         waitingTokens);
-		if(inputCount == 0)
-		    readyToScheduleActorList.addFirst((ComponentEntity) a);
+		if(inputCount == 0) {
+		    readyToScheduleActorList.addFirst((ComponentEntity) actor);
+                }
 
-		if (_debugging) _debug("Actor "
-                        + ((ComponentEntity) a).getName() +
-                        " has " + inputCount + " unfulfilledInputs.");
-	    }
+		if (_debugging) {
+                    _debug("Actor " + ((ComponentEntity) actor).getName() +
+                            " has " + inputCount + " unfulfilledInputs.");
+                }
+            }
 
             // While we have actors left, pick one that is ready and fire it.
 	    while(readyToScheduleActorList.size() > 0) {
-		if (_debugging) {
+		if(_debugging) {
                     _debug("\nwaitingTokens: ");
-                    Iterator ports = waitingTokens.keySet().iterator();
-                    while(ports.hasNext()) {
+                    for(Iterator ports = waitingTokens.keySet().iterator();
+                        ports.hasNext();) {
                         IOPort port = (IOPort)ports.next();
-                        int tokencount[] = (int[])waitingTokens.get(port);
-                        if (_debugging) {
-                            _debug("Port " + port.getFullName());
-                            _debug("Number of channels = " + tokencount.length);
-                        }
+                        int tokenCount[] = (int[])waitingTokens.get(port);
+                        _debug("Port " + port.getFullName());
+                        _debug("Number of channels = " + 
+                                tokenCount.length);
                         for(int channel = 0;
-                            channel < tokencount.length;
-                            channel++)
-                            if (_debugging) _debug("Channel " + channel + " has " +
-                                    tokencount[channel] + " tokens.");
+                            channel < tokenCount.length;
+                            channel++) {
+                            _debug("Channel " + channel + " has " +
+                                    tokenCount[channel] + " tokens.");
+                        }
                     }
                     _debug("Actors that can be scheduled:");
-                    Iterator actorsLeft = readyToScheduleActorList.iterator();
-                    while(actorsLeft.hasNext()) {
-                        Entity e = (Entity)actorsLeft.next();
-                        _debug(e.getFullName());
+                    for(Iterator readyActors = 
+                            readyToScheduleActorList.iterator();
+                        readyActors.hasNext();) {
+                        Entity readyActor = (Entity)readyActors.next();
+                        _debug(readyActor.getFullName());
                     }
                     _debug("Actors with firings left:");
-                    actorsLeft = unscheduledActorList.iterator();
-                    while(actorsLeft.hasNext()) {
-                        Entity e = (Entity)actorsLeft.next();
-                        _debug(e.getFullName());
+                    for(Iterator remainingActors =
+                            unscheduledActorList.iterator();
+                        remainingActors.hasNext();) {
+                        Entity remainingActor = (Entity)remainingActors.next();
+                        _debug(remainingActor.getFullName());
                     }
 		}
 
-		// pick an actor that is ready to fire.
+		// Pick an actor that is ready to fire.
 		ComponentEntity currentActor
 		    = (ComponentEntity) readyToScheduleActorList.getFirst();
 
-		// remove it from the list of actors we are waiting to fire
+		// Remove it from the list of actors we are waiting to fire.
                 while(readyToScheduleActorList.remove(currentActor));
 
-		if (_debugging) {
-                    _debug("Scheduling Actor " + currentActor.getName());
+		if(_debugging) {
+                    _debug("Scheduling actor " + currentActor.getName());
                 }
+                
+                // Simulate the tokens that are consumed by the actors 
+                // input ports.
 		_simulateInputConsumption(currentActor, waitingTokens);
 
-		// add it to the schedule
+		// Add it to the schedule
+                // If we are firing the same actor twice in a row, then 
+                // compress the schedule by incrementing the number of
+                // firings.
                 boolean incrementCount = false;
                 if(newSchedule.size() > 0) {
-                    Firing lastFiring = (Firing)
-                        newSchedule.get(newSchedule.size() - 1);
+                    Firing lastFiring =
+                        (Firing) newSchedule.get(newSchedule.size() - 1);
                     if(lastFiring.getActor().equals(currentActor)) {
                         incrementCount = true;
                         lastFiring.setIterationCount(
@@ -1115,25 +1171,22 @@ public class SDFScheduler extends Scheduler {
                     firing.setActor((Actor)currentActor);
                     newSchedule.add(firing);
                 }
-                // newSchedule.addLast(currentActor);
 
-		// Get all it's outputPorts.
-		Iterator aOutputPorts =
-		    ((Actor) currentActor).outputPortList().iterator();
+		// Get all its outputPorts
+		// and simulate the proper production of tokens.
+		for(Iterator outputPorts =
+                        ((Actor) currentActor).outputPortList().iterator();
+                    outputPorts.hasNext();) {
+		    IOPort outputPort = (IOPort) outputPorts.next();
+                    
+		    int count = getTokenProductionRate(outputPort);
 
-		// And simulate the proper production of tokens.
-		while(aOutputPorts.hasNext()) {
-		    IOPort aOutputPort = (IOPort) aOutputPorts.next();
-
-		    int count =
-			getTokenProductionRate(aOutputPort);
-
-		    _simulateTokensCreated(aOutputPort,
+		    _simulateTokensCreated(outputPort,
                             count,
                             unscheduledActorList,
                             readyToScheduleActorList,
                             waitingTokens,
-                            maxBufferSize);
+                            minimumBufferSize);
 		}
 
 		// Update the firingRemainingVector for this actor.
@@ -1151,113 +1204,127 @@ public class SDFScheduler extends Scheduler {
 
 		// Figure out what to do with the actor, now that it has been
 		// scheduled.
-		if(firingsRemaining < 0)
+		if(firingsRemaining < 0) {
 		    // If we screwed up somewhere, and fired this more
 		    // times than we thought we should have
 		    // then throw an exception.
 		    // This should never happen.
-		    throw new IllegalStateException("Balance Equation " +
+		    throw new InternalErrorException("Balance Equation " +
                             "solution does not agree with " +
-                            "scheduling algorithm");
-
-		// If we've fired this actor all the times that it should, then
-		// we get rid of it entirely.
-		else {
-		    if(firingsRemaining == 0) {
+                            "scheduling algorithm!");
+                } else {
+                    if(firingsRemaining == 0) {
+                        // If we've fired this actor all the
+                        // times that it should, then
+                        // we get rid of it entirely.
                         if(_debugging) {
-                            _debug("Current Actor = " + currentActor);
+                            _debug("Actor = " + currentActor + 
+                                    " is done firing.");
                         }
-			// remove the actor from the readyToScheduleActorList
-			// so that it does not get scheduled
-			while(readyToScheduleActorList.remove(currentActor));
-			// remove the actor from the unscheduledActorList
-			// so that it does not get added back to the
-			// readyToScheduleActorList
+			// Remove the actor from the readyToScheduleActorList
+			// so that it does not get scheduled.
+			//while(readyToScheduleActorList.remove(currentActor));
+			// Remove the actor from the unscheduledActorList
+			// since we don't need to fire it any more.
 			while(unscheduledActorList.remove(currentActor));
+                        
 			if(_debugging) {
-                            _debug("Remaining actors");
-                        }
-			Iterator actorsLeft =
-                            readyToScheduleActorList.iterator();
-			while(actorsLeft.hasNext()) {
-			    Entity e = (Entity)actorsLeft.next();
-			    if (_debugging) _debug(e.getFullName());
+                            _debug("Remaining actors:");
+                            for(Iterator readyActors =
+                                    readyToScheduleActorList.iterator();
+                                readyActors.hasNext();) {
+                                Entity entity = (Entity)readyActors.next();
+                                _debug(entity.getFullName());
+                            }
 			}
-		    }
-		    // Otherwise the actor still has firings left
-		    else {
-			// Count the number of unfulfilled inputs.
+		    } else {
+			// Otherwise the actor still has firings left.
+                        // Count the number of unfulfilled inputs.
 			int inputCount =
 			    _countUnfulfilledInputs((Actor)currentActor,
                                     unscheduledActorList,
                                     waitingTokens);
 			// We've already removed currentActor from
-			// ReadytoSchedule actors
+			// readytoSchedule actors
 			// so if it can be fired again right away,
 			// put it back on the list.
 			// if the actor can still be scheduled
 			// i.e. all its inputs are satisfied, and it
 			// appears in the unscheduled actors list
-			// then put it
-			// at the END of readyToScheduleActorList.
+			// then put it at the END of readyToScheduleActorList.
                         // FIXME this is rather inefficient.. it would be 
                         // nice if we could schedule all the firings at
                         // once... it would probably be alot faster...
 			if(inputCount < 1 &&
-                                unscheduledActorList.contains(currentActor))
+                                unscheduledActorList.contains(currentActor)) {
 			    readyToScheduleActorList.addFirst(currentActor);
+                        }
 		    }
 		}
 	    }
-	}
-        catch (IllegalActionException iae) {
+	} catch (IllegalActionException exception) {
             // This could happen if we call getTokenConsumptionRate on a
             // port that isn't a part of the actor.   This probably means
             // the graph is screwed up, or somebody else is mucking
             // with it.
             throw new InternalErrorException("SDF Scheduler Failed " +
-                    "internal consistency check: " + iae.getMessage());
+                    "internal consistency check: " + exception.getMessage());
         } finally {
-            if (_debugging) _debug("finishing loop");
+            if (_debugging) {
+                _debug("finishing loop");
+            }
 	}
 
         // If there are any actors left when we're done, then report the
         // error.
 	if(unscheduledActorList.size() > 0) {
-	    String s = new String("Actors remain that cannot be scheduled:\n");
-	    Iterator actors = unscheduledActorList.iterator();
-	    while(actors.hasNext()) {
-		Entity actor = (Entity)actors.next();
-		s += actor.getFullName() + "\n";
+	    String string = 
+                new String("Actors remain that cannot be scheduled!\n");
+          
+            string += "Scheduled actors:\n";
+            List scheduledActorList = new LinkedList();
+            scheduledActorList.addAll(actorList);
+            scheduledActorList.removeAll(unscheduledActorList);
+	    for(Iterator actors = scheduledActorList.iterator();
+                actors.hasNext();) {
+		Entity entity = (Entity)actors.next();
+		string += entity.getFullName() + "\n";
 	    }
-	    throw new NotSchedulableException(s);
+
+            string += "Unscheduled actors:\n";
+            for(Iterator actors = unscheduledActorList.iterator();
+                actors.hasNext();) {
+		Entity entity = (Entity)actors.next();
+		string += entity.getFullName() + "\n";
+	    }
+
+	    throw new NotSchedulableException(string);
 	}
 
         if (_debugging) {
             _debug("Schedule is:");
-            Iterator eschedule = newSchedule.iterator();
-            while(eschedule.hasNext()) {
-                _debug(((ComponentEntity) eschedule.next()).toString());
+            Iterator schedule = newSchedule.iterator();
+            while(schedule.hasNext()) {
+                _debug(((ComponentEntity) schedule.next()).toString());
             }
         }
 
         return newSchedule;
     }
 
-    /** Set attributes in relations according to the bufferSizes 
-     *  calculated for this system.
-     *  @param maxBufferSizes A map from relation to the maximum buffer size
-     *  of that relation.
-     *  @exception IllegalActionException If any called method throws it.
+    /** Create and set a parameter in each relation according 
+     *  to the buffer sizes calculated for this system.
+     *  @param minimumBufferSizes A map from relation 
+     *  to the minimum possible buffer size of that relation.
      */
-    private void _setBufferSizes(Map maxBufferSizes) {
+    private void _setBufferSizes(Map minimumBufferSizes) {
         Director director = (Director) getContainer();
         CompositeActor container = (CompositeActor) director.getContainer();
         Iterator relations = container.relationList().iterator();
         while(relations.hasNext()) {
             Relation relation = (Relation)relations.next();
             int bufferSize = 
-                ((Integer)maxBufferSizes.get(relation)).intValue();
+                ((Integer)minimumBufferSizes.get(relation)).intValue();
             
             Parameter parameter = (Parameter)
                     relation.getAttribute("bufferSize");
@@ -1297,6 +1364,10 @@ public class SDFScheduler extends Scheduler {
      *  @param externalRates A map from external port to the rate of that
      *  port.
      *  @exception IllegalActionException If any called method throws it.
+     *  @exception NotSchedulableException If an external port is both
+     *  an input and an output, or neither an input or an output, or 
+     *  connected on the inside to ports that have different 
+     *  tokenInitProduction.
      */
     private void _setContainerRates(Map externalRates)
             throws NotSchedulableException, IllegalActionException {
@@ -1304,20 +1375,23 @@ public class SDFScheduler extends Scheduler {
         CompositeActor container = (CompositeActor) director.getContainer();
         Iterator ports = container.portList().iterator();
         while(ports.hasNext()) {
-            int consumptionRate = 0;
-            int productionRate = 0;
-            int initProduction = 0;
             IOPort port = (IOPort) ports.next();
+            if (_debugging) {
+                _debug("External Port " + port.getName());
+            }
             Integer rate = (Integer)externalRates.get(port);
             if(port.isInput() && port.isOutput()) {
                 throw new NotSchedulableException(port,
-                        "External Port is both an input and an output, "
+                        "External port is both an input and an output, "
                         + "which is not allowed in SDF.");
             } else if(port.isInput()) {
-                setTokenConsumptionRate(port, rate.intValue());
+                setTokenConsumptionRate(port, rate.intValue());  
+                if (_debugging) {
+                    _debug("tokenConsumptionRate = " + rate);
+                }
             } else if(port.isOutput()) {
                 setTokenProductionRate(port, rate.intValue());
-                // Infer init production.
+               // Infer init production.
                 Iterator connectedPorts = port.insidePortList().iterator();
                 IOPort foundOutputPort = null;
                 while(connectedPorts.hasNext()) {
@@ -1327,11 +1401,11 @@ public class SDFScheduler extends Scheduler {
                         // rate for any other internal port is correct.
                         if(foundOutputPort != null && 
                                 getTokenInitProduction(foundOutputPort) !=
-                           getTokenInitProduction(connectedPort)) {
+                                getTokenInitProduction(connectedPort)) {
                             throw new NotSchedulableException(
                                     "External output port " + port
                                     + " is connected on the inside to ports "
-                                    + "with different initial production " 
+                                    + "with different initial production: " 
                                     + foundOutputPort + " and "
                                     + connectedPort);
                         }
@@ -1340,28 +1414,16 @@ public class SDFScheduler extends Scheduler {
                         foundOutputPort = connectedPort;
                     }
                 } 
+                if (_debugging) {
+                    _debug("tokenProductionRate = " + rate);
+                    _debug("tokenInitProduction = " + rate);
+                }
             } else {
-                // FIXME IS THIS RIGHT?
                 throw new NotSchedulableException(port,
-                        "External Port is neither an input and an output, "
+                        "External port is neither an input and an output, "
                         + "which is not allowed in SDF.");
             }
-
-            if (_debugging) {
-                _debug("Port " + port.getName());
-                _debug("consumptionRate = " + consumptionRate);
-                _debug("productionRate = " + productionRate);
-                _debug("initProduction = " + initProduction);
-            }
         }
-    }
-
-    /** Set the number of firings associated with the Actor.   This is
-     *  equivalent to changing the entry in the FiringVector associated with
-     *  with the entity to have a value count.
-     */
-    private void _setFiringCount(Entity entity, int count) {
-        _firingVector.put(entity, new Integer(count));
     }
 
     /** Set the firing vector, which is a map associating an actor
@@ -1370,10 +1432,10 @@ public class SDFScheduler extends Scheduler {
      *  entry, even if it is -1 indicating that the actor has not yet had
      *  its firings determined.
      *
-     *  @param newfiringvector A map from ComponentEntity to Integer.
+     *  @param newFiringVector A map from ComponentEntity to Integer.
      */
-    private void _setFiringVector(Map newfiringvector) {
-        _firingVector = newfiringvector;
+    private void _setFiringVector(Map newFiringVector) {
+        _firingVector = newFiringVector;
         _firingVectorValid = true;
     }
 
@@ -1388,46 +1450,47 @@ public class SDFScheduler extends Scheduler {
             Map waitingTokens)
             throws IllegalActionException {
 
-	Receiver[][] creceivers = port.deepGetReceivers();
+	Receiver[][] receivers = port.deepGetReceivers();
 
 	if (_debugging) {
             _debug("Simulating external input tokens from "
                     + port.getFullName());
-            _debug("inside channels = " + creceivers.length);
+            _debug("inside channels = " + receivers.length);
         }
-	int sourcechannel;
-	for(sourcechannel = 0;
-            sourcechannel < creceivers.length;
-            sourcechannel++) {
+	int sourceChannel;
+	for(sourceChannel = 0;
+            sourceChannel < receivers.length;
+            sourceChannel++) {
 	    if (_debugging) {
                 _debug("destination receivers for channel "
-                        + sourcechannel + ": " + creceivers[sourcechannel].length);
+                        + sourceChannel + ": "
+                        + receivers[sourceChannel].length);
             }
-	    int destinationreceiver;
-	    for(destinationreceiver = 0;
-		destinationreceiver < creceivers[sourcechannel].length;
-		destinationreceiver++) {
+	    int destinationReceiver;
+	    for(destinationReceiver = 0;
+		destinationReceiver < receivers[sourceChannel].length;
+		destinationReceiver++) {
 		IOPort connectedPort =
-		    (IOPort) creceivers[sourcechannel][destinationreceiver].
+		    (IOPort) receivers[sourceChannel][destinationReceiver].
 		    getContainer();
 		ComponentEntity connectedActor =
 		    (ComponentEntity) connectedPort.getContainer();
 		// Only proceed if the connected actor is something we are
 		// scheduling.  The most notable time when this will not be
-		// true is when a connections is made to the
+		// true is when a connection is made to the
 		// inside of an opaque port.
 		if(actorList.contains(connectedActor)) {
 		    int destinationchannel =
 			_getChannel(connectedPort,
-                                creceivers[sourcechannel]
-                                [destinationreceiver]
+                                receivers[sourceChannel]
+                                [destinationReceiver]
 				    );
 		    int[] tokens = (int[]) waitingTokens.get(connectedPort);
 		    tokens[destinationchannel] = Integer.MAX_VALUE;
 
                     if (_debugging) {
-                        _debug("Channel " + destinationchannel + " of " +
-                                connectedPort.getName());
+                        _debug("Channel " + destinationchannel 
+                                + " of " + connectedPort.getName());
                     }
 		}
 	    }
@@ -1435,7 +1498,8 @@ public class SDFScheduler extends Scheduler {
     }
 
     /** Simulate the consumption of tokens by the actor during an execution.
-     *  The entries in Map will be modified to reflect the number of
+     *  The entries in the waitingTokens map will be modified 
+     *  to reflect the number of
      *  tokens still waiting after the actor has consumed tokens for a firing.
      *  Also determine if enough tokens still remain at the inputs of the actor
      *  for it to fire again immediately.
@@ -1443,31 +1507,33 @@ public class SDFScheduler extends Scheduler {
      *  @param currentActor The actor that is being simulated.
      *  @param waitingTokens A Map between each input IOPort and the number of
      *  tokens in the queue for that port.
-     *  @return boolean Whether or not the actor can fire again right away
+     *  @return true If the actor can fire again right away
      *  after it has consumed tokens.
      *  @exception IllegalActionException If any called method throws it.
      */
     private boolean _simulateInputConsumption(ComponentEntity currentActor,
-            Map waitingTokens)
-            throws IllegalActionException {
-
+            Map waitingTokens) throws IllegalActionException {
         boolean stillReadyToSchedule = true;
-        // update tokensWaiting on the actor's input ports.
 
+        // Update the number of tokens waiting on the actor's input ports.
         Iterator inputPorts =
 	    ((Actor) currentActor).inputPortList().iterator();
         while(inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens =
 		(int []) waitingTokens.get(inputPort);
-	    int tokenrate =
+	    int tokenRate =
 		getTokenConsumptionRate(inputPort);
-	    for(int channel = 0; channel < inputPort.getWidth(); channel++) {
-		tokens[channel] -= tokenrate;
+	    for(int channel = 0;
+                channel < inputPort.getWidth();
+                channel++) {
+		tokens[channel] -= tokenRate;
 
 		// keep track of whether or not this actor can fire again
 		// immediately
-		if(tokens[channel] < tokenrate) stillReadyToSchedule = false;
+		if(tokens[channel] < tokenRate) {
+                    stillReadyToSchedule = false;
+                }
 	    }
 	}
         return stillReadyToSchedule;
@@ -1495,18 +1561,18 @@ public class SDFScheduler extends Scheduler {
             LinkedList actorList,
             LinkedList readyToScheduleActorList,
             Map waitingTokens,
-            Map maxBufferSize)
+            Map minimumBufferSize)
             throws IllegalActionException {
 
-	Receiver[][] creceivers = outputPort.getRemoteReceivers();
+	Receiver[][] receivers = outputPort.getRemoteReceivers();
 
 	if (_debugging) {
             _debug("Creating " + createdTokens + " tokens on "
                     + outputPort.getFullName());
-            _debug("source channels = " + creceivers.length);
+            _debug("source channels = " + receivers.length);
         }
 
-        int sourcechannel = 0;
+        int sourceChannel = 0;
         Iterator relations = outputPort.linkedRelationList().iterator();
         while(relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
@@ -1520,63 +1586,64 @@ public class SDFScheduler extends Scheduler {
             // The bufferSize for the current relation.  This is 
             // put back into the buffer at the end after (possibly)
             // being updated.
-            Integer bufferSize = (Integer) maxBufferSize.get(relation);
+            Integer bufferSize = (Integer) minimumBufferSize.get(relation);
                        
             int width = relation.getWidth();
-            
             // loop through all of the channels of that relation.
-            for(int i = 0; i < width; i++, sourcechannel++) {
-                
+            for(int i = 0; i < width; i++, sourceChannel++) {
                 if (_debugging) {
-                    _debug("destination receivers for relation " +
-                            relation.getName() + " channel "
-                            + sourcechannel + ": " +
-                            creceivers[sourcechannel].length);
+                    _debug("destination receivers for relation "
+                            + relation.getName() + " channel "
+                            + sourceChannel + ": "
+                            + receivers[sourceChannel].length);
                 }
                 
-                int destinationreceiver;
-                for(destinationreceiver = 0;
-                    destinationreceiver < creceivers[sourcechannel].length;
-                    destinationreceiver++) {
-                    IOPort connectedPort =
-                        (IOPort) creceivers[sourcechannel][destinationreceiver].
+                for(int destinationIndex = 0;
+                    destinationIndex < receivers[sourceChannel].length;
+                    destinationIndex++) {
+                    IOPort connectedPort = (IOPort)
+                        receivers[sourceChannel][destinationIndex].
                         getContainer();
                     ComponentEntity connectedActor =
                         (ComponentEntity) connectedPort.getContainer();
                     // Only proceed if the connected actor is something we are
                     // scheduling.  The most notable time when this will not be
-                    // true is when a connections is made to the
+                    // true is when a connection is made to the
                     // inside of an opaque port.
                     if(actorList.contains(connectedActor)) {
-                        int destinationchannel = _getChannel(connectedPort,
-                                creceivers[sourcechannel][destinationreceiver]);
+                        // The channel of the destination port that is
+                        // connected to sourceChannel.
+                        int destinationChannel = _getChannel(connectedPort,
+                                receivers[sourceChannel][destinationIndex]);
                         
-                        // increment the number of waiting tokens.
-                        int[] tokens = (int[]) 
-                            waitingTokens.get(connectedPort);
-                        tokens[destinationchannel] += createdTokens;
+                        // Increment the number of waiting tokens.
+                        int[] tokens = 
+                            (int[]) waitingTokens.get(connectedPort);
+                        tokens[destinationChannel] += createdTokens;
                         
-                        // update the maximum number of tokens, if necessary.
+                        // Update the buffer size, if necessary.
                         // if bufferSize is null, then ignore, since we don't
                         // care about that relation.                        
                         if(bufferSize != null && 
-                                tokens[destinationchannel] > 
+                                tokens[destinationChannel] > 
                                 bufferSize.intValue()) {
                             bufferSize = 
-                                new Integer(tokens[destinationchannel]);
+                                new Integer(tokens[destinationChannel]);
                         }
                         if (_debugging) {
-                            _debug("Channel " + destinationchannel + " of " +
+                            _debug("Channel " + destinationChannel + " of " +
                                     connectedPort.getName());
                         }
                         // Check and see if the connectedActor can be scheduled
-                        int inputCount =
-			_countUnfulfilledInputs((Actor)connectedActor,
+                        int inputCount = _countUnfulfilledInputs(
+                                (Actor)connectedActor,
                                 actorList,
                                 waitingTokens);
                         int firingsRemaining = _getFiringCount(connectedActor);
-                        // If so, then add it to the proper list.  Note that the
-                        // actor may appear more than once.  This is OK, since we
+                        // If so, then add it to the proper list. 
+                        // Note that the
+                        // actor may appear more than once.  
+                        // This is OK, since we
                         // remove all of the appearances from the list when the
                         // actor is actually scheduled.
                         if((inputCount < 1) && (firingsRemaining > 0)) {
@@ -1586,11 +1653,11 @@ public class SDFScheduler extends Scheduler {
                 }
             }
             // update the map of buffer sizes.
-            maxBufferSize.put(relation, bufferSize);
+            minimumBufferSize.put(relation, bufferSize);
         }
     }
 
-    /** Solve the Balance Equations for the list of connected Actors.
+    /** Solve the balance equations for the list of connected Actors.
      *  For each actor, determine the ratio that determines the rate at
      *  which it should fire relative to the other actors for the graph to
      *  be live and operate within bounded memory.   This ratio is known as the
@@ -1600,80 +1667,68 @@ public class SDFScheduler extends Scheduler {
      *  @param actorList The actors that we are interested in.
      *  @param externalRates A map from external ports of container to 
      *  the fractional rates of that port.  This starts out initialized with
-     *  FRACTION.ZERO and will be populated during this method.
-     *  @return A Map that associates each actor with its fractional
+     *  Fraction.ZERO and will be populated during this method.
+     *  @return A map from each actor to its fractional
      *  firing.
      *  @exception NotSchedulableException If the graph is not consistent
-     *  under the synchronous dataflow model.
-     *  @exception NotSchedulableException If the graph is not connected.
+     *  under the synchronous dataflow model, or if the graph is not connected.
      *  @exception IllegalActionException If any called method throws it.
      */
     private Map _solveBalanceEquations(CompositeActor container,
             List actorList, Map externalRates)
             throws NotSchedulableException, IllegalActionException {
 
-        // firings contains the Map that we will return.
-        // It gets populated with the fraction firing ratios for
-        // each actor
+        // The map that we will return.
+        // This will be populated with the fraction firing ratios for
+        // each actor.
         Map firings = new TreeMap(new NamedObjComparator());
 
-        // remainingActors contains the pool of Actors that have not been
+        // The pool of Actors that have not been
         // touched yet. (i.e. all their firings are still set to Fraction
 	// equal to -1/1)
         LinkedList remainingActors = new LinkedList();
 
-        // pendingActors have their firings set, but have not had their
-        // ports explored yet.
+        // The pool of actors that have their firings set,
+        // but have not had their ports explored yet.
         LinkedList pendingActors = new LinkedList();
 
-        // Are we done?  (Is pendingActors Empty?)
-        boolean done = false;
-
-        // Initialize remainingActors to contain all the actors we were given 
+        // Initialize remainingActors to contain all the actors we were given .
         remainingActors.addAll(actorList);
         
-        // Initialize firings for everybody to -1
-        Iterator enumActors = remainingActors.iterator();
-        while(enumActors.hasNext()) {
-            ComponentEntity e = (ComponentEntity) enumActors.next();
-            firings.put(e, new Fraction(-1));
+        // Initialize firings for each actor to -1.
+        for(Iterator actors = remainingActors.iterator();
+            actors.hasNext();) {
+            ComponentEntity entity = (ComponentEntity) actors.next();
+            firings.put(entity, _minusOne);
         }
 
-        // FIXME: this doesn't work if there are no actors (i.e. a tunneling
-        // actor in a hierarchical model)
-        try {
+        if(remainingActors.size() == 0) {
+            // If we've been given
+            // no actors to do anything with, return an empty Map.
+            return firings;
+        } else {
             // Pick an actor as a reference
 	    // Should pick the reference actor to be one
 	    // that contains 0-valued ports, if there exists one.
-	    ComponentEntity a = null;
-	    // Try to find an actor that contains at least one 0-rate
-	    // port. Note that this preprocessing step only needs to
-	    // be done if we want to support SDF graphs with actors that
-	    // contain one or more 0-rate ports.
-	    a = _pickZeroRatePortActor(remainingActors);
-	    if (a == null) {
+	    ComponentEntity actor = _pickZeroRatePortActor(remainingActors);
+	    if (actor == null) {
 		// We did not find an actor with any 0-rate ports,
 		// so just pick a reference actor arbitrarily.
-		a = (ComponentEntity) remainingActors.removeFirst();
+		actor = (ComponentEntity)remainingActors.removeFirst();
 	    } else {
-		// We found an actor "a" with at least one 0-rate port.
-		remainingActors.remove(a);
+		// We found an actor with at least one 0-rate port.
+		remainingActors.remove(actor);
 	    }
 
-            // And set it's rate to one per iteration
-            firings.put(a, new Fraction(1));
-            // And start the list to recurse over.
-            pendingActors.addLast(a);
+            // Set it's rate to one per iteration
+            firings.put(actor, new Fraction(1));
+            // Start the list to recurse over.
+            pendingActors.addLast(actor);
         }
-        catch (NoSuchElementException e) {
-            // if remainingActors.removeFirst() fails, then we've been given
-            // no actors to do anything with, so return an empty Map
-            return firings;
-        }
-
-        while(!done) try {
-            // NOTE: Do not move this debug clause after the removeFirst()
-            // call... that causes an infinite loop!
+      
+        // Loop until we run out of actors that have not been 
+        // propagated.
+        while(!pendingActors.isEmpty()) {
             if (_debugging) {
                 _debug("pendingActors: ");
                 _debug(pendingActors.toString());
@@ -1684,8 +1739,8 @@ public class SDFScheduler extends Scheduler {
                 _debug("Balancing from " +
                         ((ComponentEntity) currentActor).getName());
             }
-
-            // traverse all the input and output ports, setting the firings
+            
+            // Traverse all the input and output ports, setting the firings
             // for the actor(s)???? connected to each port relative
             // to currentActor.
             Iterator AllPorts =
@@ -1696,26 +1751,35 @@ public class SDFScheduler extends Scheduler {
                         remainingActors, pendingActors);
             }
         }
-        catch (NoSuchElementException e) {
+        //        catch (NoSuchElementException e) {
             // Once we've exhausted pendingActors, this exception will be
             // thrown, causing us to terminate the loop.
 	    // FIXME this is a bad way to do this.  Don't communicate using
             // exceptions.
-            done = true;
-
-            Iterator actors = remainingActors.iterator();
-
-            // If there are any Actors left that we didn't get to, then
+        //   done = true;
+       
+        if(!remainingActors.isEmpty()) {
+            // If there are any actors left that we didn't get to, then
             // this is not a connected graph, and we throw an exception.
-            if(actors.hasNext()) {
-                String msg = "SDF scheduler found disconnected actors: ";
-                while (actors.hasNext()) {
-                    NamedObj actor = (NamedObj)(actors.next());
-                    msg += actor.getFullName() + " ";
-                }
-                throw new NotSchedulableException(msg);
+            String string = "SDF scheduler found disconnected actors!\n";
+            string += "Reached Actors:\n";
+            List reachedActorList = new LinkedList();
+            reachedActorList.addAll(actorList);
+            reachedActorList.removeAll(remainingActors);
+	    for(Iterator actors = reachedActorList.iterator();
+                actors.hasNext();) {
+		Entity entity = (Entity)actors.next();
+		string += entity.getFullName() + "\n";
+	    }   
+            string += "Unreached Actors:\n";
+            Iterator actors = remainingActors.iterator();
+            while(actors.hasNext()) {
+                NamedObj actor = (NamedObj)(actors.next());
+                string += actor.getFullName() + " ";
             }
+            throw new NotSchedulableException(string);
         }
+            // }
         return firings;
     }
 
@@ -1729,40 +1793,43 @@ public class SDFScheduler extends Scheduler {
 	int width = port.getWidth();
 	Receiver[][] receivers = port.getReceivers();
 	int channel;
-	if (_debugging) {
+	if(_debugging) {
             _debug("-- getting channels on port " + port.getFullName());
             _debug("port width = " + width);
             _debug("number of channels = " + receivers.length);
         }
-	for(channel = 0; channel < receivers.length; channel++) {
-	    int receivernumber;
-	    if (_debugging) {
+	for(channel = 0; 
+            channel < receivers.length; 
+            channel++) {
+            if(_debugging) {
                 _debug("number of receivers in channel " + channel
                         + " = " + receivers[channel].length);
             }
-	    for(receivernumber = 0;
-		receivernumber < receivers[channel].length;
-		receivernumber++)
-		if(receivers[channel][receivernumber] == receiver) {
+	    for(int destinationIndex = 0;
+		destinationIndex < receivers[channel].length;
+		destinationIndex++) {
+		if(receivers[channel][destinationIndex] == receiver) {
                     if (_debugging) {
                         _debug("-- returning channel number:" + channel);
                     }
                     return channel;
                 }
+            }
 	}
 	// Hmm...  didn't find it yet.  Port might be connected on the inside,
 	// so try the inside relations.
 	receivers = port.getInsideReceivers();
-	for(channel = 0; channel < receivers.length; channel++) {
-	    int receivernumber;
-	    if (_debugging) {
-                _debug("number of insidereceivers = "
+	for(channel = 0; 
+            channel < receivers.length;
+            channel++) {
+            if (_debugging) {
+                _debug("number of inside receivers = "
                         + receivers[channel].length);
             }
-	    for(receivernumber = 0;
-		receivernumber < receivers[channel].length;
-		receivernumber++) {
-		if(receivers[channel][receivernumber] == receiver) {
+	    for(int destinationIndex = 0;
+		destinationIndex < receivers[channel].length;
+		destinationIndex++) {
+		if(receivers[channel][destinationIndex] == receiver) {
                     return channel;
                 }
             }
@@ -1772,77 +1839,64 @@ public class SDFScheduler extends Scheduler {
                 port.getFullName());
     }
 
-    /** Try to find an actor that contains at least one 0-rate
-     *  port. Note that this preprossessing step only needs to
-     *  be done if we want to support SDF graphs with actors that
-     *  contain one or more 0-rate ports.
+    /** Search the given list of actors for one that contains at least 
+     *  one port that has zero rate.
      *
-     * @param remainingActors The list of all of the actors in the
-     *  SDF graph, not in any particular order.
-     * @return An actor that contains at least one 0-rate port.
-     *  Otherwise return null.
+     *  @param actorList The list of all of the actors to search.
+     *  @return An actor that contains at least one zero rate port, or null
+     *  if no actor has a zero rate port.
      */
-    private ComponentEntity _pickZeroRatePortActor(List remainingActors)
-    throws IllegalActionException {
-	ComponentEntity a = null;
-	    Iterator remainingActorsIter = remainingActors.iterator();
-	    boolean foundZeroPortActor = false;
-	    while (remainingActorsIter.hasNext()) {
-		ComponentEntity tempActor = 
-		    (ComponentEntity)remainingActorsIter.next();
-		// Check if this actor has any ports with rate = 0.
-		Iterator thePorts =
-                ((ComponentEntity) tempActor).portList().iterator();
-		while (thePorts.hasNext()) {
-		    // Get the next port.
-		    IOPort currentPort = (IOPort)thePorts.next();
-		    
-		    int currentRate = -1; 
-		    if(currentPort.isInput()) {
-			currentRate = 
-			    getTokenConsumptionRate(currentPort);
-		    } else if (currentPort.isOutput()) {
-			currentRate = 
-			    getTokenProductionRate(currentPort);
-		    }
-		    if (currentRate == 0) {
-			foundZeroPortActor = true;
-			a = tempActor;
-		    }
-		}
+    private ComponentEntity _pickZeroRatePortActor(List actorList)
+            throws IllegalActionException {
+        for(Iterator actors = actorList.iterator();
+	    actors.hasNext();) {
+            ComponentEntity actor = (ComponentEntity)actors.next();
+            // Check if this actor has any ports with rate of zero.
+            for(Iterator ports = actor.portList().iterator();
+		ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                if(_getRate(port) == 0) {
+                    return actor;
+                }
 	    }
-	    return a;
+        }
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private classes                   ////
 
-    /** A comparator for Named Objects.  This is currently SLOW because
-     *  getFullName is not cached.
+    /** A comparator for named objects.  
      */
     private class NamedObjComparator implements Comparator {
-        public int compare(Object o1, Object o2) {
-            if((o1 instanceof NamedObj)&&(o2 instanceof NamedObj)) {
+        // Note: This is rather slow, because getFullName is not cached.
+        public int compare(Object object1, Object object2) {
+            if((object1 instanceof NamedObj) && 
+                    (object2 instanceof NamedObj)) {
                 // Compare full names.
-                NamedObj n1 = (NamedObj) o1;
-                NamedObj n2 = (NamedObj) o2;
-                int compare = n1.getFullName().compareTo(n2.getFullName());
+                NamedObj namedObject1 = (NamedObj) object1;
+                NamedObj namedObject2 = (NamedObj) object2;
+                int compare = namedObject1.getFullName().compareTo(
+                        namedObject2.getFullName());
                 if(compare != 0) return compare;
                 // Compare class names.
-                Class c1 = n1.getClass();
-                Class c2 = n2.getClass();
-                compare = c1.getName().compareTo(c2.getName());
+                Class class1 = namedObject1.getClass();
+                Class class2 = namedObject2.getClass();
+                compare = class1.getName().compareTo(class2.getName());
                 if(compare != 0) return compare;
-                if(o1.equals(o2))
+                if(object1.equals(object2)) {
                     return 0;
-                else {
+               } else {
                     // FIXME This should never happen, hopefully.  Otherwise
                     // the comparator needs to be made more specific.
                     throw new InternalErrorException("Comparator not " +
                             "capable of comparing not equal objects.");
                 }
-            } else
-                throw new ClassCastException("Object must be NamedObjs");
+            } else {
+                throw new InternalErrorException("Arguments to comparator " + 
+                        "must be instances of NamedObj: " + object1 + ", " + 
+                        object2);
+            }
         }
     }
 
@@ -1854,4 +1908,8 @@ public class SDFScheduler extends Scheduler {
     private Map _firingVector;
     // True if the firing vector contains valid information.
     private boolean _firingVectorValid;
+    // A fraction equal to -1.  Used in several places to indicate an
+    // actor for which we have not determined the number of times it will
+    // fire.
+    private Fraction _minusOne = new Fraction(-1);
 }

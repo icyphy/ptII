@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -47,7 +47,9 @@ import java.util.Enumeration;
 A first-in, first-out (FIFO) queue receiver with variable capacity and
 optional history. Tokens are put into the receiver with the put() method,
 and removed from the receiver with the get() method. The token removed is
-the oldest one in the receiver. By default, the capacity is unbounded, but
+the one placed in the receiver before any other (i.e. the "oldest", although
+this has nothing to do with time in the model. 
+By default, the capacity is unbounded, but
 it can be set to any nonnegative size. If the history capacity is greater
 than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY),
 then tokens removed from the receiver are stored in a history queue rather
@@ -99,13 +101,6 @@ public class SDFReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Enumerate the tokens in the receiver, beginning with the oldest.
-     *  @return An enumeration of tokens.
-     */
-    public Enumeration elements() {
-        return _queue.elements();
-    }
-
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
      *  exception.
@@ -155,7 +150,7 @@ public class SDFReceiver extends AbstractReceiver {
 
     /** Get an array of tokens from this receiver. The parameter
      *  specifies the number of valid tokens to get in the returned
-     *  array. The length of the returned array will be at least euqal to
+     *  array. The length of the returned array will be at least equal to
      *  <i>count</i>. This method may sometimes return an array with
      *  length greater than <i>count</i>, in which case, only the first
      *  <i>count</i> elements are valid. This behavior is allowed so that
@@ -214,11 +209,12 @@ public class SDFReceiver extends AbstractReceiver {
      *   declared explicitly by the caller.
      */
     public boolean hasRoom(int tokens) throws IllegalArgumentException {
-	if(tokens < 1)
-	    throw new IllegalArgumentException("The number of " +
-                    "tokens must be greater than 0");
-	if (_queue.getCapacity() == INFINITE_CAPACITY) {
-	    // queue has infinite capacity, so it can accept any
+	if(tokens < 1) {
+	    throw new IllegalArgumentException("The argument "
+                    + "must not be negative. It was: " + tokens);
+	}
+        if(_queue.getCapacity() == INFINITE_CAPACITY) {
+	    // Queue has infinite capacity, so it can accept any
 	    // finite number of tokens.
 	    return true;
 	}
@@ -235,6 +231,7 @@ public class SDFReceiver extends AbstractReceiver {
 
     /** Return true if get() will succeed in returning a token the given
      *  number of times.
+     *  @param tokens The number of tokens.
      *  @return A boolean indicating whether there are the given number of
      *  tokens in this receiver.
      *  @exception IllegalArgumentException If the argument is less
@@ -242,9 +239,10 @@ public class SDFReceiver extends AbstractReceiver {
      *   declared explicitly by the caller.
      */
     public boolean hasToken(int tokens) throws IllegalArgumentException {
-	if(tokens < 0)
-	    throw new IllegalArgumentException("The number of " +
-                    "tokens must be at least 0");
+	if(tokens < 0) {
+	    throw new IllegalArgumentException("The argument "
+                    + "must not be negative. It was: " + tokens);
+        }
         return _queue.size() >= tokens;
     }
 
@@ -282,7 +280,7 @@ public class SDFReceiver extends AbstractReceiver {
     /** Put a specified number of token from an array into the receiver.
      *  If the receiver has insufficient room, throw an
      *  exception, and add none of the tokens to the receiver. An
-     *  exception is thrown if <i>count</i> is greater then
+     *  exception is thrown if <i>count</i> is greater than
      *  the length of the token array.
      *
      *  @param token The token array that contains tokens to be put
@@ -342,13 +340,20 @@ public class SDFReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** A constant indicating that the capacity of the receiver is
+     *  unbounded.
+     */
     public static final int INFINITE_CAPACITY =
     ArrayFIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The queue containing the receiver data.
     private ArrayFIFOQueue _queue;
+    // The port that this receiver is contained in.
     private IOPort _container;
+    // The token array used by this receiver to return
+    // data.
     private Token[] _tokenArray;
 }

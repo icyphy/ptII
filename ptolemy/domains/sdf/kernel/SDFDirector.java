@@ -23,8 +23,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
@@ -159,16 +159,13 @@ public class SDFDirector extends StaticSchedulingDirector {
     public Parameter iterations;
 
     /** A Parameter representing the requested vectorization factor.
-     *  The director will attempt to construct a single appearance
-     *  schedule that minimizes actor activations, using the value
-     *  of this parameter as the global blocking factor. This parameter
-     *  serves only as a suggestion, and the director is free to ignore
-     *  it or to use a different factor. Allowable values for this
-     *  parameter consist of positive integers. An exception will occur
-     *  if the value is not a positive integer. It is currently unsafe
-     *  to set the value of this parameter to be greater than one if the SDF
-     *  graph contains loops. The default value is an IntToken with the
-     *  value one.
+     *  The director will attempt to construct a schedule where each
+     *  actor fires <i>vectorizationFactor</i> times more often than
+     *  it would in a minimal schedule.  This can allow actor executions
+     *  to be grouped together, resulting in faster execution.  This is 
+     *  more likely to be possible in graphs without tight feedback.
+     *  This parameter must be a positive integer.
+     *  The default value is an IntToken with the value one.
      */
     public Parameter vectorizationFactor;
 
@@ -187,70 +184,6 @@ public class SDFDirector extends StaticSchedulingDirector {
             invalidateSchedule();
         }
         super.attributeChanged(attribute);
-    }
-
-    /** Calculate the current schedule, if necessary,
-     *  and iterate the contained actors
-     *  in the order given by the schedule.  No internal state of the
-     *  director is updated during fire, so it may be used with domains that
-     *  require this property, such as CT.
-     *  <p>
-     *  Iterating an actor involves calling the actor's iterate() method,
-     *  which is equivalent to calling the actor's  prefire(), fire() and
-     *  postfire() methods in succession.  If iterate() returns NOT_READY,
-     *  indicating that the actor is not ready to execute, then an
-     *  IllegalActionException will be thrown. The values returned from
-     *  iterate() are recorded and are used to determine the value that
-     *  postfire() will return at the end of the director's iteration.
-     *  @exception IllegalActionException If any actor executed by this
-     *  actor return false in prefire.
-     *  @exception InvalidStateException If this director does not have a
-     *  container.
-     */
-    public void fire() throws IllegalActionException {
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-
-        if (container == null) {
-            throw new InvalidStateException("SDFDirector " + getName() +
-                    " fired, but it has no container!");
-        } else {
-            Scheduler s = getScheduler();
-            if (s == null)
-                throw new IllegalActionException("Attempted to fire " +
-                        "SDF system with no scheduler");
-	    Schedule sched = s.getSchedule();
-	    Iterator firings = sched.firingIterator();
-            while (firings.hasNext()) {
-		Firing firing = (Firing)firings.next();
-		Actor actor = (Actor)firing.getActor();
-		int iterationCount = firing.getIterationCount();
-
-		if(_debugging) {
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_ITERATE));
-		}
-
-		// TODO: I need to modify the scheduler to generate an
-		// optimum vectorized schedule. I.e., first try to
-		// obtain a single appearance schedule. Then, try
-		// to minimize the number of actor activations.
-                int returnVal =
-                    actor.iterate(iterationCount);
-		if (returnVal == COMPLETED) {
-		    _postfirereturns = _postfirereturns && true;
-		} else if (returnVal == NOT_READY) {
-		    throw new IllegalActionException(this,
-                            (ComponentEntity) actor, "Actor " +
-                            "is not ready to fire.");
-		} else if (returnVal == STOP_ITERATING) {
-		    _postfirereturns = false;
-		}
-		if(_debugging) {
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.AFTER_ITERATE));
-		}
-            }
-        }
     }
 
     /** Initialize the actors associated with this director and
@@ -301,14 +234,13 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  Otherwise, return false.  Note that this does not call prefire()
      *  on the contained actors.
      *  @exception IllegalActionException If port methods throw it.
-     *  @return True if all of the input ports of the container of this
+     *  @return true If all of the input ports of the container of this
      *  director have enough tokens.
      */
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
         super.prefire();
-        _postfirereturns = true;
-
+        
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
 	Iterator inputPorts = container.inputPortList().iterator();
 	int inputCount = 0;
@@ -348,7 +280,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _iteration = 0;
+        _iterationCount = 0;
     }
 
     /** Return false if the system has finished executing, either by
@@ -361,16 +293,17 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  call to prefire returned true.
      *  @return True if the Director wants to be fired again in the
      *  future.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the iterations parameter
+     *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
         int numiterations = ((IntToken) (iterations.getToken())).intValue();
-        _iteration++;
-        if((numiterations > 0) && (_iteration >= numiterations)) {
-            _iteration = 0;
+        _iterationCount++;
+        if((numiterations > 0) && (_iterationCount >= numiterations)) {
+            _iterationCount = 0;
             return false;
         }
-        return _postfirereturns;
+        return super.postfire();
     }
 
     /** Override the base class method to transfer enough tokens to
@@ -388,21 +321,18 @@ public class SDFDirector extends StaticSchedulingDirector {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         int rate = SDFScheduler.getTokenConsumptionRate(port);
 	boolean wasTransferred = false;
-	for (int k=0; k<rate; k++) {
+	for (int k = 0; k < rate; k++) {
 	    wasTransferred |= super.transferInputs(port);
 	}
 	return wasTransferred;
     }
 
-    /** Return true if transfers data from an output port of the
-     *  container to the ports it is connected to on the outside.
-     *  This method differs from the base class method in that this
-     *  method will transfer all available tokens in the receivers,
-     *  while the base class method will transfer at most one token.
+    /** Override the base class method to transfer enough tokens to
+     *  fulfill the output production rate.
      *  This behavior is required to handle the case of non-homogeneous
      *  opaque composite actors. The port argument must be an opaque
-     *  output port.  If any channel of the output port has no data,
-     *  then that channel is ignored.
+     *  output port. If any channel of the output port has no data, then
+     *  that channel is ignored.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
@@ -411,35 +341,12 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not " +
-                    "an opaque output port.");
-        }
-        boolean tokensWereTransferred = false;
-        Receiver[][] insideReceivers = port.getInsideReceivers();
-        if (insideReceivers != null) {
-            for (int i = 0; i < insideReceivers.length; i++) {
-                if (insideReceivers[i] != null) {
-                    for (int j = 0; j < insideReceivers[i].length; j++) {
-			while (insideReceivers[i][j].hasToken()) {
-                            try {
-                                ptolemy.data.Token token = 
-                                    insideReceivers[i][j].get();
-                                port.send(i, token);
-                                tokensWereTransferred = true;
-                            } catch (NoTokenException ex) {
-                                throw new InternalErrorException(
-                                        "SDFDirector.transferOutputs: " +
-                                        "Internal error: " +
-                                        ex.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return tokensWereTransferred;
+        int rate = SDFScheduler.getTokenProductionRate(port);
+	boolean wasTransferred = false;
+	for (int k = 0; k < rate; k++) {
+	    wasTransferred |= super.transferOutputs(port);
+	}
+	return wasTransferred;
     }
 
 
@@ -477,6 +384,5 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private int _iteration = 0;
-    protected boolean _postfirereturns = true;
+    private int _iterationCount = 0;
 }

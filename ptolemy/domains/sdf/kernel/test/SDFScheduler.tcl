@@ -527,7 +527,11 @@ test SDFScheduler-8.7 {input Multiport with no connections - disconnected graph}
     set sched1 {}
     catch {set sched1 [_getSchedule $toplevel $scheduler]} s1
     list $sched1 $s1
-} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors: .Toplevel.Consumer2 }}
+} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors!
+Reached Actors:
+.Toplevel.Consumer1
+Unreached Actors:
+.Toplevel.Consumer2 }}
 
 test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
@@ -1183,7 +1187,10 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
     set sched1 ""
     catch {set sched1 [_getSchedule $toplevel $scheduler]} err1
     list $sched1 $err1
-} {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled:
+} {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled!
+Scheduled actors:
+.Toplevel.Ramp2
+Unscheduled actors:
 .Toplevel.Consumer
 }}
 

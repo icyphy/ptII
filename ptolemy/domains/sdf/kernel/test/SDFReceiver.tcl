@@ -175,7 +175,7 @@ test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in t
     catch {$receiver hasToken -1} result7
 
     list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString] $result5 $result6 $result7
-} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} 1 {ptolemy.actor.NoTokenException: : Offset 2 out of range with 2 tokens in the receiver and 0 in history.} {java.lang.IllegalArgumentException: The number of tokens must be at least 0}}
+} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} 1 {ptolemy.actor.NoTokenException: : Offset 2 out of range with 2 tokens in the receiver and 0 in history.} {java.lang.IllegalArgumentException: The argument must not be negative. It was: -1}}
 
 test SDFReceiver-2.3 {Check noTokenException} {
     # uses previous setup.
@@ -274,7 +274,7 @@ test SDFReceiver-5.1 {Check hasRoom} {
     catch {$receiver hasRoom 0} result4
     
     list $result1 $result2 $result3 $result4
-} {1 1 1 {java.lang.IllegalArgumentException: The number of tokens must be greater than 0}}
+} {1 1 1 {java.lang.IllegalArgumentException: The argument must not be negative. It was: 0}}
 
 test SDFReceiver-5.2 {Check setCapacity} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
