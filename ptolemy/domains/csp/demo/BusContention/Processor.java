@@ -120,8 +120,8 @@ public class Processor extends CSPActor {
 	try {
 	    Thread.sleep(300);
 	} catch( InterruptedException e ) {
-	    System.err.println("InterruptedException during Thread.sleep()");
 	    e.printStackTrace();
+            throw new RuntimeException(e.toString());
 	}
         BooleanToken bToken = (BooleanToken)_requestIn.get(0);
 
@@ -131,8 +131,8 @@ public class Processor extends CSPActor {
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
-	        System.err.println("InterruptedException during Thread.sleep()");
 		e.printStackTrace();
+		throw new RuntimeException(e.toString());
 	    }
             if( read ) {
                 _memoryIn.get(0);
@@ -148,8 +148,8 @@ public class Processor extends CSPActor {
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
-	        System.err.println("InterruptedException during Thread.sleep()");
 		e.printStackTrace();
+		throw new RuntimeException(e.toString());
 	    }
 	}
 
@@ -160,8 +160,7 @@ public class Processor extends CSPActor {
      */
     public boolean endYet() {
         double time = _dir.getCurrentTime();
-        if( time > 30.0 ) {
-            // System.out.println(getName() + " is ending because of time.");
+        if( time > 50.0 ) {
             return true;
         }
         return false;
