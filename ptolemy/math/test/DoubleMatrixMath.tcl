@@ -128,7 +128,6 @@ test DoubleMatrixMath-0.6.1 {applyUnaryOperation DoubleUnaryOperation double[][]
 	    {applyUnaryOperation ptolemy.math.DoubleUnaryOperation double[][] } $duo $m23]
     set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
     regsub -all {,} $s {} stmp
-    
     epsilonDiff $stmp {{{-3.7 6.6 -3.0E-4} {-4862.2 -236.1 36.25}}}
 } {}
 
@@ -160,6 +159,14 @@ test DoubleMatrixMath-1.3 {add double[][] double[][]} {
 } {{{0.5, -13.2, 6.3003}, {4862.3, 245.1, -41.5}}}
 
 ####################################################################
+test DoubleMatrixMath-1.7.1 {diag double[]} {
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    diag $a2]
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    epsilonDiff $s {{{4862.2, 0.0, 0.0}, {0.0, 236.1, 0.0}, {0.0, 0.0, -36.25}}}
+} {}
+
+####################################################################
 test DoubleMatrixMath-2.1 {determinate double[][] not square} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath determinate $m23]} errMsg
     list $errMsg
@@ -185,6 +192,24 @@ test DoubleMatrixMath-3.1 {divideElements double[][] double[][]} {
    set ok [java::call ptolemy.math.DoubleMatrixMath \
    {within double[][] double[][] double} $mr $mt $epsilon]
 } {1}
+
+####################################################################
+test DoubleMatrixMath-3.5.1 {fromMatrixToArray} {
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    fromMatrixToArray $m3]
+    set s [java::call ptolemy.math.DoubleArrayMath toString $mr]
+
+    epsilonDiff $s {{3.7, -6.6, 3.0E-4, 4862.2, 236.1, -36.25, -56.4, -26.3, 4.9}}
+} {}
+
+####################################################################
+test DoubleMatrixMath-3.8.1 {hilbert} {
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    hilbert 4]
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+
+    epsilonDiff $s {{{1.0, 0.5, 0.3333333333333333, 0.25}, {0.5, 0.3333333333333333, 0.25, 0.2}, {0.3333333333333333, 0.25, 0.2, 0.16666666666666666}, {0.25, 0.2, 0.16666666666666666, 0.14285714285714285}}}
+} {}
 
 ####################################################################
 test DoubleMatrixMath-4.1 {identity int 1} {
