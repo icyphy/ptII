@@ -54,8 +54,8 @@ import java.util.Iterator;
    When the actor has a <i>period</i> parameter, the actor manager will
    sleep between successive iterations of the actor for the duration
    given by the parameter, in milliseconds. This is used to control the
-   execution rate of source actors in the model that are always ready to
-   produce the next output.
+   execution rate of active actors that are always ready to produce the
+   next output or request the next input.
 
    @author Xiaojun Liu, Yang Zhao
    @version $Id$
