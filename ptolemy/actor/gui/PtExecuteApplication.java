@@ -71,6 +71,12 @@ public class PtExecuteApplication extends MoMLApplication
      *  @exception Exception If command line arguments have problems.
      */
     public PtExecuteApplication(String args[]) throws Exception {
+        // FIXME: Under JDK1.3.1_06, the MoMLApplication constructor
+        // calls setLookAndFeel() which invokes getDefaultToolkit()
+        // which may cause PtExecuteApplication to not exit.  See
+        // http://developer.java.sun.com/developer/bugParade/bugs/4030718.html
+        // However, since we now run with JDK1.4.1, this should not
+        // be a problem.
 	super(args);
     }
 
