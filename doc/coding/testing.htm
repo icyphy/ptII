@@ -205,7 +205,9 @@ of a simulation with a known good results.  If the comparison fails,
 then the test fails.  
  <p>If a test is in the optional <CODE>test/auto/knownFailedTests</CODE> 
 directory, then it will be marked as a known failure if it fails.
-
+(For more information, see
+<a href="#CheckingKnownFailedTests">Checking Known Failed Test Results</a>
+below).
 
  <p>Using Vergil to write tests is quite a bit easier than writing Tcl
  code, but it is much more difficult to handle corner cases and test
@@ -376,6 +378,24 @@ test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
     list $result1 $result2
 } {{} {A Named Obj}}
 </PRE>
+
+<h3><a name="CheckingKnownFailedTests">Checking Known Failed Test Results</a></h3>
+
+Note that you can combine the Tcl tests and the MoML tests
+by calling <CODE>createAndExecute</CODE>.  Even better, you
+can test for specific error messages with:
+<pre>
+test SDFSchedulerErrors-1.0 {} {
+     catch {createAndExecute "rateConsistency.xml"} foo
+     list $foo
+} {{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+   in .rateConsistency.SDF Director
+Because:
+No solution exists for the balance equations.
+Graph is not consistent under the SDF domain detected on external 
+port .rateConsistency.actor.port2}}
+
+</pre>
 
 <H4>Java Tcl Test Files</H4>
 It is best if each Java class has a separate Tcl file that contains tests.
