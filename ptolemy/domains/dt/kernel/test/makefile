@@ -56,6 +56,7 @@ JSRCS = \
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
+	DTDirector.tcl \
 	dummy.tcl
 
 # Graphical Java tests that use Tcl.
