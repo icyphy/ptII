@@ -179,7 +179,7 @@ public class PNDirector extends CompositeProcessDirector {
     /** Add a process state change listener to this director. The listener
      *  will be notified of each change to the state of a process.
      *  @param listener The PNProcessListener to add.
-     *  @see #removeProcessListener(PNProcessListener);
+     *  @see #removeProcessListener(PNProcessListener)
      */
     public void addProcessListener(PNProcessListener listener) {
         _processListeners.add(listener);
@@ -300,7 +300,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  If the listener is not attached to this director, do nothing.
      *
      *  @param listener The PNProcessListener to be removed.
-     *  @see #addProcessListener(PNProcessListener);
+     *  @see #addProcessListener(PNProcessListener)
      */
     public void removeProcessListener(PNProcessListener listener) {
         _processListeners.remove(listener);

@@ -253,7 +253,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Return true, since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
-     *  @param The number of tokens, which is ignored in this method.
+     *  @param tokens The number of tokens, which is ignored in this method.
      *  @return True.
      */
     public boolean hasRoom(int tokens) {
@@ -270,7 +270,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Return true, since a call to the get() method of the receiver will
      *  always return a token if the call to get() ever returns.
-     *  @param The number of tokens, which is ignored in this method.
+     *  @param tokens The number of tokens, which is ignored in this method.
      *  @return True.
      */
     public boolean hasToken(int tokens) {
