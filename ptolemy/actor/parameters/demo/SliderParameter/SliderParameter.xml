@@ -2,21 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SliderParameter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 115, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {48, 115, 815, 509}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 40.0">
         </property>
     </property>
@@ -146,19 +138,16 @@ Lissajous curves.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 70.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    </property>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
         </property>
-        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
-            <doc>The sampling frequency, in the same units as the frequency.</doc>
-        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
-        </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Generate a sine wave.</text></svg></configure>
             </property>
@@ -169,28 +158,14 @@ Lissajous curves.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 25.0">
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="440.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -206,15 +181,11 @@ Lissajous curves.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
             </property>
         </property>
         <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -230,31 +201,21 @@ Lissajous curves.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 200.0">
         </property>
     </entity>
     <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
         </property>
-        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
-            <doc>The sampling frequency, in the same units as the frequency.</doc>
-        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
-        </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Generate a sine wave.</text></svg></configure>
             </property>
@@ -265,28 +226,14 @@ Lissajous curves.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 25.0">
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="440.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -302,15 +249,11 @@ Lissajous curves.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
             </property>
         </property>
         <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -326,24 +269,17 @@ Lissajous curves.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 272.5">
         </property>
     </entity>
     <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -353,14 +289,6 @@ Lissajous curves.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 237.5">
         </property>
-        <port name="inputX" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="inputY" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -386,13 +314,6 @@ Lissajous curves.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 190.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="frequency2*2*PI">
@@ -406,13 +327,6 @@ Lissajous curves.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 262.5">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
