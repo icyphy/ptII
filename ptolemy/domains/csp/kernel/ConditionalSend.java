@@ -203,7 +203,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 getParent()._branchSucceeded(getID());
                                 return;
                             } else {
-                                _checkAndWait();
+                                _registerBlockAndWait();
                             }
                             if (!isAlive()) {
                                 getParent()._branchFailed(getID());
@@ -234,13 +234,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 getReceiver().notifyAll();
                             }
                         }
-                        _checkAndWait();
+                        _registerBlockAndWait();
+                        // _checkAndWait();
                     } else {
                         // CASE 3: ConditionalSend got here before a get or a
                         // ConditionalReceive. Once enter this part of main
                         // loop, do not leave.
                         getReceiver()._setConditionalSend(true, getParent());
-                        _checkAndWait();
+                        _registerBlockAndWait();
                         while (true) {
                             if (!isAlive()) {
                                 // reset state of receiver controlling
@@ -263,7 +264,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 }
                             }
                             //cannot rendezvous this time, still alive
-                            _checkAndWait();
+                            _registerBlockAndWait();
                         }
                     }
                 }
