@@ -327,6 +327,68 @@ public class PtolemyUtilities {
                             typeConstructor, elementTypeLocal)),
                     insertPoint);
             return typeLocal;
+        } else if(type instanceof ptolemy.data.type.RecordType) {
+            ptolemy.data.type.RecordType recordType = 
+                (ptolemy.data.type.RecordType)type;
+            // recurse
+            String typeName = "type_recordOf";
+            
+            // Create the new array of labels.
+            Local labelArrayLocal = Jimple.v().newLocal("labelArray", 
+                    ArrayType.v(RefType.v("java.lang.String"), 1));
+            body.getLocals().add(labelArrayLocal);
+            units.insertBefore(Jimple.v().newAssignStmt(labelArrayLocal,
+                    Jimple.v().newNewArrayExpr(RefType.v("java.lang.String"), 
+                            IntConstant.v(1))),
+                    insertPoint);
+            // Create the new array of types.
+            Local typeArrayLocal = Jimple.v().newLocal("typeArray", 
+                    ArrayType.v(RefType.v(typeClass), 1));
+            body.getLocals().add(typeArrayLocal);
+            units.insertBefore(Jimple.v().newAssignStmt(typeArrayLocal,
+                    Jimple.v().newNewArrayExpr(RefType.v(baseTypeClass), 
+                            IntConstant.v(1))),
+                    insertPoint);
+           
+            int count = 0;
+            for(Iterator labels = recordType.labelSet().iterator();
+                labels.hasNext(); count++) {
+                String label = (String)labels.next();
+                ptolemy.data.type.Type elementType = recordType.get(label);
+                Local elementTypeLocal = buildConstantTypeLocal(body, 
+                        insertPoint, elementType);
+                typeName += "_" + label + "_" + elementTypeLocal.getName();
+                // Store into the array of labels.
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        Jimple.v().newArrayRef(labelArrayLocal, 
+                                IntConstant.v(count)),
+                        StringConstant.v(label)),
+                        insertPoint);
+           
+                // Store into the array of types.
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        Jimple.v().newArrayRef(typeArrayLocal, 
+                                IntConstant.v(count)),
+                        elementTypeLocal),
+                        insertPoint);
+             }
+
+            // Create the new local and assign to local variable.
+            Local typeLocal = Jimple.v().newLocal(typeName,
+                    RefType.v(recordTypeClass));
+            body.getLocals().add(typeLocal);
+            units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                    Jimple.v().newNewExpr(RefType.v(arrayTypeClass))),
+                    insertPoint);
+            
+            // invoke the initializer.
+            SootMethod typeConstructor =
+                SootUtilities.searchForMethodByName(arrayTypeClass, "<init>");
+            units.insertBefore(Jimple.v().newInvokeStmt(
+                    Jimple.v().newSpecialInvokeExpr(typeLocal,
+                            typeConstructor, labelArrayLocal, typeArrayLocal)),
+                    insertPoint);
+            return typeLocal;
         }
         throw new RuntimeException("Unidentified type class = " +
                 type.getClass().getName());
@@ -447,6 +509,8 @@ public class PtolemyUtilities {
             ptolemy.data.type.Type type) {
         if(type instanceof ptolemy.data.type.ArrayType) {
             return RefType.v("ptolemy.data.ArrayToken");
+        } else if(type instanceof ptolemy.data.type.RecordType) {
+            return RefType.v("ptolemy.data.RecordToken");
         } else if(!type.isInstantiable()) {
             // We should be able to do something better here...  
             // This means that the port
@@ -475,6 +539,9 @@ public class PtolemyUtilities {
         if(className.equals("ptolemy.data.ArrayToken")) {
             return new ptolemy.data.type.ArrayType(
                     ptolemy.data.type.BaseType.UNKNOWN);
+        } else if(className.equals("ptolemy.data.RecordToken")) {
+            return new ptolemy.data.type.RecordType(
+                    new String[0], new ptolemy.data.type.Type[0]);
         } else if(className.equals("ptolemy.data.Token")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if(className.equals("ptolemy.data.ScalarToken")) {
@@ -491,13 +558,15 @@ public class PtolemyUtilities {
         }
     }
 
-    /** Attempt to determine the constant value of the given local, which is assumed to have a variable
-     *  type.  Walk backwards through all the possible places that the local may have been defined and
-     *  try to symbolically evaluate the value of the variable. If the value can be determined, 
-     *  then return it, otherwise throw an exception
+    /** Attempt to determine the constant value of the given local,
+     *  which is assumed to have a variable type.  Walk backwards
+     *  through all the possible places that the local may have been
+     *  defined and try to symbolically evaluate the value of the
+     *  variable. If the value can be determined, then return it,
+     *  otherwise throw an exception
      */ 
-    public static ptolemy.data.type.Type getTypeValue(SootMethod method, Local local, 
-            Unit location, LocalDefs localDefs) {
+    public static ptolemy.data.type.Type getTypeValue(SootMethod method,
+            Local local, Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
@@ -800,6 +869,9 @@ public class PtolemyUtilities {
     // Soot Class representing the ptolemy.kernel.ComponentRelation class.
     public static SootClass relationClass;
 
+    // Soot Class representing the ptolemy.data.type.RecordType class.
+    public static SootClass recordTypeClass;
+
     // Soot Type representing the ptolemy.kernel.ComponentRelation class.
     public static Type relationType;
 
@@ -969,6 +1041,8 @@ public class PtolemyUtilities {
             typeClass.getMethod("ptolemy.data.Token convert(ptolemy.data.Token)");
 
         arrayTypeClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
+        recordTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
         baseTypeClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
