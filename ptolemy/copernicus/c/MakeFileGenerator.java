@@ -84,7 +84,7 @@ public class MakeFileGenerator {
         }
 
         code.append("#Standard variables\n");
-        code.append("PTII = ../../../..\n");
+        code.append("PTII = " + Options.v().get("ptII") + "\n");
 
         code.append("THIS = " + className + ".make\n");
         code.append("RUNTIME = " + Options.v().get("runtimeDir") + "\n");
@@ -113,16 +113,19 @@ public class MakeFileGenerator {
             code.append("GC_DIR = " + gcDir + "\n\n");
         }
 
+        /* FIXME: Why is this needed?
         code.append("STATIC= -static");
         code.append("# Uncomment the next line for dynamic linking\n");
         if (isStatic) {
             code.append("#");
         }
         code.append("STATIC=\n");
+        */
 
         // The -g flag is for gdb debugging.
         //code.append("CFLAGS = -O2 -static -s -Wall -pedantic -I .");
-        code.append("CFLAGS = -g $(STATIC) -Wall -pedantic -I .");
+        code.append("CFLAGS = " + Options.v().get("cFlags"));
+
 
         if (gc) {
             code.append(" -DGC");

@@ -145,17 +145,21 @@ public class CWriter extends SceneTransformer {
             Options.v().put("compileMode", "full");
             Options.v().put("verbose", "true");
             Options.v().put("runtimeDir", "../../runtime");
-            // vta does not work with ptII for some reason.
-            Options.v().put("vta", "false");
+            //Options.v().put("gcDir", null);
 
             RFG.init(classPath, sootClass.getName());
 
             // Figure out if this is the main class
             System.out.println("Main file: " + mainFile);
             System.out.println("Class name:" + sootClass.getName());
+
+
             boolean isMainClass = false;
             MainFileGenerator mGenerator = null;
-            if (mainFile.equals(sootClass.getName())) {
+            // FIXME: Testing purposes.
+            if (true) {
+            //if (mainFile.equals(sootClass.getName())) {
+
                 isMainClass = true;
                 mGenerator = new MainFileGenerator();
             }
@@ -163,6 +167,11 @@ public class CWriter extends SceneTransformer {
             //generate the .i.h, .h, and .c files
             System.out.println("Generating C code files for " + fileName);
             String code = null;
+
+            /* FIXME: Remove this code.
+             * Not needed because RequiredFileGenerator will take care of
+             * it.
+
             code = sGenerator.generate(sootClass);
             FileHandler.write(fileName
                     + StubFileGenerator.stubFileNameSuffix(),
@@ -172,8 +181,10 @@ public class CWriter extends SceneTransformer {
             code = cGenerator.generate(sootClass);
             FileHandler.write(fileName + ".c", code);
             sourcesList.append(" " + fileName + ".c");
+            */
 
-            // Generate other required files.
+            // Generate all required files, including the files for the
+            // main class.
             try {
                 RequiredFileGenerator.generateTransitiveClosureOf(classPath,
                         sootClass.getName());

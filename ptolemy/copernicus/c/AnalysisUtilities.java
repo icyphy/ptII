@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import soot.ArrayType;
 import soot.Local;
 import soot.RefType;
+import soot.RefLikeType;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
@@ -60,7 +61,10 @@ public class AnalysisUtilities{
         classes.add(field.getDeclaringClass());
 
         Type type = field.getType();
-        if (type instanceof ArrayType) {
+
+        // This goes down and gets the base elements of arrays,
+        // including multidimensional arrays.
+        while (type instanceof ArrayType) {
             type = ((ArrayType)type).getElementType();
         }
 

@@ -40,7 +40,6 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
 
-
 /** A base class for C code generators in Ptolemy II.
 
 @author Shuvra S. Bhattacharyya
@@ -227,10 +226,10 @@ public abstract class CodeGenerator {
         }
     }
 
-    /** Register a type as a type that must be imported into the generated code
-     *  through an #include directive. The request is processed only if the
-     *  argument
-     *  is a RefType, or if it is an ArrayType with a RefType as the base type.
+    /** Register a type as a type that must be imported into the generated
+     *  code through an #include directive. The request is processed only if
+     *  the argument is a RefType, or if it is an ArrayType with a RefType
+     *  as the base type.
      *  All other requests are ignored. Duplicate requests are also ignored.
      *  @param type The type.
      */

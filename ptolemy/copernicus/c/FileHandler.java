@@ -119,6 +119,7 @@ public class FileHandler {
     /** Write out the given string to a file.
      *  @param fileName The file to write to.
      *  @param code The String to write.
+     *  @exception RuntimeException If it fails to write.
      */
     public static void write(String fileName, String code) {
         try {
@@ -127,8 +128,9 @@ public class FileHandler {
             out.close();
         }
         catch(IOException e) {
-            System.err.println("FileHandler.write(String, String): "
-                    + "ERROR: Could not create file: " + fileName + "\n");
+            throw new RuntimeException(e.toString()
+                    + "\nFileHandler.write(String, String): "
+                    + "could not create file: " + fileName + "\n");
         }
     }
 

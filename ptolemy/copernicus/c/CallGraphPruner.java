@@ -109,6 +109,19 @@ public class CallGraphPruner {
         SparkTransformer.v().transform("cg.spark", sootOptions);
 
         _growTree(source);
+
+        if (Options.v().getBoolean("reportEntities")) {
+            System.out.println("\nReporting Entities ...");
+
+            System.out.println(_reachableClasses.size()
+                    + " classes generated.");
+
+            System.out.println(_reachableMethods.size()
+                    + " methods generated.");
+
+            System.out.println(_reachableFields.size()
+                    + " fields generated.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,6 +246,10 @@ public class CallGraphPruner {
     protected LinkedList _getCompulsoryNodes() {
         LinkedList compulsoryNodes = new LinkedList();
 
+        // User-defined compulsory methods.
+        compulsoryNodes.addAll(_getForcedCompulsoryMethods());
+
+
         // Add java.lang.String.String(char[]). Initializer
         SootClass source = Scene.v().getSootClass("java.lang.String");
         SootMethod method = source.getMethod("void <init>(char[])");
@@ -299,7 +316,9 @@ public class CallGraphPruner {
 
             // Candidates for I. All superclasses and all implemented
             // interfaces.
-            Collection allParents = AnalysisUtilities.getAllInterfacesOf(source);
+            Collection allParents = AnalysisUtilities
+                    .getAllInterfacesOf(source);
+
             if (!source.isInterface()) {
                 allParents.addAll(hierarchy.getSuperclassesOf(source));
             }
@@ -463,6 +482,7 @@ public class CallGraphPruner {
         if (_reachableClasses.contains(node)) {
             return;
         }
+
         if (!OverriddenMethodGenerator.isOverridden(node)) {
             // Add the clinit method.
             if (node.declaresMethodByName("<clinit>")) {
@@ -575,6 +595,43 @@ public class CallGraphPruner {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Parse the "compulsory" option and return the list of entities that
+     * forced to be compulsory by the user.
+     */
+    private LinkedList _getForcedCompulsoryMethods() {
+        String optionString = Options.v().get("compulsoryMethods");
+        LinkedList methods = new LinkedList();
+
+        if (optionString.equals("")) {
+            return methods;
+        }
+
+        // semicolon follwed by 0 or 1 spaces.
+        String[] names = optionString.split("; ?+");
+
+        for (int i = 0; i < names.length; i++) {
+            String className, subSignature;
+
+            int parenthesisIndex = names[i].indexOf('(');
+            int spaceIndex = names[i].indexOf(' ');
+            int classNameEndIndex = names[i]
+                    .lastIndexOf('.', parenthesisIndex);
+
+            subSignature = names[i].substring(0, spaceIndex)
+                        + " "
+                        + names[i].substring(classNameEndIndex + 1);
+
+            className = names[i].substring(spaceIndex + 1, classNameEndIndex);
+
+            SootClass source = Scene.v().getSootClass(className);
+            SootMethod method = source.getMethod(subSignature);
+            methods.add(method);
+        }
+
+        return methods;
+    }
+
 
 
     /** Set all classes in the Scene as library classes. */

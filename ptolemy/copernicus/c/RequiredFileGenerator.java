@@ -272,7 +272,7 @@ public class RequiredFileGenerator {
         if (Options.v().get("compileMode").equals("full")) {
             if (verbose) {
                 if (FileHandler.exists(fileName+".c")) {
-                    System.out.println( "\texists:"+fileName+".c");
+                    System.out.println( "\texists: overwriting "+fileName+".c");
                 }
                 else {
                     System.out.println( "\tcreating: " +fileName+".c");
@@ -333,7 +333,7 @@ public class RequiredFileGenerator {
 
             FileHandler.write(name, code);
 
-            if (verbose) System.out.println( "\texists: " + fileName
+            if (verbose) System.out.println( "\texists: overwriting " + fileName
                     + StubFileGenerator.stubFileNameSuffix());
         }
         else {
@@ -357,7 +357,7 @@ public class RequiredFileGenerator {
 
 
             if (verbose) {
-                System.out.println( "\texists: " + fileName + ".h");
+                System.out.println( "\texists: overwriting " + fileName + ".h");
             }
         }
         else {
