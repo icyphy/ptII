@@ -31,7 +31,6 @@
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTWaveformGenerator

@@ -30,8 +30,8 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.Actor;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDynamicActor

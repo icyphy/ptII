@@ -30,19 +30,24 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
+import java.util.Iterator;
+import java.util.LinkedList;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
-import java.util.LinkedList;
-import java.util.Iterator;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
@@ -116,7 +121,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      * @param name The name
      * @exception NameDuplicationException If the name is used by another
      *            actor in the container.
-     * @exception IllegalActionException Never thrown in this constructor.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public CTBaseIntegrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -325,7 +330,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Update the state and its derivative, and push them
      *  into history.
      *  @return True always.
-     *  @exception IllegalActionException Never thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
@@ -495,7 +500,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
         /** Construct the history.
          */
-        public History (CTBaseIntegrator container) {
+        public History(CTBaseIntegrator container) {
             _container = container;
             _entries = new LinkedList();
             _capacity = 0;
@@ -625,7 +630,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         public double[][] toDoubleArray() {
             double[][] array = new double[_entries.size()][2];
             Iterator objs = _entries.iterator();
-            int i =0;
+            int i = 0;
             while(objs.hasNext()) {
                 DoubleDouble entry = (DoubleDouble) objs.next();
                 array[i++] = entry.toArray();

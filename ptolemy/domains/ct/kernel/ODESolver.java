@@ -29,8 +29,12 @@
 */
 
 package ptolemy.domains.ct.kernel;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+
+import ptolemy.actor.Director;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
@@ -187,9 +191,9 @@ public abstract class ODESolver extends NamedObj {
     /** Return true if the state of the system is resolved successfully.
      *  Different solvers may implement it differently.
      *
-     * @exception IllegalActionException
-     * May be thrown by derived classes if the exception is thrown by
-     * one of the execution methods of some actors.
+     * @exception IllegalActionException Thrown in derived classes if
+     * the exception is thrown by * one of the execution methods of some
+     * actors.
      */
     public abstract boolean resolveStates() throws IllegalActionException;
 

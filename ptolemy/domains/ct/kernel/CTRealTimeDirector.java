@@ -30,17 +30,15 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.domains.ct.kernel.util.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.*;
 import java.util.Iterator;
-
+import java.util.List;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector

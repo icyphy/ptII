@@ -274,7 +274,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  Discrete events at current time will be consumed and produced.
      *  @return True if this is not a top-level director, or the simulation
      *     is not finished.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), " postfire.");

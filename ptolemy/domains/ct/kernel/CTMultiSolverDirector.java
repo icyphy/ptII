@@ -756,6 +756,12 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Indicate whether this is the first iteration.*/
+    protected boolean _first = true;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The classname of the ODE solver.
@@ -770,6 +776,4 @@ public class CTMultiSolverDirector extends CTDirector {
     // The default solver.
     private ODESolver _breakpointSolver = null;
 
-    // Indicate whether this is the first iteration.
-    protected boolean _first = true;
 }

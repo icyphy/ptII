@@ -1,4 +1,5 @@
-/* An interface for actors that can remembers their state and go back to the state that is remembered.
+/* An interface for actors that can remembers their state and go back
+to the state that is remembered.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,8 +31,8 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.Actor;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTStatefulActor

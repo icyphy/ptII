@@ -32,7 +32,6 @@ package ptolemy.domains.ct.kernel;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NumericalNonconvergenceException
 /**

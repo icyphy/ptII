@@ -331,7 +331,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _timeResolution = value;
             TotallyOrderedSet table = getBreakPoints();
             // Change the breakpoint table comparator if it is created.
-            if(table!=null) {
+            if(table != null) {
                 FuzzyDoubleComparator comparator =
                     (FuzzyDoubleComparator) table.getComparator();
                 comparator.setThreshold(_timeResolution);
