@@ -478,8 +478,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             // NOTE: It's not clear that this is the right thing to do
             // here, having the same override properties as the original
-            // seems reasonable, so we leave this be.
-            // newObject._override = null;
+            // seems reasonable, so we leave this be. However, it is essential
+            // to clone the list in case it is later modified in the source
+            // of the clone.
+            if (_override != null) {
+                newObject._override = new LinkedList(_override);
+            }
+
             // NOTE: The value for the classname and superclass isn't
             // correct if this cloning operation is meant to create
             // an extension rather than a clone.  A clone has exactly
