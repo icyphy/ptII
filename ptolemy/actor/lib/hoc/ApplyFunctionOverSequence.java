@@ -55,8 +55,8 @@ import java.util.*;
    @since Ptolemy II 0.4
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
-   @see ptolemy.math.SignalProcessing#ApplyFunctionOverSequenceComplexOut
-*/
+   @see ptolemy.actor.lib.hoc.ApplyFunction
+ */
 
 public class ApplyFunctionOverSequence extends TypedAtomicActor {
 
