@@ -93,7 +93,7 @@ public class MathFunction extends TypedAtomicActor {
         
         // Ports
         firstOperand = new TypedIOPort(this, "firstOperand", true, false);
-	    output = new TypedIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         firstOperand.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -160,7 +160,7 @@ public class MathFunction extends TypedAtomicActor {
                     }
                 } else {
                     throw new IllegalActionException(this,
-                        "Unrecognized math function: " + spec);
+                            "Unrecognized math function: " + spec);
                 }
             } else {
                 super.attributeChanged(attribute);
@@ -206,9 +206,9 @@ public class MathFunction extends TypedAtomicActor {
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
-	    if (count > _resultArray.length) {
-	        _resultArray = new DoubleToken[count];
-	    }
+        if (count > _resultArray.length) {
+            _resultArray = new DoubleToken[count];
+        }
         
         if (firstOperand.hasToken(0,count)) {
             Token[] inArray1 = firstOperand.get(0,count);
@@ -219,11 +219,11 @@ public class MathFunction extends TypedAtomicActor {
                     Token[] inArray2 = secondOperand.get(0,count);
                     for (int i = 0; i < count; i++) {
                         double input1 =
-                                ((DoubleToken)(inArray1[i])).doubleValue();
+                            ((DoubleToken)(inArray1[i])).doubleValue();
                         double input2 = 
-                                ((DoubleToken)(inArray2[i])).doubleValue();
+                            ((DoubleToken)(inArray2[i])).doubleValue();
                         _resultArray[i] = 
-                                new DoubleToken(_doFunction(input1,input2));
+                            new DoubleToken(_doFunction(input1,input2));
                     }
                     output.send(0, _resultArray, count);
                     return COMPLETED;
@@ -250,7 +250,7 @@ public class MathFunction extends TypedAtomicActor {
     /** Create the second port needed by remainder function
      */
     private void _createSecondPort() 
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         
         if (secondOperand == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
