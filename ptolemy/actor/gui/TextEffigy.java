@@ -34,6 +34,7 @@ import ptolemy.kernel.util.*;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.URL;
@@ -128,8 +129,31 @@ public class TextEffigy extends Effigy {
 
         if (in != null) {
             // A URL has been given.  Read it.
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(in.openStream()));
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(
+                        new InputStreamReader(in.openStream()));
+            } catch (FileNotFoundException ex) {
+                try {
+                    // If we are running under WebStart, and try
+                    // view source on a .html file that is not in
+                    // ptsupport.jar, then we may end up here, 
+                    // so we look for the file as a resource.
+                    URL jarURL = JNLPUtilities
+                        .jarURLEntryResource(in.toString());
+                    reader = new BufferedReader(
+                            new InputStreamReader(jarURL.openStream()));
+                    // We were able to open the URL, so update the
+                    // original URL so that the title bar accurately
+                    // reflects the location of the file.
+                    in = jarURL;
+                } catch (Exception ex2) {
+                    // Looking for the file as a resource did not work,
+                    // so we rethrow the original exception.
+                    throw ex;
+                }
+            }
+
             String line = reader.readLine();
             while (line != null) {
                 // Translate newlines to Java form.
