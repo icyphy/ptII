@@ -519,8 +519,8 @@ public class Pxgraph extends Frame {
      */	
     private void _about() {
 	Message message = new Message(
- 			   "\t\t\t\t\t\tPxgraph\n" +
- 			   "\t\t\t\t\tA Java Plotting Tool\n" +
+ 			   "               Pxgraph\n" +
+ 			   "        A Java Plotting Tool\n\n" +
  			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
  			   "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
  			   "Version 1.0, Build: $Id$\n\n"+
