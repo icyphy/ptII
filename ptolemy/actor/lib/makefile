@@ -85,6 +85,7 @@ JSRCS = \
 	MaxIndex.java \
 	Maximum.java \
 	Minimum.java \
+        Multiplexor.java \
 	MultiplyDivide.java \
 	Poisson.java \
 	Pulse.java \

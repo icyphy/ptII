@@ -10,23 +10,18 @@
   <entity name="DB" class="ptolemy.actor.lib.DB">
   </entity>
 <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample"/>
-
 <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
-<doc>Forward Fast Fourier Transform</doc>
+   <doc>Forward Fast Fourier Transform</doc>
 </entity>
-
 <entity name="IFFT" class="ptolemy.domains.sdf.lib.IFFT">
-<doc>Inverse Fast Fourier Transform</doc>
+   <doc>Inverse Fast Fourier Transform</doc>
 </entity>
-
 <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-<doc name="tooltip">FIR filter</doc>
+   <doc name="tooltip">FIR filter</doc>
 </entity>
-
 <entity name="IIR" class="ptolemy.actor.lib.IIR">
-<doc>IIR filter</doc>
+   <doc>IIR filter</doc>
 </entity>
-
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>

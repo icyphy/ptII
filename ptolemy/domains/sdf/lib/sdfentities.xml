@@ -11,10 +11,6 @@
 <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
 </entity>
 
-<entity name="Multiplexor" class="ptolemy.domains.sdf.lib.Multiplexor">
-<doc>A multiplexor that is safe to use under SDF.</doc>
-</entity>
-
       </group>
     ?>
   </configure>

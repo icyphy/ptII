@@ -12,9 +12,9 @@
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="1000">
     </property>
-    <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="200">
+    <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="300">
     </property>
-    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.2">
     </property>
     <entity name="Gaussian6" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -91,9 +91,9 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="256">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="128">
         </property>
-        <property name="persistence" class="ptolemy.data.expr.Parameter" value="256">
+        <property name="persistence" class="ptolemy.data.expr.Parameter" value="128">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="563.0, 192.0">
         </property>
@@ -106,21 +106,21 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="8000.0"/>
-<yRange min="-15.266117032241608" max="33.65131777635928"/>
+<xRange min="0.0" max="4000.0"/>
+<yRange min="-18.781227589021682" max="29.541833329147906"/>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="FFT1" class="ptolemy.domains.sdf.lib.FFT">
-        <property name="order" class="ptolemy.data.expr.Parameter" value="8">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="7">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="277.0, 193.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="128">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -133,7 +133,7 @@
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="128">
             </property>
         </port>
     </entity>

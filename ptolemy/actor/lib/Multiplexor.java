@@ -28,7 +28,7 @@
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sdf.lib;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.actor.lib.Transformer;
@@ -41,18 +41,14 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Multiplexor
 /**
-A type polymorphic multiplexor. 
-This actor has two input ports. One is a multiport, from which the
-available Tokens to be chosen are received. The other input port
-receives IntTokens representing the channel containing the the Token
-to send to the output.  Because Tokens are immutable, the same Token
-is sent without additional creation of another Token.
-<p>
-This actor is useful in the SDF domain, because it always consumes a 
-token from each channel of the input port, regardless of which channel 
-is being selected.  This makes it safe to use under SDF.
-<p>
-The input port may receive Tokens of any type.
+A type polymorphic multiplexor.  This actor consumes exactly one token
+from each input channel of the <i>input</i> port, and sends one
+of these tokens to the output.  The token sent to the output
+is determined by the <i>select</i> input, which is required to be
+an integer between 0 and <i>n</i>-1, where <i>n</i> is the width
+of the <i>input</i> port. Because tokens are immutable, the same Token
+is sent to the output, rather than a copy.
+The <i>input</i> port may receive Tokens of any type.
 
 @author Jeff Tsay
 @version $Id$
@@ -84,27 +80,48 @@ public class Multiplexor extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input for index of port to select. The type is IntToken. */
+    /** Input for the index of the port to select. The type is IntToken. */
     public TypedIOPort select;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read a token from the select port and each channel of the input port,
-     *  and output the token on the selected channel.
+    /** Read a token from the <i>select</i> port and from each channel
+     *  of the <i>input</i> port, and output a token on the selected
+     *  channel.  This method will throw a NoTokenException if any
+     *  input channel does not have a token.
      *
      *  @exception IllegalActionException If there is no director, or if
-     *  an input port does not have a token.
+     *   the <i>select</i> input is out of range.
      */
     public void fire() throws IllegalActionException {
         int index = ((IntToken) select.get(0)).intValue();
 
+        boolean inRange = false;
         for (int i = 0; i < input.getWidth(); i++) {
             Token token = input.get(i);
             if (i == index) {
                 output.send(0, token);
+                inRange = true;
             }
         }
+        if (!inRange) {
+            throw new IllegalActionException(this,
+            "Select input is out of range: " + index + ".");
+        }
+    }
+
+    /** Return false if any input channel does not have a token.
+     *  Otherwise, return whatever the superclass returns.
+     *  @return False if there are not enough tokens to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!select.hasToken(0)) return false;
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (!input.hasToken(i)) return false;
+        }
+        return super.prefire();
     }
 }
 
