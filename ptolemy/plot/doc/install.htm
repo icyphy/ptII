@@ -28,6 +28,9 @@ localize the standalone scripts, then you will need to install the
 Cygwin toolkit from
 <a href="http://sourceware.cygnus.com/cygwin/"><CODE>http://sourceware.cygnus.com/cygwin/</CODE></a>
 so that you can run <CODE>/bin/sh</CODE> and <CODE>make</CODE>.
+If you are running Windows and do not want to install the Cygwin toolkit,
+then see
+<a href="#windowswithoutcygwin">Using Ptplot under Windows without Cygwin</a>
 
  <p>Below are the installation instructions for Unix and Windows
 with Cygwin.
@@ -147,12 +150,12 @@ PTJAVA_DIR=/usr/java1.1
 
 
 
-<h3>Rebuilding under Windows without Cygwin</h3>
-Below are the instructions for recompiling the Java files
-if you are under Windows and you do not have the Cygwin.
+<h3><a name="windowswithoutcygwin">Using Ptplot under Windows without Cygwin</h3>
+Below are the instructions for using Ptplot 
+if you are under Windows and you do not have the Cygwin and have 
+downloaded the tar or zip files.
 
 <ol>
-
 <li> Set the <CODE>PTII</CODE> variable to the top-level
 directory of the Ptplot tree.
 <pre>
@@ -160,7 +163,18 @@ C:\ptplot3.1&gt; PTII=c:\ptplot3.1
 </pre>
 <CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
 script and other scripts
+<li> Be sure that <code>java</code> is in your path by running
+<code>java -version</code>
+<li> Added <code>%PTII\bin</code> to your PATH.
+<li> Run <code>ptplot.in</code>
 
+</ol>
+
+Usually, it is not necessary to recompile the Ptplot classes, but
+below are the instructions for recompiling by hand under Windows without
+Cygwin.
+
+<ol>
 <li> To compile the Ptplot Java classes, they must be in the directory
 ptolemy\plot.
 <CODE></CODE>
