@@ -57,7 +57,7 @@ production rate for all ports before they can construct a firing schedule,
 this actor defines and sets three different port parameters, namely:
 <UL>
 <LI>Token Consumption Rate
-<LI>Token Production Rate
+<LI>TokenProductionRate
 <LI>TokenInitProduction
 </UL>
 These parameters can be ignored by domains that do not require this information.
@@ -87,7 +87,7 @@ public class Distributor extends AtomicActor {
         //These parameters are required for SDF
         Parameter param = new Parameter(_input, "Token Consumption Rate",
                 new IntToken(1));
-        param = new Parameter(_input,"Token Production Rate",
+        param = new Parameter(_input,"TokenProductionRate",
                 new IntToken(1));
         param = new Parameter(_input,"TokenInitProduction",
                 new IntToken(0));
@@ -97,7 +97,7 @@ public class Distributor extends AtomicActor {
         //These parameters are required for SDF
         param = new Parameter(_output, "Token Consumption Rate",
                 new IntToken(1));
-        param = new Parameter(_output,"Token Production Rate",
+        param = new Parameter(_output,"TokenProductionRate",
                 new IntToken(1));
         param = new Parameter(_output,"TokenInitProduction",
                 new IntToken(0));
