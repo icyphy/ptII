@@ -213,14 +213,18 @@ public class Node {
      *  weight (or the string "null" if the weight is <em>null</em>).
      */
     public String toString() {
-        if (_weight == null) return "null";
-        else return _weight.toString();
+        if (_weight == null) {
+            return "null";
+        }
+        return _weight.toString();
     }
 
     /** Return the weight that has been associated with this node.
      *  @return the associated weight.
      */
-    public Object weight() {return _weight;}
+    public Object weight() {
+        return _weight;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
@@ -228,7 +232,9 @@ public class Node {
     // Remove an object from an ArrayList if it exists in the list.
     public void _removeIfPresent(ArrayList list, Object element) {
         int index;
-        if ((index = list.indexOf(element)) != -1) list.remove(index);
+        if ((index = list.indexOf(element)) != -1) {
+            list.remove(index);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

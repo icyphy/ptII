@@ -96,8 +96,11 @@ public class Edge {
         String result = new String("(" + _source + ", " + _sink);
         if (showWeight) {
             result += ", ";
-            if (_weight == null) result += "null";
-            else result += _weight;
+            if (_weight == null) {
+                result += "null";
+            } else {
+                result += _weight;
+            }
         }
         result += ")";
         return result;

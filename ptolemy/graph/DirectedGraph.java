@@ -52,7 +52,6 @@ more methods will be added.
 @author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya
 @version $Id$
 */
-
 public class DirectedGraph extends Graph {
 
     /** Construct an empty directed graph.
@@ -356,8 +355,9 @@ public class DirectedGraph extends Graph {
 	_computeTransitiveClosure();
 
         int N = getNodeCount();
-        if (_transitiveClosure.length != N)
+        if (_transitiveClosure.length != N) {
             throw new InternalErrorException("Graph inconsistency");
+        }
 
         // initially, no nodes have been added to an SCC
         boolean addedToAnSCC[] = new boolean[N];
@@ -409,8 +409,9 @@ public class DirectedGraph extends Graph {
             Object sccRepresentative = sortedSCCRepresentatives[i];
             for (int j = 0; j < numberOfSCCs; j++) {
                 ArrayList nodeList = (ArrayList) (sccNodeLists.get(j));
-                if (nodeList.get(0) == sccRepresentative)
+                if (nodeList.get(0) == sccRepresentative) {
                     sortedSCCNodeLists.add(nodeList);
+                }
             }
         }
 

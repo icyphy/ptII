@@ -314,17 +314,19 @@ public class Graph {
      */
     public final Node getNode(Object object) {
         Object associatedObject = _nodeTable.get(object);
-        if (associatedObject == null)
+        if (associatedObject == null) {
             throw new IllegalArgumentException("Graph.getNode(): " +
                     "the weight \"" + object.toString() +
                     "\" is not associated with a node in this graph.");
-        else if (!(associatedObject instanceof Node))
+        } else if (!(associatedObject instanceof Node)) {
             throw new IllegalArgumentException("Graph.getNode: " +
                     "the weight \"" + object.toString() +
                     "\" maps to an object of type " +
                     associatedObject.getClass().getName() +
                     "\n(it should map to a Node)");
-        else return (Node)associatedObject;
+        } else {
+            return (Node)associatedObject;
+        }
     }
 
     /** Return the total number of nodes in this graph.
@@ -373,7 +375,9 @@ public class Graph {
         Iterator nodes = getNodeIterator();
         while (nodes.hasNext()) {
             Node node = (Node)(nodes.next());
-            if (node.outputEdgeCount() == 0) sinkList.add(node);
+            if (node.outputEdgeCount() == 0) {
+                sinkList.add(node);
+            }
         }
         Node[] sinks = new Node[sinkList.size()];
         return (Node[]) (sinkList.toArray(sinks));
@@ -395,7 +399,9 @@ public class Graph {
         Iterator nodes = getNodeIterator();
         while (nodes.hasNext()) {
             Node node = (Node)(nodes.next());
-            if (node.inputEdgeCount() == 0) sourceList.add(node);
+            if (node.inputEdgeCount() == 0) {
+                sourceList.add(node);
+            }
         }
         Node[] sources = new Node[sourceList.size()];
         return (Node[]) (sourceList.toArray(sources));
@@ -434,8 +440,12 @@ public class Graph {
         Iterator incidentEdges = removeMe.incidentEdges();
         while (incidentEdges.hasNext()) {
             Edge edge = (Edge)(incidentEdges.next());
-            if (edge.source() != removeMe) edge.source().removeEdge(edge);
-            if (edge.sink() != removeMe) edge.sink().removeEdge(edge);
+            if (edge.source() != removeMe) {
+                edge.source().removeEdge(edge);
+            }
+            if (edge.sink() != removeMe) {
+                edge.sink().removeEdge(edge);
+            }
             if (_remove(_edges, edge) == null) {
                 throw new RuntimeException("We have encountered an edge that "
                         + "is incident to a node, but is not contained in "
@@ -515,10 +525,12 @@ public class Graph {
      *  in this graph.
      */
     protected final Object _getNodeObject(Node node) {
-        if (!_nodes.contains(node))
+        if (!_nodes.contains(node)) {
             throw new IllegalArgumentException("Graph._getNodeObject: \"" +
                     node + "\" is not a node in this graph");
-        else return node.weight();
+        } else {
+            return node.weight();
+        }
     }
 
     /** Return the weight of a given node in the graph given the node
@@ -542,8 +554,10 @@ public class Graph {
     // return the object that was removed.
     private Object _remove(ArrayList list, Object element) {
         int index;
-        if ((index = list.indexOf(element)) == -1) return null;
-        else return list.remove(index);
+        if ((index = list.indexOf(element)) == -1) {
+            return null;
+        }
+        return list.remove(index);
     }
 
     ///////////////////////////////////////////////////////////////////
