@@ -55,10 +55,11 @@ public class BooleanToken extends Token {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /* *Test to see if the argument Token has the same truth value as this
+    /** Test to see if the argument Token has the same truth value as this
      *  Token.
      *  @param the Token to compare truth values against.
-     *  @exception Thrown if the argument Token is not a BooleanToken
+     *  @exception IllegalActionException Thrown if the argument Token 
+     *  is not a BooleanToken
      */
     public BooleanToken equality(Token a) throws IllegalActionException {
         if ( !(a instanceof BooleanToken)) {

@@ -53,7 +53,7 @@ public class ObjectToken extends Token {
     }
 
     /** Contruct a token with a reference to the specified object.
-     *  @exceptions IllegalActionException Argument is not of the appropriate
+     *  @exception IllegalActionException Argument is not of the appropriate
      *   type (may be thrown by derived classes, but is not thrown here).
      */
     public ObjectToken(Object value)
@@ -79,7 +79,7 @@ public class ObjectToken extends Token {
 
 
     /** Set the value of the token to be a reference to the specified object.
-     *  @exceptions IllegalActionException Argument is not of the appropriate
+     *  @exception IllegalActionException Argument is not of the appropriate
      *   type (may be thrown by derived classes, but is not thrown here).
      */
     public void setValue(Object value)

@@ -46,7 +46,7 @@ public abstract class ScalarToken extends Token {
 
     /** Return the value in the token as a byte.
       * In this base class, we just throw an exception.
-      * @exception IllegalActionException
+      * @exception IllegalActionException thrown in this base class.
       */
     public byte byteValue()
 	    throws IllegalActionException {
@@ -58,7 +58,7 @@ public abstract class ScalarToken extends Token {
 
     // Return the value in the token as a Complex.
     // In this base class, we just throw an exception.
-    // @exception IllegalActionException
+    // @exception IllegalActionException thrown in this base class.
     //
     // FIXME: restore this method after the Complex class is available.
 //    public Complex complexValue()
@@ -71,7 +71,7 @@ public abstract class ScalarToken extends Token {
 
     /** Return the value in the token as a double.
       * In this base class, we just throw an exception.
-      * @exception IllegalActionException
+      * @exception IllegalActionException thrown in this base class.
       */
     public double doubleValue()
 	    throws IllegalActionException {
@@ -83,7 +83,7 @@ public abstract class ScalarToken extends Token {
 
     // Return the value in the token as a Fix.
     // In this base class, we just throw an exception.
-    // @exception IllegalActionException
+    // @exception IllegalActionException thrown in this base class.
     //
     // FIXME: restore this method after the Fix class is available.
 //    public Fix fixValue()
@@ -96,7 +96,7 @@ public abstract class ScalarToken extends Token {
 
     /** Return the value in the token as an int.
       * In this base class, we just throw an exception.
-      * @exception IllegalActionException
+      * @exception IllegalActionException thrown in this base class.
       */
     public int intValue()
 	    throws IllegalActionException {
@@ -108,7 +108,7 @@ public abstract class ScalarToken extends Token {
 
     /** Return the value in the token as a long integer.
       * In this base class, we just throw an exception.
-      * @exception IllegalActionException
+      * @exception IllegalActionException thrown in this base class.
       */
     public long longValue()
 	    throws IllegalActionException {

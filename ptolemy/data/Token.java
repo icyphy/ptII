@@ -92,7 +92,6 @@ public abstract class Token implements Cloneable {
 
     /** Promote the clone method of the base class Object to public.
      *  @see java.lang.Object#clone()
-     *  @return An identical token.
      *  @exception CloneNotSupportedException May be thrown by derived classes.
      *  @return The cloned Token.
      */
@@ -273,6 +272,7 @@ public abstract class Token implements Cloneable {
      }
 
     /** Return the value of the Token as a String.
+     *  @exception IllegalActionException thrown in this base class.
      *  @return The value of the token as a String.
      */
     public String stringValue() throws IllegalActionException {

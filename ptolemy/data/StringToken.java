@@ -149,8 +149,8 @@ public class StringToken extends ObjectToken {
      *  @param a The token to lexicographically compare the value this
      *  Token with.
      *  @return BooleanToken indicating result of comparision.
-     *  @exception Thrown if the passed token is not of a type that can be
-     *   compared this Tokens value.
+     *  @exception IllegalActionException Thrown if the passed token
+     *  is not of a type that can be compared this Tokens value.
      */
     public BooleanToken equality(Token a) throws IllegalActionException {
         if (a instanceof StringToken) {
