@@ -72,7 +72,7 @@ public class SDFConst extends SDFSource {
     public SDFConst(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	value = new Parameter(this, "value", new IntToken(1));
+    	value = new Parameter(this, "value", new DoubleToken(1.0));
 
 	// set the type constraints.
 	output.setTypeAtLeast(value);
@@ -130,11 +130,38 @@ public class SDFConst extends SDFSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	Token[] resultTokenArray = new Token[_rate];
+	Token curVal = value.getToken();
+	//System.out.println("sdfConst: fire: " + this.getFullName() + " ");
+	//System.out.println(curVal.toString());
 	for (int i = 0; i < _rate; i++) {
-	    resultTokenArray[i] = 
-		value.getToken();
+	    _resultTokenArray[i] = 
+		curVal;
 	}
-	output.sendArray(0, resultTokenArray);
+	output.sendArray(0, _resultTokenArray);
     }
+
+    /** Allocate the output token array which is used in fire().
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+     public void initialize() throws IllegalActionException {
+        super.initialize();
+	_resultTokenArray = new Token[_rate];
+	// Set the type of <i>value</i> to be the same as the
+	// type of the output port. This is done only to optimize
+	// performance. For example, if the output port is of
+	// type DoubleToken, and <i>value</i> is initially an
+	// IntToken, than the code below will make <i>value</i>
+	// a DoubleToken as well. If this optimization is not used,
+	// than for the above example, a large amount of time will
+	// be spent converting types.
+	// This assumes that the type of the output is set at some
+	// point before this method is called.
+	value.setTypeEquals(output.getType());
+     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+
+    Token[] _resultTokenArray;
 }
