@@ -485,6 +485,9 @@ public abstract class TableauFrame extends Top {
      */
     protected boolean _saveAs() {
         JFileChooser fileDialog = new JFileChooser();
+	if (_fileFilter != null) {
+	    fileDialog.addChoosableFileFilter(_fileFilter);
+	}
         fileDialog.setDialogTitle("Save as...");
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -500,6 +503,13 @@ public abstract class TableauFrame extends Top {
                         new File(currentWorkingDirectory));
             }
         }
+
+	if (_initialSaveAsFileName != null) {
+	    fileDialog.setSelectedFile(
+                    new File(fileDialog.getCurrentDirectory(),
+			     _initialSaveAsFileName));
+	}
+
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
@@ -603,6 +613,8 @@ public abstract class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The initial filename to use in the SaveAs dialog */
+    protected String _initialSaveAsFileName = null;
     /** The view menu. Note that this is only created if there are multiple
      *  views, so if derived classes use it, they must test to see whether
      *  it is null.
