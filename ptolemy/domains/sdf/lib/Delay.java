@@ -50,7 +50,7 @@ import ptolemy.actor.TypedCompositeActor;
  *  single integer token with value zero to be produced in
  *  initialize().
  *
- *  @author Steve Neuendorffer, Edward A. Lee 
+ *  @author Steve Neuendorffer, Edward A. Lee
  *  @version $Id$
  */
 public class Delay extends Transformer {
