@@ -85,7 +85,31 @@ public class CTPeriodicalSampler extends CTActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-
+    /** prefire. If the current time is greater than the next sample
+     *  time, increase the next sample time until it is 
+     *  greater than the current time.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if(!(getDirector() instanceof CTMixedSignalDirector)) {
+            throw new IllegalActionException(this,
+                " Must be executed after a CTMixedSignalDirector.");
+        }
+        updateParameters();
+        CTDirector dir = (CTDirector) getDirector();
+        boolean hasjump = false;
+        while (_nextSamplingTime < dir.getCurrentTime()) {
+            hasjump = true;
+            _nextSamplingTime += _samplePeriod;
+        }
+        if(hasjump) {
+            dir.fireAt(this, _nextSamplingTime);
+        }
+        if(DEBUG) {
+            System.out.println("Sampler: next sampling time= "
+                + _nextSamplingTime);
+        }
+        return true;
+    }
     /** Fire: if the current time is the event time, request the end
      *  of this fire.
      */
