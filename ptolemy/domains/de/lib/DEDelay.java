@@ -49,6 +49,21 @@ no other delays to maintain determinacy.
 */
 public class DEDelay extends DEActor {
 
+    /** Construct a DEDelay actor with delay equal to 1.0.
+     *  @param container The composite actor that this actor belongs too.
+     *  @param name The name of this actor.
+     *  @param delay The amount of delay.
+     *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container, or if the delay is less than zero.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEDelay(TypedCompositeActor container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, 1.0);
+    }
+
     /** Construct a DEDelay actor with the specified delay.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.

@@ -50,7 +50,21 @@ fires.
 */
 public class Ramp extends TypedAtomicActor {
 
-    /** Constructor.
+    /** Construct a Ramp with default parameters.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @param value The initial output event value.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public Ramp(TypedCompositeActor container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, 0, 1);
+    }
+
+    /** Construct a DERamp with the default value and step size.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @param value The initial output event value.

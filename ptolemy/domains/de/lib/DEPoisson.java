@@ -50,6 +50,42 @@ director.
 */
 public class DEPoisson extends DEActor {
 
+    /** Construct a DEPoisson actor with the default parameters.
+     *  @param container The composite actor that this actor belongs to.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEPoisson(TypedCompositeActor container,
+            String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, new Token(), 0.1);
+    }
+
+    /** Construct a DEPoisson actor with the specified output tokens
+     *  and mean interarrival time.
+     *  @param container The composite actor that this actor belongs to.
+     *  @param name The name of this actor.
+     *  @param value The Token associated with the output events.
+     *  @param lambda The mean inter-arrival times.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEPoisson(TypedCompositeActor container,
+            String name, Token value, double lambda)
+            throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setDeclaredType(DoubleToken.class);
+        _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
+        _value = new Parameter(this, "value", value);
+    }
+
+
     /** Constructor.
      *  @param container The composite actor that this actor belongs to.
      *  @param name The name of this actor.
@@ -59,6 +95,7 @@ public class DEPoisson extends DEActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
+     *  @deprecated Use other constructors instead.
      */
     public DEPoisson(TypedCompositeActor container,
             String name, double value, double lambda)

@@ -46,10 +46,28 @@ wired together to form a full adder.
 */
 public class DEFullAdder extends TypedCompositeActor {
 
-    /** Construct a DESampler actor.
+    /** Construct a DEFullAdder actor with the default gate propagation delay
+     *  equal to 0.1.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.
      *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEFullAdder(TypedCompositeActor container,
+            String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name,0.1);
+    }
+
+    /** Construct a DEFullAdder actor with the specified gate propagation
+     *  delay.
+     *  @param container The composite actor that this actor belongs too.
+     *  @param name The name of this actor.
+     *  @param gateDelay The propagation delay of the gates constructing this
+     *    adder.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an

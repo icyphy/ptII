@@ -47,11 +47,25 @@ import java.util.*;
 */
 public class DEFIRfilter extends DEActor {
 
-    /** Constructor.
+    /** Construct a FIR filter with the default taps.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param value The initial output event value.
-     *  @param step The step size by which to increase the output event values.
+     *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEFIRfilter(TypedCompositeActor container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, _DEFAULT_TAPS);
+    }    
+
+
+    /** Construct an FIR filter with the specified filter taps.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @param taps The filter taps expressed as an array of double values.
      *
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -82,9 +96,7 @@ public class DEFIRfilter extends DEActor {
      *  by the corresponding Parameters.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param value The expression for the initial output event value.
-     *  @param step The expression for the step size by which to
-     *   increase the output event values.
+     *  @param taps The filter taps expressed as a string of double values.
      *
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -210,6 +222,8 @@ public class DEFIRfilter extends DEActor {
     // delay of the actor 
     private double _delay = 0.0;
 
+    // the default filter taps.
+    private static final double[] _DEFAULT_TAPS = {1, 1}; 
     
 }
 

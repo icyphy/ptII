@@ -54,6 +54,21 @@ the "overflow" output.
 @see Actor
 */
 public class DEFIFOQueue extends TypedAtomicActor {
+
+    /** Construct a FIFOQueue star with default parameters.
+     *
+     * @param container The composite actor that this actor belongs too.
+     * @param name The name of this actor.
+     *
+     * @exception NameDuplicationException Other star already had this name
+     * @exception IllegalActionException internal problem
+     */
+    public DEFIFOQueue(TypedCompositeActor container,
+            String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, 1, true, -1);
+    }
+
     /** Construct a FIFOQueue star.
      *
      * @param value The initial output event value.

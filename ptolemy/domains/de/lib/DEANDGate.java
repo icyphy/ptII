@@ -46,13 +46,25 @@ a specified delay of time.
 */
 public class DEANDGate extends DEActor {
 
+    /** Construct a DEANDGate actor with the default delay equal to 0.1.
+     *  @param container The composite actor that this actor belongs too.
+     *  @param name The name of this actor.
+     *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container, or if the delay is less than zero.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEANDGate(TypedCompositeActor container, String name) 
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, 0.1);
+                
+    }
+
     /** Construct a DEANDGate actor with the specified delay.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.
-     *  @param tlh The amount of propagation delay for the output to goes
-     *      from low to high.
-     *  @param thl The amount of propagation delay for the output to goes
-     *      from high to low.
+     *  @param delay The amount of propagation delay.
      *
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container, or if the delay is less than zero.

@@ -47,6 +47,22 @@ become free from the previous tasks.
 @see Actor
 */
 public class DEServer extends DEActor {
+
+    /** Construct a DEServer star with the default service time equal to 1.0.
+     *
+     * @param serviceTime The service time
+     * @param container The composite actor that this actor belongs too.
+     * @param name The name of this actor.
+     *
+     * @exception NameDuplicationException Other star already had this name
+     * @exception IllegalActionException internal problem
+     */
+    public DEServer(TypedCompositeActor container,
+            String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, 1.0);
+    }
+
     /** Construct a DEServer star.
      *
      * @param serviceTime The service time

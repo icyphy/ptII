@@ -46,6 +46,22 @@ a specified delay of time.
 */
 public class DEXORGate extends DEActor {
 
+    /** Construct a DEXORGate actor with the default propagation delay
+     *  equal to 0.1.
+     *  @param container The composite actor that this actor belongs too.
+     *  @param name The name of this actor.
+     *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container, or if the delay is less than zero.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEXORGate(TypedCompositeActor container,
+            String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, 0.1);
+    }
+
     /** Construct a DEXORGate actor with the specified delay.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.

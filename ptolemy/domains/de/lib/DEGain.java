@@ -46,11 +46,24 @@ import java.util.Enumeration;
 */
 public class DEGain extends TypedAtomicActor {
 
-    /** Constructor.
+    /** Construct a DEGain with the default gain value equal to 0.1.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param value The initial output event value.
-     *  @param step The step size by which to increase the output event values.
+     *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEGain(TypedCompositeActor container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name,0.1);
+    }
+
+    /** Construct a DEGain with the specified gain value.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @param gain The gain value.
      *
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -73,10 +86,9 @@ public class DEGain extends TypedAtomicActor {
         input.setDeclaredType(DoubleToken.class);
     }
 
-    /** Construct a DEGain with the specified container, name, initial
-     *  value and step size. The initial value and step size are
-     *  represented by String expressions which will be evaluated
-     *  by the corresponding Parameters.
+    /** Construct a DEGain with the specified container, name, and gain. 
+     *  The gain value is represented by String expressions which will be 
+     *  evaluated by the Parameter class.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @param value The expression for the initial output event value.
@@ -94,6 +106,7 @@ public class DEGain extends TypedAtomicActor {
         super(container, name);
         // set the parameters.
         _gain = new Parameter(this, "gain");
+        _gain.setType(DoubleToken.class);
 	_gain.setExpression(gain);
 
         // create an output port

@@ -81,10 +81,10 @@ public class Not extends TypedAtomicActor {
 
         // produce the output token.
 	DoubleToken outputToken;
-	if (inputToken.doubleValue() == 0.0)
-	    outputToken = new DoubleToken(1.0);
-	else
+	if (inputToken.doubleValue() == 1.0)
 	    outputToken = new DoubleToken(0.0);
+	else
+	    outputToken = new DoubleToken(1.0);
 
         // send the output token via output TypedIOPort.
         output.broadcast(outputToken);

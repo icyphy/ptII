@@ -45,6 +45,45 @@ Generate events at regular intervals, starting at time zero.
 */
 public class DEClock extends DEActor {
 
+    /** Construct a clock that generates events at default interval 1.0.
+     *  @param container The container.
+     *  @param name The name of the actor.
+     *  @param value The value of the output.
+     *  @param interval The interval between clock ticks.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEClock(TypedCompositeActor container, String name)
+            throws IllegalActionException, NameDuplicationException  {
+        // this(container, name, new Token(), 1.0);
+        this(container, name, 1.0, 1.0);
+    }
+
+    /** Construct a clock that generates events with the specified values
+     *  at the specified interval.
+     *  @param container The container.
+     *  @param name The name of the actor.
+     *  @param value The value of the output.
+     *  @param interval The interval between clock ticks.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     *  @deprecated This constructor is going away... 
+     */
+    public DEClock(TypedCompositeActor container, String name,
+            double value, double interval)
+            throws IllegalActionException, NameDuplicationException  {
+        super(container, name);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setDeclaredType(Token.class);
+        _interval = new Parameter(this, "interval", new DoubleToken(interval));
+        _value = new Parameter(this, "value", new DoubleToken(value));
+    }
+
+
     /** Construct a clock that generates events with the specified values
      *  at the specified interval.
      *  @param container The container.
@@ -56,17 +95,19 @@ public class DEClock extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    // FIXME: The value should be an attribute, as should the interval.
-    // FIXME: Should the value be a double? Probably not...
+    // ambiguous signature in TclBlend with the deprecated constructor.
+    // wait till deprecated -> gone, then uncomment this constructor
+    /*
     public DEClock(TypedCompositeActor container, String name,
-            double value, double interval)
+            Token value, double interval)
             throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setDeclaredType(Token.class);
         _interval = new Parameter(this, "interval", new DoubleToken(interval));
-        _value = new Parameter(this, "value", new DoubleToken(value));
+        _value = new Parameter(this, "value", value);
     }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -57,6 +57,20 @@ YES       | anything | anything | Stop after outputting the array once |<br>
 */
 public class DEWaveForm extends DEActor {
 
+    /** Contruct a DEWaveForm actor which, by default, produces the 
+     *  sequence of zero and one.
+     *  @param container The container.
+     *  @param name The name of the actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DEWaveForm(TypedCompositeActor container, String name)
+            throws IllegalActionException, NameDuplicationException  {
+        this(container, name, _DEFAULT_VALUE, false, true, 0);
+    }
+
     /** Contruct a DEWaveForm actor.
      *  @param container The container.
      *  @param name The name of the actor.
@@ -189,6 +203,8 @@ public class DEWaveForm extends DEActor {
     private Parameter _haltAtEnd;
     private Parameter _periodic;
     private Parameter _period;
+
+    private static double[] _DEFAULT_VALUE = {0.0, 1.0};
 }
 
 

@@ -59,6 +59,21 @@ public class DERegister extends DEActor {
      *   actor with this name.
      */
     public DERegister(TypedCompositeActor container,
+            String name)
+            throws NameDuplicationException, IllegalActionException  {
+        this(container, name, null);
+    }
+
+    /** Construct a DERegister actor.
+     *  @param container The composite actor that this actor belongs too.
+     *  @param name The name of this actor.
+     *
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DERegister(TypedCompositeActor container,
             String name,
             Token initToken)
             throws NameDuplicationException, IllegalActionException  {
@@ -73,6 +88,7 @@ public class DERegister extends DEActor {
         // create input ports
         input = new DEIOPort(this, "data input", true, false);
         clock = new DEIOPort(this, "clock input", true, false);
+        clock.setDeclaredType(Token.class);
         clock.triggers(output);
     }
 

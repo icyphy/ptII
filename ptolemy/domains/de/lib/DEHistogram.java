@@ -56,6 +56,19 @@ public class DEHistogram extends DEActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public DEHistogram(TypedCompositeActor container,
+            String name)
+            throws NameDuplicationException, IllegalActionException  {
+
+        this(container, name, 0.1);
+    }
+
+    /** Construct a plot actor with a new plot window. The default Y-range is
+     *  [-1, 1]. The default X-range is the start time to the stop time.
+     *
+     *  @exception NameDuplicationException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public DEHistogram(TypedCompositeActor container,
             String name, double binWidth)
             throws NameDuplicationException, IllegalActionException  {
 
