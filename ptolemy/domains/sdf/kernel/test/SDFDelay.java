@@ -36,16 +36,6 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-/* Just below this comment is a javadoc class comment.   Javadoc is a
- * program that automagically creates nicely formatted HTML documentation
- * from comments.  @version is a tag that tells javadoc what the version of
- * this file is.  The funky string between the dollar signs are automatically
- * added to the file by CVS.  CVS is a versioning control system which allows
- * multiple people in the group to edit copies of this file, and merge the
- * changes back into a central master file.  This class extends the
- * SDFAtomicActor class (in other words, it includes everything that
- * SDFAtomicActor does, along with whatever methods and data are derived here).
- */
 /**
  * This actor copies one token from its input to its output when fired.
  *
