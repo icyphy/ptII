@@ -92,7 +92,7 @@ public class ImageSequence extends Source {
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         imageURLTemplate = new Parameter(this, "imageURLTemplate",
-                new StringToken("/ptolemy/domains/sdf/lib/vq" +
+                new StringToken("ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
         imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
