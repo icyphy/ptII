@@ -32,6 +32,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -80,7 +81,9 @@ import ptolemy.kernel.util.Workspace;
    <p> 
    There is another kind of clock called ContinuousClock, which produces
    a square wave instead of a sequence of events. The ContinuousClock
-   is a special actor for continuous-time domain. 
+   is a special actor for continuous-time domain. One of their key differences
+   is that a Clock outputs a DISCRETE signal while a ContinuousClock outputs
+   a CONTINUOUS signal. 
 
    @see ptolemy.domains.ct.lib.ContinuousClock
    @author Edward A. Lee, Haiyang Zheng
@@ -131,6 +134,17 @@ public class Clock extends TimedSource {
         numberOfCycles = new Parameter(this,"numberOfCycles");
         numberOfCycles.setTypeEquals(BaseType.INT);
         numberOfCycles.setExpression("-1");
+
+        // Set the output signal type as DISCRETE to indicate
+        // that the outputs of this actor are discrete events. 
+        // NOTE: ContinuousClock, a subclass of this class overrides
+        // the signal type to CONTINUOUS.
+        new Parameter(output, "signalType",
+                new StringToken("DISCRETE"));
+
+        // Set the trigger signal type as DISCRETE.
+        new Parameter(trigger, "signalType",
+                new StringToken("DISCRETE"));
     }
 
     ///////////////////////////////////////////////////////////////////
