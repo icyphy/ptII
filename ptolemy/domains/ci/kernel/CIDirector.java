@@ -318,6 +318,18 @@ public class CIDirector extends Director {
         }
     }
 
+    /** Request that the director cease execution altogether.
+     *  This causes a call to stop() on all actors contained by
+     *  the container of this director, and sets a flag
+     *  so that the next call to postfire() returns false.
+     */
+    public void stop() {
+        super.stop();
+        synchronized (this) {
+            notifyAll();
+        }
+    }
+
     /** Request that execution of the current iteration stop.
      *  Pass the request to all actors that are deeply contained by the
      *  container of this director. Notify the threads that manage active
