@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DDEPrinter.java \
+	DDESink.java \
 	DDEStringMerge.java \
 	DDEStringSource.java \
 	DDEPipe.java \
