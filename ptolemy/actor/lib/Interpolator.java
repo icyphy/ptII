@@ -167,21 +167,21 @@ public class Interpolator extends SequenceSource {
 	try {
 	    if (attribute == values) {
 	        double[][] valueMatrix =
-			((DoubleMatrixToken)values.getToken()).doubleMatrix();
+                    ((DoubleMatrixToken)values.getToken()).doubleMatrix();
 	        if (valueMatrix.length != 1 || valueMatrix[0].length == 0) {
 		    throw new IllegalActionException(
-		        "Interpolator.attributeChanged: The values " +
-			"parameter does not contain an one dimensional " +
-			"array.");
+                            "Interpolator.attributeChanged: The values " +
+                            "parameter does not contain an one dimensional " +
+                            "array.");
 	    	}
 	    	_interpolation.setValues(valueMatrix[0]);
 	    } else if (attribute == indexes) {
 	        int[][] indexMatrix =
-			((IntMatrixToken)indexes.getToken()).intMatrix();
+                    ((IntMatrixToken)indexes.getToken()).intMatrix();
 	    	if (indexMatrix.length != 1 || indexMatrix[0].length == 0) {
 		    throw new IllegalActionException(
-		        "Interpolator.attributeChanged: The index parameter " +
-		        "does not contain an one dimensional array.");
+                            "Interpolator.attributeChanged: The index parameter " +
+                            "does not contain an one dimensional array.");
 	        }
 	        _interpolation.setIndexes(indexMatrix[0]);
 	    } else if (attribute == period) {
@@ -195,7 +195,7 @@ public class Interpolator extends SequenceSource {
 	    }
 	} catch (IllegalArgumentException ex) {
 	    throw new IllegalActionException("Interpolation.attributeChanged: "
-		+ ex.getMessage());
+                    + ex.getMessage());
 	}
     }
 
@@ -210,13 +210,13 @@ public class Interpolator extends SequenceSource {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         // try {
-            Interpolator newobj = (Interpolator)super.clone(ws);
-            newobj.indexes = (Parameter)newobj.getAttribute("indexes");
-            newobj.values = (Parameter)newobj.getAttribute("values");
-            newobj.order = (Parameter)newobj.getAttribute("order");
-            newobj.period = (Parameter)newobj.getAttribute("period");
+        Interpolator newobj = (Interpolator)super.clone(ws);
+        newobj.indexes = (Parameter)newobj.getAttribute("indexes");
+        newobj.values = (Parameter)newobj.getAttribute("values");
+        newobj.order = (Parameter)newobj.getAttribute("order");
+        newobj.period = (Parameter)newobj.getAttribute("period");
         // } catch (IllegalActionException ex) {
-          //   throw new InternalErrorException(ex.getMessage());
+        //   throw new InternalErrorException(ex.getMessage());
         // }
         return newobj;
     }
@@ -242,7 +242,7 @@ public class Interpolator extends SequenceSource {
             output.send(0, new DoubleToken(result));
 	} catch (IllegalStateException ex) {
 	    throw new IllegalActionException("Interpolator.fire: " +
-		ex.getMessage());
+                    ex.getMessage());
 	}
     }
 

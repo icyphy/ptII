@@ -90,8 +90,8 @@ public class Broadcast extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-                Broadcast newobj = (Broadcast)super.clone(ws);
-                return newobj;
+        Broadcast newobj = (Broadcast)super.clone(ws);
+        return newobj;
     }
 
     /** Output the quantization of the input.

@@ -71,8 +71,8 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     public MatrixViewer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
-                super(container, name);
-                input.setTypeEquals(BaseType.MATRIX);
+        super(container, name);
+        input.setTypeEquals(BaseType.MATRIX);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -191,21 +191,21 @@ public class MatrixViewer extends Sink implements Placeable {
 
         /** Construct for a specific matrix.
             @param matrix The matrix.
-         */
+        */
         MatrixAsTable(MatrixToken matrix) {
             _matrix = matrix;
         }
 
         /** Get the row count of the Matrix.
             @return the row count.
-         */
+        */
         public int getRowCount() {
             return _matrix.getRowCount();
         }
 
         /** Get the column count of the Matrix.
             @return the column count.
-         */
+        */
         public int getColumnCount() {
             return _matrix.getColumnCount();
         }
@@ -223,7 +223,7 @@ public class MatrixViewer extends Sink implements Placeable {
 
         /** Get column names of the Matrix.
             @return the column names.
-         */
+        */
         public String getColumnName(int columnIndex ) {
             return Integer.toString(columnIndex + 1);
         }

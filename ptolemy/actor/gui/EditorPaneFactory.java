@@ -86,18 +86,18 @@ public class EditorPaneFactory extends Attribute {
         query.setTextWidth(25);
         NamedObj container = (NamedObj)getContainer();
         Iterator params
-               = container.attributeList(Parameter.class).iterator();
+            = container.attributeList(Parameter.class).iterator();
         boolean foundOne = false;
         while (params.hasNext()) {
             foundOne = true;
             Parameter param = (Parameter)params.next();
             // Check for ParameterEditorStyle.
             Iterator styles
-                   = param.attributeList(ParameterEditorStyle.class).iterator();
+                = param.attributeList(ParameterEditorStyle.class).iterator();
             boolean foundStyle = false;
             while (styles.hasNext()) {
                 ParameterEditorStyle style
-                        = (ParameterEditorStyle)styles.next();
+                    = (ParameterEditorStyle)styles.next();
                 try {
                     style.addEntry(query);
                     foundStyle = true;
@@ -108,8 +108,8 @@ public class EditorPaneFactory extends Attribute {
             }
             if (!(foundStyle)) {
                 query.addLine(param.getName(),
-                       param.getName(),
-                       param.stringRepresentation());
+                        param.getName(),
+                        param.stringRepresentation());
                 query.attachParameter(param, param.getName());
             }
         }

@@ -199,23 +199,23 @@ public class CorbaActorClient extends TypedAtomicActor {
         }
         try {
             try {
-            // start the ORB
-            ORB orb = ORB.init(args, null);
-            _debug(getName(), "ORB initialized");
-            //get the root naming context
-            org.omg.CORBA.Object objRef = orb.resolve_initial_references(
-                    "NameService");
-            NamingContext ncRef = NamingContextHelper.narrow(objRef);
-            //resolve the remote actor reference in Naming
-            NameComponent namecomp = new NameComponent(
-                    (remoteActorName.getToken()).toString(), "");
-            _debug(getName(), " looking for name: ",
-                    (remoteActorName.getToken()).toString());
-            NameComponent path[] = {namecomp};
-            // locate the remote actor
-            _remoteActor =
-                ptolemy.actor.corba.util.CorbaActorHelper.narrow(
-                        ncRef.resolve(path));
+                // start the ORB
+                ORB orb = ORB.init(args, null);
+                _debug(getName(), "ORB initialized");
+                //get the root naming context
+                org.omg.CORBA.Object objRef = orb.resolve_initial_references(
+                        "NameService");
+                NamingContext ncRef = NamingContextHelper.narrow(objRef);
+                //resolve the remote actor reference in Naming
+                NameComponent namecomp = new NameComponent(
+                        (remoteActorName.getToken()).toString(), "");
+                _debug(getName(), " looking for name: ",
+                        (remoteActorName.getToken()).toString());
+                NameComponent path[] = {namecomp};
+                // locate the remote actor
+                _remoteActor =
+                    ptolemy.actor.corba.util.CorbaActorHelper.narrow(
+                            ncRef.resolve(path));
             } catch (UserException ex) {
                 _debug(getName(), " initialize ORB failed.");
                 throw new IllegalActionException(this,
@@ -438,7 +438,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                 } catch (CorbaIllegalActionException ex1) {
                     throw new IllegalActionException(this,
                             "Illegal Action on remote actor. "
-+ ex1.getMessage());
+                            + ex1.getMessage());
                 } catch (CorbaUnknownPortException ex2) {
                     throw new IllegalActionException(this,
                             "Unknow port name" + portName +

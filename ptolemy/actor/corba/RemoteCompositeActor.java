@@ -144,7 +144,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         RemoteCompositeActor newobj =
-	        (RemoteCompositeActor)super.clone(ws);
+            (RemoteCompositeActor)super.clone(ws);
 	if( getDirector() != getExecutiveDirector() ) {
 	    if( getDirector() != null ) {
 	        newobj._hasLocalDirector = true;

@@ -106,8 +106,8 @@ public class MoMLApplet extends PtolemyApplet {
             }
         }
         return "MoML applet for Ptolemy II.\n" +
-        "Ptolemy II comes from UC Berkeley, Department of EECS.\n" +
-        "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
+            "Ptolemy II comes from UC Berkeley, Department of EECS.\n" +
+            "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
     }
 
     /** Describe the applet parameters.
@@ -176,8 +176,8 @@ public class MoMLApplet extends PtolemyApplet {
                 XmlException xmlEx = (XmlException)ex;
                 // FIXME: The file reported below is wrong... Why?
                 report("MoML exception on line " + xmlEx.getLine()
-                + ", column " + xmlEx.getColumn() + ", in entity:\n"
-                + xmlEx.getSystemId(), ex);
+                        + ", column " + xmlEx.getColumn() + ", in entity:\n"
+                        + xmlEx.getSystemId(), ex);
             } else {
                 report("MoML applet failed:\n", ex);
             }

@@ -291,7 +291,7 @@ public class Clock extends TimedSource {
         ArrayToken val = (ArrayToken)(values.getToken());
         if (offsts[0].length != val.length()) {
             throw new IllegalActionException(this,
-            "Values and offsets vectors do not have the same length.");
+                    "Values and offsets vectors do not have the same length.");
         }
         // Adjust the phase if time has moved beyond the current phase.
         while (currentTime >=
@@ -307,9 +307,9 @@ public class Clock extends TimedSource {
             }
             if(offsts[0][_tentativePhase] >= prd) {
                 throw new IllegalActionException(this,
-                "Offset number " + _tentativePhase + " with value "
-                + offsts[0][_tentativePhase] + " must be less than the "
-                + "period, which is " + prd);
+                        "Offset number " + _tentativePhase + " with value "
+                        + offsts[0][_tentativePhase] + " must be less than the "
+                        + "period, which is " + prd);
             }
             // Schedule the next firing in this period.
             _tentativeNextFiringTime

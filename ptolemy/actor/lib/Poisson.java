@@ -142,8 +142,8 @@ public class Poisson extends TimedSource {
             double mean = ((DoubleToken)meanTime.getToken()).doubleValue();
             if (mean <= 0.0) {
                 throw new IllegalActionException(this,
-                "meanTime is required to be positive.  meanTime given: "
-                + mean);
+                        "meanTime is required to be positive.  meanTime given: "
+                        + mean);
             }
         } else if (attribute == values) {
             ArrayToken val = (ArrayToken)(values.getToken());
@@ -247,7 +247,7 @@ public class Poisson extends TimedSource {
         _currentOutputIndex = _tentativeCurrentOutputIndex;
         if (_boundaryCrossed) {
             double meanTimeValue =
-                    ((DoubleToken)meanTime.getToken()).doubleValue();
+                ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director dir = getDirector();
             _nextFiringTime = dir.getCurrentTime() + exp;
@@ -265,7 +265,7 @@ public class Poisson extends TimedSource {
         ArrayToken val = (ArrayToken)(values.getToken());
         if (val == null || index >= _length) {
             throw new IllegalActionException(this,
-            "Index out of range of the values parameter.");
+                    "Index out of range of the values parameter.");
         }
         return val.getElement(index);
     }

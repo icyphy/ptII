@@ -77,7 +77,7 @@ public class Configurer extends JPanel {
 
         _object = object;
         Iterator params
-                = object.attributeList(Parameter.class).iterator();
+            = object.attributeList(Parameter.class).iterator();
         while (params.hasNext()) {
             Parameter param = (Parameter)params.next();
             _originalValues.put(param.getName(), param.stringRepresentation());
@@ -85,7 +85,7 @@ public class Configurer extends JPanel {
 
         boolean foundOne = false;
         Iterator editors
-                = object.attributeList(EditorPaneFactory.class).iterator();
+            = object.attributeList(EditorPaneFactory.class).iterator();
         while (editors.hasNext()) {
             foundOne = true;
             EditorPaneFactory editor = (EditorPaneFactory)editors.next();
@@ -127,7 +127,7 @@ public class Configurer extends JPanel {
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
                     Parameter param =
-                    (Parameter)_object.getAttribute((String)entry.getKey());
+                        (Parameter)_object.getAttribute((String)entry.getKey());
                     param.setExpression((String)entry.getValue());
                 }
             }

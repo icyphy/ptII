@@ -237,7 +237,7 @@ public class ModelPane extends JPanel {
                         Parameter param = (Parameter)params.next();
                         String name = param.getName();
                         _directorQuery.addLine(name, name,
-                        param.stringRepresentation());
+                                param.stringRepresentation());
                         _directorQuery.attachParameter(param, name);
                     }
                     _controlPanel.add(_directorQuery);
@@ -245,9 +245,9 @@ public class ModelPane extends JPanel {
                     // If there are two queries, make them the same width.
                     if (_paramQuery != null) {
                         Dimension modelSize
-                               = _paramQuery.getPreferredSize();
+                            = _paramQuery.getPreferredSize();
                         Dimension directorSize
-                               = _directorQuery.getPreferredSize();
+                            = _directorQuery.getPreferredSize();
                         if (directorSize.width > modelSize.width) {
                             _paramQuery.setPreferredSize(new Dimension(
                                     directorSize.width,

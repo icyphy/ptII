@@ -170,7 +170,7 @@ public class AbsoluteValue extends Transformer {
         public void initialize(Object e)
 		throws IllegalActionException {
 	    throw new IllegalActionException("AbsoluteValue$FunctionTerm." +
-		"initialize: Cannot initialize a function term.");
+                    "initialize: Cannot initialize a function term.");
         }
 
         /** Return false.
@@ -194,8 +194,8 @@ public class AbsoluteValue extends Transformer {
         public void setValue(Object e)
 		throws IllegalActionException {
 	    throw new IllegalActionException(
-		"AbsolutionValue$FunctionTerm.setValue: The type is not " +
-		"settable.");
+                    "AbsolutionValue$FunctionTerm.setValue: The type is not " +
+                    "settable.");
         }
 
         /** Override the base class to give a description of this term.

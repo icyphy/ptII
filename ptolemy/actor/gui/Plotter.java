@@ -59,7 +59,7 @@ the same plot object.
 @version $Id$
  */
 public class Plotter extends TypedAtomicActor
-         implements Configurable, Placeable {
+    implements Configurable, Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -104,11 +104,11 @@ public class Plotter extends TypedAtomicActor
      *   is <i>startingDataset</i> and its value is negative.
      */
     public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == startingDataset) {
             if(((IntToken)startingDataset.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
-                "startingDataset: negative value is not allowed.");
+                        "startingDataset: negative value is not allowed.");
             }
         }
     }
@@ -125,9 +125,9 @@ public class Plotter extends TypedAtomicActor
         newobj.plot = null;
         newobj._frame = null;
         newobj.fillOnWrapup
-                = (Parameter)newobj.getAttribute("fillOnWrapup");
+            = (Parameter)newobj.getAttribute("fillOnWrapup");
         newobj.startingDataset
-                = (Parameter)newobj.getAttribute("startingDataset");
+            = (Parameter)newobj.getAttribute("startingDataset");
         return newobj;
     }
 

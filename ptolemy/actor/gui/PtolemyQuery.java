@@ -52,7 +52,7 @@ to associate that variable with a
 @version $Id$
 */
 public class PtolemyQuery extends Query
-        implements QueryListener, ValueListener {
+    implements QueryListener, ValueListener {
 
     /** Construct a panel with no queries in it.
      */

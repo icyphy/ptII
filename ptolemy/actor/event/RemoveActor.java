@@ -92,7 +92,7 @@ public class RemoveActor extends ChangeRequest {
                 Port port = (Port)ports.next();
                 if (port instanceof IOPort) {
                     farPortList.addAll(
-				((IOPort)port).deepConnectedInPortList());
+                            ((IOPort)port).deepConnectedInPortList());
                 }
                 port.unlinkAll();
             }

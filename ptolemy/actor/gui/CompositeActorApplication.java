@@ -218,9 +218,9 @@ public class CompositeActorApplication implements ExecutionListener {
      */
     public void report(String message, Exception ex) {
         String msg = "Exception thrown.\n" + message + "\n"
-                + ex.toString();
-        System.err.println(msg);
-        ex.printStackTrace();
+            + ex.toString();
+            System.err.println(msg);
+            ex.printStackTrace();
     }
 
     /** If the specified model has a manager and is not already running,
@@ -302,7 +302,7 @@ public class CompositeActorApplication implements ExecutionListener {
                 Object args[] = new Object[1];
                 args[0] = workspace;
                 CompositeActor newModel
-                       = (CompositeActor)constructor.newInstance(args);
+                    = (CompositeActor)constructor.newInstance(args);
 
                 add(newModel);
             } else {
@@ -329,7 +329,7 @@ public class CompositeActorApplication implements ExecutionListener {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                           + arg);
+                            + arg);
                 }
             }
         }
@@ -368,7 +368,7 @@ public class CompositeActorApplication implements ExecutionListener {
             if (!match) {
                 // Unrecognized option.
                 throw new IllegalActionException("Unrecognized option: "
-                + "-" + name);
+                        + "-" + name);
             }
         }
     }

@@ -114,29 +114,29 @@ public class Display extends Sink implements Placeable, SequenceActor {
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
     public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == rowsDisplayed) {
             int numRows = ((IntToken)rowsDisplayed.getToken()).intValue();
             if (numRows <= 0) {
                 throw new IllegalActionException(this,
-                "rowsDisplayed: requires a positive value.");
+                        "rowsDisplayed: requires a positive value.");
             }
             if (textArea != null) {
                 textArea.setRows(numRows);
             }
         }
         /* NOTE: Does not work...
-        else if (attribute == tabSize) {
-            int tab = ((IntToken)tabSize.getToken()).intValue();
-            if(tab <= 0) {
-                throw new IllegalActionException(this,
-                "tabSize: requires a positive value.");
-            }
-            if (textArea != null) {
-                // NOTE: As of jdk 1.3beta the following is ignored.
-                textArea.setTabSize(tab);
-            }
-        }
+           else if (attribute == tabSize) {
+           int tab = ((IntToken)tabSize.getToken()).intValue();
+           if(tab <= 0) {
+           throw new IllegalActionException(this,
+           "tabSize: requires a positive value.");
+           }
+           if (textArea != null) {
+           // NOTE: As of jdk 1.3beta the following is ignored.
+           textArea.setTabSize(tab);
+           }
+           }
         */
     }
 
@@ -173,9 +173,9 @@ public class Display extends Sink implements Placeable, SequenceActor {
             _frame.setVisible(true);
         }
         /*
-        int tab = ((IntToken)tabSize.getToken()).intValue();
-        // NOTE: As of jdk 1.3beta the following is ignored.
-        textArea.setTabSize(tab);
+          int tab = ((IntToken)tabSize.getToken()).intValue();
+          // NOTE: As of jdk 1.3beta the following is ignored.
+          textArea.setTabSize(tab);
         */
     }
 
@@ -243,7 +243,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 // is already where want it).
                 try {
                     int lineOffset = textArea
-                            .getLineStartOffset(textArea.getLineCount() - 1);
+                        .getLineStartOffset(textArea.getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar

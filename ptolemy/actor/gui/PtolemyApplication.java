@@ -90,7 +90,7 @@ public class PtolemyApplication extends MoMLApplication {
         // look and feel of the platform we are running on.
         try {
             UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
+                    UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
@@ -199,7 +199,7 @@ public class PtolemyApplication extends MoMLApplication {
 
                 // Center on screen.
                 Dimension screenSize
-                        = Toolkit.getDefaultToolkit().getScreenSize();
+                    = Toolkit.getDefaultToolkit().getScreenSize();
                 int x = (screenSize.width - frameSize.width) / 2;
                 int y = (screenSize.height - frameSize.height) / 2;
                 frame.setLocation(x, y);
@@ -211,8 +211,8 @@ public class PtolemyApplication extends MoMLApplication {
                 XmlException xmlEx = (XmlException)ex;
                 // FIXME: The file reported below is wrong... Why?
                 report("MoML exception on line " + xmlEx.getLine()
-                + ", column " + xmlEx.getColumn() + ", in entity:\n"
-                + xmlEx.getSystemId(), ex);
+                        + ", column " + xmlEx.getColumn() + ", in entity:\n"
+                        + xmlEx.getSystemId(), ex);
             } else {
                 report("Failed to read file:\n", ex);
             }

@@ -125,19 +125,19 @@ public class ModelFrame extends JFrame implements ExecutionListener {
         };
         // Open button = ctrl-o.
         fileMenuItems[0].setAccelerator(
-            KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 
         // Save button = ctrl-s.
         fileMenuItems[1].setAccelerator(
-            KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 
         // Print button = ctrl-p.
         fileMenuItems[3].setAccelerator(
-            KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
 
         // Close button = ctrl-w.
         fileMenuItems[4].setAccelerator(
-            KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
 
         FileMenuListener fml = new FileMenuListener();
         // Set the action command and listener for each menu item.
@@ -366,12 +366,12 @@ public class ModelFrame extends JFrame implements ExecutionListener {
                         new FileInputStream(_file));
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(this,
-                "File not found:\n" + ex.toString(),
-                "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                        "File not found:\n" + ex.toString(),
+                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                "Error reading input:\n" + ex.toString(),
-                "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                        "Error reading input:\n" + ex.toString(),
+                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -387,8 +387,8 @@ public class ModelFrame extends JFrame implements ExecutionListener {
                 job.print();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
-                "Printing failed:\n" + ex.toString(),
-                "Print Error", JOptionPane.WARNING_MESSAGE);
+                        "Printing failed:\n" + ex.toString(),
+                        "Print Error", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -404,8 +404,8 @@ public class ModelFrame extends JFrame implements ExecutionListener {
                 fout.close();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                "Error writing file:\n" + ex.toString(),
-                "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                        "Error writing file:\n" + ex.toString(),
+                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             _saveAs();

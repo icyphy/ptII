@@ -157,7 +157,7 @@ public class Recorder extends Sink {
      */
     public Token getLatest(int channel) {
         if (_latest == null || channel >= _latest.length ||
-                 _latest[channel] == null) {
+                _latest[channel] == null) {
             return(_bottom);
         }
         return (_latest[channel]);

@@ -86,7 +86,7 @@ public class FileWriter extends Writer {
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == filename) {
             try {
                 StringToken filenameToken = (StringToken)filename.getToken();
@@ -98,7 +98,7 @@ public class FileWriter extends Writer {
                         setWriter(null);
                     } else {
                         java.io.FileWriter writer
-                                = new java.io.FileWriter(newFilename);
+                            = new java.io.FileWriter(newFilename);
                         setWriter(writer);
                     }
                 }

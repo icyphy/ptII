@@ -77,7 +77,7 @@ import java.awt.Container;
  *  @version $Id$
  */
 public class SketchedSource extends Source
-        implements Placeable, SequenceActor {
+    implements Placeable, SequenceActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -133,11 +133,11 @@ public class SketchedSource extends Source
      *   is <i>dataset</i> and its value is negative.
      */
     public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == dataset) {
             if(((IntToken)dataset.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
-                "dataset: negative value is not allowed.");
+                        "dataset: negative value is not allowed.");
             }
             setInitialTrace();
         } else if (attribute == length) {

@@ -86,7 +86,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
         Token current = param.getToken();
         if (!(current instanceof BooleanToken)) {
             throw new IllegalActionException(getContainer(),
-            "CheckBoxStyle can only be used for boolean-valued parameters");
+                    "CheckBoxStyle can only be used for boolean-valued parameters");
         }
         query.addCheckBox(name, name, ((BooleanToken)current).booleanValue());
         query.attachParameter(param, name);

@@ -95,11 +95,11 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         HistogramPlotter newobj =
-                (HistogramPlotter)super.clone(ws);
+            (HistogramPlotter)super.clone(ws);
         newobj.histogram = null;
         newobj._container = null;
         newobj.fillOnWrapup
-                 = (Parameter)newobj.getAttribute("fillOnWrapup");
+            = (Parameter)newobj.getAttribute("fillOnWrapup");
         return newobj;
     }
 

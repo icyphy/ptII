@@ -189,15 +189,15 @@ public class ProcessDirector extends Director {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             /*
-	    CompositeActor containersContainer =
-                (CompositeActor)container.getContainer();
-	    if( containersContainer == null ) {
-		setCurrentTime(0.0);
-	    } else {
-		double time =
-                    containersContainer.getDirector().getCurrentTime();
-                setCurrentTime(time);
-	    }
+              CompositeActor containersContainer =
+              (CompositeActor)container.getContainer();
+              if( containersContainer == null ) {
+              setCurrentTime(0.0);
+              } else {
+              double time =
+              containersContainer.getDirector().getCurrentTime();
+              setCurrentTime(time);
+              }
             */
 
             // Creating threads for all actors;

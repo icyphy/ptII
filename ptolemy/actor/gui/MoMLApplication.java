@@ -156,8 +156,8 @@ public class MoMLApplication extends CompositeActorApplication {
                 XmlException xmlEx = (XmlException)ex;
                 // FIXME: The file reported below is wrong... Why?
                 report("MoML exception on line " + xmlEx.getLine()
-                + ", column " + xmlEx.getColumn() + ", in entity:\n"
-                + xmlEx.getSystemId(), ex);
+                        + ", column " + xmlEx.getColumn() + ", in entity:\n"
+                        + xmlEx.getSystemId(), ex);
             } else {
                 report("Failed to read file:\n", ex);
             }
