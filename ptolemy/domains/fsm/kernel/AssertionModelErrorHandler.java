@@ -36,6 +36,7 @@ import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.fsm.modal.ModalModel;
 
 //////////////////////////////////////////////////////////////////////////
 //// AssertionModelErrorHandler
@@ -45,17 +46,26 @@ A model error is an exception that is passed up the Ptolemy II hierarchy for
 handling until a container with a registered error handler is found.  
 If there is no registered error handler, then the error is ignored.  
 It is like throwing an exception, except that instead of unraveling 
-the calling stack, it travels up the Ptolemy II hierarchy.  
+the calling stack, it travels up the Ptolemy II hierarchy.
+This model error handler is registered with modal models only.  
 This class handles the error by checking if there is at least one non-preemptive
-transition that is enabled. If there is no one existing, the model error (exception)
-will be reported to higher level in hierarchy. If there is at least one, the
-model error is ignored. 
+transition in the controller that is enabled. If there is no one existing, 
+the model error (exception) will be reported to higher level (the container of the
+modal model) in hierarchy. 
+If there is at least one, the model error is ignored. 
 
 @see ModalController
 @author Haiyang Zheng
 @version $Id$
 */
 public class AssertionModelErrorHandler implements ModelErrorHandler {
+
+    /** Associate the modal error handler with the container (modal model).
+     *  @param container The modal model contains the model error handler.
+     */
+    public AssertionModelErrorHandler (ModalModel container) {
+	_container = container;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -76,16 +86,22 @@ public class AssertionModelErrorHandler implements ModelErrorHandler {
         
         if (!exception.getMessage().trim().startsWith("AssertionModelError")) throw exception;
         
-        ((FSMActor) context)._setInputsFromRefinement();  
-        State st = ((FSMActor) context).currentState();     
-        Transition tr = ((FSMActor) context)._chooseTransition(st.nonpreemptiveTransitionList());        
+	FSMActor fsm = ((HSDirector)_container.getDirector()).getController();
+        fsm._setInputsFromRefinement();  
+        State st = fsm.currentState();     
+        Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());        
         
         if (tr == null) {
             //System.out.println("ModelError is not handled but reported to upper level.");
-        	throw exception;
+	    throw exception;
         }
 
         //System.out.println("ModelError is discarded.");
         return true;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private ModalModel _container;
 }
