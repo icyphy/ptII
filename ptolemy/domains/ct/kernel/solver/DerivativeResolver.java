@@ -189,9 +189,6 @@ public class DerivativeResolver extends ODESolver
             _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
             next.emitTentativeOutputs();
         }
-        if(dir.STAT) {
-            dir.NFUNC ++;
-        }
         actors = schedule.get(
                 CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
         while(actors.hasNext()) {

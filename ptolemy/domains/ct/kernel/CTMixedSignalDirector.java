@@ -422,9 +422,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 if(_debugging) _debug(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
                         "due to outside time " +_outsideTime );
-                if(STAT) {
-                    _Nroll ++;
-                }
                 _rollback();
                 // Set a catch-up destination time.
                 fireAt(null, _outsideTime);
@@ -464,23 +461,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     getIterationEndTime(), "End of Prefire");
         }
         return true;
-    }
-
-    /** Show the statistics of the simulation if requested and wrapup
-     *  call actors. The statistics,
-     *  in addition to those in CTDirector, is the number of rollbacks.
-     *
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        if(STAT) {
-            if(_debugging) {
-                _debug(getName() + ": Total # of ROLLBACK " + _Nroll);
-
-            }
-        }
     }
 
     ////////////////////////////////////////////////////////////////////////

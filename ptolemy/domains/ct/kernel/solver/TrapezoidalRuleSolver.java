@@ -239,9 +239,6 @@ public class TrapezoidalRuleSolver extends ODESolver {
         _setConverge(false);
         int iterations = 0;
         while(!_isConverged()) {
-            if(dir.STAT) {
-                dir.NFUNC ++;
-            }
             incrementRound();
             _setConverge(true);
             actors = schedule.get(

@@ -308,9 +308,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public boolean prefire() throws IllegalActionException {
         if(_debugging) _debug(this.getFullName() + "prefire.");
-        if(STAT) {
-            NSTEP++;
-        }
         CompositeActor ca = (CompositeActor) getContainer();
 
         if(!isScheduleValid()) {
@@ -323,7 +320,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             scheduler.getSchedule();
             setScheduleValid(true);
         }
-
         return true;
     }
 

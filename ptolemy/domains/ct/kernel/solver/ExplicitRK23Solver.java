@@ -253,9 +253,6 @@ public class ExplicitRK23Solver extends ODESolver {
         Iterator actors;
         // for the first iteration after a breakpoint, create the history.
         if(dir.isBreakpointIteration()) {
-            if(dir.STAT) {
-                dir.NFUNC ++;
-            }
             actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while(actors.hasNext()) {
                 CTDynamicActor next = (CTDynamicActor)actors.next();
@@ -273,9 +270,6 @@ public class ExplicitRK23Solver extends ODESolver {
             }
         }
         for (int i = 0; i < _timeInc.length; i++) {
-            if(dir.STAT) {
-                dir.NFUNC ++;
-            }
             actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
@@ -294,10 +288,6 @@ public class ExplicitRK23Solver extends ODESolver {
                 next.fire();
             }
             incrementRound();
-        }
-        if(dir.STAT) {
-            // for error control.
-            dir.NFUNC ++;
         }
         return true;
     }

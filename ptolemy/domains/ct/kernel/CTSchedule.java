@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import ptolemy.actor.Actor;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.kernel.util.NamedObj;

@@ -156,9 +156,6 @@ public class ForwardEulerSolver extends FixedStepSolver {
         }
         CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
         resetRound();
-        if(dir.STAT) {
-            dir.NFUNC++;
-        }
         Iterator actors = schedule.get(
                 CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
         while(actors.hasNext()) {

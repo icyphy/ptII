@@ -179,9 +179,6 @@ public class BackwardEulerSolver extends FixedStepSolver {
         _setConvergence(false);
         int iterations = 0;
         while(!_isConverged()) {
-            if(dir.STAT) {
-                dir.NFUNC ++;
-            }
             _setConvergence(true);
             incrementRound();
             actors = schedule.get(
