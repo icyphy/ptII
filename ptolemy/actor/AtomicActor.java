@@ -266,14 +266,15 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Override the base class to ensure that the proposed container
-     *  is an instance of CompositeActor. If it is, call the base class
-     *  setContainer() method.
+     *  is an instance of CompositeActor or null. If it is, call the 
+     *  base class setContainer() method. A null argument will remove
+     *  the actor from its container.
      *
      *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this entity and container are not in the same workspace, or
-     *   if the argument is not a CompositeActor.
+     *   if the argument is not a CompositeActor or null.
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
