@@ -70,6 +70,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII2.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/vol/cooley/cooley1/cxh/tmp/ptII PTIIADM=/vol/cooley/cooley1/cxh/tmp/ptII/adm TAR=/usr/local/bin/tar
 
 USER =		ptII
 PTIIHOME =	/users/ptII
@@ -161,8 +162,7 @@ $(PTIIDIST):
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
 	@echo "Regenerate the documentation with gr and javasound"
-	@echo "  This requires JDK1.3, so run it on doppler"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m -breakiterator" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
