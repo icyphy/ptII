@@ -606,6 +606,31 @@ fi
 cd "$startdir"
 
 #--------------------------------------------------------------------
+#	Test for java.util.Timer, which is used by rtos
+#--------------------------------------------------------------------
+# PTRTOS_DIR is set to rtos and used in
+# $PTII/ptolemy/domains/makefile if rtos was found
+PTRTOS_DIR=
+
+AC_MSG_CHECKING([for java.util.Timer])
+
+# We need to run javac in the config directory so that javac from jdk1.1.6
+# under NT and cygwin works properly
+startdir=`pwd`
+cd "$srcdir/config"
+# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+if $JAVAC javaUtilTimerTest.java ; then
+    AC_MSG_RESULT(ok)
+    PTRTOS_DIR=rtos
+else
+   AC_MSG_WARN(['"$JAVAC" javaUtilTimerTest.java' failed.
+	Perhaps you are running under JDK1.2?
+	java.util.Timer is used in the rtos domain, but you can probably
+	get away without it.])
+fi
+cd "$startdir"
+
+#--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
 #       See if there was a command-line option for where Jini is
 #       If not, look in $PTII/vendors/sun/jini/jini1_0_1
@@ -1065,6 +1090,10 @@ AC_SUBST(PTJAVASOUND_DIR)
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 AC_SUBST(PTJSPACES_DIR)
 
+# Set to rtos and used in
+# $PTII/ptolemy/domains/makefile if javasound was found
+AC_SUBST(PTRTOS_DIR)
+
 # Set to kvm and used in
 # $PTII/ptolemy/apps/makefile if kvm was found
 AC_SUBST(PTKVM_DIR)
@@ -1078,12 +1107,15 @@ AC_SUBST(PTLEGO_DIR)
 # and Legos was found
 AC_SUBST(PTLEJOS_DIR)
 
+# Set to rtos and used in
+# $PTII/ptolemy/domains/makefile if util was found
+AC_SUBST(PTRTOS_DIR)
+
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
 AC_SUBST(PTTINI_DIR)
 
-# Set to soot and used in
-# $PTII/ptolemy/apps/makefile if Soot was found
+# Set to soot and used in $PTII/ptolemy/apps/makefile if Soot was found
 AC_SUBST(PTSOOT_DIR)
 
 # Set to waba and used in
