@@ -58,6 +58,9 @@ public class Query extends JPanel {
     /** Construct a panel with no entries in it.
      */
     public Query() {
+        // FIXME: The layout isn't quite right... When setTextWidth() is
+        // called with a larger number, more space also gets allocated
+        // to the labels, which is not correct...
         _grid = new GridBagLayout();
         _constraints = new GridBagConstraints();
         _constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -152,6 +155,10 @@ public class Query extends JPanel {
      *  called when any of the entries is changed.  Note that "line"
      *  entries only trigger this call when Return is pressed, or
      *  when the entry gains and then loses the keyboard focus.
+     *  Notice that the currently selected line loses focus when the
+     *  panel is destroyed, so notification of any changes that
+     *  have been made will be done at that time.  That notification
+     *  will occur in the UI thread, and may be later than expected.
      *  If the listener has already been added, then do nothing.
      *  @param listener The listener to add.
      */
