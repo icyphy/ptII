@@ -55,11 +55,12 @@ An applet that models the compiled QR algorithm.
 */
 public class QRCompileApplet extends PNApplet implements QueryListener {
 
-////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-/** Initialize the applet.
- */
+
+    /** Initialize the applet.
+     */
 public void init() {
     super.init();
     try {
