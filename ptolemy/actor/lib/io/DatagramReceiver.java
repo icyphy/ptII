@@ -196,15 +196,20 @@ public class DatagramReceiver extends TypedAtomicActor {
      *  has a value of -1, or a socket could not be created.
      *  @exception NameDuplicationException Not throw in this base class.
      */
-    public void preinitialize() throws IllegalActionException,
-            NameDuplicationException {
+    public void preinitialize() throws IllegalActionException /* ,
+            NameDuplicationException */ {
         super.preinitialize();
 
         _overwrite = ((BooleanToken)(localPort.getToken())).booleanValue();
 
         Variable var = (Variable)getAttribute("_evalVar");
         if (var == null) {
-            var = new Variable(this, "_evalVar");
+            try {
+                var = new Variable(this, "_evalVar");
+	    } catch (NameDuplicationException ex) {
+                throw new IllegalActionException(
+                        "Name '_evalVar' is already in use");
+            }
         }
         _evalVar = var;
 
@@ -233,7 +238,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         }
 
         // Allocate a thread to read from the socket.
-        _listenerThread = new ListenerThread(this);
+        _listenerThread = new ListenerThread();
         _listenerThread.start();
         if(_debugging) _debug("Socket-reading thread created & started.");
     }
