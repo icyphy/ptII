@@ -236,7 +236,7 @@ public class DDEReceiver extends TimedQueueReceiver
         Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)
                 ((Actor)getContainer().getContainer()).getDirector();
-	Thread thread = Thread.currentThread();
+	// Thread thread = Thread.currentThread();
 
         synchronized(this) {
             if( time > getCompletionTime() &&
@@ -326,7 +326,13 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
         if( super.hasToken() && !_terminate ) {
 	    // System.out.println("Time is minimum but not unique");
-            return true;
+	    if( !hasNullToken() ) {
+		return true;
+	    } else {
+		super.get();
+		timeKeeper.sendOutNullTokens();
+		return _hasToken(workspace, director, timeKeeper);
+	    }
 	}
 	director.addReadBlock();
 	while( !super.hasToken() && !_terminate ) {
