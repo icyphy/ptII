@@ -2701,6 +2701,10 @@ public class XmlParser {
 
   /**
     * Retrieve the default value type of a declared attribute.
+    * @param name The name of the element.
+    * @param aname The name of the attribute.
+    * @return ATTRIBUTE_DEFAULT_UNDECLARED if the attribute
+    * cannot be found, otherwise return an integer. 
     * @see #ATTRIBUTE_DEFAULT_SPECIFIED
     * @see #ATTRIBUTE_DEFAULT_IMPLIED
     * @see #ATTRIBUTE_DEFAULT_REQUIRED
@@ -2761,6 +2765,8 @@ public class XmlParser {
   /**
     * Retrieve the three-member array representing an
     * attribute declaration.
+    * @param elName The name of the element.
+    * @param name The name of the attribute.
     */
   Object[] getAttribute (String elName, String name)
   {
@@ -2798,7 +2804,9 @@ public class XmlParser {
   }
 
 
-    /** Return the current element */
+    /** Return the current element.
+     *  @return The current Element.  
+     */
     public String getCurrentElement() {
         // Ptolemy localization for MoMLParser so that we 
         // can get the currentElement from within MoMLParser.attribute()
@@ -2807,6 +2815,7 @@ public class XmlParser {
 
   /**
     * Find the type of an entity.
+    * @param ename The name of the entity.
     * @return An integer constant representing the entity type.
     * @see #ENTITY_UNDECLARED
     * @see #ENTITY_INTERNAL
@@ -2883,7 +2892,7 @@ public class XmlParser {
 
   /**
     * Get the notation name associated with an NDATA entity.
-    * @param ename The NDATA entity name.
+    * @param eName The NDATA entity name.
     * @return The associated notation name, or null if the
     *         entity was not declared, or if it is not an
     *         NDATA entity.
@@ -3038,6 +3047,7 @@ public class XmlParser {
 
   /**
     * Return the current line number.
+    * @return The current line number.
     */
   public int getLineNumber ()
   {
@@ -3047,6 +3057,7 @@ public class XmlParser {
 
   /**
     * Return the current column number.
+    * @return The current column number.
     */
   public int getColumnNumber ()
   {
