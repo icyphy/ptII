@@ -1,4 +1,4 @@
-/* A scheduler for the SR domain.
+/* A randomized scheduler for the SR domain.
 
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
@@ -48,7 +48,7 @@ import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// SRScheduler
+//// SRRandomizedScheduler
 /**
 A scheduler the Synchronous Reactive (SR) domain.  The schedule is simply 
 an ordering of all the actors.  The director should cycle through this 
@@ -63,12 +63,12 @@ FIXME: Add more comments after more code is written.
 @author Paul Whitaker
 @version $Id$
 */
-public class SRScheduler extends Scheduler {
+public class SRRandomizedScheduler extends Scheduler {
 
     /** Construct a SR scheduler with no container (director)
      *  in the default workspace.
      */
-    public SRScheduler() {
+    public SRRandomizedScheduler() {
         super();
     }
 
@@ -78,7 +78,7 @@ public class SRScheduler extends Scheduler {
      *  Increment the version number of the workspace.
      *  @param workspace Object for synchronization and version tracking.
      */
-    public SRScheduler(Workspace workspace) {
+    public SRRandomizedScheduler(Workspace workspace) {
         super(workspace);
     }
 
@@ -95,7 +95,7 @@ public class SRScheduler extends Scheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public SRScheduler(Director container, String name)
+    public SRRandomizedScheduler(Director container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -139,3 +139,13 @@ public class SRScheduler extends Scheduler {
     }
 
 }
+
+
+
+
+
+
+
+
+
+

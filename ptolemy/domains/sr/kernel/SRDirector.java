@@ -40,6 +40,7 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -53,6 +54,8 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -91,7 +94,7 @@ An actor is considered <i>allowed to fire</i> if its prefire()
 method has returned true.  An actor is considered <i>allowed to iterate</i>
 if its postfire() method has not returned false.
 <p>
-The SRScheduler returns an ordering of the actors.  SR semantics do not
+A scheduler returns an ordering of the actors.  SR semantics do not
 require any specific ordering of actor firings, so the ordering exists only
 to attempt to reduce the computation time required for a given iteration to
 converge.  In the course of an iteration, the director cycles through the 
@@ -163,8 +166,42 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public Parameter iterations;
 
+    /** The name of the scheduler to be used.  The default is a String
+     *  "ptolemy.domains.sr.kernel.SRRandomizedScheduler".
+     */
+    public Parameter scheduler;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute. If the changed attribute matches
+     *  a parameter of the director, then the corresponding private copy of the
+     *  parameter value will be updated.
+     *  In particular, if the <i>scheduler</i> parameter is changed, then
+     *  the corresponding scheduler will be instantiated.  However, 
+     *  setScheduler() will not be called until the next invocation of 
+     *  prefire().
+     *  @param param The changed parameter.
+     *  @exception IllegalActionException If the new scheduler that is 
+     *   specified is not valid.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == scheduler) {
+            _debug(getFullName() + " updating scheduler...");
+            String schedulerClassName =
+                ((StringToken)scheduler.getToken()).stringValue();
+            if (_isValidSchedulerClassName(schedulerClassName)) {
+                _schedulerClassName = schedulerClassName;
+                _updateScheduler = true;
+            } else {
+                throw new IllegalActionException(this,
+                        "Unrecognized SR scheduler: " + schedulerClassName);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Fire contained actors until the iteration converges.  This method
      *  also calls the prefire() method of an actor before it is fired for
@@ -305,7 +342,10 @@ public class SRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
-
+        if (_updateScheduler) {
+            _setNewScheduler(_schedulerClassName);
+            _updateScheduler = false;
+        }
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
     }
@@ -440,11 +480,11 @@ public class SRDirector extends StaticSchedulingDirector {
      *   associated scheduler.
      */
     private Schedule _getSchedule() throws IllegalActionException {
-        Scheduler scheduler = getScheduler();
-        if (scheduler == null)
+        Scheduler sched = getScheduler();
+        if (sched == null)
             throw new IllegalActionException(this,
                     "SRDirector has no associated scheduler.");
-        return scheduler.getSchedule();
+        return sched.getSchedule();
     }
 
     /** Return true if this iteration has converged.  The iteration has
@@ -509,20 +549,14 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Initialize the director by creating the scheduler and the parameters.
      */
     private void _init() {
-        try {
-            SRScheduler scheduler = 
-                new SRScheduler(this, uniqueName("Scheduler"));
-            setScheduler(scheduler);
-        }
-        catch (Exception ex) {
-            // if setScheduler fails, then we should just set it to null.
-            // This should never happen because we don't override
-            // setScheduler() to do sanity checks.
-            throw new InternalErrorException(
-                    "Cannot create SRScheduler:\n" + ex.getMessage());
-        }
-
 	try {
+            String schedulerClassName =
+                "ptolemy.domains.sr.kernel.SRRandomizedScheduler";
+            scheduler = new Parameter(
+                    this, "scheduler", new StringToken(schedulerClassName));
+            scheduler.setTypeEquals(BaseType.STRING);
+            attributeChanged(scheduler);
+
 	    iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
 	    setCurrentTime(0.0);
@@ -555,6 +589,53 @@ public class SRDirector extends StaticSchedulingDirector {
 
         //_resetAllReceivers();
         //_currentNumOfKnownReceivers = 0;
+    }
+
+    /** Instantiate a scheduler from its classname. Given the scheduler's full
+     *  class name, this method will try to instantiate it by looking
+     *  for the java class.
+     *  @param className The scheduler's full class name.
+     *  @exception IllegalActionException If the scheduler is unable to be
+     *       created.
+     */
+    protected Scheduler _instantiateScheduler(String className)
+            throws IllegalActionException {
+        Scheduler newScheduler;
+        if(_debugging) _debug("instantiating scheduler..." + className);
+        try {
+            Class constructorParameters[] = new Class[2];
+            String directorClassName = "ptolemy.actor.Director";
+            // Constructor parameters are Director and String 
+            constructorParameters[0] = Class.forName(directorClassName);
+            constructorParameters[1] = directorClassName.getClass();
+            Class schedulerClass = Class.forName(className);
+            Constructor schedulerConstructor =
+                schedulerClass.getDeclaredConstructor(constructorParameters);
+            Object constructorArguments[] = new Object[2];
+            constructorArguments[0] = this;
+            constructorArguments[1] = uniqueName("Scheduler");
+            newScheduler = (Scheduler)
+                schedulerConstructor.newInstance(constructorArguments);
+        } catch(ClassNotFoundException e) {
+            throw new IllegalActionException(this, "Scheduler: "+
+                    className + " not found.");
+        } catch(InstantiationException e) {
+            throw new IllegalActionException(this, "Scheduler: "+
+                    className + " instantiation failed.");
+        } catch(IllegalAccessException e) {
+            throw new IllegalActionException(this, "Scheduler: "+
+                    className + " not accessible.");
+        } catch(NoSuchMethodException e) {
+            throw new IllegalActionException(this, "Scheduler: "+
+                    className + " has no constructor that takes a "+
+                    "Director and a String.");
+        } catch(InvocationTargetException e) {
+            throw new IllegalActionException(this, "Scheduler: "+
+                    className + " constructor threw exception: "+
+                    e.getMessage());
+        }
+
+        return newScheduler;
     }
 
     /** Return true if the specified actor is finished firing.  An actor 
@@ -611,6 +692,17 @@ public class SRDirector extends StaticSchedulingDirector {
         if (_isNonStrict(actor)) return true;
 
         return _areAllInputsKnown(actor);
+    }
+
+    /** Return true if and only if the argument is the class name of a valid
+     *  scheduler for this domain.
+     */
+    private boolean _isValidSchedulerClassName(String name) {
+        if (name.equals("ptolemy.domains.sr.kernel.SRRandomizedScheduler"))
+                   return true;
+        if (name.equals("ptolemy.domains.sr.kernel.SROptimizedScheduler"))
+                   return true;
+        return false;
     }
 
     /** Return the number of actors that are allowed to fire.
@@ -676,6 +768,24 @@ public class SRDirector extends StaticSchedulingDirector {
         }
     }
 
+
+    /** Create a new scheduler, and set it as the new scheduler.
+     */
+    private void _setNewScheduler(String className)
+            throws IllegalActionException {
+        try {
+            Scheduler oldScheduler = getScheduler();
+            if (oldScheduler != null) {
+                oldScheduler.setContainer(null);
+            }
+            Scheduler newScheduler = _instantiateScheduler(className);
+            setScheduler(newScheduler);
+        } catch (NameDuplicationException ex) {
+            throw new IllegalActionException(this, "SRDirector cannot"
+                    + " set scheduler to " + className + ".");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -717,6 +827,13 @@ public class SRDirector extends StaticSchedulingDirector {
 
     // List of all receivers this director has created.
     private List _receivers;
+
+    // The name of the scheduler to be used, which depends on the scheduler 
+    // parameter.
+    private String _schedulerClassName;
+
+    // A flag indicating whether the scheduler must be updated.
+    private boolean _updateScheduler;
 
     // The name of an attribute that marks an actor as non strict.
     private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";

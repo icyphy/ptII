@@ -152,7 +152,7 @@ public class SRReceiver extends Mailbox {
         if (isKnown()) {
             if (hasToken()) {
                 try {
-                    if ( (token.getType() == _token.getType()) &&
+                    if ( (token.getType().isEqualTo( _token.getType())) &&
                             (token.isEqualTo(_token).booleanValue()) ) {
                         // Do nothing, because this token was already present.
                     } else {
