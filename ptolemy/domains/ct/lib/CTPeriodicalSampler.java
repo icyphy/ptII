@@ -90,10 +90,12 @@ public class CTPeriodicalSampler extends CTActor
      *  greater than the current time.
      */
     public boolean prefire() throws IllegalActionException {
+        /*
         if(!(getDirector() instanceof CTMixedSignalDirector)) {
             throw new IllegalActionException(this,
                 " Must be executed after a CTMixedSignalDirector.");
         }
+        */
         updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         boolean hasjump = false;

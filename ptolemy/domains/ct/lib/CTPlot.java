@@ -220,7 +220,7 @@ public class  CTPlot extends CTActor {
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == width) {
             throw new InternalErrorException(
-                "Discrete event scheduling error. DEPlot fired, but there "
+                "scheduling error. CTPlot fired, but there "
                 + "is no input data.");
         }
     }
