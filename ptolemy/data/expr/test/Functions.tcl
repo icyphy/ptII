@@ -1153,6 +1153,100 @@ test Function-toString {Test toString} {
 ####################################################################
 ####################################################################
 ####################################################################
+
+####################################################################
+# convolve
+
+test Function-convolve {Test convolve} {
+    list [evaluate {convolve({0.0F}, {0.0F})}] \
+    } {{{0.0}}}
+
+####################################################################
+# decibel
+
+test Function-decibel {Test decibel} {
+    list [evaluate {decibel({10.0F})}] \
+    } {{{20.0}}}
+
+####################################################################
+# downsample
+
+test Function-downsample {Test downsample} {
+    list [evaluate {downsample({1.0F, 2.0F, 3.0F, 4.0F}, 2)}] \
+    } {{{1.0, 3.0}}}
+
+####################################################################
+# generateBartlettWindow
+
+test Function-generateBartlettWindow {Test generateBartlettWindow} {
+    list [evaluate {generateBartlettWindow(1)}] \
+    } {{{NaN}}}
+
+####################################################################
+# generateBlackmanWindow
+
+test Function-generateBlackmanWindow {Test generateBlackmanWindow} {
+    list [evaluate {generateBlackmanWindow(1)}] \
+    } {{{NaN}}}
+
+####################################################################
+# generateBlackmanHarrisWindow
+
+test Function-generateBlackmanHarrisWindow {Test generateBlackmanHarrisWindow} {
+    list [evaluate {generateBlackmanHarrisWindow(1)}] \
+    } {{{NaN}}}
+
+####################################################################
+# generateHammingWindow
+
+test Function-generateHammingWindow {Test generateHammingWindow} {
+    list [evaluate {generateHammingWindow(1)}] \
+    } {{{NaN}}}
+
+####################################################################
+# generateHanningWindow
+
+test Function-generateHanningWindow {Test generateHanningWindow} {
+    list [evaluate {generateHanningWindow(1)}] \
+    } {{{NaN}}}
+
+####################################################################
+# generateRectangularWindow
+
+test Function-generateRectangularWindow {Test generateRectangularWindow} {
+    list [evaluate {generateRectangularWindow(1)}] \
+    } {{{1.0}}}
+
+####################################################################
+# generateWindow
+
+test Function-generateWindow {Test generateWindow} {
+    list [evaluate {generateWindow(1, 3)}] \
+    } {{{NaN}}}
+
+####################################################################
+# nextPowerOfTwo
+
+test Function-nextPowerOfTwo {Test nextPowerOfTwo} {
+    list [evaluate {nextPowerOfTwo(5.0F)}] \
+    } {8}
+
+####################################################################
+# order
+
+test Function-order {Test order} {
+    list [evaluate {order(5)}] \
+    } {3}
+
+####################################################################
+# FIXME: Got to here.
+
+
+####################################################################
+####################################################################
+####################################################################
+####################################################################
+####################################################################
 # FIXME: Organize the following
 
 
