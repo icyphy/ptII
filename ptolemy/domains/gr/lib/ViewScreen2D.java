@@ -29,13 +29,21 @@
 */
 package ptolemy.domains.gr.lib;
 
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.JCanvas;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.JFrame;
+import javax.swing.event.MouseInputAdapter;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.apps.superb.actor.lib.ViewScreen2DListener;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
@@ -48,15 +56,14 @@ import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
-import java.util.Iterator;
-
-import javax.swing.JFrame;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.GraphicsPane;
+import diva.canvas.JCanvas;
+import diva.canvas.OverlayLayer;
+import diva.canvas.event.EventLayer;
+import diva.canvas.interactor.DragInteractor;
+import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreen
@@ -69,7 +76,7 @@ A sink actor that renders a two-dimensional scene into a display screen.
 @since Ptolemy II 1.0
 */
 public class ViewScreen2D extends GRActor2D
-    implements Placeable, ViewScreenInterface {
+    implements Placeable, ViewScreenInterface{
 
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -146,7 +153,7 @@ public class ViewScreen2D extends GRActor2D
     /** Boolean variable that determines if the user is allowed to
      *   scale the scene.
      *  This parameter should contain a BooleanToken.
-     *  The default value of this parameter is BooleanToken false.
+     *  The default value of this parameter is BooleanToken false.Th
      */
     public Parameter scalable;
 
@@ -294,6 +301,8 @@ public class ViewScreen2D extends GRActor2D
         }
         GraphicsPane pane = new GraphicsPane();
         _layer = pane.getForegroundLayer();
+        _overlayLayer = new OverlayLayer();
+        
         _canvas = new JCanvas(pane);
        
         _container.add("Center", _canvas);
@@ -306,7 +315,26 @@ public class ViewScreen2D extends GRActor2D
         if(_frame != null) {
             _frame.pack();
         }
-        pane.translate(_container.getWidth()/2, _container.getHeight()/2);
+        
+        _origin = new Point2D.Double(_container.getWidth()/2, _container.getHeight()/2);
+        pane.translate(_origin.x, _origin.y);       
+        pane.setAntialiasing(true);
+        
+        _crosshairX = new BasicFigure(new Line2D.Double(0,2,0,-2));
+        _crosshairY = new BasicFigure(new Line2D.Double(2,0,-2,0));
+        
+        _eventHandler = new ViewScreen2DListener(
+            _crosshairX.getBounds(), _crosshairY.getBounds(), _origin, _canvas);
+        _eventLayer  = new EventLayer();
+        _eventLayer.addLayerListener(_eventHandler);
+        _eventLayer.addLayerMotionListener(_eventHandler);
+        _overlayLayer.add(_crosshairX.getShape());
+        _overlayLayer.add(_crosshairY.getShape());
+        pane.setOverlayLayer(_overlayLayer);
+        pane.setForegroundEventLayer(_eventLayer);
+        
+        Graphics2D graphics = (Graphics2D)_container.getGraphics();
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
     }
 
     /** Setup the scene graph connections of this actor.  
@@ -342,7 +370,8 @@ public class ViewScreen2D extends GRActor2D
     protected boolean _isTranslatable() throws IllegalActionException  {
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
-
+    
+    
     // The diva canvas component.
     private JCanvas _canvas;
     // The container set in the place() method, or the content pane of the
@@ -352,5 +381,19 @@ public class ViewScreen2D extends GRActor2D
     private JFrame _frame;
     // The Figure layer we are using.
     private FigureLayer _layer;
+    
+    private OverlayLayer _overlayLayer;
+    
+    private EventLayer _eventLayer; 
+    
+    private Point2D.Double _origin;
+    
+    private DragInteractor dragInteractor;
+    
+    private MouseInputAdapter mouseAdapter;
+    
+    private BasicFigure _crosshairX;
+    private BasicFigure _crosshairY;
+    private ViewScreen2DListener _eventHandler;
 }
 
