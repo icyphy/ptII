@@ -71,11 +71,11 @@ from or write to the receiver and resumes it only after a request to resume the
 process has been received.
 <p>
 
-@author Mudit Goel, John S. Davis II
+@author Mudit Goel, John S. Davis II, Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.2
-@Pt.ProposedRating Green (mudit)
-@Pt.AcceptedRating Green (davisj)
+@Pt.ProposedRating Yellow (eal)
+@Pt.AcceptedRating Red (hyzheng)
 @see QueueReceiver
 @see ptolemy.actor.QueueReceiver
 */
@@ -132,7 +132,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public void setContainer(IOPort port) throws IllegalActionException {
     	super.setContainer(port);
         Director director = ((Actor)
-                (getContainer().getContainer())).getExecutiveDirector();
+                (getContainer().getContainer())).getDirector();
         if (!(director instanceof PNDirector)) {
         	throw new IllegalActionException(port,
                     "Cannot use an instance of PNQueueReceiver " +
