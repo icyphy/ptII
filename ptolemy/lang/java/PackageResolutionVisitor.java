@@ -75,6 +75,15 @@ public class PackageResolutionVisitor extends JavaVisitor
             thePkgDecl = StaticResolution.UNNAMED_PACKAGE;
         } else {
 
+
+            if (StaticResolution.SYSTEM_PACKAGE == null) {
+                System.err.println("Warning: PackageResolutionVisitor"
+                        + ".visitCompileUnitNode(): "
+                        + "StaticResolution.SYSTEM_PACKAGE == null,"
+                        + "calling StaticResolution.setup");
+                StaticResolution.setup();
+            }
+
             NameNode name = (NameNode) StaticResolution.resolveAName(
                     (NameNode) pkgDeclNode,
                     StaticResolution.SYSTEM_PACKAGE.getScope(), null, null, CG_PACKAGE);
