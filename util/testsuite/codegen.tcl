@@ -423,9 +423,15 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	set timeout 1200000
 	puts "Setting watchdog for $timeout milliseconds"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
-	set results [exec make -C ../cg/$modelName MODEL=$modelName \
-	    SOURCECLASS=$modelPath $command]
-	$watchDog cancel
+	if [catch {set results [exec make -C ../cg/$modelName \
+		MODEL=$modelName \
+		SOURCECLASS=$modelPath $command]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+	} else {
+	    $watchDog cancel
+	}
+
 	puts $results
     }
 
