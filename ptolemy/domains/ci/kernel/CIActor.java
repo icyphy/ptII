@@ -80,7 +80,7 @@ public class CIActor extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-     // The director.
+    // The director.
     private CIDirector _director;
 
 }

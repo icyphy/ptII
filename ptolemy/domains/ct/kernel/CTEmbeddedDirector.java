@@ -187,7 +187,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
         while (waveGenerators.hasNext() && !_stopRequested) {
             CTWaveformGenerator generator =
-                    (CTWaveformGenerator) waveGenerators.next();
+                (CTWaveformGenerator) waveGenerators.next();
             if (!isPrefireComplete(generator)) {
                 setPrefireComplete(generator);
                 if (_debugging) {
@@ -198,10 +198,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 }
                 if (!generator.prefire()) {
                     throw new IllegalActionException((Nameable)generator,
-                    "Actor is not ready to fire. In the CT domain, all "
-                    + "generator actors should be ready to fire at all "
-                    + " times.\nDoes the actor only operate on sequence "
-                    + "of tokens?");
+                            "Actor is not ready to fire. In the CT domain, all "
+                            + "generator actors should be ready to fire at all "
+                            + " times.\nDoes the actor only operate on sequence "
+                            + "of tokens?");
                 }
             }
             if (_debugging) {

@@ -224,7 +224,7 @@ public class BusContentionApplet extends PtolemyApplet {
      *  hasn't yet been displayed.
      */
     public void start() {
-         _doLayout(_graph, _jgraph.getGraphPane());
+        _doLayout(_graph, _jgraph.getGraphPane());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -267,7 +267,7 @@ public class BusContentionApplet extends PtolemyApplet {
         model.setEdgeHead(this, e, n1);
         model.setEdgeTail(this, e, n2);
 
-         e = model.createEdge(null);
+        e = model.createEdge(null);
         model.setEdgeHead(this, e, n1);
         model.setEdgeTail(this, e, n4);
 
@@ -303,15 +303,15 @@ public class BusContentionApplet extends PtolemyApplet {
             final GraphController gc = gp.getGraphController();
             final GraphPane pane = gp;
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // Layout is a bit stupid
-                    LayoutTarget target = new BasicLayoutTarget(gc);
-                    LevelLayout staticLayout = new LevelLayout(target);
-                    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-                    staticLayout.layout(layoutGraph.getRoot());
-                    pane.repaint();
-                }
-            });
+                    public void run() {
+                        // Layout is a bit stupid
+                        LayoutTarget target = new BasicLayoutTarget(gc);
+                        LevelLayout staticLayout = new LevelLayout(target);
+                        staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+                        staticLayout.layout(layoutGraph.getRoot());
+                        pane.repaint();
+                    }
+                });
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -461,17 +461,17 @@ public class BusContentionApplet extends PtolemyApplet {
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
-                    public void run() {
-                        if (state == ExecEvent.WAITING)
-                            figure.setFillPaint(Color.yellow);
-                        else if (state == ExecEvent.ACCESSING)
-                            figure.setFillPaint(Color.green);
-                        else if (state == ExecEvent.BLOCKED)
-                            figure.setFillPaint(Color.red);
-                        else
-                            System.err.println("Unknown state: " + state);
-                    }
-                });
+                        public void run() {
+                            if (state == ExecEvent.WAITING)
+                                figure.setFillPaint(Color.yellow);
+                            else if (state == ExecEvent.ACCESSING)
+                                figure.setFillPaint(Color.green);
+                            else if (state == ExecEvent.BLOCKED)
+                                figure.setFillPaint(Color.red);
+                            else
+                                System.err.println("Unknown state: " + state);
+                        }
+                    });
             }
             catch (Exception e) {
                 e.printStackTrace();

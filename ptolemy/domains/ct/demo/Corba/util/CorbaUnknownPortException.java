@@ -10,17 +10,17 @@ package ptolemy.domains.ct.demo.Corba.util;
 
 public final class CorbaUnknownPortException extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity
 {
-  public String portName = null;
-  public String message = null;
+    public String portName = null;
+    public String message = null;
 
-  public CorbaUnknownPortException ()
-  {
-  } // ctor
+    public CorbaUnknownPortException ()
+    {
+    } // ctor
 
-  public CorbaUnknownPortException (String _portName, String _message)
-  {
-    portName = _portName;
-    message = _message;
-  } // ctor
+    public CorbaUnknownPortException (String _portName, String _message)
+    {
+        portName = _portName;
+        message = _message;
+    } // ctor
 
 } // class CorbaUnknownPortException

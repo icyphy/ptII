@@ -205,7 +205,7 @@ public class FeedBackDelay extends DDEActor {
         Receiver[][] receivers = output.getRemoteReceivers();
         for ( int i = 0; i < receivers.length; i++ ) {
             for ( int j = 0; j < receivers[i].length; j++ ) {
-                    DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
+                DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( new Token(), PrioritizedTimedQueue.IGNORE );
             }
         }
@@ -231,7 +231,7 @@ public class FeedBackDelay extends DDEActor {
             (Receiver[][])output.getRemoteReceivers();
         for ( int i = 0; i < receivers.length; i++ ) {
             for ( int j = 0; j < receivers[i].length; j++ ) {
-                    DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
+                DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( token, time );
             }
         }
@@ -240,7 +240,7 @@ public class FeedBackDelay extends DDEActor {
     /** Syntactic sugar for initializing parameters.
      */
     private void _setVariables() throws IllegalActionException,
-                NameDuplicationException {
+            NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.GENERAL);

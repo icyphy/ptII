@@ -10,15 +10,15 @@ package ptolemy.domains.ct.demo.Corba.util;
 
 public final class CorbaIndexOutofBoundException extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity
 {
-  public short index = (short)0;
+    public short index = (short)0;
 
-  public CorbaIndexOutofBoundException ()
-  {
-  } // ctor
+    public CorbaIndexOutofBoundException ()
+    {
+    } // ctor
 
-  public CorbaIndexOutofBoundException (short _index)
-  {
-    index = _index;
-  } // ctor
+    public CorbaIndexOutofBoundException (short _index)
+    {
+        index = _index;
+    } // ctor
 
 } // class CorbaIndexOutofBoundException

@@ -335,7 +335,7 @@ public class DiningApplet extends Applet
         NumberFormat nf = NumberFormat.getNumberInstance();
         public void run() {
             while ( true ) {
-                    if ( simulationThread == null ) {
+                if ( simulationThread == null ) {
                     return;
                 } else if ( !simulationThread.isAlive() ) {
                     return;

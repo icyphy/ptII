@@ -345,7 +345,7 @@ public class ConditionalBranchController {
      */
     protected void _branchUnblocked(CSPReceiver receiver) {
         synchronized(_internalLock) {
-             if (_blocked) {
+            if (_blocked) {
                 if (_branchesBlocked != _branchesStarted) {
                     throw new InternalErrorException(
                             ((Nameable)getParent()).getName() +

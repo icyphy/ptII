@@ -10,17 +10,17 @@ package ptolemy.domains.ct.demo.Corba.util;
 
 public final class CorbaUnknownParamException extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity
 {
-  public String paramName = null;
-  public String message = null;
+    public String paramName = null;
+    public String message = null;
 
-  public CorbaUnknownParamException ()
-  {
-  } // ctor
+    public CorbaUnknownParamException ()
+    {
+    } // ctor
 
-  public CorbaUnknownParamException (String _paramName, String _message)
-  {
-    paramName = _paramName;
-    message = _message;
-  } // ctor
+    public CorbaUnknownParamException (String _paramName, String _message)
+    {
+        paramName = _paramName;
+        message = _message;
+    } // ctor
 
 } // class CorbaUnknownParamException

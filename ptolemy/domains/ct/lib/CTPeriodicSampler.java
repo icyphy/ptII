@@ -145,7 +145,7 @@ public class CTPeriodicSampler extends Transformer
                 }
             }
             if (_debugging) _debug(getFullName(), " produces event at: "
-                + getDirector().getCurrentTime());
+                    + getDirector().getCurrentTime());
         }
     }
 
@@ -189,7 +189,7 @@ public class CTPeriodicSampler extends Transformer
             // register for the next event.
             _nextSamplingTime += _samplePeriod;
             if (_debugging) _debug(getFullName(), "request fire at"
-                + _nextSamplingTime);
+                    + _nextSamplingTime);
             // The null argument prevents the triple firing that would
             // otherwise occur.
             getDirector().fireAt(null, _nextSamplingTime);

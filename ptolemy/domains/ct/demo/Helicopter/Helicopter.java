@@ -215,7 +215,7 @@ public class Helicopter extends TypedCompositeActor {
             Port p = ent.getPort("inputPx");
             if (p != null) {
                 p.link(rSubPx);
-                }
+            }
             p = ent.getPort("inputDPx");
             if (p != null) {
                 p.link(rSubDPx);
@@ -584,41 +584,41 @@ public class Helicopter extends TypedCompositeActor {
             break;
         }
         /*
-        ZeroOrderHold hPx = new ZeroOrderHold(sub, "HPx");
-        ZeroOrderHold hDPx = new ZeroOrderHold(sub, "HDPx");
-        ZeroOrderHold hDDPx = new ZeroOrderHold(sub, "HDDPx");
-        ZeroOrderHold hD3Px = new ZeroOrderHold(sub, "HD3Px");
-        ZeroOrderHold hD4Px = new ZeroOrderHold(sub, "HD4Px");
-        ZeroOrderHold hPz = new ZeroOrderHold(sub, "HPz");
-        ZeroOrderHold hDPz = new ZeroOrderHold(sub, "HDPz");
-        ZeroOrderHold hDDPz = new ZeroOrderHold(sub, "HDDPz");
-        ZeroOrderHold hD3Pz = new ZeroOrderHold(sub, "HD3Pz");
-        ZeroOrderHold hD4Pz = new ZeroOrderHold(sub, "HD4Pz");
+          ZeroOrderHold hPx = new ZeroOrderHold(sub, "HPx");
+          ZeroOrderHold hDPx = new ZeroOrderHold(sub, "HDPx");
+          ZeroOrderHold hDDPx = new ZeroOrderHold(sub, "HDDPx");
+          ZeroOrderHold hD3Px = new ZeroOrderHold(sub, "HD3Px");
+          ZeroOrderHold hD4Px = new ZeroOrderHold(sub, "HD4Px");
+          ZeroOrderHold hPz = new ZeroOrderHold(sub, "HPz");
+          ZeroOrderHold hDPz = new ZeroOrderHold(sub, "HDPz");
+          ZeroOrderHold hDDPz = new ZeroOrderHold(sub, "HDDPz");
+          ZeroOrderHold hD3Pz = new ZeroOrderHold(sub, "HD3Pz");
+          ZeroOrderHold hD4Pz = new ZeroOrderHold(sub, "HD4Pz");
 
-        sub.connect(hPx.input, subinPx);
-        sub.connect(hDPx.input, subinDPx);
-        sub.connect(hDDPx.input, subinDDPx);
-        sub.connect(hD3Px.input, subinD3Px);
-        sub.connect(hD4Px.input, subinD4Px);
+          sub.connect(hPx.input, subinPx);
+          sub.connect(hDPx.input, subinDPx);
+          sub.connect(hDDPx.input, subinDDPx);
+          sub.connect(hD3Px.input, subinD3Px);
+          sub.connect(hD4Px.input, subinD4Px);
 
-        Relation rInPz = sub.connect(hPz.input, subinPz);
-        sub.connect(hDPz.input, subinDPz);
-        sub.connect(hDDPz.input, subinDDPz);
-        sub.connect(hD3Pz.input, subinD3Pz);
-        sub.connect(hD4Pz.input, subinD4Pz);
+          Relation rInPz = sub.connect(hPz.input, subinPz);
+          sub.connect(hDPz.input, subinDPz);
+          sub.connect(hDDPz.input, subinDDPz);
+          sub.connect(hD3Pz.input, subinD3Pz);
+          sub.connect(hD4Pz.input, subinD4Pz);
 
-        sub.connect(hPx.output, (ComponentPort)lin.getPort("inputPx"));
-        sub.connect(hDPx.output, (ComponentPort)lin.getPort("inputDPx"));
-        sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
-        sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
-        sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
+          sub.connect(hPx.output, (ComponentPort)lin.getPort("inputPx"));
+          sub.connect(hDPx.output, (ComponentPort)lin.getPort("inputDPx"));
+          sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
+          sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
+          sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
 
-        sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
-        sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
-        sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
-        sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
-        sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
-         */
+          sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
+          sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
+          sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
+          sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
+          sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
+        */
 
         sub.connect(subinPx, (ComponentPort)lin.getPort("inputPx"));
         sub.connect(subinDPx, (ComponentPort)lin.getPort("inputDPx"));
@@ -627,7 +627,7 @@ public class Helicopter extends TypedCompositeActor {
         sub.connect(subinD4Px, (ComponentPort)lin.getPort("inputD4Px"));
 
         Relation rInPz = sub.connect(subinPz,
-            (ComponentPort)lin.getPort("inputPz"));
+                (ComponentPort)lin.getPort("inputPz"));
         //sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
         sub.connect(subinDPz, (ComponentPort)lin.getPort("inputDPz"));
         sub.connect(subinDDPz, (ComponentPort)lin.getPort("inputDDPz"));

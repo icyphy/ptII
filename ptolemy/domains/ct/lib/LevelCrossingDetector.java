@@ -202,10 +202,10 @@ public class LevelCrossingDetector extends Transformer
                 // Emit event.
                 if (_debugging) {
                     _debug(getFullName() + " Emitting event: " +
-                           (_inputToken != null
-                            ? _inputToken.toString()
-                            : "inputToken == null, sending "
-                            + "defaultEventValue.getToken()"));
+                            (_inputToken != null
+                                    ? _inputToken.toString()
+                                    : "inputToken == null, sending "
+                                    + "defaultEventValue.getToken()"));
                 }
                 if (_inputToken != null) {
                     output.send(0, _inputToken);
@@ -268,7 +268,7 @@ public class LevelCrossingDetector extends Transformer
         if (((CTDirector)getDirector()).isBreakpointIteration()) {
             // Check if the discontinuity generates events.
             if ((_lastTrigger - _level) * (_thisTrigger - _level)
-                          < 0.0) {
+                    < 0.0) {
                 if (_enabled) {
                     _eventNow = true;
                     if (_debugging)

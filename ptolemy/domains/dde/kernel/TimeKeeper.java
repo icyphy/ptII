@@ -321,7 +321,7 @@ public class TimeKeeper {
 
         if ( outputTime < _currentTime ) {
             throw new IllegalActionException("Illegal attempt "
-                        + "to set the time keeper's output time "
+                    + "to set the time keeper's output time "
                     + "in the past");
         }
         if ( outputTime != PrioritizedTimedQueue.IGNORE ) {

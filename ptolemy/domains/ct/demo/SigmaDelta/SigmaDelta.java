@@ -80,170 +80,170 @@ Berkeley, Fall 1997
 */
 public class SigmaDelta extends TypedCompositeActor {
 
-     public SigmaDelta(Workspace workspace)
+    public SigmaDelta(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
 
-         // Creating the model.
-         super(workspace);
-         setName("DigitalSystem");
+        // Creating the model.
+        super(workspace);
+        setName("DigitalSystem");
 
-         // Set up the top level composite actor, director and manager
-         DEDirector deDirector = new DEDirector(this, "DEDirector");
-         //deDirector.addDebugListener(new StreamListener());
+        // Set up the top level composite actor, director and manager
+        DEDirector deDirector = new DEDirector(this, "DEDirector");
+        //deDirector.addDebugListener(new StreamListener());
 
-         double stopT = 15.0;
-         deDirector.stopTime.setToken(new DoubleToken(stopT));
+        double stopT = 15.0;
+        deDirector.stopTime.setToken(new DoubleToken(stopT));
 
-         // Create toplevel parameters.
-         samplePeriod = new Parameter(this, "samplePeriod",
-                 new DoubleToken(0.02));
-         feedbackGain = new Parameter(this, "feedbackGain",
-                 new DoubleToken(-20.0));
+        // Create toplevel parameters.
+        samplePeriod = new Parameter(this, "samplePeriod",
+                new DoubleToken(0.02));
+        feedbackGain = new Parameter(this, "feedbackGain",
+                new DoubleToken(-20.0));
 
-         // CT subsystem
-         TypedCompositeActor ctsub = new TypedCompositeActor(this,
-                 "CTSubsystem");
-         Parameter ctSamplePeriod = new Parameter(ctsub, "samplePeriod");
-         ctSamplePeriod.setExpression("samplePeriod");
+        // CT subsystem
+        TypedCompositeActor ctsub = new TypedCompositeActor(this,
+                "CTSubsystem");
+        Parameter ctSamplePeriod = new Parameter(ctsub, "samplePeriod");
+        ctSamplePeriod.setExpression("samplePeriod");
 
-         Parameter ctFeedbackGain = new Parameter(ctsub, "feedbackGain");
-         ctFeedbackGain.setExpression("feedbackGain");
+        Parameter ctFeedbackGain = new Parameter(ctsub, "feedbackGain");
+        ctFeedbackGain.setExpression("feedbackGain");
 
 
-         TypedIOPort subin = new TypedIOPort(ctsub, "Pin");
-         subin.setInput(true);
+        TypedIOPort subin = new TypedIOPort(ctsub, "Pin");
+        subin.setInput(true);
 
-         TypedIOPort subout = new TypedIOPort(ctsub, "Pout");
-         subout.setOutput(true);
+        TypedIOPort subout = new TypedIOPort(ctsub, "Pout");
+        subout.setOutput(true);
 
-         CTMixedSignalDirector ctdir =
-             new CTMixedSignalDirector(ctsub, "CTEmbDir");
-         //ctdir.addDebugListener(new StreamListener());
+        CTMixedSignalDirector ctdir =
+            new CTMixedSignalDirector(ctsub, "CTEmbDir");
+        //ctdir.addDebugListener(new StreamListener());
 
-         // ---------------------------------
-         // Create the actors.
-         // ---------------------------------
+        // ---------------------------------
+        // Create the actors.
+        // ---------------------------------
 
-         // CTActors
+        // CTActors
 
-         CurrentTime time = new CurrentTime(ctsub, "CurTime");
-         TrigFunction trigFunction =
-             new TrigFunction(ctsub, "TrigFunction");
-         ZeroOrderHold hold = new ZeroOrderHold(ctsub, "Hold");
-         AddSubtract add1 = new AddSubtract(ctsub, "Add1");
+        CurrentTime time = new CurrentTime(ctsub, "CurTime");
+        TrigFunction trigFunction =
+            new TrigFunction(ctsub, "TrigFunction");
+        ZeroOrderHold hold = new ZeroOrderHold(ctsub, "Hold");
+        AddSubtract add1 = new AddSubtract(ctsub, "Add1");
 
-         Integrator intgl1 = new Integrator(ctsub, "Integrator1");
-         Integrator intgl2 = new Integrator(ctsub, "Integrator2");
-         Scale scale0 = new Scale(ctsub, "Scale0");
-         Scale scale1 = new Scale(ctsub, "Scale1");
-         Scale scale2 = new Scale(ctsub, "Scale2");
-         Scale scale3 = new Scale(ctsub, "Scale3");
-         Scale scale4 = new Scale(ctsub, "Scale4");
-         scale4.factor.setExpression("feedbackGain");
+        Integrator intgl1 = new Integrator(ctsub, "Integrator1");
+        Integrator intgl2 = new Integrator(ctsub, "Integrator2");
+        Scale scale0 = new Scale(ctsub, "Scale0");
+        Scale scale1 = new Scale(ctsub, "Scale1");
+        Scale scale2 = new Scale(ctsub, "Scale2");
+        Scale scale3 = new Scale(ctsub, "Scale3");
+        Scale scale4 = new Scale(ctsub, "Scale4");
+        scale4.factor.setExpression("feedbackGain");
 
-         TimedPlotter ctPlot = new TimedPlotter(ctsub, "CTPlot");
-         ctPlot.plot = new Plot();
-         ctPlot.plot.setGrid(true);
-         ctPlot.plot.setXRange(0.0, stopT);
-         ctPlot.plot.setYRange(-1.0, 1.0);
-         ctPlot.plot.setSize(500, 180);
-         ctPlot.plot.addLegend(0,"Position");
-         ctPlot.plot.addLegend(1,"Input");
-         ctPlot.plot.addLegend(2, "Control");
+        TimedPlotter ctPlot = new TimedPlotter(ctsub, "CTPlot");
+        ctPlot.plot = new Plot();
+        ctPlot.plot.setGrid(true);
+        ctPlot.plot.setXRange(0.0, stopT);
+        ctPlot.plot.setYRange(-1.0, 1.0);
+        ctPlot.plot.setSize(500, 180);
+        ctPlot.plot.addLegend(0,"Position");
+        ctPlot.plot.addLegend(1,"Input");
+        ctPlot.plot.addLegend(2, "Control");
 
-         CTPeriodicSampler ctSampler =
-             new CTPeriodicSampler(ctsub, "PeriodicSampler");
-         ctSampler.samplePeriod.setExpression("samplePeriod");
+        CTPeriodicSampler ctSampler =
+            new CTPeriodicSampler(ctsub, "PeriodicSampler");
+        ctSampler.samplePeriod.setExpression("samplePeriod");
 
-         // CT Connections
-         ctsub.connect(time.output, scale3.input);
-         ctsub.connect(scale3.output, trigFunction.input);
-         Relation cr0 = ctsub.connect(trigFunction.output, scale0.input, "CR0");
-         Relation cr1 = ctsub.connect(scale0.output, add1.plus, "CR1");
-         Relation cr2 = ctsub.connect(add1.output, intgl1.input, "CR2");
-         Relation cr3 = ctsub.connect(intgl1.output, intgl2.input, "CR3");
-         Relation cr4 = ctsub.connect(intgl2.output, ctPlot.input, "CR4");
-         scale1.input.link(cr3);
-         scale2.input.link(cr4);
-         ctSampler.input.link(cr4);
-         TypedIORelation cr5 = new TypedIORelation(ctsub, "CR5");
-         ctSampler.output.link(cr5);
-         subout.link(cr5);
-         Relation cr6 = ctsub.connect(scale1.output, add1.plus, "CR6");
-         Relation cr7 = ctsub.connect(scale2.output, add1.plus, "CR7");
-         Relation cr8 = ctsub.connect(scale4.output, add1.plus, "CR8");
-         TypedIORelation cr9 = new TypedIORelation(ctsub, "CR9");
-         hold.input.link(cr9);
-         subin.link(cr9);
-         Relation cr10 = ctsub.connect(hold.output, scale4.input, "CR10");
-         ctPlot.input.link(cr0);
-         ctPlot.input.link(cr10);
+        // CT Connections
+        ctsub.connect(time.output, scale3.input);
+        ctsub.connect(scale3.output, trigFunction.input);
+        Relation cr0 = ctsub.connect(trigFunction.output, scale0.input, "CR0");
+        Relation cr1 = ctsub.connect(scale0.output, add1.plus, "CR1");
+        Relation cr2 = ctsub.connect(add1.output, intgl1.input, "CR2");
+        Relation cr3 = ctsub.connect(intgl1.output, intgl2.input, "CR3");
+        Relation cr4 = ctsub.connect(intgl2.output, ctPlot.input, "CR4");
+        scale1.input.link(cr3);
+        scale2.input.link(cr4);
+        ctSampler.input.link(cr4);
+        TypedIORelation cr5 = new TypedIORelation(ctsub, "CR5");
+        ctSampler.output.link(cr5);
+        subout.link(cr5);
+        Relation cr6 = ctsub.connect(scale1.output, add1.plus, "CR6");
+        Relation cr7 = ctsub.connect(scale2.output, add1.plus, "CR7");
+        Relation cr8 = ctsub.connect(scale4.output, add1.plus, "CR8");
+        TypedIORelation cr9 = new TypedIORelation(ctsub, "CR9");
+        hold.input.link(cr9);
+        subin.link(cr9);
+        Relation cr10 = ctsub.connect(hold.output, scale4.input, "CR10");
+        ctPlot.input.link(cr0);
+        ctPlot.input.link(cr10);
 
-         // DE System
-         ptolemy.domains.de.lib.TimedDelay delay =
-             new ptolemy.domains.de.lib.TimedDelay(this, "delay");
-         delay.delay.setToken(new DoubleToken(0.02));
-         FIR fir = new FIR(this, "fir");
-         fir.taps.setExpression("{0.7, 0.3}");
-         Quantizer quan = new Quantizer(this, "Quantizer");
-         Average accumulator = new Average(this, "accumulator");
-         Sampler sampler = new Sampler(this, "sampler");
-         Clock clk = new Clock(this, "ADClock");
-         clk.offsets.setExpression("{0.0}");
-         clk.period.setToken(new DoubleToken(1.0));
-         clk.values.setExpression("{true}");
+        // DE System
+        ptolemy.domains.de.lib.TimedDelay delay =
+            new ptolemy.domains.de.lib.TimedDelay(this, "delay");
+        delay.delay.setToken(new DoubleToken(0.02));
+        FIR fir = new FIR(this, "fir");
+        fir.taps.setExpression("{0.7, 0.3}");
+        Quantizer quan = new Quantizer(this, "Quantizer");
+        Average accumulator = new Average(this, "accumulator");
+        Sampler sampler = new Sampler(this, "sampler");
+        Clock clk = new Clock(this, "ADClock");
+        clk.offsets.setExpression("{0.0}");
+        clk.period.setToken(new DoubleToken(1.0));
+        clk.values.setExpression("{true}");
 
-         TimedPlotter dePlot = new TimedPlotter(this, "DEPlot");
-         Plot newPlot = new Plot();
-         dePlot.plot = newPlot;
-         newPlot.setGrid(true);
-         newPlot.setXRange(0.0, stopT);
-         newPlot.setYRange(-1.0, 1.0);
-         newPlot.setSize(500, 180);
-         newPlot.setConnected(false);
-         newPlot.setImpulses(true);
-         newPlot.setMarksStyle("dots");
-         newPlot.addLegend(0, "Accum");
-         newPlot.addLegend(1, "Quantize");
+        TimedPlotter dePlot = new TimedPlotter(this, "DEPlot");
+        Plot newPlot = new Plot();
+        dePlot.plot = newPlot;
+        newPlot.setGrid(true);
+        newPlot.setXRange(0.0, stopT);
+        newPlot.setYRange(-1.0, 1.0);
+        newPlot.setSize(500, 180);
+        newPlot.setConnected(false);
+        newPlot.setImpulses(true);
+        newPlot.setMarksStyle("dots");
+        newPlot.addLegend(0, "Accum");
+        newPlot.addLegend(1, "Quantize");
 
-         FIR mav = new FIR(this, "MAV");
-         mav.taps.setExpression(
-                 "{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
-                 + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
+        FIR mav = new FIR(this, "MAV");
+        mav.taps.setExpression(
+                "{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
+                + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
 
-         // DE connections.
-         Relation dr0 = this.connect(subout,  delay.input);
-         Relation dr1 = this.connect(delay.output,  fir.input);
-         Relation dr2 = this.connect(fir.output, quan.input);
-         Relation dr3 = this.connect(quan.output, subin);
-         mav.input.link(dr3);
-         Relation dr5 = this.connect(mav.output, accumulator.input);
-         Relation dr4 = this.connect(clk.output, sampler.trigger);
-         accumulator.reset.link(dr4);
-         Relation dr6 = this.connect(accumulator.output, sampler.input);
-         Relation dr7 = this.connect(sampler.output, dePlot.input);
-         dePlot.input.link(dr3);
+        // DE connections.
+        Relation dr0 = this.connect(subout,  delay.input);
+        Relation dr1 = this.connect(delay.output,  fir.input);
+        Relation dr2 = this.connect(fir.output, quan.input);
+        Relation dr3 = this.connect(quan.output, subin);
+        mav.input.link(dr3);
+        Relation dr5 = this.connect(mav.output, accumulator.input);
+        Relation dr4 = this.connect(clk.output, sampler.trigger);
+        accumulator.reset.link(dr4);
+        Relation dr6 = this.connect(accumulator.output, sampler.input);
+        Relation dr7 = this.connect(sampler.output, dePlot.input);
+        dePlot.input.link(dr3);
 
-         // CT Director parameters
-         ctdir.initStepSize.setToken(new DoubleToken(0.0001));
+        // CT Director parameters
+        ctdir.initStepSize.setToken(new DoubleToken(0.0001));
 
-         ctdir.minStepSize.setToken(new DoubleToken(1e-6));
+        ctdir.minStepSize.setToken(new DoubleToken(1e-6));
 
-         //StringToken token1 = new StringToken(
-         //        "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-         //ctdir.BreakpointODESolver.setToken(token1);
+        //StringToken token1 = new StringToken(
+        //        "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+        //ctdir.BreakpointODESolver.setToken(token1);
 
-         StringToken token2 = new StringToken(
-                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-         ctdir.ODESolver.setToken(token2);
+        StringToken token2 = new StringToken(
+                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+        ctdir.ODESolver.setToken(token2);
 
-         // CT Actor Parameters
+        // CT Actor Parameters
 
-         scale0.factor.setToken(new DoubleToken(50.0));
-         scale1.factor.setToken(new DoubleToken(-2.50));
-         scale2.factor.setToken(new DoubleToken(-250.0));
-         scale3.factor.setToken(new DoubleToken(0.5));
-     }
+        scale0.factor.setToken(new DoubleToken(50.0));
+        scale1.factor.setToken(new DoubleToken(-2.50));
+        scale2.factor.setToken(new DoubleToken(-250.0));
+        scale3.factor.setToken(new DoubleToken(0.5));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                          parameters                       ////

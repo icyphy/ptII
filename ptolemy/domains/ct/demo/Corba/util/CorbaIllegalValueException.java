@@ -10,15 +10,15 @@ package ptolemy.domains.ct.demo.Corba.util;
 
 public final class CorbaIllegalValueException extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity
 {
-  public String message = null;
+    public String message = null;
 
-  public CorbaIllegalValueException ()
-  {
-  } // ctor
+    public CorbaIllegalValueException ()
+    {
+    } // ctor
 
-  public CorbaIllegalValueException (String _message)
-  {
-    message = _message;
-  } // ctor
+    public CorbaIllegalValueException (String _message)
+    {
+        message = _message;
+    } // ctor
 
 } // class CorbaIllegalValueException

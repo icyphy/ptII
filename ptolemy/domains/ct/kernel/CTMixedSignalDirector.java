@@ -198,12 +198,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
         while (waveGenerators.hasNext() && !_stopRequested) {
             CTWaveformGenerator generator =
-                    (CTWaveformGenerator) waveGenerators.next();
+                (CTWaveformGenerator) waveGenerators.next();
             if (_debugging) {
                 _debug("Prefire generator actor: "
-                       + ((Nameable)generator).getName()
-                       + " at time "
-                       + getCurrentTime());
+                        + ((Nameable)generator).getName()
+                        + " at time "
+                        + getCurrentTime());
             }
             if (generator.prefire()) {
                 if (_debugging) {

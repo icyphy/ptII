@@ -9,30 +9,30 @@ package ptolemy.domains.ct.demo.Corba.util;
 
 public final class CorbaUnknownPortExceptionHolder implements org.omg.CORBA.portable.Streamable
 {
-  public ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException value = null;
+    public ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException value = null;
 
-  public CorbaUnknownPortExceptionHolder ()
-  {
-  }
+    public CorbaUnknownPortExceptionHolder ()
+    {
+    }
 
-  public CorbaUnknownPortExceptionHolder (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException initialValue)
-  {
-    value = initialValue;
-  }
+    public CorbaUnknownPortExceptionHolder (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException initialValue)
+    {
+        value = initialValue;
+    }
 
-  public void _read (org.omg.CORBA.portable.InputStream i)
-  {
-    value = ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.read (i);
-  }
+    public void _read (org.omg.CORBA.portable.InputStream i)
+    {
+        value = ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.read (i);
+    }
 
-  public void _write (org.omg.CORBA.portable.OutputStream o)
-  {
-    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.write (o, value);
-  }
+    public void _write (org.omg.CORBA.portable.OutputStream o)
+    {
+        ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.write (o, value);
+    }
 
-  public org.omg.CORBA.TypeCode _type ()
-  {
-    return ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.type ();
-  }
+    public org.omg.CORBA.TypeCode _type ()
+    {
+        return ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.type ();
+    }
 
 }

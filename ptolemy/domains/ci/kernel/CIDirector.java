@@ -241,7 +241,7 @@ public class CIDirector extends Director {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors =
-                    ((CompositeActor)container).deepEntityList().iterator();
+                ((CompositeActor)container).deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if (_isActive(actor)) {
@@ -249,7 +249,7 @@ public class CIDirector extends Director {
                         _debug("Initialize -- create actor manager for "
                                 + ((Nameable)actor).getName());
                     ActiveActorManager manager =
-                            new ActiveActorManager(actor, this);
+                        new ActiveActorManager(actor, this);
                     manager.start();
                 }
             }
@@ -295,7 +295,7 @@ public class CIDirector extends Director {
             return true;
         } else {
             return (_asyncPushedActors.size() > 0)
-                    || (_asyncPulledActors.size() > 0);
+                || (_asyncPulledActors.size() > 0);
         }
     }
 
@@ -390,7 +390,7 @@ public class CIDirector extends Director {
             _debug("Wrap up...");
         _stopRequested = true;
         Iterator actors =
-                ((CompositeEntity)getContainer()).entityList().iterator();
+            ((CompositeEntity)getContainer()).entityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if (_isActive(actor)) {
@@ -481,7 +481,7 @@ public class CIDirector extends Director {
             }
         }
         return (!hasInput && outputIsPush) || (!hasOutput && !inputIsPush)
-                || (!inputIsPush && outputIsPush);
+            || (!inputIsPush && outputIsPush);
     }
 
     /** Return true if the given actor has been pulled.
@@ -524,7 +524,7 @@ public class CIDirector extends Director {
      *  @param actorManager An active actor manager.
      */
     protected synchronized void
-            _removeActorManager(ActiveActorManager actorManager) {
+    _removeActorManager(ActiveActorManager actorManager) {
         _actorManagers.remove(actorManager);
         notifyAll();
     }

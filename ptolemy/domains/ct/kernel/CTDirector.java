@@ -389,8 +389,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
 
         if (Math.abs(time - currentTime) < resolution &&
-            actor != null && !(actor instanceof CTStepSizeControlActor)
-            && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
+                actor != null && !(actor instanceof CTStepSizeControlActor)
+                && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
             // Requesting firing at the current time.
             if (_debugging) _debug(((Nameable)actor).getName(),
                     "requests refire at current time: " + currentTime);
@@ -685,7 +685,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         // Integrators emit output.
         Iterator actors =
-                schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
+            schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
             if (!isPrefireComplete(actor)) {
@@ -698,10 +698,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 }
                 if (!actor.prefire()) {
                     throw new IllegalActionException((Nameable)actor,
-                    "Actor is not ready to fire. In the CT domain, all "
-                    + "continuous actors should be ready to fire at all "
-                    + " times.\nDoes the actor only operate on sequence "
-                    + "of tokens?");
+                            "Actor is not ready to fire. In the CT domain, all "
+                            + "continuous actors should be ready to fire at all "
+                            + " times.\nDoes the actor only operate on sequence "
+                            + "of tokens?");
                 }
             }
             if (_debugging) {

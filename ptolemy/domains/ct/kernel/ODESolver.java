@@ -231,10 +231,10 @@ public abstract class ODESolver extends NamedObj {
                     + ((Nameable)actor).getName());
             dir.setPrefireComplete(actor);
             if (!actor.prefire()) {
-                    throw new IllegalActionException((Nameable)actor,
-                    "Expected prefire() to return true!\n"
-                    + "Perhaps a continuous input is being driven by a "
-                    + "discrete output?");
+                throw new IllegalActionException((Nameable)actor,
+                        "Expected prefire() to return true!\n"
+                        + "Perhaps a continuous input is being driven by a "
+                        + "discrete output?");
             }
         }
     }

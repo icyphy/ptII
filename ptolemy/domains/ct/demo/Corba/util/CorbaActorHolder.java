@@ -13,30 +13,30 @@ package ptolemy.domains.ct.demo.Corba.util;
          */
 public final class CorbaActorHolder implements org.omg.CORBA.portable.Streamable
 {
-  public ptolemy.domains.ct.demo.Corba.util.CorbaActor value = null;
+    public ptolemy.domains.ct.demo.Corba.util.CorbaActor value = null;
 
-  public CorbaActorHolder ()
-  {
-  }
+    public CorbaActorHolder ()
+    {
+    }
 
-  public CorbaActorHolder (ptolemy.domains.ct.demo.Corba.util.CorbaActor initialValue)
-  {
-    value = initialValue;
-  }
+    public CorbaActorHolder (ptolemy.domains.ct.demo.Corba.util.CorbaActor initialValue)
+    {
+        value = initialValue;
+    }
 
-  public void _read (org.omg.CORBA.portable.InputStream i)
-  {
-    value = ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.read (i);
-  }
+    public void _read (org.omg.CORBA.portable.InputStream i)
+    {
+        value = ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.read (i);
+    }
 
-  public void _write (org.omg.CORBA.portable.OutputStream o)
-  {
-    ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.write (o, value);
-  }
+    public void _write (org.omg.CORBA.portable.OutputStream o)
+    {
+        ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.write (o, value);
+    }
 
-  public org.omg.CORBA.TypeCode _type ()
-  {
-    return ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.type ();
-  }
+    public org.omg.CORBA.TypeCode _type ()
+    {
+        return ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.type ();
+    }
 
 }

@@ -98,7 +98,7 @@ public class Check {
             _send = (InterfaceAutomaton)parser.parse(url, url);
 
             url = MoMLApplication.specToURL(base
-                                          + "ConditionalBranchController.xml");
+                    + "ConditionalBranchController.xml");
             parser = new MoMLParser();
             _controller = (InterfaceAutomaton)parser.parse(url, url);
         }
@@ -138,7 +138,7 @@ public class Check {
         // pairs from one instance, the state names in all the clones will
         // be the same as that in the master instance.
         InterfaceAutomaton[] phiCho =
-                         new InterfaceAutomaton[_numberOfPhilosophers];
+            new InterfaceAutomaton[_numberOfPhilosophers];
         for (int i=0; i<_numberOfPhilosophers; i++) {
             InterfaceAutomaton phiAndReceiver = _composePhiAndReceiver(i);
             phiAndReceiver.combineInternalTransitions();
@@ -167,7 +167,7 @@ public class Check {
             all.combineInternalTransitions();
 
             System.out.println("0 to " + i
-                               + "th philosopher/chopstick pairs:");
+                    + "th philosopher/chopstick pairs:");
             System.out.println(all.getInfo());
 
         }
@@ -202,7 +202,7 @@ public class Check {
             check.go();
         } catch (Exception ex) {
             System.out.println(ex.getClass().getName() + ": "
-                             + ex.getMessage());
+                    + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -241,7 +241,7 @@ public class Check {
 
             // create left receiver
             InterfaceAutomaton leftReceiver =
-                                 (InterfaceAutomaton)_receiver.clone();
+                (InterfaceAutomaton)_receiver.clone();
             leftReceiver.setName("c" + index + "lr");
 
             nameMap = new HashMap();
@@ -259,7 +259,7 @@ public class Check {
 
             // create right receiver
             InterfaceAutomaton rightReceiver =
-                                 (InterfaceAutomaton)_receiver.clone();
+                (InterfaceAutomaton)_receiver.clone();
             rightReceiver.setName("c" + index + "rr");
 
             nameMap = new HashMap();
@@ -291,7 +291,7 @@ public class Check {
             return whole;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composeChoAndReceiver: "
-              + "clone not supported: " + cnse.getMessage());
+                    + "clone not supported: " + cnse.getMessage());
         }
     }
 
@@ -327,14 +327,14 @@ public class Check {
 
             // create left receiver
             InterfaceAutomaton leftReceiver =
-                                 (InterfaceAutomaton)_receiver.clone();
+                (InterfaceAutomaton)_receiver.clone();
             leftReceiver.setName("p" + index + "lr");
 
             nameMap = new HashMap();
 
             // compute the index of the chopstick on the left
             int leftIndex =
-                  (index + _numberOfPhilosophers - 1) % _numberOfPhilosophers;
+                (index + _numberOfPhilosophers - 1) % _numberOfPhilosophers;
 
             nameMap.put("p", "c" + leftIndex + "pr");
             nameMap.put("pR", "c" + leftIndex + "prR");
@@ -350,7 +350,7 @@ public class Check {
 
             // create right receiver
             InterfaceAutomaton rightReceiver =
-                                 (InterfaceAutomaton)_receiver.clone();
+                (InterfaceAutomaton)_receiver.clone();
             rightReceiver.setName("p" + index + "rr");
 
             nameMap = new HashMap();
@@ -373,14 +373,14 @@ public class Check {
             return phiWithReceivers;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composePhiAndReceiver: "
-              + "clone not supported: " + cnse.getMessage());
+                    + "clone not supported: " + cnse.getMessage());
         }
     }
 
     // compose the simple or the full version of conditional send.
     private InterfaceAutomaton _composeSend(int index)
             throws CloneNotSupportedException, IllegalActionException,
-                   NameDuplicationException {
+            NameDuplicationException {
         InterfaceAutomaton send;
         if (_useSimple) {
             send = (InterfaceAutomaton)_simpleSend.clone();
@@ -410,7 +410,7 @@ public class Check {
         } else {
             // create conditional branch controller
             InterfaceAutomaton controller =
-                                   (InterfaceAutomaton)_controller.clone();
+                (InterfaceAutomaton)_controller.clone();
             controller.setName("c" + index + "c");
 
             HashMap nameMap = new HashMap();
@@ -498,7 +498,7 @@ public class Check {
             send.combineInternalTransitions();
 
             System.out.println("Controller and two send, "
-                               + "after combining internals:");
+                    + "after combining internals:");
             System.out.println(send.getInfo());
         }
         return send;

@@ -9,30 +9,30 @@ package ptolemy.domains.ct.demo.Corba.util;
 
 public final class CorbaUnknownParamExceptionHolder implements org.omg.CORBA.portable.Streamable
 {
-  public ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException value = null;
+    public ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException value = null;
 
-  public CorbaUnknownParamExceptionHolder ()
-  {
-  }
+    public CorbaUnknownParamExceptionHolder ()
+    {
+    }
 
-  public CorbaUnknownParamExceptionHolder (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException initialValue)
-  {
-    value = initialValue;
-  }
+    public CorbaUnknownParamExceptionHolder (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException initialValue)
+    {
+        value = initialValue;
+    }
 
-  public void _read (org.omg.CORBA.portable.InputStream i)
-  {
-    value = ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.read (i);
-  }
+    public void _read (org.omg.CORBA.portable.InputStream i)
+    {
+        value = ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.read (i);
+    }
 
-  public void _write (org.omg.CORBA.portable.OutputStream o)
-  {
-    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.write (o, value);
-  }
+    public void _write (org.omg.CORBA.portable.OutputStream o)
+    {
+        ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.write (o, value);
+    }
 
-  public org.omg.CORBA.TypeCode _type ()
-  {
-    return ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.type ();
-  }
+    public org.omg.CORBA.TypeCode _type ()
+    {
+        return ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.type ();
+    }
 
 }

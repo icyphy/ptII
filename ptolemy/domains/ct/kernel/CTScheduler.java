@@ -789,7 +789,7 @@ public class CTScheduler extends Scheduler {
         while (entities.hasNext()) {
             Entity entity = (Entity)entities.next();
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 String typeString =
                     typeMap.getType(port).toString();
@@ -958,7 +958,7 @@ public class CTScheduler extends Scheduler {
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {
                             ((CTReceiver)receivers[i][j])
-                            .setSignalType(type);
+                                .setSignalType(type);
                         }
                     }
                 }
@@ -968,7 +968,7 @@ public class CTScheduler extends Scheduler {
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {
                             ((CTReceiver)receivers[i][j])
-                            .setSignalType(type);
+                                .setSignalType(type);
                         }
                     }
                 }
@@ -1097,10 +1097,10 @@ public class CTScheduler extends Scheduler {
                     IOPort port = (IOPort)ports.next();
                     String type = signalTypeToString(getType(port));
                     buffer.append("  "
-                           + port.getFullName()
-                           + " :: "
-                           + type
-                           + "\n");
+                            + port.getFullName()
+                            + " :: "
+                            + type
+                            + "\n");
                 }
             }
             return buffer.toString();

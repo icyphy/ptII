@@ -92,15 +92,15 @@ public class CTReceiver extends Mailbox {
 
     /** Signal type: continuous */
     public static SignalType CONTINUOUS = new SignalType() {
-        public String toString() {return "CONTINUOUS";}};
+            public String toString() {return "CONTINUOUS";}};
 
     /** Signal type: discrete */
     public static SignalType DISCRETE = new SignalType() {
-        public String toString() {return "DISCRETE";}};
+            public String toString() {return "DISCRETE";}};
 
     /** Signal type: unknown */
     public static SignalType UNKNOWN = new SignalType() {
-        public String toString() {return "UNKNOWN";}};
+            public String toString() {return "UNKNOWN";}};
 
     ///////////////////////////////////////////////////////////////////
     ////                    public inner classes                   ////

@@ -83,7 +83,7 @@ public class LocalZenoApplet extends PtolemyApplet {
      *  hasn't yet been displayed.
      */
     public void start() {
-           _doLayout(_graph, _jgraph.getGraphPane());
+        _doLayout(_graph, _jgraph.getGraphPane());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,7 +217,7 @@ public class LocalZenoApplet extends PtolemyApplet {
 
         // Set up ports, relations and connections
         Relation clkRelation =
-                toplevel.connect( _clock.output, _join1.input );
+            toplevel.connect( _clock.output, _join1.input );
         _join2.input.link( clkRelation );
 
         toplevel.connect( _join1.output, _fork1.input );
@@ -291,7 +291,7 @@ public class LocalZenoApplet extends PtolemyApplet {
         _divaPanel.add(_jgraph );
 
         StateListener listener =
-                new StateListener((GraphPane)_jgraph.getCanvasPane());
+            new StateListener((GraphPane)_jgraph.getCanvasPane());
         _join1.addDebugListener(listener);
         _join2.addDebugListener(listener);
         _fork1.addDebugListener(listener);
@@ -312,15 +312,15 @@ public class LocalZenoApplet extends PtolemyApplet {
             final GraphController gc = gp.getGraphController();
             final GraphPane pane = gp;
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // Layout is a bit stupid
-                    LayoutTarget target = new BasicLayoutTarget(gc);
-                    LevelLayout staticLayout = new LevelLayout(target);
-                    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-                    staticLayout.layout(layoutGraph.getRoot());
-                    pane.repaint();
-                }
-            });
+                    public void run() {
+                        // Layout is a bit stupid
+                        LayoutTarget target = new BasicLayoutTarget(gc);
+                        LevelLayout staticLayout = new LevelLayout(target);
+                        staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+                        staticLayout.layout(layoutGraph.getRoot());
+                        pane.repaint();
+                    }
+                });
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -478,17 +478,17 @@ public class LocalZenoApplet extends PtolemyApplet {
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
-                    public void run() {
-                        if (state == ExecEvent.WAITING)
-                            figure.setFillPaint(Color.yellow);
-                        else if (state == ExecEvent.ACCESSING)
-                            figure.setFillPaint(Color.green);
-                        else if (state == ExecEvent.BLOCKED)
-                            figure.setFillPaint(Color.red);
-                        else
-                            System.err.println("Unknown state: " + state);
-                    }
-                });
+                        public void run() {
+                            if (state == ExecEvent.WAITING)
+                                figure.setFillPaint(Color.yellow);
+                            else if (state == ExecEvent.ACCESSING)
+                                figure.setFillPaint(Color.green);
+                            else if (state == ExecEvent.BLOCKED)
+                                figure.setFillPaint(Color.red);
+                            else
+                                System.err.println("Unknown state: " + state);
+                        }
+                    });
             }
             catch (Exception e) {
                 e.printStackTrace();

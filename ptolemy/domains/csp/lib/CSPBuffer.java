@@ -78,7 +78,7 @@ public class CSPBuffer extends CSPActor {
      *   coincides with a parameter already in this actor.
      */
     public CSPBuffer() throws IllegalActionException,
-                NameDuplicationException {
+            NameDuplicationException {
         super();
         depth = new Parameter(this, "depth", (new IntToken(1)) );
         output = new TypedIOPort(this, "output", false, true);

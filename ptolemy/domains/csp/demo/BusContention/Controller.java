@@ -224,7 +224,7 @@ public class Controller extends CSPActor {
                             new PortChannelCode(requestInput, br, code);
                     } else {
                         _losingPortChannelCodes.add(0, new
-                                PortChannelCode(requestInput, br, code) );
+                            PortChannelCode(requestInput, br, code) );
                     }
 
                 } else if ( br == _numRequestInChannels ) {

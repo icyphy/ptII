@@ -379,7 +379,7 @@ public class StickyMasses extends TypedCompositeActor {
         ctDecOSTI.link(hsSTI);
         ctrlInSTI.link(hsSTI);
 
-            // connect the top-level system
+        // connect the top-level system
         //this.connect(source1.output, hsin1);
         //this.connect(source2.output, hsin2);
         this.connect(hsout1, responsePlot.input);

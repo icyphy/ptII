@@ -78,7 +78,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   contained by the proposed container.
      */
     public CSPReceiver(IOPort container) throws IllegalActionException {
-             super(container);
+        super(container);
         _boundaryDetector = new BoundaryDetector(this);
     }
 
@@ -270,7 +270,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         if ( isConnectedToBoundary() ) {
             return true;
         }
-            return false;
+        return false;
     }
 
     /** Return true if this receiver is contained on the inside of a
@@ -306,7 +306,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
-            return false;
+        return false;
     }
 
     /** Return a true or false to indicate whether there is a read block

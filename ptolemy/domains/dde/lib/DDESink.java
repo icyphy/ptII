@@ -133,7 +133,7 @@ public class DDESink extends TypedAtomicActor {
      * @see #fire
      */
     public boolean postfire() throws IllegalActionException {
-            return _continue;
+        return _continue;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -67,7 +67,7 @@ public class ActiveActorManager extends PtolemyThread {
         _actor = actor;
         _director = director;
         CompositeActor container =
-                (CompositeActor)((NamedObj)actor).getContainer();
+            (CompositeActor)((NamedObj)actor).getContainer();
         _manager = container.getManager();
         _init();
         director._addActorManager(this);

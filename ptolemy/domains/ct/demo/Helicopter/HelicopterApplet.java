@@ -56,7 +56,7 @@ public class HelicopterApplet extends PtolemyApplet {
     /** Override the base class to create a HelicopterModelPane.
      */
     protected void _createView() {
-                // Parse applet parameters that determine visual appearance.
+        // Parse applet parameters that determine visual appearance.
 
         // Start with orientation.
         String orientationSpec = getParameter("orientation");

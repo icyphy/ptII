@@ -291,7 +291,7 @@ public class ContinuousClock extends TimedSource {
             // FIXME: do we need a general method to deal with time resolution
             // for every actor/director?
             if (currentTime + ((CTDirector)getDirector()).getTimeResolution() >=
-                _tentativeCycleStartTime + _offsets[_tentativePhase]) {
+                    _tentativeCycleStartTime + _offsets[_tentativePhase]) {
                 if (_tPlus) {
                     if (_debugging)_debug("phase is: tPlus");
 
@@ -311,13 +311,13 @@ public class ContinuousClock extends TimedSource {
 
                     if (_offsets[_tentativePhase] >= periodValue) {
                         throw new IllegalActionException(this,
-                            "Offset number "
-                            + _tentativePhase
-                            + " with value "
-                            + _offsets[_tentativePhase]
-                            + " must be strictly less than the "
-                            + "period, which is "
-                            + periodValue);
+                                "Offset number "
+                                + _tentativePhase
+                                + " with value "
+                                + _offsets[_tentativePhase]
+                                + " must be strictly less than the "
+                                + "period, which is "
+                                + periodValue);
                     }
 
                     _tMinus = !_tMinus;
@@ -383,7 +383,7 @@ public class ContinuousClock extends TimedSource {
         if (!_done) {
             if (_debugging) {
                 _debug("Requesting firing at time "
-                       + (_offsets[0] + currentTime));
+                        + (_offsets[0] + currentTime));
             }
             // This should be the last line, because in threaded domains,
             // it could execute immediately.
@@ -421,7 +421,7 @@ public class ContinuousClock extends TimedSource {
         if (!_done && _tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
             if (_debugging)_debug("Requesting firing at: "
-                   + _tentativeNextFiringTime + ".");
+                    + _tentativeNextFiringTime + ".");
         }
         // This should be computed after the above so that a firing
         // gets requested for the tail end of the output pulses.

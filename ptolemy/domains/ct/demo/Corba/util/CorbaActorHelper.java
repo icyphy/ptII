@@ -14,59 +14,59 @@ package ptolemy.domains.ct.demo.Corba.util;
          */
 abstract public class CorbaActorHelper
 {
-  private static String  _id = "IDL:util/CorbaActor:1.0";
+    private static String  _id = "IDL:util/CorbaActor:1.0";
 
-  public static void insert (org.omg.CORBA.Any a, ptolemy.domains.ct.demo.Corba.util.CorbaActor that)
-  {
-    org.omg.CORBA.portable.OutputStream out = a.create_output_stream ();
-    a.type (type ());
-    write (out, that);
-    a.read_value (out.create_input_stream (), type ());
-  }
-
-  public static ptolemy.domains.ct.demo.Corba.util.CorbaActor extract (org.omg.CORBA.Any a)
-  {
-    return read (a.create_input_stream ());
-  }
-
-  private static org.omg.CORBA.TypeCode __typeCode = null;
-  synchronized public static org.omg.CORBA.TypeCode type ()
-  {
-    if (__typeCode == null)
+    public static void insert (org.omg.CORBA.Any a, ptolemy.domains.ct.demo.Corba.util.CorbaActor that)
     {
-      __typeCode = org.omg.CORBA.ORB.init ().create_interface_tc (ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.id (), "CorbaActor");
+        org.omg.CORBA.portable.OutputStream out = a.create_output_stream ();
+        a.type (type ());
+        write (out, that);
+        a.read_value (out.create_input_stream (), type ());
     }
-    return __typeCode;
-  }
 
-  public static String id ()
-  {
-    return _id;
-  }
-
-  public static ptolemy.domains.ct.demo.Corba.util.CorbaActor read (org.omg.CORBA.portable.InputStream istream)
-  {
-    return narrow (istream.read_Object (_CorbaActorStub.class));
-  }
-
-  public static void write (org.omg.CORBA.portable.OutputStream ostream, ptolemy.domains.ct.demo.Corba.util.CorbaActor value)
-  {
-    ostream.write_Object ((org.omg.CORBA.Object) value);
-  }
-
-  public static ptolemy.domains.ct.demo.Corba.util.CorbaActor narrow (org.omg.CORBA.Object obj)
-  {
-    if (obj == null)
-      return null;
-    else if (obj instanceof ptolemy.domains.ct.demo.Corba.util.CorbaActor)
-      return (ptolemy.domains.ct.demo.Corba.util.CorbaActor)obj;
-    else if (!obj._is_a (id ()))
-      throw new org.omg.CORBA.BAD_PARAM ();
-    else
+    public static ptolemy.domains.ct.demo.Corba.util.CorbaActor extract (org.omg.CORBA.Any a)
     {
-      org.omg.CORBA.portable.Delegate delegate = ((org.omg.CORBA.portable.ObjectImpl)obj)._get_delegate ();
-      return new ptolemy.domains.ct.demo.Corba.util._CorbaActorStub (delegate);
+        return read (a.create_input_stream ());
     }
-  }
+
+    private static org.omg.CORBA.TypeCode __typeCode = null;
+    synchronized public static org.omg.CORBA.TypeCode type ()
+    {
+        if (__typeCode == null)
+            {
+                __typeCode = org.omg.CORBA.ORB.init ().create_interface_tc (ptolemy.domains.ct.demo.Corba.util.CorbaActorHelper.id (), "CorbaActor");
+            }
+        return __typeCode;
+    }
+
+    public static String id ()
+    {
+        return _id;
+    }
+
+    public static ptolemy.domains.ct.demo.Corba.util.CorbaActor read (org.omg.CORBA.portable.InputStream istream)
+    {
+        return narrow (istream.read_Object (_CorbaActorStub.class));
+    }
+
+    public static void write (org.omg.CORBA.portable.OutputStream ostream, ptolemy.domains.ct.demo.Corba.util.CorbaActor value)
+    {
+        ostream.write_Object ((org.omg.CORBA.Object) value);
+    }
+
+    public static ptolemy.domains.ct.demo.Corba.util.CorbaActor narrow (org.omg.CORBA.Object obj)
+    {
+        if (obj == null)
+            return null;
+        else if (obj instanceof ptolemy.domains.ct.demo.Corba.util.CorbaActor)
+            return (ptolemy.domains.ct.demo.Corba.util.CorbaActor)obj;
+        else if (!obj._is_a (id ()))
+            throw new org.omg.CORBA.BAD_PARAM ();
+        else
+            {
+                org.omg.CORBA.portable.Delegate delegate = ((org.omg.CORBA.portable.ObjectImpl)obj)._get_delegate ();
+                return new ptolemy.domains.ct.demo.Corba.util._CorbaActorStub (delegate);
+            }
+    }
 
 }

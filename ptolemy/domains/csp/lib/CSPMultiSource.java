@@ -76,7 +76,7 @@ public class CSPMultiSource extends CSPActor {
      *   name coincides with a port already in this actor.
      */
     public CSPMultiSource() throws
-                IllegalActionException, NameDuplicationException {
+            IllegalActionException, NameDuplicationException {
         super();
         tokenLimit = new Parameter( this, "tokenLimit",
                 (new IntToken(-1)) );
@@ -101,7 +101,7 @@ public class CSPMultiSource extends CSPActor {
      *   in this actor.
      */
     public CSPMultiSource(TypedCompositeActor container, String name,
-                int limit) throws IllegalActionException,
+            int limit) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);

@@ -358,18 +358,18 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if (_debugging) {
             _debug("There are dynamic actors in "
-                   + getContainer().getFullName()
-                   + " require firing at current time.");
+                    + getContainer().getFullName()
+                    + " require firing at current time.");
         }
 
         if (_debugging) {
             _debug("Set the current time as a break point: "
-                   + getCurrentTime());
+                    + getCurrentTime());
         }
         fireAt(null, getCurrentTime());
         if (_debugging) {
             _debug("Set the stop time as a break point: "
-                   + getStopTime());
+                    + getStopTime());
         }
         fireAt(null, getStopTime());
         if (_debugging) {
@@ -466,7 +466,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     + getCurrentTime());
             _setDiscretePhase(true);
             Iterator discrete =
-                    schedule.get(CTSchedule.DISCRETE_ACTORS).actorIterator();
+                schedule.get(CTSchedule.DISCRETE_ACTORS).actorIterator();
             while (discrete.hasNext()) {
                 Actor actor = (Actor)discrete.next();
                 // Skip the actor if it is an event generator with no
@@ -681,7 +681,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
         while (actors.hasNext()) {
             CTStepSizeControlActor actor =
-                    (CTStepSizeControlActor) actors.next();
+                (CTStepSizeControlActor) actors.next();
             boolean thisAccurate = actor.isThisStepAccurate();
             if (_debugging) {
                 _debug(((Nameable)actor).getName()
@@ -762,10 +762,10 @@ public class CTMultiSolverDirector extends CTDirector {
             boolean ready = actor.prefire();
             if (!ready) {
                 throw new IllegalActionException((Nameable)actor,
-                "Actor is not ready to fire. In the CT domain, all "
-                + "dynamic actors should be ready to fire at "
-                + "all times.\n "
-                + "Does the actor only operate on sequence of tokens?");
+                        "Actor is not ready to fire. In the CT domain, all "
+                        + "dynamic actors should be ready to fire at "
+                        + "all times.\n "
+                        + "Does the actor only operate on sequence of tokens?");
             }
             if (_debugging) _debug("Prefire of "
                     + ((Nameable)actor).getName()
@@ -778,7 +778,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // date information.  Also, without this, on the first round of
         // firing, the state transition actors will have stale data.
         Iterator integrators =
-                schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while (integrators.hasNext() && !_stopRequested) {
             CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
             if (_debugging) _debug("Emit tentative state: "
@@ -820,7 +820,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 // not in the middle of this step.
                 double point = ((Double)breakPoints.first()).doubleValue();
                 double iterationEndTime =
-                        getCurrentTime() + getCurrentStepSize();
+                    getCurrentTime() + getCurrentStepSize();
                 if (iterationEndTime > point) {
                     setCurrentStepSize(point-getCurrentTime());
                 }
@@ -843,7 +843,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
         while (actors.hasNext()) {
             CTStepSizeControlActor actor =
-                 (CTStepSizeControlActor)actors.next();
+                (CTStepSizeControlActor)actors.next();
             refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
         //FIXME: output constraints are different from the state constraints.
