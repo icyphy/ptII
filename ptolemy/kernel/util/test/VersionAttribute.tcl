@@ -48,9 +48,9 @@ test VersionAttribute-1.0 {Constructor} {
     set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
     set v [java::new ptolemy.kernel.util.VersionAttribute $n "my Version"]
     set result1 [$v toString]
-    set PTOLEMYII_VERSION [java::field \
-	    ptolemy.kernel.util.VersionAttribute PTOLEMYII_VERSION]
-    $v setExpression [$PTOLEMYII_VERSION getExpression]
+    set CURRENT_VERSION [java::field \
+	    ptolemy.kernel.util.VersionAttribute CURRENT_VERSION]
+    $v setExpression [$CURRENT_VERSION getExpression]
 
     set result2 [$v toString]
     set result3 [$v getExpression]
@@ -63,24 +63,24 @@ test VersionAttribute-2.0 {compareTo} {
     set v [java::new ptolemy.kernel.util.VersionAttribute $n \
 	    "testValue"]
 
-    set PTOLEMYII_VERSION [java::field \
-	    ptolemy.kernel.util.VersionAttribute PTOLEMYII_VERSION]
+    set CURRENT_VERSION [java::field \
+	    ptolemy.kernel.util.VersionAttribute CURRENT_VERSION]
 
     set results {}
     set testValues [list "1.0" "1.0.0" "1.0-beta" \
 	    "2.0" "2.0-devel" "2.0.alpha" "2.0_beta" "2.0-build003" \
 	    "2.0-release-1" \
 	    "3.0" \
-	    [$PTOLEMYII_VERSION getExpression] \
+	    [$CURRENT_VERSION getExpression] \
 	    ]
     foreach testValue $testValues {
 	$v setExpression $testValue
 	lappend results \
 		[list \
 		[$v getExpression] \
-		[$PTOLEMYII_VERSION getExpression] \
-		[$v compareTo $PTOLEMYII_VERSION] \
-		[$PTOLEMYII_VERSION compareTo $v]]
+		[$CURRENT_VERSION getExpression] \
+		[$v compareTo $CURRENT_VERSION] \
+		[$CURRENT_VERSION compareTo $v]]
     }
     list $results
 } {{{1.0 2.0-devel -1 1} {1.0.0 2.0-devel -1 1} {1.0-beta 2.0-devel -1 1} {2.0 2.0-devel -1 1} {2.0-devel 2.0-devel 0 0} {2.0.alpha 2.0-devel -1 1} {2.0_beta 2.0-devel -1 1} {2.0-build003 2.0-devel -1 1} {2.0-release-1 2.0-devel 1 -1} {3.0 2.0-devel 1 -1} {2.0-devel 2.0-devel 0 0}}}
