@@ -556,24 +556,24 @@ public class PtolemyUtilities {
      *  @param base A local that is assumed to have an attribute type.
      */
     public static void callAttributeChanged(
-            Local base, SootClass theClass, SootMethod method,
+            Local base, Local attributeLocal, SootClass theClass, SootMethod method,
             JimpleBody body, Object insertPoint) {
-        Local attributeLocal = base;
         // Make sure we have a local of type attribute to pass
         // to attributeChanged
-        if (base.getType() != attributeType) {
+        if (attributeLocal.getType() != attributeType) {
+            Local oldAttributeLocal = attributeLocal;
             attributeLocal = Jimple.v().newLocal("attributeLocal",
                     attributeType);
             body.getLocals().add(attributeLocal);
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(attributeLocal,
-                            Jimple.v().newCastExpr(base,
+                            Jimple.v().newCastExpr(oldAttributeLocal,
                                     attributeType)),
                     insertPoint);
         }
 
         Stmt stmt = Jimple.v().newInvokeStmt(
-                Jimple.v().newVirtualInvokeExpr(body.getThisLocal(),
+                Jimple.v().newVirtualInvokeExpr(base,
                         attributeChangedMethod, attributeLocal));
         body.getUnits().insertBefore(stmt, insertPoint);
     }
@@ -1062,6 +1062,9 @@ public class PtolemyUtilities {
     // Soot Method representing Entity.connectionsChanged().
     public static SootMethod connectionsChangedMethod;
 
+    // Soot field corresponding to the debugging flag for named objects.
+    public static SootField debuggingField;
+
     // Soot class representing the ptolemy.data.DoubleToken class.
     public static SootClass doubleTokenClass;
     // Soot Method representing the DoubleToken(int) constructor.
@@ -1347,6 +1350,7 @@ public class PtolemyUtilities {
 
         namedObjClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
+        debuggingField = namedObjClass.getField("boolean _debugging");
         getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute "
                 + "getAttribute(java.lang.String)");
