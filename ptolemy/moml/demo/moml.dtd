@@ -1,0 +1,39 @@
+<!ELEMENT model (doc | manager | director | parameter | actor |
+	 connection | link | placement | icon)*>
+<!ATTLIST model name CDATA "top">
+<!ATTLIST model class CDATA "ptolemy.actor.TypedCompositeActor">
+
+  <!ELEMENT doc (#PCDATA)>
+
+  <!ELEMENT actor (doc | manager | director | parameter | actor |
+	 connection | link | placement | icon)*>
+  <!ATTLIST actor name CDATA #REQUIRED>
+  <!ATTLIST actor class CDATA "ptolemy.actor.TypedCompositeActor">
+
+  <!ELEMENT director (parameter*)>
+  <!ATTLIST director name CDATA "director">
+  <!ATTLIST director class CDATA #REQUIRED>
+
+  <!ELEMENT connection (vertex*)>
+  <!ATTLIST connection name CDATA #IMPLIED>
+  <!ATTLIST connection source CDATA #REQUIRED>
+  <!ATTLIST connection destination CDATA #REQUIRED>
+
+  <!ELEMENT link (vertex*)>
+  <!ATTLIST link port CDATA #REQUIRED>
+  <!ATTLIST link vertex CDATA #REQUIRED>
+
+    <!ELEMENT vertex EMPTY>
+    <!ATTLIST vertex name CDATA "">
+    <!ATTLIST vertex xpos CDATA #IMPLIED>
+    <!ATTLIST vertex ypos CDATA #IMPLIED>
+
+  <!ELEMENT parameter EMPTY>
+  <!ATTLIST parameter name CDATA #REQUIRED>
+  <!ATTLIST parameter value CDATA #REQUIRED>
+
+  <!ELEMENT icon EMPTY>
+  <!ATTLIST icon class CDATA "ptolemy.actor.gui.GenericIcon">
+  <!ATTLIST icon xpos CDATA #IMPLIED>
+  <!ATTLIST icon ypos CDATA #IMPLIED>
+  <!ATTLIST icon modifiers CDATA #IMPLIED>
