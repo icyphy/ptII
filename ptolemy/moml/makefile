@@ -62,9 +62,7 @@ EXTRA_SRCS =	$(JSRCS) \
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES = \
-	MoML_1.dtd \
-	ptolemy.bat \
-	ptolemy.in	
+	MoML_1.dtd
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
