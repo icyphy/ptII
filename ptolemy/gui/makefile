@@ -50,7 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	BasicJApplet.java \
 	ComponentDialog.java \
-	Configurer.java \
 	Query.java \
 	QueryListener.java \
 	StatusBar.java
