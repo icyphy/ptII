@@ -42,9 +42,8 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.domains.sdf.kernel.*;
-// fixme: should not use enumeration.
-import java.util.Enumeration;
 
+import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -198,9 +197,9 @@ public class SDFTestZeroRate2 extends SDFTransformer {
 
 	// Get the SDF Director's scheduler.
 	Scheduler s = dir.getScheduler();
-	Enumeration allactors = s.schedule();
-	while (allactors.hasMoreElements()) {
-	    Actor actor = (Actor)allactors.nextElement();
+	Iterator allactors = s.getSchedule().actorIterator();
+	while (allactors.hasNext()) {
+	    Actor actor = (Actor)allactors.next();
 	    String schedActName = ((Nameable)actor).getName();
 	    System.out.println("Actor in scheduler: " + schedActName);
 	}	
