@@ -55,6 +55,7 @@ import javax.swing.SwingUtilities;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
@@ -233,16 +234,16 @@ public class VergilApplication extends MoMLApplication {
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
 
-        if (_configurationURLSpec == null) {
-            _configurationURLSpec =
-                "ptolemy/configs/full/configuration.xml";
+        if (_configurationURL == null) {
+            _configurationURL =
+		specToURL("ptolemy/configs/full/configuration.xml");
         }
         Configuration configuration = null;
         try {
-            configuration = _readConfiguration(_configurationURLSpec);
+            configuration = _readConfiguration(_configurationURL);
         } catch (Exception ex) {
             throw new Exception("Failed to read configuration '"
-                    + _configurationURLSpec + "'", ex);
+                    + _configurationURL + "'", ex);
         }
 
         // Read the user's vergilUserLibrary.xml file
@@ -300,11 +301,12 @@ public class VergilApplication extends MoMLApplication {
         }
         // FIXME: This code is Dog slow for some reason.
         URL inURL = specToURL("ptolemy/configs/"
-                + _configurationSubdirectory + "/welcomeWindow.xml");
-
+			      + _configurationSubdirectory
+			      + "/welcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inURL, inURL.openStream());
+	_parser.parse(inURL, inURL.openStream());
+
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
 
         if (_configurationSubdirectory == null) {
@@ -420,8 +422,10 @@ public class VergilApplication extends MoMLApplication {
                         // tools.
                         if (!configurationDirectories[i]
                                 .getName().equals("jxta")) {
+			    URL specificationURL =
+				specToURL(configurationFileName);
                             Configuration configuration =
-                                _readConfiguration(configurationFileName);
+                                _readConfiguration(specificationURL);
                             if (configuration != null
                                     && configuration.getAttribute("_doc")
                                     != null
@@ -493,9 +497,7 @@ public class VergilApplication extends MoMLApplication {
                     "ptolemy/configs/" + _configurationSubdirectory
                     + "/configuration.xml";
                 // This will throw an Exception if we can't find the config.
-                specToURL(potentialConfiguration);
-
-                _configurationURLSpec = potentialConfiguration;
+                _configurationURL = specToURL(potentialConfiguration);
             } catch (Exception ex) {
                 // The argument did not name a configuration, let the parent
                 // class have a shot.
@@ -503,7 +505,7 @@ public class VergilApplication extends MoMLApplication {
             }
         } else if (_expectingConfiguration) {
             _expectingConfiguration = false;
-            _configurationURLSpec = arg;
+            _configurationURL = specToURL(arg);
         } else {
             return false;
         }
@@ -563,7 +565,11 @@ public class VergilApplication extends MoMLApplication {
 
     // URL of the configuration to read.
     // The URL may absolute, or relative to the Ptolemy II tree root.
-    private String _configurationURLSpec;
+    // We use the URL instead of the string so that if the configuration
+    // is set as a command line argument, we can use the processed value
+    // from the command line instead of calling specToURL() again, which
+    // might be expensive.
+    private URL _configurationURL;
 
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
