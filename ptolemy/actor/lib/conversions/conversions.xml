@@ -55,8 +55,13 @@
 
   </entity>
 
-<entity name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">
-</entity>
+  <entity name="IntToBits"
+          class="ptolemy.domains.sdf.lib.IntToBits">
+  </entity>
+
+  <entity name="LongToDouble"
+          class="ptolemy.actor.lib.conversions.LongToDouble">
+  </entity>
 
   <entity name="PolarToComplex"
           class="ptolemy.actor.lib.conversions.PolarToComplex">
