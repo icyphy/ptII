@@ -187,8 +187,17 @@ See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/in
 (Haiyang Zheng) - The Giotto scheduler was rewritten and the kernel
 was updated.
 
+<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
+(Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
+to perform multiple runs of refinement on a model.
+
+<li> <a href="coding/debugging.htm">Support for <code>jdb</code></a> 
+(Zoltan Kemenczy, Research In Motion, Ltd.) -
+The scripts that invoke Ptolemy II have been extended to support
+<code>jdb</code>, the Java Debugger.
+
 <li> Ptolemy II Matlab interface
-(Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.) -
+(Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.) -
 The Matlab Expression actor uses JNI to invoke the Matlab engine, 
 evaluate Matlab expressions and return the results to Ptolemy II.
 The Matlab Expression actor works only under Windows, and requires
@@ -209,9 +218,6 @@ for static function (and method) signatures that includes most ptolemy.math
 classes; peformance improvements by caching search results; widened token to
 java-type conversions for function arguments and results.
 
-<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
-(Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
-to perform multiple runs of refinement on a model.
 
 <li> <a href="codeDoc/ptolemy/graph/package-summary.html">ptolemy.graph</a>
  (Shuvra S. Bhattacharyya (University of Maryland at College Park)) -
@@ -692,6 +698,9 @@ untar this file with a checksum error because the pathnames are longer
 than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from 
 ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
+ <p>Note further that some of the .class names are longer than
+31 characters, which may cause problems when downloading zip files
+on the Macintosh and using Stuffit.
 
 <li> Instructions for adding an actor may be found at
 <a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
@@ -700,14 +709,14 @@ ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 the internal hyperlinks refer to usingVergil.html instead of index.htm
 
 <li> The documentation for custom actors used in demonstrations is not
-included in the release.
+included in the release.  The source code for the custom actors can be found
+in the source download.
 
 <li> If a URL ends with <CODE>#in_browser</CODE>, then
 Ptolemy II will invoke the User's web browser.  Unfortunately, this
 does not always work, especially under Windows if Netscape is already
 running.  The workaround is to exit Netscape and let Ptolemy II
 start up Netscape for you.
-
 
 <li> Applet issues:
 	<ul>
@@ -835,12 +844,9 @@ mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
 not allow the user to remove built in Java defined ports.
 <li> Query needs to be put into a scroll pane
-
 <li> Manually setting of the types of actors like ArrayToSequence that
 have constraints on their element types can cause problems.
-
-<li> HTVQ demo is badly laid out when run under vergil
-	
+<li> HTVQ demo is badly laid out when run under vergil.
 <li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
