@@ -60,10 +60,19 @@ class CmdLineArgException extends Throwable {
 //// Pxgraph
 /** 
  * Java implementation of the Unix X Windows xgraph plotter program.
-@author Christopher Hylands
-@version $Id$
-@see Plot
-*/
+ * 
+ * This class is a Java Application that uses the Plot Java Applet to
+ * simulate the <code>pxgraph</code> X Windows system program.  
+ * <code>pxgraph</code> takes a number of command line arguments, 
+ * type <code>pxgraph -help</code> to see them.
+ *
+ * The <code>pxgraph</code> script is a Bourne shell script that
+ * attempts to call java with the proper environment.
+ *
+ * @author Christopher Hylands
+ * @version $Id$
+ * @see Plot
+ */
 public class Pxgraph extends Frame { 
 
     /** Constructor
