@@ -76,7 +76,6 @@ public class DebugProfile {
 
     /** Add this FiringEventType to the DebugProfile.
      *  @param type the FiringEventType.
-     *  @see #unlistenForEvent(FiringEventType)
      */
     public void listenForEvent(FiringEventType type) {
         _firingEventTypes.add(type);
@@ -93,7 +92,6 @@ public class DebugProfile {
 
     /** Remove this FiringEventType from the DebugProfile.
      *  @param type the FiringEventType.
-     *  @see #listenForEvent(FiringEventType)
      */
     public void unlistenForEvent(FiringEventType type) {
         _firingEventTypes.remove(type);
