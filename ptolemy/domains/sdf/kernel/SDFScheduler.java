@@ -53,7 +53,7 @@ Any actors may be scheduled by this scheduler, which will assume
 homogenous behavior for each actor.  (i.e. each output port produces one 
 token for each firing, and each input port consumes one token on each firing,
 and no tokens are created during initialization.)  If this is not the case
-then the parameters "Token Consumption Rate", "Token Production Rate", and
+then the parameters "TokenConsumptionRate", "Token Production Rate", and
 "Token Init Production" must be set.   The SDFAtomicActor and 
 SDFCompositeActor classes provide easier access to these parameters.
 <p>
@@ -188,12 +188,12 @@ public class SDFScheduler extends Scheduler{
 
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
-     *  by the port's "Token Consumption Rate" Parameter.   If the parameter
+     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogenous and return a
      *  rate of 1.
      */
     protected int _getTokenConsumptionRate(IOPort p) {
-        Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
+        Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
         if(param == null) {
             if(p.isInput()) 
                 return 1;
@@ -220,7 +220,7 @@ public class SDFScheduler extends Scheduler{
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor during each firing,
      *  as supplied by
-     *  by the port's "Token Consumption Rate" Parameter.   If the parameter
+     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogenous and return a
      *  rate of 1..
      */
@@ -883,9 +883,9 @@ public class SDFScheduler extends Scheduler{
             */
             try {
         Parameter param;
-        param = (Parameter)port.getAttribute("Token Consumption Rate");
+        param = (Parameter)port.getAttribute("TokenConsumptionRate");
         if(param == null) 
-            param = new Parameter(port,"Token Consumption Rate",
+            param = new Parameter(port,"TokenConsumptionRate",
                     new IntToken(1)); 
         param.setToken(new IntToken(consumptionrate));
         param = (Parameter)port.getAttribute("Token Production Rate");
@@ -916,12 +916,12 @@ public class SDFScheduler extends Scheduler{
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
-            port.getAttribute("Token Consumption Rate");
+            port.getAttribute("TokenConsumptionRate");
         if(param != null) {
             param.setToken(new IntToken(rate));
         } else {
             try {
-                param = new Parameter(port,"Token Consumption Rate",
+                param = new Parameter(port,"TokenConsumptionRate",
                         new IntToken(rate));
             }
             catch (Exception exception) {
