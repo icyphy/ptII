@@ -168,7 +168,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
                         director,       // context
                         moml.toString()  // MoML code
                         );
-                director.addChangeListener(this);
+                request.addChangeListener(this);
                 director.requestChange(request);
             }
         } else {

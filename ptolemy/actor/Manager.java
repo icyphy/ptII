@@ -547,16 +547,12 @@ public class Manager extends NamedObj implements Runnable {
                     if (_state == ITERATING) {
                         // Set the new state to show that execution is paused
                         // on a breakpoint.
+                        PAUSED_ON_BREAKPOINT.setDescription(
+                                "pausing on breakpoint: "
+                                + breakpointMessage
+                                + ".  Click Resume to continue.");
                         _setState(PAUSED_ON_BREAKPOINT);
 
-                        // FIXME: I want to show a different message
-                        // in the Run window (not just "pausing
-                        // execution on a breakpoint").
-
-                        //_setState(new State("pausing on breakpoint: "
-                        //                  + breakpointMessage
-                        //                  + ".  Select Resume to continue."));
-                        
                         _resumeNotifyWaiting = true;
                         
                         // Wait until resume() is called.
@@ -998,9 +994,6 @@ public class Manager extends NamedObj implements Runnable {
     // Flag indicating that pause() has been called.
     private boolean _pauseRequested = false;
 
-    // Synchronization object for resume().
-    private Object _resumeNotify = new Object();
-
     // Flag for waiting on resume();
     private boolean _resumeNotifyWaiting = false;
 
@@ -1039,6 +1032,11 @@ public class Manager extends NamedObj implements Runnable {
             return _description;
         }
 
+        //  An utter hack...
+        private void setDescription(String description) {
+            _description = description;
+        }             
+        
         /** Print out the current state.
          */
         public String toString() {
