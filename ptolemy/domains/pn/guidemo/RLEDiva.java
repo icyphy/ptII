@@ -34,14 +34,15 @@ import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
 import diva.canvas.toolbox.*;
-import diva.util.gui.TutorialWindow;
+import diva.util.gui.BasicWindow;
+import diva.surfaces.trace.*;
 
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -76,10 +77,20 @@ public class RLEDiva extends PNApplet implements Runnable {
      */
     JGraph jgraph = new JGraph();
 
+    GraphModel _gmodel;
+
     /** The window to display in
      */
     //private TutorialWindow window;
-    private JGraph window;
+    //private JGraph window;
+    
+    /** The window to display the traces
+     */
+    //private BasicWindow traceWindow;
+
+    /** The pane displaying the trace
+     */
+    private TracePane tracePane;
 
     /* The actors
      */
@@ -110,17 +121,50 @@ public class RLEDiva extends PNApplet implements Runnable {
         // Process the background parameter.
         super.init();
 
+	Button layout = new Button("Layout");
+	add("North", layout);
+	layout.addActionListener(new LayoutListener());
+
         // Construct the Ptolemy kernel topology
         constructPtolemyModel();
 	
         // Construct the graph representing the PN topology
-        GraphModel model = constructThreadGraph();
+	_gmodel = constructThreadGraph();
+        final GraphModel model = _gmodel;
 
         // Display the model in the window
-	callInvoke(model);
+	//callInvoke(model);
+
+	//private void callInvoke(final GraphModel mod) {
+	try {
+	    SwingUtilities.invokeAndWait(new Runnable (){
+		public void run () {
+		    displayGraph(jgraph, model);
+		}
+	    });
+        } catch(Exception ex) {
+	    ex.printStackTrace();
+	    System.exit(0);
+	}
+	//}
+
+        final TraceModel traceModel = constructTraceModel();
+	
+        // Display the trace
+	try {
+	    SwingUtilities.invokeAndWait(new Runnable (){
+		public void run () {
+		    displayTrace(traceModel);		
+		}
+	    });
+        } catch(Exception ex) {
+	    ex.printStackTrace();
+	    System.exit(0);
+	}
+
+
 
         // Add the process state listener
-        //BasePNDirector dir = (BasePNDirector) compositeActor.getDirector();
         _director.addProcessListener(new StateListener(
 		(GraphPane) jgraph.getCanvasPane()));
 	
@@ -130,21 +174,6 @@ public class RLEDiva extends PNApplet implements Runnable {
 		"Initial_queue_capacity");
         p.setToken(new IntToken(10));
 	return;
-    }
-
-    
-    private void callInvoke(final GraphModel mod) {
-	try {
-	    SwingUtilities.invokeAndWait(new Runnable (){
-		//private mod = model;
-		public void run () {
-		    displayGraph(jgraph, mod);
-		}
-	    });
-        } catch(Exception ex) {
-	    ex.printStackTrace();
-	    System.exit(0);
-	}
     }
 	
 	
@@ -305,6 +334,54 @@ public class RLEDiva extends PNApplet implements Runnable {
 	    System.out.println(e);
 	}
     }
+
+    /**
+     * Construct the trace model.
+     */
+    public TraceModel constructTraceModel() {
+        TraceModel traceModel = new TraceModel();
+        traceModel.addTrace("ImageReader", new TraceModel.Trace());
+        traceModel.addTrace("Unpacker", new TraceModel.Trace());
+        traceModel.addTrace("Encoder", new TraceModel.Trace());
+        traceModel.addTrace("Decoder", new TraceModel.Trace());
+        traceModel.addTrace("Packer", new TraceModel.Trace());
+        traceModel.addTrace("Sink", new TraceModel.Trace());
+        traceModel.addTrace("InputDisplay", new TraceModel.Trace());
+        traceModel.addTrace("OutputDisplay", new TraceModel.Trace());
+        return traceModel;
+    }
+
+    /**
+     * Construct the trace display.
+     */
+    public void displayTrace(TraceModel traceModel) {
+        //traceWindow = new BasicWindow("PN Thread Trace");
+        tracePane = new TracePane();
+        JCanvas traceWidget = new JCanvas(tracePane);
+        add("South", traceWidget);
+	traceWidget.setPreferredSize(new Dimension(800, 300));
+
+        // Configure the view
+        final TraceView traceView = tracePane.getTraceView();
+	final TraceModel mod = traceModel;
+	//try {
+	//SwingUtilities.invokeLater(new Runnable() {
+	//public void run () {
+	traceView.setTimeScale(0.02);
+	traceView.setLayout(10,10,500,30,5);
+	traceView.setTraceModel(mod);
+	//}
+	//});
+	//} catch (Exception e) {
+	//System.out.println(e.toString());
+ 	//}
+        // Display the window
+        //traceWindow.getContentPane().add("Center", traceWidget);
+        //traceWindow.setSize(800, 300);
+        //traceWindow.setLocation(300, 300);
+        //traceWindow.setVisible(true);
+    }
+
     
     ///////////////////////////////////////////////////////////////////
     //// StateListener
@@ -318,16 +395,53 @@ public class RLEDiva extends PNApplet implements Runnable {
 
         // The pane
         GraphPane _graphPane;
+        // The pending start times
+        private double _startTime[] = new double[9];
+
+        // The absolute start time
+        private long _start = 0;
+
+        // The current element of each state;
+        private TraceModel.Element _currentElement[];
 
         /* Create a listener on the given graph pane
          */
         public StateListener (GraphPane pane) {
             _graphPane = pane;
+
+            // Set system "start" time
+            _start = System.currentTimeMillis();
+
+           // Initial elements of all traces
+            TraceModel model = tracePane.getTraceModel();
+            _currentElement = new TraceModel.Element[model.size()];
+
+            for (int i = 0; i < model.size(); i++ ) {
+                TraceModel.Trace trace = model.getTrace(i);
+                
+                final TraceModel.Element element = new TraceModel.Element(
+                        0, 1, 3);
+                element.closure = TraceModel.Element.OPEN_END;
+                trace.add(element);
+                _currentElement[i] = element;
+
+                try {
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        public void run () {
+                            tracePane.getTraceView().drawTraceElement(element);
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
         }
 
         /** Respond to a state changed event.
          */
         public void processStateChanged(PNProcessEvent event) {
+	    System.out.println("In state changed");
             final int state = event.getCurrentState();
             Actor actor = event.getActor();
 
@@ -364,8 +478,74 @@ public class RLEDiva extends PNApplet implements Runnable {
                         }
                     }
                 });
-            } 
-            catch (Exception e) {}
+            } catch (Exception e) {
+		System.out.println(e.toString());
+	    }
+	    System.out.println("In state changed after initial stuff**8**");
+
+            // Get the trace and element figure
+            ComponentEntity ce = (ComponentEntity) actor;
+            String name = ce.getName();
+            TraceModel model = tracePane.getTraceView().getTraceModel();
+            TraceModel.Trace trace = model.getTrace(name);
+            int id = trace.getID();
+            // OK, this is nasty, but get the color "state" from the process state
+            int colorState = 3;
+            switch (state) {
+            case PNProcessEvent.PROCESS_BLOCKED:
+                colorState = 0;
+                break;
+		
+            case PNProcessEvent.PROCESS_FINISHED:
+                colorState = 7;
+                break;
+                        
+            case PNProcessEvent.PROCESS_PAUSED:
+                colorState = 2;
+                break;
+
+            case PNProcessEvent.PROCESS_RUNNING:
+                colorState = 3;
+                break;
+            }
+
+	    System.out.println("In state changed and getting time ???");
+            // Create the new element
+            double currentTime = (double) (System.currentTimeMillis() - _start);
+            final TraceModel.Element element = new TraceModel.Element(
+                    currentTime, currentTime+1, colorState);
+            element.closure = TraceModel.Element.OPEN_END;
+            trace.add(element);
+            
+            // Close the current element
+            final TraceModel.Element current = _currentElement[id];
+            current.closure = 0;
+
+            // Update all elements
+            final int msize = model.size();
+            final TraceModel.Element temp[] = new TraceModel.Element[msize];
+            for (int i = 0; i < msize; i++) {
+                _currentElement[i].stopTime = currentTime;
+                temp[i] = _currentElement[i];
+            }
+
+            try {
+		SwingUtilities.invokeAndWait(new Runnable() {
+		    public void run () {
+			TraceView v = tracePane.getTraceView();
+			for (int i = 0; i < msize; i++) {
+			    v.updateTraceElement(temp[i]);
+			}
+			v.drawTraceElement(element);
+		    }
+		});
+	    }
+	    catch (Exception e) {
+		System.out.println(e.toString());
+	    }
+	    
+            // Update
+            _currentElement[id] = element;
         }
 
         /** Respond to a process finshed event.
@@ -475,8 +655,28 @@ public class RLEDiva extends PNApplet implements Runnable {
 
     }
 
-}
+    private class LayoutListener implements ActionListener {
+	public void actionPerformed(ActionEvent evt) {
+	    final GraphPane gp = (GraphPane)RLEDiva.this.jgraph.getCanvasPane();
+	    final GraphView gv = gp.getGraphView();
+	    final GraphModel m = _gmodel;
+	    try {
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run () {
+			LevelLayout staticLayout = new LevelLayout();
+			staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+			staticLayout.layout(gv, m.getGraph());
+			gp.repaint();
+		    }
+		});
+	    } catch (Exception e) {
+		System.out.println(e);
+	    }
+	}
+    }
 
+
+}
 
 
 
