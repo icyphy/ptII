@@ -167,7 +167,7 @@ public class CSPDirector extends ProcessDirector {
         newobj._actorsBlocked = 0;
 	newobj._actorsDelayed = 0;
         newobj._delayedActorList = new LinkedList();
-        newobj._topologyChangesPending = false;
+        // JFIXME newobj._topologyChangesPending = false;
         return newobj;
     }
 
@@ -217,12 +217,13 @@ public class CSPDirector extends ProcessDirector {
      *  the next occasion deadlock is reached the changes
      *  to the topology are made.
      *  @param req The topology change being queued.
-     */
+     *  JFIXME
     public synchronized void
             queueTopologyChangeRequest(TopologyChangeRequest req) {
         _topologyChangesPending = true;
         super.queueTopologyChangeRequest(req);
     }
+     */
 
     /** Set the current model time. It is intended for use when composing
      *  CSP with other timed domains.
@@ -326,8 +327,9 @@ public class CSPDirector extends ProcessDirector {
      *  @return True if real deadlock occurred, false otherwise.
      */
     protected synchronized boolean _handleDeadlock() {
-        try {
+        // JFIXME try {
             if (_topologyChangesPending) {
+                /* JFIXME
                 _processTopologyRequests();
                 LinkedList newThreads = new LinkedList();
                 Enumeration newActors = _newActors();
@@ -346,6 +348,7 @@ public class CSPDirector extends ProcessDirector {
                     _addNewThread(p);
                 }
                 _topologyChangesPending = false;
+                JFIXME */
 
             } else if (_actorsDelayed > 0) {
                 // Time deadlock.
@@ -375,6 +378,7 @@ public class CSPDirector extends ProcessDirector {
             }
             // Return false for topology changes and time deadlock.
             return false;
+            /* JFIXME
         } catch (TopologyChangeFailedException ex ) {
             throw new InvalidStateException("CSPDirector: failed to " +
                     "complete topology change requests.");
@@ -383,6 +387,7 @@ public class CSPDirector extends ProcessDirector {
                     "create new receivers following a topology " +
                     "change request.");
         }
+            */
     }
 
     /** Returns true if all active processes are either blocked or
