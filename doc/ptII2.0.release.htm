@@ -68,6 +68,12 @@ behavior
 <li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">Synchronous/Reactive Domain</a>:
 (Primary Author: Paul Whitaker, Contributors: Elaine Cheong, John Reekie)
 
+<li> <a href="webStartHelp.htm">Web Start</a>
+ (Christopher Hylands) -  
+Ptolemy II includes support to build distributions using Sun's Web Start
+facility, which allows end users to download fully functional distributions
+via the web.
+
 </menu>
 
 <h2>Other Features that are new in Ptolemy II 2.0</h2>
@@ -109,12 +115,6 @@ to perform multiple runs of refinement on a model
 <li> <a href="codeDoc/ptolemy/graph/package-summary.html">ptolemy.graph</a>
  (Shuvra S. Bhattacharyya (University of Maryland at College Park)) -
 The graph package was redesigned and reimplemented.
-
-<li> <a href="webStartHelp.htm">Web Start</a>
- (Christopher Hylands) -  
-Ptolemy II includes support to build distributions using Sun's Web Start
-facility, which allows end users to download fully functional distributions
-via the web.
 
  <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
 
@@ -169,7 +169,9 @@ via the web.
 	Synchronous Dataflow
  <menu>
  <li><a href="../ptolemy/domains/sdf/demo/LMSAdaptive/LMSAdaptive.htm">LMSAdaptive</a>
+ An adaptive filter
  <li><a href="../ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.htm">MaximumEntropySpectrum</a>
+ A spectral estimation example
  </menu>
 
 
@@ -577,10 +579,6 @@ Version 2.0 has a number of limitations.
 
 <h3>Release Limitations</h3>
 <menu>
-
-<li> Code generation does not work in the Ptolemy 2.0 Web Edition.
-The problem is that some of the code generation facility requires
-that the <CODE>PTII</CODE> environment variable be set.
 
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
