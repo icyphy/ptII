@@ -1,0 +1,156 @@
+<!-- $Id$ -->
+<html>
+<head>
+<Title>Vergil Frequently Asked Questions</Title>
+</head>
+<body bgcolor="#faf0e6">
+<h1><a name="vergil FAQ">Vergil Frequently Asked Questions</a></h1>
+Below are some answers to frequently asked questions about vergil.
+This page contains links to documents about Vergil internals and
+infrastructure.
+<H2>Contents</H2>
+<MENU>
+<LI> <A HREF="#vergil faq: general questions"><B>1. General</B></A>
+	<MENU>
+	<LI> <A HREF="#vergil description (short)"><B>1.1 What Is Vergil?</B></A>
+
+	<LI> <A HREF="#vergil pronunciation"><B>1.2 How do I pronounce 'vergil'?</B></A>
+	<LI> <A HREF="#virgil"><B>1.3 Isn't the guy's name 'Virgil'?</B></A>
+
+	<LI> <A HREF="#vergil copyright"><B>1.4 What is the copyright?</B></A>
+	<LI> <A HREF="#contact"><B>1.5 How do I contact the authors?</B></A>
+	<LI> <A HREF="#mailing list"><B>1.6 Is there a mailing list?</B></A>
+	</MENU>
+
+<LI> <A HREF="#vergil faq: installation"><B>2. Installation questions</B></A>
+	<MENU>
+	<LI> <A HREF="#downloading vergil"><B>2.1 How do I download
+	vergil?</B></A>
+
+	<LI> <A HREF="#platforms that vergil runs under"><B>2.2 What
+	platforms does vergil run under?</B></A>
+
+	<LI> <A HREF="#vergil installation, what do I need"><B>2.3 What do I need to Install Vergil?</B></A>
+
+	<LI> <A HREF="#vergil troubleshooting overview"><B>2.4	Troubleshooting</B></A>
+	<LI> <A HREF="#vergil bug list"><B>2.5	Is there a bug list?</B></A>
+	</MENU>
+
+<LI> <A HREF="#vergil faq: How do I . . ."><B>3. How do I  . . .</B></A>
+	<MENU>
+	
+	</MENU>
+
+</MENU>
+<HR>
+
+<H2><A NAME="vergil faq: general questions"><B>1. General</B></A></H2>
+
+<DL>
+<DT> <A NAME="vergil description (short)"><B>1.1 What Is Vergil?</B></A>
+<DD> Vergil is an extensible framework for developing component-based design applications.  Vergil can be used in applets and applications.  The
+<A HREF="main.htm">top-level Vergil page</A> describes Vergil
+further.
+
+<DT> <A NAME="vergil pronunciation"><B>1.2 How do I pronounce 'vergil'?</B></A>
+<DD> verge-ill.
+
+<DT> <A NAME="virgil"><B>1.3 Isn't the guy's name 'Virgil'?</B></A>
+<DD> In Latin, the author's name was Publius Vergilius Maro.  English
+translations seems to be split about an accepted spelling.  If you are
+interested in the author, try <a href="http://www.virgil.org" target="_top">www.virgil.org</a> for more information about him.  The name was chosen as a pseudo-acronym for
+"Visual Editing Graphical Interactive Language".
+
+<DT> <A NAME="vergil copyright"><B>1.4 What is the copyright?</B></A>
+<DD> Vergil is released under the fairly liberal UC Berkeley copyright,
+see <a href="../../../copyright.txt">copyright.txt</a>.
+Most files have the copyright at the top.
+
+ <p>Vergil is free for academic and commercial use.  You an incorporate it
+into products, but you need to follow the instructions in the
+copyright notice.
+
+ <p>This copyright is based on the Tcl copyright that was used when
+Prof. Ousterhout was developing Tcl here at UC Berkeley.  This
+copyright was also used in Ptolemy Classic, which has been used in
+commercial products.
+
+<DT> <A NAME="contact"><B>1.5 How do I contact the authors?</B></A>
+<DD> The primary author of Vergil is Stephen Neuendorffer.
+You can contact the author at
+<A HREF="mailto:neuendor@ptolemy.eecs.berkeley.edu"><CODE>neuendor@ptolemy.eecs.berkeley.edu</CODE></A>
+
+<DT> <A NAME="mailing list"><B>1.6 Is there a mailing list?</B></A>
+<DD> We have an internal mailing list <code>ptguidevel</code> for people 
+actively developing and contributing to vergil.  There is currently no
+external mailing list.
+<!-- 
+FIXME!
+<DD> We maintain the <CODE>vergil-announce</CODE> alias for announcing
+new vergil releases.  This alias is for Vergil announcements only.  Thus,
+you cannot post to this group.  To subscribe to this group,
+send email to <A HREF="mailto:vergil-announce-request@ptolemy.eecs.berkeley.edu"><CODE>vergil-announce-request@ptolemy.eecs.berkeley.edu</CODE></A>
+with the word <CODE>subscribe</CODE> in the body, not the header.
+-->
+
+</DL>
+ <HR>
+
+<H2><A NAME="vergil faq: installation"><B>2. Installation questions</B></A></H2>
+<DL>
+
+<DT> <A NAME="downloading Vergil"><B>2.1 How do I download Vergil?</B></A>
+<DD> <A HREF="http://ptolemy.eecs.berkeley.edu/java/vergil/index.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/vergil.htm</CODE></A>
+has links to the tar and zip files.
+
+<DT> <A NAME="platforms that Vergil runs under"><B>2.2 What platforms does Vergil run under?</B></A>
+<DD> Vergil was developed under JDK1.2.2 and JDK1.3.  It requires Java 2 and Swing.
+<p>The <a href="http://www.javasoft.com/products/plugin/" target="_top">Java Plug-in</a>
+allows JDK1.1 browsers under Windows to run JDK1.2 applets.
+
+ <p>Older browsers may not have support for JDK1.1, you may need to
+upgrade your browser.
+
+<DT> <A NAME="vergil installation, what do I need"><B>2.3 What do I need to Install Vergil?</B></A>
+<DD>
+To use Vergil, you will need the Java Development kit (JDK), which
+can be downloaded from
+<A HREF="http://www.javasoft.com" target="_top"><CODE>http://www.javasoft.com</CODE></A>.
+ <p>See the <a href="install.htm">Installing Vergil</a> page 
+for more information
+ <P>You can also run Vergil as an applet in your local browser.  
+ <p>Vergil uses <a href="http://www.gigascale.org/diva">Diva</a>, and a jar file of the Diva class files is included in the installation.  
+
+<DT> <A NAME="vergil troubleshooting overview"><B>2.4 Troubleshooting</B></A>
+<DD> The <A HREF="troubleshooting.htm">Vergil Troubleshooting</A> guide
+has a few hints.
+
+ <P>You might find useful information on the Vergil homepage at
+<A HREF="http://ptolemy.eecs.berkeley.edu/java/vergil" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/vergil</CODE></A>.
+
+ <P>If you are really stumped, you can send mail to <A
+HREF="mailto:neuendor@ptolemy.eecs.berkeley.edu"><CODE>neuendor@ptolemy.eecs.berkeley.edu</CODE></A>.
+Your mail should include:
+<OL>
+<LI> What version of Vergil you are running.
+<LI> What platform you are running under (Solaris, Windows etc.)
+<LI> Exactly how to reproduce the bug.
+</OL>
+
+Please realize that due to the extensible nature of Vergil, bugs that appear
+when using Vergil are often bugs in other related software.
+<DT> <A NAME="vergil bug list"><B>2.5 Is there a bug list?</B></A>
+<DD> There should be...
+<MENU>
+
+</MENU>
+
+</DL>
+
+ <HR>
+<H2><A NAME="vergil faq: How do I  . . .">3. How do I  . . .</A>
+</H2>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
