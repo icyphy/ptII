@@ -3,12 +3,18 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ArrayAppend" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF6" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="97.0, 50.0">
         </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="ArrayAppend0" class="ptolemy.actor.lib.ArrayAppend">
         <property name="_location" class="ptolemy.moml.Location" value="317.0, 179.0">
@@ -40,11 +46,13 @@
         </port>
     </entity>
     <entity name="SequenceToArray10" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="203.0, 179.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -62,11 +70,13 @@
         </port>
     </entity>
     <entity name="16:SequenceToArray10" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="213.0, 248.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -83,19 +93,11 @@
             </property>
         </port>
     </entity>
-    <entity name="Test18" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2,0,1,2,3,4,5,3,4,5,6,7,8,6,7,8}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="528.0, 180.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="ArrayToSequence0" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="433.0, 179.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
@@ -113,8 +115,20 @@
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="6">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
             </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,0,1,1,2,2}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="532.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -127,7 +141,7 @@
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ArrayAppend0.input" relation="relation12"/>
     <link port="ArrayAppend0.input" relation="relation17"/>
@@ -137,7 +151,7 @@
     <link port="SequenceToArray10.output" relation="relation12"/>
     <link port="16:SequenceToArray10.input" relation="relation15"/>
     <link port="16:SequenceToArray10.output" relation="relation17"/>
-    <link port="Test18.input" relation="relation2"/>
     <link port="ArrayToSequence0.input" relation="relation1"/>
-    <link port="ArrayToSequence0.output" relation="relation2"/>
+    <link port="ArrayToSequence0.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
 </entity>
