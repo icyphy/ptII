@@ -55,7 +55,9 @@ JSRCS = \
         HammingCoder.java \
         HammingDecoder.java \
         Scrambler.java \
+	Slicer.java \
         ViterbiDecoder.java
+
 OTHER_FILES_TO_BE_JARED = \
 	comm.xml
 
