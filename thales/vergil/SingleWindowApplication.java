@@ -31,7 +31,7 @@ import javax.swing.UIManager;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.gui.MessageHandler;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilApplication;
 import thales.actor.gui.SingleWindowHTMLViewer;
 
