@@ -105,6 +105,14 @@ Object:
 		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" \
 		java.lang.Object
 
+# Generate C code under single class mode for a simple class 
+Simple:
+	CLASSPATH="$(CLASSPATH)" \
+		$(JAVA) ptolemy.copernicus.c.JavaToC \
+		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" \
+		Simple \
+		-singleClass
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
