@@ -71,7 +71,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII-4.0 PTIIADM=/tmp/cxh/ptII-4.0/adm TAR=/bin/tar clean
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII-4.0 PTIIADM=/tmp/cxh/ptII-4.0/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 
 USER =		ptII
@@ -287,6 +287,7 @@ src_jar: #$(PTII_SRC)
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign3-domains.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
+
 
 ###############
 
@@ -1173,6 +1174,14 @@ REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
+
+fortytwo_test: $(PTII_SRC)
+	$(MAKE) REMOTE4HOME=$(GENDIR)/test \
+		PTII_FULL=$(PTII_SRC) \
+		remote4nuke remote4ptiidist remote4configure \
+		remote4distclean remote4build \
+		remote4javatest \
+		remote4done
 
 # Create a separate tree and build on REMOTE4HOST
 remote4: $(PTII_FULL) $(GENLOGDIR)
