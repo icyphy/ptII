@@ -103,6 +103,7 @@ JSRCS = \
 	Sink.java \
 	Source.java \
 	SquareRoot.java \
+	Synchronizer.java \
 	Test.java \
 	TimedActor.java \
 	TimedSource.java \
