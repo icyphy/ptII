@@ -174,8 +174,10 @@ public class ParameterPort extends TypedIOPort {
             Attribute parameter = entity.getAttribute(getName());
             if (parameter instanceof PortParameter) {
                 _parameter = (PortParameter)parameter;
-                _parameter._port = this;
-                _parameter.setTypeSameAs(this);
+                if (_parameter._port == null) {
+                    _parameter._port = this;
+                    _parameter.setTypeSameAs(this);
+                }
             }
         }
     }

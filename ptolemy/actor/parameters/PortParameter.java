@@ -81,6 +81,7 @@ want the associated port to appear.
 
 @author Edward A. Lee
 @version $Id$
+@see AttributePort
 */
 public class PortParameter extends Parameter {
 
@@ -102,8 +103,15 @@ public class PortParameter extends Parameter {
             // If we get to here, we know the container is a ComponentEntity,
             // so the cast is safe.
             _port = new ParameterPort((ComponentEntity)container, name);
-            _port._parameter = this;
-            _port.setTypeSameAs(this);
+            // NOTE: The following two statements are not necessary, since
+            // the port will discover this parameter when it's setContainer()
+            // method is called.  Moreover, doing this again is not a good
+            // idea, since the setTypeSameAs() method will just add an
+            // extra (redundant) set of constraints.  This will cause
+            // the clone tests to fail, since cloning does not produce
+            // the extra set of constraints.
+            // _port._parameter = this;
+            // _port.setTypeSameAs(this);
         }
     }
 
@@ -249,8 +257,10 @@ public class PortParameter extends Parameter {
             Port port = entity.getPort(getName());
             if (port instanceof ParameterPort) {
                 _port = (ParameterPort)port;
-                _port._parameter = this;
-                _port.setTypeSameAs(this);
+                if (_port._parameter == null) {
+                    _port._parameter = this;
+                    _port.setTypeSameAs(this);
+                }
             }
         }
     }
