@@ -280,7 +280,7 @@ public class Thermostat extends TypedCompositeActor{
         // CT embedded director 1 parameters
         ctIncDir.initStepSize.setToken(new DoubleToken(0.01));
         ctIncDir.minStepSize.setToken(new DoubleToken(1e-3));
-        ctIncDir.maxStepSize.setToken(new DoubleToken(0.05));
+        ctIncDir.maxStepSize.setToken(new DoubleToken(0.5));
 
         StringToken tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
@@ -293,7 +293,7 @@ public class Thermostat extends TypedCompositeActor{
         // CT embedded director 2  parameters
         ctDecDir.initStepSize.setToken(new DoubleToken(0.01));
         ctDecDir.minStepSize.setToken(new DoubleToken(1e-3));
-        ctDecDir.maxStepSize.setToken(new DoubleToken(0.05));
+        ctDecDir.maxStepSize.setToken(new DoubleToken(0.5));
 
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
@@ -306,7 +306,7 @@ public class Thermostat extends TypedCompositeActor{
         // CT director parameters
         topdir.initStepSize.setToken(new DoubleToken(0.01));
         topdir.minStepSize.setToken(new DoubleToken(1e-3));
-        topdir.maxStepSize.setToken(new DoubleToken(0.05));
+        topdir.maxStepSize.setToken(new DoubleToken(0.5));
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         topdir.breakpointODESolver.setToken(tok);
