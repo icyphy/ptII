@@ -31,6 +31,8 @@
 package ptolemy.domains.fsm.demo;
 
 import ptolemy.actor.*;
+import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
 //import ptolemy.domains.de.kernel.*;
 //import ptolemy.domains.de.lib.*;
 import ptolemy.domains.fsm.kernel.*;
@@ -80,14 +82,14 @@ public class SimpleHS {
             //intv.setToken(new DoubleToken(0.1));
 
             // a DE ramp
-            CTRamp ramp = new CTRamp(sys, "Ramp");
+            Ramp ramp = new Ramp(sys, "Ramp");
             Parameter p = (Parameter)ramp.getAttribute("InitialValue");
             p.setToken(new DoubleToken(1.0));
             p = (Parameter)ramp.getAttribute("Slope");
             p.setToken(new DoubleToken(0.0));
 
             // the plot
-            CTPlot plot = new CTPlot(sys, "Plot");
+            SequencePlotter plot = new SequencePlotter(sys, "Plot");
 
             // a simple hybrid system
             CTCompositeActor hs = new CTCompositeActor(sys, "HS");
@@ -176,7 +178,7 @@ public class SimpleHS {
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
             CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
             CTIntegrator ctDecI = new CTIntegrator(ctDec, "Integrator");
-            CTGain ctGain = new CTGain(ctDec, "Gain");
+            Scale scale = new Scale(ctDec, "Gain");
             CTZeroCrossingDetector ctDecD = new CTZeroCrossingDetector(ctDec, "ZD");
             GeneralFunctionActor ctDecGF = new GeneralFunctionActor(ctDec, "GF");
             //CTPeriodicalSampler ctDecS = new CTPeriodicalSampler(ctDec, "Sample");
@@ -202,8 +204,8 @@ public class SimpleHS {
             ctDecTr.setTypeEquals(DoubleToken.class);
             // connect ctDec
             ctDec.connect(ctDecIn, ctDecH.input);
-            ctDec.connect(ctDecH.output, ctGain.input);
-            ctDec.connect(ctGain.output, ctDecI.input);
+            ctDec.connect(ctDecH.output, scale.input);
+            ctDec.connect(scale.output, ctDecI.input);
             //ctDec.connect(ctDecGFo, ctDecD.trigger);
             Relation ctDecR2 = ctDec.newRelation("R2");
             ctDecGFo.link(ctDecR2);
@@ -283,7 +285,7 @@ public class SimpleHS {
 
             //sp = (Parameter)ctDecS.getAttribute("SamplePeriod");
             //sp.setToken(new DoubleToken(0.1));
-            Parameter gain = (Parameter)ctGain.getAttribute("Gain");
+            Parameter gain = (Parameter)scale.getAttribute("Gain");
             gain.setToken(new DoubleToken(-1.0));
 
             // CT director parameters
