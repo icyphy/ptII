@@ -269,7 +269,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 throws Exception {
             if (input == null) {
                 // Create a blank effigy.
-                PtolemyEffigy effigy = new PtolemyEffigy(
+                // Use the strategy pattern so derived classes can
+                // override this.
+                PtolemyEffigy effigy = _newEffigy(
                         container, container.uniqueName("effigy"));
 
                 // If this factory contains an entity called "blank", then
@@ -293,7 +295,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     return null;
                 }
                 // Create a blank effigy.
-                PtolemyEffigy effigy = new PtolemyEffigy(
+                PtolemyEffigy effigy = _newEffigy(
                         container, container.uniqueName("effigy"));
 
                 MoMLParser parser = new MoMLParser();
@@ -397,6 +399,19 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 }
                 return null;
             }
+        }
+
+        /** Create a new effigy.  We use the strategy pattern here
+         *  so that derived classes can easily override the exact class
+         *  that is created.
+         *  @param container The container for the effigy.
+         *  @param name The name.
+         *  @return A new effigy.
+         */
+        protected PtolemyEffigy _newEffigy(
+                CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            return new PtolemyEffigy(container, name);
         }
     }
 

@@ -78,6 +78,8 @@ JSRCS = \
 	EditParametersDialog.java \
 	Effigy.java \
 	EffigyFactory.java \
+	ExpressionShellEffigy.java \
+	ExpressionShellTableau.java \
 	ExternalTextEffigy.java \
 	ExternalTextTableau.java \
 	HTMLEffigy.java \
