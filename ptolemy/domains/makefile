@@ -35,7 +35,6 @@ DIRS = ct #sdf pn
 # Root of Tycho directory
 ROOT =		../..
 
-ME = 		ptolemy/domains
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 

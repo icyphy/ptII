@@ -34,7 +34,6 @@ DIRS = testsuite
 # Root of Ptolemy II directory
 ROOT =		..
 
-ME =		util
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

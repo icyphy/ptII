@@ -32,7 +32,6 @@
 # Root of the Java directory
 ROOT =		../../../../..
 
-ME =		java/ptolemy/domains/pn/kernel
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

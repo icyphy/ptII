@@ -35,7 +35,6 @@
 # Root of the Java directory
 ROOT =		../..
 
-ME =		ptolemy/math
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
