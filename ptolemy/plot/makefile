@@ -73,11 +73,12 @@ JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat testpxgraph ptplot2mif.tcl index.html
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = demo doc adm #bean #test \
+MISC_FILES = demo doc #bean #test \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	adm \
 	manifest.tmp \
 	ptplot.jar \
 	ptplot.zip \
