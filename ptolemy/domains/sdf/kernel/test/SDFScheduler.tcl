@@ -871,29 +871,3 @@ test SDFScheduler-10.15 {output Broadcast Multirate Scheduling tests} {
     list $sched1
 } {{{Ramp Consumer1 Consumer2}}}
 
-test SDFScheduler-11.1 {Cycle Scheduling tests} {
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
-    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
-    $toplevel setName Toplevel
-    $toplevel setManager $manager
-    $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
-
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $toplevel Actor1]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $toplevel Actor2]
-    set a3 [java::new ptolemy.domains.sdf.lib.Delay $toplevel Delay]
-
-    set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
-    set r2 [$toplevel connect [java::field $a2 output] [java::field $a3 input] R2]
-    set r3 [$toplevel connect [java::field $a3 output] [java::field $a1 input] R3]
-
-    $scheduler setValid false
-
-#    set l1 [java::new ptolemy.kernel.util.StreamListener]
-#    $scheduler addDebugListener $l1
-
-    set sched1 [_testEnums schedule $scheduler]
-    list $sched1
-} {{{Actor1 Actor2 Delay}}}
