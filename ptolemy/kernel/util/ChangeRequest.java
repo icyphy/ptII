@@ -113,7 +113,7 @@ public abstract class ChangeRequest {
                     listener.changeExecuted(this);
                 } else {
 		    // note that local listeners do not prevent an exception
-		    // from being seen globally.  This is wierd.
+		    // from being seen globally.  This is weird.
                     listener.changeFailed(this, _exception);
                 }
             }
