@@ -54,8 +54,12 @@ import javax.swing.SwingUtilities;
 //// EntityPortController
 /**
 This class provides interaction with nodes that represent Ptolemy II
-ports on an actor.   It provides a context menu containing commands to
-edit parameters ("Configure"), rename, and get documentation.
+ports on an actor.  It provides a double click binding and context
+menu entry to edit the parameters of the port ("Configure") and a
+command to get documentation.
+It can have one of two access levels, FULL or PARTIAL.
+If the access level is FULL, the the context menu also
+contains a command to rename the node.
 Note that whether the port is an input or output or multiport cannot
 be controlled via this interface.  The "Configure Ports" command of
 the container should be invoked instead.
@@ -65,12 +69,21 @@ the container should be invoked instead.
 */
 public class EntityPortController extends AttributeController {
 
-    /** Create an attribute port controller associated with the
-     *  specified graph controller.
+    /** Create a port controller associated with the specified graph
+     *  controller.  The controller is given full access.
      *  @param controller The associated graph controller.
      */
     public EntityPortController(GraphController controller) {
-	super(controller);
+        this(controller, FULL);
+    }
+
+    /** Create a port controller associated with the
+     *  specified graph controller.
+     *  @param controller The associated graph controller.
+     *  @param access The access level.
+     */
+    public EntityPortController(GraphController controller, Access access) {
+	super(controller, access);
 	setNodeRenderer(new EntityPortRenderer());
 
 	// Ports of entities do not use a selection interactor with

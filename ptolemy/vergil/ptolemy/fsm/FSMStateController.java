@@ -60,7 +60,16 @@ public class FSMStateController extends AttributeController {
      *  @param controller The associated graph controller.
      */
     public FSMStateController(GraphController controller) {
-	super(controller);
+        this(controller, FULL);
+    }
+
+    /** Create a state controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     *  @param access The access level.
+     */
+    public FSMStateController(GraphController controller, Access access) {
+	super(controller, access);
 	setNodeRenderer(new StateRenderer());
     }
 

@@ -72,14 +72,7 @@ public class ViewerGraphController extends PtolemyGraphController {
      *  terminal and edge interactors and default context menus.
      */
     public ViewerGraphController() {
-        // FIXME: Need read-only versions of these, and then need
-        // to override this in EditorGraphController.
-	_attributeController = new AttributeController(this);
-	_entityPortController = new EntityPortController(this);
-	_entityController = new EntityController(this);
-	_portController = new PortController(this);
-	_relationController = new RelationController(this);
-	_linkController = new LinkController(this);
+        _createControllers();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,60 +97,40 @@ public class ViewerGraphController extends PtolemyGraphController {
      *  @param object A Vertex, Location, or Port.
      */
     public NodeController getNodeController(Object object) {
-	//return _controllerMap.get(getGraphModel().getNodeModel(object));
+        // Defer to the superclass if it can provide a controller.
+        NodeController result = super.getNodeController(object);
+        if (result != null) {
+            // Add to the selection dragger.
+            // NOTE: This should not be null, but in case it is,
+            // it is better to just have the selection dragger not
+            // work than to get a null pointer exception.
+            if(_selectionDragger != null) {
+                _selectionDragger.addSelectionInteractor(
+                        (SelectionInteractor)result.getNodeInteractor());
+            }
+            return result;
+        }
+
+        // Superclass cannot provide a controller. Use defaults.
 	if(object instanceof Vertex) {
             return _relationController;
         } else if(object instanceof Location) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
-            // Check to see whether
-            // this is a NamedObj that contains a NodeControllerFactory.
-            // If so, that could be used. If not, use the defaults
-            // below.  This allows any object in Ptolemy II to have
-            // its own controller, which means its own context menu
-            // and its own interactors.
-            if (semanticObject instanceof NamedObj) {
-                List factoryList = ((NamedObj)semanticObject)
-                        .attributeList(NodeControllerFactory.class);
-                if(factoryList.size() > 0) {
-                    NodeControllerFactory factory = (NodeControllerFactory)
-                           factoryList.get(0);
-                    PtolemyNodeController controller = factory.create(this);
-                    controller.setConfiguration(getConfiguration());
-
-                    // Add to the selection dragger.
-                    // NOTE: This should not be null, but in case it is,
-                    // it is better to just have the selection dragger not
-                    // work than to get a null pointer exception.
-                    if(_selectionDragger != null) {
-                        _selectionDragger.addSelectionInteractor(
-                                (SelectionInteractor)controller
-                                .getNodeInteractor());
-                    }
-                    return controller;
-                } else {
-                    // No controller factory, so return a default one.
-                    if (semanticObject instanceof Entity) {
-                        return _entityController;
-                    } else if (semanticObject instanceof Attribute) {
-                        return _attributeController;
-                    } else if (semanticObject instanceof Port) {
-                        return _portController;
-                    } else {
-                        throw new RuntimeException(
-                       "Unrecognized object: " + semanticObject);
-                    }
-                }
+            if (semanticObject instanceof Entity) {
+                return _entityController;
+            } else if (semanticObject instanceof Attribute) {
+                return _attributeController;
+            } else if (semanticObject instanceof Port) {
+                return _portController;
+            } else {
+                throw new RuntimeException(
+                "Unrecognized object: " + semanticObject);
             }
         } else if(object instanceof Port) {
             return _entityPortController;
-        } else {
-            throw new RuntimeException(
-                    "Node with unknown semantic object: " + object);
         }
-        // The compiler seems to lose track of the fact that all branches
-        // above either return or throw an exception, so to silence an
-        // error, we need this:
-        return null;
+        throw new RuntimeException(
+                "Node with unknown semantic object: " + object);
     }
 
     /** Set the configuration.  This is used by some of the controllers
@@ -176,6 +149,26 @@ public class ViewerGraphController extends PtolemyGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Create the controllers for nodes in this graph.
+     *  In this base class, controllers with PARTIAL access are created.
+     *  This is called by the constructor, so derived classes that
+     *  override this must be careful not to reference local variables
+     *  defined in the derived classes, because the derived classes
+     *  will not have been fully constructed by the time this is called.
+     */
+    protected void _createControllers() {
+	_attributeController = new AttributeController(this,
+                 AttributeController.PARTIAL);
+	_entityController = new EntityController(this,
+                 AttributeController.PARTIAL);
+	_entityPortController = new EntityPortController(this,
+                 AttributeController.PARTIAL);
+	_portController = new PortController(this,
+                 AttributeController.PARTIAL);
+	_relationController = new RelationController(this);
+	_linkController = new LinkController(this);
+    }
 
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.

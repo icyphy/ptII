@@ -1,4 +1,4 @@
-/* A simple graph view for Ptolemy models
+/* A graph editor for Ptolemy II models.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -40,11 +40,10 @@ import java.awt.Color;
 //////////////////////////////////////////////////////////////////////////
 //// GraphTableau
 /**
-A simple graph view for ptolemy models.  This represents a level of the
-hierarchy of a ptolemy model as a diva graph.  Cut, copy and paste operations
-are supported using MoML and the graph itself is created using a visual
-notation as a a factory
+This is a graph editor for ptolemy models.  It constructs an instance
+of KernelGraphFrame, which contains an editor pane based on diva.
 
+@see KernelGraphFrame
 @author  Steve Neuendorffer
 @version $Id$
 */
@@ -71,8 +70,8 @@ public class KernelGraphTableau extends Tableau {
             if (!(model instanceof CompositeEntity)) {
                 throw new IllegalActionException(this,
                         "Cannot graphically edit a model "
-                        + "that is not a CompositeEntity. Model was a " + 
-                                                 model);
+                        + "that is not a CompositeEntity. Model is a "
+                        + model);
             }
             CompositeEntity entity = (CompositeEntity)model;
             

@@ -30,53 +30,43 @@
 
 package ptolemy.vergil.ptolemy;
 
-// FIXME: Trim this list and replace with explict (per class) imports.
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.gui.MessageHandler;
-import ptolemy.moml.*;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.Token;
-import ptolemy.data.ObjectToken;
-
-import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
-import diva.graph.GraphException;
-import diva.graph.GraphUtilities;
-import diva.graph.MutableGraphModel;
-import diva.graph.toolbox.*;
 import diva.graph.modular.ModularGraphModel;
-import diva.graph.modular.CompositeModel;
-import diva.graph.modular.NodeModel;
-import diva.graph.modular.EdgeModel;
-import diva.graph.modular.CompositeNodeModel;
-import diva.util.*;
 
-import java.util.*;
-import javax.swing.SwingUtilities;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractPtolemyGraphModel
 /**
-This class defines some useful things that help to create new visual notations
-for ptolemy models.  It handles the things that almost all such models need
-to handle.  It assumes that all the objects in the graph are ptolemy named
-objects.  It also assumes that the semantic object of a particular
-graph object is fixed.  Lastly, it makes sure that all the modifications to
-the ptolemy model that use this interface occur within a change request.
+This base class provides some common services for visual notations for
+Ptolemy II models. It assumes that the semantic object of a particular
+graph object is fixed, and provides facilities for making changes to the
+model via a change request.
 <p>
-This model uses a ptolemy change listener to detect changes to the model that
-do not originate from this model.  These changes are propagated
+This class uses a change listener to detect changes to the Ptolemy model
+that do not originate from this class.  These changes are propagated
 as structure changed graph events to all graphListeners registered with this
 model.  This mechanism allows a graph visualization of a ptolemy model to
 remain synchronized with the state of a mutating model.
 
 @author Steve Neuendorffer
+@contributor Edward A. Lee
 @version $Id$
 */
 public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 
+    /** Create a graph model for the specified Ptolemy II model.
+     *  @param toplevel The Ptolemy II model.
+     */
     public AbstractPtolemyGraphModel(CompositeEntity toplevel) {
 	super(toplevel);
 	_toplevel = toplevel;
@@ -86,45 +76,26 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Disconnect an edge from its two enpoints and notify graph
-     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     * event whose source is the given source.
-     *
-     * @param eventSource The source of the event that will be dispatched, e.g.
-     *                    the view that made this call.
-     * @exception GraphException if the operation fails.
+    /** Disconnect an edge from its two endpoints and notify graph
+     *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     *  event whose source is the given source.
+     *  @param eventSource The source of the event that will be dispatched,
+     *   e.g. the view that made this call.
+     *  @exception GraphException If the operation fails.
      */
     public abstract void disconnectEdge(Object eventSource, Object edge);
 
-    /** Return the context for which a change request concerning the given
-     *  object should be made.  This is the first container
-     *  above the object in the hierarchy that defers its
-     * MoML definition, or the immediate parent if there is none.
-     */
-    public static NamedObj getChangeRequestParent(NamedObj object) {
-        NamedObj container = MoMLChangeRequest.getDeferredToParent(object);
-        if (container == null) {
-            container = (NamedObj)object.getContainer();
-        }
-        if (container == null) {
-            return object;
-        }
-        return container;
-    }
-
-    /**
-     * Return the property of the object associated with
-     * the given property name.  In this implementation
-     * properties are stored in variables of the graph object (which is
-     * always a Ptolemy NamedObj).  If no variable with the given name
-     * exists in the object, then return null.  Otherwise retrieve the
-     * token from the variable.  If the token is an instance of ObjectToken,
-     * then get the value from the token and return it.  Otherwise, return
-     * the result of calling toString on the token.
-     * @param object The graph object, which is assumed to be an instance of
-     * NamedObj.
-     * @param propertyName The name of the new property.
+    /** Return the property of the object associated with
+     *  the given property name. In this implementation
+     *  properties are stored in variables of the graph object (which is
+     *  always a Ptolemy NamedObj). If no variable with the given name
+     *  exists in the object, then return null.  Otherwise retrieve the
+     *  token from the variable.  If the token is an instance of ObjectToken,
+     *  then get the value from the token and return it.  Otherwise, return
+     *  the result of calling toString on the token.
+     *  @param object The graph object, which is assumed to be an instance of
+     *   NamedObj.
+     *  @param propertyName The name of the new property.
      */
     public Object getProperty(Object object, String propertyName) {
 	try {
@@ -141,37 +112,34 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	}
     }
 
-    /**
-     * Return the toplevel composite entity of this ptolemy model.
+    /** Return the toplevel composite entity of this ptolemy model.
+     *  @return The Ptolemy II model.
      */
     public CompositeEntity getToplevel() {
 	return _toplevel;
     }
 
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
-     *
-     * @param eventSource The source of the event that will be dispatched, e.g.
-     *                    the view that made this call.
-     * @exception GraphException if the operation fails.
+    /** Delete a node from its parent graph and notify
+     *  graph listeners with a NODE_REMOVED event.
+     *  @param eventSource The source of the event that will be dispatched,
+     *   e.g. the view that made this call.
+     *  @exception GraphException if the operation fails.
      */
     public abstract void removeNode(Object eventSource, Object node);
 
-    /**
-     * Set the property of the given graph object associated with
-     * the given property name to the given value.  In this implementation
-     * properties are stored in variables of the graph object (which is
-     * always a Ptolemy NamedObj).  If no variable with the given name exists
-     * in the graph object, then create a new variable contained
-     * by the graph object with the given name.
-     * If the value is a string, then set the expression of the variable
-     * to that string. Otherwise create a new object token contained the
-     * value and place that in the variable instead.
-     * The operation is performed in a ptolemy change request.
-     * @param object The graph object.
-     * @param propertyName The property name.
-     * @param value The new value of the property.
+    /** Set the property of the given graph object associated with
+     *  the given property name to the given value.  In this implementation
+     *  properties are stored in variables of the graph object (which is
+     *  always a Ptolemy NamedObj).  If no variable with the given name exists
+     *  in the graph object, then create a new variable contained
+     *  by the graph object with the given name.
+     *  If the value is a string, then set the expression of the variable
+     *  to that string. Otherwise create a new object token contained the
+     *  value and place that in the variable instead.
+     *  The operation is performed in a ptolemy change request.
+     *  @param object The graph object.
+     *  @param propertyName The property name.
+     *  @param value The new value of the property.
      */
     public void setProperty(final Object object,
             final String propertyName,
@@ -179,13 +147,12 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	throw new UnsupportedOperationException("hack");
     }
 
-    /**
-     * Set the semantic object correspoding to the given node, edge,
-     * or composite.  The semantic objects in this graph model are
-     * fixed, so this method throws an UnsupportedOperationException.
-     * @param object The graph object that represents a node or an edge.
-     * @param semantic The semantic object to associate with the given
-     * graph object.
+    /** Set the semantic object correspoding to the given node, edge,
+     *  or composite.  The semantic objects in this graph model are
+     *  fixed, so this method throws an UnsupportedOperationException.
+     *  @param object The graph object that represents a node or an edge.
+     *  @param semantic The semantic object to associate with the given
+     *   graph object.
      */
     public void setSemanticObject(Object object, Object semantic) {
 	throw new UnsupportedOperationException("Ptolemy Graph Model does" +
@@ -193,26 +160,54 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 " to be changed");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return the context for which a change request concerning the given
+     *  object should be made.  This is the first container
+     *  above the object in the hierarchy that defers its
+     *  MoML definition, or the immediate parent if there is none.
+     *  @param object The object to change.
+     *  @return The context for a change request.
+     */
+    protected static NamedObj _getChangeRequestParent(NamedObj object) {
+        NamedObj container = MoMLChangeRequest.getDeferredToParent(object);
+        if (container == null) {
+            container = (NamedObj)object.getContainer();
+        }
+        if (container == null) {
+            return object;
+        }
+        return container;
+    }
+
     /** Update the graph model.  This is called whenever a change request is
      *  executed.  Subclasses will override this to update internal data
      *  structures that may be cached.
+     *  @return True if the graph model changes (always true in this
+     *   base class).
      */
     protected boolean _update() {
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The root of this graph model, as a CompositeEntity.
+    private CompositeEntity _toplevel;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /**
-     * Mutations may happen to the ptolemy model without the knowledge of
-     * this model.  This change listener listens for those changes
-     * and when they occur, issues a GraphEvent so that any views of
-     * this graph model can come back and update themselves.  Note that
-     * although the graph model uses mutations to make changes to the ptolemy
-     * model, those graph events are not handled here.
-     * Instead, they are handled in the base class since they can be easily
-     * propagated at a finer level of granularity than is possible here.
+    /** Mutations may happen to the ptolemy model without the knowledge of
+     *  this model.  This change listener listens for those changes,
+     *  and when they occur, issues a GraphEvent so that any views of
+     *  this graph model can update themselves.  Note that although
+     *  the graph model uses mutations to make changes to the ptolemy
+     *  model, those graph events are not handled here. Instead, they
+     *  are handled in the base class since they can be easily
+     *  propagated at a finer level of granularity than is possible here.
      */
     public class GraphChangeListener implements ChangeListener {
 
@@ -261,15 +256,4 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
             }
         }
     }
-
-    // The root of this graph model, as a CompositeEntity.
-    private CompositeEntity _toplevel;
 }
-
-
-
-
-
-
-
-

@@ -61,30 +61,32 @@ import javax.swing.SwingUtilities;
 //// PtolemyGraphModel
 /**
 This class represents one level of hierarchy of a Ptolemy II model.
-The graph model represents ports, entities and relations as nodes.  Entities
-are represented in the model by the icon that is used to visually
-depict them.  Relations are represented in the model by its vertices
-(which are visual elements that generally exist in multiple
-places in a visual rendition).  Ports represent themselves in the model.
-In the terminology of diva, the graph elements are "nodes" (icons,
-vertices, and ports), and the "edges" that link them.  Edges
-are represented in the model by instances of the Link class.
+The graph model represents attributes, ports, entities and relations
+as nodes.  Entities and attributes are represented in the model by the
+icon that is used to visually depict them.  Relations are represented
+in the model by its vertices (which are visual elements that generally
+exist in multiple places in a visual rendition).  Ports represent
+themselves in the model.
 <p>
-Edges may link a port and a vertex, or a port and
-another port.  For visual simplicity, both types of edges are represented by
+In the terminology of diva, the graph elements are "nodes" (icons,
+vertices, and ports), and the "edges" link them.  Edges
+are represented in the model by instances of the Link class.
+Edges may link a port and a vertex, or a port and another port.
+For visual simplicity, both types of edges are represented by
 an instance of the Link class.  If an edge is placed between a port
 and a vertex then the Link represents a Ptolemy II link between
 the port and the vertex's Relation.  However, if an edge is placed between
-two ports, then it represents a Relation (with no vertex) and links from
+two ports, then it represents a relation (with no vertex) and links from
 the relation to each port (in Ptolemy II, this is called a "connection").
 <p>
-This model uses a ptolemy change listener to detect changes to the model that
-do not originate from this model.  These changes are propagated
+This model uses a ptolemy change listener to detect changes to the model
+that do not originate from this model.  These changes are propagated
 as structure changed graph events to all graphListeners registered with this
 model.  This mechanism allows a graph visualization of a ptolemy model to
 remain synchronized with the state of a mutating model.
 
 @author Steve Neuendorffer
+@contributor Edward A. Lee
 @version $Id$
  */
 public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
@@ -101,14 +103,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Disconnect an edge from its two enpoints and notify graph
-     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     * event whose source is the given source.
-     *
-     * @param eventSource The source of the event that will be dispatched, e.g.
-     *                    the view that made this call.
-     * @exception GraphException if the operation fails.
+    /** Disconnect an edge from its two enpoints and notify graph
+     *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     *  event whose source is the given source.
+     *  @param eventSource The source of the event that will be dispatched,
+     *   e.g. the view that made this call.
+     *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
 	if(!(getEdgeModel(edge) instanceof MutableEdgeModel)) return;
@@ -119,27 +119,26 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
         model.setHead(edge, null);
         if(head != null) {
             GraphEvent e = new GraphEvent(eventSource,
-					  GraphEvent.EDGE_HEAD_CHANGED,
-					  edge, head);
+                    GraphEvent.EDGE_HEAD_CHANGED,
+                    edge, head);
             dispatchGraphEvent(e);
         }
         if(tail != null) {
             GraphEvent e = new GraphEvent(eventSource,
-					  GraphEvent.EDGE_TAIL_CHANGED,
-					  edge, tail);
+                    GraphEvent.EDGE_TAIL_CHANGED,
+                    edge, tail);
             dispatchGraphEvent(e);
         }
     }
 
-    /**
-     * Return the model for the given composite object.  If the object is not
-     * a composite, meaning that it does not contain other nodes,
-     * then return null.
-     * @param composite An object which is assumed to be a node object in
-     * this graph model.
-     * @return An instance of ToplevelModel if the object is the root
-     * object of this graph model or an instance of IconModel if the
-     * object is an icon.  Otherwise return null.
+    /** Return the model for the given composite object.  If the object is not
+     *  a composite, meaning that it does not contain other nodes,
+     *  then return null.
+     *  @param composite An object that is assumed to be a node object in
+     *   this graph model.
+     *  @return An instance of ToplevelModel if the object is the root
+     *   object of this graph model or an instance of IconModel if the
+     *   object is an icon.  Otherwise return null.
      */
     public CompositeModel getCompositeModel(Object composite) {
 	if(composite.equals(getRoot())) {
@@ -152,12 +151,11 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
-    /**
-     * Return the model for the given edge object.  If the object is not
-     * an edge, then return null.
-     * @param edge An object which is assumed to be in this graph model.
-     * @return An instance of LinkModel if the object is a Link.
-     * Otherwise return null.
+    /** Return the model for the given edge object.  If the object is not
+     *  an edge, then return null.
+     *  @param edge An object which is assumed to be in this graph model.
+     *  @return An instance of LinkModel if the object is a Link.
+     *   Otherwise return null.
      */
     public EdgeModel getEdgeModel(Object edge) {
 	if(edge instanceof Link) {
@@ -167,15 +165,26 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
-    /**
-     * Return the node model for the given object.  If the object is not
-     * a node, then return null.
-     * @param node An object which is assumed to be in this graph model.
-     * @return An instance of IconModel if the object is an icon, an instance
-     * of ExternalPortModel if the object is a port contained in the root of
-     * this graph model, an instance of PortModel for all other ports
-     * (which are presumably contained in Icons), and an instance of
-     * VertexModel for vertexes.  Otherwise return null.
+    /** Return the model for edge objects that are instance of Link.
+     *  This will return the same object as getEdgeModel() when the
+     *  argument is a link.
+     *  @return The model for links.
+     */
+    public LinkModel getLinkModel() {
+        // FIXME: This design makes it impossible to have different
+        // models for different types of links.  This method should
+        // be removed, and getEdgeModel() should be used instead.
+	return _linkModel;
+    }
+
+    /** Return the node model for the given object.  If the object is not
+     *  a node, then return null.
+     *  @param node An object which is assumed to be in this graph model.
+     *  @return An instance of IconModel if the object is an icon, an instance
+     *   of ExternalPortModel if the object is a port contained in the root of
+     *   this graph model, an instance of PortModel for all other ports
+     *   (which are presumably contained in Icons), and an instance of
+     *   VertexModel for vertexes.  Otherwise return null.
      */
     public NodeModel getNodeModel(Object node) {
 	if(node instanceof Port) {
@@ -197,9 +206,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
-    public LinkModel getLinkModel() {
-	return _linkModel;
-    }
     public ToplevelModel getToplevelModel() {
 	return _toplevelModel;
     }
@@ -264,6 +270,233 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The set of all links in the model.
+    private Set _linkSet;
+
+    // The models of the different types of nodes and edges.
+    private AttributeModel _attributeModel = new AttributeModel();
+    private ExternalPortModel _externalPortModel = new ExternalPortModel();
+    private IconModel _iconModel = new IconModel();
+    private LinkModel _linkModel = new LinkModel();
+    private PortModel _portModel = new PortModel();
+    private ToplevelModel _toplevelModel = new ToplevelModel();
+    private VertexModel _vertexModel = new VertexModel();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Update the graph model.  This is called whenever a change request is
+     *  executed.  In this class the internal set of link objects is
+     *  verified to be correct.  This method is usually called just before
+     *  issuing a graph event.  If this method returns false, then the graph
+     *  event should not be issued, because further changes are necessary.
+     *  @return true if the model was successfully updated, or false if
+     *  further change requests were queued.
+     */
+    protected boolean _update() {
+	// Go through all the links that currently exist, and remove
+        // any that don't have both ends in the model.
+	Iterator links = _linkSet.iterator();
+	while(links.hasNext()) {
+ 	    Link link = (Link)links.next();
+            Relation relation = link.getRelation();
+            if(relation == null) continue;
+            boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
+                    getRoot(), this);
+            boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
+                    getRoot(), this);
+            // If the head or tail has been removed, then remove this link.
+            if(!(headOK && tailOK)) {
+                Object headObj = getSemanticObject(link.getHead());
+                Object tailObj = getSemanticObject(link.getTail());
+                link.setHead(null);
+                link.setTail(null);
+                links.remove();
+                if(headObj instanceof Port && tailObj instanceof Port) {
+                    NamedObj container = _getChangeRequestParent(relation);
+                    // remove the relation  This should trigger removing the
+                    // other link.  This avoids turning a direct connection
+                    // into a half connection with a diamond.
+                    // Note that the source is NOT the graphmodel, so this
+                    // will trigger the changerequest listener to
+                    // redraw the graph again.
+                    ChangeRequest request = new MoMLChangeRequest(
+                            container, getToplevel(),
+                            "<deleteRelation name=\""
+                            + relation.getName(container)
+                            + "\"/>\n");
+                    container.requestChange(request);
+                    // If updating requires further updates to the model
+                    // i.e. the above change request, then return false.
+                    // this is so that rerendering doesn't happen until the
+                    // graph model has reached a stable point.
+                    // Note that there is a bit of a performance tradeoff
+                    // here as to whether we queue a bunch of mutations in
+                    // parallel (which may be redundant) or queue them
+                    // serially (which may be slow).
+                    return false;
+                }
+            }
+        }
+
+        // Now create Links for links that may be new
+        Iterator relations = getToplevel().relationList().iterator();
+        while(relations.hasNext()) {
+            _updateLinks((ComponentRelation)relations.next());
+        }
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Check to make sure that there is a Link object representing every
+    // link connected to the given relation.  In some cases, it may
+    // be necessary to create a vertex to represent the relation as well.
+    private void _updateLinks(ComponentRelation relation) {
+        List linkedPortList = relation.linkedPortList();
+	int allPortCount = linkedPortList.size();
+
+	// Go through all the links that currently exist, and remove ports
+	// from the linkedPortList that already have a Link object.
+	// FIXME this could get expensive
+	Iterator links = _linkSet.iterator();
+	while(links.hasNext()) {
+	    Link link = (Link)links.next();
+            // only consider links that are associated with this relation.
+	    if(link.getRelation() != relation) continue;
+      	    // remove any ports that this link is linked to.  We don't need
+	    // to manufacture those links.
+	    Object tail = link.getTail();
+	    Object tailObj = getSemanticObject(tail);
+            if(tailObj != null && linkedPortList.contains(tailObj)) {
+                linkedPortList.remove(tailObj);
+	    }
+	    Object head = link.getHead();
+	    Object headObj = getSemanticObject(head);
+            if(headObj != null && linkedPortList.contains(headObj)) {
+                linkedPortList.remove(headObj);
+	    }
+	}
+        
+	// Count the linked ports.
+	int unlinkedPortCount = linkedPortList.size();
+        
+	// If there are no links left to create, then just return.
+	if(unlinkedPortCount == 0) return;
+
+	Iterator vertexes =
+	    relation.attributeList(Vertex.class).iterator();
+	// get the Root vertex.  This is where we will manufacture links.
+	Vertex rootVertex = null;
+	while(vertexes.hasNext()) {
+	    Vertex v = (Vertex)vertexes.next();
+	    if(v.getLinkedVertex() == null) {
+		rootVertex = v;
+	    }
+	}
+
+	// If there are no vertecies, and the relation has exactly
+	// two connections, neither of which has been made yet, then
+	// create a link without a vertex for the relation.
+	if(rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
+	    Port port1 = (Port)linkedPortList.get(0);
+	    Port port2 = (Port)linkedPortList.get(1);
+	    Object head = null;
+	    Object tail = null;
+
+	    if(port1.getContainer().equals(getRoot())) {
+		head = _getLocation(port1);
+	    } else {
+		head = port1;
+	    }
+
+	    if(port2.getContainer().equals(getRoot())) {
+		tail = _getLocation(port2);
+	    } else {
+		tail = port2;
+	    }
+
+	    Link link;
+	    try {
+		link = new Link();
+		_linkSet.add(link);
+	    }
+	    catch (Exception e) {
+		throw new InternalErrorException("Failed to create " +
+		    "new link, even though one does not " +
+		    "already exist:" + e.getMessage());
+	    }
+	    link.setRelation(relation);
+	    link.setHead(head);
+	    link.setTail(tail);
+	} else {
+	    // A regular relation with a diamond.
+	    // Create a vertex if one is not found
+	    if(rootVertex == null) {
+		try {
+		    rootVertex = new Vertex(relation,
+					    relation.uniqueName("vertex"));
+		}
+		catch (Exception e) {
+		    throw new InternalErrorException(
+			"Failed to create " +
+			"new vertex, even though one does not " +
+			"already exist:" + e.getMessage());
+		}
+	    }
+	    // Connect all the links for that relation.
+	    Iterator ports = linkedPortList.iterator();
+	    while(ports.hasNext()) {
+		Port port = (Port)ports.next();
+		Object head = null;
+		if(port.getContainer().equals(getRoot())) {
+		    head = _getLocation(port);
+		} else {
+		    head = port;
+		}
+
+		Link link;
+		try {
+		    link = new Link();
+		    _linkSet.add(link);
+		}
+		catch (Exception e) {
+		    throw new InternalErrorException(
+			    "Failed to create " +
+			    "new link, even though one does not " +
+			    "already exist:" + e.getMessage());
+		}
+		link.setRelation(relation);
+		link.setHead(head);
+		link.setTail(rootVertex);
+	    }
+	}
+    }
+
+    // Return the location contained in the given object, or
+    // a new location contained in the given object if there was no location.
+    private Location _getLocation(NamedObj object) {
+	List locations = object.attributeList(Location.class);
+	if(locations.size() > 0) {
+	    return (Location)locations.get(0);
+	} else {
+	    try {
+		Location location = new Location(object, "_location");
+		return location;
+	    }
+	    catch (Exception e) {
+		throw new InternalErrorException("Failed to create " +
+                        "location, even though one does not exist:" +
+                        e.getMessage());
+	    }
+	}
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The model for visible attributes
@@ -305,7 +538,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             final Object prevParent = getParent(node);
 	    NamedObj attribute = (NamedObj)((Location)node).getContainer();
 
-            NamedObj container = getChangeRequestParent(attribute);
+            NamedObj container = _getChangeRequestParent(attribute);
 
             String moml = "<deleteProperty name=\""
 		+ attribute.getName(container) + "\"/>\n";
@@ -401,7 +634,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    Location location = (Location)node;
 	    ComponentPort port = (ComponentPort)location.getContainer();
 
-            NamedObj container = getChangeRequestParent(port);
+            NamedObj container = _getChangeRequestParent(port);
 
 	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
@@ -500,7 +733,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     + deleteObj.getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = getChangeRequestParent(deleteObj);
+            NamedObj container = _getChangeRequestParent(deleteObj);
 
             // Note: The source is NOT the graph model.
             ChangeRequest request =
@@ -513,6 +746,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     /** The model for links that connect two ports, or a port and a vertex.
      */
     public class LinkModel implements MutableEdgeModel {
+
 	/** Return true if the head of the given edge can be attached to the
 	 *  given node.
 	 *  @param edge The edge to attach, which is assumed to be a link.
@@ -575,7 +809,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	/** Append moml to the given buffer that disconnects a link with the
 	 *  given head, tail, and relation. Names in the returned moml will be
-         *  relative to the iven container.
+         *  relative to the given container.
 	 */
 	private void _unlinkMoML(
                 NamedObj container,
@@ -749,7 +983,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    failmoml.append("<group>\n");
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
 
@@ -835,7 +1069,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
 
@@ -1043,7 +1277,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public void removeNode(final Object eventSource, Object node) {
 	    ComponentPort port = (ComponentPort)node;
 
-            NamedObj container = getChangeRequestParent(port);
+            NamedObj container = _getChangeRequestParent(port);
 
 	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
@@ -1245,7 +1479,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    ComponentRelation relation =
 		(ComponentRelation)((Vertex)node).getContainer();
 
-            NamedObj container = getChangeRequestParent(relation);
+            NamedObj container = _getChangeRequestParent(relation);
 
 	    // Delete the relation.
 	    StringBuffer moml = new StringBuffer();
@@ -1262,238 +1496,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                        private inner classes              ////
 
-    /** Update the graph model.  This is called whenever a change request is
-     *  executed.  In this class the internal set of link objects is
-     *  verified to be correct.  This method is usually called just before
-     *  issuing a graph event.  If this method returns false, then the graph
-     *  event should not be issued, because further changes are necessary.
-     *  @return true if the model was successfully updated, or false if
-     *  further change requests were queued.
-     */
-    protected boolean _update() {
-	// Go through all the links that currently exist, and remove
-        // any that don't have both ends in the model.
-	Iterator links = _linkSet.iterator();
-	while(links.hasNext()) {
- 	    Link link = (Link)links.next();
-            Relation relation = link.getRelation();
-            if(relation == null) continue;
-            boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
-                    getRoot(), this);
-            boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
-                    getRoot(), this);
-            // If the head or tail has been removed, then remove this link.
-            if(!(headOK && tailOK)) {
-                Object headObj = getSemanticObject(link.getHead());
-                Object tailObj = getSemanticObject(link.getTail());
-                link.setHead(null);
-                link.setTail(null);
-                links.remove();
-                if(headObj instanceof Port && tailObj instanceof Port) {
-                    NamedObj container = getChangeRequestParent(relation);
-                    // remove the relation  This should trigger removing the
-                    // other link.  This avoids turning a direct connection
-                    // into a half connection with a diamond.
-                    // Note that the source is NOT the graphmodel, so this
-                    // will trigger the changerequest listener to
-                    // redraw the graph again.
-                    ChangeRequest request = new MoMLChangeRequest(
-                            container, getToplevel(),
-                            "<deleteRelation name=\""
-                            + relation.getName(container)
-                            + "\"/>\n");
-                    container.requestChange(request);
-                    // If updating requires further updates to the model
-                    // i.e. the above change request, then return false.
-                    // this is so that rerendering doesn't happen until the
-                    // graph model has reached a stable point.
-                    // Note that there is a bit of a performance tradeoff
-                    // here as to whether we queue a bunch of mutations in
-                    // parallel (which may be redundant) or queue them
-                    // serially (which may be slow).
-                    return false;
-                }
-            }
-        }
-
-        // Now create Links for links that may be new
-        Iterator relations = getToplevel().relationList().iterator();
-        while(relations.hasNext()) {
-            _updateLinks((ComponentRelation)relations.next());
-        }
-        return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Check to make sure that there is a Link object representing every
-    // link connected to the given relation.  In some cases, it may
-    // be necessary to create a vertex to represent the relation as well.
-    private void _updateLinks(ComponentRelation relation) {
-        List linkedPortList = relation.linkedPortList();
-	int allPortCount = linkedPortList.size();
-
-	// Go through all the links that currently exist, and remove ports
-	// from the linkedPortList that already have a Link object.
-	// FIXME this could get expensive
-	Iterator links = _linkSet.iterator();
-	while(links.hasNext()) {
-	    Link link = (Link)links.next();
-            // only consider links that are associated with this relation.
-	    if(link.getRelation() != relation) continue;
-      	    // remove any ports that this link is linked to.  We don't need
-	    // to manufacture those links.
-	    Object tail = link.getTail();
-	    Object tailObj = getSemanticObject(tail);
-            if(tailObj != null && linkedPortList.contains(tailObj)) {
-                linkedPortList.remove(tailObj);
-	    }
-	    Object head = link.getHead();
-	    Object headObj = getSemanticObject(head);
-            if(headObj != null && linkedPortList.contains(headObj)) {
-                linkedPortList.remove(headObj);
-	    }
-	}
-        
-	// Count the linked ports.
-	int unlinkedPortCount = linkedPortList.size();
-        
-	// If there are no links left to create, then just return.
-	if(unlinkedPortCount == 0) return;
-
-	Iterator vertexes =
-	    relation.attributeList(Vertex.class).iterator();
-	// get the Root vertex.  This is where we will manufacture links.
-	Vertex rootVertex = null;
-	while(vertexes.hasNext()) {
-	    Vertex v = (Vertex)vertexes.next();
-	    if(v.getLinkedVertex() == null) {
-		rootVertex = v;
-	    }
-	}
-
-	// If there are no vertecies, and the relation has exactly
-	// two connections, neither of which has been made yet, then
-	// create a link without a vertex for the relation.
-	if(rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
-	    Port port1 = (Port)linkedPortList.get(0);
-	    Port port2 = (Port)linkedPortList.get(1);
-	    Object head = null;
-	    Object tail = null;
-
-	    if(port1.getContainer().equals(getRoot())) {
-		head = _getLocation(port1);
-	    } else {
-		head = port1;
-	    }
-
-	    if(port2.getContainer().equals(getRoot())) {
-		tail = _getLocation(port2);
-	    } else {
-		tail = port2;
-	    }
-
-	    Link link;
-	    try {
-		link = new Link();
-		_linkSet.add(link);
-	    }
-	    catch (Exception e) {
-		throw new InternalErrorException("Failed to create " +
-		    "new link, even though one does not " +
-		    "already exist:" + e.getMessage());
-	    }
-	    link.setRelation(relation);
-	    link.setHead(head);
-	    link.setTail(tail);
-	} else {
-	    // A regular relation with a diamond.
-	    // Create a vertex if one is not found
-	    if(rootVertex == null) {
-		try {
-		    rootVertex = new Vertex(relation,
-					    relation.uniqueName("vertex"));
-		}
-		catch (Exception e) {
-		    throw new InternalErrorException(
-			"Failed to create " +
-			"new vertex, even though one does not " +
-			"already exist:" + e.getMessage());
-		}
-	    }
-	    // Connect all the links for that relation.
-	    Iterator ports = linkedPortList.iterator();
-	    while(ports.hasNext()) {
-		Port port = (Port)ports.next();
-		Object head = null;
-		if(port.getContainer().equals(getRoot())) {
-		    head = _getLocation(port);
-		} else {
-		    head = port;
-		}
-
-		Link link;
-		try {
-		    link = new Link();
-		    _linkSet.add(link);
-		}
-		catch (Exception e) {
-		    throw new InternalErrorException(
-			    "Failed to create " +
-			    "new link, even though one does not " +
-			    "already exist:" + e.getMessage());
-		}
-		link.setRelation(relation);
-		link.setHead(head);
-		link.setTail(rootVertex);
-	    }
-	}
-    }
-
-    // Return the location contained in the given object, or
-    // a new location contained in the given object if there was no location.
-    private Location _getLocation(NamedObj object) {
-	List locations = object.attributeList(Location.class);
-	if(locations.size() > 0) {
-	    return (Location)locations.get(0);
-	} else {
-	    try {
-		Location location = new Location(object, "_location");
-		return location;
-	    }
-	    catch (Exception e) {
-		throw new InternalErrorException("Failed to create " +
-                        "location, even though one does not exist:" +
-                        e.getMessage());
-	    }
-	}
-    }
-
+    /** Interface for node models representing nodes that can be removed. */
     private interface RemoveableNodeModel extends NodeModel {
         /** Remove the given edge from the model
 	 */
 	public void removeNode(Object eventSource, Object node);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The set of all links in the model.
-    private Set _linkSet;
-
-    // The models of the different types of nodes and edges.
-    private AttributeModel _attributeModel = new AttributeModel();
-    private ExternalPortModel _externalPortModel = new ExternalPortModel();
-    private IconModel _iconModel = new IconModel();
-    private LinkModel _linkModel = new LinkModel();
-    private PortModel _portModel = new PortModel();
-    private ToplevelModel _toplevelModel = new ToplevelModel();
-    private VertexModel _vertexModel = new VertexModel();
-    }
-
-
-
-
+}

@@ -60,6 +60,8 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.ptolemy.kernel.AttributeController;
+import ptolemy.vergil.ptolemy.kernel.PortController;
 import ptolemy.vergil.toolbox.FigureAction;
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,6 +103,23 @@ public class FSMGraphController extends FSMViewerController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Create the controllers for nodes in this graph.
+     *  In this class, controllers with FULL access are created.
+     *  This is called by the constructor, so derived classes that
+     *  override this must be careful not to reference local variables
+     *  defined in the derived classes, because the derived classes
+     *  will not have been fully constructed by the time this is called.
+     */
+    protected void _createControllers() {
+	_attributeController = new AttributeController(this,
+                 AttributeController.FULL);
+	_portController = new PortController(this,
+                 AttributeController.FULL);
+	_stateController = new FSMStateController(this,
+                 AttributeController.FULL);
+	_transitionController = new FSMTransitionController(this);
+    }
 
     /** Initialize interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.

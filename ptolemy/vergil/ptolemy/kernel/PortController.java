@@ -60,9 +60,12 @@ import javax.swing.SwingUtilities;
 //// PortController
 /**
 This class provides interaction with nodes that represent Ptolemy II
-ports inside a composite.   It provides a double click binding to edit
-the parameters of the port, and a context menu containing commands to
-edit parameters ("Configure"), rename, and get documentation.
+ports inside a composite.  It provides a double click binding and context
+menu entry to edit the parameters of the port ("Configure") and a
+command to get documentation.
+It can have one of two access levels, FULL or PARTIAL.
+If the access level is FULL, the the context menu also
+contains a command to rename the node.
 Note that whether the port is an input or output or multiport cannot
 be controlled via this interface.  The "Configure Ports" command of
 the container should be invoked instead.
@@ -73,11 +76,20 @@ the container should be invoked instead.
 public class PortController extends AttributeController {
 
     /** Create a port controller associated with the specified graph
-     *  controller.
+     *  controller.  The controller is given full access.
      *  @param controller The associated graph controller.
      */
     public PortController(GraphController controller) {
-	super(controller);
+        this(controller, FULL);
+    }
+
+    /** Create a port controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     *  @param access The access level.
+     */
+    public PortController(GraphController controller, Access access) {
+	super(controller, access);
 	setNodeRenderer(new PortRenderer());
     }
 

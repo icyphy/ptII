@@ -415,7 +415,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
 
@@ -509,7 +509,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getToplevel());
 
 	    String relationName = "";
 
@@ -643,7 +643,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj)getChangeRequestParent(deleteObj);
+            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
             ChangeRequest request =
                 new MoMLChangeRequest(
                         FSMGraphModel.this, container, moml);
@@ -763,7 +763,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj)getChangeRequestParent(deleteObj);
+            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
             ChangeRequest request =
                 new MoMLChangeRequest(
                         FSMGraphModel.this, container, moml);
@@ -859,7 +859,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 link.setTail(null);
                 links.remove();
                 NamedObj container =
-                    (NamedObj)getChangeRequestParent(relation);
+                    (NamedObj)_getChangeRequestParent(relation);
                 // remove the relation  This should trigger removing the
                 // other link. This will only happen when we've deleted
                 // the state at one end of the model.

@@ -115,6 +115,26 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Create the controllers for nodes in this graph.
+     *  In this class, controllers with FULL access are created.
+     *  This is called by the constructor, so derived classes that
+     *  override this must be careful not to reference local variables
+     *  defined in the derived classes, because the derived classes
+     *  will not have been fully constructed by the time this is called.
+     */
+    protected void _createControllers() {
+	_attributeController = new AttributeController(this,
+                 AttributeController.FULL);
+	_entityController = new EntityController(this,
+                 AttributeController.FULL);
+	_entityPortController = new EntityPortController(this,
+                 AttributeController.FULL);
+	_portController = new PortController(this,
+                 AttributeController.FULL);
+	_relationController = new RelationController(this);
+	_linkController = new LinkController(this);
+    }
+
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.
      *  This initialization cannot be done in the constructor because
@@ -124,6 +144,9 @@ public class EditorGraphController extends ViewerGraphController {
     protected void initializeInteraction() {
         super.initializeInteraction();
         GraphPane pane = getGraphPane();
+
+        // Add a menu command to configure the ports.
+	_menuFactory.addMenuItemFactory(new PortDialogFactory());
 
         // Create a listener that creates new relations
 	_relationCreator = new RelationCreator();

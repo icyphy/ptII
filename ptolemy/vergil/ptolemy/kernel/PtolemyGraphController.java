@@ -30,6 +30,8 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
+import java.util.List;
+
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
@@ -37,10 +39,12 @@ import diva.canvas.Figure;
 import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
+import diva.graph.NodeController;
 import diva.gui.toolbox.MenuCreator;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Location;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
@@ -84,6 +88,38 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
 	return _configuration;
     }
 
+    /** Return the node controller appropriate for the given object.
+     *  In this base class, the method checks to see whether the object
+     *  is an instance of Location and contains a NodeControllerFactory
+     *  (which is an attribute).  If it does, then it invokes that factory
+     *  to create a node controller. Otherwise, it returns null.
+     *  @param object The object to get a controller for.
+     *  @return A custom node controller if there is one, and null otherwise.
+     */
+    public NodeController getNodeController(Object object) {
+        if(object instanceof Location) {
+            Object semanticObject = getGraphModel().getSemanticObject(object);
+            // Check to see whether
+            // this is a NamedObj that contains a NodeControllerFactory.
+            // If so, that should be used. If not, use the defaults
+            // below.  This allows any object in Ptolemy II to have
+            // its own controller, which means its own context menu
+            // and its own interactors.
+            if (semanticObject instanceof NamedObj) {
+                List factoryList = ((NamedObj)semanticObject)
+                        .attributeList(NodeControllerFactory.class);
+                if(factoryList.size() > 0) {
+                    NodeControllerFactory factory = (NodeControllerFactory)
+                           factoryList.get(0);
+                    PtolemyNodeController controller = factory.create(this);
+                    controller.setConfiguration(getConfiguration());
+                    return controller;
+                }
+            }
+        }
+        return null;
+    }
+
     /** Set the configuration.  This is used by some of the controllers
      *  to open files or URLs.
      *  @param configuration The configuration.
@@ -103,7 +139,8 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
      */
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
-	_menuCreator = new MenuCreator(new SchematicContextMenuFactory(this));
+	_menuFactory = new SchematicContextMenuFactory(this);
+	_menuCreator = new MenuCreator(_menuFactory);
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 	pane.getBackgroundEventLayer().setConsuming(false);
     }
@@ -115,6 +152,9 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
      *  graph itself.
      */
     protected MenuCreator _menuCreator;
+
+    /** The factory belonging to the menu creator. */
+    protected PtolemyMenuFactory _menuFactory;
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
@@ -136,7 +176,6 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new PortDialogFactory());
 	}
 
 	protected NamedObj _getObjectFromFigure(Figure source) {

@@ -38,9 +38,12 @@ import diva.graph.GraphController;
 //// AttributeController
 /**
 This class provides interaction with nodes that represent Ptolemy II
-attributes.  It provides a double click binding to edit the parameters
-of the node, and a context menu containing a command to edit parameters
-("Configure"), a command to rename, and a command to get documentation.
+attributes.  It provides a double click binding and context menu
+entry to edit the parameters of the node ("Configure") and a
+command to get documentation.
+It can have one of two access levels, FULL or PARTIAL.
+If the access level is FULL, the the context menu also
+contains a command to rename the node.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -48,16 +51,43 @@ of the node, and a context menu containing a command to edit parameters
 public class AttributeController extends IconController {
 
     /** Create an attribute controller associated with the specified graph
-     *  controller.
+     *  controller.  The attribute controller is given full access.
      *  @param controller The associated graph controller.
      */
     public AttributeController(GraphController controller) {
+        this(controller, FULL);
+    }
+
+    /** Create an attribute controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     *  @param access The access level.
+     */
+    public AttributeController(GraphController controller, Access access) {
 	super(controller);
 
-        // Add to the context menu.
-        _menuFactory.addMenuItemFactory(
-                 new RenameDialogFactory());
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new GetDocumentationAction()));
+        if(access == FULL) {
+            // Add to the context menu.
+            _menuFactory.addMenuItemFactory(
+                    new RenameDialogFactory());
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(new GetDocumentationAction()));
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public members                        ////
+
+    /** Indicator to give full access to the attribute. */
+    public static Access FULL = new Access();
+
+    /** Indicator to give partial access to the attribute. */
+    public static Access PARTIAL = new Access();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     inner classes                         ////
+
+    /** A static enumerator for constructor arguments. */
+    protected static class Access {
     }
 }

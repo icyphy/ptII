@@ -39,8 +39,11 @@ import diva.graph.NodeController;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.moml.Location;
+import ptolemy.vergil.ptolemy.kernel.AttributeController;
 import ptolemy.vergil.ptolemy.kernel.PortController;
+import ptolemy.vergil.ptolemy.kernel.PtolemyNodeController;
 import ptolemy.vergil.ptolemy.kernel.PtolemyGraphController;
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,29 +64,42 @@ public class FSMViewerController extends PtolemyGraphController {
      *  controllers.
      */
     public FSMViewerController() {
-        _portController = new PortController(this);
-	_stateController = new FSMStateController(this);
-	_transitionController = new FSMTransitionController(this);
+        _createControllers();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Return the node controller appropriate for the given node.
+    /** Return the node controller appropriate for the given node.
      */
     public NodeController getNodeController(Object object) {
-	if(object instanceof Location &&
-                getGraphModel().getSemanticObject(object)
-                instanceof Entity) {
-            return _stateController;
-	} else if(object instanceof Location &&
-                getGraphModel().getSemanticObject(object)
-                instanceof Port) {
-            return _portController;
-	} else
-            throw new RuntimeException(
-                    "Node with unknown semantic object: " + object);
+        // Defer to the superclass if it can provide a controller.
+        NodeController result = super.getNodeController(object);
+        if (result != null) {
+            // Add to the selection dragger.
+            // NOTE: This should not be null, but in case it is,
+            // it is better to just have the selection dragger not
+            // work than to get a null pointer exception.
+            if(_selectionDragger != null) {
+                _selectionDragger.addSelectionInteractor(
+                        (SelectionInteractor)result.getNodeInteractor());
+            }
+            return result;
+        }
+
+        // Superclass cannot provide a controller. Use defaults.
+        if(object instanceof Location) {
+            Object semanticObject = getGraphModel().getSemanticObject(object);
+            if(semanticObject instanceof Entity) {
+                return _stateController;
+            } else if (semanticObject instanceof Attribute) {
+                return _attributeController;
+            } else if(semanticObject instanceof Port) {
+                return _portController;
+            }
+        }
+        throw new RuntimeException(
+                "Node with unknown semantic object: " + object);
     }
 
     /**
@@ -99,6 +115,7 @@ public class FSMViewerController extends PtolemyGraphController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
+        _attributeController.setConfiguration(configuration);
         _portController.setConfiguration(configuration);
         _stateController.setConfiguration(configuration);
         _transitionController.setConfiguration(configuration);
@@ -106,6 +123,23 @@ public class FSMViewerController extends PtolemyGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Create the controllers for nodes in this graph.
+     *  In this base class, controllers with PARTIAL access are created.
+     *  This is called by the constructor, so derived classes that
+     *  override this must be careful not to reference local variables
+     *  defined in the derived classes, because the derived classes
+     *  will not have been fully constructed by the time this is called.
+     */
+    protected void _createControllers() {
+	_attributeController = new AttributeController(this,
+                 AttributeController.PARTIAL);
+	_portController = new PortController(this,
+                 AttributeController.PARTIAL);
+	_stateController = new FSMStateController(this,
+                 AttributeController.PARTIAL);
+	_transitionController = new FSMTransitionController(this);
+    }
 
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.
@@ -118,6 +152,8 @@ public class FSMViewerController extends PtolemyGraphController {
 
         // Create and set up the selection dragger
 	SelectionDragger _selectionDragger = new SelectionDragger(pane);
+	_selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_attributeController.getNodeInteractor());
         _selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_portController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
@@ -130,6 +166,9 @@ public class FSMViewerController extends PtolemyGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The attribute controller. */
+    protected PtolemyNodeController _attributeController;
 
     /** The port controller. */
     protected PortController _portController;

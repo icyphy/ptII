@@ -30,44 +30,21 @@
 
 package ptolemy.vergil;
 
-// FIXME: Trim this.
-import java.net.URL;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Enumeration;
-import javax.swing.*;
-import java.io.*;
 
-import com.microstar.xml.XmlException;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
 
-import ptolemy.gui.*;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Manager;
-import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.MoMLApplet;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.PtolemyApplet;
-import ptolemy.actor.gui.HTMLViewer;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.*;
-import ptolemy.vergil.ptolemy.*;
-import ptolemy.vergil.ptolemy.kernel.*;
 import ptolemy.vergil.ptolemy.fsm.FSMGraphController;
 import ptolemy.vergil.ptolemy.fsm.FSMGraphModel;
-import ptolemy.vergil.toolbox.EditParametersFactory;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
+import ptolemy.vergil.ptolemy.kernel.PtolemyGraphModel;
+import ptolemy.vergil.ptolemy.kernel.ViewerGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet

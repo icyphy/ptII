@@ -66,10 +66,13 @@ import javax.swing.SwingConstants;
 //// EntityController
 /**
 This class provides interaction with nodes that represent Ptolemy II
-entities.   It provides a double click binding to edit the parameters
-of the node, and a context menu containing commands to edit parameters
-("Configure"), rename, get documentation, configure ports, and
-look inside.  In addition, a layout algorithm is applied so that
+entities.  It provides a double click binding and context menu
+entry to edit the parameters of the node ("Configure"), a
+command to get documentation, and a command to look inside.
+It can have one of two access levels, FULL or PARTIAL.
+If the access level is FULL, the the context menu also
+contains a command to rename the node and to configure its ports.
+In addition, a layout algorithm is applied so that
 the figures for ports are automatically placed on the sides of the
 figure for the entity.
 
@@ -79,15 +82,27 @@ figure for the entity.
 public class EntityController extends AttributeController {
 
     /** Create an entity controller associated with the specified graph
-     *  controller.
+     *  controller with full access.
      *  @param controller The associated graph controller.
      */
     public EntityController(GraphController controller) {
-	super(controller);
+        this(controller, FULL);
+    }
 
-        // Add to the context menu.
-        _menuFactory.addMenuItemFactory(
-                new PortDialogFactory());
+    /** Create an entity controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     *  @param access The access level.
+     */
+    public EntityController(GraphController controller, Access access) {
+	super(controller, access);
+
+        if(access == FULL) {
+            // Add to the context menu.
+            _menuFactory.addMenuItemFactory(
+                    new PortDialogFactory());
+        }
+
         // NOTE: This requires that the configuration be non null, or it
         // will report an error.
         _menuFactory.addMenuItemFactory(
