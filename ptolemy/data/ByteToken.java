@@ -387,17 +387,21 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Test for ordering of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is ByteToken.
+     *  Token.  It is assumed that the type of the argument is
+     *  ByteToken.  This method applies the unsignedConvert() method
+     *  this token's value and to the argument prior to comparison.
+     *  This ensures that the ByteTokens' values are interpreted as
+     *  being in the range 0 through 255 by the less-than operator.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A new Token containing the result.
-     */
+     *  @return A new Token containing the result.  */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         ByteToken convertedArgument = (ByteToken)rightArgument;
         return BooleanToken.getInstance(
-                _value < convertedArgument.byteValue());
+                unsignedConvert(_value)
+		< unsignedConvert(convertedArgument.byteValue()));
     }
 
     /** Return a new token whose value is the value of this token
