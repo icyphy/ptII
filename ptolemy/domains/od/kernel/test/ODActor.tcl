@@ -61,7 +61,7 @@ test ODActor-2.1 {Check setPriorities} {
     
     set portA1 [java::new ptolemy.domains.od.kernel.ODIOPort $actorA "portA1"]
     $portA1 setInput true
-    $portA1 setPriority 10
+    $portA1 setPriority 15
     
     set portA2 [java::new ptolemy.domains.od.kernel.ODIOPort $actorA "portA2"]
     $portA2 setInput true
@@ -81,8 +81,9 @@ test ODActor-2.1 {Check setPriorities} {
     
     $actorA setPriorities
     
+    
     list [$portA1 getPriority] [$portA2 getPriority]
-} {10 5}
+} {15 5}
 
 
 
