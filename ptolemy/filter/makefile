@@ -35,6 +35,9 @@ DIRS = filtermodel view controller applet
 # Root of Tycho directory
 ROOT =		../..
 
+# $(ME) is used in tydir.mk
+ME =		ptolemy/filter.mk
+
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 

@@ -35,6 +35,9 @@ DIRS = ct #sdf pn
 # Root of Tycho directory
 ROOT =		../..
 
+# $(ME) is used in tydir.mk
+ME =		ptolemy/domains
+
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 

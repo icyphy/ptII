@@ -34,6 +34,9 @@ DIRS = kernel actors demo
 # Root of Tycho directory
 ROOT =		../../../..
 
+# $(ME) is used in tydir.mk
+ME =		ptolemy/domains/pn
+
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 

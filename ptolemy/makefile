@@ -41,6 +41,9 @@ DIRS = kernel plot filter graph data actor automata gui math domains
 # Root of Ptolemy II directory
 ROOT =		..
 
+# $(ME) is used in tydir.mk
+ME =		ptolemy
+
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 
