@@ -101,7 +101,12 @@ public class LocatableNodeController extends NodeController {
      *  an instance of Locatable.
      */
     public boolean hasLocation(Node n) {
-        return (n.getSemanticObject() instanceof Locatable);
+        if(n.getSemanticObject() instanceof Locatable) {
+            Locatable object = (Locatable) n.getSemanticObject();
+            double[] location = object.getLocation();
+            if(location != null) return true;
+        }
+        return false;
     }
 
     /** Return the desired location of this node.  Throw an exception if the
