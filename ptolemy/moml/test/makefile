@@ -99,13 +99,25 @@ compat:
 		echo "$(OLDTREE) does not exist"; \
 		echo "skipping compatibility tests"; \
 	else \
-		@echo "Generating compat/ from $(OLDTREE)"; \
-		cd $(OLDTREE); \
+		echo "Generating compat/ from $(OLDTREE)"; \
+		(cd $(OLDTREE); \
 			find . -name "*.xml" -print | \
 			grep auto | \
-			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls;
+			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls); \
 		mkdir compat; \
+		echo "Copying old xmls over"; \
 		cp `cat /tmp/oldxmls` compat; \
+		echo "Copying xmls that have the same name"; \
+		rm compat/test1.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			compat/sdftest1.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			compat/vqtest1.xml; \
+		rm compat/test2.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			compat/sdftest1.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			compat/vqtest1.xml; \
 	fi
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
