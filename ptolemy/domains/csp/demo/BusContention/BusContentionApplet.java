@@ -100,6 +100,7 @@ import javax.swing.border.TitledBorder;
  *  @author John S. Davis II (davisj@eecs.berkeley.edu)
  *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
  *  @version $Id$
+ *  @since Ptolemy II 0.3
  */
 public class BusContentionApplet extends PtolemyApplet {
 

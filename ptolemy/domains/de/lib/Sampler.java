@@ -71,6 +71,7 @@ Inhibit reacts to the absence of it.
 
 @author Jie Liu, Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.domains.de.lib.Inhibit
 */
 

@@ -76,6 +76,7 @@ If no input tokens are available at all, then no output is produced.
 
 @author Yuhong Xiong and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class AddSubtract extends TypedAtomicActor {

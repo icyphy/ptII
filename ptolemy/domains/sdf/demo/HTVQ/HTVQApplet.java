@@ -59,6 +59,7 @@ An applet that uses Ptolemy II SDF domain.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class HTVQApplet extends MoMLApplet {
 

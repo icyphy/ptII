@@ -42,6 +42,7 @@ Applet demonstrating the Query class.
 
 @author  Edward A. Lee, Manda Sutijono
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.gui.Query
 */
 public class QueryApplet extends BasicJApplet implements QueryListener {

@@ -44,6 +44,7 @@ and an output port, and manages the cloning of these ports.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Transformer extends TypedAtomicActor {

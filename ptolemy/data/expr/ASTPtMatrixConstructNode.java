@@ -50,6 +50,7 @@ Matlab like expressions.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token

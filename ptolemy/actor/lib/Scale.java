@@ -65,6 +65,7 @@ on the right. Otherwise, the factor is multiplied on the right.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Scale extends Transformer {

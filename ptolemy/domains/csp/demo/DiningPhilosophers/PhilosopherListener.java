@@ -33,6 +33,7 @@ package ptolemy.domains.csp.demo.DiningPhilosophers;
 /** Listener for Philosopher events.
  @author Neil Smyth
  @version $Id$
+ @since Ptolemy II 0.3
  */
 public interface PhilosopherListener {
 

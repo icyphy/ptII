@@ -56,6 +56,7 @@ philosopher as the philosopher holds the chopstick for some random time.
 <p>
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 

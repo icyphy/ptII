@@ -43,6 +43,7 @@ unit time is unpredictable, and out of the control of the actor.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public interface SequenceActor {}

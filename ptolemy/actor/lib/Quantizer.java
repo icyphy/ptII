@@ -71,6 +71,7 @@ i.e. we allow that (<i>c</i>-<i>b</i>) != (<i>b</i>-<i>a</i>).
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Quantizer extends Transformer {

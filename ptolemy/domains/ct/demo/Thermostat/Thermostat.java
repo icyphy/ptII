@@ -71,6 +71,7 @@ We use this demo to illustrate the accuracy of detecting events, and the
 ability of simulating hybrid system in Ptolemy II.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class Thermostat extends TypedCompositeActor{
 

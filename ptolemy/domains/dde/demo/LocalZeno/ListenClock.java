@@ -55,6 +55,7 @@ the Diva graphical user interface.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.actor.gui.ExecEvent
 @see ptolemy.actor.gui.ExecEventListener
 */

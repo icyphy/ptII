@@ -40,6 +40,7 @@ import ptolemy.kernel.util.*;
 Test class that checks to see whether it is ok to cache parameter values.
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class AttributeChanged extends Entity {
 

@@ -73,6 +73,7 @@ times are decreased relative to the eating times.
 <p>
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class DiningPhilosophers {
 

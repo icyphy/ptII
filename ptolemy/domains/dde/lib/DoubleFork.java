@@ -52,6 +52,7 @@ Real tokens are never produced on output2.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 

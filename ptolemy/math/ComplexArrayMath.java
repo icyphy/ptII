@@ -44,6 +44,7 @@ will be thrown in the method or called methods.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class ComplexArrayMath {
 

@@ -40,6 +40,7 @@ two double number is less than the threshold, then they are considered
 equal. The default value of the fuzzy threshold is 1e-10.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class FuzzyDoubleComparator implements Comparator{
 

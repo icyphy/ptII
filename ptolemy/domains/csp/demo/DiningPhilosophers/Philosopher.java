@@ -73,6 +73,7 @@ rates characterize a uniform distribution between 0 and the rate.
 <p>
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.3
  */
 public class Philosopher extends CSPActor {
 

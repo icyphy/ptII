@@ -40,6 +40,7 @@ in certain domains where time has no useful significance.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public interface TimedActor {}

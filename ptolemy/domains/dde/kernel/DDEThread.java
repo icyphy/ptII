@@ -55,6 +55,7 @@ actors when the actor controlled by the thread is ending execution.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.domains.dde.kernel.TimeKeeper
 */
 public class DDEThread extends ProcessThread {

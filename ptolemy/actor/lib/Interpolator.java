@@ -76,6 +76,7 @@ Output type is DoubleToken.
 
 @author Sarah Packman, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.math.Interpolation
 */
 

@@ -45,6 +45,7 @@ The exception might not be a valid reference.
 
 @author Mudit Goel
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class ReceiverActionEvent {

@@ -56,6 +56,7 @@ value 'k', then this actor will consume k tokens.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 

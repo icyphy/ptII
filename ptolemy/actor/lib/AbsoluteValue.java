@@ -54,6 +54,7 @@ of the input complex.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class AbsoluteValue extends Transformer {

@@ -40,6 +40,7 @@ Interface for objects that have UI components that can be placed in containers.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 public interface Placeable {
 

@@ -68,6 +68,7 @@ import javax.swing.JButton;
  *  @author John S. Davis II (davisj@eecs.berkeley.edu)
  *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
  *  @version $Id$
+ *  @since Ptolemy II 0.3
  */
 public class LocalZenoApplet extends PtolemyApplet {
 

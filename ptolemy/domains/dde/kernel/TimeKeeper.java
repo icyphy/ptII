@@ -85,6 +85,7 @@ determine what the current time is local to the actor.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class TimeKeeper {

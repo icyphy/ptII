@@ -38,6 +38,7 @@ package ptolemy.math;
 /**
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 0.3
 */
 public interface ArrayStringFormat {
 

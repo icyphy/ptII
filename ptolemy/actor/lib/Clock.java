@@ -104,6 +104,7 @@ This actor is a timed source, the untimed version is Pulse.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Clock extends TimedSource {

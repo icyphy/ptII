@@ -33,6 +33,7 @@
  *
  * @author John Hall
  * @version $Id$
+ * @since Ptolemy II 0.3
  */
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 

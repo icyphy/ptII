@@ -42,6 +42,7 @@ as NamedList.
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class TestNullNamedObj extends NamedObj {
 

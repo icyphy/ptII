@@ -34,6 +34,7 @@
  *
  * @author Neil Smyth, modified from a file by John Hall
  * @version $Id$
+ * @since Ptolemy II 0.3
  */
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;

@@ -98,6 +98,7 @@ This is a wrapper for the CTBaseIntegrator class.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class Integrator extends CTBaseIntegrator {

@@ -57,6 +57,7 @@ and division.  In this case, a run-time error will occur.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Average extends Transformer {

@@ -47,6 +47,7 @@ typed, input multiport. Use this class to test DDEReceiver and DDEThread.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 

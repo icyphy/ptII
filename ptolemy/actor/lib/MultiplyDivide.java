@@ -71,6 +71,7 @@ If no input tokens are available at all, then no output is produced.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class MultiplyDivide extends TypedAtomicActor {

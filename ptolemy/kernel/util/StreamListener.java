@@ -40,6 +40,7 @@ A debug listener that sends messages to a stream or to the standard output.
 
 @author  Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.3
 @see NamedObj
 @see RecorderListener
 

@@ -57,6 +57,7 @@ and then discards the token.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public abstract class Source extends TypedAtomicActor {

@@ -62,6 +62,7 @@ IllegalArgumentException will be thrown.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.domains.dde.kernel.DDEReceiver
 */
 

@@ -56,6 +56,7 @@ Here is one example of creating a query with a radio button:
 
 @author  Edward A. Lee, Manda Sutijono
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class Query extends JPanel {
 

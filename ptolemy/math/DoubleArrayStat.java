@@ -44,6 +44,7 @@ will be thrown in the method or called methods.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class DoubleArrayStat extends DoubleArrayMath {
 

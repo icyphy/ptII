@@ -44,6 +44,7 @@ Implementations of this interface are typically contained by CTCompositeActors.
 @see CTCompositeActor
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 public interface CTTransparentDirector {

@@ -60,6 +60,7 @@ for developing actors that operate according to DDE semantics.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.domains.dde.kernel.DDEThread
 @see ptolemy.domains.dde.kernel.NullToken
 */

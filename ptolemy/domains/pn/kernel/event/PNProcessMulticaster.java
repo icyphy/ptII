@@ -46,6 +46,7 @@ methods.
 
 @author John Reekie, Mudit Goel
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.kernel.event.ChangeRequest
 */
 public class PNProcessMulticaster implements PNProcessListener {

@@ -57,6 +57,7 @@ The input port is a multiport.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Maximum extends TypedAtomicActor {

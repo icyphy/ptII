@@ -77,6 +77,7 @@ other contenders.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Controller extends CSPActor {

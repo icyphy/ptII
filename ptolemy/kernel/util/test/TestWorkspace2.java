@@ -49,6 +49,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 public class TestWorkspace2 extends Thread {

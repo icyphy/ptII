@@ -52,6 +52,7 @@ This actor uses the class java.util.Random to generate random numbers.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Bernoulli extends RandomSource {

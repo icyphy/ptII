@@ -52,6 +52,7 @@ code value represents the priority assigned to the contender.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class PortChannelCode {

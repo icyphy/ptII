@@ -61,6 +61,7 @@ import java.text.NumberFormat;
    <p>
    @author Neil Smyth
    @version $Id$
+   @since Ptolemy II 0.3
 */
 
 public class DiningApplet extends Applet

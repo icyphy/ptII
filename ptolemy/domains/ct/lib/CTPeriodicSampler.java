@@ -56,6 +56,7 @@ each input channel are sampled and produced to corresponding output
 channel.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 */
 public class CTPeriodicSampler extends Transformer
     implements CTEventGenerator, TimedActor {

@@ -47,6 +47,7 @@ getDelay() method that approximates a Zeno condition.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.domains.dde.kernel.NullToken
 */
 public class ZenoDelay extends ListenFeedBackDelay {

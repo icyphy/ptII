@@ -55,6 +55,7 @@ becomes available.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 @see ptolemy.data.Token
 @see ptolemy.domains.dde.kernel.DDEReceiver
 */

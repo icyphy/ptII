@@ -37,6 +37,7 @@ A debug listener that records messages in a string buffer.
 
 @author  Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.3
 @see NamedObj
 @see StreamListener
 

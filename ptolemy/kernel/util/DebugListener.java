@@ -37,6 +37,7 @@ Interface for listeners that receive debug messages.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 @see NamedObj
 
 */

@@ -46,6 +46,7 @@ the current time. The output is of type double.
 
 @author Jie Liu and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class CurrentTime extends TimedSource {

@@ -47,6 +47,7 @@ and are correctly handled in cloned actors.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public class Sink extends TypedAtomicActor {

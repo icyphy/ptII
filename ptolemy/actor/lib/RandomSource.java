@@ -49,6 +49,7 @@ This base class manages the seed.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.3
 */
 
 public abstract class RandomSource extends Source {

@@ -55,6 +55,7 @@ the value to be plotted is not as important as the time axis values.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 

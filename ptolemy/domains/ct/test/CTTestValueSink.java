@@ -48,6 +48,7 @@ the test is considered successful, i.e. the isSuccessful() method returns
 true. Otherwise, the method returns false.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.3
 
 */
 public class CTTestValueSink extends TypedAtomicActor {
