@@ -34,6 +34,7 @@ import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
@@ -117,6 +118,7 @@ public class PtolemyDocument extends AbstractDocument
 		Object userObject = ((Figure)selection[i]).getUserObject();
 		NamedObj object = (NamedObj)userObject;
 		if(object instanceof Icon) {
+		    // add the entity, not the icon.
 		    NamedObj actual = (NamedObj)object.getContainer();
 		    try {
 			NamedObj clone = (NamedObj)actual.clone();
@@ -126,11 +128,28 @@ public class PtolemyDocument extends AbstractDocument
 			throw new RuntimeException(ex.getMessage());
 		    }		
 		} else if(object instanceof Vertex) {
+		    // add the relation, not the vertex
 		    NamedObj actual = (NamedObj)object.getContainer();
 		    try {
 			NamedObj clone = (NamedObj)actual.clone();
 			System.out.println("adding " + actual);
-			transferable.add(actual);
+			transferable.add(clone);
+		    } catch (CloneNotSupportedException ex) {
+			throw new RuntimeException(ex.getMessage());
+		    }
+		} else if(object instanceof Port) {
+		    try {
+			NamedObj clone = (NamedObj)object.clone();
+			System.out.println("adding " + object);
+			transferable.add(clone);
+		    } catch (CloneNotSupportedException ex) {
+			throw new RuntimeException(ex.getMessage());
+		    }
+		} else if(object instanceof Link) {
+		    try {
+			NamedObj clone = (NamedObj)object.clone();
+			System.out.println("adding " + object);
+			transferable.add(clone);
 		    } catch (CloneNotSupportedException ex) {
 			throw new RuntimeException(ex.getMessage());
 		    }
@@ -282,7 +301,10 @@ public class PtolemyDocument extends AbstractDocument
 			ComponentRelation clone = 
 			    (ComponentRelation)object.clone();
 			System.out.println("clone = " + clone);
+			String name = _model.uniqueName(object.getName());
+			clone.setName(name);
 			clone.setContainer(_model);
+			Vertex vertex = (V
 			Icon icon = (Icon)clone.getAttribute("_icon");
 			
 			model.addNode(node, controller.getGraph());
@@ -362,6 +384,28 @@ public class PtolemyDocument extends AbstractDocument
      */
     public void setModel(CompositeEntity toplevel) {
 	_model = toplevel;
+
+	// Create a manager.
+	// Attaching these listeners is a nasty business...
+	// All Managers are not created equal, since some have
+	// listeners attached.
+	if(toplevel instanceof Actor) {
+	    CompositeActor actor = (CompositeActor)toplevel;
+	    Manager manager = actor.getManager();
+	    if(manager == null) {
+		try {
+		    manager =
+			new Manager(toplevel.workspace(), "Manager");
+		    actor.setManager(manager);
+		    manager.addExecutionListener(new PtolemyModule.VergilExecutionListener(getApplication()));
+		    manager.addExecutionListener(new StreamExecutionListener());
+		    manager.addChangeListener(new IsDirtyListener());
+		} catch (IllegalActionException ex) {
+		    // This should never happen.
+		    throw new InternalErrorException(ex.getMessage());
+		}
+	    }
+	}
     }
 
     /** Print information about the graph document.
@@ -376,6 +420,18 @@ public class PtolemyDocument extends AbstractDocument
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
+
+    /**
+     * A class that sets the dirty bit when appropriate
+     */
+    public class IsDirtyListener implements ChangeListener {
+	/** Notify the listener that a change has been successfully executed.
+	 *  @param change The change that has been executed.
+	 */
+	public void changeExecuted(ChangeRequest change) {
+	    setDirty(true);
+	}
+    }
 
     /**
      * The factory for Ptolemy documents.

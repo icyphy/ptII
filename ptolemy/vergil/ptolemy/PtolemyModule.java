@@ -413,21 +413,12 @@ public class PtolemyModule implements Module {
 		// FIXME there is alot of code in here that is similar
 		// to code in MoMLApplet and MoMLApplication.  I think
 		// this should all be in ModelPane.
-		
-		// Create a manager.
-		// Attaching these listeners is a nasty business...
-		// All Managers are not created equal, since some have
-		// listeners attached.
+				
 		Manager manager = toplevel.getManager();
 		if(manager == null) {
-		    manager =
-			new Manager(toplevel.workspace(), "Manager");
-		    toplevel.setManager(manager);
-		    manager.addExecutionListener(
-		       new VergilExecutionListener(_application));
-		    manager.addExecutionListener(new StreamExecutionListener());
+		    throw new IllegalActionException("No Manager exists!");
 		}
-		
+
 		// We can't reuse the execution frame, since some 
 		// window systems don't properly dispose the frame when
 		// it is closed.
