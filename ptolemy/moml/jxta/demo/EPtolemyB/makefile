@@ -76,8 +76,13 @@ all: Gaussian.class jclass $(PTCLASSJAR)
 
 install: all
 
-Gaussian.class:
+Gaussian.class: $(ROOT)/ptolemy/actor/lib/Guassian.class
 	cp $(ROOT)/ptolemy/actor/lib/Gaussian.class .
+
+# Build Guassian.class if it does not yet exist.  The nightly build
+# requires this 
+$(ROOT)/ptolemy/actor/lib/Guassian.class: $(ROOT)/ptolemy/actor/lib/Guassian.java
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Guassian.class)
 
 demo:
 	@echo "Don't forget to run"
