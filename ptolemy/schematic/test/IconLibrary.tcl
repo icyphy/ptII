@@ -58,12 +58,14 @@ test IconLibrary-2.1 {Constructor tests} {
     set e1 [java::new ptolemy.schematic.IconLibrary $attributes]
     list [$e0 toString] [$e1 toString]
 } {{<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 </iconlibrary>
 } {<iconlibrary name1="value1" name2="value2" version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 </iconlibrary>
 }}
 
@@ -79,13 +81,12 @@ test IconLibrary-3.1 {addChildElement tests} {
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<iconlibrary version="" name="">
-<description>
-</description>
-<element1 name1="value1" name2="value2">
-</element1>
+<header>
+<description></description>
+</header>
+<element1 name1="value1" name2="value2"></element1>
 </iconlibrary>
-} {<element1 name1="value1" name2="value2">
-</element1>
+} {<element1 name1="value1" name2="value2"></element1>
 }}
 
 
@@ -97,11 +98,11 @@ test IconLibrary-3.2 {removeChildElement tests} {
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 </iconlibrary>
-} {<element1 name1="value1" name2="value2">
-</element1>
+} {<element1 name1="value1" name2="value2"></element1>
 }}
 
 ######################################################################
@@ -155,8 +156,9 @@ test IconLibrary-5.1 {setAttribute tests} {
     $e0 setAttribute name2 value2
     $e0 toString
 } {<iconlibrary name1="value1" name2="value2" version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 </iconlibrary>
 }
 
@@ -169,8 +171,9 @@ test IconLibrary-6.2 {removeAttribute tests} {
     $e0 removeAttribute name1
     $e0 toString
 } {<iconlibrary name2="value2" version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 </iconlibrary>
 }
 
@@ -208,8 +211,9 @@ test IconLibrary-8.1 {setPCData tests} {
     $e0 setPCData "hello this is a test\n"
     $e0 toString
 } {<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 hello this is a test
 </iconlibrary>
 }
@@ -223,8 +227,9 @@ test IconLibrary-8.2 {setPCData tests} {
     $e0 appendPCData " of appending\n"
     $e0 toString
 } {<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 hello this is a test of appending
 </iconlibrary>
 }
@@ -239,8 +244,9 @@ test IconLibrary-8.3 {setPCData tests} {
     $e0 setPCData "and resetting PCData\n"    
     $e0 toString
 } {<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 and resetting PCData
 </iconlibrary>
 }
@@ -253,9 +259,10 @@ test IconLibrary-9.1 {set/getDescription tests} {
     $e0 setDescription "Test Description\n"
     list [$e0 toString] [$e0 getDescription]
 } {{<iconlibrary version="" name="">
-<description>
-Test Description
+<header>
+<description>Test Description
 </description>
+</header>
 </iconlibrary>
 } {Test Description
 }}
@@ -268,9 +275,10 @@ test IconLibrary-9.2 {set/getName tests} {
     $e0 setName "IconLibrary Name"
     list [$e0 toString] [$e0 getName]
 } {{<iconlibrary version="" name="IconLibrary Name">
-<description>
-Test Description
+<header>
+<description>Test Description
 </description>
+</header>
 </iconlibrary>
 } {IconLibrary Name}}
 
@@ -282,9 +290,10 @@ test IconLibrary-9.3 {set/getVersion tests} {
     $e0 setVersion "IconLibrary Version"
     list [$e0 toString] [$e0 getVersion]
 } {{<iconlibrary version="IconLibrary Version" name="IconLibrary Name">
-<description>
-Test Description
+<header>
+<description>Test Description
 </description>
+</header>
 </iconlibrary>
 } {IconLibrary Version}}
 
@@ -296,10 +305,10 @@ test IconLibrary-10.1 {sublibrary tests} {
     $e0 addSubLibrary testlibrary
     list [$e0 toString] [$e0 containsSubLibrary testlibrary]
 } {{<iconlibrary version="" name="">
-<description>
-</description>
-<sublibrary>
-testlibrary</sublibrary>
+<header>
+<description></description>
+<sublibrary>testlibrary</sublibrary>
+</header>
 </iconlibrary>
 } 1}
 
@@ -325,8 +334,9 @@ test IconLibrary-10.3 {remove sublibrary tests} {
     list [$e0 toString] [$e0 containsSubLibrary testLibrary]\
 [$enumlib hasMoreElements]
 } {{<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 </iconlibrary>
 } 0 0}
 
@@ -340,11 +350,11 @@ test IconLibrary-11.1 {icon tests} {
     $e0 addIcon $i0
     list [$e0 toString] [$e0 containsIcon testicon]
 } {{<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 <icon name="testicon">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 </iconlibrary>
 } 1}
@@ -371,7 +381,8 @@ test IconLibrary-11.3 {remove icon tests} {
     list [$e0 toString] [$e0 containsIcon testicon]\
 [$enumlib hasMoreElements]
 } {{<iconlibrary version="" name="">
-<description>
-</description>
+<header>
+<description></description>
+</header>
 </iconlibrary>
 } 1 1}
