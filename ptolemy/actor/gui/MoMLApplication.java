@@ -652,13 +652,16 @@ public class MoMLApplication implements ExecutionListener {
             // Ignore blank argument.
         } else {
             if (_expectingClass) {
+                // FIXME: This -class does not work.
+                // Try:
+                // $PTII/bin/vergil -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+
                 // Previous argument was -class
                 _expectingClass = false;
 
                 // Create the class.
                 Class newClass = Class.forName(arg);
 
-                System.out.println("MoMLApplication: Class: " + newClass);
                 // Instantiate the specified class in a new workspace.
                 Workspace workspace = new Workspace();
 
@@ -673,10 +676,8 @@ public class MoMLApplication implements ExecutionListener {
 
                 NamedObj newModel = (NamedObj) constructor.newInstance(args);
 
-                System.out.println("MoMLApplication: newModel: " + newModel);
                 // If there is a configuration, then create an effigy
                 // for the class, and enter it in the directory.
-                System.out.println("MoMLApplication: _configuration: " + _configuration);
                 if (_configuration != null) {
                     // Create an effigy for the model.
                     PtolemyEffigy effigy = new PtolemyEffigy(_configuration
@@ -687,16 +688,16 @@ public class MoMLApplication implements ExecutionListener {
                         .getEntity("directory");
 
                     
-effigy.setName(arg);
-                    effigy.setName("foo");
+                    // Can't use names with dots, so we subsitute.
+                    String safeName =
+                        StringUtilities.substitute(arg, ".","_" );
+                    effigy.setName(safeName);
 
-                    System.out.println("MoMLApplication: directory: " + directory);
                     if (directory != null) {
-                        //if (directory.getEntity(arg) != null) {
-                        if (directory.getEntity("foo") != null) {
+                        if (directory.getEntity(safeName) != null) {
                             // Name is already taken.
                             int count = 2;
-                            String newName = arg + " " + count;
+                            String newName = safeName + " " + count;
 
                             while (directory.getEntity(newName) != null) {
                                 count++;
