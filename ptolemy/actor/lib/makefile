@@ -58,8 +58,10 @@ PTCLASSALLJARS = \
 	conversions/conversions.jar \
 	gui/gui.jar \
 	hoc/hoc.jar \
-        io/io.jar \
 	logic/logic.jar
+
+# Don't include io.jar, it requires javacomm
+#        io/io.jar 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
