@@ -34,8 +34,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.PtParser;
+//import ptolemy.data.expr.ASTPtRootNode;
+//import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
@@ -46,7 +46,11 @@ import ptolemy.data.type.TypeLattice;
 /**
 A token that contains a byte number in the range 0 through 255.
 This is in contrast to Java's default that a byte is in the range
--128 through 127.  To get our desired behavior...
+-128 through 127.  To get our desired behavior we need only apply 
+a custom conversion <i>unsignedConvert()<\i> from byte to integer.  
+Conversion to byte already gives the desired behavior of truncating 
+the value, keeping the lowest 8 bits.  Thus, for example, the integers 
+-1 and 1023 both truncate to the byte 255.
 
 @author Winthrop Williams
 @version $Id$
@@ -59,24 +63,26 @@ public class ByteToken extends ScalarToken {
         _value = 0;
     }
 
-    /** Construct a ByteToken with the specified value.
+    /** Construct a ByteToken with the specified byte value.
      */
     public ByteToken(byte value) {
         _value = value;
     }
 
-    /** Construct a ByteToken from the specified integer.
-     *  This takes the low 8 bits and discards the rest.
-     *  This avoids us having to cast to byte when calling
-     *  a constructor such as in the one() or zero() methods.
+    /** Construct a ByteToken from the specified integer.  This takes
+     * the low 8 bits and discards the rest.  Having this form (which
+     * takes an integer) in addition to the one above (which takes a
+     * byte) avoids us having to cast to byte when calling
+     * constructors such as those called from within the one() and
+     * zero() methods.
      */
     public ByteToken(int value) {
         _value = (byte)value;
     }
 
-    /** Construct an ByteToken from the specified string.
+    /** Construct a ByteToken from the specified string.
      *  @exception IllegalActionException If the token could not
-     *   be created from the given String.
+     *   be created from the given string.
      */
     public ByteToken(String init) throws IllegalActionException {
 	try {
@@ -89,15 +95,17 @@ public class ByteToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an ByteToken containing the absolute value (which IS
-     *  ALREADY the value) of this token.
-     *  @return An ByteToken.
+    /** Return a ByteToken containing the absolute value (which, for
+     *  bytes, equals the value) of this token.  Since we have defined
+     *  the byte as ranging from 0 through 255, its absolute value is
+     *  equal to itself.  Although this method does not actually do
+     *  anything, it is included to make the ByteToken interface
+     *  compatable with the interfaces of the other types.
+     *  @return An ByteToken.  
      */
     public ScalarToken absolute() {
         ByteToken result;
-
 	result = new ByteToken(_value);
-
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
     }
