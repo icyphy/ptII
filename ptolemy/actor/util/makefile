@@ -63,6 +63,7 @@ JSRCS = \
 	CalendarQueue.java \
 	ConstVariableModelAnalysis.java \
 	CQComparator.java \
+	DFUtilities.java \
 	DependencyDeclaration.java \
 	ExplicitChangeContext.java \
 	FIFOQueue.java \
