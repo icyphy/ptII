@@ -44,7 +44,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =    graph
+PTPACKAGE =    strategy
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR

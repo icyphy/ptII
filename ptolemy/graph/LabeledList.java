@@ -60,7 +60,7 @@ import java.util.NoSuchElementException;
     <p> Element labels maintain their consistency (remain constant) during
     periods when no elements are removed from the list. When elements are
     removed, the labels assigned to the remaining elements may
-    change (see {@link#remove(Object)} for details).
+    change (see {@link #remove(Object)} for details).
 
     <p> Elements themselves must be non-null and distinct, as determined by the
     <code>equals</code> method.

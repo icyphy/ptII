@@ -31,8 +31,7 @@ package ptolemy.graph.analysis;
 //// InvalidAnalyzerException
 /**
 Invalid analyzer plugged into an analysis.
-Signals an invalid analyzer plugged into an analysis
-using {@link ptolemy.graph.analysis.Analysis.validAnalyzerInterface}
+Signals an invalid analyzer plugged into an analysis.
 
 @since Ptolemy II 2.0
 @author Shahrooz Shahparnia

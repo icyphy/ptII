@@ -294,9 +294,7 @@ public class DirectedGraph extends Graph {
         return Collections.unmodifiableList(_inputEdgeList(node));
     }
 
-    /** Test if this graph is acyclic (is a DAG). The computation is
-     *  done in <code>AcyclicAnalysis</code>. Please see
-     *  {@link ptolemy.graph.analysis.AcyclicAnalysis}
+    /** Test if this graph is acyclic (is a DAG).
      *  @return True if the the graph is acyclic, or
      *  empty; false otherwise.
      */

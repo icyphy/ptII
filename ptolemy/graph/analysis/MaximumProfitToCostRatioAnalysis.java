@@ -61,7 +61,7 @@ p.37-42, June 21-25, 1999, New Orleans, Louisiana, United States
 <p>
 For a detailed mathematical description of the problem.
 <p>
-@see @see ptolemy.graph.analysis.CycleMeanAnalysis
+@see ptolemy.graph.analysis.CycleMeanAnalysis
 @since Ptolemy II 2.0
 @author Shahrooz Shahparnia
 @version $Id$

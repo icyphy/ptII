@@ -65,7 +65,6 @@ public class ClusterNodesAnalysis extends Analysis {
      *  @param graph The graph.
      *  @param nodeCollection The collection of nodes.
      *  @param superNode The node that replaces the subgraph.
-     *  @return The subgraph that is replaced.
      */
     public ClusterNodesAnalysis(Graph graph, Collection nodeCollection,
             Node superNode) {
