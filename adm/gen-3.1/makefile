@@ -1168,7 +1168,7 @@ remote4build:
 	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast install)
 
-# Run the deep tests, this is likely to take 6 hours.
+# Run the deep tests, this is likely to take 14 hours.
 remote4javatest:
 	@echo "#"
 	@echo "# Now running make in $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test"
@@ -1178,7 +1178,7 @@ remote4javatest:
 	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
 		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
-		JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=43200 \
+		JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=50400 \
 		test_long)
 
 ##########################################################################
