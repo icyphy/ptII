@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE iconlibrary SYSTEM "../../schematic/lib/ptml.dtd">
+
+<iconlibrary name="generic" version="1.0">
+<description>Generic Icons</description>
+
+<icon name="source">
+<description>A default icon for sources</description>
+<xmlgraphic>
+<rectangle coords="0 0 60 40" fill="orange"/>
+<polygon coords="10 10 50 20 10 30" fill="blue"/>
+</xmlgraphic>
+</icon>
+
+<icon name="sink">
+<xmlgraphic>
+<rectangle coords="0 0 60 40" fill="orange"/>
+<polygon coords="50 10 10 20 50 30" fill="blue"/>
+</xmlgraphic>
+</icon>
+
+<terminalstyle name="source">
+<terminal name="output" x="64" y="20"/>
+</terminalstyle>
+
+<terminalstyle name="sink">
+<terminal name="input" x="-4" y="20"/>
+</terminalstyle>
+
+</iconlibrary>
+

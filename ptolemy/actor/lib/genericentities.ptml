@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entitylibrary SYSTEM "../../schematic/lib/ptml.dtd">
+
+<entitylibrary name="generic" version="1.0">
+<description>Generic domain polymorphic actors</description>
+
+<entity name="ramp" icon="generic.source" terminalstyle="generic.source">
+<description>Create a sequence of tokens with increasing value</description>
+<terminalmap ports="output"/>
+<parameter name="init" value="0.0" type="double"/>
+<parameter name="step" value="1.0" type="double"/>
+<port name="output" output="true" type="double"/>
+</entity>
+
+<entity name="recorder" icon="generic.sink" terminalstyle="generic.sink">
+<terminalmap ports="input"/>
+<port name="input" input="true" type="double"/>
+</entity>
+</entitylibrary>
+
