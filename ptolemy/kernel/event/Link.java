@@ -59,7 +59,7 @@ public class Link extends ChangeRequest {
     public Link(Nameable originator, ComponentPort port,
             ComponentRelation relation) {
         super(originator, "Link port "
-        + port.getFullName() + " to relation " + relation.getFullName());
+                + port.getFullName() + " to relation " + relation.getFullName());
         _port = port;
         _relation = relation;
     }
@@ -86,7 +86,7 @@ public class Link extends ChangeRequest {
                 }
             }
             ComponentEntity portContainer
-                    = (ComponentEntity)_port.getContainer();
+                = (ComponentEntity)_port.getContainer();
             if (portContainer != null) {
                 if (portContainer instanceof Actor) {
                     Director director = ((Actor)portContainer).getDirector();

@@ -59,7 +59,7 @@ public class Connect extends ChangeRequest {
     public Connect(Nameable originator, ComponentPort port1,
             ComponentPort port2) {
         super(originator, "Connect port "
-        + port1.getFullName() + " to " + port2.getFullName());
+                + port1.getFullName() + " to " + port2.getFullName());
         _firstPort = port1;
         _secondPort = port2;
     }
@@ -79,17 +79,17 @@ public class Connect extends ChangeRequest {
     public void execute() throws ChangeFailedException {
         try {
             ComponentEntity firstContainer
-                    = (ComponentEntity)_firstPort.getContainer();
+                = (ComponentEntity)_firstPort.getContainer();
             if (firstContainer == null) {
                 throw new ChangeFailedException(this, "Cannot connect. "
-                + "First port has no container: " + _firstPort.getFullName());
+                        + "First port has no container: " + _firstPort.getFullName());
             }
             CompositeEntity container
-                    = (CompositeEntity)firstContainer.getContainer();
+                = (CompositeEntity)firstContainer.getContainer();
             if (container == null) {
                 throw new ChangeFailedException(this, "Cannot connect. "
-                + "First port's container has no container: "
-                + _firstPort.getFullName());
+                        + "First port's container has no container: "
+                        + _firstPort.getFullName());
             }
             container.connect(_firstPort, _secondPort);
 

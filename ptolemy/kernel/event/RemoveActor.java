@@ -76,7 +76,7 @@ public class RemoveActor extends ChangeRequest {
             _actor.wrapup();
             if (!(_actor instanceof ComponentEntity)) {
                 throw new ChangeFailedException(this,
-                "Cannot remove an actor that is not an Entity.");
+                        "Cannot remove an actor that is not an Entity.");
             }
             ComponentEntity entity = (ComponentEntity)_actor;
             Enumeration ports = entity.getPorts();

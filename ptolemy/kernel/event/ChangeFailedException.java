@@ -52,8 +52,8 @@ public class ChangeFailedException extends KernelException {
      */
     public ChangeFailedException(ChangeRequest request, Exception ex) {
         super(request.getOriginator(), null, "Change request failed: "
-        + request.getDescription() + "\n"
-        + ex.getMessage());
+                + request.getDescription() + "\n"
+                + ex.getMessage());
     }
 
     /** Create an exception with a detailed message about the change
@@ -61,7 +61,7 @@ public class ChangeFailedException extends KernelException {
      */
     public ChangeFailedException(ChangeRequest request, String msg) {
         super(request.getOriginator(), null, "Change request failed: "
-        + request.getDescription() + "\n"
-        + msg);
+                + request.getDescription() + "\n"
+                + msg);
     }
 }
