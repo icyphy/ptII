@@ -165,6 +165,15 @@ public class KernelMain {
 	// Thread thread = new Thread(main);
 	// thread.start();
 	main.run();
+
+        // Reset the state of the manager.  We haven't actually done
+        // anything, but the state of the manager must be reset.
+        try {
+            _toplevel.getManager().wrapup();
+        } catch (Exception exception) {
+            throw new KernelRuntimeException(exception,
+                    "Could not wrapup composite actor");
+        }
     }
 
     /** Read in a MoML class, sanitize the top level name,
@@ -271,7 +280,7 @@ public class KernelMain {
         try {
             Manager manager = new Manager(_toplevel.workspace(), "manager");
             _toplevel.setManager(manager);
-            manager.initialize();
+            manager.preinitializeAndResolveTypes();
         } catch (Exception exception) {
             throw new KernelRuntimeException(exception,
                     "Could not initialize composite actor");
