@@ -40,8 +40,6 @@ Totally ordered set, implemented using LinkedList. No repeated elements (
 elements that the comparator returns 0).
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class TotallyOrderedSet {
     /** Construct the set with the given comparator. comparator is a blank
@@ -163,39 +161,6 @@ public class TotallyOrderedSet {
     public int size() {
         return _set.size();
     }
-
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    protected int _AProtectedMethod() {
-        return 1;
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Description */
-    protected int _aprotectedvariable;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Private methods should not have doc comments, they should
-    // have regular C++ comments.
-    private int _APrivateMethod() {
-        return 1;
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
