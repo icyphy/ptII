@@ -42,12 +42,12 @@ genuine (non-null) objects.
 @since Ptolemy II 2.0
 @see ptolemy.graph.Edge
 */
-public final class Node {
+public final class Node extends Element {
 
     /** Construct an unweighted node.
      */
     public Node() {
-        _weight = null;
+        super();
     }
 
     /** Construct a node with a given node weight.
@@ -56,46 +56,11 @@ public final class Node {
      *  @param weight The given weight.
      */
     public Node(Object weight) {
-        setWeight(weight);
+        super(weight);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the weight that has been associated with this node.
-     *  @return The associated weight.
-     *  @exception IllegalStateException If this is an unweighted node.
-     */
-    public Object getWeight() {
-        if (!hasWeight()) {
-            throw new IllegalStateException("Attempt to access the weight "
-                    + "of an unweighted node.\n");
-        } else {
-            return _weight;
-        }
-    }
-
-    /** Return <code>true</code> if and only if this is a weighted node.
-     *  @return True if and only if this is a weighted node.
-     */
-    public boolean hasWeight() {
-        return _weight != null;
-    }
-
-    /** Set or change the weight of a node. This method should be used with
-     *  caution since it may make the node incompatible with graphs that 
-     *  contain it. 
-     *  @param weight The new weight.
-     */
-    public void setWeight(Object weight) {
-        if (weight == null) {
-            throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to a node.");
-        } else {
-            _weight = weight;
-        }
-    } 
-
     /** Return a string representation of the node.
      *  The string representation is simply a representation of the node
      *  weight (or the string <code>"<unweighted node>"</code> if
@@ -109,24 +74,15 @@ public final class Node {
         }
     }
 
-    /** Return the weight that has been associated with this node.
-     *  @return The associated weight.
-     *  @deprecated Use getWeight() instead.
-     *  @exception IllegalStateException If this is an unweighted node.
-     */
-    public Object weight() {
-        if (!hasWeight()) {
-            throw new IllegalStateException("Attempt to access the weight "
-                    + "of an unweighted node.\n");
-        } else {
-            return _weight;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
 
-    // The weight that has been associated with the node.
-    private Object _weight;
+    /** A one-word description of the element type that is used to specialize
+     *  error messages. 
+     *  @return The description.
+     */
+    protected String _descriptor() {
+        return "node";
+    }
 
 }

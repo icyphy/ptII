@@ -63,7 +63,7 @@ test Node-2.1 {Create an unweighted node} {
 test Node-2.2 {Attempt to access the weight of an unweighted node} {
     catch {$n weight} msg
     list $msg
-} {{java.lang.IllegalStateException: Attempt to access the weight of an unweighted node.
+} {{java.lang.IllegalStateException: Attempt to access the weight of the following unweighted node: <unweighted node>
 }}
 
 ######################################################################
@@ -85,4 +85,5 @@ test Node-3.2 {Attempt to create a weighted node with a null weight} {
     catch {set newNode [java::new {ptolemy.graph.Node Object} [java::null]]} \
             msg
     list $msg
-} {{java.lang.IllegalArgumentException: Attempt to assign a null weight to a node.}}
+} {{java.lang.IllegalArgumentException: Attempt to assign a null weight to the following node: <unweighted node>
+}}

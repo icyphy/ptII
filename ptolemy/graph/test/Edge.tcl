@@ -95,7 +95,8 @@ test Edge-2.3 {Create a self-loop edge} {
 test Edge-2.4 {Attempt to access the weight of an unweighted edge} {
     catch {$e1 weight} msg
     list $msg
-} {{java.lang.IllegalStateException: Attempt to access the weight of an unweighted edge '(node1, node2)'}}
+} {{java.lang.IllegalStateException: Attempt to access the weight of the following unweighted edge: (node1, node2)
+}}
 
 ######################################################################
 ####
@@ -104,7 +105,5 @@ test Edge-2.5 {Attempt to create a weighted edge with a null weight} {
 
     catch {set newEdge [java::new ptolemy.graph.Edge $n1 $n2 [java::null]]} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Attempt to assign a null weight to an edge.
-The source node: node1.
-The sink node: node2.
+} {{java.lang.IllegalArgumentException: Attempt to assign a null weight to the following edge: (node1, node2)
 }}

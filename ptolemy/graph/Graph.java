@@ -1453,8 +1453,8 @@ public class Graph implements Cloneable {
      *
      *  <p>In this example, #validateWeight(Node) could be used
      *  (e.g., if the previous weight <em>oldWeight</em> was not available)
-     *  in place of #validateNodeWeight(Node, Object),
-     *  but the efficiency would be lower.
+     *  in place of #validateWeight(Node, Object), but the efficiency would be 
+     *  lower.
      *
      *  @param node The node whose weight is to be validated.
      *  @param oldWeight The previous weight of the node.
@@ -1493,7 +1493,10 @@ public class Graph implements Cloneable {
                 throw new IllegalArgumentException("Incorrect previous weight "
                         + "specified." + _weightDump(oldWeight));
             }
-            changed = oldWeight.equals(newWeight);
+            changed = !oldWeight.equals(newWeight);
+        }
+        if (changed) {
+            _registerChange();
         }
         _registerWeight(node);
         return changed;

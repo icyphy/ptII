@@ -57,6 +57,7 @@ JSRCS = \
 	DirectedAcyclicGraph.java \
 	DirectedGraph.java \
 	Edge.java \
+    Element.java \
 	Graph.java \
 	Graphs.java \
 	LabeledList.java \

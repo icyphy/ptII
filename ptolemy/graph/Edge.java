@@ -56,16 +56,16 @@ are allowed.
 @since Ptolemy II 2.0
 @see ptolemy.graph.Node
 */
-public final class Edge {
+public final class Edge extends Element {
 
     /** Construct an unweighted edge with a specified source node and sink node.
      *  @param source The source node.
      *  @param sink The sink node.
      */
     public Edge(Node source, Node sink) {
+        super();
         _source = source;
         _sink = sink;
-        _weight = null;
     }
 
     /** Construct a weighted edge with a specified source node, sink node, and
@@ -83,48 +83,12 @@ public final class Edge {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the weight of the edge.
-     *  @return The edge weight.
-     *  @exception IllegalStateException If this is an unweighted edge.
-     */
-    public Object getWeight() {
-        if (!hasWeight()) {
-            throw new IllegalStateException("Attempt to access the weight "
-                    + "of an unweighted edge '" + this + "'");
-        } else {
-            return _weight;
-        }
-    }
-
-    /** Return true if this is a weighted edge.
-     *  @return True if this is a weighted edge.
-     */
-    public boolean hasWeight() {
-        return _weight != null;
-    }
-
     /** Return true if this is a self-loop edge.
      *  @return True if this is a self-loop edge.
      */
     public boolean isSelfLoop() {
         return _source == _sink;
     }
-
-    /** Set or change the weight of an edge. This method should be used with
-     *  caution since it may make the edge incompatible with graphs that 
-     *  contain it. 
-     *  @param weight The new weight.
-     */
-    public void setWeight(Object weight) {
-        if (weight == null) {
-            throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to an edge.\nThe source node: " + _source
-                    + ".\nThe sink node: " + _sink + ".\n");
-        } else {
-            _weight = weight;
-        }
-    } 
 
     /** Return the sink node of the edge.
      *  @return The sink node.
@@ -178,18 +142,15 @@ public final class Edge {
         return toString(true);
     }
 
-    /** Return the weight of the edge.
-     *  @return The edge weight.
-     *  @deprecated Use getWeight() instead.
-     *  @exception IllegalStateException If this is an unweighted edge.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** A one-word description of the element type that is used to specialize
+     *  error messages. 
+     *  @return The description.
      */
-    public Object weight() {
-        if (!hasWeight()) {
-            throw new IllegalStateException("Attempt to access the weight "
-                    + "of an unweighted edge '" + this + "'");
-        } else {
-            return _weight;
-        }
+    protected String _descriptor() {
+        return "edge";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -201,6 +162,4 @@ public final class Edge {
     // The source node of the edge.
     private Node _source;
 
-    // The weight of the edge
-    private Object _weight;
 }
