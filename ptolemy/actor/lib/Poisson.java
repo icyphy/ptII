@@ -38,9 +38,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.graph.*;
 
-import collections.LinkedList;
-import java.util.Enumeration;
-
 //////////////////////////////////////////////////////////////////////////
 //// Poisson
 /**

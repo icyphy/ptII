@@ -36,9 +36,6 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 
-import java.util.Enumeration;
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 //// TimedActor
 /**

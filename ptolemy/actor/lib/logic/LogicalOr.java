@@ -34,8 +34,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
-import java.util.Enumeration;
-import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalOr

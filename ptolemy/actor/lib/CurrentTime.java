@@ -37,9 +37,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 
-import java.util.Enumeration;
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 //// CurrentTime
 /**
