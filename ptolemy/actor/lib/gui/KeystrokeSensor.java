@@ -83,7 +83,7 @@ This frame sets up call-backs which react to the keystrokes.  When
 called back, these in turn call the director's fireAtCurrentTime() 
 method.  This causes the director to call fire() on the actor.  The 
 actor then broadcasts tokens from one or both outputs depending on 
-which keystroke(s) have occured since the actor was last fired.  <p>
+which keystroke(s) have occurred since the actor was last fired.  <p>
 
 NOTE: This actor only works in DE due to its reliance on the 
 director's fireAtCurrentTime() method.

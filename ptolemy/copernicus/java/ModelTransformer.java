@@ -1003,7 +1003,8 @@ public class ModelTransformer extends SceneTransformer {
                     //   deferredClass);
                 }
             } catch (Exception ex) {
-                System.out.println("Exception occured during parsing:\n" + ex);
+                System.out.println("Exception occurred during parsing:\n"
+                        + ex);
                 ex.printStackTrace();
                 System.out.println("done parsing:\n");
                 deferredObject = null;

@@ -281,7 +281,7 @@ public class KernelException extends Exception {
      *  KernelException cannot extend RuntimeException for the same
      *  reason.
      *
-     *  @param whereString The string that identifies where the error occured,
+     *  @param whereString The string that identifies where the error occurred,
      *   as in for example "in object: foo".
      *  @param cause The cause of this exception.
      *  @param detail The message.
