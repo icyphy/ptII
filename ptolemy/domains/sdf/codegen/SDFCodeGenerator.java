@@ -170,7 +170,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         Iterator actorItr = _actorSet.iterator();
 
-	Runtime runtime = Runtime.getRuntime();
+	    Runtime runtime = Runtime.getRuntime();
         System.out.println("SDFCodeGenerator: Starting to accumulate " +
                 "class info ---" +
                 (System.currentTimeMillis() - startTime) + " ms " +
@@ -188,7 +188,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 " freeMemory: " + runtime.freeMemory());
 
         System.out.println("SDFCodeGenerator: calling System.gc()");
-	System.gc();
+	    System.gc();
 
         System.out.println("SDFCodeGenerator: pass1 ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
@@ -241,6 +241,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             actorCodeGen.pass3(renamedSource);
         }
+        System.out.println("AST loading status: " + ASTReflect.getLoadingStatus()); 
         System.out.println("\nSDFCodeGenerator: done " +
                 (System.currentTimeMillis() - startTime) + " ms" +
                 " totalMemory: " + runtime.totalMemory() +
