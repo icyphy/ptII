@@ -28,6 +28,24 @@ dnl	Makefile in this directory.
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# configure is derived from configure.in by running GNU autoconf
+# on configure.in.  Sadly, autoconf now requires Perl and is much
+# slower than it used to be.
+# See $PTII/doc/coding/develsetup.htm for details about how configure
+# works.
+# To modify configure:
+# 1. Edit configure.in
+# 2. Run: cd $PTII; rm config.*; autoconf; ./configure
+# 3. When you are satisfied with your changes, check in configure.in:
+#       cvs commit -m "Added xxx package" configure.in
+# 4. Since configure.in will have a more recent modification time than
+#    configure, be sure to run autoconf again
+# 5. Check in configure:
+#       cvs commit -m "configure.in changed" configure
+# NOTE: sometimes the order that the files are updated when cvs update
+# is run can cause configure.in to have a more recent mod time than
+# configure.  If this is the case, try editing configure and adding
+# a space to a comment line and commiting the change.
 
 dnl Don't look for ptolemy/kernel/util/NamedObj.java here, or
 dnl else we won't be able to rebuild after make extraclean.
