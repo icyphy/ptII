@@ -123,8 +123,31 @@ public class PlotMLParser extends PlotBoxMLParser {
                 }
 
             } else if (elementName.equals("dataset")) {
-                _currentDataset++;
-                _currentPointCount = 0.0;
+                String name = (String)_attributes.get("name");
+
+                if (!((Plot)_plot).getReuseDatasets()
+                        || name == null
+                        || _currentDataset < 0 ) {
+                    // reuseDatasets was not present or if it was,
+                    // the current dataset does not have a name
+                    // or we have not yet seen a dataset.
+                    _currentDataset++;
+                    _currentPointCount = 0.0;
+                } else {
+                    // reuseDatasets was set to true and name is not null.
+                    int possibleDataset = ((Plot)_plot).getLegendDataset(name);
+                    if (possibleDataset != -1) {
+                        _currentDataset = possibleDataset;
+                    } else {
+                        // Did not yet have a dataset with that name.
+                        _currentDataset++;
+                        _currentPointCount = 0.0;
+                    }
+                }
+
+                if (name != null) {
+                    ((Plot)_plot).addLegend(_currentDataset, name);
+                }
 
                 String connected = (String)_attributes.get("connected");
                 if (connected != null) {
@@ -138,11 +161,6 @@ public class PlotMLParser extends PlotBoxMLParser {
                 String marks = (String)_attributes.get("marks");
                 if (marks != null) {
                     ((Plot)_plot).setMarksStyle(marks, _currentDataset);
-                }
-
-                String name = (String)_attributes.get("name");
-                if (name != null) {
-                    ((Plot)_plot).addLegend(_currentDataset, name);
                 }
 
                 String stems = (String)_attributes.get("stems");
