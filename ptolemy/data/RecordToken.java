@@ -55,14 +55,14 @@ A token that contains a set of label/token pairs.
 public class RecordToken extends Token {
 
     /** Construct a RecordToken with the specified labels and values.
-     *  The labels and values array must have the same length, and have one
-     *  to one correspondence. That is, the i'th entry in the labels array
-     *  is the label for the i'th value in the values array. Both arrays
-     *  must be non-empty.
+     *  The labels and values arrays must have the same length, and have one
+     *  to one correspondence with each other. That is, the i'th entry in
+     *  the labels array is the label for the i'th value in the values array.
+     *  Both arrays must be non-empty.
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
      *  @exception IllegalActionException If the labels or the values array
-     *   do not have the same length; or is empty; or contains null element;
+     *   do not have the same length, or is empty, or contains null element,
      *   or the labels array contains duplicate elements.
      */
     public RecordToken(String[] labels, Token[] values)
