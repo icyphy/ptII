@@ -338,9 +338,7 @@ public class Plot extends PlotBox {
         String unsupportedOptions[] = {
             "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
         };
-        String unsupportedFlags[] = {
-            "-bb"
-        };
+
         // Default URL to be opened
         String dataurl = "";
 
@@ -363,17 +361,12 @@ public class Plot extends PlotBox {
                     }
                 }
                 if (badarg) continue;
-                // Search for unsupported boolean flags
-                for(j = 0; j < unsupportedFlags.length; j++) {
-                    if (arg.equals(unsupportedFlags[j])) {
-                        System.err.println("pxgraph: " + arg +
-                                " is not yet supported");
-                        badarg = true;
-                    }
 
-                }
-                if (badarg) continue;
-                if (arg.equals("-bg")) {
+                if (arg.equals("-bb")) {
+                    // We ignore -bb because the Java version of pxgraph plot
+                    // region is a different color from the surrounding region.
+                    continue;
+                } else if (arg.equals("-bg")) {
                     setBackground(getColorByName(args[i++]));
                     continue;
                 } else if (arg.equals("-brw")) {

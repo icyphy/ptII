@@ -133,7 +133,8 @@ The point itself is located at the center of the bar.
 <dd>Draw a bounding box around the data region. This is
 very useful if you prefer to see tick marks rather than
 grid lines (see <code>-tk</code>).
-<b>Unsupported in the Java version.</b>
+<b>Ignored in the Java version because the plotting area is a different
+color than the border where the axes are labeled.</b>
 
 <dt><code>-bd</code> <code><i>&lt;color&gt;</i></code>
 <dd>This specifies the border color of the <code>pxgraph</code> window.
@@ -614,7 +615,7 @@ public class Pxgraph extends Frame {
 
         String commandFlags[][] = {
             {"-bar", "BarGraph",  ""},
-            {"-bb", "BoundBox",  "(Unsupported)"},
+            {"-bb", "BoundBox",  "(Ignored)"},
             {"-binary", "Binary",  ""},
             {"-db", "Debug",  ""},
             // -help is not in the original X11 pxgraph.
