@@ -553,7 +553,6 @@ i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
 	$(REMOTE1PTIIDIST)/com/JLex \
@@ -575,6 +574,7 @@ i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hde \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
