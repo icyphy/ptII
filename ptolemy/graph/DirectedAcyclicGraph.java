@@ -420,96 +420,71 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // if ids.length = 0, return null.
     private Object _leastElementNodeId(int[] ids) {
 
-        // Algorithm: use 2 data structures: (1)a linked list storing all
-        // the upper bounds incomparable with one another.  The least
-        // element (if exists) must be less than all the elements in this
-        // list. (2)an int storing the nodeId of a least element
-        // candidate( == -1 if no candidate).  Scan all the elements in the
-        // ids array, for each current element(CE) in ids, there are 4 cases:
-        // (1) (candidate == -1 && list empty)
-        //         candidate = CE;
-        // (2) (candidate != -1 && list empty) {
-        //         if (CE >= candidate) {
-        //             discard CE
-        //         } else if (CE < candidate) {
-        //             replace candidate with CE
-        //         } else {
-        //             put both candidate and CE to list;
-        //             candidate = -1;
-        //         }
-        // (3) (candidate == -1 && list not empty)
-        //         if (CE >= any element in list) {
-        //             discard CE;
-        //         } else if (CE < all elements in list) {
-        //             empty list and candidate = CE;
-        //         } else {
-        //         // CE is less than some elements in list, but
-        //         // incomparable with others
-        //             remove all elements in list that > CE;
-        //             insert CE in list;
-        //         }
-        //  (4) (candidate != -1 && list not empty)
-        //         ERROR!
-
+        // Algorithm: Use a linked list storing all the elements incomparable 
+        // with at least one other. The least element, if it exists, must be 
+        // less than all the elements in this list. Compare the elements in 
+        // the ids array in consecutive pairs. Elements found  higher in a 
+        // pair-comparison are removed from the ids array. Elements found 
+        // incomparable are removed from the ids array and put into the list. 
+        // If two elements are found equal, one of them is arbitrarily removed 
+        // from the ids array. Repeat the above process until the ids array 
+        // contains no more than one element. In the end, if the ids array 
+        // contains no elements, return null. If it contains an element, 
+        // compare it with all the elements in the list. If it is found lower 
+        // than all of them, then this is the least element, otherwise there 
+        // exists no least element. 
+        // This algorithm computes the least element of a poset in O(n) time. 
+        // (ematsi 09/2003)
+        
         // list of incomparable elements.
         LinkedList incomparables = new LinkedList();
-        int candidate = -1;
-
-        for (int i = 0; i < ids.length; i++) {
-            boolean listEmpty = incomparables.size() == 0;
-            if (candidate == -1 && listEmpty) {
-                // case (1)
-                candidate = ids[i];
-            } else if (candidate != -1 && listEmpty) {
-                // case (2)
-                int result = _compareNodeId(ids[i], candidate);
-                if (result == LOWER) {
-                    candidate = ids[i];
-                } else if (result == INCOMPARABLE) {
-
-                    incomparables.addLast(new Integer(candidate));
-                    incomparables.addLast(new Integer(ids[i]));
-
-                    candidate = -1;
+        int virtualLength = ids.length;
+        
+        while (virtualLength > 1) {
+            int i;
+            int virtualIndex = 0;
+            int numberOfRemovedElements = 0;
+    
+            for (i = 0; i < virtualLength-1; ) {
+                switch (_compareNodeId(ids[i++], ids[i++])) {
+                case LOWER:
+                case SAME:
+                    ids[virtualIndex++] = ids[i-2];
+                    numberOfRemovedElements++;
+                    break;
+                case HIGHER:
+                    ids[virtualIndex++] = ids[i-1];
+                    numberOfRemovedElements++;
+                    break;
+                case INCOMPARABLE:
+                    incomparables.addLast(new Integer(ids[i-2]));
+                    incomparables.addLast(new Integer(ids[i-1]));                
+                    numberOfRemovedElements += 2;
+                    break;
+                default:
+                    throw new GraphStateException(
+                            "Bugs in code! Inconsistent data structure!");
                 }
-            } else if (candidate == -1 && !listEmpty) {
-                // case (3)
-                // flag indicating if the current element should be discarded
-                boolean discard = false;
-
-                for (ListIterator iterator = incomparables.listIterator(0);
-                     iterator.hasNext() ;) {
-                    int listValue = ((Integer)iterator.next()).intValue();
-                    int result = _compareNodeId(ids[i], listValue);
-                    if (result == LOWER) {
-                        iterator.remove();
-                    } else if (result == HIGHER || result == SAME) {
-                        discard = true;
-                        break;
-                    }
-                }
-
-
-                if (incomparables.size() == 0) {
-                    candidate = ids[i];
-                } else if ( !discard) {
-
-                    incomparables.addLast(new Integer(ids[i]));
-
-                }
-            } else {
-                // case (4)
-                // candidate != -1 && !listEmpty
-                throw new GraphStateException(
-                        "Bugs in code! Inconsistent data structure!");
+            }
+            if (i == virtualLength-1) {
+                ids[virtualIndex] = ids[i];
+            }
+            virtualLength -= numberOfRemovedElements;      
+        }
+        
+        if (virtualLength == 0) {
+            return null;
+        } else if (incomparables.size() != 0){
+            for (ListIterator iterator = incomparables.listIterator(0);
+                 iterator.hasNext() ;) {
+                int result = _compareNodeId(ids[0], 
+                        ((Integer)iterator.next()).intValue());
+                if (result == HIGHER || result == INCOMPARABLE)
+                    return null;
             }
         }
 
-        if (candidate == -1) {
-            return null;
-        } else {
-            return nodeWeight(candidate);
-        }
+        return nodeWeight(ids[0]);
     }
 
     // compute the least element in a subset.
