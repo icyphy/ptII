@@ -9,6 +9,7 @@
       <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
       <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
       <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      <property name="TM" class="ptolemy.domains.tm.kernel.TMDirector"/>
       <property name="PetriNet" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
       <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
       <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
