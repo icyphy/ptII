@@ -159,7 +159,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     }
 
 
-    /** Create a new instance of this figure decorator, modelled
+    /** Create a new instance of this figure decorator, modeled
      * on this one. This is used by interaction code that needs to
      * dynamically create new manipulators. The figure argument can
      * be used by this method to initialize the new instance; however,
