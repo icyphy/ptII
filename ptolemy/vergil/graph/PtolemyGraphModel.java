@@ -809,11 +809,11 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public void removeNode(Object eventSource, Object node) {
 	Object parent = getParent(node);
 	if(node instanceof ComponentPort) {
-	    removeNode(eventSource, (ComponentPort)node);
+	    removeNode((ComponentPort)node);
 	} else if(node instanceof Icon) {
-	    removeNode(eventSource, (Icon)node);
+	    removeNode((Icon)node);
 	} else if(node instanceof Vertex) {
-	    removeNode(eventSource, (Vertex)node);
+	    removeNode((Vertex)node);
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model only handles " +
