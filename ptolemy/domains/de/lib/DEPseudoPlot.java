@@ -74,7 +74,7 @@ public class DEPseudoPlot extends DEActor {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setDeclaredType(DoubleToken.class);
-        input.makeMultiport(true);
+        input.setMultiport(true);
 
         //_plot = plot;
         //_plot.setMarksStyle("dots");

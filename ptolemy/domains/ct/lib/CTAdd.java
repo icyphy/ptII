@@ -56,13 +56,13 @@ public class CTAdd extends CTActor{
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
-        input.makeInput(true);
-        input.makeOutput(false);
-        input.makeMultiport(true);
+        input.setInput(true);
+        input.setOutput(false);
+        input.setMultiport(true);
         input.setDeclaredType(DoubleToken.class);
         output = new TypedIOPort(this, "output");
-        output.makeInput(false);
-        output.makeOutput(true);
+        output.setInput(false);
+        output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
     }
 

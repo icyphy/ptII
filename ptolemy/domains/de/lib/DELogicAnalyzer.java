@@ -70,7 +70,7 @@ public class DELogicAnalyzer extends DEActor {
 
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
-        input.makeMultiport(true);
+        input.setMultiport(true);
 
         _logicAnalyzer = plot;
         _logicAnalyzer.setButtons(true);

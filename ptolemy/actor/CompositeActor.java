@@ -89,7 +89,7 @@ The container is constrained to be an instance of CompositeActor.
 Derived classes may impose further constraints by overriding setContainer().
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
-@version $Id$
+@version @(#)CompositeActor.java	1.37 11/02/98
 @see ptolemy.actor.IOPort
 @see ptolemy.actor.IORelation
 @see ptolemy.kernel.ComponentEntity

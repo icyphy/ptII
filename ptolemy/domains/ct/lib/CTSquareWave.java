@@ -61,8 +61,8 @@ public class CTSquareWave extends CTActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output");
-        output.makeInput(false);
-        output.makeOutput(true);
+        output.setInput(false);
+        output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
         _maxValue = (double)1.0;
         _paramMaxValue = new CTParameter(this, "MaximumValue",

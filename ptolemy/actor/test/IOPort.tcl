@@ -116,8 +116,8 @@ test IOPort-3.2 {Test input/output changes} {
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set result [list [$p1 isInput] [$p1 isOutput]]
-    $p1 makeInput false
-    $p1 makeOutput false
+    $p1 setInput false
+    $p1 setOutput false
     lappend result [$p1 isInput] [$p1 isOutput]
 } {1 1 0 0}
 
@@ -147,7 +147,7 @@ test IOPort-4.1 {Test multiport predicate} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $p1 link $r1
     $p0 link $r1
-    $p1 makeMultiport true
+    $p1 setMultiport true
     $p0 isMultiport
 } {0}
 
@@ -158,7 +158,7 @@ test IOPort-4.2 {Test multiport predicate on transparent port} {
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true false]
     set temp [$p1 isMultiport]
-    $p1 makeMultiport true
+    $p1 setMultiport true
     list $temp [$p1 isMultiport]
 } {0 1}
 
@@ -185,7 +185,7 @@ test IOPort-5.2 {Test getWidth} {
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
-    $p1 makeMultiport true
+    $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
     $p1 getWidth
@@ -200,7 +200,7 @@ test IOPort-5.3 {Test getWidth} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 2
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
-    $p1 makeMultiport true
+    $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
     $p1 getWidth
@@ -543,7 +543,7 @@ test IOPort-10.5 {Check description use multi-output port} {
     # sender
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
-    $p1 makeMultiport true
+    $p1 setMultiport true
     # receiver 1
     set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.IOPort $e2 P2 true false]
@@ -593,32 +593,32 @@ test IOPort-10.6 {Check description use the example in design doc} {
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1 false true]
-    $p1 makeMultiport true
+    $p1 setMultiport true
     set p2 [java::new ptolemy.actor.IOPort $e1 P2 false true]
-    $p2 makeMultiport true
+    $p2 setMultiport true
     set p3 [java::new ptolemy.actor.IOPort $e1 P3 false true]
-    $p3 makeMultiport true
+    $p3 setMultiport true
     set p4 [java::new ptolemy.actor.IOPort $e1 P4 false true]
-    $p4 makeMultiport true
+    $p4 setMultiport true
     set e3 [java::new ptolemy.actor.CompositeActor $e0 E3]
     set e4 [java::new ptolemy.actor.AtomicActor $e3 E4]
     set e5 [java::new ptolemy.actor.AtomicActor $e3 E5]
     # set p5 without specify input/output
     set p5 [java::new ptolemy.actor.IOPort $e3 P5]
-    $p5 makeMultiport true
+    $p5 setMultiport true
     set p6 [java::new ptolemy.actor.IOPort $e3 P6 true false]
     set p8 [java::new ptolemy.actor.IOPort $e4 P8 true false]
-    $p8 makeMultiport true
+    $p8 setMultiport true
     set p9 [java::new ptolemy.actor.IOPort $e5 P9 true false]
-    $p9 makeMultiport true
+    $p9 setMultiport true
 
     set e6 [java::new ptolemy.actor.AtomicActor $e0 E6]
     set p7 [java::new ptolemy.actor.IOPort $e6 P7 true false]
-    $p7 makeMultiport true
+    $p7 setMultiport true
 
     set e7 [java::new ptolemy.actor.AtomicActor $e0 E7]
     set p10 [java::new ptolemy.actor.IOPort $e7 P10 false true]
-    $p10 makeMultiport true
+    $p10 setMultiport true
 
     # connection
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
@@ -701,15 +701,15 @@ test IOPort-11.1 {Check liberalLink on transparent multiport and inferred width}
     set e0 [java::new ptolemy.actor.CompositeActor $ex E0]
     # transparent port
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
-    $p0 makeMultiport true
+    $p0 setMultiport true
     # inside entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
-    $p1 makeMultiport true
+    $p1 setMultiport true
     # outside entoty
     set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.IOPort $e2 P2 true false]
-    $p2 makeMultiport true
+    $p2 setMultiport true
     # connection
     # inside relation with unspecified width
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
@@ -741,7 +741,7 @@ test IOPort-11.2 {Check liberalLink: link a linked relation from inside } {
     $e0 setDirector $director
     $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
-    $p0 makeMultiport true
+    $p0 setMultiport true
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 0
     $p0 link $r1
@@ -754,7 +754,7 @@ test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     $e0 setDirector $director
     $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
-    $p0 makeMultiport true
+    $p0 setMultiport true
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 0
     $p0 link $r1
@@ -769,7 +769,7 @@ test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
     $e0 setDirector $director
     $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
-    $p0 makeMultiport true
+    $p0 setMultiport true
     # inside relation, fixed width
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 3
@@ -791,7 +791,7 @@ test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     $e0 setDirector $director
     $e0 setManager $manager
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
-    $p0 makeMultiport true
+    $p0 setMultiport true
     # inside relation, *
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 0
@@ -837,12 +837,12 @@ test IOPOrt-12.1 {deepConnectedIn(out)Ports} {
     $p5 link $r3
 
     # make P1, P3 output, P5 input
-    $p1 makeInput false
-    $p1 makeOutput true
-    $p3 makeInput false
-    $p3 makeOutput true
-    $p5 makeInput true
-    $p5 makeOutput false
+    $p1 setInput false
+    $p1 setOutput true
+    $p3 setInput false
+    $p3 setOutput true
+    $p5 setInput true
+    $p5 setOutput false
 
     list [enumToNames [$p1 deepConnectedInPorts]] \
             [enumToNames [$p1 deepConnectedOutPorts]] \
@@ -860,12 +860,12 @@ test IOPOrt-12.1 {deepConnectedIn(out)Ports} {
 test IOPort-12.2 {deepConnectedIn(Out)Ports} {
 
     # make P1 output, P3, P5 input
-    $p1 makeInput false
-    $p1 makeOutput true
-    $p3 makeInput true
-    $p3 makeOutput false
-    $p5 makeInput true
-    $p5 makeOutput false
+    $p1 setInput false
+    $p1 setOutput true
+    $p3 setInput true
+    $p3 setOutput false
+    $p5 setInput true
+    $p5 setOutput false
 
     list [enumToNames [$p1 deepConnectedInPorts]] \
             [enumToNames [$p1 deepConnectedOutPorts]] \
@@ -883,12 +883,12 @@ test IOPort-12.2 {deepConnectedIn(Out)Ports} {
 test IOPort-12.3 {deepConnectedIn(Out)Ports} {
 
     # make P3 output, P1, P5 input
-    $p1 makeInput true
-    $p1 makeOutput false
-    $p3 makeInput false
-    $p3 makeOutput true
-    $p5 makeInput true
-    $p5 makeOutput false
+    $p1 setInput true
+    $p1 setOutput false
+    $p3 setInput false
+    $p3 setOutput true
+    $p5 setInput true
+    $p5 setOutput false
 
     list [enumToNames [$p1 deepConnectedInPorts]] \
             [enumToNames [$p1 deepConnectedOutPorts]] \
@@ -932,10 +932,10 @@ test IOPOrt-12.4 {deepConnectedInPorts from a inside outputport} {
     
 
     # make P1, P3 output, P5 input
-    $p1 makeInput false
-    $p1 makeOutput true
-    $p3 makeInput true
-    $p3 makeOutput false
+    $p1 setInput false
+    $p1 setOutput true
+    $p3 setInput true
+    $p3 setOutput false
 
     list [enumToNames [$p1 deepConnectedInPorts]] 
 } {{}}
@@ -967,12 +967,12 @@ test IOPort-13.1 {test getReceivers()} {
     set p2 [java::new ptolemy.actor.IOPort $e2 "P2"]
     set p3 [java::new ptolemy.actor.IOPort $e3 "P3"]
     set p4 [java::new ptolemy.actor.IOPort $e4 "P4"]
-    $p1 makeMultiport true
-    $p2 makeMultiport true
-    $p3 makeMultiport true
-    $p3 makeOutput true
-    $p4 makeMultiport true
-    $p4 makeInput true
+    $p1 setMultiport true
+    $p2 setMultiport true
+    $p3 setMultiport true
+    $p3 setOutput true
+    $p4 setMultiport true
+    $p4 setInput true
     set r1 [$e0 connect $p1 $p2]
     $r1 setWidth 3
     set r2 [$e1 connect $p3 $p1]

@@ -131,7 +131,7 @@ test IORelation-3.4.1 {Test getWidth of a port} {
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1]
     $p1 link $r1
-    $p1 makeMultiport true
+    $p1 setMultiport true
     $r1 setWidth 4
     $p1 getWidth
 } {4}
@@ -158,7 +158,7 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1]
     $r1 setWidth 0
-    $p1 makeMultiport true
+    $p1 setMultiport true
     $p1 link $r1
     $p1 getWidth
 } {1}
@@ -195,7 +195,7 @@ test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
     $p1 link $r1
     $p2 link $r1
     $p2 link $r2
-    $p1 makeMultiport true
+    $p1 setMultiport true
     catch {$r1 setWidth 0} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .E0.E1.R1 and .E0.E1.P2: Cannot make bus because the relation is linked to a non-multiport.}}
@@ -214,8 +214,8 @@ test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
     $p1 link $r1
     $p2 link $r1
     $p2 link $r2
-    $p1 makeMultiport true
-    $p2 makeMultiport true
+    $p1 setMultiport true
+    $p2 setMultiport true
     $r1 setWidth 0
     $r2 setWidth 4
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth]
@@ -247,8 +247,8 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
     $r1 setWidth 0
     set p1 [java::new ptolemy.actor.IOPort $e1 P1]
     set p2 [java::new ptolemy.actor.IOPort $e2 P2]
-    $p1 makeMultiport true
-    $p2 makeMultiport true
+    $p1 setMultiport true
+    $p2 setMultiport true
     $p1 link $r1
     $p2 link $r1
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth]
@@ -261,13 +261,13 @@ test IORelation-3.13 {Resolve width through three levels} {
     $e0 setManager $manager
     $e0 setName E0
     set p0 [java::new ptolemy.actor.IOPort $e0 P0]
-    $p0 makeMultiport true
+    $p0 setMultiport true
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1]
-    $p1 makeMultiport true
+    $p1 setMultiport true
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set p2 [java::new ptolemy.actor.IOPort $e2 P2]
-    $p2 makeMultiport true
+    $p2 setMultiport true
     set r0 [java::new ptolemy.actor.IORelation]
     $r0 setName R0
     $r0 setWidth 0
@@ -298,21 +298,21 @@ test IORelation-4.1 {Elaborate test system} {
     # First level of the hierarchy
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set p2 [java::new ptolemy.actor.IOPort $e1 P2]
-    $p2 makeMultiport true
+    $p2 setMultiport true
     set p3 [java::new ptolemy.actor.IOPort $e1 P3]
-    $p3 makeMultiport true
+    $p3 setMultiport true
     set p4 [java::new ptolemy.actor.IOPort $e1 P4]
-    $p4 makeMultiport true
+    $p4 setMultiport true
 
     set e3 [java::new ptolemy.actor.CompositeActor $e0 E3]
     set p5 [java::new ptolemy.actor.IOPort $e3 P5]
-    $p5 makeMultiport true
+    $p5 setMultiport true
     set p6 [java::new ptolemy.actor.IOPort $e3 P6]
 
     set e6 [java::new ptolemy.actor.AtomicActor $e0 E6]
     set p7 [java::new ptolemy.actor.IOPort $e6 P7]
-    $p7 makeMultiport true
-    $p7 makeInput true
+    $p7 setMultiport true
+    $p7 setInput true
 
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
     $r2 setWidth 3
@@ -331,8 +331,8 @@ test IORelation-4.1 {Elaborate test system} {
     # Inside E1
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1]
-    $p1 makeMultiport true
-    $p1 makeOutput true
+    $p1 setMultiport true
+    $p1 setOutput true
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     $r1 setWidth 0
     $p1 link $r1
@@ -343,12 +343,12 @@ test IORelation-4.1 {Elaborate test system} {
     # Inside E3
     set e4 [java::new ptolemy.actor.AtomicActor $e3 E4]
     set p8 [java::new ptolemy.actor.IOPort $e4 P8]
-    $p8 makeMultiport true
-    $p8 makeInput true
+    $p8 setMultiport true
+    $p8 setInput true
     set e5 [java::new ptolemy.actor.AtomicActor $e3 E5]
     set p9 [java::new ptolemy.actor.IOPort $e5 P9]
-    $p9 makeMultiport true
-    $p9 makeInput true
+    $p9 setMultiport true
+    $p9 setInput true
     set r5 [java::new ptolemy.actor.IORelation $e3 R5]
     $r5 setWidth 0
     set r6 [java::new ptolemy.actor.IORelation $e3 R6]
@@ -443,18 +443,18 @@ test IORelation-6.4 {Test linkedSourcePorts} {
 
 ######################################################################
 ####
-# Test widthFixed
+# Test isWidthFixed
 # NOTE: These build on system above...
 #
-test IORelation-7.1 {Test widthFixed} {
+test IORelation-7.1 {Test isWidthFixed} {
     list \
-            [$r1 widthFixed] \
-            [$r2 widthFixed] \
-            [$r3 widthFixed] \
-            [$r4 widthFixed] \
-            [$r5 widthFixed] \
-            [$r6 widthFixed] \
-            [$r7 widthFixed]
+            [$r1 isWidthFixed] \
+            [$r2 isWidthFixed] \
+            [$r3 isWidthFixed] \
+            [$r4 isWidthFixed] \
+            [$r5 isWidthFixed] \
+            [$r6 isWidthFixed] \
+            [$r7 isWidthFixed]
 } {0 1 1 1 0 1 1}
 
 ######################################################################

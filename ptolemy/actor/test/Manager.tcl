@@ -62,14 +62,14 @@ test Manager-8.1 {Test type checking} {
     #create e1
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
-    $p1 makeOutput true
+    $p1 setOutput true
     set t1 [[java::new ptolemy.data.IntToken] getClass]
     $p1 setDeclaredType $t1
 
     #create e2
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2]
-    $p2 makeInput true
+    $p2 setInput true
     set t2 [[java::new ptolemy.data.DoubleToken] getClass]
     $p2 setDeclaredType $t2
 
@@ -147,7 +147,7 @@ test Manager-8.6 {Test type resolution} {
     #create e1, a source actor
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
-    $p1 makeOutput true
+    $p1 setOutput true
     set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
     $p1 setDeclaredType $tDouble
 
@@ -156,19 +156,19 @@ test Manager-8.6 {Test type resolution} {
     set p21 [java::new ptolemy.actor.TypedIOPort $e2 P21]
     set p22 [java::new ptolemy.actor.TypedIOPort $e2 P22]
     set p23 [java::new ptolemy.actor.TypedIOPort $e2 P23]
-    $p21 makeInput true
-    $p22 makeOutput true
-    $p23 makeOutput true
+    $p21 setInput true
+    $p22 setOutput true
+    $p23 setOutput true
 
     #create e3, a sink actor
     set e3 [java::new ptolemy.actor.TypedAtomicActor $e0 E3]
     set p3 [java::new ptolemy.actor.TypedIOPort $e3 P3]
-    $p3 makeInput true
+    $p3 setInput true
 
     #create e4, a sink actor
     set e4 [java::new ptolemy.actor.TypedAtomicActor $e0 E4]
     set p4 [java::new ptolemy.actor.TypedIOPort $e4 P4]
-    $p4 makeInput true
+    $p4 setInput true
     $p4 setDeclaredType $tDouble
 
     #link up p1-p21, p22-p3, p23-p4

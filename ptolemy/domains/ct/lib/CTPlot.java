@@ -74,7 +74,7 @@ public class  CTPlot extends CTActor {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         //input.setDeclaredType(DoubleToken.class);
-        input.makeMultiport(true);
+        input.setMultiport(true);
         input.setDeclaredType(DoubleToken.class);
 
         _plot = plot;

@@ -62,7 +62,7 @@ public class DEBus extends DEActor {
             throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         ioport = new TypedIOPort(this, "ioport", true, true);
-        ioport.makeMultiport(true);
+        ioport.setMultiport(true);
         ioport.setDeclaredType(DoubleToken.class);
     }
 

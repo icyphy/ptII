@@ -131,7 +131,7 @@ public class HierarchyApplet extends Applet {
 
             DEIOPort A1 = new DEIOPort(blockA, "A1", false, true);
             //A1.setDeclaredType(DoubleToken.class);
-            A1.makeMultiport(true);
+            A1.setMultiport(true);
             DEIOPort A2 = new DEIOPort(blockA, "A2", false, true);
             //A2.setDeclaredType(DoubleToken.class);
 

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
@@ -52,6 +52,13 @@ contained by an actor that has a director.  If it is not, then
 any attempt to read data or list the receivers will trigger
 an exception.
 <p>
+If this port is at the boundary of an opaque composite actor, then
+then it can have both inside and outside links, with corresponding
+inside and outside receivers. The inside links are to relations
+inside the opaque composite actor, whereas the outside links are
+to relations outside. If it is not specified, then a link is an
+outside link.
+<p>
 The port has a <i>width</i>, which by default can be no greater
 than one.  This width is the sum of the widths of the linked relations.
 A port with a width greater than one behaves as a bus interface,
@@ -68,7 +75,7 @@ general will have <i>w</i> distinct groups of receivers, and can receive
 <p>
 By default, the maximum width of the port is one, so only one
 channel is handled. A port that allows a width greater than one
-is called a <i>multiport</i>. Calling makeMultiport() with a
+is called a <i>multiport</i>. Calling setMultiport() with a
 <i>true</i> argument converts the port to a multiport.
 <p>
 The width of the port is not set directly. It is the sum of the
@@ -82,7 +89,7 @@ An IOPort can only link to instances of IORelation. Derived classes
 may further constrain links to a subclass of IORelation.  To do this,
 they should override the protected methods _link() and _linkInside()
 to throw an exception if their arguments are not of the appropriate
-type.  Similarly, an IOPort can be only be contained by a class
+type.  Similarly, an IOPort can only be contained by a class
 derived from ComponentEntity and implementing the Actor interface.
 Subclasses may further constrain the containers by overriding
 setContainer().
@@ -135,8 +142,8 @@ public class IOPort extends ComponentPort {
             boolean isinput, boolean isoutput)
             throws IllegalActionException, NameDuplicationException {
         this(container, name);
-        makeInput(isinput);
-        makeOutput(isoutput);
+        setInput(isinput);
+        setOutput(isoutput);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,12 +170,12 @@ public class IOPort extends ComponentPort {
                         "broadcast: Tokens can only be sent from an " +
                         "output port.");
             }
-            Receiver fr[][] = getRemoteReceivers();
-            if(fr == null) {
+            Receiver farRecs[][] = getRemoteReceivers();
+            if(farRecs == null) {
                 return;
             }
 
-            for (int j = 0; j < fr.length; j++) {
+            for (int j = 0; j < farRecs.length; j++) {
                 send(j, token);
             }
         } finally {
@@ -329,8 +336,8 @@ public class IOPort extends ComponentPort {
 	    workspace().getReadAccess();
 	    LinkedList result = new LinkedList();
 
-	    for (Enumeration allPorts = deepConnectedPorts();
-                 allPorts.hasMoreElements(); ) {
+	    Enumeration allPorts = deepConnectedPorts();
+            while(allPorts.hasMoreElements()) {
 		IOPort port = (IOPort)allPorts.nextElement();
 		if (port.isInput()) {
 		    result.insertLast(port);
@@ -370,7 +377,9 @@ public class IOPort extends ComponentPort {
     }
 
     /** If the port is an input, return the receivers deeply linked on the
-     *  inside, otherwise return null.  The returned value is an array of
+     *  inside, otherwise return null.  This method is used to obtain
+     *  the receivers that are to receive data at this input port.
+     *  The returned value is an array of
      *  arrays in the same format as that returned by getReceivers(). The
      *  difference between this method and getReceivers() is that this method
      *  treats the port as a transparent port regardless of whether it is
@@ -424,7 +433,8 @@ public class IOPort extends ComponentPort {
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling get.
      *
-     *
+     *  @param channelindex The channel index.
+     *  @return A token from the specified channel.
      *  @exception NoTokenException If there is no token.
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created, if the port is not an input port, or
@@ -843,6 +853,7 @@ public class IOPort extends ComponentPort {
      *  are multiple receivers in the group associated with the channel,
      *  then return true only if all the receivers can accept a token.
      *
+     *  @param channelindex The channel index.
      *  @return True if there is room for a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
      *   this query, if this is not an output port, or if the channel index
@@ -858,21 +869,24 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "hasRoom: Channel index out of range.");
         }
-        Receiver[][] fr = getRemoteReceivers();
-        if (fr == null || fr[channelindex] == null) return false;
-        for (int j = 0; j < fr[channelindex].length; j++) {
-            if (!fr[channelindex][j].hasRoom()) return false;
+        Receiver[][] farRecs = getRemoteReceivers();
+        if (farRecs == null || farRecs[channelindex] == null) {
+            return false;
+        }
+        for (int j = 0; j < farRecs[channelindex].length; j++) {
+            if (!farRecs[channelindex][j].hasRoom()) return false;
         }
         return true;
     }
 
     /** Return true if the specified channel has a token to deliver
      *  via the get() method.  If this port is not an input, or if the
-     *  channel index is out of range, then throws IllegalActionException.
+     *  channel index is out of range, then throw an exception.
      *  Note that this does not report any tokens in inside receivers
      *  of an output port. Those are accessible only through
      *  getInsideReceivers().
      *
+     *  @param channelindex The channel index.
      *  @return True if there is a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
      *   this query, if there is no director, and hence no receivers,
@@ -891,16 +905,18 @@ public class IOPort extends ComponentPort {
         }
         // The getReceivers() method throws an IllegalActionException if
         // there's no director.
-        Receiver[][] fr = getReceivers();
-        if (fr == null || fr[channelindex] == null) return false;
-        for (int j = 0; j < fr[channelindex].length; j++) {
-            if (fr[channelindex][j].hasToken()) return true;
+        Receiver[][] recs = getReceivers();
+        if (recs == null || recs[channelindex] == null) {
+            return false;
+        }
+        for (int j = 0; j < recs[channelindex].length; j++) {
+            if (recs[channelindex][j].hasToken()) return true;
         }
         return false;
     }
 
     /** Return true if the port is an input.  The port is an input
-     *  if either makeInput() has been called with a <i>true</i> argument, or
+     *  if either setInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is
      *  connected on the inside to the inside of an output port.
      *  In other words, it is an input if data can be put directly into
@@ -910,9 +926,9 @@ public class IOPort extends ComponentPort {
      *  @return True if the port is an input.
      */
     public boolean isInput() {
-        try {
-            workspace().getReadAccess();
-            if (_insideinputversion != workspace().getVersion()) {
+        if (_insideinputversion != workspace().getVersion()) {
+            try {
+                workspace().getReadAccess();
                 // Check to see whether any port linked on the inside
                 // is an input.
                 Enumeration ports = deepInsidePorts();
@@ -922,15 +938,15 @@ public class IOPort extends ComponentPort {
                     if (p != this && p.isInput()) _isinput = true;
                 }
                 _insideinputversion = workspace().getVersion();
+            } finally {
+                workspace().doneReading();
             }
-            return _isinput;
-        } finally {
-            workspace().doneReading();
         }
+        return _isinput;
     }
 
     /** Return true if the port is a multiport.  The port is a multiport
-     *  if makeMultiport() has been called with a true argument.
+     *  if setMultiport() has been called with a true argument.
      *
      *  @return True if the port is a multiport.
      */
@@ -942,7 +958,7 @@ public class IOPort extends ComponentPort {
     }
 
     /** Return true if the port is an output. The port is an output
-     *  if either makeOutput() has been called with a true argument, or
+     *  if either setOutput() has been called with a true argument, or
      *  it is connected on the inside to an output port, or it is
      *  connected on the inside to the inside of an input port.
      *  This method is read-synchronized on the workspace.
@@ -950,9 +966,9 @@ public class IOPort extends ComponentPort {
      *  @return True if the port is an output.
      */
     public boolean isOutput() {
-        try {
-            workspace().getReadAccess();
-            if (_insideoutputversion != workspace().getVersion()) {
+        if (_insideoutputversion != workspace().getVersion()) {
+            try {
+                workspace().getReadAccess();
                 // Check to see whether any port linked on the
                 // inside is an output.
                 Enumeration ports = deepInsidePorts();
@@ -962,74 +978,11 @@ public class IOPort extends ComponentPort {
                     if (p != this && p.isOutput()) _isoutput = true;
                 }
                 _insideoutputversion = workspace().getVersion();
+            } finally {
+                workspace().doneReading();
             }
-            return _isoutput;
-        } finally {
-            workspace().doneReading();
         }
-    }
-
-    /** If the argument is true, make the port an input port.
-     *  If the argument is false, make the port not an input port.
-     *  This has no effect if the port is a transparent port.
-     *  In that case, the port
-     *  is an input port regardless of whether and how this method is called.
-     *  This method is write-synchronized on the workspace.
-     *
-     *  @param isinput True to make the port an input.
-     */
-    public void makeInput(boolean isinput) {
-        // No need for the try ... finally construct here because no
-        // exception can occur.  Note that although the action here is
-        // atomic, we still need to obtain write access to be sure that
-        // the change is not made in the middle of another read in another
-        // thread.
-        workspace().getWriteAccess();
-        _isinput = isinput;
-        workspace().doneWriting();
-    }
-
-    /** If the argument is true, make the port a multiport.
-     *  That is, make it capable of linking with multiple IORelations,
-     *  or with IORelations that have width greater than one.
-     *  If the argument is false, allow only links with a single
-     *  IORelation of width one.
-     *  This has no effect if the port is a transparent port that is
-     *  linked on the inside to a multiport.  In that case, the port
-     *  is a multiport regardless of whether and how this method is called.
-     *  This method is write-synchronized on the workspace.
-     *
-     *  @param ismultiport True to make the port a multiport.
-     */
-    public void makeMultiport(boolean ismultiport) {
-        // No need for the try ... finally construct here because no
-        // exception can occur.  Note that although the action here is
-        // atomic, we still need to obtain write access to be sure that
-        // the change is not made in the middle of another read in another
-        // thread.
-        workspace().getWriteAccess();
-        _ismultiport = ismultiport;
-        workspace().doneWriting();
-    }
-
-    /** If the argument is true, make the port an output port.
-     *  If the argument is false, make the port not an output port.
-     *  This has no effect if the port is a transparent port that is
-     *  linked on the inside to output ports.  In that case, the port
-     *  is an output port regardless of whether and how this method is called.
-     *  This method is write-synchronized on the workspace.
-     *
-     *  @param isoutput True to make the port an output.
-     */
-    public void makeOutput(boolean isoutput) {
-        // No need for the try ... finally construct here because no
-        // exception can occur.  Note that although the action here is
-        // atomic, we still need to obtain write access to be sure that
-        // the change is not made in the middle of another read in another
-        // thread.
-        workspace().getWriteAccess();
-        _isoutput = isoutput;
-        workspace().doneWriting();
+        return _isoutput;
     }
 
     /** Send the specified token to all receivers connected to the
@@ -1099,6 +1052,69 @@ public class IOPort extends ComponentPort {
         super.setContainer(container);
     }
 
+    /** If the argument is true, make the port an input port.
+     *  If the argument is false, make the port not an input port.
+     *  This has no effect if the port is a transparent port.
+     *  In that case, the port
+     *  is an input port regardless of whether and how this method is called.
+     *  This method is write-synchronized on the workspace.
+     *
+     *  @param isinput True to make the port an input.
+     */
+    public void setInput(boolean isinput) {
+        // No need for the try ... finally construct here because no
+        // exception can occur.  Note that although the action here is
+        // atomic, we still need to obtain write access to be sure that
+        // the change is not made in the middle of another read in another
+        // thread.
+        workspace().getWriteAccess();
+        _isinput = isinput;
+        workspace().doneWriting();
+    }
+
+    /** If the argument is true, make the port a multiport.
+     *  That is, make it capable of linking with multiple IORelations,
+     *  or with IORelations that have width greater than one.
+     *  If the argument is false, allow only links with a single
+     *  IORelation of width one.
+     *  This has no effect if the port is a transparent port that is
+     *  linked on the inside to a multiport.  In that case, the port
+     *  is a multiport regardless of whether and how this method is called.
+     *  This method is write-synchronized on the workspace.
+     *
+     *  @param ismultiport True to make the port a multiport.
+     */
+    public void setMultiport(boolean ismultiport) {
+        // No need for the try ... finally construct here because no
+        // exception can occur.  Note that although the action here is
+        // atomic, we still need to obtain write access to be sure that
+        // the change is not made in the middle of another read in another
+        // thread.
+        workspace().getWriteAccess();
+        _ismultiport = ismultiport;
+        workspace().doneWriting();
+    }
+
+    /** If the argument is true, make the port an output port.
+     *  If the argument is false, make the port not an output port.
+     *  This has no effect if the port is a transparent port that is
+     *  linked on the inside to output ports.  In that case, the port
+     *  is an output port regardless of whether and how this method is called.
+     *  This method is write-synchronized on the workspace.
+     *
+     *  @param isoutput True to make the port an output.
+     */
+    public void setOutput(boolean isoutput) {
+        // No need for the try ... finally construct here because no
+        // exception can occur.  Note that although the action here is
+        // atomic, we still need to obtain write access to be sure that
+        // the change is not made in the middle of another read in another
+        // thread.
+        workspace().getWriteAccess();
+        _isoutput = isoutput;
+        workspace().doneWriting();
+    }
+
     /** Unlink the specified Relation. The receivers associated with
      *  this relation, and any data they contain, are lost. If the Relation
      *  is not linked to this port, do nothing.
@@ -1120,7 +1136,7 @@ public class IOPort extends ComponentPort {
 
     /** Unlink all relations.
      *  This method is write-synchronized on the
-     *  workspace and increments its version number.
+     *  workspace.
      */
     public void unlinkAll() {
         try {
@@ -1311,7 +1327,7 @@ public class IOPort extends ComponentPort {
         while (relations.hasMoreElements()) {
             IORelation rel = (IORelation)relations.nextElement();
             if (rel != except) {
-                if (!rel.widthFixed()) {
+                if (!rel.isWidthFixed()) {
                     throw new InvalidStateException(this,
                             "Width of inside relations cannot be determined.");
                 }
@@ -1355,7 +1371,7 @@ public class IOPort extends ComponentPort {
                         "Attempt to link more than one relation " +
                         "to a single port.");
             }
-            if (rel.getWidth() != 1 || !rel.widthFixed()) {
+            if (rel.getWidth() != 1 || !rel.isWidthFixed()) {
                 // Relation is a bus.
                 if(!isMultiport()) {
                     throw new IllegalActionException(this,  rel,
@@ -1365,7 +1381,7 @@ public class IOPort extends ComponentPort {
                 Enumeration relations = linkedRelations();
                 while (relations.hasMoreElements()) {
                     IORelation r = (IORelation)relations.nextElement();
-                    if (!r.widthFixed()) {
+                    if (!r.isWidthFixed()) {
                         throw new IllegalActionException(this, rel,
                                 "Attempt to link a second bus relation " +
                                 "with unspecified width to the outside " +
@@ -1412,14 +1428,14 @@ public class IOPort extends ComponentPort {
                         "Attempt to link more than one relation " +
                         "to a single port.");
             }
-            if ((rel.getWidth() != 1) || !rel.widthFixed()) {
+            if ((rel.getWidth() != 1) || !rel.isWidthFixed()) {
                 // Relation is a bus.
                 if(!isMultiport()) {
                     throw new IllegalActionException(this,  rel,
                             "Attempt to link a bus relation " +
                             "to a single port.");
                 }
-                if (!rel.widthFixed()) {
+                if (!rel.isWidthFixed()) {
                     // Make sure there are no other busses already
                     // connected with unspecified widths.
                     try {
@@ -1437,7 +1453,7 @@ public class IOPort extends ComponentPort {
     }
 
     /** Create a new receiver compatible with the local director.
-     *  This is done by asking the local director of the container
+     *  This is done by asking the local director of the container for
      *  a new receiver, and then setting its
      *  container to this port.  This allows actors to work across
      *  several domains, since often the only domain-specific part of

@@ -46,7 +46,7 @@ public class SDFPrint extends SDFAtomicActor {
         super(container,name);
         try{
             inputport=(IOPort)newPort("input");
-            inputport.makeInput(true);
+            inputport.setInput(true);
             setTokenConsumptionRate(inputport,1);
         }
         catch (IllegalActionException e1) {

@@ -47,7 +47,7 @@ public class SDFRamp extends SDFAtomicActor {
         super(container,name);
         try{
             outputport=(IOPort) newPort("output");
-            outputport.makeOutput(true);
+            outputport.setOutput(true);
             setTokenProductionRate(outputport,1);
         }
         catch (IllegalActionException e1) {

@@ -56,7 +56,7 @@ public class CSPMultiSource extends CSPActor {
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
 	 output = new IOPort(this, "output", false, true);
-	 output.makeMultiport(true);
+	 output.setMultiport(true);
     }
 
     ////////////////////////////////////////////////////////////////////////

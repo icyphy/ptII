@@ -58,9 +58,9 @@ public class CTSink extends CTActor{
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
-        input.makeInput(true);
-        input.makeOutput(false);
-        input.makeMultiport(true);
+        input.setInput(true);
+        input.setOutput(false);
+        input.setMultiport(true);
         input.setDeclaredType(DoubleToken.class);
     }
 

@@ -50,13 +50,13 @@ public class SDFJoin extends SDFAtomicActor {
         super(container,name);
         try{
             inputport1=(IOPort)newPort("input1");
-            inputport1.makeInput(true);
+            inputport1.setInput(true);
             setTokenConsumptionRate(inputport1,1);
             inputport2=(IOPort)newPort("input2");
-            inputport2.makeInput(true);
+            inputport2.setInput(true);
             setTokenConsumptionRate(inputport2,1);
             outputport=(IOPort)newPort("output");
-            outputport.makeOutput(true);
+            outputport.setOutput(true);
             setTokenProductionRate(outputport,2);
         }
         catch (IllegalActionException e1) {

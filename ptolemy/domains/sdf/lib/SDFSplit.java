@@ -46,13 +46,13 @@ public class SDFSplit extends SDFAtomicActor {
         super(container,name);
         try{
             inputport=(IOPort)newPort("input");
-            inputport.makeInput(true);
+            inputport.setInput(true);
             setTokenConsumptionRate(inputport,2);
             outputport1=(IOPort)newPort("output1");
-            outputport1.makeOutput(true);
+            outputport1.setOutput(true);
             setTokenProductionRate(outputport1,1);
             outputport2=(IOPort)newPort("output2");
-            outputport2.makeOutput(true);
+            outputport2.setOutput(true);
             setTokenProductionRate(outputport2,1);
         }
         catch (IllegalActionException e1) {

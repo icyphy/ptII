@@ -57,14 +57,14 @@ public class CTGain extends CTActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
-        input.makeInput(true);
-        input.makeOutput(false);
-        input.makeMultiport(false);
+        input.setInput(true);
+        input.setOutput(false);
+        input.setMultiport(false);
         input.setDeclaredType(DoubleToken.class);
         output = new TypedIOPort(this, "output");
-        output.makeInput(false);
-        output.makeOutput(true);
-        output.makeMultiport(false);
+        output.setInput(false);
+        output.setOutput(true);
+        output.setMultiport(false);
         output.setDeclaredType(DoubleToken.class);
         _gain = (double)1.0;
         _paramGain = new CTParameter(this, "Gain", new DoubleToken(_gain));

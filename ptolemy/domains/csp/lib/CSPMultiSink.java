@@ -56,7 +56,7 @@ public class CSPMultiSink extends CSPActor {
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
 	 input = new IOPort(this, "input", true, false);
-	 input.makeMultiport(true);
+	 input.setMultiport(true);
     }
 
     ////////////////////////////////////////////////////////////////////////

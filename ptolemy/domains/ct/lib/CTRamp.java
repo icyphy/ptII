@@ -54,8 +54,8 @@ public class CTRamp extends CTActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output");
-        output.makeInput(false);
-        output.makeOutput(true);
+        output.setInput(false);
+        output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
         _initValue = (double)0.0;
         _paramInitValue = new CTParameter(this, "InitialValue",

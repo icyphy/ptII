@@ -46,10 +46,10 @@ public class SDFDelay extends SDFAtomicActor {
         super(container,name);
         try{
             inputport=(IOPort)newPort("input");
-            inputport.makeInput(true);
+            inputport.setInput(true);
             setTokenConsumptionRate(inputport,1);
             outputport=(IOPort)newPort("output");
-            outputport.makeOutput(true);
+            outputport.setOutput(true);
             setTokenProductionRate(outputport,1);
         }
         catch (IllegalActionException e1) {

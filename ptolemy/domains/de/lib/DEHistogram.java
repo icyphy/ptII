@@ -76,7 +76,7 @@ public class DEHistogram extends DEActor {
 
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
-        input.makeMultiport(true);
+        input.setMultiport(true);
 
         _plot = plot;
         _plot.setBars((1-_percentGap)*binWidth, 0.25*_percentGap*binWidth);

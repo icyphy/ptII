@@ -63,13 +63,13 @@ public class IdentityActor extends AtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new IOPort(this, "input");
-        input.makeInput(true);
-        input.makeOutput(false);
-        input.makeMultiport(false);
+        input.setInput(true);
+        input.setOutput(false);
+        input.setMultiport(false);
         output = new IOPort(this, "output");
-        output.makeInput(false);
-        output.makeOutput(true);
-        output.makeMultiport(false);
+        output.setInput(false);
+        output.setOutput(true);
+        output.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////

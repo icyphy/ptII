@@ -56,8 +56,8 @@ public class CTPrintln extends CTActor{
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
-        input.makeInput(true);
-        input.makeOutput(false);
+        input.setInput(true);
+        input.setOutput(false);
         input.setDeclaredType(DoubleToken.class);
     }
 

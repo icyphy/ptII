@@ -211,16 +211,21 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  This method is write-synchronized on the workspace.
      *
      *  @return A new TypedIORelation.
-     *  @exception IllegalActionException If name argument is null.
      *  @exception NameDuplicationException If name collides with a name
      *   already on the container's contents list.
      */
     public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
+            throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
             TypedIORelation rel = new TypedIORelation(this, name);
             return rel;
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(
+                    "TypedCompositeActor.newRelation: Internal error: "
+                    + ex.getMessage());
         } finally {
             workspace().doneWriting();
         }

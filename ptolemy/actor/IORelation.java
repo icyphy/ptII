@@ -123,7 +123,7 @@ public class IORelation extends ComponentRelation {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         IORelation newobj = (IORelation)super.clone(ws);
-        newobj._inferredwidthversion = -1;
+        newobj._inferredWidthVersion = -1;
         return newobj;
     }
 
@@ -148,10 +148,12 @@ public class IORelation extends ComponentRelation {
      *  then <i>x</i>[<i>c</i>] is null.  Otherwise, it is an array, where
      *  the size of the array is the number of receivers in the group.
      *  <p>
-     *  This method may have the effect of creating new receivers in the
-     *  remote input ports, if they do not already have the right number of
-     *  receivers.  In this case, previous receivers are lost, together
-     *  with any data they may contain.
+     *  NOTE: This method may have the effect of creating new receivers in the
+     *  remote input ports and losing the previous receivers in those ports,
+     *  together with any data they may contain.  This occurs only if the
+     *  topology has changed since the receivers were created, and that change
+     *  resulting in one of those ports not having the right number of
+     *  receivers.
      *  <p>
      *  This method read-synchronizes on the workspace.
      *
@@ -217,6 +219,14 @@ public class IORelation extends ComponentRelation {
             return _inferWidth();
         }
         return _width;
+    }
+
+    /** Return true if the relation has a definite width (i.e.,
+     *  setWidth() has not been called with a zero argument).
+     *  @return True if the width has been set to non-zero.
+     */
+    public boolean isWidthFixed() {
+        return (_width != 0);
     }
 
     /** Enumerate the input ports that we are linked to from the
@@ -361,6 +371,7 @@ public class IORelation extends ComponentRelation {
      *   one and the relation is linked to a non-multiport, or it is zero and
      *   the relation is linked on the inside to a port that is already
      *   linked on the inside to a relation with unspecified width.
+     *  @see WorkSpace.getWriteAccess
      */
     public void setWidth(int width) throws IllegalActionException {
         try {
@@ -391,13 +402,6 @@ public class IORelation extends ComponentRelation {
         } finally {
             workspace().doneWriting();
         }
-    }
-
-    /** Return true if the relation has a definite width (i.e.,
-     *  setWidth() has not been called with a zero argument).
-     */
-    public boolean widthFixed() {
-        return (_width != 0);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -438,7 +442,7 @@ public class IORelation extends ComponentRelation {
      *  CONFIGURATION, then append to the description is a field
      *  of the form "configuration {width <i>integer</i> ?fixed?}", where the
      *  word "fixed" is present if the relation has fixed width, and is
-     *  absent if the relation is a bus with inferred width (widthFixed()
+     *  absent if the relation is a bus with inferred width (isWidthFixed()
      *  returns false).
      *
      *  This method is read-synchronized on the workspace.
@@ -463,7 +467,7 @@ public class IORelation extends ComponentRelation {
                 }
                 result += "configuration {";
                 result += "width " + getWidth();
-                if (widthFixed()) result += " fixed";
+                if (isWidthFixed()) result += " fixed";
                 result += "}";
             }
             if (bracket == 2) result += "}";
@@ -518,8 +522,8 @@ public class IORelation extends ComponentRelation {
     // This method is not read-synchronized on the workspace, so the caller
     // should be.
     private int _inferWidth() {
-        if (workspace().getVersion() != _inferredwidthversion) {
-            _inferredwidth = 1;
+        if (workspace().getVersion() != _inferredWidthVersion) {
+            _inferredWidth = 1;
             Enumeration ports = linkedPorts();
             while(ports.hasMoreElements()) {
                 IOPort p = (IOPort) ports.nextElement();
@@ -528,12 +532,12 @@ public class IORelation extends ComponentRelation {
                     int piw = p._getInsideWidth(this);
                     int pow = p.getWidth();
                     int diff = pow - piw;
-                    if (diff > _inferredwidth) _inferredwidth = diff;
+                    if (diff > _inferredWidth) _inferredWidth = diff;
                 }
             }
-            _inferredwidthversion = workspace().getVersion();
+            _inferredWidthVersion = workspace().getVersion();
         }
-        return _inferredwidth;
+        return _inferredWidth;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -543,6 +547,6 @@ public class IORelation extends ComponentRelation {
     private int _width = 1;
 
     // cached inferred width.
-    private transient int _inferredwidth;
-    private transient long _inferredwidthversion = -1;
+    private transient int _inferredWidth;
+    private transient long _inferredWidthVersion = -1;
 }

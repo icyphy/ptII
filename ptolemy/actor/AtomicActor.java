@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -56,8 +56,8 @@ actor does nothing in the action methods (prefire, fire, ...).
 public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Construct an actor in the default workspace with an empty string
-     *  The object is added to the workspace directory.
      *  as its name. Increment the version number of the workspace.
+     *  The object is added to the workspace directory.
      */
     public AtomicActor() {
 	super();
@@ -68,7 +68,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  If the workspace argument is null, then use the default workspace.
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the entity.
+     *  @param workspace The workspace that will list this actor.
      */
     public AtomicActor(Workspace workspace) {
 	super(workspace);
@@ -99,7 +99,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  yourself if you want it there).
      *  The result is a new actor with the same ports as the original, but
      *  no connections and no container.  A container must be set before
-     *  much can be done with the actor.
+     *  much can be done with this actor.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
@@ -109,6 +109,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         AtomicActor newobj = (AtomicActor)super.clone(ws);
+	// Reset to force reinitialization of cache.
         newobj._inputPortsVersion = -1;
         newobj._outputPortsVersion = -1;
         return newobj;
@@ -166,12 +167,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Return an enumeration of the input ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of IOPort objects.
+     *  @return An enumeration of input IOPort objects.
      */
     public Enumeration inputPorts() {
-        try {
-            workspace().getReadAccess();
-            if(_inputPortsVersion != workspace().getVersion()) {
+        if(_inputPortsVersion != workspace().getVersion()) {
+            try {
+                workspace().getReadAccess();
                 // Update the cache.
                 LinkedList inports = new LinkedList();
                 Enumeration ports = getPorts();
@@ -183,21 +184,24 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 }
                 _cachedInputPorts = inports;
                 _inputPortsVersion = workspace().getVersion();
+            } finally {
+                workspace().doneReading();
             }
-            return _cachedInputPorts.elements();
-        } finally {
-            workspace().doneReading();
         }
+        return _cachedInputPorts.elements();
     }
 
     /** Create a new IOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
+     *  Normally this method is not called directly by actor code.
+     *  Instead, a change request should be queued with the director.
      *
      *  @param name The name for the new port.
      *  @return The new port.
-     *  @exception NameDuplicationException If the actor already has a port
+     *  @exception NameDuplicationException If this actor already has a port
      *   with the specified name.
+     *  @see WorkSpace.getWriteAccess
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -215,7 +219,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Return a new receiver of a type compatible with the director.
-     *  Derived classes may further specialize this to return a reciever
+     *  Derived classes may further specialize this to return a receiver
      *  specialized to the particular actor.
      *
      *  @exception IllegalActionException If there is no director.
@@ -232,12 +236,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Return an enumeration of the output ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of IOPort objects.
+     *  @return An enumeration of output IOPort objects.
      */
     public Enumeration outputPorts() {
-        try {
-            workspace().getReadAccess();
-            if(_outputPortsVersion != workspace().getVersion()) {
+        if(_outputPortsVersion != workspace().getVersion()) {
+            try {
+                workspace().getReadAccess();
                 _cachedOutputPorts = new LinkedList();
                 Enumeration ports = getPorts();
                 while(ports.hasMoreElements()) {
@@ -247,11 +251,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
                     }
                 }
                 _outputPortsVersion = workspace().getVersion();
+            } finally {
+                workspace().doneReading();
             }
-            return _cachedOutputPorts.elements();
-        } finally {
-            workspace().doneReading();
         }
+        return _cachedOutputPorts.elements();
     }
 
     /** Return true.  Derived classes override this method to define
@@ -259,7 +263,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  its execution, after one invocation of the prefire() method
      *  and any number of invocations of the fire() method.
      *  This method typically wraps up an iteration, which may
-     *  involve updating local state.
+     *  involve updating local state.  In derived classes,
+     *  this method returns false to indicate that this actor should not
+     *  be fired again.
      *
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -274,7 +280,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  Derived classes may also use it to check preconditions for an
      *  iteration, if there are any.
      *
-     *  @return True if the actor is ready for firing, false otherwise.
+     *  @return True if this actor is ready for firing, false otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
@@ -284,9 +290,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
     /** Override the base class to ensure that the proposed container
      *  is an instance of CompositeActor or null. If it is, call the
      *  base class setContainer() method. A null argument will remove
-     *  the actor from its container.
+     *  this actor from its container.
      *
-     *  @param entity The proposed container.
+     *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this entity and container are not in the same workspace, or

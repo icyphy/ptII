@@ -74,14 +74,14 @@ public class CTZeroOrderHold extends CTActor{
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input");
-        input.makeMultiport(false);
-        input.makeInput(true);
-        input.makeOutput(false);
+        input.setMultiport(false);
+        input.setInput(true);
+        input.setOutput(false);
         input.setDeclaredType(DoubleToken.class);
         output = new TypedIOPort(this, "output");
-        output.makeMultiport(false);
-        output.makeInput(false);
-        output.makeOutput(true);
+        output.setMultiport(false);
+        output.setInput(false);
+        output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
 
     }
