@@ -116,6 +116,11 @@ public class KernelMain {
 	// which is not accessible because of security concerns.
 	RemoveGraphicalClasses removeGraphicalClasses =
 	    new RemoveGraphicalClasses();
+
+	// FIXME: Not sure why this is necessary, but it helps
+	// when generating an applet for moml/demo/spectrum.xml
+	removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
+
 	removeGraphicalClasses
 	    .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.

@@ -464,10 +464,16 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             parser.addMoMLFilters(BackwardCompatibility.allFilters());
 
             // Filter out any graphical classes
-            parser.addMoMLFilter(new RemoveGraphicalClasses());
+	    RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
+	    // FIXME: Not sure why this is necessary, but it helps
+	    // when generating an applet for moml/demo/spectrum.xml
+	    filter.put("ptolemy.kernel.util.Location", null);
+	    parser.addMoMLFilter(filter);
 
+	    
 	    NamedObj toplevel = null;
 	    try {
+		System.out.println("GeneratorAttribute: parsing " + modelURL);
 		toplevel = parser.parse(null, modelURL);
 		// FIXME: 1st arg of parse() could be $PTII as a URL.
 		modelPathOrURL = modelURL.toExternalForm();
