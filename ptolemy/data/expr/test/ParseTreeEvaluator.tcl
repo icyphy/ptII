@@ -483,7 +483,7 @@ test ParseTreeEvaluator-19.9 {Test various function calls} {
 test ParseTreeEvaluator-20.1 {Test Addition between incomparable data types} {
     catch {list [theTest {1.0+1L}]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.DoubleToken '1.0' and ptolemy.data.LongToken '1L' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert token 1.0 to type scalar, because scalar is not a concrete type.}}
 
 ####################################################################
 
