@@ -838,9 +838,9 @@ public class PxgraphParser {
 
             try {
 		// Flag that we are starting a new data set.
-		_firstinset = true;
+		_firstInSet = true;
 		// Flag that we have not seen a DataSet line in this file.
-		_sawfirstdataset = false;
+		_sawFirstDataset = false;
 
 
                 c = in.readByte();
@@ -920,8 +920,8 @@ public class PxgraphParser {
                             connected = false;
                             break;
                         case 'n':
-			    _firstinset = true;
-                            _sawfirstdataset = true;
+			    _firstInSet = true;
+                            _sawFirstDataset = true;
                             StringBuffer datasetname = new StringBuffer();
                             _currentdataset++;
                             // New set name, ends in \n.
@@ -966,23 +966,23 @@ public class PxgraphParser {
 
     // Add a legend if necessary, return the value of the connected flag.
     private boolean _addLegendIfNecessary(boolean connected) {
-        if (! _sawfirstdataset  || _currentdataset < 0) {
+        if (! _sawFirstDataset  || _currentdataset < 0) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args
-            _sawfirstdataset = true;
+            _sawFirstDataset = true;
             _currentdataset++;
         }
 	if (_plot.getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
-            _firstinset = true;
-            _sawfirstdataset = true;
+            _firstInSet = true;
+            _sawFirstDataset = true;
             _plot.addLegend(_currentdataset,
                     new String("Set "+ _currentdataset));
         }
-        if (_firstinset) {
+        if (_firstInSet) {
             connected = false;
-            _firstinset = false;
+            _firstInSet = false;
         }
         return connected;
 
@@ -1033,9 +1033,8 @@ public class PxgraphParser {
     private int _endian = _NATIVE_ENDIAN;
 
     // Is this the first datapoint in a set?
-    private boolean _firstinset = true;
+    private boolean _firstInSet = true;
 
     // Have we seen a DataSet line in the current data file?
-    private boolean _sawfirstdataset = false;
-
+    private boolean _sawFirstDataset = false;
 }
