@@ -57,6 +57,40 @@ of these MoML files need to be listed in order for them to be run.)
  <p>However, said infrastructure has to be re-built in each new
 directory containing tests. 
 
+ <p>Note that MoML models used for testing should follow the following
+conventions:
+<menu>
+<li> Models in <CODE>domains/<I>yourdomain</I>/kernel/test/auto</CODE>
+should <B>not</B> use actors in 
+<CODE>domains/<I>yourdomain</I>/lib</CODE>.
+ <br>The reason is that these tests are really testing the domain
+actors, not the kernel.  During the nightly build, the
+testsuite runs in the <CODE>kernel</CODE> directories before running
+in the <CODE>lib</CODE> directories, so the actors in <CODE>lib</CODE>
+will not yet be built.
+
+<li> Models that use more than one domain should be located
+in <CODE>domains/<I>yourdomain/test/auto</I></CODE>.  
+ <br>The reason is that all the domains might not be built if the
+test is in <CODE>lib/test/auto</CODE> or <CODE>kernel/test/auto</CODE>.
+ <br>Also, multi domain tests tend to be integration tests, not unit tests.
+
+<li> There should be no MoML files (and no <CODE>test/auto</CODE> directories)
+in <CODE>ptolemy/kernel</CODE> and its subdirectories.
+ The tests in <CODE>ptolemy/kernel</CODE> and subdirectories should
+not use code from <CODE>ptolemy/domains</CODE>
+ <br> The reason is that <CODE>ptolemy/moml</CODE> and the domains
+is not yet built.  Again, we want unit tests of the kernel, not
+tests of moml and the domains here.
+
+<li> All MoML test models should <b>not</b> use actors from 
+<code>ptolemy.actor.lib.<b>gui</b></code> because these gui actors 
+will not work during the nightly build when the models are run
+without a display.
+
+</menu>
+
+
  To create the infrastructure for a new test directory, do the following:
  <MENU>
  <LI> Choose an existing <code>test/</code> directory
@@ -172,10 +206,6 @@ then the test fails.
  <p>If a test is in the optional <CODE>test/auto/knownFailedTests</CODE> 
 directory, then it will be marked as a known failure if it fails.
 
- <p>The MoML test file should <b>not</b> use actors from 
-<code>ptolemy.actor.lib.<b>gui</b></code> because these gui actors 
-will not work during the nightly build when the models are run
-without a display.
 
  <p>Using Vergil to write tests is quite a bit easier than writing Tcl
  code, but it is much more difficult to handle corner cases and test
