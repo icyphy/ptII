@@ -58,18 +58,28 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl. List these in alphabetical order
 # ONLY.
 JSIMPLE_TESTS = \
-	Array1.tcl \
-	CountDown.tcl \
+	_cleanLib.tcl \
+        Array2DInt.tcl \
+        Array3DInt.tcl \
+        ArrayOfObjects.tcl \
+	BasicException.tcl \
+        Cases.tcl \
+        CommandLine.tcl \
 	FIR.tcl \
+        FIR2.tcl \
 	FIRSingle.tcl \
+        GlobalExceptions.tcl \
+        InheritedException.tcl \
+        InnerField.tcl \
+        InnerLocal.tcl \
 	Object.tcl \
 	ObjectSingle.tcl \
 	printInt.tcl \
 	ramp.tcl \
+        RightShift.tcl \
 	Simple.tcl \
 	SimpleSingle.tcl \
-	Terp.tcl\
-        Terp2.tcl
+	Terp.tcl 
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
