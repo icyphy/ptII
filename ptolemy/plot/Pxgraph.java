@@ -544,8 +544,7 @@ public class Pxgraph extends Frame {
                 "For help, type 'pxgraph -help', or see \n" +
                 "the Pxgraph class documentation.\n" +
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                Color.white, Color.black);
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Pxgraph");
         message.pack();
         message.show();
