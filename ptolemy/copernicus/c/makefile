@@ -47,8 +47,7 @@ include $(CONFIG)
 PTPACKAGE = 	c
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Test directory
-DIRS =		test
+DIRS =		test runtime
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -57,14 +56,14 @@ JSRCS = \
 	CodeGenerator.java \
 	Context.java \
 	CSwitch.java \
-    ExceptionTracker.java \
+	ExceptionTracker.java \
 	HeaderFileGenerator.java \
-    InterfaceFileGenerator.java \
+	InterfaceFileGenerator.java \
 	JavaToC.java \
 	Main.java \
-    MakeFileGenerator.java \
+	MakeFileGenerator.java \
 	MethodListGenerator.java \
-    RequiredFileGenerator.java
+	RequiredFileGenerator.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	README.txt
