@@ -44,7 +44,7 @@ import ptolemy.math.SignalProcessing;
 
 /** This actor implements a forward FFT of a real input array of
 doubles. The order of the FFT determines the number of tokens that
-will be consumped and produced. The order gives the size of the
+will be consumed and produced. The order gives the size of the
 transform as the base-2 logarithm of order. The default order is 8,
 which means that 2^8 = 256 tokens are read and 2^8 = 256 tokens are
 produced. The result of the FFT is a new array of Complex's.
