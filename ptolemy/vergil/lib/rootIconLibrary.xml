@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model SYSTEM "../../moml/moml.dtd">
-<class name="" extends="ptolemy.actor.TypedCompositeActor">
+<class name="iconLibrary" extends="ptolemy.actor.TypedCompositeActor">
   <doc>
 	root entity library
   </doc>
