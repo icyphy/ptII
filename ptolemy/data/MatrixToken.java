@@ -206,14 +206,14 @@ public abstract class MatrixToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                      public  variables                    ////
 
     /** A constant indicating to constructors that contents of an argument 2-D
      *  matrix should be copied. The contents of the input 2-D matrix may be
      *  modified after construction without violating the immutibility of
      *  MatrixTokens.
      */
-    protected static final int DO_COPY = 0;
+    public static final int DO_COPY = 0;
 
     /** A constant indicating to constructors not to copy the contents
      *  of an argument 2-D matrix, but instead to just copy the
@@ -222,5 +222,5 @@ public abstract class MatrixToken extends Token {
      *  instance of MatrixToken, if the property of immutability is
      *  to be preserved.
      */
-    protected static final int DO_NOT_COPY = 1;
+    public static final int DO_NOT_COPY = 1;
 }

@@ -77,14 +77,11 @@ public class DoubleMatrixToken extends MatrixToken {
      *  If copy is DO_NOT_COPY, just reference the matrix (do not copy
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
-     *  is called to preserve immutability.
-     *  <p>
-     *  Since the DO_NOT_COPY option requires some care, this constructor
-     *  is protected.
+     *  is called to preserve immutability, although this is not enforced.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    protected DoubleMatrixToken(final double[][] value, final int copy)
+    public DoubleMatrixToken(final double[][] value, final int copy)
             throws IllegalActionException {
         if (value == null) {
 	    throw new IllegalActionException("DoubleMatrixToken: The "
