@@ -28,6 +28,8 @@
 package pt.kernel;
 
 import java.util.Hashtable;
+import java.util.Enumeration;
+import collections.UpdatableBag;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
@@ -51,6 +53,7 @@ public class Relation extends NamedObj {
      */	
     public Relation() {
 	 super();
+	 _buffer = null;
 	 _sourcePorts = null;
 	 _destinationPorts = null;
          _isSourceOrDestination = 0;
@@ -61,6 +64,7 @@ public class Relation extends NamedObj {
      */	
     public Relation(String name) {
 	 super(name);
+	 _buffer = null;
 	 _sourcePorts = null;
 	 _destinationPorts = null;
          _isSourceOrDestination = 0;
@@ -203,6 +207,26 @@ public class Relation extends NamedObj {
         return false;
     }
 
+    /** Put a particle in the Relation's buffer.
+     * @param particle The Particle to be placed in the Relation.
+     */	
+    public void put(Particle particle) {
+	_buffer.add( particle );
+        return;
+    }
+
+    /** Get all particles in the Relation's buffer.
+     * @return Return an Enumeration of the particles contained within
+     * this Relation. Return null if empty.
+     */	
+    public Enumeration get() {
+	if( _buffer == null )
+	{
+	     return null;
+	}
+	return _buffer.elements();
+    }
+
     /** Clear all port references.
      */	
     public void clearAllConnections() {
@@ -244,37 +268,11 @@ public class Relation extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    protected int AProtectedMethod() {
-        return 1;
-    }
-
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
-    /** Description */
-    protected int aProtectedVariable;
-
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
-
-    /* Private methods should not have doc comments, they should
-     * have regular comments.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    private int APrivateMethod() {
-        return 1;
-    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
@@ -291,6 +289,13 @@ public class Relation extends NamedObj {
      * destination relation. Set to 0 by the constructor to indicate null. 
      */
     private int _isSourceOrDestination;
+
+    /* The buffer which holds particles as they travel through the
+     * the Relation. Note that this buffer has no delay properties
+     * associated with it at this level. Derived versions of this
+     * class might.
+     */
+    private UpdatableBag _buffer;
 
     /* Private variables should not have doc comments, they should
        have regular comments.
