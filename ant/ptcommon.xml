@@ -1,8 +1,8 @@
-<!-- Ant tasks that are common to most files
+<!-- Ant tasks that are common to most files -->
 
-Version Identification:
-$Id$
-
+  <property name="ptcommon_author" value="Christopher Hylands"/>
+  <property name="ptcommon_version" value="$Id$"/>
+  <property name="ptcommon_copyright" value="
 Copyright (c) 2002 The Regents of the University of California.
 All rights reserved.
 
@@ -21,17 +21,24 @@ SUCH DAMAGE.
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION_2
 						COPYRIGHTENDKEY
+"/>
 
+<!--
 
 The idea of splitting large files into smaller files came from
 http://www.manjug.org/Managing_Java_Projects_With_ANT.html
 
 # External properties that this file uses
+
+# Files:
+JSRCS		.java files
+ME		The name of the directory we are compiling in,
+                for example: ptolemy/kernel/util
 
 # Variables used by cleaning rules:
 KRUFT		Files to be removed by 'ant clean'
@@ -48,6 +55,7 @@ KRUFT		Files to be removed by 'ant clean'
      srcdir="."
      debug="on"
      classpath="${root}"
+     includes="${JSRCS}"
      excludes="${compileExcludes}"
     />
   </target>
@@ -65,4 +73,38 @@ KRUFT		Files to be removed by 'ant clean'
     <!-- Create the time stamp -->
     <tstamp/>
   </target>
+
+
+  <!-- Temporary directory where we copy .class files and other
+       files in preparation for jaring -->
+  <property name="PTJAR_TMPDIR" value="ptjar_tmpdir"/>
+
+  <!-- Create a jar file called ${PTCLASSJAR} that
+       contains the .class files and the ${OTHER_FILES_TO_BE_JARED}
+       files.
+  --> 
+  <target name="PTCLASSJAR"
+          if="PTCLASSJAR"
+          description="Build jar files" >
+    <delete includeEmptyDirs="true"
+     dir="${PTJAR_TMPDIR}"/>
+    <mkdir dir="${PTJAR_TMPDIR}/${ME}"/>
+    <copy todir="${PTJAR_TMPDIR}/${ME}">
+      <fileset dir=".">
+       <patternset id="classfile_and_other_files_to_be_jared" >
+           <include name="*.class"/>
+           <include name="${OTHER_FILES_TO_BE_JARED}"
+	    if="${OTHER_FILES_TO_BE_JARED}"/>
+       </patternset>
+      </fileset>
+      <mapper type="flatten"/>
+    </copy>
+    <echo message="Creating ${PTCLASSJAR}"/>
+    <jar destfile="${PTCLASSJAR}" basedir="${PTJAR_TMPDIR}"/>
+    <delete includeEmptyDirs="true"
+       dir="${PTJAR_TMPDIR}"/>
+  </target>
+
+
+
 
