@@ -1,4 +1,4 @@
-/* Wrapper class to start up Ptolemy from a Menu choice.
+/* Wrapper to start up Ptolemy from a Menu choice.
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.vergil.VergilApplication;
 
 //////////////////////////////////////////////////////////////////////////
 //// MenuApplication
-/** A class that starts up Vergil from a menu.
+/** A wrapper that starts up Vergil from a menu.
 
 <p>This class is primarily for use with the
 Java Network Launching Protocol
