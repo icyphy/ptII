@@ -1,28 +1,28 @@
 /* Interface for objects that support deferrable change requests.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2003 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -34,32 +34,32 @@ package ptolemy.kernel.util;
 //////////////////////////////////////////////////////////////////////////
 //// Changeable
 /**
-This is an interface for objects that support change requests that can
-be deferred.  A change request is any
-modification to a model that might be performed during execution of the
-model, but where there might only be certain phases of execution during
-which it is safe to make the modification.  Such changes are also called
-<i>mutations</i>.
-<p>
-A change request is typically made by instantiating a subclass of
-ChangeRequest (possibly using an anonymous inner class) and then passing
-to the requestChange() method of an object implementing this interface.
-That object may delegate the request (for example, it might consolidate
-all such requests at the top level of the hierarchy by passing the
-request to its container).  If it does delegate, then it is expected
-to consistently delegate all commands to the same object.
-<p>
-When a change request is made, if it is safe to do so, then an
-implementor of this interface is free to immediately execute
-the request, unless setDeferringChangeRequests(true) has been called.
-It is never safe to execute a change request of the implementor
-is already in the middle of executing a change request (that
-execution may have triggered the request).
+   This is an interface for objects that support change requests that can
+   be deferred.  A change request is any
+   modification to a model that might be performed during execution of the
+   model, but where there might only be certain phases of execution during
+   which it is safe to make the modification.  Such changes are also called
+   <i>mutations</i>.
+   <p>
+   A change request is typically made by instantiating a subclass of
+   ChangeRequest (possibly using an anonymous inner class) and then passing
+   to the requestChange() method of an object implementing this interface.
+   That object may delegate the request (for example, it might consolidate
+   all such requests at the top level of the hierarchy by passing the
+   request to its container).  If it does delegate, then it is expected
+   to consistently delegate all commands to the same object.
+   <p>
+   When a change request is made, if it is safe to do so, then an
+   implementor of this interface is free to immediately execute
+   the request, unless setDeferringChangeRequests(true) has been called.
+   It is never safe to execute a change request of the implementor
+   is already in the middle of executing a change request (that
+   execution may have triggered the request).
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
-@see ChangeRequest
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see ChangeRequest
 */
 
 public interface Changeable {
