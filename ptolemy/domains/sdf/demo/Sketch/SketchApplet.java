@@ -85,7 +85,9 @@ public class SketchApplet extends SDFApplet implements EditListener {
 
             Ramp ramp = new Ramp(_toplevel, "ramp");
             ramp.step.setExpression("PI/10.0");
-            Sine sine = new Sine(_toplevel, "sine");
+            TrigFunction trigFunction =
+                new TrigFunction(_toplevel, "trigFunction");
+            trigFunction.function.setExpression("sin");
             MultiplyDivide mult = new MultiplyDivide(_toplevel, "mult");
             SketchedSource source = new SketchedSource(_toplevel,"source");
             SequencePlotter plotter = new SequencePlotter(_toplevel,"plotter");
@@ -120,8 +122,8 @@ public class SketchApplet extends SDFApplet implements EditListener {
             plot.setBackground(getBackground());
             plot.addEditListener(this);
 
-            _toplevel.connect(ramp.output, sine.input);
-            _toplevel.connect(sine.output, mult.multiply);
+            _toplevel.connect(ramp.output, trigFunction.input);
+            _toplevel.connect(trigFunction.output, mult.multiply);
             _toplevel.connect(source.output, mult.multiply);
             _toplevel.connect(mult.output, plotter.input);
         } catch (Exception ex) {
