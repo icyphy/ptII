@@ -230,7 +230,9 @@ public class XMLIcon extends EditorIcon implements ValueListener {
             return super.createIcon();
         }
         // NOTE: The size is hardwired here.  Should it be?
-        _iconCache = new FigureIcon(figure, 20, 15);
+        // The second to last argument specifies the border.
+        // The last says to turn anti-aliasing on.
+        _iconCache = new FigureIcon(figure, 20, 15, 0, true);
         return _iconCache;
     }
 
