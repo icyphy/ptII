@@ -53,6 +53,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 
 
@@ -206,15 +207,18 @@ public class MoMLApplet extends PtolemyApplet {
 
         MoMLParser parser = new MoMLParser();
 
-	if (filterGraphicalClasses) {
-            // FIXME: if we call _createModel twice, then we will add
-            // this filter twice.  We reset the filter list here,
-            // though we will lose any other filters
-            parser.setMoMLFilters(null);
+	// FIXME: if we call _createModel twice, then we will add
+	// this filter twice.  We reset the filter list here,
+	// though we will lose any other filters
+	parser.setMoMLFilters(null);
 
+	parser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+	if (filterGraphicalClasses) {
 	    // Filter out graphical classes so that we do not require diva.jar
 	    parser.addMoMLFilter(new RemoveGraphicalClasses());
 	}
+
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
         _manager = null;
