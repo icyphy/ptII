@@ -726,7 +726,9 @@ public class DirectedGraph extends Graph {
         }
     }
 
-    /* Disconnect an edge from a node that it is incident to.
+    /* Disconnect an edge from a node that it is incident to by modifying
+     * the adjacency information (incident, input, and output edge sets)
+     * that is associated with the node in this graph.
      * Do nothing if the edge is not incident to the node.
      *  @param edge The edge.
      *  @param node The node.
