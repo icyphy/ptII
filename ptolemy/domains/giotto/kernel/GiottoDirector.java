@@ -325,7 +325,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			    pout.print(", ");
 			}
 		    }
-		    pout.println(") {");
+		    pout.println(") state () {");
 		    pout.println("  schedule "
 				 + taskName
 				 + "_fire( "
@@ -371,7 +371,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 				pout.print(", ");
 			    }
 			}
-			pout.println(") {");
+			pout.println(") state () {");
 			pout.println("  schedule "
 				     + taskName
 				     + "_fire( "
@@ -403,7 +403,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    inPorts = actor.inputPortList().iterator();
 		    while (inPorts.hasNext()) {
 			IOPort inPort = (IOPort) inPorts.next();
-			String sanitizedPortName = 
+			String sanitizedPortName =
                             StringUtilities.sanitizeName(
                                     inPort.getName(container));
 			Iterator sourcePorts = inPort.
@@ -644,17 +644,17 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		//generate code inside "start {}"
 		String containerName = container.getName();
-		double periodValue = 
+		double periodValue =
                     ((DoubleToken)period.getToken()).doubleValue();
 		int actorFreq = 0;
 		int actFreq = 0;
 		int exitFreq = 0;
 		pout.println("start "
 			     + containerName
-			     + "_name {");
-		if (controller != null) { 
+			     + " {");
+		if (controller != null) {
                     // check to make sure it is multi-modes
-		    // find the modes from the state's refinement of the 
+		    // find the modes from the state's refinement of the
                     // controller
 		    State initState = controller.getInitialState();
 		    Iterator states = controller.entityList().iterator(); //???
@@ -666,7 +666,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			    String modeName = statePara.getExpression();
 			    pout.println("  mode "
 					 + modeName
-					 + "_name () period "
+					 + " () period "
 					 + periodValue
 					 + " {");
 			    // generate mode code for toplevel outputs drivers
@@ -685,7 +685,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                                     director3.depthInHierarchy()<=1) {
 				    portContainer = container;
 				}
-				outputName = 
+				outputName =
                                     StringUtilities.sanitizeName(
                                             outPort.getName(portContainer));
 				Iterator portConnected = outPort.
@@ -743,7 +743,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 						     + exitFreq
 						     + " do "
 						     + trModeName
-						     + "_name ("
+						     + " ("
 						     + inPortName
 						     + "_driver);");
 				    }
@@ -807,7 +807,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		} else { //the model only has single mode
 		    pout.println("  mode "
 				 + containerName
-				 + "_name () period "
+				 + " () period "
 				 + periodValue
 				 + " {");
 		    outPorts = container.outputPortList().iterator();
@@ -854,7 +854,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			TypedActor actor = (TypedActor) actors.next();
 			actorName = StringUtilities.sanitizeName(
                                 ((NamedObj) actor).getName(container));
-			Parameter actorFreqPara = (Parameter) 
+			Parameter actorFreqPara = (Parameter)
                             ((NamedObj) actor).getAttribute("frequency");
                         if (actorFreqPara == null) {
                             actorFreq = 1;
@@ -870,7 +870,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                                 + actorName
                                 + "_driver);"
                                      );
-                        
+
 		    }
 		    pout.println("  }");
 		}
