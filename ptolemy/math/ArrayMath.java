@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -40,11 +40,7 @@ import java.lang.reflect.*;
 //// ArrayMath
 /**
  * This class provides library for mathematical operations on Complex
- * and double arrays.
- * <p>
- * The suffix "R" on method names means "Replace."  Any method with
- * that suffix modifies the array argument rather than constructing a new
- * array.
+ * and double arrays.  This library is just a starting point.
  *
  * @author Albert Chen, William Wu, Edward A. Lee
  * @version $Id$
@@ -67,20 +63,9 @@ public final class ArrayMath {
     public static Complex[] add(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
         for (int i = array.length-1; i >= 0; i--) {
-            result[i] = Complex.add(array[i], z);
+            result[i] = array[i].add(z);
         }
         return result;
-    }
-
-    /** Modify the array argument by
-     *  adding the second argument to every element.
-     *  @param array An array of complex numbers.
-     *  @param z The complex number to add.
-     */
-    public static void addR(Complex[] array, Complex z) {
-        for (int i = array.length-1; i >= 0; i--) {
-            array[i].add(z);
-        }
     }
 
     /** Return a new array that is the complex-conjugate of the argument.
@@ -90,19 +75,9 @@ public final class ArrayMath {
     public static Complex[] conjugate(Complex[] array) {
         Complex[] result = new Complex[array.length];
         for (int i = array.length-1; i >= 0; i--) {
-            result[i] = Complex.conjugate(array[i]);
+            result[i] = array[i].conjugate();
         }
         return result;
-    }
-
-    /** Modify the argument array by replacing each element with its
-     *  complex conjugate.
-     *  @param array An array of complex numbers.
-     */
-    public static void conjugateR(Complex[] array) {
-        for (int i = array.length-1; i >= 0; i--) {
-            array[i].conjugate();
-        }
     }
 
     /** Return a new array that is the convolution of two complex arrays.
@@ -129,16 +104,20 @@ public final class ArrayMath {
             return result;
         }
 
-        result = new Complex[resultsize];
-        
-        for (int i = 0; i<result.length; i++) {
-            result[i] = new Complex();
-        }
+        double[] reals = new double[resultsize];
+        double[] imags = new double[resultsize];
         for (int i = 0; i<array1.length; i++) {
             for (int j = 0; j<array2.length; j++) {
-                Complex c = result[i+j];
-                c.add(c.multiply(array1[i], array2[j]));
+                reals[i+j] += array1[i].real*array2[j].real
+                        - array1[i].imag*array2[j].imag;
+                imags[i+j] += array1[i].imag*array2[j].real
+                        + array1[i].real*array2[j].imag;
             }
+        }
+
+        result = new Complex[resultsize];
+        for (int i = 0; i<result.length; i++) {
+            result[i] = new Complex(reals[i], imags[i]);
         }
         return result;
     }
@@ -204,30 +183,6 @@ public final class ArrayMath {
         return result;
     }
 
-    /** Modify the argument array by limiting its values to lie within
-     *  the specified range.  If any value is infinite or NaN (not a number),
-     *  then it is replaced by either the top or the bottom, depending on
-     *  its sign.  To leave either the bottom or the top unconstrained,
-     *  specify Double.MIN_VALUE or Double.MAX_VALUE.
-     *  @param array An array of numbers.
-     *  @param bottom The bottom limit.
-     *  @param top The top limit.
-     */
-    public static void limitR(double[] array, double bottom, double top) {
-        for (int i = array.length-1; i >= 0; i--) {
-            if (array[i] > top ||
-                    array[i] == Double.NaN ||
-                    array[i] == Double.POSITIVE_INFINITY) {
-                array[i] = top;
-            }
-            if (array[i] < bottom ||
-                    array[i] == -Double.NaN ||
-                    array[i] == Double.NEGATIVE_INFINITY) {
-                array[i] = bottom;
-            }
-        }
-    }
-
     /** Given the roots of a polynomial, return a polynomial that has
      *  has such roots.  If the roots are
      *  [<em>r</em><sub>0</sub>, ..., <em>r</em><sub>N-1</sub>],
@@ -258,11 +213,11 @@ public final class ArrayMath {
         result[0] = new Complex(1);
 
         if (roots.length >= 1) {
-            result[1] = roots[0].negate(roots[0]);
+            result[1] = roots[0].negate();
             if (roots.length > 1) {
                 for (int i = 1; i < roots.length; i++) {
                     Complex[] factor =
-                    {new Complex(1), roots[i].negate(roots[i])};
+                    {new Complex(1), roots[i].negate()};
                     result = convolve(result, factor);
                 }
             }
@@ -271,15 +226,20 @@ public final class ArrayMath {
     }
 
     /** Return the product of the elements in the array.
+     *  If there are no elements in the array, return zero.
      *  @param array A complex array.
      *  @return A new complex number.
      */
     public static Complex product(Complex[] array) {
-        Complex value = new Complex(1.0);
+        if (array.length == 0) return new Complex();
+        double real = 1.0;
+        double imag = 0.0;
         for (int i = 0; i < array.length; i++) {
-            value.multiply(array[i]);
+            double tmp = real*array[i].real - imag*array[i].imag;
+            imag = real*array[i].imag + imag*array[i].real;
+            real = tmp;
         }
-        return value;
+        return new Complex(real, imag);
     }
 
     /** Return a new array that is constructed from the argument by
@@ -291,19 +251,8 @@ public final class ArrayMath {
     public static Complex[] subtract(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
         for (int i = array.length-1; i >= 0; i--) {
-            result[i] = Complex.subtract(array[i], z);
+            result[i] = array[i].subtract(z);
         }
         return result;
-    }
-
-    /** Modify the array argument by
-     *  subtracting the second argument from every element.
-     *  @param array An array of complex numbers.
-     *  @param z The complex number to subtract.
-     */
-    public static void subtractR(Complex[] array, Complex z) {
-        for (int i = array.length-1; i >= 0; i--) {
-            array[i].subtract(z);
-        }
     }
 }
