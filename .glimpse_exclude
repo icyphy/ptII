@@ -2,7 +2,6 @@ adm
 #*
 #.??*
 core
-make.out
 */codeDoc/*
 */\#*
 */*\~
@@ -15,6 +14,7 @@ make.out
 *.jar
 *.jsm
 *.mif
+*.out
 *.pdf
 *.vsd
 */CVS
