@@ -7,7 +7,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="69.0, 194.0">
         </property>
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000">
@@ -17,12 +17,12 @@
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 206.0">
+        <property name="_location" class="ptolemy.moml.Location" value="372.0, 200.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text style="font-size:14; font-family:sanserif; fill:blue" y="20" x="20">This model shows a simple periodogram spectral estimate of a
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a simple periodogram spectral estimate of a
 modulated sinusoid in noise. The top-level parameters control
 the carrier frequency, the signal frequency, and the noise
 level. Notice that the two peaks are centered at the carrier
@@ -33,12 +33,12 @@ signal frequency. The sample rate is assumed to be 8kHz.</text>
         </property>
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="148.0, 294.0">
+        <property name="_location" class="ptolemy.moml.Location" value="135.0, 286.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text style="font-size:12; font-family:sanserif; fill:black" y="20" x="20">The blocks with red outlines are hierarchical.
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The blocks with red outlines are hierarchical.
 These generate sinusoids, one for the 
 signal and the other for the carrier.</text>
            </svg>
@@ -46,24 +46,24 @@ signal and the other for the carrier.</text>
         </property>
     </property>
     <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="323.0, 347.0">
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 339.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text style="font-size:12; font-family:sanserif; fill:black" y="20" x="20">The Expression block calculates a mathematical expression.
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The Expression block calculates a mathematical expression.
 Right click and select "Edit Parameters" to see the expression.</text>
            </svg>
            </configure>
         </property>
     </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="326.0, 77.0">
+        <property name="_location" class="ptolemy.moml.Location" value="245.0, 74.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text style="font-size:18; font-family:sanserif; fill:red" y="20" x="20">Note that this applet does not have the full set of commands that are
+           <text x="20" style="font-size:14; font-family:sanserif; fill:red" y="20">Note that this applet does not have the full set of commands that are
 available in the Vergil application.  For example, it is not possible to
 browse the hierarchy of the model.  We anticipate enriching this so that
 the full Vergil application (given Applet security constraints) 
@@ -74,9 +74,9 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
            </configure>
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[675, 532]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[59, 27]">
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -86,7 +86,7 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noiseStandardDeviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="67.0, 497.0">
+        <property name="_location" class="ptolemy.moml.Location" value="54.0, 489.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -107,7 +107,7 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
             <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="72.0, 426.0">
+        <property name="_location" class="ptolemy.moml.Location" value="59.0, 418.0">
         </property>
     </entity>
     <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
@@ -121,13 +121,13 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
             <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 354.0">
+        <property name="_location" class="ptolemy.moml.Location" value="57.0, 346.0">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="177.0, 418.0">
+        <property name="_location" class="ptolemy.moml.Location" value="164.0, 410.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -153,7 +153,7 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="472.0, 418.0">
+        <property name="_location" class="ptolemy.moml.Location" value="459.0, 410.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -169,7 +169,7 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
 <yRange min="-21.208318390214906" max="36.538209132222235"/>
 <noGrid/>
 </plot>?>
-                                        </configure>    </entity>
+                                                </configure>    </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -181,7 +181,7 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
            <svg>
-           <text style="font-size:14; font-family:sanserif; fill:blue" y="20" x="20">This composite actor produces a magnitude-only
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This composite actor produces a magnitude-only
 frequency-domain representation of the input.
 The number of inputs required to produce any
 output is 2^order, and the number of outputs
@@ -195,7 +195,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="313.0, 418.0">
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 410.0">
         </property>
     </entity>
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -209,7 +209,7 @@ centered at zero frequency.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="341.0, 484.0">
+        <property name="_location" class="ptolemy.moml.Location" value="328.0, 476.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -225,7 +225,7 @@ centered at zero frequency.</text>
 <yRange min="-1.154037151526568" max="1.1568297032397656"/>
 <noGrid/>
 </plot>?>
-                                        </configure>    </entity>
+                                                </configure>    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -235,7 +235,7 @@ centered at zero frequency.</text>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="246.0, 424.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="233.0, 416.0">
         </vertex>
     </relation>
     <link port="Noise Source.output" relation="relation2"/>
