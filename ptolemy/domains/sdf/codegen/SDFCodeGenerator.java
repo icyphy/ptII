@@ -807,3 +807,4 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  next argument in the command-line.
      */
     protected boolean _expectingOutputPackage = false;
+}
