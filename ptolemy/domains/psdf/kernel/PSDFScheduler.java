@@ -215,6 +215,15 @@ public class PSDFScheduler extends BaseSDFScheduler {
             throws NotSchedulableException, IllegalActionException {
         PSDFDirector director = (PSDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
+
+        // Get the vectorization factor.
+        String vectorizationFactorExpression = "1";
+        if (director instanceof PSDFDirector) {
+            String name =
+                ((PSDFDirector)director).vectorizationFactor.getName(model);
+            vectorizationFactorExpression = name.replaceAll("\\.", "::");
+        }
+        
         PSDFGraphReader graphReader = new PSDFGraphReader();
         PSDFGraph graph = (PSDFGraph)graphReader.convert(model);
         _debug("PSDF graph = \n" + graph.toString());
@@ -229,6 +238,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
         SymbolicScheduleElement resultSchedule =
             _expandAPGAN(graph, strategy.getClusterManager().getRootNode(),
                     strategy);
+        resultSchedule.setIterationCount(vectorizationFactorExpression);
+
         _debug("Final schedule = \n" + resultSchedule.toString());
         if (_debugging) {
             _debug("The buffer size map:\n");
@@ -258,8 +269,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         // to the same external input port.  See
         // BaseSDFScheduler.setContainerRates.
 
-        CompositeActor container = (CompositeActor) director.getContainer();
-        Iterator ports = container.portList().iterator();
+        Iterator ports = model.portList().iterator();
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
             if (_debugging && VERBOSE) {
@@ -274,7 +284,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 if (sinks.size() > 0) {
                     IOPort connectedPort = (IOPort)sinks.get(0);
                     Entity entity = (Entity)connectedPort.getContainer();
-                    String name = connectedPort.getName(container);
+                    String name = connectedPort.getName(model);
                     String identifier = name.replaceAll("\\.", "::");
 
                     String sinkExpression;
@@ -288,7 +298,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                             + sinkRateVariable.getName();
                     }
                     String expression = sinkExpression + " * " 
-                        + entity.getName() + "::firingCount";
+                        + entity.getName() + "::firingsPerIteration";
 
                     SDFUtilities.setExpressionIfNotDefined(
                             port, "tokenConsumptionRate",
@@ -304,7 +314,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 if (sources.size() > 0) {
                     IOPort connectedPort = (IOPort)sources.get(0);
                     Entity entity = (Entity)connectedPort.getContainer();
-                    String name = connectedPort.getName(container);
+                    String name = connectedPort.getName(model);
                     String identifier = name.replaceAll("\\.", "::");
                     Variable sourceRateVariable = 
                         SDFUtilities.getRateVariable(
@@ -317,7 +327,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                             + sourceRateVariable.getName();
                     }
                     String expression = sourceExpression + " * " 
-                        + entity.getName() + "::firingCount";
+                        + entity.getName() + "::firingsPerIteration";
 
                     SDFUtilities.setExpressionIfNotDefined(
                             port, "tokenProductionRate",
@@ -514,7 +524,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             }
         } catch (Exception exception) {
             throw new RuntimeException("Error converting cluster hierarchy to "
-                    + "sschchedule.\n" + exception.getMessage());
+                    + "schedule.\n" + exception.getMessage());
         }
     }
 
@@ -530,9 +540,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
         if (element instanceof SymbolicFiring) {
             SymbolicFiring firing = (SymbolicFiring)element;
             Entity actor = (Entity)firing.getActor();
-            Variable parameter = (Variable)actor.getAttribute("firingCount");
+            Variable parameter = (Variable)actor.getAttribute("firingsPerIteration");
             if (parameter == null) {
-                parameter = new Parameter(actor, "firingCount");
+                parameter = new Parameter(actor, "firingsPerIteration");
                 parameter.setVisibility(Settable.NOT_EDITABLE);
                 parameter.setPersistent(false);
             }
@@ -566,11 +576,11 @@ public class PSDFScheduler extends BaseSDFScheduler {
     private class SymbolicFiring extends Firing
         implements SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
-         *  expression.  The given actor
-         *  is assumed to fire the number of times determined by
-         *  evaluating the given expression.
+         *  expression.  The given actor is assumed to fire the number
+         *  of times determined by evaluating the given expression.
          *  @param actor The actor in the firing.
-         *  @param expression The expression associated with the firing.
+         *  @param expression A string expression representing the
+         *  number of times to fire the actor.
          */
         public SymbolicFiring(Actor actor, String expression)
                 throws IllegalActionException {
@@ -656,7 +666,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.
-         *  @param expression The expression associated with the schedule.
+         *  @param expression A string expression representing the
+         *  number of times to execute the schedule.
          */
         public SymbolicSchedule(String expression)
                 throws IllegalActionException {

@@ -9,6 +9,10 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
         </property>
     </property>
@@ -30,6 +34,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 60.0">
         </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
@@ -68,7 +76,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
-        <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+        <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
             </property>
         </property>
@@ -106,7 +116,9 @@
         <entity name="Decoder" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 305.0">
             </property>
-            <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+            <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
                 </property>
             </property>
@@ -133,6 +145,14 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 140.0">
                 </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {74, 117, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="ReflectionCoefficients" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
@@ -161,34 +181,14 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 210.0">
                 </property>
             </entity>
-            <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-                <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="blockSize">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 270.0">
-                </property>
-            </entity>
-            <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="blockSize">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 270.0">
-                </property>
-            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="reconstruction" relation="relation2"/>
-            <link port="quantizedResiduals" relation="relation4"/>
+            <link port="quantizedResiduals" relation="relation"/>
             <link port="RecursiveLattice.input" relation="relation"/>
             <link port="RecursiveLattice.output" relation="relation2"/>
-            <link port="SequenceToArray.input" relation="relation4"/>
-            <link port="SequenceToArray.output" relation="relation3"/>
-            <link port="ArrayToSequence.input" relation="relation3"/>
-            <link port="ArrayToSequence.output" relation="relation"/>
         </entity>
         <entity name="Autocorrelation" class="ptolemy.domains.sdf.lib.Autocorrelation">
             <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="blockSize">
@@ -207,9 +207,9 @@
             </property>
         </entity>
         <entity name="Encoder" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 210.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 210.0}">
             </property>
-            <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+            <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
@@ -277,7 +277,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 90.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -293,7 +293,7 @@
             </port>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 210.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 210.0}">
                 </property>
             </port>
             <entity name="Lattice" class="ptolemy.actor.lib.Lattice">
@@ -308,18 +308,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 210.0">
                 </property>
             </entity>
-            <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="blockSize">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 270.0">
-                </property>
-            </entity>
-            <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-                <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="blockSize">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 270.0">
-                </property>
-            </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="365.0, 210.0">
                 </vertex>
@@ -332,20 +320,12 @@
                 <vertex name="vertex1" value="125.0, 210.0">
                 </vertex>
             </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <link port="quantizedResiduals" relation="relation2"/>
             <link port="port" relation="relation"/>
-            <link port="Lattice.input" relation="relation5"/>
+            <link port="Lattice.input" relation="relation"/>
             <link port="Lattice.output" relation="relation3"/>
             <link port="Quantizer2.input" relation="relation3"/>
             <link port="Quantizer2.output" relation="relation2"/>
-            <link port="ArrayToSequence.input" relation="relation4"/>
-            <link port="ArrayToSequence.output" relation="relation5"/>
-            <link port="SequenceToArray.input" relation="relation"/>
-            <link port="SequenceToArray.output" relation="relation4"/>
         </entity>
         <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 220.0">
