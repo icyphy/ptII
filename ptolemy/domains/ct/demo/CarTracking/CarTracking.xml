@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 29.5">
         </property>
     </property>
-    <property name="fault" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="fault" class="ptolemy.data.expr.Parameter" value="0">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -169,6 +169,8 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         </entity>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="260.0, 219.5">
             </property>
@@ -1150,6 +1152,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         </entity>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="565.0, 229.5">
             </property>
