@@ -79,16 +79,13 @@ to the newsgroups etc.  See also main.htm
 <h2>Platforms</h2>
 
 The core of Ptolemy II 2.2 is 100% Java, so it should work on any
-platform that has JDK1.3
+platform that has JDK1.4
 
- <p>We developed Ptolemy II 2.2 under Solaris 8 and Windows 2000 sr2
-and with JDK1.3.1 and JDK1.4.  Note that code generation 
-only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
+ <p>We developed Ptolemy II 2.2 under Solaris 8 and Windows XP
+and with JDK1.4.1_01.
 
-Ptolemy II 2.2 will not compile under JDK1.2.2.
-
-<p>The code generation facility requires JDK1.3.0, it will not
-work under JDK 1.4.0
+Ptolemy II 2.2 will not compile under JDK1.3.0 because Ptolemy II
+uses the java.net.URI class.
 
 <!--whatsnew-->
 <h2>Major Features that are new in Ptolemy 2.2 </h2>
@@ -696,25 +693,26 @@ recompiling is safer.
 </ul>
 
 <!--vergilDocs-->
+<!--hyVisualDocs-->
 <h2>Limitations</h2>
 Version 2.2 has a number of limitations.
 
 <h3>Release Limitations</h3>
 <ul>
 
+<!--/hyVisualDocs-->
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 untar this file with a checksum error because the pathnames are longer
-than 100 characters.  If you do not have GNU tar, you can obtain
-source and selected binaries from 
-ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
+than 100 characters. 
  <p>Note further that some of the .class names are longer than
 31 characters, which may cause problems when downloading zip files
 on the Macintosh and using Stuffit.
+<!--hyVisualDocs-->
 
 <li> The documentation for custom actors used in demonstrations is not
-included in the release.  The source code for the custom actors can be found
-in the source download.
+included in the release.  The source code for the custom actors can be
+found in the source download.
 
 <li> If a URL ends with <CODE>#in_browser</CODE>, then
 Ptolemy II will invoke the User's web browser.  Unfortunately, this
@@ -722,7 +720,20 @@ does not always work, especially under Windows if Netscape is already
 running.  The workaround is to exit Netscape and let Ptolemy II
 start up Netscape for you.
 
+<li> Ptolemy II requires Java 1.4 or later because we use the 
+java.net.URI class. If Ptolemy II fails to start and you see
+a message about java.net.URI or possibly ptolemy.vergil.VergilApplication,
+the the problem could be that you are running a version 
+of Java that is older than Java 1.4
 
+<li> Unfortunately, there is a bug in Java 1.4
+under Windows XP that may that causes XP to hang when exiting
+a Java application.  For details, see
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4713003.html"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4713003.html</CODE></a>
+<br>The workaround is to start the java interpreter with 
+<CODE>-Dsun.java2d.noddraw=true</CODE>
+
+<!--/hyVisualDocs-->
 <li> Web Start does not work very well if the pathname to the 
 <CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
 to place your Ptolemy II tree in a directory that does not have spaces
@@ -817,9 +828,13 @@ Attempted to find as a moml class, but got:
 	from the Ptolemy Website:
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.2/ptII2.2/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.2/ptII2.2/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
 	</ul>
+<!--hyVisualDocs-->
 
 <li> Web Start issues:
 	<ul>
+
+
+	<li> The Initial HTML intro screen may be rendered incorrectly.
 
 	<li> Viewing a pdf file may bring up a blank window along with
 	the pdf file.  Running the code generator may bring up
@@ -857,6 +872,7 @@ in floating point numbers.
 
 <li> The readFile() parameter function does not work with applets.
 
+<!--/hyVisualDocs-->
 <!-- If you change the next paragraph update install.htm -->
 
 <li>The Matlab interface works only under Windows and it requires that
@@ -879,7 +895,10 @@ he was able to get farther with the recompilation of the Matlab interface.
 <a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
 The SerialComm actor will only work under Windows.
 
+<!--hyVisualDocs-->
 </ul>
+<!--/hyVisualDocs-->
+
 
 <h3>Limitations in the PN Domain</h3>
 The PN domain documents that it locally handles mutations.  However, this
@@ -894,17 +913,13 @@ lost, since timed PN models can locally execute mutations deterministically.
 The TM domain will not run in system that does not have a GUI because
 the TMDirector brings up a plot of the schedule.
 
+<!--hyVisualDocs-->
 <h3>Limitations in the User Interface</h3>
 
 Below are some of the limitations of Vergil, the Ptolemy II Graphical
 User Interface.
 
 <ul>
-
-<li> Under JDK1.3.1_03, the tool tips do not work.  They work under
-JDK1.3.1_02, see 
-<a href="http://developer.java.sun.com/developer/bugParade/bugs/4671567.html"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4671567.html</CODE></a>.
-
 
 <li> When setting the type of a port, we should provide a combo
 box that lists the common ports
@@ -917,11 +932,14 @@ be to have an information message in the status bar about this.
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
 not allow the user to remove built in Java defined ports.
-<li> Query needs to be put into a scroll pane
+
+<li> It should be possible to reorder ports.
 <li> Manually setting of the types of actors like ArrayToSequence that
 have constraints on their element types can cause problems.
 <li> HTVQ demo is badly laid out when run under vergil.
-<li>No undo mechanism.
+<li> The Undo mechanism is under development.  Not
+all actions undoable.
+<li> The save in library and make hierarchy facilities are under development
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
 <li>Cannot have more than one vertex in a connection.
@@ -933,6 +951,7 @@ have constraints on their element types can cause problems.
 <li>No dynamic class reloading.
 </ul>
 
+<!--/hyVisualDocs-->
 <h3>Code Generation Limitations</h3>
 Code Generation limitations are covered on the
 <a href="codegen.htm#limitations">Code Generation</a> page. 
