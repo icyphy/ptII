@@ -59,6 +59,12 @@ public interface DEEventQueue {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append a listener to the current set of debug listeners.
+     *  If the listener is already in the set, do not add it again.
+     *  @param listener The listener to which to send debug messages.
+     */
+    public void addDebugListener(DebugListener listener);
+
     /** Empty this event queue.
      */
     public void clear();
@@ -80,6 +86,13 @@ public interface DEEventQueue {
      *  @param event The event to be put into the queue.
      */
     public void put(DEEvent event);
+
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     */
+    public void removeDebugListener(DebugListener listener);
 
     /** Dequeue the earliest event in this event queue.
      *  @return The DEEvent object associated with the earliest event in

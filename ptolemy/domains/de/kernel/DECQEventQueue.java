@@ -43,7 +43,8 @@ import java.util.Enumeration;
 //// DECQEventQueue
 //
 /** A calendar queue implementation of the DE event queue. Its complexity is
- *  O(1) for both enqueue and dequeue operations.
+ *  O(1) for both enqueue and dequeue operations, assuming a reasonable
+ *  distribution of time stamps.
  *
  *  @author Lukito Muliadi
  *  @version $Id$
@@ -58,10 +59,21 @@ public class DECQEventQueue implements DEEventQueue {
      */
     public DECQEventQueue() {
         _cQueue = new CalendarQueue(new DECQComparator());
+        // Uncomment this to disable reallocation of bins when
+        // queue size changes.
+        // _cQueue.setAdaptive(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Append a listener to the current set of debug listeners.
+     *  If the listener is already in the set, do not add it again.
+     *  @param listener The listener to which to send debug messages.
+     */
+    public void addDebugListener(DebugListener listener) {
+        _cQueue.addDebugListener(listener);
+    }
 
     /** Empty the event queue.
      */
@@ -75,20 +87,29 @@ public class DECQEventQueue implements DEEventQueue {
      *  event queue.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public DEEventTag getNextTag() throws IllegalActionException {
+    public final DEEventTag getNextTag() throws IllegalActionException {
         return (DEEventTag)_cQueue.getNextKey();
     }
 
     /** Return true if this event queue is empty.
      */
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return _cQueue.isEmpty();
     }
 
     /** Enqueue an event into the event queue.
      */
-    public synchronized void put(DEEvent event) {
+    public final synchronized void put(DEEvent event) {
         _cQueue.put(event.getEventTag(), event);
+    }
+
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     */
+    public void removeDebugListener(DebugListener listener) {
+        _cQueue.removeDebugListener(listener);
     }
 
     /** Dequeue the earliest event in this event queue.
@@ -96,7 +117,7 @@ public class DECQEventQueue implements DEEventQueue {
      *    the queue.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public synchronized DEEvent take() throws IllegalActionException {
+    public final synchronized DEEvent take() throws IllegalActionException {
         return (DEEvent)_cQueue.take();
     }
 
@@ -124,7 +145,7 @@ public class DECQEventQueue implements DEEventQueue {
          *         instances
 	 *            of DEEventTag
 	 */
-	public int compare(Object object1, Object object2) {
+	public final int compare(Object object1, Object object2) {
 
 	    DEEventTag a = (DEEventTag) object1;
 	    DEEventTag b = (DEEventTag) object2;
@@ -155,7 +176,7 @@ public class DECQEventQueue implements DEEventQueue {
 	 *  @exception ClassCastException Arguments need to be instances of
 	 *          DEEventTag.
 	 */
-	public long getBinIndex(Object key,
+	public final long getBinIndex(Object key,
                 Object zeroReference, Object binWidth) {
 	    DEEventTag a = (DEEventTag) key;
 	    DEEventTag w = (DEEventTag) binWidth;
@@ -164,11 +185,15 @@ public class DECQEventQueue implements DEEventQueue {
 	    return (long)((a.timeStamp() - zero.timeStamp())/w.timeStamp());
 	}
 
-
-	/** Given an array of DEEventTag objects, find the appropriate bin
-	 *  width. Ideally, the bin width is chosen so that
-	 *  the average number of entries in non-empty bins is equal to one.
-	 *  If the argument is null, return the default bin width which is 1.0
+	/** Given an array of DEEventTag objects, return an appropriate bin
+	 *  width. This method assumes that the
+         *  keys provided are all different, and are in increasing order.
+         *  Note, however, that the time stamps may not be increasing.
+         *  It may instead be the receiver depth that is increasing.
+         *  Ideally, the bin width is chosen so that
+	 *  the average number of entries in bins is equal to one.
+	 *  If the argument is null or is an array with length less
+         *  than two, return the default bin width, which is 1.0
 	 *  for this implementation.
 	 *  <p>
 	 *  If the argument is not an instance of DEEventTag[], then a
@@ -182,30 +207,36 @@ public class DECQEventQueue implements DEEventQueue {
 	 */
 	public Object getBinWidth(Object[] keyArray) {
 
-	    if ( keyArray == null ) {
+	    if ( keyArray == null || keyArray.length < 2) {
 		return new DEEventTag(1.0, 0);
 	    }
 
 	    double[] diff = new double[keyArray.length - 1];
 
-	    double average = 0;
-	    for (int i = 1; i < keyArray.length; ++i) {
-		diff[i-1] = ((DEEventTag)keyArray[i]).timeStamp() -
-		    ((DEEventTag)keyArray[i-1]).timeStamp();
-		average = average + diff[i-1];
+	    double average = 0.0;
+	    for (int i = 0; i < keyArray.length - 1; ++i) {
+		diff[i] = ((DEEventTag)keyArray[i+1]).timeStamp() -
+		    ((DEEventTag)keyArray[i]).timeStamp();
+		average += diff[i];
 	    }
-	    average = average / diff.length;
-	    double effAverage = 0;
+	    average /= diff.length;
+	    double effAverage = 0.0;
 	    int nEffSamples = 0;
-	    for (int i = 1; i < keyArray.length; ++i) {
-		if ( diff[i-1] < 2*average ) {
+	    for (int i = 0; i < keyArray.length - 1; ++i) {
+		if (diff[i] < 2*average) {
 		    nEffSamples++;
-		    effAverage = effAverage + diff[i-1];
+		    effAverage = effAverage + diff[i];
 		}
 	    }
+            // To avoid returning NaN or 0.0
+            // for the width, apparently due to simultaneous events,
+            // we return the default instead.  This is probably not really 
+            // right... instead the bin width should be left unchanged.
+            if (effAverage == 0.0 || nEffSamples == 0) {
+                return new DEEventTag(1.0, 0);
+            }
 	    effAverage = effAverage / nEffSamples;
 	    return new DEEventTag(3.0 * effAverage, 0);
-
 	}
     }
 

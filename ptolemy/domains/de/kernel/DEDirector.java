@@ -203,6 +203,15 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append a listener to the current set of debug listeners.
+     *  If the listener is already in the set, do not add it again.
+     *  @param listener The listener to which to send debug messages.
+     */
+    public void addDebugListener(DebugListener listener) {
+        _eventQueue.addDebugListener(listener);
+        super.addDebugListener(listener);
+    }
+
     /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
@@ -403,7 +412,8 @@ public class DEDirector extends Director {
         _isInitialized = true;
 
         // Set the depth field of the receivers.
-        _computeDepth();
+        // FIXME: This is done in prefire... Presumably that is sufficient.
+        // _computeDepth();
 
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
@@ -451,6 +461,16 @@ public class DEDirector extends Director {
             _computeDepth();
         }
         return super.prefire();
+    }
+
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     */
+    public void removeDebugListener(DebugListener listener) {
+        _eventQueue.removeDebugListener(listener);
+        super.removeDebugListener(listener);
     }
 
     /** Set the stop time for the execution.
@@ -525,8 +545,6 @@ public class DEDirector extends Director {
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(actor, key);
         _eventQueue.put(event);
-        _debug("Enqueue pure event for actor:", ((Entity)actor).getName(),
-                "at time " + time, "with depth " + depth);
     }
 
     /** Put an event into the event queue with the specified destination
@@ -596,6 +614,7 @@ public class DEDirector extends Director {
         // to put them back outside the loop.
         FIFOQueue eventsToPutBack = new FIFOQueue();
         double currentTime = getCurrentTime();
+        long currentDepth = 0;
         while (true) {
 
             // Get the next event off the event queue.
@@ -642,13 +661,14 @@ public class DEDirector extends Director {
 
                 // Advance current time.
                 currentTime = currentEvent.getEventTag().timeStamp();
+                currentDepth = currentEvent.getEventTag().receiverDepth();
                 try {
                     setCurrentTime(currentTime);
                 } catch (IllegalActionException ex) {
                     // Thrown if time moves backwards.
                     throw new InternalErrorException(ex.toString());
                 }
-                _debug("-- Setting current time to: " + currentTime);
+                _debug("******* Setting current time to: " + currentTime);
 
                 // Note: The following comparison is true
                 // only during the first iteration, before the start time
@@ -676,20 +696,22 @@ public class DEDirector extends Director {
                 // Not the first time through the loop; check whether the event
                 // has time stamp equal to previously obtained current
                 // time. Then check if it's for the same actor.
-
-                if (currentEvent.getEventTag().timeStamp() < currentTime) {
+                double eventTime = currentEvent.getEventTag().timeStamp();
+                long eventDepth = currentEvent.getEventTag().receiverDepth();
+                if (eventTime < currentTime) {
                     throw new InternalErrorException("Event that was "+
                             "dequeued later has smaller time stamp!");
                 }
                 // Check whether the event occurred at current time.
-                if (currentEvent.getEventTag().timeStamp() > currentTime) {
-                    // The event has a later time stamp, so we put it back
+                if (eventTime > currentTime || eventDepth > currentDepth) {
+                    // The event has a later time stamp or depth,
+                    // so we put it back
                     eventsToPutBack.put(currentEvent);
                     // Break the loop, since all events after this will
                     // all have time stamp later or equal to this one.
                     break;
                 } else {
-                    // The event has the same time stamp as the first
+                    // The event has the same time stamp and depth as the first
                     // event seen.  Check whether it is for the same actor.
                     if (currentEvent.getDestinationActor() == actorToFire) {
                         DEReceiver rec = currentEvent.getDestinationReceiver();
@@ -709,6 +731,11 @@ public class DEDirector extends Director {
         }
         // Transfer back the events from the eventsToPutBack queue
         // into the calendar queue.
+        _debug("Putting back events for another actor or at later time.");
+        // FIXME: Putting these events back can be costly.
+        // Is there some way to avoid this? Perhaps they can be
+        // processed (fired) since the depth and time stamp is the same on all
+        // but the last one.
         while (eventsToPutBack.size() > 0) {
             DEEvent event = (DEEvent)eventsToPutBack.take();
             _eventQueue.put(event);
@@ -803,7 +830,7 @@ public class DEDirector extends Director {
     private void _computeDepth() throws IllegalActionException {
         DirectedAcyclicGraph dag = _constructDirectedGraph();
         Object[] sort = (Object[]) dag.topologicalSort();
-        _debug("### Result of topological sort: ###");
+        _debug("####### Result of topological sort:");
 	for(int i = sort.length-1; i >= 0; i--) {
             Actor actor = (Actor)sort[i];
             _debug(((Nameable)actor).getFullName() + ":" + i);
@@ -826,6 +853,7 @@ public class DEDirector extends Director {
                 }
             }
 	}
+        _debug("####### End of topological sort.");
     }
 
     // Request that the container of this director be refired in the future.

@@ -128,6 +128,14 @@ public class DEEvent {
         return _token;
     }
 
+    /** Return a description of the event.
+     *  @return The token as a string with the time stamp.
+     */
+    public String toString() {
+        return "(" + _token + ", " + _tag.timeStamp() + ", "
+                + ((NamedObj)_actor).getFullName() + ")";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Actor _actor;
