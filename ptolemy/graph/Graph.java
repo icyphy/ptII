@@ -750,7 +750,7 @@ public class Graph implements Cloneable {
      *  removal from the incidence lists of the source and sink nodes, but
      *  preserves the allocation of the edge label to the edge. This
      *  makes the operation more efficient than standard edge removal
-     *  {@link removeEdge(Edge)}, and
+     *  {@link #removeEdge(Edge)}, and
      *  allows the same label to be used if the edge is restored later.
      *  This is an <em>O(1)</em> operation.
      *  @param edge The edge to hide.
