@@ -168,8 +168,19 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             methodName.equals("attributeTypeChanged")) {           
            return NullValue.instance;        
         }         
+
+        node.setParams(
+         TNLManip.traverseList(this, node, args, node.getParams()));
+                                                
+        node.setBody((TreeNode) node.getBody().accept(this, args));
+
+        // eliminate declared, throwable Ptolemy exceptions
+        node.setThrowsList(_eliminatePtolemyExceptionList(
+         TNLManip.traverseList(this, node, args, node.getThrowsList())));
+
+        node.setReturnType((TypeNode) node.getReturnType().accept(this, args));        
         
-        return _defaultVisit(node, args);   
+        return node;
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
@@ -186,6 +197,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         node.setBody((BlockNode) node.getBody().accept(this, args));
         node.setConstructorCall((ConstructorCallNode) 
          node.getConstructorCall().accept(this, args));
+         
+        // eliminate declared, throwable Ptolemy exceptions         
+        node.setThrowsList(_eliminatePtolemyExceptionList(
+         TNLManip.traverseList(this, node, args, node.getThrowsList())));
          
         return node;
     }
@@ -271,8 +286,29 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return node;                
     }
 
-    public Object visitThrowNode(ThrowNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+    public Object visitThrowNode(ThrowNode node, LinkedList args) {        
+        TypeNameNode exceptionType = 
+         (TypeNameNode) _typeVisitor.type(node.getExpr());
+        
+        int kind = _typeID.kindOfTypeNameNode(exceptionType);
+        
+        if (_typeID.isPtolemyExceptionKind(kind)) {
+           String message = "ptolemy non-runtime exception";
+           if (_typeID.isPtolemyRuntimeExceptionKind(kind)) {
+              message = "ptolemy runtime exception";
+           }
+           
+           node.setExpr(new AllocateNode(new TypeNameNode(
+            new NameNode(AbsentTreeNode.instance, "RuntimeException")),
+            TNLManip.cons(new StringLitNode(message)),
+            AbsentTreeNode.instance));                            
+            
+           return node;
+        }
+
+        node.setExpr((ExprNode) node.getExpr().accept(this, args));
+                
+        return node;
     }
 
     public Object visitSynchronizedNode(SynchronizedNode node, LinkedList args) {
@@ -282,11 +318,48 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitCatchNode(CatchNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        TypeNameNode exceptionType = (TypeNameNode) node.getParam().getDefType();
+        
+        int kind = _typeID.kindOfTypeNameNode(exceptionType);
+        
+        // don't catch any Ptolemy exceptions      
+        if (_typeID.isPtolemyExceptionKind(kind)) {
+           return NullValue.instance; 
+        }
+        
+        node.setParam((ParameterNode) node.getParam().accept(this, args));
+        node.setBlock((BlockNode) node.getBlock().accept(this, args));
+        
+        return node;
     }
 
     public Object visitTryNode(TryNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        
+        Iterator catchNodeItr = 
+         TNLManip.traverseList(this, node, args, node.getCatches()).iterator();
+        
+        LinkedList newCatchNodeList = new LinkedList();
+        
+        while (catchNodeItr.hasNext()) {
+           Object catchNodeObj = catchNodeItr.next();
+           
+           // don't add catch clauses that catch Ptolemy exceptions
+           if (catchNodeObj != NullValue.instance) {
+              newCatchNodeList.addLast(catchNodeObj);
+           }                      
+        }
+                
+        node.setBlock((BlockNode) node.getBlock().accept(this, args));
+                
+        // if there's nothing to catch, return the block
+        if (newCatchNodeList.size() < 1) {
+           return node.getBlock();
+        }
+
+        node.setCatches(newCatchNodeList);
+        node.setFinly((TreeNode) node.getFinly().accept(this, args));
+        
+        return node;
     }
                          
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
@@ -337,14 +410,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            if (methodArgs.size() > 0) {
               firstArg = (ExprNode) methodArgs.get(0);
            }
-                
-           boolean accessedObjIsMatrix = _typeID.isMatrixTokenKind(accessedObjKind);     
-           boolean accessedObjIsScalar = _typeID.isScalarTokenKind(accessedObjKind);     
-           boolean accessedObjIsBoolean = 
-            (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN);
-           boolean accessedObjIsString =
-            (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN);
-                   
+                                   
            if (methodName.equals("booleanValue")) {
               return new CastNode(BoolTypeNode.instance, accessedObj);
            } else if (methodName.equals("intValue")) {
@@ -1166,19 +1232,39 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return null;        
     }       
        
+    /** Given a list of TypeNameNodes that are the types of exceptions,
+     *  return a new list of TypeNameNodes that are not Ptolemy exception types.
+     */   
+    protected List _eliminatePtolemyExceptionList(List exceptionTypeList) {
+    
+        LinkedList retval = new LinkedList();
+        
+        Iterator exceptionTypeItr = exceptionTypeList.iterator();
+        
+        while (exceptionTypeItr.hasNext()) {
+           TypeNameNode exceptionType = (TypeNameNode) exceptionTypeItr.next();
+           
+           int exceptionKind = _typeID.kindOfTypeNameNode(exceptionType);
+           
+           if (!_typeID.isPtolemyExceptionKind(exceptionKind)) {
+              retval.addLast(exceptionType);
+           }  
+        }   
+        
+        return retval;
+    }   
+       
     protected Object _makeDefaultPreinitializeMethod() {
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "preinitialize"), new LinkedList(),          
-         TNLManip.cons(new TypeNameNode(
-          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),         
+         new LinkedList(),
          new BlockNode(new LinkedList()), VoidTypeNode.instance);    
     }    
 
     protected Object _makeDefaultInitializeMethod() {
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "initialize"), new LinkedList(), 
-         TNLManip.cons(new TypeNameNode(
-         new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),
+         new LinkedList(),
          new BlockNode(new LinkedList()), VoidTypeNode.instance);    
     }    
     
@@ -1186,16 +1272,14 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));        
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "prefire"), new LinkedList(), 
-         TNLManip.cons(new TypeNameNode(
-          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),         
+         new LinkedList(),                  
          new BlockNode(blockList), BoolTypeNode.instance);    
     }    
 
     protected Object _makeDefaultFireMethod() {
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "fire"), new LinkedList(), 
-         TNLManip.cons(new TypeNameNode(
-          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),         
+         new LinkedList(),
          new BlockNode(new LinkedList()), VoidTypeNode.instance);    
     }    
 
@@ -1203,8 +1287,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));        
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "postfire"), new LinkedList(), 
-         TNLManip.cons(new TypeNameNode(
-          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),                  
+         new LinkedList(),
          new BlockNode(blockList), BoolTypeNode.instance);    
     }    
 
@@ -1212,8 +1295,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "wrapup"),
          new LinkedList(), 
-         TNLManip.cons(new TypeNameNode(
-          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),
+         new LinkedList(),
          new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }    
 
