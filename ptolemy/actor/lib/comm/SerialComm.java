@@ -114,10 +114,6 @@ It also assumes that if additional bytes come in between fire()'s call to
 .read() (which retrieves them) that the DATA_AVAILABLE event DOES occur
 again, even though the serial buffer was never really empty.
 <p>
-@param baudRate the baud rate (integer such as 19200) to use (applies
-to both input and output)
-@param serialPortName the name (string such as "COM2") of the serial
-port to use
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
