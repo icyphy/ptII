@@ -293,6 +293,12 @@ REMOTE1HOST = tycho
 # Log file to save the results in
 REMOTE1LOG = $(GENDIR)/logs/remote1.out
 
+# JavaScope database, gets removed every night
+JSDATABASE=/users/ptII/jsdatabase
+
+# Directory to place output in
+JSOUTDIR=/users/ptII/public_html/nightly/js 
+
 # Create a separate tree and run the test suite with code coverage
 # on REMOTE1HOST
 remote1: remote1coverage
@@ -306,6 +312,13 @@ remote1coverage: $(PTII_SRC)
 		remote1distjsall remote1distjsrestore remote1distjavadocs \
 		remote1done >& $(REMOTE1LOG)" &
 
+
+bldmastrcoverage:
+	$(MAKE) REMOTE1HOME=../.. \
+		VERSION= \
+		JSDATABASE=/home/bldmastr/ptII/js \
+		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
+		remote1distjsall remote1distjsrestore
 
 # Remove the remote dist
 remote1nuke:
@@ -402,9 +415,9 @@ remote1distjsall:
 	@echo "#"
 	@echo `date`
 
-	@echo "Removing /users/ptII/jsdatabase in prep for $$x "
-	-ls -ldg /users/ptII/jsdatabase /users/ptII/jsdatabase/*
-	-rm -rf /users/ptII/jsdatabase
+	@echo "Removing $(JSDATABASE) in prep for $$x "
+	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
+	-rm -rf $(JSDATABASE)
 
 	@-if [ "x$(JSALLDIRS)" != "x" ]; then \
 		set $(JSALLDIRS); \
@@ -419,13 +432,13 @@ remote1distjsall:
 		done ; \
 	fi
 	jssummary -HTML -PROGRESS \
-		-OUTFILE=/users/ptII/public_html/nightly/js/coverage.html
+		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
-		-OUTDIR=/users/ptII/public_html/nightly/js 
+		-OUTDIR=$(JSOUTDIR) 
 	# Add links and colorize the coverage.html page
 	sh $(PTIIADM)/bin/coveragerating $(PTIIDIST) \
-		/users/ptII/public_html/nightly/js/coverage.html
-	-chmod -R a+r /users/ptII/public_html/nightly/js
+		$(JSOUTDIR)/coverage.html
+	-chmod -R a+r $(JSOUTDIR)
 
 # Remove the JavaScope instrumentation
 remote1distjsrestore:
