@@ -100,6 +100,10 @@ public class ABPApplet extends DEApplet implements QueryListener {
             _query.addQueryListener(this);
             getContentPane().add(_query);
 
+            // The 2 argument requests a go and stop button.
+	    // We call _getStopTime() below, so this should be first.
+            getContentPane().add(_createRunControls(2));
+
             // message source
             _msgSrc = new DEMessageSource(_toplevel,
                     "MessageSource");
@@ -671,9 +675,6 @@ public class ABPApplet extends DEApplet implements QueryListener {
 
             // We are now allowed to run the model.
             _initCompleted = true;
-
-            // The 2 argument requests a go and stop button.
-            getContentPane().add(_createRunControls(2));
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
