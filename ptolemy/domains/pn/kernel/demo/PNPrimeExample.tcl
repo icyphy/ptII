@@ -146,5 +146,3 @@ puts "Bye World"
 # Get the output
 $printStream flush
 list "[$stream toString]"
-update
-
