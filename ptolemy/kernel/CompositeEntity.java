@@ -597,7 +597,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int detail, int indent, int bracket){
+    protected String _description(int detail, int indent, int bracket) {
         try {
             workspace().getReadAccess();
             String result;
