@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
  */
@@ -89,27 +89,27 @@ public class ApplicationTutorial extends AbstractApplication {
      * application context.
      */
     public static void main(String argv[]) {
-	AppContext context = new ApplicationContext();
-	new ApplicationTutorial(context);
+        AppContext context = new ApplicationContext();
+        new ApplicationTutorial(context);
     }
 
     public ApplicationTutorial(AppContext context) {
-	super(context);
-	
-	initializeApp();
+        super(context);
+        
+        initializeApp();
 
-	// Initialize the context.
-	JMenuBar menuBar = new JMenuBar();
-	context.setJMenuBar(menuBar);
-	initializeMenuBar(menuBar);
-	
-	JToolBar toolBar = new JToolBar();
-	context.getContentPane().add(toolBar, BorderLayout.NORTH);
-	initializeToolBar(toolBar);
+        // Initialize the context.
+        JMenuBar menuBar = new JMenuBar();
+        context.setJMenuBar(menuBar);
+        initializeMenuBar(menuBar);
+        
+        JToolBar toolBar = new JToolBar();
+        context.getContentPane().add(toolBar, BorderLayout.NORTH);
+        initializeToolBar(toolBar);
 
-	// Set the icon in the upper left corner of the context.
-	Image iconImage = getResources().getImage("GraphIconImage");
-	context.setIconImage(iconImage);
+        // Set the icon in the upper left corner of the context.
+        Image iconImage = getResources().getImage("GraphIconImage");
+        context.setIconImage(iconImage);
 
         /*
           // create the editing component.
@@ -117,9 +117,9 @@ public class ApplicationTutorial extends AbstractApplication {
           displayDocument(getCurrentDocument());
         */
             
-	// When the currently selected document is changed, this listener
-	// is notified.
-	addViewListener(new ListDataListener() {
+        // When the currently selected document is changed, this listener
+        // is notified.
+        addViewListener(new ListDataListener() {
                 public void contentsChanged(ListDataEvent e) {
                     System.out.println("current document = " +
                             getCurrentView().getDocument());
@@ -131,10 +131,10 @@ public class ApplicationTutorial extends AbstractApplication {
                 }
             });
 
-	// Set the size of the context.
-	context.makeComponent().setSize(800, 600);
-	// and make it visible.
-	context.setVisible(true);
+        // Set the size of the context.
+        context.makeComponent().setSize(800, 600);
+        // and make it visible.
+        context.setVisible(true);
     }
 
     /** Return a view of this document.
@@ -151,7 +151,7 @@ public class ApplicationTutorial extends AbstractApplication {
      // only handle text documents.
      TextDocument document = (TextDocument) d;
      System.out.println("displaying");
-	
+        
      if(_displayedDocument != null) {
      // Pull the text out of the editor and stuff it back into the 
      // document.
@@ -177,18 +177,18 @@ public class ApplicationTutorial extends AbstractApplication {
     /** Get the title of this application
      */
     public String getTitle() {
-	return "Application Tutorial";
+        return "Application Tutorial";
     }
 
     /** Initialize the application.
      */
     public void initializeApp() {
-	// Create and initialize the storage policy
-	try {
-	    DefaultStoragePolicy storage = new DefaultStoragePolicy();
-	    setStoragePolicy(storage);
-	
-	    FileFilter ff = new FileFilter() {
+        // Create and initialize the storage policy
+        try {
+            DefaultStoragePolicy storage = new DefaultStoragePolicy();
+            setStoragePolicy(storage);
+        
+            FileFilter ff = new FileFilter() {
                     public boolean accept (File file) {
                         return GUIUtilities.getFileExtension(file).
                             toLowerCase().equals("txt");
@@ -197,17 +197,17 @@ public class ApplicationTutorial extends AbstractApplication {
                         return "Text files";
                     }
                 };
-	    JFileChooser fc;      
-	    fc = storage.getOpenFileChooser();
-	    fc.addChoosableFileFilter(ff);
-	    fc.setFileFilter(ff);
-	    
-	    fc = storage.getSaveFileChooser();
-	    fc.addChoosableFileFilter(ff);
-	    fc.setFileFilter(ff);
-	} catch (SecurityException ex) {
-	    // FIXME: create a new "NoStoragePolicy"
-	}
+            JFileChooser fc;      
+            fc = storage.getOpenFileChooser();
+            fc.addChoosableFileFilter(ff);
+            fc.setFileFilter(ff);
+            
+            fc = storage.getSaveFileChooser();
+            fc.addChoosableFileFilter(ff);
+            fc.setFileFilter(ff);
+        } catch (SecurityException ex) {
+            // FIXME: create a new "NoStoragePolicy"
+        }
 
         setDocumentFactory(new TextDocument.Factory());
     }
@@ -215,7 +215,7 @@ public class ApplicationTutorial extends AbstractApplication {
     /** Initialize the menu bar
      */
     public void initializeMenuBar(JMenuBar menuBar) {
-	Action action;
+        Action action;
         JMenuItem item;
 
         // Create the File menu
@@ -256,9 +256,9 @@ public class ApplicationTutorial extends AbstractApplication {
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'X', 
                 "Exit from the graph editor");
-	// Hook the exit action into the frame's close button, if we are
-	// running in an ApplicationContext.
-	getAppContext().setExitAction(action);
+        // Hook the exit action into the frame's close button, if we are
+        // running in an ApplicationContext.
+        getAppContext().setExitAction(action);
     }
 
     /** Initialize the given toolbar. Image icons will be obtained

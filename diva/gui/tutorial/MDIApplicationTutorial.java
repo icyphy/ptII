@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
  */
@@ -82,34 +82,34 @@ public class MDIApplicationTutorial extends MDIApplication {
      * application context.
      */
     public static void main(String argv[]) {
-	AppContext context = new ApplicationContext();
-	// This is an MDI application that uses a desktop context.
-	new MDIApplicationTutorial(new DesktopContext(context));
+        AppContext context = new ApplicationContext();
+        // This is an MDI application that uses a desktop context.
+        new MDIApplicationTutorial(new DesktopContext(context));
     }
 
     public MDIApplicationTutorial(DesktopContext context) {
-	super(context);
+        super(context);
 
-	initializeApp();
-	
+        initializeApp();
+        
         // Initialize the context.  DesktopContext already has a toolbar
-	// and a menu bar.
+        // and a menu bar.
         initializeMenuBar(context.getJMenuBar());
-	JPanel toolBarPane = context.getToolBarPane();
-	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
+        JPanel toolBarPane = context.getToolBarPane();
+        toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
         initializeToolBar(context.getJToolBar());
 
-	// Set the icon in the upper left corner of the context.
-	Image iconImage = getResources().getImage("GraphIconImage");
-	context.setIconImage(iconImage);
-	// Set the icon for the internal frames of the desktop context.
+        // Set the icon in the upper left corner of the context.
+        Image iconImage = getResources().getImage("GraphIconImage");
+        context.setIconImage(iconImage);
+        // Set the icon for the internal frames of the desktop context.
         Icon icon = getResources().getImageIcon("GraphIconImage");
         context.setFrameIcon(icon);
 
-	// Set the size of the context.
-	context.makeComponent().setSize(800, 600);
-	// and make it visible.
-	context.setVisible(true);
+        // Set the size of the context.
+        context.makeComponent().setSize(800, 600);
+        // and make it visible.
+        context.setVisible(true);
     }
 
     /** Create a view on the given document.
@@ -121,17 +121,17 @@ public class MDIApplicationTutorial extends MDIApplication {
     /** Get the title of this application
      */
     public String getTitle() {
-	return "MDI Application Tutorial";
+        return "MDI Application Tutorial";
     }
 
     /** Initialize the application.
      */
     public void initializeApp() {
-	// Create and initialize the storage policy
-	try {
-	    DefaultStoragePolicy storage = new DefaultStoragePolicy();
-	    setStoragePolicy(storage);
-	    FileFilter ff = new FileFilter() {
+        // Create and initialize the storage policy
+        try {
+            DefaultStoragePolicy storage = new DefaultStoragePolicy();
+            setStoragePolicy(storage);
+            FileFilter ff = new FileFilter() {
                     public boolean accept (File file) {
                         return GUIUtilities.getFileExtension(file).
                             toLowerCase().equals("txt");
@@ -140,17 +140,17 @@ public class MDIApplicationTutorial extends MDIApplication {
                         return "Text files";
                     }
                 };
-	    JFileChooser fc;      
-	    fc = storage.getOpenFileChooser();
-	    fc.addChoosableFileFilter(ff);
-	    fc.setFileFilter(ff);
-	    
-	    fc = storage.getSaveFileChooser();
-	    fc.addChoosableFileFilter(ff);
-	    fc.setFileFilter(ff);
-	} catch (SecurityException ex) {
-	    // FIXME: create a new "NoStoragePolicy"
-	}
+            JFileChooser fc;      
+            fc = storage.getOpenFileChooser();
+            fc.addChoosableFileFilter(ff);
+            fc.setFileFilter(ff);
+            
+            fc = storage.getSaveFileChooser();
+            fc.addChoosableFileFilter(ff);
+            fc.setFileFilter(ff);
+        } catch (SecurityException ex) {
+            // FIXME: create a new "NoStoragePolicy"
+        }
 
         setDocumentFactory(new TextDocument.Factory());
     }
@@ -158,7 +158,7 @@ public class MDIApplicationTutorial extends MDIApplication {
     /** Initialize the menu bar
      */
     public void initializeMenuBar(JMenuBar menuBar) {
-	Action action;
+        Action action;
         JMenuItem item;
 
         // Create the File menu
@@ -199,9 +199,9 @@ public class MDIApplicationTutorial extends MDIApplication {
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'X', 
                 "Exit from the graph editor");
-	// Hook the exit action into the frame's close button, if we are
-	// running in an ApplicationContext.
-	getAppContext().setExitAction(action);
+        // Hook the exit action into the frame's close button, if we are
+        // running in an ApplicationContext.
+        getAppContext().setExitAction(action);
     }
 
     /** Initialize the given toolbar. Image icons will be obtained

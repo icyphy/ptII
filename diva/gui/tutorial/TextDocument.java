@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
  */
@@ -72,8 +72,8 @@ public class TextDocument extends AbstractDocument {
      * empty string.
      */
     public TextDocument(Application application) {
-	super(application);
-	_text = "";
+        super(application);
+        _text = "";
     }
 
     /** Close the document. Do not attempt to save the document first
@@ -87,13 +87,13 @@ public class TextDocument extends AbstractDocument {
      * @exception Exception If the close operation fails.
      */
     public void close () {
-	// DO NOTHING.
+        // DO NOTHING.
     }
 
     /** Return the text contained in this document.
      */
     public String getText() {
-	return _text;
+        return _text;
     }
 
     /** Open the document from its current file or URL. Throw an
@@ -102,16 +102,16 @@ public class TextDocument extends AbstractDocument {
      * @exception Exception If the close operation fails.
      */
     public void open () throws Exception {
-	BufferedReader reader = new BufferedReader(new FileReader(getFile()));
-	char[] buffer = new char[100];
-	StringBuffer readResult = new StringBuffer();
-	int amountRead;
-	while ((amountRead = reader.read(buffer, 0, 100)) == 100) {
-	    readResult.append(buffer);
-	}
-	readResult.append(buffer, 0, amountRead);
-	_text = readResult.toString();
-    }	
+        BufferedReader reader = new BufferedReader(new FileReader(getFile()));
+        char[] buffer = new char[100];
+        StringBuffer readResult = new StringBuffer();
+        int amountRead;
+        while ((amountRead = reader.read(buffer, 0, 100)) == 100) {
+            readResult.append(buffer);
+        }
+        readResult.append(buffer, 0, amountRead);
+        _text = readResult.toString();
+    }        
 
     /** Save the document to its current file or URL.  Throw an
      * exception if the operation failed. Reasons for failure might
@@ -122,7 +122,7 @@ public class TextDocument extends AbstractDocument {
      * @exception Exception If the save operation fails.
      */
     public void save () throws Exception {
-	saveAs(getFile());
+        saveAs(getFile());
     }
 
     /** Save the document to the given file.  Throw an exception if
@@ -135,9 +135,9 @@ public class TextDocument extends AbstractDocument {
      * @exception Exception If the save-as operation fails.
      */
     public void saveAs (File file) throws Exception {
-	Writer writer = new BufferedWriter(new FileWriter(file));
-	writer.write(_text);
-	writer.flush();
+        Writer writer = new BufferedWriter(new FileWriter(file));
+        writer.write(_text);
+        writer.flush();
     }
 
     /** Save the document to the given URL.  Throw an exception if the
@@ -149,7 +149,7 @@ public class TextDocument extends AbstractDocument {
      * @exception Exception If the save-as operation fails.
      */
     public void saveAs (URL url) throws Exception {
-	throw new UnsupportedOperationException("Saving as a URL is not" +
+        throw new UnsupportedOperationException("Saving as a URL is not" +
                 " supported for" +
                 " text documents.");
     }
@@ -159,10 +159,10 @@ public class TextDocument extends AbstractDocument {
      * different from the previously contained text, then set the dirty flag.
      */
     public void setText(String text) {
-	if(_text != text) {
-	    setDirty(true);
-	    _text = text;
-	}
+        if(_text != text) {
+            setDirty(true);
+            _text = text;
+        }
     }
 
     /** TextDocument.Factory is a factory for Text Documents
