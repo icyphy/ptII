@@ -351,11 +351,11 @@ public class CIDirector extends Director {
 
     }
 
-    /** Request that execution of the current iteration stop.
-     *  Pass the request to all actors that are deeply contained by the
-     *  container of this director. and if <i>_interatingStarted<i> is ture, set
-     *  the <i>_stopRequested<i> flag to be ture, so that the ActiveActorManager
-     *  thread will suspend the executing of the active actor.
+    /** Request that execution of the current iteration stop.  Pass
+     *  the request to all actors that are deeply contained by the container
+     * of this director. and if <i>_interatingStarted<i> is true, set the
+     * <i>_stopRequested<i> flag to be ture, so that the ActiveActorManager
+     * thread will suspend the executing of the active actor.
      */
     public void stopFire() {
         super.stopFire();
