@@ -62,7 +62,6 @@ is also created.
 
 @author  Edward A. Lee
 @version $Id$
-@see ptolemy.gui.MoML
 */
 public class MoMLApplet extends PtolemyApplet {
 
