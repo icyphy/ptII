@@ -37,6 +37,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.FilterOutGraphicalClasses;
+import ptolemy.moml.FilterBackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;
 
@@ -83,6 +84,7 @@ public class MoMLSimpleApplication implements ChangeListener {
         MoMLParser parser = new MoMLParser();
 
 	// Filter out any graphical classes
+	parser.addMoMLFilter(new FilterBackwardCompatibility());
 	parser.addMoMLFilter(new FilterOutGraphicalClasses());
 
         parser.setErrorHandler(new StreamErrorHandler());
