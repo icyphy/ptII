@@ -97,12 +97,12 @@ public abstract class FixedStepSolver extends ODESolver {
         return 0;
     }
 
-    /** Return 1 to indicate that an integrator under this solver needs
-     *  one auxiliary variable.
-     *  @return 1.
+    /** Return 0 to indicate that an integrator under this solver needs
+     *  no auxiliary variable.
+     *  @return 0.
      */
     public int getIntegratorAuxVariableCount() {
-        return 1;
+        return 0;
     }
 
     /** Return true always, since no error control is performed.
