@@ -31,6 +31,7 @@ package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.kernel.Entity;
@@ -140,11 +141,13 @@ public class OutputActionsAttribute
                 Integer channel = (Integer)channels.next();
                 Variable variable = (Variable)variables.next();
                 try {
-                    if (channel != null) {
-                        destination.send(channel.intValue(),
-                                variable.getToken());
-                    } else {
-                        destination.broadcast(variable.getToken());
+                    Token tok = variable.getToken();
+                    if (tok != null) {
+                        if (channel != null) {
+                            destination.send(channel.intValue(), tok);
+                        } else {
+                            destination.broadcast(tok);
+                        }
                     }
                 } catch (NoRoomException ex) {
                     throw new IllegalActionException(this,
@@ -191,4 +194,3 @@ public class OutputActionsAttribute
         return port;
     }
 }
-
