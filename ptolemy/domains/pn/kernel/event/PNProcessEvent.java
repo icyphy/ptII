@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.pn.kernel.event;
 import ptolemy.actor.Actor;
+import ptolemy.kernel.Entity;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessEvent
