@@ -58,7 +58,7 @@ test PBODirector-2.1 {Constructor tests} {
     $e0 setName E0
     set d3 [java::new ptolemy.domains.pbo.kernel.PBODirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 W.D2 W.E0.D3}
+} {.D1 .D2 .E0.D3}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test PBODirector-3.1 {Test clone} {
     set d4 [java::cast ptolemy.domains.pbo.kernel.PBODirector [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.Manager}
+} {.Manager}
 
 ######################################################################
 ####
@@ -85,7 +85,7 @@ test PBODirector-4.1 {Test _makeDirectorOf} {
     $e1 setManager $manager
     $e1 setDirector $d3
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E1.D3 W.D4 {W.E0 W.E1}}
+} {.E1.D3 .D4 {.E0 .E1}}
 
 ######################################################################
 ####
@@ -100,15 +100,15 @@ test PBODirector-5.1 {Test action methods} {
     $e0 setDirector $d3
 
     set a1 [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
-    set p1 [java::new ptolemy.data.expr.Parameter $a1 firingPeriod]
+    set p1 [java::new ptolemy.data.expr.Parameter $a1 executionPeriod]
     _testSetToken $p1 [java::new ptolemy.data.DoubleToken 1.0]
-    set p1 [java::new ptolemy.data.expr.Parameter $a1 delay]
+    set p1 [java::new ptolemy.data.expr.Parameter $a1 executionTime]
     _testSetToken $p1 [java::new ptolemy.data.DoubleToken 0.4]
 
     set a2 [java::new ptolemy.actor.lib.Recorder $e0 Recorder]
-    set p2 [java::new ptolemy.data.expr.Parameter $a2 firingPeriod]
+    set p2 [java::new ptolemy.data.expr.Parameter $a2 executionPeriod]
     _testSetToken $p2 [java::new ptolemy.data.DoubleToken 1.2]
-    set p2 [java::new ptolemy.data.expr.Parameter $a2 delay]
+    set p2 [java::new ptolemy.data.expr.Parameter $a2 executionTime]
     _testSetToken $p2 [java::new ptolemy.data.DoubleToken 0.4]
 
     $e0 connect \
@@ -118,9 +118,6 @@ test PBODirector-5.1 {Test action methods} {
     set listener [java::new ptolemy.kernel.util.StreamListener]
     $manager addDebugListener $listener
     $d3 addDebugListener $listener
-
-    set listener [java::new ptolemy.actor.DefaultExecutionListener]
-    $manager addExecutionListener $listener
 
     $manager run
     set record [$a2 getRecord 0]
