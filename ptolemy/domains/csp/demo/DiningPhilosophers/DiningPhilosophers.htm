@@ -60,7 +60,7 @@ button).  Deadlock occurs when each of the philosophers acquires one
 chopstick.  No special measures are taken in this model to avoid
 deadlock, so it will eventually occur.
 <P>
-The Dining Philosophers problem was first dreamt up by Edsger W. Dijkstra
+The Dining Philosophers problem was first described by Edsger W. Dijkstra
 in 1965. It is a classic concurrent programming problem that illustrates
 the two basic properties of concurrent programming:
 <LI>
@@ -82,19 +82,15 @@ deadlock, and if it is let run long enough this will eventually occur.
 The probability that deadlock occurs sooner increases as the thinking
 times are decreased relative to the eating times.
 <P>
-<P>
-<H1>
-Implementation:</H1>
-The above applet is implemented using the
-<A HREF="" "http://ptolemy.eecs.berkeley.edu">Ptolemy II</A>
-Communicating Sequential Processes (CSP) domain. Ptolemy II is an
-environment that supports heterogeneous modeling and design of
-embedded systems. The CSP domain models a system as a network of process
+The applet is implemented using the
+Communicating Sequential Processes (CSP) domain in Ptolemy II.
+The CSP domain models a system as a network of process
 communicating with messages through unidirectional channels. The
-communication is rendezvous based as both the sending and receiving
+communication is rendezvous based, as both the sending and receiving
 processes block until the other side is ready to communicate. The model of
 communication used in the CSP domain is different from the CSP model
-normally encountered in that a notion of time has been added to the model.
+normally encountered in that a notion of time has been added to the model,
+although this model of time is not used in this applet.
 <P>
 In the above applet, each chopstick and each philosopher is represented as a
 separate process. A chopstick must be ready to communicate with either

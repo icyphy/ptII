@@ -38,11 +38,12 @@ import diva.canvas.toolbox.*;
 import diva.canvas.connector.*;
 import diva.canvas.interactor.*;
 
+import ptolemy.actor.*;
+import ptolemy.actor.gui.PtolemyApplet;
+import ptolemy.actor.process.*;
 import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.gui.*;
 import ptolemy.domains.csp.kernel.*;
@@ -101,24 +102,88 @@ import javax.swing.border.TitledBorder;
  *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
  *  @version $Id$
  */
-public class BusContentionApplet extends CSPApplet {
+public class BusContentionApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the applet.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Create a model.
+     *  @param workspace The workspace in which to create the model.
+     *  @return A model.
+     *  @throws Exception If something goes wrong.  This is a broad
+     *   exception to allow derived classes wide lattitude as to which
+     *   exception to throw.
      */
-    public void init() {
-	super.init();
+    protected CompositeActor _createModel(Workspace workspace)
+            throws Exception {
+        _toplevel = new TypedCompositeActor(workspace);
+        _toplevel.setName("BusContention");
+	new CSPDirector(_toplevel, "CSPDirector");
 
-	getContentPane().setLayout( new BorderLayout(5, 5) );
+        // Instantiate Actors
+        _contentionActor = new Controller( _toplevel, "controller" );
+        _alarmActor = new ContentionAlarm( _toplevel, "alarm" );
+        _memoryActor = new Memory( _toplevel, "memory" );
+        _processActor1 = new Processor( _toplevel, "proc1", 1 );
+        _processActor2 = new Processor( _toplevel, "proc2", 2 );
+        _processActor3 = new Processor( _toplevel, "proc3", 3 );
+        
+        TypedIORelation inReqs, outReqs,
+                reads, writes, outContends, inContends;
 
-	// The '2' argument specifies 'go' and 'stop' buttons.
-	// If we need a layout button in the future, then change the '2' to
-	// a '3'.
-	getContentPane().add( _createRunControls(2), BorderLayout.NORTH );
+	// Set up connections
+        inReqs = (TypedIORelation)_toplevel.connect(
+                _contentionActor.requestInput,
+                _processActor1.requestOutput );
+	inReqs = (TypedIORelation)_toplevel.connect(
+                _contentionActor.requestInput,
+                _processActor2.requestOutput );
+        inReqs = (TypedIORelation)_toplevel.connect(
+                _contentionActor.requestInput,
+                _processActor3.requestOutput );
+	outContends = (TypedIORelation)_toplevel.connect(
+                _contentionActor.contendOutput,
+                _alarmActor.input );
+        inContends = (TypedIORelation)_toplevel.connect(
+                _contentionActor.contendInput,
+                _alarmActor.output );
+        outReqs = (TypedIORelation)_toplevel.connect(
+                _contentionActor.requestOutput,
+                _processActor1.requestInput );
+        outReqs = (TypedIORelation)_toplevel.connect(
+                _contentionActor.requestOutput,
+                _processActor2.requestInput );
+        outReqs = (TypedIORelation)_toplevel.connect(
+                _contentionActor.requestOutput,
+                _processActor3.requestInput );
+        reads = (TypedIORelation)_toplevel.connect(
+                _memoryActor.output,
+                _processActor1.memoryInput );
+        reads = (TypedIORelation)_toplevel.connect(
+                _memoryActor.output,
+                _processActor2.memoryInput );
+        reads = (TypedIORelation)_toplevel.connect(
+                _memoryActor.output,
+                _processActor3.memoryInput );
+        writes = (TypedIORelation)_toplevel.connect(
+                _memoryActor.input,
+                _processActor1.memoryOutput );
+        writes = (TypedIORelation)_toplevel.connect(
+                _memoryActor.input,
+                _processActor2.memoryOutput );
+        writes = (TypedIORelation)_toplevel.connect(
+                _memoryActor.input,
+                _processActor3.memoryOutput );
+        return _toplevel;
+    }
 
-	constructPtolemyModel();
+    /** Create an animation pane.
+     */
+    protected void _createView() {
+	super._createView();
 
 	_divaPanel = new JPanel( new BorderLayout() );
         _divaPanel.setBorder(new TitledBorder(
@@ -128,7 +193,7 @@ public class BusContentionApplet extends CSPApplet {
 	_divaPanel.setBackground(getBackground());
 	getContentPane().add( _divaPanel, BorderLayout.SOUTH );
 
-        _graph = constructGraph();
+        _graph = _constructGraph();
 
 	final BasicGraphModel finalGraphModel = _graph;
 	// display the graph.
@@ -150,11 +215,25 @@ public class BusContentionApplet extends CSPApplet {
 	_processActor3.addDebugListener(listener);
     }
 
-    /**  Construct the graph representing the topology.
-     * This is sort of bogus because it's totally hard-wired,
-     * but it will do for now...
+    /** Override the baseclass start method so that the model
+     *  does not immediately begin executing as soon as the
+     *  the applet page is displayed. Execution begins once
+     *  the "Go" button is depressed. Layout the graph visualization,
+     *  since this can't be done in the init method, because the graph
+     *  hasn't yet been displayed.
      */
-    public BasicGraphModel constructGraph() {
+    public void start() {
+ 	_doLayout(_graph, _jgraph.getGraphPane());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Construct the graph representing the topology.
+     *  This is sort of bogus because it's totally hard-wired,
+     *  but it will do for now...
+     */
+    private BasicGraphModel _constructGraph() {
 	BasicGraphModel model = new BasicGraphModel();
 	Object root = model.getRoot();
 
@@ -214,73 +293,9 @@ public class BusContentionApplet extends CSPApplet {
 	return model;
     }
 
-    /** Construct the Ptolemy system */
-    public void constructPtolemyModel() {
-        try {
-            // Instantiate Actors
-	    _contentionActor = new Controller( _toplevel, "controller" );
-	    _alarmActor = new ContentionAlarm( _toplevel, "alarm" );
-            _memoryActor = new Memory( _toplevel, "memory" );
-	    _processActor1 = new Processor( _toplevel, "proc1", 1 );
-	    _processActor2 = new Processor( _toplevel, "proc2", 2 );
-	    _processActor3 = new Processor( _toplevel, "proc3", 3 );
-
-	    TypedIORelation inReqs, outReqs,
-                reads, writes, outContends, inContends;
-
-	    // Set up connections
-	    inReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestInput,
-                    _processActor1.requestOutput );
-	    inReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestInput,
-                    _processActor2.requestOutput );
-	    inReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestInput,
-                    _processActor3.requestOutput );
-	    outContends = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.contendOutput,
-                    _alarmActor.input );
-            inContends = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.contendInput,
-                    _alarmActor.output );
-            outReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestOutput,
-                    _processActor1.requestInput );
-	    outReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestOutput,
-                    _processActor2.requestInput );
-	    outReqs = (TypedIORelation)_toplevel.connect(
-            	    _contentionActor.requestOutput,
-                    _processActor3.requestInput );
-	    reads = (TypedIORelation)_toplevel.connect(
-            	    _memoryActor.output,
-                    _processActor1.memoryInput );
-	    reads = (TypedIORelation)_toplevel.connect(
-            	    _memoryActor.output,
-                    _processActor2.memoryInput );
-	    reads = (TypedIORelation)_toplevel.connect(
-            	    _memoryActor.output,
-                    _processActor3.memoryInput );
-	    writes = (TypedIORelation)_toplevel.connect(
-            	    _memoryActor.input,
-                    _processActor1.memoryOutput );
-	    writes = (TypedIORelation)_toplevel.connect(
-            	    _memoryActor.input,
-                    _processActor2.memoryOutput );
-	    writes = (TypedIORelation)_toplevel.connect(
-            	    _memoryActor.input,
-                    _processActor3.memoryOutput );
-
-        } catch (Exception e) {
-	    e.printStackTrace();
-            throw new RuntimeException(e.toString());
-        }
-    }
-
     /** Layout the graph again.
      */
-    public void doLayout(GraphModel graph, GraphPane gp) {
+    private void _doLayout(GraphModel graph, GraphPane gp) {
         // Do the layout
 	try {
 	    final GraphModel layoutGraph = graph;
@@ -299,38 +314,6 @@ public class BusContentionApplet extends CSPApplet {
 	} catch (Exception e) {
 	    System.out.println(e);
 	}
-    }
-
-    /** Override the baseclass start method so that the model
-     *  does not immediately begin executing as soon as the
-     *  the applet page is displayed. Execution begins once
-     *  the "Go" button is depressed. Layout the graph visualization,
-     *  since this can't be done in the init method, because the graph
-     *  hasn't yet been displayed.
-     */
-    public void start() {
- 	doLayout(_graph, _jgraph.getGraphPane());
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** In addition to creating the buttons provided by the base class,
-     *  if the number of iterations has not been specified, then create
-     *  a dialog box for that number to be entered.  The panel containing
-     *  the buttons and the entry box is returned.
-     *  @param numButtons The number of buttons to create.
-     */
-    protected JPanel _createRunControls(int numButtons) {
-        JPanel controlPanel = super._createRunControls(numButtons);
-
-        if (numButtons > 2) {
-            JButton layout = new JButton("Layout");
-            controlPanel.add(layout);
-            layout.addActionListener(new LayoutListener());
-        }
-
-        return controlPanel;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -366,7 +349,7 @@ public class BusContentionApplet extends CSPApplet {
 	public void actionPerformed(ActionEvent evt) {
 	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
 	    final GraphModel g = _graph;
-	    doLayout(g, gp);
+	    _doLayout(g, gp);
 	}
     }
 

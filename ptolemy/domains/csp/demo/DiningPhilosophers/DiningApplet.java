@@ -56,6 +56,10 @@ import java.text.NumberFormat;
    thinks for a while, then grabs one chopstick, then the other, eats for
    a while and puts the chopsticks down. This cycle continues.
    <p>
+   NOTE: This applet predates much of the infrastructure in Ptolemy II
+   for constructing applets, and also predates swing. It probably should
+   not be used as a model for how to construct applets in Ptolemy II.
+   <p>
    @author Neil Smyth
    @version $Id$
 */
