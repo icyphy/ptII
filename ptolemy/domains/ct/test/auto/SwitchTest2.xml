@@ -1,12 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SwitchTest" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SwitchTest2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 323]">
-    </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -54,14 +50,39 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 192, 839, 441}, maximized=false}">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Note at time 1.5, the EventSource generates an event and the event 
+triggers the continuous time composite actor to output a new value. 
+This new value is sampled by the periodicSampler. At this time, 
+the model works as a discrete system. </text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 400.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.0, 161.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sampling period as 0.3">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sampling period as 0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 40.0]">
         </property>
@@ -388,9 +409,9 @@
         <link port="sinewave.output" relation="relation4"/>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.3">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 105.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -406,51 +427,48 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9553242920833, 0.8253139225488, 0.6215843888267, 0.3623359738043, 0.0707278141974, 1.0, -0.5048081143107, -0.7373256220607, -0.9039746195803, -0.9898705765073}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.995, 0.9800583055556, 0.9553242920833, 0.921045175619, 0.8775635418974, 0.8253139225488, 0.7648184526274, 0.6966816528703, 0.6215843888267, 0.5402770672231, 0.4535721375508, 0.3623359738043, 0.2674802174883, 0.1699526683989, 0.0707278141974, 1.0, 1.0, 1.0, 1.0, 1.0, -0.5048081143107, -0.588453274758, -0.6662180951695, -0.7373256220607, -0.8010654260426, -0.8568006996631, -0.9039746195803, -0.9421159095076, -0.9708435483512, -0.9898705765073}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 105.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="270.0, 190.0">
         </vertex>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="260.0, 225.0">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[395.0, 105.0]">
+        </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="EventSource.output" relation="relation6"/>
-    <link port="Integrator.input" relation="relation2"/>
+    <link port="EventSource.output" relation="relation3"/>
+    <link port="Integrator.input" relation="relation5"/>
     <link port="Integrator.output" relation="relation"/>
     <link port="Integrator2.input" relation="relation"/>
-    <link port="Integrator2.output" relation="relation4"/>
-    <link port="Scale.input" relation="relation4"/>
-    <link port="Scale.output" relation="relation2"/>
-    <link port="Const.output" relation="relation7"/>
-    <link port="continuous time composite actor.trigger" relation="relation6"/>
-    <link port="continuous time composite actor.input1" relation="relation7"/>
-    <link port="continuous time composite actor.input2" relation="relation4"/>
-    <link port="continuous time composite actor.output" relation="relation3"/>
-    <link port="PeriodicSampler.input" relation="relation3"/>
-    <link port="PeriodicSampler.output" relation="relation5"/>
-    <link port="NonStrictTest.input" relation="relation5"/>
+    <link port="Integrator2.output" relation="relation2"/>
+    <link port="Scale.input" relation="relation2"/>
+    <link port="Scale.output" relation="relation5"/>
+    <link port="Const.output" relation="relation4"/>
+    <link port="continuous time composite actor.trigger" relation="relation3"/>
+    <link port="continuous time composite actor.input1" relation="relation4"/>
+    <link port="continuous time composite actor.input2" relation="relation2"/>
+    <link port="continuous time composite actor.output" relation="relation7"/>
+    <link port="PeriodicSampler.input" relation="relation7"/>
+    <link port="PeriodicSampler.output" relation="relation6"/>
+    <link port="NonStrictTest.input" relation="relation6"/>
 </entity>
