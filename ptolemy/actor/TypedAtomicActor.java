@@ -153,13 +153,12 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
     /** Return the type constraints of this actor.
      *  The constraints have the form of an enumeration of inequalities.
-     *  In this base class, the default implementation of type constraints
+     *  In this base class, the implementation of type constraints
      *  is that the type of any input port with undeclared type must be less
-     *  than or equal to the type of any output port, and the type of any
-     *  output port with undeclared type must be greater than or equal
-     *  to the type of any input port. If all the ports have declared
-     *  type, then no constraints are generated, and an empty enumeration
-     *  is returned.
+     *  than or equal to the type of any output port with undeclared type.
+     *  The constraints do not involve ports with declared types.
+     *  If all the ports have declared type, then no constraints are
+     *  generated, and an empty enumeration is returned.
      *  This method is read-synchronized on the workspace.
      *  @return an Enumeration of Inequality.
      *  @see ptolemy.graph.Inequality
@@ -172,14 +171,15 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	    Enumeration inPorts = inputPorts();
 	    while (inPorts.hasMoreElements()) {
 	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
-		Enumeration outPorts = outputPorts();
-	    	while (outPorts.hasMoreElements()) {
-		    TypedIOPort outport = (TypedIOPort)outPorts.nextElement();
+		if (inport.getDeclaredType() == null) {
+		    Enumeration outPorts = outputPorts();
+	    	    while (outPorts.hasMoreElements()) {
+		    	TypedIOPort outport =
+				 (TypedIOPort)outPorts.nextElement();
 
-		    if (inport != outport) {
-		        // not bi-directional port
-			if (inport.getDeclaredType() == null ||
-			    outport.getDeclaredType() == null) {
+		    	if (outport.getDeclaredType() == null &&
+			    inport != outport) {
+			    // output also undeclared, not bi-directional port, 
 		            Inequality ineq = new Inequality(
 				inport.getTypeTerm(), outport.getTypeTerm());
 			    result.insertLast(ineq);
