@@ -121,7 +121,7 @@ public class TrigFunction extends Transformer {
         // parameters
         function = new StringAttribute(this, "function");
         function.setExpression("sin");
-        _function = SIN;
+        _function = _SIN;
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -148,17 +148,17 @@ public class TrigFunction extends Transformer {
         if (attribute == function) {
             String spec = function.getExpression();
             if (spec.equals("acos")) {
-                _function = ACOS;
+                _function = _ACOS;
             } else if (spec.equals("asin")) {
-                _function = ASIN;
+                _function = _ASIN;
             } else if (spec.equals("atan")) {
-                _function = ATAN;
+                _function = _ATAN;
             } else if (spec.equals("cos")) {
-                _function = COS;
+                _function = _COS;
             } else if (spec.equals("sin")) {
-                _function = SIN;
+                _function = _SIN;
             } else if (spec.equals("tan")) {
-                _function = TAN;
+                _function = _TAN;
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized trigonometric function: " + spec);
@@ -227,22 +227,22 @@ public class TrigFunction extends Transformer {
     private double _doFunction(double in) {
         double result;
         switch(_function) {
-        case ACOS:
+        case _ACOS:
             result = Math.acos(in);
             break;
-        case ASIN:
+        case _ASIN:
             result = Math.asin(in);
             break;
-        case ATAN:
+        case _ATAN:
             result = Math.atan(in);
             break;
-        case COS:
+        case _COS:
             result = Math.cos(in);
             break;
-        case SIN:
+        case _SIN:
             result = Math.sin(in);
             break;
-        case TAN:
+        case _TAN:
             result = Math.tan(in);
             break;
         default:
@@ -264,10 +264,10 @@ public class TrigFunction extends Transformer {
     private int _function;
 
     // Constants used for more efficient execution.
-    private static final int ACOS = 0;
-    private static final int ASIN = 1;
-    private static final int ATAN = 2;
-    private static final int COS = 3;
-    private static final int SIN = 4;
-    private static final int TAN = 5;
+    private static final int _ACOS = 0;
+    private static final int _ASIN = 1;
+    private static final int _ATAN = 2;
+    private static final int _COS = 3;
+    private static final int _SIN = 4;
+    private static final int _TAN = 5;
 }
