@@ -34,14 +34,12 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.Configurable;
 import ptolemy.moml.*;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.net.URL;
 import java.io.*;
-import collections.*;
-import ptolemy.schematic.xml.XMLElement;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.*;
+import diva.util.xml.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLIcon
@@ -60,15 +58,24 @@ it will have a default figure.
 public class XMLIcon extends EditorIcon implements Configurable {
 
     /**
-     * Create a new icon with the name "Icon" in the given container.
+     * Create a new icon with the name "_icon" in the given container.
      * By default, the icon contains no graphic
      * representations.
      */
     public XMLIcon (NamedObj container) 
             throws NameDuplicationException, IllegalActionException {
-        super(container);
-        setName("_icon");
-        _graphics = (CircularList) new CircularList();
+       this(container, "_icon");
+    }
+
+    /**
+     * Create a new icon with the given name in the given container.
+     * By default, the icon contains no graphic
+     * representations.
+     */
+    public XMLIcon (NamedObj container, String name) 
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+        _graphics = (LinkedList) new LinkedList();
     }
 
    /**
@@ -76,7 +83,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      */
     public void addGraphicElement (GraphicElement g) 
             throws IllegalActionException {
-        _graphics.insertLast(g);
+        _graphics.add(g);
     }
 
     /** Configure the object with data from the specified input stream.
@@ -90,7 +97,19 @@ public class XMLIcon extends EditorIcon implements Configurable {
      *   is incorrect.
      */
     public void configure(URL base, InputStream in) throws Exception {
-	// Do nothing yet.
+        _graphics.clear();
+        XmlDocument document = new XmlDocument(base);
+        XmlReader reader = new XmlReader();
+        reader.parse(document, in);
+        XmlElement root = document.getRoot();
+        
+        // FIXME this should be a little nicer, but it will work for now.
+        Iterator graphics = root.elements();
+        while(graphics.hasNext()) {
+            XmlElement graphic = (XmlElement)graphics.next();
+            GraphicElement g = _createGraphicElement(graphic);
+            addGraphicElement(g);
+        }  
     }
 
     /**
@@ -98,7 +117,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * given format.
      */
     public boolean containsGraphicElement (GraphicElement g) {
-        return _graphics.includes(g);
+        return _graphics.contains(g);
     }
 
     /**
@@ -116,13 +135,22 @@ public class XMLIcon extends EditorIcon implements Configurable {
     }
 
     /**
-     * Return an enumeration over the names of the graphics formats
-     * supported by this icon.
+     * Return an unmodifiable list over the graphic elements
+     * contained by this icon.
+     */
+    public List graphicElementList() {
+        return Collections.unmodifiableList(_graphics);
+    }
+
+    /**
+     * Return an enumeration over the graphic elements
+     * contained by this icon.
      *
-     * @return Enumeration of String.
+     * @return Enumeration of GraphicElements.
+     * @deprecate
      */
     public Enumeration graphicElements() {
-        return _graphics.elements();
+        return Collections.enumeration(_graphics);
     }
 
     /**
@@ -132,7 +160,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
     public void removeGraphicElement (GraphicElement g)
             throws IllegalActionException {
         try {
-            _graphics.removeOneOf(g);
+            _graphics.remove(g);
         }
         catch (NoSuchElementException e) {
             throw new IllegalActionException("removeGraphicElement:" +
@@ -184,6 +212,32 @@ public class XMLIcon extends EditorIcon implements Configurable {
         return result;
     }
 
-    private CircularList _graphics;
+    private GraphicElement _createGraphicElement(XmlElement e)
+        throws IllegalActionException {
+
+        String name = e.getType();
+        GraphicElement element = new GraphicElement(name);
+        Iterator children = e.elements();
+        while(children.hasNext()) {
+            XmlElement child = (XmlElement)children.next();
+            System.out.println("Unrecognized element type = " +
+                    child.getType() + " found in " + 
+                    element.getClass().getName());
+        }
+        
+        Iterator attributes = e.attributeNames();
+        while(attributes.hasNext()) {
+            String n = (String) attributes.next();
+            String v = e.getAttribute(n);        
+            element.setAttribute(n, v);
+        }
+
+        element.setLabel(e.getPCData());
+        return element;
+    }
+
+    
+    
+    private LinkedList _graphics;
 }
 

@@ -51,8 +51,6 @@ JSRCS = \
 	EditorIcon.java \
 	EnumerationIterator.java \
 	GraphicElement.java \
-	IconLibrary.java \
-	IconLibraryFactory.java \
 	LibraryIcon.java \
 	PatternIcon.java \
 	XMLIcon.java	

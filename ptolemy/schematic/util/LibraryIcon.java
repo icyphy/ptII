@@ -97,9 +97,9 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	    throw new RuntimeException("buffer overrun");
 	}
 	String name = new String(b, 0, bytesread);
-        IconLibrary library = LibraryIcon.getIconLibrary();
+        CompositeEntity library = LibraryIcon.getIconLibrary();
         if(library == null) return;
-	EditorIcon icon = (EditorIcon)library.findIcon(name);
+	EditorIcon icon = (EditorIcon)library.getAttribute(name);
 	// if it is found
 	if(icon != null) {
 	    setPattern(icon);
@@ -172,17 +172,17 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 
     /** Return the root icon library from which to search for icons.
      */
-    public static IconLibrary getIconLibrary() {
+    public static CompositeEntity getIconLibrary() {
 	return _iconLibrary;
     }
 
     /** Set the root icon library from which to search for icons.
      */
-    public static void setIconLibrary(IconLibrary library) {
+    public static void setIconLibrary(CompositeEntity library) {
 	_iconLibrary = library;
     }
 
-    private static IconLibrary _iconLibrary;
+    private static CompositeEntity _iconLibrary;
     private String _iconName;
 }
 
