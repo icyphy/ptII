@@ -31,12 +31,12 @@
 
 package ptolemy.graph;
 
-import ptolemy.kernel.util.InvalidStateException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import ptolemy.kernel.util.InvalidStateException;
+
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicGraph.java
 /**
@@ -53,8 +53,8 @@ import java.util.ListIterator;
 
    This class implements the CPO interface since the Hasse diagram of a CPO
    can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
-   and a finite CPO. In the case of CPO, the Objects representing
-   nodes of the graph are CPO elements. The CPO does not require the bottom
+   and a finite CPO. In the case of CPO, the node weights
+   are the CPO elements. The CPO does not require the bottom
    element to exist. The call to <code>bottom</code> returns
    <code>null</code> if the bottom element does not exist.
    <p>
@@ -85,7 +85,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  for the specified number of elements.  Memory management is more
      *  efficient with this constructor if the number of elements is
      *  known.
-     *  @param elementCount the number of elements.
+     *  @param nodeCount the number of elements.
      */
     public DirectedAcyclicGraph(int nodeCount) {
         super(nodeCount);
@@ -93,54 +93,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add a node to this DAG.  The node is represented by the
-     *  specified <code>Object</code>. The <code>Object</code> cannot
-     *  be <code>null</code>.  In addition, two <code>Object</code>s
-     *  equal to each other, as determined by the <code>equals</code>
-     *  method, cannot both be added.<p>
-     *
-     *  After nodes are added to a graph, The node Objects should not
-     *  be changed in such a way that the Objects representing
-     *  distinct nodes are equal, as determined by the
-     *  <code>equals</code> method. Doing so may generate unexpected
-     *  results.
-     *
-     *  @param o the Object representing a graph node.
-     *  @exception IllegalArgumentException If an Object equals to the
-     *   specified one is already in this DAG.
-     *  @exception NullPointerException If the specified Object is
-     *   <code>null</code>.
-     */
-    public void add(Object object) {
-        super.add(object);
-
-        _invalidate();
-    }
-
-    /** Add a directed edge to connect two nodes. That is, make the first
-     *  argument lower than the second.  Multiple connections
-     *  between two nodes are allowed, and are considered different
-     *  edges. When this class is used to model a finite CPO, multiple
-     *  connections between the same nodes are redundant and have no
-     *  effects on CPO operations. Self loop is not allowed.
-     *
-     *  @param object1 the Object representing the lower node.
-     *  @param object2 the Object representing the higher node.
-     *  @exception IllegalArgumentException If the two nodes are equal,
-     *   as determined by the <code>equals</code> method.
-     *  @exception NullPointerException If at least one of the specified
-     *   Objects is <code>null</code>.
-     */
-    public void addEdge(Object object1, Object object2) {
-        if (object1.equals(object2)) {
-            throw new IllegalArgumentException("DirectedAcyclicGraph.addEdge: "
-                    + "Cannot add a self loop in acyclic graph.");
-        }
-
-        super.addEdge(object1, object2);
-        _invalidate();
-    }
 
     /** Return the bottom element of this CPO.
      *  @return an Object representing the bottom element, or
@@ -162,8 +114,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     public int compare(Object e1, Object e2) {
         _validate();
 
-        int i1 = _getNodeId(e1);
-        int i2 = _getNodeId(e2);
+        int i1 = nodeLabel(e1);
+        int i2 = nodeLabel(e2);
 
         return _compareNodeId(i1, i2);
     }
@@ -238,7 +190,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 	    return false;
 	}
 
-	Object[] nodes = getNodes();
+	Object[] nodes = weightArray(nodes());
 	for (int i = 0; i < nodes.length-1; i++) {
 	    for (int j = i+1; j < nodes.length; j++) {
 		if (leastUpperBound(nodes[i], nodes[j]) == null) {
@@ -310,10 +262,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @exception InvalidStateException If the graph is cyclic.
      */
     public Object[] topologicalSort() {
-        int size = getNodeCount();
+        int size = nodeCount();
         int[] indeg = new int[size];
         for (int i = 0; i < size; i++) {
-            indeg[i] = _getNode(i).inputEdgeCount();
+            indeg[i] = inputEdgeCount(node(i));
         }
         Object[] result = new Object[size];
         boolean finished = false;
@@ -328,12 +280,12 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                 }
                 if(indeg[id] == 0) {
                     finished = false;
-                    result[nextResultIndex++] = _getNodeObject(id);
+                    result[nextResultIndex++] = nodeWeight(id);
                     indeg[id]--;
-                    Iterator outputEdges = _getNode(id).outputEdges();
+                    Iterator outputEdges = outputEdges(node(id)).iterator();
                     while (outputEdges.hasNext()) {
                         Node sink = ((Edge)(outputEdges.next())).sink();
-                        indeg[_getNodeId(sink.weight())]--;
+                        indeg[nodeLabel(sink)]--;
                     }
                 }
             }
@@ -359,7 +311,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         int N = objects.length;
         int[] ids = new int[N];
         for (int i = 0; i < N; i++) {
-            ids[i] = _getNodeId(objects[i]);
+            ids[i] = nodeLabel(objects[i]);
         }
         for (int i = 0; i < N-1; i++) {
             for (int j = i+1; j < N; j++) {
@@ -373,7 +325,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         }
         Object[] result = new Object[N];
         for (int i = 0; i < N; i++) {
-            result[i] = _getNodeObject(ids[i]);
+            result[i] = nodeWeight(ids[i]);
         }
         return result;
     }
@@ -388,6 +340,51 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     public Object[] upSet(Object e) {
         _validate();
         return _upSetShared(e);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Create and add an edge with a specified source node and sink node.
+     * The third parameter specifies whether the edge is to be
+     * weighted, and the fourth parameter is the weight that is
+     * to be applied if the edge is weighted.
+     * Returns the edge that is added.
+     * @param node1 The source node of the edge.
+     * @param node2 The sink node of the edge.
+     * @param weighted True if the edge is to be weighted.
+     * @param weight The weight that is to be applied if the edge is to
+     * be weighted.
+     * @return The edge.
+     * @exception IllegalArgumentException If either of the specified nodes
+     * is not in the graph, or if the specified nodes are identical.
+     * @exception NullPointerException If the edge is to be weighted, but
+     * the specified weight is null.
+     */ 
+    protected Edge _addEdge(Node node1, Node node2, boolean weighted,
+            Object weight) {
+        if (node1 == node2) {
+            throw new IllegalArgumentException("Cannot add a self loop in " +
+                    "an acyclic graph.\nA self loop was attempted on the " +
+                    "following node.\n" + node1.toString());
+        } else {
+            return super._addEdge(node1, node2, weighted, weight);
+        }
+    }
+
+    /** Return an empty DAG. 
+     *  @return An empty DAG.
+     */
+    protected static Graph _emptyGraph() {
+        return new DirectedAcyclicGraph();
+    }
+
+    /** Create and register all of the change listeners for this graph, and
+     *  initialize the change counter of the graph.
+     */
+    protected void _initializeListeners() {
+        super._initializeListeners();
+        _transitiveClosureListener = new GraphListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -409,17 +406,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     // upSet
     //   |
     // _upSetShared
-
-    // set the flag indicating the graph is modified so some data structures
-    // are invalid.
-    private void _invalidate() {
-	_invalid = true;
-    }
-
+    
     // compute transitive closure.  Throws InvalidStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
-        if ( !_invalid) {
+        if (!_transitiveClosureListener.obsolete()) {
             _closure = _transitiveClosure;
             return;
         }
@@ -432,10 +423,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
         // find bottom
         _bottom = null;
-        for (int i = 0; i < getNodeCount(); i++) {
-            if (_getNode(i).inputEdgeCount() == 0) {
+        for (int i = 0; i < nodeCount(); i++) {
+            if (inputEdgeCount(node(i)) == 0) {
                 if (_bottom == null) {
-                    _bottom = _getNodeObject(i);
+                    _bottom = nodeWeight(i);
                 } else {
 		    _bottom = null;
 		    break;
@@ -445,10 +436,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
 	// find top
 	_top = null;
-	for (int i = 0; i < getNodeCount(); i++) {
-            if (_getNode(i).outputEdgeCount() == 0) {
+	for (int i = 0; i < nodeCount(); i++) {
+            if (outputEdgeCount(node(i)) == 0) {
                 if (_top == null) {
-                    _top = _getNodeObject(i);
+                    _top = nodeWeight(i);
                 } else {
                     _top = null;
                     break;
@@ -458,8 +449,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
         _closure = _transitiveClosure;
         _tranClosureTranspose = null;
-
-        _invalid = false;
+        _transitiveClosureListener.registerComputation();
     }
 
     // compute the transposition of transitive closure and point _closure
@@ -587,7 +577,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         if (candidate == -1) {
             return null;
         } else {
-            return _getNodeObject(candidate);
+            return nodeWeight(candidate);
         }
     }
 
@@ -600,8 +590,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                 throw new IllegalArgumentException("Object not in CPO.");
             }
         } else if (subset.length == 2) {
-            int i1 = _getNodeId(subset[0]);
-            int i2 = _getNodeId(subset[1]);
+            int i1 = nodeLabel(subset[0]);
+            int i2 = nodeLabel(subset[1]);
 
             int result = _compareNodeId(i1, i2);
             if (result == LOWER || result == SAME) {
@@ -614,7 +604,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         } else {
             int[] ids = new int[subset.length];
             for (int i = 0; i < subset.length; i++) {
-                ids[i] = _getNodeId(subset[i]);
+                ids[i] = nodeLabel(subset[i]);
             }
             return _leastElementNodeId(ids);
         }
@@ -623,8 +613,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     // compute the lub using _closure.  This method is shared by
     // leastUpperBound() and greatestLowerBound()
     private Object _lubShared(Object e1, Object e2) {
-        int i1 = _getNodeId(e1);
-        int i2 = _getNodeId(e2);
+        int i1 = nodeLabel(e1);
+        int i2 = nodeLabel(e2);
 
         int result = _compareNodeId(i1, i2);
         if (result == LOWER || result == SAME) {
@@ -634,7 +624,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         } else {    // incomparable
             // an array of flags indicating if the ith element is an
             // upper bound.
-            int size = getNodeCount();
+            int size = nodeCount();
             boolean[] isUpperBD = new boolean[size];
             int numUpperBD = 0;
             for (int i = 0; i < size; i++) {
@@ -661,7 +651,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                 }
 
                 if (numUpperBD == 1) {
-                    return _getNodeObject(upperBD[0]);
+                    return nodeWeight(upperBD[0]);
                 } else {
                     return _leastElementNodeId(upperBD);
                 }
@@ -678,11 +668,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 	// convert all elements to their IDs
 	int[] subsetId = new int[subset.length];
 	for (int i = 0; i < subset.length; i++) {
-	    subsetId[i] = _getNodeId(subset[i]);
+	    subsetId[i] = nodeLabel(subset[i]);
 	}
 
 	// find all the upper bounds
-	int size = getNodeCount();
+	int size = nodeCount();
 	int numUB = 0;
 	int[] ubId = new int[size];
 	for (int i = 0; i < size; i++) {
@@ -709,12 +699,12 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
     // compute the up-set of an element.
     private Object[] _upSetShared(Object e) {
-        int id = _getNodeId(e);
+        int id = nodeLabel(e);
         ArrayList upset = new ArrayList(_closure.length);
         upset.add(e);    // up-set includes the element itself.
         for (int i = 0; i < _closure.length; i++) {
             if (_closure[id][i]) {
-                upset.add(_getNodeObject(i));
+                upset.add(nodeWeight(i));
             }
         }
 
@@ -724,10 +714,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // flag indicating that the graph is modified so some data structures
-    // are invalid.
-    private boolean _invalid = true;
-
     // _closure = _transitiveClosure for lub, upSet, leastElement;
     // _closure = _tranClosureTranspose for the dual operations: glb,
     //   downSet, greatestElement.
@@ -735,6 +721,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     // use _closure instead of _transitiveClosure or _tranClosureTranspose.
     private boolean[][] _closure = null;
     private boolean[][] _tranClosureTranspose = null;
+
+    // The graph listener for computation of the transitive closure.
+    private GraphListener _transitiveClosureListener; 
 
     private Object _bottom = null;
     private Object _top = null;

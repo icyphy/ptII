@@ -1,4 +1,4 @@
-/* A weighted edge for a directed or undirected graph.
+/* A weighted or unweighted edge for a directed or undirected graph.
 
  Copyright (c) 2001 The University of Maryland
  All rights reserved.
@@ -31,76 +31,115 @@ package ptolemy.graph;
 //////////////////////////////////////////////////////////////////////////
 //// Edge
 /**
-A weighted edge for a directed or undirected graph. Edges should
-normally be manipulated (created, and modified) only by classes of
+A weighted or unweighted edge for a directed or undirected graph. 
+Edges are immutable, and should
+normally created only by classes of
 graphs that contain them. The connectivity of edges is specified by
 "source" nodes and "sink" nodes.  A directed edge is directed "from"
 its source node "to" its sink node.  For an undirected edge, the
 source node is simply the first node that was specified when the edge
 was created, and the sink node is the second node.  This convention
-allows undirected edges to later be "converted" in a consistent manner
+allows undirected edges to later be converted in a consistent manner
 to directed edges, if desired.
+
+<p>On creation of an edge, an arbitrary object can be associated with the edge
+as the weight of the edge.  We say that an edge is <em>unweighted</em> if it
+does not have an assigned weight. It is an error to attempt to access the
+weight of an unweighted edge.
 
 <p>Self-loop edges (edges whose source and sink nodes are identical)
 are allowed.
-
-<p>An arbitrary object can be associated with an edge as the "weight"
-of the edge.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
 @see ptolemy.graph.Node
 */
-public class Edge {
+public final class Edge {
+
+    /** Construct an unweighted edge with a specified source node and sink node.
+     *  @param source The source node.
+     *  @param sink The sink node.
+     */
+    public Edge(Node source, Node sink) {
+        _source = source;
+        _sink = sink;
+        _weight = null;
+    }
 
     /** Construct an edge with a specified source node, sink node, and
      *  edge weight.
-     *  The edge weight may be <em>null</em>.
-     *  @param the source node.
-     *  @param the sink node.
-     *  @param the edge weight.
+     *  @param source The source node.
+     *  @param sink The sink node.
+     *  @param weight The edge weight.
+     *  @exception IllegalArgumentException If the specified weight is
+     *  <code>null</code>.
      */
     public Edge(Node source, Node sink, Object weight) {
-        _source = source;
-        _sink = sink;
-        _weight = weight;
-        source.addOutputEdge(this);
-        sink.addInputEdge(this);
+        this(source, sink);
+        if (weight == null) {
+            throw new IllegalArgumentException("Attempt to assign a null "
+                    + "weight to an edge.\nThe source node: " + source
+                    + ".\nThe sink node: " + sink + ".\n");
+        } else {
+            _weight = weight;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the sink node of the edge
-     *  @return the sink node.
+    /** Return true if this is a weighted edge.
+     *  @return True if this is a weighted edge.
      */
-    public Node sink() {return _sink;}
+    public boolean hasWeight() {
+        return _weight != null;
+    }
 
-    /** Return the source node of the edge
-     *  @return the source node.
+    /** Return true if this is a self-loop edge.
+     *  @return True if this is a self-loop edge. 
      */
-    public Node source() {return _source;}
+    public boolean isSelfLoop() {
+        return _source == _sink;
+    }
+
+    /** Return the sink node of the edge.
+     *  @return The sink node.
+     */
+    public Node sink() {
+        return _sink;
+    }
+
+    /** Return the source node of the edge.
+     *  @return The source node.
+     */
+    public Node source() {
+        return _source;
+    }
 
     /** Return a string representation of the edge. The string
-     *  representation is of the form <p> (<em>source</em>,
-     *  <em>sink</em>, <em>weight</em>), <p> where <em>source</em>,
-     *  <em>sink</em>, and <em>weight</em> are string representations
+     *  representation is of the form 
+     *
+     *  <p> <code>(source, sink, weight)</code>, 
+     *
+     *  <p> where <code>source</code>, <code>sink</code>, and 
+     *  <code>weight</code> 
+     *
+     *  are string representations
      *  of the source node, sink node, and edge weight, respectively.
-     *  The edge weight is suppressed from the representation if the
-     *  method argument is <em>false</em>.
-     *  @param showWeight include a string representation of the edge
-     *  weight in the edge's string representation.
-     *  @return the edge's string representation.
+     *  If the edge is unweighted or the <code>showWeight</code> argument is 
+     *  false, then the string representation is
+     *  is simply
+     *
+     *  <p> <code>(source, sink)</code>. 
+     *
+     *  @param showWeight True to include a string representation of the edge
+     *  weight in the string representation of the edge.
+     *  @return A string representation of the edge.
      */
     public String toString(boolean showWeight) {
         String result = new String("(" + _source + ", " + _sink);
-        if (showWeight) {
-            result += ", ";
-            if (_weight == null) {
-                result += "null";
-            } else {
-                result += _weight;
-            }
+        if (showWeight && hasWeight()) {
+            result += ", " + _weight;
         }
         result += ")";
         return result;
@@ -109,15 +148,24 @@ public class Edge {
     /** Return a string representation of the edge. Include information
      *  about the edge weight.
      *  @see #toString(boolean)
+     *  @return A string representation of the edge.
      */
     public String toString() {
         return toString(true);
     }
 
-    /** Return the weight of the edge
-     *  @return the edge weight.
+    /** Return the weight of the edge.
+     *  @return The edge weight.
+     *  @exception IllegalStateException If this is an unweighted node.
      */
-    public Object weight() {return _weight;}
+    public Object weight() {
+        if (!hasWeight()) {
+            throw new IllegalStateException("Attempt to access the weight "
+                    + "of an unweighted edge. The edge: " + this + ".\n");
+        } else {
+            return _weight;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
@@ -131,3 +179,4 @@ public class Edge {
     // The weight of the edge
     private Object _weight;
 }
+

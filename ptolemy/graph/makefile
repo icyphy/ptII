@@ -56,10 +56,13 @@ JSRCS = \
 	DirectedGraph.java \
 	Edge.java \
 	Graph.java \
-	Node.java \
+    GraphListener.java \
+	GraphReader.java \
+    LabeledList.java \
 	Inequality.java \
 	InequalitySolver.java \
-	InequalityTerm.java
+	InequalityTerm.java \
+    Node.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
