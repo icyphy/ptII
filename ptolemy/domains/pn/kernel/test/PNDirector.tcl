@@ -118,11 +118,11 @@ test PNDirector-5.2.1 {cover debug basic block} {
 	        [$stream toString] "\n" debugOutput
     # Truncate debugging output because it varies
     puts $debugOutput 	
-    list [string range $debugOutput 0 169]
+    list [string range $debugOutput 0 178]
 } {{Invoking preinitialize():  .E0.A1
 Invoking preinitialize():  .E0.A2
 Finished preinitialize().
------ Setting current time to 0.0
+----- Setting current time to 0.0000000000
 Called initialize().
 Invoking initialize()}}
 

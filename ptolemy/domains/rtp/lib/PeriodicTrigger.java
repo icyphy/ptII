@@ -119,7 +119,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
         Director director = getDirector();
         Time time = director.getModelTime();
         if (_debugging) _debug("Next iteration at " 
-            + time.add(_period).getTimeValue());
+            + time.add(_period).getDoubleValue());
         director.fireAt(this, time.add(_period));
         return super.postfire();
     }

@@ -120,7 +120,7 @@ public class TimedSource extends Source implements TimedActor {
             double newStopTimeValue = 
                 ((DoubleToken)stopTime.getToken()).doubleValue();
             if (_executing) {
-                Time newStopTime = new Time(this, newStopTimeValue);
+                Time newStopTime = new Time(getDirector(), newStopTimeValue);
                 Director director = getDirector();
                 if (director != null) {
                     Time currentTime = director.getModelTime();
@@ -145,7 +145,7 @@ public class TimedSource extends Source implements TimedActor {
      *  {@link #getModelStopTime}
      */
     public double getStopTime() {
-        return getModelStopTime().getTimeValue();
+        return getModelStopTime().getDoubleValue();
     }
     
     /** Get the stop time.
@@ -167,7 +167,7 @@ public class TimedSource extends Source implements TimedActor {
         }
         double stopTimeValue = 
             ((DoubleToken)stopTime.getToken()).doubleValue();
-        _stopTime = new Time(this, stopTimeValue); 
+        _stopTime = new Time(getDirector(), stopTimeValue); 
         Time currentTime = director.getModelTime();
         if (_stopTime.compareTo(currentTime) > 0) {
             director.fireAt(this, _stopTime);

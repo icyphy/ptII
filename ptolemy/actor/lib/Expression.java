@@ -290,7 +290,7 @@ public class Expression extends TypedAtomicActor {
         public Token get(String name) throws IllegalActionException {
             if (name.equals("time")) {
                 return new DoubleToken(
-                    getDirector().getModelTime().getTimeValue());
+                    getDirector().getModelTime().getDoubleValue());
             } else if (name.equals("iteration")) {
                 return new IntToken(_iterationCount);
             }

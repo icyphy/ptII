@@ -137,8 +137,8 @@ test TMReceiver-4.4 {put port that has a container} {
 Updating TMDirector parameter startTime
 Updating TMDirector parameter stopTime
 Updating TMDirector parameter preemptive
-Updating TMDirector parameter timeResolution
---- Set the time resolution to: 1.0E-10
+Updating TMDirector parameter timeScale
+--- The timeScale is set to: 10
 Updating TMDirector parameter defaultTaskExecutionTime
 Updating TMDirector parameter synchronizeToRealTime
 Invoking preinitialize():  .top.A0

@@ -303,7 +303,7 @@ public class TimedPNDirector extends PNDirector
                         //process is the same as the newly advanced time
                         //then unblock it. Else put the newly removed
                         //process back on the event queue.
-                        if (newTime.equalTo(getModelTime())) {
+                        if (newTime.equals(getModelTime())) {
                             _informOfDelayUnblock();
                         } else {
                             _eventQueue.put(new TimedEvent(newTime, actor));

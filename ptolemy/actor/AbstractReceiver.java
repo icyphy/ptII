@@ -152,7 +152,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   {@link #getModelTime()}
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /**  Return the current time associated with this receiver. For

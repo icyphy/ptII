@@ -44,6 +44,7 @@ import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DECQEventQueue;
@@ -213,10 +214,10 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public Parameter synchronizeToRealTime;
 
-    /** The resolution in comparing time.
-     *  The default value is 1e-10, of type DoubleToken.
+    /** The number of digits of the fractional part of the model time.
+     *  The default value is 10, and the type is int.
      */
-    public Parameter timeResolution;
+    public Parameter timeScale;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -266,14 +267,9 @@ public class TMDirector extends Director implements TimedDirector {
                 throw new IllegalActionException(this,
                         " task execution time cannot be less than 0.");
             }
-        } else if (attribute == timeResolution) {
-            double value = ((DoubleToken)timeResolution.getToken()).
-                doubleValue();
-            if (value <= 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot set a negative or zero time resolution.");
-            }
-            setTimeResolution(value);
+        } else if (attribute == timeScale) {
+            int value = ((IntToken)timeScale.getToken()).intValue();
+            setTimeScale(value);
         } else if (attribute == preemptive) {
             _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
         } else if (attribute == synchronizeToRealTime) {
@@ -395,7 +391,7 @@ public class TMDirector extends Director implements TimedDirector {
 
                         // Actor stops executing, i.e. finishing
                         _displaySchedule(((Nameable)actor).getName(),
-                        getModelTime().getTimeValue(),
+                        getModelTime().getDoubleValue(),
                                 ScheduleListener.TASK_SLEEPING);
                         _displaySchedule();
 
@@ -548,9 +544,9 @@ public class TMDirector extends Director implements TimedDirector {
             long elapsedTime = System.currentTimeMillis()
                 - _realStartTime;
             double elapsedTimeInSeconds = ((double)elapsedTime)/1000.0;
-            if ((_outsideTime.getTimeValue() - elapsedTimeInSeconds) > 1e-3) {
+            if ((_outsideTime.getDoubleValue() - elapsedTimeInSeconds) > 1e-3) {
                 long timeToWait = (long)(_outsideTime.subtract(
-                    elapsedTimeInSeconds).getTimeValue()*1000.0);
+                    elapsedTimeInSeconds).getDoubleValue()*1000.0);
                 if (timeToWait > 0) {
                     if (_debugging) {
                         _debug("Waiting for real time to pass: "
@@ -582,11 +578,11 @@ public class TMDirector extends Director implements TimedDirector {
             TMEvent event = (TMEvent)_eventQueue.get();
             if (event.hasStarted()) {
                 if (_debugging) _debug("deduct "+ getModelTime()
-                    .subtract(cachedCurrentTime).getTimeValue(),
+                    .subtract(cachedCurrentTime).getDoubleValue(),
                         " from processing time of event",
                         event.toString());
                 event.timeProgress(getModelTime()
-                    .subtract(cachedCurrentTime).getTimeValue());
+                    .subtract(cachedCurrentTime).getDoubleValue());
                 // Finish the tasks if it ends at this time.
                 // We do it here to ensure that it is done before
                 // the transfer input from composite actors.
@@ -600,7 +596,7 @@ public class TMDirector extends Director implements TimedDirector {
                     actor.fire();
                     // Actor stops executing, i.e. finishing
                     _displaySchedule(((Nameable)actor).getName(),
-                    getModelTime().getTimeValue(),
+                    getModelTime().getDoubleValue(),
                             ScheduleListener.TASK_SLEEPING);
                     _displaySchedule();
                     // Should handle dead actors.
@@ -741,7 +737,7 @@ public class TMDirector extends Director implements TimedDirector {
             for (int i = events.length-1; i >= 0; i-- ) {
                 String actorName =
                     ((Nameable)((TMEvent)events[i]).actor()).getName();
-                double timeValue = getModelTime().getTimeValue();
+                double timeValue = getModelTime().getDoubleValue();
                 int scheduleEvent = ScheduleListener.TASK_BLOCKED;
                 if (i == 0) {
                     scheduleEvent = ScheduleListener.TASK_RUNNING;
@@ -809,16 +805,15 @@ public class TMDirector extends Director implements TimedDirector {
             _stopTime = new Time(this, Double.MAX_VALUE);
 
             startTime = new Parameter(this, "startTime", 
-                    new DoubleToken(_startTime.getTimeValue()));
+                    new DoubleToken(_startTime.getDoubleValue()));
             startTime.setTypeEquals(BaseType.DOUBLE);
             stopTime = new Parameter(this, "stopTime",
                     new DoubleToken(Double.MAX_VALUE));
             stopTime.setTypeEquals(BaseType.DOUBLE);
             preemptive = new Parameter(this, "preemptive",
                     new BooleanToken(false));
-            timeResolution = new Parameter(this, "timeResolution",
-                    new DoubleToken("1e-10"));
-            timeResolution.setTypeEquals(BaseType.DOUBLE);
+            timeScale = new Parameter(this, "timeScale", new IntToken("10"));
+            timeScale.setTypeEquals(BaseType.INT);
 
             preemptive.setTypeEquals(BaseType.BOOLEAN);
             defaultTaskExecutionTime = new Parameter(this,

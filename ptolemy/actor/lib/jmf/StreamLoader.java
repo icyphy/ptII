@@ -88,14 +88,14 @@ public class StreamLoader extends Source {
         }
         Director director = getDirector();
         if (director != null) {
-            director.fireAt(this, new Time(this));
+            director.fireAt(this, new Time(director));
         } else {
             throw new IllegalActionException(this, "No director");
         }
     }
 
     public boolean postfire() throws IllegalActionException {
-        if (getDirector().getModelTime().getTimeValue() == 0.0) {
+        if (getDirector().getModelTime().getDoubleValue() == 0.0) {
             output.send(0, new ObjectToken(_dataSource));
         }
         return super.postfire();

@@ -158,9 +158,9 @@ test TimedEvent-3.0 {Put 4 entries in the queue and do a single take} {
     $queue put $p1
     set g [java::cast ptolemy.actor.util.TimedEvent [$queue get]]
     set t [java::cast ptolemy.actor.util.TimedEvent [$queue take]]
-    list [[java::field $g timeStamp] getTimeValue] \
+    list [[java::field $g timeStamp] getDoubleValue] \
 	[java::field $g contents] \
-	[[java::field $t timeStamp] getTimeValue] \
+	[[java::field $t timeStamp] getDoubleValue] \
 	[java::field $t contents] \
 	[$queue isEmpty] \
 	[$queue size]
@@ -189,7 +189,7 @@ test TimedEvent-3.3 {Test the resize method } {
     while {![$queue isEmpty]} {
 	set t [java::cast ptolemy.actor.util.TimedEvent [$queue take]]
         lappend result [list\
-			    [[java::field $t timeStamp] getTimeValue] \
+			    [[java::field $t timeStamp] getDoubleValue] \
 				 [java::field $t contents]]
     }
     list $result

@@ -33,10 +33,10 @@ import ptolemy.actor.util.Time;
 //////////////////////////////////////////////////////////////////////////
 //// TimedDirector
 /**
-   This is a interface for directors that operate on time-based signals.
+   This is an interface for directors that operate on time-based signals.
    That is, logically, all signals observed or produced are tokens placed
    in time. Actors that implement the TimedActor marker interface are allowed
-   to be executed by directors that implement this interfact.
+   to be executed by directors that implement this interface.
    
    @see TimedActor 
    @author Haiyang Zheng
@@ -47,15 +47,21 @@ import ptolemy.actor.util.Time;
 */
 
 public interface TimedDirector {
-    /** Return a new object as the copy of the current time object of 
-     *  this director.  
-     *  @return A new object as the copy of the current time object of 
-     *  this director.
+    /** Return a time object that contains the value of the current time.
+     *  @return A time object that contains the value of the current time.
      */
     public Time getModelTime();
     
-    /** Return the time resolution used by this director. 
-     *  @return The time resolution specified used by this director.
+    /** Get the scale, the number of digits of the fractional part of the
+     *  time value used in this model.
+     *  @return The scale value.
+     */
+    public int getTimeScale();
+
+    /** Get the time resolution of the model. The time resoultion is
+     *  double with a value of 10^(scale), where the scale is the number
+     *  of the digits for the fractional part. See {@link #getTimeScale()}.
+     *  @return The time resolution of the model.
      */
     public double getTimeResolution();
 }

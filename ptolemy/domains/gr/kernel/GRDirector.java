@@ -272,7 +272,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return The current "time"
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /** Return the current "time". The GR domain is not a timed domain,
@@ -299,7 +299,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return The maximum value for type double.
      */
     public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
+        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Return maximum value for type double. Since the GR domain is not a

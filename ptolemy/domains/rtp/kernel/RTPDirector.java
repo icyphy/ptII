@@ -120,7 +120,7 @@ public class RTPDirector extends ProcessDirector
      *  @return The current computer time.
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /** Return the time count of the computer in the number of milliseconds,
@@ -149,7 +149,7 @@ public class RTPDirector extends ProcessDirector
             throws IllegalActionException {
         Time timeNow = getModelTime();
         if (time.compareTo(timeNow) > 0){
-            long delay = (long) (time.subtract(timeNow)).getTimeValue();
+            long delay = (long) (time.subtract(timeNow)).getDoubleValue();
             try {
                 if (_debugging) _debug("Sleep " + delay);
                 Thread.sleep(delay+ 5);

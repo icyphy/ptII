@@ -131,8 +131,8 @@ public class TimedEvent {
          */
         public long getVirtualBinNumber(Object entry) {
             return (long)(((TimedEvent)entry).timeStamp.subtract(
-                _zeroReference.timeStamp).getTimeValue()
-                / _binWidth.timeStamp.getTimeValue());
+                _zeroReference.timeStamp).getDoubleValue()
+                / _binWidth.timeStamp.getDoubleValue());
         }
 
         /** Given an array of TimedEvent objects, find the appropriate bin
@@ -167,7 +167,7 @@ public class TimedEvent {
             double average = 0;
             for (int i = 1; i < entryArray.length; ++i) {
                 diff[i-1] = ((TimedEvent)entryArray[i]).timeStamp.subtract(
-                ((TimedEvent)entryArray[i-1]).timeStamp).getTimeValue();
+                ((TimedEvent)entryArray[i-1]).timeStamp).getDoubleValue();
                 average = average + diff[i-1];
             }
             average = average / diff.length;

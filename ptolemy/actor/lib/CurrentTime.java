@@ -98,7 +98,7 @@ public class CurrentTime extends TimedSource {
             }
         } else {
             // Trigger port is not connected.
-            currentTimeValue = getDirector().getModelTime().getTimeValue();
+            currentTimeValue = getDirector().getModelTime().getDoubleValue();
             output.send(0, new DoubleToken(currentTimeValue));
         }
         super.fire();
