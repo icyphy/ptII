@@ -596,9 +596,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
         }
 	
-        System.out.println("StaticResolution._importPackage(" +
-			   name.getIdent() + ") :" +
-			   env.toString());
+        ApplicationUtility.trace("StaticResolution._importPackage(" +
+                name.getIdent() + ") :" +
+                env.toString());
         return decl;
     }
 
