@@ -30,7 +30,7 @@ import pt.kernel.*;
 import pt.data.*;
 import pt.actors.*;
 import pt.domains.pn.kernel.*;
-import pt.domains.pn.stars.*;
+import pt.domains.pn.actors.*;
 import java.util.Enumeration;
 
 import gui.DynamicGraphView;
@@ -38,7 +38,7 @@ import gui.DynamicGraphView;
 //////////////////////////////////////////////////////////////////////////
 //// PNPrimeExample
 /** 
-This is currently a Universe containing some PNStars. This might not support
+This is currently a Universe containing some PN Actors. This might not support
 hierarchy currently.
 @author  Mudit Goel
 @version $Id$

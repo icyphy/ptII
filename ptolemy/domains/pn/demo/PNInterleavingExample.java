@@ -27,7 +27,7 @@
 
 package pt.domains.pn.demo;
 import pt.domains.pn.kernel.*;
-import pt.domains.pn.stars.*;
+import pt.domains.pn.actors.*;
 import pt.actors.*;
 import pt.data.*;
 import pt.kernel.*;
