@@ -31,7 +31,6 @@
 package ptolemy.vergil.basic;
 
 import diva.canvas.Figure;
-import diva.canvas.TransformContext;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.DragInteractor;
 import diva.graph.GraphController;
@@ -42,7 +41,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
 import java.awt.Point;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
 

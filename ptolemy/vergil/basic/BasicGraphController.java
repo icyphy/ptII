@@ -31,6 +31,7 @@
 package ptolemy.vergil.basic;
 
 import diva.canvas.Figure;
+import diva.canvas.TransformContext;
 import diva.canvas.event.EventLayer;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionRenderer;
@@ -84,7 +85,7 @@ to add commands to the menu or toolbar of the frame it is controlling.
 @since Ptolemy II 2.0
 */
 public abstract class BasicGraphController extends AbstractGraphController
-        implements DebugListener {
+        implements DebugListener, ValueListener {
 
     /** Create a new basic controller.
      */
@@ -203,12 +204,50 @@ public abstract class BasicGraphController extends AbstractGraphController
         _portController.setConfiguration(configuration);
     }
 
+    /** Set the figure associated with the given semantic object, and if
+     *  that semantic object is Location, then set up a value listener
+     *  so that if its value changes, then the figure is repainted.
+     *  The semantic object is normally an instance of Location, which
+     *  is an instance of Location.
+     *  A null figure clears the association.
+     *  @param semanticObject The semantic object (normally a Location).
+     */
+    public void setFigure(Object semanticObject, Figure figure) {
+        super.setFigure(semanticObject, figure);
+        if (semanticObject instanceof Location) {
+            ((Location)semanticObject).addValueListener(this);
+        }
+    }
+
     /** Set the graph frame.  This is used by some of the controllers
      *  to mark the modified bit of the frame and to update any dependents.
      *  @param frame The graph frame, or null if there is none.
      */
     public void setFrame(BasicGraphFrame frame) {
         _frame = frame;
+    }
+
+    /** React to the fact that the specified Location has changed.
+     *  If the argument is the semantic object for a figure, then
+     *  repaint the figure.
+     *  @param location The object that has changed value.
+     */
+    public void valueChanged(Settable location) {
+/* FIXME: Extremely frustratingly, it is impossible in diva to set
+   the location of a figure.  I give up. EAL 7/25/02.
+   Probably don't have to implement the ValueListener interface
+   when this goes away.
+        Figure figure = getFigure(location);
+        TransformContext context = figure.getTransformContext();
+        AffineTransform transform = context.getTransform();
+        double[] newLocation = ((Location)location).getLocation();
+        Point2D newPoint = new Point2D.Double(newLocation[0], newLocation[1]);
+        // transform.deltaTransform(newPoint, newPoint);
+        transform = new AffineTransform();
+        transform.setToTranslation(newPoint.getX(), newPoint.getY());
+        // FIXME: Have to give a delta, not an absolute.
+        figure.transform(transform);
+*/
     }
 
     ///////////////////////////////////////////////////////////////////

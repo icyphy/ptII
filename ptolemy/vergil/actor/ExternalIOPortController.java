@@ -44,6 +44,7 @@ import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.Polygon2D.Double;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
@@ -205,7 +206,12 @@ public class ExternalIOPortController extends AttributeController {
 
 		    polygon.closePath();
 
-		    if (ioport.isMultiport()) {
+		    if (ioport instanceof ParameterPort) {
+                        // It would be better to couple these to the
+                        // parameters by position, but this is impossible
+                        // in diva, so we assign a special color.
+			fill = Color.green;
+                    } else if (ioport.isMultiport()) {
 			fill = Color.white;
 		    } else {
 			fill = Color.black;
@@ -243,7 +249,8 @@ public class ExternalIOPortController extends AttributeController {
 		tsite.setNormal(normal);
 		tsite = new FixedNormalSite(tsite);
                 String name = port.getName();
-                if (name != null && !name.equals("")) {
+                if (name != null && !name.equals("")
+                        && !(port instanceof ParameterPort)) {
                     figure = new NameWrapper(figure, port.getName());
                 }
 		figure = new TerminalFigure(figure, tsite)  {
