@@ -243,7 +243,7 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
      or
    use the Graph -> Automatic Layout menu choice.
 
-2. Connect a TimedPlotter from the actor library -> timed sinks
+2. Connect a TimedPlotter from the actor library -> sinks -> timed sinks
    palette in the upper left tree widget to one of the
    relations.
 
