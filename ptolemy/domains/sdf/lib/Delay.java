@@ -42,14 +42,15 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.actor.TypedCompositeActor;
 
-/** This actor outputs a set of initial tokens during the initialize() method, and
- *  subsequently passes the input tokens to the output.  It is used to
- *  break dependency cycles in directed loops (the initial outputs permit
- *  the computation to get started). The default value for
- *  the <i>initialOutputs</i> parameter causes a single integer token
- *  with value zero to be produced in initialize().
+/** This actor outputs a set of initial tokens during the initialize()
+ *  method, and subsequently passes the input tokens to the output.
+ *  It is used to break dependency cycles in directed loops (the
+ *  initial outputs permit the computation to get started). The
+ *  default value for the <i>initialOutputs</i> parameter causes a
+ *  single integer token with value zero to be produced in
+ *  initialize().
  *
- *  @author Steve Neuendorffer, Edward A. Lee
+ *  @author Steve Neuendorffer, Edward A. Lee 
  *  @version $Id$
  */
 public class Delay extends Transformer {
