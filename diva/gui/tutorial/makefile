@@ -58,7 +58,8 @@ JSRCS = \
 	TextView.java \
 	$(DEMO_JSRCS)
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	AppletTutorial.htm 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -69,7 +70,14 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'ApplicationTutorial$$1.class' \
+	'ApplicationTutorial$$2.class' \
+	'MDIApplication$$1.class' \
+	'MDIApplication$$MDIViewListener.class' \
+	'MDIApplicationTutorial$$1.class' \
+	'TextDocument$$Factory.class' \
+	'TextView$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
