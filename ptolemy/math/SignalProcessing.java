@@ -706,6 +706,178 @@ public class SignalProcessing {
 
         return returnValue;
     }
+    
+    /** Return a new array that is filled with samples of a Bartlett
+     *  window of a specified length. Throw an IllegalArgumentException
+     *  if the length is less than 1 or the window type is unknown.
+     *  @param length The length of the window to be generated.
+     *  @return A new array of doubles.
+     */
+    public static final double[] generateBartlettWindow(int length) {
+
+        if (length < 1) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing" +
+                    ".generateBartlettWindow(): " +
+                    " length of window should be greater than 0.");
+        }        
+        
+        int M = length - 1;
+        int n;
+        double[] window = new double[length];
+
+        int halfM = M / 2;
+        double twoOverM = 2.0 / (double) M;
+        
+        for (n = 0; n <= halfM; n++) {
+            window[n] = n * twoOverM;
+        }
+        
+        for (n = halfM + 1; n < length; n++) {
+            window[n] = 2.0 - n * twoOverM;
+        }
+        return window;
+    }
+
+    /** Return a new array that is filled with samples of a Blackman
+     *  window of a specified length. Throw an IllegalArgumentException
+     *  if the length is less than 1 or the window type is unknown.
+     *  @param length The length of the window to be generated.
+     *  @return A new array of doubles.
+     */
+    public static final double[] generateBlackmanWindow(int length) {
+
+        if (length < 1) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing" +
+                    ".generateBlackmanWindow(): " +
+                    " length of window should be greater than 0.");
+        }        
+        
+        int M = length - 1;
+        int n;
+        double[] window = new double[length];
+                
+        double twoPiOverM = 2.0 * Math.PI / (double) M;
+        double fourPiOverM = 2.0 * twoPiOverM;
+        
+        for (n = 0; n < length; n++) {
+            window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n) +
+                0.08 * Math.cos(fourPiOverM * n);
+        }
+        return window;
+    }
+    
+    /** Return a new array that is filled with samples of a Blackman Harris
+     *  window of a specified length. Throw an IllegalArgumentException
+     *  if the length is less than 1 or the window type is unknown.
+     *  @param length The length of the window to be generated.
+     *  @return A new array of doubles.
+     */
+    public static final double[] generateBlackmanHarrisWindow(int length) {
+
+        if (length < 1) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing" +
+                    ".generateBlackmanHarrisWindow(): " +
+                    " length of window should be greater than 0.");
+        }        
+        
+        int M = length - 1;
+        int n;
+        double[] window = new double[length];
+                
+        double twoPiOverM = 2.0 * Math.PI / (double) M;
+        double fourPiOverM = 2.0 * twoPiOverM;
+        double sixPiOverM = 3.0 * twoPiOverM;
+        
+        for (n = 0; n < length; n++) {
+            window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n) +
+                0.14128 * Math.cos(fourPiOverM * n) -
+                0.01168 * Math.cos(sixPiOverM * n);
+        }
+        return window;
+    }
+    
+
+    /** Return a new array that is filled with samples of a Hamming
+     *  window of a specified length. Throw an IllegalArgumentException
+     *  if the length is less than 1 or the window type is unknown.
+     *  @param length The length of the window to be generated.
+     *  @return A new array of doubles.
+     */
+    public static final double[] generateHammingWindow(int length) {
+
+        if (length < 1) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.generateHammingWindow(): " +
+                    " length of window should be greater than 0.");
+        }        
+        
+        int M = length - 1;
+        int n;
+        double[] window = new double[length];
+
+        double twoPiOverM = 2.0 * Math.PI / (double) M;
+        
+        for (n = 0; n < length; n++) {
+            window[n] = 0.54 - 0.46 * Math.cos(twoPiOverM * n);
+        }
+        return window;
+    }    
+
+    /** Return a new array that is filled with samples of a Hanning
+     *  window of a specified length. Throw an IllegalArgumentException
+     *  if the length is less than 1 or the window type is unknown.
+     *  @param length The length of the window to be generated.
+     *  @return A new array of doubles.
+     */
+    public static final double[] generateHanningWindow(int length) {
+
+        if (length < 1) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.generateHanningWindow(): " +
+                    " length of window should be greater than 0.");
+        }        
+        
+        int M = length - 1;
+        int n;
+        double[] window = new double[length];
+        
+        double twoPiOverM = 2.0 * Math.PI / (double) M;
+        
+        for (n = 0; n < length; n++) {
+            window[n] = 0.5 - 0.5 * Math.cos(twoPiOverM * n);
+        }
+        return window;
+    }
+
+
+
+    /** Return a new array that is filled with samples of a rectangular
+     *  window of a specified length. Throw an IllegalArgumentException
+     *  if the length is less than 1 or the window type is unknown.
+     *  @param length The length of the window to be generated.
+     *  @return A new array of doubles.
+     */
+    public static final double[] generateRectangularWindow(int length) {
+
+        if (length < 1) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing"
+                    + ".generateRectangularWindow(): " +
+                    " length of window should be greater than 0.");
+        }        
+        
+        int M = length - 1;
+        int n;
+        double[] window = new double[length];
+                 
+        for (n = 0; n < length; n++) {
+            window[n] = 1.0;
+        }
+        return window;
+    }
 
     /** Return a new array that is filled with samples of a window of a
      *  specified length and type. Throw an IllegalArgumentException
@@ -722,88 +894,43 @@ public class SignalProcessing {
                     " length of window should be greater than 0.");
         }
 
-        int M = length - 1;
-        int n;
-        double[] window = new double[length];
-
         switch (windowType) {
 
         case WINDOW_TYPE_RECTANGULAR:
             {
-                for (n = 0; n < length; n++) {
-                    window[n] = 1.0;
-                }
+                return generateRectangularWindow(length);
             }
-            break;
 
         case WINDOW_TYPE_BARTLETT:
             {
-                int halfM = M / 2;
-                double twoOverM = 2.0 / (double) M;
-
-                for (n = 0; n <= halfM; n++) {
-                    window[n] = n * twoOverM;
-                }
-
-                for (n = halfM + 1; n < length; n++) {
-                    window[n] = 2.0 - n * twoOverM;
-                }
+                return generateBartlettWindow(length);
             }
-            break;
 
         case WINDOW_TYPE_HANNING:
             {
-                double twoPiOverM = 2.0 * Math.PI / (double) M;
-
-                for (n = 0; n < length; n++) {
-                    window[n] = 0.5 - 0.5 * Math.cos(twoPiOverM * n);
-                }
+                return generateHanningWindow(length);
             }
-            break;
 
         case WINDOW_TYPE_HAMMING:
             {
-                double twoPiOverM = 2.0 * Math.PI / (double) M;
-
-                for (n = 0; n < length; n++) {
-                    window[n] = 0.54 - 0.46 * Math.cos(twoPiOverM * n);
-                }
+                return generateHammingWindow(length);
             }
-            break;
 
         case WINDOW_TYPE_BLACKMAN:
             {
-                double twoPiOverM = 2.0 * Math.PI / (double) M;
-                double fourPiOverM = 2.0 * twoPiOverM;
-
-                for (n = 0; n < length; n++) {
-                    window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n) +
-                        0.08 * Math.cos(fourPiOverM * n);
-                }
+                return generateBlackmanWindow(length);
             }
-            break;
 
         case WINDOW_TYPE_BLACKMAN_HARRIS:
             {
-                double twoPiOverM = 2.0 * Math.PI / (double) M;
-                double fourPiOverM = 2.0 * twoPiOverM;
-                double sixPiOverM = 3.0 * twoPiOverM;
-
-                for (n = 0; n < length; n++) {
-                    window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n) +
-                        0.14128 * Math.cos(fourPiOverM * n) -
-                        0.01168 * Math.cos(sixPiOverM * n);
-                }
+                return generateBlackmanHarrisWindow(length);
             }
-            break;
 
         default:
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.generateWindow(): " +
                     "Unknown window type (" + windowType + ").");
         }
-
-        return window;
     }
 
     /** Return the next power of two larger than the argument.
