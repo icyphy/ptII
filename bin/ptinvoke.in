@@ -82,6 +82,9 @@ PTJACL_JAR="@PTJACL_JAR@"
 # Flag to pass to java.  Solaris JDK1.2 reference version needs -native
 PTJACL_JFLAG=@PTJACL_JFLAG@
 
+# Jar file for JHDL
+JHDL_JAR=@JHDL_JAR@
+
 #### Serial port stuff
 # Directory that contains the Java Serial Comm API, see
 # http://java.sun.com/products/javacomm/
@@ -150,7 +153,7 @@ case `basename "$0"` in
 	# JAva decompiler
 	javastartupclass=jode.decompiler.Main
 	javasourcedir=
-	jarfile="$JODE_JAR"
+	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
     moml)
