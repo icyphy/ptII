@@ -1,20 +1,20 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HanoiTower1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HanoiTower" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-320.0, -190.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {55, 88, 888, 616}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, -1, 905, 547}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[673, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[690, 412]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-55.3450126262626, 18.9413667929293}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-46.8450126262626, -25.0586332070707}">
     </property>
     <property name="numberOfDisks" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1876,125 +1876,119 @@
         <link port="Repeat.output" relation="relation20"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {451, 1, 292, 229}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={451, 1, 410, 294}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
         </property>
     </entity>
     <entity name="3D Viewer" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 45.0]">
         </property>
         <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 55.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {58, 89, 762, 586}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 9, 1072, 752}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[547, 470]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[857, 617]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.5, 235.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{428.5, 308.5}">
         </property>
         <port name="movingDisk" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 95.0]">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 165.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 215.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 190.0]">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <entity name="Tower0" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
-            </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="towerRadius">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="towerHeight">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 265.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 220.0]">
             </property>
         </entity>
         <entity name="Translate3D2" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="-tower0_position_x">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 415.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 370.0]">
             </property>
         </entity>
         <entity name="Translate3D3" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="tower0_position_y">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 350.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 305.0]">
             </property>
         </entity>
         <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen">
-            <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 1.0]">
+            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 165.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 140.0]">
             </property>
         </entity>
         <entity name="Tower2" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
-            </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="towerRadius">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="towerHeight">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 395.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 350.0]">
             </property>
         </entity>
         <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="tower0_position_x">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 285.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 240.0]">
             </property>
         </entity>
         <entity name="Tower1" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
-            </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="towerRadius">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="towerHeight">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 330.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 285.0]">
             </property>
         </entity>
         <entity name="Disks" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
             <property name="nInstances" class="ptolemy.data.expr.Parameter" value="numberOfDisks">
             </property>
             <doc>Creates multiple instances of itself</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 135.0]">
             </property>
             <property name="Director" class="ptolemy.actor.Director">
                 <doc>Simple director that executes actors in the order in which they were created.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-280.0, -230.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {244, 103, 779, 486}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 41, 779, 505}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[564, 370]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-69.2348484848485, -86.6850536616162}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-72.3074494949495, -81.3969381313132}">
             </property>
             <port name="movingDisk" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-330.0, -35.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-330.0, -30.0]">
                 </property>
             </port>
             <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -2004,7 +1998,7 @@
             </port>
             <port name="y" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-330.0, 40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-330.0, 55.0]">
                 </property>
             </port>
             <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -2012,14 +2006,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -140.0]">
                 </property>
             </port>
-            <entity name="Cylinder3D" class="ptolemy.domains.gr.lib.Cylinder3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0]">
+            <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="radius" class="ptolemy.data.expr.Parameter" value="towerRadius*0.8^(instance+1)">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[towerRadius*0.8^(instance+1), diskHeight/2, towerRadius*0.8^(instance+1), -diskHeight/2, 0.015, -diskHeight/2, 0.015, diskHeight/2, towerRadius*0.8^(instance+1), diskHeight/2]">
                 </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="diskHeight">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-185.0, -160.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -160.0]">
                 </property>
             </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -2031,7 +2023,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, -65.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, -75.0]">
                 </property>
                 <port name="movingDisk" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2053,7 +2045,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 10.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 30.0]">
                 </property>
                 <port name="movingDisk" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2073,12 +2065,14 @@
                 </property>
                 <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="tower0_position_y+towerHeight/2+diskHeight*(instance+0.5)">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -140.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -140.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[-255.0, -35.0]">
+                <vertex name="vertex1" value="[-260.0, -30.0]">
                 </vertex>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -2086,27 +2080,73 @@
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="movingDisk" relation="relation"/>
-            <link port="x" relation="relation2"/>
-            <link port="y" relation="relation3"/>
-            <link port="port" relation="relation7"/>
-            <link port="Cylinder3D.sceneGraphOut" relation="relation4"/>
-            <link port="Expression.output" relation="relation5"/>
+            <link port="x" relation="relation6"/>
+            <link port="y" relation="relation7"/>
+            <link port="port" relation="relation5"/>
+            <link port="CircularSweep3D.sceneGraphOut" relation="relation2"/>
+            <link port="Expression.output" relation="relation3"/>
             <link port="Expression.movingDisk" relation="relation"/>
-            <link port="Expression.x" relation="relation2"/>
-            <link port="Expression2.output" relation="relation6"/>
+            <link port="Expression.x" relation="relation6"/>
+            <link port="Expression2.output" relation="relation4"/>
             <link port="Expression2.movingDisk" relation="relation"/>
-            <link port="Expression2.y" relation="relation3"/>
-            <link port="Translate3D.sceneGraphIn" relation="relation4"/>
-            <link port="Translate3D.sceneGraphOut" relation="relation7"/>
-            <link port="Translate3D.xTranslate" relation="relation5"/>
-            <link port="Translate3D.yTranslate" relation="relation6"/>
+            <link port="Expression2.y" relation="relation7"/>
+            <link port="Translate3D.sceneGraphIn" relation="relation2"/>
+            <link port="Translate3D.sceneGraphOut" relation="relation5"/>
+            <link port="Translate3D.xTranslate" relation="relation3"/>
+            <link port="Translate3D.yTranslate" relation="relation4"/>
+        </entity>
+        <entity name="Axis0" class="ptolemy.domains.gr.lib.Cylinder3D">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.015">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="(numberOfDisks+1)*diskHeight">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 420.0]">
+            </property>
+        </entity>
+        <entity name="Axis1" class="ptolemy.domains.gr.lib.Cylinder3D">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.015">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="(numberOfDisks+1)*diskHeight">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 485.0]">
+            </property>
+        </entity>
+        <entity name="Axis2" class="ptolemy.domains.gr.lib.Cylinder3D">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.015">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="(numberOfDisks+1)*diskHeight">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 555.0]">
+            </property>
+        </entity>
+        <entity name="Translate3D4" class="ptolemy.domains.gr.lib.Translate3D">
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="tower0_position_x">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 440.0]">
+            </property>
+        </entity>
+        <entity name="Translate3D5" class="ptolemy.domains.gr.lib.Translate3D">
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="-tower0_position_x">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 575.0]">
+            </property>
+        </entity>
+        <entity name="Translate3D6" class="ptolemy.domains.gr.lib.Translate3D">
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="tower0_position_y+towerHeight/2+(numberOfDisks+1)/2*diskHeight">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 505.0]">
+            </property>
         </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -2121,18 +2161,30 @@
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[115.0, 185.0]">
+            <vertex name="vertex1" value="[110.0, 160.0]">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[115.0, 145.0]">
+            <vertex name="vertex1" value="[110.0, 120.0]">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[115.0, 165.0]">
+            <vertex name="vertex1" value="[110.0, 140.0]">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="movingDisk" relation="relation9"/>
         <link port="x" relation="relation10"/>
@@ -2146,6 +2198,7 @@
         <link port="Translate3D3.sceneGraphOut" relation="relation6"/>
         <link port="ViewScreen3D.sceneGraphIn" relation="relation6"/>
         <link port="ViewScreen3D.sceneGraphIn" relation="relation7"/>
+        <link port="ViewScreen3D.sceneGraphIn" relation="relation16"/>
         <link port="Tower2.sceneGraphOut" relation="relation2"/>
         <link port="Translate3D.sceneGraphIn" relation="relation"/>
         <link port="Translate3D.sceneGraphOut" relation="relation3"/>
@@ -2154,6 +2207,17 @@
         <link port="Disks.x" relation="relation10"/>
         <link port="Disks.y" relation="relation8"/>
         <link port="Disks.port" relation="relation7"/>
+        <link port="Axis0.sceneGraphOut" relation="relation11"/>
+        <link port="Axis1.sceneGraphOut" relation="relation14"/>
+        <link port="Axis2.sceneGraphOut" relation="relation12"/>
+        <link port="Translate3D4.sceneGraphIn" relation="relation11"/>
+        <link port="Translate3D4.sceneGraphOut" relation="relation13"/>
+        <link port="Translate3D5.sceneGraphIn" relation="relation12"/>
+        <link port="Translate3D5.sceneGraphOut" relation="relation15"/>
+        <link port="Translate3D6.sceneGraphIn" relation="relation13"/>
+        <link port="Translate3D6.sceneGraphIn" relation="relation14"/>
+        <link port="Translate3D6.sceneGraphIn" relation="relation15"/>
+        <link port="Translate3D6.sceneGraphOut" relation="relation16"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
