@@ -62,7 +62,6 @@ public class PlotApplet extends JApplet {
 
     /** Construct a Plot applet */
     public PlotApplet() {
-        super();
         if (_mutex == null) {
             _mutex = new Object();
         }
