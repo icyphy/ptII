@@ -130,3 +130,4 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
 
         SDF_IO_PORT_TYPE = SDF_IO_PORT_DECL.getDefType();
     }
+}

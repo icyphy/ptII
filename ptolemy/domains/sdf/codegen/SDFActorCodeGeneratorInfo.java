@@ -77,3 +77,4 @@ public class SDFActorCodeGeneratorInfo extends ActorCodeGeneratorInfo {
      *  ports as keys.
      */
     public final Map outputInfoMap = new HashMap();
+}

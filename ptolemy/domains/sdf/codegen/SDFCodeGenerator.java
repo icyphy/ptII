@@ -430,3 +430,4 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
     /** A non-decreasing number used for globally unique labeling. */
     protected int labelNum = 0;
+}
