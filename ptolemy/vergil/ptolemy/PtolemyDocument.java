@@ -127,7 +127,6 @@ public class PtolemyDocument extends AbstractDocument
      * and place them on the given clipboard. 
      */
     public void copy (Clipboard c) {
-	System.out.println("copy");
 	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
@@ -144,7 +143,6 @@ public class PtolemyDocument extends AbstractDocument
 		    (NamedObj)graphModel.getSemanticObject(object);
 		if(objectSet.contains(actual)) continue;
 		objectSet.add(actual);
-		System.out.println("adding " + actual);
 	    }
 	}
 	
@@ -162,12 +160,11 @@ public class PtolemyDocument extends AbstractDocument
 	    buffer.write(container.exportLinks(1, objectSet));
 	    buffer.write("</group>\n");
 	 
-	    // The below code works around
+	    // The code below does not use a PtolemyTransferable, 
+	    // to work around
 	    // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
 	    // is that cut and paste through the system clipboard to native
-	    // applications doesn't work unless you use string selection.  It
-	    // is probably possible to avoid this bug entirely by not using 
-	    // PtolemyTransferable at all.
+	    // applications doesn't work unless you use string selection. 
 	    c.setContents(new StringSelection(buffer.toString()), this);
 	}
 	catch (Exception ex) {
@@ -263,8 +260,6 @@ public class PtolemyDocument extends AbstractDocument
 	        "PtolemyDocument " + getTitle() + " has no current file");
         }
 	MoMLParser parser = new MoMLParser(new Workspace(), null);
-	//, 
-	//   ((VergilApplication)getApplication()).classLoadingService.getClassLoader());
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(getFile().toURL(),
                     new FileInputStream(getFile()));
@@ -277,9 +272,7 @@ public class PtolemyDocument extends AbstractDocument
      * for copying the data.
      */
     public void paste (Clipboard c) {
-	System.out.println("paste");
 	Transferable transferable = c.getContents(this);
-	System.out.println("transferable = " + transferable);
 	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
@@ -291,7 +284,6 @@ public class PtolemyDocument extends AbstractDocument
 	try {
 	    String string = (String)
 		transferable.getTransferData(DataFlavor.stringFlavor);
-	    System.out.println("string = " + string);
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
 	    MoMLParser parser = new MoMLParser(workspace);
 	    parser.setContext(toplevel);
@@ -307,11 +299,6 @@ public class PtolemyDocument extends AbstractDocument
 	    ex.printStackTrace();
 	    throw new RuntimeException(ex.getMessage());
 	} 
-	// The model doesn't listen for mutations yet, so we have to 
-	// let it know manually.
-	model.dispatchGraphEvent(new GraphEvent(this, 
-						GraphEvent.STRUCTURE_CHANGED,
-						model.getRoot()));
     }
 
     /** Print the document to a printer, represented by the specified graphics
