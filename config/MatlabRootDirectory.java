@@ -29,6 +29,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 
 /** Given the pathname to the matlab executable, return
 the pathname to the Matlab installation.
@@ -50,7 +51,7 @@ matlabr12/extern/include/...
 @@since Ptolemy II 2.0
  */
 public class MatlabRootDirectory {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         try {
             System.out.print(_getMatlabRootDirectory(args[0]));
         } catch (Exception exception) {
@@ -63,14 +64,31 @@ public class MatlabRootDirectory {
 
     // Given the pathname to the matlab executable, return the path name
     // of the Matlab directory.
-    private static String _getMatlabRootDirectory(String matlabExecutable) {
+    private static String _getMatlabRootDirectory(String matlabExecutable)
+        throws Exception {
         // Return the directory above the bin/ directory in
         // the path to the matlab executable
+
+        // Under Solaris, we might pass this: 
+        //   /usr/sww/bin/matlab
+        // Under Windows: 
+        //   /cygdrive/c/matlab6p1/bin/win32/matlab
+
         // We could use java.io.File here, but the problem is that
         // if we pass in /cygwin/c/ptII/bin/matlab, then
         // the name we will return will be \cygwin\c\ptII, which
         // will cause problems with the backslash when we do
         // 'if test -d \cygwin\c\ptII'
-        return matlabExecutable.substring(0,matlabExecutable.lastIndexOf("/bin/"));
+        
+        File matlabFile = new File(matlabExecutable);
+        String matlabCanonicalPath = matlabFile.getCanonicalPath();
+        URI matlabURI = new URI(matlabCanonicalPath);
+        String matlabPath = matlabURI.getPath();
+        if (File.separatorChar == '\\' 
+            && matlabPath.startsWith("/")) {
+            // We probably have /c:/foo, strip off the leading /
+            matlabPath = matlabPath.substring(1);
+        }
+        return matlabPath.substring(0,matlabPath.lastIndexOf("/bin/"));
     }
 }
