@@ -620,15 +620,15 @@ public class IOPort extends ComponentPort {
                     } else {
                         if (sourcePort.isInput()){
                             Iterator deepSourcePorts = sourcePort.
-                                    sourcePortList().iterator();
+                                sourcePortList().iterator();
                             if (deepSourcePorts.hasNext()) {
-                            sourcePort = (IOPort) deepSourcePorts.next();
+                                sourcePort = (IOPort) deepSourcePorts.next();
                             }
                         } else if (sourcePort.isOutput()){
                             Iterator deepSourcePorts = sourcePort.
-                                    deepInsidePortList().iterator();
+                                deepInsidePortList().iterator();
                             if (deepSourcePorts.hasNext()) {
-                            sourcePort = (IOPort) deepSourcePorts.next();
+                                sourcePort = (IOPort) deepSourcePorts.next();
                             }
                         }
                     }
@@ -780,7 +780,7 @@ public class IOPort extends ComponentPort {
      *  Currently, only the DT domain uses this per-channel time feature.
      */
     public double getCurrentTime(int channelIndex)
-                                     throws IllegalActionException {
+            throws IllegalActionException {
         Receiver[][] localReceivers;
         try {
             try {
@@ -797,7 +797,7 @@ public class IOPort extends ComponentPort {
                 _workspace.doneReading();
             }
             AbstractReceiver receiver = (AbstractReceiver)
-                                       localReceivers[channelIndex][0];
+                localReceivers[channelIndex][0];
             return receiver.getCurrentTime();
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may be thrown if the port is not an input port.
@@ -1387,15 +1387,15 @@ public class IOPort extends ComponentPort {
     public void insertLink(int index, Relation relation)
             throws IllegalActionException {
         if (!isMultiport()) {
-             if (index > 0) {
+            if (index > 0) {
                 throw new IllegalActionException(this,
-                "Cannot insert link at an index greater than zero in a " +
-                "port that is not a multiport.");
-             } else if (numLinks() > 0) {
-                 throw new IllegalActionException(this,
-                "Cannot insert a second link in a port that is not a " +
-                "multiport.");
-             }
+                        "Cannot insert link at an index greater than zero in a " +
+                        "port that is not a multiport.");
+            } else if (numLinks() > 0) {
+                throw new IllegalActionException(this,
+                        "Cannot insert a second link in a port that is not a " +
+                        "multiport.");
+            }
         }
         super.insertLink(index, relation);
         _invalidate();
