@@ -31,11 +31,16 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.domains.csp.demo.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import collections.LinkedList;
+import java.util.Enumeration;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,15 +57,7 @@ then puts both forks back on the table and continues thinking.
 
  */
 public class CSPPhilosopher extends CSPActor {
-    public CSPPhilosopher() 
-            throws IllegalActionException, NameDuplicationException {
-        super();
-        leftIn = new IOPort(this, "leftIn", true, false);
-        leftOut = new IOPort(this, "leftOut", false, true);
-        rightIn = new IOPort(this, "rightIn", true, false);
-        rightOut = new IOPort(this, "rightOut", false, true);
-    }
-
+    
     public CSPPhilosopher(CompositeActor cont, String name)
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
@@ -68,6 +65,12 @@ public class CSPPhilosopher extends CSPActor {
         leftOut = new IOPort(this, "leftOut", false, true);
         rightIn = new IOPort(this, "rightIn", true, false);
         rightOut = new IOPort(this, "rightOut", false, true);
+        
+        _eating = new Parameter(this, "eatingRate");
+        _eating.setExpression("1.0");
+
+        _thinking = new Parameter(this, "thinkingRate");
+        _thinking.setExpression("1.0");
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -81,30 +84,50 @@ public class CSPPhilosopher extends CSPActor {
         int count = 0;
         try {
             while (count < 20 ) {
-                // rate = ((DoubleToken)_rate.getToken()).doubleValue();
-                // exponential distribution parameterised by rate.
+                rate = ((DoubleToken)_thinking.getToken()).doubleValue();
                 interval = (int)(rand.nextDouble()*rate*1000);
                 interval = interval/1000;
                 System.out.println(getName() + count + ": thinking for "
-                        + interval);
+                        + interval);   
+                Thread th = Thread.currentThread();
+                th.sleep((long)interval*1000);
                 delay(interval);
 
                 // Obtain the forks
                 if (rand.nextDouble() > 0.5) {
                     leftIn.get(0);
+                    gotLeft = true;
+                    notifyListeners();
+                    waitingRight = true;
                     rightIn.get(0);
+                    gotRight = true;
+                    waitingRight = false;
+                    notifyListeners();
                 } else {
                     rightIn.get(0);
+                    gotRight = true;
+                    notifyListeners();
+                    waitingLeft = true;
                     leftIn.get(0);
+                    gotLeft = true;
+                    waitingLeft = false;
+                    notifyListeners();
                 }
-                interval = (int)(rand.nextDouble()*rate*1000);
+                rate = ((DoubleToken)_eating.getToken()).doubleValue();
+                interval = (int)(rand.nextDouble()*rate*2000);
                 interval = interval/1000;
                 System.out.println(getName() + ": eating for " + interval);
+                th.sleep((long)interval*1000);
+                delay(interval);
 
                 // Release the forks.
                 leftOut.send(0, t);
+                gotLeft = false;
                 rightOut.send(0,t);
-
+                gotRight = false;
+                   
+                notifyListeners();
+                    
                 count++;
             }
             return;
@@ -112,15 +135,51 @@ public class CSPPhilosopher extends CSPActor {
             System.out.println(getName() + ": invalid get, exiting...");
         } catch (NoTokenException ex) {
             System.out.println(getName() + ": invalid get, exiting...");
+        } catch (InterruptedException ex) {
+            System.out.println(getName() + ": invalid get, exiting...");
         }
     }
 
     public boolean postfire() {
         return false;
     }
+    
+    /** Register a PhilosospherListener with this Philosopher.
+     */
+     public void addPhilosopherListener(PhilosopherListener newListener) {
+         if (_listeners == null) {
+             _listeners = new LinkedList();
+         }
+         _listeners.insertLast(newListener);
+     }
+     
+    /*  Notify any PhilosospherListeners that have registered an
+     *  interest/dependency in this Philosospher.
+     */
+    protected void notifyListeners() {
+        if (_listeners == null) {
+            // No listeners to notify.
+            return;
+        }
+        Enumeration list = _listeners.elements();
+        while (list.hasMoreElements()) {
+            ((PhilosopherListener)list.nextElement()).philosopherChanged();
+        }
+    }
+
 
     public IOPort leftIn;
     public IOPort leftOut;
     public IOPort rightIn;
     public IOPort rightOut;
+
+    public boolean gotLeft = false;
+    public boolean gotRight = false;
+    public boolean waitingLeft = false;
+    public boolean waitingRight = false;
+
+    private LinkedList _listeners;
+    private Parameter _eating;
+    private Parameter _thinking;
+    
 }
