@@ -50,12 +50,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CTButtonEvent.java \
 	CTPeriodicSampler.java \
+	CTTriggeredSampler.java \
 	Integrator.java \
 	IPCInterface.java \
 	ThresholdMonitor.java \
 	ZeroCrossingDetector.java \
-	ZeroOrderHold.java
-	
+	ZeroOrderHold.java	
 
 EXTRA_SRCS =	$(JSRCS)
 
