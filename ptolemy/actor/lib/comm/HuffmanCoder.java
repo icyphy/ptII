@@ -92,9 +92,9 @@ public class HuffmanCoder extends Transformer {
         input.setTypeAtLeast(elementTerm);
         output.setTypeEquals(BaseType.BOOLEAN);
         
-        //TypedIOPort huffmanCodeBook = 
-          //  new TypedIOPort(this, "huffmanCodeBook", false, true);
-        //huffmanCodeBook.setTypeEquals(new ArrayType(BaseType.STRING));
+        huffmanCodeBook = 
+            new TypedIOPort(this, "huffmanCodeBook", false, true);
+        huffmanCodeBook.setTypeEquals(new ArrayType(BaseType.STRING));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +111,7 @@ public class HuffmanCoder extends Transformer {
      */
     public Parameter alphabet;
     
-    //public TypedIOPort huffmanCodeBook;
+    public TypedIOPort huffmanCodeBook;
     
     ////////////////////////////////////////////////////////////////////
     ////                  public inner classes                      ////
@@ -217,14 +217,14 @@ public class HuffmanCoder extends Transformer {
         // Get the input token. Ready for output.
         Token inputToken = (Token)input.get(0);
         
-        /*
+        
         StringToken[] codeBookTokens = new StringToken[_pmf.length];
         for (int i = 0; i < _pmf.length; i ++) {
-            System.out.println("codeBook[" + i + "] is " + _codeBook[i]);
+            //System.out.println("codeBook[" + i + "] is " + _codeBook[i]);
             codeBookTokens[i] = new StringToken(_codeBook[i]);
         }
         huffmanCodeBook.send(0, new ArrayToken(codeBookTokens));
-        */
+        
         
         // Find the token in the alphabet;
         boolean validInput = false;
