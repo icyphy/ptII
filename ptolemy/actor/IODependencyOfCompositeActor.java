@@ -34,6 +34,7 @@ package ptolemy.actor;
 import ptolemy.graph.DirectedGraph;
 
 import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// IODependence
@@ -78,16 +79,22 @@ public class IODependencyOfCompositeActor extends IODependency {
         while (inputs.hasNext()) {
             _directedGraph.addNodeWeight(inputs.next());
         }
-        Iterator outputs = _container.outputPortList().listIterator();
+        List outputPorts = _container.outputPortList();
+        Iterator outputs = outputPorts.listIterator();
         while (outputs.hasNext()) {
             _directedGraph.addNodeWeight(outputs.next());
         }
 
+        // Here we may add constraints on which actors to be used to
+        // construct graph. For example, in a modal model, we only include
+        // the controller, but not the refinements?
+        // FIXME:
+        List embeddedActors = _getEntities();
+        
         // merge the contained actors' graph into current one
-        Iterator embeddedActors = 
-            ((CompositeActor)_container).deepEntityList().iterator();
-        while (embeddedActors.hasNext()) {
-            Actor embeddedActor = (Actor)embeddedActors.next();
+        Iterator embeddedActorsIterator = embeddedActors.iterator();
+        while (embeddedActorsIterator.hasNext()) {
+            Actor embeddedActor = (Actor)embeddedActorsIterator.next();
             IODependency ioDependency = embeddedActor.getIODependencies();
             // merge the ports graph of the embedded actor into current one
             _directedGraph.addGraph(ioDependency.getAbstractPortsGraph());
@@ -98,11 +105,10 @@ public class IODependencyOfCompositeActor extends IODependency {
            
         // Next, create the directed edges according to the connections at 
         // the container level
-        embeddedActors = 
-            ((CompositeActor)_container).deepEntityList().iterator();
+        embeddedActorsIterator = embeddedActors.iterator();
         // iterate all embedded actors (include opaque composite actors)
-        while (embeddedActors.hasNext()) {
-            Actor embeddedActor = (Actor)embeddedActors.next();
+        while (embeddedActorsIterator.hasNext()) {
+            Actor embeddedActor = (Actor)embeddedActorsIterator.next();
             // Find the successor of the output ports of current actor.
             Iterator successors = 
                 embeddedActor.outputPortList().iterator();
@@ -129,11 +135,16 @@ public class IODependencyOfCompositeActor extends IODependency {
                     // Port considering the lazy evaluation of variables.
                     if (receivers[i] != null) {
                         for (int j = 0; j < receivers[i].length; j++) {
-                            _directedGraph.addEdge(
-                                outPort, receivers[i][j].getContainer());
-//                                _directedGraph.addEdge(
-//                                    outPort, receivers[i][j].getContainer(), 
-//                                    new Integer(1));
+                            IOPort ioPort = 
+                                receivers[i][j].getContainer();
+                            if (embeddedActors.contains(ioPort.getContainer()) ||
+                                outputPorts.contains(ioPort)) {
+                                _directedGraph.addEdge(
+                                    outPort, ioPort);
+    //                                _directedGraph.addEdge(
+    //                                    outPort, receivers[i][j].getContainer(), 
+    //                                    new Integer(1));
+                            }
                         }
                     }
                 }
@@ -161,12 +172,20 @@ public class IODependencyOfCompositeActor extends IODependency {
             Receiver[][] receivers = inputPort.deepGetReceivers();
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    _directedGraph.addEdge(inputPort, 
-                        receivers[i][j].getContainer());
-//                    _directedGraph.addEdge(inputPort, 
-//                        receivers[i][j].getContainer(), new Integer(1));
+                    IOPort ioPort = 
+                        receivers[i][j].getContainer();
+                    if (embeddedActors.contains(ioPort.getContainer())) {
+                        _directedGraph.addEdge(inputPort, 
+                            receivers[i][j].getContainer());
+    //                    _directedGraph.addEdge(inputPort, 
+    //                        receivers[i][j].getContainer(), new Integer(1));
+                    }
                 }
             }
         }
+    }
+
+    protected List _getEntities() {
+        return ((CompositeActor)_container).deepEntityList();
     }
 }
