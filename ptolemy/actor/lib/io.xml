@@ -25,7 +25,21 @@
       </entity>
 
       <entity name="DatagramSender"
-              class="ptolemy.actor.lib.net.DatagramSender"/>
+              class="ptolemy.actor.lib.net.DatagramSender">
+          <property name="encoding">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+              <property name="for_Ptolemy_parser" 
+                     value="for_Ptolemy_parser"
+                     class="ptolemy.kernel.util.StringAttribute"/>
+              <property name="raw_integers_little_endian" 
+                     value="raw_integers_little_endian"
+                     class="ptolemy.kernel.util.StringAttribute"/>
+              <property name="raw_low_bytes_of_integers" 
+                     value="raw_low_bytes_of_integers"
+                     class="ptolemy.kernel.util.StringAttribute"/>
+            </property>
+         </property>
+      </entity>
 
       <entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
         <doc>Read in doubles from either stdin or a URL</doc>
@@ -42,10 +56,34 @@
 
       <entity name="Wormhole"
               class="ptolemy.actor.lib.net.Wormhole">
-         <doc>Reads (&eventually writes) the copy past buffer</doc>
+         <doc>Reads (and eventually writes) the copy past buffer</doc>
       </entity>
 
       </group>
     ?>
   </configure>
 </entity>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
