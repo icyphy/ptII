@@ -152,6 +152,7 @@ PTINYPACKAGES = \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
+			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.logic \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.de.lib \
@@ -317,6 +318,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
 			../ptolemy/actor/lib/hoc/*.java \
+			../ptolemy/actor/lib/io/*.java \
 			../ptolemy/actor/lib/net/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
