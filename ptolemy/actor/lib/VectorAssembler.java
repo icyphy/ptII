@@ -48,6 +48,11 @@ them into a DoubleMatrixToken with one column. If there is no input token
 at any channel of the input port, then the prefire() will return false.
 Note that the elements in the vector are not copied.
 
+<p>For sequential domains like SDF, the combination of the
+a Commutator and sdf.actor.lib.DoubleToDoubleMatrix is equivalent
+to this actor.  However, that combination will not work in CT,
+so we need this actor.
+
 @author Jie Liu
 @version $Id$
 @see VectorDisassembler

@@ -54,6 +54,11 @@ elements in the vector will be sent, and the rest is discarded.
 If <i>n</i> is greater than <i>m<i>, then the last <i>n-m</i> channels
 in the output port will never send tokens out.
 
+<p>For sequential domains like SDF, the combination of the
+sdf.actor.lib.DoubleMatrixToDouble and a Distributor is equivalent
+to this actor.  However, that combination will not work in CT,
+so we need this actor.
+
 @author Jie Liu
 @version $Id$
 @see VectorAssembler
