@@ -80,7 +80,7 @@ process has been received.
 @see ptolemy.actor.QueueReceiver
 */
 public class NPNQueueReceiver extends PNQueueReceiver
-        implements ProcessReceiver {
+    implements ProcessReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -377,7 +377,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  at.
      */
     protected CalendarQueue _eventQueue =
-	    new CalendarQueue(new TimedEvent.TimeComparator());
+    new CalendarQueue(new TimedEvent.TimeComparator());
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

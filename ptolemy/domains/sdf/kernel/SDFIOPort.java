@@ -65,7 +65,7 @@ public final class SDFIOPort extends TypedIOPort {
 	_initialize();
     }
 
-   /** Construct a port in the specified workspace with an empty
+    /** Construct a port in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument
      *  is null, then use the default workspace.
