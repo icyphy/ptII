@@ -48,8 +48,6 @@ import java.awt.Graphics;
 import java.io.*;
 import java.util.*;
 import java.net.*;
-import javax.swing.SwingUtilities;
-import javax.swing.RepaintManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
@@ -241,7 +239,7 @@ public class Plot extends PlotBox {
 
         if (_xlog) {
             if (x <= 0.0) {
-                System.err.println("Can't plot non-positive X values "+
+                throw new RuntimeException("Can't plot non-positive X values "+
                         "when the logarithmic X axis value is specified: " +
                         x);
                 return;
@@ -250,7 +248,7 @@ public class Plot extends PlotBox {
         }
         if (_ylog) {
             if (y <= 0.0) {
-                System.err.println("Can't plot non-positive Y values "+
+                throw new RuntimeException("Can't plot non-positive Y values "+
                         "when the logarithmic Y axis value is specified: " +
                         y);
                 return;
@@ -287,7 +285,7 @@ public class Plot extends PlotBox {
             boolean connected) {
         if (_xlog) {
             if (x <= 0.0) {
-                System.err.println("Can't plot non-positive X values "+
+                throw new RuntimeException("Can't plot non-positive X values "+
                         "when the logarithmic X axis value is specified: " +
                         x);
                 return;
@@ -296,7 +294,7 @@ public class Plot extends PlotBox {
         }
         if (_ylog) {
             if (y <= 0.0 || yLowEB <= 0.0 || yHighEB <= 0.0) {
-                System.err.println("Can't plot non-positive Y values "+
+                throw new RuntimeException("Can't plot non-positive Y values "+
                         "when the logarithmic Y axis value is specified: " +
                         y);
                 return;
@@ -374,23 +372,7 @@ public class Plot extends PlotBox {
     public synchronized void erasePoint(int dataset, int index) {
         _checkDatasetIndex(dataset);
         if (_showing) {
-            // In swing, updates to showing graphics must be done in the
-            // event thread, not here.  Thus, we have to queue the request.
-            final int pendingDataset = dataset;
-            final int pendingIndex = index;
-            Runnable doPlotPoint = new Runnable() {
-                public void run() {
-                    _erasePoint(getGraphics(), pendingDataset, pendingIndex);
-                }
-            };
-            try {
-                // NOTE: Have to use invokeAndWait() here, not invokeLater()
-                // for reasons that I don't understand...
-                SwingUtilities.invokeAndWait(doPlotPoint);
-            } catch (Exception ex) {
-                // Ignore InterruptedException.
-                // Other exceptions should not occur.
-            }
+            _erasePoint(getGraphics(), dataset, index);
         }
 
         // Remove the point from the model.
@@ -1028,8 +1010,7 @@ public class Plot extends PlotBox {
             // no line being drawn.
             // NOTE: It is unfortunate to have to test the class of graphics,
             // but there is no easy way around this that I can think of.
-            if (!pointinside && marks != 3 && _isConnected(dataset) &&
-                    (graphics instanceof EPSGraphics)) {
+            if (!pointinside && marks != 3 && _isConnected(dataset)) { 
                 graphics.drawLine(xposi-6, yposi, xposi+6, yposi);
             } else {
                 // Color display.  Use normal legend.
@@ -1360,6 +1341,7 @@ public class Plot extends PlotBox {
         return false;
     }
 
+
     /** Write plot information to the specified output stream in
      *  PlotML, an XML extension.
      *  Derived classes should override this method to first call
@@ -1639,23 +1621,7 @@ public class Plot extends PlotBox {
         }
         // Draw the point on the screen only if the plot is showing.
         if (_showing) {
-            // In swing, updates to showing graphics must be done in the
-            // event thread, not here.  Thus, we have to queue the request.
-            final int pendingDataset = dataset;
-            final int pendingPoint = pts.size() - 1;
-            Runnable doPlotPoint = new Runnable() {
-                public void run() {
-                    _drawPlotPoint(getGraphics(), pendingDataset, pendingPoint);
-                }
-            };
-            try {
-                // NOTE: Have to use invokeAndWait() here, not invokeLater()
-                // for reasons that I don't understand...
-                SwingUtilities.invokeAndWait(doPlotPoint);
-            } catch (Exception ex) {
-                // Ignore InterruptedException.
-                // Other exceptions should not occur.
-            }
+            _drawPlotPoint(getGraphics(), dataset, pts.size() -1);
         }
 
         if(_wrap && _xRangeGiven && x == _xhighgiven) {

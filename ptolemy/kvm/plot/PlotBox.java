@@ -40,17 +40,10 @@ import java.awt.Graphics;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Rectangle;
 import java.awt.Panel;
 import java.awt.event.*;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.awt.print.Paper;
 import java.io.*;
 import java.net.*;
-import java.text.*;
 import java.util.*;
 
 // TO DO:
@@ -200,7 +193,7 @@ import java.util.*;
  * @contributor Jun Wu (jwu@inin.com.au)
  * @version $Id$
  */
-public class PlotBox extends Panel implements Printable {
+public class PlotBox extends Panel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
@@ -2841,6 +2834,7 @@ public class PlotBox extends Panel implements Printable {
         }
     }
 
+    /* KAWT_FIXME
     public class DragListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent event) {
             // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
@@ -2854,4 +2848,5 @@ public class PlotBox extends Panel implements Printable {
         public void mouseMoved(MouseEvent event) {
         }
     }
+    */
 }

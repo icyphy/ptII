@@ -76,7 +76,7 @@ public class PlotApplication extends Frame {
         }
 
         if (args == null || args.length == 0) {
-            samplePlot();
+            plot.samplePlot();
         }
         setVisible(true);
     }

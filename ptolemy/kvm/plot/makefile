@@ -80,7 +80,7 @@ all: jclass PlotApplication.prc
 install: jclass subinstall $(PTCLASSJAR)
 
 PlotApplication.prc: $(JCLASS)
-	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.Plot.PlotApplication
+	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.plot.PlotApplication
 
 depend:
 	@echo "no dependencies in this directory"
