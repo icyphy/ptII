@@ -66,7 +66,7 @@ public class RegenerateCode {
             JavaParser javaParser = new JavaParser();
 
             try {
-                javaParserinit(args[f + fileStart]);
+                javaParser.init(args[f + fileStart]);
 
             } catch (Exception e) {
                 System.err.println("error opening input file " + args[f + fileStart]);
