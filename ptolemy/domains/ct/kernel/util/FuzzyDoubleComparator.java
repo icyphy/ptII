@@ -63,10 +63,10 @@ public class FuzzyDoubleComparator implements Comparator{
 
     /** Return -1 if fst < snd - threshold/2; <BR>
      *  return 1 if fst > snd + threshold/2; <BR>
-     *  return 0 otherwise.<BR>
+     *  return 0 otherwise.
      *
-     *  If any of the argument is not a Double object, a ClassCastException
-     *  will be thrown
+     *  <p>If any of the argument is not a Double object, a ClassCastException
+     *  will be thrown.
      *  @param fst The first Double object.
      *  @param snd The second Double object.
      *  @return The comparison result, -1, 0, or 1.
