@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -63,20 +66,20 @@ public class DEEventTag {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the time stamp field of this sort key.
-     *
-     * @return The time stamp field.
-     */
-    public double timeStamp() {
-        return _timeStamp;
-    }
-
     /** Return the receiver depth field of this sort key.
      *
      * @return The receiver depth field.
      */
     public long receiverDepth() {
         return _receiverDepth;
+    }
+
+    /** Return the time stamp field of this sort key.
+     *
+     * @return The time stamp field.
+     */
+    public double timeStamp() {
+        return _timeStamp;
     }
 
     ///////////////////////////////////////////////////////////////////

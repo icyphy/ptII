@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (lmuliadi@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -117,7 +117,7 @@ public class DEIOPort extends TypedIOPort {
     public void before(IOPort otherport) throws IllegalActionException {
         if (!isInput() || !otherport.isInput()) {
             throw new IllegalActionException(this,
-                    "Invalid before relationship.  " + 
+                    "Invalid before relationship.  " +
                     "Must be input before input.");
         }
         _beforeList.insertLast(otherport);
@@ -171,7 +171,7 @@ public class DEIOPort extends TypedIOPort {
             if (fr == null) return;
             if (channelindex >= fr.length || channelindex < 0) {
                 throw new IllegalActionException(this,
-                "send: channel index is out of range.");
+                        "send: channel index is out of range.");
             }
             if (fr[channelindex] == null) return;
             for (int j = 0; j < fr[channelindex].length; j++) {
@@ -179,7 +179,7 @@ public class DEIOPort extends TypedIOPort {
                     ((DEReceiver)fr[channelindex][j]).setDelay(_delay);
                 } catch (ClassCastException e) {
                     throw new InvalidStateException("DEIOPort.send() " +
-                    "expects to connect to receivers of type DEReceiver.");
+                            "expects to connect to receivers of type DEReceiver.");
                 }
             }
             super.send(channelindex, token);

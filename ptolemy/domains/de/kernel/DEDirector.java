@@ -241,7 +241,7 @@ public class DEDirector extends Director {
             boolean refire = false;
             do {
                 _debug("Iterating actor", ((Entity)actorToFire).getName(),
-                    "at time " + getCurrentTime());
+                        "at time " + getCurrentTime());
                 if (!actorToFire.prefire()) {
                     _debug("Prefire returned false.");
                     break;
@@ -249,7 +249,7 @@ public class DEDirector extends Director {
                 actorToFire.fire();
                 if (!actorToFire.postfire()) {
                     _debug("Postfire returned false:",
-                        ((Entity)actorToFire).getName());
+                            ((Entity)actorToFire).getName());
                     // Actor requests that it not be fired again.
                     if (_deadActors == null) {
                         _deadActors = new HashSet();
@@ -286,8 +286,8 @@ public class DEDirector extends Director {
                 break;
             } else if (nextKey.timeStamp() < getCurrentTime()) {
                 throw new InternalErrorException(
-                    "fire(): the next event has smaller time stamp than" +
-                    " the current time!");
+                        "fire(): the next event has smaller time stamp than" +
+                        " the current time!");
             }
         }
     }
@@ -387,7 +387,6 @@ public class DEDirector extends Director {
     public void initialize() throws IllegalActionException {
 
 	_eventQueue.clear();
-	_dag = new DirectedAcyclicGraph();
         _deadActors = null;
         _currentTime = 0.0;
         _noMoreActorsToFire = false;
@@ -450,13 +449,7 @@ public class DEDirector extends Director {
      */
     public boolean prefire() throws IllegalActionException {
         if (!_sortValid) {
-            _constructDirectedGraph();
-            if (!_dag.isAcyclic()) {
-                // FIXME: This error message is inadequate, since it gives
-                // no clue where the cycle is.
-                throw new IllegalActionException("Can't initialize a "+
-                "cyclic graph in DEDirector.initialize()");
-            }
+            _computeDepth();
         }
         return super.prefire();
     }
@@ -498,8 +491,8 @@ public class DEDirector extends Director {
             container.getExecutiveDirector().getCurrentTime();
         if (outsideCurrTime < getCurrentTime()) {
             throw new IllegalActionException(this,
-                "Received an event in the past at "
-                + "an opaque composite actor boundary.");
+                    "Received an event in the past at "
+                    + "an opaque composite actor boundary.");
         }
         setCurrentTime(outsideCurrTime);
         super.transferInputs(port);
@@ -528,13 +521,13 @@ public class DEDirector extends Director {
         // Check for events in the past.
         if (_startTime != Double.MAX_VALUE && time < getCurrentTime()) {
             throw new IllegalActionException((Entity)actor,
-            "Attempt to schedule a firing in the past.");
+                    "Attempt to schedule a firing in the past.");
         }
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(actor, key);
         _eventQueue.put(event);
         _debug("Enqueue pure event for actor:", ((Entity)actor).getName(),
-        "at time " + time, "with depth " + depth);
+                "at time " + time, "with depth " + depth);
     }
 
     /** Put an event into the event queue with the specified destination
@@ -554,16 +547,16 @@ public class DEDirector extends Director {
 
         Nameable destination = receiver.getContainer();
         if (time < getCurrentTime()) {
-             throw new IllegalActionException(destination,
-            "Attempt to send a token with a time stamp in the past.");
+            throw new IllegalActionException(destination,
+                    "Attempt to send a token with a time stamp in the past.");
         }
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(receiver, token, key);
         _eventQueue.put(event);
         _debug("Enqueue event for port:",
-            destination.getFullName(),
-            "at time " + time,
-            "with depth " + depth);
+                destination.getFullName(),
+                "at time " + time,
+                "with depth " + depth);
     }
 
     /** Override the default Director implementation, because in DE
@@ -726,13 +719,13 @@ public class DEDirector extends Director {
 
     // Construct a directed graph with the nodes representing input ports and
     // directed edges representing zero delay path.  The directed graph
-    // is put in the private variable _dag, replacing whatever was there
-    // before.
-    private void _constructDirectedGraph() {
+    // is returned.
+    private DirectedAcyclicGraph _constructDirectedGraph()
+            throws IllegalActionException {
         LinkedList portList = new LinkedList();
 
         // Clear the graph
-        _dag = new DirectedAcyclicGraph();
+        DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
         // First, include all input ports to be nodes in the graph.
         CompositeActor container = ((CompositeActor)getContainer());
@@ -746,7 +739,7 @@ public class DEDirector extends Director {
 		while (allports.hasMoreElements()) {
 		    IOPort port = (IOPort)allports.nextElement();
 		    // create the nodes in the graph.
-		    _dag.add(port);
+		    dag.add(port);
 		    portList.insertLast(port);
 		}
 	    }
@@ -764,8 +757,8 @@ public class DEDirector extends Director {
                 while (befores.hasMoreElements()) {
                     IOPort after = (IOPort) befores.nextElement();
                     // create an arc from p to after
-                    if (_dag.contains(after)) {
-                        _dag.addEdge(p, after);
+                    if (dag.contains(after)) {
+                        dag.addEdge(p, after);
                     } else {
                         // Note: Could this exception be triggered by
                         // level-crossing transitions?  In this case,
@@ -783,9 +776,9 @@ public class DEDirector extends Director {
 		    while (inPortEnum.hasMoreElements()) {
                         IOPort pp = (IOPort)inPortEnum.nextElement();
                         // create an arc from p to pp
-                        if (_dag.contains(pp)) {
+                        if (dag.contains(pp)) {
 			    //if (pp != deltaInPort)
-			    _dag.addEdge(p, pp);
+			    dag.addEdge(p, pp);
                         } else {
                             // Note: Could this exception be triggered by
                             // level-crossing transitions?  In this case,
@@ -808,9 +801,9 @@ public class DEDirector extends Director {
                     while (inPortEnum.hasMoreElements()) {
                         IOPort pp = (IOPort)inPortEnum.nextElement();
                         // create an arc from p to pp
-                        if (_dag.contains(pp)) {
+                        if (dag.contains(pp)) {
 			    //if (pp != deltaInPort)
-			    _dag.addEdge(ioPort, pp);
+			    dag.addEdge(ioPort, pp);
                         } else {
                             // Note: Could this exception be triggered by
                             // level-crossing transitions?  In this case,
@@ -820,22 +813,24 @@ public class DEDirector extends Director {
                         }
                     }
                 }
-	    }
+            }
+            if (!dag.isAcyclic()) {
+                throw new IllegalActionException(this,
+                        "Zero delay loop including port: " + ioPort.getFullName());
+            }
         }
+        return dag;
     }
 
     // Perform topological sort on the directed graph and use the result
     // to set the depth field of the DEReceiver objects.
-    private void _computeDepth() {
-        Object[] sort = (Object[]) _dag.topologicalSort();
-        if (DEBUG) {
-            System.out.println("### Result of topological sort: ###");
-        }
+    private void _computeDepth() throws IllegalActionException {
+        DirectedAcyclicGraph dag = _constructDirectedGraph();
+        Object[] sort = (Object[]) dag.topologicalSort();
+        _debug("### Result of topological sort: ###");
 	for(int i = sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
-            if (DEBUG) {
-                System.out.println(p.description(FULLNAME) + ":" + i);
-            }
+            _debug(p.getFullName() + ":" + i);
             // Set the fine levels of all DEReceiver instances in IOPort p
             // to be i.
             Receiver[][] r;
@@ -858,16 +853,6 @@ public class DEDirector extends Director {
 	}
     }
 
-    // Return true if this director is embedded inside an opaque composite
-    // actor contained by another composite actor.
-    public boolean _isEmbedded() {
-        if (getContainer().getContainer() == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy 0.x terminology).
@@ -877,30 +862,33 @@ public class DEDirector extends Director {
             sortkey = _eventQueue.getNextTag();
         } catch (IllegalAccessException e) {
             throw new IllegalActionException(
-                "Request to refire composite actor, "
-                + "but the event queue is empty.");
+                    "Request to refire composite actor, "
+                    + "but the event queue is empty.");
         }
         double nextRefire = sortkey.timeStamp();
 
         // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
-            (Actor)getContainer(), nextRefire);
+                (Actor)getContainer(), nextRefire);
 
         _debug("DEDirector requests refiring at " + nextRefire);
+    }
+
+    // Return true if this director is embedded inside an opaque composite
+    // actor contained by another composite actor.
+    private boolean _isEmbedded() {
+        if (getContainer().getContainer() == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static final boolean DEBUG = false;
-
     //_eventQueue: an instance of DEEventQueue is used for sorting events.
     private DEEventQueue _eventQueue;
-
-    // Directed Graph whose nodes represent input ports and whose
-    // edges represent delay free paths.  This is used for prioritizing
-    // simultaneous events.
-    private DirectedAcyclicGraph _dag = null;
 
     // Indicate whether the actors (not the director) is initialized.
     private boolean _isInitialized = false;

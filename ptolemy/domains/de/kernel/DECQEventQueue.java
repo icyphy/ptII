@@ -24,7 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -68,7 +69,6 @@ public class DECQEventQueue implements DEEventQueue {
         _cQueue.clear();
     }
 
-
     /** Return the DEEventTag associated with the earliest event in this
      *  event queue. Note that the event is not dequeued.
      *  @return The DEEventTag associated with the earliest event in this
@@ -77,6 +77,12 @@ public class DECQEventQueue implements DEEventQueue {
      */
     public DEEventTag getNextTag() throws IllegalAccessException {
         return (DEEventTag)_cQueue.getNextKey();
+    }
+
+    /** Return true if this event queue is empty.
+     */
+    public boolean isEmpty() {
+        return _cQueue.isEmpty();
     }
 
     /** Enqueue an event into the event queue.
@@ -92,12 +98,6 @@ public class DECQEventQueue implements DEEventQueue {
      */
     public synchronized DEEvent take() throws IllegalAccessException {
         return (DEEvent)_cQueue.take();
-    }
-
-    /** Return true if this event queue is empty.
-     */
-    public boolean isEmpty() {
-        return _cQueue.isEmpty();
     }
 
     ///////////////////////////////////////////////////////////////////

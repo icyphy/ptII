@@ -24,7 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -62,11 +63,6 @@ public interface DEEventQueue {
      */
     public void clear();
 
-    /** Return true if this event queue is empty.
-     *  @return True if this queue is empty, false otherwise.
-     */
-    public boolean isEmpty();
-
     /** Return the DEEventTag associated with the earliest event in this
      *  event queue. Note that the event is not dequeued.
      *  @return Return the DEEventTag associated with the earliest event
@@ -74,6 +70,11 @@ public interface DEEventQueue {
      *  @exception IllegalAccessException If the queue is empty.
      */
     public DEEventTag getNextTag() throws IllegalAccessException;
+
+    /** Return true if this event queue is empty.
+     *  @return True if this queue is empty, false otherwise.
+     */
+    public boolean isEmpty();
 
     /** Enqueue an event into the event queue.
      *  @param event The event to be put into the queue.
