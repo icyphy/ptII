@@ -38,6 +38,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.domains.wireless.kernel.PropertyTransformer;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -99,9 +100,21 @@ indicates that by default, there is no range limit.
 <p>
 Any receiver that is within the specified range when transmit()
 is called will receive the transmission, unless the <i>lossProbability</i>
-parameter is set to greater than zero.
-
-@author Edward A. Lee
+parameter is set to greater than zero. 
+<p>
+The received power is decided by the formula:
+<pre>
+ transmitPower*powerLossFactor*senderGain*receiverGain
+<pre>
+where the senderGain and receiverGain is decided by the specified
+anttena pattern. If their is PropertyTransformer that provides the
+anttena gain registered for the sender and receiver port, 
+the channel will call the getProperty() method of the PropertyTansformer
+to get the gain respecting to the position of the sender 
+and receiver. If no PropertyTransformer is registered, use 1.0 as
+the default value for senderGain or receiverGain.
+<p> 
+@author Edward A. Lee, Yang Zhao
 @version $Id$
 */
 public class PowerLossChannel extends LimitedRangeChannel {
@@ -199,10 +212,65 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // with the new value of "distance."
         double powerLossFactorValue
                 = ((DoubleToken)powerLossFactor.getToken()).doubleValue();
+        //Check whether their is special anttena pattern registered
+        //for the sender and destination port. If there is, invoke
+        //the model defining the anttena gain to get the value respecting
+        //the position of the sender and receiver. Otherwise, use 1.0 as
+        //the default value. 
+        double senderGain = 1.0;
+        double receiverGain = 1.0;
+        WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
+        //FIXME: the following code only considers 2 dimensions.
+        //calculate the direction of the receiver respect to the sender, and
+        // get the gain corresponding to that direction.
+        if(_portPropertyTransformer.get(sender) != null || 
+                _portPropertyTransformer.get(destination) != null ) {
+            double[] p1 = _locationOf(sender);
+            double[] p2 = _locationOf(destination);
+            double dx = p2[0] - p1[0];
+            double dy = p2[1] - p1[1];
+            double r = Math.sqrt(dx*dx + dy*dy);
+            double theta = Math.acos(dx/r);
+            if (dy < 0 ) {
+                theta = 2*Math.PI - theta;
+            } 
+                  
+            if(_portPropertyTransformer.get(sender) != null) {
+                PropertyTransformer propertyTransformer = (PropertyTransformer) 
+                        _portPropertyTransformer.get(sender);
+                String[] labels = {"theta"};
+                DoubleToken[] value = {new DoubleToken(theta)};
+                RecordToken args = new RecordToken(labels, value);
+                String[] resultLabels = {"gain"};
+                RecordToken results = propertyTransformer.
+                        getProperty(args, resultLabels);
+                //FIXME: How to ensure the cast is safe?
+                senderGain = ((DoubleToken)results.get("gain")).doubleValue();
+            }
         
+            if(_portPropertyTransformer.get(destination) != null) {
+                PropertyTransformer propertyTransformer = (PropertyTransformer) 
+                        _portPropertyTransformer.get(destination);
+                //Ajust the angle by Pi and round it to 0 ~ 2Pi.
+                if(theta < Math.PI){
+                    theta =  Math.PI + theta;
+                } else {
+                    theta = theta - Math.PI;
+                }
+                String[] labels = {"theta"};
+                DoubleToken[] value = {new DoubleToken(theta)};
+                RecordToken args = new RecordToken(labels, value);
+                String[] resultLabels = {"gain"};
+                RecordToken results = propertyTransformer.
+                        getProperty(args, resultLabels);
+                //FIXME: How to ensure the cast is safe?
+                receiverGain = ((DoubleToken)results.get("gain")).doubleValue();
+            }
+        }
         // Calculate the receive power.
         double receivePower
-                = transmitPower.doubleValue() * powerLossFactorValue;
+                = transmitPower.doubleValue() * powerLossFactorValue *
+                  receiverGain * senderGain;
         
         // Create a record token with the receive power.
         String[] names = {"power"};

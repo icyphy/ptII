@@ -134,7 +134,7 @@ public class GetProperties extends TypedAtomicActor {
         Iterator connectedPorts = trigger.sourcePortList().iterator();
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();
-            if (port.isInput() && port instanceof WirelessIOPort && port.getContainer() == getContainer()) {
+            if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
                 Token propertiesValue = ((WirelessIOPort)port).getProperties(0);
             
@@ -160,9 +160,9 @@ public class GetProperties extends TypedAtomicActor {
         Iterator connectedPorts = trigger.sourcePortList().iterator();
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();
-            if (port.isInput() && port instanceof WirelessIOPort && port.getContainer() == getContainer()) {
+            if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
-                Entity container = (Entity)getContainer();
+                Entity container = (Entity)(port.getContainer());
                 String channelName
                         = ((WirelessIOPort)port).outsideChannel.stringValue();
                 CompositeEntity container2 = (CompositeEntity)container.getContainer();
