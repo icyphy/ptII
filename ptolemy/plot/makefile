@@ -49,7 +49,14 @@ PTPACKAGE = 	plot
 #    PlotApplication.java, doc/main.htm, doc/changes.htm, doc/install.htm 
 PTVERSION =	3.1
 PTDIST =	ptplot$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		plotml/plotml.jar \
+		compat/compat.jar
+
+PTCLASSALLJAR = plot.jar
 
 # Jar file consisting of classes used by an applet.
 PTAUXJAR = 		plotapplet.jar
@@ -254,7 +261,7 @@ BASECLASSFILES = \
 		'$(ME)/PlotBox$$FillButtonListener.class' \
 		'$(ME)/PlotBox$$ZoomListener.class' \
 
-# Class files used in applets
+# Class files used in simple applets
 APPLETCLASSFILES = \
 		$(ME)/PlotApplet.class \
 		$(ME)/PlotLive.class \
@@ -262,14 +269,19 @@ APPLETCLASSFILES = \
 		'$(ME)/PlotLive$$StartButtonListener.class' \
 		'$(ME)/PlotLive$$StopButtonListener.class' \
 
-# Class files used in applications
-APPLICATIONCLASSFILES = \
+# Class files that permit editing and histograms, used by
+# complex applets and applications
+COMPLEXCLASSFILES = \
 		'$(ME)/EditablePlot$$EditMouseListener.class' \
 		'$(ME)/EditablePlot$$ModifyListener.class' \
 		'$(ME)/EditablePlot$$UndoListener.class' \
 		$(ME)/EditablePlot.class \
 		$(ME)/Histogram.class \
-		$(ME)/HistogramApplet.class \
+		$(ME)/HistogramApplet.class
+
+# Class files used in applications
+APPLICATIONCLASSFILES = \
+		$(COMPLEXCLASSFILES) \
 		'$(ME)/PlotApplication$$1.class' \
 		$(ME)/PlotApplication.class \
 		'$(ME)/PlotFrame$$1.class' \
@@ -305,6 +317,7 @@ $(PLOTMLAPPLETJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLETCLASSFILES) \
+		$(COMPLEXCLASSFILES) \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
             )
@@ -315,6 +328,7 @@ $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLICATIONCLASSFILES) \
+		$(COMPLEXCLASSFILES) \
 		ptolemy/gui/*.class \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
