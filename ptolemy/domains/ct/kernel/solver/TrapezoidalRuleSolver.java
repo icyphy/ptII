@@ -82,7 +82,6 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this solver.
      */
     public TrapezoidalRuleSolver(Workspace workspace) {
         super(workspace);

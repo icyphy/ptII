@@ -69,7 +69,7 @@ public class CTPeriodicSampler extends Transformer
      *  construction time and can't be changed thereafter.
      *  A dynamic actor will produce a token at its initialization phase.
      *
-     *  @param CompositeActor The subsystem that this actor is lived in
+     *  @param container The container of this actor.
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.

@@ -812,12 +812,12 @@ public class PxgraphParser {
     }
 
     /** Read a pxgraph-compatible binary or ASCII encoded file.
-     *  @param in The input stream.
+     *  @param inputStream The input stream.
      *  @exception java.io.IOException If an I/O error occurs.
      */
-    public void read(InputStream inputstream) throws IOException {
+    public void read(InputStream inputStream) throws IOException {
         DataInputStream in = new DataInputStream(
-                new BufferedInputStream(inputstream));
+                new BufferedInputStream(inputStream));
         if (_binary) {
             int c;
             float x = 0, y = 0, pointCount = 0;
@@ -959,7 +959,7 @@ public class PxgraphParser {
             // Read ASCII files.
             // NOTE: These are not in xgraph format, but rather in the
             // old ptplot format!!
-            _plot.read(inputstream);
+            _plot.read(inputStream);
         }
     }
 

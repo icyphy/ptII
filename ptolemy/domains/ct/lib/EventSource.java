@@ -74,7 +74,7 @@ public class EventSource extends TypedAtomicActor
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *
-     *  @param CompositeActor The subsystem that this actor is lived in
+     *  @param container The container.
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.

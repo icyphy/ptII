@@ -248,7 +248,7 @@ public class CTScheduler extends Scheduler {
      *  this opaque composite actor.
      *  If the argument is null, returns null.
      *  If the actor is a source, returns an empty list.
-     *  @param The specified actor.
+     *  @param actor The specified actor.
      *  @return The list of predecessors, unordered.
      */
     public List predecessorList(Actor actor) {
@@ -293,7 +293,7 @@ public class CTScheduler extends Scheduler {
     /** Return the successive actors of the given actor in the topology.
      *  If the argument is null, returns null.
      *  If the actor is a sink, returns an empty list.
-     *  @param The specified actor. If the actor is null, returns null.
+     *  @param actor The specified actor. If the actor is null, returns null.
      *  @return The enumerations of predecessors.
      */
     public List successorList(Actor actor) {

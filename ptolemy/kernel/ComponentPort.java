@@ -622,7 +622,7 @@ public class ComponentPort extends Port {
 
     /** Override the base class to ensure that the proposed container is a
      *  ComponentEntity.
-     *  @param entity The proposed container.
+     *  @param container The proposed container.
      *  @exception IllegalActionException If the container is not a
      *   ComponentEntity.
      */

@@ -1091,7 +1091,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  a null argument.  This method is write synchronized on
      *  the workspace because it modifies the object that is the
      *  argument to refer back to this one.
-     *  @param referTo The object to refer to.
+     *  @param deferTo The object to defer to.
      *  @see #exportMoML(Writer, int)
      */
     public void setDeferMoMLDefinitionTo(NamedObj deferTo) {

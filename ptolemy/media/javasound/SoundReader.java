@@ -133,7 +133,7 @@ public class SoundReader {
      *  from a sound file specified as a URL and open the file at
      *  the specified URL. It is safe
      *  to call getSamples() immediately after this constructor returns.
-     *  @param sourceURL The URL of a sound file.
+     *  @param soundURL The URL of a sound file.
      *  @param getSamplesArraySize The number of samples per channel
      *   returned by getSamples().
      */

@@ -416,7 +416,6 @@ public class Plot extends PlotBox {
     /** Return whether a line will be drawn from any
      *  plotted point down to the x axis.
      *  A plot with such lines is also known as a stem plot.
-     *  @param on If true, draw a stem plot.
      */
     public boolean getImpulses() {
         return _impulses;
@@ -487,8 +486,8 @@ public class Plot extends PlotBox {
      *  @param inputstream The input stream.
      *  @exception IOException If the stream cannot be read.
      */
-    public synchronized void read(InputStream in) throws IOException {
-        super.read(in);
+    public synchronized void read(InputStream inputStream) throws IOException {
+        super.read(inputStream);
         _firstInSet = true;
         _sawFirstDataSet = false;
     }

@@ -158,12 +158,12 @@ public class PlotBoxMLParser extends HandlerBase {
      *  &AElig;lfred will call this method whenever it encounters
      *  a serious error.  This method simply throws an XmlException.
      *  @param message The error message.
-     *  @param systemId The URI of the entity that caused the error.
+     *  @param systemID The URI of the entity that caused the error.
      *  @param line The approximate line number of the error.
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
      */
-    public void error(String message, String sysid,
+    public void error(String message, String systemID,
             int line, int column) throws XmlException {
         throw new XmlException(message, _currentExternalEntity(), line, column);
     }
@@ -222,8 +222,8 @@ public class PlotBoxMLParser extends HandlerBase {
      *  a modified URI (a string), an InputStream, or a Reader.
      *  In the latter two cases, the input character stream is
      *  provided.
-     *  @param publicId The public identifier, or null if none was supplied.
-     *  @param systemId The system identifier.
+     *  @param publicID The public identifier, or null if none was supplied.
+     *  @param systemID The system identifier.
      *  @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
@@ -350,10 +350,10 @@ public class PlotBoxMLParser extends HandlerBase {
     /** Handle the start of an external entity.  This pushes the stack so
      *  that error reporting correctly reports the external entity that
      *  causes the error.
-     *  @param systemId The URI for the external entity.
+     *  @param systemID The URI for the external entity.
      */
-    public void startExternalEntity(String systemId) {
-        _externalEntities.push(systemId);
+    public void startExternalEntity(String systemID) {
+        _externalEntities.push(systemID);
     }
 
     ///////////////////////////////////////////////////////////////////

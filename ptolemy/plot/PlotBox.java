@@ -416,7 +416,7 @@ public class PlotBox extends JPanel implements Printable {
      *  to the clipboard.  Otherwise, it goes to the specified file.
      *  To send it to standard output, use
      *  <code>System.out</code> as an argument.
-     *  @param file A file writer to which to send the description.
+     *  @param out An output stream to which to send the description.
      */
     public synchronized void export(OutputStream out) {
         try {

@@ -92,7 +92,7 @@ public class FuzzyDoubleComparator implements Comparator{
 
     /** Set the fuzziness threshold. The threshold is always positive.
      *  If the argument is negative, then its absolute value is taken.
-     *  @param thres The threshold.
+     *  @param threshold The threshold.
      */
     public void setThreshold(double threshold) {
         _threshold = Math.abs(threshold);

@@ -109,8 +109,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  is null, then the name is set to the empty string.
      *  The object is added to the workspace directory.
      *  Increment the version of the workspace.
-     *  @param workspace The workspace for synchronization and version
-     *  tracking.
+     *  @param container The container.
      *  @param name The name of this object.
      *  @exception IllegalActionException If the name has a period.
      */
