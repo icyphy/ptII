@@ -309,8 +309,8 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set res9 [[$p4 get 0] toString]
     
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
-} {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: hasToken: channel index is out of range.
-  in .E0.E2.IDEN.output} {ptolemy.kernel.util.IllegalActionException: hasToken: channel index is out of range.
+} {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: Port is not an input port!
+  in .E0.E2.IDEN.output} {ptolemy.kernel.util.IllegalActionException: Port is not an input port!
   in .E0.E2.P3} 1 {"foo"}}
 
 ######################################################################
