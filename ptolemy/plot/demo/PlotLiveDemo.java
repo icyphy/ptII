@@ -73,7 +73,6 @@ public class PlotLiveDemo extends PlotLive {
                 Math.cos(Math.PI * _count/100), false);
         addPoint(3, Math.sin(Math.PI*_count/50),
                 Math.cos(Math.PI * _count/70), false);
-        _first = false;
         _count += 1.0;
         try {
             Thread.sleep(5);
@@ -82,9 +81,6 @@ public class PlotLiveDemo extends PlotLive {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** @serial True if this is the first time through. */
-    private boolean _first = true;
 
     /** @serial Value being plotted */
     private double _count = 0.0;
