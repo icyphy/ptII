@@ -132,7 +132,7 @@ public class BusContentionApplet extends CSPApplet {
 	final Graph finalGraph = _graph;
 
         try {
-	    SwingUtilities.invokeAndWait(new Runnable (){
+	    SwingUtilities.invokeAndWait(new Runnable(){
 		public void run() {
 		    displayGraph(_jgraph, finalGraph);
 		}
@@ -390,13 +390,14 @@ public class BusContentionApplet extends CSPApplet {
 	 * Create a new basic controller with default
 	 * node and edge interactors.
 	 */
-	public BusContentionGraphController () {
+	public BusContentionGraphController() {
 	    // The interactors attached to nodes and edges
 	    setNodeController(new NodeController(this));
 	    setEdgeController(new EdgeController(this));
 	    getNodeController().setNodeRenderer(new ThreadRenderer());
 	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
 	}
+
 
 	/**
 	 * Initialize all interaction on the graph pane. This method
@@ -405,7 +406,7 @@ public class BusContentionApplet extends CSPApplet {
 	 * the controller does not yet have a reference to its pane
 	 * at that time.
 	 */
-	protected void initializeInteraction () {
+	protected void initializeInteraction() {
 	    GraphPane pane = getGraphPane();
 
 	    // Create and set up the selection dragger
@@ -479,7 +480,7 @@ public class BusContentionApplet extends CSPApplet {
 
             // Color the graph
             try {
-                SwingUtilities.invokeAndWait(new Runnable () {
+                SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
                         switch (state) {
                         case 1:
