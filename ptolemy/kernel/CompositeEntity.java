@@ -1060,6 +1060,8 @@ public class CompositeEntity extends ComponentEntity {
                 "height=\"40\" style=\"fill:blue\"/>\n" +
                 "<rect x=\"5\" y=\"5\" width=\"50\" " +
                 "height=\"30\" style=\"fill:white\"/>\n" +
+                "<polygon points=\"10,10 50,20 10,30\" " +
+                "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }
 
