@@ -42,13 +42,20 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 
-test HSIFUtilities-1.1 {Convert the SwimmingPool example} {
-    java::call ptolemy.hsif.HSIFUtilities HSIFToMoML \
-	../demo/SwimmingPool/SwimmingPool.xml SwimmingPool_moml.xml
-} {}
+test HSIFEffigy.1.1 {Convert the Thermostat demo using the configuration} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset	
+    set inURL [java::call ptolemy.actor.gui.MoMLApplication specToURL \
+	"ptolemy/configs/hyvisual/configuration.xml"]
+    set toplevel [$parser parse $inURL [$inURL openStream]]
+    set config [java::cast ptolemy.actor.gui.Configuration $toplevel]
 
-test HSIFUtilities-1.2 {Convert the Thermostat example using main to increase code coverage} {
-    exec java -classpath $PTII ptolemy.hsif.HSIFUtilities \
-	../demo/Thermostat/Thermostat.xml Thermostat_moml.xml
-} {}
-
+    set inURL [java::call ptolemy.actor.gui.MoMLApplication specToURL \
+	"../demo/Thermostat/Thermostat.xml"]
+	
+    set key [$inURL toExternalForm]	
+    catch {$config openModel $inURL $inURL $key	} errMsg
+    # It is ok to get a NoClassDefFoundError because we are trying to
+    # start vergil	
+    list $errMsg
+} {java.lang.NoClassDefFoundError}

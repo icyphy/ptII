@@ -35,7 +35,7 @@ ME =		ptolemy/hsif/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -49,6 +49,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	HSIFEffigy.tcl \
 	HSIFUtilities.tcl
 
 # Graphical Java tests that use Tcl.
