@@ -393,7 +393,7 @@ executed in a separate thread.</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>RealTimePlotter</title>
-<xRange min="90.0" max="9994.0"/>
+<xRange min="0" max="25"/>
 <yRange min="-1.7675101890654452" max="2.1545375117972467"/>
 </plot>?>
                         </configure>    </entity>
