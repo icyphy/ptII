@@ -184,6 +184,43 @@ Christopher Hylands and Professor Edward A. Lee developed a user
 interface to control code generation.  
 
 
+<h2>Applet code generation</h2>
+Ptolemy II can generate the files necessary to run a model as an applet.
+If a model is named <CODE>MyModel</CODE>, and the user selects
+<CODE>foo.bar</CODE> as the package, then saving the model as an
+applet will create a directory called <CODE>$PTII/foo/bar/MyModel</CODE>
+and create the following files for that model:
+<dl>
+<dt> <CODE>makefile</CODE>
+<dd> <CODE>make demo</CODE> will run appletviewer on the HTML files
+
+<dt> <CODE>MyModel.xml</CODE>
+<dd> A local copy of the model
+
+<dt> <CODE>MyModel.htm</CODE>
+<dd> An HTML file containing the code necessary to <CODE>MyModel.xml</CODE>
+
+
+<dt> <CODE>MyModelVergil.htm</CODE>
+<dd> An HTML file containing the code necessary to
+display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet and in text format
+
+</dl>
+
+The applet generator uses the soot framework, though in principle a
+shell script could be used instead.  The applet generator reads
+template files that end in <CODE>.in</CODE> from
+<CODE>$PTII/ptolemy/copernicus/applet</CODE>, substitutes keywords and
+writes out the files in the destination directory.  Users may modify
+the template files to match their local setup
+
+ <p>Making an applet available via the web is somewhat complex because
+the Java Plugin has two sections, one for Netscape, the other for
+Internet Explorer, so changes to the htm files must be replicated in 
+both sections.  The codebase and the location of the jar files also add
+to the problems.
+
+
 <h2>Multiprocessors and DSP targets</h2>
 
 Partitioning a model between multiple processors is fairly tricky, and
