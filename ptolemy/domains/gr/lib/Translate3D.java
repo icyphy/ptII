@@ -49,6 +49,7 @@ version in its output. In reality, this actor encapsulates a Java3D TransformGro
 which is converted into a node in the resulting Java3D scene graph. This actor will
 only have meaning in the GR domain.
 @author C. Fong
+@version $Id$
 */
 public class Translate3D extends GRTransform {
 
@@ -72,27 +73,33 @@ public class Translate3D extends GRTransform {
         zTranslate.setTypeEquals(BaseType.DOUBLE);
 
 
-        initialXTranslation = new Parameter(this, "xTranslation", new DoubleToken(0.0));
-        initialYTranslation = new Parameter(this, "yTranslation", new DoubleToken(0.0));
-        initialZTranslation = new Parameter(this, "zTranslation", new DoubleToken(0.0));
+        initialXTranslation = new Parameter(this, 
+                                  "xTranslation", new DoubleToken(0.0));
+        initialYTranslation = new Parameter(this, 
+                                  "yTranslation", new DoubleToken(0.0));
+        initialZTranslation = new Parameter(this, 
+                                  "zTranslation", new DoubleToken(0.0));
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The amount of translation in the x-axis during firing. If this transform
-     *  is in accumulate mode, the translation value is accumulated for each firing.
+    /** The amount of translation in the x-axis during firing. If this 
+     *  transform is in accumulate mode, the translation value is 
+     *  accumulated for each firing.
      */
     public TypedIOPort xTranslate;
 
-    /** The amount of translation in the y-axis during firing. If this transform
-     *  is in accumulate mode, the translation value is accumulated for each firing.
+    /** The amount of translation in the y-axis during firing. If this 
+     *  transform is in accumulate mode, the translation value is 
+     *  accumulated for each firing.
      */
     public TypedIOPort yTranslate;
 
-    /** The amount of translation in the z-axis during firing. If this transform
-     *  is in accumulate mode, the translation value is accumulated for each firing.
+    /** The amount of translation in the z-axis during firing. If this 
+     *  transform is in accumulate mode, the translation value is 
+     *  accumulated for each firing.
      */
     public TypedIOPort zTranslate;
 
@@ -120,8 +127,8 @@ public class Translate3D extends GRTransform {
 
     /** Check the input ports for translation inputs.  Convert the translation
      *  tokens into a Java3D transformation.
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+     *  @exception IllegalActionException If the value of some parameters 
+     *   can't be obtained
      */
     public void fire() throws IllegalActionException {
         boolean applyTransform = false;
