@@ -111,7 +111,7 @@ public class PtolemyApplet extends Applet {
         ex.printStackTrace();
     }
 
-    /** Report an exception with an additional meesage.  This prints a
+    /** Report an exception with an additional message.  This prints a
      *  message to standard error, followed by the stack trace.
      */
     public void report(String msg, Exception ex) {
