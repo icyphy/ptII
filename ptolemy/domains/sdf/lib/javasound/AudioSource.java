@@ -176,21 +176,46 @@ public class AudioSource extends SDFAtomicActor {
             numBytesRead =
 		     properFormatAudioInputStream.read(data);
 		if (numBytesRead == -1) {
-		    // Ran out of samples to play.
+		    // Ran out of samples to play. This generally means
+		    // that the end of the sound file has been reached.
+		    // Output productionRate many zeros.
+		    audioTokenArray = new DoubleToken[productionRate];
+		    // Convert to DoubleToken[].
+		    // FIXME: I don't think this is very efficient. Currently
+		    // creating a new token for each sample!
+		    for (i = 0; i < productionRate; i++) {
+			audioTokenArray[i] = new DoubleToken(0);
+		    }
+		    
+		    output.sendArray(0, audioTokenArray);
+	    	    output.sendArray(1, audioTokenArray);
 		    return false;
 		} else if (numBytesRead != data.length) {
-                    // Read few samples than needed to fill up data[].
+                    // Read fewer samples than productionRate many samples.
+
+		    // Ran out of samples to play. This generally means
+		    // that the end of the sound file has been reached.
+		    // Output productionRate many zeros.
+		    audioTokenArray = new DoubleToken[productionRate];
+		    // Convert to DoubleToken[].
+		    // FIXME: I don't think this is very efficient. Currently
+		    // creating a new token for each sample!
+		    for (i = 0; i < productionRate; i++) {
+			audioTokenArray[i] = new DoubleToken(0);
+		    }
+		    
+		    output.sendArray(0, audioTokenArray);
+	    	    output.sendArray(1, audioTokenArray);
 		    return false;
                 }
 
-		// Array of audio samples in double format.
-		double[] audioInDoubleArray;
+		
 		// Convert byte array to double array.
 		audioInDoubleArray = _byteArrayToDoubleArray(data, frameSizeInBytes);
 
                 
 
-                DoubleToken[] audioTokenArray = new DoubleToken[productionRate];
+                audioTokenArray = new DoubleToken[productionRate];
 		// Convert to DoubleToken[].
 		// FIXME: I don't think this is very efficient. Currently
 		// creating a new token for each sample!
@@ -338,6 +363,11 @@ public class AudioSource extends SDFAtomicActor {
     private int productionRate;
     
     private double[] audioArray;
+
+    // Array of audio samples in double format.
+    private double[] audioInDoubleArray;
+
+    private DoubleToken[] audioTokenArray;
 
     private int _index;
     
