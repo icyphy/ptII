@@ -119,6 +119,28 @@ public class UtilityFunctions {
         return token1.getType().convert(token2);
     }
 
+    /** Concatenate two arrays.
+	@exception IllegalActionException If the arrays do not have 
+                   compatible types.
+     */
+
+    public static ArrayToken concatenate(ArrayToken token1, ArrayToken token2) 
+	throws IllegalActionException {
+	
+	Token array1[] = token1.arrayValue();
+	Token array2[] = token2.arrayValue();
+
+	int nElements = array1.length + array2.length;
+	Token resultArray[] = new Token[nElements];
+
+	System.arraycopy(array1, 0, resultArray, 0,             array1.length);
+	System.arraycopy(array2, 0, resultArray, array1.length, array2.length);
+	
+	return new ArrayToken(resultArray);
+    }
+
+    
+
     /** Return a record token that contains the names of all the
      *  constants and their values.
      *  @return A token containing the names of all the constants
