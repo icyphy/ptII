@@ -64,7 +64,6 @@ test Director-2.1 {Constructor tests} {
     # These methods could be abstract, but are not for testing purposes
     # so we call them here
     $d1 fireAtCurrentTime $e0
-    $d1 fireAtRelativeTime $e0 1.0
 
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 .E0.D3}
