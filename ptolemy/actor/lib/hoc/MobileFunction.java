@@ -143,10 +143,9 @@ public class MobileFunction extends TypedAtomicActor{
         // function only has one argument.  how to resolve type and type
         // signature?
                 Token in = input.get(0);
-                _argList.add(in);
-                Token t = _function.apply(_argList);
+                Token [] argList = new Token [] {in};
+                Token t = _function.apply(argList);
                 output.broadcast(t);
-                _argList.remove(in);
             }
 
         }
@@ -157,7 +156,6 @@ public class MobileFunction extends TypedAtomicActor{
      */
     public void initialize() throws IllegalActionException {
         _function = null;
-        _argList = new LinkedList();
         super.initialize();
     }
 
@@ -181,9 +179,4 @@ public class MobileFunction extends TypedAtomicActor{
      *
      */
     private FunctionToken _function;
-
-    /** The arguments list for the applying function.
-     *
-     */
-    private LinkedList _argList;
 }
