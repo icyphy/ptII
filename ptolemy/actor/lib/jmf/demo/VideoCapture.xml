@@ -18,8 +18,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={216, 23, 815, 509}}">
+    </property>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 145.0">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={456, 360, 112, 48}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -37,8 +43,22 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="BufferToImageConversion" class="ptolemy.actor.lib.jmf.BufferToImageConversion">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ImageDisplay.input" relation="relation"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ImageDisplay.input" relation="relation2"/>
     <link port="VideoCamera.output" relation="relation"/>
+    <link port="BufferToImageConversion.input" relation="relation"/>
+    <link port="BufferToImageConversion.output" relation="relation2"/>
 </entity>
