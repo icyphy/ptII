@@ -236,7 +236,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 } else {
                     newModel = new TypedCompositeActor(new Workspace());
                 }
-                newModel.setName("Unnamed");
+                newModel.setName("top");
                 effigy.setModel(newModel);
                 return effigy;
             } else {
