@@ -49,7 +49,7 @@ in the fire() method.
 FIXME: More details.
 <P>
 
-@author Edward A. Lee
+@author Edward A. Lee, (Contributor: Yang Zhao)
 @version $Id$
 */
 public class RunCompositeActor extends TypedCompositeActor {
@@ -127,6 +127,59 @@ public class RunCompositeActor extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    /** Execute requested changes. In this class,
+     *  do not delegate the change request to the container, but
+     *  execute the request immediately.  Listeners will be notified
+     *  of success or failure.
+     *  @see #addChangeListener(ChangeListener)
+     *  @see #requestChange(ChangeRequest)
+     *  @see #setDeferChangeRequests(boolean)
+     */
+    public void executeChangeRequests() {
+        synchronized(_changeLock) {
+            if (_changeRequests != null && _changeRequests.size() > 0) {
+                // Copy the change requests lists because it may
+                // be modified during execution.
+                LinkedList copy = new LinkedList(_changeRequests);
+
+                // Remove the changes to be executed.
+                // We remove them even if there is a failure because
+                // otherwise we could get stuck making changes that
+                // will continue to fail.
+                _changeRequests.clear();
+
+                Iterator requests = copy.iterator();
+                boolean previousDeferStatus = isDeferChangeRequests();
+                try {
+                    // Get write access once on the outside, to make
+                    // getting write access on each individual
+                    // modification faster.
+                    _workspace.getWriteAccess();
+
+                    // Defer change requests so that if changes are
+                    // requested during execution, they get queued.                    
+                    setDeferChangeRequests(true);
+                    while (requests.hasNext()) {
+                        ChangeRequest change = (ChangeRequest)requests.next();
+                        change.setListeners(_changeListeners);
+                        if (_debugging) {
+                            _debug("-- Executing change request "
+                                    + "with description: "
+                                    + change.getDescription());
+                        }
+                        change.execute();
+                    }
+                } finally {
+                    _workspace.doneWriting();
+                    setDeferChangeRequests(previousDeferStatus);
+                }
+                
+                // Change requests may have been queued during the execute.
+                // Execute those by a recursive call.
+                executeChangeRequests();
+            }
+        }
+    }
 
     /** Run a complete execution of the contained model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
@@ -138,6 +191,8 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  Before running the complete execution, this method calls the
      *  director's transferInputs() method to read any available inputs.
      *  After running the complete execution, it calls transferOutputs().
+     *  The subclass of this can set the <i>_isSubclassOfThis<i> to
+     *  be true to call the fire method of the superclass of this.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
@@ -145,6 +200,9 @@ public class RunCompositeActor extends TypedCompositeActor {
         if (_debugging) {
             _debug("---- Firing RunCompositeActor, which will execute a subsystem.");
         }
+        if (_isSubclassOfThis) {
+            super.fire();
+        } else {
         // Use the local director to transfer inputs.
         try {
             _workspace.getReadAccess();
@@ -163,32 +221,7 @@ public class RunCompositeActor extends TypedCompositeActor {
         if (_stopRequested) return;
 
         try {
-            // FIXME: Should preinitialize() also be called?
-            // FIXME: Reset time to zero.
-            // NOTE: Use the superclass initialize() because this method overrides
-            // initialize() and does not initialize the model.
-            super.initialize();
-            
-            
-            // Call iterate() until finish() is called or postfire()
-            // returns false.
-            _debug("-- RunCompositeActor beginning to iterate.");
-
-            // FIXME: This result is not used... Should it be to determine postfire() result?
-            _lastIterateResult = COMPLETED;
-            while (!_stopRequested) {
-                executeChangeRequests();
-                if (super.prefire()) {
-                    super.fire();
-                    if (!super.postfire()) {
-                        _lastIterateResult = STOP_ITERATING;
-                        break;
-                    }
-                } else {
-                    _lastIterateResult = NOT_READY;
-                    break;
-                }
-            }
+            _executeInsideModel();
         } finally {
             try {
                 wrapup();
@@ -214,16 +247,23 @@ public class RunCompositeActor extends TypedCompositeActor {
                 _debug("---- Firing of RunCompositeActor is complete.");
             }
         }
+        }//else
     }
     
-    /** Initialize this actor, which in this case, does nothing.
+    /** Initialize this actor, which in this case, does nothing. 
      *  The initialization of the submodel is accomplished in fire().
+     *  The subclass of this can set the <i>_isSubclassOfThis<i> to
+     *  be true to call the initailize method of the superclass of this.
      *  @exception IllegalActionException Not thrown, but declared
      *   so the subclasses can throw it.
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
             _debug("Called initialize()");
+        }
+        //Call the initialize method of the superclass. 
+        if (_isSubclassOfThis) {
+            super.initialize();
         }
     }
     
@@ -236,10 +276,16 @@ public class RunCompositeActor extends TypedCompositeActor {
     }
     
     /** Return true, indicating that execution can continue.
+     *  The subclass of this can set the <i>_isSubclassOfThis<i> to
+     *  be true to call the postfire method of the superclass of this.
      *  @exception IllegalActionException Not thrown, but declared
      *   so the subclasses can throw it.
      */
     public boolean postfire() throws IllegalActionException {
+        //Call the initialize method of the superclass. 
+        if (_isSubclassOfThis) {
+            return super.postfire();
+        }
         return true;
     }
     
@@ -293,6 +339,10 @@ public class RunCompositeActor extends TypedCompositeActor {
         if (_debugging) {
             _debug("Called wrapup()");
         }
+        //Call the method of the superclass. 
+        if (_isSubclassOfThis) {
+            super.wrapup();
+        }
     }
  
     ///////////////////////////////////////////////////////////////////
@@ -303,13 +353,60 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  this, since Java doesn't supported super.super.initialize().
      *  @exception IllegalActionException If super.initialize() throws it.
      */
-    protected void _callSuperInitialize() throws IllegalActionException {
-        super.initialize();
-    }
+    //protected void _callSuperInitialize() throws IllegalActionException {
+      //  super.initialize();
+    //}
     
+    /** Run a complete execution of the contained model.  A complete
+     *  execution consists of invocation of super.initialize(), repeated
+     *  invocations of super.prefire(), super.fire(), and super.postfire(),
+     *  followed by super.wrapup().  The invocations of prefire(), fire(),
+     *  and postfire() are repeated until either the model indicates it
+     *  is not ready to execute (prefire() returns false), or it requests
+     *  a stop (postfire() returns false or stop() is called).
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's action methods throw it.
+     */
+    protected void _executeInsideModel() throws IllegalActionException {
+        // FIXME: Should preinitialize() also be called?
+         // FIXME: Reset time to zero.
+         // NOTE: Use the superclass initialize() because this method overrides
+         // initialize() and does not initialize the model.
+         super.initialize();
+            
+            
+         // Call iterate() until finish() is called or postfire()
+         // returns false.
+         _debug("-- RunCompositeActor beginning to iterate.");
+
+         // FIXME: This result is not used... Should it be to determine postfire() result?
+         _lastIterateResult = COMPLETED;
+         while (!_stopRequested) {
+             executeChangeRequests();
+             if (super.prefire()) {
+                 super.fire();
+                 if (!super.postfire()) {
+                     _lastIterateResult = STOP_ITERATING;
+                     break;
+                 }
+             } else {
+                 _lastIterateResult = NOT_READY;
+                 break;
+             }
+         }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     
     /** Indicator of what the last call to iterate() returned. */
     private int _lastIterateResult = NOT_READY; 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected variables                  ////
+    /** This flag is used to indicate whether to call corresponding
+     *  method of the superclass. This is
+     *  provided so that subclasses have a mechanism for doing
+     *  this, since Java doesn't supported super.super.initialize(), etc.
+     */
+    protected boolean _isSubclassOfThis = false;
 }
