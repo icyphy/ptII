@@ -417,15 +417,8 @@ public class PlotBox extends Panel {
             }
         }
 
-        //Cursor oldCursor = getCursor();
-
         // At this point, we've opened the data source, now read it in
         try {
-            if (filespec != null) {
-                // We are not reading from stdin, so set the wait cursor.
-                //setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            }
-
             BufferedReader din = new BufferedReader(
                     new InputStreamReader(in));
             String line = din.readLine();
@@ -444,7 +437,6 @@ public class PlotBox extends Panel {
             _errorMsg[1] = e.getMessage();
             _errorMsg[1] = e.getMessage();
         } finally {
-            //setCursor(oldCursor);
             try {
                 in.close();
             } catch (IOException me) {}
@@ -483,9 +475,6 @@ public class PlotBox extends Panel {
      */
     public void read(InputStream in)
             throws IOException {
-        Cursor oldCursor = getCursor();
-        setCursor(new Cursor(Cursor.WAIT_CURSOR));
-
         try {
             // Create a decorated stream reader depending on what kind
             // of file we are reading.
@@ -526,8 +515,6 @@ public class PlotBox extends Panel {
             _errorMsg[0] = "Failure reading input data.";
             _errorMsg[1] = e.getMessage();
             throw e;
-        } finally {
-            setCursor(oldCursor);
         }
     }
 
