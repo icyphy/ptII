@@ -541,7 +541,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/psdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
@@ -562,6 +561,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/psdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
