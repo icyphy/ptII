@@ -109,6 +109,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
+     *  @exception IllegalActionException If there is a problem setting
+     *  the rate dependency on an external port.
      */
     public abstract void declareRateDependency() throws IllegalActionException;
 
@@ -116,11 +118,17 @@ public abstract class BaseSDFScheduler extends Scheduler {
     ////                         protected methods                 ////
 
     /** Add a DependencyDeclaration (with the name
-     * "_SDFRateDependencyDeclaration") to the variable with the given
-     * name in the given port that declares the variable is dependent
-     * on the given list of variables.  If a dependency declaration
-     * with that name already exists, then simply set its dependents
-     * list to the given list.
+     *  "_SDFRateDependencyDeclaration") to the variable with the given
+     *  name in the given port that declares the variable is dependent
+     *  on the given list of variables.  If a dependency declaration
+     *  with that name already exists, then simply set its dependents
+     *  list to the given list.
+     *  @param analysis The ConstVariableModelAnalysis
+     *  @param port The port that gets the DependencyDeclaration.
+     *  @param name The name of the DependencyDeclaration.
+     *  @param dependents 
+     *  @exception IllegalActionException If there is a problem setting
+     *  the rate dependency on a port
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             Port port, String name, List dependents) throws IllegalActionException {
