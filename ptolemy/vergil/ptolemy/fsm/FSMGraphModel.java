@@ -72,8 +72,6 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      */
     public FSMGraphModel(CompositeEntity toplevel) {
 	super(toplevel);
-	_toplevel = toplevel;
-	toplevel.addChangeListener(new GraphChangeListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -210,16 +208,14 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  be an icon.
 	 */
 	public void setHead(final Object edge, final Object head) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        FSMGraphModel.this,
-		"move head of link" +  ((Arc)edge).getFullName()) {
-		protected void _execute() throws Exception {
-		    ((Arc)edge).unlink();		
-		    ((Arc)edge).setHead(head);
-		    ((Arc)edge).link();
-		}
-	    });
-	}	
+	    try {
+		((Arc)edge).unlink();		
+		((Arc)edge).setHead(head);
+		((Arc)edge).link();
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
+	}
 	
 	/** Connect the given edge to the given tail node.
 	 *  This class queues a new change request with the ptolemy model
@@ -229,15 +225,13 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  be an icon.
 	 */
 	public void setTail(final Object edge, final Object tail) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        FSMGraphModel.this, 
-		"move tail of link" +  ((Arc)edge).getFullName()) {
-		protected void _execute() throws Exception {
-		    ((Arc)edge).unlink();		
-		    ((Arc)edge).setTail(tail);
-		    ((Arc)edge).link();
-		}
-	    });
+	    try {
+		((Arc)edge).unlink();		
+		((Arc)edge).setTail(tail);
+		((Arc)edge).link();
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}	
     }
     
@@ -287,7 +281,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List stateLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Arc.class);
+	    List linkList = getToplevel().attributeList(Arc.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Arc link = (Arc)links.next();
@@ -332,7 +326,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List stateLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Arc.class);
+	    List linkList = getToplevel().attributeList(Arc.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Arc link = (Arc)links.next();
@@ -354,15 +348,13 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
 	public void setParent(final Object node, final Object parent) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        FSMGraphModel.this, 
-		"Set Parent of Icon " +  ((Icon)node).getFullName()) {
-		protected void _execute() throws Exception {
-		    ComponentEntity entity = 
-                        (ComponentEntity)((Icon)node).getContainer();
-		    entity.setContainer((CompositeEntity)parent);
-		}
-	    });
+	    try {
+		ComponentEntity entity = 
+		    (ComponentEntity)((Icon)node).getContainer();
+		entity.setContainer((CompositeEntity)parent);
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}
     }
 
@@ -392,7 +384,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 */
 	public Iterator nodes(Object composite) {
 	    Set nodes = new HashSet();
-	    Iterator entities = _toplevel.entityList().iterator();
+	    Iterator entities = getToplevel().entityList().iterator();
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
 		List icons = entity.attributeList(Icon.class);
@@ -423,7 +415,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     // the given relation.
     private void _updateLinks(ComponentRelation relation) {
 	// Find the link for this relation
-	List linkList = _toplevel.attributeList(Arc.class);
+	List linkList = getToplevel().attributeList(Arc.class);
 	Iterator links = linkList.iterator();
 	Arc foundLink = null;
 	while(links.hasNext()) {
@@ -450,7 +442,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
 	Arc link;
 	try {
-	    link = new Arc(_toplevel, _toplevel.uniqueName("arc"));
+	    link = new Arc(getToplevel(), getToplevel().uniqueName("arc"));
 	} 
 	catch (Exception e) {
 	    throw new InternalErrorException(
@@ -483,9 +475,6 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The root of this graph model, as a CompositeEntity.
-    private CompositeEntity _toplevel = null;
 
     // The models of the different types of nodes and edges.
     private ArcModel _arcModel = new ArcModel();
