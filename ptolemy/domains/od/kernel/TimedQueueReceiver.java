@@ -258,6 +258,7 @@ public class TimedQueueReceiver implements Receiver {
      *  this receiver.
      * @param token The token to put on the queue.
      * @param time The time stamp of the token.
+     *  FIXME: Check for completion time here instead of ODReceiver.put()
      */
     public void put(Token token, double time) {
         // System.out.println("Call to TimedQueueReceiver.put()");
