@@ -115,6 +115,8 @@ And Control Network Data Transfer</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, -25.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 58, 815, 652}}">
+    </property>
     <entity name="cluster1_Clock" class="ptolemy.actor.TypedCompositeActor">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
@@ -242,21 +244,34 @@ And Control Network Data Transfer</text></svg></configure>
             </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
             </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+            </property>
+            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 270.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 </property>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="start" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
+            </port>
+            <port name="stop" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -686,13 +701,21 @@ And Control Network Data Transfer</text></svg></configure>
         </port>
     </entity>
     <entity name="1:cluster1_FSM" class="ptolemy.vergil.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, -55.0">
+        </property>
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
         </property>
         <port name="rts" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
@@ -830,6 +853,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="rd_dn==true">
@@ -848,6 +873,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(rack_isPresent==true)&amp;&amp;(rack ==true)">
@@ -865,6 +892,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="idle.incomingPort" relation="relation2"/>
@@ -1112,13 +1141,21 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="done.rd_dn" relation="rd_dnRelation"/>
     </entity>
     <entity name="cluster2_FSM" class="ptolemy.vergil.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, -60.0">
+        </property>
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
         </property>
         <port name="davi" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
@@ -1228,6 +1265,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="done==true">
@@ -1245,6 +1284,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="idle.incomingPort" relation="relation2"/>
@@ -3158,21 +3199,34 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
             </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+            </property>
+            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 285.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 </property>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="start" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
+            </port>
+            <port name="stop" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -3230,6 +3284,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 310.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -3244,6 +3300,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 255, 31, 255, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0}}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="745.0, 255.0">
         </property>
