@@ -182,11 +182,10 @@ public class GeneratorTableau extends Tableau {
 		if (getEffigy() == null
 		    || getEffigy().url == null 
 		    || getEffigy().url.getURL() == null) { 
-		    throw new IllegalActionException(model, ex, 
+		    throw new IllegalActionException(model, (Throwable) null,
 				     "Could not read the URL of this "
 				     + "model.  getEffigy(): "
 				     + getEffigy());
-		    }
 		}
 	    }
 
