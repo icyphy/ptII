@@ -709,20 +709,17 @@ public class FSMActor extends CompositeEntity
             Iterator inPorts = inputPortList().iterator();
             while (inPorts.hasNext()) {
                 TypedIOPort inPort = (TypedIOPort)inPorts.next();
-                boolean isUndeclared = inPort.getTypeTerm().isSettable();
-                if (isUndeclared) {
-                    // inPort has undeclared type
-                    Iterator outPorts = outputPortList().iterator();
-                    while (outPorts.hasNext()) {
-                        TypedIOPort outport = (TypedIOPort)outPorts.next();
-                        isUndeclared = outport.getTypeTerm().isSettable();
-                        if (isUndeclared && inPort != outport) {
-                            // outport also has undeclared type
-                            Inequality ineq = new Inequality(
-                                    inPort.getTypeTerm(),
-                                    outport.getTypeTerm());
-                            result.add(ineq);
-                        }
+                // Note that we must constrain the types of shadow
+                // variables properly so that output types can be
+                // inferred.
+                Variable[][] shadowVariables =
+                    (Variable[][])_inputVariableMap.get(inPort);
+                if(shadowVariables != null) {
+                    for(int i = 0; i < shadowVariables.length; i++) {
+                        Inequality ineq = new Inequality(
+                                inPort.getTypeTerm(),
+                                shadowVariables[i][1].getTypeTerm());
+                        result.add(ineq);
                     }
                 }
             }

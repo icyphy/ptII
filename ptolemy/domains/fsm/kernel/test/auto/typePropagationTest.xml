@@ -36,7 +36,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3,30,2,2,2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3,3,2,2,2}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -49,7 +49,7 @@
         </port>
     </entity>
     <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
+        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state3">
         </property>
         <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
         </property>
@@ -68,7 +68,7 @@
         </property>
         <property name="lastState" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="p2" class="ptolemy.data.expr.Parameter" value="p1*3">
+        <property name="p2" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -87,7 +87,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 300.0">
             </property>
         </property>
-        <property name="p1" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="p1" class="ptolemy.data.expr.Parameter" value="10">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -144,6 +144,20 @@
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
+        <entity name="state3" class="ptolemy.domains.fsm.kernel.State">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 275.0">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
@@ -184,10 +198,32 @@
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
+        <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="p1=1;p2=3">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.1698892716582558">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <link port="state.incomingPort" relation="relation3"/>
         <link port="state.outgoingPort" relation="relation2"/>
         <link port="state2.incomingPort" relation="relation2"/>
         <link port="state2.incomingPort" relation="relation"/>
         <link port="state2.outgoingPort" relation="relation"/>
+        <link port="state3.outgoingPort" relation="relation3"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>

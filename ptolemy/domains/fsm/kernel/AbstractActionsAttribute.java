@@ -505,13 +505,14 @@ public abstract class AbstractActionsAttribute extends Action
          *  @return A description of this term.
          */
         public String getVerboseString() {
-            return _name;
+            return getExpression(_name);
         }
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
         private String _name;
+        private String _description;
         private ParseTreeTypeInference _typeInference =
         new ParseTreeTypeInference();
         private ParseTreeFreeVariableCollector _variableCollector =

@@ -206,6 +206,8 @@ The ID p1 is undefined.}}
 test FSMActor-6.1 {test action methods} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set dir [java::new ptolemy.actor.Director $e0 dir]
+    set manager [java::new ptolemy.actor.Manager manager]
+    $e0 setManager $manager
 
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
@@ -223,7 +225,6 @@ test FSMActor-6.1 {test action methods} {
     set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
     $p2 setOutput true
     $p2 setMultiport true
-    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
 
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 e1]
     set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
@@ -241,8 +242,7 @@ test FSMActor-6.1 {test action methods} {
     $p2 link $r1
     [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r1
 
-    $dir preinitialize
-    $dir initialize
+    $manager initialize
 
     set re0 [[$fsm currentState] getFullName]
     $fsm prefire
@@ -290,6 +290,10 @@ test FSMActor-6.1 {test action methods} {
     list $re0 $re1 $re2 $re3 $re4 $re5 $re6 $re7 $re8 [listToStrings $ls0] \
             [listToStrings $ls1]
 } {..fsm.s0 false 1 true 0 true 6 ..fsm.s1 ..fsm.s0 {{"_"} {"_"} 7} {{"_"} {"_"} 7}}
+
+test FSMActor-6.2 {test typeConstraints} {
+    listToStrings [$fsm typeConstraintList]
+} {{(ptolemy.actor.TypedIOPort {..fsm.p1}, int) <= (ptolemy.data.expr.Variable {..fsm.p1_0} 6, int)} {(ptolemy.actor.TypedIOPort {..fsm.p1}, int) <= (ptolemy.data.expr.Variable {..fsm.p1_1} 6, int)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Variable {..fsm.p1_0_isPresent} true, boolean)} {(TypeConstant, int) <= (ptolemy.data.expr.Variable {..fsm.p1_0} 6, int)} {(TypeConstant, {int}) <= (ptolemy.data.expr.Variable {..fsm.p1_0Array} {6}, {int})} {(TypeConstant, boolean) <= (ptolemy.data.expr.Variable {..fsm.p1_1_isPresent} true, boolean)} {(TypeConstant, int) <= (ptolemy.data.expr.Variable {..fsm.p1_1} 6, int)} {(TypeConstant, {int}) <= (ptolemy.data.expr.Variable {..fsm.p1_1Array} {6}, {int})} {(ptolemy.domains.fsm.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (ptolemy.actor.TypedIOPort {..fsm.p2}, int)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.exitAngle} 0.628318530718, double)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.gamma} 0.0, double)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.reset} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.preemptive} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Variable {..fsm.t0._guard} true, boolean)}}
 
 ######################################################################
 ####
