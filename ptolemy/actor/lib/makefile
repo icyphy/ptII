@@ -178,7 +178,6 @@ OTHER_FILES_TO_BE_JARED = \
 	matrix.xml \
 	random.xml \
 	realtime.xml \
-	io.xml \
 	signalprocessing.xml \
 	sinks.xml \
 	sources.xml \
