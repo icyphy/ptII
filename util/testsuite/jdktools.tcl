@@ -50,13 +50,7 @@ proc jdkRuntime {} {
 
 # Return the classpath separator charactor
 proc jdkClassPathSeparator {} {
-    global env
-    # If you mess with this, consider fixing $PTII/configure.in
-    switch "$env(os.name)" \
-	    "Windows 98" {return ";"} \
-	    "Windows NT" {return ";"} \
-	    "Windows 2000" {return ";"} \
-	    default {return ":"}
+    return [java::field java.io.File pathSeparator]
 }
 
 # Print JDK version info
