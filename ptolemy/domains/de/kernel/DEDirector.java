@@ -795,9 +795,9 @@ public class DEDirector extends Director {
      */
     public void stopFire() {
         if (_eventQueue != null) {
-            synchronized(_eventQueue) {
+            synchronized(getContainer()/*Was _eventQueue*/) {
                 _stopRequested = true;
-                _eventQueue.notifyAll();
+                getContainer()/*Was _eventQueue*/.notifyAll();
             }
         }
         super.stopFire();
@@ -837,7 +837,8 @@ public class DEDirector extends Director {
      *  flag is true (which is set to true by default) then return null,
      *  which will have the effect of stopping the simulation.
      *  If _stopWhenQueueIsEmpty is false and the queue is empty, then
-     *  stall the current thread by calling wait() on the _eventQueue
+     *  stall the current thread by calling wait() on the 
+     *  getContainer()(Was _eventQueue)
      *  until there are events available.  If _synchronizeToRealTime
      *  is true, then this method may suspend the calling thread using
      *  Object.wait(long) to let elapsed real time catch up with the
@@ -873,7 +874,7 @@ public class DEDirector extends Director {
                         _debug("Queue is empty. Waiting for input events.");
                     }
                     Thread.currentThread().yield();
-                    synchronized(_eventQueue) {
+                    synchronized(getContainer()/*Was _eventQueue*/) {
                         try {
                             // FIXME: If the manager gets a change request
                             // during this wait, the change request will
@@ -881,7 +882,7 @@ public class DEDirector extends Director {
                             // wait.  This can lead to deadlock if the UI
                             // waits for the change request to complete
                             // (which it typically does).
-                            _eventQueue.wait();
+                            getContainer()/*Was _eventQueue*/.wait();
                         } catch (InterruptedException e) {
                             // If the wait is interrupted, then stop waiting.
                             break;
@@ -924,9 +925,9 @@ public class DEDirector extends Director {
                                 _debug("Waiting for real time to pass: "
                                         + timeToWait);
                             }
-                            synchronized(_eventQueue) {
+                            synchronized(getContainer()/*Was _eventQueue*/) {
                                 try {
-                                    _eventQueue.wait(timeToWait);
+                                    getContainer()/*Was _eventQueue*/.wait(timeToWait);
                                 } catch (InterruptedException ex) {
                                     // Continue executing.
                                 }
