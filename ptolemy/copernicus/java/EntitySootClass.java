@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -47,20 +47,20 @@ import java.util.List;
 @version $Id$
 */
 public class EntitySootClass extends SootClass {
-    public EntitySootClass(SootClass superClass, 
+    public EntitySootClass(SootClass superClass,
             String name, int modifier) {
         super(name, modifier);
         setSuperclass(superClass);
-            
+
         Type stringType = RefType.v("java.lang.String");
         Type compositeEntityType =
             RefType.v("ptolemy.kernel.CompositeEntity");
         Type workspaceType = RefType.v("ptolemy.kernel.util.Workspace");
 
-        _initMethod = new SootMethod("__CGInit", 
+        _initMethod = new SootMethod("__CGInit",
                 new LinkedList(), VoidType.v(), Modifier.PUBLIC);
         addMethod(_initMethod);
-           
+
         // Now create constructors to call the superclass constructors,
         // and then the __CGInit method.
         for(Iterator methods = getSuperclass().getMethods().iterator();
@@ -77,36 +77,36 @@ public class EntitySootClass extends SootClass {
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newVirtualInvokeExpr(thisLocal,
                             _initMethod)));
-                
+
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
         }
-    }            
+    }
 
     public SootMethod getInitMethod() {
         return _initMethod;
     }
 
     // Create a constructor in theClass with the given parameterTypes.
-    // Add instructions to the body of the constructor that call the 
+    // Add instructions to the body of the constructor that call the
     // super constructor with the same arguments.
     private SootMethod _createSuperConstructor(SootClass theClass,
             List parameterTypes) {
         // Create the constructor.
-        SootMethod constructor = new SootMethod("<init>", 
+        SootMethod constructor = new SootMethod("<init>",
                 parameterTypes,
                 VoidType.v(), Modifier.PUBLIC);
-        
+
         theClass.addMethod(constructor);
-        // System.out.println("creating constructor = " + 
+        // System.out.println("creating constructor = " +
         //        constructor.getSignature());
-        
+
         // create empty body
         JimpleBody body = Jimple.v().newBody(constructor);
         // Add this and read the parameters into locals
         body.insertIdentityStmts();
         constructor.setActiveBody(body);
-            
+
         Chain units = body.getUnits();
         Local thisLocal = body.getThisLocal();
 
@@ -115,16 +115,16 @@ public class EntitySootClass extends SootClass {
         List parameterList = new ArrayList();
         parameterList.addAll(body.getLocals());
         parameterList.remove(thisLocal);
-        
+
         // get the constructor in the super class that has the same signature
         // as the constructor we just created.
-        SootMethod superConstructor = 
+        SootMethod superConstructor =
             theClass.getSuperclass().getMethod(constructor.getSubSignature());
-        
+
         // Call the super constructor.
         units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
                 thisLocal, superConstructor, parameterList)));
-        
+
         return constructor;
     }
 

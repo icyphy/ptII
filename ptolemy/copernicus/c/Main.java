@@ -69,13 +69,13 @@ C code generation yet.
 */
 
 public class Main extends KernelMain {
-    
 
-    /** Read in a MoML mode and generate Java classes for that model. 
+
+    /** Read in a MoML mode and generate Java classes for that model.
      *  @param args An array of Strings that control the transformation
      */
     public Main(String [] args) throws IllegalActionException {
-	// args[0] contains the MoML class name. 
+	// args[0] contains the MoML class name.
 	super(args[0]);
 
 	// Parse the model, initialize it and create instance classes
@@ -87,9 +87,9 @@ public class Main extends KernelMain {
         // This transformer is required to be a scene transformer,
         // and it is applied before body transformers.
         // "wjtp.c" is the name of the phase.
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.c", 
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.c",
         //        CTransformer.v(_toplevel));
-        
+
         // Add transformers to do other passes.
         // "jtp" mean "java tranformation package.
         // These transformers are required to be a body transformer,
@@ -106,10 +106,10 @@ public class Main extends KernelMain {
                   CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
                 DeadAssignmentEliminator.v()));
-           
+
         _callSootMain(args);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -52,7 +52,7 @@ import java.util.Map;
 //// InlineParameterTransformer
 /**
 A Transformer that is responsible for inlining the values of parameters.
-The values of the parameters are taken from the model specified for this 
+The values of the parameters are taken from the model specified for this
 transformer.
 
 @author Stephen Neuendorffer, Christopher Hylands
@@ -69,16 +69,16 @@ public class InlineParameterTransformer extends SceneTransformer {
      *  The model is assumed to already have been properly initialized so that
      *  resolved types and other static properties of the model can be inspected.
      */
-    public static InlineParameterTransformer v(CompositeActor model) { 
+    public static InlineParameterTransformer v(CompositeActor model) {
         return new InlineParameterTransformer(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " deep";
     }
 
     protected void internalTransform(String phaseName, Map options) {

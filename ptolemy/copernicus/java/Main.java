@@ -60,32 +60,32 @@ Read in a MoML model and generate Java classes for that model.
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
 */
-public class Main extends KernelMain {    
+public class Main extends KernelMain {
 
-    /** Read in a MoML mode and generate Java classes for that model. 
+    /** Read in a MoML mode and generate Java classes for that model.
      *  @params args The first element of the array is the MoML class
      *  name or file name, subsequent optional arguments are Soot
      *  command line options, see the superclass documentation for details.
      *  @exception IllegalActionException if the model cannot be parsed.
      */
     public Main(String [] args) throws IllegalActionException {
-	// args[0] contains the MoML class name. 
+	// args[0] contains the MoML class name.
 	super(args[0]);
 
 	// Parse the model, initialize it and create instance classes
 	// for the actors.
 	_initialize();
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.mt", 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ModelTransformer.v(_toplevel)));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.clt", 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
-       
+
         //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
-        
+
         // When we fold classes, we create extra locals.  These optimizations
         // will remove them.  Unfortunately, -O creates bogus code?
         /*   Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
@@ -98,7 +98,7 @@ public class Main extends KernelMain {
                 CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
         DeadAssignmentEliminator.v()));*/
-       
+
 	_callSootMain(args);
     }
 
@@ -115,7 +115,7 @@ public class Main extends KernelMain {
     }
 }
 
-    
+
 
 
 
