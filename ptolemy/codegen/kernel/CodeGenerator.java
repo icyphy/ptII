@@ -36,6 +36,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -89,6 +90,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generatorPackage = new StringParameter(this, "generatorPackage");
         generatorPackage.setExpression("ptolemy.codegen.c");
 
+        overwriteFiles = new Parameter(this, "overwriteFiles");
+        overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
+        overwriteFiles.setExpression("true");
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>"
@@ -116,6 +121,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  "ptolemy.codegen.c".
      */
     public StringParameter generatorPackage;
+
+    /** If true, overwrite preexisting files.  The default
+     *  value is a parameter with the value true.
+     */
+    public Parameter overwriteFiles;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -177,7 +187,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Write the code to the file specified by codeDirectory.
         try {
             // Check if needs to overwrite.
-            if (codeDirectory.asFile().exists()) {
+            if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
+                    && codeDirectory.asFile().exists()) {
+                // FIXME: It is totally bogus to ask a yes/no question
+                // like this, since it makes it impossible to call
+                // this method from a script.  If the question is
+                // asked, the build will hang.
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
                             + " exists. OK to overwrite?")) {
                     throw new IllegalActionException(this,
@@ -188,7 +203,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             writer.write(code.toString());
             codeDirectory.close();
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "Failed to write \"" + codeDirectory.asFile() + "\"");
         }
     }
 
