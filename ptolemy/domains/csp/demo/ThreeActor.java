@@ -83,7 +83,7 @@ public class ThreeActor {
             IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
-            univ.getExecutiveDirector().run(1);
+            univ.getExecutiveDirector().go(1);
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
             throw new InvalidStateException(e.getMessage());
