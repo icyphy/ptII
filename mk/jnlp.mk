@@ -36,9 +36,9 @@
 
 # Large jar file containing all the codedoc documentation.
 # Comment this out for testing
-#DOC_CODEDOC_JAR = \
-#	doc/codeDoc.jar
-DOC_CODEDOC_JAR =
+DOC_CODEDOC_JAR = \
+	doc/codeDoc.jar
+#DOC_CODEDOC_JAR =
 
 # If a jar file is checked in to cvs, and we sign it, then
 # cvs update will think that we need to update it.
