@@ -114,6 +114,7 @@ JSRCS = \
         Multiplexor.java \
 	MultiplyDivide.java \
 	NonStrictTest.java \
+	OrderedMerge.java \
 	PhaseUnwrap.java \
 	PoissonClock.java \
 	Pulse.java \
