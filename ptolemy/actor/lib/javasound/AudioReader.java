@@ -72,6 +72,9 @@ should be set to "file:../test.wav". To reference the file
 test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
 should be set to "file:///tmp/test.wav" The default value is
 "file:///tmp/test.wav".
+Under Windows, to reference a file ":\WINNT\Media\chord.wav, use
+"file:///c:/WINNT/Media/chord.wav".  Note that URLS by definition
+have forward slashes, not backward slashes.
 <p>
 The sound file is not periodically repeated by this actor, so
 postfire() will return false when the end of the sound
