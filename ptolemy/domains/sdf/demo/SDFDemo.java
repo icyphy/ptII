@@ -10,7 +10,7 @@ import java.util.Enumeration;
 
 import gui.DynamicGraphView;
 
-import ptolemy.debug.*;
+import ptolemy.domains.sdf.kernel.*;
 
 public class SDFdemo {
 
