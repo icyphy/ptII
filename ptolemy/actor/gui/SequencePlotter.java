@@ -163,14 +163,14 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                         protected members                 ////
 
     /** X axis counter. */
-    private double _xValue;
+    protected double _xValue;
 
     /** Start of the X axis counter. */
-    private double _xInit;
+    protected double _xInit;
 
     /** Increment of the X axis counter. */
-    private double _xUnit;
+    protected double _xUnit;
 }
