@@ -115,7 +115,7 @@ References</H1>
 
 <OL>
 <LI>
-[1] A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
+A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
 Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 1998.</LI>
 
@@ -723,13 +723,13 @@ public class HDFFSMDirector extends FSMDirector {
     //////////        private methods             /////////////////
 
     /** Create the guard variables assiciated with <i>port</i> and
-     *  add them to a protected queue containing all the guard
+     *  add them to a queue containing all the guard
      *  variables associated with all of the ports of contained by
      *  the HDF composite actor with this director.
      *  <p>
      *  The number of guard variables created for <i>port</i> is
      *  the number returned by getGuardTokenHistory().
-     *  This variables of the queue are returned by
+     *  This variables in the queue are returned by
      *  _getTransitionGuardVars().
      *
      *  @param port The port to create guard variables for.
@@ -756,6 +756,30 @@ public class HDFFSMDirector extends FSMDirector {
 	    // reference paper).
 	    if (!_inputPortNameToVariableArray.containsKey(port.getFullName())) {
 		_inputPortNameToVariableArray.put(port.getFullName(), guardVarArray);
+		try {
+		    for(int i = 0; i < history; i++) {
+			
+			Integer iInt = new Integer(i);
+			String guardName = port.getName() + "$" + iInt.toString();
+			
+			//if (_debugging) _debug("guard: with guard name:" + guardName);
+			
+			guardVarArray[i] = new Variable(this, guardName);
+		    }
+		    // Put this variable in a list of variables and make
+		    // this list available to the transition. The
+		    // transition will then add the variables in the
+		    // list to its scope of variables allowed in the
+		    // transition guard expression.
+		    
+		    // create new variable lists
+		    if (_allGuardVars == null) {
+			_allGuardVars = new ArrayFIFOQueue();
+		    }
+		    _allGuardVars.putArray(guardVarArray);
+		} catch (NameDuplicationException ex) {
+		    System.err.println("HDFFSMDirector " +ex.getMessage());
+		}
 	    }
 	} else if (port.isOutput()) {
 	    if (_outputPortNameToVariableArray == null) {
@@ -772,6 +796,30 @@ public class HDFFSMDirector extends FSMDirector {
 	    // reference paper).
 	    if (!_outputPortNameToVariableArray.containsKey(port.getFullName())) {
 		_outputPortNameToVariableArray.put(port.getFullName(), guardVarArray);
+		try {
+		    for(int i = 0; i < history; i++) {
+			
+			Integer iInt = new Integer(i);
+			String guardName = port.getName() + "$" + iInt.toString();
+			
+			//if (_debugging) _debug("guard: with guard name:" + guardName);
+			
+			guardVarArray[i] = new Variable(this, guardName);
+		    }
+		    // Put this variable in a list of variables and make
+		    // this list available to the transition. The
+		    // transition will then add the variables in the
+		    // list to its scope of variables allowed in the
+		    // transition guard expression.
+		    
+		    // create new variable lists
+		    if (_allGuardVars == null) {
+			_allGuardVars = new ArrayFIFOQueue();
+		    }
+		    _allGuardVars.putArray(guardVarArray);
+		} catch (NameDuplicationException ex) {
+		    System.err.println("HDFFSMDirector " +ex.getMessage());
+		}
 	    }
 	} else {
 	    throw new IllegalActionException(this,
@@ -779,30 +827,7 @@ public class HDFFSMDirector extends FSMDirector {
 					     "output port");
 	}
 
-	try {
-	    for(int i = 0; i < history; i++) {
-		
-		Integer iInt = new Integer(i);
-		String guardName = port.getName() + "$" + iInt.toString();
-		
-		//if (_debugging) _debug("guard: with guard name:" + guardName);
-		
-		guardVarArray[i] = new Variable(this, guardName);
-	    }
-	    // Put this variable in a list of variables and make
-	    // this list available to the transition. The
-	    // transition will then add the variables in the
-	    // list to its scope of variables allowed in the
-	    // transition guard expression.
-	    
-	    // create new variable lists
-	    if (_allGuardVars == null) {
-		_allGuardVars = new ArrayFIFOQueue();
-	    }
-	    _allGuardVars.putArray(guardVarArray);
-	} catch (NameDuplicationException ex) {
-	    System.err.println("HDFFSMDirector " +ex.getMessage());
-	}
+
     }
 
 
