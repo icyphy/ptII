@@ -2810,6 +2810,12 @@ public class MoMLParser extends HandlerBase {
             // A class name is given.
             reference = searchForClass(className, source);
             if (reference == null) {
+                // Allow the class name to be local in the current context
+                // or defined in scope. Search for a class definition that
+                // matches in the current context.
+                reference = _searchForClassInContext(className, source);
+            }
+            if (reference == null) {
                 // No previously defined class with this name.
                 // First attempt to instantiate a Java class.
 
@@ -3769,6 +3775,44 @@ public class MoMLParser extends HandlerBase {
         return result;
     }
 
+    /** Search for a class definition in the current context or
+     *  anywhere above it in the hierarchy.
+     *  If a instance of a MoML class with a matching name and
+     *  source is found, then return it. Otherwise, return null.
+     *  @param name The name of the class.
+     *  @param source The source for the class.
+     *  @return A class, if it exists.
+     *  @throws XmlException This should not be thrown.
+     */
+    private ComponentEntity _searchForClassInContext(
+            String name, String source) 
+            throws XmlException {
+        ComponentEntity candidate = _searchForEntity(name);
+        // Search upwards in the hierarchy if necessary.
+        NamedObj context = _current;
+        while (candidate == null && context != null) {
+            if (context instanceof CompositeEntity) {
+                candidate = ((CompositeEntity)context).getEntity(name);
+            }
+            context = (NamedObj)context.getContainer();
+        }
+        if (candidate != null) {
+            // Check that it's a class.
+            if (candidate.getMoMLInfo().elementName.equals("class")) {
+                // Check that its source matches.
+                String candidateSource = candidate.getMoMLInfo().source;
+
+                if (source == null && candidateSource == null) {
+                    return candidate;
+                } else if (source != null
+                        && source.equals(candidateSource)) {
+                    return candidate;
+                }
+            }
+        }
+        return null;
+    }
+    
     // Given a name that is either absolute (with a leading period)
     // or relative to _current, find a component entity with that name.
     // Return null if it is not found
@@ -3830,6 +3874,8 @@ public class MoMLParser extends HandlerBase {
                 ComponentEntity result =
                     ((CompositeEntity)_current).getEntity(name);
                 if (result != null && !_current.deepContains(result)) {
+                    // FIXME: How can this exception possibly occur?
+                    // The result was obtained using getEntity!
                     throw new XmlException(
                             "Reference to an existing entity: "
                             + result.getFullName()
