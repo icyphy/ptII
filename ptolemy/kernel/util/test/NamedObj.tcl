@@ -175,4 +175,4 @@ test NamedObj-6.1 {Test toString} {
     set b [java::new pt.kernel.NamedObj $n ""]
     set c [java::new pt.kernel.NamedObj $n "car" ]
     list [$a toString] [$b toString] [$c toString]
-} {}
+} {{pt.kernel.NamedObj `.'} {pt.kernel.NamedObj `foo.'} {pt.kernel.NamedObj `foo.car'}}
