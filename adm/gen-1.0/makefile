@@ -874,16 +874,18 @@ indent_all:
 INSTALLSHIELD_SRC=installshield
 INSTALLSHIELD_APP=$(INSTALLSHIELD_SRC)/app
 INSTALLSHIELD_PTINY=$(INSTALLSHIELD_SRC)/ptiny
+INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/codeDoc
 INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/designdoc
 INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
 INSTALLSHIELD_EXPERIMENTAL=$(INSTALLSHIELD_SRC)/experimental
 
-# Ptiny is last so we don't get the kruft from the doc dir
+# DOC is last so that we can get the bits and piecs out of app/doc
 installshield_app: installshield $(INSTALLSHIELD_APP) \
+	$(INSTALLSHIELD_CODEDOC) \
 	$(INSTALLSHIELD_DESIGNDOC) \
-	$(INSTALLSHIELD_DOC) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
 	$(INSTALLSHIELD_PTINY) \
+	$(INSTALLSHIELD_DOC) \
 
 installshield:
 	if [ ! -d $@ ]; then 
@@ -893,12 +895,16 @@ installshield:
 
 clean_installshield:
 	rm -rf $(INSTALLSHIELD_APP) \
+	$(INSTALLSHIELD_CODEDOC) \
 	$(INSTALLSHIELD_DESIGNDOC) \
 	$(INSTALLSHIELD_DOC) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
 	$(INSTALLSHIELD_PTINY)
 
+
 $(INSTALLSHIELD_APP): #$(PTII_SRC)
+	@echo "#"
+	@echo "# Building $@"
 	(cd $(INSTALLSHIELD_SRC); \
 	$(TAR) -xf ../ptII$(VERSION).src.tar; \
 	 mv ptII$(VERSION) `basename $@`)
@@ -906,73 +912,102 @@ $(INSTALLSHIELD_APP): #$(PTII_SRC)
 INSTALLSHIELD_PTINY_DOMAINS=ct de fsm pn sdf
 installshield_ptiny: $(INSTALLSHIELD_PTINY)
 $(INSTALLSHIELD_PTINY):
+	@echo "#"
+	@echo "# Building $@"
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
-	 mkdir -p $@/doc/codeDoc/ptolemy/actor
-	 mkdir -p $@/moml/demo/Networked
+	 mkdir -p $@/doc/img
 	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
-	 -mv $(INSTALLSHIELD_APP)/doc $@
+	 -mv $(INSTALLSHIELD_APP)/doc/*Vergil.htm \
+		$(INSTALLSHIELD_APP)/doc/acks.htm \
+		$(INSTALLSHIELD_APP)/doc/authors.htm \
+		$(INSTALLSHIELD_APP)/doc/default.css \
+		$@/doc
+	 -mv $(INSTALLSHIELD_APP)/doc/img/ptIIplanet.gif \
+		$(INSTALLSHIELD_APP)/doc/img/PtolemyIISmall.gif \
+		$@/doc/img
 	 -mv $(INSTALLSHIELD_APP)/lib/diva.jar $@/lib
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptolemy.jar \
-		$(INSTALLSHIELD_APP)/ptolemy/configs \
+		$(INSTALLSHIELD_APP)/ptolemy/configs/ \
 		$@/ptolemy
+	 -mv $@/ptolemy/configs/introPtiny.htm $@/ptolemy/configs/intro.htm 
+	 -mv $@/ptolemy/configs/vergilConfigurationPtiny.xml \
+		$@/ptolemy/configs/vergilConfiguration.xml
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
-	 for domain in $(INSTALLSHIELD_PTINY_DOMAINS); do \
+	 -for domain in $(INSTALLSHIELD_PTINY_DOMAINS); do \
 	  mkdir -p $@/ptolemy/domains/$$domain; \
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/$$domain.jar \
+	  mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/$$domain.jar \
 	 	$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo \
 		$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/doc \
 		$@/ptolemy/domains/$$domain; \
-		 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/domains/$$domain \
-		 $@/doc/codeDoc/ptolemy; \
 	 done
-	 # We do want to ship actor/lib docs
-	 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/actor/lib \
-		$@/doc/codeDoc/ptolemy/actor
+	# FIXME: we should find this in the jar file?
+	 -mkdir $@/ptolemy/domains/sdf/lib 
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/lib/Spectrum*.xml \
+		$@/ptolemy/domains/sdf/lib 
+	 -mkdir -p $@/doc/codeDoc
+	 -cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
+		 $@/doc/codeDoc
 	 # Set up for a few demos
-	 mkdir -p $@/ptolemy/actor/lib/javasound/demo
-	 mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/demo/KarplusStrong \
+	 -mkdir -p $@/ptolemy/actor/lib/javasound/demo
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/demo/KarplusStrong \
+	     $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/javasound.jar \
 		$@/ptolemy/actor/lib/javasound/demo
-	 mkdir -p $@/ptolemy/moml/demo
-	 mv $(INSTALLSHIELD_APP)/ptolemy/moml/demo/Networked \
+	 -mkdir -p $@/ptolemy/moml/demo
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/moml/demo/Networked \
 		$@/ptolemy/moml/demo
-	 mkdir -p $@/ptolemy/data/type/demo
-	 mv $(INSTALLSHIELD_APP)/ptolemy/data/type/demo/Router \
+	 -mkdir -p $@/ptolemy/data/type/demo
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/data/type/demo/Router \
 		$@/ptolemy/data/type/demo
 	 # FIXME: vergil looks for ../actor/lib/logic/logic.xml, so
 	 # we don't find it in the jar file
-	 mkdir -p $@/ptolemy/actor/lib/logic
-	 mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/logic/logic.xml \
+	 -mkdir -p $@/ptolemy/actor/lib/logic
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/logic/logic.xml \
 		$@/ptolemy/actor/lib/logic
-	 mkdir -p $@/ptolemy/actor/lib/conversions
-	 mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/conversions/conversions.xml \
+	 -mkdir -p $@/ptolemy/actor/lib/conversions
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/conversions/conversions.xml \
+		$@/ptolemy/actor/lib/conversions
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/Sinewave.xml \
 		$@/ptolemy/actor/lib/conversions
 
-configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
-$(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar: \
-	$(INSTALLSHIELD_PTINY)/ptolemy/configs
-	(cd $(INSTALLSHIELD_PTINY); \
-		jar -cf ptolemy/configs/configsPtiny.jar \
-			ptolemy/configs)
 
-$(INSTALLSHIELD_PTINY)/ptolemy/configs:
-	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs
-	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs/doc
-	mv $(INSTALLSHIELD_APP)/ptolemy/configs/introPtiny.htm $@/intro.htm
-	mv $(INSTALLSHIELD_APP)/ptolemy/configs/vergilConfigurationPtiny.xml \
-		$@/vergilConfiguration.xml
-	mv $(INSTALLSHIELD_APP)/ptolemy/configs/doc/demosPtiny.htm \
-		$@/doc/demos.htm
+#configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
+#$(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar: \
+#	$(INSTALLSHIELD_PTINY)/ptolemy/configs
+#	(cd $(INSTALLSHIELD_PTINY); \
+#		jar -cf ptolemy/configs/configsPtiny.jar \
+#			ptolemy/configs)
+
+#$(INSTALLSHIELD_PTINY)/ptolemy/configs:
+#	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs
+#	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs/doc
+#	mv $(INSTALLSHIELD_APP)/ptolemy/configs/introPtiny.htm $@/intro.htm
+#	mv $(INSTALLSHIELD_APP)/ptolemy/configs/vergilConfigurationPtiny.xml \
+#		$@/vergilConfiguration.xml
+#	mv $(INSTALLSHIELD_APP)/ptolemy/configs/doc/demosPtiny.htm \
+#		$@/doc/demos.htm
 
 installshield_designdoc: $(INSTALLSHIELD_DESIGNDOC)
 $(INSTALLSHIELD_DESIGNDOC):
+	@echo "#"
+	@echo "# Building $@"
 	 mkdir -p $@/doc/design
 	 mv $(INSTALLSHIELD_APP)/doc/design/design.pdf $@/doc/design
 
-$(INSTALLSHIELD_DOC):
+$(INSTALLSHIELD_CODEDOC):
+	@echo "#"
+	@echo "# Building $@"
 	 mkdir -p $@/doc
 	 mv $(INSTALLSHIELD_APP)/doc/codeDoc $@/doc
 
+$(INSTALLSHIELD_DOC):
+	@echo "#"
+	@echo "# Building $@"
+	 mkdir -p $@/doc
+	 mv $(INSTALLSHIELD_APP)/doc $@/doc
+
 $(INSTALLSHIELD_EXPERIMENTAL):
+	@echo "#"
+	@echo "# Building $@"
 	 mkdir -p $@/ptolemy $@/ptolemy/domains/sdf
 	 mv $(INSTALLSHIELD_APP)/ptolemy/codegen $@/ptolemy
 	 mv $(INSTALLSHIELD_APP)/ptolemy/lang $@/ptolemy
@@ -987,7 +1022,7 @@ ISPMP_LIB=/users/ptII/vendors/installshield/ispmp40/lib/
 
 ISPMP_DEBUG_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/classes/src: 
 
-ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/solarisppk.jar
+ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/solarisppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/webppk.jar
 
 ptiny.xml: ptII.xml ptiny.xsl
 	java -classpath $(ISPMP_CLASSPATH) \
@@ -1005,7 +1040,6 @@ unixPtiny.xml: ptiny.xml
 	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
 	    -e 's@ptiny\\copyright@ptiny/copyright@' \
 		 $< > $@
-	echo "</isjeProject>" >> $@
 
 build_unixPtiny: unixPtiny.xml
 	java -classpath $(ISPMP_CLASSPATH) \
