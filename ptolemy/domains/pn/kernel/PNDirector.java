@@ -83,25 +83,7 @@ capacity of the receiver with the smallest capacity amongst all the
 receivers on which a process is blocked on a write.
 This breaks the deadlock and the execution can resume.
 <p>
-This director is capable of handling dynamic changes to the topology,
-i.e. mutations of graphs. These mutations can be non-deterministic. In PN,
-since the execution of a model is not centralized, it is impossible to define
-a useful point in the execution of all the active processes where
-mutations can occur. Due to this, PN permits mutations
-to happen as soon as they are requested. Thus as soon as a process queues
-mutations in PN, the director is notified and the director stops the
-execution. Then it performs all the mutations requested, and notifies the
-topology listeners. After this the execution is resumed.
-<p>
-Though this class defines and uses a event-listener mechanism for notifying
-the listeners of the various states a process is in, this mechanism is expected
-to change to a great extent in the later versions of this class. A developer
-must keep that in mind while building applications by using this mechanism. It
-is highly recommended that the user do not use this mechanism as the future
-changes might not be compatible with the current listener mechanism.<p>
-<p>
-FIXME: Currently this director does not properly deal with
-       topology mutations.
+Currently this director does not properly deal with topology mutations.
 
 @author Mudit Goel
 @version $Id$
@@ -240,7 +222,7 @@ public class PNDirector extends BasePNDirector {
      *  This method is called by the processes requesting mutations and not
      *  the directing thread.
      *  <p>
-     *  FIXME: Currently this director does not properly deal with
+     *  FIXME: Currently this director does not properly deal with 
      *         topology mutations.
      *
      *  @param request An object with commands to perform topology changes

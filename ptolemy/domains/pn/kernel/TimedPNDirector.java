@@ -100,24 +100,7 @@ deadlock occurs. In such a case, the director
 processes requests for mutations, if any. Otherwise the director advances time
 to the time when the first timed-blocked process can be awakened.
 <p>
-This director is capable of handling mutations of graphs (dynamic changes to
-topology). These mutations are deterministic and are performed only when a
-timed deadlock occurs and the mutations are pending (topology changes have been
-requested). On requesting a mutation, the process queues the request
-and suspends (mutation-blocked) until the request for topology changes is
-processed. The directing thread processes these requests on the next occurrence
-of a timed-deadlock. After this the directing thread awakens the processes
-blocked on a mutation (mutation-blocked) and the execution resumes.
-<p>
-Though this class defines and uses a event-listener mechanism for notifying
-the listeners of the various states a process is in, this mechanism is expected
-to change to a great extent in the later versions of this class. A developer
-must keep that in mind while building applications by using this mechanism. It
-is highly recommended that the user do not use this mechanism as the future
-changes might not be compatible with the current listener mechanism.<p>
-<P>
-FIXME: Currently this director does not properly deal with
-       topology mutations.
+Currently this director does not properly deal with topology mutations.
 
 @author Mudit Goel
 @version $Id$
