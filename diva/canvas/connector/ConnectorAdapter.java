@@ -32,7 +32,7 @@ package diva.canvas.connector;
  * @author John Reekie
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class ConnectorAdapter implements ConnectorListener {
     /**

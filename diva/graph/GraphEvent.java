@@ -42,7 +42,7 @@ package diva.graph;
  * @author Michael Shilman
  * @author John Reekie
  * @version $Id$
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public class GraphEvent extends java.util.EventObject {
     /**

@@ -37,7 +37,7 @@ import java.util.Iterator;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public interface FigureSet {
 

@@ -44,7 +44,7 @@ import diva.canvas.interactor.Interactor;
  *
  * @version $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public abstract class AbstractFigure implements Figure {
 

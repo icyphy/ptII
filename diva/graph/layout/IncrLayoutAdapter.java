@@ -33,7 +33,7 @@ import diva.graph.GraphModel;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class IncrLayoutAdapter implements IncrementalLayout {
     private LayoutTarget _target;

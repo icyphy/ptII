@@ -42,7 +42,7 @@ import diva.canvas.interactor.DragInteractor;
  * @author         Michael Shilman
  * @author         John Reekie
  * @version        $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class NodeDragInteractor extends DragInteractor {
     /**

@@ -39,7 +39,7 @@ import javax.swing.JComponent;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface View {
     /** Close the view.

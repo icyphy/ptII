@@ -38,7 +38,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @version        $Id$
  * @author         John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public interface VisibleComponent extends CanvasComponent {
 

@@ -56,7 +56,7 @@ import diva.canvas.interactor.SelectionModel;
  *
  * @author         Michael Shilman
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public class BasicEdgeController implements EdgeController {
 

@@ -31,7 +31,7 @@ import diva.gui.AppletContext;
  * A bubble graph demo that can run in an applet.
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BubbleGraphDemoApplet extends AppletContext {
     public BubbleGraphDemoApplet() {

@@ -48,7 +48,7 @@ import diva.gui.BasicFrame;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class SimpleTutorial {
     /**

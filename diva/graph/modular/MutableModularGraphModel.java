@@ -38,7 +38,7 @@ import diva.graph.MutableGraphModel;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class MutableModularGraphModel extends ModularGraphModel
     implements MutableGraphModel {

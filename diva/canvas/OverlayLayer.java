@@ -51,7 +51,7 @@ import java.util.Iterator;
  * @author Michael Shilman
  * @author John Reekie
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class OverlayLayer extends CanvasLayer implements VisibleComponent {
 

@@ -51,7 +51,7 @@ import diva.util.ProxyIterator;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BasicLayoutTarget implements LayoutTarget {
     /**

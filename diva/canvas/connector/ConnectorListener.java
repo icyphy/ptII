@@ -50,7 +50,7 @@ package diva.canvas.connector;
  * @author John Reekie
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface ConnectorListener extends java.util.EventListener {
     /**

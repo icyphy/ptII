@@ -32,7 +32,7 @@ package diva.gui;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface ContextView {
     /** Return the component that implements the display of this view.

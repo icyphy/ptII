@@ -33,7 +33,7 @@ import diva.gui.AppletContext;
  * @see BasicGraphDemo
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BasicGraphDemoApplet extends AppletContext {
     public BasicGraphDemoApplet() {

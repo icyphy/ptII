@@ -40,7 +40,7 @@ import diva.util.java2d.ShapeUtilities;
  *
  * @version $Id$
  * @author John Reekie
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class DamageRegion {
 

@@ -37,7 +37,7 @@ import diva.graph.toolbox.GraphEventMulticaster;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class AbstractGraphModel implements GraphModel {
     /**

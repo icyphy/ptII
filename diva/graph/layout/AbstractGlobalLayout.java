@@ -30,7 +30,7 @@ package diva.graph.layout;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class AbstractGlobalLayout implements GlobalLayout {
 

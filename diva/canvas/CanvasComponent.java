@@ -34,7 +34,7 @@ package diva.canvas;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public interface CanvasComponent {
 

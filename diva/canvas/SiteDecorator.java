@@ -37,7 +37,7 @@ import java.awt.geom.Point2D;
  *
  * @version $Id$
  * @author  Steve Neuendorffer
- * @rating  Red
+ * @Pt.AcceptedRating  Red
  */
 public class SiteDecorator implements Site {
 

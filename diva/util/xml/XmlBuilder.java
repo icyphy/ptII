@@ -39,7 +39,7 @@ package diva.util.xml;
  *
  * @author John Reekie
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface XmlBuilder {
     /** Given an XmlElement, create and return an internal representation

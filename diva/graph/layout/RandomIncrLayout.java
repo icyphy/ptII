@@ -35,7 +35,7 @@ import java.util.Iterator;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class RandomIncrLayout implements IncrementalLayout {
     private RandomLayout _global;

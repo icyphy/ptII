@@ -37,7 +37,7 @@ import diva.util.SemanticObjectContainer;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BasicModularGraphModel extends MutableModularGraphModel {
 

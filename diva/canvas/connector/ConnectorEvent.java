@@ -37,7 +37,7 @@ import diva.canvas.Figure;
  *
  * @author Michael Shilman, John Reekie, Contributor: Edward A. Lee
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class ConnectorEvent extends java.util.EventObject {
 

@@ -35,7 +35,7 @@ import diva.graph.NodeController;
  *
  * @author         Michael Shilman
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public class BubbleGraphController extends BasicGraphController {
     /**

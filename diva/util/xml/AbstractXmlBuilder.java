@@ -32,7 +32,7 @@ package diva.util.xml;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class AbstractXmlBuilder implements XmlBuilder {
     private XmlBuilder _delegate;

@@ -35,7 +35,7 @@ import diva.canvas.interactor.SelectionModel;
  * @author         Michael Shilman
  * @author         John Reekie
  * @version        $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class NodeInteractor extends SelectionInteractor {
 

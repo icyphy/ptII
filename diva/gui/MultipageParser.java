@@ -43,7 +43,7 @@ import diva.util.ModelParser;
  * @author  Heloise Hse
  * @author  Michael Shilman
  * @version $Id$
- * @rating  Red
+ * @Pt.AcceptedRating  Red
  */
 public class MultipageParser extends HandlerBase {
     /**

@@ -52,7 +52,7 @@ import diva.util.Filter;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public class FigureLayer extends CanvasLayer implements FigureContainer, EventAcceptor {
 

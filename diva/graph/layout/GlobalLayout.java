@@ -32,7 +32,7 @@ package diva.graph.layout;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface GlobalLayout {
 

@@ -81,7 +81,7 @@ import diva.canvas.event.EventLayer;
  * @author Michael Shilman
  * @author John Reekie
  * @version        $Id$
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public class GraphicsPane extends CanvasPane {
     /*

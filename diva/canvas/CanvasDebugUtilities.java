@@ -38,7 +38,7 @@ import java.util.Iterator;
  *
  * @version $Id$
  * @author John Reekie
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public final class CanvasDebugUtilities {
     public static String printContextTree(FigureLayer rootLayer) {

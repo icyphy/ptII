@@ -31,7 +31,7 @@ package diva.gui;
  * @author Heloise Hse
  * @author John Reekie
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BasicPage implements Page {
     /**

@@ -32,7 +32,7 @@ import diva.graph.GraphPane;
  *
  * @author         John Reekie
  * @version        $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BubblePane extends GraphPane {
     /**

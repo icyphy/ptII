@@ -37,7 +37,7 @@ import diva.graph.GraphListener;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class GraphLogger implements GraphListener {
     /**

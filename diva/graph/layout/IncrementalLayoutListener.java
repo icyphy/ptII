@@ -35,7 +35,7 @@ import diva.util.Filter;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class IncrementalLayoutListener
     implements diva.graph.GraphViewListener {

@@ -40,7 +40,7 @@ import diva.canvas.connector.Connector;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface EdgeRenderer {
     /**

@@ -40,7 +40,7 @@ import diva.graph.EdgeRenderer;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BasicEdgeRenderer implements EdgeRenderer {
     /**

@@ -38,7 +38,7 @@ package diva.graph;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class GraphException extends RuntimeException {
     public GraphException() {

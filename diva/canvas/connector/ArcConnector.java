@@ -62,7 +62,7 @@ import diva.canvas.toolbox.LabelFigure;
  * @version $Id$
  * @author  Edward Lee
  * @author  John Reekie
- * @rating  Red
+ * @Pt.AcceptedRating  Red
  */
 public class ArcConnector extends AbstractConnector {
 

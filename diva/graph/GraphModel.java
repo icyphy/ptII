@@ -45,7 +45,7 @@ import java.util.Iterator;
  * @author Michael Shilman
  * @author John Reekie
  * @version $Id$
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public interface GraphModel {
     /**

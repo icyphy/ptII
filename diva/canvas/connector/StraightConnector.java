@@ -37,7 +37,7 @@ import diva.canvas.TransformContext;
  * @version $Id$
  * @author  John Reekie
  * @author  Michael Shilman
- * @rating  Red
+ * @Pt.AcceptedRating  Red
  */
 public class StraightConnector extends AbstractConnector {
 

@@ -71,7 +71,7 @@ import diva.resource.RelativeBundle;
  *
  * @author John Reekie
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class AbstractApplication implements Application {
 

@@ -37,7 +37,7 @@ import java.awt.event.InputEvent;
  * @see EventRecorder
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class EventPlayer {
     /**

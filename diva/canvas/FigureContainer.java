@@ -39,7 +39,7 @@ import diva.util.Filter;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public interface FigureContainer extends FigureSet, VisibleComponent {
 

@@ -52,7 +52,7 @@ import diva.canvas.interactor.SelectionInteractor;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class PaneWrapper extends AbstractFigure implements EventAcceptor {
 

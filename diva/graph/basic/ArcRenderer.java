@@ -40,7 +40,7 @@ import diva.graph.EdgeRenderer;
  *
  * @author Edward A. Lee
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class ArcRenderer implements EdgeRenderer {
     /** Render a visual representation of the given edge.

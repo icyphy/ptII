@@ -45,7 +45,7 @@ import diva.gui.BasicFrame;
  * @author Michael Shilman
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class BubbleGraphDemo {
     /**

@@ -39,7 +39,7 @@ import java.awt.Shape;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface GeometricSet extends FigureSet {
 

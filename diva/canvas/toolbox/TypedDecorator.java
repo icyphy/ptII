@@ -43,7 +43,7 @@ import diva.canvas.FigureDecorator;
  * @author John Reekie
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class TypedDecorator extends FigureDecorator {
     /**

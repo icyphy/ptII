@@ -64,7 +64,7 @@ import diva.canvas.event.LayerEvent;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public class JCanvas extends JComponent implements Printable {
 

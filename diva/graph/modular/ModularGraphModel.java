@@ -36,7 +36,7 @@ import diva.graph.AbstractGraphModel;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class ModularGraphModel extends AbstractGraphModel {
 

@@ -37,7 +37,7 @@ import java.awt.geom.NoninvertibleTransformException;
  *
  * @version $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public class TransformContext {
 

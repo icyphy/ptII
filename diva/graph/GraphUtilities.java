@@ -37,7 +37,7 @@ import diva.util.FilteredIterator;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public final class GraphUtilities {
 

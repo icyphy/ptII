@@ -32,7 +32,7 @@ package diva.graph.modular;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface MutableCompositeNodeModel extends MutableNodeModel,
                                                    CompositeModel {

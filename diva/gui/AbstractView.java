@@ -34,7 +34,7 @@ import javax.swing.JComponent;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class AbstractView implements View {
     /** The document being viewed.

@@ -39,7 +39,7 @@ import diva.util.Filter;
  *
  * @version $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public abstract class AbstractFigureContainer extends AbstractFigure implements FigureContainer {
 

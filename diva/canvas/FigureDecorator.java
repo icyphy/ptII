@@ -46,7 +46,7 @@ import diva.util.UnitIterator;
  *
  * @version        $Id$
  * @author John Reekie
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public abstract class FigureDecorator extends AbstractFigureContainer {
 

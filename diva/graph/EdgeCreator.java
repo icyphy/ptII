@@ -41,7 +41,7 @@ import diva.canvas.interactor.GrabHandle;
  *
  * @author         Steve Neuendorffer
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public abstract class EdgeCreator extends AbstractInteractor {
     // The Controller that this creator is using.

@@ -36,7 +36,7 @@ import diva.util.SemanticObjectContainer;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface Graph extends SemanticObjectContainer, PropertyContainer {
     /**

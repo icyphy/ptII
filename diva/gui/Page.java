@@ -33,7 +33,7 @@ package diva.gui;
  * @author Heloise Hse
  * @author John Reekie
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public interface Page {
     /** Return the model of the page.

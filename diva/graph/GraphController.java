@@ -45,7 +45,7 @@ import diva.canvas.interactor.SelectionModel;
  * @author         Michael Shilman
  * @author         Steve Neuendorffer
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public interface GraphController {
     /** Add an edge to this graph editor and render it

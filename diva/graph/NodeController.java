@@ -36,7 +36,7 @@ import diva.canvas.interactor.Interactor;
  *
  * @author         Steve Neuendorffer
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public interface NodeController {
 

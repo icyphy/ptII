@@ -52,7 +52,7 @@ import diva.util.java2d.ShapeUtilities;
  *
  * @version $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public class CompositeFigure extends AbstractFigureContainer {
 

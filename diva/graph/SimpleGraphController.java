@@ -35,7 +35,7 @@ package diva.graph;
  *
  * @author         Steve Neuendorffer
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public abstract class SimpleGraphController extends AbstractGraphController {
 

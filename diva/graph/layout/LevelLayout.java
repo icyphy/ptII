@@ -82,7 +82,7 @@ import diva.util.ArrayIterator;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class LevelLayout extends AbstractGlobalLayout {
     /**

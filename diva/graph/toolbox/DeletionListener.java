@@ -43,7 +43,7 @@ import diva.graph.JGraph;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class DeletionListener implements ActionListener {
     /**

@@ -37,7 +37,7 @@ import diva.graph.GraphListener;
  *
  * @author Michael Shilman
  * @version $Id$
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public class GraphEventMulticaster implements GraphListener {
     /**

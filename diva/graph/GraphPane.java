@@ -34,7 +34,7 @@ import diva.canvas.GraphicsPane;
  * @see JGraph
  * @author         Michael Shilman
  * @version        $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class GraphPane extends GraphicsPane {
     /** The controller

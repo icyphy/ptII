@@ -43,7 +43,7 @@ import diva.util.UserObjectContainer;
  *
  * @version $Id$
  * @author John Reekie
- * @rating Yellow
+ * @Pt.AcceptedRating Yellow
  */
 public interface Figure extends VisibleComponent, UserObjectContainer {
 

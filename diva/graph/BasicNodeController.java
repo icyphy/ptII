@@ -51,7 +51,7 @@ import diva.canvas.interactor.SelectionModel;
  *
  * @author         Steve Neuendorffer
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public class BasicNodeController implements NodeController {
 

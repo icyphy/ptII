@@ -37,7 +37,7 @@ import diva.gui.AppletContext;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class AppletTutorial extends AppletContext {
     public AppletTutorial() {

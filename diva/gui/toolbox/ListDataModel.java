@@ -40,7 +40,7 @@ import javax.swing.DefaultComboBoxModel;
  *
  * @author John Reekie
  * @version $Id$
- * @rating Red
+ * @Pt.AcceptedRating Red
  */
 public class ListDataModel extends DefaultComboBoxModel {
 

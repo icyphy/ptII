@@ -37,7 +37,7 @@ import java.awt.geom.Point2D;
  *
  * @version $Id$
  * @author  John Reekie
- * @rating  Red
+ * @Pt.AcceptedRating  Red
  */
 public interface Site {
 

@@ -49,7 +49,7 @@ import diva.canvas.interactor.SelectionModel;
  * @author         Michael Shilman
  * @author         Steve Neuendorffer
  * @version        $Id$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public abstract class AbstractGraphController implements GraphController {
     /** Map semantic objects to their figure representations
