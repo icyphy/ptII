@@ -55,7 +55,7 @@ public class PNPrimeExample {
         PNInPort portin = (PNInPort)sieve.getPort("input");
         PNOutPort portout = (PNOutPort)ramp.getPort("output");
         myUniverse.connect(portin, portout, "2_queue");
-        portin.getQueue(portout).setCapacity(1);
+        //portin.getQueue(portout).setCapacity(1);
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
         myUniverse.start();

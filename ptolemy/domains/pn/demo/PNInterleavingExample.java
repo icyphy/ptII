@@ -1,6 +1,6 @@
 /* An example to demonstrate the PN Domain Scheduler.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -74,7 +74,9 @@ class PNInterleavingExample {
         queue = (IORelation)myUniverse.connect(portin, portout, "QY");
         //portin.getQueue().setCapacity(1);
  
-        portout = (PNOutPort)_redirect1.getPort("output");
+
+	//((PNOutPort)_redirect1.getPort("output")).link(queue);
+        portout =(PNOutPort)_redirect1.getPort("output");
         portin = (PNInPort)_interleave.getPort("input1");
         queue = (IORelation)myUniverse.connect(portin, portout, "QZ");
         //portin.getQueue().setCapacity(1);
@@ -89,6 +91,7 @@ class PNInterleavingExample {
         queue = (IORelation)myUniverse.connect(portin, portout, "QT2");
         //portin.getQueue().setCapacity(1);
  
+	System.out.println("Connections made");
  	myUniverse.start();
         System.out.println("Bye World\n");
 	return;

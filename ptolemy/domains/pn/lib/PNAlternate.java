@@ -31,7 +31,7 @@ import pt.kernel.*;
 import pt.data.*;
 import pt.actors.*;
 import java.util.Enumeration;
-import java.util.NoSuchElementException;
+//import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNAlternate
@@ -65,25 +65,27 @@ public class PNAlternate extends PNActor {
     //FIXME: CUrrently this is a BIIIIIG hack and should be changed ASA 
     // the new kernel strategy is implemented
     public void run() {
-        IntToken data;
+        Token[] data;
         try {
 	    int i;
 	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                Enumeration outports = _input.deepConnectedOutputPorts();
-                while (outports.hasMoreElements()) {
-                    PNOutPort outport = (PNOutPort)outports.nextElement();
-                    data = (IntToken)readFrom(_input, outport);
-                    writeTo(_output0, data);
+                Enumeration relations = _input.linkedRelations();
+                while (relations.hasMoreElements()) {
+                    IORelation relation = (IORelation)relations.nextElement();
+                    data = readFrom(_input, relation);
+		    for (int j =0; j<data.length; j++) {
+		      writeTo(_output0, data[j]);
+		    }
                 }
-                outports = _input.deepConnectedOutputPorts();
-                while (outports.hasMoreElements()) {
-                    PNOutPort outport = (PNOutPort)outports.nextElement();
-                    data = (IntToken)readFrom(_input, outport);
-                    writeTo(_output1, data);
+                relations = _input.linkedRelations();
+                while (relations.hasMoreElements()) {
+                    IORelation relation = (IORelation)relations.nextElement();
+                    data = readFrom(_input, relation);
+                    writeTo(_output1, data[0]);
                 }
             }                
             ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchItemException e) {
 	    System.out.println("Terminating "+ this.getName());
             return;
         }

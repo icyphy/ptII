@@ -63,21 +63,21 @@ public class PNRedirect extends PNActor{
      */
     public void run() {
         int i;
-        IntToken data;
+        Token[] data;
         try {
             writeTo(_output, _initValue);
             //System.out.println(this.getName()+" writes "+_initValue.intValue()+" to "+_output.getName());
             for(i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                Enumeration outports = _input.deepConnectedOutputPorts();
-                while (outports.hasMoreElements()) {
-                    PNOutPort outport = (PNOutPort)outports.nextElement();
-                    data = (IntToken)readFrom(_input, outport);
-                    writeTo(_output, data);
+                Enumeration relations = _input.linkedRelations();
+                while (relations.hasMoreElements()) {
+                    IORelation relation = (IORelation)relations.nextElement();
+                    data = readFrom(_input, relation);
+                    writeTo(_output, data[0]);
                     //System.out.println(this.getName()+" writes "+data.intValue()+" to "+_output.getName());
                 }
             }
             ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchItemException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
         }
@@ -101,3 +101,4 @@ public class PNRedirect extends PNActor{
     /* Output port */
     private PNOutPort _output;
 }
+

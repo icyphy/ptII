@@ -31,7 +31,6 @@ import pt.kernel.*;
 import pt.actors.*;
 import pt.data.*;
 import java.util.Enumeration;
-import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNSieve
@@ -69,39 +68,39 @@ public class PNSieve extends PNActor {
      *  port. 
      */
     public void run() {
-        IntToken data;
+        Token[] data;
         try {
             int i;
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                Enumeration outports = _input.deepConnectedOutputPorts();
-                while (outports.hasMoreElements()) {
-                    PNOutPort outport = (PNOutPort)outports.nextElement();
-                    data = (IntToken)readFrom(_input, outport);
-                    if (data.intValue()%_prime != 0) {
-                        // is it the next prime? 
-                        if (_output == null) {
-                            // yes - make the sieve for it 
-                            PNSieve newSieve = new PNSieve((CompositeActor)
-                                    getContainer(), data.intValue() + "_sieve");
-                            newSieve.setInitState(data.intValue());
+	      Enumeration relations = _input.linkedRelations();
+	      while (relations.hasMoreElements()) {
+		  IORelation rel = (IORelation)relations.nextElement();
+		  data = readFrom(_input, rel);
+		  if (((IntToken)data[0]).intValue()%_prime != 0) {
+		      // is it the next prime? 
+		      if (_output == null) {
+			  // yes - make the sieve for it 
+			  PNSieve newSieve = new PNSieve((CompositeActor)
+                                  getContainer(), ((IntToken)data[0]).intValue() + "_sieve");
+                            newSieve.setInitState(((IntToken)data[0]).intValue());
                             _output = new PNOutPort(this, "output");
                             IORelation relation = new IORelation((CompositeEntity)
-                                    getContainer(), data.intValue()+"_queue");
+                                    getContainer(), ((IntToken)data[0]).intValue()+"_queue");
                             _output.link(relation);
                             PNPort inport = (PNPort)newSieve.getPort("input");
                             inport.link(relation);
-                            inport.getQueue(_output).setCapacity(1);
+                            //inport.getQueue(_output).setCapacity(1);
 			    //THIS IS CURRENTLY VERY IMPORTANT
                             ((PNDirector)getDirector()).setMutate(true);
                         } 
                         else {
-                            writeTo(_output, data);
+                            writeTo(_output, data[0]);
                         }
                     }
                 }
             }
             ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchItemException e) {
             System.out.println("Terminating "+ this.getName());
             return;
         } catch (NameDuplicationException e) {

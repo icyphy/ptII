@@ -31,7 +31,7 @@ import pt.kernel.*;
 import pt.data.*;
 import pt.actors.*;
 import java.util.Enumeration;
-import java.util.NoSuchElementException;
+//import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleave
@@ -66,7 +66,7 @@ public class PNInterleave extends PNActor{
      */	
     //FIXME: THis code shoudl change when the new kernel is in place
     public void run() {
-        Token data;
+        Token[] data;
         int i;
         setCycles(((PNCompositeActor)getContainer()).getCycles());
         try {
@@ -75,18 +75,18 @@ public class PNInterleave extends PNActor{
 		while (ports.hasMoreElements()) {
 		    PNPort nextPort = (PNPort)ports.nextElement();
                     if (nextPort.isInput()) {
-                        Enumeration outports = nextPort.deepConnectedOutputPorts();
-                        while (outports.hasMoreElements()) {
-                            PNOutPort outport = (PNOutPort)outports.nextElement();
-                            data = readFrom((PNInPort)nextPort, outport);
-                            writeTo(_output, data);
-                            System.out.println(this.getName()+" writes "+((IntToken)data).intValue()+" to "+_output.getName());
+                        Enumeration relations = nextPort.linkedRelations();
+                        while (relations.hasMoreElements()) {
+                            IORelation relation = (IORelation)relations.nextElement();
+                            data = readFrom((PNInPort)nextPort, relation);
+                            writeTo(_output, data[0]);
+                            System.out.println(this.getName()+" writes "+((IntToken)data[0]).intValue()+" to "+_output.getName());
                         }
                     }
                 }
             }
             ((PNDirector)getDirector()).processStopped();
-        } catch(NoSuchElementException e) {
+        } catch(NoSuchItemException e) {
             System.out.println("Terminating "+ this.getName());
             return;
         }
