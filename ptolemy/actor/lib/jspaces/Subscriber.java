@@ -145,21 +145,14 @@ public class Subscriber extends Source implements RemoteEventListener {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-	try {
-	    Subscriber newobj = (Subscriber)super.clone(ws);
-	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-            newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.numberOfHistory =
-                (Parameter)newobj.getAttribute("numberOfHistory");
-            newobj.blocking = (Parameter)newobj.getAttribute("blocking");
-            newobj.defaultToken =
-                (Parameter)newobj.getAttribute("defaultToken");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Subscriber newobj = (Subscriber)super.clone(ws);
+        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
+        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
+        newobj.numberOfHistory =
+            (Parameter)newobj.getAttribute("numberOfHistory");
+        newobj.blocking = (Parameter)newobj.getAttribute("blocking");
+        newobj.defaultToken = (Parameter)newobj.getAttribute("defaultToken");
+        return newobj;
     }
 
     /** update parameters.

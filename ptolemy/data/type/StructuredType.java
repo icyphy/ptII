@@ -60,14 +60,11 @@ public abstract class StructuredType implements Type, Cloneable {
     /** Return a deep copy this StructuredType. The returned copy does
      *  not have the user set.
      *  @return A StructuredType.
+     *  @exception CloneNotSupportedException If the super class throws it
      */
-    public Object clone() {
-	try {
-	    return super.clone();
-	} catch (CloneNotSupportedException ex) {
-	    throw new InternalErrorException("StructuredType.clone: " +
-                    ex.getMessage());
-	}
+    public Object clone()
+	    throws CloneNotSupportedException {
+        return super.clone();
     }
 
     /** If this type is a variable, disallow it to be changed by the
