@@ -459,8 +459,7 @@ public class BasePNDirector extends ProcessDirector {
      *  of the process blocking on a read. If either of them is detected,
      *  then notify the directing thread of the same.
      */
-    protected synchronized void _informOfReadBlock(PNQueueReceiver receiver,
-    	    boolean internal) {
+    protected synchronized void _actorReadBlocked(boolean internal) {
 	_readBlockCount++;
         /*
         if (!_processlisteners.isEmpty()) {
@@ -514,7 +513,7 @@ public class BasePNDirector extends ProcessDirector {
      *  @param receiver The receiver to which the blocking process was trying
      *  to write.
      */
-    protected synchronized void _informOfWriteBlock(PNQueueReceiver receiver) {
+    protected synchronized void _actorWriteBlocked(PNQueueReceiver receiver) {
 	_writeBlockCount++;
         // FIXME: is add correct or should it have been addFirst
         // used to be insertFirst

@@ -118,7 +118,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             while (!_terminate && !super.hasToken()) {
                 //Only for listeners. Keep it before inform
                 _readblockedactor = (Actor)getContainer().getContainer();
-                director._informOfReadBlock(this, true);
+                director._actorReadBlocked(true);
                 _readpending = true;
                 while (_readpending && !_terminate) {
                     workspace.wait(this);
@@ -368,7 +368,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Note: Required only to inform the listeners
                 _writeblockedactor =
                     ((ProcessThread)Thread.currentThread()).getActor();
-                director._informOfWriteBlock(this);
+                director._actorWriteBlocked(this);
                 while (!_terminate && !super.hasRoom()) {
                     while(_writepending) {
                         workspace.wait(this);
