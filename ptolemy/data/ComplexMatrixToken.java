@@ -242,7 +242,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
      *  @param token The token with which to test equality.
-     *  @return A booleanToken containing the result.
+     *  @return A BooleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not a matrix token; or lossless conversion is not possible.
      */
@@ -277,8 +277,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @param column The column index of the desired element.
      *  @return A ComplexToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained matrix.
+     *   row or column number is outside the range of this matrix.
      */
     public Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
@@ -291,22 +290,21 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @param column The column index of the desired element.
      *  @return The Complex at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained matrix.
+     *   row or column number is outside the range of this matrix.
      */
     public Complex getElementAt(final int row, final int column) {
         return _value[row][column];
     }
 
     /** Return the number of columns in the matrix.
-     *  @return An integer.
+     *  @return The number of columns in the matrix.
      */
     public int getColumnCount() {
         return _columnCount;
     }
 
     /** Return the number of rows in the matrix.
-     *  @return An integer.
+     *  @return The number of rows in the matrix.
      */
     public int getRowCount() {
         return _rowCount;
@@ -413,10 +411,10 @@ public class ComplexMatrixToken extends MatrixToken {
      *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its dimension must be the
      *  same as this token.
-     *  @param token The token to subtract to this token.
+     *  @param token The token to subtract from this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be added to this token.
+     *   not of a type that can be subtracted from this token.
      */
     public final Token subtract(final Token token)
             throws IllegalActionException {
@@ -517,7 +515,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a reference to the internal 2-D matrix of complex numbers that
      *  represents this Token. Because no copying is done, the contents must
      *  NOT be modified to preserve the immutability of Token.
-     *  @return A 2-D complex matrix.
+     *  @return A 2-D complex Java array.
      */
     protected Complex[][] _getInternalComplexMatrix() {
         return _value;

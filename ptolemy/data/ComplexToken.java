@@ -139,7 +139,7 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Return the value of this token as a Complex.
-     *  @return A Complex
+     *  @return The value of this token as a Complex
      */
     public Complex complexValue() {
         // Complex is immutable, so we can just return the value.
@@ -152,7 +152,7 @@ public class ComplexToken extends ScalarToken {
      *  it is returned without any change. Otherwise, if the argument
      *  is below ComplexToken in the type hierarchy, it is converted to
      *  an instance of ComplexToken or one of the subclasses of
-     *  ComplexToken and returned. If none of the above condition is
+     *  ComplexToken and returned. If none of the above conditions are
      *  met, an exception is thrown.
      *  @param token The token to be converted to a ComplexToken.
      *  @return A ComplexToken.
@@ -195,9 +195,9 @@ public class ComplexToken extends ScalarToken {
      *  above two types that allows lossless conversion from the other.
      *
      *  @param divisor The token to divide this Token by
+     *  @return A new Token containing the result.
      *  @exception IllegalActionException If the passed token is
      *  not of a type that can divide this Tokens value by.
-     *  @return A new Token containing the result.
      */
     public Token divide(Token divisor)
 	    throws IllegalActionException {
@@ -225,7 +225,7 @@ public class ComplexToken extends ScalarToken {
      *  @param dividend The token to be divided by the value of this Token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than ComplexToken;
+     *   token is not lower than ComplexToken.
      */
     public Token divideReverse(Token dividend)
 	    throws IllegalActionException {
@@ -281,8 +281,10 @@ public class ComplexToken extends ScalarToken {
         }
     }
 
-    /** Throw an exception. Mathematically, there is no "less than"
-     *  relationship among complex numbers.
+    /** Check if the value of this token is strictly less than that of the
+     *  argument token. Mathematically, there is no "less than"
+     *  relationship among complex numbers. So this method always throws
+     *  an exception.
      *  @param arg A ScalarToken.
      *  @return A BooleanToken 
      *  @exception IllegalActionException Always thrown.
@@ -364,7 +366,7 @@ public class ComplexToken extends ScalarToken {
      *  information. The type of the returned token is one of the
      *  above two types that allows lossless conversion from the other.
      *
-     *  @param rightArg The token to subtract this Token by
+     *  @param rightArg The token to subtract this Token by.
      *  @return A new Token containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be subtracted from this Token.
