@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		doc/doclet
+ME =		doc/doclets
 
 DIRS =
 
