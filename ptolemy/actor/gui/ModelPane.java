@@ -297,7 +297,14 @@ public class ModelPane extends JPanel implements CloseListener {
                         _controlPanel.add(
                                 Box.createRigidArea(new Dimension(0, 8)));
                         _directorQuery = new Configurer(director);
-                        _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
+                        if (_layout == HORIZONTAL) {
+                            _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
+                        } else {
+                            // If we don't align this with CENTER, then
+                            // the scrollbars in the Query get messed up when
+                            // the orientation of an applet is vertical
+                            _directorQuery.setAlignmentX(CENTER_ALIGNMENT);
+                        }
                         _directorQuery.setBackground(null);
                         _controlPanel.add(_directorQuery);
                     }
