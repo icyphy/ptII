@@ -50,6 +50,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,7 +59,8 @@ import ptolemy.kernel.util.Workspace;
    An HSDirector governs the execution of the discrete dynamics of a hybrid
    system model.
    <p>
-   <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
+   <a href="
+   http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
    Hierarchical Hybrid System Simulation</a> describes how hybrid system models
    are built and simulated in Ptolemy II.
    <p>
@@ -142,7 +144,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public void fire() throws IllegalActionException {
         // FIXME: this basically copies the fire method of FSMDirector.
-        // It will be cleaned by introducing an abstract modal model director.
+        // Introducing an abstract modal model director?
         if (_debugging) {
             _debug(getName(), " fire.");
         }
@@ -151,7 +153,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // reconstruct the list of enabled refinenents from the current state.
         // FIXME: prefire does this too.... why do this again here?
         if (_firstFire) {
-            Actor[] actors = _st.getRefinement();
+            Actor[] actors = _currentState.getRefinement();
             _enabledRefinements = new LinkedList();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -176,9 +178,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if ((getExecutionPhase() ==
             CTExecutionPhase.GENERATING_EVENTS_PHASE) ||
             (getExecutionPhase() ==
-            CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE)) {
-            // FIXME: _checkTransition...
-            tr = _ctrl._chooseTransition(_st.preemptiveTransitionList());
+            CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE)) {
+            tr = _ctrl._chooseTransition(_currentState.preemptiveTransitionList());
             _hasEvent = false;
         } else {
             tr = null;
@@ -205,15 +206,14 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return;
         }
 
-        //////////////////////////////////////////////////////////////////////
-        // Handle preemptive transitions
-        
         Iterator actors = _enabledRefinements.iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            if (_debugging) _debug(getName(), " fire refinement",
-                    ((ptolemy.kernel.util.NamedObj)actor).getName());
+            if (_debugging && _verbose) {
+                _debug(getName(), " fire refinement", 
+                        ((NamedObj)actor).getName());
+            }
             actor.fire();
         }
 
@@ -233,13 +233,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // is checked.
             if ((getExecutionPhase() ==
                 CTExecutionPhase.GENERATING_EVENTS_PHASE) 
-//                ||
-//                (getExecutionPhase() ==
-//                CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE)
+                ||
+                (getExecutionPhase() ==
+                CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE)
                 ) {
                 // Note that the output actions associated with the transition
                 // are executed.
-                tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
+                tr = _ctrl._chooseTransition(_currentState.nonpreemptiveTransitionList());
                 _hasEvent = false;
             } else {
                 tr = null;
@@ -289,14 +289,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
     }
 
-    /** Return the current time value obtained from the executive director, if
-     *  there is one, and otherwise return the local view of current time.
-     *  @return The current time value.
-     */
-    public double getCurrentTime() {
-        return getModelTime().getDoubleValue();
-    }
-
     /** Return the enclosing CT director of this director, or null if
      *  this director is at the top level or the enclosing director is
      *  not a CT general director.
@@ -326,11 +318,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // For any executive director that is not a CTGeneralDirector,
             // the current execution phase is always 
             // ITERATING_PURELY_DISCRETE_PHASE.
-            return CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE;
+            // Although the returned result is not used anywhere. 
+            return CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE;
         }
     }
 
-    /** Return the begin time of the current iteration.
+    /** Return the begin time of the current iteration, this method only
+     *  makes sense in continuous-time domain.
      *  @return The begin time of the current iteration.
      */
     public Time getIterationBeginTime() {
@@ -430,12 +424,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  the super class throws it.
      */
     public void initialize() throws IllegalActionException {
+        
         super.initialize();
 
         _ctrl = getController();
-        _st = _ctrl.currentState();
+        _currentState = _ctrl.currentState();
         _enabledRefinements = new LinkedList();
-        Actor[] actors = _st.getRefinement();
+        Actor[] actors = _currentState.getRefinement();
          if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
                 actors[i].initialize();
@@ -485,18 +480,19 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
 
         // Even if the result is false, this method does not return immediately.
-        // Instead, we continue checking whether there is any transition
-        // enabled with the current (temporary) outputs.
+        // Instead, we continue to check whether there is any transition
+        // enabled with respect to the current inputs.
         // The reason is that when refining step size, we want to find the
-        // largest step size that satisfies all the constraints to reduce the
-        // computation cost.
-        // NOTE: Both the non-preemptive and preemptive transitions are checked.
+        // largest step size that satisfies all the step size constraints to 
+        // reduce the computation cost.
+        // Both non-preemptive and preemptive transitions are checked below.
         try {
             // Check if there is any preemptive transition enabled.
             Transition preemptiveTr
-                = _ctrl._checkTransition(_st.preemptiveTransitionList());
+                = _ctrl._checkTransition(
+                        _currentState.preemptiveTransitionList());
             if (preemptiveTr != null) {
-                if (_debugging) {
+                if (_debugging && _verbose) {
                     _debug("Find enabled transition:  " +
                             preemptiveTr.getGuardExpression());
                 }
@@ -504,9 +500,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
             // Check if there is any non-preemptive transition enabled.
             Transition nonPreemptiveTr
-                = _ctrl._checkTransition(_st.nonpreemptiveTransitionList());
+                = _ctrl._checkTransition(
+                        _currentState.nonpreemptiveTransitionList());
             if (nonPreemptiveTr != null) {
-                if (_debugging) {
+                if (_debugging && _verbose) {
                     _debug("Find enabled transition:  " +
                             nonPreemptiveTr.getGuardExpression());
                 }
@@ -514,7 +511,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
             // Check if there is any event detected for preemptive transitions.
             Transition preemptiveTrWithEvent =
-                _checkEvent(_st.preemptiveTransitionList());
+                _checkEvent(_currentState.preemptiveTransitionList());
             if (preemptiveTrWithEvent != null) {
                 if (_debugging) {
                     _debug("Detected event for transition:  " +
@@ -525,7 +522,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // Check if there is any events detected for
             // nonpreemptive transitions.
             Transition nonPreemptiveTrWithEvent =
-                _checkEvent(_st.nonpreemptiveTransitionList());
+                _checkEvent(_currentState.nonpreemptiveTransitionList());
             if (nonPreemptiveTrWithEvent != null) {
                 if (_debugging) {
                     _debug("Detected event for transition:  " +
@@ -533,24 +530,19 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
 
-            // If no transition is enabled, set "tr" as the transition
-            // with event detected.
+            // If no transition is enabled, use the transition with event 
+            // detected instead.
             if (preemptiveTr == null) {
-                preemptiveTr= preemptiveTrWithEvent;
+                preemptiveTr = preemptiveTrWithEvent;
             }
             if (nonPreemptiveTr == null) {
-                nonPreemptiveTr= nonPreemptiveTrWithEvent;
+                nonPreemptiveTr = nonPreemptiveTrWithEvent;
             }
 
-            // If there is no transition enabled, the last step size is accurate for
-            // transitions. The status of the relations of the guard expressions are
-            // committed into all the associated relation lists.
-            // FIXME: this is wrong. It is too early to tell whether current
-            // step size is accurate because the refinements may not be
-            // satisfied with the current step size. What is more, the other
-            // actors that at the same level of hierarchy as this modal model
-            // may not be satisfied the current step size. The states should
-            // be committed at the postfire method.
+            double errorTolerance = dir.getErrorTolerance();
+            // If there is no transition enabled, the last step size is 
+            // accurate for transitions. The states will be committed at 
+            // the postfire method.
             if (nonPreemptiveTr == null && preemptiveTr == null) {
                 _hasEvent = false;
             } else if (nonPreemptiveTr != null) {
@@ -559,62 +551,69 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // their status with the current step size for
                 // step size refinement.
                 RelationList relationList = nonPreemptiveTr.getRelationList();
-                _distanceToBoundaryNonPreemptive = relationList.maximumDifference();
+                _distanceToBoundaryNonPreemptive = 
+                    relationList.maximumDifference();
 
-                _nonpreemptiveTransitionAccurate =
-                    (_distanceToBoundaryNonPreemptive < dir.getErrorTolerance());
-
-                if (_debugging) {
-                    _debug(" ==> The guard " +
-                            nonPreemptiveTr.getGuardExpression() +
-                            " has difference " + _distanceToBoundaryNonPreemptive);
+                if (_debugging && _verbose) {
+                    _debug("The guard " + nonPreemptiveTr.getGuardExpression() 
+                            + " has the biggest difference to boundary as " 
+                            + _distanceToBoundaryNonPreemptive);
                 }
 
+                _nonpreemptiveTransitionAccurate =
+                    (_distanceToBoundaryNonPreemptive < errorTolerance);
+
                 if (!_nonpreemptiveTransitionAccurate) {
-                    // Retrive the previous distance of the relation which has the
-                    // biggest difference with the current step size.
-                    // This previous distance will be used to refine the step size.
-                    _lastDistanceToBoundaryNonPremptive = relationList.getFormerMaximumDistance();
+                    // Retrive the previous distance of the relation which has 
+                    // the biggest difference with the current step size.
+                    // This previous distance will be used to refine the 
+                    // step size.
+                    _lastDistanceToBoundaryNonPremptive = 
+                        relationList.getPreviousMaximumDistance();
                 } else {
                     _hasEvent = true;
-                    dir.fireAt(container, getModelTime());
+                    // FIXME: why requesting refiring here? should this go to
+                    // the postfire() method?
+                    // dir.fireAt(container, getModelTime());
                 }
             } else {
                 // There is one preemptive transition enabled.
                 // We check the maximum difference of all relations that change
-                // their status with the current step size for
+                // their status with the current step size for 
                 // step size refinement.
                 RelationList relationList = preemptiveTr.getRelationList();
-                _distanceToBoundaryPreemptive = relationList.maximumDifference();
+                _distanceToBoundaryPreemptive = 
+                    relationList.maximumDifference();
+
+                if (_debugging && _verbose) {
+                    _debug("The guard " + preemptiveTr.getGuardExpression() 
+                            + " has the biggest difference to boundary as " 
+                            + _distanceToBoundaryPreemptive);
+                }
 
                 _preemptiveTransitionAccurate =
-                    (_distanceToBoundaryPreemptive < dir.getErrorTolerance());
-
-                if (_debugging) {
-                    _debug(" ==> The guard " +
-                            preemptiveTr.getGuardExpression() +
-                            " has difference " + _distanceToBoundaryPreemptive);
-                }
+                    (_distanceToBoundaryPreemptive < errorTolerance);
 
                 if (!_preemptiveTransitionAccurate) {
                     // Retrive the previous distance of the relation which has the
                     // biggest difference with the current step size.
                     // This previous distance will be used to refine the step size.
-                    _lastDistanceToBoundaryPremptive = relationList.getFormerMaximumDistance();
+                    _lastDistanceToBoundaryPremptive = 
+                        relationList.getPreviousMaximumDistance();
                 } else {
                     _hasEvent = true;
-                    dir.fireAt(container, getModelTime());
+                    // FIXME: why requesting refiring here? should this go to
+                    // the postfire() method?
+                    // dir.fireAt(container, getModelTime());
                 }
             }
             return result 
                     && _nonpreemptiveTransitionAccurate
                     && _preemptiveTransitionAccurate;
         } catch (Exception e) {
-            //FIXME: handle the exception
-            System.out.println(
-                    "FIXME:: HSDirector.isThisStepAccurate() throws exception ");
-            e.printStackTrace();
-            return result;
+            // Can not request refirng 
+            // or multiple enabled transitions are found.
+            throw new InternalErrorException(e);
         }
     }
 
@@ -648,6 +647,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  CTStepSizeControlActor; and if the current time is exactly the same
      *  time the transition is enabled.
      *  @return True if the current step is accurate.
+     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and 
+     *  isStateAccurate() methods instead.
      */
     public boolean isThisStepAccurate() {
         return isOutputAccurate() && isStateAccurate();
@@ -672,7 +673,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         CTReceiver receiver = new CTReceiver();
         //FIXME: this is not right. Instead of blindly assigning a "discrete" 
         //signal type, we need to derive the actual signal type from the 
-        //connections.
+        //connections between ports.
         receiver.setSignalType(CTReceiver.DISCRETE);
         return receiver;
     }
@@ -709,49 +710,57 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Transition tr = _enabledTransition;
 
         // If there is one transition enabled, the HSDirector requests
-        // fire again at the same time to see whether the next state
+        // to be fired again at the same time to see whether the next state
         // has some outgoing transition enabled.
         if (tr != null) {
             if (_debugging) {
                 _debug("Postfire deals with enabled transition " +
                         tr.getGuardExpression());
             }
-            Iterator iterator = _st.preemptiveTransitionList().listIterator();
+            
             // It is important to clear the history information of the
             // relation list since after this breakpoint, no history
             // information is valid.
+            Iterator iterator = 
+                _currentState.nonpreemptiveTransitionList().listIterator();
             while (iterator.hasNext()) {
-                ((Transition) iterator.next()).getRelationList().clearRelationList();
+                Transition transition = (Transition)iterator.next();
+                transition.getRelationList().clearRelationList();
             }
-            iterator = _st.nonpreemptiveTransitionList().listIterator();
-            // It is important to clear the history information of the
-            // relation list since after this breakpoint, no history
-            // information is valid.
+            iterator = _currentState.preemptiveTransitionList().listIterator();
             while (iterator.hasNext()) {
-                ((Transition) iterator.next()).getRelationList().clearRelationList();
+                Transition transition = (Transition)iterator.next();
+                transition.getRelationList().clearRelationList();
             }
+
             // If the top level of the model is modal model, the director
-            // is null. We do not request to fire again since no one in upper
-            // hierarchy will do that.
+            // is null. We do not request to be fired again since no one in 
+            // the upper level of hierarchy will do that.
             if (dir != null) {
                 if (_debugging) {
-                    _debug("HSDirector requests refiring at " + getModelTime());
+                    _debug(dir.getFullName() 
+                            + " requests refiring at " + getModelTime());
                 }
+                // If there is one transition enabled, the HSDirector requests
+                // to be fired again at the same time to see whether the next 
+                // state has some outgoing transition enabled.
                 dir.fireAt(container, getModelTime());
             }
             // clear the cached enabled transition
             _enabledTransition = null;
         } else {
-            // Otherwise, commit the current states of all the transitions.
-            Iterator iterator = _st.nonpreemptiveTransitionList().listIterator();
+            // Otherwise, there is no enabled transition, the current step size
+            // is acceptable. Commit the current states of all the transitions.
+            Iterator iterator = 
+                _currentState.nonpreemptiveTransitionList().listIterator();
             while (iterator.hasNext()) {
-                ((Transition) iterator.next()).
-                    getRelationList().commitRelationValues();
+                Transition transition = (Transition)iterator.next();
+                transition.getRelationList().commitRelationValues();
             }
-            iterator = _st.preemptiveTransitionList().listIterator();
+            iterator = _currentState.preemptiveTransitionList().listIterator();
             while (iterator.hasNext()) {
-                ((Transition) iterator.next()).
-                    getRelationList().commitRelationValues();
+                Transition transition = (Transition)iterator.next();
+                transition.getRelationList().commitRelationValues();
             }
         }
         return super.postfire();
@@ -780,17 +789,18 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return result;
     }
 
-    /** Set the controller. Call super.prefire().
+    /** Set the controller and current state. Call super.prefire().
+     *  @return True if the prefire() method of the super class returns true.
      */
     public boolean prefire() throws IllegalActionException {
         _ctrl = getController();
-        _st = _ctrl.currentState();
+        _currentState = _ctrl.currentState();
         if (_debugging) {
             _debug(getName(), " find FSMActor " + _ctrl.getName()
-                    + " and the current state is " + _st.getName());
+                    + " and the current state is " + _currentState.getName());
         }
     
-        Actor[] actors = _st.getRefinement();
+        Actor[] actors = _currentState.getRefinement();
         _enabledRefinements = new LinkedList();
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
@@ -922,7 +932,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     private boolean _hasEvent = false;
     
     // Cached reference to current state.
-    private State _st = null;
+    private State _currentState = null;
 
     // Lcoal variable to indicate whether the
     // the enabled nonpreemptive transition is accurate.
