@@ -46,7 +46,7 @@ This class provides a method to create a mapping from a Query entry to
 a Variable. The Variable will be automatically set each time the
 corresponding Query entity changes. To use this class, first add an entry to
 the query, and then use the attachParameter method in this class
-to associate that variable with a
+to associate a variable to that entry.
 
 @author Brian K. Vogel
 @version $Id$
@@ -62,11 +62,13 @@ public class PtolemyQuery extends Query
 	_parameters = new HashMap();
     }
 
-    /** Attach a Variable <i>var</i> to an entry, <i>entryName</i>,
+    /** Attach a variable <i>var</i> to an entry, <i>entryName</i>,
      *  of a Query. After attaching the <i>var</i> to the entry,
      *  automatically set <i>var</i> when <i>entryName</i> changes.
      *  If <i>var</i> has previously been attached to an entry,
      *  then the old value is replaced with <i>entryName</i>.
+     *  @param var The variable to attach to an entry.
+     *  @param entryName The entry to attach the variable to.
      */
     public void attachParameter(Variable var, String entryName) {
 	_parameters.put(entryName, var);
@@ -79,19 +81,22 @@ public class PtolemyQuery extends Query
 
     /** Set the Variable to the value of the Query entry. This
      *  method is called whenever an entry changes.
+     *  @param name The entry that has changed.
      */
     public void changed(String name)  {
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
 	    // Set the variable.
             Variable var = (Variable)(_parameters.get(name));
+
             // Temporarily disable listening, so when we are notified
             // back, we ignore it.
             _listening = false;
             var.setExpression(stringValue(name));
+
             // Force evaluation, but ignore errors for now.
             try {
-                var.getToken();
+	      var.getToken();
             } catch (IllegalActionException ex) {}
             _listening = true;
 	}
