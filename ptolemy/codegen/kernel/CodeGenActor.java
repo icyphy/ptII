@@ -28,14 +28,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import java.util.HashMap;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenActor
