@@ -63,6 +63,7 @@ JSRCS = \
        PoleZeroView.java \
        FreqView.java \
        ImpulseView.java \
+       TransFunctView.java \
        ViewController.java 
  
 JCLASS = $(JSRCS:%.java=%.class)
