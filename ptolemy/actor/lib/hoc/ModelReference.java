@@ -158,6 +158,7 @@ FIXME: Need options for error handling.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 3.1
 */
 public class ModelReference
         extends TypedAtomicActor

@@ -71,6 +71,7 @@ FIXME: Useful options would be to output only files or only directories.
 
 @author  Christopher Hylands, Edward A. Lee
 @version $Id$
+@since Ptolemy II 3.1
 */
 public class DirectoryListing extends Source implements FilenameFilter {
 

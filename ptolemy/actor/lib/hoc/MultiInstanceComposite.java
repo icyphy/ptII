@@ -109,6 +109,7 @@ import java.util.List;
 
  @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
  @version $Id$
+ @since Ptolemy II 2.0
  */
 public class MultiInstanceComposite extends TypedCompositeActor {
 
