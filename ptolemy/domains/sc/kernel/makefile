@@ -2,7 +2,7 @@
 #
 # @Authors: Xiaojun Liu
 #
-# @Version: $ID$
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -60,7 +60,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	demo doc test
+MISC_FILES =	$(DIRS) doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
