@@ -272,7 +272,7 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     set root1 [ $parser {generateParseTree String ptolemy.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
     set res1  [ $root1 evaluateParseTree ]
 
-    set newTok [java::new ptolemy.data.DoubleToken 102.45]
+    set newTok [java::new {ptolemy.data.DoubleToken double} 102.45]
     $param2 setToken $newTok
     set res2  [ $root1 {evaluateParseTree} ]
     

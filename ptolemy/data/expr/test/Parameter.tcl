@@ -151,7 +151,7 @@ test Parameter-4.0 {Check setting the contained Token from a String or another T
     set value3 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
-    set tok2 [java::new ptolemy.data.DoubleToken 3.3]
+    set tok2 [java::new {ptolemy.data.DoubleToken double} 3.3]
     $param1 setToken $tok2    
     set value4 [[$param1 getToken] getValue]
 
@@ -194,7 +194,7 @@ test Parameter-5.0 {Check reseting the Parameter to its original String} {
 #
 test Parameter-5.1 {Check reseting the Parameter to its original Token} {
     set e [java::new {ptolemy.kernel.Entity String} parent]
-    set tok1 [java::new ptolemy.data.DoubleToken 9.9]
+    set tok1 [java::new {ptolemy.data.DoubleToken double} 9.9]
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
@@ -208,7 +208,7 @@ test Parameter-5.1 {Check reseting the Parameter to its original Token} {
     set value3 [[$param1 getToken] getValue]
 
     # Put a new Token in the Param from a Token
-    set tok1 [java::new  ptolemy.data.DoubleToken 5.5]
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 5.5]
     $param1 setToken $tok1    
     set value4 [[$param1 getToken] getValue]
     
@@ -261,7 +261,7 @@ test Parameter-7.0 {Check that dependency cycles are flagged as an error} {
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
     $param1 setExpression 1.1
 
-    set tok1 [java::new ptolemy.data.DoubleToken 9.9]
+    set tok1 [java::new {ptolemy.data.DoubleToken double} 9.9]
     set param2 [java::new ptolemy.data.expr.Parameter $e id2 $tok1]
 
     set param3 [java::new ptolemy.data.expr.Parameter $e id3]
