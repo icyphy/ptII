@@ -64,7 +64,7 @@ import java.util.Enumeration;
    The identification number assigned to each branch only needs to identify
    the branch uniquely for one sequence of the steps above. A good example
    of how to use a CDO is the code in the actor CSPBuffer, in the
-   ptolemy.domians.csp.lib package. One significant difference between a
+   ptolemy.domains.csp.lib package. One significant difference between a
    CDO (or CIF) and a common <I>do</I> (<I>if</I>) is that all the branches
    are evaluated in parallel, as opposed to sequentially.
 
