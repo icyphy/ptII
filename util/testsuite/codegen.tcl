@@ -86,7 +86,10 @@ proc speedComparison  {xmlFile \
 		[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
 
     } else {
-	if {$codeGenType == "Applet"} {
+	if {$codeGenType == "Applet" || $codeGenType == "Interpreted"} {
+	    # Can't run applets without a head
+	    # Can't run interpreted code in the nightly build because
+	    # we do not find the JavaScope jar files.
 	    puts "Applet codegen done"
 	} else {
 	    set targetClass $modelName.$modelClass
