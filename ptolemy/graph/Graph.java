@@ -145,6 +145,25 @@ public class Graph implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add an analysis to the list of analyses that this graph is associated
+     *  with.
+     *  @param analysis The analysis.
+     *  @exception IllegalArgumentException If the graph associated with the
+     *  analysis is not equal to this graph, or if the graph already contains
+     *  the analysis in its list of analyses.
+     */
+    public void addAnalysis(Analysis analysis) {
+        if (analysis.graph() != this) {
+            throw new IllegalArgumentException("Invalid associated graph.\n" +
+                    "The analysis:\n" + analysis + "\n");
+        }
+        if (_analysisList.contains(analysis)) {
+            throw new IllegalArgumentException("Attempt to add " +
+                    "duplicate analysis.\nThe analysis:\n" + analysis);
+        }
+        _analysisList.add(analysis);
+    }
+
     /** Add a weighted edge between two nodes.  If the edge is subsequently
      *  operated on as a directed edge, its orientation will be taken
      *  to be directed <i>from</i> the first (<code>node1</code>) node
@@ -242,25 +261,6 @@ public class Graph implements Cloneable {
         while (edges.hasNext()) {
             addEdge((Edge)(edges.next()));
         }
-    }
-
-    /** Add an analysis to the list of analyses that this graph is associated
-     *  with.
-     *  @param analysis The analysis.
-     *  @exception IllegalArgumentException If the graph associated with the
-     *  analysis is not equal to this graph, or if the graph already contains
-     *  the analysis in its list of analyses.
-     */
-    public void addAnalysis(Analysis analysis) {
-        if (analysis.graph() != this) {
-            throw new IllegalArgumentException("Invalid associated graph.\n" +
-                    "The analysis:\n" + analysis + "\n");
-        }
-        if (_analysisList.contains(analysis)) {
-            throw new IllegalArgumentException("Attempt to add " +
-                    "duplicate analysis.\nThe analysis:\n" + analysis);
-        }
-        _analysisList.add(analysis);
     }
 
     /** Add an unweighted node to this graph.
@@ -1210,7 +1210,7 @@ public class Graph implements Cloneable {
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  @param nodes The collection of nodes; each element is a {@link Node}.
      *  @return The induced subgraph.
-     *  @exception IllegalArgumentException if the collection contains a node
+     *  @exception IllegalArgumentException If the collection contains a node
      *  that is not in this graph.
      */
     public Graph subgraph(Collection collection) {
@@ -1249,7 +1249,7 @@ public class Graph implements Cloneable {
      *  of {@link Node}.
      *  @param edges The subset of edges. Each element is an instance
      *  of {@link Edge}.
-     *  @exception IllegalArgumentException if the argument collections contain
+     *  @exception IllegalArgumentException If the argument collections contain
      *  a node or edge that is not in this graph.
      *  @return The subgraph.
      *  @see #addEdges(Collection).
@@ -1562,7 +1562,7 @@ public class Graph implements Cloneable {
      *  Derived classes can override this method to perform additional updates
      *  of internal data structures.
      *  @param edge The new edge.
-     *  @exception RuntimeException if the weight of the given edge is
+     *  @exception RuntimeException If the weight of the given edge is
      *  not valid, as determined by {@link #validEdgeWeight(Object)}.
      *  @see #_registerNode(Node).
      */
@@ -1584,7 +1584,7 @@ public class Graph implements Cloneable {
      *  Derived classes can override this method to perform additional updates
      *  of internal data structures.
      *  @param node The new node.
-     *  @exception RuntimeException if the weight of the given node is
+     *  @exception RuntimeException If the weight of the given node is
      *  not valid, as determined by {@link #validNodeWeight(Object)}.
      *  @see #_registerEdge(Edge).
      */
