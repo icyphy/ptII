@@ -38,7 +38,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 
 import java.util.LinkedList;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper
@@ -446,10 +446,10 @@ public class TimeKeeper {
         }
         
         else {
-	    Enumeration ports = _actor.outputPorts(); 
+	    Iterator ports = _actor.outputPortList().iterator(); 
             double time = getCurrentTime(); 
-            while( ports.hasMoreElements() ) {
-            	IOPort port = (IOPort)ports.nextElement(); 
+            while( ports.hasNext() ) {
+            	IOPort port = (IOPort)ports.next(); 
                 Receiver rcvrs[][] = 
                         (Receiver[][])port.getRemoteReceivers();
             	for (int i = 0; i < rcvrs.length; i++) {
@@ -505,16 +505,16 @@ public class TimeKeeper {
     public synchronized void setRcvrPriorities()
             throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
-	Enumeration enum = _actor.inputPorts();
-	if( !enum.hasMoreElements() ) {
+	Iterator inputPorts = _actor.inputPortList().iterator();
+	if( !inputPorts.hasNext() ) {
             return;
 	}
 
         //
         // First Order The Ports
         //
-        while( enum.hasMoreElements() ) {
-	    listOfPorts.addLast( (IOPort)enum.nextElement() );
+        while( inputPorts.hasNext() ) {
+	    listOfPorts.addLast( (IOPort)inputPorts.next() );
         }
 
         //
