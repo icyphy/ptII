@@ -138,8 +138,12 @@ public class SequenceSource extends Source implements SequenceActor {
 
     // This is the value in parameter 
     // firingCountLimit.
-    private int _firingCountLimit;
+    // It may be convient for derived classes to read this
+    // variable in the iterate() method.
+    protected int _firingCountLimit;
 
     // The current number of elapsed iterations.
-    private int _iterationCount = 0;
+    // It may be convient for derived classes to read/set this
+    // variable in the iterate() method.
+    protected int _iterationCount = 0;
 }
