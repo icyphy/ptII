@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile	1.22 05/28/98
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -47,7 +47,7 @@ ME =		java/pt/actors
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-#JAVAHOME = 	$(LATEST_JAVAHOME)
+#JAVAHOME =   $(LATEST_JAVAHOME)
 DIRS = 		test #doc
 
 CLASSPATH = ../..
@@ -61,10 +61,13 @@ TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
+
 JSRCS = \
 	Actor.java \
 	AtomicActor.java \
-	AtomicIOPort.java \
+	CalendarQueue.java \
+	CQLink.java \
+	CQComparator.java
 	CompositeActor.java \
 	DataComputingInit.java \
 	Director.java \
@@ -76,12 +79,8 @@ JSRCS = \
 	IORelation.java \
 	Mailbox.java \
 	MailboxPort.java \
-	Receptionist.java \
-	TokenHolderFullException.java \
-	TransparentIOPort.java \
-	CalendarQueue.java \
-	CQLink.java \
-	CQComparator.java
+	Receiver.java \
+	TokenHolderFullException.java
 
 EXTRA_SRCS =	$(JSRCS)
 
