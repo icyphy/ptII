@@ -127,7 +127,7 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     # Run the automatically generated executible.
     cd $outputDir
 
-    exec $exeFile
+    exec ./$exeFile
 
     list \
         [file readable $exeFile]

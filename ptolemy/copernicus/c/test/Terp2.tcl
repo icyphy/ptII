@@ -118,9 +118,13 @@ test Terp2-1.1 {Generate all required files for Terp2.java} {
     # Run the automatically generated executible.
     cd $outputDir
 
-    set exeFile "./$exeFile"
-    exec $exeFile
+    # The nightly build does not have . in the path, so we use ./ here.
+    set output [exec ./$exeFile]
     
-} {Fear the Turtle!!!
-}
+    # Turn newlines into spaces.
+    regsub -all "\n" $output " " output
+    regsub -all "
+" $output "" output
+    
+} {Fear the Turtle!!!}
 
