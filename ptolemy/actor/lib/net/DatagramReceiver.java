@@ -646,7 +646,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                 } finally {
 		    if (_stopFire) {
 			_stopFire = false;
-			System.out.println("return due to stopFire");
+			if (_debugging) _debug("return due to stopFire");
 			return;
 		    }
                 }
@@ -910,7 +910,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
      */
     public void stopFire() {
-        System.out.println("stopFire() is called");
+        if (_debugging) _debug("stopFire() is called");
         synchronized(_syncFireAndThread) {
             if (_fireIsWaiting) {
                 // stopFire() gets called a lot.  Including each time 
@@ -919,9 +919,9 @@ public class DatagramReceiver extends TypedAtomicActor {
                 // few firings.
 		_stopFire = true;
                 _syncFireAndThread.notifyAll();
-                System.out.println("stopFire() has notified fire()");
+                if (_debugging) _debug("stopFire() has notified fire()");
             } else {
-                System.out.println("stopFire() did not notify fire()");
+                if (_debugging) _debug("stopFire() did not notify fire()");
             }
         }
     }
@@ -1092,11 +1092,12 @@ public class DatagramReceiver extends TypedAtomicActor {
                         synchronized(_syncSocket) {
                         }
                     } catch (NullPointerException ex) {
-                        System.out.println("--!!--" + (_socket == null));
+                        if (_debugging) _debug("--!!--" + (_socket == null));
+			return;
 			// -> --!!--true
-                        System.out.println(ex.toString());
+                        //System.out.println(ex.toString());
                         // -> java.lang.NullPointerException
-                        throw new RuntimeException("-null ptr-");
+                        //throw new RuntimeException("-null ptr-");
 			// -> java.lang.RuntimeException: -null ptr-
 			//     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
                     }

@@ -47,7 +47,8 @@ DIRS = 		conversions gui logic hoc image net \
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# DIVA_JAR required for KeystrokeSensor.java
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -101,6 +102,7 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
+	KeystrokeSensor.java \
 	Lattice.java \
 	LevinsonDurbin.java \
 	Limiter.java \
@@ -137,6 +139,7 @@ JSRCS = \
 	Source.java \
 	Switch.java \
 	Synchronizer.java \
+	SystemClipboard.java \
 	Test.java \
 	TimedActor.java \
 	TimedSource.java \

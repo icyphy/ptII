@@ -49,6 +49,14 @@
         <doc>Write out tokens to a file or stdout</doc>
       </entity>
 
+      <entity name="KeystrokeSensor" class="ptolemy.actor.lib.KeystrokeSensor">
+        <doc>Create a JFrame for sensing Copy and Paste keystrokes</doc>
+      </entity>
+
+      <entity name="SystemClipboard" class="ptolemy.actor.lib.SystemClipboard">
+        <doc>Gives access to the system clipboard</doc>
+      </entity>
+
       <entity name="URLDirectoryReader"
               class="ptolemy.actor.lib.URLDirectoryReader">
          <doc>Read a directory and output each file or subdirectory</doc>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Wormhole3" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Wormhole4" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 129]">
@@ -21,25 +21,9 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="375.0, 275.0">
         </property>
     </property>
-    <entity name="Wormhole" class="ptolemy.actor.lib.net.Wormhole">
-        <doc>Reads (and eventually writes) the copy past buffer</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 115.0">
-        </property>
-        <port name="pasteOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
-        <port name="copyTrigger" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="copyInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
@@ -96,7 +80,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="520.0, 90.0">
+        <property name="_location" class="ptolemy.moml.Location" value="600.2449035644531, 90.0010871887207">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -173,7 +157,7 @@
         </port>
     </entity>
     <entity name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
-        <property name="_location" class="ptolemy.moml.Location" value="445.0, 125.0">
+        <property name="_location" class="ptolemy.moml.Location" value="525.2449035644531, 125.0010871887207">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,8 +191,31 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="1:SystemClipboard" class="ptolemy.actor.lib.net.SystemClipboard">
+        <doc>Gives access to the system clipboard</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="435.0, 125.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="KeystrokeSensor" class="ptolemy.actor.lib.net.KeystrokeSensor">
+        <doc>Create a JFrame for sensing Copy and Paste keystrokes</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="315.0, 155.0">
+        </property>
+        <port name="controlC" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="controlV" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -220,7 +227,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="415.0, 125.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="495.0, 125.0">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -231,15 +238,16 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Wormhole.pasteOutput" relation="relation10"/>
-    <link port="Wormhole.copyTrigger" relation="relation11"/>
-    <link port="Wormhole.copyInput" relation="relation3"/>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DatagramReceiver.returnAddress" relation="relation12"/>
     <link port="DatagramReceiver.output" relation="relation7"/>
     <link port="DatagramSender.remoteAddress" relation="relation8"/>
     <link port="DatagramSender.data" relation="relation2"/>
     <link port="Sampler.input" relation="relation5"/>
-    <link port="Sampler.output" relation="relation3"/>
+    <link port="Sampler.output" relation="relation9"/>
     <link port="Sampler.trigger" relation="relation4"/>
     <link port="partner's IP address.output" relation="relation8"/>
     <link port="partner's IP address.trigger" relation="relation"/>
@@ -253,4 +261,9 @@
     <link port="Display.input" relation="relation11"/>
     <link port="Display.input" relation="relation10"/>
     <link port="SingleEvent.output" relation="relation"/>
+    <link port="1:SystemClipboard.input" relation="relation9"/>
+    <link port="1:SystemClipboard.trigger" relation="relation3"/>
+    <link port="1:SystemClipboard.output" relation="relation10"/>
+    <link port="KeystrokeSensor.controlC" relation="relation11"/>
+    <link port="KeystrokeSensor.controlV" relation="relation3"/>
 </entity>

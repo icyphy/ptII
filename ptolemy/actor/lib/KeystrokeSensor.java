@@ -1,4 +1,4 @@
-/* An actor which pops up a wormhole frame responsive to copy and paste.
+/* An actor which pops up a keystroke-sensing JFrame.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,7 +30,7 @@
 
 package ptolemy.actor.lib.net;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (fully pruned)
+// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
 import diva.gui.toolbox.FocusMouseListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -47,7 +47,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 //import java.awt.event.MouseListener;
 
-// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (fully pruned)
+// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (not pruned)
 //import ptolemy.actor.AtomicActor;
 //import ptolemy.actor.IOPort;
   import ptolemy.actor.TypedAtomicActor;
@@ -68,60 +68,49 @@ import java.awt.event.KeyEvent;
 //import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// Wormhole
+//// KeystrokeSensor
 
 /**
-This actor generates an additional frame.  This may look like a new
-window in Windows.  This frame detects copy (control-c) and paste
-(control-v) keystrokes provided it has the focus at the time.  When it
-is clicked on, it will acquire said focus.  This actor additionally
-accesses the system clipboard.  When fired, it copies the input token,
-if there is one, to the system clipboard and pastes the system
-clipboard to its output, sending a token there.  If both paste and
-copy occur, paste is performed first.  The frame and clipboard
-portions of this actor are coupled through the director.  The frame
-portion, specified by this actor's inner class, calls the director's
-fireAtCurrentTime() method.  This causes the director to call fire()
-on the clipboard portion. <p>
+When this actor is preinitialized, it pops up a new JFrame window on 
+the desktop, usually in the upper left hand corner of the screen.
+When this JFrame has the focus (such as when it has been clicked on)
+it is capable of sensing keystrokes.  This actor senses only two 
+keystrokes, control-C (copy) and control-V (paste).  This actor is 
+designed to work with SystemClipboard.java<p>
+
+This actor contains a private inner class which generated the JFrame.
+The frame sets up callbacks which react to the keystrokes.  When called, 
+these call the director's fireAtCurrentTime() method.  This causes 
+the director to call fire() on the actor.   The actor then broadcasts 
+tokens from one or both outputs depending on which keystroke(s) have 
+occured since the actor was last fired.  <p>
 
 @author Winthrop Williams
 @version $Id$
 */
-public class Wormhole extends TypedAtomicActor implements ClipboardOwner {
+public class KeystrokeSensor extends TypedAtomicActor {
 
-    public Wormhole(CompositeEntity container, String name)
+    public KeystrokeSensor(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Outputs
-        pasteOutput = new TypedIOPort(this, "pasteOutput");
-        pasteOutput.setTypeEquals(BaseType.STRING);
-        pasteOutput.setOutput(true);
 
-        copyTrigger = new TypedIOPort(this, "copyTrigger");
-        copyTrigger.setTypeEquals(BaseType.GENERAL);
-        copyTrigger.setOutput(true);
+        controlC = new TypedIOPort(this, "controlC");
+        controlC.setTypeEquals(BaseType.GENERAL);
+        controlC.setOutput(true);
 
-        // Input
-        copyInput = new TypedIOPort(this, "copyInput");
-        copyInput.setTypeEquals(BaseType.STRING);
-        copyInput.setInput(true);
-
-	/*
-         focusTrigger
-        */
-
+        controlV = new TypedIOPort(this, "controlV");
+        controlV.setTypeEquals(BaseType.GENERAL);
+        controlV.setOutput(true);
     }
 
-    public TypedIOPort pasteOutput;
+    public TypedIOPort controlV;
 
-    public TypedIOPort copyTrigger;
-    
-    public TypedIOPort copyInput;
+    public TypedIOPort controlC;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
 
     /** Fire this actor.
@@ -130,81 +119,17 @@ public class Wormhole extends TypedAtomicActor implements ClipboardOwner {
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
 
-	if (_pasteKeyPressed) {
-	    _pasteKeyPressed = false;
-	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
-	    Transferable transferable = clipboard.getContents(this);
-	    try{
-		pasteOutput.broadcast(new StringToken( (String)transferable
-                        .getTransferData(DataFlavor.stringFlavor) ));
-	    // NullPointerException also possible //
-		// Ignore this for now, allowing exception to go uncaught.
-	    } catch (java.io.IOException ex) {
-		throw new IllegalActionException(this,
-                        " Failed to paste (IO Exception): " + ex);
-	    } catch (java.awt.datatransfer.UnsupportedFlavorException ex) {
-		throw new IllegalActionException(this,
-                        " Failed to paste: (Flavor Exception)" + ex);
-	    }
-	}
-
-	if (copyInput.getWidth()>0 && copyInput.hasToken(0)) {
-	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
-	    String myString = ((StringToken)(copyInput.get(0))).stringValue();
-
-	    /*
-	    ArrayToken myArrayToken = (ArrayToken) copyInput.get(0);
-	    // (Use only low byte of each integer.)
-	    int byteCount = myArrayToken.length();
-	    byte[] byteData = new byte[byteCount];
-	    for (int j = 0; j < byteCount; j++) {
-		IntToken myToken = (IntToken) myArrayToken.getElement(j);
-		byteData[j] = (byte) myToken.intValue();
-	    }
-	    */
-     
-	    clipboard.setContents(new StringSelection(myString), this);
-	}
-
 	if (_copyKeyPressed) {
 	    _copyKeyPressed = false;
-	    copyTrigger.broadcast(new Token());
+	    controlC.broadcast(new Token());
+	}
+
+	if (_pasteKeyPressed) {
+	    _pasteKeyPressed = false;
+	    controlV.broadcast(new Token());
 	}
 
 	if (_debugging) _debug("fire has completed");
-    }
-
-    /** Comply with the ClipboardOwner interface.  It requires a
-     *  method exist named <i>lostOwnership</i>.  
-     *  
-     *  Without this (and having the actor, or something, 
-     *  implement ClipboardOwner, I get the following error:
-     *  
-     *  setContents(java.awt.datatransfer.Transferable,
-     *              java.awt.datatransfer.ClipboardOwner) 
-     *           in java.awt.datatransfer.Clipboard
-     *           cannot be applied to
-     *             (java.awt.datatransfer.StringSelection,
-     *              ptolemy.actor.lib.net.Wormhole)
-     */
-    /*
-CLASSPATH="../../../..;c:\cygwin\home\winthrop\8Feb\ptII/lib/diva.jar" "/cygdriv
-e/c/jdk1.4/bin/javac" -g -O Wormhole.java
-Wormhole.java:137: cannot resolve symbol
-symbol  : variable _myFrame
-location: class ptolemy.actor.lib.net.Wormhole
-            Transferable transferable = clipboard.getContents(_myFrame);
-                                                              ^
-1 error
-make: *** [Wormhole.class] Error 1
-bash-2.04$ emacs Wormhole.java
-
-When I have '_myframe' in place of 'this' in getContents( ) call.
-Seems "requestor" who calls this must implement the ClipboardOwner interface.
-    */
-    public void lostOwnership(Clipboard clipboard, Transferable contents) {
     }
 
     public void preinitialize() {
@@ -227,7 +152,7 @@ Seems "requestor" who calls this must implement the ClipboardOwner interface.
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-    private class MyFrame extends JFrame /*implements ClipboardOwner*/ {
+    private class MyFrame extends JFrame {
 
         /** Construct a frame associated with the specified Ptolemy II
          *  model.  After constructing this, it is necessary to call
@@ -240,20 +165,14 @@ Seems "requestor" who calls this must implement the ClipboardOwner interface.
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
 
-	    // Paste callback
-            ActionListener myPasteListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			pasteFromBufferToPasteOutput(); 
-		    } 
-	    };
-
 	    // Copy callback
             ActionListener myCopyListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			if (_debugging) _debug("copy callback called");
 			_copyKeyPressed = true;
 			try {
-			    getDirector().fireAtCurrentTime(Wormhole.this);
+			    getDirector().fireAtCurrentTime(
+                                    KeystrokeSensor.this);
 			} catch (IllegalActionException ex) {
 			    System.out.println(this
 			            + "Ex calling fireAtCurrentTime");
@@ -261,6 +180,24 @@ Seems "requestor" who calls this must implement the ClipboardOwner interface.
 			}
 			if (_debugging) _debug("copy callback completed");
 		    }
+	    };
+
+	    // Paste callback
+            ActionListener myPasteListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			if (_debugging) _debug("pasteFrom.. has been called");
+			_pasteKeyPressed = true;
+			try {
+			    getDirector().fireAtCurrentTime(
+                                    KeystrokeSensor.this);
+			} catch (IllegalActionException ex) {
+			    System.out.println("--" + ex.toString() + "--");
+			    System.out.println(this
+				    + "Exception calling fireAtCurrentTime");
+			    throw new RuntimeException("-fireAt* catch-");
+			}
+			if (_debugging) _debug("pasteFrom.. has completed");
+		    } 
 	    };
 
             getContentPane().setLayout(new BorderLayout());
@@ -287,32 +224,6 @@ Seems "requestor" who calls this must implement the ClipboardOwner interface.
             pack();
 	    show();
             if (_debugging) _debug("frame constructor completes");
-        }
-
-        /** Comply with the ClipboardOwner interface.
-         *  It requires a method exist named <i>lostOwnership</i>.
-	 */
-	/*
-        public void lostOwnership(Clipboard clipboard,
-                Transferable contents) {
-        }
-	*/
-
-        /** Assuming the contents of the clipboard is MoML code, paste
-         *  it into the current model by issuing a change request.
-         */
-        public void pasteFromBufferToPasteOutput() {
-            if (_debugging) _debug("pasteFrom.. has been called");
-            _pasteKeyPressed = true;
-	    try {
-                getDirector().fireAtCurrentTime(Wormhole.this);
-            } catch (IllegalActionException ex) {
-		System.out.println("--" + ex.toString() + "--");
-                System.out.println(this
-                        + "Exception calling fireAtCurrentTime");
-                throw new RuntimeException("-fireAt* catch-");
-            }
-            if (_debugging) _debug("pasteFrom.. has completed");
         }
     }
 }
