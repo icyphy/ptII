@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy II DDE domain test directory
+# Makefile for the Ptolemy II DDE domain kernel/test directory
 #
 # @Authors: Christopher Hylands
 #
@@ -56,13 +56,13 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	DDEDirector.tcl \
 	DDEIOPort.tcl \
 	DDEReceiver.tcl \
 	FBDelay.tcl \
 	TimeKeeper.tcl \
 	TimedQueueReceiver.tcl 
-	# DDEDirector.tcl 
-	# test.tcl
+	# test.tcl \
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
