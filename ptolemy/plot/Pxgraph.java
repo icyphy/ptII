@@ -671,24 +671,20 @@ public class Pxgraph extends Frame {
     /* Set the visibility of the buttons
      */
     private void _setButtonsVisibility(boolean vis) {
-	//_exitButton.setVisible(vis);
-	//_printButton.setVisible(vis);
-	//_htmlButton.setVisible(vis);
-	//_aboutButton.setVisible(vis);
- 	if (vis) {
- 	    _exitButton.show(); // FIXME: show() is
- 	    // deprecated in JDK1.1, but we need to compile under
- 	    // 1.0.2 for netscape3.x compatibilty.
- 	    _printButton.show(); // FIXME: show() deprecated, but . . .
- 	    _htmlButton.show(); // FIXME: show() deprecated, but . . .
- 	    _aboutButton.show(); // FIXME: show() deprecated, but . . .
+	// To make a button invisible, 
+	// We set the foreground of the button to the background.
+	// If we use hide(), then the button gets unmapped and the
+	// Frame resizes itself, which causes problems with printing.
+  	if (vis) {
+	    _exitButton.setForeground(getForeground());
+	    _printButton.setForeground(getForeground());
+	    _htmlButton.setForeground(getForeground());
+	    _aboutButton.setForeground(getForeground());
  	} else {
- 	    _exitButton.hide(); // FIXME: hide() is
- 	    // deprecated in JDK1.1, but we need to compile under
- 	    // 1.0.2 for netscape3.x compatibilty.
- 	    _printButton.hide(); // FIXME: hide() deprecated, but . . .
- 	    _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
- 	    _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
+	    _exitButton.setForeground(getBackground());
+	    _printButton.setForeground(getBackground());
+	    _htmlButton.setForeground(getBackground());
+	    _aboutButton.setForeground(getBackground());
  	}
     }
 
@@ -841,15 +837,14 @@ public class Pxgraph extends Frame {
  		_plotApplet._setButtonsVisibility(false);
 
   		// Print
-  		printComponents(printgraphics);
  		printAll(printgraphics);
-
- 		printgraphics.dispose();
- 		printjob.end();
 
  		// Make the buttons visible, reset the graphics.
  		_plotApplet._setButtonsVisibility(true);
  		_setButtonsVisibility(true);
+
+ 		printgraphics.dispose();
+ 		printjob.end();
  	    } else {
  		printjob.end();
  	    }
