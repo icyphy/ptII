@@ -117,11 +117,9 @@ CalendarQueue class.</i>
 @version $Id$
 @see ptolemy.actor.util.CQComparator
 */
-
-                      public class CalendarQueue implements Debuggable {
-
-                          /** Construct an empty queue with a given comparator, which
-                           *  is used to sort the entries.  The bin count factor and the
+public class CalendarQueue implements Debuggable {
+    /** Construct an empty queue with a given comparator, which
+     *  is used to sort the entries.  The bin count factor and the
                            *  initial and minimum number of bins are set to 2.
                            *  @param comparator The comparator used to sort entries.
                            */
