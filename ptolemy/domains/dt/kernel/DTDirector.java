@@ -647,7 +647,7 @@ public class DTDirector extends SDFDirector {
             _actorTable = new ArrayList();
             _receiverTable = new ArrayList();
             iterations.setToken(new IntToken(0));
-            debug = new DTDebug(true);
+            debug = new DTDebug(false);
     	} catch (Exception e) {
     	    throw new InternalErrorException(
                     "unable to initialize DT Director:\n" +
