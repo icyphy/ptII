@@ -59,14 +59,15 @@ test PtParser-1.1 {Get information about an instance of PtParser} {
   fields:        lookingAhead nextToken token token_source
     
   methods:       {ReInit java.io.InputStream} {ReInit pt.data.parser.PtP
-    arserTokenManager} disable_tracing element enable_traci
-    ng {equals java.lang.Object} function generateParseExce
-    ption getClass getNextToken {getToken int} hashCode log
-    icalAnd logicalEquals logicalOr notify notifyAll {parse
-    Expression java.lang.String} {parseExpression java.lang
-    .String pt.kernel.NamedList pt.data.Param} parseFromInp
-    ut reEvaluate relational start sum term toString unary 
-    wait {wait long} {wait long int}
+    arserTokenManager} bitwiseAnd bitwiseOr bitwiseXor disa
+    ble_tracing element enable_tracing {equals java.lang.Ob
+    ject} funcIf function generateParseException getClass g
+    etNextToken {getToken int} hashCode logicalAnd logicalE
+    quals logicalOr notify notifyAll {parseExpression java.
+    lang.String} {parseExpression java.lang.String pt.kerne
+    l.NamedList pt.data.Param} parseFromInput reEvaluatePar
+    seTree relational start sum term toString unary wait {w
+    ait long} {wait long int}
     
   constructors:  pt.data.parser.PtParser {pt.data.parser.PtParser java.i
     o.InputStream} {pt.data.parser.PtParser pt.data.parser.
@@ -185,10 +186,10 @@ test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} 
     set p [java::new pt.data.parser.PtParser]
     set r1 [ $p {parseExpression String} "\"hello\" == \"hello\""]
     set r2 [ $p {parseExpression String} "\"hello\" != \"hello\""]
-    #set r3 [ $p {parseExpression String} "\"4\" == 2*(9-7)"] do we want this???
+    
     set c1 [$r1 getClass]
     set c2 [$r2 getClass]
-    #set c3 [$r3 getClass]
+    
     list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString]  
 } {pt.data.BooleanToken true pt.data.BooleanToken false}
 ######################################################################
@@ -204,6 +205,19 @@ test PtParser-5.0 {Construct a Parser, test use of logical operators} {
     set c3 [$r3 getClass]
     list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] [$c3 getName ] [$r3 toString]  
 } {pt.data.BooleanToken true pt.data.BooleanToken false pt.data.BooleanToken true}
+######################################################################
+####
+# 
+test PtParser-5.1 {Construct a Parser, unary minus & unary logical not} {
+    set p [java::new pt.data.parser.PtParser]
+    set r1 [ $p {parseExpression String} "!true"]
+    set r2 [ $p {parseExpression String} "-7"]
+   
+    set c1 [$r1 getClass]
+    set c2 [$r2 getClass]
+   
+    list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] 
+} {pt.data.BooleanToken false pt.data.IntToken -7}
 ######################################################################
 ####
 # 
@@ -230,3 +244,109 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set c1 [$r1 getClass]
     list [$c1 getName ] [$r1 toString] 
 } {pt.data.StringToken {11.45 hello world }}
+######################################################################
+####
+# 
+test PtParser-6.1 {Test reEvaluation of parse Tree} {
+    set parser [java::new pt.data.parser.PtParser]
+    set e [java::new {pt.kernel.Entity String} parent]
+    set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
+    set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
+    set tok3 [java::new  {pt.data.IntToken int} 9]
+    set tok4 [java::new  {pt.data.StringToken String} { hello world }]
+    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
+    set param2 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id2 $tok2]
+    set param3 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id3 $tok3]
+    set param4 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id4 $tok4]
+
+    $e {addParam pt.data.Param} $param1
+    $e {addParam pt.data.Param} $param2
+    $e {addParam pt.data.Param} $param3
+    $e {addParam pt.data.Param} $param4
+
+    set nl [$param1 getScope]
+
+    set r1 [ $parser {parseExpression String pt.kernel.NamedList pt.data.Param} "id2 + id3 + id4\n" $nl $param1]
+    set c1 [$r1 getClass]
+
+    $tok2 {setValue double} 102.45
+    set r2  [ $parser {reEvaluateParseTree} ]
+    set c2 [$r2 getClass]
+
+    list [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] 
+} {pt.data.StringToken {11.45 hello world } pt.data.StringToken {111.45 hello world }}
+######################################################################
+####
+# 
+test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set r [ $p1 {parseExpression String} "(true)?(7):(6)\n"]
+    set c1 [$r getClass]
+    list  [$c1 getName ] [$r toString] 
+} {pt.data.IntToken 7}
+
+######################################################################
+####
+# 
+test PtParser-7.1 {Construct a Parser, try harder if then else} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set r [ $p1 {parseExpression String} "(false) ? (3/.5*4) : (\"hello\")"]
+    set c1 [$r getClass]
+    list  [$c1 getName ] [$r toString] 
+} {pt.data.StringToken hello}
+######################################################################
+####
+# 
+test PtParser-7.2 {Test complicated expression within boolean condition} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set r [ $p1 {parseExpression String} "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (\"hello\")"]
+    set c1 [$r getClass]
+    list  [$c1 getName ] [$r toString] 
+} {pt.data.DoubleToken 24.0}
+######################################################################
+####
+# 
+test PtParser-7.3 {Test nested if then elses} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set r [ $p1 {parseExpression String} "(true ? false: true ) ? (3/.5*4) : (\"hello\")"]
+    set c1 [$r getClass]
+    list  [$c1 getName ] [$r toString] 
+} {pt.data.StringToken hello}
+######################################################################
+####
+# 
+test PtParser-8.0 {Test method calls on PtTokens} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set r1 [ $p1 {parseExpression String} "(4.0).add(3.0)"]
+    set c1 [$r1 getClass]
+    list  [$c1 getName ] [$r1 toString] 
+} {pt.data.DoubleToken 7.0}
+######################################################################
+####
+# 
+test PtParser-8.1 {Test bitwise operators} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set r1 [ $p1 {parseExpression String} "5 & 2"]
+    set r2 [ $p1 {parseExpression String} "5 | 2"]
+    set r3 [ $p1 {parseExpression String} "5 ^ 4"]
+    set r4 [ $p1 {parseExpression String} "~5"]
+    set c1 [$r1 getClass]
+    set c2 [$r2 getClass]
+    set c3 [$r3 getClass]
+    set c4 [$r4 getClass]
+    list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] [$c3 getName ] [$r3 toString] [$c4 getName ] [$r4 toString] 
+} {pt.data.IntToken 0 pt.data.IntToken 7 pt.data.IntToken 1 pt.data.IntToken -6}
+######################################################################
+####
+# 
+test PtParser-8.2 {Test more complicated bitwise operations, and bitwise ops on booleans} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set r1 [ $p1 {parseExpression String} "~(5 & 2 | 4)"]
+    set r2 [ $p1 {parseExpression String} "(5>4) & (2==2)"]
+    set r3 [ $p1 {parseExpression String} "(false) | (2!=2)"]
+
+    set c1 [$r1 getClass]
+    set c2 [$r2 getClass]
+    set c3 [$r3 getClass]
+    list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] [$c3 getName ] [$r3 toString]
+} {pt.data.IntToken -5 pt.data.BooleanToken true pt.data.BooleanToken false}
