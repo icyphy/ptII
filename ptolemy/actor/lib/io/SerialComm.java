@@ -295,12 +295,11 @@ public class SerialComm extends TypedAtomicActor
 
 
     // Weirdo thing required for accessing the serial port.
-    // This is a very strange animal because the identifier 
-    // 'driver' is given here but nowhere else.  Thus, one 
-    // would think, it cannot do anything.  However, removing 
-    // it makes things fail.  Specifically, it makes the try 
-    // block in fire() have an exception whose message is the 
-    // word "null".
+    // The identifier 'weirdoDriver' is used here nowhere else.
+    // Somehow the .initialize() call must do something crucial.
+    // Removing this code block makes things fail.  Specifically, 
+    // it makes the 'try' block in fire() have an exception whose 
+    // message is the word "null".
     static {
         CommDriver weirdoDriver = new com.sun.comm.Win32Driver();
         weirdoDriver.initialize();
