@@ -48,6 +48,17 @@ proc jdkRuntime {} {
     puts "freeMemory:  [$runtime freeMemory]"
 }
 
+# Return the classpath separator charactor
+proc jdkClassPathSeparator {} {
+    global env
+    # If you mess with this, consider fixing $PTII/configure.in
+    switch "$env(os.name)" \
+	    "Windows 98" {return ";"} \
+	    "Windows NT" {return ";"} \
+	    "Windows 2000" {return ";"} \
+	    default {return ":"}
+}
+
 # Print JDK version info
 proc jdkVersion {} {
     global tcl_version tcl_patchLevel env
