@@ -87,12 +87,10 @@ OPTIONAL_FILES = \
 	'IterateOverArray$$IteratePort.class' \
 	'ModelReference$$1.class'
 
-JCLASS = $$(JSRCS:%.java=%.class' \
-
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
