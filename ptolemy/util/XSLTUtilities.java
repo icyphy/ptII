@@ -41,7 +41,6 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -52,8 +51,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.xalan.serialize.Serializer;
-import org.apache.xalan.serialize.SerializerFactory;
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -144,15 +143,13 @@ public class XSLTUtilities {
         //System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
         //                   defaultDBFI == null ? "" : defaultDBFI);
 
-        Properties format = org.apache.xalan.templates.OutputProperties
-            .getDefaultMethodProperties("xml");
-        format.setProperty("indent", "yes");
-        format.setProperty("{http://xml.apache.org/xslt}indent-amount",
-                "4");
-        Serializer serializer = SerializerFactory.getSerializer(format);
+        OutputFormat format = new OutputFormat(document);
+        format.setLineWidth(65);
+        format.setIndenting(true);
+        format.setIndent(4);
         OutputStream outputStream = new ByteArrayOutputStream();
-        serializer.setOutputStream(outputStream);
-        serializer.asDOMSerializer().serialize(document);
+        XMLSerializer serializer = new XMLSerializer(outputStream, format);
+        serializer.serialize(document);
         outputStream.close();
         return outputStream.toString();
     }
