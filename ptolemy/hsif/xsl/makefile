@@ -51,7 +51,8 @@ OTHER_FILES_TO_BE_JARED = \
 	GlobalVariablePreprocessor.xsl \
 	HSIF.xsl \
 	LocalVariablePreprocessor.xsl \
-	SlimPreprocessor.xsl
+	SlimPreprocessor.xsl \
+	SlimPreprocessorForLinks.xsl
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
