@@ -50,6 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	gui/gui.jar \
 	lib/lib.jar \
+	parameters/parameters.jar \
 	process/process.jar \
 	sched/sched.jar \
 	util/util.jar
