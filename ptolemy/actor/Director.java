@@ -368,6 +368,14 @@ public class Director extends Attribute implements Executable {
         return _currentTime;
     }
 
+    /** Get the time resolution of the model. Be default, the value of
+     *  the time resolution is 1.0e-10. 
+     *  @return The time resolution of the model.
+     */
+    public double getTimeResolution() {
+        return _timeResolution;
+    }
+
     /** Initialize the model controlled by this director.  Set the
      *  current time to 0.0 or the time of the executive director, and
      *  then invoke the initialize() method of this director on each
@@ -759,6 +767,19 @@ public class Director extends Attribute implements Executable {
         }
     }
 
+    /** Set the time resolution of the model. Be default, the value of
+     *  the time resolution is 1.0e-10. Derived classes can override
+     *  the value.
+     *
+     *  @param timeResolution The new time resolution.
+     */
+    public void setTimeResolution(double timeResolution) {
+        _timeResolution = timeResolution;
+        if (_debugging) {
+            _debug("--- Set the time resolution to: " + timeResolution);
+        }
+    }
+
     /** Request that the director cease execution altogether.
      *  This causes a call to stop() on all actors contained by
      *  the container of this director, and sets a flag
@@ -985,6 +1006,9 @@ public class Director extends Attribute implements Executable {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
+
+    /** The time resolution of the model. */
+    protected double _timeResolution = 1.0e-10;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
