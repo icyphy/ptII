@@ -397,7 +397,7 @@ public class NavigableEffigy extends PtolemyEffigy {
 
                             // We might have three effigies here:
                             // 1) .configuration.directory.configuration
-                            // 2) .configuration.directory.user library
+                            // 2) .configuration.directory.UserLibrary
                             // 3) .configuration.directory.effigy
                             // Note that one of the effigies is the configuration
                             // itself, which does not prevent exiting the app.
