@@ -132,18 +132,17 @@ subinstall:
 
 
 # Run make demo in the subdirs
-# Note that this rule cannot be called 'demo' because we have
-# a demo subdirectory, and 'make sources' will run 'make demo'
-# if the DIRS variable contains demo.
-demos: subdemos
-subdemos:
+# Note that if DIRS include the demo directory, and MISC_FILES includes
+# DIRS, then 'make sources' will run 'make demo', which is not what we want
+demo: subdemo
+subdemo:
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
 			echo making demos in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) demos ;\
+			$(MAKE) $(MFLAGS) $(MAKEVARS) demo ;\
 			) \
 		    fi ; \
 		done ; \
