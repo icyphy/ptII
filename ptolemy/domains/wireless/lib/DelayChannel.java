@@ -42,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// DelayChannel
@@ -209,6 +210,7 @@ public class DelayChannel extends ErasureChannel {
                 = (WirelessIOPort)receiver.getContainer();
             double distance = _distanceBetween(sender, destination);
             double time = director.getCurrentTime() + distance/speed;
+            time = Utilities.round(time, director.getTimeResolution());
 
             if (_receptions == null) {
                 _receptions = new HashMap();

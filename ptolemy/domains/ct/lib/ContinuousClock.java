@@ -36,6 +36,7 @@ import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
@@ -194,6 +195,8 @@ public class ContinuousClock extends Clock {
                 // missed a deadline.  As a consequence, the clock will stop.
                 _tentativeNextFiringTime
                     = _tentativeCycleStartTime + _offsets[_tentativePhase];
+                _tentativeNextFiringTime = Utilities.round(
+                    _tentativeNextFiringTime, getDirector().getTimeResolution());
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }

@@ -41,6 +41,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Clock
@@ -275,7 +276,11 @@ public class Clock extends TimedSource {
             while (_tentativeCycleStartTime + periodValue <= currentTime) {
                 _tentativeCycleStartTime += periodValue;
             }
-
+            // time resolution adjustment
+            _tentativeCycleStartTime = 
+                Utilities.round(_tentativeCycleStartTime, 
+                    getDirector().getTimeResolution());
+            
             // Adjust the phase if time has moved beyond the current phase.
             // FIXME: why using while but not if?
             if (currentTime
@@ -291,6 +296,10 @@ public class Clock extends TimedSource {
                     _tentativePhase = 0;
                     // Schedule the first firing in the next period.
                     _tentativeCycleStartTime += periodValue;
+                    // time resolution adjustment
+                    _tentativeCycleStartTime = 
+                        Utilities.round(_tentativeCycleStartTime, 
+                            getDirector().getTimeResolution());
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
                 }
@@ -311,6 +320,10 @@ public class Clock extends TimedSource {
                 // missed a deadline.  As a consequence, the clock will stop.
                 _tentativeNextFiringTime
                     = _tentativeCycleStartTime + _offsets[_tentativePhase];
+                // time resolution adjustment
+                _tentativeNextFiringTime = 
+                    Utilities.round(_tentativeNextFiringTime, 
+                        getDirector().getTimeResolution());
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
@@ -347,6 +360,8 @@ public class Clock extends TimedSource {
         double timeToStart = getDirector().getCurrentTime();
         _cycleStartTime = timeToStart;
         _startTime = timeToStart + _offsets[0];
+        _startTime = Utilities.round(_startTime, 
+            getDirector().getTimeResolution());
         _currentValue = _getValue(0).zero();
         _phase = 0;
 

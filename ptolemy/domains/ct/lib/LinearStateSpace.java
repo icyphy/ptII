@@ -253,6 +253,7 @@ public class LinearStateSpace extends TypedCompositeActor {
     }
 
     /** Return the executive director, regardless what isOpaque() returns.
+     *  //FIXME: this is not what this method does!!! 
      *  @return the executive director.
      */
     public Director getDirector() {
@@ -276,6 +277,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  @exception IllegalActionException If thrown by super class.
      */
     public boolean postfire() throws IllegalActionException {
+        // FIXME: the parameter change does affect the workspace version.
         if (_requestInitialization) _requestInitialization();
         return super.postfire();
     }
@@ -303,6 +305,7 @@ public class LinearStateSpace extends TypedCompositeActor {
 
         try {
             _workspace.getWriteAccess();
+            // remove the existing model
             removeAllEntities();
             removeAllRelations();
             // Create the model
@@ -396,6 +399,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         }finally {
             _workspace.doneWriting();
         }
+        // FIXME: super.preinitialize()?
         // preinitialize all contained actors.
         for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
             Actor actor = (Actor)i.next();

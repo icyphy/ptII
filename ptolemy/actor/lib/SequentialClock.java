@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// SequentialClock
@@ -250,10 +251,13 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         // Schedule the first firing.
         double currentTime = getDirector().getCurrentTime();
+        double nextFiringTime = _offsets[0] + currentTime;
+        nextFiringTime = Utilities.round(nextFiringTime,
+            getDirector().getTimeResolution());
 
         // NOTE: This must be the last line, because it could result
         // in an immediate iteration.
-        getDirector().fireAt(this, _offsets[0] + currentTime);
+        getDirector().fireAt(this, nextFiringTime);
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -286,7 +290,10 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
                     + "period, which is " + periodValue);
         }
 
-        getDirector().fireAt(this, _cycleStartTime + _offsets[_phase]);
+        double nextIterationTime = _cycleStartTime + _offsets[_phase];
+        nextIterationTime = Utilities.round(nextIterationTime,
+            getDirector().getTimeResolution());
+        getDirector().fireAt(this, nextIterationTime);
 
         return true;
     }

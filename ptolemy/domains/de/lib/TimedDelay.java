@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedDelay
@@ -201,6 +202,8 @@ public class TimedDelay extends DETransformer {
     public boolean postfire() throws IllegalActionException {
         double currentTime = getDirector().getCurrentTime();
         double delayToTime = currentTime + _delay;
+        delayToTime = Utilities.round(delayToTime, 
+            getDirector().getTimeResolution());
         // Remove the token that is scheduled to be sent 
         // at the current time.
         if (_delayedTokens.size() > 0 && 
