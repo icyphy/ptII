@@ -260,7 +260,7 @@ public class Location extends SingletonAttribute
      *  the container and any value listeners of the new location. Setting
      *  the location involves maintaining a local copy of the passed
      *  parameter. No notification is done if the location is the same
-     *  as before.
+     *  as before. This method propagates the value to any derived objects.
      *  @param location The location.
      *  @exception IllegalActionException If throw when attributeChanged()
      *  is called.
@@ -274,6 +274,7 @@ public class Location extends SingletonAttribute
             // then make sure the new value is exported in MoML.
             setPersistent(true);
         }
+        propagateValue();
     }
 
     /** Set the visibility of this attribute.  The argument should be one
