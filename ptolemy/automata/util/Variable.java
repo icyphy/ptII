@@ -163,6 +163,7 @@ public class Variable extends Parameter {
                     // have names
                 }
             }
+            varlist._addDependent(this);
             _addedVars = newlist;
             _addedVarLists.insertFirst(varlist);
             _scopeVersion = -1;
@@ -282,12 +283,21 @@ public class Variable extends Parameter {
         } finally {
             workspace().doneReading();
         }
-        _rebuildDependencies();
+        // CHECK
+        //_rebuildDependencies();
+        _invalidateDependencies();
         return;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /*  Force this variable to rebuild ParameterListener dependencies next
+     *  time its value is queried.
+     */
+    protected void _invalidateDependencies() {
+        setExpression(getExpression());
+    }
 
     /** If this variable is contained in a VariableList and 
      *  setReportChange(false) has been called on it then do nothing. 
@@ -343,7 +353,9 @@ public class Variable extends Parameter {
         }
         _addedVars.remove((Nameable)var);
         _scopeVersion = -1;
-        _rebuildDependencies();
+        // CHECK
+        //_rebuildDependencies();
+        _invalidateDependencies();
     }
 
     ///////////////////////////////////////////////////////////////////
