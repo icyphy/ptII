@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (srao@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
@@ -68,19 +68,6 @@ public class SquareRoot extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        SquareRoot newobj = (SquareRoot)super.clone(ws);
-        return newobj;
-    }
-
     /** Compute the square root of the input.  If there is no input, then
      *  produce no output.
      *  @exception IllegalActionException If there is no director.
@@ -93,4 +80,3 @@ public class SquareRoot extends Transformer {
         }
     }
 }
-

@@ -1,0 +1,149 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </director>
+    <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="pi/6">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
+            <location value="51.0, 80.0"/>
+            <configure>
+            <![CDATA[
+                <xmlgraphic>
+                <rectangle coords="0 0 60 40" fill="white"/>
+                <polygon coords="10 30 50 10 50 30" fill="blue"/>
+                </xmlgraphic>
+            ]]>
+            </configure>
+        </rendition>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Sine1" class="ptolemy.actor.lib.Sine">
+        <property name="amplitude" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="omega" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="161.0, 81.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MaxIndex13" class="ptolemy.actor.lib.MaxIndex">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="406.0, 81.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test16" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[3]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="542.0, 81.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Distributor20" class="ptolemy.actor.lib.Distributor">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="264.0, 81.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="331.5, 122.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="331.5, 162.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="330.5, 193.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="329.5, 226.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation38" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="206.5, 169.0"/>
+        </vertex>
+    </relation>
+    <link port="Ramp0.output" relation="relation4"/>
+    <link port="Sine1.input" relation="relation4"/>
+    <link port="Sine1.output" relation="relation38"/>
+    <link port="MaxIndex13.input" relation="relation24"/>
+    <link port="MaxIndex13.input" relation="relation25"/>
+    <link port="MaxIndex13.input" relation="relation28"/>
+    <link port="MaxIndex13.input" relation="relation31"/>
+    <link port="MaxIndex13.input" relation="relation34"/>
+    <link port="MaxIndex13.output" relation="relation18"/>
+    <link port="Test16.input" relation="relation18"/>
+    <link port="Distributor20.input" relation="relation38"/>
+    <link port="Distributor20.output" relation="relation24"/>
+    <link port="Distributor20.output" relation="relation25"/>
+    <link port="Distributor20.output" relation="relation28"/>
+    <link port="Distributor20.output" relation="relation31"/>
+    <link port="Distributor20.output" relation="relation34"/>
+</model>

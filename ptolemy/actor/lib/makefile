@@ -68,7 +68,7 @@ JSRCS = \
 	Commutator.java \
 	Const.java \
 	CurrentTime.java \
-	dB.java \
+	DB.java \
 	Discard.java \
         DiscreteRandomSource.java \
 	Distributor.java \

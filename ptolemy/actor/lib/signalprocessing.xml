@@ -1,0 +1,43 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="signal processing" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Signal processing actors</doc>
+  <configure>
+    <?moml
+      <group>
+
+  <entity name="DB" class="ptolemy.actor.lib.DB">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+<entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+<doc>FIR filter</doc>
+</entity>
+
+<entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+        <input source="../../domains/sdf/lib/javasound/index.xml"/>
+
+	<!-- NOTE: This next one is labeled as image processing."-->
+        <input source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,85 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="math" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Arithmetic and mathematical functions</doc>
+  <configure>
+    <?moml
+      <group>
+
+  <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+ 
+  <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+       <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Average" class="ptolemy.actor.lib.Average">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Expression" class="ptolemy.actor.lib.Expression">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="MaxIndex" class="ptolemy.actor.lib.MaxIndex">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+       <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Scale" class="ptolemy.actor.lib.Scale">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Sine" class="ptolemy.actor.lib.Sine">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="SquareRoot" class="ptolemy.actor.lib.SquareRoot">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

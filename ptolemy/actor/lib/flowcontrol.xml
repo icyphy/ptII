@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="flow control" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Actors that route tokens or otherwise affect the flow of control.</doc>
+  <configure>
+    <?moml
+      <group>
+
+  <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="RealTimeDelay" class="ptolemy.actor.lib.RealTimeDelay">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+       <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,4 +1,4 @@
-/* A polymorphic comparator.
+/* Produce the index of the largest of the inputs.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
@@ -39,17 +39,14 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// MaxIndex
 /**
-A polymorphic comparator.
-This actor has one input port, which is multiport,
-and one output port, which is not.
-The types on the ports are undeclared and will be resolved by
-the type resolution mechanism. The tokens on each port will be
-compared and an IntToken corresponding to the index of the largest
-one will be output. Comparison is done by converting all input Tokens
-to doubles and comparing the doubles. Therefore, all input Tokens
-must be convertible to DoubleToken.
+Produce the index of the largest of the inputs.
+This actor has one input port, which is multiport of type double
+and one output port, which is not a multiport, and has type int.
+The tokens on each channel of the input port will be
+compared and an IntToken giving the channel number of the largest
+one will be output.
 
-@author Jeff Tsay
+@author Jeff Tsay and Edward A. Lee
 @version $Id$
 */
 
@@ -67,65 +64,41 @@ public class MaxIndex extends Transformer {
     public MaxIndex(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeAtMost(BaseType.DOUBLE);
-         input.setMultiport(true);
-
-        // This could change if we add ShortTokens or ByteTokens
+        input.setTypeEquals(BaseType.DOUBLE);
+        input.setMultiport(true);
         output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-        throws CloneNotSupportedException {
-        MaxIndex newobj = (MaxIndex)super.clone(ws);
-        return newobj;
-    }
-
-    /** If there is at least one token on the input ports, compare the
-     *  tokens by converting them into doubles, and output the index of
-     *  the port that has the Token with the largest double value.
-     *  At most one token is read from each channel, so if more than one
-     *  token is pending, the rest are left for future firings.
+    /** Read at most one token from each channel of the input port
+     *  and produce the channel number of the largest one.
      *  If none of the input channels has a token, do nothing.
      *
-     *  @exception IllegalActionException If there is no director,
-     *  or if conversion to DoubleToken is not supported by the input tokens.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-       double maxValue = Double.NEGATIVE_INFINITY;
-       int maxIndex = -1;
-       boolean foundFirst = false;
-       for (int i = 0; i < input.getWidth(); i++) {
-           if (input.hasToken(i)) {
-              double val = ((ScalarToken) input.get(i)).doubleValue();
-              if (foundFirst) {
-                 if (maxValue < val) {
+        double maxValue = Double.NEGATIVE_INFINITY;
+        int maxIndex = -1;
+        boolean foundFirst = false;
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                double val = ((DoubleToken) input.get(i)).doubleValue();
+                if (foundFirst) {
+                    if (maxValue < val) {
+                        maxValue = val;
+                        maxIndex = i;
+                    }
+                } else {
                     maxValue = val;
                     maxIndex = i;
-                 }
-              } else {
-                 maxValue = val;
-                 maxIndex = i;
-                 foundFirst = true;
-              }
-           }
-       }
-
-       if (foundFirst) {
-          output.send(0, new IntToken(maxIndex));       
-       }
+                    foundFirst = true;
+                }
+            }
+        }
+        if (foundFirst) {
+            output.send(0, new IntToken(maxIndex));       
+        }
     }
 }

@@ -1,44 +1,79 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
-<class name="conversions" extends="ptolemy.actor.TypedCompositeActor">
-  <doc>
-	Conversion actors
-  </doc>
-  <!-- Define the actors -->  
-  <entity name="ComplexToReal" class="ptolemy.actor.lib.conversions.ComplexToReal">
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="conversions" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Conversion actors</doc>
+  <configure>
+    <?moml
+      <group>
+
+<entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+  <entity name="ComplexToReal"
+          class="ptolemy.actor.lib.conversions.ComplexToReal">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
  
-  <entity name="RealToComplex" class="ptolemy.actor.lib.conversions.RealToComplex">
+  <entity name="DoubleToFix"
+          class="ptolemy.actor.lib.conversions.DoubleToFix">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
-  <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
+  <entity name="FixToDouble"
+          class="ptolemy.actor.lib.conversions.FixToDouble">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
-  <entity name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
+<entity name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+  <entity name="PolarToRectangular"
+          class="ptolemy.actor.lib.conversions.PolarToRectangular">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
-  <entity name="PolarToRectangular" class="ptolemy.actor.lib.conversions.PolarToRectangular">
+  <entity name="RealToComplex"
+          class="ptolemy.actor.lib.conversions.RealToComplex">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
-  <entity name="RectangularToPolar" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+  <entity name="RectangularToPolar"
+          class="ptolemy.actor.lib.conversions.RectangularToPolar">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
-</class>
+<entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
