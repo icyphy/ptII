@@ -716,7 +716,7 @@ public class DEDirector extends Director {
                 .getExecutiveDirector().getCurrentTime();
             // FIXME: Also need a time resolution parameter, like the one
             // in CT.
-            if (outsideCurrentTime < getCurrentTime()) {
+            if (Math.abs(outsideCurrentTime - getCurrentTime()) < 1e-10) {
                 throw new IllegalActionException(this,
                         "Received an event in the past at "
                         + "an opaque composite actor boundary: "
@@ -727,7 +727,7 @@ public class DEDirector extends Director {
             if (!_eventQueue.isEmpty()) {
                 DEEvent nextEvent = _eventQueue.get();
                 // FIXME: Need a time resolution parameter, like the one
-                // in CT (?)
+                // in CT.
                 if (Math.abs(nextEvent.timeStamp() - outsideCurrentTime)
                         < 1e-10) {
                     setCurrentTime(nextEvent.timeStamp());
