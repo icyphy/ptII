@@ -75,6 +75,7 @@ PTCLASSALLJARS = \
 	conversions/conversions.jar \
 	gui/gui.jar \
 	hoc/hoc.jar \
+	io/io.jar \
 	logic/logic.jar \
 	net/net.jar
 
