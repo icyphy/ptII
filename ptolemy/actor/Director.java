@@ -457,7 +457,7 @@ public class Director extends NamedObj implements Executable {
 
     /** Terminate any currently executing model with extreme prejudice.
      *  This method is not intended to be used as a normal route of 
-     *  stopping execution. To normally stop exceution, call the finish() 
+     *  stopping execution. To normally stop execution, call the finish() 
      *  method instead. This method should be called only 
      *  when execution fails to terminate by normal means due to certain
      *  kinds of programming errors (infinite loops, threading errors, etc.).

@@ -585,7 +585,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  that the model cannot be executed again.  A new model must be
      *  created, with a new manager, to execute again.
      *  This method is not intended to be used as a normal route of 
-     *  stopping execution. To normally stop exceution, call the finish() 
+     *  stopping execution. To normally stop execution, call the finish() 
      *  method instead. This method should be called only 
      *  when execution fails to terminate by normal means due to certain
      *  kinds of programming errors (infinite loops, threading errors, etc.).
