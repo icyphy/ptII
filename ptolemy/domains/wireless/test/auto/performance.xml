@@ -7,7 +7,7 @@
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -36,11 +36,7 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">11/17/03: 38.4 seconds
-11/18/03: 28.9 seconds (with flawed caching)
-11/18/03: 37.1 seconds (with caching in public methods)
-11/24/03: 38.0 seconds (with cache overhead only)
-11/24/03: 32.8 seconds (with elaborate caching)</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">12/3/03: 6.7 seconds</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
