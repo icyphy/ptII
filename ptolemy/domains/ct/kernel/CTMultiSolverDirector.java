@@ -156,11 +156,11 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     protected void _initParameters() {
         super._initParameters();
         try {
-            String defaultsolverclass=
+            String defaultsolverclass =
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
             ODESolver.setToken(
                     new StringToken(defaultsolverclass));
-            _breakpointsolverclass=
+            _breakpointsolverclass =
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
             BreakpointODESolver = new Parameter(
                     this, "BreakpointODESolver",
