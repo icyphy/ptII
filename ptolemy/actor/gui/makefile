@@ -53,28 +53,17 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CompositeActorApplication.java \
 	Configurer.java \
-	Display.java \
 	EditorPaneFactory.java \
 	ExecEvent.java \
 	ExecEventListener.java \
-	HistogramPlotter.java \
-	MatrixViewer.java \
 	ModelFrame.java \
 	ModelPane.java \
 	MoMLApplet.java \
 	MoMLApplication.java \
 	Placeable.java \
-	Plotter.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
-	PtolemyQuery.java \
-	SequencePlotter.java \
-	SequenceScope.java \
-	SketchedSource.java \
-	TimedPlotter.java \
-	TimedScope.java \
-	XYPlotter.java \
-	XYScope.java
+	PtolemyQuery.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -86,11 +75,12 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'Configurer$$1.class' \
-	'MatrixViewer$$MatrixAsTable.class' \
 	'ModelFrame$$FileMenuListener.class' \
 	'ModelFrame$$HelpMenuListener.class' \
 	'ModelPane$$1.class' \
 	'ModelPane$$2.class' \
+	'ModelPane$$3.class' \
+	'ModelPane$$4.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
 	'PtolemyApplet$$StopButtonListener.class' \
 	'PtolemyApplication$$1.class'
