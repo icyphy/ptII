@@ -208,7 +208,7 @@ test Variable-5.0 {Check types} {
     $p1 setToken [java::new ptolemy.data.StringToken foo]
     set r5 [[$p1 getType] toString]
     list $r1 $r2 $r3 $r4 $r5
-} {{class ptolemy.data.DoubleToken} {class ptolemy.data.DoubleToken} {class ptolemy.data.ComplexToken} {class ptolemy.data.ComplexToken} {class ptolemy.data.StringToken}}
+} {{class ptolemy.data.DoubleToken} {class ptolemy.data.IntToken} {class ptolemy.data.ComplexToken} {class ptolemy.data.DoubleToken} {class ptolemy.data.StringToken}}
 
 test Variable-5.1 {Set types without first clearing} {
     set double [java::new ptolemy.data.DoubleToken 0.0]
@@ -230,14 +230,13 @@ test Variable-5.3 {Check return value is null} {
 test Variable-5.4 {Check setting expression to null} {
     $p1 setExpression 1
     set r1 [[$p1 getToken] stringValue]
-    set r3 [[$p1 getContainedToken] stringValue]
     $p1 setExpression ""
     set int [java::new ptolemy.data.IntToken 0]
     set intClass [$int getClass]
     $p1 setTypeEquals $intClass
     set r2 [$p1 getToken]
-    list $r1 $r3 [string compare $r2 [java::null]]
-} {1.0 1 0}
+    list $r1 [string compare $r2 [java::null]]
+} {1.0 0}
 
 #################################
 ####
@@ -419,15 +418,3 @@ test Variable-11.0 {Check reach of scope} {
     $p2 setExpression {P1}
     [$p2 getToken] stringValue
 } {a}
-
-#################################
-####
-test Variable-12.0 {Check type changes} {
-    set e1 [java::new ptolemy.kernel.CompositeEntity]
-    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
-    set t [java::new ptolemy.data.DoubleToken 1.0]
-    set p1 [java::new ptolemy.data.expr.Variable $e1 P1 $t]
-    set ti [java::new ptolemy.data.IntToken 2]
-    $p1 setToken $ti
-    [java::cast ptolemy.data.DoubleToken [$p1 getToken]] stringValue
-} {2.0}

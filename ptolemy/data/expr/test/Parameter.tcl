@@ -116,7 +116,7 @@ test Parameter-3.2 {Check that type changes with new Token type} {
 #################################
 ####
 #
-test Parameter-3.3 {Check type constriants: ok to put int in a double} {
+test Parameter-3.3 {Check type constraints: ok to put int in a double} {
     set e [java::new {ptolemy.kernel.Entity String} entity]
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.4]
 
@@ -124,15 +124,39 @@ test Parameter-3.3 {Check type constriants: ok to put int in a double} {
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] stringValue]
 
-    # Now put a new token into the Param
+    # Now put a new token of a lower type into the Param
     set tok2 [java::new  {ptolemy.data.IntToken int} 7]
-    catch {$param1 setToken $tok2} errmsg
+    $param1 setToken $tok2
     
     set name2 [$param1 getFullName]
     set value2 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $name2 $value2 
-} {.entity.id1 4.4 .entity.id1 7.0}
+} {.entity.id1 4.4 .entity.id1 7}
+
+test Parameter-3.4 {Check setting type constraints (conversion)} {
+    set double [java::new ptolemy.data.DoubleToken 0.0]
+    set doubleClass [$double getClass]
+    $param1 setTypeEquals $doubleClass
+    [$param1 getToken] stringValue
+} {7.0}
+
+test Parameter-3.5 {Check that we can't convert down} {
+    set int [java::new ptolemy.data.IntToken 0]
+    set intClass [$int getClass]
+    catch {$param1 setTypeEquals $intClass} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .entity.id1: setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) cannot be losslessly converted to the desired type class ptolemy.data.IntToken}}
+
+test Parameter-3.6 {Check that a new token is converted} {
+    $param1 setToken $int
+    [$param1 getToken] stringValue
+} {0.0}
+
+test Parameter-3.7 {Check that a new expression is converted} {
+    $param1 setExpression {1}
+    [$param1 getToken] stringValue
+} {1.0}
 
 #################################
 ####
@@ -270,31 +294,7 @@ test Parameter-9.0 {Check that notification works properly when a Parameter is r
 
     list $res1 $res2
 } {ptolemy.data.IntToken(6600) ptolemy.data.IntToken(1100)}
-#################################
-####
-# 
-test Parameter10.0 {Check that the type of the Token returned by getToken is the same type as the type of the Parameter. Compare with the token obtained by calling getContainedToken.} {
-    set e [java::new {ptolemy.kernel.Entity String} entity]
-    set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.4]
 
-    set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
-    set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
-
-    # Now put a new token into the Param
-    set tok2 [java::new  {ptolemy.data.IntToken int} 7]
-    catch {$param1 setToken $tok2} errmsg
-    
-    set tok2  [$param1 getToken]
-    set class2 [[$tok2 getClass] getName]
-    set value2 [$tok2 stringValue]
-
-    set tok3 [$param1 getContainedToken]
-    set class3 [[$tok3 getClass] getName]
-    set value3 [$tok3 stringValue]
-
-    list $name1 $value1 $class2 $value2 $class3 $value3
-} {.entity.id1 4.4 ptolemy.data.DoubleToken 7.0 ptolemy.data.IntToken 7}
 #################################
 ####
 #
