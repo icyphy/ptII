@@ -37,11 +37,13 @@ import ptolemy.kernel.util.*;
 /** 
 A simple DE test system.
 
-@author Edward A. Lee
+@author Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
 public class ClockSystem {
     /** Constructor
+     *  @exception IllegalActionException Not thrown.
+     *  @exception NameDuplicationException Not thrown.
      */	
     public ClockSystem()
             throws IllegalActionException, NameDuplicationException {
@@ -66,9 +68,11 @@ public class ClockSystem {
     ////                         public methods                         ////
 
     /** Run the system for the specified amount of time.
+     *  @exception IllegalActionException Not thrown.
+     *  @exception NameDuplicationException Not thrown.
      */	
-    public void go(double stopTime) throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
+    public void go(double stopTime) throws IllegalActionException, 
+            NameDuplicationException {
         localDirector.setStopTime(stopTime);
         executiveDirector.go();
     }

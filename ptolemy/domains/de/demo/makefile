@@ -128,7 +128,9 @@ CLOCK_CLASSFILES = \
 	ptolemy/actor/Executable.class \
 	ptolemy/actor/IOPort.class \
 	ptolemy/actor/IORelation.class \
+	ptolemy/actor/NoTokenException.class \
 	ptolemy/actor/Receiver.class \
+	ptolemy/actor/TypeConflictException.class \
 	ptolemy/actor/util/CQComparator.class \
 	'ptolemy/actor/util/CalendarQueue$$CQEntry.class' \
 	'ptolemy/actor/util/CalendarQueue$$EntryComparator.class' \
@@ -139,10 +141,15 @@ CLOCK_CLASSFILES = \
 	ptolemy/data/IntToken.class \
 	ptolemy/data/ScalarToken.class \
 	ptolemy/data/Token.class \
+	ptolemy/data/expr/Parameter.class \
+	ptolemy/data/expr/ParameterListener.class \
 	'ptolemy/domains/de/demo/ClockApplet$$GoButtonListener.class' \
 	'ptolemy/domains/de/demo/ClockApplet$$StopTimeListener.class' \
 	ptolemy/domains/de/demo/ClockApplet.class \
-	ptolemy/domains/de/demo/ClockApplet.class \
+	'ptolemy/domains/de/demo/HistogramApplet$$CurrentTimeThread.class' \
+	'ptolemy/domains/de/demo/HistogramApplet$$GoButtonListener.class' \
+	'ptolemy/domains/de/demo/HistogramApplet$$IntervalSbListener.class' \
+	ptolemy/domains/de/demo/HistogramApplet.class \
 	ptolemy/domains/de/kernel/DEActor.class \
 	'ptolemy/domains/de/kernel/DECQDirector$$DECQComparator.class' \
 	'ptolemy/domains/de/kernel/DECQDirector$$DEEvent.class' \
@@ -154,8 +161,11 @@ CLOCK_CLASSFILES = \
 	ptolemy/domains/de/lib/DEClock.class \
 	ptolemy/domains/de/lib/DEPlot.class \
 	ptolemy/domains/de/lib/DEPoisson.class \
+	ptolemy/domains/de/lib/DEStatistics.class \
 	ptolemy/domains/de/lib/DEWaitingTime.class \
+	ptolemy/graph/CPO.class \
 	ptolemy/graph/DirectedGraph.class \
+	ptolemy/graph/DirectedAcyclicGraph.class \
 	ptolemy/graph/Graph.class \
 	ptolemy/kernel/ComponentEntity.class \
 	ptolemy/kernel/ComponentPort.class \

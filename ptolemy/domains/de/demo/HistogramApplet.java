@@ -1,4 +1,5 @@
-/* An applet containing a discrete-event simulation.
+/* An applet that uses Ptolemy II DE domain engine to simulate passengers
+   and buses arrivals and then calculate the wait time.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -36,16 +37,19 @@ import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramApplet
 /** 
-A very simple applet containing a discrete-event simulation.
+An applet that uses Ptolemy II DE domain engine to simulate passengers 
+and buses arrivals and then calculate the wait time.
 
 @author Lukito
 @version $Id$
 */
-public class HistogramApplet extends Applet {
+public class HistogramApplet extends Applet implements Runnable {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -53,132 +57,289 @@ public class HistogramApplet extends Applet {
     /** Initialize the applet.
      */	
     public void init() {
+
+        // Initialization
+
+        _cbg = new CheckboxGroup();
+        _stopTimeBox = new TextField("100.0", 10);
+        _goButton = new Button("Go");
+        _intervalTextField = new TextField("10.0", 10);
+        _averageWaitTimeLabel = new Label("Mean wait time = 0.0    ");
+        _currentTimeLabel = new Label("Current time = 0.0      ");
+        _clockCheckbox = new Checkbox("Clock", _cbg, true);
+        _poissonCheckbox = new Checkbox("Poisson", _cbg, false);
+
+
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
-        appletPanel.setLayout(new BorderLayout());
-        
+        appletPanel.setLayout(new GridLayout(2,1));
         add(appletPanel, "Center");
 
         // _plot is the drawing panel for DEPlot actor.
-        _plot = new Plot();
-        _plot.setSize(new Dimension(450, 150));
-        _plot.setTitle("DE Demo");
-        _plot.setButtons(true);
-        _plot.addLegend(0, "Bus");
-        _plot.addLegend(1, "Passenger");
-        _plot.addLegend(2, "Wait Time");
-
+        Plot plot = new Plot();
+        plot.setSize(new Dimension(450, 150));
+        plot.setTitle("Buses, Passengers and Wait Time");
+        plot.setButtons(true);
+        plot.addLegend(0, "Bus");
+        plot.addLegend(1, "Passenger");
+        plot.addLegend(2, "Wait Time");
+        plot.setXLabel("Time");
+        plot.setYLabel("Wait time");
+        appletPanel.add(plot, "North");
+        
         // _hist is the drawing panel for the DEHist actor.
-        _hist = new Plot();
-        _hist.setSize(new Dimension(450, 150));
-        _hist.setTitle("Waiting Time");
-        _hist.setButtons(true);
-        _hist.addLegend(0, "Wait Time");
+        Plot hist = new Plot();
+        hist.setSize(new Dimension(450, 150));
+        hist.setTitle("Distribution of Wait Time");
+        hist.setButtons(true);
+        hist.addLegend(0, "Wait Time");
+        hist.setYLabel("# People");
+        hist.setXLabel("Wait Time");
+        appletPanel.add(hist, "South");
 
+        // Adding a control panel in the applet panel.
         Panel controlPanel = new Panel();
-        controlPanel.setLayout(new GridLayout(10, 1));
-        add(controlPanel, "West");
+        add(controlPanel, "South");
+        // Done adding a control panel.
 
-        controlPanel.add(_goButton);
-        _goButton.addActionListener(new GoButtonListener());
-
-        controlPanel.add(_stopTimeBox);
-        _stopTimeBox.addActionListener(new StopTimeListener());
-
-        controlPanel.add(_averageTextField);
-
+        // Adding check box in the control panel.
         Panel checkboxPanel = new Panel();
         checkboxPanel.setLayout(new GridLayout(2,1));
-        checkboxPanel.add(new Checkbox("one", _cbg, true));
-        checkboxPanel.add(new Checkbox("two", _cbg, false));
+        checkboxPanel.add(_clockCheckbox);
+        checkboxPanel.add(_poissonCheckbox);
         controlPanel.add(checkboxPanel);
+        // Done adding check box.
 
-        
-        
-        appletPanel.add(_plot, "North");
-        appletPanel.add(_hist, "South");
-        
+        // Adding simulation parameter panel in the control panel.
+        Panel simulationParam = new Panel();
+        simulationParam.setLayout(new GridLayout(2,1));
+        controlPanel.add(simulationParam);
+        // Done adding simulation parameter panel.
 
+        // Adding Stop time in the simulation panel.
+        Panel st = new Panel();
+        simulationParam.add(st);
+        st.add(new Label("Stop time:"));
+        st.add(_stopTimeBox);
+        // Done adding stop time.
+
+       // Adding scrollbar and label in the simulation panel.
+        Panel sb = new Panel();
+        sb.setLayout(new BorderLayout());
+        simulationParam.add(sb);
+        _meanIntervalLabel = new Label("Mean interarrival time = 1");
+        sb.add(_meanIntervalLabel, "South");
+        _meanIntervalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1,30);
+        sb.add(_meanIntervalScrollbar, "North");
+        _sbListener = new IntervalSbListener();
+        _meanIntervalScrollbar.addAdjustmentListener(_sbListener);
+        // Done adding scroll bar and label in the applet panel.
+
+        // Add a sub panel in the control panel
+        Panel subPanel = new Panel();
+        subPanel.setLayout(new GridLayout(2,1));
+        controlPanel.add(subPanel);
+        // Done adding a sub panel.
+
+
+        // Adding average wait time in the sub panel.
+        subPanel.add(_averageWaitTimeLabel);
+        // Done adding average wait time.
+
+        // Adding current time in the sub panel.
+        subPanel.add(_currentTimeLabel);
+        // Done adding current time.
+
+        // Adding go button in the control panel.
+        controlPanel.add(_goButton);
+        _goButton.addActionListener(new GoButtonListener());        
+        // Done adding go button
+        
         try {
-            topLevel = new CompositeActor();
+            CompositeActor topLevel = new CompositeActor();
             topLevel.setName("Top");
         
             // Set up the directors
+            _clock = new DEClock(topLevel, "Clock Bus", 1.0, 1.0);
+            _poisson = new DEPoisson(topLevel, "Poisson Bus", 1.0, 1.0);
             _localDirector = new DECQDirector("DE Director");
             topLevel.setDirector(_localDirector);
             _executiveDirector = new Director("Executive Director");
             topLevel.setExecutiveDirector(_executiveDirector);
             
-            // Set up the actors and connections
-            DEClock clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
-            DEPoisson poisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);
-            DEWaitingTime waitingTime = new DEWaitingTime(topLevel, "Wait");
-            DEPlot plot = new DEPlot(topLevel, "Plot", _plot);
-            DEHistogram hist = new DEHistogram(topLevel, "Histogram", 0.1, _hist);
+            // Create the actors.
+            // The connections are created after appropriate source is chosen.
+            DEPoisson dePoisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);
+            DEWaitingTime deWaitingTime = new DEWaitingTime(topLevel, "Wait");
+            DEPlot dePlot = new DEPlot(topLevel, "Plot", plot);
+            DEHistogram deHist = new DEHistogram(topLevel, "Histogram", 0.1, hist);
             _stat = new DEStatistics(topLevel, "Stat");
 
-            Relation r1 = topLevel.connect(clock.output, plot.input);
-            Relation r2 = topLevel.connect(poisson.output, plot.input);
-            waitingTime.waitee.link(r1);
-            waitingTime.waiter.link(r2);
-            Relation r3 = topLevel.connect(waitingTime.output, plot.input);
-            hist.input.link(r3);
+            // Create the connections.
+            _bus = _clock;
+            r1 = topLevel.connect(_clock.output, dePlot.input);
+            Relation r2 = topLevel.connect(dePoisson.output, dePlot.input);
+            deWaitingTime.waitee.link(r1);
+            deWaitingTime.waiter.link(r2);
+            Relation r3 = topLevel.connect(deWaitingTime.output, dePlot.input);
+            deHist.input.link(r3);
             _stat.input.link(r3);
+            
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
+    /** Run the simulation.
+     */
+    public void run() {
+        
+        String timespec = _stopTimeBox.getText();
+        try {
+            Double spec = Double.valueOf(timespec);
+                _stopTime = spec.doubleValue();
+        } catch (NumberFormatException ex) {
+            System.err.println("Invalid stop time: " + ex.getMessage());
+            return;
+        }
+        
+        try {
+                Checkbox selected = _cbg.getSelectedCheckbox();
+                
+                if (selected == _clockCheckbox) {
+                    _meanInterval = (Parameter)_clock.getAttribute("interval");
+                    // Use DEClock for the bus arrival
+                    if (_bus != _clock) {
+                        _poisson.output.unlink(r1);
+                        _clock.output.link(r1);
+                        _bus = _clock;
+                        _meanInterval = (Parameter)_clock.getAttribute("interval");
+                    }
+                } else {
+                    _meanInterval = (Parameter)_poisson.getAttribute("lambda");
+                    // Use DEPoisson for the bus arrival
+                    if (_bus != _poisson) {
+                        _clock.output.unlink(r1);
+                        _poisson.output.link(r1);
+                        _bus = _poisson;
+                    }
+                }
+                
+                _localDirector.setStopTime(_stopTime);
+
+                // Start the CurrentTimeThread.
+                Thread ctt = new CurrentTimeThread();
+                ctt.start();
+
+                // Update the mean inter arrival time.
+                int value = _meanIntervalScrollbar.getValue();
+                _meanInterval.setToken(new DoubleToken((double)value));
+
+                // Start the simulation.
+                _executiveDirector.go();
+                
+                double average = _stat.getAverage();
+                double variance = _stat.getVariance();
+                _averageWaitTimeLabel.setText("Mean wait time = "+average);
+        } catch (Exception ex) {
+            System.err.println("Run failed: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        _meanInterval = null;
+    }
+    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
+    
+    // The thread that runs the simulation.
+    private Thread simulationThread;
+    //private boolean isSimulationRunning = false;
 
-    private Plot _plot;
-    private Plot _hist;
-    private CompositeActor topLevel;
+
+    // The actors involved in the topology.
     private DEStatistics _stat;
-    private CheckboxGroup _cbg = new CheckboxGroup();
+    private CheckboxGroup _cbg;
+    private Checkbox _clockCheckbox;
+    private Checkbox _poissonCheckbox;
+    private DEClock _clock;
+    private DEPoisson _poisson;
+    private DEActor _bus;
+    private Relation r1;
+
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    public DECQDirector _localDirector;
-    public Director _executiveDirector;
+    private DECQDirector _localDirector;
+    private Director _executiveDirector;
 
-    public TextField _stopTimeBox = new TextField("10.0", 10);
-    double _stopTime = 10.0;
-    private Button _goButton = new Button("Go");
+    private TextField _stopTimeBox;
+    private double _stopTime = 100.0;
+    private Button _goButton;
     
-    private TextField _intervalTextField = new TextField("10.0", 10);
-    double _interval = 10.0;
+    private TextField _intervalTextField;
+    private double _interval = 10.0;
     
-    private TextField _averageTextField = new TextField("0.0", 10);
+    private Label _averageWaitTimeLabel;
+    private Label _currentTimeLabel;
+
+    // Some parameters that we want to change during simulation.
+    private Parameter _meanInterval;
+    private Scrollbar _meanIntervalScrollbar;
+    private IntervalSbListener _sbListener;
+    private Label _meanIntervalLabel;
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
 
-    private class StopTimeListener implements ActionListener {
+    // Show simulation progress.
+    private class CurrentTimeThread extends Thread {
+        public void run() {
+            while (simulationThread.isAlive()) {
+                // get the current time from director.
+                double currenttime = _localDirector.getCurrentTime();
+                _currentTimeLabel.setText("Current time = "+currenttime);
+                try {
+                    sleep(500);
+                } catch (InterruptedException e) {}
+            } 
+        }
+    }
+
+    
+    private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            String timespec = _stopTimeBox.getText();
             try {
-                Double spec = Double.valueOf(timespec);
-                _stopTime = spec.doubleValue();
-            } catch (NumberFormatException ex) {
-                System.err.println("Invalid stop time: " + ex.getMessage());
+                if (simulationThread == null) {
+                    simulationThread = new Thread(HistogramApplet.this);
+                }
+                if (!(simulationThread.isAlive())) {
+                    simulationThread = new Thread(HistogramApplet.this);
+                    // start() will eventually call the run() method.
+                    simulationThread.start();
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+                
+        }
+    }
+
+    private class IntervalSbListener implements AdjustmentListener {
+        public void adjustmentValueChanged(AdjustmentEvent e) {
+            int value = e.getValue();
+            _meanIntervalLabel.setText("Mean interarrival time = " + value);
+            if (_meanInterval != null) {
+                _meanInterval.setToken(new DoubleToken((double)value));
             }
         }
     }
 
-    private class GoButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            try {
-                _localDirector.setStopTime(_stopTime);
-                _executiveDirector.go();
-                double average = _stat.getAverage();
-                _averageTextField.setText("Ave: "+average);
-            } catch (Exception ex) {
-                System.err.println("Run failed: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-    }
+    
 }
+
+
+
