@@ -100,7 +100,7 @@ public class Counter extends TypedAtomicActor {
     /** Consume at most one token from each input and update the
      *  counter appropriately. Send the current value of the counter
      *  to the output.  If there are no input tokens available, no
-     *  output will be produced.  If a tokem is consumed from only the
+     *  output will be produced.  If a token is consumed from only the
      *  <i>increment</i> port the output value will be one more than
      *  the previous output value.  If a token consumed from only the
      *  <i>decrement</i> port the output value will be one less than
