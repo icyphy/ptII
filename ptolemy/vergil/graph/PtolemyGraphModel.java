@@ -833,7 +833,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Delete a node from its parent graph and notify
      * graph listeners with a NODE_REMOVED event.
      */
-    public void removeNode(final Vertex vertex) {
+    public void removeNode(Object eventSource, final Vertex vertex) {
 	final ComponentRelation relation =
 	    (ComponentRelation)vertex.getContainer();
 	_doChangeRequest(new RemoveRelation(vertex, relation));
