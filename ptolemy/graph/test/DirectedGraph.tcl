@@ -60,9 +60,9 @@ test DirectedGraph-1.1 {Get information about the class} {
   methods:       {add java.lang.Object} {addEdge java.lang.Object java.l
     ang.Object} allEdges allNodes {contains java.lang.Objec
     t} {equals java.lang.Object} getClass hashCode isAcycli
-    c isDirected notify notifyAll numEdges numNodes {reache
-    ableNodes java.lang.Object} toString topSort wait {wait
-     long} {wait long int}
+    c isDirected notify notifyAll numEdges numNodes {reacha
+    bleNodes java.lang.Object} toString topSort wait {wait 
+    long} {wait long int}
     
   constructors:  pt.graph.DirectedGraph {pt.graph.DirectedGraph int}
     
