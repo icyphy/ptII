@@ -196,7 +196,7 @@ public abstract class TreeNode extends TrackedPropertyMap
     /** Return true if the class of this object is a singleton, i.e. there
      *  exists only one object of the subclass. This method needs to be
      *  overridden by  singleton classes.
-     *  @return False.
+     *  @return False, by default.
      */
     public boolean isSingleton() {
         return false;
