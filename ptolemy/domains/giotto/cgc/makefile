@@ -44,7 +44,8 @@ include $(CONFIG)
 
 JSRCS = \
 	CPort.java \
-	CActorBase.java
+	CActorBase.java \
+        GiottoCEmachineFramework.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	CActor.xml \
