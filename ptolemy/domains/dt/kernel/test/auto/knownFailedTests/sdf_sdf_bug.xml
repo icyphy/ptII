@@ -117,11 +117,7 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="Display1" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
+        <entity name="Test1" class="ptolemy.actor.lib.Test">
             <property name="title" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="284.0, 225.0">
@@ -131,11 +127,8 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
+        <entity name="Test3" class="ptolemy.actor.lib.Test">
+
             <property name="title" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="529.0, 271.0">
@@ -165,8 +158,8 @@
         <link port="CurrentTime8.trigger" relation="relation5"/>
         <link port="CurrentTime9.output" relation="relation4"/>
         <link port="CurrentTime9.trigger" relation="relation7"/>
-        <link port="Display1.input" relation="relation2"/>
-        <link port="Display3.input" relation="relation4"/>
+        <link port="Test1.input" relation="relation2"/>
+        <link port="Test3.input" relation="relation4"/>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
