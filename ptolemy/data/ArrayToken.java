@@ -165,6 +165,28 @@ public class ArrayToken extends Token {
 	return _value.length;
     }
 
+    /** Return a new ArrayToken whose value is the value of this Token
+     *  multiplied with the value of the argument Token.
+     *  The argument token must be a scalar token. The operation of this
+     *  method can be viewed as scaling the elements of this token by the
+     *  argument. The resulting token will have the same dimension as this
+     *  token, with the element type being the type of the multiplication
+     *  result of the element of this token and the argument.
+     *  @param rightFactor The token to multiply this Token by.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be multiplied with the elements of this
+     *   Token in a lossless fashion.
+     *  @return A new ArrayToken.
+     */
+    public Token multiply(Token rightFactor) throws IllegalActionException {
+	Token[] result = new Token[_value.length];
+	for (int i = 0; i < _value.length; i++) {
+	    result[i] = _value[i].multiply(rightFactor);
+	}
+
+	return new ArrayToken(result);
+    }
+
     /** Returns a new ArrayToken representing the multiplicative identity.
      *  The returned token contains an array of the same size as the
      *  array contained by this token, and each element of the array
