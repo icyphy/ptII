@@ -62,13 +62,13 @@ JSRCS = \
 	GenericPort.java \
 	GraphElement.java \
 	GraphException.java \
-	HashedLinkedList.java \
 	HasValue.java \
 	IntervalTag.java \
 	InvalidMoCException.java \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \
+	NamedObjList.java \
 	NameDuplicationException.java \
 	NoTag.java \
 	NoTagDoubleParticle.java \
