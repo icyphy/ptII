@@ -181,6 +181,18 @@ test NamedObj-8.1 {Test RecorderListener: call clone} {
 } {Cloned .A into workspace: N
 }
 
+test NamedObj-8.1.1 {Test RecorderListener: call clone with a null arg} {
+    # Note that this test used the three arg _debug() method
+    # which needed testing anyway
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    $a clone [java::null]
+    $listener getMessages
+} {Cloned .A into default workspace.}
+
+
 test NamedObj-8.2 {Test RecorderListener: call setName} {
     set a [java::new ptolemy.kernel.util.NamedObj]
     set listener [java::new ptolemy.kernel.util.RecorderListener]
