@@ -24,18 +24,22 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
+@ProposedRating Red (celaine@eecs.berkeley.edu)
+@AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.Token;
+import ptolemy.graph.Inequality;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
+
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// NonstrictDelay
@@ -47,7 +51,10 @@ than one token is received on the input port in a given iteration, only
 the final token is output on the next iteration.  If no tokens are received
 in a given iteration, no token is output on the next iteration.
 
-@author Paul Whitaker
+You can specify an the value of token to be emitted in the first
+iteration by setting the <i>initialValue</i> parameter.
+
+@author Paul Whitaker and Elaine Cheong
 @version $Id$
 */
 
@@ -66,7 +73,18 @@ public class NonStrictDelay extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
+        
+        initialValue = new Parameter(this, "initialValue");
     }
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Initial token value.
+     */
+    public Parameter initialValue;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -100,7 +118,8 @@ public class NonStrictDelay extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
-        _previousToken = null;
+        // Note that this will default to null if there is no initialValue set.
+        _previousToken = initialValue.getToken();
         _currentToken = null;
         super.initialize();
     }
@@ -115,6 +134,31 @@ public class NonStrictDelay extends Transformer {
 
         return super.postfire();
     }
+
+    /** Override the method in the base class so that the type
+     *  constraint for the <i>initialValue</i> parameter will be set
+     *  if it contains a value.
+     *  @return a list of Inequality objects.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList() {
+        List typeConstraints = super.typeConstraintList();
+
+        try {
+            if (initialValue.getToken() != null) {
+                Inequality ineq = new Inequality(initialValue.getTypeTerm(),
+                        output.getTypeTerm());
+                typeConstraints.add(ineq);
+            }
+        } catch (IllegalActionException ex) {
+            // Do nothing.  Errors in the initialValue parameter should
+            // already have been caught in getAttribute() method
+            // of the base class.
+        }
+
+        return typeConstraints;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////

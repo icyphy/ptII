@@ -55,7 +55,6 @@ JSRCS = \
 	InstantaneousDialogGenerator.java \
 	Latch.java \
 	NonStrictDelay.java \
-	NonStrictDelayInitialized.java \
 	NonStrictDisplay.java \
 	NonStrictLogicFunction.java \
 	NonStrictThreeBitAdder.java \

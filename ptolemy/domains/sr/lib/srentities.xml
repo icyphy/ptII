@@ -34,9 +34,6 @@
 <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
 </entity>
 
-<entity name="NonStrictDelayInitialized" class="ptolemy.domains.sr.lib.NonStrictDelayInitialized">
-</entity>
-
 <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
 </entity>
 
