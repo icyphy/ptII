@@ -39,9 +39,11 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -266,7 +268,12 @@ public class SRDirector extends StaticSchedulingDirector {
                     // a previous iteration, so here, for the benefit of
                     // connected actors, we need to explicitly call the
                     // sendClear() method of all of its output ports.
-                    _sendClearToAllUnknownOutputsOf(actor);
+                    if ((_actorsNotAllowedToFire == null) ||
+                        ((_actorsNotAllowedToFire != null &&
+                         !_actorsNotAllowedToFire.contains(actor)))) {
+                            _sendClearToAllUnknownOutputsOf(actor);
+                            _doNotAllowFiringOf(actor);
+                    }
                 }
 
             }
@@ -286,6 +293,108 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public int getIterations() throws IllegalActionException {
         return ((IntToken) iterations.getToken()).intValue();
+    }
+
+    /** Get predencence list of non strict but dependent actors.
+     *  @return A list of the precedence of the non strict actors.
+     */
+    public List getPrecedenceOfNonStrictDependentActors() {
+        LinkedList precedence = new LinkedList();
+        Iterator entities = 
+            ((CompositeEntity)getContainer()).entityList().iterator();
+        while (entities.hasNext()) {
+            Actor actor = (Actor)entities.next();
+            if (_isNonStrict(actor) && _isDependent(actor)) {
+                Iterator inputs = actor.inputPortList().listIterator();
+                Iterator outputs = actor.outputPortList().listIterator();
+                while (inputs.hasNext()) {
+                    IOPort input = (IOPort)inputs.next();
+                    while (outputs.hasNext()) {
+                        IOPort output = (IOPort)outputs.next();
+                        IOPort[] portPair = new IOPort[2];
+                        portPair[0] = input;
+                        portPair[1] = output;
+                        precedence.add(portPair);
+                    }
+                }
+            }
+        }
+        return precedence;
+    }
+    
+    /** Get predencence list of non strict but independent actors.
+     *  @return A list of the precedence of the non strict actors.
+     */
+    public List getPrecedenceOfNonStrictIndependentActors() {
+        LinkedList precedence = new LinkedList();
+        Iterator entities = 
+            ((CompositeEntity)getContainer()).entityList().iterator();
+        while (entities.hasNext()) {
+            Actor actor = (Actor)entities.next();
+            if (_isNonStrict(actor) && !_isDependent(actor)) {
+                Iterator inputs = actor.inputPortList().listIterator();
+                Iterator outputs = actor.outputPortList().listIterator();
+                while (inputs.hasNext()) {
+                    IOPort input = (IOPort)inputs.next();
+                    while (outputs.hasNext()) {
+                        IOPort output = (IOPort)outputs.next();
+                        IOPort[] portPair = new IOPort[2];
+                        portPair[0] = input;
+                        portPair[1] = output;
+                        precedence.add(portPair);
+                    }
+                }
+            }
+        }
+        return precedence;
+    }
+
+    public DirectedGraph getNonStrictDependencyGraph() {
+        DirectedGraph nonStrictDependencyGraph = 
+            new DirectedGraph();
+        Iterator entities = 
+            ((CompositeEntity)getContainer()).entityList().iterator();
+        while (entities.hasNext()) {
+            Actor actor = (Actor)entities.next();
+            if (_isNonStrict(actor) && _isDependent(actor)) {
+                Iterator inputs = actor.inputPortList().listIterator();
+                Iterator outputs = actor.outputPortList().listIterator();
+                while (inputs.hasNext()) {
+                    IOPort input = (IOPort)inputs.next();
+                    nonStrictDependencyGraph.addNodeWeight(input);
+                    while (outputs.hasNext()) {
+                        IOPort output = (IOPort)outputs.next();
+                        nonStrictDependencyGraph.addNodeWeight(output);
+                        nonStrictDependencyGraph.addEdge(input, output);
+                    }
+                }
+            }
+        }
+        return nonStrictDependencyGraph;
+    }
+    
+    public DirectedGraph getNonStrictIndependencyGraph() {
+        DirectedGraph nonStrictIndependencyGraph = 
+            new DirectedGraph();
+        Iterator entities = 
+            ((CompositeEntity)getContainer()).entityList().iterator();
+        while (entities.hasNext()) {
+            Actor actor = (Actor)entities.next();
+            if (_isNonStrict(actor) && !_isDependent(actor)) {
+                Iterator inputs = actor.inputPortList().listIterator();
+                Iterator outputs = actor.outputPortList().listIterator();
+                while (inputs.hasNext()) {
+                    IOPort input = (IOPort)inputs.next();
+                    nonStrictIndependencyGraph.addNodeWeight(input);
+                    while (outputs.hasNext()) {
+                        IOPort output = (IOPort)outputs.next();
+                        nonStrictIndependencyGraph.addNodeWeight(output);
+                        nonStrictIndependencyGraph.addEdge(input, output);
+                    }
+                }
+            }
+        }
+        return nonStrictIndependencyGraph;
     }
 
     /** Initialize the director and invoke the initialize() methods of all
@@ -348,6 +457,7 @@ public class SRDirector extends StaticSchedulingDirector {
                         postfireReturns = true;
                     } else {
                         _doNotAllowIterationOf(actor);
+                        _doNotAllowFiringOf(actor);
                     }
                     actorsPostfired.add(actor);
                 }
@@ -525,6 +635,18 @@ public class SRDirector extends StaticSchedulingDirector {
         }
     }
 
+    /** Do not allow the specified actor to fire in the current iteration.
+     *  Typically called when the prefire method of the actor returns true.
+     */
+    private void _doNotAllowFiringOf(Actor actor) {
+        if (actor != null) {
+            if (_actorsNotAllowedToFire == null) {
+                _actorsNotAllowedToFire = new HashSet();
+            }
+            _actorsNotAllowedToFire.add(actor);
+        }
+    }
+
     /** Do not allow the specified actor to iterate.  Typically called when
      *  the postfire method of the actor returns false.
      */
@@ -698,6 +820,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _initFiring() throws IllegalActionException {
         _actorsAllowedToFire = null;
+        _actorsNotAllowedToFire = null;
         _actorsFired = null;
 
         _cachedAllInputsKnown = null;
@@ -760,6 +883,17 @@ public class SRDirector extends StaticSchedulingDirector {
         }
 
         return newScheduler;
+    }
+
+    /** Return true if the specified actor has its output dependent
+     *  on its input.
+     */
+    protected boolean _isDependent(Actor actor) {
+
+        Attribute dependentAttribute =
+            ((NamedObj) actor).getAttribute(_INDEPENDENT_ATTRIBUTE_NAME);
+
+        return (dependentAttribute == null);
     }
 
     /** Return true if the specified actor is finished firing.  An actor
@@ -835,13 +969,13 @@ public class SRDirector extends StaticSchedulingDirector {
 
     /** Return true if the specified actor is a nonstrict actor.
      */
-    private boolean _isNonStrict(Actor actor) {
+    protected boolean _isNonStrict(Actor actor) {
 
         // This information is not cached, since there is no semantic reason
         // that the strictness of an actor could not change during execution,
         // so long as that change happened between iterations.
         Attribute nonStrictAttribute =
-            ((NamedObj) actor).getAttribute(NON_STRICT_ATTRIBUTE_NAME);
+            ((NamedObj) actor).getAttribute(_NON_STRICT_ATTRIBUTE_NAME);
 
         return (nonStrictAttribute != null);
     }
@@ -965,6 +1099,9 @@ public class SRDirector extends StaticSchedulingDirector {
     // The set of actors that have returned true in their prefire() methods
     // on the given iteration.
     private Set _actorsAllowedToFire;
+    
+    // The es of actors that can not be fired in the current iteration.
+    private Set _actorsNotAllowedToFire;
 
     // The set of actors that have been fired once or more in the given
     // iteration.
@@ -1014,5 +1151,6 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _updateScheduler;
 
     // The name of an attribute that marks an actor as nonstrict.
-    private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
+    private static final String _NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
+    private static final String _INDEPENDENT_ATTRIBUTE_NAME = "_independent";
 }
