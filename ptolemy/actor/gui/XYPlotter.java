@@ -1,4 +1,4 @@
-/* Plot XY functions of time.
+/* Plot XY functions.
 
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -39,9 +39,16 @@ import ptolemy.actor.lib.TimedActor;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
-/** A XY signal plotter.  This plotter contains an instance of the Plot class
+/** A XY plotter.  This plotter contains an instance of the Plot class
  *  from the Ptolemy plot package as a public member.  Data at the inputX and
- *  input Y, which consist of only one channel, is plotted on this instance.
+ *  inputY, are plotted on this instance. Both inputX and inputY are 
+ *  multiport with type DoubelToken. When plotted, the first channel of 
+ *  inputX and the first channel of inputY is considered the first signal,
+ *  then the second channel of inputX and the second channel of inputY
+ *  is considered the second signal, and so on. The current implemtation
+ *  requires that the inputX and inputY has the same width. For a meaning
+ *  plot, each time the actor is fired, it requires at least one
+ *  token from each channel
  *  The horizontal axis is inputX and vertical axis is inputY.
  *
  *  @author Jie Liu
@@ -61,13 +68,13 @@ public class XYPlotter extends Plotter implements Placeable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // create the input ports and make them single ports.
+        // Create the input ports and make them single ports.
         inputX = new TypedIOPort(this, "inputX", true, false);
-        inputX.setMultiport(false);
+        inputX.setMultiport(true);
         inputX.setTypeEquals(DoubleToken.class);
 
         inputY = new TypedIOPort(this, "inputY", true, false);
-        inputY.setMultiport(false);
+        inputY.setMultiport(true);
         inputY.setTypeEquals(DoubleToken.class);
     }
 
@@ -91,20 +98,25 @@ public class XYPlotter extends Plotter implements Placeable {
     public Object clone(Workspace ws) {
         XYPlotter newobj = (XYPlotter)super.clone(ws);
         newobj.inputX = (TypedIOPort)newobj.getPort("inputX");
-        newobj.inputX.setMultiport(false);
+        newobj.inputX.setMultiport(true);
         newobj.inputX.setTypeEquals(DoubleToken.class);
         newobj.inputY = (TypedIOPort)newobj.getPort("inputY");
-        newobj.inputY.setMultiport(false);
+        newobj.inputY.setMultiport(true);
         newobj.inputY.setTypeEquals(DoubleToken.class);
         return newobj;
     }
 
-    /** Read at most one input from each input port and plot it.
+    /** Read at most one input from each channel of each input port
+     *  and plot it.
      *  This is done in postfire to ensure that data has settled.
-     *  Both input port should have at least one tokens. Otherwise,
-     *  one token will be consumed from the input port that has
+     *  The width of the inputs should be the same, otherwise a
+     *  exception will be thrown. For each matched input channel
+     *  pairm, each data channel should has
+     *  at least one tokens. Otherwise,
+     *  one token will be gotten from the input channel that has
      *  a token, but nothing will be plotted.
-     *  @exception IllegalActionException If there is no director, or
+     *  @exception IllegalActionException If there is no director, 
+     *  the width of the ports are not the same, or
      *   if the base class throws it.
      *  @return True if it is OK to continue.
      */
@@ -112,16 +124,24 @@ public class XYPlotter extends Plotter implements Placeable {
         boolean hasX = false, hasY = false;
         double xValue = 0.0;
         double yValue = 0.0;
-        if (inputX.hasToken(0)) {
-            xValue = ((DoubleToken)inputX.get(0)).doubleValue();
-            hasX = true;
+        int widthX = inputX.getWidth();
+        int widthY = inputY.getWidth();
+        if (widthX != widthY) {
+            throw new IllegalActionException(this,
+                    " The number of input channels mismatch.");
         }
-        if (inputY.hasToken(0)) {
-            yValue = ((DoubleToken)inputY.get(0)).doubleValue();
-            hasY = true;
-        }
-        if(hasX && hasY) {
-            plot.addPoint(0, xValue, yValue, true);
+        for (int i = widthX - 1; i >= 0; i--) {
+            if (inputX.hasToken(i)) {
+                xValue = ((DoubleToken)inputX.get(i)).doubleValue();
+                hasX = true;
+            }
+            if (inputY.hasToken(i)) {
+                yValue = ((DoubleToken)inputY.get(i)).doubleValue();
+                hasY = true;
+            }
+            if(hasX && hasY) {
+                plot.addPoint(i, xValue, yValue, true);
+            }
         }
         return super.postfire();
     }
