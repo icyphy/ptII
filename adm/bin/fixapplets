@@ -51,65 +51,94 @@ do
 			alternateHTML = ""    
 		    }
  sawEmbed == 1 && sawNoEmbed == 0 && $1 !~ /<EMBED/ { 
+                    # We search the contents of the EMBED tag to
+                    # get the various applet parameters.
 		    if ( $0 ~ /=/) {
-			# Line like   background="#faf0e6"
-		        # We call split twice so that we get the
-		        # name that is in $1 without leading spaces
-			split($1, n, "=")
-			nf=split($0, f, "=")
+                        # Unfortunately, if we run this script over and
+                        # over again, then the htmlconverter tends to
+                        # combine all the application applet parameters
+                        # like pxgraphargs on to one line, which makes
+                        # it much more difficult to parse.
 
-                        # Deal with lines that have other = in them, like 
-                        # plot/demo/Binary.htm
-                        if (nf > 2) {
-                            for(i=3;i<=nf;i++) {
-                                f[2] = f[2] "=" f[i]
+                        q = split($0, quotes, "\"")
+                        # If q == 3, then we have a standard line like
+                        # type = "foo"
+                        # If q == 5, then we have a standard line like
+                        # background = "bar" pxgraphargs = "bif"
+
+                        for (qnf = 1; qnf < q; qnf += 2) {
+                            # Reassemble the tag = value into qf
+                            qf = quotes[qnf] "\"" quotes[qnf + 1] "\" "
+                            #print "q: ", q, qf
+
+			    # Line like   background="#faf0e6"
+		            # We call split twice so that we get the
+		            # name that is in $1 without leading spaces
+			    #split($1, n, "=")
+			    #nf=split($0, f, "=")
+                            split(qf, words, " ")
+			    split(words[1], n, "=")
+			    nf=split(qf, f, "=")
+
+                            # Deal with lines that have other = in them, like 
+                            # plot/demo/Binary.htm
+                            if (nf > 2) {
+                                for(i=3;i<=nf;i++) {
+                                   f[2] = f[2] "=" f[i]
+                                }
                             }
-                        }
 
-			# Look for applet parameters
-			sawAppletParam = 0
-                        if (substr(f[2], length(f[2]), 1) == "\\") {
-                            # Strip off any trailing back slashes
-                            f[2] = substr(f[2], 1, length(f[2]) - 1)
-                        }
+			    # Look for applet parameters
+			    sawAppletParam = 0
+                            if (substr(f[2], length(f[2]), 1) == "\\") {
+                                # Strip off any trailing back slashes
+                                f[2] = substr(f[2], 1, length(f[2]) - 1)
+                            }
 
-			for (appletParamName in appletParamNames) {
-			    if (n[1] == appletParamName) {
-			        if (n[1] == "code" \
-				    && f[2] ~ /.class"/ ) {
-                                    # Replace .class" with "
-				    f[2] = substr(f[2], 0, length(f[2])- 7) "\""
-				}				
-				sawAppletParam = 1
-		                appletParams[appletParamName] = f[2]
-				lastAppletParam = appletParamName
+			    for (appletParamName in appletParamNames) {
+			        if (n[1] == appletParamName) {
+			            if (n[1] == "code" \
+				        && f[2] ~ /.class"/ ) {
+                                        # Replace .class" with "
+				        f[2] = substr(f[2], 0, length(f[2])- 8) "\""
+				    }				
+				    sawAppletParam = 1
+		                    appletParams[appletParamName] = f[2]
+				    lastAppletParam = appletParamName
+			        }
 			    }
-			}
-			if (sawAppletParam == 0 \
+			    if (sawAppletParam == 0 \
 				    && n[1] != "type" \
 				    && n[1] != "scriptable" \
 				    && n[1] != "pluginspage") {
-			    paramName[paramCount] = n[1]
-                            if ( match(f[2], singlequote) == 0) { 
-			        paramValue[paramCount++] = f[2]
-                            } else {
-                                nff = split(f[2], ff, singlequote)
-                                param = ""
-                                for(i=1; i<nff; i++) {
-                                    param=sprintf("%s%s\\%c", param, ff[i], 39)
-                                }                                    
-		                paramValue[paramCount++] = param ff[nff]
-                            }
-			}
+			        paramName[paramCount] = n[1]
+                                tf = f[2]
+                                if (index(f[2], " ") == 1) {
+                                    tf = substr(f[2], 2, length(f[2]) - 1)
+                                }
+
+                                if ( match(tf, singlequote) == 0) { 
+			            paramValue[paramCount++] = tf
+                                    #print "No singlequote: " paramValue[paramCount -1]
+                                } else {
+                                    nff = split(tf, ff, singlequote)
+                                    param = ""
+                                    for(i=1; i<nff; i++) {
+                                        #print "--->" ff[i] "<---"
+                                        param=sprintf("%s%s\\%c", param, ff[i], 39)
+                                    }                                    
+		                    paramValue[paramCount++] = param ff[nff]
+                                    #print "saw singlequote: " paramValue[paramCount -1]
+                                }
+			   }
+                        }
 		    } else {
-                        #print "xxxx" $0 "--->"appletParams["archive"]"<---"
 			if ($1 !~ /</ && lastAppletParam == "archive") {
 			    # continuation lines like: 
 			    # archive="
 			    #    ptolemy/ptsupport.jar,
 			    #    ptolemy/domains/sdf/sdf.jar"
 			    appletParams["archive"] = appletParams["archive"] $1
-                            #print "yyyyy...>" appletParams["archive"] "<..."
 			}
 		    }
 		}
@@ -142,7 +171,7 @@ do
 
 		    print ">"
 		    for (i = 0; i < paramCount; i++) {
-			printf("        <param name = \"%s\" value = %s>\n", paramName[i], paramValue[i])
+			printf("        <param name = \"%s\" value =%s>\n", paramName[i], paramValue[i])
 		    }
 		    if (alternateHTML ~ /No JDK 1.3 support for applet!/) {_
 			print "No Java Plug-in support for applet, see <a href=\"http://java.sun.com/products/plugin/\"><code>http://java.sun.com/products/plugin/</code></a>"
@@ -159,6 +188,7 @@ do
 
  '  > fixapplets.htm
         # For debugging purposes, uncomment the next line
+        # and view fixapplets.htm
         #exit
 
         # At this point, fixapplets.htm contains just the applet tag 
@@ -173,7 +203,7 @@ do
 	mkdir htmlconverter_bak
 
 	# Avoid a basename message here
-	"$PTII/bin/htmlconverter" \
+	"$PTII/bin/htmlconverter" -q \
 	    -backup $CURRENT_DIRECTORY/htmlconverter_bak \
 	    fixapplets.htm
 
@@ -210,6 +240,7 @@ $NF ~ /);$/ {
 	-e 's/VALUE  = /VALUE = /' \
 	-e 's/VALUE=[^ ]/VALUE = /' \
 	-e 's/VALUE = *\("[^"]*"\) *>/VALUE = \1 >/' \
+	-e 's/VALUE  ="/VALUE = "/' \
 	-e 's/<!--"CONVERTED_APPLET"-->//' \
 	-e 's/<!--"END_CONVERTED_APPLET"-->//' \
 	-e '# Split up lines that contain code ... codebase ...
