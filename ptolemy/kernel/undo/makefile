@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to implement the Ptolemy kernel
+# Makefile Undo/Redo classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,15 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/kernel
+ME = 		ptolemy/kernel/undo
 
-# Order matters here, go into util first, since mutation depends on it
-DIRS = 		util attributes undo test
+DIRS = 		test
 
 # Root of the Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -47,26 +46,15 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy.kernel
+PTPACKAGE = 	undo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		attributes/attributes.jar \
-		undo/undo.jar
-		util/util.jar
-
-PTCLASSALLJAR = kernel.jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ComponentEntity.java \
-	ComponentPort.java \
-	ComponentRelation.java \
-	CompositeEntity.java \
-	Entity.java \
-	Port.java \
-	Relation.java
+	RedoChangeRequest.java \
+	UndoAction.java \
+	UndoChangeRequest.java \
+	UndoStackAttribute.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -78,13 +66,12 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules
