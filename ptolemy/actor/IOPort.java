@@ -2317,9 +2317,12 @@ public class IOPort extends ComponentPort {
                                 + getName());
                         sendInside(i, t);
                         wasTransferred = true;
-                    } else {
-                        sendClearInside(i);
                     }
+                    // NOTE: Used to call sendClear() here, but most
+                    // domains now throw an exception if this is called.
+                    // Presumably this was called to support SR, but
+                    // SR needs to handle this itself. EAL 10/31/02.
+                    // else:    sendClearInside(i);
                 }
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
@@ -2356,9 +2359,11 @@ public class IOPort extends ComponentPort {
                         Token t = getInside(i);
                         send(i, t);
                         wasTransferred = true;
-                    } else {
-                        sendClear(i);
                     }
+                    // NOTE: Used to call sendClear() here, but most
+                    // domains now throw an exception if this is called.
+                    // Why was it called?  EAL 10/31/02.
+                    // else:    sendClear(i);
                 }
             } catch (NoTokenException ex) {
                 throw new InternalErrorException(this, ex, null);
