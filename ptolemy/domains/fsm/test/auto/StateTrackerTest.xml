@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StateTrackerTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 75.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 175, 891, 520}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 175, 891, 518}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[676, 400]">
     </property>
@@ -51,13 +51,23 @@ David Hermann, Research in Motion</text></svg></configure>
         </property>
     </property>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+                <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+                </property>
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 170.0">
+        </property>
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
         </property>
         <port name="out" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
@@ -67,6 +77,8 @@ David Hermann, Research in Motion</text></svg></configure>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="A">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
@@ -169,6 +181,8 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="relation2">
                 </property>
             </relation>
@@ -188,6 +202,8 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="relation">
                 </property>
@@ -209,6 +225,8 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -228,6 +246,8 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -617,6 +637,8 @@ expression to show how the Set and Output Actions still function as normally.</t
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 170.0">
         </property>
@@ -654,10 +676,13 @@ expression to show how the Set and Output Actions still function as normally.</t
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 180.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="multiport"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
