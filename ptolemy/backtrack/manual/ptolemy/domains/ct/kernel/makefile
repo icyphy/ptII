@@ -49,7 +49,8 @@ PTPACKAGE = 	kernel
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = StatefulCompositeActor.java
+JSRCS = \
+	CTCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = 
 

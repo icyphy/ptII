@@ -12,7 +12,7 @@
             <group>
               <entity name="Continuous Time" class="ptolemy.moml.EntityLibrary">
                 <group>
-                  <entity name="StatefulCompositeActor" class="ptolemy.backtrack.manual.ptolemy.domains.ct.kernel.StatefulCompositeActor"/>
+                  <entity name="CTCompositeActor" class="ptolemy.backtrack.manual.ptolemy.domains.ct.kernel.CTCompositeActor"/>
                 </group>
               </entity>
             </group>
