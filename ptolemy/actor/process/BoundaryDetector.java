@@ -99,22 +99,16 @@ public class BoundaryDetector {
                     // connected to the inside of a boundary port.
 		    // Now determine if this receiver's channel is
 		    // connected to the boundary port.
-                    try {
-                        Receiver[][] receivers =
+                    Receiver[][] receivers =
                             connectedPort.deepGetReceivers();
-                        for ( int i = 0; i < receivers.length; i++ ) {
-                            for ( int j = 0; j < receivers[i].length; j++ ) {
-                                if ( _receiver == receivers[i][j] ) {
-                                    _connectedBoundaryCacheIsOn = true;
-                                    _isConnectedBoundaryValue = true;
-                                    return true;
-                                }
+                    for ( int i = 0; i < receivers.length; i++ ) {
+                        for ( int j = 0; j < receivers[i].length; j++ ) {
+                            if ( _receiver == receivers[i][j] ) {
+                                _connectedBoundaryCacheIsOn = true;
+                                _isConnectedBoundaryValue = true;
+                                return true;
                             }
                         }
-                    } catch( IllegalActionException e) {
-                        // FIXME: Do Something!
-			System.out.println("BoundaryDetector threw " +
-				"IllegalActionException!!!");
                     }
                 } else if ( connectedPort.isOpaque()
 			&& !connectedEntity.isAtomic()
@@ -176,22 +170,16 @@ public class BoundaryDetector {
                     // connected to the inside of a boundary port.
 		    // Now determine if this receiver's channel is
 		    // connected to the boundary port.
-                    try {
-                        Receiver[][] receivers =
+                    Receiver[][] receivers =
                             connectedPort.deepGetReceivers();
-                        for ( int i = 0; i < receivers.length; i++ ) {
-                            for ( int j = 0; j < receivers[i].length; j++ ) {
-                                if ( _receiver == receivers[i][j] ) {
-                                    _connectedInsideOfBoundaryCacheIsOn = true;
-                                    _isConnectedInsideOfBoundaryValue = true;
-                                    return true;
-                                }
+                    for ( int i = 0; i < receivers.length; i++ ) {
+                        for ( int j = 0; j < receivers[i].length; j++ ) {
+                            if ( _receiver == receivers[i][j] ) {
+                                _connectedInsideOfBoundaryCacheIsOn = true;
+                                _isConnectedInsideOfBoundaryValue = true;
+                                return true;
                             }
                         }
-                    } catch( IllegalActionException e) {
-                        // FIXME: Do Something!
-			System.out.println("BoundaryDetector threw " +
-				"IllegalActionException!!!");
                     }
 		}
             }
