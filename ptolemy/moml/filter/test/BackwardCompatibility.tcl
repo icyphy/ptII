@@ -674,7 +674,14 @@ test BackwardCompatibility-12.1 {Setting a multiport can result in a null contai
     set toplevel [$parser parse $testMoML]
     set newMoML [$toplevel exportMoML]
     list $newMoML
-} {}
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="testMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <entity name="test" class="ptolemy.actor.lib.Test">
+    </entity>}
 
 test BackwardCompatiblity-20.1 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {
