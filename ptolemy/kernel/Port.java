@@ -46,7 +46,7 @@ to an entity may be divided into any number of subsets, with one port
 representing each subset.
 
 @author Mudit Goel, Edward A. Lee
-$Id$
+@version $Id$
 @see Entity
 @see Relation
 */
