@@ -141,7 +141,7 @@ public class ActorRecursion extends TypedCompositeActor {
             getDirector().initialize();
             _transferOutputs();
             ((DDFDirector)getExecutiveDirector()).
-                    merge((DDFDirector)getDirector());
+                merge((DDFDirector)getDirector());
             try {
                 getDirector().setContainer(null);
             } catch (NameDuplicationException ex) {
