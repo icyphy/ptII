@@ -56,6 +56,7 @@ PTCLASSALLJARS = \
 	HTVQ/HTVQ.jar \
 	LMSAdaptive/LMSAdaptive.jar \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
+	OrthogonalCom/OrthogonalCom.jar \
 	Spectrum/Spectrum.jar \
 	Type/Type.jar
 
