@@ -28,7 +28,7 @@
 @AcceptedRating
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.logic;
 
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
@@ -38,7 +38,7 @@ import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-////  LogicalXor
+//// LogicalXnor
 /**
 A polymorphic logical XNOR operator. 
 This actor has a single input port, which is a multiport, and one 
@@ -58,7 +58,7 @@ as are available in each channel.
 @version $Id: 
 */
 
-public class LogicalXnor extends TypedAtomicActor {
+public class LogicalXnor extends ptolemy.actor.lib.Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -72,72 +72,39 @@ public class LogicalXnor extends TypedAtomicActor {
     public LogicalXnor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	xnorPort = new TypedIOPort(this, "xnorPort", true, false);
-	xnorPort.setMultiport(true);
-        xnorPort.setTypeEquals(BooleanToken.class);
-	output = new TypedIOPort(this, "output", false, true);
+	input.setMultiport(true);
+        input.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BooleanToken.class);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Output port.  The type is inferred from the connections.
-     */
-    public TypedIOPort output = null;
-
-    /** Input for the logical XNOR operation.  This is a multiport, and its
-     *  type is inferred from the connections.
-     */
-    public TypedIOPort xnorPort = null;
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) {
-        try {
-            LogicalXnor newobj = (LogicalXnor)super.clone(ws);
-            newobj.xnorPort = (TypedIOPort)newobj.getPort("xnorPort");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
-    }
 
-    /** If there is at least one token on the input port, the 
-     *  number of TRUE token values are counted and recorded.  If 
-     *  that number is even, the value TRUE is broadcasted, otherwise 
-     *  FALSE is broadcasted.  As many tokens as are available will be read.
+    /** If there is at least one token on the <i>input</i>, the output
+     *  token will be set to the first value encountered.  The output 
+     *  token will then call add() on each of the remaining input tokens
+     *  and be set to the resulting value.  The negation of this will be
+     *  broadcasted.  The add() function of a BooleanToken is the equivalent 
+     *  of the logical XOR operation. 
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        int numOfTrues = 0;
-
-	Token value = null;
-        Token trueToken = new BooleanToken(true);
-	for (int i = 0; i < xnorPort.getWidth(); i++) {
-	    while(xnorPort.hasToken(i)) {
-                if(xnorPort.get(i).isEqualTo(trueToken).booleanValue())
-                    numOfTrues++;
-		}
+	Token value = null, in = null;
+	for (int i = 0; i < input.getWidth(); i++) {
+	    while(input.hasToken(i)) {
+                in = input.get(i);
+                if(value == null)
+                    value = in;
+                else 
+                    value = ((BooleanToken)value.add(in)).not();
+            }
         }
-        if(numOfTrues % 2 == 1)
-            value = trueToken.zero();
-        else
-            if(numOfTrues >= 1)
-                value = trueToken;
-	if (value != null) {
-	    output.broadcast(value);
-	}
+        if (value != null) 
+	    output.broadcast((BooleanToken)value);
     }
 }
+
 

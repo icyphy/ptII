@@ -28,7 +28,7 @@
 @AcceptedRating
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.logic;
 
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
@@ -56,7 +56,7 @@ If no input tokens are available at all, then no output is produced.
 @version $Id: 
 */
 
-public class LogicalNor extends TypedAtomicActor {
+public class LogicalNor extends ptolemy.actor.lib.Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -70,72 +70,41 @@ public class LogicalNor extends TypedAtomicActor {
     public LogicalNor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	norPort = new TypedIOPort(this, "norPort", true, false);
-	norPort.setMultiport(true);
-        norPort.setTypeEquals(BooleanToken.class);
-	output = new TypedIOPort(this, "output", false, true);
+	input.setMultiport(true);
+        input.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BooleanToken.class);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
- 
-    /** Input for the logical NOR operation.  This is a multiport, and its
-     *  type is set to BooleanToken.
-     */
-    public TypedIOPort norPort = null;
-
-    /** Output port.  The type is inferred from the connections.
-     */
-    public TypedIOPort output = null;
-
 
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) {
-        try {
-            LogicalNor newobj = (LogicalNor)super.clone(ws);
-            newobj.norPort = (TypedIOPort)newobj.getPort("norPort");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
-    }
-
-    /** If there is at least one token on the <i>norPort</i>, the output
-     *  token will be set to the first value encountered, and be 
-     *  subsequently compared to the remaining tokens in a logical
-     *  NOR operation.
+    /** If there is at least one token on the <i>input</i>, the output
+     *  token will be set to the first value encountered.  The logical
+     *  OR operation will then be applied to each input, and its 
+     *  negation is returned.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	Token value = null;
-        Token trueToken = new BooleanToken(true);
-	for (int i = 0; i < norPort.getWidth(); i++) {
-	    while(norPort.hasToken(i)) {
-		if (value == null) {
-		    value = norPort.get(i);
-		} else {
-                    if(value.isEqualTo(trueToken).booleanValue() || 
-                            norPort.get(i).isEqualTo(trueToken).booleanValue()) 
-                        value = trueToken;
+	Token value = null, in = null;
+	for (int i = 0; i < input.getWidth(); i++) {
+	    while(input.hasToken(i)) {
+                in = input.get(i);
+		if (value == null) 
+		    value = in;
+                else {
+                    if(value.isEqualTo(BooleanToken.FALSE).booleanValue() &&
+                            in.isEqualTo(BooleanToken.FALSE).booleanValue())
+                        value = BooleanToken.TRUE;
+                    else 
+                        value = BooleanToken.FALSE;
                 }
 	    }
 	}
 	if (value != null) {
-	    output.broadcast(value.zero());
+	    output.broadcast((BooleanToken)value);
 	}
     }
 }

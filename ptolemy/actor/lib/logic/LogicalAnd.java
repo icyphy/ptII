@@ -28,7 +28,7 @@
 @AcceptedRating 
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.logic;
 
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
@@ -51,14 +51,14 @@ This actor is not strict. That is, it does not require that each input
 channel have a token upon firing.  As long as one channel contains a 
 token, output will be produced.  In the case of only one channel having a 
 token, that token will be the output.  If no input tokens are available at
- all, then no output is produced.  This actor will consume as many tokens
+all, then no output is produced.  This actor will consume as many tokens
 as are available in each channel.
 
 @author John Li
 @version $Id:
 */
 
-public class LogicalAnd extends TypedAtomicActor {
+public class LogicalAnd extends ptolemy.actor.lib.Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -72,72 +72,40 @@ public class LogicalAnd extends TypedAtomicActor {
     public LogicalAnd(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	andPort = new TypedIOPort(this, "andPort", true, false);
-	andPort.setMultiport(true);
-        andPort.setTypeEquals(BooleanToken.class);
-	output = new TypedIOPort(this, "output", false, true);
+	input.setMultiport(true);
+        input.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BooleanToken.class);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Input for the logical AND operation.  This is a multiport, and its
-     *  type is set to BooleanToken.
-     */
-    public TypedIOPort andPort = null;
-
-    /** Output port.  The type is inferred from the connections.
-     */
-    public TypedIOPort output = null;
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) {
-        try {
-            LogicalAnd newobj = (LogicalAnd)super.clone(ws);
-            newobj.andPort = (TypedIOPort)newobj.getPort("andPort");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
-    }
-
-    /** If there is at least one token on the <i>andPort</i>, the output
-     *  token will be set to the first value encountered, and be 
-     *  subsequently compared to the remaining tokens in a logical
-     *  AND operation.
+    /** If there is at least one token on the <i>input</i>, the output
+     *  token will be set to the first value encountered.  The logical AND
+     *  operation will then be applied to the output token and each of 
+     *  the remaining input tokens, and the final value is broadcasted.
+     *  The multiply() method for BooleanTokens is the equivalent of the
+     *  logical AND operation.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 	Token value = null;
-        Token trueToken = new BooleanToken(true);
-        Token falseToken = new BooleanToken(false);
-	for (int i = 0; i < andPort.getWidth(); i++) {
-	    while(andPort.hasToken(i)) {
+        BooleanToken in;
+	for (int i = 0; i < input.getWidth(); i++) {
+	    while(input.hasToken(i)) {
+                in = (BooleanToken)input.get(i);
 		if (value == null) {
-		    value = andPort.get(i);
-		} else {
-		    if(value.isEqualTo(trueToken).booleanValue() &&
-                            andPort.get(i).isEqualTo(trueToken).booleanValue())
-                        value = trueToken;
-                    else
-                        value = falseToken;
-		}
+                    value = in;
+                }
+                else 
+                    value = value.multiply(in); 
 	    }
 	}
+        
 	if (value != null) {
-	    output.broadcast(value);
+	    output.broadcast((BooleanToken)value);
 	}
     }
 }

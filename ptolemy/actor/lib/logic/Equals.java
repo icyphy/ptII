@@ -28,7 +28,7 @@
 @AcceptedRating 
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.logic;
 
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
@@ -42,7 +42,7 @@ import collections.LinkedList;
 /** 
 
 A polymorphic logical equals operator.  This operator has two
-input ports and one output port, all of which are not multiports.  The
+input ports and one output port, none of which are multiports.  The
 types on the ports are undeclared and will be resolved by the type
 resolution mechanism. A datum that arrives on the input port named
 <i>upperPort</i> will be compared for equality with a datum in the
@@ -50,17 +50,9 @@ input port named <i>lowerPort</i>.  This distinction between operands
 is necessary to determine which method to call; data in the
 <i>upperPort</i> is comparable to being on the left side of the
 equality operator.
-
 <p>
-
-FIXME
 Currently, the type system is quite liberal about the resolved
-types it will permit at the inputs. In particular, it may permit the
-<i>upperPort</i> and <i>lowerPort</i> inputs to resolve to types that cannot 
-in fact be subtracted.  In these cases, a run-time error will occur.
-In the future, we hope that the type system will intercept such errors
-before run time.
-<p>
+types it will permit at the inputs.
 It consumes at most one input token from each port.
 If no input tokens are available at all, then no output is produced.
 
@@ -85,17 +77,19 @@ public class Equals extends TypedAtomicActor {
 	upperPort = new TypedIOPort(this, "upperPort", true, false);
         lowerPort = new TypedIOPort(this, "lowerPort", true, false);
 	output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BooleanToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input for the EQUALS operation.  This is a multiport, and its
-     *  type is inferred from the connections. 
+    /** Input for the EQUALS operation.  This port represents the left 
+     *  side of an equals sign.  Its type is inferred from the connections. 
      */
     public TypedIOPort upperPort = null;
 
-    /** FIXME
+    /** Input for the EQUALS operation.  This port represents the right 
+     *  side of an equals sign.  Its type is inferred from the connections. 
      */
     public TypedIOPort lowerPort = null;
 
@@ -134,12 +128,11 @@ public class Equals extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if ( upperPort.hasToken(0) && lowerPort.hasToken(0)) {
-	    Token trueToken = new BooleanToken(true);
-            if ( upperPort.get(0).isEqualTo(lowerPort.get(0)).booleanValue())		
-                output.broadcast( trueToken );
+        if (upperPort.hasToken(0) && lowerPort.hasToken(0)) {
+            if (upperPort.get(0).isEqualTo(lowerPort.get(0)).booleanValue())
+                output.broadcast(BooleanToken.TRUE);
             else
-                output.broadcast( ( (BooleanToken) trueToken ).zero());
+                output.broadcast(BooleanToken.FALSE);
         }   
     }
 }

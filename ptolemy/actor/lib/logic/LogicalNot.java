@@ -1,4 +1,4 @@
-/* A polymorphic logical NAND operator.
+/* A polymorphic logical NOT operator.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli@eecs.berkeley.edu)
-@AcceptedRating 
+@ProposedRating Red (johnli.eecs.berkeley.edu)
+@AcceptedRating
 */
 
 package ptolemy.actor.lib.logic;
@@ -38,27 +38,22 @@ import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// LogicalNand
+//// LogicalNot
 /**
-A polymorphic logical NAND operator.
-This actor has a single input port, which is a multiport, and one 
-output port, which is not.
-For now, the type of the multiport is set to accept only 
-BooleanTokens, until a standard is established to handle numeric
-values and the mixing of those and booleans.
-<p>
-This actor is not strict. That is, it does not require that each input
-channel have a token upon firing.  As long as one channel contains a 
-token, output will be produced.  In the case of only one channel having a 
-token, that token will be the output.  If no input tokens are available at
-all, then no output is produced.  This actor will consume as many tokens
-as are available in each channel.
+A polymorphic logical NOT operator.
+This adder has one input port and one output port, 
+neither of which are multiports.
+For now, the type of the input port is limited to 
+BooleanToken, until a standard for handling non-booleans is 
+resolved.  A BooleanToken that arrives in the <i>input</i> 
+will be negated and passed to the <i>output</i> port for broadcasting.
+If no input token is available at all, then no output is produced.
 
 @author John Li
-@version $Id:
+@version $Id: 
 */
 
-public class LogicalNand extends ptolemy.actor.lib.Transformer {
+public class LogicalNot extends ptolemy.actor.lib.Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -69,42 +64,32 @@ public class LogicalNand extends ptolemy.actor.lib.Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public LogicalNand(TypedCompositeActor container, String name)
+    public LogicalNot(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input.setMultiport(true);
+	input.setMultiport(false);
         input.setTypeEquals(BooleanToken.class);
         output.setTypeEquals(BooleanToken.class);
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is at least one token on the <i>input</i>, the output
-     *  token will be set to the first value encountered.  The logical NAND
-     *  operation will then be applied to the output token and each of 
-     *  the remaining input tokens, and the final value is broadcasted.
-     *  The multiply() method for BooleanTokens is the equivalent of the
-     *  logical AND operation.
+
+    /** If there exists a token in the <i>input</i>, its negation
+     *  will be passed to the <i>output</i> port for broadcast.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	Token value = null, in = null;
-	for (int i = 0; i < input.getWidth(); i++) {
-	    while(input.hasToken(i)) {
-                in = input.get(i);
-		if (value == null) 
-		    value = in;
-                else 
-                    value = ((BooleanToken)value.multiply(in)).not();
-	    }
-	}
-	if (value != null) {
-	    output.broadcast((BooleanToken)value);
-	}
+	if(input.hasToken(0))
+            output.broadcast(((BooleanToken)input.get(0)).not());
     }
+
 }
+
+
+
+
+
 

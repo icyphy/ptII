@@ -28,7 +28,7 @@
 @AcceptedRating
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.logic;
 
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
@@ -41,7 +41,6 @@ import collections.LinkedList;
 //// LogicalOr
 /**
 A polymorphic Logical OR operator.
-This adder has two input ports, bot
 This actor has a single input port, which is a multiport, and one 
 output port, which is not. For now, the type of the multiport is 
 set to accept only BooleanTokens, until a standard is established 
@@ -57,7 +56,7 @@ If no input tokens are available at all, then no output is produced.
 @version $Id: 
 */
 
-public class LogicalOr extends TypedAtomicActor {
+public class LogicalOr extends ptolemy.actor.lib.Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -71,72 +70,38 @@ public class LogicalOr extends TypedAtomicActor {
     public LogicalOr(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	orPort = new TypedIOPort(this, "orPort", true, false);
-	orPort.setMultiport(true);
-        orPort.setTypeEquals(BooleanToken.class);
-	output = new TypedIOPort(this, "output", false, true);
+	input.setMultiport(true);
+        input.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BooleanToken.class);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
- 
-    /** Input for the bitwise OR operation.  This is a multiport, and its
-     *  type is set to BooleanToken.
-     */
-    public TypedIOPort orPort = null;
-
-    /** Output port.  The type is inferred from the connections.
-     */
-    public TypedIOPort output = null;
-
-
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) {
-        try {
-            LogicalOr newobj = (LogicalOr)super.clone(ws);
-            newobj.orPort = (TypedIOPort)newobj.getPort("orPort");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
-    }
 
-    /** If there is at least one token on the <i>orPort</i>, the output
-     *  token will be set to the first value encountered, and be 
-     *  subsequently compared to the remaining tokens in a logical
-     *  OR operation.
+    /** If there is at least one token on the <i>input</i>, the output
+     *  token will be set to the first value encountered.  The logical
+     *  OR operation will then be applied to each input, and its 
+     *  value is returned.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	Token value = null;
-        Token trueToken = new BooleanToken(true);
-	for (int i = 0; i < orPort.getWidth(); i++) {
-	    while(orPort.hasToken(i)) {
-		if (value == null) {
-		    value = orPort.get(i);
-		} else {
-                    if(value.isEqualTo(trueToken).booleanValue() || 
-                            orPort.get(i).isEqualTo(trueToken).booleanValue()) 
-                        value = trueToken;
-                }
-	    }
+	Token value = null, in = null;
+	for (int i = 0; i < input.getWidth(); i++) {
+	    while(input.hasToken(i)) {
+                in = input.get(i);
+		if (value == null) 
+		    value = in;
+		else 
+                    if(value.isEqualTo(BooleanToken.TRUE).booleanValue() ||
+                            in.isEqualTo(BooleanToken.TRUE).booleanValue())
+                        value = BooleanToken.TRUE;
+            }
 	}
 	if (value != null) {
-	    output.broadcast(value);
+	    output.broadcast((BooleanToken)value);
 	}
     }
 }

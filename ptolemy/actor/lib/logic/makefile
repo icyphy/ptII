@@ -57,7 +57,8 @@ JSRCS = \
 	LogicalNor.java \
 	LogicalOr.java \
 	LogicalXor.java \
-	LogicalXnor.java
+	LogicalXnor.java \
+	LogicalNot.java
 
 EXTRA_SRCS =	$(JSRCS)
 
