@@ -49,6 +49,7 @@ import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
+import diva.graph.NodeInteractor;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;

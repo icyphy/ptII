@@ -57,9 +57,13 @@ import ptolemy.vergil.form.FormFrameFactory;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
 import diva.canvas.Figure;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.MouseFilter;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
 import diva.canvas.interactor.SelectionModel;
+import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.ActionInteractor;
 
 import diva.gui.ApplicationContext;
 import diva.gui.Document;
@@ -74,6 +78,7 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.MutableGraphModel;
+import diva.graph.NodeInteractor;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LevelLayout;
 import diva.graph.layout.LayoutTarget;
@@ -149,6 +154,15 @@ public class KernelGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    protected void _addDoubleClickInteractor(NodeInteractor interactor,
+            Interactor doubleClickInteractor) {
+        interactor.addInteractor(doubleClickInteractor);
+        // FIXME this is a horrible dance so that the
+        // doubleclickinteractor gets the events before the drag interactor.
+        interactor.setDragInteractor(
+                interactor.getDragInteractor());
+    }
+
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
@@ -166,7 +180,7 @@ public class KernelGraphFrame extends GraphFrame {
 	// create the graph editor
 	// These two things control the view of a ptolemy model.
 	_controller = new EditorGraphController();
-	PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
+	final PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
 
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newPortAction = _controller.getNewPortAction();
@@ -177,16 +191,54 @@ public class KernelGraphFrame extends GraphFrame {
 	//_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
-	_controller.getAttributeController().setMenuFactory(
+     
+        // Double click to edit parameters
+        Action action = new AbstractAction("Edit Parameters") {
+	    public void actionPerformed(ActionEvent e) {
+                LayerEvent event = (LayerEvent)e.getSource();
+                Figure figure = event.getFigureSource();
+                Object object = figure.getUserObject();
+                NamedObj target = 
+                (NamedObj)graphModel.getSemanticObject(object);
+                // Create a dialog for configuring the object.
+                new EditParametersDialog(null, target);
+	    }
+	};
+        ActionInteractor doubleClickInteractor = new ActionInteractor(action);
+        doubleClickInteractor.setConsuming(false);
+        doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
+
+      	_controller.getAttributeController().setMenuFactory(
                 new AttributeContextMenuFactory(_controller));
+        _addDoubleClickInteractor((NodeInteractor)
+                _controller.getAttributeController().getNodeInteractor(),
+                doubleClickInteractor);
+        
 	_controller.getEntityController().setMenuFactory(
-                new EntityContextMenuFactory(_controller));
+                new EntityContextMenuFactory(_controller));        
+        _addDoubleClickInteractor((NodeInteractor)
+                _controller.getEntityController().getNodeInteractor(),
+                doubleClickInteractor);
+	
  	_controller.getEntityPortController().setMenuFactory(
                 new PortContextMenuFactory(_controller));
+        // FIXME: entity ports don't use a NodeInteractor.
+        /*_addDoubleClickInteractor((NodeInteractor)
+               _controller.getEntityPortController().getNodeInteractor(),
+                doubleClickInteractor);
+        */
   	_controller.getPortController().setMenuFactory(
                 new PortContextMenuFactory(_controller));
+        _addDoubleClickInteractor((NodeInteractor)
+               _controller.getPortController().getNodeInteractor(),
+                doubleClickInteractor);
+
   	_controller.getRelationController().setMenuFactory(
                 new RelationContextMenuFactory(_controller));
+        _addDoubleClickInteractor((NodeInteractor)
+                _controller.getRelationController().getNodeInteractor(),
+                doubleClickInteractor);
+
   	_controller.getLinkController().setMenuFactory(
                 new RelationContextMenuFactory(_controller));
 	return pane;
@@ -220,7 +272,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
     }
-
+ 
     /**
      * The factory for creating context menus on entities.
      */
