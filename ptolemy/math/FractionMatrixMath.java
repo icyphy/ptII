@@ -126,7 +126,14 @@ public class FractionMatrixMath {
         // Assume the matrix is zero-filled.
 
         for (int i = 0; i < n; i++) {
-            returnValue[i][i] = array[i];
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    returnValue[i][j] = array[i];
+                }
+                else {
+                    returnValue [i][j] = new Fraction(0, 1);
+                }
+            }
         }
 
         return returnValue;
@@ -212,56 +219,16 @@ public class FractionMatrixMath {
         Fraction[][] returnValue = new Fraction[dim][dim];
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
-            returnValue[i][i] = new Fraction(1, 1);
+            for (int j = 0; j < dim; j++) {
+                if (i == j) {
+                    returnValue[i][i] = new Fraction(1, 1);
+                }
+                else {
+                    returnValue[i][j] = new Fraction(0,1);
+                }
+            }
         }
         return returnValue;
-    }
-
-    /** Return an new identity matrix with the specified dimension. The
-     *  matrix is square, so only one dimension specifier is needed.
-     *  @return Identity matrix in Fractions
-     */
-    public static final Fraction[][] identityMatrixFraction(final int dim) {
-        return identity(dim);
-    }
-
-    /** Replace the first matrix argument elements with the values of
-     *  the second matrix argument. The second matrix argument must be
-     *  large enough to hold all the values of second matrix argument.
-     *  @param destMatrix A matrix of Fractions, used as the destination.
-     *  @param srcMatrix A matrix of Fractions, used as the source.
-     */
-    public static final void matrixCopy(final Fraction[][] srcMatrix,
-            final Fraction[][] destMatrix) {
-        matrixCopy(srcMatrix, 0, 0, destMatrix, 0, 0, _rows(srcMatrix),
-                _columns(srcMatrix));
-    }
-
-    /** Replace the first matrix argument's values, in the specified row
-     *  and column range, with the second matrix argument's values, starting
-     *  from specified row and column of the second matrix.
-     *  @param srcMatrix A matrix of Fraction, used as the destination.
-     *  @param srcRowStart An int specifying the starting row of the source.
-     *  @param srcColStart An int specifying the starting column of the
-     *  source.
-     *  @param destMatrix A matrix of Fraction, used as the destination.
-     *  @param destRowStart An int specifying the starting row of the dest.
-     *  @param destColStart An int specifying the starting column of the
-     *         dest.
-     *  @param rowSpan An int specifying how many rows to copy.
-     *  @param colSpan An int specifying how many columns to copy.
-     */
-    public static final void matrixCopy(final Fraction[][] srcMatrix,
-            final int srcRowStart, final int srcColStart,
-            final Fraction[][] destMatrix,
-            final int destRowStart, final int destColStart,
-            final int rowSpan, final int colSpan) {
-        // We should verify the parameters here
-        for (int i = 0; i < rowSpan; i++) {
-            System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
-                    destMatrix[destRowStart + i], destColStart,
-                    colSpan);
-        }
     }
 
     /** Return a new matrix that is constructed by multiplying the matrix
@@ -285,16 +252,16 @@ public class FractionMatrixMath {
     }
 
     /** Return a new array that is constructed from the argument by
-     *  pre-multiplying the array (treated as a row vector) by a matrix.
+     *  pre-multiplying the matrix by an array (treated as a row vector).
      *  The number of rows of the matrix must equal the number of elements
      *  in the array. The returned array will have a length equal to the number
      *  of columns of the matrix.
-     *  @param matrix The matrix of Fractions.
      *  @param array The array of Fractions.
+     *  @param matrix The matrix of Fractions.
      *  @return The resulting matrix of Fractions.     
      */
-    public static final Fraction[] multiply(final Fraction[][] matrix,
-            final Fraction[] array) {
+    public static final Fraction[] multiply(final Fraction[] array, 
+            final Fraction[][] matrix) {
 
         int rows = _rows(matrix);
         int columns = _columns(matrix);
@@ -326,8 +293,8 @@ public class FractionMatrixMath {
      *  @param array The array of Fractions.
      *  @return The resulting matrix of Fractions.     
      */
-    public static final Fraction[] multiply(final Fraction[] array,
-            final Fraction[][] matrix) {
+    public static final Fraction[] multiply(final Fraction[][] matrix,
+            final Fraction[] array) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -340,7 +307,7 @@ public class FractionMatrixMath {
 
         Fraction[] returnValue = new Fraction[rows];
         for (int i = 0; i < rows; i++) {
-            Fraction sum = new Fraction(0, 0);
+            Fraction sum = new Fraction(0, 1);
             for (int j = 0; j < columns; j++) {
                 sum = sum.add(matrix[i][j].multiply(array[j]));
             }
@@ -365,14 +332,20 @@ public class FractionMatrixMath {
      *  @param matrix1 The first matrix of Fractions.
      *  @param matrix2 The second matrix of Fractions.
      *  @return A new matrix of ints.
+     *  @exception ArithmeticException If the matrix dimensions don't match up.
      */
     public static final Fraction[][] multiply(Fraction[][] matrix1,
-            Fraction[][] matrix2) {
-        Fraction[][] returnValue = new Fraction[_rows(matrix1)][matrix2[0].length];
+            Fraction[][] matrix2) throws ArithmeticException {
+        if (_columns(matrix1) != _rows(matrix2)) {
+            throw new ArithmeticException("Number of columns (" + 
+                    _columns(matrix1) + ") of matrix1 does note equal number of rows (" +
+                    _rows(matrix2) + ") of matrix2.");
+        }
+        Fraction[][] returnValue = new Fraction[_rows(matrix1)][_columns(matrix2)];
         for (int i = 0; i < _rows(matrix1); i++) {
-            for (int j = 0; j < matrix2[0].length; j++) {
-                Fraction sum = new Fraction(0, 0);
-                for (int k = 0; k < matrix2.length; k++) {
+            for (int j = 0; j < _columns(matrix2); j++) {
+                Fraction sum = new Fraction(0, 1);
+                for (int k = 0; k < _columns(matrix1); k++) {
                     sum = sum.add(matrix1[i][k].multiply(matrix2[k][j]));
                 }
                 returnValue[i][j] = sum;
@@ -386,13 +359,12 @@ public class FractionMatrixMath {
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
      *  <p>Note that this method does pointwise matrix multiplication.
-     *  @see #multiply(Fraction[][], Fraction[][]) 
+     *  @see #multiply(Fraction[][], Fraction[][])} 
      *  @param matrix1 The first matrix of Fractions.
      *  @param matrix2 The second matrix of Fractions.
      *  @return A new matrix of ints.
      */
-    public static final Fraction[][] multiplyElements(
-            final Fraction[][] matrix1,
+    public static final Fraction[][] multiplyElements(final Fraction[][] matrix1,
             final Fraction[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
@@ -464,28 +436,6 @@ public class FractionMatrixMath {
         return sum;
     }
 
-    /** Return a new matrix that is formed by converting the Fractions
-     *  in the argument matrix to complex numbers. Each complex number
-     *  has a real part equal to the value in the argument matrix and a
-     *  zero imaginary part.
-     *
-     *  @param matrix A matrix of Fractions.
-     *  @return A new matrix of complex numbers.
-     */
-    public static final Complex[][] toComplexMatrix(final Fraction[][] matrix) {
-        int rows = _rows(matrix);
-        int columns = _columns(matrix);
-
-        Complex[][] returnValue = new Complex[rows][columns];
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = new Complex(matrix[i][j].toDouble(), 0.0);
-            }
-        }
-        return returnValue;
-    }
-
     /** Return a new matrix that is formed by converting the Fractions in
      *  the argument matrix to doubles.
      *  @param matrix An matrix of Fractions.
@@ -500,25 +450,6 @@ public class FractionMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix[i][j].toDouble();
-            }
-        }
-        return returnValue;
-    }
-
-    /** Return a new matrix that is formed by converting the ints in
-     *  the argument matrix to floats.
-     *  @param matrix An matrix of int.
-     *  @return A new matrix of floats.
-     */
-    public static final float[][] toFloatMatrix(final Fraction[][] matrix) {
-        int rows = _rows(matrix);
-        int columns = _columns(matrix);
-
-        float[][] returnValue = new float[rows][columns];
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = matrix[i][j].toFloat();
             }
         }
         return returnValue;
@@ -595,7 +526,7 @@ public class FractionMatrixMath {
      */
     public static final Fraction trace(final Fraction[][] matrix) {
         int dim = _checkSquare("trace", matrix);
-        Fraction sum = new Fraction(0, 0);
+        Fraction sum = new Fraction(0, 1);
 
         for (int i = 0; i < dim; i++) {
             sum = sum.add(matrix[i][i]);
@@ -606,7 +537,7 @@ public class FractionMatrixMath {
     /** Return a new matrix that is constructed by transposing the input
      *  matrix. If the input matrix is m x n, the output matrix will be
      *  n x m.
-     *  @param matrix The input matrix.
+     *  @param The input matrix.
      *  @return The matrix transpose.
      */
     public static final Fraction[][] transpose(final Fraction[][] matrix) {
