@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {42, 1, 948, 763}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {42, 1, 948, 780}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 654]">
     </property>
@@ -87,6 +87,12 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 625.0]">
         </property>
+    </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 525.0]">
+        </property>
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/data/unit/demo/StaticUnits/StaticUnits.htm">
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -423,7 +429,7 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 175.0">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
+        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$minus;$plus=$minus">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
