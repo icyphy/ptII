@@ -605,6 +605,7 @@ public class Schedule extends ScheduleElement {
 	////                         private variables                 ////
 
 	private boolean _advance;
+	private ScheduleElement _currentNode;
 	private boolean _lastHasNext;
 	// The current depth in the schedule tree.
 	private int _currentDepth;
@@ -627,5 +628,4 @@ public class Schedule extends ScheduleElement {
     //private long _firingIteratorVersion;
     // The depth of this schedule tree. This may grow.
     private int _treeDepth;
-    private ScheduleElement _currentNode;
 }
