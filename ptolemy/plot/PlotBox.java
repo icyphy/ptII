@@ -1289,11 +1289,6 @@ public class PlotBox extends JPanel implements Printable {
         _xRangeGiven = true;
         _xlowgiven = min;
         _xhighgiven = max;
-        if (!_originalXRangeGiven) {
-            _originalXlow = min;
-            _originalXhigh = max;
-            _originalXRangeGiven = true;
-        }
         _setXRange(min, max);
     }
 
@@ -1325,11 +1320,6 @@ public class PlotBox extends JPanel implements Printable {
         _yRangeGiven = true;
         _ylowgiven = min;
         _yhighgiven = max;
-        if (!_originalYRangeGiven) {
-            _originalYlow = min;
-            _originalYhigh = max;
-            _originalYRangeGiven = true;
-        }
         _setYRange(min, max);
     }
 
@@ -2656,7 +2646,7 @@ public class PlotBox extends JPanel implements Printable {
         //
         // Bugs in log axes:
         // * Sometimes not enough grid lines are displayed because the
-        // region is small.  This bug is present in the original xgraph
+        // region is small.  This bug is present in the oriignal xgraph
         // binary, which is the basis of this code.  The problem is that
         // as ratio gets closer to 1.0, we need to add more and more
         // grid marks.
@@ -2921,6 +2911,26 @@ public class PlotBox extends JPanel implements Printable {
      * autoranging.
      */
     private void _setXRange(double min, double max) {
+        // We check to see if the original range has been given here
+        // because if we check in setXRange(), then we will not catch
+        // the case where we have a simple plot file that consists of just
+        // data points
+        //
+        // 1. Create a file that consists of two data points
+        //   1 1
+        //   2 3
+        // 2. Start up plot on it
+        // $PTII/bin/ptplot foo.plt
+        // 3. Zoom in
+        // 4. Hit reset axes
+        // 5. The bug is that the axes do not reset to the initial settings
+
+        if (!_originalXRangeGiven) {
+            _originalXlow = min;
+            _originalXhigh = max;
+            _originalXRangeGiven = true;
+        }
+
         // If values are invalid, try for something reasonable.
         if (min > max) {
             min = -1.0;
@@ -2960,6 +2970,13 @@ public class PlotBox extends JPanel implements Printable {
      * autoranging.
      */
     private void _setYRange(double min, double max) {
+        // See comment in _setXRange() about why this is necessary.
+        if (!_originalYRangeGiven) {
+            _originalYlow = min;
+            _originalYhigh = max;
+            _originalYRangeGiven = true;
+        }
+
         // If values are invalid, try for something reasonable.
         if (min > max) {
             min = -1.0;
