@@ -78,6 +78,7 @@ public class StaticSchedulingCodeGenerator
      *  In this base class, nothing is generated.
      */
     public void generateBodyCode(StringBuffer code) throws IllegalActionException {
+        code.append(comment("SDF schedule:"));
         generateFireCode(code);
     }
 

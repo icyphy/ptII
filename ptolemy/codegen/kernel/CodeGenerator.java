@@ -31,6 +31,7 @@ package ptolemy.codegen.kernel;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -40,6 +41,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -175,7 +177,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    /** Generate variable declarations for inputs and outputs.
+    /** Generate variable declarations for inputs and outputs and parameters.
      */
     public void generateVariableDeclarations(StringBuffer code)
             throws IllegalActionException {
@@ -185,30 +187,61 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
+            List attributeList = ((NamedObj)actor).attributeList();
+            for (int i = 0; i < attributeList.size(); i ++) {
+                Attribute attribute = (Attribute)attributeList.get(i);
+                if (attribute instanceof Parameter) {
+                    String type = ((Parameter)attribute).getType().toString();
+                    if (type.equals("boolean")) {
+                        type = "bool";
+                    }
+                    code.append(type);
+                    code.append(" ");
+                    code.append(attribute.getFullName().replace('.', '_'));
+                    code.append(" = ");
+                    code.append(((Variable) attribute).getToken().toString());
+                    code.append(";\n");
+                } 
+            }
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
                 if (inputPort.getWidth() == 0) {
-                    return;
+                    break;
                 }
                 code.append(inputPort.getType().toString());
                 code.append(" ");
                 code.append(inputPort.getFullName().replace('.', '_'));
                 
+                if (inputPort.isMultiport()) {
+                    code.append("[");
+                    code.append((new Integer(inputPort.getWidth())).toString());
+                    code.append("]");
+                }
+                // For multi-rate SDF. 
+                // This should move to StaticSchedulingCodeGenerator.
+                /*
                 code.append("[");
-                code.append((new Integer(inputPort.getWidth())).toString());
-                code.append("];\n");
+                int bufferCapacity = (inputPort.getReceivers())[0].length;
+                code.append(new Integer(bufferCapacity).toString());
+                code.append("]");
+                */
+                code.append(";\n");
             }
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
                 TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
                 // Only generate declarations for those output ports with
                 // port width zero.
+                // FIXME: we need to think about how to deal with output
+                // ports that does not have downstream connections.
                 if (outputPort.getWidth() == 0) {
                     code.append(outputPort.getType().toString());
                     code.append(" ");
                     code.append(outputPort.getFullName().replace('.', '_'));
-                    code.append("[1]");
+                    if (outputPort.isMultiport()) {
+                        code.append("[1]");
+                    }
                     code.append(";\n");
                 }
             }
