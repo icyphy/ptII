@@ -41,14 +41,14 @@ import ptolemy.data.expr.Parameter;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// QueueApplet
+//// InterruptApplet
 /**
 An applet that uses Ptolemy II DE domain.
 
 @author Lukito Muliadi
 @version $Id$
 */
-public class QueueApplet extends Applet {
+public class InterruptApplet extends Applet {
 
     public static final boolean DEBUG = true;
 
@@ -80,35 +80,13 @@ public class QueueApplet extends Applet {
 
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
-        Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(2,2));
+        Plot appletPanel = new Plot();
         add(appletPanel, "Center");
-
-        // _la is the drawing panel for DELogicAnalyzer actor.
-        Plot panel1 = new Plot();
-        Plot panel2 = new Plot();
-        Plot panel3 = new Plot();
-        Plot panel4 = new Plot();
-        appletPanel.add(panel1);
-        appletPanel.add(panel2);
-        appletPanel.add(panel3);
-        appletPanel.add(panel4);
-
+        
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
         // Done adding a control panel.
-
-
-        /*
-        // Adding A and B in the control panel.
-        Panel checkboxPanel = new Panel();
-        checkboxPanel.setLayout(new GridLayout(2,1));
-        checkboxPanel.add(_ATextField);
-        checkboxPanel.add(_BTextField);
-        controlPanel.add(checkboxPanel);
-        // Done adding A and B
-        */
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
@@ -143,7 +121,7 @@ public class QueueApplet extends Applet {
         // Creating the topology.
         try {
             TypedCompositeActor sys = new TypedCompositeActor();
-            sys.setName("DE Demo");
+            sys.setName("DEDemo");
 
             // Set up the top level composite actor, director and manager
             _localDirector = new DECQDirector("DE Director");
@@ -155,56 +133,31 @@ public class QueueApplet extends Applet {
             // ---------------------------------
             // Create the actors.
             // ---------------------------------
+
             DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
-            Ramp ramp = new Ramp(sys, "Ramp", 0, 1.0);
+            Ramp ramp = new Ramp(sys, "Ramp", 0.0, 1.0);
 
-            DEFIFOQueue fifo1 = new DEFIFOQueue(sys, "FIFO1", 1, true, 10);
-            DEPlot plot1 = new DEPlot(sys, "Queue 1 Size", panel1);
-
-            DEServerAlt server1 = new DEServerAlt(sys, "Server1", 1.0);
-            DEPassGate passgate = new DEPassGate(sys, "PassGate");
-            DEDelay delta = new DEDelay(sys, "DEDelay", 0.0);
-
-            DEFIFOQueue fifo2 = new DEFIFOQueue(sys, "FIFO2", 1, true, 1000);
-            DEPlot plot2 = new DEPlot(sys, "Queue 2 Size", panel2);
-
-            TestLevel testlevel = new TestLevel(sys, "TestLevel", true, 4);
-            Not not = new Not(sys, "Not");
-
-            DEServerAlt server2 = new DEServerAlt(sys, "Server2", 3.0);
-
-            DEPlot plot3 = new DEPlot(sys, "Blocking signal", panel3);
-            DEPlot plot4 = new DEPlot(sys, "Dispositions of inputs", panel4);
-
+            // create a processor with min service time = 1.0
+            // interrupt service time = 0.1
+            // mean interarrival time = 3.0
+            DEProcessor processor = new DEProcessor(sys, 
+                    "processor",
+                    0.8, 0.1, 3.0);
+            DEPlot plot = new DEPlot(sys, "Processor Input v.s. Output", 
+                    appletPanel);
+            
+            DESampler sampler = new DESampler(sys, "Sampler");
+            
             // -----------------------
             // Creating connections
             // -----------------------
 
             Relation r1 = sys.connect(clock.output, ramp.input);
-            Relation r2 = sys.connect(ramp.output, fifo1.inData);
-            Relation r3 = sys.connect(fifo1.queueSize, plot1.input);
+            Relation r2 = sys.connect(ramp.output, processor.input);
+            Relation r3 = sys.connect(processor.output, sampler.input);
+            Relation r4 = sys.connect(sampler.output, plot.input);
 
-            Relation r4 = sys.connect(passgate.output, fifo1.demand);
-            fifo2.inData.link(r4);
-
-            Relation r5 = sys.connect(fifo1.outData, server1.input);
-            Relation r6 = sys.connect(fifo1.overflow, plot4.input);
-
-            Relation r7 = sys.connect(server1.output, passgate.input);
-            Relation r8 = sys.connect(delta.output, passgate.gate);
-
-            Relation r9 = sys.connect(not.output, delta.input);
-
-            Relation r14 = sys.connect(testlevel.output, not.input);
-            plot3.input.link(r14);
-
-            Relation r10 = sys.connect(server2.output, plot4.input);
-            fifo2.demand.link(r10);
-
-            Relation r12 = sys.connect(fifo2.queueSize, testlevel.input);
-            plot2.input.link(r12);
-
-            Relation r13 = sys.connect(fifo2.outData, server2.input);
+            sampler.clock.link(r1);
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
@@ -332,7 +285,6 @@ public class QueueApplet extends Applet {
             _manager.terminate();
         }
     }
-
 }
 
 

@@ -122,7 +122,8 @@ public class HierarchyApplet extends Applet {
 
             // Set up block A
 
-            TypedCompositeActor blockA = new TypedCompositeActor(sys, "BlockA");
+            TypedCompositeActor blockA = new TypedCompositeActor(sys, 
+                    "BlockA");
             blockA.setDirector(new DECQDirector("Director A"));
 
             DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);

@@ -1,0 +1,89 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<TITLE>Discrete Event Simulation Demo</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FAF0E6">
+
+<CENTER>
+<H1>
+Demo of DE simulation applet</H1></CENTER>
+
+<H3>
+DE Simulation:</H3>
+The following applet uses Ptolemy II DE domain architecture to simulate a
+queueing system with blocking policy. This particular demo is obtained from
+Ptolemy 0.7.1 DE domain demo.
+<P>
+You can interact with the applet by choosing the stop time of the simulation.
+<P>
+<BR>&nbsp;
+<BR>&nbsp;
+<CENTER>
+<P><APPLET name="AdderApplet"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/de/demo/clockapplet.jar"
+   code=ptolemy.domains.de.demo.InterruptApplet.class
+   codebase=../../../..
+   width=600 height=400>
+<param name="background" value="#faf0e6">
+<BR><I>If you were able to run applets, you would have a waveform demo
+here.</I>
+<BR></APPLET></CENTER>
+
+<P>This applet is implemented by
+<TT><A HREF="QueueApplet.java">InterruptApplet.java</A></TT>.
+<P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
+Actor, a
+<A HREF="../lib/DERamp.java">Ramp</A> Actor,
+<A HREF="../lib/FIFOQueue.java">FIFOQueue</A> Actor,
+<A HREF="../lib/DEServer.java">Server</A> Actor,
+<A HREF="../lib/DEPassGate.java">PassGate</A> Actor,
+<A HREF="../lib/DEDelay.java">Delay</A> Actor,
+<A HREF="../lib/TestLevel.java">TestLevel</A> Actor,
+and a <A HREF="../lib/Not.java">Not</A>
+Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
+<BR>
+<MAP Name="ActorsMap">
+<AREA Shape="rect" Coords="33,315,82,364"
+	Href="../lib/DEClock.java">
+<AREA Shape="rect" Coords="119,314,169,363"
+	Href="../lib/Ramp.java">
+<AREA Shape="rect" Coords="207,330,257,349"
+	Href="../lib/FIFOQueue.java">
+<AREA Shape="rect" Coords="257,253,306,301"
+	Href="../lib/DEPlot.java">
+<AREA Shape="rect" Coords="308,327,343,351"
+	Href="../lib/DEServer.java">
+<AREA Shape="rect" Coords="369,315,418,363"
+	Href="../lib/DEPassGate.java">
+<AREA Shape="rect" Coords="437,229,450,248"
+	Href="../lib/DEDelay.java">
+
+
+<AREA Shape="rect" Coords="468,329,519,349"
+	Href="../lib/FIFOQueue.java">
+<AREA Shape="rect" Coords="507,253,557,301"
+	Href="../lib/TestLevel.java">
+<AREA Shape="rect" Coords="579,263,611,292"
+	Href="../lib/Not.java">
+
+<AREA Shape="rect" Coords="570,327,606,352"
+	Href="../lib/DEServer.java">
+<AREA Shape="rect" Coords="507,176,557,227"
+	Href="../lib/DEPlot.java">
+<AREA Shape="rect" Coords="619,164,669,214"
+	Href="../lib/DEPlot.java">
+<AREA Shape="rect" Coords="657,327,707,377"
+	Href="../lib/DEPlot.java">
+</MAP>
+<CENTER>
+<IMG SRC="img/QueueDiagram.gif"
+Alt="Imagemap" Usemap="#ActorsMap" Ismap>
+</CENTER>
+<BR>
+<HR>Copyright &copy; 1998 The Regents of the University of California.
+All rights reserved.
+<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
+</BODY>
+</HTML>
