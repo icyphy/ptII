@@ -156,7 +156,7 @@ public class DDEDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Increment the count of actors blocked on a read.
+    /** FIXME
      */
     public double getCurrentTime() {
 	Thread thread = Thread.currentThread();
@@ -164,6 +164,7 @@ public class DDEDirector extends ProcessDirector {
 	    TimeKeeper tk = ((DDEThread)thread).getTimeKeeper();
 	    return tk.getCurrentTime();
 	} else {
+	    // FIXME: Hmmm...this might not be right.
 	    return super.getCurrentTime();
 	}
     }
