@@ -188,3 +188,68 @@ test InequalitySolver-2.6 {solve for greatest solutino for above} {
          [enumToInfo [$s1 unsatisfiedInequalities]]
 } {0 w z B(variable)_z A(variable)_w {{Y(constant)_y B(variable)_z}}}
 
+######################################################################
+####
+# 
+test InequalitySolver-3.1 {solve constraints on TypeLattic} {
+    # This comes from a real topology in DE SamplerSystem.
+    set tem [java::new ptolemy.data.TypeCPO]
+    set cpo [$tem cpo]
+
+    # init. type terms
+    set pDouble [java::new ptolemy.actor.TypedIOPort]
+    $pDouble setDeclaredType [[java::new ptolemy.data.DoubleToken] getClass]
+    set tDouble [$pDouble getTypeTerm]
+
+    set ps1c [java::new ptolemy.actor.TypedIOPort]
+    set ts1c [$ps1c getTypeTerm]
+    set ps1d [java::new ptolemy.actor.TypedIOPort]
+    set ts1d [$ps1d getTypeTerm]
+    set ps1o [java::new ptolemy.actor.TypedIOPort]
+    set ts1o [$ps1o getTypeTerm]
+
+    set ps2c [java::new ptolemy.actor.TypedIOPort]
+    set ts2c [$ps2c getTypeTerm]
+    set ps2d [java::new ptolemy.actor.TypedIOPort]
+    set ts2d [$ps2d getTypeTerm]
+    set ps2o [java::new ptolemy.actor.TypedIOPort]
+    set ts2o [$ps2o getTypeTerm]
+
+    # setup type constraints
+    set d_s1c [java::new ptolemy.graph.Inequality $tDouble $ts1c]
+    set d_s2c [java::new ptolemy.graph.Inequality $tDouble $ts2c]
+
+    set s1d_s1o [java::new ptolemy.graph.Inequality $ts1d $ts1o]
+    set s1c_s1o [java::new ptolemy.graph.Inequality $ts1c $ts1o]
+    set s1o_d [java::new ptolemy.graph.Inequality $ts1o $tDouble]
+
+    set s2d_s2o [java::new ptolemy.graph.Inequality $ts2d $ts2o]
+    set s2c_s2o [java::new ptolemy.graph.Inequality $ts2c $ts2o]
+    set s2o_d [java::new ptolemy.graph.Inequality $ts2o $tDouble]
+
+    set d_s1d [java::new ptolemy.graph.Inequality $tDouble $ts1d]
+    set d_s2d [java::new ptolemy.graph.Inequality $tDouble $ts2d]
+
+    # solver constraints
+    set s [java::new ptolemy.graph.InequalitySolver $cpo]
+    $s addInequality $d_s1c
+    $s addInequality $d_s2c
+    $s addInequality $s1d_s1o
+    $s addInequality $s1c_s1o
+    $s addInequality $s1o_d
+    $s addInequality $s2d_s2o
+    $s addInequality $s2c_s2o
+    $s addInequality $s2o_d
+    $s addInequality $d_s1d
+    $s addInequality $d_s2d
+
+    set sat [$s solveLeast]
+    list $sat \
+	 [[$ps1c getResolvedType] getName] \
+	 [[$ps1d getResolvedType] getName] \
+	 [[$ps1o getResolvedType] getName] \
+	 [[$ps2c getResolvedType] getName] \
+	 [[$ps2d getResolvedType] getName] \
+	 [[$ps2o getResolvedType] getName]
+} {1 ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken} 
+
