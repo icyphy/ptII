@@ -88,6 +88,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/joystick/jstick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
     $inputFileNamesToSkip add "/rectangle.xml"
+    $inputFileNamesToSkip add "TOSIndex.xml"
     $inputFileNamesToSkip add "/quicktime.xml"
     $inputFileNamesToSkip add "/matlab.xml"
     $inputFileNamesToSkip add "/x10/x10.xml"
