@@ -61,6 +61,10 @@ public class FunctionDependencyOfModalModel extends FunctionDependencyOfComposit
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
+    /** Get a list of refinements of the current state for function 
+     *  dependency calculation.  
+     *  @return a list of refinements of the current state. 
+     */
     protected List _getEntities() {
         LinkedList entities = new LinkedList();
         try {
