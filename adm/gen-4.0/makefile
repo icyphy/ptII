@@ -940,9 +940,10 @@ $(REMOTE2PTJACL_JAR):
 	@echo "$@ `date`"
 	@echo "`uptime`"
 
-remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
+remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 	@echo "#"
-	@echo "# Now testing with JDK1.4 on carson, a two processor machine"
+	@echo "# Now testing with on `hostname`"
+	@echo "# with `java -version`"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
