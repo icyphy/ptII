@@ -66,7 +66,7 @@ public class CSPSource extends CSPActor {
 	Random rand = new Random();
 	int count = 0;
 	while (count < 15 ) {
-	  Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
+            //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
 	  Token t = new IntToken(count);
 	  output.send(0,t);
 	  System.out.println(getName() + " sent Token: " + t.toString());
@@ -77,9 +77,9 @@ public class CSPSource extends CSPActor {
 	System.out.println("CSPSource: illegalActionException, exiting");
       }  catch (CloneNotSupportedException ex) {
 	System.out.println(getName() + ": cannot clone  token, bug in DATA");
-      } catch (InterruptedException ex) {
+        /*} catch (InterruptedException ex) {
 	System.out.println(getName() + ": interupted while sleeping");
-      }
+        */}
     }
     
     public IOPort output;

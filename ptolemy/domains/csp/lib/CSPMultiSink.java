@@ -58,41 +58,54 @@ public class CSPMultiSink extends CSPActor {
 	 input.makeMultiport(true);
     }
 
-  public void _run() {
-    try {
-      int count = 0;
-      int size = input.getWidth();
-      int i = 0;
-      boolean[] bools = new boolean[size];
-      for (i=0; i<size; i++) {
-	bools[i] = true;
+    public void _run() {
+        try {
+            int count = 0;
+            int size = input.getWidth();
+            _branchCount = new int[size];
+            int i = 0;
+            boolean[] bools = new boolean[size];
+            for (i=0; i<size; i++) {
+                _branchCount[i] = 0;
+                bools[i] = true;
+            }
+            while (count < 25 ) {
+                ConditionalBranch[] branches = new ConditionalBranch[size];
+                for (i=0; i<size; i++) {
+                    if (bools[i]) {
+                        branches[i] = new ConditionalReceive(input, i, i);
+                    }
+                }
+                int successfulBranch = chooseBranch(branches);
+                _branchCount[successfulBranch]++;
+                boolean flag = false;
+                for (i=0; i<size; i++) {
+                    if (successfulBranch == i) {
+                        System.out.println(getName() + ": received Token: " + getToken().toString() + " from receiver " + i);
+                        flag = true;
+                    }
+                }
+                if (!flag) {
+                    System.out.println("Error: branch id not valid!");
+                }
+                count++;
       }
-      while (count < 25 ) {
-	ConditionalBranch[] branches = new ConditionalBranch[size];
-	for (i=0; i<size; i++) {
-	  if (bools[i]) {
-	    branches[i] = new ConditionalReceive(input, i, i);
-	  }
-	}
-	int successfulBranch = chooseBranch(branches);
-	boolean flag = false;
-	for (i=0; i<size; i++) {
-	  if (successfulBranch == i) {
-	    System.out.println(getName() + ": received Token: " + getToken().toString() + " from receiver " + i);
-	    flag = true;
-	    }
-	}
-	if (!flag) {
-	  System.out.println("Error: successful branch id not valid!");
-	}
-	count++;
-      }
-    
-    } catch (IllegalActionException ex) {
-      System.out.println("Error: could not create ConditionalReceive branch");
+            
+        } catch (IllegalActionException ex) {
+            String str = "Error: could not create ConditionalReceive branch";
+            System.out.println(str);
+        }
+        return;
     }
-    return;
-  }
- 
-  public IOPort input;
+
+    public void wrapup() {
+        System.out.println("Invoking wrapup of CSPMultiSink...\n");
+        for (int i=0; i<input.getWidth(); i++) {
+            String str = "MultiSink: Branch " + i +  " successfully  rendez";
+            System.out.println(str + "voused " + _branchCount[i] + " times.");
+        }
+    }
+
+    public IOPort input;
+    private int[] _branchCount;
 }

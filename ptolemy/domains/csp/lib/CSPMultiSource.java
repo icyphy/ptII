@@ -31,10 +31,10 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
-import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.*;
+import ptolemy.data.*;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,50 +47,67 @@ import java.util.Random;
 
 */
 public class CSPMultiSource extends CSPActor {
-  public CSPMultiSource() {
+    public CSPMultiSource() {
         super();
     }
     
-    public CSPMultiSource(CSPCompositeActor cont, String name, CSPReceiver[] 
-            recs) throws IllegalActionException, NameDuplicationException {
-                super(cont, name);
-                receivers = recs;
-                //output = new IOPort(this, "output", false, true);
+    public CSPMultiSource  (CSPCompositeActor cont, String name)
+       throws IllegalActionException, NameDuplicationException {
+	 super(cont, name);
+	 output = new IOPort(this, "output", false, true);
+	 output.makeMultiport(true);
     }
 
-  public void _run() {
-    try {
-      int count = 0;
-      int size = receivers.length;
-      int i = 0;
-      while (count < 10 ) {
-	Token t = new IntToken(count);
-	ConditionalBranch[] branches = new ConditionalBranch[size];
-	for (i=0; i<size; i++) {
-	  branches[i] = new ConditionalSend(receivers[i], this, i, t);
-	}
-	int successfulBranch = chooseBranch(branches);
-	boolean flag = false;
-	for (i=0; i<size; i++) {
-	  if (successfulBranch == i) {
-	    System.out.println(getName() + ": sent Token: " +t.toString() + " to receiver " + i);
-	    flag = true;
-	  }
-	}
-	if (!flag) {
-	  System.out.println("Error: successful branch id not valid!");
-	}
-	count++;
+    public void _run() {
+        try {
+            int count = 0;
+            int size = output.getWidth();
+            _branchCount = new int[size];
+            int i = 0;
+            boolean[] bools = new boolean[size];
+            for (i=0; i<size; i++) {
+                _branchCount[i] = 0;
+                bools[i] = true;
+            }
+            Token t;
+            while (count < 25 ) {
+                t = new IntToken(count);
+                ConditionalBranch[] branches = new ConditionalBranch[size];
+                for (i=0; i<size; i++) {
+                    if (bools[i]) {
+                        branches[i] = new ConditionalSend(output, i, i,t);
+                    }
+                }
+                int successfulBranch = chooseBranch(branches);
+                _branchCount[successfulBranch]++;
+                boolean flag = false;
+                for (i=0; i<size; i++) {
+                    if (successfulBranch == i) {
+                        System.out.println(getName() + ": sent Token: " + t.toString() + " to receiver " + i);
+                        flag = true;
+                    }
+                }
+                if (!flag) {
+                    System.out.println("Error: branch id not valid!");
+                }
+                count++;
       }
-      // terminate sinks
-      for (i=0; i<size; i++) {
-	receivers[i].put(new NullToken());
-      }
-    } catch (Exception ex) {
-      System.out.println(ex.getMessage());
+            
+        } catch (IllegalActionException ex) {
+            String str = "Error: could not create ConditionalSend branch";
+            System.out.println(str);
+        }
+        return;
     }
-    return;
-  }
- 
-  private CSPReceiver[] receivers;
+
+    public void wrapup() {
+        System.out.println("Invoking wrapup of CSPMultiSource...\n");
+        for (int i=0; i<output.getWidth(); i++) {
+            String str = "MultiSource: Branch " + i +  " successfully  rendez";
+            System.out.println(str + "voused " + _branchCount[i] + " times.");
+        }
+    }
+
+    public IOPort output;
+    private int[] _branchCount;
 }
