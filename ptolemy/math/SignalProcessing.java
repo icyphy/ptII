@@ -541,8 +541,9 @@ public final class SignalProcessing {
     // The size of the FFT is <i>size</i> = 2<sup><i>order</i></sup>,
     // which must be equal to the length of the array argument (this is
     // not checked, so the caller should ensure it).
-    // This is adapted from "C Language Algorithms for DSP", P.258,
-    // FIXME (publisher, authors, date).
+    // This is adapted from "C Language Algorithms for Digital
+    // Signal Processing," Paul M. Embree and Bruce Kimble, Prentice-Hall,
+    // 1991, P.258.
     // @param x The data to transform
     // @param order The log (base 2) of the size of the FFT
     // @param inverse If true, compute the inverse DFT
