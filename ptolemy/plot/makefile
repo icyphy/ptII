@@ -29,8 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Root of the Java directory
-ROOT =		../../..
+# Root of the Ptolemy II directory
+ROOT =		../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

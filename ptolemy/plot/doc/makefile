@@ -29,10 +29,8 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Root of Tycho directory
-ROOT =		../../../..
-# True source directory
-VPATH =		$(ROOT)/java/pt/plot/doc
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
