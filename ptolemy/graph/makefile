@@ -1,6 +1,7 @@
 # Makefile for the Ptolemy Java graph classes.
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Shuvra S. Bhattacharyya, Christopher Hylands, 
+# based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -59,6 +60,7 @@ JSRCS = \
     DirectedGraph.java \
     Edge.java \
     Element.java \
+    ElementList.java \
     Graph.java \
     Graphs.java \
     LabeledList.java \

@@ -61,19 +61,7 @@ test DirectedAcyclicGraph-2.1 {Create an empty instance} {
 test DirectedAcyclicGraph-2.2 {test methods on the above empty instance} {
     catch {$p leastUpperBound null null} msg
     list [$p bottom] [$p top] $msg
-} {java0x0 java0x0 {ptolemy.graph.exception.GraphWeightException: The specified weight is not a node weight in this graph.
-Dumps of the offending weight and graph follow.
-The offending weight:
-null
-The offending graph:
-{ptolemy.graph.DirectedAcyclicGraph
-Node Set:
-
-Edge Set:
-
-}
-
-}}
+} {java0x0 java0x0 {ptolemy.graph.exception.GraphWeightException: Invalid weight argument.}}
 
 ######################################################################
 ####

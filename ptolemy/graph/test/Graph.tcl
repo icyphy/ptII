@@ -752,7 +752,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+} {ptolemy.graph.exception.GraphElementException: Incorrect previous weight specified.
 Dumps of the offending weight and graph follow.
 The offending weight:
 weight2
@@ -766,7 +766,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+} {ptolemy.graph.exception.GraphElementException: Incorrect previous weight specified.
 Dumps of the offending weight and graph follow.
 The offending weight:
 null
@@ -780,7 +780,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+} {ptolemy.graph.exception.GraphElementException: Incorrect previous weight specified.
 Dumps of the offending weight and graph follow.
 The offending weight:
 null
