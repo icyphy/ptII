@@ -62,23 +62,23 @@ public class KernelException extends Exception {
      *  names of the first two arguments plus the third argument string.
      *  If one or more of the parameters are null, then the detail
      *  message is adjusted accordingly.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
      *  @param detail The message.
      */
-    public KernelException(Nameable obj1, Nameable obj2,
+    public KernelException(Nameable object1, Nameable object2,
             String detail) {
-        String obj1string = _getFullName(obj1);
-        String obj2string = _getFullName(obj2);
+        String object1string = _getFullName(object1);
+        String object2string = _getFullName(object2);
         String prefix;
-        if (!obj1string.equals("")) {
-            if (!obj2string.equals("")) {
-                prefix = new String(obj1string + " and " + obj2string);
+        if (!object1string.equals("")) {
+            if (!object2string.equals("")) {
+                prefix = new String(object1string + " and " + object2string);
             } else {
-                prefix = obj1string;
+                prefix = object1string;
             }
         } else {
-            prefix = obj2string;
+            prefix = object2string;
         }
         _setMessage(prefix);
         if (detail != null) {
@@ -123,15 +123,15 @@ public class KernelException extends Exception {
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a name.
+     *  @param object An object with a name.
      *  @return The name of the argument.
      */
-    protected String _getName(Nameable obj) {
+    protected String _getName(Nameable object) {
         String name;
-        if (obj == null) {
+        if (object == null) {
             return "";
         } else {
-            name = obj.getName();
+            name = object.getName();
             if (name.equals("")) {
                 name = new String("<Unnamed Object>");
             }
@@ -142,18 +142,18 @@ public class KernelException extends Exception {
     /** Get the name of a Nameable object.  This method attempts to use
      *  getFullName(), if it is defined, and resorts to getName() if it is
      *  not.  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a full name.
+     *  @param object An object with a full name.
      *  @return The full name of the argument.
      */
-    protected String _getFullName(Nameable obj) {
+    protected String _getFullName(Nameable object) {
         String name;
-        if (obj == null) {
+        if (object == null) {
             return "";
         } else {
             try {
-                name = obj.getFullName();
+                name = object.getFullName();
             } catch (InvalidStateException ex) {
-                name = obj.getName();
+                name = object.getName();
             }
         }
         return name;
