@@ -107,7 +107,7 @@ public class  CTPlot extends CTActor {
         if (_plot == null) {
             _plot = (new PlotFrame(getName())).plot;
         }
-
+        _plot.clear(true);
         _plot.setButtons(true);
 	_plot.setPointsPersistence(0);
         //_plot.setMarksStyle("points");
@@ -132,8 +132,6 @@ public class  CTPlot extends CTActor {
                  System.out.println(_legends[index-1]);
             }
         }
-        // Call clear with 'true' argument, so it'll reset the legend...
-        _plot.clear(false);
         int width = input.getWidth();
         _firstPoint = new boolean[width];
         for (int i = 0; i < width; i++) {
