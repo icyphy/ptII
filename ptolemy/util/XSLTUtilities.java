@@ -62,6 +62,13 @@ import org.xml.sax.InputSource;
 A collection of utilities for manipulating strings using XSLT
 These utilities do not depend on any other ptolemy.* packages.
 
+<p>This file uses Saxon, the XSLT and XQuery Processor
+<a href="http://saxon.sourceforge.net/#in_browser" target="_top">http://saxon.sourceforge.net</a>.
+
+<p>Between Java 1.4.x and Java 1.5, Xalan was removed from the jar
+files that are shipped.  Since Caltrop uses Saxon anyway, we now
+use Saxon here as well.
+
 
 @author Christopher Hylands, Haiyang Zheng
 @version $Id$
