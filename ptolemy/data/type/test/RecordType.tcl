@@ -270,7 +270,7 @@ test RecordType-8.2 {Test initialize} {
 test RecordType-9.0 {Test updateType} {
     catch {$empRT updateType $sdRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: The argument is not a substitution instance of this type.}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {} argument: {name:string, value:double}}}
 
 ######################################################################
 ####
@@ -278,7 +278,7 @@ test RecordType-9.0 {Test updateType} {
 test RecordType-9.1 {Test updateType} {
     catch {$sdRT updateType $empRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: The argument is not a substitution instance of this type.}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name:string, value:double} argument: {}}}
 
 ######################################################################
 ####
@@ -286,7 +286,7 @@ test RecordType-9.1 {Test updateType} {
 test RecordType-9.2 {Test updateType} {
     catch {$sdRT updateType $varRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: The argument is not a substitution instance of this type.}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name:string, value:double} argument: {name:string, value:NaT}}}
 
 ######################################################################
 ####

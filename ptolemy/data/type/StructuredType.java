@@ -70,14 +70,12 @@ public abstract class StructuredType implements Type {
     public abstract void initialize(Type t);
 
     /** Update this StructuredType to the specified Structured Type.
-     *  The specified StructuredType must not be a constant, otherwise an
-     *  exception will be thrown. The specified type must have the same
-     *  structure as this type. This method will only update the
-     *  component type that is BaseType.NAT, and leave the constant
-     *  part of this type intact.
+     ** The specified type must have the same structure as this type.
+     *  This method will only update the component type that is BaseType.ANY,
+     *  and leave the constant part of this type intact.
      *  @param st A StructuredType.
-     *  @exception IllegalActionException If this Structured type
-     *   is a constant, or the specified type has a different structure.
+     *  @exception IllegalActionException If the specified type has a
+     *   different structure.
      */
     public abstract void updateType(StructuredType st)
             throws IllegalActionException;

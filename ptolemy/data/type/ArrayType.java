@@ -281,20 +281,32 @@ public class ArrayType extends StructuredType {
     }
 
     /** Update this Type to the specified ArrayType.
-     *  The specified type must be a substitution instance of this type.
+     *  The specified type must be an ArrayType with the same structure as
+     *  this type.
      *  This method will only update the component whose declared type is
-     *  BaseType.NAT, and leave the constant part of this type intact.
-     *  This method does not check for circular usage, the caller should
-     *  perform this check.
+     *  BaseType.ANY, and leave the constant part of this type intact.
      *  @param st A StructuredType.
-     *  @exception IllegalActionException If the specified type is not a
-     *   substitution instance of this type.
+     *  @exception IllegalActionException If the specified type is not an
+     *   ArrayType or it does not have the same structure as this one.
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
+	if (this.isConstant()) {
+	    if (this.isEqualTo(newType)) {
+	        return;
+	    } else {
+	        throw new IllegalActionException("ArrayType.updateType: " +
+		    "This type is a constant and the argument is not the " +
+		    "same as this type. This type: " + this.toString() +
+		    " argument: " + newType.toString());
+            }
+	}
+
+	// This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("ArrayType.updateType: " +
-                    "The argument is not a substitution instance of this type.");
+                "This type is a variable and the argument is not a " +
+		"substitution instance of this type.");
         }
 
         Type newElemType = ((ArrayType)newType).getElementType();

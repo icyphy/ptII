@@ -362,18 +362,32 @@ public class RecordType extends StructuredType {
     }
 
     /** Update this Type to the specified RecordType.
-     *  The specified type must be a substitution instance of this type.
+     *  The specified type must be a RecordType and have the same structure
+     *  as this one.
      *  This method will only update the component whose declared type is
      *  BaseType.ANY, and leave the constant part of this type intact.
      *  @param st A StructuredType.
      *  @exception IllegalActionException If the specified type is not a
-     *   substitution instance of this type.
+     *   RecordType or it does not have the same structure as this one.
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
+	if (this.isConstant()) {
+	    if (this.isEqualTo(newType)) {
+	        return;
+	    } else {
+	        throw new IllegalActionException("RecordType.updateType: " +
+		    "This type is a constant and the argument is not the " +
+		    "same as this type. This type: " + this.toString() +
+		    " argument: " + newType.toString());
+            }
+	}
+	
+	// This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("RecordType.updateType: " +
-                    "The argument is not a substitution instance of this type.");
+                "This type is a varaible and the argument is not a " +
+		"substitution instance of this type.");
         }
 
         Iterator iter = _fields.keySet().iterator();
