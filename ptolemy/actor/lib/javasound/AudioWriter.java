@@ -198,7 +198,8 @@ public class AudioWriter extends Sink {
             if ((_inArray == null) || (_channels != _inArray.length)) {
                 _inArray = new Token[_channels][];
             }
-            if ((_audioPutArray == null) || (_channels != _audioPutArray.length)) {
+            if ((_audioPutArray == null) ||
+                    (_channels != _audioPutArray.length)) {
                 _audioPutArray = new double[_channels][];
             }
             for (int i = 0; i < _channels; i++) {

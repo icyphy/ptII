@@ -150,9 +150,10 @@ public class DoubleToFix extends Converter {
     }
 
     /** Read at most one token from the input and output the converted
-     *  fixed-point value with the precision given by the <i>precision</i> parameter,
-     *  overflow strategy given by the <i>overflow</i> parameter,
-     *  and rounding strategy given by the <i>rounding</i> parameter.
+     *  fixed-point value with the precision given by the
+     *  <i>precision</i> parameter, overflow strategy given by the
+     *  <i>overflow</i> parameter, and rounding strategy given by the
+     *  <i>rounding</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

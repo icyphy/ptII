@@ -303,7 +303,8 @@ public class AudioCapture extends Source implements LiveSoundListener {
                 }
                 _getSamplesArrayPointer++;
                 // Check if we still have at least one sample left.
-                if ((_audioInDoubleArray[0].length - _getSamplesArrayPointer) <= 0) {
+                if ((_audioInDoubleArray[0].length -
+                        _getSamplesArrayPointer) <= 0) {
                     // We just ran out of samples.
                     _haveASample = false;
                 }
