@@ -1,6 +1,6 @@
 # Tests for deep codegen
 #
-# @Author: Steve Neuendorffer
+# @Author: Steve Neuendorffer, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -82,12 +82,12 @@ proc autoDeepCG {autoDirectory} {
 #  } {2 4 6 8 10 12 14 16 18 20}
 
 # First, do an SDF test just to be sure things are working
-test Deep-1.2 {Compile and run the SDF IIR test} {
-    set result [sootDeepCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto \
-	    IIR.xml]]
-    list {}
-} {{}}
+#test Deep-1.2 {Compile and run the SDF IIR test} {
+#    set result [sootDeepCodeGeneration \
+#	    [file join $relativePathToPTII ptolemy actor lib test auto \
+#	    IIR.xml]]
+#    list {}
+#} {{}}
 
 #  test Deep-1.3 {Compile and run the SDF ArrayAppend test} {
 #      set result [sootDeepCodeGeneration \
@@ -97,18 +97,26 @@ test Deep-1.2 {Compile and run the SDF IIR test} {
 #  } {{}}
 
 # Now try to generate code for all the tests in the auto directories.
-#  autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
-#  autoDeepCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
+
+autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
+autoDeepCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
+
 #  #autoDeepCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains de lib test auto]
+
+
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains dt kernel test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains fsm test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
-#autoDeepCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
-#autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
-#autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
+
+
+autoDeepCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
+autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
+autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
+
+
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
 
