@@ -1433,17 +1433,28 @@ public class AssignmentTransformer extends AbstractTransformer
         invocation.arguments().addAll(indices);
         
         // Add the right-hand side expression to the argument list.
+        Type rightHandType = Type.getType(rightHand);
         if (!isSpecial &&
                 type.isPrimitive() &&
-                !type.equals(Type.getType(rightHand))) {
+                !type.equals(rightHandType)) {
             // Require an explicit conversion.
             CastExpression castExpression = ast.newCastExpression();
             castExpression.setType(createType(ast, type.getName()));
             castExpression.setExpression((Expression)
                     ASTNode.copySubtree(ast, rightHand));
             rightHand = castExpression;
-        } else
+        } else {
             rightHand = (Expression)ASTNode.copySubtree(ast, rightHand);
+            if (isSpecial &&
+                    type.getName().equals(String.class.getName()) &&
+                    !type.equals(rightHandType)) {
+                InfixExpression extraPlus = ast.newInfixExpression();
+                extraPlus.setLeftOperand(ast.newStringLiteral());
+                extraPlus.setOperator(InfixExpression.Operator.PLUS);
+                extraPlus.setRightOperand(rightHand);
+                rightHand = extraPlus;
+            }
+        }
         invocation.arguments().add(rightHand);
         
         // Set the type of this invocation.
