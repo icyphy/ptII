@@ -70,8 +70,9 @@ is not a multiport.  All ports have type boolean.
 This actor is nonstrict.  That is, it does not require that each input
 channel have a token upon firing.  If the output can be determined from the
 known inputs, the output will be produced.  If the output can not be
-determinedin the given firing, no output will be produced. At most one token 
-is consumed on each input channel.
+determined in the given firing, no output will be produced.  If all of the
+inputs are known and absent, the output will be made known and absent.
+At most one token is consumed on each input channel.
 
 @author Paul Whitaker
 @version $Id$
@@ -112,11 +113,20 @@ public class NonStrictLogicFunction extends LogicFunction
             }
         }
 
-        if (value != null) value = _nullifyIncompleteResults(value);
+        if (value == null) {
+            // If value is null, there were no inputs.  If all the inputs are
+            // known, they must be all absent, so make the output absent.
+            if (input.isKnown()) output.sendAbsent(0);
+        } else {
+            // If the value is not null, there were some inputs.  If some of
+            // the inputs are unknown, the result might be invalid.  In that
+            // case, nullify the result so no token is sent.
+            value = _nullifyIncompleteResults(value);
+        }
 
         if (value != null) {
             if (_negate) value = value.not();
-            output.send(0,(BooleanToken)value);
+            output.send(0, (BooleanToken)value);
         }
     }
 

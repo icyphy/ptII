@@ -1,4 +1,4 @@
-/* An actor that outputs the most recent input received.
+/* A nonstrict client that receives data from a server.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,76 +30,109 @@
 
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.lib.Transformer;
-import ptolemy.data.Token;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
 
 //////////////////////////////////////////////////////////////////////////
-//// Latch
+//// NonStrictClient
 /**
-This actor implements a latch.  It has one input port and
-one output port, both of which are single ports.  A token that is received
-on the input port is sent to the output port immediately, and also every time
-the actor is fired until a new token is received.  No tokens are output until
-the first token is received at the input.
+A nonstrict client that receives data from a server.  This actor outputs
+incrementing integers on the <i>indexOutput</i> port.  A server is expected to
+receive an index number and output a token associated with this index, which
+the client receives on the <i>dataInput</i> port.  The client then outputs this
+token on the <i>dataOutput</i> port.  All ports are single ports.
 
 @author Paul Whitaker
 @version $Id$
 */
 
-public class Latch extends Transformer {
+public class NonStrictClient extends TypedAtomicActor
+    implements NonStrictActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
-     *  @param name The name of this actor within the container.
+     *  @param name The name of this adder within the container.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Latch(CompositeEntity container, String name)
+    public NonStrictClient(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        dataInput = new TypedIOPort(this, "dataInput", true, false);
+        indexOutput = new TypedIOPort(this, "indexOutput", false, true);
+        dataOutput = new TypedIOPort(this, "dataOutput", false, true);
 
-        output.setTypeSameAs(input);
+        indexOutput.setTypeEquals(BaseType.INT);
+        dataOutput.setTypeSameAs(dataInput);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Input port for data from a server.
+     */
+    public TypedIOPort dataInput;
+
+    /** Output port for data.  The type is the same as dataInput.
+     */
+    public TypedIOPort dataOutput;
+
+    /** Output port for data indices.  The type is integer.
+     */
+    public TypedIOPort indexOutput;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a token on the input port, consume exactly one token
-     *  from the input port, and output this token.  If there is no token
-     *  on the input port, output the most recent token received, if any.
+    /** Output incrementing integers on the inputOutput.  Transfer tokens
+     *  received on the dataInput port to the dataOutput port.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            _currentToken = input.get(0);
-        }
-        
-        if (_currentToken != null) {
-            output.send(0, _currentToken);
+        indexOutput.send(0, new IntToken(_index));
+        if (dataInput.isKnown(0)) {
+            if (dataInput.hasToken(0)) {
+                dataOutput.send(0, dataInput.get(0));
+            } else {
+                dataOutput.sendAbsent(0);
+            }
         }
     }
 
-    /** Initialize the buffer variable.
+    /** Initialize private variables.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
-        _currentToken = null;
         super.initialize();
+        _index = 0;
+    }
+
+    /** Incremement the index number.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _index++;
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                        private variables                  ////
 
-    // The most recent token received.
-    private Token _currentToken;
+    // The index number to output on the indexOutput port.
+    private int _index;
 
 }
+
+
+
 
 
 

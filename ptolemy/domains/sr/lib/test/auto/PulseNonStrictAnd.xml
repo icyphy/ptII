@@ -4,12 +4,12 @@
 <entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[91, 75]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="period" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">
         </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="83.0, 124.0">
+        <property name="_location" class="ptolemy.moml.Location" value="84.0, 124.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -52,50 +52,8 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="438.0, 123.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="457.0, 218.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="NonStrictDisplay3" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="489.0, 314.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="NonStrictLogicalOr" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="or">
+    <entity name="NonStrictLogicalAnd" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
                 </property>
@@ -111,7 +69,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="357.0, 316.0">
+        <property name="_location" class="ptolemy.moml.Location" value="338.0, 317.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -119,6 +77,42 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="432.0, 61.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="520.0, 229.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="475.0, 392.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -129,14 +123,14 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="255.0, 234.0">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Pulse.output" relation="relation5"/>
     <link port="Pulse2.output" relation="relation6"/>
-    <link port="NonStrictDisplay.input" relation="relation5"/>
-    <link port="NonStrictDisplay2.input" relation="relation6"/>
-    <link port="NonStrictDisplay3.input" relation="relation"/>
-    <link port="NonStrictLogicalOr.input" relation="relation5"/>
-    <link port="NonStrictLogicalOr.input" relation="relation6"/>
-    <link port="NonStrictLogicalOr.output" relation="relation"/>
+    <link port="NonStrictLogicalAnd.input" relation="relation5"/>
+    <link port="NonStrictLogicalAnd.input" relation="relation6"/>
+    <link port="NonStrictLogicalAnd.output" relation="relation4"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="Test2.input" relation="relation6"/>
+    <link port="Test3.input" relation="relation4"/>
 </entity>

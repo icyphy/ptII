@@ -7,18 +7,13 @@ FIXMEs
 
 are tests running?
 
-verify that all SR actors handle absent appropriately
-figure out what is wrong with Undefined - write tests
+Delay should be NonStrictDelay
 
 add SRDirector and sr.lib to the library
 
 create an SRScheduler
 determine whether actors are ready to fire
 determine whether actors are done firing
-
-modify actors to work in SR
-       LogicFunction shouldn't produce an output unless it has enough inputs
-fix tests
 
 -------------------------------------------------------------------------------
 

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.InvalidStateException;
 //// SRReceiver
 /**
 
-FIXME: update.
+FIXMENOW: update.
 
 The receiver for the SR domain. This receiver is a mailbox with capacity one,
 and any token put in the receiver overwrites any token previously present in

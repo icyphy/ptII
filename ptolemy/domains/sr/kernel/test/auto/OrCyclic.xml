@@ -4,26 +4,21 @@
 <entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[112, 114]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="period" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">
+        <property name="_location" class="ptolemy.moml.Location" value="73.0, 38.0">
         </property>
     </property>
-    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="2">
+    <entity name="True" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true}">
-        </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="83.0, 124.0">
+        <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="48.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -33,26 +28,17 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="3">
+    <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
+        <property name="_location" class="ptolemy.moml.Location" value="516.0, 223.0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{1, 2}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true}">
-        </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="91.0, 229.0">
-        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
-    <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
+    <entity name="NonStrictLogicalOr" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="or">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -69,7 +55,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="351.0, 341.0">
+        <property name="_location" class="ptolemy.moml.Location" value="335.0, 250.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -80,11 +66,11 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="447.0, 127.0">
+        <property name="_location" class="ptolemy.moml.Location" value="178.0, 126.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -92,11 +78,11 @@
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="466.0, 237.0">
+        <property name="_location" class="ptolemy.moml.Location" value="315.0, 76.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -104,33 +90,36 @@
         </port>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="481.0, 350.0">
+        <property name="_location" class="ptolemy.moml.Location" value="520.0, 327.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="209.0, 129.0">
-        </vertex>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="255.0, 234.0">
-        </vertex>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="435.0, 256.0">
+        </vertex>
     </relation>
-    <link port="Pulse.output" relation="relation5"/>
-    <link port="Pulse2.output" relation="relation6"/>
-    <link port="LogicFunction.input" relation="relation5"/>
-    <link port="LogicFunction.input" relation="relation6"/>
-    <link port="LogicFunction.output" relation="relation"/>
-    <link port="Test.input" relation="relation5"/>
-    <link port="Test2.input" relation="relation6"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="230.0, 156.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="133.0, 259.0">
+        </vertex>
+    </relation>
+    <link port="True.output" relation="relation3"/>
+    <link port="LogicalNot.input" relation="relation"/>
+    <link port="LogicalNot.output" relation="relation2"/>
+    <link port="NonStrictLogicalOr.input" relation="relation2"/>
+    <link port="NonStrictLogicalOr.input" relation="relation3"/>
+    <link port="NonStrictLogicalOr.output" relation="relation"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test2.input" relation="relation2"/>
     <link port="Test3.input" relation="relation"/>
 </entity>

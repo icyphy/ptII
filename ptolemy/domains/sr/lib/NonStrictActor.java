@@ -39,9 +39,9 @@ that implement this interface should produce outputs only if those outputs
 can be determined from the given inputs.  Outputs that cannot be determined 
 from the given inputs should not be produced.
 <p>
-An actor could implement this interface to notify the director that it may
-output undefined values.  Otherwise the director might assume that these 
-values are absent.
+If an actor implements this interface, the director should assume that it may
+intentionally output undefined values.  The director should not assume that
+these values are absent.
 
 @author Paul Whitaker
 @version $Id$

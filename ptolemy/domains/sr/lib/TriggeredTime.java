@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TriggeredTime
 /**
 Upon receiving a token on the input, produce an output token with a value 
-that is the current time. The output is of Type Double.
+that is the current time. The output is of type double.
 
 @author Paul Whitaker, Jie Liu
 @version $Id$
@@ -94,3 +94,15 @@ public class TriggeredTime extends TimedSource {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

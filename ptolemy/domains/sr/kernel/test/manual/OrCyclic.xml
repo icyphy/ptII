@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="OrCyclic" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
@@ -14,38 +14,11 @@
         <property name="_location" class="ptolemy.moml.Location" value="73.0, 38.0">
         </property>
     </property>
-    <entity name="LogicalOr" class="ptolemy.actor.lib.logic.LogicFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="or">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
-                </property>
-                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
-                </property>
-                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
-                </property>
-                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
-                </property>
-                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
-                </property>
-                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 193.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="True" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="77.0, 119.0">
+        <property name="_location" class="ptolemy.moml.Location" value="48.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -62,7 +35,7 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="339.0, 39.0">
+        <property name="_location" class="ptolemy.moml.Location" value="202.0, 46.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -70,7 +43,7 @@
         </port>
     </entity>
     <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
-        <property name="_location" class="ptolemy.moml.Location" value="507.0, 257.0">
+        <property name="_location" class="ptolemy.moml.Location" value="516.0, 223.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -86,7 +59,7 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="532.0, 110.0">
+        <property name="_location" class="ptolemy.moml.Location" value="321.0, 83.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -100,32 +73,59 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="269.0, 378.0">
+        <property name="_location" class="ptolemy.moml.Location" value="519.0, 388.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="NonStrictLogicalOr" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="or">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="335.0, 250.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="428.0, 198.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="435.0, 256.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="197.0, 308.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="230.0, 156.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="189.0, 173.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="133.0, 259.0">
         </vertex>
     </relation>
-    <link port="LogicalOr.input" relation="relation3"/>
-    <link port="LogicalOr.input" relation="relation2"/>
-    <link port="LogicalOr.output" relation="relation"/>
     <link port="True.output" relation="relation3"/>
     <link port="Display.input" relation="relation3"/>
     <link port="LogicalNot.input" relation="relation"/>
     <link port="LogicalNot.output" relation="relation2"/>
-    <link port="Display 2.input" relation="relation"/>
-    <link port="Display 3.input" relation="relation2"/>
+    <link port="Display 2.input" relation="relation2"/>
+    <link port="Display 3.input" relation="relation"/>
+    <link port="NonStrictLogicalOr.input" relation="relation2"/>
+    <link port="NonStrictLogicalOr.input" relation="relation3"/>
+    <link port="NonStrictLogicalOr.output" relation="relation"/>
 </entity>

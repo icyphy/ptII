@@ -1,4 +1,4 @@
-/* An actor that outputs the most recent input received.
+/* A nonstrict actor that delays tokens by one iteration.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -37,19 +37,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.CompositeEntity;
 
 //////////////////////////////////////////////////////////////////////////
-//// Latch
+//// NonstrictDelay
 /**
-This actor implements a latch.  It has one input port and
+This actor implements a token delay.  It has one input port and
 one output port, both of which are single ports.  A token that is received
-on the input port is sent to the output port immediately, and also every time
-the actor is fired until a new token is received.  No tokens are output until
-the first token is received at the input.
+on the input port is sent on the output port on the next iteration.  If more
+than one token is received on the input port in a given iteration, only
+the final token is output on the next iteration.  If no tokens are received
+in a given iteration, no token is output on the next iteration.
 
 @author Paul Whitaker
 @version $Id$
 */
 
-public class Latch extends Transformer {
+public class NonStrictDelay extends Transformer implements NonStrictActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -60,7 +61,7 @@ public class Latch extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Latch(CompositeEntity container, String name)
+    public NonStrictDelay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -71,35 +72,59 @@ public class Latch extends Transformer {
     ////                         public methods                    ////
 
     /** If there is a token on the input port, consume exactly one token
-     *  from the input port, and output this token.  If there is no token
-     *  on the input port, output the most recent token received, if any.
+     *  from the input port, and store it for output on the next iteration.
+     *  If a token was received on the previous iteration, send it to the
+     *  output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+
         if (input.hasToken(0)) {
             _currentToken = input.get(0);
+        } else if (input.isKnown(0)) {
+            _currentToken = AbsentToken.ABSENT;
         }
         
-        if (_currentToken != null) {
-            output.send(0, _currentToken);
+        if (_previousToken != null) {
+            if (_previousToken == AbsentToken.ABSENT) {
+                output.sendAbsent(0);
+            } else {
+                output.send(0, _previousToken);
+            }
         }
     }
 
-    /** Initialize the buffer variable.
+    /** Initialize the buffer variables.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
+        _previousToken = null;
         _currentToken = null;
         super.initialize();
+    }
+
+    /** Update the buffer variables to allow the inputs received to be 
+     *  sent as outputs.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _previousToken = _currentToken;
+        _currentToken = null;
+
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The most recent token received.
+    // The token received on the previous iteration to be output on the
+    // current iteration.
+    private Token _previousToken;
+
+    // The most recent token received on the current iteration to be 
+    // output on the next iteration.
     private Token _currentToken;
 
 }
-
 
 

@@ -1,4 +1,4 @@
-/* Director for the SR model of computation.
+/* Director for the Synchronous-Reactive model of computation.
 
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
@@ -56,7 +56,7 @@ import java.util.List;
 //// SRDirector
 /**
 
-FIXME: update.
+FIXMENOW: update.
 <p>
 An actor is considered <i>ready to fire</i> if sufficient known inputs are 
 available.  An actor <i>has completed firing</i> if it has defined all of 
@@ -157,10 +157,10 @@ public class SRDirector extends Director {
      */
     public void fire() throws IllegalActionException {
 
-        // FIXME: change this to use a scheduler.
+        // FIXMENOW: change this to use a scheduler.
 
         List actorList = _getActorList();
-        // FIXME: distinguish between iteration of an actor and iteration
+        // FIXMENOW: distinguish between iteration of an actor and iteration
         // through the actors
         Iterator actorIterator;
 
@@ -287,8 +287,8 @@ public class SRDirector extends Director {
         super.preinitialize();
     }
 
-    //FIXME transferInputs
-    //FIXME transferOutputs
+    //FIXMESOON transferInputs
+    //FIXMESOON transferOutputs
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -322,7 +322,6 @@ public class SRDirector extends Director {
     private boolean _areAllInputsKnown(Actor actor)
             throws IllegalActionException {
 
-        // FIXME: Is this list deep enough?
         Iterator inputPorts = actor.inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
@@ -371,6 +370,10 @@ public class SRDirector extends Director {
             if (_isFiringAllowed(actor)) {
                 if (!_hasCompletedFiring(actor)) {
                     _debug("    SRDirector is firing", _getNameOf(actor));
+                    // Whether all inputs are known must be checked before
+                    // firing to handle cases with self-loops.
+                    boolean allInputsKnownBeforeFiring =
+                        _areAllInputsKnown(actor);
                     actor.fire();
 
                     // If all of the inputs of this actor are known, firing
@@ -379,10 +382,8 @@ public class SRDirector extends Director {
                     // it will have no new inputs to react to.  Thus, we
                     // can assume that any unknown outputs of this actor
                     // are actually absent.
-                    if (_areAllInputsKnown(actor)) 
+                    if (allInputsKnownBeforeFiring) 
                         _sendAbsentToAllUnknownOutputsOf(actor);
-                    // FIXME:* it might be possible to improve efficiency here
-                    // by caching the fact that this actor is done firing. 
                 }
             } else {
                 _debug("    SRDirector is prefiring", _getNameOf(actor));
@@ -403,16 +404,16 @@ public class SRDirector extends Director {
             throw new InvalidStateException(this,
                     "fired, but it has no container!");
 
-        // FIXME improve efficiency by caching the list.
+        // FIXMELATER: improve efficiency by caching the list.
         
-        // FIXME improve efficiency with partial ordering.
+        // FIXMELATER: improve efficiency with partial ordering.
         // Explain in comments that order doesn't affect results.
         // Do something similar to this?  
 	// Collections.sort(actorList, new GiottoActorComparator());
 
         List actorList = container.deepEntityList();
 
-        // FIXME: this shouldn't happen, just for testing
+        // FIXMELATER: this shouldn't happen, just for testing
         java.util.Collections.shuffle(actorList);
 
         return actorList;
@@ -430,7 +431,11 @@ public class SRDirector extends Director {
     private boolean _hasCompletedFiring(Actor actor)
             throws IllegalActionException {
 
-        // FIXME: Is this list deep enough?
+        // Non strict actors should fire every phase in case more inputs
+        // become available (the inputs might be, for example, cached and
+        // used in a subsequent iteration.
+        if (actor instanceof NonStrictActor) return false;
+
         Iterator outputPorts = actor.outputPortList().iterator();
 
         while (outputPorts.hasNext()) {
@@ -438,7 +443,7 @@ public class SRDirector extends Director {
             if (!outputPort.isKnown()) return false;
         }
 
-        // FIXME:* it might be possible to improve efficiency here
+        // FIXMESOON:* it might be possible to improve efficiency here
         // by caching the fact that this actor is done firing. 
         return true;
     }
@@ -550,6 +555,8 @@ public class SRDirector extends Director {
      *  ready to fire if sufficient known inputs are available.
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
+
+        // Non strict actors are allowed to fire even if no inputs are known.
         if (actor instanceof NonStrictActor) {
             return true;
         }
@@ -615,6 +622,7 @@ public class SRDirector extends Director {
     private void _sendAbsentToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
 
+        // Nonstrict actors may intend to output undefined values.
         if (!(actor instanceof NonStrictActor)) {
             // No need to do anything if this actor has defined all of its 
             // outputs.
@@ -622,7 +630,6 @@ public class SRDirector extends Director {
                 _debug("  SRDirector is calling sendAbsent()",
                         "on the output ports of", _getNameOf(actor));
 
-                // FIXME: Is this list deep enough?
                 Iterator outputPorts = actor.outputPortList().iterator();
 
                 while (outputPorts.hasNext()) {
@@ -633,7 +640,7 @@ public class SRDirector extends Director {
                 }
             }
 
-            // FIXME:* it might be possible to improve efficiency here
+            // FIXMESOON:* it might be possible to improve efficiency here
             // by caching the fact that this actor is done firing. 
         }
     }

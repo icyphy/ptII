@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Delay" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
@@ -110,7 +110,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="Delay" class="ptolemy.domains.sr.lib.Delay">
+    <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
         <property name="_location" class="ptolemy.moml.Location" value="335.0, 221.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -120,7 +120,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Delay2" class="ptolemy.domains.sr.lib.Delay">
+    <entity name="NonStrictDelay2" class="ptolemy.domains.sr.lib.NonStrictDelay">
         <property name="_location" class="ptolemy.moml.Location" value="271.0, 344.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -130,7 +130,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Delay3" class="ptolemy.domains.sr.lib.Delay">
+    <entity name="NonStrictDelay3" class="ptolemy.domains.sr.lib.NonStrictDelay">
         <property name="_location" class="ptolemy.moml.Location" value="374.0, 353.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -154,10 +154,10 @@
     <link port="TimedPlotter2.input" relation="relation4"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="TimedPlotter3.input" relation="relation5"/>
-    <link port="Delay.input" relation="relation"/>
-    <link port="Delay.output" relation="relation4"/>
-    <link port="Delay2.input" relation="relation"/>
-    <link port="Delay2.output" relation="relation6"/>
-    <link port="Delay3.input" relation="relation6"/>
-    <link port="Delay3.output" relation="relation5"/>
+    <link port="NonStrictDelay.input" relation="relation"/>
+    <link port="NonStrictDelay.output" relation="relation4"/>
+    <link port="NonStrictDelay2.input" relation="relation"/>
+    <link port="NonStrictDelay2.output" relation="relation6"/>
+    <link port="NonStrictDelay3.input" relation="relation6"/>
+    <link port="NonStrictDelay3.output" relation="relation5"/>
 </entity>

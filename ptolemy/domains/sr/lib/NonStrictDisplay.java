@@ -42,7 +42,7 @@ import javax.swing.text.BadLocationException;
 Display the values of the tokens arriving on the input channels along
 with the associated time in a text area on the screen.  If the value is
 undefined or known to be absent, that information is indicated instead.
-Each input token  is written on a separate line.  The input type can be 
+Each input token is written on a separate line.  The input type can be 
 of any type.  If the input happens to be a StringToken,
 then the surrounding quotation marks are stripped before printing
 the value of the token.  Thus, string-valued tokens can be used to
@@ -51,10 +51,10 @@ Tokens are read from the input only in
 the postfire() method, to allow them to settle in domains where they
 converge to a fixed point.
 
-@author  Yuhong Xiong, Edward A. Lee
+@author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
 @version $Id$
  */
-public class NonStrictDisplay extends Display {
+public class NonStrictDisplay extends Display implements NonStrictActor {
 
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
