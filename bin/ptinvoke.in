@@ -107,10 +107,10 @@ JHDL_JAR="@JHDL_JAR@"
 #
 # Directory that contains the Cal jar file ptCal.jar
 # used by bin/ptinvoke.in
-CAL_DIR = @CAL_DIR@
+CAL_DIR="@CAL_DIR@"
 
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
-PTCAL_DIR = @PTCAL_DIR@
+PTCAL_DIR=@PTCAL_DIR@
 
 # If PTCAL_DIR is not empty, then set CAL_JARS to have the class path sep.
 CAL_JARS="" 
