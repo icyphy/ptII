@@ -37,13 +37,6 @@ public class ArmController extends TypedAtomicActor {
     public TypedIOPort input;
     public TypedIOPort output;
 
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArmController newObject = (ArmController) super.clone();
-        newObject.input = (TypedIOPort) getPort("input");
-        newObject.output = (TypedIOPort) getPort("output");
-        return newObject;
-    }
 
     public void initialize() throws IllegalActionException {
         baseValue = 165;
