@@ -83,7 +83,10 @@ public class RecordDisassembler extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
 
-        _addIcon();
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-5\" y=\"-30\" width=\"10\" "
+                + "height=\"60\" style=\"fill:red\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,16 +163,6 @@ public class RecordDisassembler extends TypedAtomicActor {
 	}
 
 	return constraints;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private void _addIcon() {
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-5\" y=\"-30\" width=\"10\" " +
-                "height=\"60\" style=\"fill:red\"/>\n" +
-                "</svg>\n");
     }
 }
 

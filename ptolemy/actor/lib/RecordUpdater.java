@@ -96,7 +96,10 @@ public class RecordUpdater extends TypedAtomicActor {
 
 	output.setTypeAtLeast(new FunctionTerm(this));
 
-        _addIcon();
+	_attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-5\" y=\"-30\" width=\"10\" "
+                + "height=\"60\" style=\"fill:red\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -190,16 +193,6 @@ public class RecordUpdater extends TypedAtomicActor {
 	    }
         }
 	return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private void _addIcon() {
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-5\" y=\"-30\" width=\"10\" " +
-                "height=\"60\" style=\"fill:red\"/>\n" +
-                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
