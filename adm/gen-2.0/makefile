@@ -209,6 +209,7 @@ $(PTII_FULL_ZIP): $(PTIIDIST)
 ptii_src: $(PTII_SRC)
 $(PTII_SRC): $(PTII_FULL)
 	@echo "Creating $@"
+	rm -rf src/ptII$(VERSION)
 	-mkdir src
 	(cd src; \
 		$(TAR) -zxf $(PTII_FULL); cd ptII$(VERSION); \
