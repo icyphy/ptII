@@ -266,7 +266,7 @@ PTWABA_DIR =	@PTWABA_DIR@
 DIVA_JAR = $(PTII)/lib/diva.jar
 
 # JSAT jar location
-JSAT_JAR = $(PTII)/mescal/lib/jsat.jar
+MESCAL_DEPEND_JAR = $(PTII)/mescal/lib/jsat.jar;$(SOOT_CLASSES)
 
 # Commands used to install scripts and data
 # Use $(ROOT) instead of $(PTII) for install so that we don't
