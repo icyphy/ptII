@@ -134,10 +134,11 @@ public class SigmaDeltaApplet extends CTApplet {
 
             Integrator intgl1 = new Integrator(ctsub, "Integrator1");
             Integrator intgl2 = new Integrator(ctsub, "Integrator2");
-            Scale gain0 = new Scale(ctsub, "Gain0");
-            Scale gain1 = new Scale(ctsub, "Gain1");
-            Scale gain2 = new Scale(ctsub, "Gain2");
-            _gain3 = new Scale(ctsub, "Gain3");
+            Scale scale0 = new Scale(ctsub, "Scale0");
+            Scale scale1 = new Scale(ctsub, "Scale1");
+            Scale scale2 = new Scale(ctsub, "Scale2");
+            Scale scale3 = new Scale(ctsub, "Scale3");
+            _scale4 = new Scale(ctsub, "Scale4");
 
             _ctPlot = new TimedPlotter(ctsub, "CTPlot");
             _ctPlot.place(getContentPane());
@@ -155,25 +156,26 @@ public class SigmaDeltaApplet extends CTApplet {
                 new CTPeriodicSampler(ctsub, "Sampler");
 
             // CT Connections
-            ctsub.connect(time.output, trigFunction.input);
-            Relation cr0 = ctsub.connect(trigFunction.output, gain0.input, "CR0");
-            Relation cr1 = ctsub.connect(gain0.output, add1.plus, "CR1");
+            ctsub.connect(time.output, scale3.input);
+	    ctsub.connect(scale3.output, trigFunction.input);
+            Relation cr0 = ctsub.connect(trigFunction.output, scale0.input, "CR0");
+            Relation cr1 = ctsub.connect(scale0.output, add1.plus, "CR1");
             Relation cr2 = ctsub.connect(add1.output, intgl1.input, "CR2");
             Relation cr3 = ctsub.connect(intgl1.output, intgl2.input, "CR3");
             Relation cr4 = ctsub.connect(intgl2.output, _ctPlot.input, "CR4");
-            gain1.input.link(cr3);
-            gain2.input.link(cr4);
+            scale1.input.link(cr3);
+            scale2.input.link(cr4);
             _sampler.input.link(cr4);
             TypedIORelation cr5 = new TypedIORelation(ctsub, "CR5");
             _sampler.output.link(cr5);
             subout.link(cr5);
-            Relation cr6 = ctsub.connect(gain1.output, add1.plus, "CR6");
-            Relation cr7 = ctsub.connect(gain2.output, add1.plus, "CR7");
-            Relation cr8 = ctsub.connect(_gain3.output, add1.plus, "CR8");
+            Relation cr6 = ctsub.connect(scale1.output, add1.plus, "CR6");
+            Relation cr7 = ctsub.connect(scale2.output, add1.plus, "CR7");
+            Relation cr8 = ctsub.connect(_scale4.output, add1.plus, "CR8");
             TypedIORelation cr9 = new TypedIORelation(ctsub, "CR9");
             hold.input.link(cr9);
             subin.link(cr9);
-            Relation cr10 = ctsub.connect(hold.output, _gain3.input, "CR10");
+            Relation cr10 = ctsub.connect(hold.output, _scale4.input, "CR10");
             _ctPlot.input.link(cr0);
             _ctPlot.input.link(cr10);
 
@@ -238,11 +240,10 @@ public class SigmaDeltaApplet extends CTApplet {
 
             // CT Actor Parameters
 
-            //trigFunction.omega.setToken(new DoubleToken(0.5));
-
-            gain0.factor.setToken(new DoubleToken(50.0));
-            gain1.factor.setToken(new DoubleToken(-2.50));
-            gain2.factor.setToken(new DoubleToken(-250.0));
+            scale0.factor.setToken(new DoubleToken(50.0));
+            scale1.factor.setToken(new DoubleToken(-2.50));
+            scale2.factor.setToken(new DoubleToken(-250.0));
+	    scale3.factor.setToken(new DoubleToken(0.5));
 
         } catch (Exception ex) {
             report("Setup failed: ",  ex);
@@ -266,7 +267,7 @@ public class SigmaDeltaApplet extends CTApplet {
                 double stopT = _query.doubleValue("stopT");
                 _deDirector.stopTime.setToken(new DoubleToken(stopT));
                 //System.out.println("stop time set");
-                _gain3.factor.setToken(new DoubleToken(
+                _scale4.factor.setToken(new DoubleToken(
                         _query.doubleValue("feedback")));
                 //System.out.println("feedback gain set");
                 _sampler.samplePeriod.setToken(new DoubleToken(
@@ -294,7 +295,7 @@ public class SigmaDeltaApplet extends CTApplet {
     private DEDirector _deDirector;
 
     private double _stopTime = 15.0;
-    private Scale _gain3;
+    private Scale _scale4;
     private CTPeriodicSampler _sampler;
     private TimedPlotter _ctPlot;
     private TimedPlotter _dePlot;
