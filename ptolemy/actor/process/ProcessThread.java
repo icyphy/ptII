@@ -96,23 +96,6 @@ public class ProcessThread extends PtolemyThread {
 	_director._increaseActiveCount();
     }
 
-    /** Construct a thread to be used for the execution of the
-     *  iteration methods of the actor.
-     *  @param actor The actor that needs to be executed.
-     *  @param director The director responsible for the execution of this
-     *  actor.
-     *  @param name The name of the thread.
-     *  @deprecated Please use the first constructor alone.
-     */
-    public ProcessThread(Actor actor, ProcessDirector director, String name) {
-        super(name);
-	_actor = actor;
-        _director = director;
-        _manager = ((CompositeActor)((NamedObj)actor).getContainer()).getManager();
-        _director.increaseActiveCount();
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
