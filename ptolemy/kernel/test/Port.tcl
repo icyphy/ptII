@@ -38,7 +38,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Load up Tcl procs to print out enums
-if {[info procs _testPortEnumRelation] == "" } then { 
+if {[info procs _testPortEnumRelations] == "" } then { 
     source testEnums.tcl
 }
 
@@ -62,9 +62,9 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams {connectToRelation pt.kernel.Relation} disconnectAllRelations {disconnectRelation pt.kernel.Relation} enumRelations getEntity numRelations {setEntity pt.kernel.Entity}
-  constructors:  pt.kernel.Port {pt.kernel.Port java.lang.String}
-  properties:    class params name entity
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String} getLinkedRelations {link pt.kernel.Relation} numLinks {setContainer pt.kernel.Entity} {unlink pt.kernel.Relation} unlinkAll
+  constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.lang.String}
+  properties:    fullName class name container linkedRelations
   superclass:    pt.kernel.NamedObj
 }}
 
@@ -72,136 +72,149 @@ test Port-1.1 {Get information about an instance of Port} {
 ####
 # 
 test Port-2.1 {Construct Ports} {
+    set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
-    set p2 [java::new pt.kernel.Port "My Port"]
+    set p2 [java::new pt.kernel.Port $e1 "My Port"]
     list [$p1 getName] [$p2 getName] \
-	    [$p1 numRelations] [$p2 numRelations]
+	    [$p1 numLinks] [$p2 numLinks]
 } {{} {My Port} 0 0}
 
 ######################################################################
 ####
 # 
-test Port-3.1 {Test connectToRelation with one port, one relation} {
-    set p1 [java::new pt.kernel.Port "My Port"]
+test Port-3.1 {Test link with one port, one relation} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port]
+    $p1 setContainer $e1
     set r1 [java::new pt.kernel.Relation "My Relation"]
-    $p1 connectToRelation $r1
-    list [_testPortEnumRelations $p1]
+    $p1 link $r1
+    list [_testPortGetLinkedRelations $p1]
 } {{{{My Relation}}}}
 
 ######################################################################
 ####
 # 
-test Port-3.1.1 {Test connectToRelation with one port, one relation twice} {
-    set p1 [java::new pt.kernel.Port "My Port"]
+test Port-3.1.1 {Test link with one port, one relation twice} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port]
+    $p1 setContainer $e1
     set r1 [java::new pt.kernel.Relation "My Relation"]
-    $p1 connectToRelation $r1
-    $p1 connectToRelation $r1
-    list [_testPortEnumRelations $p1]
+    $p1 link $r1
+    $p1 link $r1
+    list [_testPortGetLinkedRelations $p1]
 } {{{{My Relation} {My Relation}}}}
 
 ######################################################################
 ####
 # 
-test Port-3.1.2 {Test connectToRelation with one port to a null relation} {
-    set p1 [java::new pt.kernel.Port "My Port"]
-    catch {$p1 connectToRelation [java::null]} errmsg
-    list $errmsg [_testPortEnumRelations $p1]
-} {{java.lang.NullPointerException: Null Relation passed to Port.connectToRelation()} {{}}}
+test Port-3.1.2 {Test link with one port to a null relation} {
+    set p1 [java::new pt.kernel.Port]
+    $p1 link [java::null]
+    list [_testPortGetLinkedRelations $p1]
+} {{{}}}
 
 ######################################################################
 ####
 # 
-test Port-3.2 {Test connectToRelation with one port, two relations} {
-    set p1 [java::new pt.kernel.Port "My Port"]
+test Port-3.2 {Test link with one port, two relations} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port]
+    $p1 setContainer $e1
     set r1 [java::new pt.kernel.Relation "My Relation"]
     set r2 [java::new pt.kernel.Relation "My Other Relation"]
-    $p1 connectToRelation $r1
-    $p1 connectToRelation $r2
-    list [_testPortEnumRelations $p1]
-} {{{{My Other Relation} {My Relation}}}}
+    $p1 link $r1
+    $p1 link $r2
+    list [_testPortGetLinkedRelations $p1]
+} {{{{My Relation} {My Other Relation}}}}
 
 ######################################################################
 ####
 # 
-test Port-3.3 {Test connectToRelation with two ports, one relation} {
-    set p1 [java::new pt.kernel.Port "My Port"]
-    set p2 [java::new pt.kernel.Port "My Other Port"]
+test Port-3.3 {Test link with two ports, one relation} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port $e1 P1]
+    set p2 [java::new pt.kernel.Port $e1 P2]
     set r1 [java::new pt.kernel.Relation "My Relation"]
-    $p1 connectToRelation $r1
-    $p2 connectToRelation $r1
-    list [_testPortEnumRelations $p1 $p2]
+    $p1 link $r1
+    $p2 link $r1
+    list [_testPortGetLinkedRelations $p1 $p2]
 } {{{{My Relation}} {{My Relation}}}}
 
 ######################################################################
 ####
 # 
-test Port-3.4 {Test connectToRelation with two ports, two relations} {
-    set p1 [java::new pt.kernel.Port "My Port"]
-    set p2 [java::new pt.kernel.Port "My Other Port"]
+test Port-3.4 {Test link with two ports, two relations} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port $e1 P1]
+    set p2 [java::new pt.kernel.Port $e1 P2]
     set r1 [java::new pt.kernel.Relation "My Relation"]
     set r2 [java::new pt.kernel.Relation "My Other Relation"]
-    $p1 connectToRelation $r1
-    $p2 connectToRelation $r1
-    $p1 connectToRelation $r2
-    $p2 connectToRelation $r2
-    list [_testPortEnumRelations $p1 $p2] \
-	    [$p1 numRelations] \
-	    [$p2 numRelations]
-} {{{{My Other Relation} {My Relation}} {{My Other Relation} {My Relation}}} 2 2}
+    $p1 link $r1
+    $p2 link $r1
+    $p1 link $r2
+    $p2 link $r2
+    list [_testPortGetLinkedRelations $p1 $p2] \
+	    [$p1 numLinks] \
+	    [$p2 numLinks]
+} {{{{My Relation} {My Other Relation}} {{My Relation} {My Other Relation}}} 2 2}
 
 ######################################################################
 ####
 # 
-test Port-4.1 {Test disconnectAllRelations} {
-    set p1 [java::new pt.kernel.Port "port1"]
-    set p2 [java::new pt.kernel.Port "port2"]
+test Port-4.1 {Test unlinkAll} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port]
+    $p1 setContainer $e1
+    set p2 [java::new pt.kernel.Port $e1 P2]
     set r1 [java::new pt.kernel.Relation "relation1"]
     set r2 [java::new pt.kernel.Relation "relation2"]
-    $p1 connectToRelation $r1
-    $p2 connectToRelation $r1
-    $p1 connectToRelation $r2
-    $p2 connectToRelation $r2
-    $p1 disconnectAllRelations
-    set result1 [_testPortEnumRelations $p1 $p2]
+    $p1 link $r1
+    $p2 link $r1
+    $p1 link $r2
+    $p2 link $r2
+    $p1 unlinkAll
+    set result1 [_testPortGetLinkedRelations $p1 $p2]
     # We call this twice to make sure that if there are no relations,
     # we don't cause an error.
-    $p1 disconnectAllRelations
-    set result2 [_testPortEnumRelations $p1 $p2]
-    $p2 disconnectAllRelations 
-    set result3 [_testPortEnumRelations $p1 $p2]
+    $p1 unlinkAll
+    set result2 [_testPortGetLinkedRelations $p1 $p2]
+    $p2 unlinkAll 
+    set result3 [_testPortGetLinkedRelations $p1 $p2]
    list "$result1\n$result2\n$result3"
-} {{{} {relation2 relation1}
-{} {relation2 relation1}
+} {{{} {relation1 relation2}
+{} {relation1 relation2}
 {} {}}}
 
 ######################################################################
 ####
 # 
-test Port-5.1 {Test disconnectRelation} {
-    set p1 [java::new pt.kernel.Port "port1"]
-    set p2 [java::new pt.kernel.Port "port2"]
+test Port-5.1 {Test unlink} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port $e1 P1]
+    set p2 [java::new pt.kernel.Port]
+    $p2 setContainer $e1
     set r1 [java::new pt.kernel.Relation "relation1"]
     set r2 [java::new pt.kernel.Relation "relation2"]
-    $p1 connectToRelation $r1
-    $p2 connectToRelation $r1
-    $p1 connectToRelation $r2
-    $p2 connectToRelation $r2
-    $p1 disconnectRelation $r1
-    set result1 [_testPortEnumRelations $p1 $p2]
-    $p2 disconnectRelation $r2
-    set result2 [_testPortEnumRelations $p1 $p2]
-    $p2 disconnectRelation $r1
-    set result3 [_testPortEnumRelations $p1 $p2]
+    $p1 link $r1
+    $p2 link $r1
+    $p1 link $r2
+    $p2 link $r2
+    $p1 unlink $r1
+    set result1 [_testPortGetLinkedRelations $p1 $p2]
+    $p2 unlink $r2
+    set result2 [_testPortGetLinkedRelations $p1 $p2]
+    $p2 unlink $r1
+    set result3 [_testPortGetLinkedRelations $p1 $p2]
 
-    # Call disconnectRelation on a relation that has already been disconnected.
-    $p2 disconnectRelation $r1
-    set result4 [expr {$result3 == [_testPortEnumRelations $p1 $p2]}]
+    # Call unlink on a relation that has already been disconnected.
+    $p2 unlink $r1
+    set result4 [expr {$result3 == [_testPortGetLinkedRelations $p1 $p2]}]
 
-    $p1 disconnectRelation $r2
-    set result5 [_testPortEnumRelations $p1 $p2]
+    $p1 unlink $r2
+    set result5 [_testPortGetLinkedRelations $p1 $p2]
 
    list "$result1\n$result2\n$result3\n$result4\n$result5"
-} {{relation2 {relation2 relation1}
+} {{relation2 {relation1 relation2}
 relation2 relation1
 relation2 {}
 1
@@ -210,22 +223,23 @@ relation2 {}
 ######################################################################
 ####
 # 
-test Port-5.1 {Test disconnectRelation on a relation we are not connected to} {
-    set p1 [java::new pt.kernel.Port "port1"]
+test Port-5.2 {Test unlink on a relation we are not connected to} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port]
+    $p1 setContainer $e1
     set r1 [java::new pt.kernel.Relation "relation1"]
     set r2 [java::new pt.kernel.Relation "relation2"]
-    $p1 connectToRelation $r1
-    $p1 disconnectRelation $r2
-    list [_testPortEnumRelations $p1]
+    $p1 link $r1
+    $p1 unlink $r2
+    list [_testPortGetLinkedRelations $p1]
 } {relation1}
 
 ######################################################################
 ####
 # 
-test Port-6.1 {Test enumRelations.  Note that enumRelations is also tested in \
-	our _testPortEnumRelations test proc} {
-    set p1 [java::new pt.kernel.Port "port1"]
-    set enum [$p1 enumRelations]
+test Port-6.1 {Test getLinkedRElations} {
+    set p1 [java::new pt.kernel.Port]
+    set enum [$p1 getLinkedRelations]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
 } {{java.util.NoSuchElementException: exhausted enumeration} 0}
@@ -233,39 +247,85 @@ test Port-6.1 {Test enumRelations.  Note that enumRelations is also tested in \
 ######################################################################
 ####
 # 
-test Port-7.1 {Test getEntity on a Port that has no entity } {
-    set p1 [java::new pt.kernel.Port "port1"]
-    list [expr { [java::null] == [$p1 getEntity] } ]
+test Port-7.1 {Test getContainer on a Port that has no container } {
+    set p1 [java::new pt.kernel.Port]
+    list [expr { [java::null] == [$p1 getContainer] } ]
 } {1}
 
 ######################################################################
 ####
 # 
-test Port-7.2 {Test getEntity on a Port that has an entity } {
-    set p1 [java::new pt.kernel.Port "port1"]
+test Port-7.2 {Test getContainer on a Port that has a container } {
+    set p1 [java::new pt.kernel.Port]
     set e1 [java::new pt.kernel.Entity "entity1"]
-    $p1 setEntity $e1
-    list [expr { $e1 == [$p1 getEntity] } ]
+    $p1 setContainer $e1
+    list [expr { $e1 == [$p1 getContainer] } ]
 } {1}
 
 ######################################################################
 ####
 # 
-test Port-8.1 {Build a simple tree consiting of a Ramp and a Print Entity} {
+test Port-8.1 {Build a topology consiting of a Ramp and a Print Entity} {
     # Create objects
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set print [java::new pt.kernel.Entity "Print"]
-    set out [java::new pt.kernel.Port "Ramp out"]
-    set in [java::new pt.kernel.Port "Print in"]
+    set out [java::new pt.kernel.Port $ramp "Ramp out"]
+    set in [java::new pt.kernel.Port $print "Print in"]
     set arc [java::new pt.kernel.Relation "Arc"]
 
     # Connect
-    $out setEntity $ramp
-    $in setEntity $print
-    $out connectToRelation $arc
-    $in connectToRelation $arc
+    $out link $arc
+    $in link $arc
 
     # Note that we are not getting all the information we could
-    # here, we are only testing the methods in Port
-    list [_testPortEnumRelations $out $in]
-} {{Arc Arc}}
+    list [_testPortGetLinkedRelations $out $in] \
+            [_testEntityGetPorts $ramp] \
+            [_testEntityGetPorts $print]
+} {{Arc Arc} {{{Ramp out}}} {{{Print in}}}}
+
+######################################################################
+####
+# 
+test Port-9.1 {Remove a port from its container} {
+    # Create objects
+    set ramp [java::new pt.kernel.Entity "Ramp"]
+    set print [java::new pt.kernel.Entity "Print"]
+    set out [java::new pt.kernel.Port $ramp "Ramp out"]
+    set in [java::new pt.kernel.Port $print "Print in"]
+    set arc [java::new pt.kernel.Relation "Arc"]
+
+    # Connect
+    $out link $arc
+    $in link $arc
+
+    $out setContainer [java::null]
+
+    # Note that we are not getting all the information we could
+    list [_testPortGetLinkedRelations $out $in] \
+            [_testEntityGetPorts $ramp] \
+            [_testEntityGetPorts $print]
+} {{{} Arc} {{}} {{{Print in}}}}
+
+######################################################################
+####
+# 
+test Port-10.1 {Reassign a port to a new container} {
+    # Create objects
+    set ramp [java::new pt.kernel.Entity "Ramp"]
+    set print [java::new pt.kernel.Entity "Print"]
+    set out [java::new pt.kernel.Port $ramp "Ramp out"]
+    set in [java::new pt.kernel.Port $print "Print in"]
+    set arc [java::new pt.kernel.Relation "Arc"]
+
+    # Connect
+    $out link $arc
+    $in link $arc
+
+    $out setContainer $print
+
+    # Note that we are not getting all the information we could
+    list [_testPortGetLinkedRelations $out $in] \
+            [_testEntityGetPorts $ramp] \
+            [_testEntityGetPorts $print]
+} {{Arc Arc} {{}} {{{Print in} {Ramp out}}}}
+

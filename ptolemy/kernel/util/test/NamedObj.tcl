@@ -57,9 +57,9 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedObj
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams
-  constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String}
-  properties:    class params name
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String}
+  constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String} {pt.kernel.NamedObj pt.kernel.Nameable java.lang.String}
+  properties:    fullName class name container
   superclass:    java.lang.Object
 }}
 
@@ -107,26 +107,52 @@ test NamedObj-2.3 { Check names with dots} {
 ######################################################################
 ####
 # 
-test NamedObj-3.1 {Experiment with Parameters} {
-    set n [java::new pt.kernel.NamedObj]
-    set paramlist [$n getParams]
+# test NamedObj-3.1 {Experiment with Parameters} {
+#     set n [java::new pt.kernel.NamedObj]
+#     set paramlist [$n getParamList]
+# 
+#     # Create two ParamTest objects, add them to the NamedObjList
+#     set paramtest1 [java::new pt.kernel.test.ParamTest]
+#     $paramtest1 setName "first param"
+#     $paramtest1 setValue int 42
+# 
+#     set paramtest2 [java::new pt.kernel.test.ParamTest]
+#     $paramtest2 setName "second param"
+#     $paramtest2 setValue int -4
+# 
+#     $paramlist append $paramtest2
+#     $paramlist prepend $paramtest1
+# 
+#     # Get the NamedList again.
+#     set paramlist1a [$n getParamList]
+#     set paramtest1a [$paramlist1a {get String} "first param"]
+#     set paramtest2a [$paramlist1a {get String} "second param"]
+#     list [$paramtest1a getName] [$paramtest1a getValue] \
+# 	    [$paramtest2a getName] [$paramtest2a getValue]
+# } {{first param} 42 {second param} -4}
 
-    # Create two ParamTest objects, add them to the NamedObjList
-    set paramtest1 [java::new pt.kernel.test.ParamTest]
-    $paramtest1 setName "first param"
-    $paramtest1 setValue int 42
+######################################################################
+####
+# 
+test NamedObj-4.1 {Attempt to set the name to null in the constructor} {
+    catch {set n [java::new pt.kernel.NamedObj [java::null]]} msg
+    list $msg
+} {{pt.kernel.IllegalActionException: Attempt to set name of a NamedObj to null.}}
 
-    set paramtest2 [java::new pt.kernel.test.ParamTest]
-    $paramtest2 setName "second param"
-    $paramtest2 setValue int -4
+######################################################################
+####
+# 
+test NamedObj-4.2 {Attempt to set the name to null after construction} {
+    set n [java::new pt.kernel.NamedObj "foo"]
+    catch {$n setName [java::null]} msg
+    list $msg
+} {{pt.kernel.IllegalActionException: Attempt to set name of a NamedObj to null.}}
 
-    $paramlist append $paramtest2
-    $paramlist prepend $paramtest1
-
-    # Get the NamedList again.
-    set paramlist1a [$n getParams]
-    set paramtest1a [$paramlist1a {get String} "first param"]
-    set paramtest2a [$paramlist1a {get String} "second param"]
-    list [$paramtest1a getName] [$paramtest1a getValue] \
-	    [$paramtest2a getName] [$paramtest2a getValue]
-} {{first param} 42 {second param} -4}
+######################################################################
+####
+# 
+test NamedObj-5.1 {Test getFullName} {
+    set n [java::new pt.kernel.NamedObj "foo"]
+    set b [java::new pt.kernel.NamedObj $n "bar"]
+    list [$n getFullName] [$b getFullName]
+} {foo foo.bar}

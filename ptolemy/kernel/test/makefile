@@ -58,9 +58,8 @@ JSIMPLE_TESTS = \
 	HierEntity.tcl \
 	IntParam.tcl \
 	NamedObj.tcl \
-	NamedObjList.tcl \
+	NamedList.tcl \
 	Port.tcl \
-	PortList.tcl \
 	PtolemyException.tcl \
 	Relation.tcl
 

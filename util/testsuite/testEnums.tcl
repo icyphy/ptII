@@ -89,30 +89,39 @@ proc _testEnums {enummethod args} {
 }
 
 ######################################################################
-#### _testCrossRefListElements
+#### _testCrossRefListGetLinks
 # Given one or more CrossRefLists, return a Tcl List containing 
-# a list of lists of the elements in each CrossRefList
+# a list of lists of the links in each CrossRefList
 #
-proc _testCrossRefListElements {args} {
-    eval _testEnums elements $args
+proc _testCrossRefListGetLinks {args} {
+    eval _testEnums getLinks $args
 }
 
 ######################################################################
-#### _testEntityEnumEntities
+#### _testEntityGetConnectedEntities
 # Given one or more Entities, return a Tcl list containing 
-# a list of lists of the Entities that each Entity is connected to.
+# a list of lists of the names of the Entities that each Entity is connected to.
 #
-proc _testEntityEnumEntities {args} {
-    eval _testEnums enumEntities $args
+proc _testEntityGetConnectedEntities {args} {
+    eval _testEnums getConnectedEntities $args
 }
 
 ######################################################################
-#### _testEntityEnumRelations
+#### _testEntityGetLinkedRelations
 # Given one or more Entities, return a Tcl list containing 
 # a list of lists of the Relations that each Entity is connected to.
 #
-proc _testEntityEnumRelations {args} {
-    eval _testEnums enumRelations $args
+proc _testEntityGetLinkedRelations {args} {
+    eval _testEnums getLinkedRelations $args
+}
+
+######################################################################
+#### _testEntityGetPorts
+# Given one Entity, return a Tcl list containing 
+# a list of lists of the ports that the Entity is connected to.
+#
+proc _testEntityGetPorts {entity} {
+    eval _testEnums getPorts $entity
 }
 
 ######################################################################
@@ -136,27 +145,27 @@ proc _testParamListEnumParams {paramlist} {
 }
 
 ######################################################################
-#### _testPortEnumRelations
+#### _testPortGetLinkedRelations
 # Given a Port, return a Tcl List containing its Relations.
 #
-proc _testPortEnumRelations {args} {
-    eval _testEnums enumRelations $args
+proc _testPortGetLinkedRelations {args} {
+    eval _testEnums getLinkedRelations $args
 }
 
 ######################################################################
-#### _testRelationsEnumEntities
+#### _testRelationGetLinkedEntities
 # Given one or more Entities, return a Tcl list containing 
 # a list of lists of the Entities that each Relation is connected to.
 #
-proc _testRelationEnumEntities {args} {
-    eval _testEnums enumEntities $args
+proc _testRelationGetLinkedEntities {args} {
+    eval _testEnums getLinkedEntities $args
 }
 
 ######################################################################
-#### _testRelationsEnumPorts
+#### _testRelationGetLinkedPorts
 # Given one or more Entities, return a Tcl list containing 
 # a list of lists of the Ports that each Relation is connected to.
 #
-proc _testRelationEnumPorts {args} {
-    eval _testEnums enumPorts $args
+proc _testRelationGetLinkedPorts {args} {
+    eval _testEnums getLinkedPorts $args
 }
