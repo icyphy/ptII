@@ -31,6 +31,7 @@ package ptolemy.domains.de.lib;
 import java.util.Vector;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEActor;
@@ -126,10 +127,10 @@ public class WaitingTime extends DEActor {
      */
     public void fire() throws IllegalActionException {
 
-        double currentTime = ((DEDirector)getDirector()).getCurrentTime();
+        Time currentTime = ((DEDirector)getDirector()).getCurrentTime();
         while (waiter.hasToken(0)) {
             waiter.get(0);
-            _waiting.addElement(new Double(currentTime));
+            _waiting.addElement(currentTime);
         }
         boolean godot = false;
         while (waitee.hasToken(0)) {
@@ -138,10 +139,11 @@ public class WaitingTime extends DEActor {
         }
         if (godot) {
             for (int i = 0; i < _waiting.size(); i++) {
-                double previousTime =
-                    ((Double)_waiting.elementAt(i)).doubleValue();
+                Time previousTime =
+                    (Time)_waiting.elementAt(i);
                 DoubleToken outToken =
-                    new DoubleToken(currentTime-previousTime);
+                    new DoubleToken(currentTime.subtract(previousTime)
+                        .getTimeValue());
                 output.send(0, outToken);
             }
             _waiting.removeAllElements();

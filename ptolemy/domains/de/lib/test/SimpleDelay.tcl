@@ -62,16 +62,19 @@ test SimpleDelay-2.1 {test with the default delay value} {
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock] output] \
-       [java::field $delay input]
+       [java::field [java::cast ptolemy.domains.de.lib.DETransformer \
+       $delay] input]
     $e0 connect \
-       [java::field $delay output] \
+       [java::field [java::cast ptolemy.domains.de.lib.DETransformer \
+       $delay] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToObjects [$rec getTimeRecord]
 } {1.0 2.0 3.0}
 
 test SimpleDelay-3.1 {test with the zero delay} {
-    set delayAmount [java::field $delay delay]
+    set delayAmount [java::field [java::cast ptolemy.domains.de.lib.TimedDelay \
+    $delay] delay]
     $delayAmount setExpression "0.0"
     [$e0 getManager] execute
     enumToObjects [$rec getTimeRecord]
@@ -119,9 +122,11 @@ test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
 test SimpleDelay-5.2 {fix the zero delay with a non-zero delay} {
     set delay [java::new ptolemy.domains.de.lib.test.SimpleDelay $e0 delay]
     [java::field $add plus] unlink $r
-    [java::field $delay input] link $r
+    [java::field [java::cast ptolemy.domains.de.lib.DETransformer \
+    $delay] input] link $r
     $e0 connect \
-            [java::field $delay output] \
+            [java::field [java::cast ptolemy.domains.de.lib.DETransformer \
+            $delay] output] \
             [java::field $add plus]
     [$e0 getManager] execute
     enumToObjects [$rec getTimeRecord]

@@ -31,6 +31,7 @@ package ptolemy.domains.de.lib;
 import java.util.LinkedList;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -150,7 +151,7 @@ public class PreemptableTask extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        double currentTime = ((DEDirector)getDirector()).getCurrentTime();
+        Time currentTime = ((DEDirector)getDirector()).getCurrentTime();
         DEDirector director = (DEDirector)getDirector();
 
         // If the task receives a token on the <i>input</i> port, queue
@@ -163,7 +164,7 @@ public class PreemptableTask extends DETransformer {
         // non-interrupted state.
         if (_tokenList.size() > 0 && !_executing && !_interrupted) {
             _executing = true;
-            _outputTime = currentTime + _executionTimeValue;
+            _outputTime = currentTime.add(_executionTimeValue);
             director.fireAt(this, _outputTime);
         }
 
@@ -177,8 +178,9 @@ public class PreemptableTask extends DETransformer {
             } else {
                 _interrupted = false;
                 if (_executing) {
-                    double delay_time = currentTime - _interruptTime;
-                    _outputTime += delay_time;
+                    double delay_time = 
+                        currentTime.subtract(_interruptTime).getTimeValue();
+                    _outputTime = _outputTime.add(delay_time);
                     director.fireAt(this, _outputTime);
                 }
             }
@@ -193,9 +195,9 @@ public class PreemptableTask extends DETransformer {
         super.initialize();
 
         _executing = false;
-        _interruptTime = 0.0;
+        _interruptTime = new Time(this);
         _interrupted = false;
-        _outputTime = 0.0;
+        _outputTime = new Time(this);
 
         _tokenList = new LinkedList();
     }
@@ -209,10 +211,10 @@ public class PreemptableTask extends DETransformer {
     public boolean postfire() throws IllegalActionException {
         // FIXME: can not be used in SR, dealing with time
         DEDirector director = (DEDirector)getDirector();
-        double currentTime = director.getCurrentTime();
+        Time currentTime = director.getCurrentTime();
 
         if (_executing && !_interrupted) {
-            if (currentTime >= _outputTime) {
+            if (currentTime.compareTo(_outputTime) >= 0){
                 output.send(0, (Token)_tokenList.removeFirst());
                 _executing = false;
             }
@@ -241,14 +243,14 @@ public class PreemptableTask extends DETransformer {
 
     // Records the time at which a token arrives on the interrupt port
     // (the time at which the task is interrupted).
-    private double _interruptTime = 0.0;
+    private Time _interruptTime;
 
     // If true, the task has been interrupted.
     private boolean _interrupted = false;
 
     // Records the time at which the output should be
     // emitted (execution time + any elapsed interrupt time).
-    private double _outputTime = 0.0;
+    private Time _outputTime;
 
     // Queue of saved input tokens.
     private LinkedList _tokenList;

@@ -71,7 +71,7 @@ test Server-2.1 {test with the default service time value} {
 } {1.0 2.0 3.0}
 
 test Server-3.1 {test with zero service time} {
-    set serviceTime [java::field $server serviceTime]
+    set serviceTime [java::field [java::cast ptolemy.domains.de.lib.VariableDelay $server] delay]
     $serviceTime setExpression "0.0"
     [$e0 getManager] execute
     enumToObjects [$rec getTimeRecord]
@@ -81,10 +81,7 @@ test Server-3.2 {test with negative service time} {
     $serviceTime setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: -1.0
-  in .top.server.serviceTime
-Because:
-Cannot have negative service time: -1.0
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to queue an event in the past: Current time is 0.0 while event time is -1.0
   in .top.server}}
 
 test Server-4.0 {Test with service time input} {
@@ -99,7 +96,7 @@ test Server-4.0 {Test with service time input} {
     $values setExpression {{1.5, 0.5}}
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock2] output] \
-       [java::field $server newServiceTime]
+	[[java::field [java::cast ptolemy.domains.de.lib.VariableDelay $server] delay] getPort]
     [$e0 getManager] execute
     enumToObjects [$rec getTimeRecord]
 } {1.5 2.0 2.5}

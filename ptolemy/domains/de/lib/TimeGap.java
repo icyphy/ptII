@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -78,10 +79,12 @@ public class TimeGap extends DETransformer {
         if (input.hasToken(0)) {
             input.get(0);
         }
-        double currentTime = getDirector().getCurrentTime();
-        if (_previousTime != Double.NEGATIVE_INFINITY) {
+        Time currentTime = getDirector().getCurrentTime();
+        if (_previousTime.compareTo(
+            getDirector().timeConstants.NEGATIVE_INFINITY) != 0) {
             DoubleToken outToken =
-                new DoubleToken(currentTime-_previousTime);
+                new DoubleToken(currentTime.subtract(_previousTime)
+                    .getTimeValue());
             output.send(0, outToken);
         }
     }
@@ -98,7 +101,7 @@ public class TimeGap extends DETransformer {
     /** Set the previous event time to -1.
      */
     public void initialize() throws IllegalActionException {
-        _previousTime = Double.NEGATIVE_INFINITY;
+        _previousTime = getDirector().timeConstants.NEGATIVE_INFINITY;
         super.initialize();
     }
 
@@ -106,5 +109,5 @@ public class TimeGap extends DETransformer {
     ////                         private variables                 ////
 
     // The time observed in the previous iteration.
-    private double _previousTime = Double.NEGATIVE_INFINITY;
+    private Time _previousTime;
 }

@@ -27,50 +27,21 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib.test;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEIOPort;
+import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
-  @author Edward A. Lee
+  @author Edward A. Lee, Haiyang Zheng
   @version $Id$
-  @Pt.ProposedRating Red (eal)
+  @Pt.ProposedRating Yellow (hyzheng)
   @Pt.AcceptedRating Red (cxh)
 */
-public class SimpleDelay extends TypedAtomicActor {
+public class SimpleDelay extends TimedDelay {
 
     public SimpleDelay(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input = new DEIOPort(this, "input", true, false);
-        output = new DEIOPort(this, "output", false, true);
-        delay = new Parameter(this, "delay", new DoubleToken(1.0));
-        delay.setTypeEquals(BaseType.DOUBLE);
-    }
-
-    public Parameter delay;
-    public DEIOPort input;
-    public DEIOPort output;
-    private Token _currentInput;
-
-    public void fire() throws IllegalActionException {
-        _currentInput = input.get(0);
-    }
-
-    public boolean postfire() throws IllegalActionException {
-        output.send(0, _currentInput,
-                ((DoubleToken)delay.getToken()).doubleValue());
-        return super.postfire();
-    }
-
-    public void pruneDependencies() {
-        super.pruneDependencies();
-        removeDependency(input, output);
     }
 }

@@ -32,6 +32,7 @@ package ptolemy.domains.de.lib.test;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -85,10 +86,10 @@ public class TestSource extends TypedAtomicActor {
         output.broadcast(new DoubleToken(value + increment));
         value += 1.0;
         Director director = getDirector();
-        double time = director.getCurrentTime();
+        Time time = director.getCurrentTime();
         count++;
         if (count >= 5) {
-            director.fireAt(this, time + 1.0);
+            director.fireAt(this, time.add(1.0));
             count = 0;
         } else {
             director.fireAt(this, time);

@@ -31,6 +31,7 @@ package ptolemy.domains.de.lib;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -140,7 +141,7 @@ public class SingleEvent extends TypedAtomicActor {
         if (eventTime >= 0.0) {
             Director director = getDirector();
             if (director != null) {
-                director.fireAt(this, eventTime);
+                director.fireAt(this, new Time(director, eventTime));
             } else {
                 throw new IllegalActionException(this, "No director.");
             }
@@ -152,8 +153,9 @@ public class SingleEvent extends TypedAtomicActor {
      *  parameter.
      */
     public void fire() throws IllegalActionException {
-        double eventTime = ((DoubleToken)time.getToken()).doubleValue();
-        if (getDirector().getCurrentTime() == eventTime) {
+        double eventTimeValue = ((DoubleToken)time.getToken()).doubleValue();
+        Time eventTime = new Time(this, eventTimeValue);
+        if (getDirector().getCurrentTime().equalTo(eventTime)) {
             output.send(0, value.getToken());
         }
         super.fire();
