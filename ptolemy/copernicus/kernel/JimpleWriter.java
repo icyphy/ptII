@@ -79,6 +79,10 @@ public class JimpleWriter extends SceneTransformer {
             String fileName;
             
             if(!outDir.equals("")) {
+                File outDirFile = new File(outDir);
+                if (!outDirFile.isDirectory()) {
+                    outDirFile.mkdirs();
+                }
                 fileName = outDir + System.getProperty("file.separator");
             } else {
                 fileName = "";
