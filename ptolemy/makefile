@@ -40,7 +40,7 @@ ME =		ptolemy
 # PTMATLAB_DIR is set to matlab by configure in $PTII/mk/ptII.mk
 # if libeng.def is found.
 DIRS = kernel plot graph moml data actor gui math media	\
-	$(PTCOPERNICUS_DIR) ]
+	$(PTCOPERNICUS_DIR) \
 	$(PTMATLAB_DIR)	domains vergil apps configs
 
 # Root of Ptolemy II directory
