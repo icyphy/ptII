@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IIRGUI" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -14,9 +15,106 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 102]">
     </property>
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
+        <property name="initialParametersURL" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
+            <doc name="tooltip">MoML File that contains the initial parameter values.</doc>
+        </property>
+        <property name="codeGenerator" class="ptolemy.data.expr.Parameter" value="&quot;java&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="java" class="ptolemy.kernel.util.StringAttribute" value="&quot;java&quot;">
+                </property>
+                <property name="applet" class="ptolemy.kernel.util.StringAttribute" value="&quot;applet&quot;">
+                </property>
+                <property name="c" class="ptolemy.kernel.util.StringAttribute" value="&quot;c&quot;">
+                </property>
+                <property name="jhdl" class="ptolemy.kernel.util.StringAttribute" value="&quot;jhdl&quot;">
+                </property>
+                <property name="shallow" class="ptolemy.kernel.util.StringAttribute" value="&quot;shallow&quot;">
+                </property>
+            </property>
+            <doc>The code generator to run.</doc>
+        </property>
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc>If true, compile the generated code.  The default is true.</doc>
+            <doc name="tooltip">Compile generated code.</doc>
+        </property>
+        <property name="show" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc> If true, then show the generated code.  The default is true.</doc>
+            <doc name="tooltip">Show generated code.</doc>
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc> If true, then run the generated code.  The default is true.</doc>
+            <doc name="tooltip">Execute generated code.</doc>
+        </property>
+        <property name="targetPackage" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.copernicus.java.cg.&quot; + model">
+            <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus.java.cg." + model</doc>
+        </property>
+        <property name="model" class="ptolemy.data.expr.Parameter" value="&quot;IIRGUI&quot;">
+            <doc> The name of the model, read from the .xml file and sanitized.</doc>
+        </property>
+        <property name="modelPath" class="ptolemy.data.expr.Parameter" value="ptII + &quot;ptolemy/copernicus/shallow/test/IIRGUI.xml&quot;">
+            <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
+        </property>
+        <property name="compileCommandTemplateFile" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/compileCommandTemplate.txt&quot;">
+            <doc>The template file that contains the command to run that generates the code.</doc>
+        </property>
+        <property name="compileOptions" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+            <doc>User supplied arguments to be passed to the code generator.  Defaults to the empty string.</doc>
+        </property>
+        <property name="classPath" class="ptolemy.data.expr.Parameter" value="root + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses">
+            <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
+        </property>
+        <property name="classPathSeparator" class="ptolemy.data.expr.Parameter" value="property(&quot;path.separator&quot;)">
+            <doc>The classpath separator. Under Windows, the default is ';'. Under Unix, the default is ':'</doc>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
+            <doc>Number of iterations to run the model for. Defaults to 1000.</doc>
+        </property>
+        <property name="iterationsParameter" class="ptolemy.data.expr.Parameter" value="&quot;,iterations:&quot; + iterations">
+            <doc>Defaults to "iterations:" + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
+        </property>
+        <property name="java" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;) + &quot;/bin/java&quot;">
+            <doc>Defaults to the value of the java.home property + bin/java, for example: c:/jdk1.3.1/bin/java</doc>
+        </property>
+        <property name="javaSystemJar" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;) + &quot;/lib/rt.jar&quot;">
+            <doc>Defaults to the value of the java.home property + "/lib/rt.jar"</doc>
+        </property>
+        <property name="jvmSize" class="ptolemy.data.expr.Parameter" value="&quot;-Xmx256m&quot;">
+            <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
+        </property>
+        <property name="ptII" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;)">
+            <doc>The location of the Ptolemy II classes.</doc>
+        </property>
+        <property name="root" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;)">
+            <doc>The top level directory to write the code in. The code will appear in 'root/targetPath'.</doc>
+        </property>
+        <property name="runCommandTemplateFile" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/runCommandTemplate.txt&quot;">
+            <doc>The template file that contains the command to run the generated code.</doc>
+        </property>
+        <property name="runOptions" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+            <doc>User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.</doc>
+        </property>
+        <property name="sootDir" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;) + &quot;/lib&quot;">
+            <doc>Defaults to the value of the ptolemy.ptII.dir property + "/lib/"</doc>
+        </property>
+        <property name="sootClasses" class="ptolemy.data.expr.Parameter" value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;/jasminclasses.jar&quot; + classPathSeparator + javaSystemJar">
+            <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).</doc>
+        </property>
+        <property name="watchDogTimeout" class="ptolemy.data.expr.Parameter" value="600000">
+            <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_editorFactory" class="ptolemy.copernicus.gui.GeneratorTableauAttribute$GeneratorTableauEditorFactory">
+        </property>
         <property name="sootShallow" class="ptolemy.data.expr.Parameter" value="true">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
@@ -37,29 +135,8 @@
             </property>
             <doc name="tooltip">Generate JHDL using Michael Wirthlin's code</doc>
         </property>
-        <property name="show" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc name="tooltip">Show generated code.</doc>
-        </property>
-        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc name="tooltip">Compile generated code.</doc>
-        </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc name="tooltip">Execute generated code.</doc>
-        </property>
         <property name="directory" class="ptolemy.kernel.util.StringAttribute" value="c:\users\cxh\ptII">
             <doc name="tooltip">Directory into which to put generated code.</doc>
-        </property>
-        <property name="compileOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;c:\users\cxh\ptII;.&quot;">
-            <doc name="tooltip">Options to pass to the compiler.</doc>
-        </property>
-        <property name="runOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;c:\users\cxh\ptII;.&quot;">
-            <doc name="tooltip">Options to use when executing the code.</doc>
         </property>
         <property name="packageName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.copernicus.shallow.cg">
             <doc name="tooltip">Package name for the generated classes.</doc>
