@@ -74,10 +74,6 @@ depend:
 
 demo:
 	java -classpath "$(CLASSPATH)" ptolemy.vergil.icon.IconEditor
-mine:
-	java -classpath "$(CLASSPATH)" ptolemy.vergil.icon.MyWindow
-drag:
-	java ptolemy.vergil.icon.DragKing
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

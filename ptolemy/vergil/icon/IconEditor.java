@@ -58,7 +58,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
 //import java.io.StringBufferInputStream;
-//import java.net.URL;
+import java.net.URL;
 //import java.util.Enumeration;
 
 // Ptolemy imports.
@@ -203,19 +203,19 @@ public class IconEditor {
 	// are instantiated with gif image files and these files must be 
 	// located in a sub-directory from this one named "gifs".
 
-	String Rectangle = "gifs/rect.gif";
-	String Line = "gifs/line.gif";
-	String Quad = "gifs/quad.gif";
-	String Cubic = "gifs/cubic.gif";
-	String Circle = "gifs/circle.gif";
-	String Ellipse = "gifs/ellipse.gif";
-	String Fill = "gifs/fill.gif";
-	String Stroke = "gifs/stroke.gif";
-	String thickness1 = "gifs/thickness1.gif";
-	String thickness2 = "gifs/thickness2.gif";
-	String thickness3 = "gifs/thickness3.gif";
-	String thickness4 = "gifs/thickness4.gif";
-	String thickness5 = "gifs/thickness5.gif";
+	URL Rectangle = getClass().getResource("/ptolemy/vergil/icon/gifs/rect.gif");
+	URL Line = getClass().getResource("gifs/line.gif");
+	URL Quad = getClass().getResource("gifs/quad.gif");
+	URL Cubic = getClass().getResource("gifs/cubic.gif");
+	URL Circle = getClass().getResource("gifs/circle.gif");
+	URL Ellipse = getClass().getResource("gifs/ellipse.gif");
+	URL Fill = getClass().getResource("gifs/fill.gif");
+	URL Stroke = getClass().getResource("gifs/stroke.gif");
+	URL thickness1 = getClass().getResource("gifs/thickness1.gif");
+	URL thickness2 = getClass().getResource("gifs/thickness2.gif");
+	URL thickness3 = getClass().getResource("gifs/thickness3.gif");
+	URL thickness4 = getClass().getResource("gifs/thickness4.gif");
+	URL thickness5 = getClass().getResource("gifs/thickness5.gif");
 
 
 	// Now that I have the names of all the gif files, I need to make them 
