@@ -220,7 +220,7 @@ case `basename "$0"` in
         # Mescal UI
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
-	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$PTII/mescal/lib/jsat.jar"
+	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$PTII/mescal/lib/jsat.jar$CLASSPATHSEPARATOR$PTII/mescal/lib/java_cup.jar"
 	javaflag="$ALL_JFLAG \"-DmescalBinaries=$PTII/mescal/bin\""
 	;;	
     moml)
