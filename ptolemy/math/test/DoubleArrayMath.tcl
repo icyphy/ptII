@@ -207,7 +207,7 @@ test DoubleArrayMath-7.3 {limit: no bottom} {
 	    [java::field java.lang.Double NEGATIVE_INFINITY] \
 	    1.25]
     $da2 getrange 0
-} {1.0 1.25 4.94065645841e-324 1.25 4.94065645841e-324 4.94065645841e-324 4.94065645841e-324 1.25 4.94065645841e-324 NaN 4.94065645841e-324 1.25}
+} {1.0 1.25 -3.0 1.25 0.0 -0.0 0.0 1.25 -Infinity NaN 4.94065645841e-324 1.25}
 
 
 ####################################################################
@@ -218,7 +218,7 @@ test DoubleArrayMath-7.4 {limit: no top} {
 	    [java::field java.lang.Double POSITIVE_INFINITY] \
 	    ]
     $da2 getrange 0
-} {1.0 2.0 -0.5 4.1 0.0 -0.0 0.0 1.79769313486e+308 -0.5 NaN 4.94065645841e-324 1.79769313486e+308}
+} {1.0 2.0 -0.5 4.1 0.0 -0.0 0.0 Infinity -0.5 NaN 4.94065645841e-324 1.79769313486e+308}
 
 ####################################################################
 test DoubleArrayMath-7.5 {limit: bottom greater than top} {
