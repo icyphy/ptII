@@ -29,10 +29,11 @@
 */
 
 package ptolemy.kernel.event;
-
-import java.util.Enumeration;
-import collections.LinkedList;
 import ptolemy.kernel.util.Nameable;
+
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChangeList
@@ -67,7 +68,7 @@ public class ChangeList extends ChangeRequest {
         if (_changes == null) {
             _changes = new LinkedList();
         }
-        _changes.insertLast(change);
+        _changes.add(change);
     }
 
     /** Execute each of the changes in the change list.
@@ -79,12 +80,12 @@ public class ChangeList extends ChangeRequest {
     public void execute() throws ChangeFailedException {
         if (_changes != null) {
             _changesExecuted = new LinkedList();
-            Enumeration changes = _changes.elements();
-            while (changes.hasMoreElements()) {
-                ChangeRequest change = (ChangeRequest)changes.nextElement();
+            Iterator changes = _changes.iterator();
+            while (changes.hasNext()) {
+                ChangeRequest change = (ChangeRequest)changes.next();
                 change.execute();
                 // If we get here, the change succeeded.
-                _changesExecuted.insertLast(change);
+                _changesExecuted.add(change);
             }
             _changesSucceeded = true;
         }
@@ -99,9 +100,9 @@ public class ChangeList extends ChangeRequest {
      */
     public void notify(ChangeListener listener) {
         if (_changes != null) {
-            Enumeration changes = _changesExecuted.elements();
-            while (changes.hasMoreElements()) {
-                ChangeRequest change = (ChangeRequest)changes.nextElement();
+            Iterator changes = _changesExecuted.iterator();
+            while (changes.hasNext()) {
+                ChangeRequest change = (ChangeRequest)changes.next();
                 listener.changeExecuted(change);
             }
             if (_changesSucceeded) {
@@ -114,10 +115,10 @@ public class ChangeList extends ChangeRequest {
     ////                         private variables                 ////
 
     // The list of change requests.
-    private LinkedList _changes;
+    private List _changes;
 
     // The list of changes the succeeded.
-    private LinkedList _changesExecuted;
+    private List _changesExecuted;
 
     // An indicator of whether the changes have been executed.
     private boolean _changesSucceeded = false;
