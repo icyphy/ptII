@@ -1,6 +1,6 @@
 # Makefile for the classes needed to use CHIC from inside Ptolemy II
 #
-# @Version: $Id$
+# @Version: makefile,v 1.3 2003/07/26 16:57:33 rowland Exp
 # @Author: Christopher Hylands (makefile only)
 #
 # @Copyright (c) 2002-2003 The Regents of the University of California.
@@ -52,7 +52,7 @@ JSRCS = \
 	ChicAttribute.java \
 	ChicController.java \
 	ChicControllerFactory.java \
-	ChicInvoker.java \
+	ChicInvoker.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	chic.gif \
