@@ -471,8 +471,9 @@ public class SerialComm extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+// FIXME: wrong place
     // Pointer/handle thingy for the serial port.
-    private SerialPort _serialPort;
+    protected SerialPort _serialPort;
 
     // Threshold for reading serial port data.  Don't read unless.
     // at least this many bytes are available.
