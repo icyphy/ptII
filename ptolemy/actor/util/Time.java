@@ -102,16 +102,14 @@ import ptolemy.kernel.util.InternalErrorException;
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class Time implements Comparable {
-    // FIXME: added a double representation for time values to compare the
-    // performance penalties introduced by using BigDecimal.
-
+    
     /** Construct a Time object with zero as the time value. This object
      *  is associated with the given director, which provides the necessary
-     *  information for quantization.
+     *  information for quantization. 
      *  @param director The director with which this time object is associated.
      */
     public Time(Director director) {
@@ -141,7 +139,6 @@ public class Time implements Comparable {
 
         if (Double.isInfinite(timeValue)) {
             _timeValue = null;
-
             if (timeValue < 0) {
                 _isNegativeInfinite = true;
             } else {
@@ -162,6 +159,8 @@ public class Time implements Comparable {
     /** Construct a Time object with the specified BigDecimal value as its
      *  time value. The time object is associated with the given director,
      *  which provides the necessary information for quantization.
+     *  This constructor is private and can only be accessed by the methods
+     *  defined inside this class.
      *  @param director The director with which this time object is associated.
      *  @param timeValue A BidDecimal value as the specified time value.
      */
@@ -169,10 +168,12 @@ public class Time implements Comparable {
         _director = director;
 
         if (_usingDouble) {
-            _timeDoubleValue = 0.0;
+            _timeValue = null;
         } else {
-            _timeValue = _quantizeTimeValue(timeValue);
+            // Addition operation performed on BigDecimal is always accurate.
+            _timeValue = timeValue;
         }
+        _timeDoubleValue = timeValue.doubleValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -229,16 +230,16 @@ public class Time implements Comparable {
                     return POSITIVE_INFINITY;
                 }
             }
+        } else if (isInfinite()) {
+            return this;
+        } else if (_usingDouble) {
+            double newValue = 
+                _quantizeTimeValue(_timeDoubleValue + timeValue);
+            return new Time(_director, newValue);
         } else {
-            if (isInfinite()) {
-                return this;
-            } else if (_usingDouble) {
-                double newValue = _quantizeTimeValue(_timeDoubleValue
-                        + timeValue);
-                return new Time(_director, newValue);
-            } else {
-                return _add(new BigDecimal(timeValue));
-            }
+            BigDecimal newTimeValue = 
+                _quantizeTimeValue(new BigDecimal(timeValue));
+            return _add(newTimeValue);
         }
     }
 
@@ -251,6 +252,10 @@ public class Time implements Comparable {
     public Time add(Time time) {
         // NOTE: a time value of a time object can be either positive infinite
         // or negative infinite.
+        if (_usingDouble) {
+            return add(time.getDoubleValue());
+        }
+        
         if (time.isNegativeInfinite()) {
             // the time object has a negative infinity time value
             if (isPositiveInfinite()) {
@@ -269,12 +274,10 @@ public class Time implements Comparable {
             } else {
                 return POSITIVE_INFINITY;
             }
+        } else if (isInfinite()) {
+            return this;
         } else {
-            if (_usingDouble) {
-                return add(time.getDoubleValue());
-            } else {
-                return _add(time._getBigDecimalValue());
-            }
+            return _add(time._getBigDecimalValue());
         }
     }
 
@@ -289,6 +292,11 @@ public class Time implements Comparable {
         // not be quantized.
         Time castedTime = (Time) time;
 
+        if (_usingDouble) {
+            return Double.compare(_timeDoubleValue,
+                    castedTime.getDoubleValue());
+        }
+         
         // If at least one of the time objects has an infinite time value,
         if (castedTime.isInfinite() || isInfinite()) {
             if (castedTime.isNegativeInfinite()) {
@@ -315,12 +323,7 @@ public class Time implements Comparable {
                 }
             }
         } else {
-            if (_usingDouble) {
-                return Double.compare(_timeDoubleValue,
-                        castedTime.getDoubleValue());
-            } else {
-                return _timeValue.compareTo(castedTime._getBigDecimalValue());
-            }
+            return _timeValue.compareTo(castedTime._getBigDecimalValue());
         }
     }
 
@@ -341,30 +344,29 @@ public class Time implements Comparable {
      *  @return The double representation of the time value.
      */
     public double getDoubleValue() {
+        if (_usingDouble) {
+            return _timeDoubleValue;
+        } 
         if (isPositiveInfinite()) {
             return Double.POSITIVE_INFINITY;
         } else if (isNegativeInfinite()) {
             return Double.NEGATIVE_INFINITY;
         } else {
-            if (_usingDouble) {
-                return _timeDoubleValue;
-            } else {
-                // NOTE: A simple computation may help to warn users that
-                // the returned double value loses the specified precisoin.
-                // One example: if timePrecisionInDigits = 12, and time resolution is 1E-12,
-                // any double that is bigger than 8192.0 can distinguish from itself
-                // from a value slighter bigger (with the difference as time
-                // resolution). 8192 is the LUB of the set of double values have
-                // the time resolution.
-                // NOTE: The strategy to find the LUB for a given time resolution r:
-                // find the smallest N such that time resolution r >=  2^(-1*N);
-                // get M = 52 - N, which is the multiplication we can apply on the
-                // significand without loss of time resolution;
-                // the LUB is approximately (1+1)*2^M.
-                // NOTE: the formula to calculate a decimal value from a binary
-                // representation is (-1)^(sign)x(1+significand)x2^(exponent-127).
-                return _getBigDecimalValue().doubleValue();
-            }
+            // NOTE: A simple computation may help to warn users that
+            // the returned double value loses the specified precisoin.
+            // One example: if timePrecisionInDigits = 12, and time resolution is 1E-12,
+            // any double that is bigger than 8192.0 can distinguish from itself
+            // from a value slighter bigger (with the difference as time
+            // resolution). 8192 is the LUB of the set of double values have
+            // the time resolution.
+            // NOTE: The strategy to find the LUB for a given time resolution r:
+            // find the smallest N such that time resolution r >=  2^(-1*N);
+            // get M = 52 - N, which is the multiplication we can apply on the
+            // significand without loss of time resolution;
+            // the LUB is approximately (1+1)*2^M.
+            // NOTE: the formula to calculate a decimal value from a binary
+            // representation is (-1)^(sign)x(1+significand)x2^(exponent-127).
+            return _getBigDecimalValue().doubleValue();
         }
     }
 
@@ -375,16 +377,16 @@ public class Time implements Comparable {
      *  @return The hash code for the time object.
      */
     public int hashCode() {
+        if (_usingDouble) {
+            return (new Double(_timeDoubleValue)).hashCode();
+        } 
+        
         if (isNegativeInfinite()) {
             return Integer.MIN_VALUE;
         } else if (isPositiveInfinite()) {
             return Integer.MAX_VALUE;
         } else {
-            if (_usingDouble) {
-                return (new Double(_timeDoubleValue)).hashCode();
-            } else {
-                return _getBigDecimalValue().hashCode();
-            }
+            return _getBigDecimalValue().hashCode();
         }
     }
 
@@ -426,6 +428,10 @@ public class Time implements Comparable {
      *  @return A new time object with time value decremented.
      */
     public Time subtract(Time time) {
+        if (_usingDouble) {
+            return add(-1 * time.getDoubleValue());
+        } 
+        
         // NOTE: a time value of a time object can be either a
         // positive infinity or a negative infinity.
         if (time.isNegativeInfinite()) {
@@ -446,12 +452,10 @@ public class Time implements Comparable {
             } else {
                 return NEGATIVE_INFINITY;
             }
+        } else if (isInfinite()) {
+            return this;
         } else {
-            if (_usingDouble) {
-                return add(-1 * time.getDoubleValue());
-            } else {
-                return _add(time._getBigDecimalValue().negate());
-            }
+            return _add(time._getBigDecimalValue().negate());
         }
     }
 
@@ -461,16 +465,16 @@ public class Time implements Comparable {
      *  @return A String represention of this time object.
      */
     public String toString() {
+        if (_usingDouble) {
+            return "" + _timeDoubleValue;
+        } 
+        
         if (isPositiveInfinite()) {
             return "A positive infinity.";
         } else if (isNegativeInfinite()) {
             return "A negative infinity.";
         } else {
-            if (_usingDouble) {
-                return "" + _timeDoubleValue;
-            } else {
-                return _getBigDecimalValue().toString();
-            }
+            return _getBigDecimalValue().toString();
         }
     }
 
@@ -485,16 +489,7 @@ public class Time implements Comparable {
      *  @return A new time object with the quantized and incremented time value.
      */
     private Time _add(BigDecimal timeValue) {
-        // NOTE: A BigDecimal can not have its value being infinite or NaN,
-        // so we only need to check whether this time object is infinite.
-        if (isInfinite()) {
-            // NOTE: we do not create a new time object since infinities
-            // are static and final constants of the time class.
-            return this;
-        } else {
-            BigDecimal quantizedTimeValue = _quantizeTimeValue(timeValue);
-            return new Time(_director, _timeValue.add(quantizedTimeValue));
-        }
+        return new Time(_director, _timeValue.add(timeValue));
     }
 
     /** Return the time value of this time object as a BigDecimal.
@@ -503,13 +498,9 @@ public class Time implements Comparable {
      *  @return The BigDecimal time value.
      */
     private BigDecimal _getBigDecimalValue() {
-        if (isInfinite()) {
-            throw new InternalErrorException("The getBigDecimalValue method "
-                    + "can not be applied on time objects with infinite "
-                    + "time values.");
-        } else {
-            return _timeValue;
-        }
+        // We do not check whether this time object is infinite.
+        // Other methods call this method should be responsible for checking.
+        return _timeValue;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -550,16 +541,6 @@ public class Time implements Comparable {
         double newValue = Math.round(originalTimeValue * Math.pow(10, precision)) / Math
             .pow(10, precision);
         return newValue;
-    }
-
-    /** Return a new time object whose time value is decreased by the
-     *  time value of the given BigDecimal. Quantization
-     *  is performed on both the timeValue argument and the result.
-     *  @param timeValue The amount of time decrement.
-     *  @return A new time object with time value decremented.
-     */
-    private Time _subtract(BigDecimal timeValue) {
-        return _add(timeValue.negate());
     }
 
     ///////////////////////////////////////////////////////////////////
