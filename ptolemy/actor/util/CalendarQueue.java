@@ -683,6 +683,9 @@ public class CalendarQueue implements Debuggable {
         }
 
         public final boolean includes(Object object) {
+            if (isEmpty()) {
+                return false;
+            }
             return (head.find(object) != null);
         }
 
