@@ -62,11 +62,13 @@ test UtilityFunctions-1.0 {Check readFile method} {
     set value [$res toString]
 
     list $value
-} {Greetings...}
+} {Greetings...
+}
+
 ######################################################################
 ####
 # result is 50 as the string for the re-invoked parser is 3+43+4 !
-test UtilityFunctions-1.0 {Check recurive calls to the parser with eval method} {
+test UtilityFunctions-3.0 {Check recurive calls to the parser with eval method} {
     set parser [java::new ptolemy.data.expr.PtParser]
     
     set tree [$parser generateParseTree "eval(\"3 + 4\" + \"3 + 4\")"]
