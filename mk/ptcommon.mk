@@ -393,10 +393,15 @@ jsoriginal:
 
 # Back out the instrumentation.
 jsrestore:
-	$(JSRESTORE) $(JSRCS)
-	-rm -f jsoriginal/README
-	-rmdir jsoriginal
-	$(MAKE) clean
+	if [ -d jsoriginal -a "$(JSRCS)" != "" ]; then \
+		echo "Running jsrestore in `pwd`"; \
+		$(JSRESTORE) $(JSRCS); \
+		-rm -f jsoriginal/README; \
+		-rmdir jsoriginal; \
+		$(MAKE) clean; \
+	else \
+		echo "no jsoriginal directory, or no java sources"; \
+	fi
 
 # Compile the instrumented Java classes and include JavaScope.zip
 jsbuild:
