@@ -525,16 +525,18 @@ public final class ASTReflect {
     }
 
     /** Return a diagnostic message that provides information about the set 
-     *  of compile units
-     *  that have been loaded and undergone package resolution. At minimum,
-     *  the number of ASTs loaded through each loading mode (shallow, deep, or full)
+     *  of user type declarations
+     *  that have been loaded and whose associated compile unit nodes have
+     *  undergone package resolution. At minimum,
+     *  the number of user type declaration ASTs loaded through each loading 
+     *  mode (shallow, deep, or full)
      *  is included in the diagnostic message. Additional information 
      *  can be included by setting one or more of the method arguments to 
      *  'true'.
      *  @param listClasses List the classes and interfaces (compile unit nodes)
      *  that have been loaded. The listing
-     *  of compile unit nodes is grouped by loading mode --- full, deep, or shallow.
-     *  @param dumpASTs Dump the abstract syntax tree for each compile unit node.
+     *  of user type declarations is grouped by loading mode --- full, deep, or shallow.
+     *  @param dumpASTs Dump the abstract syntax tree for each user type declaration.
      *  This option can result in a very large amount of generated text. 
      *  @return The diagnostic message.
      */
@@ -545,23 +547,26 @@ public final class ASTReflect {
         Collection compilationUnitList = StaticResolution.allPass0ResolvedMap.values();
         Iterator compilationUnits = compilationUnitList.iterator();
         while (compilationUnits.hasNext()) {
-            UserTypeDeclNode declaration 
-                    = NodeUtil.getDefinedType((CompileUnitNode)(compilationUnits.next()));
-            String information = "";
-            if (listClasses) {
-                information += getFullyQualifiedName(declaration);
-                if (declaration instanceof InterfaceDeclNode) 
-                    information  += " (interface)";
+            CompileUnitNode nextUnit = (CompileUnitNode)(compilationUnits.next());
+            Iterator definedTypes = NodeUtil.getDefinedTypes(nextUnit);
+            while (definedTypes.hasNext()) {
+                UserTypeDeclNode declaration = (UserTypeDeclNode)(definedTypes.next());
+                String information = "";
+                if (listClasses) {
+                    information += getFullyQualifiedName(declaration);
+                    if (declaration instanceof InterfaceDeclNode) 
+                        information  += " (interface)";
+                }
+                if (dumpASTs) information  += declaration.toString();
+                if (isShallow(declaration)) shallowASTs.add(information );
+                else if (isDeep(declaration)) deepASTs.add(information );
+                else if (isFull(declaration)) fullASTs.add(information );
+	            else throw new RuntimeException("ASTReflect.getLoadingStatus(): "
+                        + "Class '" + getFullyQualifiedName(declaration) 
+                        + "' has unknown loading status."
+                        + "\nA dump of the offending AST subtree follows.\n"
+                        + declaration.toString());
             }
-            if (dumpASTs) information  += declaration.toString();
-            if (isShallow(declaration)) shallowASTs.add(information );
-            else if (isDeep(declaration)) deepASTs.add(information );
-            else if (isFull(declaration)) fullASTs.add(information );
-	        else throw new RuntimeException("ASTReflect.getLoadingStatus(): "
-                    + "Class '" + getFullyQualifiedName(declaration) 
-                    + "' has unknown loading status."
-                    + "\nA dump of the offending AST subtree follows.\n"
-                    + declaration.toString());
         }
         StringBuffer status = new StringBuffer();
         status.append(shallowASTs.size() + deepASTs.size() + fullASTs.size() 

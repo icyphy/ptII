@@ -208,7 +208,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     /** Return a string representation of the list of loaded classes and interfaces, 
      *  the associated
      *  hash map keys, and the loading statuses. This is useful for diagnostic
-     *  purposes.
+     *  purposes. Note that if a given compile unit contains multiple user
+     *  type definitions (e.g., an interface and a class definition), then
+     *  there will accordingly be multiple listings with the same hash map key.
      *  @return The string representation of loaded classes and interfaces.
      */
     public static String getLoadedASTNames() {
@@ -217,9 +219,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         while (keys.hasNext()) {
             Object nextKey = keys.next();
             CompileUnitNode unit = (CompileUnitNode) allPass0ResolvedMap.get(nextKey);
-            UserTypeDeclNode declaration = NodeUtil.getDefinedType(unit);
-            names.append(nextKey + ": " + ASTReflect.getFullyQualifiedName(declaration)
-                    + " (" + ASTReflect.getLoadingMode(declaration) + ")\n");
+            Iterator definedTypes = NodeUtil.getDefinedTypes(unit);
+            while (definedTypes.hasNext()) {
+                UserTypeDeclNode declaration = (UserTypeDeclNode)(definedTypes.next());
+                names.append(nextKey + ": " + ASTReflect.getFullyQualifiedName(
+                        declaration) + " (" + ASTReflect.getLoadingMode(declaration) + 
+                        ")\n");
+            }
         }
         return names.toString();
 

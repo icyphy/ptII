@@ -215,10 +215,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                         }
                     }
                     if (loadedClass != null)  {
-                        // Generate a shallow AST
+                        // Generate a shallow AST or a deep AST (if shallow
+                        // loading is disabled)
                         CompileUnitNode loadedAST = 
                                 ASTReflect.ASTCompileUnitNode(loadedClass);
-                        _source = NodeUtil.getDefinedType(loadedAST);
                         if (loadedAST == null)
                             throw new NullPointerException("ClassDecl.loadSource: "
                                     + "loaded AST for " + fullName() + " is null even " 
@@ -227,7 +227,9 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                                     + ")was successfully loaded.");
                         else {
                             // Register the loaded class, and perform pass 0 resolution.
-                            _source = NodeUtil.getDefinedType(loadedAST);
+                            // There is only only type definition in the loaded AST
+                            // since it was created via ASTReflect.
+                            _source = NodeUtil.getSingleDefinedType(loadedAST);
                             loadedAST.setProperty(IDENT_KEY, fullName());
                             JavaParserManip.allParsedMap.put(fullName(), loadedAST); 
                             StaticResolution.loadCompileUnit(loadedAST, 0);
