@@ -437,14 +437,18 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         // Set scope variables
                         // This would be more efficient if the matlab engine
                         // understood the scope.
-                        Iterator variables =
-                            _scope.variableList().elementList().iterator();
-                        while (variables.hasNext()) {
-                            Variable var = (Variable)variables.next();
-                            // This was here...  don't understand why???
-                            // if (var != packageDirectories)
-                            matlabEngine.put
-                                (engine, var.getName(), var.getToken());
+			NamedList scopeVariableList =
+			    _scope.variableList();
+			if (scopeVariableList != null) {
+			    Iterator variables =
+				_scope.variableList().elementList().iterator();
+			    while (variables.hasNext()) {
+				Variable var = (Variable)variables.next();
+				// This was here...  don't understand why???
+				// if (var != packageDirectories)
+				matlabEngine.put
+				    (engine, var.getName(), var.getToken());
+			    }
                         }
                         matlabEngine.evalString(engine,
                                 "result__=" + expression);
