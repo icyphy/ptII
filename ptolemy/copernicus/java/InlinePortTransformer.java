@@ -825,7 +825,10 @@ public class InlinePortTransformer extends SceneTransformer {
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-            if(value instanceof CastExpr) {
+            if(value instanceof Local) {
+                return getPortValue(method, (Local)value,
+                        stmt, localDefs, localUses);
+            } else if(value instanceof CastExpr) {
                 return getPortValue(method, (Local)((CastExpr)value).getOp(),
                         stmt, localDefs, localUses);
             } else if(value instanceof FieldRef) {

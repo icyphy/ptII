@@ -407,7 +407,10 @@ public class InlineParameterTransformer extends SceneTransformer {
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-            if(value instanceof CastExpr) {
+            if(value instanceof Local) {
+                return getAttributeValue(method, (Local)value,
+                        stmt, localDefs, localUses);
+            } else if(value instanceof CastExpr) {
                 return getAttributeValue(method, (Local)((CastExpr)value).getOp(),
                         stmt, localDefs, localUses);
             } else if(value instanceof FieldRef) {
