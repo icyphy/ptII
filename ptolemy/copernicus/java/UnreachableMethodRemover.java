@@ -93,7 +93,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
         // Temporary hack to deal with interfaces...  assume that methods of
         // interfaces are automatically reachable.
         HashSet forcedReachableMethodSet = new HashSet();
-        forcedReachableMethodSet.addAll(EntryPoints.v().all());
+        forcedReachableMethodSet.addAll(EntryPoints.v().application());
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {

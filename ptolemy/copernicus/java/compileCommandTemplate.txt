@@ -8,41 +8,19 @@
 "@java@" @jvmSize@
  -classpath "@classPath@"
  "@javaPtIIProperty@"
- ptolemy.copernicus.java.Main "@modelPath@" -d "@ptIIUserDirectory@"
+ ptolemy.copernicus.java.Main "@modelPath@"
+ -watchDogTimer "@watchDogTimeout@"
+ -outputDirectory "@ptIIUserDirectory@/@targetPath@"
+ -targetPackage "@targetPackage@"
+ -templateDirectory "ptolemy/copernicus/java"
+ -generatorAttributeFileName "@_generatorAttributeFileName@"
+ -sootArgs
+ -d "@ptIIUserDirectory@"
+ -via-grimp
  -w
  -p wjop.smb off
  -p wjop.si off
  -p wjap.ra off
  -p cg off
- -p wjtp.watchDog time:@watchDogTimeout@
- -p wjtp.mt targetPackage:@targetPackage@
- -p wjtp.clt targetPackage:@targetPackage@@iterationsParameter@
- -p wjtp.ffat1 targetPackage:@targetPackage@	
- -p wjtp.ffat2 targetPackage:@targetPackage@
- -p wjtp.ffet targetPackage:@targetPackage@
- -p wjtp.ffpt targetPackage:@targetPackage@
- -p wjtp.idt "outDir:@ptIIUserDirectory@/@targetPath@,targetPackage:@targetPackage@"
- -p wjtp.iat targetPackage:@targetPackage@
- -p wjtp.ipt targetPackage:@targetPackage@
- -p wjtp.itt1 targetPackage:@targetPackage@
- -p wjtp.itt2 targetPackage:@targetPackage@
- -p wjtp.ttn enabled
- -p wjtp.umr1 debug
- -p wjtp.nee targetPackage:@targetPackage@
- -p wjtp.noe enabled
- -p wjtp.lur "outDir:@ptIIUserDirectory@/@targetPath@"
- -p wjtp.ee1 obfuscate,targetPackage:@targetPackage@ 
- -p wjtp.ee2 obfuscate,targetPackage:@targetPackage@
- -p wjtp.snapshot1 "outDir:@ptIIUserDirectory@/@targetPath@/jimple1" 
- -p wjtp.snapshot1jimple "outDir:@ptIIUserDirectory@/@targetPath@/jimple1"
- -p wjtp.snapshot2 "outDir:@ptIIUserDirectory@/@targetPath@/jimple2"
- -p wjtp.snapshot2jimple "outDir:@ptIIUserDirectory@/@targetPath@/jimple2"
- -p wjtp.snapshot3 "outDir:@ptIIUserDirectory@/@targetPath@/jimple3"
- -p wjtp.snapshot3jimple "outDir:@ptIIUserDirectory@/@targetPath@/jimple3"
- -p wjtp.snapshot4 "outDir:@ptIIUserDirectory@/@targetPath@/jimple4"
- -p wjtp.snapshot4jimple "outDir:@ptIIUserDirectory@/@targetPath@/jimple4"
- -p wjtp.finalSnapshotJimple "outDir:@ptIIUserDirectory@/@targetPath@"
- -p wjtp.makefileWriter 
- "_generatorAttributeFileName:@_generatorAttributeFileName@,targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@,templateDirectory:ptolemy/copernicus/java"
  @compileOptions@
 

@@ -40,6 +40,7 @@ import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
@@ -234,11 +235,13 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
             
-            // If we have an attribute that derives from stringAttribute, then
-            // we need to grab some code for it. (i.e. FileAttribute
-            if((attribute instanceof StringAttribute) && 
-                    !(attribute instanceof Variable) &&
-                    !(attribute.getClass().equals(StringAttribute.class))) {
+            // If we have an attribute that derives from
+            // stringAttribute, or Parameter then we need to grab some
+            // code for it. (i.e. FileAttribute, and FileParameter)
+            if((attribute instanceof StringAttribute &&
+                    !attribute.getClass().equals(StringAttribute.class)) ||
+               (attribute instanceof Parameter &&
+                    !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
                 
                 SootClass attributeClass = 
@@ -267,7 +270,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 // Fold the copied class up to StringAttribute.
                 SootClass superClass = newClass.getSuperclass();
                 while (superClass != PtolemyUtilities.objectClass &&
-                        superClass != PtolemyUtilities.stringAttributeClass) {
+                        superClass != PtolemyUtilities.stringAttributeClass &&
+                        superClass != PtolemyUtilities.parameterClass) {
                     superClass.setLibraryClass();
                     SootUtilities.foldClass(newClass);
                     superClass = newClass.getSuperclass();

@@ -222,8 +222,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                                 PtolemyUtilities.arrayTokenConstructor)) {
                         // The arrayToken constructor depends on the type
                         // of its constructor argument.
-                        System.out.println("found array invoke: " + r);
-                        System.out.println("Argument type is : " + in.get(r.getArg(0)));
+                        //     System.out.println("found array invoke: " + r);
+                        //     System.out.println("Argument type is : " + in.get(r.getArg(0)));
                         out.put(r.getBase(), new ArrayType(
                             (ptolemy.data.type.Type)in.get(r.getArg(0))));
                     }

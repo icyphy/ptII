@@ -33,6 +33,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.ClassWriter;
 import ptolemy.copernicus.kernel.InvocationBinder;
+import ptolemy.copernicus.kernel.GrimpTransformer;
 import ptolemy.copernicus.kernel.JimpleWriter;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.LibraryUsageReporter;
@@ -75,9 +76,9 @@ public class Main extends KernelMain {
      *  command line options, see the superclass documentation for details.
      *  @exception IllegalActionException If the model cannot be parsed.
      */
-    public Main(String [] args) throws IllegalActionException {
+    public Main(String momlClassName) throws IllegalActionException {
         // args[0] contains the MoML class name.
-        super(args[0]);
+        super(momlClassName);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,7 +95,8 @@ public class Main extends KernelMain {
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
-        addTransform(pack, "wjtp.watchDog", WatchDogTimer.v());
+        addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
+                "time:" + _watchDogTimer);
 
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
@@ -105,148 +107,166 @@ public class Main extends KernelMain {
         // Create a class for the composite actor of the model, and
         // additional classes for all actors (both composite and
         // atomic) used by the model.
-       addTransform(pack, "wjtp.mt", ModelTransformer.v(toplevel));
+       addTransform(pack, "wjtp.mt", ModelTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
 
 
         // Inline the director into the composite actor.
        addTransform(pack, "wjtp.idt",
-                        InlineDirectorTransformer.v(toplevel));
+               InlineDirectorTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage + 
+               " outDir:" + _outputDirectory);
 
         // Add a command line interface (i.e. Main)
        addTransform(pack, "wjtp.clt",
-                        CommandLineTransformer.v(toplevel));
+                        CommandLineTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
 
-
+       
        addTransform(pack, "wjtp.ta1",
-                        new TransformerAdapter(TypeAssigner.v()));
-        _addStandardOptimizations(pack, 1);
-        
-       addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v());
-       addTransform(pack, "wjtp.snapshot1", ClassWriter.v());
+               new TransformerAdapter(TypeAssigner.v()));
+       _addStandardOptimizations(pack, 1);
+       
+       addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple1");
+       addTransform(pack, "wjtp.snapshot1", ClassWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple1");
        
        addTransform(pack, "wjtp.ib1", InvocationBinder.v());
        
        addTransform(pack, "wjtp.ls7",
                         new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.ffet",
-                        FieldsForEntitiesTransformer.v(toplevel));
+                        FieldsForEntitiesTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
 
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
        addTransform(pack, "wjtp.ta2",
-                        new TransformerAdapter(TypeAssigner.v()));
+               new TransformerAdapter(TypeAssigner.v()));
        addTransform(pack, "wjtp.cie1",
-                        new TransformerAdapter(
-                                CastAndInstanceofEliminator.v()));
+               new TransformerAdapter(
+                       CastAndInstanceofEliminator.v()));
         _addStandardOptimizations(pack, 2);
        
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
        addTransform(pack, "wjtp.ffat1",
-                        FieldsForAttributesTransformer.v(toplevel));
+               FieldsForAttributesTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
         
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
        addTransform(pack, "wjtp.ffpt",
-                        FieldsForPortsTransformer.v(toplevel));
-        
+               FieldsForPortsTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
+       
        addTransform(pack, "wjtp.ls2",
-                        new TransformerAdapter(LocalSplitter.v()));
-        addTransform(pack, "wjtp.lns",
-                        new TransformerAdapter(LocalNameStandardizer.v()));
-         _addStandardOptimizations(pack, 3);
-         
+               new TransformerAdapter(LocalSplitter.v()));
+       addTransform(pack, "wjtp.lns",
+               new TransformerAdapter(LocalNameStandardizer.v()));
+       _addStandardOptimizations(pack, 3);
+       
        addTransform(pack, "wjtp.ls3",
-                        new TransformerAdapter(LocalSplitter.v()));
+               new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.ta3",
-                        new TransformerAdapter(TypeAssigner.v()));
+               new TransformerAdapter(TypeAssigner.v()));
        addTransform(pack, "wjtp.ib2",
-                        InvocationBinder.v());
-        
-        // Set about removing reference to attributes and parameters.
-        // Anywhere where a method is called on an attribute or
-        // parameter, replace the method call with the return value
-        // of the method.  This is possible, since after
-        // initialization attribute values are assumed not to
-        // change.  (Note: There are certain cases where this is
-        // not true, i.e. the expression actor.  Those will be
-        // specially handled before this point, or we should detect
-        // assignments to attributes and handle them differently.)
+               InvocationBinder.v());
+       
+       // Set about removing reference to attributes and parameters.
+       // Anywhere where a method is called on an attribute or
+       // parameter, replace the method call with the return value
+       // of the method.  This is possible, since after
+       // initialization attribute values are assumed not to
+       // change.  (Note: There are certain cases where this is
+       // not true, i.e. the expression actor.  Those will be
+       // specially handled before this point, or we should detect
+       // assignments to attributes and handle them differently.)
        addTransform(pack, "wjtp.iat",
-                        InlineParameterTransformer.v(toplevel));
-        
-        // Remove equality checks, which arise from inlining attributeChanged.
-        //  pack.add(
-        //                 new Transform("wjtp.ta",
-        //                         new TransformerAdapter(TypeAssigner.v()));
-        //         pack.add(
-        //                 new Transform("wjtp.nee",
-        //                         NamedObjEqualityEliminator.v(toplevel));
-
-        // Anywhere we have a method call on a token that can be
-        // statically evaluated (usually, these will have been
-        // created by inlining parameters), inline those calls.
-        // We do this before port transformation, since it
-        // often allows us to statically determine the channels
-        // of port reads and writes.
+               InlineParameterTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
+       
+       // Remove equality checks, which arise from inlining attributeChanged.
+       //  pack.add(
+       //                 new Transform("wjtp.ta",
+       //                         new TransformerAdapter(TypeAssigner.v()));
+       //         pack.add(
+       //                 new Transform("wjtp.nee",
+       //                         NamedObjEqualityEliminator.v(toplevel));
+       
+       // Anywhere we have a method call on a token that can be
+       // statically evaluated (usually, these will have been
+       // created by inlining parameters), inline those calls.
+       // We do this before port transformation, since it
+       // often allows us to statically determine the channels
+       // of port reads and writes.
        addTransform(pack, "wjtp.itt1",
-                        InlineTokenTransformer.v(toplevel));
-        
+               InlineTokenTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
+       
        addTransform(pack, "wjtp.ls4",
-                        new TransformerAdapter(LocalSplitter.v()));
-
-        // While we still have references to ports, use the
-        // resolved types of the ports and run a typing
-        // algorithm to specialize the types of domain
-        // polymorphic actors.  After this step, no
-        // uninstantiable types should remain.
+               new TransformerAdapter(LocalSplitter.v()));
+       
+       // While we still have references to ports, use the
+       // resolved types of the ports and run a typing
+       // algorithm to specialize the types of domain
+       // polymorphic actors.  After this step, no
+       // uninstantiable types should remain.
        addTransform(pack, "wjtp.tie",
                         new TransformerAdapter(
                                 TokenInstanceofEliminator.v()));
        addTransform(pack, "wjtp.ta4",
-                        new TransformerAdapter(TypeAssigner.v()));
-
-       addTransform(pack, "wjtp.cp1",
-                        new TransformerAdapter(CopyPropagator.v()));
+               new TransformerAdapter(TypeAssigner.v()));
        
-        //       _addStandardOptimizations(pack, 4);
-        
-       addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v());
-       addTransform(pack, "wjtp.snapshot2", ClassWriter.v());
-
-        // Set about removing references to ports.
-        // Anywhere where a method is called on a port, replace the
-        // method call with an inlined version of the method.
-        // Currently this only deals with SDF, and turns
-        // all gets and puts into reads and writes from circular
-        // buffers.
+       addTransform(pack, "wjtp.cp1",
+               new TransformerAdapter(CopyPropagator.v()));
+       
+       //       _addStandardOptimizations(pack, 4);
+       
+       addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple2");
+       addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple2");
+       
+       // Set about removing references to ports.
+       // Anywhere where a method is called on a port, replace the
+       // method call with an inlined version of the method.
+       // Currently this only deals with SDF, and turns
+       // all gets and puts into reads and writes from circular
+       // buffers.
        addTransform(pack, "wjtp.ipt",
-                        InlinePortTransformer.v(toplevel));
-
-        // This appears again because Inlining the parameters
-        // also inlines calls to connectionsChanged, which by default
-        // calls getDirector...  This transformer removes
-        // these method calls.
-        // FIXME: This should be done in a better way...
+               InlinePortTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
+       
+       // This appears again because Inlining the parameters
+       // also inlines calls to connectionsChanged, which by default
+       // calls getDirector...  This transformer removes
+       // these method calls.
+       // FIXME: This should be done in a better way...
        addTransform(pack, "wjtp.ffat2",
-                        FieldsForAttributesTransformer.v(toplevel));
-        
-        // Deal with any more statically analyzeable token
-        // references that were created.
+               FieldsForAttributesTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
+       
+       // Deal with any more statically analyzeable token
+       // references that were created.
        addTransform(pack, "wjtp.itt2",
-                        InlineTokenTransformer.v(toplevel));
+               InlineTokenTransformer.v(toplevel),
+               "targetPackage:" + _targetPackage);
         
-        //pack.add(new Transform("wjtp.ta",
-        //        new TransformerAdapter(TypeAssigner.v()));
-        // pack.add(new Transform("wjtp.ibg",
-        //        InvokeGraphBuilder.v());
-        // pack.add(new Transform("wjtp.si",
-        //        StaticInliner.v());
-        
-       addTransform(pack, "wjtp.snapshot3jimple", JimpleWriter.v());
-       addTransform(pack, "wjtp.snapshot3", ClassWriter.v());
+       //pack.add(new Transform("wjtp.ta",
+       //        new TransformerAdapter(TypeAssigner.v()));
+       // pack.add(new Transform("wjtp.ibg",
+       //        InvokeGraphBuilder.v());
+       // pack.add(new Transform("wjtp.si",
+       //        StaticInliner.v());
+       
+       addTransform(pack, "wjtp.snapshot3jimple", JimpleWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple3");
+       addTransform(pack, "wjtp.snapshot3", ClassWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple3");
        
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
@@ -262,7 +282,8 @@ public class Main extends KernelMain {
                InvocationBinder.v());
        
        addTransform(pack, "wjtp.nee",
-               NamedObjEqualityEliminator.v(toplevel));
+               NamedObjEqualityEliminator.v(toplevel),
+               "targetPackage:" + _targetPackage);
        
        // Remove casts and instanceof Checks.
        addTransform(pack, "wjtp.cie2",
@@ -319,8 +340,10 @@ public class Main extends KernelMain {
                                 DeadObjectEliminator.v()));
         _addStandardOptimizations(pack, 7);
         
-       addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v());
-       addTransform(pack, "wjtp.snapshot4", ClassWriter.v());
+       addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple4");
+       addTransform(pack, "wjtp.snapshot4", ClassWriter.v(),
+               "outDir:" + _outputDirectory + "/jimple4");
        
        addTransform(pack, "wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel));
@@ -356,9 +379,12 @@ public class Main extends KernelMain {
 
         // This snapshot should be last...
        addTransform(pack, "wjtp.finalSnapshotJimple",
-                        JimpleWriter.v());
+               JimpleWriter.v(),
+               "outDir:" + _outputDirectory);
        addTransform(pack, "wjtp.lur",
                         LibraryUsageReporter.v());
+//        addTransform(pack, "wjtp.gt",
+//                         GrimpTransformer.v());
     }
 
 
@@ -375,8 +401,17 @@ public class Main extends KernelMain {
         //                 new Transform("wjtp.finalSnapshot", CWriter.v());
 
         // Generate the makefile files in outDir
+        System.out.println("_generatorAttributeFileName:" + _generatorAttributeFileName +
+                " targetPackage:" + _targetPackage + 
+                " outDir:" + _outputDirectory + 
+                " templateDirectory:" + _templateDirectory);
         addTransform(pack, "wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel));
+                MakefileWriter.v(_toplevel),
+                "_generatorAttributeFileName:" + _generatorAttributeFileName +
+                " targetPackage:" + _targetPackage + 
+                " templateDirectory:" + _templateDirectory +
+                " outDir:" + _outputDirectory);
+              
 
         addTransform(pack, "wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true");
@@ -389,7 +424,7 @@ public class Main extends KernelMain {
         try {
             long startTime = System.currentTimeMillis();
 
-            Main main = new Main(args);
+            Main main = new Main(modelName);
 
             // Parse the model.
             CompositeActor toplevel = main.readInModel(modelName);
@@ -397,10 +432,21 @@ public class Main extends KernelMain {
             // Create instance classes for the actors.
             main.initialize(toplevel);
 
+            // Parse any copernicus args.
+            System.out.println("args = ");
+            for(int i = 0; i < args.length; i++) {
+                System.out.println(args[i]);
+            }
+            String[] sootArgs = _parseArgs(args);
+            System.out.println("sootArgs = ");
+            for(int i = 0; i < sootArgs.length; i++) {
+                System.out.println(sootArgs[i]);
+            }
+              
             // Add Transforms to the Scene.
             main.addTransforms();
 
-            main.generateCode(args);
+            main.generateCode(sootArgs);
 
             // Print out memory usage info
             System.out.println(modelName + " "
@@ -443,4 +489,71 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.SOule" + time,
                 new TransformerAdapter(UnusedLocalEliminator.v()));
     }
+    
+    private static String[] _parseArgs(String args[]) {
+        // Ignore the first argument.
+        for(int i = 1; i < args.length; i++) {
+            System.out.println("arg = " + args[i]);
+            if(args[i].equals("-targetPackage")) {
+                i++;
+                if(i < args.length) {
+                    _targetPackage = args[i];
+                } else {
+                    throw new RuntimeException(
+                            "Expected argument to -targetPackage");
+                }
+            } else if(args[i].equals("-templateDirectory")) {
+                i++;
+                if(i < args.length) {
+                    _templateDirectory = args[i];
+                } else {
+                    throw new RuntimeException(
+                            "Expected argument to -templateDirectory");
+                }
+            } else if(args[i].equals("-watchDogTimer")) {
+                i++;
+                if(i < args.length) {
+                    _watchDogTimer = args[i];
+                } else {
+                    throw new RuntimeException(
+                            "Expected argument to -watchDogTimer");
+                }
+            } else if(args[i].equals("-outputDirectory")) {
+                i++;
+                if(i < args.length) {
+                    _outputDirectory = args[i];
+                } else {
+                    throw new RuntimeException(
+                            "Expected argument to -outputDirectory");
+                }
+            } else if(args[i].equals("-generatorAttributeFileName")) {
+                i++;
+                if(i < args.length) {
+                    _generatorAttributeFileName = args[i];
+                } else {
+                    throw new RuntimeException(
+                           "Expected argument to -generatorAttributeFileName");
+                }
+            } else if(args[i].equals("-sootArgs")) {
+                String[] sootArgs = new String[args.length - i];
+                i++;
+                sootArgs[0] = args[0];
+                for(int j = 1; j < sootArgs.length; j++) {
+                    sootArgs[j] = args[i++];
+                }
+                return sootArgs;
+            }
+        }   
+        
+        // Default args to soot, if no -sootArgs is found.
+        String[] sootArgs = new String[1];
+        sootArgs[0] = args[0];
+        return sootArgs;
+    }
+    
+    private static String _generatorAttributeFileName = "unsetParameter";
+    private static String _watchDogTimer = "unsetParameter";
+    private static String _targetPackage = "unsetParameter";
+    private static String _templateDirectory = "ptolemy/copernicus/java";
+    private static String _outputDirectory = "unsetParameter";
 }
