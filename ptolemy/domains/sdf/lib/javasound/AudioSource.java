@@ -149,19 +149,19 @@ public class AudioSource extends SDFAtomicActor {
 	sampleRate.setTypeEquals(BaseType.INT);
 
 	sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
-					 new IntToken(16));
+                new IntToken(16));
 	sampleSizeInBits.setTypeEquals(BaseType.INT);
 
 	channels = new Parameter(this, "channels",
-				 new IntToken(1));
+                new IntToken(1));
 	channels.setTypeEquals(BaseType.INT);
 
 	bufferSize = new Parameter(this, "bufferSize",
-				   new IntToken(4096));
+                new IntToken(4096));
 	bufferSize.setTypeEquals(BaseType.INT);
 
 	tokenProductionRate = new Parameter(this, "tokenProductionRate",
-					    new IntToken(256));
+                new IntToken(256));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -388,66 +388,66 @@ public class AudioSource extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	//System.out.println("AudioSource: initialize(): invoked");
-	    if (((StringToken)source.getToken()).toString() == "URL") {
-		// Load audio from a URL.
-		String theURL =
-		    ((StringToken)pathName.getToken()).toString();
-		_soundCapture = new SoundCapture(true,
-						  theURL,
-						  _productionRate);
-		// Start capturing audio.
-		_soundCapture.startCapture();
+        if (((StringToken)source.getToken()).toString() == "URL") {
+            // Load audio from a URL.
+            String theURL =
+                ((StringToken)pathName.getToken()).toString();
+            _soundCapture = new SoundCapture(true,
+                    theURL,
+                    _productionRate);
+            // Start capturing audio.
+            _soundCapture.startCapture();
 
-		// Read the number of audio channels and set
-		// parameter accordingly.
-		_channels = _soundCapture.getChannels();
-		channels.setToken(new IntToken(_channels));
+            // Read the number of audio channels and set
+            // parameter accordingly.
+            _channels = _soundCapture.getChannels();
+            channels.setToken(new IntToken(_channels));
 
-	    } else if (((StringToken)source.getToken()).toString() ==
-		       "file") {
-		// Load audio from a file.
-		String theFileName =
-		    ((StringToken)pathName.getToken()).toString();
-		_soundCapture = new SoundCapture(false,
-						  theFileName,
-						  _productionRate);
-		 // Start capturing audio.
-		_soundCapture.startCapture();
+        } else if (((StringToken)source.getToken()).toString() ==
+                "file") {
+            // Load audio from a file.
+            String theFileName =
+                ((StringToken)pathName.getToken()).toString();
+            _soundCapture = new SoundCapture(false,
+                    theFileName,
+                    _productionRate);
+            // Start capturing audio.
+            _soundCapture.startCapture();
 
-		// Read the number of audio channels and set
-		// parameter accordingly.
-		_channels = _soundCapture.getChannels();
-		channels.setToken(new IntToken(_channels));
-	    } else if (((StringToken)source.getToken()).toString() ==
-		       "mic") {
+            // Read the number of audio channels and set
+            // parameter accordingly.
+            _channels = _soundCapture.getChannels();
+            channels.setToken(new IntToken(_channels));
+        } else if (((StringToken)source.getToken()).toString() ==
+                "mic") {
 
-		int sampleRateInt =
-		    ((IntToken)sampleRate.getToken()).intValue();
+            int sampleRateInt =
+                ((IntToken)sampleRate.getToken()).intValue();
 
-		int sampleSizeInBitsInt =
-		    ((IntToken)sampleSizeInBits.getToken()).intValue();
-		int channelsInt =
-		    ((IntToken)channels.getToken()).intValue();
-		int bufferSizeInt =
-		    ((IntToken)bufferSize.getToken()).intValue();
-		int getSamplesSizeInt = _productionRate;
-		_soundCapture = new SoundCapture((float)sampleRateInt,
-						 sampleSizeInBitsInt,
-						 channelsInt,
-						 bufferSizeInt,
-						 getSamplesSizeInt);
-		 // Start capturing audio.
-		_soundCapture.startCapture();
-	    } else {
-		throw new IllegalActionException("Parameter " +
-				  source.getFullName() +
-			          " is not set to a valid string.");
-	    }
+            int sampleSizeInBitsInt =
+                ((IntToken)sampleSizeInBits.getToken()).intValue();
+            int channelsInt =
+                ((IntToken)channels.getToken()).intValue();
+            int bufferSizeInt =
+                ((IntToken)bufferSize.getToken()).intValue();
+            int getSamplesSizeInt = _productionRate;
+            _soundCapture = new SoundCapture((float)sampleRateInt,
+                    sampleSizeInBitsInt,
+                    channelsInt,
+                    bufferSizeInt,
+                    getSamplesSizeInt);
+            // Start capturing audio.
+            _soundCapture.startCapture();
+        } else {
+            throw new IllegalActionException("Parameter " +
+                    source.getFullName() +
+                    " is not set to a valid string.");
+        }
 
 
 
-	    // Allocate array for postfire()
-	    _audioTokenArray = new DoubleToken[_productionRate];
+        // Allocate array for postfire()
+        _audioTokenArray = new DoubleToken[_productionRate];
     }
 
     /** Stop capturing audio. Free up any system resources involved

@@ -1,7 +1,7 @@
 /* An actor that writes input audio data to a sound file or plays
 the audio data.
 
-@Copyright (c) 1998-2000 The Regents of the University of California.
+@Copyright (c) 2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib.javasound;
@@ -55,7 +55,7 @@ import ptolemy.domains.sdf.kernel.*;
 This actor reads in audio data from the input port and records the
 data to a sound file or plays the audio data. The input port is of type
 DoubleToken. Each DoubleToken read from the input represents one sample
-of the audio data and should be in the range [-1,1]. Single channel
+of the audio data and should be in the range [-1, 1]. Single channel
 (mono) and multichannel audio (stereo) are supported. For single
 audio, tokens are read from channel 0 of the input port. For multichannel
 (stereo) audio, tokens are read from channel 0 (left) and channel 1
@@ -136,19 +136,20 @@ public class AudioSink extends SDFAtomicActor {
         sampleRate = new Parameter(this, "sampleRate", new IntToken(22050));
         sampleRate.setTypeEquals(BaseType.INT);
 
-        sampleSizeInBits = new Parameter(this, "sampleSizeInBits", new IntToken(16));
+        sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
+                new IntToken(16));
         sampleSizeInBits.setTypeEquals(BaseType.INT);
 
 	channels = new Parameter(this, "channels",
-				 new IntToken(1));
+                new IntToken(1));
 	channels.setTypeEquals(BaseType.INT);
 
 	bufferSize = new Parameter(this, "bufferSize",
-				   new IntToken(4096));
+                new IntToken(4096));
 	bufferSize.setTypeEquals(BaseType.INT);
 
 	tokenConsumptionRate = new Parameter(this, "tokenConsumptionRate",
-					    new IntToken(256));
+                new IntToken(256));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -244,10 +245,12 @@ public class AudioSink extends SDFAtomicActor {
 	    newobj.sink = (Parameter)newobj.getAttribute("sink");
             newobj.pathName = (Parameter)newobj.getAttribute("pathName");
             newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-            newobj.sampleSizeInBits = (Parameter)newobj.getAttribute("sampleSizeInBits");
+            newobj.sampleSizeInBits =
+                (Parameter)newobj.getAttribute("sampleSizeInBits");
 	    newobj.channels = (Parameter)newobj.getAttribute("channels");
 	    newobj.bufferSize = (Parameter)newobj.getAttribute("bufferSize");
-	    newobj.tokenConsumptionRate = (Parameter)newobj.getAttribute("tokenConsumptionRate");
+	    newobj.tokenConsumptionRate =
+                (Parameter)newobj.getAttribute("tokenConsumptionRate");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -295,30 +298,32 @@ public class AudioSink extends SDFAtomicActor {
 	    String pathNameString =
 		((StringToken)pathName.getToken()).toString();
 	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
-	    int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
+	    int sampleSizeInBitsInt =
+                ((IntToken)sampleSizeInBits.getToken()).intValue();
 	    int channelsInt = ((IntToken)channels.getToken()).intValue();
 	    int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
 
 	    _soundPlayback = new SoundPlayback(pathNameString,
-					       sampleRateInt,
-					       sampleSizeInBitsInt,
-					       channelsInt,
-					       bufferSizeInt,
-					       _consumptionRate);
+                    sampleRateInt,
+                    sampleSizeInBitsInt,
+                    channelsInt,
+                    bufferSizeInt,
+                    _consumptionRate);
 	} else if (((StringToken)sink.getToken()).toString() == "speaker") {
 	    // Send audio data to the speaker.
 	    System.out.println("AudioSink: initialize(): playback to speaker");
-	     int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
-	     int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
-	     int channelsInt = ((IntToken)channels.getToken()).intValue();
-	     int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
+            int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
+            int sampleSizeInBitsInt =
+                ((IntToken)sampleSizeInBits.getToken()).intValue();
+            int channelsInt = ((IntToken)channels.getToken()).intValue();
+            int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
 
-	     _soundPlayback = new SoundPlayback(sampleRateInt,
-						sampleSizeInBitsInt,
-						channelsInt,
-						bufferSizeInt,
-						_consumptionRate);
-	     System.out.println("AudioSink: initialize(): SoundPlayback created");
+            _soundPlayback = new SoundPlayback(sampleRateInt,
+                    sampleSizeInBitsInt,
+                    channelsInt,
+                    bufferSizeInt,
+                    _consumptionRate);
+            System.out.println("AudioSink: initialize(): SoundPlayback created");
 
 	} else if (((StringToken)sink.getToken()).toString() == "both") {
 	    // Write audio data to a file.
@@ -327,10 +332,10 @@ public class AudioSink extends SDFAtomicActor {
 
 	} else {
 	    throw new IllegalActionException("Parameter " +
-				  sink.getFullName() +
-			          " is not set to a valid string." +
-				  " Valid choices are \"speaker\", " +
-				  "\"file\", and \"both\"");
+                    sink.getFullName() +
+                    " is not set to a valid string." +
+                    " Valid choices are \"speaker\", " +
+                    "\"file\", and \"both\"");
 	}
 
 	// Start audio playback.
