@@ -370,7 +370,7 @@ public class ProcessDirector extends Director {
      *  may be overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     * @param rcvr The receiver whose data transfer is blocked.
+     *  @param rcvr The receiver whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
         _blockedActorCount++;
@@ -382,7 +382,7 @@ public class ProcessDirector extends Director {
      *  may be overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     * @param rcvrs The receivers whose data transfer is blocked.
+     *  @param rcvrs The receivers whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(LinkedList rcvrs) {
         _blockedActorCount++;
@@ -394,7 +394,7 @@ public class ProcessDirector extends Director {
      *  overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     * @param rcvr The receiver whose data transfer was previously blocked.
+     *  @param rcvr The receiver whose data transfer was previously blocked.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
         _blockedActorCount--;
@@ -406,7 +406,7 @@ public class ProcessDirector extends Director {
      *  overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     * @param rcvrs The receivers whose data transfer was previously blocked.
+     *  @param rcvrs The receivers whose data transfer was previously blocked.
      */
     protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
         _blockedActorCount--;
@@ -424,7 +424,8 @@ public class ProcessDirector extends Director {
     /** Return true if the count of active processes in the container is 0.
      *  Otherwise return false. Derived classes must override this method to
      *  return true to any other forms of deadlocks that they might introduce.
-     * @return true if there are no active processes in the container.
+     *
+     *  @return true if there are no active processes in the container.
      */
     protected synchronized boolean _areActorsDeadlocked() {
         return (_actorsActive == 0);
@@ -445,7 +446,8 @@ public class ProcessDirector extends Director {
 
     /** Return the number of active processes under the control of this
      *  director.
-     * @return The number of active actors.
+     *
+     *  @return The number of active actors.
      */
     protected synchronized long _getActiveActorsCount() {
 	return _actorsActive;
@@ -462,12 +464,12 @@ public class ProcessDirector extends Director {
      *  is passed as a parameter of this method. Subclasses are
      *  encouraged to override this method as necessary for domain
      *  specific functionality.
-     * @param actor The actor that the created ProcessThread will
-     *  control.
-     * @param director The director that manages the model that the
-     *  created thread is associated with.
-     * @return Return a new ProcessThread that will control the
-     *  actor passed as a parameter for this method.
+     *  @param actor The actor that the created ProcessThread will
+     *   control.
+     *  @param director The director that manages the model that the
+     *   created thread is associated with.
+     *  @return Return a new ProcessThread that will control the
+     *   actor passed as a parameter for this method.
      */
     protected ProcessThread _getProcessThread(Actor actor,
 	    ProcessDirector director) throws IllegalActionException {
@@ -493,8 +495,8 @@ public class ProcessDirector extends Director {
      *  deadlocks. Return false if a real deadlock has occurred and
      *  the simulation can be ended. Return true if the simulation
      *  can proceed given additional data and need not be terminated.
-     * @return False.
-     * @exception IllegalActionException Not thrown in this base class.
+     *  @return False.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
 	return false;
@@ -523,7 +525,5 @@ public class ProcessDirector extends Director {
     //A copy of threads started since the last invocation of prefire().
     private LinkedList _newActorThreadList;
 
-
     private String _name = null;
-
 }

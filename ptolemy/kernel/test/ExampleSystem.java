@@ -44,16 +44,17 @@ The graph has 10 entities, 14 ports, and 12 relations.
 The main function also returns the results of some key functions of
 ComponentRelation and ComponentPort.
 See Ptolemy 2 design document, Figure 11
+
 @author Jie Liu
 @version $Id$
 */
 public class ExampleSystem implements Serializable {
 
     /** Construct the graph.
-     * @exception NameDuplicationException if the example system cannot
-     * be built because of a duplicate name
-     * @exception IllegalActionException if the example system cannot
-     * be built.
+     *  @exception NameDuplicationException if the example system cannot
+     *  be built because of a duplicate name
+     *  @exception IllegalActionException if the example system cannot
+     *  be built.
      */
     public ExampleSystem()
             throws IllegalActionException, NameDuplicationException {
@@ -182,11 +183,10 @@ public class ExampleSystem implements Serializable {
 
     }
 
-    /**
-     * Print the linked ports for a given ComponentRelation. The ports
-     * are restricted in the same level of hierarchy
-     * @see ptolemy.kernel.Relation#linkedPorts()
-     * @param ComponentRelation Print the linked ports for this relation.
+    /** Print the linked ports for a given ComponentRelation. The ports
+     *  are restricted in the same level of hierarchy
+     *  @see ptolemy.kernel.Relation#linkedPorts()
+     *  @param ComponentRelation Print the linked ports for this relation.
      */
     public String printLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
@@ -199,13 +199,12 @@ public class ExampleSystem implements Serializable {
         return(st+"\n");
     }
 
-    /**
-     * Print the deeply linked ports for a given
-     * ComponentRelation. Look through all transparent ports and return
-     * only non transparent ports (those with no inside links).
-     * @see ptolemy.kernel.ComponentRelation#deepLinkedPorts()
-     * @param ComponentRelation Print the deeply linked ports for this
-     * relation.
+    /** Print the deeply linked ports for a given
+     *  ComponentRelation. Look through all transparent ports and return
+     *  only non transparent ports (those with no inside links).
+     *  @see ptolemy.kernel.ComponentRelation#deepLinkedPorts()
+     *  @param ComponentRelation Print the deeply linked ports for this
+     *  relation.
      */
     public String printDeepLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
@@ -218,11 +217,10 @@ public class ExampleSystem implements Serializable {
         return(st+"\n");
     }
 
-    /**
-     * Print the connected ports for a given ComponentPort.  Restricted
-     * to the same level of hierarchy.
-     * @see ptolemy.kernel.Port#connectedPorts()
-     * @param ComponentPort Print the connected ports for this Port.
+    /** Print the connected ports for a given ComponentPort.  Restricted
+     *  to the same level of hierarchy.
+     *  @see ptolemy.kernel.Port#connectedPorts()
+     *  @param ComponentPort Print the connected ports for this Port.
      */
     public String printConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
@@ -235,12 +233,11 @@ public class ExampleSystem implements Serializable {
         return(st+"\n");
     }
 
-    /**
-     * Print the deeply connected ports for a given ComponentPort. Look through
-     * all transparent ports and return only non transparent ports (those
-     * with no inside links).
-     * @see ptolemy.kernel.ComponentPort#deepConnectedPorts()
-     * @param ComponentPort Print the deeply connected ports for this Port.
+    /** Print the deeply connected ports for a given
+     *  ComponentPort. Look through all transparent ports and return
+     *  only non transparent ports (those with no inside links).
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts()
+     *  @param ComponentPort Print the deeply connected ports for this Port.
      */
     public String printDeepConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
@@ -254,10 +251,10 @@ public class ExampleSystem implements Serializable {
     }
 
     /** Create an Example System, then print it out.
-     * @exception NameDuplicationException if the example system cannot
-     * be built because of a duplicate name
-     * @exception IllegalActionException if the example system cannot
-     * be built.
+     *  @exception NameDuplicationException if the example system cannot
+     *  be built because of a duplicate name
+     *  @exception IllegalActionException if the example system cannot
+     *  be built.
      */
     public static void main(String args[])
             throws NameDuplicationException, IllegalActionException {

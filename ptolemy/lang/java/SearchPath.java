@@ -146,14 +146,14 @@ public class SearchPath extends Vector {
     }
 
     /** Return a Set that contains an entry for each class in the
-     * in the Ptolemy II core as listed in ptolemyCorePackages.
-     * Classes are found by reading SearchPath.NAMED_PATH.
-     * The entry will be a String of the form "ptolemy.kernel.util.NamedObj".
-     * As a side effect, this method also updates the public variable
-     * ptolemyCorePackageSet, which contains the names of the Ptolemy
-     * core Packages.
-     * @returns A set of Strings where each element is a fully
-     * qualified class name.
+     *  in the Ptolemy II core as listed in ptolemyCorePackages.
+     *  Classes are found by reading SearchPath.NAMED_PATH.
+     *  The entry will be a String of the form "ptolemy.kernel.util.NamedObj".
+     *  As a side effect, this method also updates the public variable
+     *  ptolemyCorePackageSet, which contains the names of the Ptolemy
+     *  core Packages.
+     *  @returns A set of Strings where each element is a fully
+     *  qualified class name.
      */
     public static Set ptolemyCoreClasses() {
         // Create a HashSet with a size of 421
@@ -234,17 +234,17 @@ public class SearchPath extends Vector {
     }
 
     /** Return a Set that contains an entry for each class in the
-     * system jar file.
-     * Note that classes will have entries like "java.lang.Object", they
-     * will not have extension like .class or .java
-     * As a side effect, this method also updates the public variable
-     * systemPackageSet, which contains the names of the Java runtime
-     * system Packages.
-     * @returns A set of Strings where each element is a fully
-     * qualified class name.
-     * @exception FileNotFoundException If we cannot find the JDK jar
-     * file 'rt.jar'.
-     * @exception IOException If we cannot read the JDK jar file 'rt.jar'.
+     *  system jar file.
+     *  Note that classes will have entries like "java.lang.Object", they
+     *  will not have extension like .class or .java
+     *  As a side effect, this method also updates the public variable
+     *  systemPackageSet, which contains the names of the Java runtime
+     *  system Packages.
+     *  @returns A set of Strings where each element is a fully
+     *  qualified class name.
+     *  @exception FileNotFoundException If we cannot find the JDK jar
+     *  file 'rt.jar'.
+     *  @exception IOException If we cannot read the JDK jar file 'rt.jar'.
      */
     public static Set systemClasses()
             throws IOException, FileNotFoundException {
