@@ -60,7 +60,6 @@ JSRCS = \
 	FIR.java \
 	FIRToken.java \
 	FFT.java \
-	ScaleXY.java \
 	IntToBits.java\
 	LineCoder.java \
 	RaisedCosine.java \
