@@ -19,6 +19,20 @@ This page describes how we release software.
 
 <h2>Splitting the tree</h2>
 <ol>
+<li>Add any new models to <code>$PTII/ptolemy/configs/doc/completeDemos.htm</code>
+
+<li>If necessary create applets for new demos
+<pre>
+cd $PTII/ptolemy/domains/wireless/demo/SmartParking
+$PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/wireless/demo/SmartParking SmartParking.xml
+</pre>
+Then add the <code>.htm</code> files to the makefile.
+<br>Note that sometimes we use just the Vergil applet, in which case
+we do
+<pre>
+mv <i>Foo</i>VergilApplet.htm <i>Foo</i>Applet.htm
+</pre>
+
 <li> Ptolemy handled 
 <a href="about:copyright"><code>about:copyright</code></a>
 URLS specially.  One facility on the copyrigth page is the ability
