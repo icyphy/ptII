@@ -270,7 +270,7 @@ public class CSPDirector extends ProcessDirector {
  
     /** Increase the count of blocked processes and check for deadlock.
      */
-    protected synchronized void _actorWriteBlocked(CSPReceiver rcvr) {
+    protected synchronized void _actorWriteBlocked() {
         _writeBlockCount++;
         if (_isDeadlocked()) {
 	    notifyAll();
@@ -328,7 +328,7 @@ public class CSPDirector extends ProcessDirector {
 
     /** An actor has unblocked, decrease the count of blocked actors.
      */
-    protected synchronized void _actorWriteUnBlocked(ProcessReceiver rcvr) {
+    protected synchronized void _actorWriteUnBlocked() {
         _writeBlockCount--;
     }
 
