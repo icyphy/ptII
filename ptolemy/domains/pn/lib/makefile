@@ -75,8 +75,10 @@ JSRCS = \
 	RLDecoder.java \
 	RLEncoder.java \
 	ImageDisplay.java \
-	PNPlot.java \
 	RadioController.java
+
+#	PNPlot.java 
+
 
 EXTRA_SRCS =	$(JSRCS)
 
