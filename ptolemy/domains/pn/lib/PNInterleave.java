@@ -50,7 +50,7 @@ public class PNInterleave extends PNActor{
      *  identical name already exists.
      */ 
     public PNInterleave(CompositeActor container, String name)
-             throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container, name);
         _input = newInPort(this, "input");
         _input.makeMultiplex(true);
