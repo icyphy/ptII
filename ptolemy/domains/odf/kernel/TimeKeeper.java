@@ -91,12 +91,6 @@ manages time.
 */
 public class TimeKeeper {
 
-    /**
-    public TimeKeeper() {
-        _rcvrTimeList = new LinkedList();
-    }
-     */
-
     /** Construct a time keeper to manage local time of an actor in
      *  the ODF domain. Set the receiver priorities of all receivers
      *  contained by the actor of this time keeper. Initialize the
@@ -182,7 +176,8 @@ public class TimeKeeper {
 	        time = triple.getTime();
 	    }
 
-	    if( time > firstTime || time == -1.0 ) {
+	    if( time > firstTime || 
+		    time == TimedQueueReceiver.INACTIVE ) {
 	        rcvrNotFound = false;
 	    } else if( maxPriority < triple.getPriority() ) {
 		maxPriority = triple.getPriority();
@@ -325,14 +320,15 @@ public class TimeKeeper {
     /** Set the current time of this TimeKeeper. If the new specified
      *  time is less than the previous value for current time, then
      *  throw an IllegalArgumentException. Do not throw an
-     *  IllegalActionException if the current time is set to -1.0 to
-     *  indicate termination.
+     *  IllegalActionException if the current time is set to 
+     *  TimedQueueReceiver.INACTIVE to indicate termination.
      * @param time The new value for current time.
      * @exception IllegalArgumentException If there is an attempt to
      *  decrease the value of current time to a nonnegative number.
      */
     public synchronized void setCurrentTime(double time) {
-	if( time < _currentTime && time != -1.0 ) {
+	if( time < _currentTime && 
+		time != TimedQueueReceiver.INACTIVE ) {
 	    throw new IllegalArgumentException(
 		    ((NamedObj)getActor()).getName() + " - Attempt to "
 		    + "set current time in the past.");
@@ -380,7 +376,6 @@ public class TimeKeeper {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
                     ((ODFReceiver)rcvrs[i][j]).setPriority(
 			    currentPriority);
-                    // ((ODFReceiver)rcvrs[i][j]).setThread(this);
                     // ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(this);
                     // ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(_timeKeeper);
 
@@ -404,6 +399,7 @@ public class TimeKeeper {
 
     /** Return the delay time associated with this time keeper.
      *  The delay time value is expected to be updated possibly
+     * @return double Return the delay time of this time keeper.
      *  once per every token consumption of a given actor.
      */
     public synchronized double getDelayTime() { 
@@ -429,12 +425,12 @@ public class TimeKeeper {
      *  specified triple. If the specified triple is already
      *  contained in the list, then the triple is removed and
      *  then added back to the list. The position of the triple
-     *  is based on the triple's time value. If all receivers
-     *  contained in the RcvrTimeTriple list have rcvrTimes of
-     *  -1.0, then notify all actors connected via the output
-     *  ports of the actor that are managed by this time keeper.
-     * @param triple The RcvrTimeTriple to be positioned in the list.
+     *  is based on the triple's time value. 
+     * @param tqr The TimedQueueReceiver whose position is being updated.
+     * @param time The time of the repositioned TimedQueueReceiver.
+     * @param priority The priority of the repositioned TimedQueueReceiver.
      */
+    // * @param triple The RcvrTimeTriple to be positioned in the list.
     // RFIXME: public synchronized void updateRcvrList(RcvrTimeTriple triple) {
     public synchronized void updateRcvrList(TimedQueueReceiver tqr,
 	    double time, int priority ) {
@@ -477,14 +473,14 @@ public class TimeKeeper {
     ////                         methods			   ////
 
     /** Add the specified RcvrTimeTriple to the list of triples.
-     *  If the time stamp of the specified triple is -1.0, then
-     *  insert the triple into the last position of the RcvrTimeTriple
-     *  list. Otherwise, insert the triple immediately after all
-     *  other triples with time stamps less than or equal to the
-     *  time stamp of the specified triple. ALWAYS call
-     *  _removeRcvrTriple immediately before calling this method if
-     *  the RcvrTimeTriple list already contains the triple specified
-     *  in the argument.
+     *  If the time stamp of the specified triple is 
+     *  TimedQueueReceiver.INACTIVE, then insert the triple into 
+     *  the last position of the RcvrTimeTriple list. Otherwise, 
+     *  insert the triple immediately after all other triples with 
+     *  time stamps less than or equal to the time stamp of the 
+     *  specified triple. ALWAYS call _removeRcvrTriple immediately 
+     *  before calling this method if the RcvrTimeTriple list already 
+     *  contains the triple specified in the argument.
      */
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
         if( _rcvrTimeList.size() == 0 ) {
@@ -492,7 +488,7 @@ public class TimeKeeper {
             return;
         }
 
-	if( newTriple.getTime() == -1.0 ) {
+	if( newTriple.getTime() == TimedQueueReceiver.INACTIVE ) {
 	    _rcvrTimeList.insertLast(newTriple);
 	    return;
 	}
@@ -500,9 +496,10 @@ public class TimeKeeper {
 	int cnt = 0;
         boolean notAddedYet = true;
 	while( cnt < _rcvrTimeList.size() ) {
-	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+	    RcvrTimeTriple triple = 
+		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 
-	    if( triple.getTime() == -1.0 ) {
+	    if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
 	        _rcvrTimeList.insertAt( cnt, newTriple );
 		cnt = _rcvrTimeList.size();
                 notAddedYet = false;
@@ -541,7 +538,7 @@ public class TimeKeeper {
     ////                        private variables                  ////
 
     // The actor that is managed by this time keeper.
-    Actor _actor;
+    private Actor _actor;
 
     // The _rcvrTimeList stores RcvrTimeTriples and is used to
     // order the receivers according to time and priority.
@@ -583,7 +580,8 @@ public class TimeKeeper {
 			rcvr.getContainer().getName() + 
 			" is not a TimedQueueReceiver.");
 	    } 
-	    if( rcvrTime < _rcvrTime && rcvrTime != -1 ) {
+	    if( rcvrTime < _rcvrTime && 
+		    rcvrTime != TimedQueueReceiver.INACTIVE ) {
 	        throw new IllegalArgumentException(
 			"Rcvr times must be monotonically " 
 			+ "non-decreasing.");
