@@ -96,16 +96,16 @@ public class ViewScreen extends GRActor implements Placeable {
     public Parameter showAxes;
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ViewScreen newobj = (ViewScreen) super.clone(workspace);
-        newobj.sceneGraphIn = (TypedIOPort) newobj.getPort("sceneGraphIn");
-        newobj.scale = (Parameter) newobj.getAttribute("horizontal resolution");
-        newobj.scale = (Parameter) newobj.getAttribute("vertical resolution");
-        newobj.scale = (Parameter) newobj.getAttribute("scale");
-        newobj.rotatable = (Parameter) newobj.getAttribute("allow model rotation");
-        newobj.scalable = (Parameter) newobj.getAttribute("allow model zooming");
-        newobj.translatable = (Parameter) newobj.getAttribute("allow model translation");
-        newobj.showAxes = (Parameter) newobj.getAttribute("show axes");
-        return newobj;
+        ViewScreen newObject = (ViewScreen) super.clone(workspace);
+        newObject.sceneGraphIn = (TypedIOPort) newObject.getPort("sceneGraphIn");
+        newObject.scale = (Parameter) newObject.getAttribute("horizontal resolution");
+        newObject.scale = (Parameter) newObject.getAttribute("vertical resolution");
+        newObject.scale = (Parameter) newObject.getAttribute("scale");
+        newObject.rotatable = (Parameter) newObject.getAttribute("allow model rotation");
+        newObject.scalable = (Parameter) newObject.getAttribute("allow model zooming");
+        newObject.translatable = (Parameter) newObject.getAttribute("allow model translation");
+        newObject.showAxes = (Parameter) newObject.getAttribute("show axes");
+        return newObject;
     }
 
 

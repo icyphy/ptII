@@ -152,9 +152,9 @@ public class PNDirector extends BasePNDirector {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        PNDirector newobj = (PNDirector)super.clone(workspace);
-	// newobj._mutationsRequested = false;
-        return newobj;
+        PNDirector newObject = (PNDirector)super.clone(workspace);
+	// newObject._mutationsRequested = false;
+        return newObject;
     }
 
     /** Suspend the calling thread until a deadlock or request for topology

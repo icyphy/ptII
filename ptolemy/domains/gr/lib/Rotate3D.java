@@ -131,12 +131,12 @@ public class Rotate3D extends GRTransform {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Rotate3D newobj = (Rotate3D)super.clone(workspace);
-        newobj.angle = (TypedIOPort) newobj.getPort("angle");
-        newobj.initialAngle = (Parameter) newobj.getAttribute("initialAngle");
-        newobj.axisDirection = (Parameter) newobj.getAttribute("axis direction");
-        newobj.pivotLocation = (Parameter) newobj.getAttribute("pivot location");
-        return newobj;
+        Rotate3D newObject = (Rotate3D)super.clone(workspace);
+        newObject.angle = (TypedIOPort) newObject.getPort("angle");
+        newObject.initialAngle = (Parameter) newObject.getAttribute("initialAngle");
+        newObject.axisDirection = (Parameter) newObject.getAttribute("axis direction");
+        newObject.pivotLocation = (Parameter) newObject.getAttribute("pivot location");
+        return newObject;
     }
 
     /** Change the rotation angle depending on the value given in the input port

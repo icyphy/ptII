@@ -109,10 +109,10 @@ public class GRTransform extends GRActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRTransform newobj = (GRTransform)super.clone(workspace);
-        newobj.sceneGraphIn  = (TypedIOPort) newobj.getPort("sceneGraphIn");
-        newobj.sceneGraphOut = (TypedIOPort) newobj.getPort("sceneGraphOut");
-        return newobj;
+        GRTransform newObject = (GRTransform)super.clone(workspace);
+        newObject.sceneGraphIn  = (TypedIOPort) newObject.getPort("sceneGraphIn");
+        newObject.sceneGraphOut = (TypedIOPort) newObject.getPort("sceneGraphOut");
+        return newObject;
     }
 
 

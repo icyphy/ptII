@@ -183,19 +183,19 @@ public class FIR extends SDFTransformer {
      */
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        FIR newobj = (FIR)(super.clone(workspace));
+        FIR newObject = (FIR)(super.clone(workspace));
 
         // set the type constraints
         try {
-            ArrayType paramType = (ArrayType)newobj.taps.getType();
+            ArrayType paramType = (ArrayType)newObject.taps.getType();
             InequalityTerm elemTerm = paramType.getElementTypeTerm();
-            newobj.output.setTypeAtLeast(elemTerm);
+            newObject.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
             // Ignore..
             // FIXME: This try..catch seems bogus...  ArrayToSequence
             // doesn't need it..
         }
-        return newobj;
+        return newObject;
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.

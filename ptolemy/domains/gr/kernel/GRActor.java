@@ -44,8 +44,8 @@ public class GRActor extends TypedAtomicActor {
 
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRActor newobj = (GRActor)super.clone(workspace);
-        return newobj;
+        GRActor newObject = (GRActor)super.clone(workspace);
+        return newObject;
     }
 
     public Node getNodeObject() {
