@@ -68,9 +68,6 @@ public class Writer extends Sink {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Set the type of the input port.
-        input.setTypeEquals(BaseType.GENERAL);
-
         if (_stdOut == null) {
             _stdOut = new OutputStreamWriter(System.out);
         }
