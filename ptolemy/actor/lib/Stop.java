@@ -1,61 +1,144 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="higher order" class="ptolemy.moml.EntityLibrary">
-  <configure>
-    <?moml
-      <group>
-      <doc>Higher-Order Computation Infrastructure.</doc>
+/* An actor that stops a model executing when it receives a true token.
 
-      <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
-        <doc>Creates multiple instances of itself</doc>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-           </property>
-           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
-           </property>
-           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-           </property>
-           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-           </property>
-           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
-           </property>
-         </property>
-      </entity>
+ Copyright (c) 1997-2003 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-      </group>
-    ?>
-  </configure>
-</entity>
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
 
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+*/
 
+package ptolemy.actor.lib;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// Stop
+/**
+An actor that stops a model executing when it receives a true token
+on any input channel. This is accomplished by calling finish() on the
+manager, which requests that the current iteration be completed and
+then the model execution be halted.
+<p>
+When exactly this stops the execution depends on the domain.
+For example, in DE, if an event with time stamp <i>T</i> and
+value <i>true</i> arrives at this actor, then the current
+iteration will be concluded, and then the model will halt.
+Concluding the current iteration means processing all events
+in the event queue with time stamp <i>T</i>. Thus, it is possible
+for actors to be invoked after this one is invoked with a <i>true</i>
+input.
+<p>
+In SDF, if this actor receives <i>true</i>, then the current
+iteration is concluded and then execution is stopped.  Similarly in SR.
+<p>
+In PN, where each actor has its own thread, there is no well-defined
+notion of an iteration. The finish() method of the manager calls
+stopFire() on all actors, which for threaded actors results in them
+halting upon their next attempt to read an input or write an
+output. When all actor threads have stopped, the iteration
+concludes and the model halts. <b>NOTE</b>:
+<i>This is not the best way to stop a PN model!</i>
+This mechanism is nondeterministic in the sense that there is
+no way to control exactly what data is produced or consumed on
+the connections before the model stops.  To stop a PN model,
+it is better to design the model so that all actors are starved
+of data when the model is to stop.  The director will detect
+this starvation, and halt the model.  Nonetheless, if
+the nondeterminism is acceptable, this actor can be used.
 
+@author Edward A. Lee
+@version $Id$
+*/
 
+public class Stop extends Sink {
 
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public Stop(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
+        input.setTypeEquals(BaseType.BOOLEAN);
 
+	_attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
+                + "-8,19 -19,8 -19,-8\" "
+                + "style=\"fill:red\"/>\n"
+                + "<text x=\"-15\" y=\"4\""
+                + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
+                + "STOP</text>\n"
+                + "</svg>\n");
+        new TransientSingletonConfigurableAttribute(this, "_hideName");
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-
-
-
-
-
-
-
-
-
-
+    /** Read one token from each input channel that has a token,
+     *  and if any token is true, call stop() on the director.
+     *  @exception IllegalActionException If there is no director or
+     *   if there is no manager, or if the container is not a
+     *   CompositeActor.
+     *  @return False if a stop is requested, and true otherwise.
+     */
+    public boolean postfire() throws IllegalActionException {
+        boolean result = false;
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                if (((BooleanToken)input.get(i)).booleanValue()) {
+                    result = true;
+                }
+            }
+        }
+        if (result) {
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Manager manager = ((CompositeActor)container).getManager();
+                if (manager != null) {
+                    manager.finish();
+                } else {
+                    throw new IllegalActionException(this,
+                    "Cannot stop without a Manager.");
+                }
+            } else {
+                throw new IllegalActionException(this,
+                "Cannot stop without a container that is a CompositeActor.");
+            }
+        }
+        return !result;
+    }
+}
 
