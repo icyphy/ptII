@@ -335,7 +335,7 @@ public class PortParameter extends Parameter {
             throws IllegalActionException {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
-            "PortParameter can only be used in an instance of Entity.");
+                    "PortParameter can only be used in an instance of Entity.");
         }
     }
 
