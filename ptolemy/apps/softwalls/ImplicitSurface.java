@@ -81,17 +81,30 @@ public class ImplicitSurface extends TypedAtomicActor {
 	y = new TypedIOPort(this, "y", true, false);
 	heading = new TypedIOPort(this, "heading", true, false);
 	functionValue = new TypedIOPort(this, "functionValue", false, true);
+        dx = new TypedIOPort(this, "dx", false, true);
+        dy = new TypedIOPort(this, "dy", false, true);
+        dtheta = new TypedIOPort(this, "dz", false, true);
 		
 	// Create and configure parameters
 	functionFile = 
             new Parameter(this, "functionFile", new StringToken("plane.data"));
+        dxFile = 
+            new Parameter(this, "dxFile", new StringToken("plane.data"));
+        dyFile =
+            new Parameter(this, "dyFile", new StringToken("plane.data"));
+        dthetaFile =
+            new Parameter(this , "dthetaFile", new StringToken("plane.data"));
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** File name for implicit surface function */
+    /** File name for implicit surface functions and gradients*/
     public Parameter functionFile;
+    public Parameter dxFile;
+    public Parameter dyFile;
+    public Parameter dthetaFile;
     
     /** Current x position */
     public TypedIOPort x;
@@ -105,6 +118,11 @@ public class ImplicitSurface extends TypedAtomicActor {
     /** Output functionValue */
     public TypedIOPort functionValue;
 
+    /** Output gradiant values */
+    public TypedIOPort dx;
+    public TypedIOPort dy;
+    public TypedIOPort dtheta;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -114,12 +132,25 @@ public class ImplicitSurface extends TypedAtomicActor {
      */
 
     public void fire() throws IllegalActionException {
-        double currentX, currentY, currentTheta, f;
-        currentX = ((DoubleToken)x.get(0)).doubleValue();
-        currentY = ((DoubleToken)y.get(0)).doubleValue();
-        currentTheta = ((DoubleToken)heading.get(0)).doubleValue();
-        f = _surfaceFunction.getValue(currentX, currentY, currentTheta);
+        double x1, x2, x3;
+        double f, xGrad, yGrad, thetaGrad;
+
+        /** Get current function and gradient information.
+         */
+        x1 = ((DoubleToken)x.get(0)).doubleValue();
+        x2 = ((DoubleToken)y.get(0)).doubleValue();
+        x3 = ((DoubleToken)heading.get(0)).doubleValue();
+        f = _surfaceFunction.getValue(x1, x2, x3);
+        xGrad = _xGradientFunction.getValue(x1, x2, x3);
+        yGrad = _yGradientFunction.getValue(x1, x2, x3);
+        thetaGrad = _thetaGradientFunction.getValue(x1, x2, x3);
+
+        /** Send values out of ports.
+         */
  	functionValue.send(0, new DoubleToken(f));
+        dx.send(0, new DoubleToken(xGrad));
+        dy.send(0, new DoubleToken(yGrad));
+        dtheta.send(0, new DoubleToken(thetaGrad));
     }
     
     /** Loads the implicit surface function and gradient function.
@@ -130,25 +161,39 @@ public class ImplicitSurface extends TypedAtomicActor {
      
     public void initialize() throws IllegalActionException {
         super.initialize();
-        String ptII, name;
+        String ptII, functionName, dxName, dyName, dthetaName;
         String path = "/ptolemy/apps/softwalls/surfaces/";
-        StringToken functionToken;
+        StringToken functionToken, dxToken, dyToken, dthetaToken;
 
         /** Get the full path name for the implicit surface function
          * file.
          */
         ptII = System.getProperty("ptolemy.ptII.dir");
-        functionToken = (StringToken)functionFile.getToken();
-        name = functionToken.toString();
-        StringTokenizer t = new StringTokenizer(name, "\"");
-        name = t.nextToken();
 
-        System.out.println(name);
+        /** Extract the file names.
+         */
+        functionToken = (StringToken)functionFile.getToken();
+        functionName = functionToken.stringValue();
+        dxToken = (StringToken)dxFile.getToken();
+        dxName = dxToken.stringValue();
+        dyToken = (StringToken)dyFile.getToken();
+        dyName = dyToken.stringValue();
+        dthetaToken = (StringToken)dthetaFile.getToken();
+        dthetaName = dthetaToken.stringValue();
+
+        /** Make the file names relative to the correct path.
+         */
         path = ptII.concat(path);
-        name = path.concat(name);
+        functionName = path.concat(functionName);
+        dxName = path.concat(dxName);
+        dyName = path.concat(dyName);
+        dthetaName = path.concat(dthetaName);
 
 	try {
-	    _surfaceFunction = new ThreeDFunction(name);
+	    _surfaceFunction = new ThreeDFunction(functionName);
+            _xGradientFunction = new ThreeDFunction(dxName);
+            _yGradientFunction = new ThreeDFunction(dyName);
+            _thetaGradientFunction = new ThreeDFunction(dthetaName);
 	} 
 	catch (IllegalActionException a) {
 	    throw a;
@@ -159,9 +204,11 @@ public class ImplicitSurface extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
     
-    /* Implicit Surface Function and it's gradient Function*/
+    /* Implicit Surface Function and it's gradient functions*/
     ThreeDFunction _surfaceFunction;
-    ThreeDFunction _gradientFunction;
+    ThreeDFunction _xGradientFunction;
+    ThreeDFunction _yGradientFunction;
+    ThreeDFunction _thetaGradientFunction;
 
 
     ///////////////////////////////////////////////////////////////////
