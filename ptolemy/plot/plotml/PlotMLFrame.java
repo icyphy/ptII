@@ -1,4 +1,4 @@
-/* Plotter apllication that is capable of reading PlotML files.
+/* Plot frame that is capable of reading PlotML files.
 
 @Author: Edward A. Lee
 
@@ -35,7 +35,7 @@ package ptolemy.plot.plotml;
 
 import ptolemy.plot.Message;
 import ptolemy.plot.Plot;
-import ptolemy.plot.PlotApplication;
+import ptolemy.plot.PlotFrame;
 
 import com.microstar.xml.XmlException;
 
@@ -45,71 +45,60 @@ import java.io.InputStream;
 import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
-//// PlotMLApplication
+//// PlotMLFrame
 
 /**
-An application that can plot data in PlotML format from a URL.
-To compile and run this application, do the following (in Unix):
+PlotMLFrame is a versatile two-dimensional data plotter that runs as
+part of an application, but in its own window. It can read files
+in the PlotML format and, for backward compatibility, the old Ptolemy
+plot file format.
+An application can also interact directly with the contained Plot
+object, which is visible as a public member, by invoking its methods.
+<p>
+An application that uses this class should set up the handling of
+window-closing events.  Presumably, the application will exit when
+all windows have been closed. This is done with code something like:
 <pre>
-    setenv CLASSPATH ../..
-    javac PlotApplication.java
-    java ptolemy.plot.plotml.PlotMLApplication
+    plotFrameInstance.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            // Handle the event
+        }
+    });
 </pre>
-or in a bash shell in Windows NT:
-<pre>
-    CLASSPATH=../..
-    export CLASSPATH
-    javac PlotApplication.java
-    java ptolemy.plot.plotml.PlotMLApplication
-</pre>
+<p>
+PlotMLFrame contains an instance of PlotBox. PlotBox is the base class for
+classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
+specified in the constructor, the default is to contain a Plot object. This
+field is set once in the constructor and immutable afterwards.
 
-@author Edward A. Lee
-@version $Id$
-@see PlotBox
 @see Plot
+@see PlotBox
+@author Christopher Hylands and Edward A. Lee
+@version $Id$
 */
-public class PlotMLApplication extends PlotApplication {
+public class PlotMLFrame extends PlotFrame {
 
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
      */
-    public PlotMLApplication() {
-        this(null);
+    public PlotMLFrame() {
+        this("Ptolemy Plot Frame");
     }
 
-    /** Construct a plot with the specified command-line arguments.
-     *  @param args The command-line arguments.
+    /** Construct a plot frame with the specified title and by default
+     *  contains an instance of Plot.
      */
-    public PlotMLApplication(String args[]) {
-        this(new Plot(), args);
+    public PlotMLFrame(String title) {
+        this(title, null);
     }
 
-    /** Construct a plot with the specified command-line arguments
-     *  and instance of plot.
-     *  @param args The command-line arguments.
+    /** Construct a plot frame with the specified title and the specified
+     *  instance of PlotBox.
      */
-    public PlotMLApplication(Plot plot, String args[]) {
-        super(plot, args);
+    public PlotMLFrame(String title, PlotBox plotArg) {
+        super(title, plotArg);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Create a new plot window and map it to the screen.
-     */
-    public static void main(String args[]) {
-        PlotApplication plot = new PlotMLApplication(new Plot(), args);
-
-        // If the -test arg was set, then exit after 2 seconds.
-        if (_test) {
-            try {
-                Thread.currentThread().sleep(2000);
-            }
-            catch (InterruptedException e) {
-            }
-            System.exit(0);
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -118,20 +107,20 @@ public class PlotMLApplication extends PlotApplication {
      */
     protected void _about() {
         Message message = new Message(
-                "ptplot\n" +
+                "Ptolemy plot frame\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.0, Build: $Id$\n\n"+
+                "Version 3.0, Build: $Id$"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n" +
-                "Copyright (c) 1997-1999,\n" +
-                "The Regents of the University of California.");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
     }
 
     /** Read the specified stream.  This method checks to see whether
      *  the data is PlotML data, and if so, creates a parser to read it.
-     *  If not, it defers to the parent class to read it.
+     *  If not, it defers to the parent class to read it.  The current
+     *  working directory (or the directory of the last opened or saved
+     *  file) is the base for relative references.
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
@@ -167,13 +156,13 @@ public class PlotMLApplication extends PlotApplication {
                 if (ex instanceof XmlException) {
                     XmlException xmlex = (XmlException)ex;
                     msg =
-                        "PlotMLApplication: failed to parse PlotML data:\n"
+                        "PlotMLFrame: failed to parse PlotML data:\n"
                         + "line: " + xmlex.getLine()
                         + ", column: " + xmlex.getColumn()
                         + "\nIn entity: " + xmlex.getSystemId()
                         + "\n";
                 } else {
-                    msg = "PlotMLApplication: failed to parse PlotML data:\n";
+                    msg = "PlotMLFrame: failed to parse PlotML data:\n";
                 }
                 System.err.println(msg + ex.toString());
                 ex.printStackTrace();

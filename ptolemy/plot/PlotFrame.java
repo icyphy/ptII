@@ -51,10 +51,10 @@ import java.util.StringTokenizer;
 
 PlotFrame is a versatile two-dimensional data plotter that runs as
 part of an application, but in its own window. It can read files
-compatible with the Ptolemy plot file format (currently only ASCII),
-or the application can interact directly with the contained Plot
-object, which is visible as a public member. For a description of
-the file format, see the Plot and PlotBox classes.
+compatible with the old Ptolemy plot file format (currently only ASCII).
+It is extended with the capability to read PlotML files in PlotMLFrame.
+An application can also interact directly with the contained Plot
+object, which is visible as a public member, by invoking its methods.
 <p>
 An application that uses this class should set up the handling of
 window-closing events.  Presumably, the application will exit when
@@ -237,7 +237,7 @@ public class PlotFrame extends Frame {
      */
     protected void _help() {
         Message message = new Message(
-                "PlotFrame is a versatile two-dimensional data plotter " +
+                "This is a versatile two-dimensional data plotter " +
                 "that runs as part of an application, but in its own " +
                 "window. It can read files compatible with the Ptolemy " +
                 "plot file format (currently only ASCII), or the " +

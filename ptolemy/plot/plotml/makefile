@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = PlotBoxMLParser.java \
 	PlotMLApplet.java \
 	PlotMLApplication.java \
+	PlotMLFrame.java \
 	PlotMLParser.java
 
 EXTRA_SRCS =	$(JSRCS) \
