@@ -99,7 +99,9 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
      */
     public ptolemy.data.type.Type getTypeOfBefore(Local local, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
+        // System.out.println("flowBefore = " + map);
         Object object = map.get(local);
+        //  System.out.println("local = " + local + ", object = " + object);
         if (object == null) {
             return ptolemy.data.type.BaseType.GENERAL;
         }
@@ -325,12 +327,21 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             } else if (rightOp instanceof CastExpr) {
                 CastExpr castExpr = (CastExpr)rightOp;
                 Type type = castExpr.getType();
-                // RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
+                // FIXME: what if downcast???
+
+                RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
+          //       System.out.println("castType = " + tokenType);
+//                 System.out.println("castOp = " + castExpr.getOp());
+//                 System.out.println("currentType = " + in.get(castExpr.getOp()));
                 //if (tokenType != null) {
                 out.put(leftOp, in.get(castExpr.getOp()));
                 // } else {
                 // Otherwise there is nothing to be done.
                 //}
+            } else if (rightOp instanceof Local) {
+                Local local = (Local)rightOp;
+             
+                out.put(leftOp, in.get(local));
             } else if (rightOp instanceof NewExpr) {
                 NewExpr newExpr = (NewExpr)rightOp;
                 RefType type = newExpr.getBaseType();
