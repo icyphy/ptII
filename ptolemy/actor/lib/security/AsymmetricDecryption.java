@@ -148,13 +148,9 @@ public class AsymmetricDecryption extends CipherActor {
     /** Decrypt the data with the private key.  Receives the data to be
      *  decrypted as a byte array and returns a byte array.
      *
-     * @param dataBytes the data to be decrypted.
-     * @return byte[] the decrypted data.
-     * @exception IllegalActionException If exception below is thrown.
-     * @exception IOException when 
-     * @exception InvalideKeyException when key is invalid.
-     * @exception BadPaddingException when padding is bad.
-     * @exception IllegalBockSizeException for illegal block sizes.
+     *  @param dataBytes the data to be decrypted.
+     *  @return byte[] the decrypted data.
+     *  @exception IllegalActionException If exception below is thrown.
      */
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
@@ -172,7 +168,7 @@ public class AsymmetricDecryption extends CipherActor {
             }
             byteOutputStream.flush();
             byteOutputStream.close();
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Problem decrypting data with the private key");
         }
