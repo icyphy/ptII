@@ -313,10 +313,11 @@ test Variable-5.4 {Check setting expression to null} {
 #     [$v2 getToken] toString
 # } {"ab"}
 
-test Variable-6.3 {check getScope} {
-    set namelist [$v2 getScope]
-    enumToFullNames [$namelist elements]
-} {.E.P2 .E.P1}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-6.3 {check getScope} {
+#     set namelist [$v2 getScope]
+#     enumToFullNames [$namelist elements]
+# } {.E.P2 .E.P1}
 
 # NOTE: Cannot add individual variables to scope anymore.
 # test Variable-6.4 {Check removeFromScope} {
