@@ -132,6 +132,7 @@ import java.applet.Applet;
  * The "move" command causes a break in connected points, if lines are
  * being drawn between points. The numbers <i>x</i> and <i>y</i> are
  * arbitrary numbers as supported by the Double parser in Java.
+ * The numbers can be separated by commas, spaces or tabs. 
  *
  * @author: Edward A. Lee, Christopher Hylands
  * @version: $Id$
@@ -283,7 +284,7 @@ public class Plot extends PlotBox {
             } else if (line.startsWith("DataSet:")) {
                 // new data set
                 _firstinset = true;
-                _currentdataset += 1;
+                _currentdataset++;
                 if (_currentdataset >= 10) _currentdataset = 0;
                 String legend = (line.substring(8)).trim();
                 addLegend(_currentdataset, legend);
@@ -320,7 +321,8 @@ public class Plot extends PlotBox {
         	            Double bwidth = new Double(barwidth);
         	            double boffset = _baroffset;
         	            if (baroffset != null) {
-        	                boffset = (new Double(baroffset)).doubleValue();
+        	                boffset = (new Double(baroffset)).
+				    doubleValue();
         	            }
         	            setBars(bwidth.doubleValue(), boffset);
         	        } catch (NumberFormatException e) {
@@ -336,14 +338,27 @@ public class Plot extends PlotBox {
                 // a connected point, if connect is enabled.
                 start = 5;
             }
-            // See if an x,y point is given
-         	int comma = line.indexOf(",", start);
-        	if (comma > 0) {
-                String x = (line.substring(start, comma)).trim();
-                String y = (line.substring(comma+1)).trim();
+            // See if an x,y or x<Space>y x<Taby> point is given
+         	int fieldsplit = line.indexOf(",", start);
+        	if (fieldsplit == -1) {
+		    fieldsplit = line.indexOf(" ", start);
+		}
+        	if (fieldsplit == -1) {
+		    fieldsplit = line.indexOf("	", start);  // a tab
+		}
+
+        	if (fieldsplit > 0) {
+                String x = (line.substring(start, fieldsplit)).trim();
+                String y = (line.substring(fieldsplit+1)).trim();
         	    try {
         	        Double xpt = new Double(x);
         	        Double ypt = new Double(y);
+        	        if (_currentdataset == -1) {
+			    // We did not see a "DataSet" string yet
+			    _firstinset = true;
+			    addLegend(++_currentdataset,
+				      new String("Dataset "+ _currentdataset));
+			}
         	        if (_firstinset) {
         	            connected = false;
         	            _firstinset = false;
@@ -433,9 +448,27 @@ public class Plot extends PlotBox {
      * this causes any previously plotted points to be forgotten.
      * This method should be called before
      * <code>setPointsPersistence</code>.
+     * @exception java.io.NumberFormatException if the number is less
+     * than 1 or greater than an internal limit (usually 63).
      */
-    public void setNumSets (int numsets) {
-        this._numsets = numsets;
+    public void setNumSets (int numsets) throws NumberFormatException {
+	if (numsets < 1) {
+	    throw new NumberFormatException("Number of data sets ("+
+					    numsets +
+					    ") must be " +
+					    "greater than 0.");
+
+	}
+	if (numsets > _MAX_DATASETS) {
+	    throw new NumberFormatException("Number of data sets (" +
+					    numsets +
+					    ") must be less than the " +
+					    "internal limit of " +
+					    _MAX_DATASETS +
+					    "To increase this value, edit " +
+					    "_MAX_DATASETS and recompile");
+	}
+	this._numsets = numsets;
         _points = new Vector[numsets];
         _prevx = new int[numsets];
         _prevy = new int[numsets];
@@ -831,7 +864,7 @@ public class Plot extends PlotBox {
     private int _sweepsPersistence = 0;
     private boolean _connected = true;
     private boolean _impulses = false;
-    private boolean _firstinset = true;
+    private boolean _firstinset = true;	// Is this the first datapoint in a set
     private boolean _bars = false;
     private double _barwidth = 0.5;
     private double _baroffset = 0.05;
