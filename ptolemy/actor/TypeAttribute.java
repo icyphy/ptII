@@ -79,7 +79,7 @@ same syntax as in expressions. For example:
 @author Edward A. Lee, Xiaojun Liu
 @version $Id$
 @see TypedIOPort
-@see data.expr.Constants
+@see ptolemy.data.expr.Constants
 */
 public class TypeAttribute extends Parameter {
 
