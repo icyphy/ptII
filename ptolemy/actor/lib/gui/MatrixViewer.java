@@ -107,7 +107,6 @@ public class MatrixViewer extends Sink implements Placeable {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException 
         {
-            System.out.println(" attribute change " + attribute.toString());
             if (attribute == width) {                
                 _width = ((IntToken)width.getToken()).intValue();
             } else if (attribute == height) {
@@ -205,12 +204,10 @@ public class MatrixViewer extends Sink implements Placeable {
         _scrollPane.setPreferredSize( getPreferredSize() );
        
         if (_container == null) {
-            System.out.println("Container is null");
             // place the table in its own frame.
             _frame = new JFrame(getFullName());
             _frame.getContentPane().add(_scrollPane, BorderLayout.CENTER);
         } else {
-            System.out.println("Container is exists");
             // place the table in supplied container.
             _table.setBackground(_container.getBackground());
             _container.add(_scrollPane, BorderLayout.CENTER);
