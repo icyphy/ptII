@@ -83,7 +83,6 @@ public class CTPeriodicSampler extends Transformer
         Parameter inputType = new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
         output.setMultiport(true);
-        output.setTypeAtLeast(input);
         Parameter outputType = new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
         _samplePeriod = (double)0.1;
