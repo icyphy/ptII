@@ -92,13 +92,17 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 JAVAFLAGS = -Xms228m -Xmx228m
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
+		cleanFileWriter cleanRunCompositeActor
 	@echo "There are also long tests in this directory."
 	@echo "Run 'make test_long' to run these tests, which will take 5 hrs"
 	$(JTCLSH) alljtests.tcl
+	$(MAKE) cleanFileWriter cleanRunCompositeActor
 
-test_long: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) longjtests.tcl
+test_long: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) longjtests.tcl \
+		cleanFileWriter cleanRunCompositeActor
 	$(JTCLSH) longjtests.tcl
+	$(MAKE) cleanFileWriter cleanRunCompositeActor
 
 # lonjtests.tcl is used to source all the long tcl files that use Java
 longjtests.tcl: makefile
@@ -138,6 +142,15 @@ longjtests.tcl: makefile
 	fi
 	echo "catch {doneTests}" >> $@
 	echo "exit" >> $@
+
+# auto/FileWriter1.xml creates this file, so we remove it before running
+# the tests
+cleanFileWriter:
+	echo 'if [catch {file delete -force [file join [java::call System getProperty java.io.tmpdir] FileWriter1Output.txt]} errMsg ] {puts $$errMsg}; exit ' | $(JTCLSH)
+
+cleanRunCompositeActor:
+	echo 'if [catch {file delete -force [file join [java::call System getProperty java.io.tmpdir] RunCompositeActor.txt]} errMsg ] {puts $$errMsg}; exit ' | $(JTCLSH)
+
 
 # 'make ptjacl' will start up jacl with the proper classpath
 ptjacl:
