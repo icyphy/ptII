@@ -78,9 +78,12 @@ public class RemoveRelation extends ChangeRequest {
             Nameable container = _relation.getContainer();
             if (container instanceof CompositeActor) {
                 Director director = ((Actor)container).getDirector();
-                director.invalidateSchedule();
-                director.invalidateResolvedTypes();
-            }
+		if(director != null) {
+		    director.invalidateSchedule();
+		    director.invalidateResolvedTypes();
+ 
+		}
+	    }
             _relation.setContainer(null);
         } catch (KernelException ex) {
             throw new ChangeFailedException(this, ex);
