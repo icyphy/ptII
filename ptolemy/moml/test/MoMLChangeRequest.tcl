@@ -1482,12 +1482,6 @@ test MoMLChangeRequest-11.2.3 {test paste with inherited and overridden values} 
                 </property>
             </class>
         </class>
-        <entity name="iABcopy" class="cAB">
-            <class name="cABC" extends="ptolemy.actor.CompositeActor">
-                <property name="p" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </class>
-        </entity>
     </entity>
 </entity>
 }
@@ -1635,12 +1629,6 @@ test MoMLChangeRequest-12.3 {check propagation of deletion higher up} {
                 </property>
             </class>
         </class>
-        <entity name="iABcopy" class="cAB">
-            <class name="cABC" extends="ptolemy.actor.CompositeActor">
-                <property name="p" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </class>
-        </entity>
     </entity>
 </entity>
 }
