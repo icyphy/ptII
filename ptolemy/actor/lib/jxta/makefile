@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Corba Actor classes
+# Makefile for Ptolemy II JXTA Actor classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2001 The Regents of the University of California.
+# @Copyright (c) 2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,23 +28,6 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-
-# Note: To compile the CorbaActor.idl, use:
-# prompt> idltojava -p ptolemy.actor.corba -j ../../.. CorbaActor.idl
-#
-# idltojava can be downloaded from:
-#
-# http://developer.java.sun.com/developer/earlyAccess/jdk12/idltojava.html
-#
-# idltojava takes the CorbaActor.idl and generate all the files in the
-# ptolemy/actor/corba/util directory.
-#
-# Currently, all generated java files in the util directory are checked in,
-# and the command need to be run only if the CorbaActor.idl is changed.
-# Then the newly generated java files need to be checked in again.
-# This may not be the right way to do it...
-
-
 
 ME =		ptolemy/actor/lib/jxta
 
