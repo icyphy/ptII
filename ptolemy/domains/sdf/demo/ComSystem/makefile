@@ -68,7 +68,7 @@ all: jclass
 install: all
 
 demo:
-	CLASSPATH=$(CLASSPATH) appletviewer ComSystem.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer ComSystem.htm
 
 depend:
 	@echo "no dependencies in this directory"
