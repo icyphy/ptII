@@ -475,6 +475,9 @@ public class WirelessIOPort extends TypedIOPort {
     public Receiver[][] getReceivers() {
         try {
             if (getOutsideChannel() != null) {
+                if (_receivers == null) {
+                    return _EMPTY_RECEIVERS;
+                }
                 return _receivers;
             } else {
                 return super.getReceivers();
