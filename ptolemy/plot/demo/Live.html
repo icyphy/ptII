@@ -8,7 +8,7 @@
 <hr>
 The following plot illustrates a dynamically updated plot:
 <p>
-<applet name="Live" code="ptplot.PlotLiveDemoApplet" width=400 height=400
+<applet name="Live" code="ptplot.demo.PlotLiveDemoApplet" width=400 height=400
     codebase="../.."
     archive="ptplot/ptplot.zip"
     alt="If you had a java-enabled browser, you would see an applet here."
@@ -24,7 +24,7 @@ On a reasonable computer, plotting is quite fast.
 <p>
 Such a plot is created by defining a class derived from <code>PlotLive</code>
 (which is abstract).  The example shown here is the
-<a href="../PlotLiveDemo.java">PlotLiveDemo</a> class.
+<a href="PlotLiveDemo.java">PlotLiveDemo</a> class.
 It defines only two methods, <code>init()</code> and <code>run()</code>.
 The first of these sets static properties of the plot (title, labels, etc.)
 while the second defines the body of a thread that generates points forever (if it is

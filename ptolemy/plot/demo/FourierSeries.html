@@ -11,7 +11,8 @@ wave constructed by adding together sinusoids.
 It is implemented by a Java class derived from Plot that
 computes the data to be plotted on the fly:
 <p>
-<applet name="Fourier" code="ptplot.PlotFourierSeries" width=500 height=300
+<applet name="Fourier" code="ptplot.demo.PlotFourierSeries"
+    width=500 height=300
     codebase="../.."
     archive="ptplot/ptplot.zip"
     alt="If you had a java-enabled browser, you would see an applet here."
@@ -30,7 +31,7 @@ dragging will cause a box to be displayed that represents the new
 view.  Zooming out will only go as far as the original scale.
 Clicking on the "fill" button at the upper right brings all data within range.
 <p>
-The <a href="../PlotFourierSeries.java">source code</a>
+The <a href="PlotFourierSeries.java">source code</a>
 defines a class <code>PlotFourierSeries</code>
 derived from <code>Plot</code>.  This class contains a sequence of Java
 statements in its <code>init()</code> method that configures and constructs
