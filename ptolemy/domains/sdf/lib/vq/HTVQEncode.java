@@ -114,7 +114,7 @@ import ptolemy.math.IntegerMatrixMath;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red
+   @Pt.AcceptedRating Red (neuendor)
 */
 
 public class HTVQEncode extends Transformer {
