@@ -62,8 +62,8 @@ public class CurrentTime extends TimedSource {
     public CurrentTime(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	// set the type constraints.
-	output.setTypeEquals(BaseType.DOUBLE);
+	    // set the type constraints.
+	    output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -73,8 +73,18 @@ public class CurrentTime extends TimedSource {
      *  @exception IllegalActionException If send() throws it.
      */
     public void fire() throws IllegalActionException {
+    
+        // For domain polymorphism getCurrentTime(channel_number) has
+        // to be called before get(channel_number)
+        double currentTime;
+        if (trigger.getWidth() > 0) {
+            currentTime = trigger.getCurrentTime(0);
+        } else {
+            Director director = getDirector();
+            currentTime = director.getCurrentTime();
+        }
         super.fire();
-        Director director = getDirector();
-        output.send(0, new DoubleToken(director.getCurrentTime()));
+        output.send(0, new DoubleToken(currentTime));
+        
     }
 }
