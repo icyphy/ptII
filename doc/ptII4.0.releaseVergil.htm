@@ -17,7 +17,7 @@ Version 4.0 has the following limitations:
 <h3>Release Limitations</h3>
 <ul>
 
-<li> Some of he documentation has not yet been updated
+<li> Some of the documentation has not yet been updated
 <menu>
 <li> The three volume design doc has not yet been updated
 
@@ -70,6 +70,9 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 
 <li> Applet issues:
 	<ul>
+
+	<li> The GR applets do not work well under Java 1.5.0-beta.
+	Use 1.4.2-04 instead.
 
 	<li> Applets seems to be trying to download tmp.jar, which
 	is not found.
@@ -342,6 +345,10 @@ he set them by hand:
 </pre>
 he was able to get farther with the recompilation of the Matlab interface.
 
+<li>Matlab interface has problems work with gcc-3.3
+Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
+<br>Under Windows, we recommend using gcc-3.2.
+
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
 <a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
@@ -438,6 +445,17 @@ have constraints on their element types can cause problems.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class reloading.
 
+
+<li> Plot windows don't resize when control panel is resized
+ <br>If a model with plotters
+is executed using the run button on the toolbar, and
+then re-executed using the run control panel accessed through
+the View menu, then resizing the run control panel does not
+cause the plots to resize to fit.
+<br>Workaround:
+Close the model and re-open it, and then run first using the
+run control panel.
+
 <li>There is no mechanism in the UI to save a model as a class,
 nor to save a submodel as a class.
 
@@ -455,7 +473,46 @@ incorrectly shows the slider as a subitem of the actor.
   copy and paste them into a new one, they sometimes all get
   placed at the origin.  Strangely, if I then auto-place,
   and then undo, they get their original (correct) placement!
+
+
+<li> Printing a model that contains transparent objects can result
+in problems when printing to Encapsulated Postscript (EPS).
+
+ <br>If a model has transparent objects, then when it is printed to
+EPS, the resulting file is a bitmap instead of a Postscript
+description of the graphics.  You can tell by the file size (several
+Meg vs. several K) and by opening it in Illustrator, where in theory
+you should be able to ungroup and select and edit individual
+components.
+
+ <br>The way Java prints EPS is that there is an implementation of
+Graphics2D that literally translates each graphics2D call into a
+Postscript snippet.  If Java detects any transparent colors or images,
+then the literal translation of each element independently doesn't
+work, so the printing code reverts to writing everything to an image
+and then sending the image, encapsulated in Postscript to the printer.
+
+ <br>Solution1: Use one of these pdf writing programs to generate
+pdf-1.4 compliant pdf files, which have extensions to support
+transparency that Postscript lacks, and then print them to eps, which
+would use the distill implementation of the above algorithm.
+Or alternatively, we could switch to using pdftex instead of 
+latex-&gt;dvips-&gt;distill which should
+embed pdf for figures directly at the expense of less robust latex support.
+<a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
+
+ <br>Solution 2: Use the undocumented flag
+-Dsun.java2d.print.pipeline=pdl on the command line to force the
+printing to use the postscript path, ignoring transparency.
+Under Cygwin:
+<pre>
+export JAVAFLAGS=-Dsun.java2d.print.pipeline=pdl
+vergil
+</pre>
+Then edit the file by hand in Illustrator to add the transparency back in.
+
 </ul>
+
 <h3>Limitations in JNI</h3>
 <menu>
 <li> The Interface to C actors using the Java Native Interface
@@ -465,6 +522,18 @@ incorrectly shows the slider as a subitem of the actor.
 
 
 <li> The JNI user interface does not permit creation of new JNI actors.
+
+<b>If you follow the instructions in 
+<a href="codeDoc/jni/JNIUtilities.html">JNIUtilities</a>, then
+eventually you will get a NameDuplicationException.
+<p>The resulting model will be missing
+<pre>
+&lt;property name="output" class="jni.Argument" value="false,false,true,double"&gt;
+&lt;/property&gt;
+</pre>
+We are working with the original authors on a solution.
+<br>In the short term, one workaround is to edit the xml file directly
+and add the appropriate property by hand.
 
 <li> JNI will not work with Hierarchical classes, subclasses, and inner
 classes
