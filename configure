@@ -272,7 +272,7 @@ PACKAGE_BUGREPORT=
 
 ac_unique_file="mk/ptII.mk.in"
 ac_default_prefix=$PTII
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT JJTREE MATLAB CAL_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTII_LOCALURL SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT JJTREE MATLAB CAL_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTII_LOCALURL SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -812,7 +812,7 @@ Optional Packages:
                           defaults to \$PTII/vendors/gc/gc/include
   --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
                           defaults to \$PTII/vendors/jhdl/ptjhdllib/JHDL.jar
-  --with-jhdl-jar=JARFILE       use JOYSTICK from JARFILE,
+  --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-jython=DIR       use jython.jar from DIR,
                           defaults to \$PTII/vendors/jython
@@ -1946,6 +1946,17 @@ esac
 echo "$as_me:$LINENO: result: '$CLASSPATHSEPARATOR'" >&5
 echo "${ECHO_T}'$CLASSPATHSEPARATOR'" >&6
 
+
+#--------------------------------------------------------------------
+#	Get ready to accumulate information for Eclipse
+#--------------------------------------------------------------------
+
+# These directories are always excluded from Eclipse
+ECLIPSE_EXCLUDING_SRC=""
+
+# Jar files to include in the Eclipse library
+ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
+
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
@@ -1980,9 +1991,9 @@ else
     echo "$as_me:$LINENO: checking for CaffeineMarkEmbeddedApp.class" >&5
 echo $ECHO_N "checking for CaffeineMarkEmbeddedApp.class... $ECHO_C" >&6
 
-# Check whether --with-jhdl_jar or --without-jhdl_jar was given.
-if test "${with_jhdl_jar+set}" = set; then
-  withval="$with_jhdl_jar"
+# Check whether --with-cmkit or --without-cmkit was given.
+if test "${with_cmkit+set}" = set; then
+  withval="$with_cmkit"
   CMKIT_DIR=$withval
 else
   CMKIT_DIR=$PTII/vendors/cm
@@ -2079,6 +2090,14 @@ echo "$as_me: WARNING: Failed to find PTII/lib/ptCal.jar
     fi
 fi
 
+if test -z "$PTCAL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
+fi
+
 #--------------------------------------------------------------------
 #       commapi is the Java serial interface, see
 #	http://java.sun.com/products/javacomm/
@@ -2094,7 +2113,7 @@ COMMAPI_PRESENT=no
 #
 PTLEGO_DIR=
 # PTCOMM_DIR is set to comm and used in
-# $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
+# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
 #
 PTCOMM_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
@@ -2158,6 +2177,13 @@ echo "$as_me: WARNING: Perhaps commapi is not installed?
     The commapi can be downloaded from http://java.sun.com/products/javacomm/
     and placed  in \$PTII/vendors/sun/commapi" >&2;}
     fi
+fi
+
+if test -z "$PTCOMM_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$COMMAPI_DIR/comm.jar\"/>"
 fi
 
 #--------------------------------------------------------------------
@@ -3397,6 +3423,13 @@ echo "$as_me: WARNING: Failed to find PTII/vendors/jhdl/ptjhdllib/JHDL.jar
     fi
 fi
 
+if test -z "$PTJHDL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/jhdl/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JHDL_JAR\"/>"
+fi
+
 #--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information,
@@ -3459,7 +3492,7 @@ PTJOYSTICK_DIR=
 # Joystick Jar file
 JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
 
-# We only need to look for jhdl if $PTII/ptolemy/actor/lib/joystick exists
+# We only need to look for joystick if $PTII/ptolemy/actor/lib/joystick exists
 if test ! -d "$PTII/ptolemy/actor/lib/joystick"; then
     echo "$as_me:$LINENO: result: $PTII/ptolemy/actor/lib/joystick is not present,
 	so we need not find the Joystick interface." >&5
@@ -3469,9 +3502,9 @@ else
     echo "$as_me:$LINENO: checking for joystick jar file" >&5
 echo $ECHO_N "checking for joystick jar file... $ECHO_C" >&6
 
-# Check whether --with-jhdl_jar or --without-jhdl_jar was given.
-if test "${with_jhdl_jar+set}" = set; then
-  withval="$with_jhdl_jar"
+# Check whether --with-joystick_jar or --without-joystick_jar was given.
+if test "${with_joystick_jar+set}" = set; then
+  withval="$with_joystick_jar"
   JOYSTICK_JAR=$withval
 else
   JOYSTICK_JAR=$PTII/vendors/misc/joystick/Joystick.jar
@@ -3501,6 +3534,13 @@ echo "$as_me: WARNING: Failed to find $JOYSTICK_JAR
 	# Note that we don't substitute in the ${PTII} here
 	JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
     fi
+fi
+
+if test -z "$PTJOYSTICK_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/joystick/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
 fi
 
 #--------------------------------------------------------------------
@@ -3547,7 +3587,7 @@ echo "${ECHO_T}$JYTHON_DIR" >&6
 
     if test "$PTJYTHON_DIR" = ""; then
         if test -f "$PTII/vendors/jython/jython.jar"; then
-	    JYTHON_DIR="$PTII/vendors/jython/jython.jar"
+	    JYTHON_DIR="$PTII/vendors/jython"
 	    echo "$as_me:$LINENO: result: $JYTHON_DIR" >&5
 echo "${ECHO_T}$JYTHON_DIR" >&6
 	    # FIXME: This is ugly, but we set to python instead of jythong
@@ -3570,6 +3610,13 @@ echo "$as_me: WARNING: Failed to find PTII/lib/jython.jar
 	JYTHON_DIR='${PTII}/vendors/jython'
         fi
     fi
+fi
+
+if test -z "$PTJYTHON_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jython/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JYTHON_DIR/jython.jar\"/>"
 fi
 
 #--------------------------------------------------------------------
@@ -3633,6 +3680,19 @@ echo "$as_me: WARNING: Failed to find PTII/vendors/sun/jxta/jxta.jar
     fi
 fi
 
+if test -z "$PTJYTHON_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|vendors/sun/jxta/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxta.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix-asn1.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix32.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/beepcore.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/minimalBC.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtasecurity.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/log4j.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtaptls.jar\"/>"
+fi
 
 #--------------------------------------------------------------------
 #       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
@@ -3926,6 +3986,13 @@ echo "$as_me: WARNING: The ptjacl.jar file was not found at '$PTJACL_JAR'
     fi
 fi
 
+if test -z "$PTJACL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/ptjacl/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTJACL_JAR\"/>"
+fi
+
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
 #--------------------------------------------------------------------
@@ -3967,6 +4034,9 @@ echo "$as_me: WARNING: '\"$JAVAC\" java3dTest.java' failed.
     cd "$startdir"
 fi
 
+if test -z "$PTJAVA3D_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/"
+fi
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
@@ -4477,9 +4547,9 @@ echo $ECHO_N "checking the value of the Matlab root directory ... $ECHO_C" >&6
 echo "${ECHO_T}'$MATLAB_DIR'" >&6
 		else
 		    { echo "$as_me:$LINENO: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MatlabRootDirectory \"$MATLAB\"' failed.
-    We will not be able to compile the Matlab interface in ptolemy/matlab" >&5
+    We will not be able to compile the Matlab interface in ptolemy/matlab/" >&5
 echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MatlabRootDirectory \"$MATLAB\"' failed.
-    We will not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
+    We will not be able to compile the Matlab interface in ptolemy/matlab/" >&2;};
 		fi
 	    else
 		{ echo "$as_me:$LINENO: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC MatlabRootDirectory.java' failed.
@@ -4637,6 +4707,10 @@ echo "$as_me: WARNING: Failed to find gcc or cc, so we will
     fi
 fi
 
+if test -z "$PTMATLAB_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/matlab/"
+fi
+
 
 #--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
@@ -4762,6 +4836,15 @@ echo "$as_me: error: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
     cd "$startdir"
 fi
 
+if test -z "$PTCOPERNICUS_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
+EoF
+    # What about JAVA_SYSTEM_JAR?
+fi
 
 #--------------------------------------------------------------------
 #       TINI is the JDK for Dallas Tini board, see
@@ -5016,6 +5099,14 @@ fi
 # GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
 
 
+# Eclipse .classpath excluding src values
+# of the form "vendors/|ptolemy/matlab/"
+
+
+# Eclipse .classpath lib elements of the format
+#    <classpathentry kind="lib" path="lib/diva.jar"/>
+
+
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
 # Soot uses this variable to find java.lang.Object
@@ -5221,7 +5312,7 @@ fi
 
 
 # Files we substitute in
-                    ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke"
+                              ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke .classpath"
           ac_config_commands="$ac_config_commands default"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5777,6 +5868,7 @@ do
   # Handling of arguments.
   "mk/ptII.mk" ) CONFIG_FILES="$CONFIG_FILES mk/ptII.mk" ;;
   "bin/ptinvoke" ) CONFIG_FILES="$CONFIG_FILES bin/ptinvoke" ;;
+  ".classpath" ) CONFIG_FILES="$CONFIG_FILES .classpath" ;;
   "default" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -5882,6 +5974,8 @@ s,@COMMAPI_DIR@,$COMMAPI_DIR,;t t
 s,@COMMAPI_PRESENT@,$COMMAPI_PRESENT,;t t
 s,@GC_INCLUDE_DIR@,$GC_INCLUDE_DIR,;t t
 s,@GC_LD_DIRECTIVE@,$GC_LD_DIRECTIVE,;t t
+s,@ECLIPSE_EXCLUDING_SRC@,$ECLIPSE_EXCLUDING_SRC,;t t
+s,@ECLIPSE_CLASSPATHENTRY_LIBS@,$ECLIPSE_CLASSPATHENTRY_LIBS,;t t
 s,@JAVA_SYSTEM_JAR@,$JAVA_SYSTEM_JAR,;t t
 s,@JAVACC@,$JAVACC,;t t
 s,@JAVACC_DIR@,$JAVACC_DIR,;t t
