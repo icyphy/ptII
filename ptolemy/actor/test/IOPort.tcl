@@ -291,7 +291,7 @@ test IOPort-9.1 {Check connectivity via send} {
     $p1 send 0 $token
     set received [$p2 get 0]
     $received toString
-} {foo}
+} {pt.data.StringToken(foo)}
 
 test IOPort-9.2 {Check unlink and send to dangling relation} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
@@ -314,7 +314,7 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     $p1 send 0 $token
     catch {$p2 get 0} msg
     list [$p2 getWidth] $msg
-} {0 {pt.kernel.NoSuchItemException: ..E1.P2: get: channel index is out of range.}}
+} {0 {pt.kernel.util.NoSuchItemException: ..E1.P2: get: channel index is out of range.}}
 
 test IOPort-9.3 {Check unlink and get from unlinked port} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
@@ -337,7 +337,7 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     catch {$p1 send 0 $token} msg1
     catch {$p2 get 0} msg2
     list [$p2 getWidth] $msg1 $msg2
-} {1 {pt.kernel.IllegalActionException: ..E1.P1: send: channel index is out of range.} {pt.kernel.NoSuchItemException: ..E1.P2: Attempt to get data from an empty mailbox.}}
+} {1 {pt.kernel.util.IllegalActionException: ..E1.P1: send: channel index is out of range.} {pt.kernel.util.NoSuchItemException: ..E1.P2: Attempt to get data from an empty mailbox.}}
 
 ######################################################################
 ####
