@@ -138,7 +138,12 @@ public class InterfaceAutomaton extends FSMActor {
 	// check composability
 	_checkComposability(automaton);
 
-	// computes the input, output, and internal transitions
+	// computes the input, output, and internal transitions of the
+	// composition
+	Set[] sets = _computeCompositionTransitions(automaton);
+        Set inputs = sets[0];
+	Set outputs = sets[1];
+	Set internals = sets[2];
 
 
 
@@ -372,6 +377,38 @@ public class InterfaceAutomaton extends FSMActor {
 	    throw new IllegalActionException(message + "the output "
 	        + "transitions of the two overlap.");
 	}
+    }
+
+    // Compute the input, output, and internal transitions of the composition.
+    // Return the result in an array of sets, in that order.
+    private Set[] _computeCompositionTransitions(InterfaceAutomaton automaton) {
+        Set[] sets = new Set[3];
+
+	// compute shared transitions
+	Set shared = this.inputNameSet();
+	Set thatOutputs = automaton.outputNameSet();
+	shared.retainAll(thatOutputs);
+
+	Set shared1 = this.outputNameSet();
+	Set thatInputs = automaton.inputNameSet();
+	shared1.retainAll(thatInputs);
+
+	shared.addAll(shared1);
+
+	// compute input, output, and internal transitions
+	sets[0] = this.inputNameSet();
+	sets[0].addAll(automaton.inputNameSet());
+	sets[0].removeAll(shared);
+
+	sets[1] = this.outputNameSet();
+	sets[1].addAll(automaton.outputNameSet());
+	sets[1].removeAll(shared);
+
+	sets[2] = this.internalTransitionNameSet();
+	sets[2].addAll(automaton.internalTransitionNameSet());
+	sets[2].addAll(shared);
+
+	return sets;
     }
 
     // Compute the product of this autmaton and the argument.
