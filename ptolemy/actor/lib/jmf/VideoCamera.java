@@ -63,28 +63,36 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.jmf;
 
 // FIXME: Replace with per-class imports.
-import java.awt.*;
-import javax.media.*;
+//import java.awt.*;
+//import javax.media.*;
+import javax.media.ControllerListener;
+import javax.media.ControllerEvent;
+import javax.media.Buffer;
+import javax.media.Processor;
+import javax.media.Codec;
+import javax.media.CaptureDeviceManager;
+import javax.media.CaptureDeviceInfo;
+import javax.media.MediaLocator;
+import javax.media.Manager;
+import javax.media.UnsupportedPlugInException;
+import javax.media.ConfigureCompleteEvent;
+import javax.media.RealizeCompleteEvent;
+import javax.media.PrefetchCompleteEvent;
+import javax.media.ResourceUnavailableEvent;
+import javax.media.EndOfMediaEvent;
+
 import javax.media.control.TrackControl;
 import javax.media.Format;
-import javax.media.format.*;
+import javax.media.format.VideoFormat;
+import javax.media.format.YUVFormat;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.net.MalformedURLException;
-import javax.media.util.BufferToImage;
-import javax.swing.ImageIcon;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -205,8 +213,8 @@ public class VideoCamera extends Source implements ControllerListener {
 
 	// Instantiate and set the frame access codec to the data flow path.
 	try {
-	    JamesCodec = new PreAccessCodec();
-	    Codec codec[] = {JamesCodec};
+	    CameraCodec = new PreAccessCodec();
+	    Codec codec[] = {CameraCodec};
 	    videoTrack.setCodecChain(codec);
 	} catch (UnsupportedPlugInException e) {
 	    throw new IllegalActionException(
@@ -251,13 +259,10 @@ public class VideoCamera extends Source implements ControllerListener {
 //         }	
 	//_imageNew = JamesCodec.getFrame();
 	//output.send(0, new ObjectToken(frameBuffer));
-	_bufferNew = JamesCodec.getFrame();
+	_bufferNew = CameraCodec.getFrame();
 	if (_bufferNew != null) {
 	    //_bufferNew.setFormat(new YUVFormat());
 	    output.send(0, new ObjectToken(_bufferNew));
-	}
-	if (_debugging) {
-	    _debug("just fired and I am yuv format!!!");
 	}
     }
 
@@ -451,14 +456,12 @@ public class VideoCamera extends Source implements ControllerListener {
     ////                         private variables                 ////
 
     // The java.awt.Image that we are producing
-    private Image _image;
-    private Image _imageNew;
     private Buffer _bufferNew;
     private boolean _newFrame = false;
     private Thread _busyFlag = null;
     // The video processor.
     Processor _processor;
-    PreAccessCodec JamesCodec;
+    PreAccessCodec CameraCodec;
     Object waitSync = new Object();
     boolean stateTransitionOK = true;
     Buffer frameBuffer = new Buffer();
