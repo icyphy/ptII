@@ -177,15 +177,13 @@ public class PlotApplication extends PlotFrame {
     /** Display basic information about the application.
      */
     protected void _about() {
-        // FIXME: Is the web address correct?
         Message message = new Message(
                 "Ptolemy plot\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 2.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                Color.white, Color.black);
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
     }
 
@@ -198,8 +196,14 @@ public class PlotApplication extends PlotFrame {
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        // FIXME:  This is a pretty lame excuse for help...
-        Message message = new Message(_usage());
+        Message message = new Message(
+                "PlotApplication is a standalone Java 2D plot application " +
+                "It can read files compatible with the Ptolemy plot " +
+                "file format (currently only ASCII).  For a description " +
+                "of the file format, see the Plot and PlotBox classes." +
+                "Command-line options include:\n" + _usage(),
+                null, null, 40, 20,
+                TextArea.SCROLLBARS_BOTH);
         message.setTitle("Usage of Ptolemy Plot");
     }
 
