@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixFIR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -28,7 +28,7 @@ using double precision.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 154, 819, 459}, maximized = false}">
@@ -120,6 +120,8 @@ centered at zero frequency.</text>
            </svg>
            </configure>
             </property>
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 165.0">
         </property>
@@ -145,6 +147,8 @@ centered at zero frequency.</text>
            </svg>
            </configure>
             </property>
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 225.0">
         </property>
@@ -169,6 +173,8 @@ frequencies from -pi to pi radians per second,
 centered at zero frequency.</text>
            </svg>
            </configure>
+            </property>
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 285.0">
