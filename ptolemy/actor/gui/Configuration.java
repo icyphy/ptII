@@ -525,20 +525,6 @@ public class Configuration extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Call show() on all instances of Tableaux contained by the specified
-    // container.
-    private void _showTableaux(CompositeEntity container) {
-        Iterator entities = container.entityList().iterator();
-        while (entities.hasNext()) {
-            Object entity = entities.next();
-            if (entity instanceof Tableau) {
-                ((Tableau)entity).show();
-            } else if (entity instanceof CompositeEntity) {
-                _showTableaux((CompositeEntity)entity);
-            }
-        }
-    }
-
     // Recursively search the specified composite for an instance of
     // PtolemyEffigy that matches the specified model.
     private PtolemyEffigy _findEffigyForModel(
@@ -562,6 +548,20 @@ public class Configuration extends CompositeEntity {
             }
         }
         return null;
+    }
+
+    // Call show() on all instances of Tableaux contained by the specified
+    // container.
+    private void _showTableaux(CompositeEntity container) {
+        Iterator entities = container.entityList().iterator();
+        while (entities.hasNext()) {
+            Object entity = entities.next();
+            if (entity instanceof Tableau) {
+                ((Tableau)entity).show();
+            } else if (entity instanceof CompositeEntity) {
+                _showTableaux((CompositeEntity)entity);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
