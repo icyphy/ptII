@@ -91,7 +91,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 275.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 815, 694}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 815, 703}}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1597,8 +1597,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="31.59999999999963"/>
-<yRange min="0.0" max="1.9999758356903072"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="2.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -1977,8 +1977,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="31.59999999999963"/>
-<yRange min="0.0" max="69.20000054975577"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="206.0"/>
 </plot>?>
             </configure>
         </entity>
