@@ -91,6 +91,26 @@ OPTIONAL_FILES = \
 	'BaseType$$7.class' \
 	'BaseType$$8.class' \
 	'BaseType$$9.class' \
+	'BaseType$$BooleanMatrixType.class' \
+	'BaseType$$BooleanType.class' \
+	'BaseType$$ByteType.class' \
+	'BaseType$$ComplexMatrixType.class' \
+	'BaseType$$ComplexType.class' \
+	'BaseType$$DoubleMatrixType.class' \
+	'BaseType$$DoubleType.class' \
+	'BaseType$$FixMatrixType.class' \
+	'BaseType$$FixType.class' \
+	'BaseType$$GeneralType.class' \
+	'BaseType$$IntMatrixType.class' \
+	'BaseType$$IntType.class' \
+	'BaseType$$LongMatrixType.class' \
+	'BaseType$$LongType.class' \
+	'BaseType$$MatrixType.class' \
+	'BaseType$$NumericalType.class' \
+	'BaseType$$ObjectType.class' \
+	'BaseType$$ScalarType.class' \
+	'BaseType$$StringType.class' \
+	'BaseType$$UnknownType.class' \
 	'BaseType$$ConvertOperator.class' \
 	'RecordType$$1.class' \
 	'RecordType$$FieldType.class' \

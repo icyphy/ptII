@@ -77,6 +77,17 @@ OPTIONAL_FILES = \
 	doc \
 	'ComponentDialog$$1.class' \
 	'ComponentDialog$$2.class' \
+	'JTextAreaExec$$1.class' \
+	'JTextAreaExec$$10.class' \
+	'JTextAreaExec$$2.class' \
+	'JTextAreaExec$$3.class' \
+	'JTextAreaExec$$4.class' \
+	'JTextAreaExec$$5.class' \
+	'JTextAreaExec$$6.class' \
+	'JTextAreaExec$$7.class' \
+	'JTextAreaExec$$8.class' \
+	'JTextAreaExec$$9.class' \
+	'JTextAreaExec$$_StreamReaderThread.class' \
 	'Message$$1.class' \
 	'Message$$2.class' \
 	'Query$$CheckBoxListener.class' \
@@ -85,6 +96,9 @@ OPTIONAL_FILES = \
 	'Query$$QueryFocusListener.class' \
 	'Query$$QueryItemListener.class' \
 	'Query$$SliderListener.class' \
+	'SwingWorker$$1.class' \
+	'SwingWorker$$2.class' \
+	'SwingWorker$$ThreadVar.class' \
 	'Top$$1.class' \
 	'Top$$FileMenuListener.class' \
 	'Top$$HelpMenuListener.class'
