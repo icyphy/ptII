@@ -58,6 +58,7 @@ proc autoDeepCG {autoDirectory} {
 	puts "---- testing $file"
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
+	    global PTII
 	    set elapsedTime [time {sootCodeGeneration $PTII $file "Deep" 1000}]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	    list {}
