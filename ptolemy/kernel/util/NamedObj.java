@@ -152,7 +152,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Register a listener for debug messages.
+    /** Append a listener to the current set of debug listeners.
+     *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
      */
     public void addDebugListener(DebugListener listener) {
@@ -406,7 +407,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Unregister a debug listener.  If the specified listener has not
-     *  been registered, then do nothing.
+     *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
      */
@@ -539,8 +540,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Send a debug message to all debug listeners that have registered.
+     * Note that each individual listener will append a newline to
+     * the message.
      */
-    protected void _debug(String message) {
+    protected final void _debug(String message) {
         if (_debugListeners == null) {
             return;
         } else {

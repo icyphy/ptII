@@ -1,4 +1,4 @@
-/* A debug listeners that records messages in a string buffer.
+/* A debug listener that records messages in a string buffer.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -33,13 +33,14 @@ package ptolemy.kernel.util;
 import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// StreamListener
+//// RecorderListener
 /**
-A debug listeners that records messages in a string buffer.
+A debug listener that records messages in a string buffer.
 
-@author  Edward A. Lee
+@author  Edward A. Lee, Christopher Hylands
 @version $Id$
 @see NamedObj
+@see StreamListener
 
 */
 public class RecorderListener implements DebugListener {
@@ -55,19 +56,17 @@ public class RecorderListener implements DebugListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Append a message String to the current set of messages.
-     */
-    public void message(String message) {
-        if (_buffer.length() != 0) {
-            _buffer.append("\n");
-        }
-        _buffer.append(message);
-    }
-
-    /** Get messages recorded so far.
+    /** Get the messages recorded so far.
      */
     public String getMessages() {
         return _buffer.toString();
+    }
+
+    /** Append the message to the current set of messages.
+     *  A newline is automatically appended to the message.
+     */
+    public void message(String message) {
+        _buffer.append(message + "\n");
     }
 
     /** Clear the buffer.

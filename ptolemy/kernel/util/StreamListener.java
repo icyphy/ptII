@@ -1,4 +1,4 @@
-/* A debug listeners that sends messages to a stream or to standard out.
+/* A debug listener that sends messages to a stream or to standard out.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -35,11 +35,12 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// StreamListener
 /**
-A debug listeners that sends messages to a stream or to standard out.
+A debug listener that sends messages to a stream or to the standard output.
 
-@author  Edward A. Lee
+@author  Edward A. Lee, Christopher Hylands
 @version $Id$
-@see NamedObj
+@see NamedObj 
+@see RecorderListener
 
 */
 public class StreamListener implements DebugListener {
@@ -63,7 +64,9 @@ public class StreamListener implements DebugListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a debug message.
+    /** Copy the message argument to the stream associated with
+     *  the listener.  Note that a newline is appended to the
+     *  end of the message.
      */
     public void message(String message) {
         _output.println(message);

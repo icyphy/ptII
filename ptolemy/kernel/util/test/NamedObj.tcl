@@ -188,7 +188,8 @@ test NamedObj-8.1 {Test RecorderListener: call clone} {
     $a addDebugListener $listener
     $a clone
     $listener getMessages
-} {Cloned N.A into workspace: N}
+} {Cloned N.A into workspace: N
+}
 
 test NamedObj-8.2 {Test RecorderListener: call setName} {
     set a [java::new ptolemy.kernel.util.NamedObj]
@@ -196,7 +197,8 @@ test NamedObj-8.2 {Test RecorderListener: call setName} {
     $a addDebugListener $listener
     $a setName "B"
     $listener getMessages
-} {Changed name from . to .B}
+} {Changed name from . to .B
+}
 
 test NamedObj-8.3 {Test RecorderListener: call setName 2x} {
     set a [java::new ptolemy.kernel.util.NamedObj]
@@ -206,7 +208,8 @@ test NamedObj-8.3 {Test RecorderListener: call setName 2x} {
     $a setName "C"
     $listener getMessages
 } {Changed name from . to .B
-Changed name from .B to .C}
+Changed name from .B to .C
+}
 
 test NamedObj-8.4 {Test Recorderlistener: setName, then reset, then setName} {
     set a [java::new ptolemy.kernel.util.NamedObj]
@@ -216,7 +219,8 @@ test NamedObj-8.4 {Test Recorderlistener: setName, then reset, then setName} {
     $listener reset
     $a setName "C"
     $listener getMessages
-} {Changed name from .B to .C}
+} {Changed name from .B to .C
+}
 
 
 test NamedObj-8.5 {Test RecorderListener: reset, getMessages, setName} {
@@ -234,7 +238,8 @@ test NamedObj-8.5 {Test RecorderListener: reset, getMessages, setName} {
     $b setContainer [java::null]
     list $result1 [$listener getMessages]
 } {{} {Added attribute X to N.A
-Removed attribute X from N.A}}
+Removed attribute X from N.A
+}}
 
 test NamedObj-8.6 {Test RecorderListener: set container to null} {
     set n [java::new ptolemy.kernel.util.Workspace "N"]
@@ -245,7 +250,8 @@ test NamedObj-8.6 {Test RecorderListener: set container to null} {
     $b setContainer [java::null]
     $listener getMessages
 } {Added attribute X to N.A
-Removed attribute X from N.A}
+Removed attribute X from N.A
+}
 
 test NamedObj-8.7 {Test RecorderListener: add then remove a listenert} {
     set a [java::new ptolemy.kernel.util.NamedObj]
@@ -261,7 +267,9 @@ test NamedObj-8.7 {Test RecorderListener: add then remove a listenert} {
 
     $a setName "C"
     list $result1 [$listener getMessages]
-} {{Changed name from . to .B} {Changed name from . to .B}}
+} {{Changed name from . to .B
+} {Changed name from . to .B
+}}
 
 
 test NamedObj-8.8 {Test RecorderListener: call message() directly} {
@@ -278,7 +286,8 @@ test NamedObj-8.8 {Test RecorderListener: call message() directly} {
 } {This is the first Message, no trailing newline.
 This is the second Message, trailing newline.
 
-This is the third Message, no trailing newline.}
+This is the third Message, no trailing newline.
+}
 
 
 # Capture output to System.out
