@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997 The Regents of the University of California.
+# @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -73,7 +73,8 @@ MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	$(JARFILE)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
