@@ -119,7 +119,7 @@ public class SequenceSource extends Source implements SequenceActor {
     }
 
     /** Increment the iteration counter, and if it equals the
-     *  value of the <i>iterations</i> parameter, return false.
+     *  value of the <i>firingCountLimit</i> parameter, return false.
      *  Otherwise, return true.  Derived classes should call this
      *  at the end of their postfire() method and return its returned
      *  value.
