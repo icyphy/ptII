@@ -25,7 +25,9 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu) execute catches Exceptions and rethrows them as runtime exceptions. why?
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+execute catches Exceptions and rethrows them as runtime exceptions. why?
+requestInitialization is pickier about what actors are initialized
 */
 
 package ptolemy.actor;
@@ -301,8 +303,6 @@ public class Manager extends NamedObj implements Runnable {
      *  resume from running.
      */
     public void finish() {
-
-        (new IllegalActionException(this)).printStackTrace();
 
         // Set this regardless of whether the model is running to
         // avoid race conditions.  The model may not have gotten around
@@ -689,6 +689,41 @@ public class Manager extends NamedObj implements Runnable {
      *  @param actor The actor to initialize.
      */
     public void requestInitialization(Actor actor) {
+        // Only initialize once.
+        if(_actorsToInitialize.contains(actor)) {
+            return;
+        }
+        // Only initialize containers.  This avoids initializing an
+        // actor twice when it is added as part of a container that is
+        // being added.
+        {
+            NamedObj container = (NamedObj)((NamedObj)actor).getContainer();
+            while(container != null) {
+                if(_actorsToInitialize.contains(container)) {
+                    return;
+                }
+                container = (NamedObj)container.getContainer();
+            }
+        }
+        // OK, then we need to initialize this actor.  However, we
+        // don't need to initialize any actors contained by this
+        // actor.
+        List list = new LinkedList(_actorsToInitialize);
+        for(Iterator actors = list.iterator();
+            actors.hasNext();) {
+            NamedObj otherActor = (NamedObj)actors.next();
+            NamedObj otherActorContainer = (NamedObj)otherActor.getContainer();
+            while(otherActorContainer != null) {
+                // If otherActor is contained by actor, then remove it.
+                if(otherActorContainer == actor) {
+                    _actorsToInitialize.remove(otherActor);
+                    otherActorContainer = null;
+                } else {
+                    otherActorContainer = (NamedObj)otherActorContainer.getContainer();
+                }
+            }
+        }
+        // Lastly, add this actor to the actors to initialize.
         _actorsToInitialize.add(actor);
     }
 

@@ -31,6 +31,7 @@ fire: call transferOutputs on local, not executive director.
 preinitialize: validate attributes of this composite and
     the attributes of its ports.
 setDirector invalidatesSchedule of executiveDirector.
+moved invalidation code from _addEntity to _finishedAddEntity
 */
 
 package ptolemy.actor;
@@ -907,9 +908,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
-     *  implements the Actor interface, to invalidate the schedule
-     *  and type resolution, and to request initialization with the director.
-     *  This method does not alter the actor in any way.
+     *  implements the Actor interface.
      *  It is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -928,6 +927,23 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     " implement the Actor interface.");
         }
         super._addEntity(entity);
+    }
+
+    /** Notify this actor that the given entity has been added inside it.
+     *  This overrides the base-class method to invalidate the schedule
+     *  and type resolution, and to request initialization with the director.
+     *  This method does not alter the actor in any way.
+     *  It is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @param entity Actor to contain.
+     *  @exception IllegalActionException If the actor has no name, or the
+     *   action would result in a recursive containment structure, or the
+     *   argument does not implement the Actor interface.
+     *  @exception NameDuplicationException If the name collides with a name
+     *   already on the actor contents list.
+     */
+    protected void _finishedAddEntity(ComponentEntity entity) {
         Director director = getDirector();
         if (director != null) {
             director.invalidateSchedule();

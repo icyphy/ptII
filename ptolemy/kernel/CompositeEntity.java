@@ -1010,6 +1010,17 @@ public class CompositeEntity extends ComponentEntity {
         _containedEntities.append(entity);
     }
 
+    /** Notify this entity that the given entity has been added inside it.
+     *  This base class does nothing.   Derived classes may override it to 
+     *  do something useful in responds to the notification.
+     *  It is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @param entity The contained entity.
+     */
+    protected void _finishedAddEntity(ComponentEntity entity) {
+    }
+
     /** Add a relation to this container. This method should not be used
      *  directly.  Call the setContainer() method of the relation instead.
      *  This method does not set
