@@ -113,7 +113,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
         Rectangle2D stringBounds = label.getBounds();
         try {
             int numberOfCharacters
-                    = ((IntToken)displayWidth.getToken()).intValue();
+                = ((IntToken)displayWidth.getToken()).intValue();
             // NOTE: Padding of 20.
             int width = (int)(stringBounds.getWidth()*numberOfCharacters + 20);
             _background = new BasicRectangle(0, 0, width, 30, Color.white, 1);
@@ -137,14 +137,14 @@ public class UpdatedValueIcon extends AttributeValueIcon {
             // some values being skipped, so it seems like it's not
             // a good idea.
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (_label != null) {
-                        _label.setString(_displayString());
-                    }
-                    if (_background != null) {
-                        _background.repaint();
-                    }
-                }});
+                    public void run() {
+                        if (_label != null) {
+                            _label.setString(_displayString());
+                        }
+                        if (_background != null) {
+                            _background.repaint();
+                        }
+                    }});
         } else {
             super.valueChanged(settable);
         }

@@ -167,9 +167,9 @@ public class FSMGraphTableau extends Tableau {
                         "_library", LibraryAttribute.class);
 
                 FSMGraphTableau tableau =
-                        new FSMGraphTableau((PtolemyEffigy)effigy,
-                        effigy.uniqueName("tableau"),
-                        library);
+                    new FSMGraphTableau((PtolemyEffigy)effigy,
+                            effigy.uniqueName("tableau"),
+                            library);
                 return tableau;
             } else {
                 return null;

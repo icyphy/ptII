@@ -141,7 +141,7 @@ public class TransitionController extends BasicEdgeController {
 
         // Add a double click interactor.
         ActionInteractor doubleClickInteractor
-                = new ActionInteractor(_configureAction);
+            = new ActionInteractor(_configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -180,7 +180,7 @@ public class TransitionController extends BasicEdgeController {
 
     /** The configure action, which handles edit parameters requests. */
     protected static ConfigureAction _configureAction =
-             new ConfigureAction("Configure (Ctrl-E)");
+    new ConfigureAction("Configure (Ctrl-E)");
 
     /** The action that handles look inside. */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
@@ -238,7 +238,7 @@ public class TransitionController extends BasicEdgeController {
                     + angle + "\"/>" +
                     "<property name=\"gamma\" value=\"" + gamma + "\"/></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(
-                                                                  this, transition, moml);
+                        this, transition, moml);
                 transition.requestChange(request);
             }
             // rerender the edge.  This is necessary for several reasons.
@@ -311,7 +311,7 @@ public class TransitionController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-               if (object instanceof Locatable) {
+            if (object instanceof Locatable) {
                 Locatable location = (Locatable)object;
                 if (location.getContainer() instanceof Entity)
                     return true;

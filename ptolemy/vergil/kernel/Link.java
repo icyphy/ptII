@@ -97,8 +97,8 @@ public class Link {
     public String toString() {
         return "Link("
             + _head + ", "
-                + _tail + ", "
-                    + _relation + ")";
+            + _tail + ", "
+            + _relation + ")";
     }
 
     private Object _head;

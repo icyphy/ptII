@@ -103,11 +103,11 @@ public class AttributeNodeModel extends NamedObjNodeModel {
         NamedObj container = _getChangeRequestParent(attribute);
 
         String moml = "<deleteProperty name=\""
-                + attribute.getName(container) + "\"/>\n";
+            + attribute.getName(container) + "\"/>\n";
 
         // Note: The source is NOT the graph model.
         ChangeRequest request =
-                 new MoMLChangeRequest(this, container, moml);
+            new MoMLChangeRequest(this, container, moml);
         container.requestChange(request);
     }
 }

@@ -749,7 +749,7 @@ public class IconEditor {
                 int y) {
             g.setColor(_color);
             g.fillRect(x, y, getIconHeight(), getIconWidth());
-               }
+        }
         private Color _color;
     }
 

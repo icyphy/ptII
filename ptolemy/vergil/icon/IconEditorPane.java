@@ -98,7 +98,7 @@ public class IconEditorPane extends JCanvas {
         // Instantiate the color chooser for the color button.
         _colorChooser = new JColorChooser();
 
-          _pane =(GraphicsPane) this.getCanvasPane();
+        _pane =(GraphicsPane) this.getCanvasPane();
         _layer = _pane.getForegroundLayer();
         _layer.setPickHalo(MOUSE_SENSITIVITY);
 

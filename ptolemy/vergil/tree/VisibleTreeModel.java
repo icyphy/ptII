@@ -139,8 +139,8 @@ public class VisibleTreeModel extends FullTreeModel {
     protected boolean _isVisible(NamedObj object) {
         List iconList = object.attributeList(EditorIcon.class);
         if (iconList.size() > 0
-               || object.getAttribute("_iconDescription") != null
-               || object.getAttribute("_iconSmallDescription")!= null) {
+                || object.getAttribute("_iconDescription") != null
+                || object.getAttribute("_iconSmallDescription")!= null) {
             return true;
         } else {
             return false;
@@ -192,7 +192,7 @@ public class VisibleTreeModel extends FullTreeModel {
         // Cache is not valid.
         List result = new LinkedList();
         Iterator relations
-               = ((CompositeEntity)object).relationList().iterator();
+            = ((CompositeEntity)object).relationList().iterator();
         while (relations.hasNext()) {
             NamedObj relation = (NamedObj)relations.next();
             if (_isVisible(relation)) {

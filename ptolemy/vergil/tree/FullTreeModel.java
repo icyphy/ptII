@@ -118,7 +118,7 @@ public class FullTreeModel extends EntityTreeModel {
         int numRelations = relations.size();
 
         return numAttributes + numPorts + numRelations
-                + super.getChildCount(parent);
+            + super.getChildCount(parent);
     }
 
     /** Return the index of the given child within the given parent.

@@ -84,8 +84,8 @@ public class CompositeEntityModel implements CompositeModel {
         }
         long version = ((CompositeEntity)composite).workspace().getVersion();
         if (_nodeList == null
-               || composite != _composite
-               || version != _version) {
+                || composite != _composite
+                || version != _version) {
             _nodeList = _nodeList((CompositeEntity)composite);
             _composite = composite;
             _version = version;
@@ -106,8 +106,8 @@ public class CompositeEntityModel implements CompositeModel {
         }
         long version = ((CompositeEntity)composite).workspace().getVersion();
         if (_nodeList == null
-               || composite != _composite
-               || version != _version) {
+                || composite != _composite
+                || version != _version) {
             _nodeList = _nodeList((CompositeEntity)composite);
             _composite = composite;
             _version = version;
@@ -193,7 +193,7 @@ public class CompositeEntityModel implements CompositeModel {
                     // A vertex is needed, so create one.
                     try {
                         Vertex vertex = new Vertex(relation,
-                                 relation.uniqueName("vertex"));
+                                relation.uniqueName("vertex"));
                         nodes.add(vertex);
                     } catch (Exception e) {
                         throw new InternalErrorException(

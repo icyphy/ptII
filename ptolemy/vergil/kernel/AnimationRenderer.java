@@ -104,24 +104,24 @@ public class AnimationRenderer implements SelectionRenderer {
      */
     public void renderDeselected (final Figure figure) {
         Runnable doUndecorate = new Runnable() {
-            public void run() {
-                synchronized(AnimationRenderer.this) {
-                    if ( !_decorators.containsKey(figure)) {
-                        return;
+                public void run() {
+                    synchronized(AnimationRenderer.this) {
+                        if ( !_decorators.containsKey(figure)) {
+                            return;
+                        }
+                        // Rather than just get the parent of the figure, we must
+                        // get the decorator out of the hashtable, since other
+                        // wrappers may have been inserted between the figure and
+                        // its decorator
+                        FigureDecorator d = (FigureDecorator)_decorators.get(figure);
+                        if (d.getParent() != null) {
+                            figure.repaint();
+                            ((FigureContainer) d.getParent()).undecorate(d);
+                        }
+                        _decorators.remove(figure);
                     }
-                    // Rather than just get the parent of the figure, we must
-                    // get the decorator out of the hashtable, since other
-                    // wrappers may have been inserted between the figure and
-                    // its decorator
-                    FigureDecorator d = (FigureDecorator)_decorators.get(figure);
-                    if (d.getParent() != null) {
-                        figure.repaint();
-                        ((FigureContainer) d.getParent()).undecorate(d);
-                    }
-                    _decorators.remove(figure);
                 }
-            }
-        };
+            };
         SwingUtilities.invokeLater(doUndecorate);
         Thread.yield();
     }
@@ -137,23 +137,23 @@ public class AnimationRenderer implements SelectionRenderer {
      */
     public void renderSelected (final Figure figure) {
         Runnable doDecorate = new Runnable() {
-            public void run() {
-                synchronized(AnimationRenderer.this) {
-                    if (_decorators.containsKey(figure)) {
-                        ((Figure)_decorators.get(figure)).repaint();
-                    } else {
-                        FigureContainer parent
+                public void run() {
+                    synchronized(AnimationRenderer.this) {
+                        if (_decorators.containsKey(figure)) {
+                            ((Figure)_decorators.get(figure)).repaint();
+                        } else {
+                            FigureContainer parent
                                 = (FigureContainer) figure.getParent();
-                        if (parent != null) {
-                            FigureDecorator d
+                            if (parent != null) {
+                                FigureDecorator d
                                     = _prototypeDecorator.newInstance(figure);
-                            parent.decorate(figure,d);
-                            _decorators.put(figure,d);
+                                parent.decorate(figure,d);
+                                _decorators.put(figure,d);
+                            }
                         }
                     }
                 }
-            }
-        };
+            };
         SwingUtilities.invokeLater(doDecorate);
         Thread.yield();
     }

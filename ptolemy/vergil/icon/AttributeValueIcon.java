@@ -114,7 +114,7 @@ public class AttributeValueIcon extends XMLIcon {
             truncated = " ";
         }
         _label = new LabelFigure(truncated,
-               _labelFont, 1.0, SwingConstants.CENTER);
+                _labelFont, 1.0, SwingConstants.CENTER);
         Rectangle2D backBounds = _background.getBounds();
         _label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
         result.add(_label);

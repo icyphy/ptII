@@ -214,11 +214,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  verified to be correct.
      */
     protected boolean _update() {
-             // Go through all the links that currently exist, and remove
+        // Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
         Iterator links = _linkSet.iterator();
         while (links.hasNext()) {
-             Arc link = (Arc)links.next();
+            Arc link = (Arc)links.next();
             Relation relation = link.getRelation();
             if (relation == null) continue;
             // Check that the relation hasn't been removed.
@@ -436,25 +436,25 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 new MoMLChangeRequest(FSMGraphModel.this,
                         container,
                         moml.toString()) {
-                protected void _execute() throws Exception {
-                    super._execute();
-                    link.setHead(null);
-                    link.setTail(null);
-                    link.setRelation(null);
-                }
-            };
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            link.setHead(null);
+                            link.setTail(null);
+                            link.setRelation(null);
+                        }
+                    };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
-                public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // Ignore... nothing we can do about it anyway.
-                }
+                    public void changeFailed(ChangeRequest change,
+                            Exception exception) {
+                        // Ignore... nothing we can do about it anyway.
+                    }
 
-                public void changeExecuted(ChangeRequest change) {
-                    _linkSet.remove(edge);
-                }
-            });
+                    public void changeExecuted(ChangeRequest change) {
+                        _linkSet.remove(edge);
+                    }
+                });
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -511,48 +511,48 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 new MoMLChangeRequest(FSMGraphModel.this,
                         container,
                         moml.toString()) {
-                protected void _execute() throws Exception {
-                    super._execute();
-                    link.setHead(newArcHead);
-                    if (relationNameToAdd != null) {
-                        ComponentRelation relation = (ComponentRelation)
-                            getPtolemyModel().getRelation(
-                                    relationNameToAdd);
-                        link.setRelation(relation);
-                    }
-                }
-            };
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            link.setHead(newArcHead);
+                            if (relationNameToAdd != null) {
+                                ComponentRelation relation = (ComponentRelation)
+                                    getPtolemyModel().getRelation(
+                                            relationNameToAdd);
+                                link.setRelation(relation);
+                            }
+                        }
+                    };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
-                public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail here, then we remove the link entirely.
-                    _linkSet.remove(link);
-                    link.setHead(null);
-                    link.setTail(null);
-                    link.setRelation(null);
-                    // and queue a new change request to clean up the model
-                    // Note: JDK1.2.2 requires that this variable not be
-                    // called request or we get a compile error.
-                    MoMLChangeRequest requestChange =
-                        new MoMLChangeRequest(FSMGraphModel.this,
-                                container,
-                                failmoml.toString());
-                    // Fail moml execution not undoable
-                    container.requestChange(requestChange);
-                }
-
-                public void changeExecuted(ChangeRequest change) {
-                    if (GraphUtilities.isPartiallyContainedEdge(edge,
-                            getRoot(),
-                            FSMGraphModel.this)) {
-                        _linkSet.add(edge);
-                    } else {
-                        _linkSet.remove(edge);
+                    public void changeFailed(ChangeRequest change,
+                            Exception exception) {
+                        // If we fail here, then we remove the link entirely.
+                        _linkSet.remove(link);
+                        link.setHead(null);
+                        link.setTail(null);
+                        link.setRelation(null);
+                        // and queue a new change request to clean up the model
+                        // Note: JDK1.2.2 requires that this variable not be
+                        // called request or we get a compile error.
+                        MoMLChangeRequest requestChange =
+                            new MoMLChangeRequest(FSMGraphModel.this,
+                                    container,
+                                    failmoml.toString());
+                        // Fail moml execution not undoable
+                        container.requestChange(requestChange);
                     }
-                }
-            });
+
+                    public void changeExecuted(ChangeRequest change) {
+                        if (GraphUtilities.isPartiallyContainedEdge(edge,
+                                getRoot(),
+                                FSMGraphModel.this)) {
+                            _linkSet.add(edge);
+                        } else {
+                            _linkSet.remove(edge);
+                        }
+                    }
+                });
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -611,47 +611,47 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 new MoMLChangeRequest(FSMGraphModel.this,
                         container,
                         moml.toString()) {
-                protected void _execute() throws Exception {
-                    super._execute();
-                    link.setTail(newArcTail);
-                    if (relationNameToAdd != null) {
-                        link.setRelation(
-                                getPtolemyModel()
-                                .getRelation(relationNameToAdd));
-                    }
-                }
-            };
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            link.setTail(newArcTail);
+                            if (relationNameToAdd != null) {
+                                link.setRelation(
+                                        getPtolemyModel()
+                                        .getRelation(relationNameToAdd));
+                            }
+                        }
+                    };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
-                public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail here, then we remove the link entirely.
-                    _linkSet.remove(link);
-                    link.setHead(null);
-                    link.setTail(null);
-                    link.setRelation(null);
-                    // and queue a new change request to clean up the model
-                    // Note: JDK1.2.2 requires that this variable not be
-                    // called request or we get a compile error.
-                    MoMLChangeRequest requestChange =
-                        new MoMLChangeRequest(FSMGraphModel.this,
-                                container,
-                                failmoml.toString());
-                    // fail moml execution not undaoble
-                    container.requestChange(requestChange);
-                }
-
-                public void changeExecuted(ChangeRequest change) {
-                    if (GraphUtilities.isPartiallyContainedEdge(edge,
-                            getRoot(),
-                            FSMGraphModel.this)) {
-                        _linkSet.add(edge);
-                    } else {
-                        _linkSet.remove(edge);
+                    public void changeFailed(ChangeRequest change,
+                            Exception exception) {
+                        // If we fail here, then we remove the link entirely.
+                        _linkSet.remove(link);
+                        link.setHead(null);
+                        link.setTail(null);
+                        link.setRelation(null);
+                        // and queue a new change request to clean up the model
+                        // Note: JDK1.2.2 requires that this variable not be
+                        // called request or we get a compile error.
+                        MoMLChangeRequest requestChange =
+                            new MoMLChangeRequest(FSMGraphModel.this,
+                                    container,
+                                    failmoml.toString());
+                        // fail moml execution not undaoble
+                        container.requestChange(requestChange);
                     }
-                }
-            });
+
+                    public void changeExecuted(ChangeRequest change) {
+                        if (GraphUtilities.isPartiallyContainedEdge(edge,
+                                getRoot(),
+                                FSMGraphModel.this)) {
+                            _linkSet.add(edge);
+                        } else {
+                            _linkSet.remove(edge);
+                        }
+                    }
+                });
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -664,7 +664,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         private String _deleteRelation(NamedObj container, Relation relation) {
             return "<deleteRelation name=\""
                 + relation.getName(container)
-                    + "\"/>\n";
+                + "\"/>\n";
         }
 
         /** Append moml to the given buffer that connects a link with the
@@ -821,9 +821,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     if (ptolemyModel != container) {
                         String contextString = "<entity name=\""
                             + ptolemyModel.getName(container)
-                                + "\">\n";
-                            moml.append(contextString);
-                            failmoml.append(contextString);
+                            + "\">\n";
+                        moml.append(contextString);
+                        failmoml.append(contextString);
                     }
                     boolean createdNewRelation = false;
                     String relationName = null;
@@ -897,9 +897,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             ComponentPort headPort = (ComponentPort)headState.incomingPort;
             return "<unlink port=\""
                 + headPort.getName(container)
-                    + "\" relation=\""
-                    + relation.getName(container)
-                        + "\"/>\n";
+                + "\" relation=\""
+                + relation.getName(container)
+                + "\"/>\n";
         }
 
         /** Return moml to unlink a relation with the given tail in the
@@ -912,9 +912,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             ComponentPort tailPort = (ComponentPort)tailState.outgoingPort;
             return "<unlink port=\""
                 + tailPort.getName(container)
-                    + "\" relation=\""
-                    + relation.getName(container)
-                        + "\"/>\n";
+                + "\" relation=\""
+                + relation.getName(container)
+                + "\"/>\n";
         }
     }
 
@@ -931,7 +931,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
             String moml = "<deletePort name=\""
-                    + deleteObj.getName(container) + "\"/>\n";
+                + deleteObj.getName(container) + "\"/>\n";
             return moml;
         }
 
@@ -994,13 +994,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             String moml = "<" + elementName + " name=\""
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
-                // Make the request in the context of the container.
-                NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-                MoMLChangeRequest request =
-                    new MoMLChangeRequest(
-                            FSMGraphModel.this, container, moml);
-                request.setUndoable(true);
-                request.addChangeListener(new ChangeListener() {
+            // Make the request in the context of the container.
+            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(
+                        FSMGraphModel.this, container, moml);
+            request.setUndoable(true);
+            request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
                             Exception exception) {
                         // If we fail, then issue structureChanged.
@@ -1017,8 +1017,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 getRoot()));
                     }
                 });
-                request.setUndoable(true);
-                container.requestChange(request);
+            request.setUndoable(true);
+            container.requestChange(request);
         }
     }
 
@@ -1139,12 +1139,12 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             String moml = "<" + elementName + " name=\""
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
-                // Make the request in the context of the container.
-                NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-                MoMLChangeRequest request =
-                    new MoMLChangeRequest(
-                            FSMGraphModel.this, container, moml);
-                request.addChangeListener(new ChangeListener() {
+            // Make the request in the context of the container.
+            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(
+                        FSMGraphModel.this, container, moml);
+            request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
                             Exception exception) {
                         // If we fail, then issue structureChanged.
@@ -1161,8 +1161,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 getRoot()));
                     }
                 });
-                request.setUndoable(true);
-                container.requestChange(request);
+            request.setUndoable(true);
+            container.requestChange(request);
         }
     }
 }

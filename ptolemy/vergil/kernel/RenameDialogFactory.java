@@ -68,24 +68,24 @@ public class RenameDialogFactory implements MenuItemFactory {
         // ensure that we actually have a target.
         if (target == null) return null;
         Action action = new AbstractAction(name) {
-            public void actionPerformed(ActionEvent e) {
-                // Create a dialog for configuring the object.
-                // First, identify the top parent frame.
-                // Normally, this is a Frame, but just in case, we check.
-                // If it isn't a Frame, then the edit parameters dialog
-                // will not have the appropriate parent, and will disappear
-                // when put in the background.
-                Component parent = menu.getInvoker();
-                while (parent.getParent() != null) {
-                    parent = parent.getParent();
+                public void actionPerformed(ActionEvent e) {
+                    // Create a dialog for configuring the object.
+                    // First, identify the top parent frame.
+                    // Normally, this is a Frame, but just in case, we check.
+                    // If it isn't a Frame, then the edit parameters dialog
+                    // will not have the appropriate parent, and will disappear
+                    // when put in the background.
+                    Component parent = menu.getInvoker();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
+                    }
+                    if (parent instanceof Frame) {
+                        new RenameDialog((Frame)parent, target);
+                    } else {
+                        new RenameDialog(null, target);
+                    }
                 }
-                if (parent instanceof Frame) {
-                    new RenameDialog((Frame)parent, target);
-                } else {
-                    new RenameDialog(null, target);
-                }
-            }
-        };
+            };
         return menu.add(action, name);
     }
 }
