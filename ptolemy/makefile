@@ -63,12 +63,15 @@ PTAUXALLJARS = \
 		data/data.jar \
 		gui/gui.jar \
 		graph/graph.jar \
-		hsif/hsif.jar \
 		kernel/kernel.jar \
 		math/math.jar \
 		media/media.jar \
 		moml/moml.jar \
 		plot/plotmlapplet.jar
+
+# hsif.jar is not included in ptsupport.jar because it only works
+# with the -hyvisual configuration.
+#		hsif/hsif.jar 
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar

@@ -115,6 +115,7 @@ HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	ptolemy/hsif/hsif.jar \
 	ptolemy/hsif/demo/demo.jar
 
+
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
 
@@ -179,6 +180,7 @@ COPERNICUS_JARS = \
 	lib/jasminclasses.jar \
 	lib/sootclasses.jar \
 	ptolemy/copernicus/copernicus.jar
+
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
