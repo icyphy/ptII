@@ -185,6 +185,45 @@ import javax.swing.RepaintManager;
  * <li> The limitations of the log axis facility are listed in
  *      the <code>_gridInit()</code> method in the PlotBox class.
  * </ul>
+ * <p>
+ * NOTE: Because of the way that swing works, it is recommended that
+ * if a large amount of data is going to be plotted (e.g. in a live
+ * plot that runs forever), that the
+ * data be added (or erased) in the event thread.  This will occur
+ * automatically if data is added via a GUI.  It can be done from an
+ * arbitrary thread as follows:
+ *
+ *    Runnable doPlotPoint = new Runnable() {
+ *        public void run() {
+ *            ... add points with calls to addPoint()...
+ *        }
+ *    };
+ *    try {
+ *        SwingUtilities.invokeAndWait(doPlotPoint);
+ *    } catch (Exception ex) {
+ *        // Ignore InterruptedException.
+ *        // Other exceptions should not occur.
+ *    }
+ *
+ * You need to use invokeAndWait(), not invokeLater().
+ * The reason for this is that the plotter defers to the event thread
+ * to render the points on the screen (as all swing components are required
+ * to do), and it is possible call addPoint() many times before Java
+ * will get around to processing the requested events.  These events
+ * can accumulate indefinitely, and you may run out of memory.
+ * This is, in our opinion, a bug in Java, since the thread scheduler
+ * doing a better job would prevent an infinite buildup of pending events.
+ * But we must live with it for now.
+ *
+ * Unfortunately, this creates a risk of deadlock.  If your code holds
+ * any resource (any synchronization lock or a Ptolemy workspace),
+ * then that resource will continue to be held until after the event thread
+ * completes the request.  However, the event thread might be stalled
+ * attempting to process some other request that requires the resource
+ * that you hold.  In this case, it will not be able to continue.
+ * The workaround is that when you call invokeAndWait(), you must
+ * not hold any resource that might be needed by any code that runs
+ * in the event thread.
  *
  * @author Edward A. Lee, Christopher Hylands
  * @version $Id$
@@ -223,44 +262,7 @@ public class Plot extends PlotBox {
      */
     public synchronized void addPoint(int dataset, double x, double y,
             boolean connected) {
-
-        // NOTE: jdk 1.3beta has a bug exhibited here, fixed later.
-        // The value of the second argument is corrupted the second
-        // time that samplePlot() calls this.  The print statement
-        // in samplePlot() shows that the value is correct before the call.
-        // System.out.println("x value in addPoint: " + x);
-
-        // In swing, updates to showing graphics must be done in the
-        // event thread.  If we are in the event thread, then proceed.
-        // Otherwise, queue a request.
-        if(EventQueue.isDispatchThread()) {
-            // This point is not an error bar so we set yLowEB
-            // and yHighEB to 0
-            _addPoint(dataset, x, y, 0, 0, connected, false);
-        } else {
-            final int pendingDataset = dataset;
-            final double pendingX = x;
-            final double pendingY = y;
-            final boolean pendingConnected = connected;
-            
-            Runnable doAddPoint = new Runnable() {
-                public void run() {
-                    _addPoint(pendingDataset, pendingX, pendingY,
-                            0, 0, pendingConnected, false);
-                }
-            };
-            try {
-                // NOTE: Using invokeAndWait() here rather than
-                // invokeLater() causes a deadlock...
-                // If the fill button has been
-                // pushed, then the event thread is stalled, and won't
-                // deal with this request.  Thus, this call never returns.
-                SwingUtilities.invokeLater(doAddPoint);
-            } catch (Exception ex) {
-                // Ignore InterruptedException.
-                // Other exceptions should not occur.
-            }
-        }
+        _addPoint(dataset, x, y, 0, 0, connected, false);
     }
 
     /** In the specified data set, add the specified x, y point to the
@@ -286,7 +288,6 @@ public class Plot extends PlotBox {
     public synchronized void addPointWithErrorBars(int dataset,
             double x, double y, double yLowEB, double yHighEB,
             boolean connected) {
-// FIXME: Need to do swing song and dance as above.
         _addPoint(dataset, x, y,
                 yLowEB, yHighEB, connected, true);
     }
@@ -1727,13 +1728,36 @@ public class Plot extends PlotBox {
                 //     4204551.html
                 //     4295712.htm
                 // </pre>
-                setDoubleBuffered(false);
-                Component parent = getParent();
-                while (parent != null) {
-                    if (parent instanceof JComponent) {
-                        ((JComponent)parent).setDoubleBuffered(false);
+                Runnable disableDblBuffering = new Runnable() {
+                    public void run() {
+                        setDoubleBuffered(false);
+                        Component parent = getParent();
+                        while (parent != null) {
+                            if (parent instanceof JComponent) {
+                                ((JComponent)parent).setDoubleBuffered(false);
+                            }
+                            parent = parent.getParent();
+                        }
                     }
-                    parent = parent.getParent();
+                };
+                // In swing, updates to showing graphics must be done in the
+                // event thread.  If we are in the event thread, then proceed.
+                // Otherwise, queue a request.
+                if(EventQueue.isDispatchThread()) {
+                    disableDblBuffering.run();
+                } else {
+                    try {
+                        // NOTE: Using invokeAndWait() here rather than
+                        // invokeLater() causes a deadlock...
+                        // If the fill button has been
+                        // pushed, then the event thread is stalled, and won't
+                        // deal with this request.
+                        // Thus, this call never returns.
+                        SwingUtilities.invokeLater(disableDblBuffering);
+                    } catch (Exception ex) {
+                        // Ignore InterruptedException.
+                        // Other exceptions should not occur.
+                    }
                 }
             }
 
