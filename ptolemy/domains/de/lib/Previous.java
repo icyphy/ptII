@@ -129,6 +129,9 @@ public class Previous extends Transformer {
                         output.getTypeTerm());
                 typeConstraints.add(ineq);
             }
+            Inequality ineq2 = new Inequality(input.getTypeTerm(),
+                    output.getTypeTerm());
+            typeConstraints.add(ineq2);
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should
             // already have been caught in getAttribute() method
