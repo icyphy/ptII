@@ -236,8 +236,10 @@ public class Scheduler extends NamedObj implements MutationListener{
                     "is a dangling scheduler.");
             }
             if(!valid()) {
-                Enumeration newsche = _schedule();
                 _cachedschedule = new LinkedList();
+                //System.out.println("new list");
+                Enumeration newsche = _schedule();
+                //System.out.println("new schedule");
                 while (newsche.hasMoreElements()) {
                     _cachedschedule.insertLast(newsche.nextElement());
                 }
