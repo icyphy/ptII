@@ -76,10 +76,6 @@ proc testJNI {modelbase} {
 ####
 #
 
-test meaningOfLife-1.4 {Run a model that uses both testDeux and testTrois} {
-    testJNI testQuatre
-} {}
-exit
 # Remove the jni directory that might contain code from a previous
 # run.
 file delete -force jni
@@ -105,5 +101,11 @@ test meaningOfLife-1.3 {A native function that takes arrays of longs} {
     puts "[exec make shared SHAREDBASE=testTrois]"
     testJNI testTrois
 } {}
+
+test meaningOfLife-1.4 {Run a model that uses both testDeux and testTrois} {
+    testJNI testQuatre
+} {}
+
+
 
 

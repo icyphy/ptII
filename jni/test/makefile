@@ -84,9 +84,18 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 AUXCLASSPATH = $(CLASSPATHSEPARATOR).
+
+
+#JTCLSHFLAGS="-Djava.library.path=`pwd`:`pwd`jni/jnimeaningOfLifeImeaningOfLife:`pwd`jni/jnitestDeuxItestDeux:`pwd`jni/jnitestDeuxItestDeux2:`pwd`jni/jnitestTroisIfnTest:`pwd`jni/jnitestTroisIfnTest10:`pwd`jni/jnitestTroisIfnTest2:`pwd`jni/jnitestTroisIfnTest3:`pwd`jni/jnitestTroisIfnTest4:`pwd`jni/jnitestTroisIfnTest5:`pwd`jni/jnitestTroisIfnTest6:`pwd`jni/jnitestTroisIfnTest7:`pwd`jni/jnitestTroisIfnTest8:`pwd`jni/jnitestTroisIfnTest9:$(PATH)" 
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	PATH="`pwd`:`pwd`/jni/jnimeaningOfLife:`pwd`/jni/jnitestDeux:`pwd`/jni/jnitestTrois:$(PATH)" $(JTCLSH) alljtests.tcl
+	PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:$(PATH)"; export PATH; \
+	$(JTCLSH) alljtests.tcl
+
+#PATH=/cygdrive/c/cxh/ptII/jni/test/jni/jnimeaningOfLifeImeaningOfLife:c:/cxh/ptII/jni/test/jni/jnimeaningOfLifeImeaningOfLife:${PATH}
+# export PATH
+#CLASSPATH="../..;c:\cxh\ptII/lib/diva.jar;.;c:\cxh\ptII/lib/ptjacl.jar" "/cygdrive/c/j2sdk1.4.1_01/bin/java"  "-Dptolemy.ptII.dir=c:\cxh\ptII"  tcl.lang.Shell alljtests.tcl
 
 shared:
 	gcc -shared -o $(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX) \

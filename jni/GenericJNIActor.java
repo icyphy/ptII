@@ -413,12 +413,21 @@ public class GenericJNIActor extends TypedAtomicActor {
 					     + "nativeLibrary Parameter");
         }
 
-        String internativeLibraryValue =
-            "jni" + nativeLibraryValue
-	    .substring(1, nativeLibraryValue.length() - 1);
+//         String interNativeLibraryValue =
+//             "jni" + nativeLibraryValue
+// 	    .substring(1, nativeLibraryValue.length() - 1);
+
+//        String interNativeLibrary = JNIUtilities._getInterNativeLibrary(this);
         //searching the class generated
-	String className = "jni." + internativeLibraryValue + ".Jni"
+
+//	String className = "jni." + interNativeLibrary + ".Jni"
+//	    + this.getName();
+
+        String nativeLibrary = JNIUtilities._getNativeLibrary(this);
+	String className = "jni." + nativeLibrary + ".Jni"
 	    + this.getName();
+
+
 
 	URL[] tab = new URL[1];
 	try {

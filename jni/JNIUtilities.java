@@ -279,10 +279,10 @@ public class JNIUtilities {
 
         //actor.notifyAll();
 
-        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
+        String interNativeLibrary = _getInterNativeLibrary(actor);
 	String destinationDirectory =
 	    System.getProperty("user.dir") + "/jni/"
-	    + interNativeLibrary;
+	    + nativeLibrary;
 
 
         //Cr‰ation du fichier Java
@@ -306,20 +306,18 @@ public class JNIUtilities {
         // Create the .class file.
         execCommands.add("javac -classpath \"" 
                 + StringUtilities.getProperty("ptolemy.ptII.dir")
-                + "\" jni/jni" 
-                + nativeLibrary
+                + "\" jni/" + nativeLibrary
                 + "/Jni"
                 + actor.getName()
                 + ".java");
         // Create the .h file.
-        execCommands.add("javah -d jni/" + interNativeLibrary
-                + " jni.jni"
-                + nativeLibrary
+        execCommands.add("javah -d jni/" + nativeLibrary
+                + " jni." + nativeLibrary
                 + ".Jni"
                 + actor.getName());
 
         // Create the shared library.
-        execCommands.add("make -C jni/" + interNativeLibrary + " -f " 
+        execCommands.add("make -C jni/" + nativeLibrary + " -f " 
                 + "Jni" + interNativeLibrary + ".mk");
 
 
@@ -357,8 +355,8 @@ public class JNIUtilities {
         String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
-        String interFuncName = "jni" + nativeFunction;
+        String interNativeLibrary = _getInterNativeLibrary(actor);
+        String interNativeFunction = _getInterNativeFunction(actor);
 
         String returnJType = "";
         String returnName = "";
@@ -381,7 +379,7 @@ public class JNIUtilities {
 	}
 
         results.append("package jni."
-		       + interNativeLibrary
+		       + nativeLibrary
 		       + ";\n"
 		       + "\n\n\n"
 		       + "/* The class that interface the native function call\n"
@@ -406,7 +404,7 @@ public class JNIUtilities {
 		       + _indent1 + "public native "
 		       + returnJType
 		       + " "
-		       + interFuncName
+		       + interNativeFunction
 		       + "("
             + _getArgumentsInWithJType(actor, ",")
             + _virgule(
@@ -467,7 +465,7 @@ public class JNIUtilities {
         Argument argRet = (Argument) actor.getArgumentReturn();
         if (!(argRet.getJType().equals("void"))) {
                 results.append( _indent2 + "_" + argRet.getName() + " = "
-                    + interFuncName
+                    + interNativeFunction
                     + "("
                     + _getArgumentsIn(actor, ",")
                     + _virgule( _getArgumentsIn(actor, ","),
@@ -482,7 +480,7 @@ public class JNIUtilities {
                 results.append(_indent2 + "return"
                     + " _" + argRet.getName() + ";\n" + _indent1 + "}\n");
 	} else {
-                results.append( interFuncName
+                results.append( interNativeFunction
                     + "("
                     + _getArgumentsIn(actor, ",")
                     + _virgule( _getArgumentsIn(actor, ","),
@@ -561,8 +559,8 @@ public class JNIUtilities {
 	String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
-        String interFuncName = "jni" + nativeFunction;
+        String interNativeLibrary = _getInterNativeLibrary(actor);
+        String interNativeFunction = _getInterNativeFunction(actor);
 
         String returnType = "";
         String returnName = "";
@@ -601,7 +599,7 @@ public class JNIUtilities {
             + ".h\"\n"
             // le fichier entete g‰n‰r‰ par javah
             +"#include \"jni_"
-            + interNativeLibrary
+            + nativeLibrary
             + "_Jni"
             + actor.getName()
             + ".h\"\n"
@@ -609,7 +607,7 @@ public class JNIUtilities {
             + "*********************"
             + actor.getName()
             + "_"
-            + interFuncName
+            + interNativeFunction
             + "******************\n"
             + "*****************************************************/\n\n"
             + "//Declaration de la fonction existante\n"
@@ -629,11 +627,11 @@ public class JNIUtilities {
             + "JNIEXPORT "
             + actor.getArgumentReturn().getJNIType()
             + " JNICALL Java_jni_"
-            + interNativeLibrary
+            + nativeLibrary
             + "_Jni"
             + actor.getName()
             + "_"
-            + interFuncName
+            + interNativeFunction
             + "(\nJNIEnv *env, jobject jobj "
             + _virgule(_getArgumentsInWithJNIType(actor, ",")) 
 	    + _getArgumentsInWithJNIType(actor, ",")
@@ -828,7 +826,7 @@ public class JNIUtilities {
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
+        String interNativeLibrary = _getInterNativeLibrary(actor);
         results.append(
             "# Microsoft Developer Studio Project File - Name=\""
             + interNativeLibrary
@@ -1031,7 +1029,7 @@ public class JNIUtilities {
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
+        String interNativeLibrary = _getInterNativeLibrary( actor);
 	String libraryPath = libraryDirectory;
 	if (libraryPath.equals("\"\"")) {
 	    libraryPath = ".";
@@ -1418,9 +1416,16 @@ public class JNIUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         private method                    ////
 
-    private static String _getInterNativeLibrary(String nativeLibrary,
-						GenericJNIActor actor) {
-	return "jni" + nativeLibrary;
+    public static String _getInterNativeFunction(GenericJNIActor actor) 
+	throws IllegalActionException {
+	//return "jni" + _getNativeFunction(actor);
+	return "jni" + actor.getName();
+    }
+
+    public static String _getInterNativeLibrary(GenericJNIActor actor)
+	throws IllegalActionException {
+	//return "jni" + _getNativeLibrary(actor);
+	return "jni" + actor.getName();
     }
 
     // Return the value of the libraryDirectory argument with the double
@@ -1448,7 +1453,7 @@ public class JNIUtilities {
 
     // Return the value of the nativeLibrary argument with the double
     // quotes stripped off.
-    private static String _getNativeLibrary(GenericJNIActor actor)
+    public static String _getNativeLibrary(GenericJNIActor actor)
 	throws IllegalActionException {
 	String nativeLibrary =
 	    (((StringToken) ((Parameter) actor
