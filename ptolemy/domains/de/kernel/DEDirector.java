@@ -240,6 +240,29 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** The factor when adjusting the bin number.
+     *  This parameter must contain an IntToken.
+     *  Changes to this parameter are ignored when the model is running.
+     *  The value defaults to 2.
+     */
+    public Parameter binCountFactor;
+
+    /** Specify whether the calendar queue adjusts its bin number
+     *  at run time. This parameter must contain a BooleanToken.
+     *  If this parameter is true, the calendar queue will adapt
+     *  its bin number with respect to the distribution of events.
+     *  Changes to this parameter are ignored when the model is running.
+     *  The value defaults to true.
+     */
+    public Parameter isCQAdaptive;
+
+    /** The minimum (initial) number of bins in the calendar queue.
+     *  This parameter must contain an IntToken.
+     *  Changes to this parameter are ignored when the model is running.
+     *  The value defaults to 2.
+     */
+    public Parameter minBinCount;
+
     /** The start time of model. This parameter must contain a
      *  DoubleToken.  The value defaults to 0.0.
      */
@@ -265,29 +288,6 @@ public class DEDirector extends Director {
      *  The value defaults to false.
      */
     public Parameter synchronizeToRealTime;
-
-    /** Specify whether the calendar queue adjusts its bin number
-     *  at run time. This parameter must contain a BooleanToken.
-     *  If this parameter is true, the calendar queue will adapt
-     *  its bin number with respect to the distribution of events.
-     *  Changes to this parameter are ignored when the model is running.
-     *  The value defaults to true.
-     */
-    public Parameter isCQAdaptive;
-
-    /** The minimum (initial) number of bins in the calendar queue.
-     *  This parameter must contain an IntToken.
-     *  Changes to this parameter are ignored when the model is running.
-     *  The value defaults to 2.
-     */
-    public Parameter minBinCount;
-
-    /** The factor when adjusting the bin number.
-     *  This parameter must contain an IntToken.
-     *  Changes to this parameter are ignored when the model is running.
-     *  The value defaults to 2.
-     */
-    public Parameter binCountFactor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -1437,26 +1437,33 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The queue used for sorting events. */
-    protected DEEventQueue _eventQueue;
-
-    /** Set to true when it is time to end the execution. */
-    protected boolean _noMoreActorsToFire = false;
+    // A Hashtable stores the mapping of each actor to its depth.
+    protected Hashtable _actorToDepth = null;
 
     // The set of actors that have returned false in their postfire() methods.
     // Events destined for these actors are discarded and the actors are
     // never fired.
     protected Set _disabledActors;
 
-    // The current microstep.
-    protected int _microstep = 0;
+    /** The queue used for sorting events. */
+    protected DEEventQueue _eventQueue;
 
     // Set to true when the time stamp of the token to be dequeue has
     // exceeded the stopTime.
     protected boolean _exceedStopTime = false;
 
+    // The current microstep.
+    protected int _microstep = 0;
+
+    /** Set to true when it is time to end the execution. */
+    protected boolean _noMoreActorsToFire = false;
+
     // The real time at which the model begins executing.
     protected long _realStartTime = 0;
+
+    // Indicator of whether the topological sort giving ports their
+    // priorities is valid.
+    protected long _sortValid = -1;
 
     // Decide whether the simulation should be stopped when there's no more
     // events in the global event queue.
@@ -1469,13 +1476,6 @@ public class DEDirector extends Director {
     // Specify whether the director should wait for elapsed real time to
     // catch up with model time.
     protected boolean _synchronizeToRealTime;
-
-    // Indicator of whether the topological sort giving ports their
-    // priorities is valid.
-    protected long _sortValid = -1;
-
-    // A Hashtable stores the mapping of each actor to its depth.
-    protected Hashtable _actorToDepth = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
