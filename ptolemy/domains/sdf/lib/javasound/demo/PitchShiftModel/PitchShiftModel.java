@@ -69,12 +69,12 @@ import ptolemy.plot.*;
 //// PitchShiftModel
 /**
 A simple model demonstrating the use of the AudioSource and 
-AudioSink actors. This demo performs pitch shifting on a
-soundfile in the current directory.
+AudioSink actors, using the SDF domain. This demo performs pitch 
+shifting on a soundfile in the current directory.
 Note that AudioSource will not work unless the Java 1.3 SDK
 is used.
 // FIXME: currently requies that a soundfile with name 
-// "1-welcome.wav", mono, 11 kHz sample rate, be in
+// "welcome_pt.wav", mono, 11 kHz sample rate, be in
 // current directory.
 @author Brian K. Vogel
 @version $Id$
@@ -102,63 +102,45 @@ public class PitchShiftModel extends TypedCompositeActor {
     public void create() {
 
 	try {
-
-	    System.out.println("Create invoked");
-
-	    //this.setName("topLevel");
-	    //this.setManager(_manager);
 	     // Initialization
             SDFDirector _sdfDirector = new SDFDirector(this, "SDFDirector");
 
 
 	    // Begin debug.
-	    //StreamListener sa2 = new StreamListener();
-	    //_sdfDirector.addDebugListener(sa2);
+	    StreamListener sa2 = new StreamListener();
+	    _sdfDirector.addDebugListener(sa2);
 	    // End debug.
-
-            //Parameter iterparam = _sdfDirector.iterations;
-
-	    // Why is this 0????
-            //iterparam.setToken(new IntToken(0));
-	    
-
 
             SDFScheduler scheduler = new SDFScheduler(_workspace);
 
             _sdfDirector.setScheduler(scheduler);
             _sdfDirector.setScheduleValid(false);
 
-	    //_sdfDirector.iterations.setToken(new IntToken(0));
-
 	    // gui stuff goes here.
 
 	    //Create the top-level container and add contents to it.
-	    //  JFrame frame = new JFrame("Real-time Pitch Shifter");
+	    JFrame frame = new JFrame("Real-time Pitch Shifter");
 	    
-	    //JPanel controlpanel = new JPanel();
+	     JPanel controlpanel = new JPanel();
 
-	    //controlpanel.setLayout(new BorderLayout());
+	     controlpanel.setLayout(new BorderLayout());
 
+	    PtolemyQuery _ptQuery = new PtolemyQuery();
 	    
-	     // PtolemyQuery _ptQuery = new PtolemyQuery();
-	    
-	     //controlpanel.add("West", _ptQuery);
-           
-	     //_ptQuery.addSlider("pitchSlider", "Pitch Scale Factor",
-	     //	     1000, 400, 3000);
+	    controlpanel.add("West", _ptQuery);
 
-            //_ptQuery.addQueryListener(new ParameterListener());
-            //_query.setBackground(_getBackground());
+	    _ptQuery.addSlider("pitchSlider", "Pitch Scale Factor",
+			     1000, 400, 3000);
 
-	    //frame.getContentPane().add(controlpanel, BorderLayout.CENTER);
+	    frame.getContentPane().add(controlpanel, BorderLayout.CENTER);
 	    //Finish setting up the frame, and show it.
-	    // frame.addWindowListener(new WindowAdapter() {
-	    //    public void windowClosing(WindowEvent e) {
-	    //	System.exit(0);
-	    //    }
-	    //});
-	    // frame.pack();
-	    //frame.setVisible(true);
+	    frame.addWindowListener(new WindowAdapter() {
+		    public void windowClosing(WindowEvent e) {
+			System.exit(0);
+		    }
+		});
+	    frame.pack();
+	    frame.setVisible(true);
 
 	   
 
@@ -174,20 +156,44 @@ public class PitchShiftModel extends TypedCompositeActor {
 
 	    AudioSource soundSource = new AudioSource(this, "soundSource");
 	    // Specify where to get the sound file.
-	    //soundSource.pathName.setToken(new StringToken("NylonGtrSusB2.aiff"));
-	    soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
-	    // soundSource.pathName.setToken(new StringToken("suzanne.aiff"));
-	    //soundSource.pathName.setToken(new StringToken("chamel.aiff"));
-	    //soundSource.pathName.setToken(new StringToken("3violin1.aiff"));
+	    soundSource.pathName.setToken(new StringToken("welcome_pt.wav"));
 	    
             // Read audio data from a local file instread of a URL.
             soundSource.isURL.setToken(new BooleanToken(false));
 	
-	   
-	    
-	    
+	    // The slider value updats the value parameter of this
+	    // actor to control the pitch scale factor.
+	    Const pitchScaleSource =
+		new Const(this, "pitchScaleSource");
+	    	    pitchScaleSource.value.setTypeEquals(DoubleToken.class);
+	    // Set constant pitch scale factor.
+	    pitchScaleSource.value.setToken(new DoubleToken(1.0));
+		 
 
-	   
+	    // Set this actor to have a gain of 1/1000. This is needed
+	    // since the default vaule of the Slider is 1000 and I
+	    // want the default Slider value to correspond to a pitch
+	    // scale factor of 1 (unity pitch scaling). The large
+	    // default value of the Slider is needed since the slider
+	    // only supports the integer type (IntToken).
+	    Scale controlGain =
+		new Scale(this, "controlGain");
+	    	    controlGain.factor.setTypeEquals(DoubleToken.class);
+	    // Set constant pitch scale factor.
+	    //pitchScaleSource.value.setToken(new DoubleToken(1.0));
+	    controlGain.factor.setExpression("0.001");
+
+	    SDFPitchDetector pitchDetect = 
+		new SDFPitchDetector(this, "pitchDetect");
+	    // Set the sampling rate to use.
+	    pitchDetect.sampleRate.setToken(new DoubleToken(sampleRate));
+	    pitchDetect.consumptionProductionRate.setToken(new IntToken(cPRate));
+
+	    SDFPitchShift pitchShift =
+		new SDFPitchShift(this, "pitchShift");
+	    // Set the sampling rate to use.
+	    pitchShift.sampleRate.setToken(new DoubleToken(sampleRate));
+	    pitchShift.consumptionProductionRate.setToken(new IntToken(cPRate));
 
             AudioSink soundSink = new AudioSink(this, "soundSink");
 	  soundSink.fileName.setToken(new StringToken("outputFile.au"));  // FIXME: Does nothing.
@@ -196,10 +202,23 @@ public class PitchShiftModel extends TypedCompositeActor {
 	  soundSink.sampRate.setToken(new IntToken(sampleRate));
 	  
 
-            this.connect(soundSource.output, soundSink.input);
-	    
+	  
+	    this.connect(pitchDetect.output, pitchShift.pitchIn);
+	    this.connect(pitchScaleSource.output, controlGain.input);
+	    this.connect(controlGain.output, pitchShift.scaleFactor);
+
+	   
+	    this.connect(pitchShift.output, soundSink.input);
 	    
 
+	     //Conect tempAct's components
+	    TypedIORelation rel1 =
+		(TypedIORelation)this.newRelation("relation1");
+	     soundSource.output.link(rel1);
+            pitchDetect.input.link(rel1);
+            pitchShift.input.link(rel1);
+
+	    _ptQuery.attachParameter(pitchScaleSource.value, "pitchSlider");
 	    //_ptQuery.attachParameter(soundSink.fileName, "pitchSlider");
 
 

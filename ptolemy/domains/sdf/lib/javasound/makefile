@@ -68,6 +68,8 @@ all: jclass
 
 install: all
 
+demo:
+	CLASSPATH="$(CLASSPATH)" java ptolemy.actor.gui.PtolemyApplication -class ptolemy.domains.sdf.lib.javasound.demo.PitchShiftModel
 
 depend:
 	@echo "no dependencies in this directory"

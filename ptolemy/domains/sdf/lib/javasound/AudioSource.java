@@ -173,6 +173,7 @@ public class AudioSource extends SDFAtomicActor {
             
 	    int numBytesRead;
 	   
+
 		// Read some audio into data[].
             numBytesRead =
 		     properFormatAudioInputStream.read(data);
@@ -189,7 +190,6 @@ public class AudioSource extends SDFAtomicActor {
 		    }
 		    
 		    output.sendArray(0, audioTokenArray);
-	    	    output.sendArray(1, audioTokenArray);
 		    return false;
 		} else if (numBytesRead != data.length) {
                     // Read fewer samples than productionRate many samples.
@@ -206,7 +206,6 @@ public class AudioSource extends SDFAtomicActor {
 		    }
 		    
 		    output.sendArray(0, audioTokenArray);
-	    	    output.sendArray(1, audioTokenArray);
 		    return false;
                 }
 
@@ -226,7 +225,6 @@ public class AudioSource extends SDFAtomicActor {
 
 	    
             output.sendArray(0, audioTokenArray);
-	    	    output.sendArray(1, audioTokenArray);
 
 
 
