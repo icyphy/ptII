@@ -1,4 +1,4 @@
-/* Simulating the Lorenz system, a nonlinear CT system.
+/* Simulation of a Lorenz attractor, a nonlinear CT system.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -53,14 +53,19 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// Lorenz
 /**
-A demonstration of the Lorenz system. The system is given by a set of
-ODEs like:
-dx1/dt = sigma*(x2-x1)
-dx2/dt = (lambda-x3)*x1 -x2
-dx3/dt = x1*x2-b*x3
+This is a model of a nonlinear feedback system that exhibits chaotic
+behavior.  It is the well-known Lorenz attractor, and is given
+by a set of ordinary differential equations,
+<pre>
+  dx1/dt = sigma*(x2-x1)
+  dx2/dt = (lambda-x3)*x1 -x2
+  dx3/dt = x1*x2-b*x3
+</pre>
+The plot created by the model shows the value of x2 vs. x1.
+<p>
+This class constructs a top-level Ptolemy model containing
+a CT director, which includes a sophisticated ODE numerical solver.
 
-This demo plots the projection of the state trajectory to the (x1, x2)
-plane.
 @author Jie Liu
 @version $Id$
 */
@@ -69,7 +74,7 @@ public class Lorenz extends TypedCompositeActor {
     public Lorenz(Workspace workspace)
 	    throws IllegalActionException, NameDuplicationException {
     
-        // Creating the model.
+        // Create the model.
         super(workspace);
 	setName("LorenzSystem");
         Manager manager = new Manager(workspace, "Manager");
@@ -81,8 +86,9 @@ public class Lorenz extends TypedCompositeActor {
 	setDirector(director);
         director.stopTime.setToken(new DoubleToken(50.0));
         
-        //director.addDebugListener(new StreamListener());
-        //manager.addDebugListener(new StreamListener());
+        // To get debug outputs, uncomment these:
+        // director.addDebugListener(new StreamListener());
+        // manager.addDebugListener(new StreamListener());
 
         // Parameters
         stopTime = new Parameter(this, "stopTime", new DoubleToken(50.0));
@@ -90,12 +96,7 @@ public class Lorenz extends TypedCompositeActor {
         sigma = new Parameter(this, "sigma", new DoubleToken(10.0));
         b = new Parameter(this, "b", new DoubleToken(2.0));
 
-        // ---------------------------------
-        // Create the system.
-        // ---------------------------------
-        
-        // CTActors
-
+        // Create the actors.
         Const LAMBDA = new Const(this, "LAMBDA");
         LAMBDA.value.setExpression("lambda");
         Scale SIGMA = new Scale(this, "SIGMA");
@@ -121,7 +122,6 @@ public class Lorenz extends TypedCompositeActor {
         
         XYPlotter myplot = new XYPlotter(this, "CTXYPlot");
         myplot.plot = new Plot();
-        //myplot.plot.setBackground(getBackground());
         myplot.plot.setGrid(true);
         myplot.plot.setXRange(-25.0, 25.0);
         myplot.plot.setYRange(-25.0, 25.0);
@@ -165,7 +165,6 @@ public class Lorenz extends TypedCompositeActor {
         myplot.inputX.link(x1);
         myplot.inputY.link(x2);
         
-        //System.out.println("Parameters");
         // CT Director parameters
         director.initStepSize.setToken(new DoubleToken(0.01));
         director.minStepSize.setToken(new DoubleToken(1e-6));
@@ -178,7 +177,6 @@ public class Lorenz extends TypedCompositeActor {
         MINUS1.factor.setToken(new DoubleToken(-1.0));
         MINUS2.factor.setToken(new DoubleToken(-1.0));
         MINUS3.factor.setToken(new DoubleToken(-1.0));
-        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -204,7 +202,7 @@ public class Lorenz extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the parameter changed is the stopTime then update the 
+    /** If the parameter changed is the stopTime, then update the 
      *  stopTime parameter of the director.
      */
     public void attributeChanged(Attribute attribute) 

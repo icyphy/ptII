@@ -98,6 +98,10 @@ right click on the actor and select
            </configure>
         </property>
     </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 426]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
     <entity name="Integrator 1" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -212,7 +216,7 @@ right click on the actor and select
 <yRange min="-20.0" max="25.0"/>
 <noGrid/>
 </plot>?>
-                        </configure>    </entity>
+                                </configure>    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="26.0, 145.0">
         </vertex>

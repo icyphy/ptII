@@ -59,10 +59,20 @@ order.</text>
            </configure>
         </property>
     </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="regularBusArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="poissonBusArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="passengerArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
     <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.Poisson">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="[2]">
         </property>
@@ -79,7 +89,7 @@ order.</text>
     <entity name="Passenger Arrivals" class="ptolemy.actor.lib.Poisson">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="passengerArrivalRate">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="[1]">
         </property>
@@ -127,7 +137,7 @@ order.</text>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="4.09160932686089"/>
+<yRange min="0.0" max="5.081139067519409"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -155,8 +165,8 @@ order.</text>
 <title>Waiting Time Histogram</title>
 <xLabel>waiting times</xLabel>
 <yLabel>passengers</yLabel>
-<xRange min="0.1" max="4.199999999999999"/>
-<yRange min="0.0" max="25.0"/>
+<xRange min="0.1" max="5.199999999999999"/>
+<yRange min="0.0" max="33.0"/>
 <noGrid/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
@@ -166,14 +176,14 @@ order.</text>
     <entity name="Regular Bus Arrivals" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="regularBusArrivalRate">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0]">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="[3.0]">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="64.99999999999999, 193.0">
+        <property name="_location" class="ptolemy.moml.Location" value="65.99999999999999, 193.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

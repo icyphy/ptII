@@ -2,12 +2,13 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>CT domain demo - Lorenz System</title>
+<title>Lorenz Attractor</title>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>CT domain demo - Lorenz System</H1>
+<H1>Lorenz Attractor</H1>
 <P>
+This is a model of a nonlinear feedback system in continuous-time:
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <center>
@@ -51,30 +52,33 @@ applet is displayed on a XGA screen-->
 </NOEMBED></EMBED>
 </OBJECT>
 </center>
-
-<H2>Introduction</H2>
-The Lorenz System is a famous nonlinear dynamic system that shows the
-unstable periodic orbit.
 <p>
-The system is given by:
+This nonlinear feedback system is the well-known Lorenz attractor,
+which exhbits chaotic behavior in the form of an
+unstable periodic orbit.
+The system is given by the differential equations:
 <pre>
 <CODE>    dx1/dt = sigma*(x2-x1)</CODE>
 <CODE>    dx2/dt = (lambda-x3)*x1 -x2</CODE>
 <CODE>    dx3/dt = x1*x2-b*x3</CODE>
 </pre>
 <p>
-This applet show the chaotic attractor of the system state projected
-on to the (x1, x2) plane. The initial conditions of the states are
-all 1.0. The parameters sigma, lambda and b can be explored.
-
-<H2>Simulation</H2>
-To run the simulation, click <B>Go</B> in the above applet.
-<P>
-
-<H2>References</H2>
-Fishwick, P. A.<I>"Simulation Model Design and Execution: Building Digital Worlds"</I>, Prentice Hall, 1995, pp213-214<BR>
-
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+The applet above simulates these differential equations using
+the CT (continuous-time) domain in Ptolemy II.  The CT domain
+includes a sophisticated numerical solver for differential equations.
+The plot shows x2 vs. x1. The initial conditions of the states are
+all 1.0. The parameters sigma, lambda and b can be modified to change
+the behavior of the model.
+<p>
+Above, the applet has been implemented directly in
+Java (see the <a href="Lorenz.java">source code</a>).
+An <a href="LorenzVergil.htm">alternative definition</a>
+uses the Ptolemy II schematic editor
+called Vergil.
+<p>
+See
+Fishwick, <I>Simulation Model Design and Execution: Building Digital
+Worlds</I>, Prentice Hall, 1995, pp213-214.
+<p>
 </BODY>
 </HTML>

@@ -44,10 +44,8 @@ JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
 	FixFIR.htm \
-	FixFIR.xml \
-	fft_transform.xml \
-	fixfir.gif \
-	plotConfigure.xml
+	FixFIRVergil.htm \
+	FixFIR.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

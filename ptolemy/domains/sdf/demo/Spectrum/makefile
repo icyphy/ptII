@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Ptolemy II demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/Lorenz
+ME =		ptolemy/domains/sdf/demo/Spectrum
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -40,44 +40,37 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	Lorenz
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-JSRCS = \
-	Lorenz.java
+JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
-	Lorenz.htm \
-	LorenzVergil.htm \
-	Lorenz.xml
+	Spectrum.htm \
+	SpectrumVergil.htm \
+	Spectrum.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	$(PTCLASSJAR) \
-	'LorenzApplet$$ParameterListener.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
 demo: demo_applet demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Lorenz.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer FixFIR.htm
 
 demo_vergil:
-	$(PTII)/bin/vergil Lorenz.xml
+	$(PTII)/bin/vergil FixFIR.xml
 
 depend:
 	@echo "no dependencies in this directory"

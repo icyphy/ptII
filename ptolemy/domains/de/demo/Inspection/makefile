@@ -40,11 +40,11 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = \
-	InspectionApplet.java
+JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
 	Inspection.htm \
+	InspectionVergil.htm \
 	Inspection.xml
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -1,0 +1,62 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Spectrum</TITLE>
+<LINK href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<H1>Spectrum of a Modulated Sinusoid</H1>
+<p>
+This model illustrates calculation and display of the spectrum of a
+modulated sinusoid with noise:
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+-->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+  width=750
+  height=300
+  name="Spectrum"
+  codebase="http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0">
+ <PARAM NAME="code" VALUE=ptolemy.actor.gui.MoMLApplet>
+ <PARAM NAME="codebase" VALUE=../../../../..>
+ <PARAM NAME="archive" VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar">
+ <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2.2">
+ <PARAM NAME="background" VALUE="#faf0e6">
+ <PARAM NAME="modelURL" VALUE="SpectrumWebVersion.xml">
+ <PARAM NAME="controls" VALUE="buttons, topParameters">
+ <PARAM NAME="orientation" VALUE="horizontal">
+<EMBED type="application/x-java-applet;version=1.2.2"
+  code="ptolemy.actor.gui.MoMLApplet"
+  codebase=../../../../..
+  name="Spectrum"
+  width=750
+  height=300
+  background="#faf0e6"
+  modelURL="SpectrumWebVersion.xml"
+  controls="buttons, topParameters"
+  orientation="horizontal"
+  archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar"
+  pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
+<NOEMBED>
+<a href="SpectrumWebVersion.xml">MoML specification for this model.</a>
+</NOEMBED>
+</EMBED>
+</OBJECT>
+</center>
+This model shows a simple periodogram spectral estimate of a
+modulated sinusoid in noise. The top-level parameters control
+the carrier frequency, the signal frequency, and the noise
+level. Notice that the two peaks are centered at the carrier
+frequency, with their distance from the carrier given by the
+signal frequency. The sample rate is assumed to be 8kHz.
+<p>
+See the <a href="SpectrumVergil.htm">block diagram definition</a>.
+<p>
+</BODY>
+</HTML>
