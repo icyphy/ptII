@@ -268,7 +268,7 @@ public class Scrambler extends Transformer {
     }
 
     /** Initialize the actor by resetting the shift register state
-     *  equal to the value of <i>initialState</i>
+     *  equal to the value of <i>initialState</i>.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {

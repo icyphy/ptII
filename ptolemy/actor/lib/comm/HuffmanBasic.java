@@ -141,21 +141,26 @@ public class HuffmanBasic extends Transformer {
             huffmanCode = "";
         }
 
-        // The probability of the node.
+        /** The probability of the node.
+         */
         public double probability;
 
-        // The corresponding index in the pmf array of this node.
-        // If the value is -1, then this node is constructed by
-        // combining at least two probabilities.
+        /** The corresponding index in the pmf array of this node.
+         *  If the value is -1, then this node is constructed by
+         *  combining at least two probabilities.
+         */
         public int indexInArray;
 
-        // The left child of the node.
+        /** The left child of the node.
+         */
         public Node leftChild;
 
-        // The right child of the node.
+        /** The right child of the node.
+         */
         public Node rightChild;
 
-        // The huffman code of this node.
+        /** The huffman code of this node.
+         */
         public String huffmanCode;
     }
 
@@ -279,14 +284,17 @@ public class HuffmanBasic extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The huffman code book.
+    /** The huffman code book.
+     */
     protected String[] _codeBook;
 
-    // Flag that indicates if the parameters are invalid. If it is
-    // true, then a new code book needs to be generated.
+    /** Flag that indicates if the parameters are invalid. If it is
+     *  true, then a new code book needs to be generated.
+     */
     protected boolean _parametersInvalid;
 
-    // The probability mass function.
+    /** The probability mass function.
+     */
     protected double[] _pmf;
 
     ///////////////////////////////////////////////////////////////////
