@@ -611,7 +611,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  @param index The zero based index of the page to be drawn.
      *  @param view A rectangle specifying the portion of the graph
      *   to print.
-     *  @returns PAGE_EXISTS if the page is rendered successfully, or
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */

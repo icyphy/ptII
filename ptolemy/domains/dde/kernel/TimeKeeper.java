@@ -194,7 +194,7 @@ public class TimeKeeper {
      *  that the actor controlled by this time keeper is atomic.
      *  <P>
      *  This method is not synchronized so the calling method should be.
-     * @params receiver The receiver that is causing this method to be invoked.
+     *  @param receiver The receiver that is causing this method to be invoked.
      */
     public void sendOutNullTokens(DDEReceiver receiver) {
 	Iterator ports = _actor.outputPortList().iterator();

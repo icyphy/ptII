@@ -274,7 +274,7 @@ public class RecordType extends StructuredType {
 
     /** Return true if the specified type is a substitution instance of this
      *  type.
-     *  @parameter type A Type.
+     *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
      *  @see Type#isSubstitutionInstance
      */
