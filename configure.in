@@ -325,7 +325,8 @@ else
 		"`uname -s`" = "CYGWIN_NT-5.0" ; then
 	JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
 	JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
-	AC_MSG_WARN([Be sure that your CLASSPATH includes JavaCC.zip]);
+	AC_MSG_WARN([
+Be sure that your CLASSPATH includes JavaCC.zip]);
     else
 	if test ! -d "$JAVACC_DIR"; then
 	    AC_MSG_WARN(['${JAVACC_DIR}' is not a directory, 
@@ -364,7 +365,8 @@ else
         AC_MSG_WARN([Failed to find javacc, perhaps JavaCC is not installed?
     You need not download JavaCC unless you plan on modifying certain files 
     in ptolemy/data/expr. 
-    JavaCC used to be available from http://www.sun.com/suntest'])
+    JavaCC used to be available from 
+    http://www.sun.com/forte/ffj/resources/contributedcontent.html'])
 	JJTREE=touch
 	JAVACC=touch
     fi
