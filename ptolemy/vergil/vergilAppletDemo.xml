@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="modulation" class="ptolemy.actor.TypedCompositeActor">
+<entity name="vergilAppletDemo" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -21,7 +21,7 @@
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="372.0, 200.0">
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 200.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -35,9 +35,11 @@ signal frequency. The sample rate is assumed to be 8kHz.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 286.0">
+        <property name="_location" class="ptolemy.moml.Location" value="-5.0, 230.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -48,9 +50,11 @@ signal and the other for the carrier.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 339.0">
+        <property name="_location" class="ptolemy.moml.Location" value="150.0, 330.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -60,9 +64,11 @@ Right click and select "Edit Parameters" to see the expression.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="245.0, 74.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 60.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -77,10 +83,12 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[675, 532]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[59, 27]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[67, 61]">
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -101,6 +109,8 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         </port>
     </entity>
     <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -135,10 +145,12 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="59.0, 418.0">
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 420.0">
         </property>
     </entity>
     <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -179,7 +191,13 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="164.0, 410.0">
+        <property name="_location" class="ptolemy.moml.Location" value="205.0, 420.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -205,7 +223,7 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="459.0, 410.0">
+        <property name="_location" class="ptolemy.moml.Location" value="410.0, 420.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -225,6 +243,8 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         </configure>
     </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
@@ -251,7 +271,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 410.0">
+        <property name="_location" class="ptolemy.moml.Location" value="330.0, 420.0">
         </property>
     </entity>
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -265,7 +285,7 @@ centered at zero frequency.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="328.0, 476.0">
+        <property name="_location" class="ptolemy.moml.Location" value="315.0, 490.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -293,13 +313,12 @@ centered at zero frequency.</text>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="233.0, 416.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="285.0, 420.0">
         </vertex>
     </relation>
     <link port="Noise Source.output" relation="relation2"/>
     <link port="Carrier Source.output" relation="relation3"/>
     <link port="Signal Source.output" relation="relation4"/>
-    <link port="Expression.output" relation="relation7"/>
     <link port="Expression.signal" relation="relation4"/>
     <link port="Expression.carrier" relation="relation3"/>
     <link port="Expression.noise" relation="relation2"/>
