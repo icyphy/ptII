@@ -93,7 +93,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    // Note that fixing this will probably move the accept method
 	    // into some sort of factory object (instead of cloning
 	    // existing styles).
-	    parameterStyles = new ParameterEditorStyle[5];
+	    parameterStyles = new ParameterEditorStyle[6];
 	    parameterStyles[0] = new LineStyle();
 	    parameterStyles[0].setName("Line");
 	    parameterStyles[1] = new CheckBoxStyle();
@@ -102,8 +102,10 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    parameterStyles[2].setName("Choice");
 	    parameterStyles[3] = new EditableChoiceStyle();
 	    parameterStyles[3].setName("EditableChoice");
-	    parameterStyles[4] = new FileChooserStyle();
-	    parameterStyles[4].setName("FileChooser");
+ 	    parameterStyles[4] = new TextStyle();
+	    parameterStyles[4].setName("Text");
+	    parameterStyles[5] = new FileChooserStyle();
+	    parameterStyles[5].setName("FileChooser");
 	} catch (NameDuplicationException ex) {
 	    throw new InternalErrorException(ex.getMessage());
 	}
