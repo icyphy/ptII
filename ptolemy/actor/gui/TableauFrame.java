@@ -344,7 +344,8 @@ public abstract class TableauFrame extends Top {
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the
         // windowClosing behavior given here.
-        if (_otherOpenTableaux(getEffigy(), 1)) {
+        Effigy topEffigy = getEffigy().topEffigy();
+        if (topEffigy != null && topEffigy.numberOfOpenTableaux() > 1) {
             // There are other tableau, so just close.
             dispose();
             return true;
@@ -603,24 +604,6 @@ public abstract class TableauFrame extends Top {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // Return true if the specified effigy has more than the specified
-    // number of open tableau, or if any effigy that deeply contains it
-    // has at least one open tableau.
-    private boolean _otherOpenTableaux(Effigy effigy, int minimum) {
-        if (effigy != null) {
-            List tableaux = effigy.entityList(Tableau.class);
-            if (tableaux.size() > minimum) {
-                return true;
-            } else {
-                Nameable container = effigy.getContainer();
-                if (container instanceof Effigy) {
-                    return _otherOpenTableaux((Effigy)container, 0);
-                }
-            }
-        }
-        return false;
-    }
 
     // Return a writable file for the URL given by the <i>url</i>
     // parameter of the associated effigy, if there is one, or return
