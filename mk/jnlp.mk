@@ -664,6 +664,11 @@ $(UNJAR_DIST_DIR):
 			doc/codeDoc*) \
 			   echo "  Copying to doc"; \
 			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
+			ptolemy/actor/gui/jnlp/jnlp.jar) \
+			   echo "  Copying jar to ptolemy/actor/gui/jnlp"; \
+			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/actor/gui/jnlp; \
+			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/actor/gui/jnlp; \
+			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
 			ptolemy/hsif/hsif.jar) \
 			   echo "  Copying jar to ptolemy/hsif"; \
 			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/hsif; \
@@ -710,7 +715,7 @@ KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx"
 # make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
-
+#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp jnlp_sign
 
 jnlp_dist: jnlp_dist_1 jnlp_dist_update
 jnlp_dist_1:
@@ -724,6 +729,13 @@ jnlp_dist_update:
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		(cd $(DIST_DIR); tar -xpf -)
 	cp doc/webStartHelp.htm $(DIST_DIR)
+
+jnlp_dist_update_remote:
+	scp doc/webStartHelp.htm messier:$(DIST_DIR)
+	tar -cf - $(SIGNED_DIR) $(JNLPS) \
+		$(OTHER_FILES_TO_BE_DISTED) | \
+		ssh messier "cd $(DIST_DIR); tar -xpf -"
+
 
 sign_jar_dist: 
 	"$(PTJAVA_DIR)/bin/jarsigner" \
