@@ -1,4 +1,4 @@
-/* Encode an input sequence with a convolutional code.
+/* A prototype actor that shows how rate can be changed during execution.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,6 @@ package ptolemy.domains.hdf.lib;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -50,7 +49,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HDFActor
 /**
-FIXME
+This actor is a prototype actor that show how rate can be changed and the
+schedule can be re-computed correctly. The comsuption rate of the input
+port and the production rate of the output port are same, both set by the
+portParameter <i>rate</i>. At the end of each iteration, the actor takes
+the most recent tokens from its port, according to which the director that
+contains it (which should be HDFDirector) will re-compute the schedule.
+Tokens received by the portParameter <i>rate</i> during other postfires will
+be ignored. The schedule cannot be changed in the middle of one iteration.
 <p>
 @author Rachel Zhou
 @version $Id$
@@ -92,13 +98,10 @@ public class HDFActor extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>uncodedRate</i>,
-     *  then verify that it is a positive integer; if it is
-     *  <i>polynomialArray</i>, then verify that each of its elements is
-     *  a positive integer and find the maximum value among them, which
-     *  is used to compute the highest order among all polynomials.
-     *  @exception IllegalActionException If <i>uncodedRate</i> is
-     *  non-positive or any element of <i>polynomialArray</i> is non-positive.
+    /** If the attribute being changed is <i>rate</i>, then verify
+     *  that it is a positive integer.
+     *  @exception IllegalActionException If <i>rate</i> is not a
+     *  positive interger.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -108,28 +111,20 @@ public class HDFActor extends Transformer {
                 throw new IllegalActionException(this,
                         "rate must be non-negative.");
             }
-            //_outputRate.setToken(new IntToken(_rateValue));
-            //_inputRate.setToken(new IntToken(_rateValue));
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Read <i>uncodedRate</i> bits from the input port and shift
-     *  them into the shift register. Compute the parity for each
-     *  polynomial specified in <i>polynomialArray</i>. Send the results
-     *  in sequence to the output. The i-th bit in the output 
-     *  corresponds to the parity computed using the i-th polynomial.
+    /** Read <i>_rateValue</i> tokens from the input port and produce
+     *  them at the output port.
      */
     public void fire() throws IllegalActionException {
 
-        //System.out.println("fire(): firingSoFar = " + _firingSoFar);
-        //System.out.println("fire(): rate = " + _rateValue);
         Director director = getDirector();
         if (director instanceof HDFDirector) {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
-                  // This should be in the fire method.
             _firingCount = 
                 ((SDFScheduler)scheduler).getFiringCount(this);
         }
@@ -138,68 +133,44 @@ public class HDFActor extends Transformer {
     }
 
 
-    /** Initialize the actor by resetting the shift register state
-     *  equal to the value of <i>initialState</i>.
+    /** Preitialize the actor by setting the port rate in the first
+     *  iteration to be the initial value of the <i>rate</i> portParameter.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        //rate.update();
         _rateValue = ((IntToken)rate.getToken()).intValue();
-        _rateOldValue = _rateValue;
         _outputRate.setToken(new IntToken(_rateValue));
         _inputRate.setToken(new IntToken(_rateValue));
         _firingSoFar = 0;
         Director director = getDirector();
         director.invalidateSchedule();
-        //if (director instanceof HDFDirector) {
-        //    Scheduler scheduler =
-        //         ((SDFDirector)director).getScheduler();
-            // This should be in the fire method.
-        //    _firingCount = 
-        //        ((SDFScheduler)scheduler).getFiringCount(this);
-        //}
-        //System.out.println("preinitialize: getFiringCount = " + _firingCount);
         super.preinitialize();
     }
 
-    /** Record the most recent shift register state as the new
-     *  state for the next iteration.
+    /** If it is end of one complete iteration, the postfire method
+     *  takes in the most recent token from the <i>rate</i>
+     *  portParameter, and invalidate the schedule.
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
-        //System.out.println("begin postfire: " + _rateValue);
         _firingSoFar ++ ;
         rate.update();
         int rateValue = ((IntToken)rate.getToken()).intValue();
-        //System.out.println("begin postfire1: " + _rateValue);
-        //_outputRate.setToken(new IntToken(_rateValue));
-        //_inputRate.setToken(new IntToken(_rateValue));
         Director director = getDirector();
         if (director instanceof HDFDirector) {
-            //System.out.println("post fire: getFiringCount = " + _firingCount);
-            //System.out.println("post fire: firingSoFar = " + _firingSoFar);
-            //System.out.println("rate = " + _rateValue);
             if (_firingSoFar == _firingCount){
                 ((HDFDirector)director).invalidateSchedule();
                 _rateValue = rateValue;
-                //System.out.println("postfire: update rate = " + _rateValue);
                 _outputRate.setToken(new IntToken(_rateValue));
                 _inputRate.setToken(new IntToken(_rateValue));
                 _firingSoFar = 0;
             } else {
-                //_rateValue = 0;
-                //System.out.println("didn't change rate = " + _rateValue);
                 _outputRate.setToken(new IntToken(_rateValue));
                 _inputRate.setToken(new IntToken(_rateValue));
             }
-            //System.out.println("postfire: rate = " + _rateValue);
         }
         return super.postfire();
     }
-
-    //////////////////////////////////////////////////////////
-    ////            private methods                        ////
-
 
     //////////////////////////////////////////////////////////////
     ////           private variables                          ////
@@ -210,11 +181,13 @@ public class HDFActor extends Transformer {
     // Production rate of the output port.
     private Parameter _outputRate;
 
-    // Record the state of the shift register.
+    // The value of token received from the portParameter.
+    // It does get updated if it is in the middle of one iteration.
     private int _rateValue;
-    
-    private int _rateOldValue;
-    
+
+    // Number of firings so far in one iteration.    
     private int _firingSoFar;
+    
+    // Number of firings of this actor per iteration.
     private int _firingCount;
 }

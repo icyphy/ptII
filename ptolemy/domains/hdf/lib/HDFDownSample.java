@@ -1,4 +1,4 @@
-/* Encode an input sequence with a convolutional code.
+/* A DownSample actor that could change the sample rate during execution.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -33,17 +33,14 @@ package ptolemy.domains.hdf.lib;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.hdf.lib.HDFActor;
 import ptolemy.domains.hdf.kernel.HDFDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
-import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,7 +49,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HDFActor
 /**
-FIXME
+This actor is an extension of the DownSample actor in the SDF library.
+The sample rate is controlled by the portParameter <i>rate</i>. The
+initial rate is set by the initial value of the portParameter. At the
+end of each iteration, the actor takes the most recent tokens from its
+port, according to which the director that contains it (which should
+be HDFDirector) will re-compute the schedule. Tokens received by the
+portParameter <i>rate</i> during other postfires will be ignored. The
+schedule cannot be changed in the middle of one iteration.
 <p>
 @author Rachel Zhou
 @version $Id$
@@ -90,22 +94,27 @@ public class HDFDownSample extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Consumption and production rate of this actor.
+    /** The number of input tokens to read per output token produced.
+     *  This is an integer that defaults to 2 and must be greater than
+     *  zero.
      */
     public PortParameter rate;
     
+    /** The phase of the output with respect to the input.
+     *  This is an integer that defaults to 0 and must be between 0
+     *  and <i>factor</i>-1. If <i>phase</i> = 0, the most recent
+     *  sample is the output, while if <i>phase</i> = <i>factor</i>-1
+     *  the oldest sample is the output.
+     */
     public Parameter phase;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>uncodedRate</i>,
-     *  then verify that it is a positive integer; if it is
-     *  <i>polynomialArray</i>, then verify that each of its elements is
-     *  a positive integer and find the maximum value among them, which
-     *  is used to compute the highest order among all polynomials.
-     *  @exception IllegalActionException If <i>uncodedRate</i> is
-     *  non-positive or any element of <i>polynomialArray</i> is non-positive.
+    /** If the attribute being changed is <i>rate</i>, then verify
+     *  that it is a positive integer.
+     *  @exception IllegalActionException If <i>rate</i> is not a
+     *  positive interger.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -115,27 +124,21 @@ public class HDFDownSample extends Transformer {
                 throw new IllegalActionException(this,
                         "rate must be non-negative.");
             }
-            //_outputRate.setToken(new IntToken(_rateValue));
-            //_inputRate.setToken(new IntToken(_rateValue));
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Read <i>uncodedRate</i> bits from the input port and shift
-     *  them into the shift register. Compute the parity for each
-     *  polynomial specified in <i>polynomialArray</i>. Send the results
-     *  in sequence to the output. The i-th bit in the output 
-     *  corresponds to the parity computed using the i-th polynomial.
+    /** Read _rateValue bits from the input port and select one of
+     *  them to send to the output based on the <i>phase</i>.
+     *  @exception IllegalActionException If there is no director, or
+     *   if the <i>phase</i> value is out of range.
      */
     public void fire() throws IllegalActionException {
 
-        //System.out.println("fire(): firingSoFar = " + _firingSoFar);
-        //System.out.println("fire(): rate = " + _rateValue);
         Director director = getDirector();
         Scheduler scheduler =
             ((SDFDirector)director).getScheduler();
-        // getFiringCount should be in the fire method.
         _firingCount = 
             ((SDFScheduler)scheduler).getFiringCount(this);
         Token[] inputToken = (Token[])input.get(0, _rateValue);
@@ -149,73 +152,55 @@ public class HDFDownSample extends Transformer {
     }
 
 
-    /** Initialize the actor by resetting the shift register state
-     *  equal to the value of <i>initialState</i>.
+    /** Preinitialize the actor by setting the sample rate in the
+     *  first interation to be the initial value of the <i>rate</i>
+     *  portParameter.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void preinitialize() throws IllegalActionException {
        
-        //rate.update();
         _rateValue = ((IntToken)rate.getToken()).intValue();
-        _rateOldValue = _rateValue;
-        //_outputRate.setToken(new IntToken(_rateValue));
-        //System.out.println("preinitialize: rate = " + _rateValue);
         _inputRate.setToken(new IntToken(_rateValue));
         _firingSoFar = 0;
         Director director = getDirector();
         director.invalidateSchedule();
-        if (director instanceof HDFDirector) {
-            Scheduler scheduler =
-                 ((SDFDirector)director).getScheduler();
-            _firingCount = 
-                ((SDFScheduler)scheduler).getFiringCount(this);
-            
-        }
-        //System.out.println("preinitialize: getFiringCount = " + _firingCount);
+        //if (director instanceof HDFDirector) {
+        //    Scheduler scheduler =
+        //         ((SDFDirector)director).getScheduler();
+        //    _firingCount = 
+        //        ((SDFScheduler)scheduler).getFiringCount(this);  
+        //}
         super.preinitialize();
     }
 
-    /** Record the most recent shift register state as the new
-     *  state for the next iteration.
+    /** If it is end of one complete iteration, the postfire method
+     *  takes in the most recent token from the <i>rate</i>
+     *  portParameter, and invalidate the schedule.
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
-        //System.out.println("begin postfire: " + _rateValue);
         _firingSoFar ++ ;
         rate.update();
         int rateValue = ((IntToken)rate.getToken()).intValue();
-        //System.out.println("begin postfire1: " + _rateValue);
-        //_outputRate.setToken(new IntToken(_rateValue));
-        //_inputRate.setToken(new IntToken(_rateValue));
         Director director = getDirector();
         if (director instanceof HDFDirector) {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
+                
             _firingCount = 
                 ((SDFScheduler)scheduler).getFiringCount(this);
-            //System.out.println("post fire: getFiringCount = " + _firingCount);
-            //System.out.println("post fire: firingSoFar = " + _firingSoFar);
-            //System.out.println("rate = " + _rateValue);
             if (_firingSoFar == _firingCount){
                 ((HDFDirector)director).invalidateSchedule();
                 _rateValue = rateValue;
-                //System.out.println("postfire: update rate = " + _rateValue);
-                //_outputRate.setToken(new IntToken(_rateValue));
+
                 _inputRate.setToken(new IntToken(_rateValue));
                 _firingSoFar = 0;
             } else {
-                //_rateValue = 0;
-                //System.out.println("didn't change rate = " + _rateValue);
-                //_outputRate.setToken(new IntToken(_rateValue));
                 _inputRate.setToken(new IntToken(_rateValue));
             }
-            //System.out.println("postfire: rate = " + _rateValue);
         }
         return super.postfire();
     }
-
-    //////////////////////////////////////////////////////////
-    ////            private methods                        ////
 
 
     //////////////////////////////////////////////////////////////
@@ -227,11 +212,13 @@ public class HDFDownSample extends Transformer {
     // Production rate of the output port.
     private Parameter _outputRate;
 
-    // Record the state of the shift register.
+    // The value of token received from the portParameter.
+    // It does get updated if it is in the middle of one iteration.
     private int _rateValue;
     
-    private int _rateOldValue;
-    
+    // Number of firings so far in one iteration.
     private int _firingSoFar;
+    
+    // Number of firings of this actor per iteration.
     private int _firingCount;
 }
