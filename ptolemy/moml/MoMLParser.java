@@ -267,6 +267,25 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
+    /** If a public ID is given, and is not that of MoML version 1,
+     *  then throw a CancelException, which causes the parse to abort
+     *  and return null.
+     *  @param name The name of the document type.
+     *  @param publicId The public ID of the document type.
+     *  @param systemId The system ID of the document type.
+     *  @exception CancelException If the public ID is not that of MoML
+     *   version 1.
+     */
+    public void doctypeDecl (String name, String publicId, String systemId)
+            throws CancelException {
+        if (publicId != null
+                && !publicId.trim().equals("")
+                && !publicId.equals(MoML_PUBLIC_ID_1)) {
+            throw new CancelException(
+                    "Public ID is not that of MoML version 1: " + publicId);
+        }
+    }
+
     /** End the document. The MoMLParser calls this method once, when
      *  it has finished parsing the complete XML document. It is
      *  guaranteed that this will be the last method called in the XML
@@ -428,7 +447,8 @@ public class MoMLParser extends HandlerBase {
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param input The stream from which to read XML.
-     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @return The top-level composite entity of the Ptolemy II model, or
+     *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
      */
     public NamedObj parse(URL base, URL input)
@@ -442,7 +462,8 @@ public class MoMLParser extends HandlerBase {
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param input The stream from which to read XML.
-     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @return The top-level composite entity of the Ptolemy II model, or
+     *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
      */
     public NamedObj parse(URL base, InputStream input)
@@ -456,18 +477,27 @@ public class MoMLParser extends HandlerBase {
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param reader The reader from which to read XML.
-     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @return The top-level composite entity of the Ptolemy II model, or
+     *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
      */
     public NamedObj parse(URL base, Reader reader) throws Exception {
         _parser.setHandler(this);
         _base = base;
         Reader buffered = new BufferedReader(reader);
-        if (base == null) {
-            _parser.parse(null, null, buffered);
-        } else {
-            _parser.parse(base.toExternalForm(), null, buffered);
+        try {
+            if (base == null) {
+                _parser.parse(null, null, buffered);
+            } else {
+                _parser.parse(base.toExternalForm(), null, buffered);
+            }
+        } catch (CancelException ex) {
+            // Parse operation cancelled.
+            buffered.close();
+            return null;
         }
+        buffered.close();
+
         // Add a parser attribute to the toplevel to indicate a parser
         // responsible for handling changes, unless there already is a
         // parser, in which case we just set the parser.
@@ -595,7 +625,7 @@ public class MoMLParser extends HandlerBase {
      */
     public Object resolveEntity(String publicID, String systemID) {
         if (publicID != null &&
-                publicID.equals("-//UC Berkeley//DTD MoML 1//EN")) {
+                publicID.equals(MoML_PUBLIC_ID_1)) {
             // This is the generic MoML DTD.
             return new StringReader(MoML_DTD_1);
         } else {
@@ -637,6 +667,8 @@ public class MoMLParser extends HandlerBase {
     public void startDocument() {
         _paramsToParse.clear();
         _unrecognized = null;
+        // We assume that the data being parsed is MoML, unless we
+        // get a publicID that doesn't match.
     }
 
     /** Start an element.
@@ -1307,6 +1339,9 @@ public class MoMLParser extends HandlerBase {
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
     // updated at ptweb/xml/dtd/MoML_1.dtd.
 
+    /** The public ID for version 1 MoML. */
+    public static String MoML_PUBLIC_ID_1 = "-//UC Berkeley//DTD MoML 1//EN";
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1768,15 +1803,21 @@ public class MoMLParser extends HandlerBase {
                    _parser.getColumnNumber());
         }
         // If we get here, then xmlFile cannot possibly be null.
-        NamedObj toplevel = parser.parse(xmlFile, xmlFile.openStream());
+        try {
+            NamedObj toplevel = parser.parse(xmlFile, input);
+            input.close();
+            // Add a URL attribute to the toplevel to indicate where it was
+            // read from.
+            URLAttribute attribute =
+                     new URLAttribute(toplevel, toplevel.uniqueName("url"));
+            attribute.setURL(xmlFile);
 
-        // Add a URL attribute to the toplevel to indicate where it was
-        // read from.
-        URLAttribute attribute =
-                new URLAttribute(toplevel, toplevel.uniqueName("url"));
-        attribute.setURL(xmlFile);
-
-        return toplevel;
+            return toplevel;
+        } catch (CancelException ex) {
+            // Parse operation cancelled.
+            input.close();
+            return null;
+        }
     }
 
     // If an object is deleted from a container, and this is not the
@@ -2148,17 +2189,17 @@ public class MoMLParser extends HandlerBase {
     // The latest element seen by startElement.
     private String _currentElement;
 
-    // ErrorHandler that handles parse errors.
-    private ErrorHandler _handler = null;
-
-    // List of top-level entities imported via import element.
-    private List _imports;
-
     // The default namespace.
     private static String DEFAULT_NAMESPACE = "";
 
     // Count of doc tags so that they can nest.
     private int _docNesting = 0;
+
+    // ErrorHandler that handles parse errors.
+    private ErrorHandler _handler = null;
+
+    // List of top-level entities imported via import element.
+    private List _imports;
 
     // The current namespace.
     private String _namespace = DEFAULT_NAMESPACE;
