@@ -338,8 +338,8 @@ public class FIR extends SDFTransformer {
         // is not necessary.
         int length = (int)Math.max(_phaseLength, _decimationValue);
         if (_data == null || _data.length != length) {
-            _data = new Token[_length];
-            for (int i = 0; i < _length; i++ ) {
+            _data = new Token[length];
+            for (int i = 0; i < length; i++ ) {
                 _data[i] = _zero;
             }
             _mostRecent = _phaseLength;
