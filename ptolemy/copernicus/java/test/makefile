@@ -91,15 +91,17 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 depend:
 	@echo "no dependencies in this directory"
 ptjacl:
-	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" \
-		"$(PTII)/bin/ptjacl"
+	$(JTCLSH)
 
-SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/RecordUpdater.xml
+SOURCECLASS = $(ROOT)/ptolemy/domains/sdf/kernel/test/auto/test7.xml
 SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.test.cg
-SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).RecordUpdater
+SHALLOWTARGETNAME = test7
+SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(SHALLOWTARGETNAME)
 
 JVM_SIZE = -Xmx132m
 
+# Useful rule for quickly testing
+demo: compileShallowDemo runShallowDemo disassembleShallowDemo
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for $(SOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
@@ -122,12 +124,18 @@ runShallowDemo:
 # Run the output through the jad disassembler and then recompile it
 # This can be very useful for debugging
 disassembleShallowDemo:
-	jad -d cg cg/RecordUpdater.class
-	sh ./jad2java cg/RecordUpdater.jad > cg/RecordUpdater.java
-	$(JAVAC) -classpath $(ROOT) cg/RecordUpdater.java
+	rm -f cg/$(SHALLOWTARGETNAME).jad
+	jad -d cg cg/$(SHALLOWTARGETNAME).class
+	sh ./jad2java cg/$(SHALLOWTARGETNAME).jad \
+		> cg/$(SHALLOWTARGETNAME).java
+	$(JAVAC) -classpath $(ROOT) cg/$(SHALLOWTARGETNAME).java
 	$(ROOT)/bin/ptinvoke \
 		ptolemy.actor.gui.CompositeActorApplication \
-		-class ptolemy.copernicus.java.test.cg.RecordUpdater
+		-class ptolemy.copernicus.java.test.cg.$(SHALLOWTARGETNAME)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
+
