@@ -52,7 +52,7 @@ Subclasses should override clone() to do a deep cloning.
 @version $Id$
 */
 
-public abstract class StructuredType implements Type, Cloneable {
+public abstract class StructuredType implements Type {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -60,12 +60,9 @@ public abstract class StructuredType implements Type, Cloneable {
     /** Return a deep copy this StructuredType. The returned copy does
      *  not have the user set.
      *  @return A StructuredType.
-     *  @exception CloneNotSupportedException If the super class throws it
+     *  @exception CloneNotSupportedException Not thrown.
      */
-    public Object clone()
-	    throws CloneNotSupportedException {
-        return super.clone();
-    }
+    abstract public Object clone() throws CloneNotSupportedException;
 
     /** Return the user of this StructuredType. If the user is not set,
      *  return null.
