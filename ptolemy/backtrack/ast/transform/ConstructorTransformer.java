@@ -37,6 +37,7 @@ import java.util.Stack;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+import org.eclipse.jdt.core.dom.CastExpression;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -144,15 +145,18 @@ public class ConstructorTransformer extends AbstractTransformer
         AST ast = node.getAST();
         CompilationUnit root = (CompilationUnit)node.getRoot();
         Type type = Type.getType(node);
-        String setCheckpointName = SET_CHECKPOINT_NAME + "$" +
-				Integer.toHexString(
-				        state.getCurrentClass().getName().hashCode());
+        String setCheckpointName = SET_CHECKPOINT_NAME;
         MethodInvocation extraSetCheckpoint = ast.newMethodInvocation();
         extraSetCheckpoint.setExpression(
                 (ClassInstanceCreation)ASTNode.copySubtree(ast, node));
         extraSetCheckpoint.setName(ast.newSimpleName(setCheckpointName));
         extraSetCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
-        replaceNode(node, extraSetCheckpoint);
+        
+        CastExpression typeCast = ast.newCastExpression();
+        typeCast.setExpression(extraSetCheckpoint);
+        typeCast.setType(
+                createType(ast, getClassName(type.getName(), state, root)));
+        replaceNode(node, typeCast);
     }
     
     private Hashtable _unhandledNodes = new Hashtable();

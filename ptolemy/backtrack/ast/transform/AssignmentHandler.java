@@ -29,6 +29,8 @@ COPYRIGHTENDKEY
 package ptolemy.backtrack.ast.transform;
 
 import org.eclipse.jdt.core.dom.Assignment;
+import org.eclipse.jdt.core.dom.PostfixExpression;
+import org.eclipse.jdt.core.dom.PrefixExpression;
 
 import ptolemy.backtrack.ast.TypeAnalyzerState;
 
@@ -67,5 +69,23 @@ public interface AssignmentHandler {
      *  @param state The current state of the analyzer.
      */
     public void handle(Assignment node, TypeAnalyzerState state);
+    
+    /** Handle a postfix expression with a "++" operator or a "--" operator.
+     *  The assignment can be an assignment acting as a statement, or an
+     *  assignment as a sub-expression in a larger expression.
+     * 
+     *  @param node The assignment to be handled.
+     *  @param state The current state of the analyzer.
+     */
+    public void handle(PostfixExpression node, TypeAnalyzerState state);
+    
+    /** Handle a prefix expression with a "++" operator or a "--" operator. The
+     *  assignment can be an assignment acting as a statement, or an assignment
+     *  as a sub-expression in a larger expression.
+     * 
+     *  @param node The assignment to be handled.
+     *  @param state The current state of the analyzer.
+     */
+    public void handle(PrefixExpression node, TypeAnalyzerState state);
     
 }

@@ -59,6 +59,8 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ParenthesizedExpression;
+import org.eclipse.jdt.core.dom.PostfixExpression;
+import org.eclipse.jdt.core.dom.PrefixExpression;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.ReturnStatement;
@@ -66,6 +68,8 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.SuperMethodInvocation;
+import org.eclipse.jdt.core.dom.SwitchCase;
+import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
@@ -114,111 +118,15 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param state The current state of the type analyzer.
      */
     public void handle(Assignment node, TypeAnalyzerState state) {
-        AST ast = node.getAST();
-        
-        // Get the left-hand side.
-        Expression leftHand = node.getLeftHandSide();
-        while (leftHand instanceof ParenthesizedExpression)
-            leftHand = ((ParenthesizedExpression)leftHand).getExpression();
-        
-        // Get the right-hand side.
-        Expression rightHand = node.getRightHandSide();
-        
-        // If left-hand side is an array access, store the indices.
-        List indices = new LinkedList();
-        while (leftHand instanceof ArrayAccess) {
-            ArrayAccess arrayAccess = (ArrayAccess)leftHand;
-            indices.add(0, ASTNode.copySubtree(ast, arrayAccess.getIndex()));
-            leftHand = arrayAccess.getArray();
-            while (leftHand instanceof ParenthesizedExpression)
-                leftHand = 
-                    ((ParenthesizedExpression)leftHand).getExpression();
-        }
-        
-        // For expression.name on the left-hand side, set newObject to be the
-        // expression and name to be the name. newObject may be null.
-        Expression newObject = null;
-        SimpleName name;
-        if (leftHand instanceof FieldAccess) {
-            Expression object = ((FieldAccess)leftHand).getExpression();
-            name = ((FieldAccess)leftHand).getName();
-
-            Type type = Type.getType(object);
-            if (!type.getName().equals(state.getCurrentClass().getName()))
-                return;
-            
-            newObject = (Expression)ASTNode.copySubtree(ast, object);
-        } else if (leftHand instanceof QualifiedName) {
-            Name object = ((QualifiedName)leftHand).getQualifier();
-            name = ((QualifiedName)leftHand).getName();
-
-            Type type = Type.getType(object);
-            if (!type.getName().equals(state.getCurrentClass().getName()))
-                return;
-            
-            newObject = (Expression)ASTNode.copySubtree(ast, object);
-        } else if (leftHand instanceof SimpleName)
-            name = (SimpleName)leftHand;
-        else
-            return; // Some unknown situation.
-        
-        // Get the owner of the left-hand side, if it is a field.
-        Type owner = Type.getOwner(leftHand);
-        if (owner == null)  // Not a field.
-            return;
-
-        // Get the class of the owner and test the modifiers of the field.
-        Class ownerClass;
-        boolean isStatic;
-        try {
-            ownerClass = owner.toClass(state.getClassLoader());
-            Field field = 
-                ownerClass.getDeclaredField(name.getIdentifier());
-            int modifiers = field.getModifiers();
-            if (!java.lang.reflect.Modifier.isPrivate(modifiers))
-                return; // Not handling non-private fields.
-            isStatic = 
-                java.lang.reflect.Modifier.isStatic(modifiers);
-        } catch (ClassNotFoundException e) {
-            throw new ASTClassNotFoundException(owner.getName());
-        } catch (NoSuchFieldException e) {
-            // The field is not defined in this class.
-            return;
-        }
-        if (isStatic && !HANDLE_STATIC_FIELDS)
-            return;
-        
-        // The new method invocation to replace the assignment.
-        MethodInvocation invocation = ast.newMethodInvocation();
-
-        // Set the expression and name of the method invocation.
-        if (newObject != null)
-            invocation.setExpression(newObject);
-        SimpleName newName = 
-            ast.newSimpleName(_getAssignMethodName(name.getIdentifier()));
-        invocation.setName(newName);
-        
-        // If the field is static, add the checkpoint object as the first
-        // argument.
-        if (isStatic)
-            invocation.arguments().add(ast.newSimpleName("$CHECKPOINT"));
-        
-        // Add all the indices into the argument list.
-        invocation.arguments().addAll(indices);
-        
-        // Add the right-hand side expression to the argument list.
-        invocation.arguments().add(ASTNode.copySubtree(ast, rightHand));
-        
-        // Set the type of this invocation.
-        Type.propagateType(invocation, node);
-        
-        // Replace the assignment node with this method invocation.
-        replaceNode(node, invocation);
-        
-        // Record the field access (a corresponding method will be generated
-        // later.
-        _recordAccessedField(owner.getName(), name.getIdentifier(), 
-                indices.size());
+        _handleAssignment(node, state);
+    }
+    
+    public void handle(PostfixExpression node, TypeAnalyzerState state) {
+        _handleAssignment(node, state);
+    }
+    
+    public void handle(PrefixExpression node, TypeAnalyzerState state) {
+        _handleAssignment(node, state);
     }
     
     /** Enter an anonymous class declaration. Nothing is done in this method.
@@ -372,16 +280,17 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param fieldName The name of the field to be handled.
      *  @param fieldType The type of the field to be handled.
      *  @param indices The number of indices.
+     *  @param special Whether to handle special assign operators.
      *  @param isStatic Whether the field is static.
      *  @return The declaration of the method that handles assignment to
      *   the field.
      */
     private MethodDeclaration _createAssignMethod(AST ast, 
             CompilationUnit root, TypeAnalyzerState state, String fieldName, 
-            Type fieldType, int indices, boolean isStatic) {
+            Type fieldType, int indices, boolean special, boolean isStatic) {
         Class currentClass = state.getCurrentClass();
         ClassLoader loader = state.getClassLoader();
-        String methodName = _getAssignMethodName(fieldName);
+        String methodName = _getAssignMethodName(fieldName, special);
         
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
@@ -401,11 +310,20 @@ public class AssignmentTransformer extends AbstractTransformer
                 throw new ASTClassNotFoundException(fieldType);
             }
         
+        String fieldTypeName = fieldType.getName();
+
         // Set the name and return type.
         SimpleName name = ast.newSimpleName(methodName);
+        org.eclipse.jdt.core.dom.Type type;
         method.setName(name);
-        String typeName = getClassName(fieldType.getName(), state, root);
-        org.eclipse.jdt.core.dom.Type type = createType(ast, typeName);
+        String typeName = getClassName(fieldTypeName, state, root);
+        if (special && _assignOperators.containsKey(fieldTypeName)) {
+            PrimitiveType.Code code = 
+                (PrimitiveType.Code)_rightHandTypes.get(fieldTypeName);
+            type = ast.newPrimitiveType(code);
+        } else {
+            type = createType(ast, typeName);
+        }
         method.setReturnType(createType(ast, typeName));
         
         // If the field is static, add a checkpoint object argument.
@@ -419,6 +337,15 @@ public class AssignmentTransformer extends AbstractTransformer
                     ast.newSimpleType(createName(ast, checkpointType)));
             checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
             method.parameters().add(checkpoint);
+        }
+        
+        if (special && _assignOperators.containsKey(fieldTypeName)) {
+            // Add an operator parameter.
+            SingleVariableDeclaration operator = 
+                ast.newSingleVariableDeclaration();
+            operator.setType(ast.newPrimitiveType(PrimitiveType.INT));
+            operator.setName(ast.newSimpleName("operator"));
+            method.parameters().add(operator);
         }
         
         // Add all the indices.
@@ -447,7 +374,7 @@ public class AssignmentTransformer extends AbstractTransformer
         
         // Create the method body.
         Block body = _createAssignmentBlock(ast, state, fieldName, fieldType, 
-                indices);
+                indices, special);
         method.setBody(body);
         
         return method;
@@ -457,16 +384,15 @@ public class AssignmentTransformer extends AbstractTransformer
      *  before a new value is assigned to it.
      * 
      *  @param ast The {@link AST} object.
-     *  @param className The full name of the current class.
+     *  @param state The current state of the type analyzer.
      *  @param fieldName The name of the field.
      *  @param fieldType The type of the left-hand side (with <tt>indices</tt>
      *   dimensions less than the original field type).
      *  @param indices The number of indices.
-     *  @param dimensions The number of dimensions of the original field type.
-     *  @return The method body.
+     *  @param special Whether to handle special assign operators.
      */
     private Block _createAssignmentBlock(AST ast, TypeAnalyzerState state, 
-            String fieldName, Type fieldType, int indices) {
+            String fieldName, Type fieldType, int indices, boolean special) {
         Block block = ast.newBlock();
         
         // Test if the checkpoint object is not null.
@@ -570,9 +496,79 @@ public class AssignmentTransformer extends AbstractTransformer
             addToLists(_fixSetCheckpoint, c.getName(), block);
         
         // Return the result of the assignment.
-        ReturnStatement returnStatement = ast.newReturnStatement();
-        returnStatement.setExpression(assignment);
-        block.statements().add(returnStatement);
+        if (special && _assignOperators.containsKey(fieldType.getName())) {
+            String[] operators = 
+                (String[])_assignOperators.get(fieldType.getName());
+
+            SwitchStatement switchStatement = ast.newSwitchStatement();
+            switchStatement.setExpression(ast.newSimpleName("operator"));
+            
+            boolean isPostfix = true;
+            
+            for (int i = 0; i < operators.length; i++) {
+                String operator = operators[i];
+                
+                SwitchCase switchCase = ast.newSwitchCase();
+                switchCase.setExpression(
+                        ast.newNumberLiteral(Integer.toString(i)));
+                switchStatement.statements().add(switchCase);
+
+                ReturnStatement returnStatement = ast.newReturnStatement();
+                
+                if (operator.equals("=")) {
+                    Assignment newAssignment = 
+                        (Assignment)ASTNode.copySubtree(ast, assignment);
+                    returnStatement.setExpression(newAssignment);
+                } else if (operator.equals("++") || operator.equals("--")) {
+                    Expression expression;
+                    if (isPostfix) {
+                        PostfixExpression postfix = ast.newPostfixExpression();
+                        postfix.setOperand((Expression)
+                                ASTNode.copySubtree(ast, 
+                                        assignment.getLeftHandSide()));
+                        postfix.setOperator(
+                                PostfixExpression.Operator.toOperator(operator));
+                        expression = postfix;
+                        
+                        // Produce prefix operators next time.
+                        if (operator.equals("--"))
+                            isPostfix = false;
+                    } else {
+                        PrefixExpression prefix = ast.newPrefixExpression();
+                        prefix.setOperand((Expression)
+                                ASTNode.copySubtree(ast, 
+                                        assignment.getLeftHandSide()));
+                        prefix.setOperator(
+                                PrefixExpression.Operator.toOperator(operator));
+                        expression = prefix;
+                    }
+                    returnStatement.setExpression(expression);
+                } else {
+                    Assignment newAssignment = 
+                        (Assignment)ASTNode.copySubtree(ast, assignment);
+                    newAssignment.setOperator(
+                        Assignment.Operator.toOperator(operator));
+                    returnStatement.setExpression(newAssignment);
+                }
+                switchStatement.statements().add(returnStatement);
+            }
+            
+            // The default statement: just return the old value.
+            // This case should not be reached.
+            SwitchCase defaultCase = ast.newSwitchCase();
+            defaultCase.setExpression(null);
+            switchStatement.statements().add(defaultCase);
+            ReturnStatement defaultReturn = ast.newReturnStatement();
+            defaultReturn.setExpression((Expression)
+                    ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
+            switchStatement.statements().add(defaultReturn);
+            
+            block.statements().add(switchStatement);
+        } else {
+            ReturnStatement returnStatement = ast.newReturnStatement();
+            returnStatement.setExpression(assignment);
+            block.statements().add(returnStatement);
+        }
         
         return block;
     }
@@ -645,53 +641,6 @@ public class AssignmentTransformer extends AbstractTransformer
         addToLists(_checkParentFields, parent.getName(), record);
         
         return record;
-    }
-    
-    /** Create an extra set checkpoint method for a non-anonymous class. The
-     *  method returns the current object.
-     * 
-     *  @param ast The {@link AST} object.
-     *  @param root The root of the AST.
-     *  @param state The current state of the type analyzer.
-     *  @return The declaration of the method that sets the checkpoint object.
-     */
-    private MethodDeclaration _createExtraSetCheckpointMethod(AST ast, 
-            CompilationUnit root, TypeAnalyzerState state) {
-        MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
-        String setCheckpointName = SET_CHECKPOINT_NAME + "$" +
-        		Integer.toHexString(
-        		        state.getCurrentClass().getName().hashCode());
-        setCheckpoint.setName(ast.newSimpleName(setCheckpointName));
-        String typeName = 
-            getClassName(state.getCurrentClass(), state, root);
-        setCheckpoint.setReturnType(createType(ast, typeName));
-        
-        // Add a checkpoint parameter.
-        SingleVariableDeclaration checkpoint = 
-            ast.newSingleVariableDeclaration();
-        checkpoint.setName(ast.newSimpleName("checkpoint"));
-        checkpoint.setType(
-                createType(ast, 
-                        getClassName(Checkpoint.class, state, root)));
-        setCheckpoint.parameters().add(checkpoint);
-        
-        // The body.
-        Block body = ast.newBlock();
-        setCheckpoint.setBody(body);
-        
-        // The first statement: set the checkpoint.
-        MethodInvocation invocation = ast.newMethodInvocation();
-        invocation.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
-        invocation.arguments().add(ast.newSimpleName("checkpoint"));
-        body.statements().add(ast.newExpressionStatement(invocation));
-        
-        // The second statement: return the object.
-        ReturnStatement returnStatement = ast.newReturnStatement();
-        returnStatement.setExpression(ast.newThisExpression());
-        body.statements().add(returnStatement);
-        
-        setCheckpoint.setModifiers(Modifier.PUBLIC);
-        return setCheckpoint;
     }
     
     /** Create the record of a field. The record is stored in an extra private
@@ -1156,7 +1105,9 @@ public class AssignmentTransformer extends AbstractTransformer
         checkpoint.setName(ast.newSimpleName("checkpoint"));
         method.parameters().add(checkpoint);
         
-        // Return type default to "void".
+        // Return type is Object.
+        method.setReturnType(
+                createType(ast, getClassName(Object.class, state, root)));
         
         // The test.
         IfStatement test = ast.newIfStatement();
@@ -1238,6 +1189,11 @@ public class AssignmentTransformer extends AbstractTransformer
         thenBranch.statements().add(
                 ast.newExpressionStatement(addInvocation));
         
+        // Return this object.
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(ast.newThisExpression());
+        body.statements().add(returnStatement);
+        
         method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
         
         addToLists(_checkParentMethods, parent.getName(), method);
@@ -1257,7 +1213,24 @@ public class AssignmentTransformer extends AbstractTransformer
      *   or has never been used.
      */
     private List _getAccessedField(String className, String fieldName) {
-        Hashtable classTable = (Hashtable)_accessedFields.get(className);
+        return _getAccessedField(_accessedFields, className, fieldName);
+    }
+    
+    /** Get the list of indices of an accessed field. If the field is not of an
+     *  array type but it is accessed at least once, the returned list contains
+     *  only integer 0, which means no index is ever used. If the field is an
+     *  array, the returned list is the list of numbers of indices that have
+     *  ever been used.
+     * 
+     *  @param table The hash table to be used.
+     *  @param className The full name of the current class.
+     *  @param fieldName The field name.
+     *  @return The list of indices, or <tt>null</tt> if the field is not found
+     *   or has never been used.
+     */
+    private List _getAccessedField(Hashtable table, String className, 
+            String fieldName) {
+        Hashtable classTable = (Hashtable)table.get(className);
         if (classTable == null)
             return null;
         List indicesList = (List)classTable.get(fieldName);
@@ -1267,10 +1240,11 @@ public class AssignmentTransformer extends AbstractTransformer
     /** Get the name of the assignment method.
      * 
      *  @param fieldName The field name.
+     *  @param special Whether the method handles special assign operators.
      *  @return The name of the assignment method.
      */
-    private String _getAssignMethodName(String fieldName) {
-        return ASSIGN_PREFIX + fieldName;
+    private String _getAssignMethodName(String fieldName, boolean special) {
+        return ASSIGN_PREFIX + (special ? "SPECIAL$" : "") + fieldName;
     }
     
     private String _getExtraSetCheckpointName(String className) {
@@ -1315,6 +1289,177 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private String _getSetCheckpointMethodName(boolean isAnonymous) {
         return SET_CHECKPOINT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
+    }
+    
+    /** Handle an explicit or implicit assignment node. An explicit assignment
+     *  is one that uses the "=" operator or any special assign operator (such
+     *  as "+=" and "-="). An implicit a prefix expression or postfix
+     *  expression with the "++" operator or the "--" operator.
+     * 
+     *  @param node The AST node of the assignment. It must be of one of the
+     *   following types: {@link Assignment}, {@link PostfixExpression}, and
+     *   {@link PrefixExpression}.
+     *  @param state The current state of the type analyzer.
+     */
+    private void _handleAssignment(ASTNode node, TypeAnalyzerState state) {
+        AST ast = node.getAST();
+        boolean isSpecial;
+        if (node instanceof Assignment)
+            isSpecial =
+                ((Assignment)node).getOperator() !=
+                    Assignment.Operator.ASSIGN;
+        else
+            isSpecial = true;
+        
+        // Get the left-hand side and right-hand side.
+        Expression leftHand, rightHand;
+        if (node instanceof Assignment) {
+            leftHand = ((Assignment)node).getLeftHandSide();
+            rightHand = ((Assignment)node).getRightHandSide();
+        } else if (node instanceof PrefixExpression)
+            leftHand = rightHand = ((PrefixExpression)node).getOperand();
+        else
+            leftHand = rightHand = ((PostfixExpression)node).getOperand();
+        
+        while (leftHand instanceof ParenthesizedExpression)
+            leftHand = ((ParenthesizedExpression)leftHand).getExpression();
+        
+        // If left-hand side is an array access, store the indices.
+        List indices = new LinkedList();
+        while (leftHand instanceof ArrayAccess) {
+            ArrayAccess arrayAccess = (ArrayAccess)leftHand;
+            indices.add(0, ASTNode.copySubtree(ast, arrayAccess.getIndex()));
+            leftHand = arrayAccess.getArray();
+            while (leftHand instanceof ParenthesizedExpression)
+                leftHand = 
+                    ((ParenthesizedExpression)leftHand).getExpression();
+        }
+        
+        // For expression.name on the left-hand side, set newObject to be the
+        // expression and name to be the name. newObject may be null.
+        Expression newObject = null;
+        SimpleName name;
+        if (leftHand instanceof FieldAccess) {
+            Expression object = ((FieldAccess)leftHand).getExpression();
+            name = ((FieldAccess)leftHand).getName();
+
+            Type type = Type.getType(object);
+            if (!type.getName().equals(state.getCurrentClass().getName()))
+                return;
+            
+            newObject = (Expression)ASTNode.copySubtree(ast, object);
+        } else if (leftHand instanceof QualifiedName) {
+            Name object = ((QualifiedName)leftHand).getQualifier();
+            name = ((QualifiedName)leftHand).getName();
+
+            Type type = Type.getType(object);
+            if (!type.getName().equals(state.getCurrentClass().getName()))
+                return;
+            
+            newObject = (Expression)ASTNode.copySubtree(ast, object);
+        } else if (leftHand instanceof SimpleName)
+            name = (SimpleName)leftHand;
+        else
+            return; // Some unknown situation.
+        
+        // Get the owner of the left-hand side, if it is a field.
+        Type owner = Type.getOwner(leftHand);
+        if (owner == null)  // Not a field.
+            return;
+
+        // Get the class of the owner and test the modifiers of the field.
+        Class ownerClass;
+        boolean isStatic;
+        try {
+            ownerClass = owner.toClass(state.getClassLoader());
+            Field field = 
+                ownerClass.getDeclaredField(name.getIdentifier());
+            int modifiers = field.getModifiers();
+            if (!java.lang.reflect.Modifier.isPrivate(modifiers))
+                return; // Not handling non-private fields.
+            isStatic = 
+                java.lang.reflect.Modifier.isStatic(modifiers);
+        } catch (ClassNotFoundException e) {
+            throw new ASTClassNotFoundException(owner.getName());
+        } catch (NoSuchFieldException e) {
+            // The field is not defined in this class.
+            return;
+        }
+        if (isStatic && !HANDLE_STATIC_FIELDS)
+            return;
+        
+        // The new method invocation to replace the assignment.
+        MethodInvocation invocation = ast.newMethodInvocation();
+
+        // Set the expression and name of the method invocation.
+        if (newObject != null)
+            invocation.setExpression(newObject);
+        SimpleName newName = 
+            ast.newSimpleName(
+                    _getAssignMethodName(name.getIdentifier(), isSpecial));
+        invocation.setName(newName);
+        
+        // If the field is static, add the checkpoint object as the first
+        // argument.
+        if (isStatic)
+            invocation.arguments().add(ast.newSimpleName("$CHECKPOINT"));
+        
+        // Add an operator, if necessary.
+        Type type = Type.getType(node);
+        if (isSpecial && _assignOperators.containsKey(type.getName())) {
+            int i = 0;
+            String[] operators = 
+                (String[])_assignOperators.get(type.getName());
+            
+            String operator;
+            if (node instanceof Assignment)
+                operator = ((Assignment)node).getOperator().toString();
+            else if (node instanceof PrefixExpression)
+                operator = ((PrefixExpression)node).getOperator().toString();
+            else
+                operator = ((PostfixExpression)node).getOperator().toString();
+            
+            for (; i < operators.length; i++)
+                if (operators[i].equals(operator))
+                    break;
+            if (node instanceof PrefixExpression)
+                i += 2;
+            
+            invocation.arguments().add(
+                    ast.newNumberLiteral(Integer.toString(i)));
+        }
+        
+        // Add all the indices into the argument list.
+        invocation.arguments().addAll(indices);
+        
+        // Add the right-hand side expression to the argument list.
+        if (!isSpecial &&
+                type.isPrimitive() &&
+                !type.equals(Type.getType(rightHand))) {
+            // Require an explicit conversion.
+            CastExpression castExpression = ast.newCastExpression();
+            castExpression.setType(createType(ast, type.getName()));
+            castExpression.setExpression((Expression)
+                    ASTNode.copySubtree(ast, rightHand));
+            rightHand = castExpression;
+        } else
+            rightHand = (Expression)ASTNode.copySubtree(ast, rightHand);
+        invocation.arguments().add(rightHand);
+        
+        // Set the type of this invocation.
+        Type.propagateType(invocation, node);
+        
+        // Replace the assignment node with this method invocation.
+        replaceNode(node, invocation);
+        
+        // Record the field access (a corresponding method will be generated
+        // later.
+        Hashtable table = (node instanceof Assignment &&
+            		((Assignment)node).getOperator() ==
+            		    Assignment.Operator.ASSIGN) ?
+                _accessedFields : _specialAccessedFields;
+        _recordAccessedField(table, owner.getName(), name.getIdentifier(), 
+                indices.size());
     }
     
     /** Handle a class declaration or anonymous class declaration. Records and
@@ -1365,22 +1510,27 @@ public class AssignmentTransformer extends AbstractTransformer
                         String fieldName = fragment.getName().getIdentifier();
 
                         // Get the list of numbers of indices.
-                        List indicesList = 
-                            _getAccessedField(currentClass.getName(), 
-                                    fieldName);
-                        if (indicesList == null)
-                            continue;
+                        Hashtable[] tables = new Hashtable[] {
+                            _accessedFields, _specialAccessedFields
+                        };
+                        for (int i = 0; i < tables.length; i++) {
+                            List indicesList = 
+                                _getAccessedField(tables[i], currentClass.getName(), 
+                                        fieldName);
+                            if (indicesList == null)
+                                continue;
                         
-                        // Iterate over all the numbers of indices.
-                        Iterator indicesIter = indicesList.iterator();
-                        while (indicesIter.hasNext()) {
-                            int indices = 
-                                ((Integer)indicesIter.next()).intValue();
+                            // Iterate over all the numbers of indices.
+                            Iterator indicesIter = indicesList.iterator();
+                            while (indicesIter.hasNext()) {
+                                int indices = 
+                                    ((Integer)indicesIter.next()).intValue();
                             
-                            // Create an extra method for every different
-                            // number of indices.
-                            newMethods.add(_createAssignMethod(ast, root, state, 
-                                    fieldName, type, indices, isStatic));
+                                // Create an extra method for every different
+                                // number of indices.
+                                newMethods.add(_createAssignMethod(ast, root, state, 
+                                        fieldName, type, indices, i > 0, isStatic));
+                            }
                         }
                         
                         fieldNames.add(fieldName);
@@ -1414,9 +1564,6 @@ public class AssignmentTransformer extends AbstractTransformer
                     node instanceof AnonymousClassDeclaration);
         if (setCheckpoint != null)
             newMethods.add(setCheckpoint);
-        
-        if (!(node instanceof AnonymousClassDeclaration))
-            newMethods.add(_createExtraSetCheckpointMethod(ast, root, state));
         
         // Add an interface.
         if (node instanceof AnonymousClassDeclaration) 
@@ -1508,10 +1655,24 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private void _recordAccessedField(String className, String fieldName, 
             int indices) {
-        Hashtable classTable = (Hashtable)_accessedFields.get(className);
+        _recordAccessedField(_accessedFields, className, fieldName, indices);
+    }
+    
+    /** Record an accessed field (and possible indices after it) in a list.
+     *  Extra methods and fields for these field accesses will be added to
+     *  class declarations later when the traversal on the class finishes. 
+     * 
+     *  @param table The hash table to be used.
+     *  @param className The name of the current class.
+     *  @param fieldName The field name.
+     *  @param indices The number of indices.
+     */
+    private void _recordAccessedField(Hashtable table, String className,  
+            String fieldName, int indices) {
+        Hashtable classTable = (Hashtable)table.get(className);
         if (classTable == null) {
             classTable = new Hashtable();
-            _accessedFields.put(className, classTable);
+            table.put(className, classTable);
         }
         List indicesList = (List)classTable.get(fieldName);
         if (indicesList == null) {
@@ -1528,6 +1689,12 @@ public class AssignmentTransformer extends AbstractTransformer
      *  are lists of indices.
      */
     private Hashtable _accessedFields = new Hashtable();
+    
+    /** The table of fields accessed with special assign operators and their
+     *  indices. Keys are class names; valus are hash tables. In each value, 
+     *  keys are field names, values are lists of indices.
+     */
+    private Hashtable _specialAccessedFields = new Hashtable();
     
     /** Keys are names of superclasses; values are lists of AST nodes
      *  corresponding to the fields of children classes.
@@ -1556,4 +1723,53 @@ public class AssignmentTransformer extends AbstractTransformer
      *  checkpoints need to be added to those blocks.
      */
     private Hashtable _fixSetCheckpoint = new Hashtable();
+    
+    /** The Java operators that modify special types of values.
+     */
+    private static Hashtable _assignOperators = new Hashtable();
+    
+    /** The types of values on the right-hand side of the special operators.
+     */
+    private static Hashtable _rightHandTypes = new Hashtable();
+    
+    static {
+        _assignOperators.put("boolean", new String[]{
+                "&=", "|=", "^="
+        });
+        _assignOperators.put("byte", new String[]{
+                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", 
+                ">>=", ">>>=", "++", "--", "++", "--"
+        });
+        _assignOperators.put("char", new String[]{
+                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", 
+                ">>=", ">>>=", "++", "--", "++", "--"
+        });
+        _assignOperators.put("double", new String[]{
+                "+=", "-=", "*=", "/=", "%=", "++", "--", "++", "--"
+        });
+        _assignOperators.put("float", new String[]{
+                "+=", "-=", "*=", "/=", "%=", "++", "--", "++", "--"
+        });
+        _assignOperators.put("int", new String[]{
+                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", 
+                ">>=", ">>>=", "++", "--", "++", "--"
+        });
+        _assignOperators.put("long", new String[]{
+                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", 
+                ">>=", ">>>=", "++", "--", "++", "--"
+        });
+        _assignOperators.put("short", new String[]{
+                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", 
+                ">>=", ">>>=", "++", "--", "++", "--"
+        });
+        
+        _rightHandTypes.put("boolean", PrimitiveType.BOOLEAN);
+        _rightHandTypes.put("byte", PrimitiveType.LONG);
+        _rightHandTypes.put("char", PrimitiveType.LONG);
+        _rightHandTypes.put("double", PrimitiveType.DOUBLE);
+        _rightHandTypes.put("float", PrimitiveType.DOUBLE);
+        _rightHandTypes.put("int", PrimitiveType.LONG);
+        _rightHandTypes.put("long", PrimitiveType.LONG);
+        _rightHandTypes.put("short", PrimitiveType.LONG);
+    }
 }

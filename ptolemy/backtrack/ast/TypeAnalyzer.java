@@ -591,6 +591,18 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(PrefixExpression node) {
         Type.propagateType(node, node.getOperand());
+        PrefixExpression.Operator operator = node.getOperator();
+        if ((operator == PrefixExpression.Operator.INCREMENT ||
+                operator == PrefixExpression.Operator.DECREMENT) &&
+                _handlers.hasClassHandler()) {
+            List handlerList = _handlers.getAssignmentHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                AssignmentHandler handler = 
+                    (AssignmentHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
     }
 
     /** Propagate the type of the its sub-expression to this node.
@@ -599,6 +611,18 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(PostfixExpression node) {
         Type.propagateType(node, node.getOperand());
+        PostfixExpression.Operator operator = node.getOperator();
+        if ((operator == PostfixExpression.Operator.INCREMENT ||
+                operator == PostfixExpression.Operator.DECREMENT) &&
+                _handlers.hasClassHandler()) {
+            List handlerList = _handlers.getAssignmentHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                AssignmentHandler handler = 
+                    (AssignmentHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
     }
 
     /** Visit a primitive type node and set its type to be the corresponding
