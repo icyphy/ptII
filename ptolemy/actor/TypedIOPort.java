@@ -301,6 +301,106 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
+    /** Send the specified portion of a token array to all receivers 
+     *  connected to the specified channel, checking the type
+     *  and converting the token if necessary. The first 
+     *  <i>vectorLength</i> tokens of the token array are sent.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, or the channel index is out of
+     *  range, or the port is not an output port,
+     *  then just silently return.  This behavior makes it
+     *  easy to leave output ports unconnected when you are not interested
+     *  in the output.
+     *  <p>
+     *  To improve effiecency for the common case where the type of the
+     *  tokens to send matches the type of this port and all connected
+     *  ports, this method assumes that all of the tokens in the 
+     *  specified portion of the token array are of the same
+     *  type. If this is not the case, then the non-vectorized send()
+     *  method should be used instead.
+     *  The implementation only actually checks the 
+     *  type of the first token in the array, and then assumes that 
+     *  the remaining tokens are of the same type. 
+     *  <p>
+     *  If the type of the tokens in the specified portion of the 
+     *  token array is the type of this
+     *  port, or the tokens in the specified portion of the 
+     *  token array can be converted to that type
+     *  losslessly, the tokens in the specified portion of the 
+     *  token array are sent to all receivers connected to the
+     *  specified channel. Otherwise, IllegalActionException is thrown.
+     *  Before putting the tokens in the specified portion of the 
+     *  token array into the destination receivers, this
+     *  method also checks the type of the remote input port,
+     *  and converts the tokens if necessary.
+     *  The conversion is done by calling the
+     *  convert() method of the type of the remote input port.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @param tokenArray The token array to send
+     *  @param vectorLength The number of elements of of the token
+     *   array to send.
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException If the tokens to be sent cannot
+     *   be converted to the type of this port.
+     */
+    public void send(int channelIndex, Token[] tokenArray, int vectorLength)
+            throws IllegalActionException, NoRoomException {
+        Receiver[][] farRec;
+	Token token = null;
+        try {
+            try {
+                _workspace.getReadAccess();
+		// Only do type checking on the 1st token for
+		// performance reasons.
+		token = tokenArray[0];
+		int compare = TypeLattice.compare(token.getType(),
+                        _resolvedType);
+                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                    throw new IllegalArgumentException(
+                            "Run-time type checking failed. token type: "
+                            + token.getType().toString() + ", port: "
+                            + getFullName() + ", port type: " + getType().toString());
+                }
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farRec = getRemoteReceivers();
+                if (farRec == null || farRec[channelIndex] == null) {
+		    System.out.println("returning now...");
+		    return;
+		}
+            } finally {
+                _workspace.doneReading();
+            }
+            for (int j = 0; j < farRec[channelIndex].length; j++) {
+		TypedIOPort port =
+                    (TypedIOPort)farRec[channelIndex][j].getContainer();
+                Type farType = port.getType();
+                if (farType.isEqualTo(token.getType())) {
+		    // Good, no conversion necessary.
+		    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+                } else {
+		    // Note: This is very bad for performance!
+		    // For better efficiency, make sure
+		    // all ports have the same type.
+		    for (int i = 0; i < vectorLength; i++) {
+			tokenArray[i] = farType.convert(tokenArray[i]);
+		    }
+		    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
+        }
+    }
+
     /** Constrain that the type of this port to be equal to or greater
      *  than the type of the specified Typeable object.
      *  @param less A Typeable object.
