@@ -22,3 +22,13 @@ Having the figures at the bottom of the page is right.
 If you put them below the point where they are referred to,
 Frame leaves orphaned lines below or above them.  The layout
 ends up being far worse.
+
+Converting to html
+------------------
+http://ptolemy/~cxh/sa/quadralay.html covers the details, but basically
+as ptuser, log in to carson and do:
+
+setenv DISPLAY thesun:0
+setenv QUADRALAYHOME /usr/tools/tools2/www/quadralay
+set path = ($path $QUADRALAYHOME/bin)
+
