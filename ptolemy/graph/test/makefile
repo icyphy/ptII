@@ -54,13 +54,14 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	DirectedGraph.tcl \
 	DirectedAcyclicGraph.tcl \
-    Edge.tcl \
+	Edge.tcl \
 	Graph.tcl \
-    Graphs.tcl \
+	GraphException.tcl \
+	Graphs.tcl \
 	InequalitySolver.tcl \
 	InequalityTerm.tcl \
-    LabeledList.tcl \
-    Node.tcl
+	LabeledList.tcl \
+	Node.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
