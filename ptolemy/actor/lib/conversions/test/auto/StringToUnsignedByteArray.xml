@@ -9,6 +9,8 @@
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
+        <property name="copernicus_iterations" class="ptolemy.data.expr.Parameter" value="500">
+        </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
