@@ -116,12 +116,15 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
 
-                _registerBlocked();
+                
+                _getDirector()._informOfReadBlock(this, true);
+                // _registerBlocked();
                 blocked = true;
                 while (_isGetWaiting()) {
                     _checkFlagsAndWait();
                 }
-                _registerUnblocked();
+                _getDirector()._informOfReadUnBlock(this, true);
+                // _registerUnblocked();
                 blocked = false;
                 tmp = _token;
                 _setRendezvousComplete(true);
@@ -134,7 +137,8 @@ public class CSPReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, woken up and terminated.
                 // register process as being unblocked
-                _getDirector()._actorUnblocked();
+                _getDirector()._informOfReadUnBlock(this, true);
+                // _getDirector()._actorUnblocked();
             }
         }
         return tmp;
@@ -353,12 +357,14 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
 
-                _registerBlocked();
+                _getDirector()._informOfWriteBlock(this);
+                // _registerBlocked();
                 blocked = true;
                 while(_isPutWaiting()) {
                     _checkFlagsAndWait();
                 }
-                _registerUnblocked();
+                _getDirector()._informOfWriteUnBlock(this);
+                // _registerUnblocked();
                 blocked = false;
                 _setRendezvousComplete(true);
                 notifyAll();
@@ -371,7 +377,8 @@ public class CSPReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, awakened and terminated.
                 // register process as being unblocked
-                _getDirector()._actorUnblocked();
+                _getDirector()._informOfWriteUnBlock(this);
+                // _getDirector()._actorUnblocked();
             }
         }
     }
@@ -604,21 +611,21 @@ public class CSPReceiver implements ProcessReceiver {
      * trying to rendezvous at this receiver.
      *  @exception InterruptedException If the thread is
      *   interrupted while waiting.
-     */
     private void _registerBlocked() throws InterruptedException {
         _checkFlags();
         _getDirector()._actorBlocked();
     }
+     */
 
     /* Register with the director that an actor has unblocked after
      * rendezvousing at this receiver.
      *  @exception InterruptedException If the thread is
      *   interrupted while waiting.
-     */
     private void _registerUnblocked() throws InterruptedException {
         _checkFlags();
         _getDirector()._actorUnblocked();
     }
+     */
 
     /* Called only by the get and put methods of this class to indicate
      * that a get is waiting(value is true) or that the corresponding

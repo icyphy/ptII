@@ -223,9 +223,9 @@ public abstract class ConditionalBranch {
      *  while waiting.
      */
     protected void _registerBlockAndWait() throws InterruptedException {
-        getController()._branchBlocked();
+        // getController()._branchBlocked();
         getReceiver()._checkFlagsAndWait();
-        getController()._branchUnblocked();
+        // getController()._branchUnblocked();
     }
 
     ///////////////////////////////////////////////////////////////////
