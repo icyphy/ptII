@@ -190,7 +190,7 @@ public class HTMLAbout {
             // then event.getURL() will return null, so we have
             // to use getDescription()
             newURL = _temporaryHTMLFile("copyright", ".htm",
-                    GenerateCopyrights.generateHTML());
+                    GenerateCopyrights.generateHTML(configuration));
         } else if (event.getDescription()
                 .equals("about:configuration")) {
             // about:expandConfiguration will expand the configuration
