@@ -72,6 +72,7 @@ JSRCS = \
 	MatrixUpperBound.java \
 	Numerical.java \
 	ObjectToken.java \
+	RecordToken.java \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java
