@@ -63,6 +63,8 @@ public class ParameterizedNodeController extends NamedObjController {
 
         // Add a menu creator.
         _menuCreator = new MenuCreator(null);
+        _menuCreator.setMouseFilter(new PopupMouseFilter());
+
         // FIXME: Why doesn't getNodeInteractor() return a NodeInteractor?
         NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
         interactor.addInteractor(_menuCreator);

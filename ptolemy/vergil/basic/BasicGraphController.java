@@ -356,6 +356,10 @@ public abstract class BasicGraphController
         GraphPane pane = getGraphPane();
         _menuFactory = new SchematicContextMenuFactory(this);
         _menuCreator = new MenuCreator(_menuFactory);
+        _menuCreator.setMouseFilter(new PopupMouseFilter());
+            
+        // Note that the menuCreator cannot be an interactor, because
+        // it accepts all events.
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
         pane.getBackgroundEventLayer().setConsuming(false);
         if (_configuration != null) {
