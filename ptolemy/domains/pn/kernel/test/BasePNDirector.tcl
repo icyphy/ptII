@@ -130,8 +130,13 @@ test BasePNDirector-7.1 {Test finishing methods} {
     $d71 addProcessListener $lis
     $manager run
     $d71 removeProcessListener $lis
-    list [$t1 getProfile] [$lis getProfile]
+    set prof [$t1 getProfile]
+    $t1 clearProfile
+    $manager run
+    list $prof [$t1 getProfile] [$lis getProfile]
 } {{broadcast new token 0
+broadcast new token 1
+} {broadcast new token 0
 broadcast new token 1
 } {State of .E71.t1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
 State of .E71.s1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
