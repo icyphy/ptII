@@ -394,14 +394,14 @@ public class DTReceiver extends SDFReceiver {
         _deltaTime = 0.0;
         overrideHasToken = false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                  package-access variables                 ////
-    
+
     // override the value of hasToken() given by SDFReceiver
     // This variable is used in mixed-hierarchical DT
     boolean overrideHasToken;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -431,8 +431,8 @@ public class DTReceiver extends SDFReceiver {
 
     // The actor containing this receiver
     private Actor _to;
-    
+
     // The port containing this receiver
     private IOPort _toPort;
-  
+
     }

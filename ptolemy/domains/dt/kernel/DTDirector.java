@@ -345,7 +345,7 @@ public class DTDirector extends SDFDirector {
           }*/
 
         super.fire();
-    
+
         // fire_
     }
 
@@ -843,7 +843,7 @@ public class DTDirector extends SDFDirector {
      */
     private void _buildOutputPortTable() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        
+
         _shouldTransferOutputs = new HashMap();
         Iterator outports = container.outputPortList().iterator();
         while(outports.hasNext()) {
@@ -851,7 +851,7 @@ public class DTDirector extends SDFDirector {
 
             _shouldTransferOutputs.put(port, Boolean.TRUE);
         }
-             
+
     }
 
     /** Check if the current time is a valid time for execution. If the
@@ -916,7 +916,7 @@ public class DTDirector extends SDFDirector {
         _debug("timeElapsed = " + timeElapsed);
         _debug("timeRemaining = " + timeRemaining);
         _debug("tolerance = " + _TOLERANCE);
-        
+
         if (timeRemaining < -_TOLERANCE ) {
             // this case should not occur
             _debug("InternalErrorException time: "
@@ -933,7 +933,7 @@ public class DTDirector extends SDFDirector {
             while(outputPorts.hasNext()) {
                 Receiver[][] insideReceivers;
                 TypedIOPort port = (TypedIOPort) outputPorts.next();
-                
+
                 insideReceivers = port.getInsideReceivers();
                 double deltaTime =
                     ((DTReceiver)insideReceivers[0][0]).getDeltaTime();
