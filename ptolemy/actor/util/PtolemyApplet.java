@@ -38,6 +38,7 @@ import java.awt.event.*;
 
 // Ptolemy imports
 import ptolemy.actor.*;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplet
@@ -155,7 +156,13 @@ public class PtolemyApplet extends Applet {
      *  of the manager.
      */
     public void stop() {
-        _manager.finish();
+	try {
+            _manager.finish();
+	} catch( IllegalActionException e ) {
+	    System.err.println("IllegalActionException thrown during " +
+		    "Manager.finish().");
+	    e.printStackTrace();
+	}
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -209,7 +216,13 @@ public class PtolemyApplet extends Applet {
     /** Stop the execution.
      */
     protected void _stop() {
-        _manager.finish();
+	try {
+            _manager.finish();
+	} catch( IllegalActionException e ) {
+	    System.err.println("IllegalActionException thrown during " +
+		    "Manager.finish().");
+	    e.printStackTrace();
+	}
     }
 
     ////////////////////////////////////////////////////////////////////////
