@@ -411,7 +411,6 @@ public abstract class BasicGraphController extends AbstractGraphController
     public class OpenBaseClassAction extends FigureAction {
 
         /** Construct a new action.
-         *  @param description A description.
          */
         public OpenBaseClassAction() {
             super("Open Base Class");
