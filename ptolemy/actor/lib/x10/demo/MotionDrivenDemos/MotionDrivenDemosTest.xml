@@ -1,7 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="MotionDrivenDemosTest" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?><entity name="MotionDrivenDemosTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 590}, maximized=false}">
@@ -156,9 +153,7 @@ through the demos.</text></svg></configure>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="standby">
             </property>
-            <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                <configure></configure>
-            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 219, 796, 466}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 350]">
@@ -446,7 +441,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;&lt;D16-ON-0&gt;&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&#34;&lt;D16-ON-0&gt;&#34;">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">

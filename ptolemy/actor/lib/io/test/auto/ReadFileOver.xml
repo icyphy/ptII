@@ -1,7 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ReadFileOver" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?><entity name="ReadFileOver" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 61, 815, 509}}">
@@ -58,11 +55,7 @@
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
-  </configure>
-            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
@@ -177,7 +170,7 @@
         <link port="state.endOfFile" relation="endOfFileRelation"/>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;This&quot;, &quot;is&quot;, &quot;a&quot;, &quot;test&quot;, &quot;text&quot;, &quot;data&quot;, &quot;file.&quot;, &quot;This&quot;, &quot;is&quot;, &quot;a&quot;, &quot;test&quot;, &quot;text&quot;, &quot;data&quot;, &quot;file.&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&#34;This&#34;, &#34;is&#34;, &#34;a&#34;, &#34;test&#34;, &#34;text&#34;, &#34;data&#34;, &#34;file.&#34;, &#34;This&#34;, &#34;is&#34;, &#34;a&#34;, &#34;test&#34;, &#34;text&#34;, &#34;data&#34;, &#34;file.&#34;}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
