@@ -33,7 +33,6 @@ ME =		ptolemy/actor/lib/hoc/demo
 # Keep these alphabetical please.
 DIRS = 		DFTSubSet \
 		HocDE \
-		IterateOverArray \
 		MobileFunction \
 		ModelReference
 
@@ -52,14 +51,13 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	DFTSubSet/DFTSubSet.jar \
 	HocDE/HocDE.jar \
-	IterateOverArray/IterateOverArray.jar \
 	MobileFunction/MobileFunction.jar \
 	ModelReference/ModelReference.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 EXTRA_SRCS = \
-	index.htm phasedArrayIteration.xml phasedArray.xml
+	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

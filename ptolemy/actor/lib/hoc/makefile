@@ -53,7 +53,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	AbstractCase.java \
 	Case.java \
-	IterateOverArray.java \
 	LifeCycleManager.java \
 	MirrorPort.java \
 	MobileFunction.java \
