@@ -1,4 +1,4 @@
-/* Load a sequence of binary images from files.
+/* Calculate the inverse discrete cosine transform of a RenderedOp.
 
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
@@ -28,46 +28,64 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
-import ptolemy.actor.lib.Transformer;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import java.awt.image.DataBuffer;
 import java.awt.image.renderable.ParameterBlock;
-import javax.media.jai.PlanarImage;
+
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+
+//////////////////////////////////////////////////////////////////////////
+//// JAIIDCT
+/**
+   Calculate the inverse discrete cosine transform of an image.  Even 
+   though the input image data may be 3 bytes (one for each band) per 
+   pixel, the output image data is of a higher resolution, not suitable 
+   for displaying or saving.  To display or save the output of this image,
+   use the JAIDataCaster actor to cast the data to an appropriate type
+   (for instance, byte).
+   <p>
+   No JAIDataCaster actors should be used in between a JAIDCT and JAIIDCT 
+   actor, unless if loss of spectral information is okay (or even desired).
+
+   @see JAIDataCaster
+   @see JAIDCT
+   @author James Yeh
+   @version $Id$
+ */
+
 public class JAIIDCT extends Transformer {
 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public JAIIDCT(CompositeEntity container, String name)
              throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-
     }
 
+    /** Fire this actor.
+     *  Output the inverse discrete cosine transform of the inputted 
+     *  image.
+     *  @exception IllegalActionException If a contained method throws it.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
-        parameters = new ParameterBlock();
+        ParameterBlock idctParameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
-        image =  jaiImageToken.getValue();
-        //parameters.addSource((PlanarImage)image);
-        parameters.addSource(image);
-        RenderedOp IDCT = JAI.create("idct", parameters);
- 	//_parameters = new ParameterBlock();
- 	//_parameters.addSource(IDCT);
- 	//_parameters.add(DataBuffer.TYPE_BYTE);
- 	//RenderedOp newerImage = JAI.create("format", _parameters); 
- 	
-        output.send(0, new JAIImageToken(IDCT));
+        RenderedOp oldImage =  jaiImageToken.getValue();
+        idctParameters.addSource(oldImage);
+        RenderedOp newImage = JAI.create("idct", idctParameters);
+        output.send(0, new JAIImageToken(newImage));
     }
-
-    public RenderedOp image;
-    public ParameterBlock parameters;
-    private ParameterBlock _parameters;
-
 }
