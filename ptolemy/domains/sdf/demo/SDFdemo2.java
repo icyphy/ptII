@@ -45,15 +45,6 @@ import java.util.Enumeration;
  */
 public class SDFdemo2 {
 
-    private SDFRamp ramp;
-    private SDFDelay delay;
-    private SDFPrint print;
-    private Manager m = new Manager();
-    private CompositeActor c = new CompositeActor();
-    private SDFDirector d = new SDFDirector();
-    private SDFScheduler s = new SDFScheduler();
-    private IORelation r;
-
     public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
         {

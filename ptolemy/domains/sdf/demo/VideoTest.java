@@ -43,52 +43,44 @@ import ptolemy.domains.sdf.lib.vq.*;
  */
 public class VideoTest {
 
-    private Manager m = new Manager();
-    private CompositeActor c= new CompositeActor();
-    private SDFDirector d= new SDFDirector();
-    private SDFScheduler s=new SDFScheduler();
-    private IORelation r;
-    private ImageSequence source;
-    private ImagePartition part;
-    private ImageUnpartition unpart;
-    private ImageDisplay display;
-    private SDFConsumer consumer;
-
     public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
-         {
-             DebugListener debugger = new DebugListener();
-
-                    Debug.register(debugger);
-        VideoTest demo=new VideoTest();
-        demo.execute();
-    }
+        {
+            DebugListener debugger = new DebugListener();
+            
+            Debug.register(debugger);
+            VideoTest demo = new VideoTest();
+            demo.execute();
+        }
     public void execute()
             throws IllegalActionException, NameDuplicationException
-        {
-
-                c.setDirector(d);
-                c.setManager(m);
-                d.setScheduler(s);
-                d.setScheduleValid(false);
-
-                source = new ImageSequence(c, "Source");
-                part = new ImagePartition(c, "Part");
-                unpart = new ImageUnpartition(c, "Unpart");
-                //                display = new ImageDisplay(c, "Display");
-                consumer = new SDFConsumer(c, "Display");
-
-                r=(IORelation) c.connect((IOPort)source.getPort("image"),
-                        (IOPort)part.getPort("image"),"R1");
-                r=(IORelation) c.connect((IOPort)part.getPort("partition"),
-                        (IOPort)unpart.getPort("partition"),"R2");
-                r=(IORelation) c.connect((IOPort)unpart.getPort("image"),
-                        (IOPort)consumer.getPort("input"),"R3");
-
-                Parameter p = (Parameter) d.getAttribute("Iterations");
-                p.setToken(new IntToken(60));
-                m.run();
-                System.out.println("finished!");
+        {            
+            Manager m = new Manager();
+            CompositeActor c = new CompositeActor();
+            SDFDirector d = new SDFDirector();
+            SDFScheduler s = new SDFScheduler();
+            IORelation r;
+            c.setDirector(d);
+            c.setManager(m);
+            d.setScheduler(s);
+            d.setScheduleValid(false);
+            
+            ImageSequence source = new ImageSequence(c, "Source");
+            ImagePartition part = new ImagePartition(c, "Part");
+            ImageUnpartition unpart = new ImageUnpartition(c, "Unpart");
+            SDFConsumer consumer = new SDFConsumer(c, "Display");
+            
+            r = (IORelation) c.connect((IOPort)source.getPort("image"),
+                    (IOPort)part.getPort("image"), "R1");
+            r = (IORelation) c.connect((IOPort)part.getPort("partition"),
+                    (IOPort)unpart.getPort("partition"), "R2");
+            r = (IORelation) c.connect((IOPort)unpart.getPort("image"),
+                    (IOPort)consumer.getPort("input"), "R3");
+            
+            Parameter p = (Parameter) d.getAttribute("Iterations");
+            p.setToken(new IntToken(60));
+            m.run();
+            System.out.println("finished!");
         }
 }
 
