@@ -67,9 +67,9 @@ public class HeliControlApplet extends CTApplet {
         super.init();
         // Initialization
         _stopTimeBox = new TextField("70.0", 10);
-        _currentTimeLabel = new Label("Now: 0.0     ");
+        _currentTimeCanvas = new ProgressBar();
         _goButton = new Button("Go");
-        _actionButton = new Button("Action");
+        _actionButton = new Button("Climb");
 
         // The applet has tow panels, stacked vertically
         setLayout(new BorderLayout());
@@ -98,7 +98,7 @@ public class HeliControlApplet extends CTApplet {
         // Done adding simulation parameter panel.
 
         // Adding current time in the sub panel.
-        simulationParam.add(_currentTimeLabel);
+        simulationParam.add(_currentTimeCanvas);
         // Done adding average wait time.
 
         // Adding Stop time in the simulation panel.
@@ -138,9 +138,9 @@ public class HeliControlApplet extends CTApplet {
             // ---------------------------------
 
             CTCompositeActor sub = new CTCompositeActor(sys, "Linearizers");
-            HSDirector hsdir = new HSDirector(_workspace, "HSDirector");
+            _hsdir = new HSDirector(_workspace, "HSDirector");
 
-            sub.setDirector(hsdir);
+            sub.setDirector(_hsdir);
             TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
             subinPx.setInput(true);
             subinPx.setOutput(false);
@@ -185,7 +185,7 @@ public class HeliControlApplet extends CTApplet {
             suboutVz.setOutput(true);
             
             HSController hsctrl = new HSController(sub, "HSController");
-            hsdir.setController(hsctrl);
+            _hsdir.setController(hsctrl);
 
             TypedIOPort hscInAct = new TypedIOPort(hsctrl, "inputAction");
             hscInAct.setInput(true);
@@ -606,32 +606,6 @@ public class HeliControlApplet extends CTApplet {
             ex.printStackTrace();
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
-
-    // The thread that runs the simulation.
-    private boolean _isSimulationRunning;
-
-    // FIXME: Under jdk 1.2, the following can (and should) be private
-    private CTMultiSolverDirector _dir;
-    private Manager _thismanager;
-
-    private TextField _stopTimeBox;
-    private Label _currentTimeLabel;
-    private double _stopTime = 70.0;
-    private Button _goButton;
-    private Button _actionButton;
-
-    private Parameter _paramAlphaP;
-    private Parameter _paramAlphaV;
-    private Parameter _paramAlphaA;
-    private Parameter _paramStopT;
-    private Parameter _paramButton;
-
-    //private Label _currentTimeLabel;
-    private boolean _isSimulationPaused = false;
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
@@ -852,20 +826,93 @@ public class HeliControlApplet extends CTApplet {
         return sub;
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    // The thread that runs the simulation.
+    private boolean _isSimulationRunning;
+
+    // FIXME: Under jdk 1.2, the following can (and should) be private
+    private CTMultiSolverDirector _dir;
+    private Manager _thismanager;
+    private HSDirector _hsdir;
+    private int _currentState;
+    private int[] _switchTime = new int[5];
+    private boolean _switched;
+
+    private TextField _stopTimeBox;
+    private ProgressBar _currentTimeCanvas;
+    private double _stopTime = 70.0;
+    private Button _goButton;
+    private Button _actionButton;
+
+    private Parameter _paramAlphaP;
+    private Parameter _paramAlphaV;
+    private Parameter _paramAlphaA;
+    private Parameter _paramStopT;
+    private Parameter _paramButton;
+
+    //private Label _currentTimeLabel;
+    private boolean _isSimulationPaused = false;
 
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
-
     /* Show simulation progress.
      */
     public class CurrentTimeThread extends Thread {
         public void run() {
+            _switchTime[0] = 0;
             while (_isSimulationRunning) {
+                _switched = false;
+                // get current FSM state.
+                SCState st = _hsdir.currentState();
+                if( st == null) {
+                    continue;
+                }
+                String stateName = st.getName();
+                if (stateName.equals("HoverState")){
+                    _currentState = 0;
+                } else if(stateName.equals("AccelState")) {
+                    if(_currentState ==0) {
+                        _switched = true;
+                    }
+                    _currentState = 1;
+                } else if(stateName.equals("Cruise1State")) {
+                    if(_currentState == 1) {
+                        _switched = true;
+                    }
+                    _currentState = 2;
+                } else if(stateName.equals("ClimbState")) {
+                    if (_currentState == 1) {  // state2 is skipped
+                        _switchTime[2] = _switchTime[1]+1;
+                        _switched = true;
+                    }
+                    if(_currentState ==2) {
+                        _switched = true;
+                    }
+                   _currentState = 3;
+                } else {
+                    if(_currentState ==3) {
+                        _switched = true;
+                    }
+                    _currentState = 4;
+                }
+                
                 // get the current time from director.
                 double currenttime = _dir.getCurrentTime();
-                _currentTimeLabel.setText(("Now: "+currenttime).substring(10));
+                double ratio = (currenttime/_stopTime)*140.0;
+                int width = (new Double(ratio)).intValue();
+                if((ratio - (double)width) > 0.5) {
+                    width +=1;
+                }
+                if(_switched) {
+                    _switchTime[_currentState] = width-1;
+                }
+                int incwidth = width - _switchTime[_currentState];
+                _currentTimeCanvas.setWidth(incwidth);
+                _currentTimeCanvas.repaint();
                 try {
-                    sleep(500);
+                    sleep(100);
                 } catch (InterruptedException e) {}
             }
         }
@@ -923,6 +970,81 @@ public class HeliControlApplet extends CTApplet {
             }
 
         }
+    }
+
+    /** Draw the progress bar.
+     */
+    public class ProgressBar extends Canvas {
+
+        /** draw the progress bar.
+         */
+        public void paint(Graphics g) {
+            g.setColor(new Color(128, 128, 128));
+            g.draw3DRect(8, 8, 144, 24, false);
+           
+            switch(_currentState) {
+            case 0:
+                g.setColor(new Color(255, 0, 0));
+                g.fill3DRect(10, 10, _width, 20, true);
+                break;
+            case 1:
+                g.setColor(new Color(255, 0, 0));
+                g.fill3DRect(10, 10, _switchTime[1], 20, true);
+                g.setColor(new Color(0, 255, 0));
+                g.fill3DRect(10+_switchTime[1], 10, _width, 20, true);
+                break;
+            case 2:
+                g.setColor(new Color(255, 0, 0));
+                g.fill3DRect(10, 10, _switchTime[1], 20, true);
+                g.setColor(new Color(0, 255, 0));
+                g.fill3DRect(10+_switchTime[1], 10, 
+                        _switchTime[2]-_switchTime[1], 20, true);
+                g.setColor(new Color(0, 0, 255));
+                g.fill3DRect(10+_switchTime[2], 10, _width, 20, true);
+                break;
+            case 3:
+                //System.err.println(_switchTime[2] + " " +_switchTime[3]);
+                g.setColor(new Color(255, 0, 0));
+                g.fill3DRect(10, 10, _switchTime[1], 20, true);
+                g.setColor(new Color(0, 255, 0));
+                g.fill3DRect(10+_switchTime[1], 10, 
+                        _switchTime[2]-_switchTime[1], 20, true);
+                g.setColor(new Color(0, 0, 255));
+                g.fill3DRect(10+_switchTime[2], 10, 
+                        _switchTime[3]-_switchTime[2], 20, true);
+                g.setColor(new Color(255, 0, 255));
+                g.fill3DRect(10+_switchTime[3], 10, _width, 20, true);
+                break;
+            case 4:
+                g.setColor(new Color(255, 0, 0));
+                g.fill3DRect(10, 10, _switchTime[1], 20, true);
+                g.setColor(new Color(0, 255, 0));
+                g.fill3DRect(10+_switchTime[1], 10, 
+                        _switchTime[2]-_switchTime[1], 20, true);
+                g.setColor(new Color(0, 0, 255));
+                g.fill3DRect(10+_switchTime[2], 10, 
+                        _switchTime[3]-_switchTime[2], 20, true);
+                g.setColor(new Color(255, 0, 255));
+                g.fill3DRect(10+_switchTime[3], 10, 
+                        _switchTime[4]-_switchTime[3], 20, true);
+                g.setColor(new Color(0, 0, 255)); 
+                g.fill3DRect(10+_switchTime[4], 10, _width, 20, true);
+                break;
+            default:
+                break;
+            }
+        }
+
+        /** set the width of the rectangle.
+         */
+        public void setWidth(int width) {
+            _width = width;
+            
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                    private variables                      ////
+        private int _width= 0;
     }
 }
 
