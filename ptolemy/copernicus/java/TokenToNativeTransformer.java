@@ -203,6 +203,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     for(Iterator units = body.getUnits().snapshotIterator();
                         units.hasNext();) {
                         Unit unit = (Unit)units.next();
+                        System.out.println("unit = " + unit);
                         Iterator boxes = unit.getUseBoxes().iterator();
                         while(boxes.hasNext()) {
                             ValueBox box = (ValueBox)boxes.next();
@@ -267,7 +268,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                         !inlinee.isNative()) {
                                                     // FIXME: only inline things where we are 
                                                     // also inlining the constructor???
-                                                    // System.out.println("inlining");
+                                                    System.out.println("inlining " + inlinee);
                                                     inlinee.retrieveActiveBody();
                                                     // Then we know exactly what method will
                                                     // be called, so inline it.
@@ -283,7 +284,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                 System.out.println("method = " + j.next());
                                             }
                                         }
+                                    } else {
+                                        System.out.println("Not a token or type method.");
                                     }
+                                } else {
+                                    System.out.println("baseType = " + baseType);
                                 }
                             } else if(value instanceof SpecialInvokeExpr) {
                                 SpecialInvokeExpr r = (SpecialInvokeExpr)value;
@@ -457,9 +462,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             typeAnalysis.getSpecializedType(local);
                         
                         // If the type is not instantiable, then skip it.
-                        if(!localTokenType.isInstantiable()) {
-                            continue;
-                        }
+                        //    if(!localTokenType.isInstantiable()) {
+                        //    continue;
+                        // }
 
                         // If we've already created subfields for this
                         // field, then don't do it again.
@@ -872,13 +877,15 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                         stmt.getRightOp() instanceof NewExpr) {
                                     if(debug) System.out.println("handling as new object");
                                     NewExpr newExpr = (NewExpr)stmt.getRightOp();
-                                // We have an assignment from one local token to another.
+                                    // We have an assignment from one local token to another.
                                     Map map = (Map)localToFieldToLocal.get(stmt.getLeftOp());
                                     if(map != null) {
                                         doneSomething = true;
  
                                         Local isNullLocal = (Local)
                                             localToIsNullLocal.get(stmt.getLeftOp());
+                                        System.out.println("Stmt = " + stmt);
+                                        
                                         body.getUnits().insertBefore(
                                                 Jimple.v().newAssignStmt(
                                                         isNullLocal,

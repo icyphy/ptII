@@ -154,7 +154,7 @@ compileDemo: $(JCLASS)
 		-p wjtp.iat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ttn debug,disabled,targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ttn disabled,debug,targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ts debug,targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.noe targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.snapshot1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
