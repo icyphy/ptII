@@ -39,7 +39,6 @@ import javax.swing.JFrame;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.apps.superb.actor.lib.FigureInteractor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
