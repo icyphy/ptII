@@ -94,7 +94,6 @@ JSRCS = \
 	Reader.java \
 	RealTimeDelay.java \
 	Recorder.java \
-	Round.java \
 	SequenceActor.java \
 	SequenceSource.java \
 	Scale.java \
