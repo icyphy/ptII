@@ -53,12 +53,18 @@ TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
-JSRCS = PNActor.java \
-	PNCompositeActor.java \
+JSRCS = \
+	PNActorListener.java \
 	PNDirector.java \
-	PNInPort.java \
-	PNOutPort.java \
-	PNPort.java
+	PNQueueReceiver.java \
+	PNThread.java \
+	TerminateProcessException.java 
+
+# PNActor.java
+# PNCompositeActor.java
+# PNInPort.java
+# PNOutPort.java
+# PNPort.java
 
 EXTRA_SRCS =	$(JSRCS)
 
