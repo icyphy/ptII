@@ -233,8 +233,8 @@ public class VideoCamera extends Source implements ControllerListener {
         // Choose the device from the device list.
         // FIXME: This isn't crashing gracefully at all.
         CaptureDeviceInfo captureDeviceInfo
-            = (CaptureDeviceInfo) deviceList.get(((IntToken)deviceNumber.
-                                                         getToken()).intValue());
+            = (CaptureDeviceInfo) deviceList
+            .get(((IntToken)deviceNumber.getToken()).intValue());
 
         // Create a locator for this device.
         MediaLocator locator = captureDeviceInfo.getLocator();

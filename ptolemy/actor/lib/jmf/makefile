@@ -64,7 +64,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	jmf.xml \
 	jmf-copyright.htm \
-	movieIn.mov \
+	MrPtolemy.mov \
 	package.html
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
