@@ -46,6 +46,13 @@ import java.util.Enumeration;
 /**
 An FSMDirector governs the execution of a *charts model.
 
+Note:  The name of a refining state's input port must have the same 
+name as the input port (of this director's container) to which it
+is connected. It the names don't match, then token transfer will
+silently fail when transferInputs() is called on the input port.
+The same holds for output ports (in this case transferOutputs() will
+silently fail if the names are not the same).
+
 @author Xiaojun Liu
 @version: $Id$
 */
@@ -344,6 +351,12 @@ public class FSMDirector extends Director {
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored.
      *
+     *  Note: This method assumes that the name of the
+     *  refining state's input port has the same name 
+     *  as the input port (of this director's container) to
+     *  which it is connected. It the names don't match,
+     *  then token transfer will silently fail.
+     *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @return True if data are transfered.
@@ -372,6 +385,14 @@ public class FSMDirector extends Director {
                     }
                     rec.put(t);
                 }
+
+		// ************ FIXME ************* 
+		/* This assumes that the name of the
+		 * refining state's port must have the same name 
+		 * as the input port (of this director's container) to
+		 * which it is connected. It the names don't match,
+		 * then things silently fail! :(
+		 */
                 p = (IOPort)refine.getPort(port.getName());
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
@@ -396,6 +417,12 @@ public class FSMDirector extends Director {
      *  ports it is connected to on the outside.  The port argument must
      *  be an opaque output port.  If any channel of the output port
      *  has no data, then that channel is ignored.
+     *
+     *  Note: This method assumes that the name of the
+     *  refining state's output port has the same name 
+     *  as the output port (of this director's container) to
+     *  which it is connected. It the names don't match,
+     *  then token transfer will silently fail.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
