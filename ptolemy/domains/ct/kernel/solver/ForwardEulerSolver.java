@@ -95,15 +95,26 @@ public class ForwardEulerSolver extends FixedStepSolver {
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
-        double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double tentativeState =
-            integrator.getState() + f*(director.getCurrentStepSize());
-
-        integrator.setTentativeState(tentativeState);
-        integrator.setTentativeDerivative(f);
-
-        integrator.output.broadcast(new DoubleToken(tentativeState));
+        if (_getRoundCount() == 0) {
+            // During the first round, use the current derivative to predict
+            // the states at currentModelTime + currentStepSize. The predicted
+            // states are the initial guesses for fixed-point iteration.
+            CTDirector director = (CTDirector)getContainer();
+            double tentativeState = integrator.getState();
+            double f = integrator.getDerivative();
+            tentativeState = tentativeState + f*(director.getCurrentStepSize());
+            // Set converged to false such that the integrator will be refired
+            // again to check convergence of resolved states.
+            _voteForConverged(false);
+            integrator.setTentativeState(tentativeState);
+            integrator.output.broadcast(new DoubleToken(tentativeState));
+        } else {
+            // During the second round, store the derivative for the next 
+            // integration. Because the default converged is true, we do not set
+            // it to true again here.
+            double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
+            integrator.setTentativeDerivative(f);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

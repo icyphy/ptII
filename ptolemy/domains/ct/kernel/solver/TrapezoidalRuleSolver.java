@@ -169,8 +169,10 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return 2;
     }
 
-    /** Fire the given integrator.
-     *
+    /** Fire the given integrator. Vote false for convergence if
+     *  a fixed-point solution is not found. When the states first converged,
+     *  calculate the states again with two steps (each step advance time half
+     *  of the current step size) for error control.
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or send output.

@@ -89,6 +89,18 @@ public abstract class FixedStepSolver extends ODESolver {
         }
     }
 
+    /** Fire state transition actors. Increment the round count. If the states
+     *  have converged, reset the round count.
+     *  @exception IllegalActionException If thrown in the super class.
+     */
+    public void fireStateTransitionActors() throws IllegalActionException {
+        super.fireStateTransitionActors();
+        _incrementRoundCount();
+        if (_isConverged()) {
+            _resetRoundCount();
+        }
+    }
+
     /** Return 0 to indicate that no history information is needed by
      *  this solver.
      *  @return 0.

@@ -119,7 +119,9 @@ public class DerivativeResolver extends ODESolver
 
     /** Fire the given integrator. Build history information by recording
      *  the current input as the derivative and using the old state as the
-     *  tentative state.
+     *  tentative state. Note that this method is called during the discrete
+     *  phase of execution of an integration. See the _propagateResolvedStates()
+     *  and _discretePhaseExecution() methods in CTMultiSolverDirector class.
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If can not read input.
      */
