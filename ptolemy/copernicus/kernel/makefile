@@ -53,9 +53,13 @@ JSRCS = \
 	CastAndInstanceofEliminator.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
+	JimpleWriter.java \
 	KernelMain.java \
 	MaybeAliasAnalysis.java \
 	MustAliasAnalysis.java \
+	NullPointerAnalysis.java \
+	SideEffectAnalysis.java \
+	SideEffectFreeInvocationRemover.java \
 	SootUtilities.java \
 	TransformerAdapter.java
 

@@ -38,19 +38,9 @@ import soot.toolkits.graph.*;
 import java.util.*;
 
 /** 
-A transformer that removes instance equality checks. 
-It uses alias analysis to determine what locals can point to the same object,
-allowing static evaluation of simple conditions.
-Specifically, <i>ref1 == ref2</i> can be replaced with true if <i>ref1</i>
-and <i>ref2</i> are must-aliases of eachother, and false if <i>ref1</> and <i>ref2</i>
-are not maybe aliases of eachother.  Similarly, <i>ref1 != ref2</i> can be
-replaced with true if <i>ref1</> and <i>ref2</i> are not maybe aliases of 
-eachother and with false if they are must-aliases
-<p>
-However, in general, making decisions base on must-aliases is much easier 
-than making decisions on maybe aliases...  in particular, a conservative
-must alias analysis makes it safe 
-
+A transformer that removes isNull checks. 
+This uses null-pointer analysis to determine which checks can be
+removed.
 */
 
 public class InstanceEqualityEliminator extends BodyTransformer
@@ -69,19 +59,14 @@ public class InstanceEqualityEliminator extends BodyTransformer
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
-        System.out.println("InstanceEqualityEliminator.internalTransform("
+        System.out.println("NullCheckEliminator.internalTransform("
                 + phaseName + ", " + body.getMethod() + ", " + options + ")");
         
         boolean debug = Options.getBoolean(options, "debug");
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
-        // The analyses that give us the information to transform the code.
-        NullPointerAnalysis nullPointerAnalysis =
-            new NullPointerAnalysis(unitGraph);
-        MustAliasAnalysis mustAliasAnalysis = 
-            new MustAliasAnalysis(unitGraph);
-        MaybeAliasAnalysis maybeAliasAnalysis = 
-            new MaybeAliasAnalysis(unitGraph);
+        MustAliasAnalysis mustAliasAnalysis = new MustAliasAnalysis(unitGraph);
+        MaybeAliasAnalysis maybeAliasAnalysis = new MaybeAliasAnalysis(unitGraph);
  
         // Loop through all the unit
         for(Iterator units = body.getUnits().iterator();
@@ -96,23 +81,42 @@ public class InstanceEqualityEliminator extends BodyTransformer
                     BinopExpr binop = (BinopExpr)value;
                     Value left = binop.getOp1();
                     Value right = binop.getOp2();
-                    if(left.getType() instanceof RefType &&
-                            right.getType() instanceof RefType) {
+                    if((left.getType() instanceof RefType ||
+                            left.getType() instanceof NullType) &&
+                            (right.getType() instanceof RefType ||
+                                    right.getType() instanceof NullType)) {
                         Set leftMustAliases, rightMustAliases;
                         Set leftMaybeAliases, rightMaybeAliases;
-                        leftMustAliases = 
-                            mustAliasAnalysis.getAliasesOfBefore(
-                                    (Local)left, unit);
-                        leftMaybeAliases = 
-                            maybeAliasAnalysis.getAliasesOfBefore(
-                                    (Local)left, unit);
-                        rightMustAliases = 
-                            mustAliasAnalysis.getAliasesOfBefore(
-                                    (Local)right, unit);
-                        rightMaybeAliases = 
-                            maybeAliasAnalysis.getAliasesOfBefore(
-                                    (Local)right, unit);
-                        if(debug) System.out.println("Ref-ref unit = " + unit);
+                        if(left instanceof Local) {
+                            leftMustAliases = 
+                                mustAliasAnalysis.getAliasesOfBefore(
+                                        (Local)left, unit);
+                            leftMaybeAliases = 
+                                maybeAliasAnalysis.getAliasesOfBefore(
+                                        (Local)left, unit);
+                        } else {
+                            // A null constant.
+                            leftMustAliases = new HashSet();
+                            leftMustAliases.add(left);
+                            leftMaybeAliases = new HashSet();
+                            leftMaybeAliases.add(left);
+                        } 
+                        if(right instanceof Local) {
+                            rightMustAliases = 
+                                mustAliasAnalysis.getAliasesOfBefore(
+                                        (Local)right, unit);
+                            rightMaybeAliases = 
+                                maybeAliasAnalysis.getAliasesOfBefore(
+                                        (Local)right, unit);
+                        } else {
+                            // A null constant.
+                            rightMustAliases = new HashSet();
+                            rightMustAliases.add(right);
+                            rightMaybeAliases = new HashSet();
+                            rightMaybeAliases.add(right);
+                         } 
+                         
+                        if(debug) System.out.println("checking unit = " + unit);
                         if(debug) System.out.println("left aliases = " + 
                                 leftMustAliases);
                         if(debug) System.out.println("right aliases = " + 
@@ -121,14 +125,12 @@ public class InstanceEqualityEliminator extends BodyTransformer
                                 leftMaybeAliases);
                         if(debug) System.out.println("right maybe aliases = " + 
                                 rightMaybeAliases);
-
                         // Utter hack... Should be:
-                        // Why doesn't alias analysis return the right things?
                         // if(mustAliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
                         Set intersection = leftMustAliases;
                         intersection.retainAll(rightMustAliases);
                         if(!intersection.isEmpty()) {
-                            if(debug) System.out.println("instances are equal");
+                            System.out.println("instances are equal");
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
                         } else {
@@ -139,43 +141,13 @@ public class InstanceEqualityEliminator extends BodyTransformer
                                 // If the two sets of aliases have nothing in common, 
                                 // then the two object references cannot be equal.
                                 if(intersection.isEmpty()) {
-                                    if(debug) System.out.println("instances are not equal");
+                                    System.out.println("instances are not equal");
                                     // Replace with operands that can be statically evaluated.
                                     binop.getOp1Box().setValue(IntConstant.v(0));
                                     binop.getOp2Box().setValue(IntConstant.v(1));
                                 }
                             }
                         }                      
-                    } else if(left.getType() instanceof NullType &&
-                            right.getType() instanceof NullType) {
-                        if(debug) System.out.println("Null-Null unit = " + unit);
-                        // must be equal...
-                        binop.getOp1Box().setValue(IntConstant.v(0));
-                        binop.getOp2Box().setValue(IntConstant.v(0));
-                    } else if(left.getType() instanceof NullType &&
-                              right.getType() instanceof RefType) {
-                        // Then the right side is the one we must analyze.
-                        if(debug) System.out.println("Null-Ref unit = " + unit);
-                        Local local = (Local)right;
-                        if(nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
-                            binop.getOp1Box().setValue(IntConstant.v(0));
-                            binop.getOp2Box().setValue(IntConstant.v(0));
-                        } else if(nullPointerAnalysis.isNeverNullBefore(local, unit)) {
-                            binop.getOp1Box().setValue(IntConstant.v(0));
-                            binop.getOp2Box().setValue(IntConstant.v(1));
-                        }
-                    } else if(left.getType() instanceof RefType &&
-                              right.getType() instanceof NullType) {
-                        // Then the right side is the one we must analyze.
-                        if(debug) System.out.println("Ref-Null unit = " + unit);
-                        Local local = (Local)left;
-                        if(nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
-                            binop.getOp1Box().setValue(IntConstant.v(0));
-                            binop.getOp2Box().setValue(IntConstant.v(0));
-                        } else if(nullPointerAnalysis.isNeverNullBefore(local, unit)) {
-                            binop.getOp1Box().setValue(IntConstant.v(0));
-                            binop.getOp2Box().setValue(IntConstant.v(1));
-                        }
                     }
                 }
             }

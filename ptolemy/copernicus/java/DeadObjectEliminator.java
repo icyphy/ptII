@@ -120,13 +120,17 @@ public class DeadObjectEliminator extends BodyTransformer {
           }
           }
           }*/
-    /** Remove any creations of objects of the given class, or subclasses that are
-     *  not directly used in the given body.  Note that this is not, technically a 
-     *  safe thing to do, since object creation may have side effects that will not
+    /** Remove any creations of objects of the
+     *  given class, or subclasses that are
+     *  not directly used in the given body.  Note 
+     *  that this is not, technically a 
+     *  safe thing to do, since object creation may
+     *   have side effects that will not
      *  be seen.  We use this when we have knowledge of the given class that 
-     *  side effects are not possible.
+     *  side effects are not possible, or that the object is immutable.
      */
-    public static void _removeDeadObjectCreation(Body body, SootClass theClass) {
+    public static void _removeDeadObjectCreation(
+            Body body, SootClass theClass) {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
@@ -140,14 +144,28 @@ public class DeadObjectEliminator extends BodyTransformer {
                 Value value = box.getValue();
                 if(value instanceof SpecialInvokeExpr) {
                     SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-                    if(SootUtilities.derivesFrom(r.getMethod().getDeclaringClass(),
-                            theClass) &&
-                            !liveLocals.getLiveLocalsAfter(unit).contains(r.getBase())) {
+                    if(SootUtilities.derivesFrom(
+                            r.getMethod().getDeclaringClass(), theClass) &&
+                            !liveLocals.getLiveLocalsAfter(unit).contains(
+                                    r.getBase())) {
                         // Remove the initialization and the constructor.
+                        // Note: This assumes a fairly tight coupling between
+                        // the new and the object constructor.  This may
+                        // not be true.
                         body.getUnits().remove(unit);
-                        for(Iterator defs = localDefs.getDefsOfAt((Local)r.getBase(), unit).iterator();
+                        for(Iterator defs = localDefs.getDefsOfAt(
+                                (Local)r.getBase(), unit).iterator();
                             defs.hasNext();) {
-                            body.getUnits().remove((Unit)defs.next());
+                            Unit defUnit = (Unit)defs.next();
+                            if(defUnit instanceof DefinitionStmt) {
+                                // If we are keeping a definition, then 
+                                // set the definition to be null.
+                                ((DefinitionStmt)defUnit).getRightOpBox().setValue(NullConstant.v());
+                            } else {
+                                // I can't imagine when this would
+                                // be true?
+                                body.getUnits().remove(defUnit);
+                            }
                         }
                     }
                 }

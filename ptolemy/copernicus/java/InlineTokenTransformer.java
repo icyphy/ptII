@@ -83,7 +83,7 @@ public class InlineTokenTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug deep"; 
+        return super.getDeclaredOptions() + " debug deep targetPackage"; 
     }
 
     protected void internalTransform(String phaseName, Map options) {

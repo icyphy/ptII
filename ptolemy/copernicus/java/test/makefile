@@ -84,7 +84,7 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-PTJACL_JFLAG = -Xms132m -Xmx132m
+PTJACL_JFLAG = -Xms228m -Xmx228m
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
@@ -99,7 +99,7 @@ SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.test.cg
 SHALLOWTARGETNAME = test7
 SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(SHALLOWTARGETNAME)
 
-JVM_SIZE = -Xmx132m
+JVM_SIZE = -Xmx228m
 
 SOOT_USER_ARGS =
 

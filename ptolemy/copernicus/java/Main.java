@@ -31,9 +31,12 @@ package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
+import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
+import ptolemy.copernicus.kernel.JimpleWriter;
+import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -54,6 +57,7 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.scalar.*;
 import soot.toolkits.scalar.LocalSplitter;
+import soot.toolkits.scalar.UnusedLocalEliminator;
 import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.graph.*;
 import soot.dava.*;
@@ -136,9 +140,16 @@ public class Main extends KernelMain {
         // algorithm to specialize the types of domain
         // polymorphic actors.  After this step, no
         // uninstantiable types should remain.
-        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
         //        TypeSpecializer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.tie",
+                new TransformerAdapter(TokenInstanceofEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
+                new TransformerAdapter(TypeAssigner.v())));
 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cp",
+                new TransformerAdapter(CopyPropagator.v())));      
+       
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -159,6 +170,7 @@ public class Main extends KernelMain {
         // of port reads and writes.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
+
         // Set about removing references to ports.  
         // Anywhere where a method is called on a port, replace the
         // method call with an inlined version of the method. 
@@ -167,6 +179,7 @@ public class Main extends KernelMain {
         // buffers.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ipt",
                 InlinePortTransformer.v(_toplevel)));
+
         // Deal with any more statically analyzeable token
         // references that were created.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
@@ -185,18 +198,19 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.cpf",
                 new TransformerAdapter(ConstantPropagatorAndFolder.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.cbf",
-                    new TransformerAdapter(ConditionalBranchFolder.v())));
+                new TransformerAdapter(ConditionalBranchFolder.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.uce",
                 new TransformerAdapter(UnreachableCodeEliminator.v())));
-        
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
-                TokenToNativeTransformer.v(_toplevel)));
         
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
 
+             
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
+                SideEffectFreeInvocationRemover.v()));
+        
         // Unroll loops with constant loop bounds.
         //  Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
@@ -204,28 +218,79 @@ public class Main extends KernelMain {
 
         // Remove tests of object equality that can be statically
         // determined.  The generated code ends up with alot of
-        // these that are really just dead code.  This is currenlty
-        // fairly specific to our implementation above, and 
-        // could be generalized to arbitrary heap-based alias 
-        // analysis, but I haven't bothered yet.
-        Scene.v().getPack("jtp").add(new Transform("jtp.iee",
-                InstanceEqualityEliminator.v()));
+        // these that are really just dead code.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.iee",
+                new TransformerAdapter(InstanceEqualityEliminator.v())));
 
-      
+        // Remove casts and instanceof Checks.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
+                new TransformerAdapter(CastAndInstanceofEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
+                JimpleWriter.v()));
+       
+        // Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
+        //        TokenToNativeTransformer.v(_toplevel)));
+
         // Some cleanup.
         // Remove object creations that are now dead (i.e. aren't used
         // and have no side effects).  This currently only deals with
         // Token and Type constructors, since we know that these will
         // have no interesting side effects.  More complex analysis
         // is possible here, but not likely worth it.
-        Scene.v().getPack("jtp").add(new Transform("jop.doe",
-                DeadObjectEliminator.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.doe",
+                new TransformerAdapter(DeadObjectEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.dae",
+                new TransformerAdapter(DeadAssignmentEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.doe",
+                new TransformerAdapter(DeadObjectEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.dae",
+                new TransformerAdapter(DeadAssignmentEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.doe",
+                new TransformerAdapter(DeadObjectEliminator.v())));
+
+        // Run the standard soot optimizations.  We explicitly specify
+        // this instead of using soot's -O flag so that we can
+        // have access to the result.
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
+                new TransformerAdapter(CastAndInstanceofEliminator.v())));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple2",
+                JimpleWriter.v()));
+ 
         // Removes references to instancefields that come from 'this'.
         Scene.v().getPack("jop").add(new Transform("jop.dae",
                 ImprovedDeadAssignmentEliminator.v()));
-
-          
+        
     }
+
+    /** Add transforms corresponding to the standard soot optimizations
+     *  to the given pack.
+     */
+    private void _addStandardOptimizations(Pack pack) {
+        pack.add(new Transform("jop.cse", 
+                new TransformerAdapter(CommonSubexpressionEliminator.v())));
+        pack.add(new Transform("jop.cp", 
+                new TransformerAdapter(CopyPropagator.v())));
+        pack.add(new Transform("jop.cpf",
+                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
+        pack.add(new Transform("jop.cbf",
+                new TransformerAdapter(ConditionalBranchFolder.v())));
+        pack.add(new Transform("jop.dae",
+                new TransformerAdapter(DeadAssignmentEliminator.v())));
+        pack.add(new Transform("jop.uce1",
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
+        pack.add(new Transform("jop.ubf1",
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
+        pack.add(new Transform("jop.uce2", 
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
+        pack.add(new Transform("jop.ubf2",
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
+        pack.add(new Transform("jop.ule", 
+                new TransformerAdapter(UnusedLocalEliminator.v())));
+    }
+
 
     /** Read in a MoML model, generate java files
      *  @exception IllegalActionException If the model cannot be parsed.

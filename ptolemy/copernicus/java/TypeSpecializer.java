@@ -448,7 +448,12 @@ public class TypeSpecializer extends SceneTransformer {
         } else if(value instanceof InstanceInvokeExpr) {
             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
             String methodName = r.getMethod().getName();
-            //        System.out.println("invokeExpr = " + r);
+            // If we are invoking on something that is not a reference type,
+            // then ignore it.
+            if(!(r.getBase().getType() instanceof RefType)) {
+                return null;
+            }
+            //     System.out.println("invokeExpr = " + r);
             SootClass baseClass = ((RefType)r.getBase().getType()).getSootClass();
             InequalityTerm baseTerm =
                 (InequalityTerm)objectToInequalityTerm.get(r.getBase());
@@ -503,8 +508,7 @@ public class TypeSpecializer extends SceneTransformer {
                         new ptolemy.data.type.ArrayType(
                                 ptolemy.data.type.BaseType.UNKNOWN);
                     _addInequality(debug, solver, baseTerm, 
-                            new VariableTerm(arrayType, r) 
-                            );
+                            new VariableTerm(arrayType, r));
                     InequalityTerm returnTypeTerm = (InequalityTerm)
                         arrayType.getElementTypeTerm();
                     return returnTypeTerm;
@@ -618,17 +622,14 @@ public class TypeSpecializer extends SceneTransformer {
                 // The type of the argument must be greater than the type of the
                 // cast.
                 // The return type will be the type of the cast.
-                InequalityTerm baseTerm = new VariableTerm(
-                        PtolemyUtilities.getTokenTypeForSootType(tokenType),
-                        tokenType);
-                    //(InequalityTerm)objectToInequalityTerm.get(
-                    //     castExpr.getOp());
+                InequalityTerm baseTerm = (InequalityTerm)objectToInequalityTerm.get(
+                        castExpr.getOp());
                 InequalityTerm typeTerm = new ConstantTerm(
                         PtolemyUtilities.getTokenTypeForSootType(tokenType),
                         tokenType);
                 //System.out.println("baseTerm = " + baseTerm);
                 //System.out.println("typeTerm = " + typeTerm);
-                 _addInequality(debug, solver, typeTerm, baseTerm);
+                // _addInequality(debug, solver, typeTerm, baseTerm);
                 return baseTerm;
             } else {
                 // Otherwise there is nothing to be done.

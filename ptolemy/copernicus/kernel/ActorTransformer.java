@@ -68,6 +68,7 @@ import soot.jimple.JimpleBody;
 import soot.jimple.StringConstant;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
+import soot.jimple.toolkits.invoke.SiteInliner;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -175,7 +176,7 @@ public class ActorTransformer extends SceneTransformer {
                 SootUtilities.foldClass(theClass);
                 superClass = theClass.getSuperclass();
             }
-
+            
             // Go through all the initialization code and removing any
             // parameter initialization code.
             // FIXME: This needs to look at all code that is reachable
@@ -204,6 +205,9 @@ public class ActorTransformer extends SceneTransformer {
             // FIXME: This would be nice to do by inlining instead of
             // special casing.
             _implementExecutableInterface(entityInstanceClass);            
+
+            // Inline all methods in the class that are called from within the class.
+            _inlineLocalCalls(theClass);
         }
     }
 
@@ -263,6 +267,29 @@ public class ActorTransformer extends SceneTransformer {
         }
     }
 
+    // Inline invocation sites from methods in the given class to
+    // another method in the given class
+    private static void _inlineLocalCalls(SootClass theClass) {
+        // FIXME: what if the inlined code contains another call
+        // to this class???
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            for(Iterator units = body.getUnits().snapshotIterator();
+                units.hasNext();) {
+                Stmt stmt = (Stmt)units.next();
+                if(stmt.containsInvokeExpr()) {
+                    InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
+                    if(r.getMethod().getDeclaringClass().equals(theClass)) {
+                        // FIXME: What if more than one method could be called?
+                        SiteInliner.inlineSite(r.getMethod(), stmt, method);
+                    }
+                }
+            }
+        }
+    }
+
     private static void _removeAttributeInitialization(SootClass theClass) {
         for(Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
@@ -277,7 +304,10 @@ public class ActorTransformer extends SceneTransformer {
                     // he's written in a while.   See steve gack.
                     if(r.getMethod().getName().equals("attributeChanged") ||
                             r.getMethod().getName().equals("setExpression") ||
-                            r.getMethod().getName().equals("setToken")) {
+                            r.getMethod().getName().equals("setToken") ||
+                            r.getMethod().getName().equals("setTokenConsumptionRate") ||
+                            r.getMethod().getName().equals("setTokenProductionRate") ||
+                            r.getMethod().getName().equals("setTokenInitProduction")) {
                         body.getUnits().remove(stmt);
                     }
                 }

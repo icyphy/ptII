@@ -28,7 +28,7 @@
 */
 
 
-package ptolemy.copernicus.kernel;
+package ptolemy.copernicus.java;
 
 import soot.*;
 import soot.jimple.*;
@@ -38,35 +38,36 @@ import soot.toolkits.graph.*;
 import java.util.*;
 
 /** 
-A transformer that remove unnecessary casts and instanceof checks.
-Note that this relies on properly inferred Java types to operate properly.
-If you create code that has types which are too specific (relative to the
-inferred types) then this transformer will likely create code that is no
-longer verifiable.
+An attempt to remove unnecessary casts and instanceof checks.
 
 */
 
-public class CastAndInstanceofEliminator extends BodyTransformer {
-    private static CastAndInstanceofEliminator instance = new CastAndInstanceofEliminator();
-    private CastAndInstanceofEliminator() {}
+public class TokenInstanceofEliminator extends BodyTransformer
+{
+    private static TokenInstanceofEliminator instance = new TokenInstanceofEliminator();
+    private TokenInstanceofEliminator() {}
 
-    public static CastAndInstanceofEliminator v() { return instance; }
+    public static TokenInstanceofEliminator v() { return instance; }
 
     public String getDeclaredOptions() { return super.getDeclaredOptions(); }
     
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
-     
-        System.out.println("CastAndInstanceofEliminator.internalTransform("
-                + b.getMethod() + phaseName + ")");
-         
+             
+        System.out.println("TokenInstanceofEliminator.internalTransform(" + body.getMethod() + ", "
+                + phaseName + ")");
+
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet());
     }
  
     public static void eliminateCastsAndInstanceOf(Body body, String phaseName, 
             Set unsafeLocalSet) {
-         
+
+        TokenTypeAnalysis tokenTypes = 
+            new TokenTypeAnalysis(body.getMethod(),
+                    new CompleteUnitGraph(body));
+
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -75,12 +76,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
               
-                // This assumes that the types of local 
-                // variables are verifiable types.
-                // This is not ensured by Soot, unless 
-                // you run the TypeAssigner before this
-                // transformation.
-                if(value instanceof CastExpr) {
+                /*if(value instanceof CastExpr) {
                     // If the cast is to the same type as the 
                     // operand already is, then replace with 
                     // simple assignment.
@@ -94,7 +90,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                        !unsafeLocalSet.contains(op)) {
                         box.setValue(op);
                     }
-                } else if(value instanceof InstanceOfExpr) {
+                } else
+                */
+                if(value instanceof InstanceOfExpr) {
                     // If the operand of the expression is 
                     // declared to be of a type that implies
                     // the instanceof is true, then replace
@@ -102,7 +100,13 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     InstanceOfExpr expr = (InstanceOfExpr)value;
                     Type checkType = expr.getCheckType();
                     Value op = expr.getOp();
-                    Type opType = op.getType();
+                    if(!PtolemyUtilities.isTokenType(op.getType())) {
+                        continue;
+                    }
+
+                    ptolemy.data.type.Type type = tokenTypes.getTypeOfBefore((Local)op, unit);
+
+                    Type opType = PtolemyUtilities.getSootTypeForTokenType(type);
 
                     // Skip locals that are unsafe.
                     if(unsafeLocalSet.contains(op)) {

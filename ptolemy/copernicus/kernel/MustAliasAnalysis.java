@@ -185,7 +185,7 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
 
     protected void merge(Object in1Value, Object in2Value, Object outValue) {
         Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
-       
+
         // First set the output to the first input.
         copy(in1, out);
 
@@ -194,23 +194,15 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
             Object object = i.next();
             Set in1Set = (Set)in1.get(object);
             Set in2Set = (Set)in2.get(object);
-            if(in1Set == null && in2Set == null) {
+            if(in1Set == null) {
                 // If both inputs have maybe aliases, or no
                 // alias information, then the output
                 // is the same.
                 out.put(object, null);
-            } else if(in1Set == null) {
-                // If we have no information about one of the 
-                // inputs, then ???  
-                // FIXME: is this right?
-                in1Set = new HashSet();
-                in1Set.addAll(in2Set);
-                out.put(object, in1Set);
             } else if(!in1Set.equals(in2Set)) {
                 // If the input alias sets are not equal,
                 // then we can't tell anything for sure about
                 // what the union is.
-                // FIXME: intersection?
                 _killAlias(out, object);
             }
         }
@@ -241,9 +233,8 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
             // instance-dependent.
             return ((FieldRef)value).getField();
         } else if(value instanceof CastExpr) {
+            // Must be a local.
             return ((CastExpr)value).getOp();
-        } else if(value instanceof NullConstant) {
-            return value;
         } else return null;
     }
 

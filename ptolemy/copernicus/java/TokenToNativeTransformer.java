@@ -62,6 +62,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
+import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 
 
 /**
@@ -126,7 +127,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             // Inline all token methods, until we run out of things to inline
             boolean doneSomething = true;
             int count = 0;
-            while(doneSomething && (count < 20)) {
+            while(doneSomething && (count < 2)) {
                 doneSomething = false;
                 System.out.println("inlining methods iteration " + count++);
                 // This will allow us to get a better type inference below.
@@ -137,20 +138,27 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                     
                     // First split local variables that are used in multiple places.
-                    LocalSplitter.v().transform(body, phaseName + ".ls", "");
+                    LocalSplitter.v().transform(
+                            body, phaseName + ".ls", "");
                     // We may have locals with the same name.  Rename them.
-                    LocalNameStandardizer.v().transform(body, phaseName + ".lns", "");
+                    LocalNameStandardizer.v().transform(
+                            body, phaseName + ".lns", "");
                     // Assign types to local variables... This types everything that
                     // isn't a token type.
-                    //TypeAssigner.v().transform(body, phaseName + ".ta", "");
+                    TypeAssigner.v().transform(body, phaseName + ".ta", "");
+                   
                     // Run some cleanup...  this will speedup the rest of the analysis.
                     // And prevent typing errors.
-                    CastAndInstanceofEliminator.eliminateCastsAndInstanceOf(
-                            body, phaseName + ".cie", unsafeLocalSet);
-                    CopyPropagator.v().transform(body, phaseName + ".cp", "");
-                    ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
-                    ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
-                    UnreachableCodeEliminator.v().transform(body, phaseName + ".uce", "");
+                    TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
+                            body, phaseName + ".tie", unsafeLocalSet);
+                    CopyPropagator.v().transform(
+                            body, phaseName + ".cp", "");
+                    ConstantPropagatorAndFolder.v().transform(
+                            body, phaseName + ".cpf", "");
+                    ConditionalBranchFolder.v().transform(
+                            body, phaseName + ".cbf", "");
+                    UnreachableCodeEliminator.v().transform(
+                            body, phaseName + ".uce", "");
                 }
 
                 // InvokeGraph invokeGraph = ClassHierarchyAnalysis.newInvokeGraph();
@@ -160,7 +168,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // Now run the type specialization algorithm...  This 
                 // allows us to resolve the methods that we are inlining
                 // with better precision.
-                Map objectToTokenType = TypeSpecializer.specializeTypes(debug, entityClass, unsafeLocalSet);
+                // Map objectToTokenType = TypeSpecializer.specializeTypes(debug, entityClass, unsafeLocalSet);
              
                 for(Iterator methods = entityClass.getMethods().iterator();
                     methods.hasNext();) {
@@ -171,6 +179,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
                     SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
                     SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+                    TokenTypeAnalysis typeAnalysis = new TokenTypeAnalysis(method, unitGraph);
 
                     if(debug) System.out.println("method = " + method);
 
@@ -209,17 +218,17 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     RefType type = (RefType)r.getBase().getType();
                                                                                
                                     if(SootUtilities.derivesFrom(type.getSootClass(),
-                                            PtolemyUtilities.tokenClass)) {
-                                        //||  SootUtilities.derivesFrom(type.getSootClass(),
-                                        //               PtolemyUtilities.typeClass)) {
+                                            PtolemyUtilities.tokenClass)
+                                            ||  SootUtilities.derivesFrom(type.getSootClass(),
+                                                    PtolemyUtilities.typeClass)) {
                                         // Then determine the method that was
                                         // actually invoked.
                                          List methodList = 
                                         //      invokeGraph.getTargetsOf((Stmt)unit);
-                                         hierarchy.resolveAbstractDispatch(
-                                                    type.getSootClass(), 
-                                                   r.getMethod());
-                                        
+                                             hierarchy.resolveAbstractDispatch(
+                                                     type.getSootClass(), 
+                                                     r.getMethod());
+                                         
                                         // If there was only one possible method...
                                         if(methodList.size() == 1) {
                                             // Then inline its code
@@ -260,7 +269,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 }
                             } else if(value instanceof SpecialInvokeExpr) {
                                 SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-                                //System.out.println("special invoking = " + r.getMethod());
+                                System.out.println("special invoking = " + r.getMethod());
                                 
                                 if(r.getBase().getType() instanceof RefType) {
                                     RefType type = (RefType)r.getBase().getType();
@@ -274,13 +283,18 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                         declaringClass.setLibraryClass();
                                         if(!inlinee.isAbstract() && 
                                                 !inlinee.isNative()) {
-                                            //System.out.println("inlining");
+                                            System.out.println("inlining");
                                             inlinee.retrieveActiveBody();
                                             // Then we know exactly what method will
                                             // be called, so inline it.
                                             SiteInliner.inlineSite(
                                                     inlinee, (Stmt)unit, method);
                                             doneSomething = true;
+                                        } else {
+                                            System.out.println("removing");
+                                            // If we don't have a method,
+                                            // then remove the invocation.
+                                            body.getUnits().remove(unit);
                                         }
                                     }
                                 }
@@ -289,7 +303,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 // Inline typelattice methods.
                                 if(r.getMethod().getDeclaringClass().equals(PtolemyUtilities.typeLatticeClass)) {
                                     PtolemyUtilities.inlineTypeLatticeMethods(method,
-                                            unit, box, r, objectToTokenType, localDefs);
+                                            unit, box, r, typeAnalysis, localDefs);
                                 }
 
                                 // System.out.println("static invoking = " + r.getMethod());
@@ -322,7 +336,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         boolean doneSomething = true;
         int count = 0;
-        while(doneSomething && (count < 20)) {
+        if(false) while(doneSomething && (count < 20)) {
             doneSomething = false;
             System.out.println("inlining field iteration " + count++);
                 
@@ -935,7 +949,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
         }
         
         // Loop over all the classes.
-        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+       if(false) for(Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass entityClass = (SootClass)classes.next();
            

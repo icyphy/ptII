@@ -49,74 +49,90 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
     
     /** Return the set of other fields and locals that may reference
      *  the same object as the given field, at a point before
-     *  the given unit.
+     *  the given unit.  If there is no alias information, meaning the
+     *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfBefore(SootField field, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
-        Set set = new HashSet();
-        if(map.get(field) != null) {
+        if(map.get(field) == null) {
+            return null;
+        } else {
+            Set set = new HashSet();
             set.addAll((Set)map.get(field));
+            set.remove(field);
+            return set;
         }
-        set.remove(field);
-        return set;
     }
 
     /** Return the set of other fields and locals that may reference
      *  the same object as the given field, at a point after
-     *  the given unit.
+     *  the given unit.  If there is no alias information, meaning the
+     *  field can be aliased to anything, then return null.
      */
      public Set getAliasesOfAfter(SootField field, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
-        Set set = new HashSet();
-        if(map.get(field) != null) {
+        if(map.get(field) == null) {
+            return null;
+        } else {
+            Set set = new HashSet();
             set.addAll((Set)map.get(field));
+            set.remove(field);
+            return set;
         }
-        set.remove(field);
-        return set;
     }
 
     /** Return the set of other fields and locals that may reference
      *  the same object as the given local, at a point before
-     *  the given unit.
+     *  the given unit.  If there is no alias information, meaning the
+     *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfBefore(Local local, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
-        Set set = new HashSet();
-        if(map.get(local) != null) {
+        if(map.get(local) == null) {
+            return null;
+        } else {
+            Set set = new HashSet();
             set.addAll((Set)map.get(local));
+            set.remove(local);
+            return set;
         }
-        set.remove(local);
-        return set;
     }
 
     /** Return the set of other fields and locals that may reference
      *  the same object as the given field, at a point after
-     *  the given unit.
+     *  the given unit.  If there is no alias information, meaning the
+     *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfAfter(Local local, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
-        Set set = new HashSet();
-        if(map.get(local) != null) {
+        if(map.get(local) == null) {
+            return null;
+        } else {
+            Set set = new HashSet();
             set.addAll((Set)map.get(local));
+            set.remove(local);
+            return set;
         }
-        set.remove(local);
-        return set;
     }
 
 
     // Formulation:
-    // The dataflow information is stored in a map from each aliasable object (SootField or Local)
-    // to a set of aliases.  Note that for each alias-set there is exactly one instance of HashSet
-    // stored in the map.  This is implemented as a flow-insensitive analysis.  
-    // Method calls are handled conservatively, and we assume that they affect the values of all
+    // The dataflow information is stored in a map from each
+    // aliasable object (SootField or Local)
+    // to a set of aliases.  Note that for each alias-set there 
+    // is exactly one instance of HashSet
+    // stored in the map.  This is implemented as a flow-insensitive
+    // analysis.  
+    // Method calls are handled conservatively, and we assume that
+    // they affect the values of all
     // fields (i.e. aliases for all fields are killed.)
-    // If the object has no other aliases, or any maybe-aliases, then it points to null.
+    // If no alias information exists for the object (i.e. it could be
+    // aliased to everything) then it points to null.
     protected Object newInitialFlow() {
         return new HashMap();
     }
 
-    protected void flowThrough(Object inValue, Object d, Object outValue)
-    {
+    protected void flowThrough(Object inValue, Object d, Object outValue) {
         Map in = (Map) inValue, out = (Map) outValue;
         Stmt unit = (Stmt)d;
 
@@ -152,8 +168,9 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                     if(lvalue.getType() instanceof ArrayType ||
                             lvalue.getType() instanceof RefType) {
                         
-                        // add the left side to its new set of 
-                        // aliases. (Gen rule)
+                        // The left side is now aliased to everything
+                        // that the right side was aliased to before.
+                        // (Gen rule)
                         _createAlias(out, lobject, robject);
                     }
                 }
@@ -186,42 +203,38 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
     protected void merge(Object in1Value, Object in2Value, Object outValue) {
         Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
        
-        copy(in1, out);
+        LinkedList allKeys = new LinkedList();
+        allKeys.addAll(in1.keySet());
+        allKeys.addAll(in2.keySet());
 
-        for(Iterator i = in1.keySet().iterator(); i.hasNext();) {
-            Object object = i.next();
+        // Loop through all the variables.
+        while(!allKeys.isEmpty()) {
+            // Pick a variable.
+            Object object = allKeys.removeFirst();
+            // Get its sets of aliases.
             Set in1Set = (Set)in1.get(object);
             Set in2Set = (Set)in2.get(object);
-            // If neither has any aliases, then the output is the same.
-            if(in1Set == null && in2Set == null) {
+            // If either has all aliases, then the output is all aliases.
+            if(in1Set == null || in2Set == null) {
                 out.put(object, null);
-            } else if(in1Set == null) { 
+            } else {
+                // Take the union of the two sets.
                 // If we have any maybe aliases on either
                 // input, then the output is the union.
-                // in this case, the union is trivial.
-                in1Set = new HashSet();
-                in1Set.addAll(in2Set);
-                out.put(object, in1Set);
-            } else if(!in1Set.equals(in2Set)) {
-                // If we have any maybe aliases on either
-                // input, then the output is the union.
-                // In this case, computing the union is 
-                // trickier.
-                if(in2Set != null) {
-                    // Loop through all the things that
-                    // were maybe aliases from in2.
-                    for(Iterator j = in2Set.iterator();
-                        j.hasNext();) {
-                        Object mergeObject = j.next();
-                        // If the object is not already
-                        // listed as an alias.
-                        if(!in2Set.contains(mergeObject)) {
-                            // Then create a new Alias for it.
-                            _createAlias(out, mergeObject, object);
-                        }
-                    }
-                }                
-            }
+                Set set = new HashSet();
+                set.addAll(in1Set);
+                set.addAll(in2Set);
+                
+                // This set is the alias set for
+                // all elements in the set.
+                for(Iterator i = set.iterator();
+                    i.hasNext();) {
+                    Object alias = i.next();
+                    allKeys.remove(alias);
+                    out.put(alias, set);
+                }
+                out.put(object, set);
+            } 
         }
     }
    
@@ -230,9 +243,10 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
         // Get its new set of aliases.
         Set rset = (Set)map.get(rObject);
         if(rset == null) {
-            rset = new HashSet();
-            rset.add(rObject);
-            map.put(rObject, rset);
+            // If the right side was aliased to everything, then 
+            // the left side will also be aliased to everything.
+            map.put(lObject, null);
+            return;
         }
         
         // Add the object to the new set of aliases.
@@ -252,7 +266,8 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
             return ((FieldRef)value).getField();
         } else if(value instanceof CastExpr) {
             return ((CastExpr)value).getOp();
-        } else if(value instanceof NullConstant) {
+        } else if(value instanceof NewExpr ||
+                value instanceof NewArrayExpr) {
             return value;
         } else {
             return null;

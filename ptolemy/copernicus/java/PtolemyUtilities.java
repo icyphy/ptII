@@ -575,9 +575,13 @@ public class PtolemyUtilities {
         }
     }
 
+    /** Inline the given invocation point in the given box, unit, and method.
+     *  Use the given type analysis and local definition information to 
+     *  perform the inlining.
+     */
     public static void inlineTypeLatticeMethods(SootMethod method,
             Unit unit, ValueBox box, StaticInvokeExpr expr, 
-            Map objectToTokenType, LocalDefs localDefs) {
+            TokenTypeAnalysis typeAnalysis, LocalDefs localDefs) {
         SootMethod tokenTokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
                 "int compare(ptolemy.data.Token,ptolemy.data.Token)");
         SootMethod tokenTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
@@ -586,23 +590,23 @@ public class PtolemyUtilities {
                 "int compare(ptolemy.data.type.Type,ptolemy.data.Token)");
         SootMethod typeTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
                 "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
-
+        
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
         if(expr.getMethod().equals(tokenTokenCompareMethod)) {
             Local tokenLocal1 = (Local)expr.getArg(0);
             Local tokenLocal2 = (Local)expr.getArg(1);
-            type1 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal1);
-            type2 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal2);
+            type1 = typeAnalysis.getTypeOfBefore(tokenLocal1, unit);
+            type2 = typeAnalysis.getTypeOfBefore(tokenLocal2, unit);
         } else if(expr.getMethod().equals(typeTokenCompareMethod)) {
             Local typeLocal = (Local)expr.getArg(0);
             Local tokenLocal = (Local)expr.getArg(1);
             type1 = getTypeValue(method, typeLocal, unit, localDefs);
-            type2 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal);
+            type2 = typeAnalysis.getTypeOfBefore(tokenLocal, unit);
         } else if(expr.getMethod().equals(tokenTypeCompareMethod)) {
             Local tokenLocal = (Local)expr.getArg(0);
             Local typeLocal = (Local)expr.getArg(1);
-            type1 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal);
+            type1 = typeAnalysis.getTypeOfBefore(tokenLocal, unit);
             type2 = getTypeValue(method, typeLocal, unit, localDefs);
         } else if(expr.getMethod().equals(typeTypeCompareMethod)) {
             Local typeLocal1 = (Local)expr.getArg(0);

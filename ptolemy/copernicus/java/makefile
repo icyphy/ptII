@@ -63,7 +63,9 @@ JSRCS = \
 	Main.java \
 	ModelTransformer.java \
 	PtolemyUtilities.java \
+	TokenInstanceofEliminator.java \
 	TokenToNativeTransformer.java \
+	TokenTypeAnalysis.java \
 	TypeSpecializer.java \
 	UnreachableMethodRemover.java \
 	ValueTag.java	
@@ -96,15 +98,15 @@ deepDemo: compileDeepDemo runDeepDemo
 
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 MODEL = OrthogonalCom 
-SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
-# SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/IIR.xml
+#SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/IIR.xml
 
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
 SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow
 DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
 SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(MODEL)
 
-JVM_SIZE = -Xmx132m
+JVM_SIZE = -Xmx256m
 
 # make SOURCECLASS=../test/RampFileWriter.xml compileDemo
 
@@ -147,9 +149,10 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.iat deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ipt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ttn deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ttn deep,disabled,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.writeJimple1 outDir:jimple1 \
+		-p wjtp.writeJimple2 outDir:jimple2 \
 		-p wjtp.ts deep \
-		-p jtp.iee deep \
 		-p wjtp.umr deep \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
