@@ -316,7 +316,7 @@ remote1coverage: $(PTII_SRC) $(GENLOGDIR)
 
 
 bldmastrcoverage:
-	$(MAKE) REMOTE1HOME=/home/bldmastr \
+	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
 		VERSION= \
