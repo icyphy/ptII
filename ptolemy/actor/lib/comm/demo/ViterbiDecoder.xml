@@ -240,7 +240,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+    <entity name="decodedBits" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
@@ -249,7 +249,7 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="720.0, 290.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -340,7 +340,7 @@
     <link port="ConvolutionalCoder.output" relation="relation7"/>
     <link port="uncodeBits.input" relation="relation4"/>
     <link port="encodedBits.input" relation="relation7"/>
-    <link port="Display3.input" relation="relation3"/>
+    <link port="decodedBits.input" relation="relation3"/>
     <link port="BooleanToAnything.input" relation="relation7"/>
     <link port="BooleanToAnything.output" relation="relation6"/>
     <link port="Bernoulli.output" relation="relation4"/>
