@@ -55,7 +55,7 @@ for actors to be invoked after this one is invoked with a <i>true</i>
 input.
 <p>
 In SDF, if this actor receives <i>true</i>, then the current
-iteration is concluded and then execution is stopped.
+iteration is concluded and then execution is stopped.  Similarly in SR.
 <p>
 In PN, where each actor has its own thread, there is no well-defined
 notion of an iteration. The finish() method of the manager calls
@@ -92,6 +92,16 @@ public class Stop extends Sink {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
+
+	_attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
+                + "-8,19 -19,8 -19,-8\" "
+                + "style=\"fill:red\"/>\n"
+                + "<text x=\"-15\" y=\"4\""
+                + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
+                + "STOP</text>\n"
+                + "</svg>\n");
+        new TransientSingletonConfigurableAttribute(this, "_hideName");
     }
 
     ///////////////////////////////////////////////////////////////////
