@@ -6,8 +6,10 @@
 Matlab2EcslDP::Matlab2EcslDP( const std::string& matlabFileName, const std::string& ecslDPFileName)
 : _dnMatlab( matlab::diagram), _dnEcslDP( ECSL_DP::diagram)
 {
+	std::cerr << "Matlab2EcslDP(): " << matlabFileName << " " << ecslDPFileName << std::endl;
 	// open and create the source and target data networks.
 	_dnMatlab.OpenExisting( matlabFileName, "Matlab.XSD", Udm::CHANGES_LOST_DEFAULT);
+    std::cerr << "Matlab2EcslDP(): About to call _dnEcslDP.CreateNew()" << std::endl;
 	_dnEcslDP.CreateNew( ecslDPFileName, UseXSD()( ecslDPFileName) ? "ECSL_DP.XSD" : "ECSL_DP", ECSL_DP::RootFolder::meta, Udm::CHANGES_PERSIST_ALWAYS);
 }
 
@@ -20,12 +22,14 @@ Matlab2EcslDP::~Matlab2EcslDP()
 
 void Matlab2EcslDP::operator()()
 {
+	std::cerr << "Matlab2EcslDP::operator()" << std::endl;
 	ECSL_DP::System root= convertDataflow();
 	convertStateflow( root);
 }
 
 ECSL_DP::System Matlab2EcslDP::convertDataflow()
 {
+	std::cerr << "Matlab2EcslDP::convertDataflow()" << std::endl;
 	matlab::System ms= getMatlabSimulinkSystem();
 	ECSL_DP::System es= createDataflowSystem( ms.Name());
 	DataflowConverter convDF;
@@ -35,6 +39,7 @@ ECSL_DP::System Matlab2EcslDP::convertDataflow()
 
 void Matlab2EcslDP::convertStateflow( const ECSL_DP::System& ecsldpRootSystem)
 {
+	std::cerr << "Matlab2EcslDP::convertStateflow()" << std::endl;
 	matlab::machine mm= getMatlabStateFlowMachine();
 	if ( mm)
 	{

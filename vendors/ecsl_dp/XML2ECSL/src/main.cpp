@@ -39,6 +39,7 @@ int main( int argc, char* argv[])
 	std::cerr << "Converting " << argv[1] << " ..." << std::endl;
 	try {
 		Matlab2EcslDP matlab2EcslDP( argv[ 1], (argc == 3 ? argv[ 2] : dropExtension( argv[ 1])+ ".mga"));
+		std::cerr << "Calling matlab2EcslDP()" << std::endl;
 		matlab2EcslDP();
 	}
 	catch(const udm_exception &e) {

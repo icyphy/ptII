@@ -9,11 +9,11 @@ const int PARAM_X_OFFSET= 100;
 const int PARAM_Y_OFFSET= 100;
 const int PARAM_X_MAX_POS= 500;
 
-const int INPUTPORT_X_POS= 25;
-const int TRIGGERPORT_X_POS= 25;
-const int ENABLEPORT_X_POS= 25;
+const int INPUTPORT_X_POS= 26;
+const int TRIGGERPORT_X_POS= 27;
+const int ENABLEPORT_X_POS= 28;
 const int OUTPUTPORT_X_POS= 600;
-const int PORT_Y_INITPOS= 25;
+const int PORT_Y_INITPOS= 29;
 
 const std::string INPUTPORT_PREFIX= "In";
 const std::string OUTPUTPORT_PREFIX= "Out";
