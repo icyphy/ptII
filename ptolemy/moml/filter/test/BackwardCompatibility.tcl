@@ -713,6 +713,7 @@ The affected actors are:
 } {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
+	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
 	ptolemy.actor.lib.comm.SerialComm	 -> ptolemy.actor.lib.io.comm.SerialComm
 } {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
@@ -793,6 +794,7 @@ The affected actors are:
 ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
+	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
 	ptolemy.actor.lib.comm.SerialComm	 -> ptolemy.actor.lib.io.comm.SerialComm
 
