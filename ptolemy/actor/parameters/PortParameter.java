@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.parameters;
@@ -46,45 +46,51 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// PortParameter
 /**
-A parameter that creates an associated port that can be used to update
-the current value of the parameter.  The "current value" is set by the
-setCurrentValue() method and read by getToken().  The current value
-is distinct from the persistent value, which is set by setExpression()
-or setToken(), and accessed by getExpression().  Note that getToken()
-returns the current value, which is not necessarily the persistent value.
-The current value can be set in the usual way for a parameter (calling
-setToken() or setExpression()), or by feeding data into the associated port.
-Until the port receives data, the current value of the parameter is
-the same as the persistent value.  After the port has received
-data, then the current value is that most recently received on the port
-since the last update of the persistent value.
-The getExpression() methods always return the persistent
-value, regardless of whether an override value has been received on the
-input port.  On each call to getToken(), this parameter first checks
-to see whether an input has arrived at the associated port
-since the last setExpression() or setToken(), and if so, returns a token
-read from that port.  Also, any call to get() on the associated
-port will result in the value of this parameter being updated.
+This parameter creates an associated port that can be used to update
+the current value of the parameter. This parameter has two values,
+which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
+The persistent value is returned by
+getExpression() and is set by any of three different mechanisms:
+<ul>
+<li> calling setExpression();
+<li> calling setToken(); and
+<li> specifying a value as a constructor argument.
+</ul>
+All three of these will also set the current value, which is then
+equal to the persistent value.
+The current value is returned by get getToken()
+and is set by any of three different mechanisms:
+<ul>
+<li> calling setCurrentValue();
+<li> calling update() sets the current value if there is an associated
+     port, and that port has a token to consume; and
+<li> calling get() on the associated port.
+</ul>
+These three techniques do not change the persistent value, so after
+these are used, the persistent value and current value may be different.
 <p>
 When using this parameter in an actor, care must be exercised
-to read its value exactly once per firing by calling getToken().
-Each time getToken() is called, a new token will be consumed from
-the associated port (if there is a token).  If this is called
-multiple times in an iteration, it may result in
-consuming tokens that were intended for subsequent firings.
-Thus, for example, it should not be called in fire() and then
+to call update() exactly once per firing prior to calling getToken().
+Each time update() is called, a new token will be consumed from
+the associated port (if the port is connected and has a token).
+If this is called multiple times in an iteration, it may result in
+consuming tokens that were intended for subsequent iterations.
+Thus, for example, update() should not be called in fire() and then
 again in postfire().  Moreover, in some domains (such as DE),
 it is essential that if a token is provided on a port, that it
 is consumed.  In DE, the actor will be repeatedly fired until
-the token is consumed.  Thus, it is an error to not call getToken()
-once per iteration.
+the token is consumed.  Thus, it is an error to not call update()
+once per iteration.  For an example of an actor that uses this
+mechanism, see Ramp.
 <p>
-If this is actor is placed in a container that does not implement
+If this actor is placed in a container that does not implement
 the TypedActor interface, then no associated port is created,
 and it functions as an ordinary parameter.  This is useful,
 for example, if this is put in a library, where one would not
 want the associated port to appear.
 
+@see ptolemy.actor.lib.Ramp
+@see ParameterPort
 @author Edward A. Lee
 @version $Id$
 */
@@ -121,6 +127,7 @@ public class PortParameter extends Parameter {
     }
 
     /** Construct a Parameter with the given container, name, and Token.
+     *  The token defines the initial persistent and current values.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will use the
      *  workspace of the container for synchronization and version counts.
@@ -202,63 +209,32 @@ public class PortParameter extends Parameter {
         return newObject;
     }
 
-    /** Get a token with the current value of this parameter.
-     *  First, check to see whether an input has arrived at the
-     *  associated port since the last call to setExpression().
-     *  If one has, then return that token.  Otherwise, return the
-     *  value returned by the superclass getToken() method.
-     *  <p>
-     *  NOTE: It was tempting in the design of this class to provide
-     *  a separate getCurrentValue() method, and to have getToken()
-     *  always return the persistent value.  However, this would mean
-     *  that this class would not function as a drop-in replacement
-     *  for a Parameter. In particular, if some other parameter were
-     *  to reference this one in an expression, it would not see the
-     *  current value. It would see the persistent value.
-     *  @return The token contained by this variable converted to the
-     *   type of this variable, or null if there is none.
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated, or if the result of evaluation
-     *   violates type constraints, or if the result of evaluation is null
-     *   and there are variables that depend on this one, or if reading
-     *   data from the associated port throws it.
-     */
-    public ptolemy.data.Token getToken() throws IllegalActionException {
-        try {
-            // Avoid reading more than once within a call to getToken().
-            if (!_alreadyReadPort) {
-                _alreadyReadPort = true;
-                if (_port != null
-                        && _port.getWidth() > 0
-                        && _port.hasToken(0)) {
-                    _port.get(0);
-                }
-            }
-            return super.getToken();
-        } finally {
-            _alreadyReadPort = false;
-        }
-    }
-
-    /** Set the container of this parameter and its associated port.
-     *  If there is no associated port (e.g. this parameter was cloned),
-     *  then check the container for a port with the same name and
-     *  establish an association.  If no port is found, then leave
-     *  this parameter with no associated port.
-     *  @param entity The container.
+    /** Set the container of this parameter. If the container is different
+     *  from what it was before and there is an associated port, then
+     *  break the association.  If the new container has a port with the
+     *  same name as this parameter, then establish a new association.
+     *  That port must be an instance of ParameterPort, or no association
+     *  is created.
+     *  @see ParameterPort
+     *  @param entity The new container.
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
+        Entity previousContainer = (Entity)getContainer();
         super.setContainer(entity);
-        // If there is an associated port, then change its container too.
-        // Otherwise, look for a port with the same name, and establish
-        // an association if there is one.
-        if (_port != null) {
-            _port._setContainer(entity);
-        } else if (entity instanceof TypedActor) {
-            // Establish association with port.
+        // If there is an associated port, and the container has changed,
+        // break the association.
+        if (_port != null && entity != previousContainer) {
+            _port._parameter = null;
+            _port = null;
+        }
+
+        // Look for a port in the new container with the same name,
+        // and establish an association.
+        if (entity instanceof TypedActor) {
+            // Establish association with the port.
             Port port = entity.getPort(getName());
             if (port instanceof ParameterPort) {
                 _port = (ParameterPort)port;
@@ -270,10 +246,11 @@ public class PortParameter extends Parameter {
         }
     }
 
-    /** Set the current value of this parameter and notify the container and
-     *  and value listeners.  Force evaluation of the value listeners.
-     *  This does not erase the current expression,
-     *  but does update the value that will be returned by getToken().
+    /** Set the current value of this parameter and notify the container
+     *  and value listeners. This does not change the persistent value
+     *  (returned by getExpression()), but does change the current value
+     *  (returned by getToken()).
+     *  <p>
      *  If the type of this variable has been set with
      *  setTypeEquals(), then convert the specified token into that
      *  type, if possible, or throw an exception, if not.  If
@@ -293,34 +270,8 @@ public class PortParameter extends Parameter {
         if (_debugging) {
             _debug("setCurrentValue: " + token);
         }
-        try {
-            // Need to force evaluation of all dependents now.
-            // Otherwise, they will trigger another read of the associated
-            // port when they get around to being evaluated.
-            _forceEvaluationOfListeners = true;
-            _setTokenAndNotify(token);
-            setUnknown(false);
-        } finally {
-            _forceEvaluationOfListeners = false;
-        }
-    }
-
-    /** Set the expression of this variable, and override the base class
-     *  to read and discard all pending inputs at the associated port.
-     *  Otherwise, the behavior is exactly like that of the base class.
-     *  @param expr The expression for this variable.
-     */
-    public void setExpression(String expr) {
-        // Clear all pending inputs.
-        try {
-            while (_port != null && _port.getWidth() > 0 && _port.hasToken(0)) {
-                _port.get(0);
-            }
-        } catch (IllegalActionException ex) {
-            // Ignore, since this will only occur if the port is not
-            // operational yet.
-        }
-        super.setExpression(expr);
+        _setTokenAndNotify(token);
+        setUnknown(false);
     }
 
     /** Set or change the name, and propagate the name change to the
@@ -356,93 +307,37 @@ public class PortParameter extends Parameter {
         }
     }
 
-    /** Put a new token in this variable, notify the container and
-     *  and value listeners, and override the base class
-     *  to read and discard all pending inputs at the associated port.
-     *  Otherwise, the behavior is exactly like that of the base class.
-     *  @param token The new token to be stored in this variable.
-     *  @exception IllegalActionException If the token type is not
-     *   compatible with specified constraints, or if you are attempting
-     *   to set to null a variable that has value dependents, or if the
-     *   container rejects the change.
+    /** Check to see whether a token has arrived at the
+     *  associated port, and if so, update the current value of
+     *  parameter with that token.  If there is no associated port,
+     *  do nothing.
+     *  @throws IllegalActionException If reading from the associated
+     *   port throws it.
      */
-    public void setToken(ptolemy.data.Token token)
-            throws IllegalActionException {
-        if (!_alreadyReadPort) {
-            // Clear all pending inputs.
-            try {
-                while (_port != null
-                        && _port.getWidth() > 0
-                        && _port.hasToken(0)) {
-                    _port.get(0);
-                }
-            } catch (IllegalActionException ex) {
-                // Ignore, since this will only occur if the port is not
-                // operational yet.
-            }
+    public void update() throws IllegalActionException {
+        if (_port != null
+                && _port.getWidth() > 0
+                && _port.hasToken(0)) {
+            _port.get(0);
         }
-        super.setToken(token);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Check that the specified container is of a suitable class for
-     *  this port.  In this base class, this method returns immediately
-     *  without doing anything.
+     *  this parameter.
      *  @param container The proposed container.
-     *  @exception IllegalActionException If the container is not of
-     *   an acceptable class.  Not thrown in this base class.
+     *  @exception IllegalActionException If the container is not an
+     *   instance of Entity.
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof ComponentEntity)) {
+        if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
-                    "Container is required to be an instance of "
-                    + "ComponentEntity");
+            "PortParameter can only be used in an instance of Entity.");
         }
     }
-
-    /** Override the base class so that if this called as a result of
-     *  of a call to setCurrentValue(), then the value listeners are
-     *  all forced to be evaluated.  Otherwise, it behaves just like
-     *  the base class.
-     */
-    protected void _notifyValueListeners() {
-        if (!_forceEvaluationOfListeners) {
-            super._notifyValueListeners();
-        } else {
-            if (_valueListeners != null) {
-                Iterator listeners = _valueListeners.iterator();
-                while (listeners.hasNext()) {
-                    ValueListener listener = (ValueListener)listeners.next();
-                    listener.valueChanged(this);
-                    if (listener instanceof Variable) {
-                        try {
-                            ((Variable)listener).getToken();
-                            // FIXME: Do we have to notify the listeners
-                            // of the listeners?
-                        } catch (IllegalActionException ex) {
-                            throw new InternalErrorException(ex);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /** Set the container.  This should only be called by the associated
-     *  parameter.
-     *  @param entity The container.
-     *  @exception IllegalActionException If the superclass throws it.
-     *  @exception NameDuplicationException If the superclass throws it.
-     */
-    protected void _setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
-        super.setContainer(entity);
-    }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
@@ -450,19 +345,9 @@ public class PortParameter extends Parameter {
     /** The associated port. */
     protected ParameterPort _port;
 
-    /** Flag used to prevent multiple readings of input within one
-     *  call to getToken(), or when the port sets the current value
-     *  and value listeners are notified.  This variable is accessed
-     *  by the associated port.
-     */
-    protected boolean _alreadyReadPort = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     // Indicator that we are in the midst of setting the name.
     private boolean _settingName = false;
-
-    // Indicator to force evaluation of value listeners.
-    private boolean _forceEvaluationOfListeners = false;
 }

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.parameters;
@@ -47,7 +47,7 @@ import java.io.Writer;
 /**
 A specialized port for use with PortParameter.  This port is created
 by an instance of PortParameter and provides values to a parameter.
-The parameter's current value is updated whenever there a get() is
+The parameter's current value is updated whenever get() is
 called on this port.  This port is only useful if the container is
 opaque, however, this is not checked.
 
@@ -60,11 +60,8 @@ public class ParameterPort extends TypedIOPort {
     /** Construct a new input port in the specified container with the
      *  specified name. The specified container
      *  must implement the Actor interface, or an exception will be thrown.
-     *  This constructor is protected because only a PortParameter should
-     *  create this.
      *  @param container The container.
      *  @param name The name of the port.
-     *  @param parameter The associated parameter.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the
      *   Actor interface.
@@ -105,8 +102,8 @@ public class ParameterPort extends TypedIOPort {
     }
 
     /** Get a token from the specified channel as done by the superclass,
-     *  but override the superclass to set the value of
-     *  of the corresponding parameter.
+     *  but override the superclass to set the current value of
+     *  of the associated parameter, if there is one.
      *  @param channelIndex The channel index.
      *  @return A token from the specified channel.
      *  @exception NoTokenException If there is no token.
@@ -117,19 +114,16 @@ public class ParameterPort extends TypedIOPort {
     public Token get(int channelIndex)
             throws NoTokenException, IllegalActionException {
         Token token = super.get(channelIndex);
-        try {
-            _parameter._alreadyReadPort = true;
+        if (_parameter != null) {
             _parameter.setCurrentValue(token);
-        } finally {
-            _parameter._alreadyReadPort = false;
         }
         return token;
     }
 
     /** Get an array of tokens from the specified channel
-     *  as done by the superclass,
-     *  but override the superclass to set the value of
-     *  of the corresponding parameter.
+     *  as done by the superclass, but override the superclass to set the
+     *  current value of the corresponding parameter to be the last token
+     *  in the array.
      *  @param channelIndex The channel index.
      *  @param vectorLength The number of valid tokens to get in the
      *   returned array.
@@ -143,34 +137,38 @@ public class ParameterPort extends TypedIOPort {
     public Token[] get(int channelIndex, int vectorLength)
             throws NoTokenException, IllegalActionException {
         Token[] retArray = super.get(channelIndex, vectorLength);
-        try {
-            _parameter._alreadyReadPort = true;
+        if (_parameter != null) {
             _parameter.setToken(retArray[vectorLength-1]);
-        } finally {
-            _parameter._alreadyReadPort = false;
         }
         return retArray;
     }
 
-    /** Set the container of this port and its associated parameter.
-     *  If there is no associated parameter (e.g. this port was cloned),
-     *  then check the container for a parameter with the same name and
-     *  establish an association.  If no parameter is found, then leave
-     *  this port with no associated parameter.
-     *  @param entity The container.
+    /** Set the container of this port. If the container is different
+     *  from what it was before and there is an associated parameter, then
+     *  break the association.  If the new container has a parameter with the
+     *  same name as this port, then establish a new association.
+     *  That parameter must be an instance of PortParameter, or no association
+     *  is created.
+     *  @see PortParameter
+     *  @param entity The new container.
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
+        Entity previousContainer = (Entity)getContainer();
         super.setContainer(entity);
-        // If there is an associated parameter then change its container too.
-        // Otherwise, look for a parameter with the same name, and establish
-        // an association if there is one.
-        if (_parameter != null) {
-            _parameter._setContainer(entity);
-        } else if (entity instanceof TypedActor) {
-            // Establish association with port.
+        // If there is an associated port, and the container has changed,
+        // break the association.
+        if (_parameter != null && entity != previousContainer) {
+            _parameter._port = null;
+            _parameter = null;
+        }
+
+        // Look for a parameter in the new container with the same name,
+        // and establish an association.
+        if (entity instanceof TypedActor) {
+            // Establish association with the parameter.
             Attribute parameter = entity.getAttribute(getName());
             if (parameter instanceof PortParameter) {
                 _parameter = (PortParameter)parameter;
@@ -182,7 +180,7 @@ public class ParameterPort extends TypedIOPort {
         }
     }
 
-    /** Set or change the name, and propagate the name change to the
+    /** Set the name, and propagate the name change to the
      *  associated port.  If a null argument is given, then the
      *  name is set to an empty string.
      *  Increment the version of the workspace.
@@ -204,20 +202,6 @@ public class ParameterPort extends TypedIOPort {
                 _settingName = false;
             }
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Set the container.  This should only be called by the associated
-     *  parameter.
-     *  @param entity The container.
-     *  @exception IllegalActionException If the superclass throws it.
-     *  @exception NameDuplicationException If the superclass throws it.
-     */
-    protected void _setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
-        super.setContainer(entity);
     }
 
     ///////////////////////////////////////////////////////////////////
