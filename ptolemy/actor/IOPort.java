@@ -402,7 +402,7 @@ public class IOPort extends ComponentPort {
         if (width <= 0) return null;
         if (_insideReceiversVersion != workspace().getVersion()) {
             // Cache is invalid.  Update it.
-            _insideReceivers = new Receiver[width][];
+            _insideReceivers = new Receiver[width][0];
             int index = 0;
             Enumeration insideRels = insideRelations();
             while (insideRels.hasMoreElements()) {
@@ -516,7 +516,7 @@ public class IOPort extends ComponentPort {
             if (width <= 0) return null;
 
             // Cache not valid.  Reconstruct it.
-            _localInsideReceivers = new Receiver[width][];
+            _localInsideReceivers = new Receiver[width][0];
             int index = 0;
             relations = insideRelations();
             while (relations.hasMoreElements()) {
@@ -591,7 +591,7 @@ public class IOPort extends ComponentPort {
                 int width = getWidth();
                 if (width <= 0) return null;
 
-                _localReceivers = new Receiver[width][];
+                _localReceivers = new Receiver[width][0];
                 int index = 0;
                 Enumeration relations = linkedRelations();
                 while (relations.hasMoreElements()) {
@@ -601,7 +601,7 @@ public class IOPort extends ComponentPort {
                         for (int i = 0; i < rr.length; i++) {
                             _localReceivers[index++] = rr[i];
                         }
-                    }
+		    } 
                 }
                 _localReceiversVersion = workspace().getVersion();
                 return _localReceivers;
