@@ -45,8 +45,8 @@ This actor produces a Hadamard codeword. The parameter <i>index</i>
 specifies the code index, which is the row index in the Hadamard matrix. 
 The parameter <i>log2Length</i> is log base 2 of the codeword length, 
 which equals the dimension of the matrix.
-
-Note: it is required that <i>log2Length</i> is a strictly positive integer 
+<p>
+Note: it is required that <i>log2Length</i> be a strictly positive integer 
 smaller than 32. The <i>index</i> should be a non-negtive integer smaller 
 than the matrix dimension. Otherwise, an exception will be thrown. 
 
@@ -184,13 +184,13 @@ public class HadamardCode extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**Calculate Hardmard row given by the Hadamard matrix dimension 
-     * and the row index. The method computes iteratively by degrading 
-     * the matrix dimension into half. The smallest Hadamard matrix is
-     * a 2*2 matrix, defined as [1,1;1,-1].   
-     * @param matrixDimension the Hadamard matrix dimension
-     * @param index the row index
-     * @return the desired hadamard row     
+    /** Calculate Hardmard row given by the Hadamard matrix dimension 
+     *  and the row index. The method computes iteratively by degrading 
+     *  the matrix dimension into half. The smallest Hadamard matrix is
+     *  a 2*2 matrix, defined as [1,1;1,-1].   
+     *  @param matrixDimension the Hadamard matrix dimension
+     *  @param index the row index
+     *  @return the desired hadamard row     
      */
     private int[] _calculateRow(int matrixDimension, int index) {
         // NOTE: Don't need to check the arguments for validity
@@ -229,6 +229,7 @@ public class HadamardCode extends Source {
             return result;
         }
     }
+
     ////////////////////////////////////////////////////////////
     ////               private variable                    ////
 
