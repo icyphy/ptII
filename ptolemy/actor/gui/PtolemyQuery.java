@@ -268,6 +268,15 @@ public class PtolemyQuery extends Query
 		// So just set the variable here, since there is no
 		// director to queue a mutation request with.
 		var.setExpression(stringValue(name));
+                try {
+                    // Trigger evaluation of the variable.
+                    var.getToken();
+                } catch (Exception e) {
+		    // FIXME: This method should probably throw an
+		    // exception, but then a lot of code (including
+		    // the base class), would need to be changed.
+		    System.err.println("Change failed: " + e);
+                }
 	    } 
 	}
     }
