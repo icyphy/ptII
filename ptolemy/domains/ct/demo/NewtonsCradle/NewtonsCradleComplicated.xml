@@ -716,7 +716,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="probability" class="ptolemy.data.expr.Parameter" value="1.0">
                     <property name="style" class="ptolemy.actor.gui.style.LineStyle">
@@ -768,7 +768,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="state.incomingPort" relation="relation"/>
