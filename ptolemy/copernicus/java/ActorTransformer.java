@@ -101,7 +101,7 @@ public class ActorTransformer extends SceneTransformer {
      */
     public static ActorTransformer v(CompositeActor model) {
         // FIXME: This should use a map to return a singleton instance
-	// for each model
+        // for each model
         return new ActorTransformer(model);
     }
 
@@ -127,7 +127,7 @@ public class ActorTransformer extends SceneTransformer {
      *  @param options The options to apply.
      */
     protected void internalTransform(String phaseName, Map options) {
-	System.out.println("ActorTransformer.internalTransform("
+        System.out.println("ActorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
         // These transformations are now invoked by the
@@ -1662,16 +1662,16 @@ public class ActorTransformer extends SceneTransformer {
         Local attributeLocal = Jimple.v().newLocal("attribute",
                 PtolemyUtilities.attributeType);
         body.getLocals().add(attributeLocal);
-	Local settableLocal = Jimple.v().newLocal("settable",
+        Local settableLocal = Jimple.v().newLocal("settable",
                 PtolemyUtilities.settableType);
-	body.getLocals().add(settableLocal);
-	Local variableLocal = Jimple.v().newLocal("variable",
+        body.getLocals().add(settableLocal);
+        Local variableLocal = Jimple.v().newLocal("variable",
                 variableType);
-	body.getLocals().add(variableLocal);
+        body.getLocals().add(variableLocal);
 
         for (Iterator attributes = namedObj.attributeList().iterator();
              attributes.hasNext();) {
-	    Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute)attributes.next();
 
             if(_isIgnorableAttribute(attribute)) {
                 continue;
@@ -1746,16 +1746,16 @@ public class ActorTransformer extends SceneTransformer {
         Local attributeLocal = Jimple.v().newLocal("attribute",
                 PtolemyUtilities.attributeType);
         body.getLocals().add(attributeLocal);
-	Local settableLocal = Jimple.v().newLocal("settable",
+        Local settableLocal = Jimple.v().newLocal("settable",
                 PtolemyUtilities.settableType);
-	body.getLocals().add(settableLocal);
+        body.getLocals().add(settableLocal);
 
         // A list of locals that we will validate.
         List validateLocalsList = new LinkedList();
 
         for (Iterator attributes = namedObj.attributeList().iterator();
              attributes.hasNext();) {
-	    Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute)attributes.next();
 
             if (_isIgnorableAttribute(attribute)) {
                 continue;
@@ -1801,7 +1801,7 @@ public class ActorTransformer extends SceneTransformer {
                         variableType);
                 body.getLocals().add(variableLocal);
 
-		// cast to Variable.
+                // cast to Variable.
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(
                                 variableLocal,
@@ -1810,7 +1810,7 @@ public class ActorTransformer extends SceneTransformer {
                                         variableType)),
                         insertPoint);
 
-		// call setToken.
+                // call setToken.
                 body.getUnits().insertBefore(
 
                         Jimple.v().newInvokeStmt(
@@ -1828,8 +1828,8 @@ public class ActorTransformer extends SceneTransformer {
                 // If the attribute is settable, then set its
                 // expression.
 
-		// cast to Settable.
-		body.getUnits().insertBefore(
+                // cast to Settable.
+                body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(
                                 settableLocal,
                                 local),
@@ -1837,8 +1837,8 @@ public class ActorTransformer extends SceneTransformer {
   
                 String expression = ((Settable)attribute).getExpression();
 
-		// call setExpression.
-		body.getUnits().insertBefore(
+                // call setExpression.
+                body.getUnits().insertBefore(
                         Jimple.v().newInvokeStmt(
                                 Jimple.v().newInterfaceInvokeExpr(
                                         settableLocal,
@@ -1852,7 +1852,7 @@ public class ActorTransformer extends SceneTransformer {
                                         settableLocal,
                                         PtolemyUtilities.validateMethod)),
                         insertPoint);
-	    }
+            }
 
             // recurse so that we get all parameters deeply.
             _initializeAttributesBefore(body, insertPoint,
@@ -1870,7 +1870,7 @@ public class ActorTransformer extends SceneTransformer {
                                     validateLocal,
                                     PtolemyUtilities.validateMethod)),
                     insertPoint);
-	}
+        }
     }
 
     public static void _computeAttributesBefore(
@@ -1889,16 +1889,16 @@ public class ActorTransformer extends SceneTransformer {
         Local attributeLocal = Jimple.v().newLocal("attribute",
                 PtolemyUtilities.attributeType);
         body.getLocals().add(attributeLocal);
-	Local settableLocal = Jimple.v().newLocal("settable",
+        Local settableLocal = Jimple.v().newLocal("settable",
                 PtolemyUtilities.settableType);
-	body.getLocals().add(settableLocal);
-	Local variableLocal = Jimple.v().newLocal("variable",
+        body.getLocals().add(settableLocal);
+        Local variableLocal = Jimple.v().newLocal("variable",
                 variableType);
-	body.getLocals().add(variableLocal);
+        body.getLocals().add(variableLocal);
 
         for (Iterator attributes = namedObj.attributeList().iterator();
              attributes.hasNext();) {
-	    Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute)attributes.next();
 
             if (_isIgnorableAttribute(attribute) ||
                     !attributeList.contains(attribute)) {
@@ -1927,7 +1927,7 @@ public class ActorTransformer extends SceneTransformer {
                         ((Variable)attribute).getExpression(),
                         new HashMap(), new HashMap(), body, insertPoint);
 
-		// cast to Variable.
+                // cast to Variable.
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(
                                 variableLocal,
@@ -1936,7 +1936,7 @@ public class ActorTransformer extends SceneTransformer {
                                         variableType)),
                         insertPoint);
 
-		// call setToken.
+                // call setToken.
                 body.getUnits().insertBefore(
 
                         Jimple.v().newInvokeStmt(
@@ -1960,7 +1960,7 @@ public class ActorTransformer extends SceneTransformer {
                     body, insertPoint,
                     context, contextLocal,
                     attribute, local, theClass, attributeList);
-	}
+        }
     }
 
     // Initialize the ports of this actor.  This is similar to code in
@@ -1977,9 +1977,9 @@ public class ActorTransformer extends SceneTransformer {
                 RefType.v(PtolemyUtilities.componentPortClass));
         body.getLocals().add(tempPortLocal);
 
-	for (Iterator ports = entity.portList().iterator();
+        for (Iterator ports = entity.portList().iterator();
              ports.hasNext();) {
-	    Port port = (Port)ports.next();
+            Port port = (Port)ports.next();
             //   System.out.println("ModelTransformer: port: " + port);
 
             String className = port.getClass().getName();
@@ -1987,7 +1987,7 @@ public class ActorTransformer extends SceneTransformer {
             String fieldName =
                 ModelTransformer.getFieldNameForPort(port, container);
             RefType portType = RefType.v(className);
-	    Local portLocal = Jimple.v().newLocal("port",
+            Local portLocal = Jimple.v().newLocal("port",
                     portType);
             body.getLocals().add(portLocal);
 

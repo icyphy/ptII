@@ -222,8 +222,8 @@ public class ModelTransformer extends SceneTransformer {
         System.out.println("ModelTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-	_entityLocalMap = new HashMap();
-	_portLocalMap = new HashMap();
+        _entityLocalMap = new HashMap();
+        _portLocalMap = new HashMap();
         try {
             _constAnalysis = new ConstVariableModelAnalysis(_model);
         } catch (Exception ex) {
@@ -277,10 +277,10 @@ public class ModelTransformer extends SceneTransformer {
                 PtolemyUtilities.componentEntityType);
         body.getLocals().add(entityLocal);
 
-	for (Iterator entities = composite.deepEntityList().iterator();
+        for (Iterator entities = composite.deepEntityList().iterator();
              entities.hasNext();) {
-	    Entity entity = (Entity)entities.next();
-            //	    System.out.println("ModelTransformer: entity: " + entity);
+            Entity entity = (Entity)entities.next();
+            //            System.out.println("ModelTransformer: entity: " + entity);
 
             // If we are doing deep codegen, then use the actor
             // classes we created earlier.
@@ -355,10 +355,10 @@ public class ModelTransformer extends SceneTransformer {
                 RefType.v(PtolemyUtilities.componentPortClass));
         body.getLocals().add(tempPortLocal);
 
-	for (Iterator ports = entity.portList().iterator();
+        for (Iterator ports = entity.portList().iterator();
              ports.hasNext();) {
-	    Port port = (Port)ports.next();
-	    //System.out.println("ModelTransformer: port: " + port);
+            Port port = (Port)ports.next();
+            //System.out.println("ModelTransformer: port: " + port);
 
             // FIXME: what about subclasses?
             String className = "ptolemy.actor.TypedIOPort";
@@ -366,7 +366,7 @@ public class ModelTransformer extends SceneTransformer {
 
             String portName = port.getName(container);
             String fieldName = getFieldNameForPort(port, container);
-	    Local portLocal;
+            Local portLocal;
 
             if (createdSet.contains(port.getFullName())) {
                 //    System.out.println("already created!");
@@ -453,34 +453,34 @@ public class ModelTransformer extends SceneTransformer {
 
     // Create and set links.
     private static void _links(JimpleBody body, CompositeActor composite) {
-	// To get the ordering right,
-	// we read the links from the ports, not from the relations.
-	// First, produce the inside links on contained ports.
+        // To get the ordering right,
+        // we read the links from the ports, not from the relations.
+        // First, produce the inside links on contained ports.
         for (Iterator ports = composite.portList().iterator();
              ports.hasNext();) {
-	    ComponentPort port = (ComponentPort)ports.next();
-	    Iterator relations = port.insideRelationList().iterator();
-	    int index = -1;
-	    while (relations.hasNext()) {
-		index++;
-		ComponentRelation relation
-		    = (ComponentRelation)relations.next();
-		if (relation == null) {
-		    // Gap in the links.  The next link has to use an
-		    // explicit index.
-		    continue;
-		}
-		Local portLocal = (Local)_portLocalMap.get(port);
-		Local relationLocal = (Local)_relationLocalMap.get(relation);
-		// call the _insertLink method with the current index.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
+            ComponentPort port = (ComponentPort)ports.next();
+            Iterator relations = port.insideRelationList().iterator();
+            int index = -1;
+            while (relations.hasNext()) {
+                index++;
+                ComponentRelation relation
+                    = (ComponentRelation)relations.next();
+                if (relation == null) {
+                    // Gap in the links.  The next link has to use an
+                    // explicit index.
+                    continue;
+                }
+                Local portLocal = (Local)_portLocalMap.get(port);
+                Local relationLocal = (Local)_relationLocalMap.get(relation);
+                // call the _insertLink method with the current index.
+                body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(portLocal,
                                 PtolemyUtilities.insertLinkMethod,
                                 IntConstant.v(index),
                                 relationLocal)));
 
-	    }
-	}
+            }
+        }
     }
 
     // Produce the links on ports contained by contained entities.
@@ -550,22 +550,22 @@ public class ModelTransformer extends SceneTransformer {
     // Create and set relations.
     private static void _relations(JimpleBody body, Local thisLocal,
             CompositeActor composite, EntitySootClass modelClass) {
-	_relationLocalMap = new HashMap();
-	for (Iterator relations = composite.relationList().iterator();
+        _relationLocalMap = new HashMap();
+        for (Iterator relations = composite.relationList().iterator();
              relations.hasNext();) {
-	    Relation relation = (Relation)relations.next();
-	    String className = relation.getClass().getName();
+            Relation relation = (Relation)relations.next();
+            String className = relation.getClass().getName();
             String fieldName = getFieldNameForRelation(relation, composite);
-	    // Create a new local variable.
-	    Local local =
+            // Create a new local variable.
+            Local local =
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
                         thisLocal, relation.getName());
-	    _relationLocalMap.put(relation, local);
+            _relationLocalMap.put(relation, local);
 
             SootUtilities.createAndSetFieldFromLocal(body,
                     local, modelClass, PtolemyUtilities.relationType,
                     fieldName);
-	}
+        }
     }
 
     /** Return an instance that represents the class that
