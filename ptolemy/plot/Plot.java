@@ -1786,7 +1786,10 @@ public class Plot extends PlotBox {
      * (a runtime exception).  If it refers to a data set that does
      * not exist, create the data set.  The fourth argument indicates
      * whether the point should be connected by a line to the previous
-     * point.  The point is drawn on the screen only if is visible.
+     * point.  However, this argument is ignored if setConnected() has
+     * been called with a false argument.  In that case, a point is never
+     * connected to the previous point.
+     * The point is drawn on the screen only if is visible.
      * Otherwise, it is drawn the next time paint() is called.
      */
     private synchronized void _addPoint(
@@ -1804,7 +1807,7 @@ public class Plot extends PlotBox {
         PlotPoint pt = new PlotPoint();
         pt.x = x;
         pt.y = y;
-        pt.connected = connected;
+        pt.connected = connected && _connected;
 
         if (errorBar) {
             if (yLowEB < _yBottom) _yBottom = yLowEB;
