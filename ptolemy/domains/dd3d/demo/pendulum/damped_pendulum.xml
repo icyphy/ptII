@@ -96,7 +96,7 @@
         </port>
     </entity>
     <entity name="TrigFunction6" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;sin&quot;">
+        <property name="function" value="sin">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="acos" class="ptolemy.data.expr.Parameter" value="&quot;acos&quot;">
                 </property>
