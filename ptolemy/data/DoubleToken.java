@@ -179,10 +179,9 @@ public class DoubleToken extends ScalarToken {
         }*/  else {
             String str = "supported between " + this.getClass().getName();
             str = str + " and " + a.getClass().getName();
-            throw new IllegalActionException("modulo method not " + str);
+            throw new IllegalActionException("equality method not " + str);
         }
     }
-
 
     /** Set the value of the token to be the specified value.
      */
@@ -213,7 +212,7 @@ public class DoubleToken extends ScalarToken {
 	try {
 	    _value = (Double.valueOf(init)).doubleValue();
 	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException(e.getMessage());
+	    throw new IllegalArgumentException(" here na na na " + e.getMessage());
 	}
     }
 

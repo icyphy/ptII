@@ -63,7 +63,7 @@ public abstract class Token implements Cloneable {
      */
     public Token add(Token a) throws IllegalActionException {
         String str = "Add method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects";
         throw new IllegalActionException(str);
     }
 
