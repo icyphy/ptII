@@ -56,7 +56,7 @@ PTCLASSALLJARS = \
 		plotml/plotml.jar \
 		compat/compat.jar
 
-PTCLASSALLJAR = plot.jar
+PTCLASSALLJAR = 	plot.jar
 
 # Jar file consisting of classes used by an applet.
 PTAUXJAR = 		plotapplet.jar
@@ -68,12 +68,16 @@ PXGRAPHAPPLETJAR =	pxgraphapplet.jar
 # Jar file consisting of classes used by an application, including the
 # com/microstar/xml classes.  Note that this jar file does not include
 # the pxgraph classes.
-PLOTMLAPPLETJAR = plotmlapplet.jar
+PLOTMLAPPLETJAR =	plotmlapplet.jar
 
 # Jar file consisting of classes used by an application, including the
 # ptolemy/gui and com/microstar/xml classes.  Note that this
 # jar file does not include the pxgraph classes.
-PLOTAPPLICATIONJAR = plotapplication.jar
+PLOTAPPLICATIONJAR =	plotapplication.jar
+
+# Jar file containing Render class files used by
+# actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
+RENDERJAR =		render.jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
@@ -92,9 +96,7 @@ JSRCS = \
 	PlotFrame.java \
 	PlotLive.java \
 	PlotLiveApplet.java \
-	PlotPoint.java \
-	Render.java \
-	RenderApplication.java
+	PlotPoint.java
 
 # Used to build distributions with InstallShield's isjava tool
 ISJAVA_SRC = ptplot.isj
@@ -162,7 +164,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: sources jclass
 
 install: all jars \
-		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
+		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
+		$(RENDERJAR)
 	(cd ../../bin; $(MAKE) install)
 
 # Class files used in all applets and applications
@@ -228,6 +231,12 @@ APPLICATIONCLASSFILES = \
 		'$(ME)/PlotApplication$$1.class' \
 		$(ME)/PlotApplication.class
 
+# Render class files used by actor.lib.gui.MatrixVisualizer but
+# not to used by the Ptplot applets 
+RENDERCLASSFILES = \
+		'$(ME)/Render$$1.class' \
+		$(ME)/Render.class \
+
 # Jar file for simple applets
 $(PTAUXJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
@@ -269,6 +278,14 @@ $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 		ptolemy/gui/*.class \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
+            )
+
+# Jar file containing Render class files used by
+# actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
+$(RENDERJAR): $(JSRCS) $(JCLASS)
+	rm -f $@
+	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+		$(RENDERCLASSFILES) \
             )
 
 depend:
