@@ -37,7 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
-import ptolemy.actor.IODependency;
+import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.data.BooleanToken;
@@ -112,8 +112,8 @@ truly required, then simply set the <i>delay</i> parameter of that
 actor to zero. The directed loops are based on the port connections
 rather than the actor connections because the port connections reflect
 the data flow more accurately. The information of port connections are
-stored in a nonpersistent attribute IODependence, which is constructed
-during run time.
+stored in a nonpersistent attribute FunctionDependency, which is 
+constructed during run time.
 <p>
 Input ports in a DE model contain instances of DEReceiver.
 When a token is put into a DEReceiver, that receiver enqueues the
@@ -1351,6 +1351,20 @@ public class DEDirector extends Director {
         return false;
     }
 
+    // Request that the container of this director be refired in the future.
+    // This method is used when the director is embedded inside an opaque
+    // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
+    // If the queue is empty, then throw an InvalidStateException
+    protected void _requestFiring() throws IllegalActionException {
+        DEEvent nextEvent = null;
+        nextEvent = _eventQueue.get();
+
+        if (_debugging) _debug("Request refiring of opaque composite actor.");
+        // Enqueue a refire for the container of this director.
+        CompositeActor container = (CompositeActor)getContainer();
+        container.getExecutiveDirector().fireAt(
+                container, nextEvent.timeStamp());
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1359,6 +1373,40 @@ public class DEDirector extends Director {
 
     /** Set to true when it is time to end the execution. */
     protected boolean _noMoreActorsToFire = false;
+
+    // The set of actors that have returned false in their postfire() methods.
+    // Events destined for these actors are discarded and the actors are
+    // never fired.
+    protected Set _disabledActors;
+
+    // The current microstep.
+    protected int _microstep = 0;
+
+    // Set to true when the time stamp of the token to be dequeue has
+    // exceeded the stopTime.
+    protected boolean _exceedStopTime = false;
+
+    // The real time at which the model begins executing.
+    protected long _realStartTime = 0;
+
+    // Decide whether the simulation should be stopped when there's no more
+    // events in the global event queue.
+    // By default, its value is 'true', meaning that the simulation will stop
+    // under that circumstances. Setting it to 'false', instruct the director
+    // to wait on the queue while some other threads might enqueue events in
+    // it.
+    protected boolean _stopWhenQueueIsEmpty = true;
+
+    // Specify whether the director should wait for elapsed real time to
+    // catch up with model time.
+    protected boolean _synchronizeToRealTime;
+
+    // Indicator of whether the topological sort giving ports their
+    // priorities is valid.
+    protected long _sortValid = -1;
+
+    // A Hashtable stores the mapping of each actor to its depth.
+    protected Hashtable _actorToDepth = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1377,21 +1425,21 @@ public class DEDirector extends Director {
         if (!(container instanceof CompositeActor)) return dag;
         CompositeActor castContainer = (CompositeActor)container;
 
-        // Get the IODependence attribute of the container of this 
+        // Get the FunctionDependency attribute of the container of this 
         // director. If there is no such attribute, construct one.
-        IODependency ioDependency = castContainer.getIODependencies();
+        FunctionDependency functionDependency = castContainer.getFunctionDependencies();
          
-        // The IODependence attribute is used to construct
+        // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
-        // the IODependence also needs recalculation.
-        ioDependency.invalidate();
+        // the FunctionDependency also needs recalculation.
+        functionDependency.invalidate();
       
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = ioDependency.getCycleNodes();
+        Object[] cycleNodes = functionDependency.getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -1416,14 +1464,14 @@ public class DEDirector extends Director {
         actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            // Get the IODependence attribute of current actor.
-            ioDependency = actor.getIODependencies();
-            // The following check may not be necessary since the IODependence
+            // Get the FunctionDependency attribute of current actor.
+            functionDependency = actor.getFunctionDependencies();
+            // The following check may not be necessary since the FunctionDependency
             // attribute is constructed before. However, we check
             // it anyway. 
-            if (ioDependency == null) {
+            if (functionDependency == null) {
                 throw new IllegalActionException(this, "doesn't " +
-                        "contain a valid IODependence attribute.");
+                        "contain a valid FunctionDependency attribute.");
             }
 
             // get all the input ports of the current actor
@@ -1432,7 +1480,7 @@ public class DEDirector extends Director {
                 IOPort inputPort = (IOPort)inputPorts.next();
 
                 Set notDirectlyDependentPorts = 
-                    ioDependency.getIndependentOutputPorts(inputPort);
+                    functionDependency.getIndependentOutputPorts(inputPort);
 
                 // get all the output ports of the current actor.
                 Iterator outputPorts = actor.outputPortList().iterator();
@@ -1560,55 +1608,7 @@ public class DEDirector extends Director {
         }
     }
 
-    // Request that the container of this director be refired in the future.
-    // This method is used when the director is embedded inside an opaque
-    // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
-    // If the queue is empty, then throw an InvalidStateException
-    private void _requestFiring() throws IllegalActionException {
-        DEEvent nextEvent = null;
-        nextEvent = _eventQueue.get();
-
-        if (_debugging) _debug("Request refiring of opaque composite actor.");
-        // Enqueue a refire for the container of this director.
-        CompositeActor container = (CompositeActor)getContainer();
-        container.getExecutiveDirector().fireAt(
-                container, nextEvent.timeStamp());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The current microstep.
-    private int _microstep = 0;
-
-    // Set to true when the time stamp of the token to be dequeue has
-    // exceeded the stopTime.
-    private boolean _exceedStopTime = false;
-
-    // The real time at which the model begins executing.
-    private long _realStartTime = 0;
-
-    // Decide whether the simulation should be stopped when there's no more
-    // events in the global event queue.
-    // By default, its value is 'true', meaning that the simulation will stop
-    // under that circumstances. Setting it to 'false', instruct the director
-    // to wait on the queue while some other threads might enqueue events in
-    // it.
-    private boolean _stopWhenQueueIsEmpty = true;
-
-    // Specify whether the director should wait for elapsed real time to
-    // catch up with model time.
-    private boolean _synchronizeToRealTime;
-
-    // The set of actors that have returned false in their postfire() methods.
-    // Events destined for these actors are discarded and the actors are
-    // never fired.
-    private Set _disabledActors;
-
-    // Indicator of whether the topological sort giving ports their
-    // priorities is valid.
-    private long _sortValid = -1;
-
-    // A Hashtable stores the mapping of each actor to its depth.
-    private Hashtable _actorToDepth = null;
 }

@@ -36,11 +36,11 @@ Review fireAtCurrentTime()'s use of the time Double.NEGATIVE_INFINITY
 package ptolemy.domains.de.kernel;
 
 import java.util.Hashtable;
-import java.util.Set;
-
+import java.util.Iterator;
+import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IODependency;
+import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
 import ptolemy.graph.DirectedAcyclicGraph;
@@ -58,13 +58,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 This director extends DE director and handles hierarchical DE models.
-
+<p>
 This director uses IODependencies, which specify the input and output
 relations of an actor, to do topological sort and scheduling. This director
 excludes the models with cyclic loops in the graph composed of IO ports 
 of actors, and throws an exception complaining that no valid schedules
 can be found.
-
+<p>
 Note that the pure events are treated differently in DEDirector and this
 director. In DEDirector, the pure event has the same depth with the actor
 requesting refiring. This may delay the event passing when the event has
@@ -73,7 +73,7 @@ events highest priority (0) and they will be processed at the very beginning
 of each iteration. For simultaneous pure events, they will be processed
 based on the order they are inserted into the event queue, which reflects
 the topological order of the actors producing these pure events.
-
+<p>
 Another interesting point was pointed out by Steve, that the equivalence 
 of the send method of Delay actor and the fireAt method of general actor 
 on breaking the loop. A simple but intuitive example is an opaque composite
@@ -325,9 +325,8 @@ public class DEEDirector extends DEDirector {
                 // Consider the multi-input atomic actors, e.g. the 
                 // BooleanSelect and Inhibit.
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
-                        nextEvent.isSimultaneousWith(currentEvent)) &&
-                        nextEvent.actor() == currentEvent.actor() &&
-                        nextEvent.ioPort() == currentEvent.ioPort()) {
+                        nextEvent.isSimultaneousWith(currentEvent))
+                        && nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
 
                     _eventQueue.take();
@@ -493,23 +492,23 @@ public class DEEDirector extends DEDirector {
         if (!(container instanceof CompositeActor)) return portsGraph;
         CompositeActor castContainer = (CompositeActor)container;
 
-        // Get the IODependence attribute of the container of this 
+        // Get the functionDependency attribute of the container of this 
         // director. If there is no such attribute, construct one.
-        IODependency ioDependency = castContainer.getIODependencies();
+        FunctionDependency functionDependency = castContainer.getFunctionDependencies();
          
-//        Since the ioDependency is synchronized to workspace, 
-//        there is no need to invalidate ioDependency here.
-//        // The IODependence attribute is used to construct
+//        Since the functionDependency is synchronized to workspace, 
+//        there is no need to invalidate functionDependency here.
+//        // The functionDependency attribute is used to construct
 //        // the schedule. If the schedule needs recalculation,
-//        // the IODependence also needs recalculation.
-//        ioDependency.invalidate();
+//        // the functionDependency also needs recalculation.
+//        functionDependency.invalidate();
       
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = ioDependency.getCycleNodes();
+        Object[] cycleNodes = functionDependency.getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -523,7 +522,7 @@ public class DEEDirector extends DEDirector {
                     "Found zero delay loop including: " + names.toString());
         }
 
-        portsGraph = ioDependency.getDetailedPortsGraph().
+        portsGraph = functionDependency.getDetailedPortsGraph().
             toDirectedAcyclicGraph();
 
         return portsGraph;
@@ -549,13 +548,60 @@ public class DEEDirector extends DEDirector {
         if (_debugging) _debug(getContainer().getFullName(),
                 "depth: " + sort.length);
         _portToDepth.put(getContainer(), new Integer(sort.length));
-        for (int i = sort.length-1; i >= 0; i--) {
+
+        // assign port depth based on the topology sort result.
+        LinkedList ports = new LinkedList();
+        for (int i = 0; i <= sort.length-1; i++) {
             IOPort ioPort = (IOPort)sort[i];
+            ports.add(ioPort);
             if (_debugging) _debug(((Nameable)ioPort).getFullName(),
                     "depth: " + i);
             // Insert the hashtable entry.
             _portToDepth.put(ioPort, new Integer(i));
         }
+
+        if (_debugging) _debug("## adjusting port depth based on the " +
+            "strictness constraints.");
+        
+        // Adjust port depths with strictness constraints.
+        for (int i = sort.length-1; i >= 0; i--) {
+            IOPort ioPort = (IOPort)sort[i];
+            // we skip input ports here.
+            if (ioPort.isInput()) {
+                continue;
+            }
+            // we skip the ports of the container.
+            // we add them into the portToDepth hashtable.
+            Nameable portContainer = ioPort.getContainer();
+            if (portContainer.equals(getContainer())) {
+                continue;
+            }
+            
+            FunctionDependency functionDependency = 
+                ((Actor)portContainer).getFunctionDependencies();
+                
+            Iterator inputsIterator = 
+                functionDependency.getDependentInputPorts(ioPort).iterator();
+            int maximumPortDepth = -1;
+            while (inputsIterator.hasNext()) {
+                IOPort input = (IOPort)inputsIterator.next();
+                int inputPortDepth = ports.indexOf(input);
+                if (maximumPortDepth < inputPortDepth) {
+                    maximumPortDepth = inputPortDepth;
+                }
+            }    
+
+            inputsIterator = 
+                functionDependency.getDependentInputPorts(ioPort).iterator();
+            while (inputsIterator.hasNext()) {
+                IOPort input = (IOPort)inputsIterator.next();
+                if (_debugging) _debug(((Nameable)input).getFullName(),
+                        "depth is adjusted to: " + maximumPortDepth);
+                // Insert the hashtable entry.
+                _portToDepth.put(input, new Integer(maximumPortDepth));
+            }    
+        }
+
         if (_debugging) _debug("## End of topological sort.");
         // the sort is now valid.
         _sortValid = workspace().getVersion();
@@ -566,37 +612,6 @@ public class DEEDirector extends DEDirector {
 
     // The following variables are private. Compared with DE director, there is
     // one private variable: _portToDepth, instead of _actorToDepth.
-
-    // The current microstep.
-    private int _microstep = 0;
-
-    // Set to true when the time stamp of the token to be dequeue has
-    // exceeded the stopTime.
-    private boolean _exceedStopTime = false;
-
-    // The real time at which the model begins executing.
-    private long _realStartTime = 0;
-
-    // Decide whether the simulation should be stopped when there's no more
-    // events in the global event queue.
-    // By default, its value is 'true', meaning that the simulation will stop
-    // under that circumstances. Setting it to 'false', instruct the director
-    // to wait on the queue while some other threads might enqueue events in
-    // it.
-    private boolean _stopWhenQueueIsEmpty = true;
-
-    // Specify whether the director should wait for elapsed real time to
-    // catch up with model time.
-    private boolean _synchronizeToRealTime;
-
-    // The set of actors that have returned false in their postfire() methods.
-    // Events destined for these actors are discarded and the actors are
-    // never fired.
-    private Set _disabledActors;
-
-    // Indicator of whether the topological sort giving ports their
-    // priorities is valid.
-    private long _sortValid = -1;
 
     // A Hashtable stores the mapping of each ioPort to its depth.
     private Hashtable _portToDepth = null;
