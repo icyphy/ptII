@@ -106,8 +106,9 @@ test DirectedAcyclicGraph-2.4 {a 3 point CPO forming a triangle} {
 	 [$p leastElement $subset2] \
 	 [$p leastUpperBound $n2 $n3] [$p leastUpperBound $n1 $n2] \
 	 [$p top] \
-	 [$upN1 get 0] [$upN1 get 1] [$upN1 get 2]
-} {java0x0 node1 java0x0 node2 java0x0 node1 node2 node3}
+	 [$upN1 get 0] [$upN1 get 1] [$upN1 get 2] \
+	 [$p isLattice]
+} {java0x0 node1 java0x0 node2 java0x0 node1 node2 node3 0}
 
 ######################################################################
 ####
@@ -146,6 +147,18 @@ test DirectedAcyclicGraph-2.6 {a 5 point CPO that's not a lattice} {
 	 [$p top] \
 	 [$p bottom]
 } {node1 java0x0 java0x0 java0x0 node1 java0x0}
+
+######################################################################
+####
+# 
+#test DirectedAcyclicGraph-2.7 {a 6 point CPO that's not a lattice} {
+#    # add a bottom to the above lattice
+#    set n6 [java::new {java.lang.String String} node6]
+#    $p add $n6
+#    $p addEdge $n6 $n4
+#    $p addEdge $n6 $n5
+#    $p isLattice
+#} {0}
 
 ######################################################################
 ####
