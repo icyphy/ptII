@@ -3,7 +3,7 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.0beta Release Notes</title>
+<title>Ptolemy II 2.0-beta Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
@@ -29,6 +29,10 @@ one can easily build hybrid systems.
 (Primary Author: Stephen Neuendorffer, Contributor: Christopher Hylands)
 This release includes a limited prototype of our code generation facility
 that will generate .class files for non-hierarchical SDF models
+
+ <br>Note that the code generator will not work in an applet, but will
+work with Web Start, the Windows installer and the standard configure
+and build
 
 <li> <a href="codeDoc/ptolemy/data/unit/package-summary.html">ptolemy.data.unit</a> -
 <a href="../ptolemy/data/unit/demo/Units/Units.htm">Units Demo</a>
@@ -66,12 +70,6 @@ Ptolemy II includes support to build distributions using Sun's Web Start
 facility, which allows end users to download fully functional distributions
 via the web.
 
-</menu>
-
-<h2>Other Features that are new in Ptolemy II 2.0</h2>
-
-<ul>
-
 <li> Vergil updates
 (Steve Neuendorffer, Edward A. Lee, John Reekie
  Vergil has been improved
@@ -93,14 +91,39 @@ via the web.
 	</menu>
 See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/index.htm</code></a> for more complete information
 
+</menu>
+
+<h2>Other Features that are new in Ptolemy II 2.0</h2>
+
+<ul>
 
 <li> <a href="codeDoc/ptolemy/data/ByteToken.html">ptolemy.data.ByteToken</a>
 (Winthrop Williams, Steve Neuendorffer) - A new Token supporting bytes.
 
-<li> <a href="codeDoc/ptolemy/data/expr/package-summary.html">Expression improvements</a>
-(Zoltan Kemenczy, Research In Motion, Ltd.)
 
-<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>:
+<li> Ptolemy II Matlab interface
+(Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.) -
+The Matlab Expression actor uses JNI to invoke the Matlab engine, 
+evaluate Matlab expressions and return the results to Ptolemy II.
+The Matlab Expression actor works only under Windows, and requires
+that Matlab be installed on your local machine.
+ <menu>
+ <li> <a href="../ptolemy/matlab/matlab.htm">Ptolemy II Matlab Interface Overview</a>
+ <a href="codeDoc/ptolemy/matlab/package-summary.html">Java class documentation</a>
+ <li> <a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab Expression Demonstration</a> -
+ Windows only, requires that Matlab be installed locally, will not work within
+ an applet, but will work with Web Start
+ </menu>
+
+<li> <a href="codeDoc/ptolemy/data/expr/package-summary.html">Expression improvements</a>
+(Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.)
+Functions with scalar arguments applied to arrays and matrices
+element-by-element (recursive argument dimension reduction); widened search
+for static function (and method) signatures that includes most ptolemy.math
+classes; peformance improvements by caching search results; widened token to
+java-type conversions for function arguments and results.
+
+<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
 (Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
 to perform multiple runs of refinement on a model
 
@@ -110,7 +133,7 @@ The graph package was redesigned and reimplemented.
 
  <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
 
-</ol>
+</ul>
 
 <h3>New Demonstrations</h3>
 
@@ -168,14 +191,14 @@ The graph package was redesigned and reimplemented.
 
 
 <li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
-	synchronous/reactive (experimental), and
+	Synchronous/Reactive (experimental)
  <menu>
  <li><a href="../ptolemy/domains/sr/demo/TokenRing/TokenRing.htm">TokenRing</a>
  A cyclic token-ring arbiter composed of three blocks.
  </menu>
 
 <li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
-	timed multitasking (experimental).
+	Timed Multitasking (experimental).
  <menu>
  <li><a href="../ptolemy/domains/tm/demo/Controllers/Controllers.htm" target="main">Controllers</a>
    Two (independent) control loops whose controllers share the same CPU.
@@ -194,7 +217,7 @@ The graph package was redesigned and reimplemented.
 
 <h3>New Actors</h3>
 
-<menu>
+<ul>
 
 <li> <a href="codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a>:
 
@@ -203,6 +226,10 @@ The graph package was redesigned and reimplemented.
 <dt> <a href="codeDoc/ptolemy/actor/lib/Accumulator.html"><code>Accumulator</code></a>
 <dd> (Edward A. Lee)
 An actor that outputs the sum of the inputs so far.
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/BooleanMultiplexor.html"><code>BooleanMultiplexor</code></a> 
+<dd> (Steve Neuendorffer)
+A polymorphic multiplexor with boolean select.
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/BooleanMultiplexor.html"><code>BooleanMultiplexor</code></a> 
 <dd> (Steve Neuendorffer)
@@ -218,12 +245,12 @@ A polymorphic multiplexor with boolean select.
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/ClassWrapper.html"><code>ClassWrapper</code></a> 
 An actor that wraps (an instance of) a Java class.
-
 <dd> (Xiaojun Liu)
-<dt> <a href="codeDoc/ptolemy/actor/lib/Counter.html"><code>Counter</code></a> 
-A constant source.
 
+<dt> <a href="codeDoc/ptolemy/actor/lib/Counter.html"><code>Counter</code></a> 
+An up-down counter.
 <dd> (Steve Neuendorffer)
+
 <dt> <a href="codeDoc/ptolemy/actor/lib/Differential.html"><code>Differential</code></a> 
 <dd> (Edward A. Lee)
 An actor that outputs the difference between successive inputs.
@@ -239,7 +266,6 @@ An actor that limits the input to a specified range.
 <dt> <a href="codeDoc/ptolemy/actor/lib/LinearDifferenceEquationSystem.html"><code>LinearDifferenceEquationSystem</code></a> 
 <dd> (Jie Liu, Elaine Cheong)
 Linear Difference Equation System.
-
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/LookupTable.html"><code>LookupTable</code></a> 
 <dd> (Paul Whitaker, Christopher Hylands)
@@ -290,7 +316,7 @@ An actor that converts a boolean token into any other data type.
 An actor that converts input tokens to specified units.
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/conversions/IntArrayToString.html"><code>IntArrayToString</code></a> 
-<dd> (Michael Leung, Edward A. Lee, and Paul Whitaker)
+<dd> (Winthrop Williams)
 An actor that converts an array of integers into a string.
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/conversions/LongToDouble.html"><code>LongToDouble</code></a> 
@@ -304,7 +330,7 @@ An actor that converts a string to an array of integers.
 </dl>
 
 
-<li> <a href="codeDoc/ptolemy/actor/lib/gui/package-summary.html">ptolemy.actor.lib/gui</a>:
+<li> <a href="codeDoc/ptolemy/actor/lib/gui/package-summary.html">ptolemy.actor.lib.gui</a>:
 
 <dl>
 <dt> <a href="codeDoc/ptolemy/actor/lib/gui/MatrixVisualizer.html"><code>MatrixVisualizer</code></a> 
@@ -375,7 +401,7 @@ An actor that produces a copy of the most recent input each time
 
 <dt> <a href="codeDoc/ptolemy/domains/de/lib/PreemptableTask.html"><code>PreemptableTask</code></a> 
 <dd> (Elaine Cheong, Yang Zhao, Xiaojun Liu)
-An actor that implements as preemptable task
+An actor that simulates a preemptable task.
 
 <dt> <a href="codeDoc/ptolemy/domains/de/lib/Previous.html"><code>Previous</code></a> 
 <dd> (Edward A. Lee)
@@ -410,7 +436,7 @@ An actor that converts a matrix to sequence of output tokens.
 
 </dl>
 
-</menu>
+</ul>
 
 
 <h2>Backward compatibility issues</h2>

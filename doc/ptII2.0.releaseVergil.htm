@@ -3,7 +3,7 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.0beta Release Notes</title>
+<title>Ptolemy II 2.0-beta Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -12,7 +12,7 @@
 Version 2.0 has a number of limitations.
 
 <h3>Release Limitations</h3>
-<menu>
+<ul>
 
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
@@ -28,6 +28,10 @@ in:
 
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
 
+
+<li> Instructions for adding an actor may be found at
+<a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
+
 <li> The Using Vergil html file has some bogus characters in it.
 
 <li> <code>vergil foo</code> hangs.  No window comes up if foo does not exist.
@@ -35,16 +39,18 @@ in:
 <li> The documentation for custom actors used in demonstrations is not
 included in the release.
 
+
+<li> Ptolemy II will not configure and build properly if the pathname leading 
+up to the Ptolemy II directory contains a space. 
+
+
 <li> Dragging the UnitConversion icon into a blank canvas will
 throw an exception because UnitConversion requires data
 in the other Unit icons.
 
-</menu>
-
-
 
 <li> Applet issues:
-	<menu>
+	<ul>
 	<li>   Look inside on a composite actor fails :
 	"Cannot look inside with a configuration"
 	<li> Applets that use MoMLViewerApplet do not auto start.
@@ -95,10 +101,10 @@ The Network demo does not work as a local applet because the xml file
 includes a reference to http://ptolemy.eecs.berkeley.edu, which is
 not on the local file system, so we get a SecurityException.
 
-	</menu>
+	</ul>
 
 <li> Web Start issues:
-	<menu>
+	<ul>
 	<li> Applet generation still does not work in the Web Edition
 	<li> Invoking a pdf file or the code generator brings up a blank
 	 window.
@@ -113,11 +119,11 @@ java.lang.OutOfMemoryError
 
 	&lt;&lt;no stack trace available&gt;&gt;
 </pre>
-	</menu>
-</menu>
+	</ul>
+</ul>
 
 <h3>Limitations in the Actor Libraries</h3>
-<menu>
+<ul>
 <li>The actor library is far from complete.
 <li>The Expression actor does not properly propagate type constraints in
 an expression-dependent fashion. It works correctly for double-valued
@@ -131,16 +137,20 @@ in floating point numbers.
 <li> The readFile() parameter function does not work with applets.
 
 <!-- If you change the next paragraph update install.htm -->
+
 <li>The Matlab interface works only under Windows and it requires that
-Matlab be installed on the local machine.  The Matlab interface has
-been tested with Matlab 6.1, which corresponds with R12.1.
+Matlab be installed on the local machine. 
+The Matlab interface should work with version of Matlab from
+R11 (5.3) and up to and including R12.1 (6.1)
+
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
 <a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
+
 will only work under Windows.
 
-</menu>
+</ul>
 
 <h3>Limitations in the PN Domain</h3>
 The PN domain documents that it locally handles mutations.  However, this
@@ -156,7 +166,7 @@ lost, since timed PN models can locally execute mutations deterministically.
 Below are some of the limitations of Vergil, the Ptolemy II Graphical
 User Interface.
 
-<menu>
+<ul>
 <li> You should not change the names of built in ports - The port
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
@@ -181,18 +191,16 @@ The codegen page is especially difficult to use because of this.
 <li>Debugger not yet integrated.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class reloading.
-</menu>
+</ul>
 
 <h3>Code Generation Limitations</h3>
 Code Generation limitations are covered on the
 <a href="codegen.htm#limitations">Code Generation</a> page. 
 
-</menu>
-
 <h3>Missing Domains</h3>
-<menu>
+<ul>
 <li>Boolean and integer dataflow.
 <li>Dynamic dataflow
-</menu>
+</ul>
 </body>
 </html>
