@@ -3,26 +3,26 @@
 //########## SEMANTIC VALUES ##########
 package ptolemy.lang.java;
 
-public class parserval implements Cloneable
+public class JavaParserval implements Cloneable
 {
 public int ival;
 public double dval;
 public String sval;
 public Object obj;
-public parserval() {}
-public parserval(int val)
+public JavaParserval() {}
+public JavaParserval(int val)
 {
   ival=val;
 }
-public parserval(double val)
+public JavaParserval(double val)
 {
   dval=val;
 }
-public parserval(String val)
+public JavaParserval(String val)
 {
   sval=val;
 }
-public parserval(Object val)
+public JavaParserval(Object val)
 {
   obj=val;
 }

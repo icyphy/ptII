@@ -60,7 +60,7 @@ import java.io.FileInputStream;
 
 import ptolemy.lang.*;
 
-//#line 62 "parser.java"
+//#line 62 "JavaParser.java"
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.io.FileReader;
@@ -71,11 +71,11 @@ import java.io.LineNumberReader;
 
 
 //#####################################################################
-// class: parser
+// class: JavaParser
 // does : encapsulates yacc() parser functionality in a Java
 //        class for quick code development
 //#####################################################################
-public class parser
+public class JavaParser
 {
 
 boolean yydebug;        //do I want debug output?
@@ -229,34 +229,34 @@ static String[] read_string_table(String filename, int size)
 
 
 //########## SEMANTIC VALUES ##########
-//public class parsersemantic is defined in parserval.java
+//public class JavaParsersemantic is defined in JavaParserval.java
 
 
 String   yytext;//user variable to return contextual strings
-parserval yyval; //used to return semantic vals from action routines
-parserval yylval;//the 'lval' (result) I got from yylex()
-parserval valstk[];
+JavaParserval yyval; //used to return semantic vals from action routines
+JavaParserval yylval;//the 'lval' (result) I got from yylex()
+JavaParserval valstk[];
 int valptr;
 //###############################################################
 // methods: value stack push,pop,drop,peek.
 //###############################################################
 void val_init()
 {
-  valstk=new parserval[YYSTACKSIZE];
-  yyval=new parserval(0);
-  yylval=new parserval(0);
+  valstk=new JavaParserval[YYSTACKSIZE];
+  yyval=new JavaParserval(0);
+  yylval=new JavaParserval(0);
   valptr=-1;
 }
-void val_push(parserval val)
+void val_push(JavaParserval val)
 {
   if (valptr>=YYSTACKSIZE)
     return;
   valstk[++valptr]=val;
 }
-parserval val_pop()
+JavaParserval val_pop()
 {
   if (valptr<0)
-    return new parserval(-1);
+    return new JavaParserval(-1);
   return valstk[valptr--];
 }
 void val_drop(int cnt)
@@ -267,12 +267,12 @@ int ptr;
     return;
   valptr = ptr;
 }
-parserval val_peek(int relative)
+JavaParserval val_peek(int relative)
 {
 int ptr;
   ptr=valptr-relative;
   if (ptr<0)
-    return new parserval(-1);
+    return new JavaParserval(-1);
   return valstk[ptr];
 }
 //#### end semantic value section ####
@@ -486,7 +486,7 @@ protected static TypeNode makeArrayType(TypeNode elementType, int dims)
 
 protected String _filename = null;
 protected Yylex _lexer = null;
-//#line 2042 "parser.java"
+//#line 2042 "JavaParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -629,12 +629,12 @@ boolean doaction;
       debug("state "+yystate+", reducing "+yym+" by rule "+yyn+" ("+yyrule[yyn]+")");
     if (yym>0) { //if count of rhs not 'nil'
        try {
-         yyval = (parserval) val_peek(yym-1).clone(); //get current semantic value
+         yyval = (JavaParserval) val_peek(yym-1).clone(); //get current semantic value
        } catch (CloneNotSupportedException e) {
          yyerror("Clone not supported");
        }
     } else {
-      yyval = new parserval();
+      yyval = new JavaParserval();
     }
     switch(yyn)
       {
@@ -1808,7 +1808,7 @@ case 288:
 //#line 1472 "jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3361 "parser.java"
+//#line 3361 "JavaParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
