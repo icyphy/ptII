@@ -169,7 +169,7 @@ public class PtolemyPackage implements Module {
                             new Manager(toplevel.workspace(), "Manager");
                         toplevel.setManager(manager);
 			manager.addExecutionListener(
-			    new VergilExecutionListener());
+			    new VergilExecutionListener(_application));
                     }
 
                     if(_executionFrame != null) {
@@ -449,8 +449,12 @@ public class PtolemyPackage implements Module {
 
     // An execution listener that displays the status of the current
     // document.
-    private class VergilExecutionListener implements ExecutionListener {
-	// Defer to the application to display the error to the user.
+    public static class VergilExecutionListener implements ExecutionListener {
+	public VergilExecutionListener(Application a) {
+            _application = a;
+        }
+
+        // Defer to the application to display the error to the user.
 	public void executionError(Manager manager, Exception exception) {
 	    _application.showError(manager.getName(), exception);
 	}
@@ -466,6 +470,7 @@ public class PtolemyPackage implements Module {
 	    JStatusBar statusBar = frame.getStatusBar();
 	    statusBar.setMessage(manager.getState().getDescription());
 	}
+        private Application _application;
     }
 
     // A class that renders named objects in a combobox.

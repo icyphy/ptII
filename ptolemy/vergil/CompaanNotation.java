@@ -31,6 +31,7 @@
 package ptolemy.vergil;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
 import diva.canvas.*;
 import diva.canvas.toolbox.*;
 import diva.gui.*;
@@ -43,6 +44,8 @@ import java.awt.geom.*;
 
 /**
  * A visual notation creates views for a ptolemy document in Vergil.
+ * This class adds additional visualization for the performance data that
+ * comes from compaan.
  *
  * @author Steve Neuendorffer
  * @version $Id$
@@ -110,8 +113,25 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	GraphImpl impl = new VergilGraphImpl();
 
 	GraphPane pane = new GraphPane(controller, impl);
-	CompositeEntity entity =
-	    (CompositeEntity) ((PtolemyDocument)d).getModel();
+	CompositeActor entity = 
+	    (CompositeActor) ((PtolemyDocument)d).getModel();
+        Manager manager = entity.getManager();
+        if(manager == null) {
+            try {
+                manager =
+                    new Manager(entity.workspace(), "Manager");
+                entity.setManager(manager);
+                manager.addExecutionListener(
+                        new PtolemyPackage.VergilExecutionListener(d.getApplication())); 
+            }                
+            catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+
+        _listener = new CompaanListener(controller);
+        manager.addExecutionListener(_listener);
+
 	Graph graph = impl.createGraph(entity);
 	controller.setGraph(graph);
 	return pane;
@@ -131,4 +151,24 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	    return figure;
 	}
     }
+
+    private class CompaanListener implements ExecutionListener {
+        public CompaanListener(GraphController controller) {
+            _controller = controller;
+        }
+
+        public void executionError(Manager manager, Exception exception) {
+        }
+
+        public void executionFinished(Manager manager) {
+            _controller.rerender();
+        }
+
+        public void managerStateChanged(Manager manager) {
+        }
+
+        private GraphController _controller;
+    }
+
+    private CompaanListener _listener;
 }
