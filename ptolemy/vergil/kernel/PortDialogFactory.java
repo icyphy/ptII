@@ -41,6 +41,7 @@ import javax.swing.JMenuItem;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PortConfigurerDialog;
+import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -97,19 +98,20 @@ public class PortDialogFactory implements MenuItemFactory {
                     if (parent instanceof Frame) {
                         DialogTableau dialogTableau =
                             DialogTableau.createDialog(
-                                    (Frame) parent,
-                                    _configuration,
-                                    ((BasicGraphFrame) parent).getEffigy(),
-                                    PortConfigurerDialog.class,
-                                    (Entity) target);
+                                (Frame) parent,
+                                _configuration,
+                                ((TableauFrame) parent).getEffigy(),
+                                PortConfigurerDialog.class,
+                                (Entity) target);
                         if (dialogTableau != null) {
                             dialogTableau.show();
                         }
                     }
                 } catch (Throwable throwable) {
                     // If we get a ClassCastException, display the error.
-                    MessageHandler.error("Failed to perform action" + e,
-                            throwable);
+                    MessageHandler.error(
+                        "Failed to perform action" + e,
+                        throwable);
                 }
             }
         };

@@ -78,10 +78,10 @@ public class DialogTableau extends Tableau {
     public DialogTableau(Effigy container, String name, String title)
         throws IllegalActionException, NameDuplicationException {
         super(container.workspace());
-        if (!(container instanceof PtolemyEffigy)) {
+        if (!(container instanceof Effigy)) {
             throw new IllegalActionException(
                 this,
-                "Effigy for Dialog must be an instance of " + "PtolemyEffigy.");
+                "Effigy for Dialog must be an instance of " + "Effigy.");
         }
         setName(name);
         setTitle(title);
