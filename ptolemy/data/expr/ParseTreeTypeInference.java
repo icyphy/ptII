@@ -203,11 +203,18 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             return;
         }
 
-        // Otherwise, try to reflect the method name.
-        CachedMethod cachedMethod =
-            CachedMethod.findMethod(functionName,
+        // Otherwise, try to reflect the method name. 
+       
+        CachedMethod cachedMethod;
+        try {
+            cachedMethod = CachedMethod.findMethod(functionName,
                     childTypes, CachedMethod.FUNCTION);
-
+        } catch (Exception ex) {
+            // Deal with what happens if the method is not found.
+            // FIXME: hopefully this is monotonic???
+            _setType(node, BaseType.UNKNOWN);
+            return;
+        }
         if (cachedMethod.isValid()) {
             Type type = cachedMethod.getReturnType();
             _setType(node, type);
