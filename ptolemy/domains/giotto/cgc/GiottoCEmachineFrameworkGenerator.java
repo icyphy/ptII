@@ -636,11 +636,14 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             throws IllegalActionException {
              
         String assgtStmtString = "";
+        String initStmtString = "";
         Actor actor;
         String actorName;
 
         FCinDriversImplString += "// Input Drivers for all the Tasks requiring one" + _endLine + _endLine;
-                   
+        initStmtString += _tabChar + "static int counter = 0;" + _endLine;
+        initStmtString += _endLine;
+        
         // generate "Driver functions" for common actors.
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
@@ -677,6 +680,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 String sanitizedPortName2 = StringUtilities.sanitizeName(
                         port.getName(model));
                 String arrayLength = _getArrayLength(port);
+                String sourceActorName = StringUtilities.sanitizeName((port.getContainer()).getName());
                        
                 if (firstParameter) {
                     firstParameter = false;
@@ -690,13 +694,22 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 FHfuncVarDeclString += inPortType + " *" + sanitizedPortName2
                            + ", " + _getTypeString(inPort) + " *" + sanitizedPortName;
 
-                assgtStmtString += _tabChar + "memcpy( *" + sanitizedPortName
+                assgtStmtString += _tabChar + "if ( ("
+                                    + actorName + "_FREQ <= " + sourceActorName + "_FREQ)"
+                                    + " || !(counter % ("
+                                    + actorName + "_FREQ/"
+                                    + sourceActorName + "_FREQ)) ) {" + _endLine;
+                assgtStmtString += _tabChar + _tabChar + "memcpy( *" + sanitizedPortName
                                     + ", *" + sanitizedPortName2
                                     + ", " + arrayLength + ");" + _endLine;
+                assgtStmtString += _tabChar + "}" + _endLine + _endLine;
             }
 
+            assgtStmtString += _tabChar + "counter = (counter % "
+                                + actorName + "_FREQ) + 1;"+ _endLine;
             FCinDriversImplString += ") {" + _endLine;
             FHfuncVarDeclString += ");" + _endLine + _endLine;
+            FCinDriversImplString += initStmtString;
             FCinDriversImplString += assgtStmtString; // Copy values from the global section to the input of the task
             FCinDriversImplString += "}" + _endLine;
         }
