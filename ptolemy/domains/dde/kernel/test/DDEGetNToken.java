@@ -67,6 +67,7 @@ public class DDEGetNToken extends DDEGet {
         _tokens = new Token[_numTokens];
         _beforeTimes = new double[_numTokens];
         _afterTimes = new double[_numTokens];
+        _name = name;
 
         for(int i = 0; i < _numTokens; i++ ) {
             _beforeTimes[i] = -1.0;
@@ -113,6 +114,12 @@ public class DDEGetNToken extends DDEGet {
 			if( rcvr.hasToken() ) {
 			    _tokens[cnt] = rcvr.get();
 			    _afterTimes[cnt] = timeKeeper.getCurrentTime();
+                            if( _name.equals("actorRcvr") || _name.equals("sink") ) {
+                                /*
+                                System.out.println(_name+": _afterTimes["+cnt+"] = "+
+                                _afterTimes[cnt]+"\t_beforeTimes["+cnt+"] = "+_beforeTimes[cnt]);
+                                */
+                            }
 		            cnt++;
 			    j = rcvrs[i].length + 1;
 			    finished = true;
@@ -133,5 +140,6 @@ public class DDEGetNToken extends DDEGet {
     private Token[] _tokens = null;
     private double[] _beforeTimes = null;
     private double[] _afterTimes = null;
+    private String _name;
 
 }
