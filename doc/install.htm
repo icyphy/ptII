@@ -151,8 +151,8 @@ To build Ptolemy II under Windows NT4.0:
 <ol>
 <li> Install the Cygwin toolkit from
 <a href="http://sources.redhat.com/cygwin/" target="_top"><CODE>http://sources.redhat.com/cygwin/</CODE></a>
- <p>Installation instructions can be found at
-<a href="http://sources.redhat.com/cygwin/faq"> target="_top"><CODE>http://sources.redhat.com/cygwin/faq</CODE></a>
+ <p>Complete installation instructions can be found at
+<a href="http://sources.redhat.com/cygwin/faq" target="_top"><CODE>http://sources.redhat.com/cygwin/faq</CODE></a>, below is a summary:
 <ol>
 <li> Create an empty directory
 
@@ -212,7 +212,12 @@ the Environment tab of the System control panel
 <CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>
  <p>The PTII value should be set using back slashes so that javac
 gets the right path if you've installed Cygwin in a location
-other than <CODE>C:\</CODE> such as <CODE>C:\Cygwin</CODE>
+other than <CODE>C:\</CODE> such as <CODE>C:\Cygwin</CODE>.
+ <p>An example PTII value would be:
+<pre>
+c:\users\yourname\ptII
+</pre>
+
 
 <li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\jdk1.3\bin</CODE>)
 
@@ -224,8 +229,8 @@ make is /usr/bin/make
 </pre>
 If <CODE>make</CODE> cannot be found, then
 you may also need to add the Cygwin bin directory
-<CODE>\usr\bin</CODE>
-to your path
+<CODE>c:\cygwin\usr\bin</CODE>
+to your path.
 
 <li> Optional: Install Jacl, see the instructions
 <a href="#Jacl">above</a>.
