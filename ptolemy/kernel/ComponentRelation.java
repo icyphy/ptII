@@ -234,7 +234,8 @@ public class ComponentRelation extends Relation {
 
     // A cache of the deeply linked ports, and the version used to
     // construct it.
-    private LinkedList _deeplinkedports;
+    // 'transient' means that the variable will not be serialized.
+    private transient LinkedList _deeplinkedports;
     private long _deeplinkedportsversion = -1;
 }
 

@@ -388,8 +388,9 @@ public class ComponentPort extends Port {
 
     // A cache of the deeply linked ports, and the version used to
     // construct it.
-    private LinkedList _deeplinkedports;
+    // 'transient' means that the variable will not be serialized.
+    private transient LinkedList _deeplinkedports;
     private long _deeplinkedportsversion = -1;
-    private LinkedList _deeplinkedinports;
+    private transient LinkedList _deeplinkedinports;
     private long _deeplinkedinportsversion = -1;
 }
