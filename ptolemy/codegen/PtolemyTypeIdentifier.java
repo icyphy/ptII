@@ -387,6 +387,11 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final ClassDecl ACTOR_DECL;
     public static final TypeNameNode ACTOR_TYPE;
     
+    // SequenceActor is a marker interface that we remove
+    // in ActorTransformerVisitor
+    public static final ClassDecl SEQUENCE_ACTOR_DECL;
+    public static final TypeNameNode SEQUENCE_ACTOR_TYPE;
+
     public static final Integer PTOLEMY_TRANSFORMED_KEY =
      new Integer(RESERVED_JAVA_PROPERTIES);
 
@@ -835,6 +840,17 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         ACTOR_TYPE = ACTOR_DECL.getDefType();
 
+
+        CompileUnitNode sequenceActorUnit =
+            StaticResolution.loadClassName("ptolemy.actor.lib.SequenceActor", 1);
+
+        SEQUENCE_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
+                sequenceActorUnit,
+                "SequenceActor", CG_INTERFACE);
+
+        SEQUENCE_ACTOR_TYPE = SEQUENCE_ACTOR_DECL.getDefType();
+
+
         _KNOWN_CLASS_DECLS = new ClassDecl[] {
                 COMPLEX_DECL, FIX_POINT_DECL,
                 TYPED_ATOMIC_ACTOR_DECL,
@@ -855,7 +871,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 INTERNAL_ERROR_EXCEPTION_DECL, INVALID_STATE_EXCEPTION_DECL,
                 NOT_SCHEDULABLE_EXCEPTION_DECL, NO_ROOM_EXCEPTION_DECL,
                 NO_TOKEN_EXCEPTION_DECL,
-                ACTOR_DECL
+                ACTOR_DECL,
+                SEQUENCE_ACTOR_DECL
                 };
 
         _KNOWN_TYPENAMENODES = new TypeNameNode[] {
@@ -878,7 +895,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 INTERNAL_ERROR_EXCEPTION_TYPE, INVALID_STATE_EXCEPTION_TYPE,
                 NOT_SCHEDULABLE_EXCEPTION_TYPE, NO_ROOM_EXCEPTION_TYPE,
                 NO_TOKEN_EXCEPTION_TYPE,
-                ACTOR_TYPE
+                ACTOR_TYPE,
+                SEQUENCE_ACTOR_TYPE
                 };
 
         _TOKEN_CONTAINED_TYPES = new TypeNode[] {
