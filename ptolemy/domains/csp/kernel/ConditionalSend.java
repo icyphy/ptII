@@ -43,9 +43,9 @@ import java.util.Random;
 /**
 Represents a guarded communication statement in which the
 communication is a send(). Thus is represents
-<br>
-     guard; send() => statements
-<br>
+<P>
+      <CENTER>guard; send() => statements </CENTER>
+<P>
 It is one branch of either a CDO or a CIF conditional
 communication construct.
 <p>
@@ -73,16 +73,16 @@ succeeded with its rendezvous is executed in the run method. There are
 roughly three parts to the algorithm, each of which is relevant
 to the different rendezvous scenarios.
 <br>
-Case 1: There is a get already waiting at the rendezvous point. In this case
-the branch attempts to register itself, with the parent actor, as the first
-branch ready to rendezvous. If it succeeds it performs the rendezvous,
-notifies the parent that it succeeded and returns. If it is not the first, it
-keeps on trying to register itself until it finally succeeds or another
-branch successfully rendezvoused in which case it fails and terminates. Note
-that a put cannot "go away" so it remains in an inner-loop trying to
-rendezvous or failing.
+<I>Case 1:</I> There is a get already waiting at the rendezvous point. In 
+this case the branch attempts to register itself, with the parent actor, as 
+the first branch ready to rendezvous. If it succeeds it performs the 
+rendezvous, notifies the parent that it succeeded and returns. If it 
+is not the first, it keeps on trying to register itself until it 
+finally succeeds or another branch succeeds with a rendezvous in which 
+case it fails and terminates. Note that a put cannot "go away" so it 
+remains in an inner-loop trying to rendezvous or failing.
 <br>
-Case 2: There is a conditional receive waiting. In this case it tries to
+<I>Case 2:</I> There is a conditional receive waiting. In this case it tries to
 register both branches with their parents as the first to try. If it
 succeeds it performs the transfer, notifies the parent and returns. It
 performs the registration in two steps, first registering this branch and
@@ -93,15 +93,16 @@ the conditional send could "go away". If it is unable to register itself as
 the first branch to try, it again starts trying to rendezvous from the
 beginning.
 <br>
-Case 3: If there is neither a get or a conditional receive waiting, it sets a
-flag in the receiver that a conditional send is trying to rendezvous. It
-then waits until a get is executed on the receiver, or until another branch
-succeeds and this branch fails. If this branch fails, it resets the flag in
-the receiver, notifies the parent actor and returns. Note that it only needs
-to wait on a put as if a conditional receive is executed on the receiver, it
-is the branch which is responsible for checking that the rendezvous can
-proceed. Thus, in the case where two conditional branches are trying
-to rendezvous at a receiver, it is the responsibility of the branch arriving
+<I>Case 3:</I> If there is neither a get or a conditional receive waiting, 
+it sets a flag in the receiver that a conditional send is trying to 
+rendezvous. It then waits until a get is executed on the receiver, or 
+until another branch succeeds and this branch fails. If this branch fails, 
+it resets the flag in the receiver, notifies the parent actor and 
+returns. Note that it only needs to wait on a put as if a 
+conditional receive is executed on the receiver, it is the branch 
+which is responsible for checking that the rendezvous can proceed. Thus, 
+in the case where two conditional branches are trying to rendezvous at 
+a receiver, it is the responsibility of the branch arriving
 second to check that the rendezvous can proceed(see case 2).
 <p>
 @author  Neil Smyth
