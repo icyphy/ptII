@@ -70,6 +70,7 @@ PTCLASSJAR =
 PTAUXALLJARS = \
 		ci/ci.jar \
 		dde/dde.jar \
+		ddf/ddf.jar \
                 dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
