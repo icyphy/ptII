@@ -4,18 +4,18 @@
 <entity name="HierarchicalExecution" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 812, 635}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 4, 820, 622}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 517]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 504]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{187.6716382575758, 315.6624053030302}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 252.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows that the CT director gives a correct execution of a &#10;hierarchical continuous-time model. By correct execution, we mean &#10;the simulation results (signals) of the hierarchical model are the &#10;same as the results of the same model with the hierarchy removed.&#10;&#10;The &quot;signal 1&quot; plotter plots a signal from the flat model, and the &#10;&quot;signal 2&quot; plotter plots a signal from the hierarchical model. &#10;The &quot;difference&quot; plotter plots the difference between these two signals.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 540.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 480.0]">
         </property>
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
@@ -33,7 +33,7 @@
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -45,7 +45,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 165.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -59,7 +59,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 210.0]">
         </property>
     </entity>
     <entity name="Integrator3" class="ptolemy.domains.ct.lib.Integrator">
@@ -71,7 +71,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -92,7 +92,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 155.0]">
         </property>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
@@ -102,11 +102,11 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 165.0]">
         </property>
     </entity>
     <entity name="Embedded CT Model" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 260.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 174, 741, 468}, maximized=false}">
         </property>
@@ -161,15 +161,15 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 250.0]">
         </property>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 260.0]">
         </property>
     </entity>
     <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[18.3331298828125, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[118.3331298828125, 165.0]">
         </property>
     </entity>
     <entity name="signal 1" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -177,7 +177,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[346, 170]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 105.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -194,7 +194,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[346, 170]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 305.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -211,7 +211,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[346, 170]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 210.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -224,11 +224,11 @@
         </configure>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[315.0, 165.0]">
+        <vertex name="vertex1" value="[415.0, 105.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="[315.0, 365.0]">
+        <vertex name="vertex" value="[415.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
