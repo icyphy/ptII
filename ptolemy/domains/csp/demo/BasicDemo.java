@@ -35,31 +35,33 @@ import ptolemy.domains.csp.lib.*;
 //////////////////////////////////////////////////////////////////////////
 //// BasicDemo
 /**
+This demo illustrates basic rendezvous in the CSP domain. The actors 
+used here could be any polymorphic actors that wish to send and 
+receive. I use the classes below only on an interim basis until the 
+polymorphic libraries issues are fully resolved. the source and sink 
+fire for a limited number of times after which they terminate.
+<p>
 Source - Sink
+<p>
 @author Neil Smyth
 @version $Id$
-@see classname
-@see full-classname
+@see ptolemy.domains.csp.kernel.CSPReceiver
+@see ptolemy.domains.csp.kernel.CSPDirector
 */
 public class BasicDemo {
-    /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** Nothing to be done.
      */
     public BasicDemo() {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** Construct the topology used in this demo.
+     *  Here a single level of hierarchy is used, with the 
+     *  director controlling the CompositeActor being an 
+     *  instance of CSPDirector. Thus the execution of the model 
+     *  follows CSP semantics.
+     * @param args the command line arguments.
      */
     public static void main(String[] args) {
         try {
@@ -77,7 +79,6 @@ public class BasicDemo {
             IOPort in = sink.input;
 
             IORelation rel = (IORelation)univ.connect(out, in, "R1");
-            //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
             univ.getManager().startRun();
         } catch (Exception e) {

@@ -39,7 +39,7 @@ Customer - Buffer - Server
 <p>
 Customers arrive with a Poisson distribution, i.e. the inter-arrival
 times are exponentially distributed. The buffer stores customers who
-have arrived but ahve not yet been served. The server process also
+have arrived but have not yet been served. The server process also
 serves customers with an exponential distribution.
 <p>
 By varying the rate of customer arrivals, the buffer size and rate
