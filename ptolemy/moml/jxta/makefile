@@ -31,7 +31,7 @@
 
 ME =		ptolemy/moml/jxta
 
-DIRS =
+DIRS =		demo
 
 # Root of the Java directory
 ROOT =		../../..
