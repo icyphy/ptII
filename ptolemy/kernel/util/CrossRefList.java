@@ -328,8 +328,7 @@ public final class CrossRefList implements Serializable  {
 
         public CrossRefEnumeration() {
             _enumeratorVersion = _listVersion;
-            _startAtHead = true;
-            _ref = null;
+            _ref = _headNode;
         }
 
         /** Return true if there are more elements to enumerate. */
@@ -337,17 +336,11 @@ public final class CrossRefList implements Serializable  {
             if(_enumeratorVersion != _listVersion) {
                 throw new CorruptedEnumerationException();
             }
-            CrossRef tmp1 = _ref; // Callee-save.
-            boolean tmp2 = _startAtHead; // Callee-save.
-            Object tmpObj;
-            try {
-                tmpObj = nextElement();
-            } catch (NoSuchElementException ex) {
-                tmpObj = null;
-            }
-            _ref = tmp1; // Restore state.
-            _startAtHead = tmp2; // Restore state.
-            return tmpObj != null;
+
+            if (_ref == null)
+                return false;
+            else
+                return true;
         }
 
         /** Return the next element in the enumeration.
@@ -358,43 +351,20 @@ public final class CrossRefList implements Serializable  {
             if(_enumeratorVersion != _listVersion) {
                 throw new CorruptedEnumerationException();
             }
-            if(_startAtHead) {
-                // Starting at beginning of list.
-                _startAtHead = false;
-                if(_headNode != null) {
-                    // List not empty.
-                    _ref = _headNode;
-                    return _ref._farContainer();
-                } else {
-                    // List is empty, throw exception.
-                    throw new NoSuchElementException("exhausted enumeration");
-                }
+
+            if (_ref == null) {
+                throw new NoSuchElementException("exhausted enumeration");
             } else {
-                // Not at beginning of list.
-                if (_ref != _lastNode) {
-                    // Not at end of list.
-                    if (_ref != null) {
-                        // If pointer to element not NULL, return next.
-                        _ref = _ref._next;
-                        return _ref._farContainer();
-                    } else {
-                        // If pointer is NULL, then end of list was
-                        // already passed.  Throw exception.
-                        throw new NoSuchElementException(
-                                "exhausted enumeration");
-                    }
-                } else {
-                    // At end of list.
-                    throw new NoSuchElementException("exhausted enumeration");
-                }
+                CrossRef p = _ref;
+                Object v = _ref._farContainer();
+                _ref = p._next;
+                return v;
             }
         }
 
         private long _enumeratorVersion;
 
         private CrossRef _ref;
-
-        private boolean _startAtHead;
     }
 }
 
