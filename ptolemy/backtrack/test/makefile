@@ -85,7 +85,8 @@ tests:: $(EXTRA_SRCS) test_jsimple
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+# Don't include jclass here, Backtrack.tcl will run "make backtrack" for us.
+test_jsimple: $(EXTRA_SRCS) $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
 
@@ -102,7 +103,7 @@ transform:
 	for x in $(DIRS); do \
 	  rm -f ptolemy/backtrack/test/$$x/*.java; \
 	  "$(JAVA)" \
-	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
+	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
 	    ptolemy.backtrack.ast.Transformer \
 	    -prefix ptolemy.backtrack.test \
 	    -output "$(ROOT)" \
