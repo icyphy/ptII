@@ -34,10 +34,10 @@
 if [ $# -lt 1 ]; then
     echo "$0: Usage: $0 reviewtopdir reviewname file1 [file2...]"
     echo "reviewtopdir should be of the form: /users/ptII/public_html/reviews"
-    echo "reviewname should be of the form YYYYMMDD"
+    echo "reviewname should be of the form YYYYMMDD-design or YYMMDD-code"
     echo "file should be of the form: ptolemy/package/foo.java"
     echo "For example:"
-    echo "mkreview 19990430 ~/ptIIweb/reviews ptolemy/data/expr/{Variable,VariableList}.java"
+    echo "mkreview ~/ptIIweb/reviews 19990430-design ptolemy/data/expr/{Variable,VariableList}.java"
     echo "Source files will be loaded from $PTII/file and a review created in $reviewtopdir/reviewname"
     exit 2
 fi
