@@ -776,7 +776,12 @@ public class PlotBox extends Panel {
      * @deprecated As of JDK1.1 in java.awt.component 
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
-    public boolean mouseDrag(Event evt, int x, int y) {
+    public synchronized boolean mouseDrag(Event evt, int x, int y) {
+        // We make this method synchronized so that we can draw the drag
+        // box properly.  If this method is not synchronized, then
+        // we could end up calling setXORMode, being interrupted
+        // and having setPaintMode() called in another method.
+
         if (_debug > 9) System.out.println("PlotBox: mouseDrag "+x+" "+y);
         // Bound the rectangle so it doesn't go outside the box.
         if (y > _lry) y=_lry;
@@ -853,7 +858,12 @@ public class PlotBox extends Panel {
      * @deprecated As of JDK1.1 in java.awt.component 
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
-    public boolean mouseUp(Event evt, int x, int y) { // deprecated
+    public synchronized boolean mouseUp(Event evt, int x, int y) { //deprecated
+        // We make this method synchronized so that we can draw the drag
+        // box properly.  If this method is not synchronized, then
+        // we could end up calling setXORMode, being interrupted
+        // and having setPaintMode() called in another method.
+
         if (_debug > 9) System.out.println("PlotBox: mouseUp");
         boolean handled = false;
         if ((_zoomin == true) && (_drawn == true)){  
