@@ -292,3 +292,11 @@ test ComplexMatrixMath-5.1.3 {inverse} {
     epsilonDiff $stmp {{{-0.08054623357401358 + 0.09878325227792009i -0.012816950866797521 - 0.023549260257783887i} {0.0028290022510533727 - 0.004897469784379781i -0.061218731725691374 - 0.06985561701254343i}}}
 } {}
 
+####################################################################
+test ComplexMatrixMath-5.1.4 {imagParts} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    imagParts $m23]
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-6.0 2.0 -4.0} {0.4 8.0 -4.0}}}
+} {}
