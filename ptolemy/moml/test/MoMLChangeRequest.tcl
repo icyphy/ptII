@@ -1300,3 +1300,98 @@ test MoMLChangeRequest-11.2.1 {test paste with inherited and overridden values} 
     </property>
 </entity>
 }
+
+######################################################################
+#### Test undo of attribute deletion in the base class
+
+test MoMLChangeRequest-12.0 {Check baseline values before deletion} {
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}
+
+test MoMLChangeRequest-12.1 {first check propagation of deletion} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <deleteProperty name="cA.cAB.cABC.p"/>
+    }]
+    $change setUndoable true
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="cA" extends="ptolemy.actor.CompositeActor">
+        <class name="cAB" extends="ptolemy.actor.CompositeActor">
+            <class name="cABC" extends="ptolemy.actor.CompositeActor">
+            </class>
+            <entity name="iABC" class="cABC">
+            </entity>
+        </class>
+        <entity name="iAB" class="cAB">
+        </entity>
+        <entity name="iABcopy" class="cAB">
+        </entity>
+    </class>
+    <class name="cD" extends="cA">
+    </class>
+    <entity name="iA" class="cA">
+    </entity>
+    <entity name="iD" class="cD">
+    </entity>
+</entity>
+}
+
+test MoMLChangeRequest-12.2 {then check undo} {
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
+    $toplevel requestChange $undochange
+	# Have to get these again because we have new attributes.
+	set cccpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.cAB.cABC.p}]]
+	set ccipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.cAB.iABC.p}]]
+	set cicpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.iAB.cABC.p}]]
+	set ciipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.iAB.iABC.p}]]
+	set cccpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.cAB.cABC.p}]]
+	set ccipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.cAB.iABC.p}]]
+	set cicpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.iAB.cABC.p}]]
+	set ciipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.iAB.iABC.p}]]
+	set iccpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.cAB.cABC.p}]]
+	set icipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.cAB.iABC.p}]]
+	set iicpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.iAB.cABC.p}]]
+	set iiipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.iAB.iABC.p}]]
+	set iccpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.cAB.cABC.p}]]
+	set icipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.cAB.iABC.p}]]
+	set iicpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.iAB.cABC.p}]]
+	set iiipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.iAB.iABC.p}]]
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}

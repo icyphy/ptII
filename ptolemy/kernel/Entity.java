@@ -410,6 +410,33 @@ public class Entity extends Prototype {
             _workspace.doneWriting();
         }
     }
+    
+    /** Specify whether this object is a class definition.
+     *  This method overrides the base class to check that if the
+     *  argument is true, then this entity contains no ports with links.
+     *  This method is write synchronized on the workspace.
+     *  @param isClass True to make this object a class definition.
+     *  @throws IllegalActionException If the argument is true and
+     *   this entity contains ports with links.
+     */
+    public final void setClassDefinition(boolean isClass)
+            throws IllegalActionException {
+        if (isClass && !isClassDefinition()) {
+            // Converting from an instance to a class.
+            // Check that there are no links
+            // to ports contained by this entity.
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                if (port.numLinks() > 0) {
+                    throw new IllegalActionException(this,
+                        "Cannot convert an entity to a class definition while "
+                        + "it contains ports with links.");
+                }
+            }
+        }
+        super.setClassDefinition(isClass);
+    }
 
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute or port.  In derived classes, this should be
@@ -482,16 +509,6 @@ public class Entity extends Prototype {
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
         _portList.append(port);
-    }
-
-    /** Return an iterator over contained objects. In this base class,
-     *  this is an iterator over attributes and ports.  In derived classes,
-     *  the iterator will also traverse ports, entities, and relations.
-     *  @return An iterator over instances of NamedObj contained by this
-     *   object.
-     */
-    protected Iterator _containedObjectsIterator() {
-        return new ContainedObjectsIterator();
     }
 
     /** Return a description of the object.  The level of detail depends

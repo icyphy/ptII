@@ -149,7 +149,7 @@ test UndoDeletePort-1.1b {Test deleting a port is undoable: without entity attri
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
 
-    # Should be back to the base model minus some links
+    # Should be back to the base model.
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -173,6 +173,7 @@ test UndoDeletePort-1.1b {Test deleting a port is undoable: without entity attri
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="upper" relation="r1"/>
+        <link port="a.input" relation="r1"/>
         <link port="b.output" relation="r1"/>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
@@ -259,6 +260,7 @@ test UndoDeletePort-1.2b {Test deleting a port is undoable: without entity attri
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="upper" relation="r1"/>
+        <link port="a.input" relation="r1"/>
         <link port="b.output" relation="r1"/>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
@@ -512,7 +514,7 @@ test UndoDeletePort-1.5b {Test deleting a port is undoable: with entity attribut
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
 
-    # Should be back to the base model minus some links
+    # Should be back to the base model.
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"

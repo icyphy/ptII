@@ -381,9 +381,12 @@ public class ComponentEntity extends Entity {
             throw new IllegalActionException(this, container,
             "Component entity can only be contained by a CompositeEntity");
         }
+        // NOTE: If we don't enforce this, then undo could fail,
+        // since deletions occur in the opposite order of the re-additions
+        // in undo.  So being silent about this error will not do.
         if (container == null) {
             // If the class has objects that defer to it, then
-            // refuse to convert.
+            // refuse to delete.
             boolean hasDeferrals = false;
             List deferred = getChildren();
             StringBuffer names = new StringBuffer();

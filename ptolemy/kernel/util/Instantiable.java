@@ -110,8 +110,10 @@ public interface Instantiable extends Heritable {
 
     /** Specify whether this object is a class definition.
      *  @param isClass True to make this object a class definition.
+     *  @exception IllegalActionException If making this a class definition
+     *   or making it an instance is not allowed.
      */
-    public void setClassDefinition(boolean isClass);
+    public void setClassDefinition(boolean isClass) throws IllegalActionException;
 
     /** Specify that this object defers its definition to another
      *  object.  This should be called to make this object either an

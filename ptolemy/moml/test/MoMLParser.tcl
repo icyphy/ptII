@@ -1616,7 +1616,7 @@ test MoMLParser-2.8.1 {Test incremental parsing: remove a port using entity attr
 #
 test MoMLParser-2.8.2 {Test incremental parsing: remove a port using 
 		entity attribute, check exception is thrown if port name 
-		not immediate} {
+		not valid} {
     # First add the port back in
     set incMoml_2_8_2_a {<entity name=".top">
     <entity name="inside">
@@ -1635,7 +1635,7 @@ test MoMLParser-2.8.2 {Test incremental parsing: remove a port using
 </entity>}
     catch {$parser parse $incMoml_2_8_2_b} msg
     string range $msg 0 51
-} {com.microstar.xml.XmlException: Invalid port name: i}
+} {com.microstar.xml.XmlException: No such port to dele}
 
 
 ######################################################################
@@ -1889,7 +1889,7 @@ test MoMLParser-2.17 {Test unlink with index} {
 ######################################################################
 ####
 #
-test MoMLParser-3.1 {Test invalid containment} {
+test MoMLParser-3.1 {Test bizarre containment} {
     set incMoml_3_1 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\"/>
@@ -1901,14 +1901,25 @@ test MoMLParser-3.1 {Test invalid containment} {
 </entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
-    catch {$parser parse $incMoml_3_1} msg
-    string range $msg 0 51
-} {com.microstar.xml.XmlException: Reference to an exis}
+    set toplevel [$parser parse $incMoml_3_1]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="c" class="ptolemy.actor.TypedCompositeActor">
+        </entity>
+    </entity>
+    <entity name="b" class="ptolemy.actor.TypedCompositeActor">
+    </entity>
+</entity>
+}
 
 ######################################################################
 ####
 #
-test MoMLParser-3.2 {Test invalid containment} {
+test MoMLParser-3.2 {Test more bizarre containment} {
     set incMoml_3_2 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1919,14 +1930,23 @@ test MoMLParser-3.2 {Test invalid containment} {
 </entity>
 "
     $parser reset
-    catch {$parser parse $incMoml_3_2} msg
-    string range $msg 0 51
-} {com.microstar.xml.XmlException: Reference to an exis}
+    set toplevel [$parser parse $incMoml_3_2]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="b" class="ptolemy.actor.TypedCompositeActor">
+        </entity>
+    </entity>
+</entity>
+}
 
 ######################################################################
 ####
 #
-test MoMLParser-3.3 {Test invalid containment} {
+test MoMLParser-3.3 {Test more bizarre containment} {
     set incMoml_3_3 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1937,9 +1957,18 @@ test MoMLParser-3.3 {Test invalid containment} {
 </entity>
 "
     $parser reset
-    catch {$parser parse $incMoml_3_3} msg
-    string range $msg 0 51
-} {com.microstar.xml.XmlException: Reference to an exis}
+    set toplevel [$parser parse $incMoml_3_3]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="b" class="ptolemy.actor.TypedCompositeActor">
+        </entity>
+    </entity>
+</entity>
+}
 
 ######################################################################
 ####
@@ -1956,9 +1985,18 @@ test MoMLParser-3.4 {Test invalid containment} {
 </entity>
 "
     $parser reset
-    catch {$parser parse $incMoml_3_4} msg
-    string range $msg 0 51
-} {com.microstar.xml.XmlException: Reference to an exis}
+    set toplevel [$parser parse $incMoml_3_3]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="b" class="ptolemy.actor.TypedCompositeActor">
+        </entity>
+    </entity>
+</entity>
+}
 
 ######################################################################
 ####
@@ -3263,3 +3301,224 @@ test MoMLParser-20.8 {Test modification to the base inner class.} {
     </entity>
 </entity>
 }}
+
+######################################################################
+#### Test order of deferral lists and delete and undo of entities.
+#
+
+set baseModel {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
+    </class>
+    <class name="SubclassOfRamp" extends="Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfRamp.output" relation="relation"/>
+    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-21.1 {Order of heritage list.} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel]]
+    set ramp [$toplevel getEntity Ramp]
+    set derivedList [$ramp getHeritageList]
+    listToFullNames $derivedList
+} {.top.SubclassOfRamp .top.InstanceOfSubclassOfRamp .top.InstanceOfRamp}
+
+test MoMLParser-21.2 {Delete entity.} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <deleteEntity name="SubclassOfRamp"/>
+    }]
+    $change setUndoable true
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfRamp.output" relation="relation"/>
+</entity>
+}
+
+test MoMLParser-21.3 {Undo delete entity.} {
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
+    $toplevel requestChange $undochange
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
+    </class>
+    <class name="SubclassOfRamp" extends="Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfRamp.output" relation="relation"/>
+    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
+</entity>
+}
+
+test MoMLParser-21.4 {Delete base class.} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <deleteEntity name="Ramp"/>
+    }]
+    $change setUndoable true
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+</entity>
+}
+
+test MoMLParser-21.5 {Undo delete base class.} {
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
+    $toplevel requestChange $undochange
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
+    </class>
+    <class name="SubclassOfRamp" extends="Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfRamp.output" relation="relation"/>
+    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
+</entity>
+}
+
+
+######################################################################
+#### Test order of deferral lists and delete and undo of ports.
+#
+
+set baseModel {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
+    	<port name="trigger"><property name="input"/></port>
+    	<port name="output"><property name="output"/></port>
+    </class>
+    <class name="SubclassOfRamp" extends="Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfRamp.output" relation="relation"/>
+    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-22.1 {Order of heritage list.} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel]]
+    set port [$toplevel getPort Ramp.output]
+    set derivedList [$port getHeritageList]
+    listToFullNames $derivedList
+} {.top.SubclassOfRamp.output .top.InstanceOfSubclassOfRamp.output .top.InstanceOfRamp.output}
+
+test MoMLParser-22.2 {Delete port.} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <deletePort name="Ramp.output"/>
+    }]
+    $change setUndoable true
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </class>
+    <class name="SubclassOfRamp" extends="Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
+</entity>
+}
+
+test MoMLParser-22.3 {Undo delete port.} {
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
+    $toplevel requestChange $undochange
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </class>
+    <class name="SubclassOfRamp" extends="Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfRamp.output" relation="relation"/>
+    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
+</entity>
+}

@@ -472,10 +472,13 @@ public class ComponentPort extends Port {
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If the link crosses levels of
      *   the hierarchy, or the port has no container, or the relation
-     *   is not a ComponentRelation.
+     *   is not a ComponentRelation, or if the port is contained
+     *   by a class definition.
      */
     public void link(Relation relation) throws IllegalActionException {
-        if (relation != null) _checkLink(relation);
+        if (relation != null) {
+            _checkLink(relation);
+        } 
         _doLink(relation);
     }
 
@@ -637,9 +640,7 @@ public class ComponentPort extends Port {
      *  not throw an exception if the link crosses levels of the
      *  hierarchy.  It is used in a "strategy pattern," where the link
      *  methods call it to check the validity of a link, and derived
-     *  classes perform more elaborate checks.  Derived classes should
-     *  be sure to call super._checkLiberalLink() if they override this
-     *  method.
+     *  classes perform more elaborate checks.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container or
      *   the relation is not a ComponentRelation, or the relation has
@@ -653,10 +654,18 @@ public class ComponentPort extends Port {
                         "Attempt to link to an incompatible relation "
                         + "(expected ComponentRelation).");
             }
-            Nameable container = getContainer();
+            Entity container = (Entity)getContainer();
             if (container == null) {
                 throw new IllegalActionException(this, relation,
                         "Port must have a container to establish a link.");
+            }
+            // Check that the container is not a class or that
+            // if it is, that this is an inside link.
+            if (container.isClassDefinition() 
+                    && container != relation.getContainer()) {
+                throw new IllegalActionException(this, relation,
+                        "Cannot establish a link to a port contained " +
+                        "by a class definition");
             }
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
@@ -666,12 +675,12 @@ public class ComponentPort extends Port {
 
     /** Override the base class to throw an exception if the relation is
      *  not a ComponentRelation, or if the container of the port or
-     *  relation is null, or if the link crosses levels of the hierarchy.
+     *  relation is null, or if the link crosses levels of the hierarchy,
+     *  or if the container of this port is a class definition and the
+     *  link is not an inside link.
      *  This method is used in a "strategy pattern," where the link
      *  methods call it to check the validity of a link, and derived
-     *  classes perform more elaborate checks.  Derived classes should
-     *  be sure to call super._checkLiberalLink() if they override this
-     *  method.
+     *  classes perform more elaborate checks.
      *  This method is <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *  If the relation argument is null, do nothing.
@@ -679,27 +688,33 @@ public class ComponentPort extends Port {
      *  @exception IllegalActionException If this port has no container, or
      *   the relation is not a ComponentRelation, or the relation has
      *   no container, or the link crosses levels of the hierarchy, or
-     *   this port is not an acceptable port for the specified relation.
+     *   this port is not an acceptable port for the specified relation,
+     *   or if the container of this port is a class definition and the
+     *   link is not an inside link.
      */
     protected void _checkLink(Relation relation)
             throws IllegalActionException {
+        super._checkLink(relation);
         if (relation != null) {
             if (!(relation instanceof ComponentRelation)) {
                 throw new IllegalActionException(this, relation,
                         "Attempt to link to an incompatible relation "
                         + "(expected ComponentRelation).");
             }
-            Nameable container = getContainer();
-            if (container != null) {
-                Nameable relationContainer = relation.getContainer();
-                if (container != relationContainer &&
-                        container.getContainer() != relationContainer) {
-                    throw new IllegalActionException(this, relation,
-                            "Link crosses levels of the hierarchy");
-                }
-            } else {
+            Entity container = (Entity)getContainer();
+            // Superclass assures that the container is not null.
+            Nameable relationContainer = relation.getContainer();
+            if (container != relationContainer &&
+                    container.getContainer() != relationContainer) {
                 throw new IllegalActionException(this, relation,
-                        "Port must have a container to establish a link.");
+                        "Link crosses levels of the hierarchy");
+            }
+            // Check that the container is not a class or that
+            // if it is, that this is an inside link.
+            if (container.isClassDefinition() && container != relationContainer) {
+                throw new IllegalActionException(this, relation,
+                        "Cannot establish a link to a port contained " +
+                        "by a class definition");
             }
             // Throw an exception if this port is not of an acceptable
             // class for the relation.

@@ -29,15 +29,10 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-
 import java.util.Stack;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// UndoContext
@@ -212,50 +207,62 @@ public class UndoContext {
         return _undoable;
     }
 
-    /**
-     *  Generate and append undo MoML to move the current
-     *  context. This is done by generating a new entity element that
-     *  makes the difference between the passed in container and
-     *  containee objects.
-     *
-     *  <p>For example, if the container has full name ".top" and the
-     *  containee has a full name ".top.a.b.c.d", then MoML to move
-     *  down the model such as the following is generated: <entity
-     *  name="a.b.c" >
-     *
-     * @param container The container to move relative to
-     * @param containee The containee who is contained by the container
-     */
-    public void moveContextStart(NamedObj container,
-            NamedObj containee) {
-        String entityContext = _getRelativeContext(container, containee);
-        // Get the name of the MoML element to move with
-        String elemName = _getContainingContextType(containee);
-        // Need to move to the correct level to handle deep names
-        if (entityContext != null) {
-            appendUndoMoML("<" + elemName + " name=\"" + entityContext +
-                    "\" >\n");
-        }
-    }
-
-    /** Generate and append closing MoML for the current move.
-     *
-     *  <p>For example, if the containee is not already immediately
+    /** Return the closing element corresponding to the starting element
+     *  returned by moveContextStart(), or an empty string if none is
+     *  needed.
+     *  <p>
+     *  For example, if the containee is not already immediately
      *  contained, and the container is an entity, the </entity>
      *  is appended to the model.
-     *
-     * @param container The container to move relative to.
-     * @param containee The containee who is contained by the container.
+     *  @param context The current context.
+     *  @param containee The containee whose immediate context we want.
+     *  @return The MoML that closes the MoML returned by moveContextStart(),
+     *   or an empty string if none is needed.
+     *  @see #moveContextStart(NamedObj, NamedObj)
      */
-    public void moveContextEnd(NamedObj container,
+    public static String moveContextEnd(
+            NamedObj context,
             NamedObj containee) {
-        String entityContext = _getRelativeContext(container, containee);
-        // Get the name of the MoML element to move with
-        String elemName = _getContainingContextType(containee);
-        // Need to move to the correct level to handle deep names
-        if (entityContext != null) {
-            appendUndoMoML("</" + elemName + ">\n");
+        if (moveContextStart(context, containee).equals("")) {
+            return "";
         }
+        // If we get to here, then containee and its
+        // container cannot be null.
+        NamedObj container = containee.getContainer();
+        return "</" + container.getElementName() + ">\n";
+    }
+
+    /** Return the MoML start element to put us in the
+     *  context of the immediate container of the containee,
+     *  assuming the current context is as given by the
+     *  <i>context</i> argument.  Return an empty string if the
+     *  specified context is the immediate container of the
+     *  specified containee.
+     *  <p>
+     *  For example, if the context has full name ".top" and the
+     *  containee has full name ".top.a.b.c.d", then MoML to move
+     *  down the model such as the following is returned:
+     *  <entity name="a.b.c" >
+     *  @param context The current context.
+     *  @param containee The containee whose immediate context we want.
+     *  @return The MoML to put us in the right context from the current
+     *   context, or an empty string if we are already in that context
+     *   or if either argument is null.
+     *  @see #moveContextEnd(NamedObj, NamedObj)
+     */
+    public static String moveContextStart(
+            NamedObj context,
+            NamedObj containee) {
+        if (context == null || containee == null) {
+            return "";
+        }
+        NamedObj container = containee.getContainer();
+        if (container == null || container == context) {
+            return "";
+        }
+        String entityContext = container.getName(context);
+        String elemName = container.getElementName();
+        return "<" + elemName + " name=\"" + entityContext + "\" >\n";
     }
 
     /**
@@ -299,64 +306,6 @@ public class UndoContext {
             + " undoable children\n"
             + "undoMoML: " + getUndoMoML() + "\n"
             + "closingUndoMoML: " + _closingUndoMoML.toString() + "\n";
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**
-     *  Get the entity context ot use to move to the correct level in a model.
-     *  It works as follows: given the container (first arg), what entity
-     *  element name is needed to move down the hierarchy so that the containee
-     *  can be referred to by an immediate name.
-     *
-     * @param container The container.
-     * @param containee The containee.
-     * @return the relative context.
-     */
-    private String _getRelativeContext(NamedObj container,
-            NamedObj containee) {
-        // First get the full name of the containee relative to the
-        // container
-        String relativeName = containee.getName(container);
-        int lastDotIndex = relativeName.lastIndexOf(".");
-        if (lastDotIndex == -1) {
-            // already is immediately contained, so no extra context needed
-            return null;
-        } else {
-            return relativeName.substring(0, lastDotIndex);
-        }
-    }
-
-    /**
-     *  Return the MoML element name to use for a containing context
-     *  for the passed in NamedObj. This is used with the
-     *  moveContextStart() method to determine the type of containing
-     *  element. The type of containing element is used to move the
-     *  context when relative names are used that go down more than
-     *  one level.
-     *
-     * @param named the object whose containing context needs to be
-     * determined.
-     * @return the MoML element name of the containing context, or null
-     * if the argument was null.
-     */
-    private String _getContainingContextType(NamedObj named) {
-        if (named == null) {
-            return null;
-        }
-        Nameable container = named.getContainer();
-        if (container instanceof Entity) {
-            return "entity";
-        } else if (container instanceof Port) {
-            return "port";
-        } else if (container instanceof Relation) {
-            return "relation";
-        } else if (container instanceof Attribute) {
-            return "property";
-        } else {
-            return null;
-        }
     }
 
     ///////////////////////////////////////////////////////////////////

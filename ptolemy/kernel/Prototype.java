@@ -339,10 +339,17 @@ public class Prototype extends NamedObj implements Instantiable {
     }
 
     /** Specify whether this object is a class definition.
+     *  This method is write synchronized on the workspace.
      *  @param isClass True to make this object a class definition.
+     *  @throws IllegalActionException If setting the class definition
+     *   is not allowed.
      */
-    public final void setClassDefinition(boolean isClass) {
+    public void setClassDefinition(boolean isClass)
+            throws IllegalActionException {
+        // No need for a try-catch, since it's an atomic set.
+        workspace().getWriteAccess();
         _isClassDefinition = isClass;
+        workspace().doneWriting();
     }
 
     /** Specify that this object defers its definition to another

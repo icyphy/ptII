@@ -210,7 +210,8 @@ public class Port extends NamedObj {
      *  @exception IllegalActionException If the link would cross levels of
      *   the hierarchy, or the relation is incompatible,
      *   or the port has no container, or the port is not in the
-     *   same workspace as the relation.
+     *   same workspace as the relation, or if the port is contained
+     *   by a class definition.
      */
     public void insertLink(int index, Relation relation)
             throws IllegalActionException {
@@ -260,7 +261,8 @@ public class Port extends NamedObj {
      *  @exception IllegalActionException If the link would cross levels of
      *   the hierarchy, or the relation is incompatible,
      *   or the port has no container, or the port is not in the
-     *   same workspace as the relation.
+     *   same workspace as the relation, or if the port is contained
+     *   by a class definition.
      */
     public void link(Relation relation) throws IllegalActionException {
         if (relation != null && _workspace != relation.workspace()) {
@@ -503,8 +505,8 @@ public class Port extends NamedObj {
     protected void _checkContainer(Entity container)
             throws IllegalActionException {}
 
-    /** Check that this port is compatible with the specified relation.
-     *  If the argument is null, do nothing.
+    /** Check that this port is compatible with the specified relation,
+     *  that it has a container. If the argument is null, do nothing.
      *  If this port has no container, throw an exception.
      *  Derived classes may constrain the argument to be a subclass of
      *  Relation. Level-crossing links are allowed.
@@ -512,9 +514,7 @@ public class Port extends NamedObj {
      *  but this is not checked here.  The caller should check.
      *  This method is used in a "strategy pattern," where the link
      *  methods call it to check the validity of a link, and derived
-     *  classes perform more elaborate checks.  Derived classes should
-     *  be sure to call super._checkLiberalLink() if they override this
-     *  method.
+     *  classes perform more elaborate checks.
      *  This method is <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *  @param relation The relation to link to.

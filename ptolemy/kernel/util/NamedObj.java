@@ -1610,12 +1610,12 @@ public class NamedObj implements
     }
 
     /** Fix the fields of the given object which point to Attributes.
-     * The object is assumed to be a clone of this one.  The fields
-     * are fixed to point to the corresponding attribute of the clone,
-     * instead of pointing to attributes of this object.
+     *  The object is assumed to be a clone of this one.  The fields
+     *  are fixed to point to the corresponding attribute of the clone,
+     *  instead of pointing to attributes of this object.
      *  @param newObject The object in which we fix the fields.
      *  @exception CloneNotSupportedException If there is a problem
-     *  getting the attribute
+     *   getting the attribute
      */
     protected void _cloneFixAttributeFields(NamedObj newObject)
             throws CloneNotSupportedException {

@@ -624,11 +624,9 @@ public class CompositeEntity extends ComponentEntity {
                     continue;
                 }
                 // Apply filter.
-                if (filter == null
-                        || (filter.contains(relation)
-                                && (filter.contains(port)
-                                        ||  filter
-                                        .contains(port.getContainer())))) {
+                if (filter == null || (filter.contains(relation)
+                        && (filter.contains(port)
+                        ||  filter.contains(port.getContainer())))) {
 
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
@@ -1253,16 +1251,6 @@ public class CompositeEntity extends ComponentEntity {
                     = (ComponentEntity)entities.next();
             entity._adjustDeferrals(prototype, clone);
         }
-    }
-
-    /** Return an iterator over contained objects. In this class,
-     *  this is an iterator over attributes, ports, entities, and
-     *  relations, in that order.
-     *  @return An iterator over instances of NamedObj contained by this
-     *   object.
-     */
-    protected Iterator _containedObjectsIterator() {
-        return new ContainedObjectsIterator();
     }
 
     /** Return a description of the object.  The level of detail depends

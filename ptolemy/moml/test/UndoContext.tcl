@@ -144,7 +144,7 @@ name="bar"
 closingUndoMoML: 
 }}
 
-test UndoContext-3.4 {moveContextStart: use example from method documentation } {
+test UndoContext-3.4.0.1 {moveContextStart: use example from method documentation } {
     set workspace [java::new ptolemy.kernel.util.Workspace workspace]
     set container [java::new ptolemy.kernel.CompositeEntity $workspace] 
     $container setName top
@@ -155,7 +155,6 @@ test UndoContext-3.4 {moveContextStart: use example from method documentation } 
 
     set undoContext [java::new ptolemy.moml.UndoContext true]
     $undoContext moveContextStart $container $containee
-    $undoContext getUndoMoML
 } {<entity name="a.b.c" >
 }
 
@@ -163,13 +162,11 @@ test UndoContext-3.4.1 {moveContextStart: use a containee that is already immedi
     # Use container and a from 3.4 above	
     set undoContext [java::new ptolemy.moml.UndoContext true]
     $undoContext moveContextStart $container $a
-    $undoContext getUndoMoML
 } {}
 
 test UndoContext-3.5 {moveContextEnd: use example from method documentation } {
     # Use container and containee from 3.4 above	
     set undoContext [java::new ptolemy.moml.UndoContext true]
     $undoContext moveContextEnd $container $containee
-    $undoContext getUndoMoML
 } {</entity>
 }

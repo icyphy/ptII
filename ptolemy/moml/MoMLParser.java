@@ -1825,7 +1825,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String portName = (String)_attributes.get("name");
                 _checkForNull(portName,
                         "No name for element \"deletePort\"");
-                // The entity attribute is optional
+                // The entity attribute is optional.
                 String entityName = (String)_attributes.get("entity");
 
                 // NOTE: this also takes care of creating the undo
@@ -1867,12 +1867,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _current = deletedProp;
                 _namespace = _DEFAULT_NAMESPACE;
                 if (undoEnabled && _undoContext.isUndoable()) {
-                    // NOTE: do not need to move context as property deletions
-                    // are with immedaitely contained properties
-                    // NOTE: deleting a property does not have side effects,
-                    // so it is ok to generate the undo MoML after the
-                    // property has been deleted.
-                    _undoContext.appendUndoMoML(deletedProp.exportMoML());
                     // Note that nothing below a deleteProperty is undoable
                     _undoContext.setChildrenUndoable(false);
                 }
@@ -3318,8 +3312,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _parser.getColumnNumber());
         }
 
-        // NOTE: Added to ensure that inherited objects aren't changed.
-        // EAL 1/04.
+        // Ensure that inherited objects aren't changed.
         if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This entity is part of the class definition.");
@@ -3327,31 +3320,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // NOTE: not enough to simply record the MoML of the deleted entity
         // as any links connected to its ports will also be deleted.
-        if (_undoEnabled && _undoContext.isUndoable()) {
-            _undoContext.appendUndoMoML("<group>\n");
-            // May need to move context if the entity name given is not
-            // immediate
-            _undoContext.moveContextStart(_current, toDelete);
-
-            // Add in the description
-            _undoContext.appendUndoMoML(toDelete.exportMoML());
-
-            // NOTE: cannot use the relationlist as returned as it is
-            // unmodifiable and we need to add in the entity being deleted.
-            ArrayList filter = new ArrayList(toDelete.linkedRelationList());
-            filter.add(toDelete);
-
-            // The parent container can do the filtering and generate the
-            // MoML
-            CompositeEntity container = (CompositeEntity)toDelete.getContainer();
-            String replicaLinkMoML = container.exportLinks(0, filter);
-            _undoContext.appendUndoMoML(replicaLinkMoML);
-
-            // Finally move back to context if needed
-            _undoContext.moveContextEnd(_current, toDelete);
-            _undoContext.appendUndoMoML("</group>\n");
-
-        }
+        // Construct the undo MoML as we go to ensure: (1) that
+        // the undo occurs in the opposite order of all deletions, and
+        // (2) that if a failure to delete occurs at any point, then
+        // the current undo only represents as far as the failure got.
+        StringBuffer undoMoML = new StringBuffer();
 
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
@@ -3359,14 +3332,40 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
-        Iterator heritage = toDelete.getHeritageList().iterator();
-        while (heritage.hasNext()) {
-            ComponentEntity inherited = (ComponentEntity)heritage.next();
-            inherited.setContainer(null);
+        // Note that deletion and undo need to occur in the opposite
+        // order, so we first create the undo in the order given
+        // by the heritage list, then do the deletion in the
+        // opposite order.
+        try {
+            Iterator heritage = toDelete.getHeritageList().iterator();
+            // NOTE: Deletion needs to occur in the reverse order from
+            // what appears in the heritage list. So first we construct
+            // a reverse order list.
+            List reverse = new LinkedList();
+            while (heritage.hasNext()) {
+                reverse.add(0, heritage.next());
+            }
+            heritage = reverse.iterator();
+            while (heritage.hasNext()) {
+                ComponentEntity inherited = (ComponentEntity)heritage.next();
+                // Have to get this _before_ deleting.
+                String toUndo = _getUndoForDeleteEntity(inherited);
+                inherited.setContainer(null);
+                // Put at the _start_ of the undo MoML, to ensure
+                // reverse order from the deletion.
+                undoMoML.insert(0, toUndo);
+            }
+            // Have to get this _before_ deleting.
+            String toUndo = _getUndoForDeleteEntity(toDelete);
+            toDelete.setContainer(null);
+            undoMoML.insert(0, toUndo);
+        } finally {
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                undoMoML.insert(0, "<group>");
+                undoMoML.append("</group>\n");
+                _undoContext.appendUndoMoML(undoMoML.toString());
+            }
         }
-
-        toDelete.setContainer(null);
-
         return toDelete;
     }
 
@@ -3374,43 +3373,26 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  by the current environment.
      *  @param portName The relative or absolute name of the
      *   port to delete.
+     *  @param entityName Optional name of the entity that contains
+     *   the port (or null to use the current context).
      *  @return The deleted object.
      *  @throws Exception If there is no such port or if the port
      *   is defined in the class definition.
      */
     private Port _deletePort(String portName, String entityName)
             throws Exception {
-        // NOTE: if the entity attribute is not used, then the
-        // deletion of any links associated with this port will
-        // not be undoable.
-        // If the entity attribute is used, then the port name must be
-        // immediate i.e. not contain a period.
         Port toDelete = null;
         Entity portContainer = null;
-        boolean entityAttrUsed = false;
         if (entityName == null) {
             toDelete = _searchForPort(portName);
-            entityAttrUsed = false;
-        }
-        else {
-            entityAttrUsed = true;
+            if (toDelete != null) {
+                portContainer = (Entity)toDelete.getContainer();
+            }
+        } else {
             portContainer = _searchForEntity(entityName, _current);
-            if (portContainer == null) {
-                throw new XmlException("No such entity (" + entityName +
-                        ") to delete the port on: " + portName,
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+            if (portContainer != null) {
+                toDelete = portContainer.getPort(portName);
             }
-            if (portName.indexOf(".") != -1) {
-                throw new XmlException("Invalid port name: " + portName +
-                        ", must be immediately contained if the entity " +
-                        "attribute is used",
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
-            }
-            toDelete = portContainer.getPort(portName);
         }
         if (toDelete == null) {
             throw new XmlException("No such port to delete: "
@@ -3419,96 +3401,76 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
+        if (portContainer == null) {
+            throw new XmlException("No container for the port: "
+                    + portName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
 
-        // NOTE: Added to ensure that inherited objects aren't changed.
-        // EAL 1/04.
+        // Ensure that inherited objects aren't changed.
         if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This port is part of the class definition.");
         }
 
+        // Propagate and generate undo MoML.
         // NOTE: not enough to simply record the MoML of the deleted port
-        // as any links connected to it will also be deleted.
-        if (_undoEnabled && _undoContext.isUndoable()) {
-            _undoContext.appendUndoMoML("<group>\n");
-            // Need to work out the entity context to use if any
-            if (!entityAttrUsed) {
-                _undoContext.moveContextStart(_current, toDelete);
-            }
-            else {
-                _undoContext.moveContextStart(_current, portContainer);
-            }
+        // as any links connected to it will also be deleted
+        // and derived ports will have to have similar undo MoML
+        // so that connections get remade.
+        // Construct the undo MoML as we go to ensure: (1) that
+        // the undo occurs in the opposite order of all deletions, and
+        // (2) that if a failure to delete occurs at any point, then
+        // the current undo only represents as far as the failure got.
+        StringBuffer undoMoML = new StringBuffer();
 
-            // Move to the entity context if the entity attribute was used.
-            // NOTE: only the local name is used.
-            if (entityAttrUsed) {
-                _undoContext.appendUndoMoML("<entity name=\"" +
-                        portContainer.getName() + "\" >\n");
-            }
-
-            // Add in the MoML description of the port
-            _undoContext.appendUndoMoML(toDelete.exportMoML());
-
-            // NOTE: only generate undo MoML for deleted links if the entity
-            // attribute is used
-            if (entityAttrUsed) {
-                // First need to generate replicaLinkMoML for the internal
-                // links if the port is a component port, then close of the
-                // local entity MoML, then generate replicaLinkMoML for
-                // the outside links.
-                if (portContainer instanceof CompositeEntity) {
-                    // Get the containing compositeEntity as this is
-                    // needed for the generating the link MoML and
-                    // level crossing links below
-                    CompositeEntity composite = (CompositeEntity)portContainer;
-                    ComponentPort compPort = (ComponentPort)toDelete;
-                    List insideRelationsList = compPort.insideRelationList();
-                    ArrayList filter = new ArrayList(insideRelationsList);
-                    filter.add(compPort);
-                    String replicaLinkMoML = composite.exportLinks(0, filter);
-                    _undoContext.appendUndoMoML(replicaLinkMoML);
-                }
-
-                // Close off the local entity
-                _undoContext.appendUndoMoML("</entity>\n");
-
-                // Add in the replica links for outside
-                List relationsList = toDelete.linkedRelationList();
-                ArrayList filter = new ArrayList(relationsList);
-                filter.add(toDelete);
-                // Get the containing compositeEntity as this is needed for the
-                // generating the link MoML and level crossing links below
-                CompositeEntity composite =
-                    (CompositeEntity)portContainer.getContainer();
-                String replicaLinkMoML = composite.exportLinks(0, filter);
-                _undoContext.appendUndoMoML(replicaLinkMoML);
-            }
-
-
-            // Finally move back to context if needed
-            if (!entityAttrUsed) {
-                _undoContext.moveContextEnd(_current, toDelete);
-            }
-            else {
-                _undoContext.moveContextEnd(_current, portContainer);
-            }
-            _undoContext.appendUndoMoML("</group>\n");
-        }
-        
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
         // we look for its heritage, not the context's heritage.
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
-        Iterator heritage = toDelete.getHeritageList().iterator();
-        while (heritage.hasNext()) {
-            Port inherited = (Port)heritage.next();
-            inherited.setContainer(null);
+        // Note that deletion and undo need to occur in the opposite
+        // order.
+        try {
+            Iterator heritage = toDelete.getHeritageList().iterator();
+            // NOTE: Deletion needs to occur in the reverse order from
+            // what appears in the heritage list. So first we construct
+            // a reverse order list.
+            List reverse = new LinkedList();
+            while (heritage.hasNext()) {
+                reverse.add(0, heritage.next());
+            }
+            heritage = reverse.iterator();
+            while (heritage.hasNext()) {
+                Port inherited = (Port)heritage.next();
+                // Create the undo MoML.
+                // Have to get this _before_ deleting.
+                // Put at the _start_ of the undo MoML, to ensure
+                // reverse order from the deletion.
+                // NOTE: This describes links to the
+                // inherited port.  Amazingly, the order
+                // seems to be exactly right so that links
+                // that will propagate on undo are no longer
+                // present. So it seems to generate exactly
+                // the right undo to not end up with duplicate connections!
+                String toUndo = _getUndoForDeletePort(inherited);
+                inherited.setContainer(null);
+                undoMoML.insert(0, toUndo);
+            }
+            // Have to get this _before_ deleting.
+            String toUndo = _getUndoForDeletePort(toDelete);
+            toDelete.setContainer(null);
+            undoMoML.insert(0, toUndo);
+        } finally {
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                undoMoML.insert(0, "<group>");
+                undoMoML.append("</group>\n");
+                _undoContext.appendUndoMoML(undoMoML.toString());
+            }
         }
-
-        toDelete.setContainer(null);
-
         return toDelete;
     }
 
@@ -3529,26 +3491,58 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
-        // NOTE: Added to ensure that inherited objects aren't changed.
-        // EAL 1/04.
-        if (toDelete.isInherited()) {
+        // Ensure that inherited objects aren't changed.
+         if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This attribute is part of the class definition.");
         }
         
+        // Propagate and generate undo MoML.
+        // NOTE: not enough to simply record the MoML of the deleted attribute
+        // as derived attributes may have overridden the values.
+        // Construct the undo MoML as we go to ensure: (1) that
+        // the undo occurs in the opposite order of all deletions, and
+        // (2) that if a failure to delete occurs at any point, then
+        // the current undo only represents as far as the failure got.
+        StringBuffer undoMoML = new StringBuffer();
+
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
         // we look for its heritage, not the context's heritage.
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
-        Iterator heritage = toDelete.getHeritageList().iterator();
-        while (heritage.hasNext()) {
-            Attribute inherited = (Attribute)heritage.next();
-            inherited.setContainer(null);
-        }
+        try {
+            // NOTE: Deletion can occur in the the same order as
+            // what appears in the heritage list.
+            Iterator heritage = toDelete.getHeritageList().iterator();
 
-        toDelete.setContainer(null);
+            String toUndo = _getUndoForDeleteAttribute(toDelete);
+            toDelete.setContainer(null);
+            undoMoML.append(toUndo);
+
+            while (heritage.hasNext()) {
+                Attribute inherited = (Attribute)heritage.next();
+
+                if (inherited.isModifiedHeritage()) {
+                    toUndo = _getUndoForDeleteAttribute(inherited);
+                    inherited.setContainer(null);
+                    undoMoML.append(toUndo);
+                } else {
+                    // No need for undo code.
+                    // Propagation will take care of it.
+                    inherited.setContainer(null);
+                }
+            }
+        } finally {
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                undoMoML.insert(0, "<group>");
+                undoMoML.append("</group>\n");
+                _undoContext.appendUndoMoML(undoMoML.toString());
+                // FIXME
+                System.out.println("***********************\n" + undoMoML.toString() + "************************\n");
+            }
+        }
         return toDelete;
     }
 
@@ -3570,41 +3564,21 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _parser.getColumnNumber());
         }
 
-        // NOTE: Added to ensure that inherited objects aren't changed.
-        // EAL 1/04.
         if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This relation is part of the class definition.");
         }
 
-        // NOTE: not enough to simply record the MoML of the deleted entity
-        // as any links connected to its ports will also be deleted.
-        if (_undoEnabled && _undoContext.isUndoable()) {
-            _undoContext.appendUndoMoML("<group>\n");
-            // May need to move context if the entity name given is not
-            // immediate
-            _undoContext.moveContextStart(_current, toDelete);
-
-            // Add in the relation description
-            _undoContext.appendUndoMoML(toDelete.exportMoML());
-
-            // NOTE: cannot use the relationlist as returned as it is
-            // unmodifiable and we need to add in the entity being deleted.
-            ArrayList filter = new ArrayList(toDelete.linkedPortList());
-            filter.add(toDelete);
-
-            // The parent container can do the filtering and generate the
-            // MoML
-            CompositeEntity container = (CompositeEntity)toDelete.getContainer();
-            String replicaLinkMoML = container.exportLinks(0, filter);
-
-            // Append it to the current element undo MoML
-            _undoContext.appendUndoMoML(replicaLinkMoML.toString());
-
-            // Finally move back to context if needed
-            _undoContext.moveContextEnd(_current, toDelete);
-            _undoContext.appendUndoMoML("</group>\n");
-        }
+        // Propagate and generate undo MoML.
+        // NOTE: not enough to simply record the MoML of the deleted relation
+        // as any links connected to it will also be deleted
+        // and derived relations will have to have similar undo MoML
+        // so that connections get remade.
+        // Construct the undo MoML as we go to ensure: (1) that
+        // the undo occurs in the opposite order of all deletions, and
+        // (2) that if a failure to delete occurs at any point, then
+        // the current undo only represents as far as the failure got.
+        StringBuffer undoMoML = new StringBuffer();
 
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
@@ -3612,14 +3586,41 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // We have to do this before actually deleting it,
         // which also has the side effect of triggering errors
         // before the deletion.
-        Iterator heritage = toDelete.getHeritageList().iterator();
-        while (heritage.hasNext()) {
-            ComponentRelation inherited = (ComponentRelation)heritage.next();
-            inherited.setContainer(null);
+        // Note that deletion and undo need to occur in the opposite
+        // order.
+        try {
+            Iterator heritage = toDelete.getHeritageList().iterator();
+            // NOTE: Deletion needs to occur in the reverse order from
+            // what appears in the heritage list. So first we construct
+            // a reverse order list.
+            List reverse = new LinkedList();
+            while (heritage.hasNext()) {
+                reverse.add(0, heritage.next());
+            }
+            heritage = reverse.iterator();
+            while (heritage.hasNext()) {
+                ComponentRelation inherited 
+                        = (ComponentRelation)heritage.next();
+                // Since the Relation can't be a
+                // class itself (currently), it has derived objects
+                // only if its container has derived objects.
+                // Thus, we do not need to create undo MoML
+                // for the derived objects. The undo MoML for
+                // the principal relation will propagate when
+                // executed.
+                inherited.setContainer(null);
+            }
+            // Have to get this _before_ deleting.
+            String toUndo = _getUndoForDeleteRelation(toDelete);
+            toDelete.setContainer(null);
+            undoMoML.insert(0, toUndo);
+        } finally {
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                undoMoML.insert(0, "<group>");
+                undoMoML.append("</group>\n");
+                _undoContext.appendUndoMoML(undoMoML.toString());
+            }
         }
-
-        toDelete.setContainer(null);
-
         return toDelete;
     }
     
@@ -3733,6 +3734,135 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return (ComponentPort)port;
     }
 
+    /** Return the MoML commands to undo deleting the specified attribute
+     *  from the current context.
+     *  @param toDelete The component to delete.
+     */
+    private String _getUndoForDeleteAttribute(Attribute toDelete)
+            throws IOException {
+
+        // Set the context to the immediate container.
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
+        
+        // Add in the description.
+        moml.append(toDelete.exportMoML());
+        
+        // Finally move back to context if needed
+        moml.append(UndoContext.moveContextEnd(_current, toDelete));
+        
+        return moml.toString();
+    }
+
+    /** Return the MoML commands to undo deleting the specified entity
+     *  from the current context.
+     *  @param toDelete The component to delete.
+     */
+    private String _getUndoForDeleteEntity(ComponentEntity toDelete)
+            throws IOException {
+
+        // Set the context to the immediate container.
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
+        
+        // Add in the description.
+        moml.append(toDelete.exportMoML());
+                
+        // Now create the undo that will recreate any links
+        // the are deleted as a side effect.
+        // NOTE: cannot use the relationlist as returned as it is
+        // unmodifiable and we need to add in the entity being deleted.
+        ArrayList filter = new ArrayList(toDelete.linkedRelationList());
+        filter.add(toDelete);
+        
+        // The parent container can do the filtering and generate the MoML.
+        CompositeEntity container = (CompositeEntity)toDelete.getContainer();
+        moml.append(container.exportLinks(0, filter));
+        
+        // Finally move back to context if needed
+        moml.append(UndoContext.moveContextEnd(_current, toDelete));
+        
+        return moml.toString();
+    }
+    
+    /** Return the MoML commands to undo deleting the specified port
+     *  from the current context.
+     *  @param toDelete The component to delete.
+     */
+    private String _getUndoForDeletePort(Port toDelete)
+            throws IOException {
+                
+        // Set the context to the immediate container.
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
+        
+        // Add in the description.
+        moml.append(toDelete.exportMoML());
+                
+        // Now create the undo that will recreate any links
+        // the are deleted as a side effect.
+        ArrayList filter = new ArrayList(toDelete.linkedRelationList());
+        if (toDelete instanceof ComponentPort) {
+            filter.addAll(((ComponentPort)toDelete).insideRelationList());
+        }
+        filter.add(toDelete);
+        
+        NamedObj container = toDelete.getContainer();
+        
+        // Generate the undo MoML for the inside links, if there are any.
+        if (container instanceof CompositeEntity) {
+            moml.append(((CompositeEntity)container).exportLinks(0, filter));
+        }
+
+        // Move back to context if needed.
+        moml.append(UndoContext.moveContextEnd(_current, toDelete));
+
+        // The undo MoML for the outside links is trickier.
+        // We have to move up in the hierarchy, so we need to generate
+        // an absolute context.
+        if (container != null) {
+            NamedObj containerContainer = container.getContainer();
+            if (containerContainer instanceof CompositeEntity) {
+                // Set the context to the container's container.
+                moml.append(UndoContext.moveContextStart(_current, container));
+                moml.append(((CompositeEntity)containerContainer)
+                        .exportLinks(0, filter));
+                moml.append(UndoContext.moveContextEnd(_current, container));
+            }
+        }
+        return moml.toString();
+    }
+
+    /** Return the MoML commands to undo deleting the specified relation
+     *  from the current context.
+     *  @param toDelete The component to delete.
+     */
+    private String _getUndoForDeleteRelation(ComponentRelation toDelete)
+            throws IOException {
+                
+        // Set the context to the immediate container.
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
+        
+        // Add in the description.
+        moml.append(toDelete.exportMoML());
+        
+        // NOTE: cannot use the relationlist as returned as it is
+        // unmodifiable and we need to add in the relation being deleted.
+        ArrayList filter = new ArrayList(toDelete.linkedPortList());
+        filter.add(toDelete);
+
+        // The parent container can do the filtering and generate the
+        // MoML.
+        CompositeEntity container = (CompositeEntity)toDelete.getContainer();
+        moml.append(container.exportLinks(0, filter));
+        
+        // Move back to context if needed.
+        moml.append(UndoContext.moveContextEnd(_current, toDelete));
+
+       return moml.toString();
+    }
+    
     /** Create a property and/or set its value.
      *  @param className The class name field, if present.
      *  @param propertyName The property name field.
@@ -4508,8 +4638,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 insertInsideAtSpec + "\" />\n");
                     }
                 }
-            }
-            else {
+            } else {
                 // The relation name was given, see if the link was
                 // added inside or outside
                 if (port.numInsideLinks() != origNumInsideLinks) {
@@ -4519,16 +4648,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _undoContext.appendUndoMoML("<unlink port=\"" +
                             portName + "\" insideIndex=\"" +
                             insertInsideAt + "\" />\n");
-                }
-                else if (port.numLinks() != origNumOutsideLinks) {
+                } else if (port.numLinks() != origNumOutsideLinks) {
                     if (insertAt == -1) {
                         insertAt = port.numLinks() - 1;
                     }
                     _undoContext.appendUndoMoML("<unlink port=\"" +
                             portName + "\" index=\"" +
                             insertAt + "\" />\n");
-                }
-                else {
+                } else {
                     // No change so do not need to generate any undo MoML
                 }
             }
@@ -4798,28 +4925,34 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         ComponentEntity candidate = _searchForEntity(name, _current);
         // Search upwards in the hierarchy if necessary.
         NamedObj context = _current;
-        while (candidate == null && context != null) {
+        // Make sure we get a real candidate, which is a
+        // class definition. The second term in the if will
+        // cause the search to continue up the hierarchy.
+        // NOTE: There is still an oddness, in that
+        // the class scoping results in a subtle (and
+        // maybe incomprehensible) identification of
+        // the base class, particularly when pasting
+        // an instance or subclass into a new context.
+        while ((candidate == null || !candidate.isClassDefinition())
+                && context != null) {
+            context = (NamedObj)context.getContainer();
             if (context instanceof CompositeEntity) {
                 candidate = ((CompositeEntity)context).getEntity(name);
             }
-            context = (NamedObj)context.getContainer();
         }
         if (candidate != null) {
-            // Check that it's a class.
-            if (candidate.isClassDefinition()) {
-                // Check that its source matches.
-                String candidateSource = candidate.getSource();
+            // Check that its source matches.
+            String candidateSource = candidate.getSource();
 
-                if (source == null && candidateSource == null) {
+            if (source == null && candidateSource == null) {
+                return candidate;
+            } else if (source != null && candidateSource != null) {
+                // Have to convert to a URL to check whether the
+                // same file is being specified.
+                URL sourceURL = fileNameToURL(source, _base);
+                URL candidateSourceURL = fileNameToURL(candidateSource, _base);
+                if (sourceURL.equals(candidateSourceURL)) {
                     return candidate;
-                } else if (source != null && candidateSource != null) {
-                    // Have to convert to a URL to check whether the
-                    // same file is being specified.
-                    URL sourceURL = fileNameToURL(source, _base);
-                    URL candidateSourceURL = fileNameToURL(candidateSource, _base);
-                    if (sourceURL.equals(candidateSourceURL)) {
-                        return candidate;
-                    }
                 }
             }
         }
@@ -4854,6 +4987,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (_toplevel != null && _toplevel instanceof ComponentEntity
                     && topLevelName.equals(_toplevel.getName())) {
                 if (nextPeriod < 1) {
+                    /* NOTE: This is too restrictive.
+                     * With an absolute name, there is no
+                     * reason to disallow setting the context.
+                     * This is useful in particular when deleting
+                     * ports to make sure undo works.  The undo
+                     * code has to execute in a context that may
+                     * be higher than that in which the port
+                     * was deleted in order for the connections
+                     * to be re-established.
+                     */
+                    /*
                     if (context != null
                             && context != _toplevel) {
                         throw new XmlException(
@@ -4865,6 +5009,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 _parser.getLineNumber(),
                                 _parser.getColumnNumber());
                     }
+                    */
                     return (ComponentEntity)_toplevel;
                 } else {
                     if (name.length() > nextPeriod + 1) {
@@ -4872,6 +5017,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             ((CompositeEntity)_toplevel).getEntity(
                                     name.substring(nextPeriod + 1));
                         if (result != null) {
+                            /* NOTE: This is too restrictive.
+                             * With an absolute name, there is no
+                             * reason to disallow setting the context.
+                             * This is useful in particular when deleting
+                             * ports to make sure undo works.  The undo
+                             * code has to execute in a context that may
+                             * be higher than that in which the port
+                             * was deleted in order for the connections
+                             * to be re-established.
+                             */
+                            /*
                             if (context != null
                                     && !context.deepContains(result)) {
                                 throw new XmlException(
@@ -4883,6 +5039,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                         _parser.getLineNumber(),
                                         _parser.getColumnNumber());
                             }
+                            */
                             return result;
                         }
                     }
