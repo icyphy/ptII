@@ -333,9 +333,9 @@ HYVISUAL_SRC_TAR = hyvisual$(VERSION).src.tar.gz
 hyvisual.tar: $(HYVISUAL_SRC_TAR)
 $(HYVISUAL_SRC_TAR): src_jar/hyvisual$(VERSION)
 	(cd src_jar; \
-		cp $(PTII)/doc/design/hyvisual.pdf \
+		cp $(PTIIHOME)/doc/design/hyvisual.pdf \
 			hyvisual$(VERSION)/doc/design/hyvisual.pdf; \
-		$(TAR) -cf ../hyvisual$(VERSION).src.tar.gz \
+		$(TAR) -czf ../hyvisual$(VERSION).src.tar.gz \
 		hyvisual$(VERSION) \
 	)
 
@@ -387,7 +387,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		doc/design/usingVergil \
 		doc/img/banner.psd \
 		doc/img/ptIIbanner2.psd \
-		doc/img/PtolemyIISpash.psd \
+		doc/img/PtolemyIISplash.psd \
 		lib/hsif \
 		lib/jni.jar \
 		lib/cachedir \
@@ -398,6 +398,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		lib/jython.jar \
 		lib/mapss.jar \
 		lib/ptCal.jar \
+		lib/ptII.properties \
 		lib/saxon.jar \
 		lib/sootclasses.jar \
 		lib/synthesis.jar \
