@@ -80,7 +80,8 @@
         <?moml
           <group>
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
-            <input source="ptolemy/chic/chic.xml"/>
+	    <!-- Chic actors are not being shipped in 4.0 -->
+            <!-- input source="ptolemy/chic/chic.xml"/ -->
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
             <!-- input source="ptolemy/copernicus/copernicus.xml"/ -->
@@ -101,7 +102,7 @@
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
-            <input source="ptolemy/apps/superb/superb.xml"/>
+            <!-- input source="ptolemy/apps/superb/superb.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
             <input source="ptolemy/domains/wireless/wireless.xml"/>
