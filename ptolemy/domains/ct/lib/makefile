@@ -59,10 +59,13 @@ JSRCS = \
 	CTGain.java \
 	CTIntegrator.java \
 	CTMultiply.java \
+	CTPeriodicalSampler.java \
+	CTPlot.java \
 	CTPrintln.java \
 	CTRamp.java \
 	CTSink.java \
-	CTSquareWave.java 
+	CTSquareWave.java \
+	CTZeroOrderHold.java  
 
 EXTRA_SRCS =	$(JSRCS)
 
