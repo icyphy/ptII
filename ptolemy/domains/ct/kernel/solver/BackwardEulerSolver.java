@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// BackwardEulerSolver
 /**
-   The backward Euler ODE solver. For an ODE
+   The Backward Euler ODE solver. For an ODE
    <pre>
    x' = f(x, t), x(0) = x0
    </pre>

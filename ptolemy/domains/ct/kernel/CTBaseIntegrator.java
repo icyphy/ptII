@@ -257,7 +257,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Return the tentative derivative.
      *  @return the tentative derivative.
-     *  @see #setTentativeDerivative()
+     *  @see #setTentativeDerivative
      */
     public double getTentativeDerivative() {
         return _tentativeDerivative;

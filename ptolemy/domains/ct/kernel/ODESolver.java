@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 //// ODESolver
 /**
    Abstract base class for ODE solvers. The key methods for the class are 
-   {@link #fireDynamicActors()} and {@link #fireStateTransitionActors()}.
+   {@link #fireDynamicActors} and {@link #fireStateTransitionActors}.
    CT directors call these methods to resolve the initial states in a future 
    time in the continuous phase of exution of a complete iteration. The process 
    of resolving the initial states in a future time is also known as an 
@@ -69,8 +69,8 @@ import ptolemy.kernel.util.Workspace;
    and _resetRoundCount() will always reset the counter to 0. These methods are 
    protected because they are only used by solvers and CT directors.
    <p>
-   In this class, two methods {@link #_isConverged()} and 
-   {@link #_voteForConverged()} are defined to let CT directors know the status
+   In this class, two methods {@link #_isConverged} and 
+   {@link #_voteForConverged} are defined to let CT directors know the status
    of resolved states. If multiple integrators exist, only when all of them 
    vote true for converged, will the _isConverged return true. Another related
    method is {@link #resolveStates()}, which always returns true in this base 
@@ -329,7 +329,7 @@ public abstract class ODESolver extends NamedObj {
      *  _voteForConverged() method, which influences the convergence of the
      *  solver.   
      *  @param converged The flag setting.
-     *  @see #_voteForConverged()
+     *  @see #_voteForConverged
      */
     protected void _setConverged(boolean converged) {
         _isConverged = converged;
@@ -341,8 +341,8 @@ public abstract class ODESolver extends NamedObj {
      *  it should be called from the integratorFire() method.
      *  Solvers and CT directors should use _setConverged() instead.
      *  @param converged True if vote for converge.
-     *  @see #integratorFire()
-     *  @see #_setConverged()
+     *  @see #integratorFire
+     *  @see #_setConverged
      */
     protected void _voteForConverged(boolean converged) {
         _setConverged(_isConverged() && converged);
