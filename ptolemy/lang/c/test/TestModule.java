@@ -62,7 +62,7 @@ public class TestModule {
         int var1 = 5;
         int var2 = 7;
         float y=2;
-        var1 = var1 + var2;
+        var1 = var1 + var2 + y;
         var2 = var2 - var1;
         _privatevar1 = var1 * var2;
         _privatevar2 = var2 / var1;
