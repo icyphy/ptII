@@ -314,23 +314,23 @@ public class KernelMain {
        	CompositeActor toplevel = null;
 	// First, try it as a top level model
 	String source = "<entity name=\"ToplevelModel\""
-	    + "class=\"" + momlClassName + "\"/>\n";
+	    + " class=\"" + momlClassName + "\"/>\n";
         try {
             toplevel = (CompositeActor)_parser.parse(source);
 
         } catch (Exception exception) {
 	    StringBuffer errorMessage = new StringBuffer();
-	    errorMessage.append("1. Failed to parse '" + momlClassName
+	    errorMessage.append("\n  1. Failed to parse '" + momlClassName
 				+ "' as a top level model in\n"
-				+ source + "\nException was: "
-				+ exception); 
+				+ source + "\n  Exception was:\n-------\n  "
+				+ exception + "\n-------\n"); 
 	    try {
 		// Then try it as an xml file
 		toplevel = (CompositeActor)_parser.parseFile(momlClassName);
 	    } catch (Exception exceptionTwo) {
-		errorMessage.append("2. Failed to parse '" + momlClassName
-				    + "' as an xml file: "
-				    + exceptionTwo); 
+		errorMessage.append("  2. Failed to parse '" + momlClassName
+				    + "' as an xml file:\n  "
+				    + exceptionTwo + "\n"); 
 		try {
 		    URL momlURL = new URL(momlClassName); 
 		    try {
@@ -338,13 +338,11 @@ public class KernelMain {
 			toplevel = (CompositeActor)_parser.parse(null,
 								 momlURL);
 		    } catch (Exception exceptionThree) {
-			errorMessage.append("3. Failed to parse '"
+			errorMessage.append("  3. Failed to parse '"
 					    + momlClassName
 					    + "' as a URL '"
-					    + momlURL + "': "
-					    + exceptionThree
-					    + momlClassName
-					    + "': " + exceptionThree);
+					    + momlURL + "':\n  "
+					    + exceptionThree + "\n");
 			throw new IllegalActionException(errorMessage
 							 .toString());
 		    
