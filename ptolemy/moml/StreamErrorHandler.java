@@ -1,4 +1,4 @@
-/* Handle a MoML Parsing Error
+/* Handle MoML Parsing Errors.
 
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
@@ -32,60 +32,70 @@ package ptolemy.moml;
 
 import ptolemy.kernel.util.NamedObj;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 //////////////////////////////////////////////////////////////////////////
-//// ErrorHandler
+//// StreamErrorHandler
 /**
-Interface for error handlers for the MoMLParser class.
+Basic error handler for the MoMLParser class. This error handler reports
+errors to a stream or to standard error, and requests that parsing continue.
 
 @see MoMLParser
 @author Edward A. Lee
 @version $Id$
 */
-public interface ErrorHandler {
+public class StreamErrorHandler implements ErrorHandler {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructors                      ////
+
+    /** Create an error handler that sends messages to the standard error.
+     */
+    public StreamErrorHandler() {
+        _output = System.err;
+    }
+
+
+    /** Create an error handler that sends messages to the specified stream.
+     */
+    public StreamErrorHandler(OutputStream out) {
+        _output = new PrintStream(out);
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Enable or disable skipping of errors.
-     *  If this method is called with a true argument, then an implementation
-     *  of this interface may ignore subsequent errors by returning
-     *  CONTINUE in handleError() without reporting the error.
-     *  If it is called with a false argument, then the implementation
-     *  is expected to report all subsequent errors (but it is not
-     *  required to do so).
-     *  <p>
-     *  This method is intended to be used when an operation may trigger
-     *  a large number of errors, and the user interface wishes to offer
-     *  the user the option of ignoring them.  This method should be
-     *  called with a true argument before the operation begins, and
-     *  then called with a false argument after the operation ends.
+    /** Enable or disable skipping of errors.  This method does nothing.
      *  @param enable True to enable skipping, false to disable.
      */
-    public void enableErrorSkipping(boolean enable);
+    public void enableErrorSkipping(boolean enable) {
+    }
 
-    /** Handle an error.
+    /** Handle an error by printing a description of the error to
+     *  the stream specified in the constructor.
      *  @param element The XML element that triggered the error.
      *  @param attributes The attributes of the element as a Map.
      *  @param context The container object for the element.
      *  @param exception The exception that was thrown.
-     *  @return CONTINUE to skip this element, CANCEL to abort processing
-     *   of the XML, or RETHROW to request that the exception be rethrown.
+     *  @return CONTINUE to request skipping this element.
      */
     public int handleError(
             String element,
             NamedObj context,
-            Exception exception);
+            Exception exception) {
+       String message = "Error encountered in:\n"
+               + element
+               + "\n"
+               + exception.getMessage();
+        _output.println(message);
+        return CONTINUE;
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
+    ////                         private variables                 ////
 
-    /** Indicator to skip this element and continue parsing XML. */
-    public static final int CONTINUE = 0;
-
-    /** Indicator to cancel parsing XML. */
-    public static final int CANCEL = 1;
-
-    /** Indicator to request that the exception be rethrown */
-    public static final int RETHROW = 3;
+    private PrintStream _output;
 }
 

@@ -206,16 +206,6 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an error handler to handle parsing errors.
-     *  Whenever a parse error occurs in an element, the parser collects
-     *  the entire element text and when it gets to the endElement the
-     *  error handler that was added with this method is called.
-     *  @param handler The ErrorHandler to call.
-     */
-    public void addErrorHandler(ErrorHandler handler) {
-        _handler = handler;
-    }
-
     /** Handle an attribute assignment that is part of an XML element.
      *  This method is called prior to the corresponding startElement()
      *  call, so it simply accumulates attributes in a hashtable for
@@ -298,6 +288,9 @@ public class MoMLParser extends HandlerBase {
      *   parse.
      */
     public void endDocument() throws Exception {
+        if (_handler != null) {
+            _handler.enableErrorSkipping(false);
+        }
         // If there were any unrecognized elements, warn the user.
         if (_unrecognized != null) {
             StringBuffer warning = new StringBuffer(
@@ -354,6 +347,12 @@ public class MoMLParser extends HandlerBase {
 	if ( _skipRendition ) {
             if (elementName.equals("rendition")) {
                 _skipRendition = false;
+            }
+        } else if (_skipElement > 0) {
+            if (elementName.equals(_skipElementName)) {
+                // Nested element name.  Have to count so we properly
+                // close the skipping.
+                _skipElement--;
             }
 	} else if (elementName.equals("configure")) {
             try {
@@ -633,6 +632,7 @@ public class MoMLParser extends HandlerBase {
         _namespace = DEFAULT_NAMESPACE;
         _namespaces = new Stack();
         _skipRendition = false;
+        _skipElement = 0;
         _toplevel = null;
     }
 
@@ -676,6 +676,15 @@ public class MoMLParser extends HandlerBase {
         _current = context;
     }
 
+    /** Set the error handler to handle parsing errors.
+     *  Note that this method is static. The specified error handler
+     *  will handle all errors for any instance of this class.
+     *  @param handler The ErrorHandler to call.
+     */
+    public static void setErrorHandler(ErrorHandler handler) {
+        _handler = handler;
+    }
+
     /** Set the top-level entity.  This can be used to associate this
      *  parser with a pre-existing model, which can then be modified
      *  via incremental parsing.  This calls reset().
@@ -696,6 +705,12 @@ public class MoMLParser extends HandlerBase {
         _unrecognized = null;
         // We assume that the data being parsed is MoML, unless we
         // get a publicID that doesn't match.
+
+        // Authorize the user interface to offer the user the option
+        // of skipping error reporting.
+        if (_handler != null) {
+            _handler.enableErrorSkipping(true);
+        }
     }
 
     /** Start an element.
@@ -708,8 +723,6 @@ public class MoMLParser extends HandlerBase {
      *   in constructing the model.
      */
     public void startElement(String elementName) throws XmlException {
-        // FIXME: Instead of doing all these string comparisons, do
-        // a hash lookup.
         try {
             if (_configureNesting > 0 || _docNesting > 0) {
                 // Inside a configure or doc tag.  First, check to see
@@ -723,32 +736,23 @@ public class MoMLParser extends HandlerBase {
                     // Count doc tags so that they can nest.
                     _docNesting++;
                 }
-                _currentCharData.append("<");
-                _currentCharData.append(elementName);
-                // Put the attributes into the character data.
-                Iterator attributeNames = _attributeNameList.iterator();
-                while (attributeNames.hasNext()) {
-                    String name = (String)attributeNames.next();
-                    String value = (String)_attributes.get(name);
-                    if(value != null) {
-                        // Note that we have to escape the value again,
-                        // so that it is properly parsed.
-                        _currentCharData.append(" ");
-                        _currentCharData.append(name);
-                        _currentCharData.append("=\"");
-                        _currentCharData.append(
-                                StringUtilities.escapeForXML(value));
-                        _currentCharData.append("\"");
-                    }
-                }
+                _currentCharData.append(_getCurrentElement(elementName));
                 _attributes.clear();
                 _attributeNameList.clear();
-                _currentCharData.append(">");
                 return;
             }
 	    if (_skipRendition) {
 		return;
-	    }
+            }
+            if (_skipElement > 0) {
+                if (elementName.equals(_skipElementName)) {
+                    // Nested element name.  Have to count so we properly
+                    // close the skipping.
+                    _skipElement++;
+                }
+                return;
+            }
+
             // NOTE: The elements are alphabetical below...
             // NOTE: I considered using reflection to invoke a set of
             // methods with names that match the element names.  However,
@@ -758,6 +762,8 @@ public class MoMLParser extends HandlerBase {
             // intended to be called, simply by putting in an element
             // whose name matches the method name.  So instead, we do
             // a dumb if...then...elseif... chain with string comparisons.
+            // FIXME: Instead of doing all these string comparisons, do
+            // a hash lookup.
             if (elementName.equals("class")) {
                 String className = (String)_attributes.get("extends");
                 _checkForNull(className,
@@ -944,9 +950,8 @@ public class MoMLParser extends HandlerBase {
 
                 // Read external file in the current context, but with
                 // a new parser.
+                MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
 
-                MoMLParser newParser =
-		    new MoMLParser(_workspace, _classLoader);
                 newParser.setContext(_current);
                 newParser._propagating = _propagating;
                 _parse(newParser, _base, source);
@@ -1149,12 +1154,14 @@ public class MoMLParser extends HandlerBase {
 
                             if (value != null) {
                                 if (!(property instanceof Settable)) {
-                                    throw new XmlException("Property is not an "
-                                        + "instance of Settable, "
-                                        + "so can't set the value.",
-                                        _currentExternalEntity(),
-                                        _parser.getLineNumber(),
-                                        _parser.getColumnNumber());
+                                    throw new XmlException(
+                                            "Property does not exist or "
+                                            + "cannot be assigned a value: "
+                                            + propertyName
+                                            + "\n",
+                                            _currentExternalEntity(),
+                                            _parser.getLineNumber(),
+                                            _parser.getColumnNumber());
                                 }
                                 Settable settable = (Settable)property;
                                 settable.setExpression(value);
@@ -1356,6 +1363,27 @@ public class MoMLParser extends HandlerBase {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         } catch (Exception ex) {
+            if (_handler != null) {
+                int reply = _handler.handleError(
+                        _getCurrentElement(elementName), _current, ex);
+                if (reply == ErrorHandler.CONTINUE) {
+                    _attributes.clear();
+                    _attributeNameList.clear(); 
+                    _skipElement = 1;
+                    _skipElementName = elementName;
+                    return;
+                } else if (reply == ErrorHandler.CANCEL) {
+                    // NOTE: Since we have to throw an XmlException for
+                    // the exception to be properly handled, we communicate
+                    // that it is a user cancellation with the special
+                    // string pattern "*** Canceled." in the message.
+                    throw new XmlException(
+                        "*** Canceled.",
+                        _currentExternalEntity(),
+                        _parser.getLineNumber(),
+                        _parser.getColumnNumber());
+                }
+            }
             if (ex instanceof XmlException) {
                 throw (XmlException)ex;
             } else {
@@ -1497,20 +1525,22 @@ public class MoMLParser extends HandlerBase {
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (Exception ex2) {
-			throw new Exception("Attempted to lookup '"
-					    + className + "', but got:\n" + ex
-					    + "\nAttempted to find as a moml "
-					    + "class, but got: " + ex2);
+			throw new Exception(
+                                "-- "
+                                + className
+                                + ": not found as a Java class.\n"
+                                + ex2.getMessage());
 		    }
                 } catch (Error error) {
                     // Java might throw a ClassFormatError.
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (Exception ex2) {
-			throw new Exception("Attempted to lookup '"
-					    + className + "', but got:\n" + error
-					    + "\nAttempted to find as a moml "
-					    + "class, but got: " + ex2);
+			throw new Exception(
+                                "-- "
+                                + className
+                                + ": found invalid Java class file.\n"
+                                + ex2.getMessage());
 		    }
                 }
             }
@@ -1639,8 +1669,8 @@ public class MoMLParser extends HandlerBase {
 
         // Read external model definition in a new parser,
         // rather than in the current context.
-        MoMLParser newParser =
-            new MoMLParser(_workspace, _classLoader);
+        MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
+
         NamedObj candidateReference = null;
         try {
             candidateReference =
@@ -1653,9 +1683,9 @@ public class MoMLParser extends HandlerBase {
                         _parse(newParser, _base, altClassAsFile);
                     classAsFile = altClassAsFile;
                 } catch (Exception ex3) {
-                // Cannot find class definition.
+                    // Cannot find class definition.
                     throw new XmlException(
-                            "Failed to parse " + className + ": " + ex3 + ".",
+                            ex3.getMessage(),
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber());
@@ -1844,6 +1874,30 @@ public class MoMLParser extends HandlerBase {
         return toDelete;
     }
 
+    // Construct a string representing the current XML element.
+    private String _getCurrentElement(String elementName) {
+        StringBuffer result = new StringBuffer();
+        result.append("<");
+        result.append(elementName);
+        // Put the attributes into the character data.
+        Iterator attributeNames = _attributeNameList.iterator();
+        while (attributeNames.hasNext()) {
+            String name = (String)attributeNames.next();
+            String value = (String)_attributes.get(name);
+            if(value != null) {
+                // Note that we have to escape the value again,
+                // so that it is properly parsed.
+                result.append(" ");
+                result.append(name);
+                result.append("=\"");
+                result.append(StringUtilities.escapeForXML(value));
+                result.append("\"");
+            }
+        }
+        result.append(">");
+        return result.toString();
+    }
+
     // Return the port corresponding to the specified port name in the
     // specified composite entity.  If the port belongs directly to the
     // composite entity, then the argument is a simple name.  If the
@@ -1912,47 +1966,42 @@ public class MoMLParser extends HandlerBase {
             }
             input = xmlFile.openStream();
         } catch (IOException ioException) {
-            errorMessage.append("1. Failed to open '" + source
-                    + "' with base '"
-                    + base + "':\n" + ioException + "\n");
+            errorMessage.append("-- " + ioException.getMessage() + "\n");
             // That failed.  Try opening it relative to the classpath.
-            try {
-                // FIXME: Shouldn't this use the base somehow?
-                xmlFile = _classLoader.getResource(source);
-                if (xmlFile == null) {
-                    // NOTE: This exception is caught below.
-                    throw new Exception("Class loader returns null");
-                }
+            xmlFile = _classLoader.getResource(source);
+            if (xmlFile != null) {
                 input = xmlFile.openStream();
-
-            } catch (Exception anotherException) {
-                errorMessage.append("2. Failed to open '" + source +
-                        "' using class loader:\n" + anotherException + "\n");
+            } else {
+                errorMessage.append(
+                        "-- XML file not found relative to classpath.\n");
 
                 // Failed to open relative to the classpath.
                 // Try relative to the current working directory.
                 // NOTE: This is last because it will fail with a
                 // security exception in applets.
-                try {
-                    String cwd = System.getProperty("user.dir");
-                    if (cwd != null) {
+                String cwd = System.getProperty("user.dir");
+                if (cwd != null) {
+                    try {
                         // We have to append a trailing "/" here for this to
                         // work under Solaris.
                         base = new URL("file", null, cwd + File.pathSeparator);
                         xmlFile = new URL(base, source);
                         input = xmlFile.openStream();
+                    } catch (Exception exception) {
+                        errorMessage.append(
+                                "-- "
+                                + cwd
+                                + File.pathSeparator
+                                + source
+                                + exception.getMessage()
+                                + "\n");
                     }
-                } catch (Exception exception) {
-                    errorMessage.append("3. Failed to open '" + xmlFile +
-                            "' relative to the user directory:\n" + exception + "\n");
                 }
             }
         }
         if (input == null) {
-            throw new XmlException("Cannot open import file: " + source +
-                    "\nUsing base: " + base +
-                    "\nTried the following:\n" +
-                    errorMessage,
+            throw new XmlException(
+                    errorMessage.toString(),
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
@@ -2356,7 +2405,7 @@ public class MoMLParser extends HandlerBase {
     private Stack _externalEntities = new Stack();
 
     // ErrorHandler that handles parse errors.
-    private ErrorHandler _handler = null;
+    private static ErrorHandler _handler = null;
 
     // List of top-level entities imported via import element.
     private List _imports;
@@ -2372,6 +2421,12 @@ public class MoMLParser extends HandlerBase {
 
     // The parser.
     private XmlParser _parser = new XmlParser();
+
+    // If greater than zero, skipping an element.
+    private int _skipElement = 0;
+
+    // If skipping an element, then this is the name of the element.
+    private String _skipElementName;
 
     // True if we are skipping a rendition body.  Rendition bodies
     // are skipped if the rendition class was not found.
