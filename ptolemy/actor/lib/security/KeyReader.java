@@ -185,6 +185,8 @@ public class KeyReader extends KeyStoreActor {
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
+        // Call super.fire() so that the password PortParameters get updated
+        // before we access _keyStore;
         super.fire();
         _updateKey();
         for (int i = 0; i < trigger.getWidth(); i++) {
@@ -204,7 +206,7 @@ public class KeyReader extends KeyStoreActor {
         super.initialize();
         // We do this in initialize so that derived classes can
         // access _keyStore.
-        _updateKey();
+        //_updateKey();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -256,7 +258,7 @@ public class KeyReader extends KeyStoreActor {
                 }                    
                 if (!_getPublicKey) {
                     _key = _keyStore.getKey(_alias,
-                            keyPassword.getExpression().toCharArray());
+                            _keyPassword.toCharArray());
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,

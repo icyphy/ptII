@@ -30,10 +30,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.security;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.Sink;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
@@ -125,7 +127,9 @@ public class KeyStoreActor extends TypedAtomicActor {
         // cd $PTII; make ptKeystore
         fileOrURL.setExpression("$PTII/ptKeystore");
 
-        keyPassword = new StringParameter(this, "keyPassword");
+        keyPassword = new PortParameter(this, "keyPassword");
+        keyPassword.setTypeEquals(BaseType.STRING);
+        keyPassword.setStringMode(true);
         keyPassword.setExpression("this.is.not.secure,it.is.for.testing.only");
 
         // Add the possible keystore types.
@@ -146,7 +150,9 @@ public class KeyStoreActor extends TypedAtomicActor {
             provider.addChoice(providers[i].getName());
         }
 
-        storePassword = new StringParameter(this, "storePassword");
+        storePassword = new PortParameter(this, "storePassword");
+        storePassword.setTypeEquals(BaseType.STRING);
+        storePassword.setStringMode(true);
         storePassword.setExpression("this.is.not.secure,it.is.for.testing.only");
         _storePassword = storePassword.getExpression();
     }
@@ -182,8 +188,9 @@ public class KeyStoreActor extends TypedAtomicActor {
 
     /** The password to the Key.
      *  The default password is "this.is.not.secure,it.is.for.testing.only".
+     *  If the port is left unconnected, then the parameter value will be used.
      */
-    public StringParameter keyPassword;
+    public PortParameter keyPassword;
 
     /** Specify a provider for the given algorithm.
      *  The default value is "SystemDefault" which allows the
@@ -193,8 +200,9 @@ public class KeyStoreActor extends TypedAtomicActor {
 
     /** The password to the KeyStore.
      *  The default password is "this.is.not.secure,it.is.for.testing.only".
+     *  If the port is left unconnected, then the parameter value will be used.
      */
-    public StringParameter storePassword;
+    public PortParameter storePassword;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -227,6 +235,23 @@ public class KeyStoreActor extends TypedAtomicActor {
         }
     }
 
+    /**
+     */
+    public void fire() throws IllegalActionException {
+        keyPassword.update();
+        _keyPassword = ((StringToken)keyPassword.getToken()).stringValue();
+        keyPassword.setExpression(_keyPassword);
+
+        storePassword.update();
+        _storePassword = ((StringToken)storePassword.getToken()).stringValue();
+        storePassword.setExpression(_storePassword);
+
+        // _loadKeystore() reads _keyPassword and _storePassword;
+        _loadKeyStore();
+        super.fire();
+            
+    }
+
     /** Read in or initialize the keyStore.
      *
      * @exception IllegalActionException If there is a problem with
@@ -236,7 +261,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         super.initialize();
         // We do this in initialize so that derived classes can
         // access _keyStore.
-        _loadKeyStore();
+        //_loadKeyStore();
     }
 
     ///////////////////////////////////////////////////////////////////

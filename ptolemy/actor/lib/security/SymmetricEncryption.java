@@ -138,17 +138,17 @@ public class SymmetricEncryption extends CipherActor {
             try {
                 KeyToken keyToken = (KeyToken)key.get(0);
                 // FIXME: do we really want to initialize the key each time?
-                java.security.Key key =
+                java.security.Key securityKey =
                     (java.security.Key)keyToken.getValue();
-                if (!_algorithm.equals(key.getAlgorithm())) { 
+                if (!_algorithm.equals(securityKey.getAlgorithm())) { 
                     // We have the name of the algorithm from the Key,
                     // so we reinitialize the cipher
-                    _algorithm = key.getAlgorithm();
+                    _algorithm = securityKey.getAlgorithm();
                     algorithm.setExpression(_algorithm);
                     _updateCipherNeeded = true;
                     _updateCipher();
                 }
-                _cipher.init(Cipher.ENCRYPT_MODE, key);
+                _cipher.init(Cipher.ENCRYPT_MODE, securityKey);
             } catch (Exception ex) {
                 throw new IllegalActionException (this, ex,
                         "Failed to initialize Cipher with "

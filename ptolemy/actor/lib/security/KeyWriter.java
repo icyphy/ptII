@@ -126,7 +126,7 @@ public class KeyWriter extends KeyStoreActor {
             // by the password.
             try {
                 _keyStore.setKeyEntry(_alias, key, 
-                        _keyPassword.toCharArray(),
+                        _storePassword.toCharArray(),
                         null /* No certificate */);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
@@ -137,7 +137,7 @@ public class KeyWriter extends KeyStoreActor {
                 FileOutputStream keyStoreOutputStream =
                     new FileOutputStream(fileOrURL.asFile());
                 _keyStore.store(keyStoreOutputStream,
-                        keyPassword.getExpression().toCharArray());
+                        _storePassword.toCharArray());
                 keyStoreOutputStream.close();
                 output.broadcast(BooleanToken.TRUE);
             } catch (Exception ex) {
