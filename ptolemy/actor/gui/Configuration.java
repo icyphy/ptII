@@ -109,58 +109,6 @@ public class Configuration extends CompositeEntity {
         }
     }
 
-    /** Create a new model.  This defers to the effigy factory contained
-     *  by this configuration.
-     */
-    public void newModel() {
-	final ModelDirectory directory = (ModelDirectory)getEntity("directory");
-	if(directory == null) return;
-
-        EffigyFactory mainFactory = (EffigyFactory)getEntity("effigyFactory");
-        if (mainFactory == null) return;
-
-	List factoryList = mainFactory.entityList(EffigyFactory.class);
-	Box panel = new Box(BoxLayout.Y_AXIS);
-	final JFrame frame = new JFrame();
-	frame.getContentPane().add(panel);
-	Iterator factories = factoryList.iterator();
-	while(factories.hasNext()) {
-	    final EffigyFactory factory = (EffigyFactory)factories.next();
-            if (!factory.canCreateBlankEffigy()) continue;
-	    String buttonName = factory.getName();
-	    JButton button = new JButton(buttonName);
-	    panel.add(button);
-	    button.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent event) {
-		    frame.hide();
-		    Effigy effigy = null;
-		    try {
-			effigy = factory.createEffigy(directory);
-		    } catch (Exception ex) {
-			MessageHandler.error("Could not create new effigy", ex);
-		    } 
-		    try {
-			createPrimaryTableau(effigy);
-		    } catch (Exception ex) {
-			MessageHandler.error("Could not create tableau " +
-					     "for new effigy", ex);
-		    } 
-		}
-	    });
-	}
-        panel.add(panel.createVerticalStrut(15));
-	panel.add(panel.createHorizontalGlue());
-	JButton button = new JButton("Cancel");	
-	panel.add(button);
-	button.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent event) {
-		frame.hide();
-	    }
-	});
-	frame.show();
-	frame.pack();
-    }
-
     /** If a model with the specified name is present in the directory,
      *  then find all the tableaux of that model and make them 
      *  visible; otherwise, read a model from the specified URL

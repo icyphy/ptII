@@ -95,9 +95,10 @@ The "New" item, for example, can be enabled with
 <pre>
     _fileMenuItems[1].setEnabled(true);
 </pre>
-A derived class that enables this menu item should implement
-the _new() method to do something more interesting than what it
-does in this base class.
+A derived class that enables this menu item can populate the menu with
+submenu items.  This particular entry in the _fileMenuItems[1]
+is a JMenu, not just a JMenuItem, so it can have menu items
+added to it.
 <p>
 A derived class can add an entirely new menu (many do that).
 However, at this time, the JMenuBar interface does not support
@@ -223,9 +224,9 @@ public abstract class Top extends JFrame {
             _fileMenuItems[0].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 
-            // New button = ctrl-n.
-            _fileMenuItems[1].setAccelerator(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+            // The mnemonic isn't set in the static initializer because
+            // JMenu doesn't have an appropriate constructor.
+            _fileMenuItems[1].setMnemonic(KeyEvent.VK_N);
             // New button disabled by default.
             _fileMenuItems[1].setEnabled(false);
 
@@ -298,7 +299,7 @@ public abstract class Top extends JFrame {
     /** Items in the file menu. */
     protected JMenuItem[] _fileMenuItems = {
         new JMenuItem("Open", KeyEvent.VK_O),
-        new JMenuItem("New", KeyEvent.VK_N),
+        new JMenu("New"),
         new JMenuItem("Save", KeyEvent.VK_S),
         new JMenuItem("SaveAs", KeyEvent.VK_A),
         new JMenuItem("Print", KeyEvent.VK_P),
@@ -396,16 +397,6 @@ public abstract class Top extends JFrame {
      */
     protected void _help() {
         _about();
-    }
-
-    /** Open a new window or model.  In this base class, this does
-     *  nothing, and the corresponding menu item is disabled.
-     *  To enable it, put the following in the _addMenus() method:
-     *  <pre>
-     *      _fileMenuItems[1].setEnabled(true);
-     *  </pre>
-     */
-    protected void _new() {
     }
 
     /** Read the specified URL.
@@ -577,7 +568,6 @@ public abstract class Top extends JFrame {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             if (actionCommand.equals("Open")) _open();
-            else if (actionCommand.equals("New")) _new();
             else if (actionCommand.equals("Save")) _save();
             else if (actionCommand.equals("SaveAs")) _saveAs();
             else if (actionCommand.equals("Print")) _print();

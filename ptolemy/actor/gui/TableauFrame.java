@@ -193,15 +193,49 @@ public abstract class TableauFrame extends Top {
         if (_tableau != null) {
 	    // Check to see if we have an effigy factory, and whether it
             // is capable of creating blank effigies.
-	    Configuration configuration = (Configuration)_tableau.toplevel();
+	    final Configuration configuration = getConfiguration();
 	    EffigyFactory effigyFactory = 
                     (EffigyFactory)configuration.getEntity("effigyFactory");
-	    if(effigyFactory != null
-                    && effigyFactory.canCreateBlankEffigy()) {
+            boolean canCreateBlank = false;
+            final ModelDirectory directory = getDirectory();
+	    if(effigyFactory != null && directory != null) {
+                List factoryList =
+                       effigyFactory.entityList(EffigyFactory.class);
+	        Iterator factories = factoryList.iterator();
+                while(factories.hasNext()) {
+                    final EffigyFactory factory =
+                            (EffigyFactory)factories.next();
+                    if (!factory.canCreateBlankEffigy()) continue;
+                    canCreateBlank = true;
+                    String name = factory.getName();
+                    ActionListener menuListener = new ActionListener() {
+                        public void actionPerformed(ActionEvent event) {
+                            Effigy effigy = null;
+                            try {
+                                effigy = factory.createEffigy(directory);
+                            } catch (Exception ex) {
+                                MessageHandler.error(
+                                        "Could not create new effigy", ex);
+                            }
+                            try {
+                                configuration.createPrimaryTableau(effigy);
+                            } catch (Exception ex) {
+                                MessageHandler.error(
+                                        "Could not create tableau " +
+                                        "for new effigy.", ex);
+                            }
+                        }
+                    };
+                    JMenuItem item = new JMenuItem(name);
+                    item.setActionCommand(name);
+                    item.setMnemonic(name.charAt(0));
+                    item.addActionListener(menuListener);
+                    ((JMenu)_fileMenuItems[1]).add(item);
+                }
+            }
+            if (canCreateBlank) {
 		// Enable the "New" item in the File menu.
 		_fileMenuItems[1].setEnabled(true);
-                // FIXME: Instead of just enabling it, it should populate
-                // a cascaded menu here.
 	    }
 
 	    Effigy tableauContainer = (Effigy)_tableau.getContainer();
@@ -253,16 +287,6 @@ public abstract class TableauFrame extends Top {
         } else {
             super._close();
         }
-    }
-
-    /** Open a new Ptolemy II model.
-     */
-    protected void _new() {
-        if (_tableau != null) {
-	    // Check to see if we have an effigy factory.
-	    Configuration configuration = (Configuration)_tableau.toplevel();
-	    configuration.newModel();
-	}
     }
 
     /** Read the specified URL.  This delegates to the ModelDirectory
