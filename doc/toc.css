@@ -1,4 +1,4 @@
-BODY { background: #7e7e8b; color: white}
-A:link { color: #ccccff }
-A:visited { color: #000080 }
+BODY { background: #6e6e7b; color: #ccccff }
+A:link { color: white }
+A:visited { color: #aaaaff }
 A:active { color: #ffcccc }
