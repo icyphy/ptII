@@ -104,6 +104,7 @@ public class ComponentDialog extends JDialog {
         getContentPane().add(_optionPane);
 
         setLocationRelativeTo(owner);
+        // FIXME: Perhaps this should center on the screen otherwise.
 
         pack();
         setResizable(false);
