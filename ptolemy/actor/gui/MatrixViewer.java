@@ -36,6 +36,7 @@ import ptolemy.actor.*;
 
 import java.awt.Container;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -115,6 +116,16 @@ public class MatrixViewer extends Sink implements Placeable {
         }
     }
 
+    /** Get the preferred size of this component.
+     *  This is simply the dimensions specified by setSize(),
+     *  if this has been called, or the default width and height
+     *  otherwise (500 by 300).
+     *  @return The preferred size.
+     */
+    public Dimension getPreferredSize() {
+        return new Dimension(_preferredWidth, _preferredHeight);
+    }
+
     /** Create a new JTable on the screen.  If a panel has not been
      *  specified, place the JTable into its own frame.  Otherwise,
      *  place it in the specified panel.
@@ -145,25 +156,51 @@ public class MatrixViewer extends Sink implements Placeable {
         _container = container;
         if (_container == null) {
             // place the text area in its own frame.
-            // FIXME: This probably needs to be a PtolemyFrame, when one
-            // exists, so that the close button is dealt with, etc.
             _frame = new JFrame(getFullName());
             table = new JTable();
             _scrollPane = new JScrollPane(table);
-            _frame.getContentPane().add(_scrollPane);
+            _scrollPane.setPreferredSize( getPreferredSize() );
+            _frame.getContentPane().add(_scrollPane, BorderLayout.CENTER);
         } else {
             table = new JTable();
-            _scrollPane = new JScrollPane(table);
-            _container.add(_scrollPane);
             table.setBackground(_container.getBackground());
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            _scrollPane = new JScrollPane(table);
+            _scrollPane.setPreferredSize( getPreferredSize() );
+            _container.add(_scrollPane, BorderLayout.CENTER);
         }
+    }
+
+    /** Set the size of the MartixViewer. This methods records the
+     *  specified size so that getPreferredSize() returns the
+     *  specified value.  This only works, however, if the plot is
+     *  placed in its own JPanel.  This is because the JPanel asks the
+     *  contained component for its preferred size before determining
+     *  the size of the panel.  If the plot is placed directly in the
+     *  content pane of a JApplet, then, mysteriously, this method has
+     *  no effect.
+     *
+     *  @param width The width, in pixels.
+     *  @param height The height, in pixels.
+     */
+    public void setSize(int width, int height) {
+
+        _width = width;
+        _height = height;
+
+        _preferredWidth = width;
+        _preferredHeight = height;
+        _sizeHasBeenSet = true;
+
+        // Transfer the new values to the MatrixTable
+        _scrollPane.setPreferredSize( getPreferredSize() );
+        _scrollPane.revalidate();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     public  JTable table;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -179,6 +216,13 @@ public class MatrixViewer extends Sink implements Placeable {
 
     /** The Abstract Table Model of a Matrix. */
     private MatrixAsTable _matrixTable = null;
+
+    /** Width and height of component in pixels. */
+    private int _width = 500, _height = 300,
+            _preferredWidth = 500, _preferredHeight = 300;
+
+    /** Indicator that size has been set. */
+    private boolean _sizeHasBeenSet = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         Inner Class                       ////

@@ -130,7 +130,7 @@ public void init() {
         _toplevel.connect(_s2m.output, _matrixViewer.input);
 
         _initCompleted = true;
-       
+
         // The 2 argument requests a go and stop button.
         getContentPane().add(_createRunControls(2));
 
@@ -182,7 +182,7 @@ public void init() {
                         setToken(new IntToken(k));
                     _ND_66.parameter_K.
                         setToken(new IntToken(k));
-                    _ND_36.parameter_K.                       
+                    _ND_36.parameter_K.
                         setToken(new IntToken(k));
                     _ND_86.parameter_K.
                         setToken(new IntToken(k));
@@ -214,32 +214,32 @@ public void init() {
             }
             if ( done ) {
                 _go();
-            }        
+            }
         } catch (IllegalActionException ex ) {
             throw new InternalErrorException(ex.toString());
-        }        
-    }    
-    
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Flag to prevent spurious exception being thrown by _go() method.
     // If this flag is not true, the _go() method will not execute the model.
     private boolean _initCompleted = false;
-    
+
     // The actors in the QR process network
     private ND_6     _ND_6;
     private ND_66    _ND_66;
     private ND_14    _ND_14;
     private ND_36    _ND_36;
     private ND_86    _ND_86;
-    
+
     private MatrixViewer   _matrixViewer;
     private StreamToMatrix _s2m;
-    
+
     private SequencePlotter   _eventplot;
     private Query             _query;
-    
+
 }
 
 
