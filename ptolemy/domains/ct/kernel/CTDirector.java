@@ -254,7 +254,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     /** React to a change in an attribute. If the changed attribute
      *  matches a parameter of the director, then the corresponding
      *  local copy of the parameter value will be updated.
-     *  @param attr The changed parameter.
+     *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      */
     public void attributeChanged(Attribute attribute)
@@ -316,12 +316,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                         "Cannot set a negative time resolution.");
             }
             _timeResolution = value;
-            TotallyOrderedSet bptable = getBreakPoints();
-            // change the breakpoint table comparator if it is created.
-            if(bptable!=null) {
-                FuzzyDoubleComparator comp =
-                    (FuzzyDoubleComparator) bptable.getComparator();
-                comp.setThreshold(_timeResolution);
+            TotallyOrderedSet table = getBreakPoints();
+            // Change the breakpoint table comparator if it is created.
+            if(table!=null) {
+                FuzzyDoubleComparator comparator =
+                    (FuzzyDoubleComparator) table.getComparator();
+                comparator.setThreshold(_timeResolution);
             }
         } else if(attribute == maxIterations) {
             int value = ((IntToken)maxIterations.getToken()).intValue();
@@ -382,7 +382,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Return the breakpoint table. If the breakpoint table has never
      *  been created, then return null. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The breakpoint table.
      */
     public final TotallyOrderedSet getBreakPoints() {
@@ -390,7 +390,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Return the current ODE solver. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The current ODE solver.
      */
     public final ODESolver getCurrentODESolver() {
@@ -398,7 +398,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Return the current integration step size. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The current step size.
      */
     public final double getCurrentStepSize() {
@@ -406,7 +406,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Return the begin time of the current iteration. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The begin time of the current iteration.
      */
     public final double getIterationBeginTime() {
@@ -414,7 +414,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Return the initial step size. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The initial step size.
      */
     public final double getInitialStepSize() {
@@ -423,7 +423,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Return the local truncation error tolerance, used by
      *  variable step size solvers. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The local truncation error tolerance.
      */
     public final double getErrorTolerance() {
@@ -434,7 +434,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  calculation. If the iteration has exceeded this number
      *  and the fixed point is still not found, then the algorithm
      *  is considered to have failed. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The maximum number of iterations when calculating 
      *  fixed points.
      */
@@ -444,7 +444,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Return the maximum step size used in variable step size
      *  ODE solvers. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The maximum step size.
      */
     public final double getMaxStepSize() {
@@ -453,7 +453,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Return the minimum step size used in variable step size
      *  ODE solvers. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The minimum step size.
      */
     public final double getMinStepSize() {
@@ -469,14 +469,14 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
     
     /** Return the start time parameter value. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return the start time.
      */
     public final double getStartTime() {
         return _startTime;
     }
     /** Return the stop time. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return the stop time.
      */
     public final double getStopTime() {
@@ -487,7 +487,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  the minimum step size that the step-size-control actors suggested
      *  at the end of last integration step. It is the prediction
      *  of the new step size. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The suggested next step size.
      */
     public final double getSuggestedNextStepSize() {
@@ -496,7 +496,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Return the time resolution such that two time stamps within this
      *  resolution are considered identical. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *  @return The time resolution.
      */
     public final double getTimeResolution() {
@@ -507,7 +507,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  has reached the fixed point. Two values that are differed less than
      *  this accuracy are considered identical in the fixed point
      *  calculation. This method is final
-     *  for performace reason.
+     *  for performance reason.
      *
      *  @return The value resolution for finding fixed point.
      */
@@ -519,7 +519,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  that want to register a predictable breakpoint should call
      *  this method with itself and the breakpoint time as arguments.
      *  The director will fire exactly at each registered time point.
-     *  From this director's point of view, it is irrelavant
+     *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
      *  executed at every breakpoint.
      *  The first argument is used only for reporting
@@ -601,58 +601,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  or there is no scheduler.
      */
     public void preinitialize() throws IllegalActionException {
-        /*
-        if(_debugging) _debug(getFullName(), "preinitializing.");
-
-        Nameable nameable = getContainer();
-        if (!(nameable instanceof CompositeActor)) {
-            throw new IllegalActionException(this,
-                    "has no CompositeActor container.");
-        }
-        CompositeActor container = (CompositeActor)nameable;
-        if (container.getContainer() != null) {
-            if (!canBeInsideDirector()) {
-                throw new IllegalActionException(this,
-                        "cannot serve as an inside director.");
-            }
-        } else {
-            if (!canBeTopLevelDirector()) {
-                throw new IllegalActionException(this,
-                        "cannot serve as an top-level director.");
-            }
-        }
-        CTScheduler scheduler = (CTScheduler)getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( this,
-                    "does not have a scheduler.");
-        }
-        if(STAT) {
-            NSTEP = 0;
-            NFUNC = 0;
-            NFAIL = 0;
-        }
-        // invalidate schedule
-        scheduler.setValid(false);
-        if(_debugging) _debug(getFullName(), " clearing break point table.");
-        TotallyOrderedSet bps = getBreakPoints();
-        if(bps != null) {
-            bps.clear();
-        } else {
-            _breakPoints = new TotallyOrderedSet(
-                    new FuzzyDoubleComparator(_timeResolution));
-        }
-        if(_debugging) _debug(getName(), " preinitialize actors");
-        
-        Iterator allactors = container.deepEntityList().iterator();
-        while (allactors.hasNext()) {
-            Actor actor = (Actor)allactors.next();
-            if(_debugging) _debug("Invoking preinitialize(): ",
-                    ((NamedObj)actor).getFullName());
-            //System.out.println("Invoking preinitialize(): " +
-            //        ((NamedObj)actor).getFullName());
-            actor.preinitialize();
-        }
-        */
         if(_debugging) _debug(getFullName(), "preinitializing.");
 
         Nameable nameable = getContainer();
@@ -711,13 +659,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     ((Nameable)dynamic).getName());
             dynamic.emitTentativeOutputs();
         }
-        Iterator outputactors =
+        Iterator actors =
             scheduler.scheduledOutputActorList().iterator();
-        while(outputactors.hasNext()) {
-            Actor nextoutputactor = (Actor)outputactors.next();
+        while(actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
             if(_debugging) _debug("Fire output actor: "+
-                    ((Nameable)nextoutputactor).getName());
-            nextoutputactor.fire();
+                    ((Nameable)actor).getName());
+            actor.fire();
         }
     }
 
@@ -729,10 +677,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void updateStates() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        Iterator allactors = container.deepEntityList().iterator();
-        while(allactors.hasNext()) {
-            Actor nextactor = (Actor)allactors.next();
-            nextactor.postfire();
+        Iterator actors = container.deepEntityList().iterator();
+        while(actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            actor.postfire();
         }
     }
 
@@ -850,26 +798,26 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     /** Instantiate an ODESolver from its classname. Given the solver's full
      *  class name, this method will try to instantiate it by looking
      *  for the java class.
-     *  @param solverclass The solver's full class name.
+     *  @param className The solver's full class name.
      *  @exception IllegalActionException If the solver is unable to be
      *       created.
      */
-    protected ODESolver _instantiateODESolver(String solverclass)
+    protected ODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
         ODESolver newSolver;
-        if(_debugging) _debug("instantiating solver..."+solverclass);
+        if(_debugging) _debug("instantiating solver..." + className);
         try {
-            Class solver = Class.forName(solverclass);
+            Class solver = Class.forName(className);
             newSolver = (ODESolver)solver.newInstance();
         } catch(ClassNotFoundException e) {
             throw new IllegalActionException(this, "ODESolver: "+
-                    solverclass + " not found.");
+                    className + " not found.");
         } catch(InstantiationException e) {
             throw new IllegalActionException(this, "ODESolver: "+
-                    solverclass + " instantiation failed.");
+                    className + " instantiation failed.");
         } catch(IllegalAccessException e) {
             throw new IllegalActionException(this, "ODESolver: "+
-                    solverclass + " not accessible.");
+                    className + " not accessible.");
         }
         newSolver._makeSolverOf(this);
         return newSolver;
@@ -904,10 +852,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  the start time for one integration step. This variable is used
      *  when the integration step is failed, and need to be restarted
      *  with another step size.
-     *  @param begintime The iteration begin time.
+     *  @param time The iteration begin time.
      */
-    protected void _setIterationBeginTime(double begintime) {
-        _iterationBeginTime = begintime;
+    protected void _setIterationBeginTime(double time) {
+        _iterationBeginTime = time;
     }
 
     /** Returns false always, indicating that this director does not need to
