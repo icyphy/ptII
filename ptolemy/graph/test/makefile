@@ -45,13 +45,16 @@ CLASSPATH = ../../..
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = 
+JSRCS = \
+	TestConstant.java \
+	TestVariable.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	DirectedGraph.tcl \
 	DirectedAcyclicGraph.tcl \
-	Graph.tcl
+	Graph.tcl \
+	InequalitySolver.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
