@@ -108,12 +108,12 @@ public class PNSieve extends AtomicActor {
      */
     private ChangeRequest makeMutation(final int value) {
         ChangeRequest request = new ChangeRequest(this, "Creating a new " +
-                                                  "sieve") {
+                "sieve") {
             public void execute() {
                 CompositeActor container =  (CompositeActor)getContainer();
                 try {
                     PNSieve newSieve = 
-                            new PNSieve(container, value + "_sieve");
+                        new PNSieve(container, value + "_sieve");
                     //queueEntityAddedEvent(container, newSieve);
                     Parameter prim = (Parameter)newSieve.getAttribute("prime");
                     prim.setToken(new IntToken(value));
@@ -130,7 +130,7 @@ public class PNSieve extends AtomicActor {
 		    }
 		    IOPort inp = (IOPort)newSieve.getPort("input");
 		    IORelation newRelation = 
-                            new IORelation(container, value+"_queue");
+                        new IORelation(container, value+"_queue");
                     //newRelation.setName(value+"_queue");
                     //FIXME: This cast should not be required. 
                     //Mention it to johnr

@@ -280,8 +280,8 @@ public class BasePNDirector extends ProcessDirector {
 	    int cap = ((IntToken)par.getToken()).intValue();
 	    rec.setCapacity(cap);
         } catch (IllegalActionException e) {
-	//This exception should never be thrown, as size of queue should
-	//be 0, and capacity should be set to a non-negative number
+            //This exception should never be thrown, as size of queue should
+            //be 0, and capacity should be set to a non-negative number
 	    throw new InternalErrorException(e.toString());
 	}
         return rec;
@@ -484,7 +484,7 @@ public class BasePNDirector extends ProcessDirector {
      *  execution.
      */
     protected synchronized void _informOfReadUnblock 
-            (PNQueueReceiver receiver) {
+    (PNQueueReceiver receiver) {
 	_readBlockCount--;
         if (!_processlisteners.isEmpty()) {
             Actor actor = receiver.getReadBlockedActor();

@@ -155,8 +155,8 @@ public class DEPseudoPlot extends DEActor {
                     //_plot.addPoint(i, curTime, curValue, false);
                     if (OUTPUT) {
                         System.out.println(getFullName() + " : Index = " + i +
-                        " Time = " + curTime +
-                        " Value = " + curValue);
+                                " Time = " + curTime +
+                                " Value = " + curValue);
                     }
                 }
             } else {
@@ -170,8 +170,8 @@ public class DEPseudoPlot extends DEActor {
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == width) {
             throw new InternalErrorException(
-                "Discrete event scheduling error. DEPseudoPlot fired, but there "
-                + "is no input data.");
+                    "Discrete event scheduling error. DEPseudoPlot fired, but there "
+                    + "is no input data.");
         }
     }
 

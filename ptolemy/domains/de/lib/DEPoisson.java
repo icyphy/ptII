@@ -1,4 +1,4 @@
- /* An actor that generates events according to Poisson process.
+/* An actor that generates events according to Poisson process.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.

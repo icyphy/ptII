@@ -98,15 +98,15 @@ public class DEClock extends DEActor {
     // ambiguous signature in TclBlend with the deprecated constructor.
     // wait till deprecated -> gone, then uncomment this constructor
     /*
-    public DEClock(TypedCompositeActor container, String name,
-            Token value, double interval)
-            throws IllegalActionException, NameDuplicationException  {
-        super(container, name);
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(Token.class);
-        _interval = new Parameter(this, "interval", new DoubleToken(interval));
-        _value = new Parameter(this, "value", value);
-    }
+      public DEClock(TypedCompositeActor container, String name,
+      Token value, double interval)
+      throws IllegalActionException, NameDuplicationException  {
+      super(container, name);
+      output = new TypedIOPort(this, "output", false, true);
+      output.setTypeEquals(Token.class);
+      _interval = new Parameter(this, "interval", new DoubleToken(interval));
+      _value = new Parameter(this, "value", value);
+      }
     */
 
     ///////////////////////////////////////////////////////////////////

@@ -144,8 +144,8 @@ public class DELogicAnalyzer extends DEActor {
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == width) {
             throw new InternalErrorException(
-                "Discrete event scheduling error. DELogicAnalyzer fired, but there "
-                + "is no input data.");
+                    "Discrete event scheduling error. DELogicAnalyzer fired, but there "
+                    + "is no input data.");
         }
     }
 

@@ -169,19 +169,19 @@ public class DESampler extends DEActor {
      *  @see ptolemy.graph.Inequality
      */
     /*
-    public Enumeration typeConstraints()  {
-	try {
-	    workspace().getReadAccess();
+      public Enumeration typeConstraints()  {
+      try {
+      workspace().getReadAccess();
 
-            LinkedList result = new LinkedList();
-            Inequality constraint = new Inequality(input.getTypeTerm(),output.getTypeTerm());
-            result.insertLast(constraint);
-            return result.elements();
+      LinkedList result = new LinkedList();
+      Inequality constraint = new Inequality(input.getTypeTerm(),output.getTypeTerm());
+      result.insertLast(constraint);
+      return result.elements();
 
-        } finally {
-	    workspace().doneReading();
-	}
-    }
+      } finally {
+      workspace().doneReading();
+      }
+      }
     */
 
     ///////////////////////////////////////////////////////////////////

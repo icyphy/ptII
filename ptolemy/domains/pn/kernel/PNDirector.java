@@ -227,7 +227,7 @@ public class PNDirector extends BasePNDirector {
             //Loop until a deadlock other than an artificial deadlock is 
             //detected.
             while ((_readBlockCount != _getActiveActorsCount()) && 
-                      !_areAllThreadsStopped()) {
+                    !_areAllThreadsStopped()) {
                 //Sleep until a deadlock is detected or mutations are requested
 		while (!_isDeadlocked() && !_areAllThreadsStopped()) {
 		    worksp.wait(this);
@@ -341,33 +341,33 @@ public class PNDirector extends BasePNDirector {
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
     // protected void _processTopologyRequests()
-//             throws IllegalActionException, TopologyChangeFailedException {
-// 	Workspace worksp = workspace();
-// 	super._processTopologyRequests();
-// 	//Perform the type resolution.
-// 	try {
-// 	    ((CompositeActor)getContainer()).getManager().resolveTypes();
-// 	} catch (TypeConflictException e) {
-// 	    throw new IllegalActionException (this, e.toString());
-// 	}
-// 	LinkedList threadlist = new LinkedList();
-// 	Enumeration newactors = _newActors();
-// 	while (newactors.hasMoreElements()) {
-// 	    Actor actor = (Actor)newactors.nextElement();
-// 	    actor.initialize();
-// 	    ProcessThread pnt = new ProcessThread(actor, this);
-// 	    threadlist.insertFirst(pnt);
-// 	    _addNewThread(pnt);
-// 	}
-// 	//Resume the paused actors
-// 	resume();
-// 	Enumeration threads = threadlist.elements();
-// 	//Starting threads;
-// 	while (threads.hasMoreElements()) {
-// 	    ProcessThread pnt = (ProcessThread)threads.nextElement();
-// 	    pnt.start();
-// 	}
-//     }
+    //             throws IllegalActionException, TopologyChangeFailedException {
+    // 	Workspace worksp = workspace();
+    // 	super._processTopologyRequests();
+    // 	//Perform the type resolution.
+    // 	try {
+    // 	    ((CompositeActor)getContainer()).getManager().resolveTypes();
+    // 	} catch (TypeConflictException e) {
+    // 	    throw new IllegalActionException (this, e.toString());
+    // 	}
+    // 	LinkedList threadlist = new LinkedList();
+    // 	Enumeration newactors = _newActors();
+    // 	while (newactors.hasMoreElements()) {
+    // 	    Actor actor = (Actor)newactors.nextElement();
+    // 	    actor.initialize();
+    // 	    ProcessThread pnt = new ProcessThread(actor, this);
+    // 	    threadlist.insertFirst(pnt);
+    // 	    _addNewThread(pnt);
+    // 	}
+    // 	//Resume the paused actors
+    // 	resume();
+    // 	Enumeration threads = threadlist.elements();
+    // 	//Starting threads;
+    // 	while (threads.hasMoreElements()) {
+    // 	    ProcessThread pnt = (ProcessThread)threads.nextElement();
+    // 	    pnt.start();
+    // 	}
+    //     }
 
 
     ///////////////////////////////////////////////////////////////////

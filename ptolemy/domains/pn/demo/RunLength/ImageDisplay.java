@@ -54,12 +54,12 @@ public final class ImageDisplay extends AtomicActor {
 	new Parameter(this, "FrameName", new StringToken("ImageDisplay"));
     }
 
-//     public ImageDisplay(CompositeActor container, String name, Picture pan) 
-//             throws IllegalActionException, NameDuplicationException {
-//         super(container,name);
-//         _port_image = new IOPort(this, "image", true, false);
-//         _panel = pan;
-//     }
+    //     public ImageDisplay(CompositeActor container, String name, Picture pan) 
+    //             throws IllegalActionException, NameDuplicationException {
+    //         super(container,name);
+    //         _port_image = new IOPort(this, "image", true, false);
+    //         _panel = pan;
+    //     }
 
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -150,7 +150,7 @@ public final class ImageDisplay extends AtomicActor {
         public _PictureFrame(String title) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-	     this.show();
+            this.show();
             _panel = new Panel();
             this.add("Center", _panel);
             this.pack();

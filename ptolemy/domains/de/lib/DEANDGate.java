@@ -77,7 +77,7 @@ public class DEANDGate extends DEActor {
         super(container, name);
         if (delay < 0.0) {
             throw new IllegalActionException(this,
-            "Invalid delay.  Cannot be less than zero.");
+                    "Invalid delay.  Cannot be less than zero.");
         }
         _delay = new Parameter(this, "delay", new DoubleToken(delay));
 

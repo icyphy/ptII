@@ -147,7 +147,7 @@ public class DEReceiver implements Receiver {
             }
         }
         throw new IllegalActionException(getContainer(),
-        "Does not have a DE director.");
+                "Does not have a DE director.");
     }
 
     /** Return true if the director exist and is an instance of
@@ -245,28 +245,28 @@ public class DEReceiver implements Receiver {
      *
      */
     /*
-    protected boolean _isInsideReceiver() {
+      protected boolean _isInsideReceiver() {
 
-        // FIXME: try to cache the result of this operation, since it's
-        // called so many times.
+      // FIXME: try to cache the result of this operation, since it's
+      // called so many times.
 
-        if (_container == null) {
-            throw new InternalErrorException("This can't happen!! " +
-                    "This receiver does not have a container ???");
-        }
-        if (!_container.isOutput()) {
-            return false;
-        }
-        Nameable compositeActor = _container.getContainer();
-        if (! (compositeActor instanceof CompositeActor)) {
-            return false;
-        }
-        if (!((CompositeActor)compositeActor).isOpaque()) {
-            return false;
-        }
-        return true;
+      if (_container == null) {
+      throw new InternalErrorException("This can't happen!! " +
+      "This receiver does not have a container ???");
+      }
+      if (!_container.isOutput()) {
+      return false;
+      }
+      Nameable compositeActor = _container.getContainer();
+      if (! (compositeActor instanceof CompositeActor)) {
+      return false;
+      }
+      if (!((CompositeActor)compositeActor).isOpaque()) {
+      return false;
+      }
+      return true;
 
-    }
+      }
     */
 
     /** Return true if pending token is allowed in this receiver by the

@@ -53,27 +53,27 @@ It provides a "Go" button to run the model.
 public class PNApplet extends PtolemyApplet {
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+////                         public methods                         ////
 
 
-    /** Describe the applet parameters.
-     *  @return An array describing the applet parameters.
-     */
-    public String[][] getParameterInfo() {
-        String basepinfo[][] = super.getParameterInfo();
-        String[][] pinfo = new String[basepinfo.length + 2][];
-        for (int i = 0; i < basepinfo.length; i++) {
-            pinfo[i] = basepinfo[i];
-        }
-        String newinfo[][] = {
-            {"initial_queue_capacity", "", "Capacity of the queues in PN"},
-            {"defaultcapacity", "1", "default capacity of queues"}
-
-        };
-        pinfo[basepinfo.length] = newinfo[0];
-        pinfo[basepinfo.length+1] = newinfo[1];
-        return pinfo;
+/** Describe the applet parameters.
+ *  @return An array describing the applet parameters.
+ */
+public String[][] getParameterInfo() {
+    String basepinfo[][] = super.getParameterInfo();
+    String[][] pinfo = new String[basepinfo.length + 2][];
+    for (int i = 0; i < basepinfo.length; i++) {
+        pinfo[i] = basepinfo[i];
     }
+    String newinfo[][] = {
+        {"initial_queue_capacity", "", "Capacity of the queues in PN"},
+        {"defaultcapacity", "1", "default capacity of queues"}
+
+    };
+    pinfo[basepinfo.length] = newinfo[0];
+    pinfo[basepinfo.length+1] = newinfo[1];
+    return pinfo;
+}
 
     /** Initialize the applet.  After invoking the base class init() method,
      *  Create a "Go" button. This method
@@ -115,35 +115,35 @@ public class PNApplet extends PtolemyApplet {
 
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+////                         protected methods                      ////
 
-    /** In addition to creating the buttons provided by the base class,
-     *  if the number of iterations has not been specified, then create
-     *  a dialog box for that number to be entered.  The panel containing
-     *  the buttons and the entry box is returned.
-     *  @param numbuttons The number of buttons to create.
-     */
-    protected Panel _createRunControls(int numbuttons) {
-        Panel panel = super._createRunControls(numbuttons);
-        if (!_queuesizegiven) {
-            // To keep the label and entry box together, put them
-            // in a new panel.
-            Panel queuepanel = new Panel();
-            queuepanel.add(new Label("Initial capacity of FIFO channels:"));
+/** In addition to creating the buttons provided by the base class,
+ *  if the number of iterations has not been specified, then create
+ *  a dialog box for that number to be entered.  The panel containing
+ *  the buttons and the entry box is returned.
+ *  @param numbuttons The number of buttons to create.
+ */
+protected Panel _createRunControls(int numbuttons) {
+    Panel panel = super._createRunControls(numbuttons);
+    if (!_queuesizegiven) {
+        // To keep the label and entry box together, put them
+        // in a new panel.
+        Panel queuepanel = new Panel();
+        queuepanel.add(new Label("Initial capacity of FIFO channels:"));
             
-            // Process the defaultiterations parameter.
-            String defqueuespec = getParameter("defaultcapacity");
-            if (defqueuespec == null) {
-                defqueuespec = "1";
-            }
-
-            _queuesizebox = new TextField(defqueuespec, 10);
-            _queuesizebox.addActionListener(new QueueSizeBoxListener());
-            queuepanel.add(_queuesizebox);
-            panel.add(queuepanel);
+        // Process the defaultiterations parameter.
+        String defqueuespec = getParameter("defaultcapacity");
+        if (defqueuespec == null) {
+            defqueuespec = "1";
         }
-        return panel;
+
+        _queuesizebox = new TextField(defqueuespec, 10);
+        _queuesizebox.addActionListener(new QueueSizeBoxListener());
+        queuepanel.add(_queuesizebox);
+        panel.add(queuepanel);
     }
+    return panel;
+}
 
 
     /** Get the initial capacity of the channels from the entry box, 
@@ -153,8 +153,8 @@ public class PNApplet extends PtolemyApplet {
         int result = 1;
         if(_director != null) {
             Parameter param =
-                    (Parameter)_director.getAttribute(
-                            "Initial_queue_capacity");
+                (Parameter)_director.getAttribute(
+                        "Initial_queue_capacity");
             result = ((IntToken)(param.getToken())).intValue();
         }
         if(_queuesizebox != null) {
@@ -177,8 +177,8 @@ public class PNApplet extends PtolemyApplet {
         try {
             int queuesize = _getQueueSize();
             Parameter param =
-                    (Parameter)_director.getAttribute(
-                            "Initial_queue_capacity");
+                (Parameter)_director.getAttribute(
+                        "Initial_queue_capacity");
 
             param.setToken(new IntToken(queuesize));
         } catch (Exception ex) {

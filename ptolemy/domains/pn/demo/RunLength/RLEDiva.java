@@ -503,7 +503,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         public StateListener (GraphPane pane) {
             _graphPane = pane;
 
-           // Initial elements of all traces
+            // Initial elements of all traces
             TraceModel model = tracePane.getTraceModel();
             _currentElement = new TraceModel.Element[model.size()];
 
@@ -687,7 +687,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse = 
-                   actor instanceof PNImageSource
+                actor instanceof PNImageSource
                 || actor instanceof PNImageSink
                 || actor instanceof ImageDisplay;
 
@@ -712,13 +712,13 @@ public class RLEDiva extends PNApplet implements Runnable {
     ///////////////////////////////////////////////////////////////////
     //// ExecutionListener
 
-//     private class MyExecutionListener extends DefaultExecutionListener {
-//         public void executionFinished(ExecutionEvent e) {
-//             super.executionFinished(e);
-//             _isSimulationRunning = false;
-//         }
+    //     private class MyExecutionListener extends DefaultExecutionListener {
+    //         public void executionFinished(ExecutionEvent e) {
+    //             super.executionFinished(e);
+    //             _isSimulationRunning = false;
+    //         }
 
-//     }
+    //     }
 
 
     ///////////////////////////////////////////////////////////////////

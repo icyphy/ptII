@@ -61,16 +61,16 @@ public class ReceiverActionEvent {
      *  as specified.
      *  @param r The receiver corresponding to which this event is generated.
      *  @param c Current capacity of the receiver.
-    public ReceiverActionEvent(PNQueueReceiver r, int c) {
-	_receiver r;
-	_capacity = c;
-    }
+     public ReceiverActionEvent(PNQueueReceiver r, int c) {
+     _receiver r;
+     _capacity = c;
+     }
 
-    //////////////////////////////////////////////////////////////
-    ////                    public methods                   /////
+     //////////////////////////////////////////////////////////////
+     ////                    public methods                   /////
 
-    /** Return the actor corresponding to the process that generated the event.
-     */
+     /** Return the actor corresponding to the process that generated the event.
+      */
     public PNQueueReceiver getReceiver() {
         return _receiver;
     }

@@ -57,8 +57,8 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      *   actor with this name.
      */
     public DEThreadActor(TypedCompositeActor container, String name)
-	 throws NameDuplicationException, IllegalActionException  {
-      super(container, name);
+            throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

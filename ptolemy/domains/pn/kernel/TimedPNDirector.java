@@ -244,7 +244,7 @@ public class TimedPNDirector extends BasePNDirector {
             _mutationsRequested = false;
             //Loop until a real deadlock is detected.
             while (_readBlockCount != _getActiveActorsCount() && 
-                      !_areAllThreadsStopped()) {
+                    !_areAllThreadsStopped()) {
 		while (!_isDeadlocked() && !_areAllThreadsStopped()) {
 		    worksp.wait(this);
 		}
@@ -501,38 +501,38 @@ public class TimedPNDirector extends BasePNDirector {
      *  after performing the mutations.
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
-//     protected void _processTopologyRequests()
-//             throws IllegalActionException, TopologyChangeFailedException {
-// 	Workspace worksp = workspace();
-// 	super._processTopologyRequests();
-// 	//Perform type resolution.
-// 	try {
-// 	    ((CompositeActor)getContainer()).getManager().resolveTypes();
-// 	} catch (TypeConflictException e) {
-// 	    throw new IllegalActionException(this, e.toString());
-// 	}
-// 	LinkedList threadlist = new LinkedList();
-// 	Enumeration newactors = _newActors();
-// 	while (newactors.hasMoreElements()) {
-// 	    Actor actor = (Actor)newactors.nextElement();
-// 	    actor.initialize();
-// 	    ProcessThread pnt = new ProcessThread(actor, this);
-// 	    threadlist.insertFirst(pnt);
-// 	    _addNewThread(pnt);
-// 	}
-// 	synchronized (this) {
-// 	    _mutationsRequested = false;
-// 	    _mutationBlockCount = 0;
-// 	    //Tell all the processes that requested mutations that their
-// 	    //requests have been processed.
-// 	    notifyAll();
-// 	}
-// 	Enumeration threads = threadlist.elements();
-// 	//Starting threads;
-// 	while (threads.hasMoreElements()) {
-// 	    ((ProcessThread)threads.nextElement()).start();
-// 	}
-//     }
+    //     protected void _processTopologyRequests()
+    //             throws IllegalActionException, TopologyChangeFailedException {
+    // 	Workspace worksp = workspace();
+    // 	super._processTopologyRequests();
+    // 	//Perform type resolution.
+    // 	try {
+    // 	    ((CompositeActor)getContainer()).getManager().resolveTypes();
+    // 	} catch (TypeConflictException e) {
+    // 	    throw new IllegalActionException(this, e.toString());
+    // 	}
+    // 	LinkedList threadlist = new LinkedList();
+    // 	Enumeration newactors = _newActors();
+    // 	while (newactors.hasMoreElements()) {
+    // 	    Actor actor = (Actor)newactors.nextElement();
+    // 	    actor.initialize();
+    // 	    ProcessThread pnt = new ProcessThread(actor, this);
+    // 	    threadlist.insertFirst(pnt);
+    // 	    _addNewThread(pnt);
+    // 	}
+    // 	synchronized (this) {
+    // 	    _mutationsRequested = false;
+    // 	    _mutationBlockCount = 0;
+    // 	    //Tell all the processes that requested mutations that their
+    // 	    //requests have been processed.
+    // 	    notifyAll();
+    // 	}
+    // 	Enumeration threads = threadlist.elements();
+    // 	//Starting threads;
+    // 	while (threads.hasMoreElements()) {
+    // 	    ((ProcessThread)threads.nextElement()).start();
+    // 	}
+    //     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////

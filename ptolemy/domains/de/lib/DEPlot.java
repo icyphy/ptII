@@ -81,7 +81,7 @@ public class DEPlot extends DEActor {
         _plot = plot;
         
         // FIXME: This is not the right way to handle this...
-       String legends = new String("");
+        String legends = new String("");
         _yMin = (double)-1.0;
         _yMax = (double)1.0;
         _paramLegends = new Parameter(this, "Legends", 
@@ -120,7 +120,7 @@ public class DEPlot extends DEActor {
             int index = 0;
             _legends = new String[stokens.countTokens()];
             while(stokens.hasMoreTokens()) {
-                 _legends[index++]= stokens.nextToken();
+                _legends[index++]= stokens.nextToken();
             }
         }   
         
@@ -184,8 +184,8 @@ public class DEPlot extends DEActor {
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == width) {
             throw new InternalErrorException(
-                "Discrete event scheduling error. DEPlot fired, but there "
-                + "is no input data.");
+                    "Discrete event scheduling error. DEPlot fired, but there "
+                    + "is no input data.");
         }
     }
 

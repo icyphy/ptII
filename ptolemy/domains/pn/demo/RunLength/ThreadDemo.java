@@ -101,7 +101,7 @@ public class ThreadDemo {
         // Add the process state listener
         BasePNDirector pnDir = (BasePNDirector) compositeActor.getDirector();
         pnDir.addProcessListener(new StateListener(
-                 (GraphPane) jgraph.getCanvasPane()));
+                (GraphPane) jgraph.getCanvasPane()));
 
         // Run the model
         System.out.println("Connections made");
@@ -168,8 +168,8 @@ public class ThreadDemo {
     /** Construct the Ptolemy system
      */
     public CompositeActor constructPtolemyModel () {
-  CompositeActor c1 = new CompositeActor();
-  Manager manager = new Manager();
+        CompositeActor c1 = new CompositeActor();
+        Manager manager = new Manager();
         // FIXME FIXME FIXME
         try {
             c1.setManager(manager);
@@ -342,7 +342,7 @@ public class ThreadDemo {
             // Set system "start" time
             _start = System.currentTimeMillis();
 
-           // Initial elements of all traces
+            // Initial elements of all traces
             TraceModel model = tracePane.getTraceModel();
             _currentElement = new TraceModel.Element[model.size()];
 
@@ -501,7 +501,7 @@ public class ThreadDemo {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse = 
-                   actor instanceof PNImageSource
+                actor instanceof PNImageSource
                 || actor instanceof PNImageSink
                 || actor instanceof ImageDisplay;
 

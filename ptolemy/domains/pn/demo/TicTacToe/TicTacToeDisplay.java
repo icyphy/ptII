@@ -218,7 +218,7 @@ public final class TicTacToeDisplay extends AtomicActor {
         public _PictureFrame(String title) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-	     this.show();
+            this.show();
             _panel = new Panel();
             this.add("Center", _panel);
             this.pack();

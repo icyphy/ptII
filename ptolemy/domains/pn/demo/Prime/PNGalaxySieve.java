@@ -155,25 +155,25 @@ public class PNGalaxySieve extends AtomicActor {
                 }
 
 		// queueEntityAddedEvent(container, galaxy);
-// 		queuePortAddedEvent(galaxy, galin);
-// 		queuePortAddedEvent(galaxy, galout);
-//                 queueEntityAddedEvent(galaxy, newSieve);
-// 		Enumeration relations = listofrels.elements();
-//                 while (relations.hasMoreElements()) {
-// 		    Relation relation = (Relation)relations.nextElement();
-//                     queuePortUnlinkedEvent(relation, _output);
-//                     queuePortLinkedEvent(relation, galout);
-//                 }
-// 		queueRelationAddedEvent(galaxy, (ComponentRelation)newin);
-// 		queueRelationAddedEvent(galaxy, (ComponentRelation)newout);
-// 		queuePortLinkedEvent(newout, galout);
-// 		queuePortLinkedEvent(newout, outport);
-// 		queuePortLinkedEvent(newin, input);
-// 		queuePortLinkedEvent(newin, galin);
-//                 //FIXME: This cast should not be required. Mention it to johnr
-//                 queueRelationAddedEvent(container, (ComponentRelation)newRelation);
-//                 queuePortLinkedEvent(newRelation, _output);
-//                 queuePortLinkedEvent(newRelation, galin);
+                // 		queuePortAddedEvent(galaxy, galin);
+                // 		queuePortAddedEvent(galaxy, galout);
+                //                 queueEntityAddedEvent(galaxy, newSieve);
+                // 		Enumeration relations = listofrels.elements();
+                //                 while (relations.hasMoreElements()) {
+                // 		    Relation relation = (Relation)relations.nextElement();
+                //                     queuePortUnlinkedEvent(relation, _output);
+                //                     queuePortLinkedEvent(relation, galout);
+                //                 }
+                // 		queueRelationAddedEvent(galaxy, (ComponentRelation)newin);
+                // 		queueRelationAddedEvent(galaxy, (ComponentRelation)newout);
+                // 		queuePortLinkedEvent(newout, galout);
+                // 		queuePortLinkedEvent(newout, outport);
+                // 		queuePortLinkedEvent(newin, input);
+                // 		queuePortLinkedEvent(newin, galin);
+                //                 //FIXME: This cast should not be required. Mention it to johnr
+                //                 queueRelationAddedEvent(container, (ComponentRelation)newRelation);
+                //                 queuePortLinkedEvent(newRelation, _output);
+                //                 queuePortLinkedEvent(newRelation, galin);
             }
         };
         return request;
