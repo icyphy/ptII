@@ -4,7 +4,7 @@
 <entity name="Simple" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[510, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 458]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -75,7 +75,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 140.0]">
         </property>
     </property>
     <property name="2:2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -95,7 +95,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 240.0]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -119,7 +119,7 @@ Iterations 4</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 30.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 120, 725, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 56, 950, 576}, maximized=false}">
     </property>
     <property name="CodeGenerator" class="ptolemy.domains.giotto.kernel.GiottoCodeGenerator">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -129,7 +129,13 @@ Iterations 4</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 229.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Giotto Code Generator Example&#10;&#10;1. Click on the &quot;Double click to generate code&quot;&#10;box.&#10;2. A window with the Giotto code will come up.&#10;3. Change all instances of Token_port to int_port&#10;4. Save the file as simple.giotto in&#10;$PTII/ptolemy/domains/giotto/demo/Simple&#10;5. In the same directory run &quot;make compile_simple&quot;.&#10;This will compile the java files in the simple/ &#10;directory.&#10;6. Download and install the Giotto Development Kit (GDK)&#10;from&#10;http://embedded.eecs.berkeley.edu/giotto/download.html&#10;7. If necessary, edit the GIOTTO_DIR variable in&#10;$PTII/ptolemy/domains/giotto/demo/Simple/makefile&#10;8. Run &quot;make gdk&quot; to start up the GDK&#10;9. Load simple.giotto with File -&gt; Load&#10;10. Change the package from &#10;giotto.functionality.code.hovercraft to simple&#10;11. Hit the compile button&#10;12. Run the E Code with E Code -&gt; Run E Code.&#10;13. The methods names will appear on standard out.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 30.0]">
+        </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -153,7 +159,7 @@ Iterations 4</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -179,7 +185,7 @@ Iterations 4</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 215.0]">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -197,7 +203,7 @@ Iterations 4</text></svg></configure>
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="295.0, 165.0">
+        <vertex name="vertex1" value="[170.0, 165.0]">
         </vertex>
     </relation>
     <link port="Ramp.output" relation="relation"/>
