@@ -301,7 +301,8 @@ public class ArrowKeySensor extends TypedAtomicActor {
                 };
 
             getContentPane().setLayout(new BorderLayout());
-            JLabel label = new JLabel("Copy and/or Paste here!");
+            JLabel label = new JLabel("This window reads Arrow Key strokes. "
+                    + "It must have the focus (be on top) to do this");
             getContentPane().add(label);
 
             // As of jdk1.4, the .registerKeyboardAction() method below is
