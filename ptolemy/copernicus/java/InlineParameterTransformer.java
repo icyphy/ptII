@@ -62,10 +62,20 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// InlineParameterTransformer
 /**
-A Transformer that is responsible for inlining the values of parameters.
-The values of the parameters are taken from the model specified for this 
-transformer.
+A Transformer that is responsible for inlining the values of
+parameters and settable attributes.  The values of the parameters are
+taken from the model specified for this transformer.  This transformer
+replaces a parameter with a field that points to a properly
+initialized token that contains the value of the parameter.  Settable
+attributes other than parameters are handled similarly and are
+replaces with their expression.  This transformer also properly
+inlines code from the attribute changed method that handles the change
+of any parameter values.
+
+
 @author Stephen Neuendorffer
 @version $Id$
 */
@@ -258,8 +268,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                 getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
                             if(debug) System.out.println("Settable base = " + attribute);
 
-                            // If the attribute resolves to null, then replace the invocation with 
-                            // an exception throw.
+                            // If the attribute resolves to null, then
+                            // replace the invocation with an
+                            // exception throw.
                             if(attribute == null) {
                                 Local exceptionLocal =
                                     SootUtilities.createRuntimeException(body, stmt,

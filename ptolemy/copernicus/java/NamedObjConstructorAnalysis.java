@@ -53,9 +53,17 @@ import ptolemy.copernicus.kernel.MustAliasAnalysis;
 
 import java.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// NamedObjConstructorAnalysis
 /**
-An analysis that maps each local variable that represents a token
-onto the particular type of the token.
+An analysis that establishes a correspondance between each constructor
+of a named object and the location in the transformed code where that
+object is created.  This information is used to create fields with the 
+appropriate naming convention for 
+named objects that are constructed, but don't have an appropriate field.
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class NamedObjConstructorAnalysis {
     public NamedObjConstructorAnalysis(JimpleBody body) {

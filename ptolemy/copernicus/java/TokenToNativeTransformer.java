@@ -1,4 +1,4 @@
-/* A transformer that inlines references to tokens.
+/* A transformer that unboxes tokens 
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -66,10 +66,18 @@ import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// TokenToNativeTransformer
 /**
-A Transformer that is responsible for inlining the values of tokens.
-The values of the parameters are taken from the model specified for this 
-transformer.
+A transformer that is responsible for unboxing tokens, i.e. replacing the
+token with the value that is contained by that token.  This transformer
+attempts to do this by replacing each token with the fields contained in
+the appropriate token class and inlining the methods that are implemented
+for that token class.  This is made more complex by the fact that tokens
+may themselves be contained by other tokens.
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class TokenToNativeTransformer extends SceneTransformer {
     /** Construct a new transformer

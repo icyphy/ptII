@@ -29,25 +29,20 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Variable;
-
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Settable;
 
-import soot.util.Chain;
-
-import soot.Body;
 import soot.Hierarchy;
 import soot.Local;
 import soot.Modifier;
@@ -57,13 +52,11 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
-
-import soot.jimple.AssignStmt;
+import soot.util.Chain;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
@@ -73,16 +66,14 @@ import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.jimple.toolkits.invoke.SiteInliner;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorTransformer
 /**
-Transform Actors using Soot.
+Transform Actors using Soot.  This transformer creates a new class for
+each actor in the model that is similar to the original class of the actor.
+During code generation, this actor class will be transformed and eventually
+written out as part of the generated code.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$

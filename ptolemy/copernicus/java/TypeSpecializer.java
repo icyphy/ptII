@@ -1,4 +1,4 @@
-/* A transformer that removes unnecessary fields from classes.
+/* A transformer that specializes token types in an actor.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -67,8 +67,20 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
 
-
+//////////////////////////////////////////////////////////////////////////
+//// TypeSpecializer
 /**
+A transformer that modifies each class using the token types from
+ports.  In particular, this class creates constraints in the same
+fashion as the Ptolemy II type system and solves those constraints.
+The resulting solution should correspond to valid Java types which are
+more specific (in the Ptolemy II sense) than the original Java types.
+The code is then transformed to use these more specific types.
+
+<p> This transformer is necessary because there are some token types
+that we want to make more specific, but that don't directly depend on
+the the types of a port.  This transformation enables the token unboxing
+performed by the TokenToNativeTransformer
 
 */
 public class TypeSpecializer extends SceneTransformer {
@@ -78,9 +90,10 @@ public class TypeSpecializer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static TypeSpecializer v(CompositeActor model) { 
         return new TypeSpecializer(model);

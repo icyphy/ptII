@@ -1,4 +1,4 @@
-/* Transform Actors using Soot
+/* A transformer that creates a class for the toplevel of a model
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -81,6 +81,11 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// ModelTransformer
 /**
+A transformer that creates a class to represent the model specified in
+the constructor.  This transformer creates new instances of the classes
+created by the ActorTransformer, along with the relations and links that
+are present in the model.  It also creates attributes and appropriate 
+fields for any toplevel attributes of the model.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$

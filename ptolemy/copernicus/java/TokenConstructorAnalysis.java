@@ -1,4 +1,4 @@
-/* An analysis for extracting the constructors of named objects.
+/* An analysis for extracting the constructors of tokens.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -52,9 +52,14 @@ import ptolemy.copernicus.kernel.MustAliasAnalysis;
 
 import java.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// FieldsForAttributesTransformer
 /**
-An analysis that maps each local variable that represents a token
-onto the particular type of the token.
+An analysis that establishes a constant value, if possible, of a token
+constructed at a particular statement.
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class TokenConstructorAnalysis {
     public TokenConstructorAnalysis(JimpleBody body, LocalDefs localDefs) {
@@ -81,7 +86,8 @@ public class TokenConstructorAnalysis {
                         continue;
                     }
 
-                    Token token = _evaluateInitializer(invokeExpr, invokedMethod);
+                    Token token = 
+                        _evaluateInitializer(invokeExpr, invokedMethod);
                     if(token != null) {
                         _constructorToValue.put(constructor, token);
                     }
@@ -108,9 +114,8 @@ public class TokenConstructorAnalysis {
             }
         }
         try {
-            return (Token)
-                SootUtilities.reflectAndInvokeConstructor(
-                        invokedMethod, argValues);
+            return (Token) SootUtilities.reflectAndInvokeConstructor(
+                    invokedMethod, argValues);
         } catch (Exception ex) {
             return null;
         }

@@ -1,4 +1,4 @@
-/* Transform Actors using Soot
+/* Make all references to attributes point to attribute fields
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -66,7 +66,10 @@ import ptolemy.copernicus.kernel.SootUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer
 /**
-A Transformer that is responsible for inlining references to attributes.
+A transformer that is responsible for replacing references to attributes.
+Any calls to the getAttribute() method are replaced with a field reference to
+the field of the appropriate class that points to the correct attribute.
+Any calls to the getDirector() method are replaced with null.  
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -139,8 +142,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             SootClass theClass = 
                 Scene.v().loadClassAndSupport(className);
        
-            // replace calls to getAttribute with field references.
-            // inline calls to parameter.getToken and getExpression
+            // Replace calls to getAttribute with field references.
             for(Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();

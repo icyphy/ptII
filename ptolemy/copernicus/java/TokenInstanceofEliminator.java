@@ -1,4 +1,4 @@
-/* A transformer that tried to statically evaluate object == object
+/* A transformer that tried to statically instanceof token expressions.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -40,12 +40,16 @@ import java.util.*;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 
+//////////////////////////////////////////////////////////////////////////
+//// FieldsForAttributesTransformer
 /** 
-An attempt to remove unnecessary instanceof checks for tokens.
+A transformer that removes unnecessary instanceof checks for tokens.
 This is similar to CastAndInstanceofEliminator, except here
 we use a stronger type inference algorithm that is aware of 
-Ptolemy token types.
+Ptolemy token types.  
 
+@author Stephen Neuendorffer
+@version $Id$
 */
 
 public class TokenInstanceofEliminator extends BodyTransformer

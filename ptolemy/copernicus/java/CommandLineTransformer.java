@@ -82,8 +82,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+//////////////////////////////////////////////////////////////////////////
+//// CommandLineTransformer
 /**
-A transformer that adds the command-line interface.
+A transformer that adds the command-line interface.  This create a new
+class that is similar to the ptolemy.copernicus.java.CommandLineTemplate
+class that creates and executes the model being generated.
+
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
 */

@@ -77,8 +77,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+//////////////////////////////////////////////////////////////////////////
+//// InlineDirectorTransformer
 /**
-A transformer that inlines an SDF director.
+A transformer that inlines an SDF director.  This transformer synthesizes
+methods that properly implement the executable interface inside the class
+representing the model.  The resulting class includes code to properly
+initialize the instance classes for the actors and fire them in the 
+order of the SDF schedule.
 
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$

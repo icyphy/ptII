@@ -58,19 +58,26 @@ import ptolemy.data.expr.Variable;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// ConstantLoopUnroller
 /**
-A Transformer that is responsible for inlining the values of parameters.
-The values of the parameters are taken from the model specified for this 
-transformer.
+A Transformer that attempts to determine the bounds of a loop at compile
+time, and then unroll the loop.  In terms of code generation, the primary
+value of this transformation is that it reduces the control logic of the
+source code, which can increase the power of other compile-time optimizations.
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class ConstantLoopUnroller extends BodyTransformer {
     /** Construct a new transformer
      */
     private ConstantLoopUnroller() {}
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static ConstantLoopUnroller v() { 
         return instance; 
@@ -104,7 +111,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
         }    
     }
     
-    protected void internalTransform(Body body, String phaseName, Map options) {
+    protected void internalTransform(Body body,
+            String phaseName, Map options) {
         Chain units = body.getUnits();
         
         BlockGraph graph = new CompleteBlockGraph(body);
@@ -150,7 +158,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
                         if(jumpStmt == null) {
                             jumpStmt = ifStmt;
                         } else {
-                            throw new RuntimeException("Two jumps in conditional!");
+                            throw new RuntimeException(
+                                    "Two jumps in conditional!");
                         }
                     }
                 }                            
@@ -175,7 +184,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
                     incrementValue = addExpr.getOp1();
                 }      
                 if(!Evaluator.isValueConstantValued(incrementValue)) continue;
-                increment = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
+                increment = ((IntConstant)
+                        Evaluator.getConstantValueOf(incrementValue)).value;
                 System.out.println("increment = " + increment);
             } else {
                 continue;
@@ -192,14 +202,16 @@ public class ConstantLoopUnroller extends BodyTransformer {
             }  
             int limit;
             if(Evaluator.isValueConstantValued(counterStmt.getRightOp())) { 
-                limit = ((IntConstant)Evaluator.getConstantValueOf(limitValue)).value;
+                limit = ((IntConstant)
+                        Evaluator.getConstantValueOf(limitValue)).value;
                 System.out.println("limit = " + increment);
             } else {
                 continue;
             }
 
             // Lastly, find the initial value of the loop.
-            List defsList = localDefs.getDefsOfAt(counterLocal, whilePredecessor.getTail());
+            List defsList = localDefs.getDefsOfAt(
+                    counterLocal, whilePredecessor.getTail());
             DefinitionStmt initializeStmt = 
                 (DefinitionStmt)defsList.get(0);
             int initial;

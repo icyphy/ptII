@@ -30,36 +30,11 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
 import soot.tagkit.AttributeValueException;
 import soot.tagkit.Tag;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.toolkits.graph.*;
-import soot.toolkits.scalar.*;
-import soot.dava.*;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.data.*;
-import ptolemy.data.expr.Variable;
-import ptolemy.copernicus.kernel.SootUtilities;
-
-
+//////////////////////////////////////////////////////////////////////////
+//// TypeTag
 /**
 A tag that references a ptolemy token type.  This tag is used
 to store information regarding the resolved ptolemy type of a
@@ -68,6 +43,9 @@ instance, in the case of a local defined as a DoubleToken, the
 type can only be BaseType.DOUBLE).  However, in many cases
 the ptolemy type contains more information than java type (for
 instance, in the case of ArrayType). 
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class TypeTag implements Tag {
     

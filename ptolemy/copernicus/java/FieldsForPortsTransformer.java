@@ -1,4 +1,4 @@
-/* Transform Actors using Soot
+/* Make all references to ports point to port fields
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -65,7 +65,12 @@ import ptolemy.copernicus.kernel.SootUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForPortsTransformer
 /**
-A Transformer that is responsible for inlining references to attributes.
+A transformer that is responsible for replacing references to ports
+Any calls to the getPort() method are replaced with a field reference to
+the field of the appropriate class that points to the correct port.
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class FieldsForPortsTransformer extends SceneTransformer {
     /** Construct a new transformer
@@ -74,9 +79,10 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static FieldsForPortsTransformer v(CompositeActor model) { 
         return new FieldsForPortsTransformer(model);
@@ -140,51 +146,37 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
                 for(Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
-                    Unit unit = (Unit)units.next();
-                    Iterator boxes = unit.getUseBoxes().iterator();
-                    while(boxes.hasNext()) {
-                        ValueBox box = (ValueBox)boxes.next();
-                        Value value = box.getValue();
-                        if(value instanceof InstanceInvokeExpr) {
-                            InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            // FIXME: string matching is probably not good enough.
-                            if(r.getMethod().getName().equals("getPort")) {
-                                // Inline calls to getPort(arg) when arg is a string
-                                // that can be statically evaluated.
-                                Value nameValue = r.getArg(0);
-                                if(Evaluator.isValueConstantValued(nameValue)) {
-                                    StringConstant nameConstant = 
-                                        (StringConstant)
-                                        Evaluator.getConstantValueOf(nameValue);
-                                    String name = nameConstant.value;
-                                    // perform type analysis to determine what the 
-                                    // type of the base is.
-                                    
-                                    // FIXME: This is not enough.
-                                    Local baseLocal = (Local)r.getBase();
-                                    RefType type = (RefType)baseLocal.getType();
-                                    Entity object = (Entity)classToObjectMap.get(type.getSootClass());
-                                    SootField portField;
-                                    if(object != null) {
-                                        // Then we are dealing with a getPort call on one of the
-                                        // classes we are generating.
-                                        Port port = object.getPort(name);
-                                        portField = (SootField)
-                                            portToFieldMap.get(port);
-                                    } else {
-                                        // Walk back and get the definition of the field.
-                                        SootField baseField = _getFieldDef(baseLocal, unit, localDefs);
-                                        portField = baseField.getDeclaringClass().getFieldByName(
-                                                baseField.getName() + "_" + name);
-                                    }
-                                    if(portField != null) {
-                                        box.setValue(Jimple.v().newInstanceFieldRef(
-                                                r.getBase(), portField));
-                                    }                                
-                                } else {
-                                    System.out.println("Port cannot be statically determined for " + 
-                                            unit + " in method " + method + ".");
-                                }
+                    Stmt unit = (Stmt)units.next();
+                    if(!unit.containsInvokeExpr()) {
+                        continue;
+                    }
+                    ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                    Value value = box.getValue();
+                    if(value instanceof InstanceInvokeExpr) {
+                        InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                        // FIXME: string matching is probably not good enough.
+                        if(r.getMethod().getName().equals("getPort")) {
+                                // Inline calls to getPort(arg) when
+                                // arg is a string that can be
+                                // statically evaluated.
+                            Value nameValue = r.getArg(0);
+                            if(Evaluator.isValueConstantValued(nameValue)) {
+                                StringConstant nameConstant = 
+                                    (StringConstant)
+                                    Evaluator.getConstantValueOf(nameValue);
+                                String name = nameConstant.value;
+                                // perform type analysis to determine what the 
+                                // type of the base is.
+                                
+                                Local baseLocal = (Local)r.getBase();
+                                Value newFieldRef = _createPortField(
+                                        baseLocal, name, unit, localDefs, 
+                                        classToObjectMap, portToFieldMap);
+                                box.setValue(newFieldRef); 
+                            } else {
+                                String string = "Port cannot be " +
+                                    "statically determined";
+                                throw new RuntimeException(string);
                             }
                         }
                     }
@@ -193,25 +185,62 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         }
     }
 
-    /** Attempt to determine the constant value of the 
-     *  given local, which is assumed to have a variable
-     *  type.  Walk backwards through all the possible
-     *   places that the local may have been defined and
-     *  try to symbolically evaluate the value of the 
-     *  variable. If the value can be determined, 
-     *  then return it, otherwise return null.
+    // Given a local variable that refers to an entity, and the name
+    // of an port in that object, return a new field ref that
+    // refers to that port.
+    private static FieldRef _createPortField(Local baseLocal, 
+            String name, Unit unit, LocalDefs localDefs,
+            Map classToObjectMap, Map portToFieldMap) {
+        // FIXME: This is not enough.
+        RefType type = (RefType)baseLocal.getType();
+        Entity entity = (Entity)classToObjectMap.get(type.getSootClass());
+        if(entity != null) {
+            // Then we are dealing with a getPort call on one of the
+            // classes we are generating.
+            Port port = entity.getPort(name);
+            SootField portField = (SootField)
+                portToFieldMap.get(port);
+            if(portField != null) {
+                return Jimple.v().newInstanceFieldRef(
+                        baseLocal, portField);
+            } else {
+                return null;
+            }
+        } else {
+            // Walk back and get the definition of the field.
+            DefinitionStmt definition = 
+                _getFieldDef(baseLocal, unit, localDefs);
+            InstanceFieldRef fieldRef = (InstanceFieldRef)
+                definition.getRightOp();
+            SootField baseField = fieldRef.getField();
+            System.out.println("baseField = " + baseField);
+            SootField portField = 
+                baseField.getDeclaringClass().getFieldByName(
+                        baseField.getName() + "_" + name);
+            return Jimple.v().newInstanceFieldRef(
+                    baseLocal, portField);
+        }
+    }        
+
+
+    /** Attempt to determine the constant value of the given local,
+     *  which is assumed to have a variable type.  Walk backwards
+     *  through all the possible places that the local may have been
+     *  defined and try to symbolically evaluate the value of the
+     *  variable. If the value can be determined, then return it,
+     *  otherwise return null.
      */ 
-    // FIXME: This is actually a backwards DataFlow problem.
-    private static SootField _getFieldDef(Local local, 
+    private static DefinitionStmt _getFieldDef(Local local, 
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return _getFieldDef((Local)((CastExpr)value).getOp(), stmt, localDefs);
+                return _getFieldDef((Local)((CastExpr)value).getOp(),
+                        stmt, localDefs);
             } else if(value instanceof FieldRef) {
-                return ((FieldRef)value).getField();
+                return stmt;
             } else {
                 throw new RuntimeException("unknown value = " + value);
             }
@@ -224,7 +253,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         }
         return null;
     }
-    
+     
     // Populate the given map according to the fields representing the
     // ports of the given object that are expected 
     // to exist in the given class

@@ -1,4 +1,4 @@
-/* An analysis for detecting objects that must be aliased to eachother.
+/* An analysis for propagating token types
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -52,9 +52,17 @@ import ptolemy.copernicus.kernel.FastForwardFlowAnalysis;
 
 import java.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// TokenTypeAnalysis
 /**
-An analysis that maps each local variable that represents a token
-onto the particular type of the token.
+An analysis that maps each local variable that represents a token onto
+the particular type of the token.  This propagates the type
+information from ports and parameter using standard dataflow
+techniques through all of the java code for a particular method.
+The result is used by transformers, such as TokenInstanceofEliminator.
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {

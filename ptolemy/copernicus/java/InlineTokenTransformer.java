@@ -59,10 +59,21 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// InlineTokenTransformer
 /**
 A Transformer that is responsible for inlining the values of tokens.
-The values of the tokens are taken from the model specified for this 
-transformer.
+Whenever a method is invoked on a token, this transformer attempts to
+compile-time evaluate that method call.  Usually this will involve
+inserting the constant value of the token, if this transformer can
+determine what that value is.  Information about the values of tokens
+comes from two places: Analysis of token constructors (using the
+TokenConstructorAnalysis class) and value information that is
+annotated into the model by previous transformation steps using a
+ValueTag.
+
+@author Stephen Neuendorffer
+@version $Id$
 */
 public class InlineTokenTransformer extends SceneTransformer {
     /** Construct a new transformer
@@ -127,119 +138,120 @@ public class InlineTokenTransformer extends SceneTransformer {
 
                 if(debug) System.out.println("method = " + method);
 
-        int count = 0;
-        boolean doneSomething = true;
-        while(doneSomething) {
-            doneSomething = false;
-            System.out.println("Inlining tokens iteration " + count++);
-
-                CompleteUnitGraph unitGraph = 
-                    new CompleteUnitGraph(body);
-                // This will help us figure out where locals are defined.
-                SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-                
-                // Analyze and tokens that are constructed in this method...
-                // these will likely not have fields for them.
-                TokenConstructorAnalysis tokenAnalysis = new TokenConstructorAnalysis(
-                        body, localDefs);
-
-                for(Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
-                    Unit unit = (Unit)units.next();
-                    Iterator boxes = unit.getUseBoxes().iterator();
-                    while(boxes.hasNext()) {
-                        ValueBox box = (ValueBox)boxes.next();
-                        Value value = box.getValue();
-                        if(value instanceof InstanceInvokeExpr) {
-                            InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            if(debug) System.out.println("invoking = " + r.getMethod());
-                            
-                            // Skip initializers.
-                            if(r.getMethod().getName().equals("<init>")) {
-                                continue;
-                            }
-
-                            if(r.getBase().getType() instanceof RefType) {
-                                RefType type = (RefType)r.getBase().getType();
-
-                                //System.out.println("baseType = " + type);
-                                // Statically evaluate constant arguments.
-                                Value argValues[] = new Value[r.getArgCount()];
-                                int argCount = 0;
-                                for(Iterator args = r.getArgs().iterator();
-                                    args.hasNext();) {
-                                    Value arg = (Value)args.next();
-                                    //      System.out.println("arg = " + arg);
-                                    if(Evaluator.isValueConstantValued(arg)) {
-                                        argValues[argCount++] = Evaluator.getConstantValueOf(arg);
-                                        //       System.out.println("argument = " + argValues[argCount-1]);
-                                    } else {
-                                        break;
-                                    }
+                int count = 0;
+                boolean doneSomething = true;
+                while(doneSomething) {
+                    doneSomething = false;
+                    // System.out.println("Inlining tokens iteration " + count++);
+                    
+                    CompleteUnitGraph unitGraph = 
+                        new CompleteUnitGraph(body);
+                    // This will help us figure out where locals are defined.
+                    SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+                    
+                    // Analyze and tokens that are constructed in this
+                    // method...  these will likely not have fields
+                    // for them.
+                    TokenConstructorAnalysis tokenAnalysis = 
+                        new TokenConstructorAnalysis(body, localDefs);
+                    
+                    for(Iterator units = body.getUnits().snapshotIterator();
+                        units.hasNext();) {
+                        Unit unit = (Unit)units.next();
+                        Iterator boxes = unit.getUseBoxes().iterator();
+                        while(boxes.hasNext()) {
+                            ValueBox box = (ValueBox)boxes.next();
+                            Value value = box.getValue();
+                            if(value instanceof InstanceInvokeExpr) {
+                                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                                if(debug) System.out.println("invoking = " + r.getMethod());
+                                
+                                // Skip initializers.
+                                if(r.getMethod().getName().equals("<init>")) {
+                                    continue;
                                 }
                                 
-                                if(SootUtilities.derivesFrom(type.getSootClass(), 
-                                        PtolemyUtilities.tokenClass)) {
-
-                                    // if we are invoking a method on a token class, then
-                                    // attempt to get the constant value of the token.
-                                    Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs, 
-                                            tokenAnalysis);
-                                    if(debug) System.out.println("reference to Token with value = " + token);
-                                   
-                                    // If we have a token and all the args are constant valued, 
-                                    // and the method returns a Constant, or a token, then
-                                    if(token != null && argCount == r.getArgCount()) {
-                                        if(debug) {
-                                            System.out.println("statically invoking " + r);
-                                            for(int j = 0; j < r.getArgCount(); j++) {
-                                                System.out.println("argument " + j + " = " + argValues[j]);
-                                            }
+                                if(r.getBase().getType() instanceof RefType) {
+                                    RefType type = (RefType)r.getBase().getType();
+                                    
+                                //System.out.println("baseType = " + type);
+                                // Statically evaluate constant arguments.
+                                    Value argValues[] = new Value[r.getArgCount()];
+                                    int argCount = 0;
+                                    for(Iterator args = r.getArgs().iterator();
+                                        args.hasNext();) {
+                                        Value arg = (Value)args.next();
+                                        //      System.out.println("arg = " + arg);
+                                        if(Evaluator.isValueConstantValued(arg)) {
+                                            argValues[argCount++] = Evaluator.getConstantValueOf(arg);
+                                            //       System.out.println("argument = " + argValues[argCount-1]);
+                                        } else {
+                                            break;
                                         }
-                                        // reflect and invoke the same method on our token
-                                        Object object = 
-                                            SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
-                                        if(debug) System.out.println("method result  = " + object);
+                                    }
+                                    
+                                    if(SootUtilities.derivesFrom(type.getSootClass(), 
+                                            PtolemyUtilities.tokenClass)) {
                                         
-                                        Type returnType = r.getMethod().getReturnType();
-                                        if(returnType instanceof ArrayType) {
-                                        } else if(returnType instanceof RefType) {
-                                            SootClass returnClass = ((RefType)returnType).getSootClass();
-                                            if(SootUtilities.derivesFrom(returnClass,
-                                                    PtolemyUtilities.tokenClass)) {
-                                                if(debug) System.out.println("handling as token type");
-                                                 Local local = PtolemyUtilities.buildConstantTokenLocal(body, 
-                                                        unit, (Token)object, "token");
-                                                box.setValue(local);
-                                                doneSomething = true;
-                                            } else if(returnClass.getName().equals("java.lang.String")) {
-                                                if(debug) System.out.println("handling as string type");
-                                                Constant constant = StringConstant.v((String)object);
+                                        // if we are invoking a method on a token class, then
+                                        // attempt to get the constant value of the token.
+                                        Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs, 
+                                                tokenAnalysis);
+                                        if(debug) System.out.println("reference to Token with value = " + token);
+                                        
+                                        // If we have a token and all the args are constant valued, 
+                                        // and the method returns a Constant, or a token, then
+                                        if(token != null && argCount == r.getArgCount()) {
+                                            if(debug) {
+                                                System.out.println("statically invoking " + r);
+                                                for(int j = 0; j < r.getArgCount(); j++) {
+                                                    System.out.println("argument " + j + " = " + argValues[j]);
+                                                }
+                                            }
+                                            // reflect and invoke the same method on our token
+                                            Object object = 
+                                                SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
+                                            if(debug) System.out.println("method result  = " + object);
+                                            
+                                            Type returnType = r.getMethod().getReturnType();
+                                            if(returnType instanceof ArrayType) {
+                                            } else if(returnType instanceof RefType) {
+                                                SootClass returnClass = ((RefType)returnType).getSootClass();
+                                                if(SootUtilities.derivesFrom(returnClass,
+                                                        PtolemyUtilities.tokenClass)) {
+                                                    if(debug) System.out.println("handling as token type");
+                                                    Local local = PtolemyUtilities.buildConstantTokenLocal(body, 
+                                                            unit, (Token)object, "token");
+                                                    box.setValue(local);
+                                                    doneSomething = true;
+                                                } else if(returnClass.getName().equals("java.lang.String")) {
+                                                    if(debug) System.out.println("handling as string type");
+                                                    Constant constant = StringConstant.v((String)object);
                                                 box.setValue(constant);
                                                 doneSomething = true;
-                                            }                                            
-                                        } else if(returnType instanceof BaseType &&
-                                                  !(returnType instanceof VoidType)) {
-                                            if(debug) System.out.println("handling as base type");
+                                                }                                            
+                                            } else if(returnType instanceof BaseType &&
+                                                    !(returnType instanceof VoidType)) {
+                                                if(debug) System.out.println("handling as base type");
                                             // Must be a primitive type...
-                                            Constant constant =
-                                                SootUtilities.convertArgumentToConstantValue(object);
-                                            box.setValue(constant);
-                                            doneSomething = true;
-                                        } else {
-                                            throw new RuntimeException("unknown return type = " + returnType);
-                                        }
-                                        // Reanalyze the locals... since this may have changed.
-                                        unitGraph = new CompleteUnitGraph(body);
-                                        localDefs = new SimpleLocalDefs(unitGraph);
-                                    } 
+                                                Constant constant =
+                                                    SootUtilities.convertArgumentToConstantValue(object);
+                                                box.setValue(constant);
+                                                doneSomething = true;
+                                            } else {
+                                                throw new RuntimeException("unknown return type = " + returnType);
+                                            }
+                                            // Reanalyze the locals... since this may have changed.
+                                            unitGraph = new CompleteUnitGraph(body);
+                                            localDefs = new SimpleLocalDefs(unitGraph);
+                                        } 
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }            
-        }
+                }            
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-/* 
+/* A transformer that replaces port communication in an SDF model
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -64,10 +64,12 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// InlinePortTransformer
 /**
-A Transformer that is responsible for inlining the values of parameters.
-The values of the parameters are taken from the model specified for this 
-transformer.
+A Transformer that is responsible for inlining the communication between ports.
+The connections between the ports are taken from the model specified in the 
+constructor of this transformer.
 
 FIXME: This is SDF specific and should get pulled out on its own.
 FIXME: currently we try to speed things up if the buffersize is only
@@ -228,14 +230,17 @@ public class InlinePortTransformer extends SceneTransformer {
                 SootMethod method = (SootMethod)methods.next();
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                 
-                System.out.println("inline port body of " + method + " = " + body);
+                System.out.println("inline port body of " + 
+                        method + " = " + body);
                 // System.out.println("method = " + method);
                 
                 boolean moreToDo = true;
                 while(moreToDo) {
                     moreToDo = _inlineMethodCalls(entityClass, method, body,
-                            portToTypeNameToBufferField, portToIndexArrayField, debug);
-                    LocalNameStandardizer.v().transform(body, phaseName + ".lns", "");
+                            portToTypeNameToBufferField, 
+                            portToIndexArrayField, debug);
+                    LocalNameStandardizer.v().transform(body, 
+                            phaseName + ".lns", "");
                 }
             }
         }
