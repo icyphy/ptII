@@ -202,6 +202,7 @@ public class PackageDecl extends JavaDecl
 
                     if ((length > 5) &&
                             name.substring(length - 5).equals(".java")) {
+
                         String className = name.substring(0, length - 5);
 
                         // make sure we don't create 2 class decls if there
@@ -253,23 +254,30 @@ public class PackageDecl extends JavaDecl
     private void _initScopeSystemPackages(Set classSet, Set packageSet) {
         String packageName = fullName('.');
         //System.out.println("PackageDecl._initScopeSystemPackages(): " +
-	//	   "loading " + packageName + " _container:" + _container);
+	//	   "loading '" + packageName + "' _container:" + _container);
 
         Iterator classes = classSet.iterator();
         while (classes.hasNext()) {
             String className = (String) classes.next();
-            if (className.startsWith(packageName)) {
-                String systemPackageName =
-                    StringManip.partBeforeLast(className, '.');
-                if (systemPackageName.equals(packageName)) {
-                    if (_scope.lookupLocal(className, CG_USERTYPE) == null) {
-                        String shortClassName =
-                            className.substring(packageName.length() + 1);
-                        //System.out.println("PackageDecl._initScope" +
-                        //                "SystemPackages():"+
-                        //                shortClassName);
-
-                        _scope.add(new ClassDecl(shortClassName, this));
+            if (packageName.equals("") 
+                    && className.indexOf('.') == -1) {
+                // Empty package name, and classname does not have a .
+                _scope.add(new ClassDecl(className, this));
+            } else {
+                // If we package = 'java' and className = 'javascope'
+                // then we are in trouble in partBeforLast, so we check
+                // to see if className has a . in it.
+                if (className.startsWith(packageName)
+                    && className.indexOf('.') != -1) {
+                    String systemPackageName =
+                        StringManip.partBeforeLast(className, '.');
+                    if (systemPackageName.equals(packageName)) {
+                        if (_scope.lookupLocal(className, CG_USERTYPE)
+                                == null) {
+                            String shortClassName =
+                                className.substring(packageName.length() + 1);
+                            _scope.add(new ClassDecl(shortClassName, this));
+                        }
                     }
                 }
             }
