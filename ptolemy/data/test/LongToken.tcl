@@ -1,4 +1,4 @@
-# Tests for the BooleanToken class
+# Tests for the LongToken class
 #
 # @Author: Neil Smyth
 #
@@ -50,41 +50,80 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test BooleanToken-1.0 {Create an empty instance} {
-    set p [java::new ptolemy.data.BooleanToken]
+test LongToken-1.0 {Create an empty instance} {
+    set p [java::new ptolemy.data.LongToken]
     $p toString
-} {ptolemy.data.BooleanToken(false)}
+} {ptolemy.data.LongToken(0)}
 
 ######################################################################
 ####
 # 
-test BooleanToken-1.1 {Create an instance with a value} {
-    set token [java::new {ptolemy.data.BooleanToken boolean} true]
+test LongToken-1.1 {Create an instance with a value} {
+    set token [java::new {ptolemy.data.LongToken long} 7]
     $token toString
-} {ptolemy.data.BooleanToken(true)}
+} {ptolemy.data.LongToken(7)}
 
 ######################################################################
 ####
 # 
-test BooleanToken-1.2 {Create an instance from a string value} {
-    set token [java::new {ptolemy.data.BooleanToken String} "true"]
+test LongToken-1.2 {Create an instance from a string value} {
+    set token [java::new {ptolemy.data.LongToken String} "5"]
     $token toString
-} {ptolemy.data.BooleanToken(true)}
+} {ptolemy.data.LongToken(5)}
 
 ######################################################################
 ####
 # 
-test BooleanToken-2.0 {Create a non-empty instance and query its value} {
-    set token [java::new {ptolemy.data.BooleanToken boolean} false]
-    $token getValue
-} {0}
+test LongToken-2.0 {Create a non-empty instance and query its value as an long} {
+    set p [java::new {ptolemy.data.LongToken long} 3]
+    set res1 [$p longValue]
+    set res2 [$p getValue]
+    list $res1 $res2
+} {3 3}
 
 ######################################################################
 ####
 # 
-test BooleanToken-3.0 {Create an non-empty instance and add it to Strings} {
+test LongToken-2.1 {Create a non-empty instance and query its value as a double} {
+    set p [java::new {ptolemy.data.LongToken long} 12]
+    catch {$p doubleValue} errmsg
+
+    list $errmsg
+} {{ptolemy.kernel.util.IllegalActionException: ScalarToken.doubleValue: This base class does not contain a value.}}
+
+######################################################################
+####
+# 
+test LongToken-2.2 {Create a non-empty instance and query its value as an int} {
+    set p [java::new {ptolemy.data.LongToken long} 12]
+    catch {$p intValue} errmsg
+
+    list $errmsg
+} {{ptolemy.kernel.util.IllegalActionException: ScalarToken.intValue: This base class does not contain a value.}}
+
+######################################################################
+####
+# 
+test LongToken-2.3 {Create a non-empty instance and query its value as a string} {
+    set p [java::new {ptolemy.data.LongToken long} 12]
+    $p stringValue
+} {12}
+
+######################################################################
+####
+# 
+#test LongToken-2.4 {Create a non-empty instance and query its value as a complex#} {
+#    set p [java::new {ptolemy.data.LongToken long} 12]
+#    $p complexValue
+#} {12}
+
+
+######################################################################
+####
+# 
+test LongToken-3.0 {Create an non-empty instance and add it to Strings} {
     set token1 [java::new ptolemy.data.StringToken "value is " ]
-    set token2 [java::new {ptolemy.data.BooleanToken boolean} true]
+    set token2 [java::new {ptolemy.data.LongToken long} 23]
     set token3 [java::new ptolemy.data.StringToken "....." ]
 
     set token4 [$token1 add $token2]
@@ -93,4 +132,4 @@ test BooleanToken-3.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{ptolemy.data.StringToken(value is truetrue.....)}}
+} {{ptolemy.data.StringToken(value is 2323.....)}}
