@@ -137,6 +137,3 @@ test ConfigurableAttribute-1.5 {test with weird configure text} {
     </property>
 </entity>
 }
-
-
-   
