@@ -493,6 +493,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @return Never returns.
      *  @exception IllegalActionException The exception passed
      *   as an argument is always thrown.
+     *  @since Ptolemy II 2.1
      */
     public boolean handleModelError(
             NamedObj context,
