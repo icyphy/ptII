@@ -211,9 +211,9 @@ test ComponentPort-3.5 {Level-crossing link} {
 ######################################################################
 ####
 # 
-test ComponentPort-3.6 {Construct aliases, then modify them} {
+test ComponentPort-3.6 {Construct transparent ports, then modify them} {
     set e0 [java::new pt.kernel.CompositeEntity]
-    $e1 setName E0
+    $e0 setName E0
     set e2 [java::new pt.kernel.ComponentEntity $e0 E2]
     set e4 [java::new pt.kernel.ComponentEntity $e0 E4]
 
