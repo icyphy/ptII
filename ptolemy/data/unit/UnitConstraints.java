@@ -35,7 +35,6 @@ import java.util.Vector;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.ComponentEntity;

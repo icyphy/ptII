@@ -38,7 +38,6 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import soot.jimple.LengthExpr;
 
 //////////////////////////////////////////////////////////////////////////
 //// Solver
@@ -153,6 +152,7 @@ public class Solver {
             constraintNum < _numConstraints;
             constraintNum++) {
             NamedObj source = _source[constraintNum];
+			String expression = _vectorA[constraintNum].commonDesc();
 
             if (_constraintConsistent[constraintNum]) {
                 color = "green";
@@ -162,7 +162,6 @@ public class Solver {
             if (source instanceof IOPort) {
                 IOPort port = (IOPort) source;
                 ComponentEntity actor = (ComponentEntity) (port.getContainer());
-                String expression = _vectorA[constraintNum].commonDesc();
                 moml.append(
                     "<entity name=\""
                         + actor.getName()
@@ -195,7 +194,7 @@ public class Solver {
                         + "<property name=\"_explanation\" "
                         + "class = \"ptolemy.kernel.util.StringAttribute\" "
                         + "value = \""
-                        + relation.toString()
+                        + expression
                         + "\"/></relation>");
             }
         }
