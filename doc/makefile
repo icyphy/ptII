@@ -148,8 +148,8 @@ COPERNICUSPACKAGES = \
 			$(JHDLPACKAGE) \
 			ptolemy.copernicus.shallow
 
-# Packages used by HyVision
-HYVISIONPACKAGES = \
+# Packages used by HyVisual
+HYVISUALPACKAGES = \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
@@ -170,7 +170,7 @@ HYVISIONPACKAGES = \
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
-			$(HYVISIONPACKAGES) \
+			$(HYVISUALPACKAGES) \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.sdf.lib.vq
@@ -250,9 +250,9 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 
 
 all: suball whatsnew.htm whatsnewVergil.htm \
-	codeDoc/tree.html codeDocHyVision/doc/codeDoc/tree.html
+	codeDoc/tree.html codeDocHyVisual/doc/codeDoc/tree.html
 
-install: all jars codeDoc.jar codeDocHyVision.jar
+install: all jars codeDoc.jar codeDocHyVisual.jar
 
 codeDoc.jar:
 	"$(JAR)" -cvf $@ -C $(ROOT) doc/codeDoc
@@ -392,21 +392,21 @@ codeDocPtiny/tree.html:
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 
 
-# Note that we change into the codeDocHyVision directory
+# Note that we change into the codeDocHyVisual directory
+
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
-codeDocHyVision.jar: codeDocHyVision/doc/codeDoc/tree.html
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocHyVision doc/codeDoc
+codeDocHyVisual.jar: codeDocHyVisual/doc/codeDoc/tree.html
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocHyVisual doc/codeDoc
 
 # We do something crafty here and create a tree of html files
 # that we can substitute in for the usual doc/codeDoc tree in the
-# Hybrid Systems webstart
-codeDocHyVision/doc/codeDoc/tree.html:
-	if [ ! -d codeDocHyVision ]; then mkdir -p codeDocHyVision; fi
+# HyVisual webstart
+codeDocHyVisual/doc/codeDoc/tree.html:
+	if [ ! -d codeDocHyVisual ]; then mkdir -p codeDocHyVisual; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVision/doc/codeDoc $(HYVISIONPACKAGES) )
-
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk

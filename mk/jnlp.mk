@@ -74,7 +74,7 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 NUMBER_OF_JARS_TO_LOAD_EAGERLY = 10
 
 # Jar files that will appear in most Ptolemy II JNLP files.
-# HybridSystems has its own set of core jars
+# HyVisual has its own set of core jars
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
@@ -102,21 +102,21 @@ DSP_JNLP_JARS =	\
 
 
 #######
-# HybridSystems - HybridSystenms
+# HyVisual - HybridSystenms
 #
-# Jar files that will appear in a HybridSystems only JNLP Ptolemy II Runtime.
+# Jar files that will appear in a HyVisual only JNLP Ptolemy II Runtime.
 # This list is used to create the ptII/signed directory, so each
 # jar file should be named once in one of the *ONLY_JNLP_JARS
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	doc/design/hyvisual.jar \
-	doc/codeDocHybridSystems.jar \
+	doc/codeDocHyVisual.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
 	ptolemy/domains/sdf/kernel/kernel.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
-	ptolemy/actor/gui/jnlp/HybridSystemsApplication.jar
+	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
 
 #  - hybrid/configure.xml includes actor/lib/math.xml which includes
 #    sdf.lib.DotProduct
@@ -259,7 +259,7 @@ KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 MKJNLP =		$(PTII)/bin/mkjnlp
 
 # JNLP files that do the actual installation
-JNLPS =	vergilDSP.jnlp vergilHybridSystems.jnlp \
+JNLPS =	vergilDSP.jnlp vergilHyVisual.jnlp \
 	vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
@@ -319,10 +319,10 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		$(SIGNED_DIR)/$(DSP_MAIN_JAR) $(KEYALIAS)
 
 
-# Web Start: HybridSystems version of Vergil - No sources or build env.
+# Web Start: HyVisual version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
 # PTII_LOCALURL has spaces in it that get converted to %20
-vergilHybridSystems.jnlp: vergilHybridSystems.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
