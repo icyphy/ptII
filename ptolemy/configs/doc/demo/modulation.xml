@@ -2,7 +2,7 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="blank" class="ptolemy.actor.TypedCompositeActor">
-    <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="500">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -10,7 +10,7 @@
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="50.0, 35.0"/>
         </rendition>
-    </director>
+    </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="200">
     </property>
     <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="20">

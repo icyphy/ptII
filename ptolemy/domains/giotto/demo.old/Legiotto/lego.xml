@@ -2,10 +2,10 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="lego" extends="ptolemy.actor.TypedCompositeActor">
-    <director class="ptolemy.domains.fsm.kernel.FSMDirector">
+    <property class="ptolemy.domains.fsm.kernel.FSMDirector">
         <property name="controllerName" value="&quot;controller&quot;">
         </property>
-    </director>
+    </property>
 
     <property name="legoID" class="ptolemy.data.expr.Parameter" value="1">
     </property>
@@ -30,8 +30,8 @@
     </port>
 
     <entity name="maneuver" class="ptolemy.actor.TypedCompositeActor">
-        <director class="ptolemy.domains.giotto.kernel.GiottoDirector">
-        </director>
+        <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        </property>
 
         <port name="bumped" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -118,8 +118,8 @@
     </entity>
 
     <entity name="follow" class="ptolemy.actor.TypedCompositeActor">
-        <director class="ptolemy.domains.giotto.kernel.GiottoDirector">
-        </director>
+        <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        </property>
         <port name="bumped" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>

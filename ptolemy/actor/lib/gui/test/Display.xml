@@ -2,9 +2,9 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
 <model name="test" class="ptolemy.actor.TypedCompositeActor">
-    <director name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
 	<property name="iterations" value="10"/>
-    </director>
+    </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp"/>
     <entity name="display" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" value="15"/>

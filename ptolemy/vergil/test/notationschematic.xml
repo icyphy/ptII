@@ -2,10 +2,10 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="hello world" class="ptolemy.actor.TypedCompositeActor">
-    <director name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
         </property>
-    </director>
+    </property>
     <doc>ramp-recorder...  a good first start</doc>
     <entity name="Notation" class="ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation"/>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">

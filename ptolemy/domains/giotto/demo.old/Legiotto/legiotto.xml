@@ -2,14 +2,14 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="legiotto" class="ptolemy.actor.TypedCompositeActor">
-    <director name="director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+    <property name="director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-    </director>
+    </property>
     <import source="lego.xml"/>
     <entity name="lego1" class=".lego">
         <property name="legoID" class="ptolemy.data.expr.Parameter" value="1">

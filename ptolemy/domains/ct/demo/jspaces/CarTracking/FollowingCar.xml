@@ -9,10 +9,10 @@
         class="ptolemy.data.expr.Parameter"></property>
     <property name="initialPosition" value="0.0" 
         class="ptolemy.data.expr.Parameter"></property>
-    <director class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
+    <property class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">
         </property>
-    </director>
+    </property>
     
     <!-- Define the actors -->
     <!-- replace this actor with the controller -->

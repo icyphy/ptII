@@ -13,10 +13,10 @@ on double tokens since a finite precision is used. The plot generated
 shows the effects of the use of finite precision.
 </doc>
 
-    <director name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-    </director>	
+    </property>	
 
   <!-- Define toplevel parameters -->
 

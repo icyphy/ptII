@@ -3,10 +3,10 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="hello world" class="ptolemy.actor.TypedCompositeActor">
     <doc>ramp-recorder...  a good first start</doc>
-    <director class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
         </property>
-    </director>
+    </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>

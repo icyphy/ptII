@@ -3,10 +3,10 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="Monitor" class="ptolemy.actor.TypedCompositeActor">
     <doc>Discrete Event Monitor of the two cars.</doc>
-    <director class="ptolemy.domains.de.kernel.DEDirector">
+    <property class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" value="false">
 	</property>
-    </director>
+    </property>
     
     <!-- Define the actors -->
     <entity name="leadingCar" 

@@ -2,11 +2,11 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="simple_hierarchy" class="ptolemy.actor.TypedCompositeActor">
-    <director class="ptolemy.domains.giotto.kernel.GiottoDirector">
+    <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="iterations" value="10">
             <doc>Number of iterations in an execution.</doc>
         </property>
-    </director>
+    </property>
     <entity name="const" class="ptolemy.actor.lib.Const">
     </entity>
 

@@ -11,10 +11,10 @@
 	        class="ptolemy.actor.gui.style.CheckBoxStyle"-->
             <!-- /property-->
 	</property>
-    <director class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
+    <property class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">
         </property>
-    </director>
+    </property>
     
     <!-- Define the actors -->
     <entity name="time" class="ptolemy.actor.lib.CurrentTime">

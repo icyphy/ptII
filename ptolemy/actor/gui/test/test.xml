@@ -4,9 +4,9 @@
 <model name="test" class="ptolemy.actor.TypedCompositeActor">
     <doc>This test has no placeable elements, but writes to standard out.</doc>
     <property name="step" value="1" class="ptolemy.data.expr.Parameter"/>
-    <director name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
 	<property name="iterations" value="3"/>
-    </director>
+    </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
         <property name="step" value="step"/>
     </entity>

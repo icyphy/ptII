@@ -2,14 +2,14 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="" class="ptolemy.actor.TypedCompositeActor">
-    <director name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
+    <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
         </rendition>
-    </director>
+    </property>
     <entity name="ViewScreen0" class="ptolemy.domains.gr.lib.ViewScreen">
         <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
         </property>
@@ -135,7 +135,7 @@
         </port>
     </entity>
     <class name="robot arm" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -143,7 +143,7 @@
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="15.0, -2.75"/>
             </rendition>
-        </director>
+        </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="251.00000095367432, 188.75"/>
         </rendition>
@@ -223,7 +223,7 @@
             </port>
         </entity>
         <class name="lower limb12" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -232,7 +232,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="100.0, 165.0"/>
             </rendition>
@@ -971,7 +971,7 @@
             </port>
         </entity>
         <class name="upper limb0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -980,7 +980,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="100.0, 238.0"/>
             </rendition>
@@ -1901,7 +1901,7 @@
             </port>
         </entity>
         <class name="wrist0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -1910,7 +1910,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="97.0, 308.0"/>
             </rendition>
@@ -2659,7 +2659,7 @@
             <link port="Translate3D22.output" relation="relation24"/>
         </class>
         <class name="gripper0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -2668,7 +2668,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="105.0, 385.0"/>
             </rendition>
@@ -3530,7 +3530,7 @@
             </port>
         </entity>
         <class name="stand0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -3539,7 +3539,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="94.0, 42.0"/>
             </rendition>
@@ -3783,7 +3783,7 @@
             <link port="Translate3D1.output" relation="relation7"/>
         </class>
         <class name="shoulder base0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -3793,7 +3793,7 @@
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                     <location value="12.0, 5.25"/>
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="106.0, 97.0"/>
             </rendition>
@@ -4262,7 +4262,7 @@
         <link port="shoulder base0.port0" relation="relation21"/>
     </class>
     <class name="IK0" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="DE" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
@@ -4277,7 +4277,7 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-        </director>
+        </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="114.0, 186.0"/>
         </rendition>
@@ -4306,12 +4306,12 @@
             </property>
         </port>
         <class name="theta20" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="316.0, 131.0"/>
             </rendition>
@@ -4619,12 +4619,12 @@
             <link port="Display15.input" relation="relation0"/>
         </class>
         <class name="theta11" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="413.0, 206.0"/>
             </rendition>

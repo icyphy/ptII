@@ -2,8 +2,8 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="composite" extends="ptolemy.actor.TypedCompositeActor">
-    <director class="ptolemy.domains.giotto.kernel.GiottoDirector">
-    </director>
+    <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
+    </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
     </port>

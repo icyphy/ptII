@@ -2,10 +2,10 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="" class="ptolemy.actor.TypedCompositeActor">
-    <director name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector">
+    <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector">
         <property name="executionDuration" class="ptolemy.data.expr.Parameter" value="10000">
         </property>
-    </director>
+    </property>
     <entity name="PeriodicTrigger0" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>

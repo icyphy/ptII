@@ -2,7 +2,7 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="" class="ptolemy.actor.TypedCompositeActor">
-    <director name="DT6" class="ptolemy.domains.dt.kernel.DTDirector">
+    <property name="DT6" class="ptolemy.domains.dt.kernel.DTDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -12,7 +12,7 @@
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="632.0, 415.0"/>
         </rendition>
-    </director>
+    </property>
     <entity name="Round0" class="ptolemy.actor.lib.conversions.Round">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="ceil">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
