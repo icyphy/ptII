@@ -65,7 +65,7 @@ RCXLEJOS=$(LEJOS_DIR)/bin/lejos
 UPLOADER=$(LEJOS_DIR)/bin/lejosrun
 
 # NOTE: Lejos demos don't use the standard JDK...  we override bootclasspath.
-CLASSPATH = $(LEJOS_DIR)/lib/classes.jar$(CLASSPATHSEPARATOR).
+CLASSPATH = $(LEJOS_DIR)/lib/classes.jar$(CLASSPATHSEPARATOR).$(MYCLASSPATH)
 JFLAGS = -bootclasspath "$(BOOTCLASSPATH)"
 
 STRIPCLASS = $(JCLASS:%.class=%,)
