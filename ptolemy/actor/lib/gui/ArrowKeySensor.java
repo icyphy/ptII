@@ -226,7 +226,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
      *  since the last firing of the actor.  <i>Pressed</i> and
      *  <i>Released</i> are are not allowed to both be true for the
      *  same key (Though both may be false).  The most recent action  
-     *  (press or release) takes precidence.  
+     *  (press or release) takes precedence.  
      */
     private boolean _upKeyPressed = false;
     private boolean _leftKeyPressed = false;
