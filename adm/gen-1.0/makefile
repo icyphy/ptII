@@ -63,6 +63,8 @@ GNU_DEST =	$(FTP_DEST)/pub/gnu/$(PTOLEMY_SRC)$(VERSION)
 # Name and directory of distribution.  For testing, use ptdesign
 # For release, use ptolemy
 #USER =		ptolemy
+# For use under Windows
+# make USER=cxh PTIIHOME=//c/users/cxh/ptII TAR=tar 
 USER =		ptII
 PTIIHOME =	/users/ptII
 PTIIADM =	$(PTIIHOME)/adm
@@ -134,7 +136,7 @@ $(PTIIDIST):
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
-	find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
+	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	@echo "Regenerate the documentation"
 	(cd $(PTIIDIST)/doc; make JDOCFLAGS="-author -version -J-Xmx132m")
 	#@echo "Do make realclean to clean up any trash"
@@ -880,6 +882,13 @@ installshield_app: $(INSTALLSHIELD_APP) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
 	$(INSTALLSHIELD_RUNTIME) \
 
+clean_installshield:
+	rm -rf $(INSTALLSHIELD_APP) \
+	$(INSTALLSHIELD_DESIGNDOC) \
+	$(INSTALLSHIELD_DOC) \
+	$(INSTALLSHIELD_EXPERIMENTAL) \
+	$(INSTALLSHIELD_RUNTIME)
+
 $(INSTALLSHIELD_APP): #$(PTII_SRC)
 	(cd $(INSTALLSHIELD_SRC); \
 	 tar -zxf ../ptII$(VERSION).src.tar.$(SUFFIX); \
@@ -888,6 +897,7 @@ $(INSTALLSHIELD_APP): #$(PTII_SRC)
 INSTALLSHIELD_RUNTIME_DOMAINS=csp de fsm pn sdf
 $(INSTALLSHIELD_RUNTIME): bar
 	 mkdir -p $@ $@/lib $@/ptolemy $@/ptolemy/vergil
+	 mkdir -p $@/doc/codeDoc/ptolemy/actor/lib
 	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
 	 -mv $(INSTALLSHIELD_APP)/doc $@
 	 -mv $(INSTALLSHIELD_APP)/lib/diva.jar $@/lib
@@ -900,6 +910,9 @@ $(INSTALLSHIELD_RUNTIME): bar
 		$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/doc \
 		$@/ptolemy/domains/$$domain; \
 	 done
+	 # We do want to ship actor/lib docs
+	 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/actor/lib \
+		$@/doc/codeDoc/ptolemy/actor/lib
 
 $(INSTALLSHIELD_DESIGNDOC):
 	 mkdir -p $@/doc/design
@@ -919,3 +932,4 @@ $(INSTALLSHIELD_EXPERIMENTAL):
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dt $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/gr $@/ptolemy/domains
+
