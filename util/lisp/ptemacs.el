@@ -34,6 +34,11 @@
 ;; default) and that C:\cygwin\bin is not already in your
 ;; Windows Path (it generally should not be).
 ;;
+;; As an alternative, Zoltan Kemenczy suggests setting the SHELL
+;; environment variable to the windows path to bash.exe.
+;; If cygwin\bin is in your DOS path, then setting SHELL to
+;; bash should work.
+;;
 (setq exec-path (cons "C:/cygwin/bin" exec-path))
 (setenv "PATH" (concat "C:\\cygwin\\bin;" (getenv "PATH")))
 
