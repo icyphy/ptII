@@ -1,44 +1,179 @@
 <!-- $Id$ -->
 <html>
 <head>
-<title>Download Ptplot</title>
+<title>Download Ptplot 5.2</title>
 </head>
 <body bgcolor="#faf0e6">
-<H1>Download Ptplot</A></H1>
+<H1>Download Ptplot 5.2</A></H1>
+<h2>Downloads</h2>
 Ptplot is available for download in several format.
  <br>Each of the formats contains the same functionality.
 <menu>
-<li> Tar and Zip files: <a href="../install.htm#tarorzip">Instructions</a>
-<menu>
-<li> <A HREF="../../ptplot3.1.tar.gz">1.24Mb Gzipped Tar File</A>
-<li> <A HREF="../../ptplot3.1.zip">1.47Mb Compressed Zip File</A>
+<li> Tar and Zip files: 
+  <menu>
+  <li> <A HREF="../../ptplot5.2.tar.gz"><CODE>ptplot5.2.tar.gz</CODE></A> 
+	-  1.91Mb Gzipped Tar File</A>
+  <li> <A HREF="../../ptplot5.2.zip"><CODE>ptplot5.2.zip</CODE></A>
+	- 2.22Mb Compressed Zip File
+
+  <li> <a href="../install.htm#tarorzip">Build Instructions for Tar or Zip files</a>
+ <br> Note that under Java 1.4.0_01, viewing local applets that have
+spaces in the path name may fail if the applet tries to download a
+data file.  The workaround is to place the Ptplot distribution in a
+directory that does not have space in the pathname.  For details, see
+the <a href="../troubleshooting.htm#spaces">Troubleshooting Guide</a>.
+
+  </menu>
+
+<li> 
+<a href="install.htm">Run the installer as an applet or download an installer</a>.
+ <br> The
+<a href="InstData/Windows/NoVM/install.exe">2.5Mb Windows executable</a>
+has been tested, the other installers are experimental.  Please
+send any feedback about these installers to
+<a href="mailto:ptplot@ptolemy.eecs.berkeley.edu"><CODE>ptplot@ptolemy.eecs.berkeley.edu</CODE></a>
+
 </menu>
 
+<h2>Installation Instructions</h2>
 
-<li> Java Installer tool: <a href="../install.htm#installshield">Instructions</a>
- <br>Note that the Windows installer installs Ptplot in your Start menu
-under the Ptolemy-&gt;Ptplot menu choice.
+<h3>1. Install Java, if necessary</h3>
+<p>
+Ptplot 5.2 requires Java 1.2 or later.
+Java 1.3 is preferred.
 
-<menu>
-<li> <A HREF="ptplotinstall_local.htm">Install via an Applet</a>
-<li> <A HREF="ptplotinstall.class">1.51Mb Java installer(<code>.class</code>)</a>
- - To install download and then do
+ <p>To run Ptplot, the Java runtime environment (JRE) is sufficient.
+To run the applets in a browser, the Java plug-in is required.
+The JRE is bundled with the plug-in, so downloading the plug-in
+is sufficient.  To extend Ptplot with your own
+Java code, the Java development kit (JDK)
+or an equivalent Java development environment is required.
+The JDK includes a Java compiler.
+<p>
+One way to determine what version of Java (if any) is installed 
+is to run our
+<a href="JavaVersionApplet.htm">Java Version Applet </a>, which
+uses the Java 1.3 plug-in.
+Another way is to run the command below to see whether
+you have Java installed, and whether it is the proper version:
 <pre>
-	CLASSPATH=.
-	export CLASSPATH
-	java ptplotinstall
+java -version
 </pre>
-<li> <A HREF="ptplotinstall.exe">1.6Mb Windows Self Extracting Installer (<code>.exe</code>)</a>
-<li> <A HREF="ptplotinstall.sh">1.52Mb Unix Self Extracting Installer (<code>/bin/sh</code>)</a>
+If the command cannot be found, or the version that is printed is
+less than 1.3, you should install the plug-in, JRE 1.3, or JDK 1.3
+<p>
+Downloads:
+<menu>
+<li> Windows JRE: The Java runtime environment, JRE (no Java compiler): 
+<a href="j2re-1_3_0_02-win.exe"><CODE>j2re-1_3_0_02-win.exe</CODE></a> (5.1Mb)
+
+<li> Full JDK, or other Platforms:
+<a href="http://java.sun.com/j2se/1.3/" target="_top"><CODE>http://java.sun.com/j2se/1.3/</CODE></a>
+</menu>
+
+<h3>2. Install Ptplot</h3>
+
+<menu>
+
+<li> There are three ways to install Ptplot on Windows machines:
+ 
+
+<menu>
+<li> Download the tar file and run using the java command
+  <ol>
+  <li> Download <a href="../../ptplot5.2.tar.gz"><CODE>ptplot5.2.tar.gz</CODE></a> (3.45Mb) 
+
+  <li> Untar the file.  In this example, I untared it in <CODE>d:\tmp</CODE>
+so that <CODE>d:\tmp\ptplot5.2</CODE> was created.
+  <li> The tar file contains sources and jar files, to run the
+plotter, start up a command window with
+<CODE>Start</CODE> -&gt; <CODE>Run</CODE> -&gt; <CODE>cmd</CODE>
+and type
+<pre>
+java -classpath d:/tmp/ptplot5.2/ptolemy/plot/plotapplication.jar ptolemy.p
+lot.plotml.EditablePlotMLApplication
+
+</pre>
+There are also simple DOS batch files that will start up
+the Plotter.  They depend on the <CODE>PTII</CODE> environment variable
+being set.  You can set that variable and run the batch files with:
+<pre>
+C:\&gt;set PTII=d:\tmp\ptplot5.2
+
+C:\&gt;echo %PTII%
+d:\tmp\ptplot5.2
+
+C:\&gt;%PTII%\bin\ptplot
+
+</pre>
+
+  </ol>
+</menu>
+
+ <B>or</B>
+
+<menu>
+<li> 
+<a href="setup.htm">Run the installer as an applet</a>.
+This applet, built with a commercial product from Zero G Inc.,
+will install Ptplot, from Berkeley, on your machine.
+ <br>If you choose to install via the applet, a dialog will pop
+up asking if you will grant permission to run software from 
+Zero G Software.  To continue with the installation process,
+click on the 'Grant' button.
+
+</menu>
+ <B>or</B>
+<menu>
+<li> Download a 
+<a href="InstData/Windows/NoVM/install.exe">2.5Mb Windows executable</a>, and execute it.
+
+</menu>
+
+ <p>If you are not planning on extending Ptplot, and you
+downloaded using the applet or installer, then you can run
+Ptplot via Start-&gt;Programs -&gt;Ptolemy-&gt;Ptplot 5.2
+
+<p> To extend Ptplot under Windows, you will also need the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/cygwin.htm">Cygwin toolkit</a>, and then
+follow the 
+<a href="../install.htm">Installation Instructions</a>
+to set up your build environment.  
+
+ <p>
+
+
+<p>
+<li> Other Platforms: 
+There are two ways to install on certain other platforms:
+<menu>
+<li> <a href="install.htm">Run the installer as an applet or download an installer</a>.
+ <br> The
+<a href="InstData/Windows/NoVM/install.exe">2.5Mb Windows executable</a>
+has been tested, the other installers are experimental.  Please
+send any feedback about these installers to
+<a href="mailto:ptplot@ptolemy.eecs.berkeley.edu"><CODE>ptplot@ptolemy.eecs.berkeley.edu</CODE></a>
+
+</menu>
+
+ <B>or</B>
+
+<menu>
+<li> Standard tar file and configure method:
+  <ol>
+  <li> Download <a href="../../ptplot5.2.tar.gz"><CODE>ptplot5.2.tar.gz</CODE></a> (1.71Mb) 
+
+  <li> Follow the 
+<a href="../install.htm">Installation Instructions</a>
+  </ol>
+</menu>
+
+</ol>
+
+</menu>
 </menu>
 </menu>
 
 
-<hr>
-Copyright &#169 1997-2002 The Regents of the University of California.
-All rights reserved.
-<br>
-Last updated: $Date$,
-comments to: <author>cxh@eecs.berkeley.edu</author>
 </body>
 </html>
