@@ -41,9 +41,9 @@ import java.awt.*;
  * An Applet that demonstrates the PlotLiveDemo class. 
  * 
  * @author Edward A. Lee, Christopher Hylands
- * @version @(#)PlotApplet.java	1.4 10/13/97
+ * @version $Id$
  */
-public class PlotLiveDemoApplet extends Applet implements Runnable {
+public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
 
     /**
      * Return a string describing this applet.
@@ -63,37 +63,10 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
         int width,height;
         setLayout(new BorderLayout());
 
-        _myPlotLiveDemo = new PlotLiveDemo();
-        add("Center",_myPlotLiveDemo);
-        //        show();
+        newPlot();              // Create a PlotLive to operate on.
+        add("Center",plot());
 
-        try {
-            width = Integer.valueOf(getParameter("width")).intValue();
-        } catch (NullPointerException e) {
-            width = 400;
-        }
-        try {
-            height = Integer.valueOf(getParameter("height")).intValue();
-        } catch (NullPointerException e) {
-            height = 400;
-        }
-
-        // Process the background parameter.
-        try {
-            Color background = Color.white;
-            background = PlotBox.getColorByName(getParameter("background"));
-            setBackground(background);
-        } catch (NullPointerException e) {}
-
-        // Process the foreground parameter.
-        try {
-            Color foreground = Color.white;
-            foreground = PlotBox.getColorByName(getParameter("foreground"));
-            setForeground(foreground);
-        } catch (NullPointerException e) {}
-
-        _myPlotLiveDemo.resize(width,height); // FIXME: resize() is deprecated.
-        _myPlotLiveDemo.init();
+        plot().init();
         super.init();
     }
 
@@ -102,7 +75,7 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
      */
     public void paint(Graphics graphics) {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: paint");
-        _myPlotLiveDemo.paint(graphics);
+        plot().paint(graphics);
     }
 
     /** 
@@ -131,17 +104,17 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
 	repaint();
     }
 
-    /** 
+    /** Start the plot
      */
     public void start () {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: start");
 	_plotLiveDemoAppletThread = new Thread(this);
         _plotLiveDemoAppletThread.start();
-        _myPlotLiveDemo.start();
+        plot().start();
         super.start();
     }
 
-    /** 
+    /** Stop the plot.
      */
     public void stop () {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: stop");
@@ -154,6 +127,21 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
 //         paint(graphics);
 //         super.update(graphics);
 //     }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                        ////
+
+    /** Create a new Plot object to operate on.
+     */
+    protected void newPlot() {
+        _myPlotLiveDemo = new PlotLiveDemo();
+    }
+
+    /** Return the Plot object to operate on.
+     */  
+    public Plot plot() {
+        return _myPlotLiveDemo;
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
