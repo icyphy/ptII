@@ -30,22 +30,22 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
+
 //////////////////////////////////////////////////////////////////////////
 //// Documentation
 /**
 An attribute that contains documentation for the container.
-This is a singleton attribute.  If there is a pre-existing instance
-with the same name, then it is replaced.
 <p>
 The name of a documentation object can often be meaningful.  Many times
 the name can be used to specify important information about the type of
@@ -56,7 +56,7 @@ treated the same.
 @version $Id$
 @since Ptolemy II 0.4
 */
-public class Documentation extends SingletonAttribute {
+public class Documentation extends StringAttribute {
 
     /** Construct an attribute with the specified container and name.
      *  The documentation contained by the attribute is initially empty,
@@ -71,6 +71,7 @@ public class Documentation extends SingletonAttribute {
     public Documentation(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,14 +117,14 @@ public class Documentation extends SingletonAttribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         if (name.equals("_doc")) {
             // Name is the default name.  Omit.
             output.write(_getIndentPrefix(depth)
                     + "<doc>"
-                    + _value
+                    + getExpression()
                     + "</doc>\n");
         } else {
             // Name is not the default name.
@@ -131,7 +132,7 @@ public class Documentation extends SingletonAttribute {
                     + "<doc name=\""
                     + name
                     + "\">"
-                    + _value
+                    + getExpression()
                     + "</doc>\n");
         }
     }
@@ -140,26 +141,24 @@ public class Documentation extends SingletonAttribute {
      *  @return The documentation.
      */
     public String getValue() {
-        return _value;
+        return getExpression();
     }
 
     /** Set the documentation string.
      *  @param value The documentation.
      */
     public void setValue(String value) {
-        _value = value;
+        try {
+            super.setExpression(value);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
     }
 
     /** Get the documentation as a string, with the class name prepended.
      *  @return A string describing the object.
      */
     public String toString() {
-        return "(" + getClass().getName() + ", " + _value + ")";
+        return "(" + getClass().getName() + ", " + getExpression() + ")";
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The string value of the documentation.
-    private String _value;
 }
