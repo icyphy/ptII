@@ -41,6 +41,14 @@ ROOT =		..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Note that CALTROP_JARS should be before SOOT_JARS because
+# CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
+# a version of java cup
+CALTROP_JARS = $(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon7.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar
+
+CLASSPATH = .$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CALTROP_JARS)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(QTJAVA_ZIP)$(CLASSPATHSEPARATOR)$(PSDF_DIR)/synthesis.jar$(CLASSPATHSEPARATOR)$(X10_JAR)
+
+
 # Used to build jar files
 PTPACKAGE = 	doc
 PTVERSION =	4.0
@@ -194,6 +202,7 @@ HYVISUALPACKAGES = \
 			ptolemy.actor.lib.python \
 			ptolemy.actor.lib.security \
 			ptolemy.actor.lib.string \
+			ptolemy.actor.lib.xslt \
 			ptolemy.actor.parameters \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.solver \
@@ -464,7 +473,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m $(JDOCBREAKITERATOR)"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
 	-chmod a+x removeasd
@@ -475,7 +484,7 @@ codeDocPtiny/tree.html:
 	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
 	-chmod a+x removeasd
@@ -496,7 +505,7 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	if [ ! -d codeDocHyVisual ]; then mkdir -p codeDocHyVisual; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
 	-chmod a+x removeasd
@@ -509,16 +518,10 @@ DOCCHECKJAR =	$(PTII)/vendors/sun/doccheck1.2b2/doccheck.jar
 JDOCCHECKDOCLET = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
 	-docletpath $(DOCCHECKJAR)
 
-# Note that CALTROP_JARS should be before SOOT_JARS because
-# CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
-# a version of java cup
-
-CALTROP_JARS=$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon7.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar
-
 doccheck: doccheck/index.html
 doccheck/index.html:
 	if [ ! -d doccheck ]; then mkdir -p doccheck; fi
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CALTROP_JARS)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(PSDF_DIR)/synthesis.jar" \
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" \
 			$(JDOCCHECKFLAGS) \
 			$(JDOCCHECKDOCLET) \
