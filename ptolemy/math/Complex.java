@@ -554,8 +554,19 @@ public class Complex implements Cloneable, Serializable {
      *   than or equal to the second argument.
      */
     public final boolean isCloseTo(Complex z, double distance) {
-        double actualDistance = abs(subtract(z));
-        return (actualDistance <= distance);
+        // NOTE: I couldn't find a way to make this as precise as double.
+        // With this implementation, the following two examples yield the
+        // wrong answer due to rounding errors:
+        //    close (1.0i, 1.1i, 0.1)
+        //    close (1.0i, 1.0, 0.0)
+        // (This is how to invoke this in the expression language.)
+        double differenceSquared = subtract(z).magnitudeSquared();
+        double distanceSquared = distance*distance;
+        if (differenceSquared > distanceSquared) {
+        	return false;
+        } else {
+        	return true;
+        }
     }
 
     /** Return true if either the real or imaginary part is infinite.
