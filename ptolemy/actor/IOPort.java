@@ -1372,8 +1372,7 @@ public class IOPort extends ComponentPort {
         return false;
     }
 
-    /** Override the base class to verify that this port is a multiport
-     *  and to invalidate the schedule and resolved
+    /** Override the base class to invalidate the schedule and resolved
      *  types of the director of the container, if there is one, in addition
      *  to what the base class does.
      *  @param index The index at which to insert the link.
@@ -1381,14 +1380,10 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the link would cross levels of
      *   the hierarchy, or the relation is incompatible,
      *   or the port has no container, or the port is not in the
-     *   same workspace as the relation, or if this port is not a multiport.
+     *   same workspace as the relation.
      */
     public void insertLink(int index, Relation relation)
             throws IllegalActionException {
-        if (!isMultiport()) {
-            throw new IllegalActionException(this,
-            "Cannot insert links in a port that is not a multiport.");
-        }
         super.insertLink(index, relation);
         _invalidate();
     }
