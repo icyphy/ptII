@@ -49,7 +49,7 @@ $Id$
 public class ArrayType implements InequalityTerm
 {
     /**
-     * Create a new dimension type variable, initialized to 
+     * Create a new array type variable, initialized to 
      * ArrayType.BOTTOM;
      */
     public ArrayType() {
@@ -58,18 +58,19 @@ public class ArrayType implements InequalityTerm
     }
 
     /** 
-     * Create a new dimension type constant with the given characteristics.
+     * Create a new array type constant with the given characteristics.
      * @param dimensions The number of dimensions of the new type.
      * @param size An array of the size in each dimension of the new type.
      */
-    public ArrayType(int dimensions, int size[]) {
+    public ArrayType(int dimensions, int size[], Type type) {
         _dimensions = dimensions;
         _size = size;
+ 	_type = type;
         _isSettable = false;
     }
 
     /**
-     * Create a new dimension type constant with the value given by the 
+     * Create a new array type constant with the value given by the 
      * given ArrayType.  If the given type is constant, then the new
      * type will also be constant.  If the given type is variable, then the
      * new type will also be variable.
@@ -77,6 +78,7 @@ public class ArrayType implements InequalityTerm
     public ArrayType(ArrayType type) {
         _dimensions = type._dimensions;
         _size = type._size;
+ 	_type = type._type;
         _isSettable = type._isSettable;
     }
 
@@ -131,7 +133,7 @@ public class ArrayType implements InequalityTerm
         for(i = 0; i < _dimensions; i++) {
             if(_size[i] != dtype._size[i]) return false;
         }
-        return true;
+        return _type.isEqualTo(type._type);
     }
 
     /** Check whether this term can be set to a specific element of the
@@ -154,7 +156,7 @@ public class ArrayType implements InequalityTerm
         if(this.isEqualTo(BOTTOM)) return false;
         if(_dimensions < 0) return false;
         if(_dimensions > 2) return false;
-        return true;
+        return _type.isTypeAcceptable();
     }
 
     /** Set the value of this term to the specified CPO element.
@@ -176,6 +178,7 @@ public class ArrayType implements InequalityTerm
         ArrayType dtype = (ArrayType) e;
         _dimensions = dtype._dimensions;
         _size = dtype._size;        
+	_type = dtype._type;
     }
 
  
@@ -188,12 +191,14 @@ public class ArrayType implements InequalityTerm
    /** 
      * An unspecified dimension type.
      */
-    public static final ArrayType BOTTOM = new ArrayType(-1, null);
+    public static final ArrayType BOTTOM = new ArrayType(-1, null, 
+							 new DataType());
     
     /**
      * A general dimension type.
      */
-    public static final ArrayType TOP = new ArrayType(-2, null);
+    public static final ArrayType TOP = new ArrayType(-2, null,
+						      new DataType));
 
     /** The number of dimensions of an object of this type.
      *  1 = 1D array, 2 = 2D array, etc.
@@ -205,10 +210,16 @@ public class ArrayType implements InequalityTerm
      */
     private int _size[];
     
+    /** The type of the objects contained in this array.
+     */
+    private Type _type;
+
     /** 
      * True if this type is a constant type.  False if this type is a
      * variable type.  This value is set at construction and cannot be changed.
      */
     private boolean _isSettable;
 }
+
+
 

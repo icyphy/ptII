@@ -60,12 +60,45 @@ public class ArrayTypeResolver implements TypeResolver
      *  does not fall on ArrayTypes.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
-        // FIXME should ensure that all the constraints act on 
-        // ArrayTypes.
+	LinkedList dataconstraints = new LinkedList();
+	LinkedList dimensionconstraints = new LinkedList();
+    
+	while(constraints.hasMoreElements()) {
+            Inequality constraint = (Inequality) constraints.nextElement();
+            InequalityTerm lesser = constraint.getLesserTerm();
+            InequalityTerm greater = constraint.getGreaterTerm();
+            if((lesser instanceof DataType) && (greater instanceof DataType)) {
+                dataconstraints.insertLast(constraint);
+            }
+            else if((lesser instanceof ArrayType) && 
+                    (greater instanceof ArrayType)) {
+                dimensionconstraints.insertLast(constraint);
+            }
+            else if((lesser instanceof Type) && 
+                    (greater instanceof Type)) {
+                Type lt = (Type) lesser;
+                Type gt = (Type) greater;
+                Inequality i1 = new Inequality(lt.getDataType(),
+                        gt.getDataType());
+                dataconstraints.insertLast(i1);
+                Inequality i2 = new Inequality(lt.getArrayType(), 
+                        gt.getArrayType());
+                dimensionconstraints.insertLast(i2);
+            }
+        }
+        
+        DataTypeResolver dataresolver = new DataTypeResolver();
+        Enumeration dataconflicts = 
+            dataresolver.resolveTypes(dataconstraints.elements());
 
-        LatticeTypeResolver resolver = 
-            new LatticeTypeResolver(ArrayType.getTypeLattice());
-        return resolver.resolveTypes(constraints);
+        LatticeTypeResolver dimensionresolver = new ArrayTypeResolver();
+        Enumeration dimensionconflicts = 
+            dimensionresolver.resolveTypes(dimensionconstraints.elements());
+
+        LinkedList conflicts = new LinkedList();
+        conflicts.appendElements(dataconflicts);
+        conflicts.appendElements(dimensionconflicts);
+        return conflicts.elements();
     }
 }
 
