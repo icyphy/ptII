@@ -32,6 +32,7 @@ package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
