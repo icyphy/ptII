@@ -73,8 +73,8 @@ public class PlotApplet extends JApplet {
     public String getAppletInfo() {
         return "PlotApplet " + PlotBox.PTPLOT_RELEASE +
             ": A data plotter.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
-            "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+            "By: Edward A. Lee and\n " +
+            "Christopher Hylands\n" +
             "($Id$)";
     }
 

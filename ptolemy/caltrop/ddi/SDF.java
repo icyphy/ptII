@@ -72,7 +72,7 @@ import caltrop.interpreter.environment.Environment;
    This plugin also adds attributes containing rate information to the
    ports of the actor.
 
-   @author Christopher Chang <cbc@eecs.berkeley.edu>
+   @author Christopher Chang 
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

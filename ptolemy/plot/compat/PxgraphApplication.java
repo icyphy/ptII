@@ -127,8 +127,8 @@ public class PxgraphApplication extends PlotApplication {
         JOptionPane.showMessageDialog(this,
                 "               pxgraph\n" +
                 "        A Java Plotting Tool\n\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
-                "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+                "By: Edward A. Lee and\n" +
+                "    Christopher Hylands\n" +
                 "Version " + PlotBox.PTPLOT_RELEASE +
                 ", Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +

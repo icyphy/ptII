@@ -52,7 +52,7 @@ public class PlotDemo extends PlotApplet {
      */
     public String getAppletInfo() {
         return "PlotDemo 2.0: Demo of Plot.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
+            "By: Edward A. Lee\n " +
             "($Id$)";
     }
 

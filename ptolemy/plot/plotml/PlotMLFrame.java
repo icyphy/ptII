@@ -111,8 +111,8 @@ public class PlotMLFrame extends PlotFrame {
     protected void _about() {
         JOptionPane.showMessageDialog(this,
                 "Ptolemy plot frame\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-                "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+                "By: Edward A. Lee\n" +
+                "and Christopher Hylands\n" +
                 "Version " + PlotBox.PTPLOT_RELEASE +
                 ", Build: $Id$"+
                 "For more information, see\n" +

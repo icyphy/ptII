@@ -39,7 +39,7 @@ import caltrop.interpreter.environment.Environment;
 /**
    The <tt>DDIFactory</tt> is used to create domain dependent plugins.
 
-   @author Christopher Chang <cbc@eecs.berkeley.edu>
+   @author Christopher Chang 
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

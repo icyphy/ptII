@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// AbstractDDI
 /**
-   @author Christopher Chang <cbc@eecs.berkeley.edu>
+   @author Christopher Chang 
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

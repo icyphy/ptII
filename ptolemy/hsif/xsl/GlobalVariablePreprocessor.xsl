@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
                                         
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (hyzheng)
+@AcceptedRating Red (cxh)
 	
 This file is the first prepropessor for the transformation of HSIF file into MoML file.
 

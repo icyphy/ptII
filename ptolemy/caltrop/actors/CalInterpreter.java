@@ -87,7 +87,7 @@ import caltrop.interpreter.environment.SingleClassEnvironment;
    <p> For further documentation on CAL, see the
    <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
 
-   @author J&#246;rn W. Janneck <jwj@acm.org> Christopher Chang <cbc@eecs.berkeley.edu>
+   @author J&#246;rn W. Janneck <jwj@acm.org> Christopher Chang 
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

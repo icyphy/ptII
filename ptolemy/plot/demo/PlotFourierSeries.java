@@ -53,7 +53,7 @@ public class PlotFourierSeries extends PlotApplet {
      */
     public String getAppletInfo() {
         return "PlotFourierSeries 1.1: Demo of PlotApplet.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
+            "By: Edward A. Lee\n " +
             "($Id$)";
     }
 

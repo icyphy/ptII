@@ -170,8 +170,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
     protected void _about() {
         JOptionPane.showMessageDialog(this,
                 "EditablePlotMLApplication class\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu " +
-                "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+                "By: Edward A. Lee " +
+                "and Christopher Hylands\n" +
                 "Version " + PlotBox.PTPLOT_RELEASE +
                 ", Build: $Id$\n\n"+
                 "For more information, see\n" +
