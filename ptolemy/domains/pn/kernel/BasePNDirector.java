@@ -40,7 +40,8 @@ import ptolemy.domains.pn.kernel.event.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// BasePNDirector
@@ -197,7 +198,7 @@ public class BasePNDirector extends ProcessDirector {
      *  @param listener The PNProcessListener to add.
      */
     public void addProcessListener(PNProcessListener listener) {
-        _processlisteners.insertLast(listener);
+        _processlisteners.add(listener);
     }
 
     /** Clone the director into the specified workspace. The new object is
@@ -317,7 +318,7 @@ public class BasePNDirector extends ProcessDirector {
      *  @param listener The PNProcessListener to be removed.
      */
     public void removeProcessListener(PNProcessListener listener) {
-        _processlisteners.removeOneOf(listener);
+        _processlisteners.remove(listener);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -337,9 +338,9 @@ public class BasePNDirector extends ProcessDirector {
             PNProcessEvent event = new PNProcessEvent(actor,
                     PNProcessEvent.PROCESS_FINISHED,
 		    PNProcessEvent.FINISHED_PROPERLY);
-            Enumeration enum = _processlisteners.elements();
-            while (enum.hasMoreElements()) {
-                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+            Iterator enum = _processlisteners.iterator();
+            while (enum.hasNext()) {
+                PNProcessListener lis = (PNProcessListener)enum.next();
                 lis.processFinished(event);
             }
         }
@@ -393,9 +394,9 @@ public class BasePNDirector extends ProcessDirector {
     protected void _incrementLowestWriteCapacityPort() {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
-	Enumeration receivers = _writeblockedQueues.elements();
-	while (receivers.hasMoreElements()) {
-	    PNQueueReceiver queue = (PNQueueReceiver)receivers.nextElement();
+	Iterator receivers = _writeblockedQueues.iterator();
+	while (receivers.hasNext()) {
+	    PNQueueReceiver queue = (PNQueueReceiver)receivers.next();
 	    if (smallestCapacity == -1) {
 	        smallestCapacityQueue = queue;
 		smallestCapacity = queue.getCapacity();
@@ -465,9 +466,9 @@ public class BasePNDirector extends ProcessDirector {
             PNProcessEvent event = new PNProcessEvent(actor,
                     PNProcessEvent.PROCESS_BLOCKED,
                     PNProcessEvent.BLOCKED_ON_READ);
-            Enumeration enum = _processlisteners.elements();
-            while (enum.hasMoreElements()) {
-                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+            Iterator enum = _processlisteners.iterator();
+            while (enum.hasNext()) {
+                PNProcessListener lis = (PNProcessListener)enum.next();
                 lis.processStateChanged(event);
             }
         }
@@ -489,9 +490,9 @@ public class BasePNDirector extends ProcessDirector {
             Actor actor = receiver.getReadBlockedActor();
             PNProcessEvent event = new PNProcessEvent(actor,
                     PNProcessEvent.PROCESS_RUNNING);
-            Enumeration enum = _processlisteners.elements();
-            while (enum.hasMoreElements()) {
-                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+            Iterator enum = _processlisteners.iterator();
+            while (enum.hasNext()) {
+                PNProcessListener lis = (PNProcessListener)enum.next();
                 lis.processStateChanged(event);
             }
         }
@@ -510,16 +511,18 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfWriteBlock(PNQueueReceiver receiver) {
 	_writeBlockCount++;
-	_writeblockedQueues.insertFirst(receiver);
+        // FIXME: is add correct or should it have been addFirst
+        // used to be insertFirst
+	_writeblockedQueues.add(receiver);
         //Inform the listeners
         if (!_processlisteners.isEmpty()) {
             Actor actor = receiver.getWriteBlockedActor();
             PNProcessEvent event = new PNProcessEvent(actor,
                     PNProcessEvent.PROCESS_BLOCKED,
                     PNProcessEvent.BLOCKED_ON_WRITE);
-            Enumeration enum = _processlisteners.elements();
-            while (enum.hasMoreElements()) {
-                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+            Iterator enum = _processlisteners.iterator();
+            while (enum.hasNext()) {
+                PNProcessListener lis = (PNProcessListener)enum.next();
                 lis.processStateChanged(event);
             }
         }
@@ -540,14 +543,14 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfWriteUnblock(PNQueueReceiver queue) {
 	_writeBlockCount--;
-	_writeblockedQueues.removeOneOf(queue);
+	_writeblockedQueues.remove(queue);
         if (!_processlisteners.isEmpty()) {
             Actor actor = queue.getWriteBlockedActor();
             PNProcessEvent event = new PNProcessEvent(actor,
                     PNProcessEvent.PROCESS_RUNNING);
-            Enumeration enum = _processlisteners.elements();
-            while (enum.hasMoreElements()) {
-                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+            Iterator enum = _processlisteners.iterator();
+            while (enum.hasNext()) {
+                PNProcessListener lis = (PNProcessListener)enum.next();
                 lis.processStateChanged(event);
             }
         }

@@ -39,7 +39,6 @@ import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import java.util.Enumeration;
-import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector

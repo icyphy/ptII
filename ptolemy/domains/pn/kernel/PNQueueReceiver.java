@@ -37,7 +37,6 @@ import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 
-import collections.LinkedList;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////

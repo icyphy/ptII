@@ -31,8 +31,7 @@
 package ptolemy.domains.pn.kernel.test;
 
 import java.io.Serializable;
-import collections.LinkedList;
-import collections.CollectionEnumeration;
+
 import ptolemy.actor.*;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.*;

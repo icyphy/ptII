@@ -41,8 +41,6 @@ import ptolemy.data.expr.*;
 
 import java.util.Enumeration;
 
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 //// TimedPNDirector
 /**

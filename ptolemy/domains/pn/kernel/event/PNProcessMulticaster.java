@@ -32,7 +32,8 @@ package ptolemy.domains.pn.kernel.event;
 
 import ptolemy.kernel.event.ChangeRequest; // For Javadoc
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessMulticaster
@@ -58,7 +59,7 @@ public class PNProcessMulticaster implements PNProcessListener {
      * @param listener An object that listens to process state events
      */
     public void addProcessListener(PNProcessListener listener) {
-        _listeners.insertLast(listener);
+        _listeners.add(listener);
     }
 
     /** Return true if there are any listeners registered with the multicaster.
@@ -73,8 +74,9 @@ public class PNProcessMulticaster implements PNProcessListener {
      * @param event The PNProcessEvent
      */
     public void processFinished(PNProcessEvent event) {
-        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
-            ((PNProcessListener) e.nextElement()).processFinished(event);
+ 	Iterator e = _listeners.iterator();
+        while( e.hasNext() ) {
+            ((PNProcessListener) e.next()).processFinished(event);
         }
     }
 
@@ -83,8 +85,9 @@ public class PNProcessMulticaster implements PNProcessListener {
      * @param event. The PNProcessEvent
      */
     public void processStateChanged(PNProcessEvent event) {
-        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
-            ((PNProcessListener) e.nextElement()).processStateChanged(event);
+        Iterator e = _listeners.iterator();
+        while( e.hasNext() ) {
+            ((PNProcessListener)e.next()).processStateChanged(event);
         }
     }
 
@@ -97,7 +100,7 @@ public class PNProcessMulticaster implements PNProcessListener {
      * @param listener An object that listens to topology events
      */
     public void removeProcessListener(PNProcessListener listener) {
-        _listeners.removeOneOf(listener);
+        _listeners.remove(listener);
     }
 
     ///////////////////////////////////////////////////////////////////

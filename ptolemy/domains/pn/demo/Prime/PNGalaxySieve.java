@@ -32,8 +32,8 @@ import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
-import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNGalaxySieve
@@ -125,13 +125,13 @@ public class PNGalaxySieve extends AtomicActor {
                     newSieve.setParam("prime", Integer.toString(value));
 
 		    //relations = _output.linkedRelations();
-		    Enumeration rels = _output.linkedRelations();
-		    while (rels.hasMoreElements()) {
-			listofrels.insertLast(rels.nextElement());
+		    Iterator rels = _output.linkedRelationList().iterator();
+		    while (rels.hasNext()) {
+			listofrels.add(rels.next());
 		    }
-		    rels = listofrels.elements();
-		    while (rels.hasMoreElements()) {
-			Relation relation = (Relation)rels.nextElement();
+		    rels = listofrels.iterator();
+		    while (rels.hasNext()) {
+			Relation relation = (Relation)rels.next();
 			//listofrels.insertLast(relation);
 			//Disconnected
 			_output.unlink(relation);
