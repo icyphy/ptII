@@ -34,6 +34,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
+import ptolemy.data.expr.Parameter;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,10 +46,18 @@ import java.util.Set;
 method, it will cause MoMLParser to filter so that models from
 earlier releases will run in the current release.
 
-<p>This class will filter for actors that have had port name changes, and
-for classes with property where the class name has changed
+<p>This class handles the following changes:
+<menu>
+<li>Actors that have had port name changes.
+<li>Classes with property where the class name has changed.
+<li>Parameters that have a _location get _editorFactory added.
+<li>If an annotation is named annotation1, then _hideName is added/
+</menu>
 
-@author Christopher Hylands, Edward A. Lee
+These changes could be handled by separate filters, but we combine
+these filters for performance reasons.
+
+@author Christopher Hylands, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -128,7 +138,22 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                     //_currentlyProcessingActorWithPropertyClassChanges = false;
                     _newClass = null;
                 }
-            }
+            } else if (attributeValue.endsWith("annotation1")) {
+		// We found a line like
+		// <property name="13:0:0:annotation1"
+		//          class="ptolemy.kernel.util.Attribute">
+		_currentlyProcessingAnnotation = true;
+		// FIXME: can we remove _currentAnnotationFullName
+		// and just use _currentActorFullName?
+		_currentAnnotationFullName = container.getFullName()
+		    + "." + attributeValue;
+		_currentActorFullName = _currentAnnotationFullName;
+	    } else if (_currentlyProcessingAnnotation &&
+                    attributeValue.equals("_hideName")) {
+		// We are processing an annotation and it already
+		// has _hideName
+		_currentlyProcessingAnnotation = false;
+	    }
 	}
 
 	// The code below is more complicated than perhaps it
@@ -306,6 +331,14 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                     + "VisibleParameterEditorFactory\">"
                     + "</property>");
 
+	} else if ( _currentlyProcessingAnnotation
+                && container.getFullName()
+                .equals(_currentAnnotationFullName)) {
+	    _currentlyProcessingAnnotation = false;
+
+	    Parameter hideName = new Parameter(container, "_hideName");
+
+	    MoMLParser.setModified(true);
 	} else if (elementName.equals("entity")) {
             _reset();
         }
@@ -345,6 +378,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	_currentlyProcessingActorThatMayNeedAnEditorFactory =
 	    false;
 	_currentlyProcessingActorThatMayNeedAnIcon = false;
+	_currentlyProcessingAnnotation = false;
 	_doneProcessingActorWithPortNameChanges  = true;
 	_currentActorFullName = null;
 	_currentAttributeHasLocation = false;
@@ -377,6 +411,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // The the full name of the actor we are currently processing
     private static String _currentActorFullName;
 
+    // The the full name of the annotation we are currently processing
+    private static String _currentAnnotationFullName;
+
     // Set to true if the current attribute has a _location attribute.
     // This variable is used to determine whether we need to add  a
     // _editorFactory.
@@ -400,6 +437,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // Set to true if we are currently processing an actor that may
     // need _icon added, set to false when we are done.
     private boolean _currentlyProcessingActorThatMayNeedAnIcon = false;
+
+    // True if we are currently processing an annotation.
+    private boolean _currentlyProcessingAnnotation = false;
 
     // Set to true if we are done processing an actor.
     private static boolean _doneProcessingActorWithPortNameChanges = false;

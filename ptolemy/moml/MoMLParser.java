@@ -1662,6 +1662,7 @@ public class MoMLParser extends HandlerBase {
             if (ex instanceof XmlException) {
                 throw (XmlException)ex;
             } else {
+		ex.printStackTrace();
                 throw new XmlException(
                         "XML element \"" + elementName
                         + "\" triggers exception:\n  "
