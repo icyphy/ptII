@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test gui actors
+# Makefile for the Java classes used to test gui framwork
 #
 # @Authors: Christopher Hylands
 #
@@ -61,13 +61,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) \
-	Display.xml \
-	FileWriter.xml \
-	HistogramPlotter.xml \
-	test.xml \
-	test2.xml \
-	test3.xml \
-	test4.xml
+	test.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
