@@ -110,7 +110,7 @@ public class GraphException extends RuntimeException {
      *  @return A text string dump of the weight and graph.
      */
     static public String weightDump(Object weight, Graph graph) {
-        return _elementDump(weight, graph, new String("weight"));
+        return _elementDump(weight, graph, "weight");
     }
 
     ///////////////////////////////////////////////////////////////////
