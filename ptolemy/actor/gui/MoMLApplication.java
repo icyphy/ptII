@@ -73,12 +73,17 @@ import ptolemy.util.StringUtilities;
    all subsequent files will be read by delegating to the Configuration,
    invoking its openModel() method.  A command-line file is assumed to be
    a MoML file or a file that can be opened by the specified configuration.
+   <p>For example, this command uses the HyVisual configuration to 
+   open a model:
+   <pre>
+$PTII/bin/moml $PTII/ptolemy/configs/hyvisual/configuration.xml $PTII/ptolemy/domains/ct/demo/StickyMasses/StickyMasses.xml
+   </pre>
    <p>
    If a Ptolemy model is instantiated on the command line, either
    by giving a MoML file or a -class argument, then parameters of that
    model can be set on the command line.  The syntax is:
    <pre>
-   ptolemy <i>modelFile.xml</i> -<i>parameterName</i> <i>value</i>
+   $PTII/bin/ptolemy <i>modelFile.xml</i> -<i>parameterName</i> <i>value</i>
    </pre>
    where <i>parameterName</i> is the name of a parameter relative to
    the top level of a model or the director of a model.  For instance,
@@ -87,7 +92,7 @@ import ptolemy.util.StringUtilities;
    parameter named <code>a</code>, and <code>y</code> contains a
    parameter named <code>b</code>, then:
    <pre>
-   ptolemy foo.xml -a 5 -y.b 10
+   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10
    </pre>
    would set the values of the two parameters.
 
@@ -95,9 +100,9 @@ import ptolemy.util.StringUtilities;
    parameter named <code>c</code> to the string <code>"bar"</code> it
    might be necessary to do something like:
    <pre>
-   ptolemy foo.xml -a 5 -y.b 10 -c \\\"bar\\\"
+   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c \\\"bar\\\"
    </pre>
-   The reason the backslashes are necessary is because <code>ptolemy</code>
+   The reason the backslashes are necessary is because <code>moml</code>
    is a shell script which tends to strip off the double quotes.
 
    <p>
@@ -531,6 +536,9 @@ public class MoMLApplication implements ExecutionListener {
             ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
             File[] configurationDirectories = configurationDirectory.listFiles(filter);
 
+            System.out.println("MoMLApplication: " + configurationURI);
+
+
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
                         + "specify alternative configurations:\n");
@@ -650,6 +658,7 @@ public class MoMLApplication implements ExecutionListener {
                 // Create the class.
                 Class newClass = Class.forName(arg);
 
+                System.out.println("MoMLApplication: Class: " + newClass);
                 // Instantiate the specified class in a new workspace.
                 Workspace workspace = new Workspace();
 
@@ -664,8 +673,10 @@ public class MoMLApplication implements ExecutionListener {
 
                 NamedObj newModel = (NamedObj) constructor.newInstance(args);
 
+                System.out.println("MoMLApplication: newModel: " + newModel);
                 // If there is a configuration, then create an effigy
                 // for the class, and enter it in the directory.
+                System.out.println("MoMLApplication: _configuration: " + _configuration);
                 if (_configuration != null) {
                     // Create an effigy for the model.
                     PtolemyEffigy effigy = new PtolemyEffigy(_configuration
@@ -675,10 +686,14 @@ public class MoMLApplication implements ExecutionListener {
                     ModelDirectory directory = (ModelDirectory) _configuration
                         .getEntity("directory");
 
-                    effigy.setName(arg);
+                    
+effigy.setName(arg);
+                    effigy.setName("foo");
 
+                    System.out.println("MoMLApplication: directory: " + directory);
                     if (directory != null) {
-                        if (directory.getEntity(arg) != null) {
+                        //if (directory.getEntity(arg) != null) {
+                        if (directory.getEntity("foo") != null) {
                             // Name is already taken.
                             int count = 2;
                             String newName = arg + " " + count;
