@@ -136,7 +136,8 @@ set clk [java::new ptolemy.domains.de.lib.DEClock $sys ADClock 1 1]
 set deplot [java::new ptolemy.domains.de.lib.DEPlot $sys DEPLOT]
 set mav [java::new {ptolemy.domains.de.lib.DEFIRfilter \
 	ptolemy.actor.TypedCompositeActor String String}\
-	$sys MAV [list 0.5 0.3 0.2]]
+	$sys MAV [list 0.1 0.1 0.1 0.1 0.1 0.05 0.05 0.05 0.05 0.05\
+	0.05 0.05 0.05 0.05 0.05]]
 # DE ports
 set firin [$fir getPort input]
 set firout [$fir getPort output]
@@ -155,12 +156,13 @@ set deplotin [$deplot getPort input]
 set dr1 [$sys connect $subout $firin DR1]
 set dr2 [$sys connect $firout $quanin DR2]
 set dr3 [$sys connect $quanout $subin DR3]
-$deplotin link $dr3 
+
 set dr4 [$sys connect $clkout $demand DR4]
 $reset link $dr4
-$accin link $dr3
-set dr5 [$sys connect $accout $mavin DR5]
-set dr6 [$sys connect $deplotin $mavout DR6]
+$mavin link $dr3
+set dr5 [$sys connect $accin $mavout DR5]
+set dr6 [$sys connect $deplotin $accout DR6]
+$deplotin link $dr3 
 
 ############################################################
 ### DEParameters

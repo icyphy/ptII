@@ -1,0 +1,68 @@
+<!---@version $Id$------>
+<!---@author Jie Liu------>
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <TITLE>CT domain demo- Micro Accelerometer with Digitial Feedback Control</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FAF0E6" LINK="#0000FF" VLINK="#800080">
+
+<CENTER>
+<H1>
+Ptolemy II CT Domain demo - <I> Micro Accelerometer with Digitial Feedback Control</I></H1></CENTER>
+
+<HR>
+<H1>Introduction:</H1>
+Micro accelerometers are MEMS devices that use beams, gaps, and electrostatics 
+to measure acceleration. Beams and anchors, separating by gaps, form parallel 
+plate capacitors. When the device is accelerated in the sensing director, the 
+displacement of the beams causes the change of the gap sizes, which further 
+causes the change of the capacity. By measuring the change of capacity (using
+ the Winston capacitor bridge), the accelerate can be obtained accurately. 
+Feedback can be applied to the beams by charging the capacitors. Using 
+feedback can reduce the sensitivity to process variations, 
+eliminate mechanical resonances, and increase sensor bandwidth, selectivity 
+and dynamic range.
+<P>
+Sigma-delta modulation, also called the pulse density modulation or the 
+bang-bang control, is a digital feedback technique, which gets the A/D 
+conversion functionality "for free". The figure below shows the conceptual
+diagram of system. The central part of the digital feedback is an one
+bit quantizer.
+<P>
+<CENTER><img src="SigmaDelta.gif"></CENTER>
+<P>
+<H1>Implementation:</H1>
+We implemented the system as Mark Alan Lemkin designed in [3]. As shown in
+the Figure below, the second order CT subsystem is used to model the beam.
+ The voltage on the beam-gap capacitor is sampled every T seconds (much
+ faster than the required output of the digital signal),  then filtered by
+ a lead compensator (FIR filter), and fed to an one-bit quantizer. 
+The outputs of the quantizer are converted to force and fed back to the
+ beams. The outputs are also counted and averaged every N*T seconds to 
+produce the digital output. In our example, the external acceleration 
+is a Sin wave. The TclBlend code is<A HREF="SigmaDelta.tcl"> here</A>
+<P >
+<CENTER><img src="SigmaDelta2.gif"></CENTER>
+<P>
+<H1>Simulation</H1>
+To run the simulation (in the ptolemy cluster), involke tyjtclsh<BR>
+<CODE>ptII/ptolemy/domains/ct/demo> tyjtclsh<BR>
+jtclsh% source SigmaDelta.tcl<BR></CODE>
+<H1>Result</H1>
+The result should be like:<BR>
+<B>CTPlot:</B>
+<p>
+<CENTER><img src="SDCTPlot.gif"></CENTER>
+<P>
+<B>DEPlot:</B>
+<p>
+<CENTER><img src="SDDEPlot.gif"></CENTER>
+<P>
+<HR>
+<CENTER>UNIVERSITY OF CALIFORNIA</CENTER>
+
+<CENTER>Department of Electrical Engineering and Computer Sciences</CENTER>
+
+</BODY>
+</HTML>
