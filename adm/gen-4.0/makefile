@@ -175,7 +175,7 @@ $(PTIIDIST):
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
 	@echo "Regenerate the documentation with gr and javasound"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
+	(cd $(PTIIDIST)/doc; $(MAKE) -k JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
