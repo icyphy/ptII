@@ -135,7 +135,7 @@ do
 			            if (n[1] == "code" \
 				        && f[2] ~ /.class"/ ) {
                                         # Replace .class" with "
-				        f[2] = substr(f[2], 0, length(f[2])- 8) "\""
+				        f[2] = substr(f[2], 0, length(f[2])- 7) "\""
 				    }				
 				    sawAppletParam = 1
 		                    appletParams[appletParamName] = f[2]
