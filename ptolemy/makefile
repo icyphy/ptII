@@ -29,7 +29,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = corejava domains exceptions kernel pitcl 
+# doc directory should be last so we get files from version control before
+# updating the docs
+DIRS = corejava domains exceptions kernel pitcl doc
 
 # Root of Tycho directory
 ROOT =		../..
