@@ -123,7 +123,7 @@ public class CachedMethod {
         if (!_methodName.equals(((CachedMethod)arg)._methodName))
             return false;
         if ((_type & (FUNCTION+METHOD)) !=
-            (((CachedMethod)arg)._type & (FUNCTION+METHOD)))
+                (((CachedMethod)arg)._type & (FUNCTION+METHOD)))
             return false;
         if (_argTypes.length != ((CachedMethod)arg)._argTypes.length)
             return false;
@@ -144,11 +144,11 @@ public class CachedMethod {
      * followed by checking the first argument's class, followed by
      * checking all the function classes registered with PtParser. */
     public static Object findAndRunMethod
-        (String methodName,
-         Class[] argTypes,
-         Object[] argValues,
-         int type
-         ) throws IllegalActionException {
+    (String methodName,
+            Class[] argTypes,
+            Object[] argValues,
+            int type
+     ) throws IllegalActionException {
 
 	// First try to find the method in the cache...
 
@@ -179,7 +179,7 @@ public class CachedMethod {
                         ex.getTargetException().printStackTrace();
                         throw new IllegalActionException
                             ("Error invoking function " + methodName + "\n" +
-                             ex.getTargetException().getMessage());
+                                    ex.getTargetException().getMessage());
                     } catch (Exception ex)  {
                         throw new IllegalActionException(ex.getMessage());
                     }
@@ -212,7 +212,7 @@ public class CachedMethod {
                         // exception.getTargetException().printStackTrace();
                         throw new IllegalActionException
                             ("Error invoking function " + methodName + "\n" +
-                             exception.getTargetException().getMessage());
+                                    exception.getTargetException().getMessage());
                     } catch (Exception exception)  {
                         throw new IllegalActionException
                             (null, exception, "Error invoking function " +
@@ -240,7 +240,7 @@ public class CachedMethod {
                         ex.getTargetException().printStackTrace();
                         throw new IllegalActionException
                             ("Error invoking function " + methodName + "\n" +
-                             ex.getTargetException().getMessage());
+                                    ex.getTargetException().getMessage());
                     } catch (Exception ex)  {
                         throw new IllegalActionException(ex.getMessage());
                     }
@@ -278,18 +278,18 @@ public class CachedMethod {
                             exception.getTargetException().printStackTrace();
                             throw new IllegalActionException
                                 ("Error invoking function " + methodName + "\n" +
-                                 exception.getTargetException().getMessage());
+                                        exception.getTargetException().getMessage());
                         } catch (Exception exception)  {
                             throw new IllegalActionException
                                 (null, exception, "Error invoking function " +
-                                 methodName + " on " + nextClass);
+                                        methodName + " on " + nextClass);
                         }
                     } catch (InvocationTargetException ex) {
                         // get the exception produced by the invoked function
                         ex.getTargetException().printStackTrace();
                         throw new IllegalActionException
                             ("Error invoking function " + methodName + "\n" +
-                             ex.getTargetException().getMessage());
+                                    ex.getTargetException().getMessage());
                     } catch (Exception ex)  {
                         throw new IllegalActionException(ex.getMessage());
                     }
@@ -409,7 +409,7 @@ public class CachedMethod {
     /** Return the CachedMethod that corresponds to methodName and argTypes if it
         had been cached previously. */
     public static CachedMethod get(String methodName, Class[] argTypes,
-                                   int type) {
+            int type) {
         CachedMethod key = new CachedMethod(methodName, argTypes, null, type);
         CachedMethod method = (CachedMethod)_cachedMethods.get(key);
         return method;
@@ -429,7 +429,7 @@ public class CachedMethod {
     // to define.  So it simply returns the first match.
     // It returns null if there is no match.
     protected static Method polymorphicGetMethod
-        (Class library, String methodName, Class[] argTypes) {
+    (Class library, String methodName, Class[] argTypes) {
         // NOTE: The Java docs do not explain the difference between
         // getMethods() and getDeclaredMethods(), so I'm guessing here...
         Method[] methods = library.getDeclaredMethods();

@@ -339,8 +339,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             if (retval == null) {
                 throw new IllegalActionException
                     ("FunctionNode: result of function " + _funcName +
-                     " is "+result.getClass()+" and is not supported by"+
-                     " FunctionNode. See the java class documentation."
+                            " is "+result.getClass()+" and is not supported by"+
+                            " FunctionNode. See the java class documentation."
                      );
             }
             if (debug) System.out.println("result:  "+retval);
@@ -366,7 +366,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
     protected static Object[] convertTokenToJavaType
-        (ptolemy.data.Token token) {
+    (ptolemy.data.Token token) {
         Object[] retval = new Object[2];
         if (token instanceof DoubleToken) {
             // Note: Java makes a distinction between the class objects
@@ -415,64 +415,64 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             // was a Token.getValue() that would return the
             // token element value in a polymorphic way...
             if (((ArrayToken)token).getElement(0)
-                instanceof FixToken) {
+                    instanceof FixToken) {
                 FixPoint[] array = new FixPoint
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((FixToken)((ArrayToken)token)
-                                .getElement(j)).fixValue();
+                            .getElement(j)).fixValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                       instanceof IntToken) {
+                    instanceof IntToken) {
                 int[] array = new int[((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((IntToken)((ArrayToken)token)
-                                .getElement(j)).intValue();
+                            .getElement(j)).intValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                       instanceof LongToken) {
+                    instanceof LongToken) {
                 long[] array = new long[((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((LongToken)((ArrayToken)token)
-                                .getElement(j)).longValue();
+                            .getElement(j)).longValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                       instanceof DoubleToken) {
+                    instanceof DoubleToken) {
                 double[] array = new double
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((DoubleToken)((ArrayToken)token)
-                                .getElement(j)).doubleValue();
+                            .getElement(j)).doubleValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                       instanceof ComplexToken) {
+                    instanceof ComplexToken) {
                 Complex[] array = new Complex
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((ComplexToken)((ArrayToken)token)
-                                .getElement(j)).complexValue();
+                            .getElement(j)).complexValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                       instanceof StringToken) {
+                    instanceof StringToken) {
                 String[] array = new String
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((StringToken)((ArrayToken)token)
-                                .getElement(j)).stringValue();
+                            .getElement(j)).stringValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                       instanceof BooleanToken) {
+                    instanceof BooleanToken) {
                 boolean[] array = new boolean
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((BooleanToken)((ArrayToken)token)
-                                .getElement(j)).booleanValue();
+                            .getElement(j)).booleanValue();
                 }
                 retval[0] = array;
             }
@@ -486,7 +486,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a java object to its corresponding Token.
     protected static ptolemy.data.Token convertJavaTypeToToken(Object object)
-        throws ptolemy.kernel.util.IllegalActionException {
+            throws ptolemy.kernel.util.IllegalActionException {
         ptolemy.data.Token retval = null;
         if (object instanceof ptolemy.data.Token) {
             retval = (ptolemy.data.Token)object;

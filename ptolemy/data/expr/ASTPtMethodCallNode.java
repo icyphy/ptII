@@ -179,7 +179,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                 try {
                     result = CachedMethod.findAndRunMethod
                         (_methodName, argTypes, argValues,
-                         CachedMethod.METHOD);
+                                CachedMethod.METHOD);
                 } catch (IllegalActionException ex) {
                     if (sb == null) sb = new StringBuffer();
                     sb.append("Failed: "+ex.toString());
@@ -194,7 +194,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
             for (int i = 1; i < num; i++) {
                 ptolemy.data.Token child = _childTokens[i];
                 Object[] javaArg =
-                     ASTPtFunctionNode.convertTokenToJavaType(child);
+                    ASTPtFunctionNode.convertTokenToJavaType(child);
                 argValues[i] = javaArg[0];
                 argTypes[i] = (Class)javaArg[1];
             }
@@ -235,9 +235,9 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
             if (retval == null) {
                 throw new IllegalActionException
                     ("Result of method call is not of a supported type: "
-                     + result.getClass().toString() + " - supported types "
-                     + "are: boolean, complex, fixpoint, double, int, "
-                     + "long, String, and ptolemy.data.Token.");
+                            + result.getClass().toString() + " - supported types "
+                            + "are: boolean, complex, fixpoint, double, int, "
+                            + "long, String, and ptolemy.data.Token.");
             }
             return retval;
         }
@@ -253,6 +253,6 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
 	}
 	throw new IllegalActionException
             ("No matching method " + _methodName
-             + "( " + sb + " ).");
+                    + "( " + sb + " ).");
     }
 }
