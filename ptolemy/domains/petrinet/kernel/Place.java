@@ -129,14 +129,14 @@ public class Place extends Transformer {
 
     /** decreaseTemporaryMarking() is to decrease the
      *  _temporaryMarking by i.
-     *  @param i the number to be decreased for the Temporarymarking
+     *  @param i the number to be decreased for the TemporaryMarking
      *   in the place.
      */
     public void decreaseTemporaryMarking(int i) {
         _temporaryMarking = _temporaryMarking - i;
     }
 
-    /**  @param i the number to be increased for the Temporarymarking
+    /**  @param i the number to be increased for the TemporaryMarking
      *   in the place.
      */
     public void increaseTemporaryMarking(int i) {
@@ -144,7 +144,7 @@ public class Place extends Transformer {
     }
 
     /** setTemporaryMarking() is to set the _temporaryMarking to i
-     *  @param i set the Temporarymarking of the place to i.
+     *  @param i set the TemporaryMarking of the place to i.
      */
     public void setTemporaryMarking(int i) {
         _temporaryMarking = i;

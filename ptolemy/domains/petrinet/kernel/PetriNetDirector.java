@@ -227,7 +227,7 @@ public class PetriNetDirector extends Director {
      *  It is assumed that the place is connected to transitions or ports
      *  and transitions are connected to places or ports. no action is
      *  performed to verify this.
-     *  @param transition Transiton to be tested to be ready or not.
+     *  @param transition Transition to be tested to be ready or not.
      *  @return true or false The tested transition is ready to fire or not.
      *  @exception IllegalActionException If the method
      *  "_getWeightNumber" throws exceptions.
