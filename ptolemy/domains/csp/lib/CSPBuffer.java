@@ -89,10 +89,10 @@ public class CSPBuffer extends CSPActor {
             while (continueCDO) {
                 // step 1
                 guard = (_size < depth);
-                branches[0] = new ConditionalReceive(guard, input, 0, 0);
+                branches[0] = new ConditionalReceive(guard, _input, 0, 0);
 
                 guard = (_size > 0);
-                branches[1] = new ConditionalSend(guard, output, 0, 1,
+                branches[1] = new ConditionalSend(guard, _output, 0, 1,
                         _buffer[_readFrom]);
 
                 // step 2
