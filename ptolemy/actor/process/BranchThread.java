@@ -49,24 +49,12 @@ public class BranchThread extends PtolemyThread {
      */
     public BranchThread( Branch branch ) {
         super();
-    	_branch = branch;
+	_branch = branch;
     } 
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
-    public void continueThread() {
-    	_stopRequest = false;
-    }
-     */
-    
-    /** 
-    public void endThread() {
-    	_continue = false;
-    }
-     */
-    
     /** 
      */
     public Branch getBranch() {
@@ -76,40 +64,16 @@ public class BranchThread extends PtolemyThread {
     /**
      */
     public void run() {
-        try {
-            while( _branch.isActive() ) {
-                _branch.transferTokens();
-
-                while( _branch.isStopped() && _branch.isActive() ) {
-                    synchronized(this) {
-                        wait();
-                    }
-                }
-            }
-        } catch( InterruptedException e ) {
-        }
-    } 
-
-    /**
-     */
-    public void restart() {
-	synchronized(this) {
-	    _branch.setStopped(false);
-	    notifyAll();
+	while( _branch.isActive() ) {
+	    while( _branch.isIterationOver() ) {
+		_branch.transferTokens();
+	    }
 	}
     } 
 
-    /** 
-     */
-    public void stopThread() {
-    	_stopRequest = true;
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
     private Branch _branch;
-    private boolean _continue = true;
-    private boolean _stopRequest = false;
 
 }

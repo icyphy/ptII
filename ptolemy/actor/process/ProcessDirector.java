@@ -198,6 +198,7 @@ public class ProcessDirector extends Director {
             }
         }
 
+	/*
 	// Instantiate Input/Output Branch Controllers
 	if( container != null ) {
             // Use the local director to transfer inputs.
@@ -223,6 +224,7 @@ public class ProcessDirector extends Director {
 	    }
 
 	}
+	*/
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.

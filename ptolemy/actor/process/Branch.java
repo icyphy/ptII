@@ -38,6 +38,29 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Branch
 /**
+A Branch serves as a proxy for a BranchController by getting or
+putting tokens in to the BoundaryReceiver to which it is assigned.
+The execution of a Branch is controlled by a BranchController in
+that a BranchController can deny a Branch permission to get or
+put data in the receiver. 
+
+An iteration of a Branch lasts until the BranchController notifies
+the Branch that the current iteration is done. Such notification 
+occurs via a TerminateBranchException that is thrown as soon as a
+Branch determines that isIterationOver() returns true. Until an
+iteration is over, a Branch will indefinitely attempt to get and
+put data to the receivers it controls. This may result in the
+Branch blocking on a read or write, only to be awakened by a
+TerminateBranchException.
+
+Once an iteration has ended, a Branch will immediately begin a new
+iteration unless isActive() returns false. The method isActive()
+will return true for the duration of the Branch's life. If 
+isActive() returns false, then isIterationOver() will return true.
+Once isActive() returns false, then the Branch will die, as will
+the thread (BranchThread) controlling the Branch, and the Branch
+reference should be set to null.
+
 
 @author John S. Davis II
 @version $Id$
@@ -134,10 +157,10 @@ public class Branch {
     }
 
     /**
-     */
     public boolean isStopped() {
         return _stopped;
     }
+     */
 
     /** Register that the receiver controlled by this branch
      *  is blocked.
@@ -163,8 +186,22 @@ public class Branch {
 	_rcvrBlocked = false;
 	_completedEngagements = 0;
 	_currentlyEngaged = false;
-	_stopped = false;
-	_active = true;
+	endIteration(true);
+    }
+
+    /**
+     */
+    public boolean isIterationOver() {
+	if( !isActive() ) {
+	    return false;
+	}
+	return _isIterationOver;
+    }
+
+    /**
+     */
+    public void endIteration(boolean endIteration) {
+	_isIterationOver = endIteration;
     }
 
     /** 
@@ -172,18 +209,13 @@ public class Branch {
      */
     public void transferTokens() {
         try {
-	    beginEngagement();
+	    // beginEngagement();
             Token token = _prodRcvr.get(this);
             _consRcvr.put(token, this);
-	    completeEngagement();
+	    // completeEngagement();
         } catch( TerminateBranchException e ) {
-	    registerRcvrUnBlocked();
-	    if( isActive() ) {
-		setStopped(true);
-		_controller._branchBlocked();
-	    }
-            // Register unblocked
-	    // Set stopped (if active)
+	    // Iteration is over
+	    _reset();
             return;
         }
     }
@@ -202,10 +234,10 @@ public class Branch {
     }
 
     /** 
-     */
     protected void setStopped(boolean value) {
         _stopped = value;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
@@ -228,6 +260,7 @@ public class Branch {
     private boolean _rcvrBlocked = false;
     private int _completedEngagements = 0;
     private boolean _currentlyEngaged = false;
-    private boolean _stopped = false;
+    // private boolean _stopped = false;
+    private boolean _isIterationOver = false;
 
 }

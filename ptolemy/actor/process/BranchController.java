@@ -47,6 +47,26 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// BranchController
 /**
+A BranchController manages the execution of a set of Branches. The
+BranchController monitors whether the branches have deadlocked and
+whether the iteration of branch executions is over. 
+
+An iteration lasts until no branches are allowed additional communication.
+Based on the BranchController parameters, it is possible that the
+Branches will be allowed indefinite communication implying that 
+iterations will continue into perpetuity. 
+
+If all branches are deadlocked and the iteration is not over, the 
+controller will notify its director by calling the director's 
+_branchBlocked() method.
+
+The BranchController's method isActive() will return true for the 
+duration of the BranchController's life. If isActive() returns false, 
+then isIterationOver() will return true.
+Once isActive() returns false, then the BranchController will die, 
+as will all Branches that it controls, and the BranchController 
+reference should be set to null.
+
 
 @author John S. Davis II
 @version $Id$
@@ -119,6 +139,15 @@ public class BranchController implements Runnable {
             }
             return false;
         }
+    }
+
+    /**
+     */
+    public boolean isIterationOver() {
+	if( !isActive() ) {
+	    return true;
+	}
+	return areEngagementsComplete();
     }
 
     /**
@@ -323,12 +352,28 @@ public class BranchController implements Runnable {
     /**
      */
     public void run() {
-	_active = true;
-	activateBranches();
-
 	synchronized(this) {
 	    try {
+		activateBranches();
 		while( isActive() ) {
+		    while( !isIterationOver() ) {
+			wait();
+
+			if( isDeadlocked() && !isIterationOver() ) {
+			    while( isDeadlocked() && 
+				    !isIterationOver() ) {
+				_getDirector()._branchBlocked(this);
+				wait();
+			    }
+			    _getDirector()._branchUnBlocked(this);
+			}
+
+			if( isIterationOver() ) {
+			    activateBranches();
+			}
+		    }
+
+		    /*
 		    wait();
 
 		    if( isDeadlocked() ) {
@@ -342,6 +387,8 @@ public class BranchController implements Runnable {
 		    if( areEngagementsComplete() ) {
 			setActive(false);
 		    }
+		    */
+		    deactivateBranches();
 		}
 	    } catch( InterruptedException e ) {
 		// Do something
