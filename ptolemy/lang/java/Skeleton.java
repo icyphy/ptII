@@ -46,14 +46,13 @@ import ptolemy.lang.java.nodetypes.CompileUnitNode;
  *  @author Jeff Tsay
  */
 public class Skeleton {
-    public static void main(String[] args) {
-        int files = args.length;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-        if (files < 1) {
-            System.out.println("usage : ptolemy.lang.java.Skeleton " +
-                    "[-d] [-i] f1.java [f2.java ...]");
-            return;
-        }
+    public static void generateSkeletons(String[] args) {
+	// generateSkeletons() could be private, but we make it public
+	// so we can test it
+        int files = args.length;
 
         _parseArgs(args);
 
@@ -77,6 +76,9 @@ public class Skeleton {
                 if (_debug)
                     System.out.println("Eliminating Imports by calling " +
                             "StaticResolution()");
+		// FIXME: chicken and egg problem here, _elminateImports
+		// requires that we have access to the java.lang .jskel
+		// files
                 ast = StaticResolution.load(ast, 0);
             }
 
@@ -114,7 +116,23 @@ public class Skeleton {
         }
     }
 
-    protected static boolean _parseArg(String arg) {
+    /** If the number of args is less than 1 print a usage string, otherwise
+     *  generate skeleton files for the remaining arguments.
+     */
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("usage : ptolemy.lang.java.Skeleton " +
+                    "[-d] [-i] f1.java [f2.java ...]");
+            return;
+        }
+	generateSkeletons(args);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static boolean _parseArg(String arg) {
         _fileStart++;
         if (arg.equals("-d")) {
             _debug = true;
@@ -128,7 +146,7 @@ public class Skeleton {
         return true; // more options possible
     }
 
-    protected static void _parseArgs(String[] args) {
+    private static void _parseArgs(String[] args) {
         int i = 0;
         int length = args.length;
         boolean moreOptions;
@@ -139,16 +157,16 @@ public class Skeleton {
         } while (moreOptions && (i < length));
     }
 
-    /** The index at which the first file to skeletonize is found in
-     *  the arguments array.
-     */
-    protected static int _fileStart = 0;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    protected static boolean _debug = false;
+    // The index at which the first file to skeletonize is found in
+    // the arguments array.
+    private static int _fileStart = 0;
 
-    /** True if the user wants to eliminate unnecessary import statements
-     *  in the skeleton output file. This takes a much longer time.
-     */
-    protected static boolean _eliminateImports = false;
+    private static boolean _debug = false;
 
+    // True if the user wants to eliminate unnecessary import statements
+    // in the skeleton output file. This takes a much longer time.
+    private static boolean _eliminateImports = false;
 }
