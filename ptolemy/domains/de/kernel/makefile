@@ -56,11 +56,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DEActor.java \
-	DECQDirector.java \
+	DECQEventQueue.java \
 	DEDirector.java \
+	DEEvent.java \
+	DEEventQueue.java \
+	DEEventTag.java \
 	DEIOPort.java \
 	DEReceiver.java \
-	DESortKey.java \
 	DEThreadActor.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -72,8 +74,7 @@ MISC_FILES =	 $(DIRS) doc #test demo
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'DECQDirector$$DECQComparator.class' \
-	'DECQDirector$$DEEvent.class'
+	'DECQEventQueue$$DECQComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

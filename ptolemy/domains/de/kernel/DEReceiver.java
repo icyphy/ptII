@@ -232,6 +232,8 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+
+    
     /** Return true if this receiver is inside an output port of an opaque
      *  composite actor (a wormhole). Calling the put() method on this
      *  kind of receiver will not result in an event being put into the
@@ -242,7 +244,8 @@ public class DEReceiver implements Receiver {
      *  @return True if above condition is satisfied, false otherwise.
      *
      */
-    protected boolean _isOCAOutput() {
+    /*
+    protected boolean _isInsideReceiver() {
 
         // FIXME: try to cache the result of this operation, since it's
         // called so many times.
@@ -264,6 +267,7 @@ public class DEReceiver implements Receiver {
         return true;
 
     }
+    */
 
     /** Return true if pending token is allowed in this receiver by the
      *  director. Otherwise, return false.

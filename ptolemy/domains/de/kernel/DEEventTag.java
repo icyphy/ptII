@@ -29,34 +29,33 @@ package ptolemy.domains.de.kernel;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// DESortKey
-/** An event in Discrete Event domain is modeled as an instance of Token and
- *  an instance of DESortKey. DESortKey is an aggregation of time stamp
- *  (double) and depth (long)
+//// DEEventTag
+/** Events in the Ptolemy II DE domain are associated with tags. The tags
+ *  define an ordering relation between events. This class implements the 
+ *  tag associated with each event. A DE event tag is an aggregation of 
+ *  time stamp and receiver depth.
  *  <p>
- *  In a particular implementation of the global event queue, namely
- *  calendar queue, methods of the DECQDirector$DECQComparator class are
- *  used to perform the sorting and arranging of events in the calendar queue.
- *  <p>
+ *  A class that implements the DEEventQueue interface implements how tags
+ *  are compared with each other and thus performs the sorting of events.
  *
  *  @author Lukito Muliadi
  *  @version $Id$
  *  @see DECQComparator
  */
-public class DESortKey {
+public class DEEventTag {
 
-    /** Construct a DESortKey object with the given time stamp and receiver
+    /** Construct a DEEventTag object with the given time stamp and receiver
      *  depth. Time stamp is a double quantity indicating the time when
      *  the event takes place. Receiver depth is a long quantity
      *  indicating the 'topological' depth of the IOport containing the
      *  receiver of the event. Receiver depths are useful for scheduling
      *  simultaneous events.
      *
-     * @param timeStamp the time when the event occurs.
-     * @param receiverDepth 'topological' depth of the receiving receiver.
+     * @param timeStamp The time when the event occurs.
+     * @param receiverDepth The topological depth of the destination receiver.
      *
      */
-    public DESortKey(double timeStamp, long receiverDepth) {
+    public DEEventTag(double timeStamp, long receiverDepth) {
         _timeStamp = timeStamp;
         _receiverDepth = receiverDepth;
     }
@@ -72,9 +71,9 @@ public class DESortKey {
         return _timeStamp;
     }
 
-    /** Return the receiver-depth field of this sort key.
+    /** Return the receiver depth field of this sort key.
      *
-     * @return The receiver-depth field.
+     * @return The receiver depth field.
      */
     public long receiverDepth() {
         return _receiverDepth;
@@ -86,9 +85,7 @@ public class DESortKey {
 
     // _timeStamp The time stamp of the event.
     private double _timeStamp;
-    // _receiverDepth The depth of the receiver receiving the event.
+    // _receiverDepth The depth of the destination receiver.
     private long _receiverDepth;
 
 }
-
-
