@@ -65,7 +65,8 @@ models.
 */
 public class ODFActor extends TypedAtomicActor {
 
-    /** Construct an ODFActor with no container and no name.
+    /** Construct an ODFActor with no container and a name that
+     *  is an empty.
      */
     public ODFActor() {
         super();
@@ -103,14 +104,16 @@ public class ODFActor extends TypedAtomicActor {
      * @return The current time of this ODFActor.
      */
     public double getCurrentTime() {
-	/*
 	Thread thread = Thread.currentThread();
-	TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
-	*/
+	if( thread instanceof ODFThread ) {
+	    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	    _currentTime = timeKeeper.getCurrentTime();
+	}
+
+	/*
 	if( _timeKeeper != null ) {
 	    _currentTime = _timeKeeper.getCurrentTime();
 	}
-	/*
 	if( thread instanceof ODFThread ) {
 	    _currentTime = ((ODFThread)thread).getCurrentTime();
             return _currentTime;
@@ -130,7 +133,7 @@ public class ODFActor extends TypedAtomicActor {
     }
 
     /** Return a non-NullToken from the receiver that has the minimum,
-     *  nonegative rcvrTime of all receivers contained by this actor.
+     *  non-negative rcvrTime of all receivers contained by this actor.
      *  If there exists a set of multiple receivers that share a common
      *  minimum rcvrTime, then return the token contained by the highest
      *  priority receiver within this set. If this actor contains no
@@ -152,10 +155,10 @@ public class ODFActor extends TypedAtomicActor {
     /** Return the TimeKeeper of this actor. If this actor does 
      *  not contain any receivers, then return null.
      * @return TimeKeeper The TimeKeeper of this actor.
-     */
     public TimeKeeper getTimeKeeper() {
 	return _timeKeeper;
     }
+     */
 
     /** Set the TimeKeeper of this actor to be equivalent to the 
      *  TimeKeeper of the receivers that this actor contains. If
@@ -163,7 +166,6 @@ public class ODFActor extends TypedAtomicActor {
      *  to be null.
      * @exception IllegalActionException If there is an error 
      *  while retrieving the receivers contained by this actor.
-     */
     public void initialize() throws IllegalActionException {
 	Enumeration enum = inputPorts();
 	ODFReceiver rcvr = null;
@@ -183,6 +185,7 @@ public class ODFActor extends TypedAtomicActor {
 	    }
 	}
     }
+     */
 
     /** Prepare to cease iterations of this actor. Notify actors which
      *  are connected downstream of this actor's cessation. Return false
@@ -215,13 +218,22 @@ public class ODFActor extends TypedAtomicActor {
      * @see ptolemy.domains.odf.kernel.ODFThread
      */
     private Token _getNextInput() throws IllegalActionException {
-        ODFReceiver lowestRcvr = getTimeKeeper().getFirstRcvr();
+	Thread thread = Thread.currentThread();
+	if( thread instanceof ODFThread ) {
+	    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+        ODFReceiver lowestRcvr = timeKeeper.getFirstRcvr();
+        // ODFReceiver lowestRcvr = getTimeKeeper().getFirstRcvr();
 	if( lowestRcvr.hasToken() ) {
 	    _lastPort = (TypedIOPort)lowestRcvr.getContainer();
 	    return lowestRcvr.get();
 	} else {
 	    return _getNextInput();
 	}
+	} else { 
+	    throw new IllegalActionException("FIXME");
+	}
+
+	
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -229,7 +241,7 @@ public class ODFActor extends TypedAtomicActor {
 
     private double _currentTime = 0.0;
 
-    private TimeKeeper _timeKeeper = null;
+    // private TimeKeeper _timeKeeper = null;
     
     private TypedIOPort _lastPort = null;
 
