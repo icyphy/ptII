@@ -13,6 +13,7 @@
 	     contains this file. -->
             <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
+            <input source="ptolemy/domains/pn/lib/pnentities.xml"/>
        </group>
     ?>
   </configure>
