@@ -1,4 +1,4 @@
-# Makefile sources from outside of Ptolemy
+# Makefile JLex lexical analyzer code generator
 #
 # @Version: $Id$
 # @Author: Christopher Hylands
@@ -29,20 +29,41 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = oroinc microstar JLex
+# $(ME) is used in ptdir.mk
+ME =		com/JLex
 
 # Root of Ptolemy II directory
-ROOT =		..
+ROOT =		../..
 
-# $(ME) is used in ptdir.mk
-ME =		com
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptdir.mk
+JSRCS = Main.java
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	manual.html \
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(PTCLASSJAR)
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+install: jclass $(PTCLASSJAR)
+docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
+
+# Include the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
