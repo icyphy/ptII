@@ -73,6 +73,7 @@ annotations to diagrams.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
+@deprecated Use ptolemy.vergil.kernel.attributes.TextAttribute.
 */
 
 public class AnnotationEditorFactory extends EditorFactory {

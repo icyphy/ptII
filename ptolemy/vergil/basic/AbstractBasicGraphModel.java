@@ -35,7 +35,6 @@ import java.util.List;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
@@ -47,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeNodeModel;
-import ptolemy.vergil.kernel.CompositeEntityModel;
+import ptolemy.vergil.kernel.CompositePtolemyModel;
 import diva.graph.GraphEvent;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.ModularGraphModel;
@@ -74,9 +73,12 @@ remain synchronized with the state of a mutating model.
 public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 
     /** Create a graph model for the specified Ptolemy II model.
+     *  Note that the argument need not be a CompositeEntity, although
+     *  if it is not, then it is a rather trivial graph that only has
+     *  hierarchy.  I.e., there can be no links.
      *  @param composite The Ptolemy II model.
      */
-    public AbstractBasicGraphModel(CompositeEntity composite) {
+    public AbstractBasicGraphModel(NamedObj composite) {
         super(composite);
         _composite = composite;
         _graphChangeListener = new GraphChangeListener();
@@ -108,11 +110,11 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     public abstract String getDeleteNodeMoML(Object edge);
 
     /** Return the model for the given composite object.
-     *  In this base class, return an instance of CompositeEntityModel
+     *  In this base class, return an instance of CompositePtolemyModel
      *  if the object is the root object of this graph model.
      *  Otherwise return null.
      *  @param composite A composite object.
-     *  @return An instance of CompositeEntityModel if the object is the root
+     *  @return An instance of CompositePtolemyModel if the object is the root
      *   object of this graph model.  Otherwise return null.
      */
     public CompositeModel getCompositeModel(Object composite) {
@@ -168,7 +170,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     /** Return the Ptolemy II model associated with this graph model.
      *  @return The Ptolemy II model.
      */
-    public CompositeEntity getPtolemyModel() {
+    public NamedObj getPtolemyModel() {
         return _composite;
     }
 
@@ -298,10 +300,10 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     private AttributeNodeModel _attributeModel = new AttributeNodeModel();
 
     // The root of this graph model, as a CompositeEntity.
-    private CompositeEntity _composite;
+    private NamedObj _composite;
 
     // The model for composite entities.
-    private CompositeEntityModel _compositeModel = new CompositeEntityModel();
+    private CompositePtolemyModel _compositeModel = new CompositePtolemyModel();
 
     // Our change listener on _composite.
     private GraphChangeListener _graphChangeListener;

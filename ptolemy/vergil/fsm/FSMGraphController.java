@@ -395,7 +395,7 @@ public class FSMGraphController extends FSMViewerGraphController {
             FSMGraphModel graphModel = (FSMGraphModel)getGraphModel();
             final double finalX = x;
             final double finalY = y;
-            final CompositeEntity toplevel = graphModel.getPtolemyModel();
+            final NamedObj toplevel = graphModel.getPtolemyModel();
 
             final String stateName = toplevel.uniqueName("state");
             // Create the state.
@@ -443,7 +443,8 @@ public class FSMGraphController extends FSMViewerGraphController {
                             // gets around to handling this, it will draw
                             // the icon at this location.
 
-                            NamedObj newObject = toplevel.getEntity(stateName);
+                            NamedObj newObject = ((CompositeEntity)toplevel)
+                                    .getEntity(stateName);
                             Location location =
                                 (Location) newObject.getAttribute(locationName);
                             if (location == null) {

@@ -91,10 +91,6 @@ public abstract class ShapeAttribute extends Attribute {
         
         _none = new Variable(this, "none");
         _none.setExpression("{1.0, 1.0, 1.0, 0.0}");
-
-        // FIXME: controller for resizing.
-        // Create a custom controller.
-        // new ImageAttributeControllerFactory(this, "_controllerFactory");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -62,7 +62,6 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
-import ptolemy.vergil.kernel.SetIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -122,9 +121,12 @@ public class ActorController extends AttributeController {
         if (access == FULL) {
             // Add to the context menu.
             _portDialogFactory = new PortDialogFactory();
-            _menuFactory.addMenuItemFactory(_portDialogFactory);
             _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(new SetIconAction()));
+                    _portDialogFactory);
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(new EditIconAction()));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(new RemoveIconAction()));
         }
 
         if (_configuration != null) {
@@ -132,6 +134,10 @@ public class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(new EditIconAction()));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(new RemoveIconAction()));
         }
 
         // NOTE: This requires that the configuration be non null, or it
@@ -238,7 +244,7 @@ public class ActorController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
+    
     /** This layout algorithm is responsible for laying out the ports
      *  within an entity.
      */
@@ -332,13 +338,13 @@ public class ActorController extends AttributeController {
         private void _reOrderPorts( Vector ports ) {
             int size = ports.size();
             Enumeration enum = ports.elements();
-            IOPort port;
+            Port port;
             StringAttribute ordinal = null;
             int number = 0;
             int index  = 0;
 
             while ( enum.hasMoreElements() ) {
-                port = (IOPort)enum.nextElement();
+                port = (Port)enum.nextElement();
                 ordinal = (StringAttribute)port.getAttribute("_ordinal");
 
                 if ( ordinal != null ) {

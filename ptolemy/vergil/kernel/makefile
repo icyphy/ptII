@@ -52,13 +52,12 @@ JSRCS = \
 	AnimationRenderer.java \
 	AttributeNodeModel.java \
 	AttributeController.java \
-	CompositeEntityModel.java \
+	CompositePtolemyModel.java \
 	DebugRenderer.java \
 	Link.java \
 	PortDialogFactory.java \
 	RelationController.java \
-	RenameDialogFactory.java \
-	SetIconAction.java
+	RenameDialogFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
 

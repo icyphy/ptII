@@ -30,14 +30,8 @@
 
 package ptolemy.vergil.actor;
 
-import diva.canvas.Figure;
-import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.graph.EdgeController;
-import diva.graph.GraphPane;
-import diva.graph.NodeController;
-import diva.gui.GUIUtilities;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
@@ -55,9 +49,12 @@ import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.RelationController;
-
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
+import diva.canvas.Figure;
+import diva.canvas.interactor.SelectionDragger;
+import diva.graph.EdgeController;
+import diva.graph.GraphPane;
+import diva.graph.NodeController;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorViewerGraphController

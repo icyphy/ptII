@@ -1,4 +1,4 @@
-/* A graph editor frame for Ptolemy models.
+/* An icon editor frame for Ptolemy models.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -24,23 +24,26 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.actor;
+package ptolemy.vergil.icon;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.net.URL;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
@@ -48,45 +51,50 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.basic.ExtendedGraphFrame;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.canvas.FigureLayer;
+import diva.canvas.JCanvas;
+import diva.canvas.toolbox.BasicRectangle;
 import diva.graph.GraphPane;
 
 //////////////////////////////////////////////////////////////////////////
-//// ActorGraphFrame
+//// EditIconFrame
 /**
-This is a graph editor frame for ptolemy models.  Given a composite
-entity and an instance of ActorGraphTableau, it creates an editor
-and populates the menus and toolbar.  This overrides the base class
-to associate with the editor an instance of ActorEditorGraphController.
+This is an icon editor frame for Ptolemy II models.
+FIXME: More information.
 
-@see ActorEditorGraphController
-@author  Steve Neuendorffer, Contributor: Edward A. Lee
+@author  Edward A. Lee
 @version $Id$
-@since Ptolemy II 2.0
 */
-public class ActorGraphFrame extends ExtendedGraphFrame {
+public class EditIconFrame extends BasicGraphFrame {
 
-    /** Construct a frame associated with the specified Ptolemy II model.
+    /** Construct a frame to edit the specified icon.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
-     *  This constructor results in a graph frame that obtains its library
+     *  This constructor results in a frame that obtains its library
      *  either from the model (if it has one) or the default library defined
      *  in the configuration.
+     *  FIXME: Check whether the above is right.
      *  @see Tableau#show()
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public ActorGraphFrame(CompositeEntity entity, Tableau tableau) {
-        this(entity, tableau, null);
+    public EditIconFrame(EditorIcon icon, Tableau tableau) {
+        this(icon, tableau, null);
     }
 
-    /** Construct a frame associated with the specified Ptolemy II model.
+    /** Construct a frame to edit the specified icon.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
@@ -100,14 +108,36 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public ActorGraphFrame(
-            CompositeEntity entity,
+    public EditIconFrame(
+            EditorIcon entity,
             Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
+        
+        zoomReset();
+        
+        _drawReferenceBox();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set zoom to the nominal.  This overrides the base class to set
+     *  a zoom factor and center more appropriate for editing icons.
+     */
+    public void zoomReset() {
+        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        AffineTransform current =
+            canvas.getCanvasPane().getTransformContext().getTransform();
+        current.setToScale(_ZOOM_SCALE, _ZOOM_SCALE);
+        canvas.getCanvasPane().setTransform(current);
+        setCenter(new Point2D.Double(0.0, 0.0));
+        if (_graphPanner != null) {
+            _graphPanner.repaint();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,6 +156,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
+            // FIXME: Wrong menu items.
             new JMenuItem("Listen to Director", KeyEvent.VK_L),
             new JMenuItem("Animate Execution", KeyEvent.VK_A),
             new JMenuItem("Stop Animating", KeyEvent.VK_S),
@@ -146,23 +177,42 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _menubar.add(_debugMenu);
     }
 
-    /** If the ptolemy model associated with this frame is a top-level
-     *  composite actor, use its manager to stop it.
-     *  Remove the listeners that this frame registered with the ptolemy
-     *  model. Also remove the listeners our graph model has created.
-     *  @return True if the close completes, and false otherwise.
+    /** Create the default library to use if an entity has no
+     *  LibraryAttribute.  Note that this is called in the
+     *  constructor and therefore overrides in subclasses
+     *  should not refer to any members that may not have been 
+     *  initialized.  This method overrides the base class to
+     *  look for a library called "icon library" in the
+     *  configuration. If there is no such library, then
+     *  it provides a simple default library, created in
+     *  the specified workspace.
+     *  @param workspace The workspace in which to create
+     *   the library, if one needs to be created.
+     *  @return The new library, or null if there is no
+     *   configuration.
      */
-    protected boolean _close() {
-        NamedObj ptModel = getModel();
-        if (ptModel instanceof CompositeActor &&
-                ptModel.getContainer() == null) {
-            CompositeActor ptActorModel = (CompositeActor)ptModel;
-            Manager manager = ptActorModel.getManager();
-            if (manager != null) {
-                manager.stop();
+    protected CompositeEntity _createDefaultLibrary(Workspace workspace) {
+        Configuration configuration = getConfiguration();
+        if (configuration != null) {
+            CompositeEntity result = (CompositeEntity)
+                    configuration.getEntity("icon editor library");
+            if (result == null) {
+                // Create a default library by directly reading the
+                // default XML description.
+                URL source = getClass().getClassLoader().getResource(
+                        "ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml");
+                MoMLParser parser = new MoMLParser(workspace);
+                try {
+                    result = (CompositeEntity)parser.parse(null, source);
+                } catch (Exception e) {
+                    throw new InternalErrorException(
+                    "Unable to open default icon editor library: " + e);
+                }
             }
+            return result;
+        } else {
+            return null;
         }
-        return super._close();
     }
 
     /** Create a new graph pane. Note that this method is called in
@@ -170,14 +220,24 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
+        // FIXME: This is the wrong controller to create.
         _controller = new ActorEditorGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
-        // The cast is safe because the constructor only accepts
-        // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel(
-                (CompositeEntity)getModel());
+        final ActorGraphModel graphModel = new ActorGraphModel(getModel());
         return new GraphPane(_controller, graphModel);
+    }
+    
+    /** Draw a reference box with the default icon size, 60x40.
+     */
+    protected void _drawReferenceBox() {
+        // The background layer is a FigureLayer, despite the fact that
+        // getBackgroundLayer() only returns a CanvasLayer.
+        FigureLayer layer = (FigureLayer)_jgraph.getGraphPane().getBackgroundLayer();
+        layer.setVisible(true);
+        BasicRectangle reference = new BasicRectangle(-30.0, -20.0, 60.0, 40.0, 0.1f);
+        reference.setStrokePaint(Color.BLUE);
+        layer.add(reference);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -193,6 +253,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
+    
+    // The default zoom scale.
+    private double _ZOOM_SCALE = 4.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
@@ -244,7 +307,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                                 "Time (in ms) to hold highlight",
                                 Long.toString(_lastDelayTime));
                         ComponentDialog dialog = new ComponentDialog(
-                                ActorGraphFrame.this,
+                                EditIconFrame.this,
                                 "Delay for Animation",
                                 query);
                         if (dialog.buttonPressed().equals("OK")) {

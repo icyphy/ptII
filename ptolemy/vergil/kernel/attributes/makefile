@@ -57,7 +57,8 @@ JSRCS = \
 	ShapeAttribute.java
 
 OTHER_FILES_TO_BE_JARED = \
-	decorative.xml
+	decorative.xml \
+	iconEditorLibrary.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

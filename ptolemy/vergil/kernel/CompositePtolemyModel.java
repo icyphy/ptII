@@ -37,6 +37,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
@@ -49,7 +50,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// CompositeEntityModel
+//// CompositePtolemyModel
 /**
 A diva node model for a Ptolemy II composite entity. Each element of
 the graph model is represented by an instance of Locatable, which is
@@ -69,7 +70,7 @@ create a Vertex.
 @since Ptolemy II 2.0
 @see ptolemy.kernel.util.Location
  */
-public class CompositeEntityModel implements CompositeModel {
+public class CompositePtolemyModel implements CompositeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -82,14 +83,14 @@ public class CompositeEntityModel implements CompositeModel {
      *   specified composite entity.
      */
     public int getNodeCount(Object composite) {
-        if (!(composite instanceof CompositeEntity)) {
+        if (!(composite instanceof NamedObj)) {
             return 0;
         }
-        long version = ((CompositeEntity)composite).workspace().getVersion();
+        long version = ((NamedObj)composite).workspace().getVersion();
         if (_nodeList == null
                 || composite != _composite
                 || version != _version) {
-            _nodeList = _nodeList((CompositeEntity)composite);
+            _nodeList = _nodeList((NamedObj)composite);
             _composite = composite;
             _version = version;
         }
@@ -104,14 +105,14 @@ public class CompositeEntityModel implements CompositeModel {
      *   specified composite entity.
      */
     public Iterator nodes(Object composite) {
-        if (!(composite instanceof CompositeEntity)) {
+        if (!(composite instanceof NamedObj)) {
             return (new LinkedList()).iterator();
         }
-        long version = ((CompositeEntity)composite).workspace().getVersion();
+        long version = ((NamedObj)composite).workspace().getVersion();
         if (_nodeList == null
                 || composite != _composite
                 || version != _version) {
-            _nodeList = _nodeList((CompositeEntity)composite);
+            _nodeList = _nodeList((NamedObj)composite);
             _composite = composite;
             _version = version;
         }
@@ -144,69 +145,79 @@ public class CompositeEntityModel implements CompositeModel {
     }
 
     /** Return a list of all the nodes in the graph corresponding to
-     *  the specified Ptolemy II model.
+     *  the specified Ptolemy II model.  The model can be any NamedObj,
+     *  and the returned list will include any entities, ports,
+     *  relations, and attributes that it contains, in that order.
      *  Note that this method creates a new list, and should therefore
      *  only be called if the object has changed.
      *  @param composite The composite entity.
      *  @return A list of the nodes in the graph.
      */
-    protected List _nodeList(CompositeEntity composite) {
+    protected List _nodeList(NamedObj composite) {
         List nodes = new LinkedList();
 
-        // Add a graph node for every entity.
-        // The node is actually the location contained by the entity.
-        // If the entity does not contain a location, then create one.
-        Iterator entities = composite.entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            nodes.add(_getLocation(entity));
+        if (composite instanceof CompositeEntity) {
+            // Add a graph node for every entity.
+            // The node is actually the location contained by the entity.
+            // If the entity does not contain a location, then create one.
+            Iterator entities = ((CompositeEntity)composite)
+                    .entityList().iterator();
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
+                nodes.add(_getLocation(entity));
+            }
         }
 
-        // Add a graph node for every external port.
-        // The node is actually the location contained by the port.
-        // If the port does not contain a location, then create one.
-        Iterator ports = composite.portList().iterator();
-        while (ports.hasNext()) {
-            ComponentPort port = (ComponentPort)ports.next();
-            nodes.add(_getLocation(port));
+        if (composite instanceof Entity) {
+            // Add a graph node for every external port.
+            // The node is actually the location contained by the port.
+            // If the port does not contain a location, then create one.
+            Iterator ports = ((Entity)composite).portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
+                nodes.add(_getLocation(port));
+            }
         }
 
-        // Add a node for every relation that has a vertex and
-        // doesn't connect exactly two ports.
-        // NOTE: This particular part of the graph model is irrelevant
-        // for FSMs, but it is harmless to include it, so there is no
-        // real need to subclass this to remove it.
-        Iterator relations = composite.relationList().iterator();
-        while (relations.hasNext()) {
-            ComponentRelation relation = (ComponentRelation)relations.next();
-            List vertexList = relation.attributeList(Vertex.class);
+        if (composite instanceof CompositeEntity) {
+            // Add a node for every relation that has a vertex and
+            // doesn't connect exactly two ports.
+            // NOTE: This particular part of the graph model is irrelevant
+            // for FSMs, but it is harmless to include it, so there is no
+            // real need to subclass this to remove it.
+            Iterator relations = ((CompositeEntity)composite)
+                    .relationList().iterator();
+            while (relations.hasNext()) {
+                ComponentRelation relation = (ComponentRelation)relations.next();
+                List vertexList = relation.attributeList(Vertex.class);
 
-            if (vertexList.size() != 0) {
-                // Add in all the vertexes.
-                Iterator vertexes = vertexList.iterator();
-                while (vertexes.hasNext()) {
-                    Vertex v = (Vertex)vertexes.next();
-                    nodes.add(v);
-                }
-            } else {
-                // See if we need to create a vertex.
-                // Count the linked ports.
-                int count = relation.linkedPortList().size();
-                if (count != 2) {
-                    // A vertex is needed, so create one.
-                    try {
-                        Vertex vertex = new Vertex(relation,
-                                relation.uniqueName("vertex"));
-                        nodes.add(vertex);
-                    } catch (Exception e) {
-                        throw new InternalErrorException(
-                                "Failed to create a vertex! " +
-                                e.getMessage());
+                if (vertexList.size() != 0) {
+                    // Add in all the vertexes.
+                    Iterator vertexes = vertexList.iterator();
+                    while (vertexes.hasNext()) {
+                        Vertex v = (Vertex)vertexes.next();
+                        nodes.add(v);
+                    }
+                } else {
+                    // See if we need to create a vertex.
+                    // Count the linked ports.
+                    int count = relation.linkedPortList().size();
+                    if (count != 2) {
+                        // A vertex is needed, so create one.
+                        try {
+                            Vertex vertex = new Vertex(relation,
+                                    relation.uniqueName("vertex"));
+                            nodes.add(vertex);
+                        } catch (Exception e) {
+                            throw new InternalErrorException(
+                                    "Failed to create a vertex! " +
+                                    e.getMessage());
+                        }
                     }
                 }
             }
         }
-
+        
         // Add a node for every director or visible attribute.
         // The node is again the location.
         // For directors, if there is no location, then create one.

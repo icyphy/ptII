@@ -1,4 +1,4 @@
-/* An icon that displays a specified java.awt.Shape.
+/* An icon that displays specified text.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -31,13 +31,13 @@
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
+import java.awt.Font;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import ptolemy.gui.Top;
@@ -46,18 +46,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.gui.toolbox.FigureIcon;
 
 //////////////////////////////////////////////////////////////////////////
-//// ShapeIcon
+//// TextIcon
 /**
-An icon that displays a specified java.awt.Shape.
+An icon that displays specified text.
 
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ShapeIcon extends EditorIcon {
+public class TextIcon extends EditorIcon {
 
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -67,28 +68,11 @@ public class ShapeIcon extends EditorIcon {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ShapeIcon(NamedObj container, String name)
+    public TextIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
     
-    /** Create a new icon with the given name in the given container
-     *  with the given default shape.
-     *  @param container The container.
-     *  @param name The name of the attribute.
-     *  @param defaultShape The default shape.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public ShapeIcon(NamedObj container, String name, Shape defaultShape)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        _defaultShape = defaultShape;
-        setShape(defaultShape);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
@@ -102,15 +86,13 @@ public class ShapeIcon extends EditorIcon {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        ShapeIcon newObject = (ShapeIcon)super.clone(workspace);
+        TextIcon newObject = (TextIcon)super.clone(workspace);
         newObject._figures = new LinkedList();
-        // NOTE: Do not set back to the default shape!
-        // newObject._shape = _defaultShape;
         return newObject;
     }
 
-    /** Create a new default background figure, which is the shape set
-     *  by setShape, if it has been called, or a small box if not.
+    /** Create a new default background figure, which is the text set
+     *  by setText, if it has been called, or default text if not.
      *  This must be called in the Swing thread, or a concurrent
      *  modification exception could occur.
      *  @return A figure representing the specified shape.
@@ -131,19 +113,15 @@ public class ShapeIcon extends EditorIcon {
         // The references to these figures, however, have to be weak
         // references, so that this class does not interfere with garbage
         // collection of the figure when the view is destroyed.
-        BasicFigure newFigure;
-        if (_shape != null) {
-            newFigure = new BasicFigure(_shape);
+        LabelFigure newFigure;
+        if (_text != null) {
+            newFigure = new LabelFigure(_text, _font);
         } else {
-            // Create a white rectangle.
-            newFigure = new BasicFigure(new Rectangle2D.Double(
-                   0.0, 0.0, 20.0, 20.0));
+            newFigure = new LabelFigure(_DEFAULT_TEXT, _font);
         }
         // By default, the origin should be the upper left.
-        newFigure.setCentered(_centered);
-        newFigure.setLineWidth(_lineWidth);
-        newFigure.setStrokePaint(_lineColor);
-        newFigure.setFillPaint(_fillColor);
+        newFigure.setAnchor(SwingConstants.NORTH_WEST);
+        newFigure.setFillPaint(_textColor);
         _figures.add(new WeakReference(newFigure));
         
         // Trim the list of figures...
@@ -158,25 +136,30 @@ public class ShapeIcon extends EditorIcon {
         }
         return newFigure;
     }
-    
-    /** Return whether the figure should be centered on its origin.
-     *  @return False If the origin of the figure, as
-     *   returned by getOrigin(), is the upper left corner.
-     *  @see #getOrigin()
-     *  @see #setCentered()
+
+    /** Create a new Swing icon.  This returns an icon with the text
+     *  "-A-".
+     *  @return A new Swing Icon.
      */
-    public boolean isCentered() {
-        return _centered;
+    public javax.swing.Icon createIcon() {
+        // In this class, we cache the rendered icon, since creating icons from
+        // figures is expensive.
+        if (_iconCache != null) {
+            return _iconCache;
+        }
+        // No cached object, so rerender the icon.
+        LabelFigure figure = new LabelFigure(_ICON_TEXT, _font);
+        figure.setFillPaint(_textColor);
+        _iconCache = new FigureIcon(figure, 20, 15);
+        return _iconCache;
     }
 
-    /** Specify whether the figure should be centered or not.
-     *  By default, the origin of the figure is the center.
-     *  This is deferred and executed in the Swing thread.
-     *  @param centered False to make the figure's origin at the
-     *   upper left.
+    /** Specify the text color to use.  This is deferred and executed
+     *  in the Swing thread.
+     *  @param textColor The fill color to use.
      */
-    public void setCentered(boolean centered) {
-        _centered = centered;
+    public void setTextColor(Color textColor) {
+        _textColor = textColor;
         
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
@@ -194,7 +177,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((BasicFigure)figure).setCentered(_centered);
+                        ((LabelFigure)figure).setFillPaint(_textColor);
                     }
                 }
             }
@@ -202,12 +185,12 @@ public class ShapeIcon extends EditorIcon {
         SwingUtilities.invokeLater(doSet);
     }
     
-    /** Specify the fill color to use.  This is deferred and executed
+    /** Specify the font to use.  This is deferred and executed
      *  in the Swing thread.
-     *  @param fillColor The fill color to use.
+     *  @param font The font to use.
      */
-    public void setFillColor(Color fillColor) {
-        _fillColor = fillColor;
+    public void setFont(Font font) {
+        _font = font;
         
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
@@ -225,38 +208,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((BasicFigure)figure).setFillPaint(_fillColor);
-                    }
-                }
-            }
-        };
-        SwingUtilities.invokeLater(doSet);
-    }
-    
-    /** Specify the line color to use.  This is deferred and executed
-     *  in the Swing thread.
-     *  @param lineColor The line color to use.
-     */
-    public void setLineColor(Color lineColor) {
-        _lineColor = lineColor;
-        
-        // Update the shapes of all the figures that this icon has
-        // created (which may be in multiple views). This has to be
-        // done in the Swing thread.  Assuming that createBackgroundFigure()
-        // is also called in the Swing thread, there is no possibility of
-        // conflict here where that method is trying to add to the _figures
-        // list while this method is traversing it.
-        Runnable doSet = new Runnable() {
-            public void run() {
-                ListIterator figures = _figures.listIterator();
-                while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((BasicFigure)figure).setStrokePaint(_lineColor);
+                        ((LabelFigure)figure).setFont(_font);
                     }
                 }
             }
@@ -264,43 +216,12 @@ public class ShapeIcon extends EditorIcon {
         SwingUtilities.invokeLater(doSet);
     }
 
-    /** Specify the line width to use.  This is deferred and executed
+    /** Specify text to display.  This is deferred and executed
      *  in the Swing thread.
-     *  @param lineWidth The line width to use.
+     *  @param text The text to display.
      */
-    public void setLineWidth(float lineWidth) {
-        _lineWidth = lineWidth;
-        
-        // Update the shapes of all the figures that this icon has
-        // created (which may be in multiple views). This has to be
-        // done in the Swing thread.  Assuming that createBackgroundFigure()
-        // is also called in the Swing thread, there is no possibility of
-        // conflict here where that method is trying to add to the _figures
-        // list while this method is traversing it.
-        Runnable doSet = new Runnable() {
-            public void run() {
-                ListIterator figures = _figures.listIterator();
-                while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((BasicFigure)figure).setLineWidth(_lineWidth);
-                    }
-                }
-            }
-        };
-        SwingUtilities.invokeLater(doSet);
-    }
-
-    /** Specify a path to display.  This is deferred and executed
-     *  in the Swing thread.
-     *  @param path The path to display.
-     */
-    public void setShape(Shape path) {
-        _shape = path;
+    public void setText(String text) {
+        _text = text;
 
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
@@ -318,7 +239,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((BasicFigure)figure).setPrototypeShape(_shape);
+                        ((LabelFigure)figure).setString(_text);
                     }
                 }
             }
@@ -328,28 +249,22 @@ public class ShapeIcon extends EditorIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+        
+    // Default text.
+    private String _DEFAULT_TEXT = "Double click to edit text.";
 
-    // Indicator of whether the figure should be centered on its origin.
-    private boolean _centered = false;
-    
-    // Default shape specified in the constructor.
-    private Shape _defaultShape;
-    
     // A list of weak references to figures that this has created.
     private List _figures = new LinkedList();
     
-    // The specified fill color.
-    private Color _fillColor = Color.white;
+    // The font to use.
+    private Font _font = new Font("SansSerif", Font.PLAIN, 12);
+    
+    // Default text.
+    private String _ICON_TEXT = "-A-";
 
-    // The specified line color.
-    private Color _lineColor = Color.black;
+    // The specified text color.
+    private Color _textColor = Color.blue;
       
-    // The specified line width.
-    private float _lineWidth = 1f;
-    
-    // The shape that is rendered.
-    private Shape _shape;
-    
-    // The scale percentage.
-    private double _scalePercentage = 100.0;
+    // The text that is rendered.
+    private String _text;
 }

@@ -46,6 +46,7 @@ import javax.swing.UIManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
@@ -499,7 +500,12 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
             ActorGraphModel graphModel = (ActorGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
-            final CompositeEntity toplevel = graphModel.getPtolemyModel();
+            final NamedObj toplevel = graphModel.getPtolemyModel();
+            if (!(toplevel instanceof CompositeEntity)) {
+                throw new InternalErrorException(
+                "Cannot invoke NewRelationAction on an object "
+                + "that is not a CompositeEntity.");
+            }
             NamedObj container =
                 MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
@@ -531,7 +537,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                             // it is done here.  When the graph controller
                             // gets around to handling this, it will draw
                             // the icon at this location.
-                            NamedObj newObject = toplevel.getRelation(relationName);
+                            NamedObj newObject
+                                    = ((CompositeEntity)toplevel)
+                                    .getRelation(relationName);
                             Vertex vertex = (Vertex) newObject.getAttribute(vertexName);
                             vertex.setLocation(point);
                         }

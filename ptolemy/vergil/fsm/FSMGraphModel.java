@@ -275,7 +275,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
 
         // Now create Links for links that may be new
-        Iterator relations = getPtolemyModel().relationList().iterator();
+        Iterator relations = ((CompositeEntity)getPtolemyModel())
+                .relationList().iterator();
         while (relations.hasNext()) {
             _updateLinks((ComponentRelation)relations.next());
         }
@@ -400,7 +401,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             StringBuffer moml = new StringBuffer();
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
-            CompositeEntity container =
+            NamedObj container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
             moml.append(_deleteRelation(container, linkRelation));
@@ -559,7 +560,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
-            final CompositeEntity container =
+            final NamedObj container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
             // If there is a previous connection, remove it.
@@ -594,8 +595,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                             link.setHead(newArcHead);
                             if (relationNameToAdd != null) {
                                 ComponentRelation relation = (ComponentRelation)
-                                    getPtolemyModel().getRelation(
-                                            relationNameToAdd);
+                                    ((CompositeEntity)getPtolemyModel())
+                                    .getRelation(relationNameToAdd);
                                 link.setRelation(relation);
                             }
                         }
@@ -657,7 +658,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
-            final CompositeEntity container =
+            final NamedObj container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
             // If there is a previous connection, remove it.
@@ -694,7 +695,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                             link.setTail(newArcTail);
                             if (relationNameToAdd != null) {
                                 link.setRelation(
-                                        getPtolemyModel()
+                                        ((CompositeEntity)getPtolemyModel())
                                         .getRelation(relationNameToAdd));
                             }
                         }
@@ -769,7 +770,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         (ComponentPort)headState.incomingPort;
                     ComponentPort tailPort =
                         (ComponentPort)tailState.outgoingPort;
-                    CompositeEntity ptolemyModel = getPtolemyModel();
+                    NamedObj ptolemyModel = getPtolemyModel();
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
                     if (ptolemyModel != container) {
@@ -893,7 +894,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         (ComponentPort)headState.incomingPort;
                     ComponentPort tailPort =
                         (ComponentPort)tailState.outgoingPort;
-                    CompositeEntity ptolemyModel = getPtolemyModel();
+                    NamedObj ptolemyModel = getPtolemyModel();
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
                     if (ptolemyModel != container) {

@@ -1,4 +1,4 @@
-/* An Icon is the graphical representation of an entity.
+/* An Icon is the graphical representation of an entity or attribute.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -39,15 +39,20 @@ import java.util.Iterator;
 
 import javax.swing.SwingConstants;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
+import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.gui.toolbox.FigureIcon;
@@ -61,8 +66,8 @@ that serves as a factory for such figures. This base class creates the
 figure by composing the figures of any contained attributes that have
 icons.  If there are no such contained attributes, then it creates a
 default figure that is a white rectangle. This class also provides
-a facility for generating a Swing icon (i.e. an instance of javax.swing.Icon)
-from that figure (the createIcon() method).
+a facility for generating a Swing icon (i.e. an instance of
+javax.swing.Icon) from that figure (the createIcon() method).
 <p>
 The icon consists of a background figure, created by the
 createBackgroundFigure() method, and a decorated version, created
@@ -76,14 +81,28 @@ Derived classes may simply populate this attribute with other
 visible attributes (attributes that contain icons), or they can
 override the createBackgroundFigure() method.  This will affect
 both the Diva Figure and the Swing Icon representations.
-Derived classes can also create the figure or
-the icon in a different way entirely (for example, starting with a
-Swing icon and creating the figure using a SwingWrapper) by overriding
-both createBackgroundFigure() and createIcon().
+Derived classes can also create the figure or the icon in a
+different way entirely (for example, starting with a Swing
+icon and creating the figure using a SwingWrapper) by overriding
+both createBackgroundFigure() and createIcon(). However, the
+icon editor provided by EditIconFrame and EditIconTableau
+will only show (and allow editing) of those icon components
+created by populating this attribute with other visible
+attributes.
+<p>
+This attribute contains another attribute that is an
+instance of EditIconTableau. This has the effect that
+an instance of Configuration, when it attempts to open
+an instance of this class, will use EditIconTableau,
+which in turn uses EditIconFrame to provide an icon
+editor.
 
 @author Steve Neuendorffer, John Reekie, Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
+@see EditIconFrame
+@see EditIconTableau
+@see ptolemy.actor.gui.Configuration
 */
 public class EditorIcon extends Attribute {
 
@@ -105,6 +124,9 @@ public class EditorIcon extends Attribute {
         super(workspace);
         try {
             setName(name);
+            // Create a tableau factory so that an instance
+            // of this class is opened using the EditIconTableau.
+            new EditIconTableau.Factory(this, "_tableauFactory");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(ex);
         }
@@ -121,6 +143,9 @@ public class EditorIcon extends Attribute {
     public EditorIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        // Create a tableau factory so that an instance
+        // of this class is opened using the EditIconTableau.
+        new EditIconTableau.Factory(this, "_tableauFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,17 +188,50 @@ public class EditorIcon extends Attribute {
             // "visible attribute" containing an attribute named "_icon"
             // that actually has the icon.
             Iterator subIcons =
-                attribute.attributeList(EditorIcon.class).iterator();
+                    attribute.attributeList(EditorIcon.class).iterator();
             while (subIcons.hasNext()) {
                 EditorIcon subIcon = (EditorIcon) subIcons.next();
                 if (figure == null) {
-                    figure = new CompositeFigure(subIcon.createBackgroundFigure());
-                } else {
-                    figure.add(subIcon.createBackgroundFigure());
+                    // NOTE: This used to use a constructor that
+                    // takes a "background figure" argument, which would
+                    // then treat this first figure specially.  This is not
+                    // right since getShape() on the figure will then return
+                    // only the shape of the composite, which results in the
+                    // wrong selection region being highlighted.
+                    figure = new CompositeFigure();
                 }
+                Figure subFigure = subIcon.createBackgroundFigure();
+                // Translate the figure to the location of the subfigure,
+                // if there is a location. Also, center it if necessary.
+                try {
+                    // NOTE: This is inelegant, but only the subclasses
+                    // have the notion of centering.
+                    // FIXME: Don't use FilledShapeAttribute... promote
+                    // centered capability to a base class.
+                    if (attribute instanceof FilledShapeAttribute
+                            && subFigure instanceof BasicFigure) {
+                        boolean centeredValue = ((BooleanToken)
+                                ((FilledShapeAttribute)attribute)
+                                .centered.getToken()).booleanValue();
+                        if (centeredValue) {
+                            ((BasicFigure)subFigure).setCentered(true);
+                        }
+                    }
+                    Locatable location = (Locatable)attribute.getAttribute(
+                            "_location", Locatable.class);
+                    if (location != null) {
+                        double[] locationValue = location.getLocation();
+                         CanvasUtilities.translateTo(
+                                subFigure, locationValue[0], locationValue[1]);
+                    }
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+                figure.add(subFigure);
             }
         }
         if (figure == null) {
+            // There are no component figures.
             return _createDefaultBackgroundFigure();
         } else {
             return figure;
@@ -338,7 +396,35 @@ public class EditorIcon extends Attribute {
      *  @return A figure representing a rectangular white box.
      */
     protected Figure _createDefaultBackgroundFigure() {
-        // NOTE: center at the origin.
+        // NOTE: It is tempting to create a RectangleAttribute for
+        // the rectangle, but that won't work...  It has to be created
+        // as a change request, and we can't get the figure until the
+        // change request is processed.  This is what the code would
+        // look like:
+        /*
+        StringBuffer moml = new StringBuffer();
+        NamedObj context = MoMLChangeRequest.getDeferredToParent(this);
+        if (context != null && context != this) {
+            moml.append("<property name=\"" + getName(context) + "\">\n");
+        }
+        moml.append("<group name=\"auto\">" +
+            "<property name=\"defaultFigure\" " +
+            "class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">\n" +
+            "<property name=\"width\" value=\"60\"/>\n" +
+            "<property name=\"height\" value=\"40\"/>\n" +
+            "<property name=\"centered\" value=\"true\"/>\n" +
+            "<property name=\"fillColor\" value=\"{1.0, 1.0, 1.0, 1.0}\"/>\n" +
+            "</property></group>" );
+        if (context != null && context != this) {
+            moml.append("</property>");
+        } else {
+            context = this;
+        }
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, context, moml.toString());
+        context.requestChange(request);
+        */
+
         return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
     }
 

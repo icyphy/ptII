@@ -160,7 +160,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         _controller = new FSMGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
-        final FSMGraphModel graphModel = new FSMGraphModel(getModel());
+        // NOTE: The cast is safe because the constructor accepts
+        // only CompositeEntity.
+        final FSMGraphModel graphModel = new FSMGraphModel(
+                (CompositeEntity)getModel());
         return new GraphPane(_controller, graphModel);
     }
 

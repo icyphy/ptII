@@ -60,7 +60,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -96,8 +95,6 @@ import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.undo.RedoChangeRequest;
 import ptolemy.kernel.undo.UndoChangeRequest;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -156,18 +153,18 @@ are supported using MoML.
 public abstract class BasicGraphFrame extends PtolemyFrame
     implements Printable, ClipboardOwner, ChangeListener {
 
-    /** Construct a frame associated with the specified Ptolemy II model.
-     *  After constructing this, it is necessary
+    /** Construct a frame associated with the specified Ptolemy II model
+     *  or object. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
      *  This constructor results in a graph frame that obtains its library
      *  either from the model (if it has one) or the default library defined
      *  in the configuration.
      *  @see Tableau#show()
-     *  @param entity The model to put in this frame.
+     *  @param entity The model or object to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public BasicGraphFrame(CompositeEntity entity, Tableau tableau) {
+    public BasicGraphFrame(NamedObj entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
@@ -180,13 +177,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  argument (if it is non-null), or the default library defined
      *  in the configuration.
      *  @see Tableau#show()
-     *  @param entity The model to put in this frame.
+     *  @param entity The model or object to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
     public BasicGraphFrame(
-            CompositeEntity entity,
+            NamedObj entity,
             Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau);
@@ -307,25 +304,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         if (!gotLibrary) {
             // Neither the model nor the argument have specified a library.
             // See if there is a default library in the configuration.
-            Configuration configuration = getConfiguration();
-            if (configuration != null) {
-                _topLibrary = (CompositeEntity)
-                    configuration.getEntity("actor library");
-                if (_topLibrary == null) {
-                    // Create an empty library by default.
-                    Workspace workspace = entity.workspace();
-                    _topLibrary = new CompositeEntity(workspace);
-                    try {
-                        _topLibrary.setName("topLibrary");
-                        // Put a marker in so that this is
-                        // recognized as a library.
-                        new Attribute(_topLibrary, "_libraryMarker");
-                    } catch (Exception ex) {
-                        throw new InternalErrorException(
-                                "Library configuration failed: " + ex);
-                    }
-                }
-            }
+            _topLibrary = _createDefaultLibrary(entity.workspace());
         }
 
         _libraryModel = new VisibleTreeModel(_topLibrary);
@@ -488,8 +467,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 // toplevel translations.
                 element.exportMoML(buffer, 1);
             }
-            CompositeEntity container = (CompositeEntity)graphModel.getRoot();
-            buffer.write(container.exportLinks(1, namedObjSet));
+            NamedObj container = (NamedObj)graphModel.getRoot();
+            if (container instanceof CompositeEntity) {
+                buffer.write(((CompositeEntity)container)
+                        .exportLinks(1, namedObjSet));
+            }
 
             // The code below does not use a PtolemyTransferable,
             // to work around
@@ -530,11 +512,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
         // First get all the nodes.
         try {
-            final CompositeEntity container =
-                (CompositeEntity)graphModel.getRoot();
+            final NamedObj container =
+                (NamedObj)graphModel.getRoot();
+            if (!(container instanceof CompositeEntity)) {
+                // This is an internal error because a reasonable GUI should not
+                // provide access to this functionality.
+                throw new InternalErrorException(
+                "Cannot create hierarchy if the container is not a CompositeEntity.");
+            }
             final String name = container.uniqueName("typed composite actor");
             final TypedCompositeActor compositeActor = new TypedCompositeActor(
-                    container, name);
+                    (CompositeEntity)container, name);
 
             double[] location = new double[2];
             boolean gotLocation = false;
@@ -778,7 +766,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     this, container, moml.toString()) {
                     protected void _execute() throws Exception {
                         super._execute();
-                        NamedObj newObject = container.getEntity(name);
+                        NamedObj newObject = ((CompositeEntity)container)
+                                .getEntity(name);
                         //_setLocation(compositeActor, point);
                     }
                 };
@@ -892,7 +881,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 container = object;
             }
 
-            CompositeEntity toplevel = (CompositeEntity)container;
+            NamedObj toplevel = (NamedObj)container;
             MoMLChangeRequest change =
                 new MoMLChangeRequest(this, toplevel, moml.toString());
             change.setUndoable(true);
@@ -908,150 +897,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         GraphEvent.STRUCTURE_CHANGED,
                         graphModel.getRoot()));
 
-    }
-
-    /** Delete the currently selected objects from this document.
-     */
-    public void deleteOld() {
-        // Note that we previously a delete was handled at the model level.
-        // Now a delete is handled by generating MoML to carry out the delete
-        // and handing that MoML to the parser
-
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
-        SelectionModel model = controller.getSelectionModel();
-        // AbstractPtolemyGraphModel graphModel =
-        //    (AbstractPtolemyGraphModel)controller.getGraphModel();
-        AbstractBasicGraphModel graphModel =
-            (AbstractBasicGraphModel)controller.getGraphModel();
-        Object selection[] = model.getSelectionAsArray();
-
-        Object userObjects[] = new Object[selection.length];
-        // First remove the selection.
-        for (int i = 0; i < selection.length; i++) {
-            userObjects[i] = ((Figure)selection[i]).getUserObject();
-            model.removeSelection(selection[i]);
-        }
-
-        // Holds a set of those elements whose deletion goes through MoML.
-        // This is the large majority of deleted objects.
-        // Currently the only exception are links from a port to nowhere.
-        HashSet namedObjNodeSet = new HashSet();
-        HashSet namedObjEdgeSet = new HashSet();
-        // Holds those elements whose deletion does no go through MoML. This
-        // is only links which are no connected to another port or a relation.
-        HashSet edgeSet = new HashSet();
-        // First make a set of all the semantic objects as they may
-        // appear more than once
-        for (int i = 0; i < selection.length; i++) {
-            Object userObject = userObjects[i];
-            if (graphModel.isEdge(userObject) ||
-                    graphModel.isNode(userObject)) {
-                NamedObj actual =
-                    (NamedObj)graphModel.getSemanticObject(userObject);
-                if (actual != null) {
-                    if (graphModel.isEdge(userObject)) {
-                        namedObjEdgeSet.add(actual);
-                    } else {
-                        namedObjNodeSet.add(actual);
-                    }
-                }
-                else {
-                    // Special case, do not handle through MoML but
-                    // simply delete which means this deletion is not
-                    // undoable
-                    edgeSet.add(userObject);
-                }
-            }
-
-        }
-        // Merge the two hashsets so that any edges get deleted first.
-        // This is need to avoid problems with relations not existing due to
-        // the way some relations are hidden and ports are shown directly
-        // connected
-
-        // Formerly, we used an ArrayList here, but this caused problems
-        // if we had a relation between two links and the user selected
-        // the relation and a link by dragging a box.
-        // JDK1.4 provides us with a LinkedHashSet that is ordered and
-        // has unique elements, so we use that. -cxh 11/16/02
-        //
-        //ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
-        //namedObjList.addAll(namedObjNodeSet);
-
-        LinkedHashSet namedObjList = new LinkedHashSet(namedObjEdgeSet);
-        namedObjList.addAll(namedObjNodeSet);
-
-        // Generate the MoML to carry out the deletion
-        StringBuffer moml = new StringBuffer();
-        moml.append("<group>\n");
-        Iterator elements = namedObjList.iterator();
-        while (elements.hasNext()) {
-            NamedObj element = (NamedObj)elements.next();
-            String deleteElemName = "";
-            if (element instanceof Relation) {
-                deleteElemName = "deleteRelation";
-            }
-            else if (element instanceof Entity) {
-                deleteElemName = "deleteEntity";
-            }
-            else if (element instanceof Attribute) {
-                deleteElemName = "deleteProperty";
-            }
-            else if (element instanceof Port) {
-                deleteElemName = "deletePort";
-            }
-            else {
-                // What else is there?
-            }
-            if (deleteElemName.length() > 0) {
-                moml.append("<" + deleteElemName + " name=\"" +
-                        element.getName() + "\" />\n");
-            }
-        }
-        moml.append("</group>\n");
-
-        // Have both MoML to perform deletion and set of objects whose
-        // deletion does not go through MoML. This set of objects
-        // should be very small and so far consists of only links that are not
-        // connected to a relation
-        try {
-            // First manually delete any objects whose deletion does not go
-            // through MoML and so are not undoable
-            // Note that we turn off event dispatching so that each individual
-            // removal does not trigger graph redrawing.
-            graphModel.setDispatchEnabled(false);
-            Iterator edges = edgeSet.iterator();
-            while (edges.hasNext()) {
-                Object nextEdge = edges.next();
-                if (graphModel.isEdge(nextEdge)) {
-                    graphModel.disconnectEdge(this, nextEdge);
-                }
-            }
-        }
-        finally {
-            graphModel.setDispatchEnabled(true);
-            /*graphModel.dispatchGraphEvent(new GraphEvent(
-              this,
-              GraphEvent.STRUCTURE_CHANGED,
-              graphModel.getRoot()));*/
-        }
-
-        // Next process the deletion MoML. This should be the large majority
-        // of most deletions.
-        try {
-            // Finally create and request the change
-            CompositeEntity toplevel = (CompositeEntity)graphModel.getRoot();
-            MoMLChangeRequest change =
-                new MoMLChangeRequest(this, toplevel, moml.toString());
-            change.setUndoable(true);
-            toplevel.requestChange(change);
-        }
-        catch (Exception ex) {
-            MessageHandler.error("Delete failed, changeRequest was:" + moml,
-                    ex);
-        }
     }
 
     /** Override the dispose method to unattach any listeners that may keep
@@ -1128,7 +973,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // Before doing the layout, need to take a copy of all the current
         // node locations  which can be used to undo the effects of the move.
         try {
-            CompositeEntity composite = model.getPtolemyModel();
+            NamedObj composite = model.getPtolemyModel();
             StringBuffer moml = new StringBuffer();
             moml.append("<group>\n");
             // NOTE: this gives at iteration over locations.
@@ -1189,7 +1034,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GraphModel model = controller.getGraphModel();
         if (transferable == null) return;
         try {
-            CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            NamedObj toplevel = (NamedObj)model.getRoot();
             NamedObj container =
                 MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
@@ -1239,8 +1084,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
     }
 
-    /**
-     *  Redo the last undone change on the model
+    /** Redo the last undone change on the model
      */
     public void redo() {
         GraphPane graphPane = _jgraph.getGraphPane();
@@ -1248,9 +1092,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             (GraphController)graphPane.getGraphController();
         GraphModel model = controller.getGraphModel();
         try {
-            CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            NamedObj toplevel = (NamedObj)model.getRoot();
             RedoChangeRequest change =
-                new RedoChangeRequest(this, toplevel);
+                    new RedoChangeRequest(this, toplevel);
             toplevel.requestChange(change);
         }
         catch (Exception ex) {
@@ -1320,8 +1164,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     }
 
 
-    /**
-     *  Undo the last undoable change on the model
+    /** Undo the last undoable change on the model
      */
     public void undo() {
         GraphPane graphPane = _jgraph.getGraphPane();
@@ -1329,7 +1172,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             (GraphController)graphPane.getGraphController();
         GraphModel model = controller.getGraphModel();
         try {
-            CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            NamedObj toplevel = (NamedObj)model.getRoot();
             UndoChangeRequest change =
                 new UndoChangeRequest(this, toplevel);
             toplevel.requestChange(change);
@@ -1475,6 +1318,41 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             }
         }
         return result;
+    }
+
+    /** Create the default library to use if an entity has no
+     *  LibraryAttribute.  Note that this is called in the
+     *  constructor and therefore overrides in subclasses
+     *  should not refer to any members that may not have been 
+     *  initialized. If no library is found in the configuration,
+     *  then an empty one is created in the specified workspace.
+     *  @param workspace The workspace in which to create
+     *   the library, if one needs to be created.
+     *  @return The new library, or null if there is no
+     *   configuration.
+     */
+    protected CompositeEntity _createDefaultLibrary(Workspace workspace) {
+        Configuration configuration = getConfiguration();
+        if (configuration != null) {
+            CompositeEntity result = (CompositeEntity)
+                    configuration.getEntity("actor library");
+            if (result == null) {
+                // Create an empty library by default.
+                result = new CompositeEntity(workspace);
+                try {
+                    result.setName("topLibrary");
+                    // Put a marker in so that this is
+                    // recognized as a library.
+                    new Attribute(result, "_libraryMarker");
+                } catch (Exception ex) {
+                    throw new InternalErrorException(
+                            "Library configuration failed: " + ex);
+                }
+            }
+            return result;
+        } else {
+            return null;
+        }
     }
 
     /** Create a new graph pane.  Subclasses will override this to change
@@ -1967,7 +1845,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         _jgraph.getGraphPane().getGraphController();
                 AbstractBasicGraphModel model =
                         (AbstractBasicGraphModel)controller.getGraphModel();
-                CompositeEntity context = model.getPtolemyModel();
+                NamedObj context = model.getPtolemyModel();
 
                 _lastClassName = query.getStringValue("class");
                 

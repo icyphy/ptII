@@ -30,6 +30,38 @@
 
 package ptolemy.vergil.basic;
 
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+
+import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.actor.ExternalIOPortController;
+import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.Figure;
 import diva.canvas.connector.Connector;
 import diva.canvas.interactor.SelectionRenderer;
@@ -44,38 +76,6 @@ import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
-
-import ptolemy.actor.IOPort;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.ValueListener;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.actor.ExternalIOPortController;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-import ptolemy.vergil.toolbox.SnapConstraint;
-
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -504,7 +504,12 @@ public abstract class BasicGraphController extends AbstractGraphController
             AbstractBasicGraphModel graphModel =
                 (AbstractBasicGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
-            final CompositeEntity toplevel = graphModel.getPtolemyModel();
+            final NamedObj toplevel = graphModel.getPtolemyModel();
+            if (!(toplevel instanceof Entity)) {
+                throw new InternalErrorException(
+                "Cannot invoke NewPortAction on an object " +
+                "that is not an instance of Entity.");
+            }
             NamedObj container =
                 MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
@@ -550,7 +555,12 @@ public abstract class BasicGraphController extends AbstractGraphController
                             // it is done here.  When the graph controller
                             // gets around to handling this, it will draw
                             // the icon at this location.
-                            NamedObj newObject = toplevel.getPort(portName);
+                            // NOTE: The cast is safe because it is checked
+                            // above, and presumably a reasonable GUI would
+                            // provide no mechanism for creating a port on
+                            // something that is not an entity.
+                            NamedObj newObject =
+                                ((Entity)toplevel).getPort(portName);
                             Location location =
                                 (Location) newObject.getAttribute(locationName);
                             location.setLocation(point);

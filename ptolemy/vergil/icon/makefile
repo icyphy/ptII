@@ -54,14 +54,12 @@ JSRCS = \
 	BoxedValuesIcon.java \
 	CopyCatIcon.java \
 	EditorIcon.java \
-	IconEditor.java \
-	IconEditorPane.java \
 	ResizableAttributeControllerFactory.java \
 	ShapeIcon.java \
-	SimpleSelection.java \
+	SVGIcon.java \
+	TextIcon.java \
 	UpdatedValueIcon.java \
 	ValueIcon.java \
-	VersatileFigure.java \
 	XMLIcon.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="icon editor library" class="ptolemy.kernel.CompositeEntity">
+  <!-- Marker so that tree view expands the library. -->
+  <property name="_libraryMarker"
+            class="ptolemy.kernel.util.SingletonAttribute"/>
+  <input source="ptolemy/configs/annotation.xml"/>
+  <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+    <property name="width" value="30"/>
+    <property name="height" value="30"/>
+    <property name="centered" value="true"/>
+    <property name="fillColor" value="{1.0, 1.0, 1.0, 1.0}"/>
+  </property>
+  <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+  </property>
+  <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+    <property name="x" value="40.0"/>
+    <property name="y" value="0.0"/>
+  </property>
+  <property name="polygon" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+    <property name="vertices" value="{0.0, 0.0, 20.0, 0.0, 5.0, 20.0, -15.0, 20.0}"/>
+    <property name="centered" value="true"/>
+    <property name="fillColor" value="{1.0, 1.0, 1.0, 1.0}"/>
+  </property>
+  <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+    <property name="width" value="60"/>
+    <property name="height" value="40"/>
+    <property name="centered" value="true"/>
+    <property name="fillColor" value="{1.0, 1.0, 1.0, 1.0}"/>
+  </property>
+</entity>

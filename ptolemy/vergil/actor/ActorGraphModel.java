@@ -30,14 +30,11 @@
 
 package ptolemy.vergil.actor;
 
-import diva.graph.GraphEvent;
-import diva.graph.GraphUtilities;
-import diva.graph.modular.CompositeModel;
-import diva.graph.modular.CompositeNodeModel;
-import diva.graph.modular.EdgeModel;
-import diva.graph.modular.MutableEdgeModel;
-import diva.graph.modular.NodeModel;
-import diva.util.NullIterator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -57,12 +54,14 @@ import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 import ptolemy.vergil.kernel.Link;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import diva.graph.GraphEvent;
+import diva.graph.GraphUtilities;
+import diva.graph.modular.CompositeModel;
+import diva.graph.modular.CompositeNodeModel;
+import diva.graph.modular.EdgeModel;
+import diva.graph.modular.MutableEdgeModel;
+import diva.graph.modular.NodeModel;
+import diva.util.NullIterator;
 
 // NOTE: The inner classes here should be factored out as independent
 // classes, and the resulting NodeModel hierarchy should be carefully
@@ -107,7 +106,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** Construct a new graph model whose root is the given composite entity.
      *  @param composite The top-level composite entity for the model.
      */
-    public ActorGraphModel(CompositeEntity composite) {
+    public ActorGraphModel(NamedObj composite) {
         super(composite);
         _linkSet = new HashSet();
         _update();
@@ -167,7 +166,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     }
 
     /** Return the model for the given composite object.
-     *  In this class, return an instance of CompositeEntityModel
+     *  In this class, return an instance of CompositePtolemyModel
      *  if the object is the root object of this graph model, and return
      *  an instance of IconModel if the object is a location contained
      *  by an entity.  Otherwise return null.
@@ -358,9 +357,13 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         }
 
         // Now create Links for links that may be new
-        Iterator relations = getPtolemyModel().relationList().iterator();
-        while (relations.hasNext()) {
-            _updateLinks((ComponentRelation)relations.next());
+        NamedObj ptolemyModel = getPtolemyModel();
+        if (ptolemyModel instanceof CompositeEntity) {
+            Iterator relations = ((CompositeEntity)ptolemyModel)
+                    .relationList().iterator();
+            while (relations.hasNext()) {
+                _updateLinks((ComponentRelation)relations.next());
+            }
         }
         return true;
     }
@@ -804,7 +807,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             StringBuffer moml = new StringBuffer();
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
-            CompositeEntity container =
+            NamedObj container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
             // create moml to unlink any existing.
@@ -924,7 +927,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         tail instanceof ComponentPort) {
                     ComponentPort headPort = (ComponentPort)head;
                     ComponentPort tailPort = (ComponentPort)tail;
-                    CompositeEntity ptolemyModel = getPtolemyModel();
+                    NamedObj ptolemyModel = getPtolemyModel();
                     // Linking two ports with a new relation.
                     String relationName =
                         ptolemyModel.uniqueName("relation");

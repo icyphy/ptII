@@ -69,7 +69,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
 
     /** Return the graph parent of the given node.
      *  @param node The node, which is assumed to be an instance of Locatable.
-     *  @return The container of th location's container, which should be
+     *  @return The container of the location's container, which should be
      *   the root of the graph.
      */
     public Object getParent(Object node) {

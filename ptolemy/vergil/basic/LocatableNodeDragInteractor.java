@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
@@ -202,7 +201,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         moml.append("</group>\n");
 
         // Finally create and register the undo entry;
-        CompositeEntity toplevel = (CompositeEntity)graphModel.getRoot();
+        NamedObj toplevel = (NamedObj)graphModel.getRoot();
         MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel, moml.toString());
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
         undoInfo.push(newEntry);

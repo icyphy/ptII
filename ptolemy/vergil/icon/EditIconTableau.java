@@ -1,4 +1,4 @@
-/* A graph editor for Ptolemy II models.
+/* An icon editor for Ptolemy II models.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -28,39 +28,37 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.actor;
+package ptolemy.vergil.icon;
+
+import java.awt.Color;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.icon.EditorIcon;
-
-import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////
-//// GraphTableau
+//// EditIconTableau
 /**
-This is a graph editor for ptolemy models.  It constructs an instance
-of ActorGraphFrame, which contains an editor pane based on diva.
+This is an icon editor for ptolemy models.  It constructs an instance
+of EditIconFrame, which contains an editor pane based on diva.
 
-@see ActorGraphFrame
-@author  Steve Neuendorffer and Edward A. Lee
+@see EditIconFrame
+@author  Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ActorGraphTableau extends Tableau {
+public class EditIconTableau extends Tableau {
 
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
      */
-    public ActorGraphTableau(Workspace workspace)
+    public EditIconTableau(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
@@ -70,7 +68,7 @@ public class ActorGraphTableau extends Tableau {
      *  @param container The container.
      *  @param name The name.
      */
-    public ActorGraphTableau(PtolemyEffigy container,
+    public EditIconTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
@@ -82,7 +80,7 @@ public class ActorGraphTableau extends Tableau {
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
      */
-    public ActorGraphTableau(
+    public EditIconTableau(
             PtolemyEffigy container,
             String name,
             LibraryAttribute defaultLibrary)
@@ -95,18 +93,19 @@ public class ActorGraphTableau extends Tableau {
             if (model == null) {
                 return;
             }
-            if (!(model instanceof CompositeEntity)) {
-                throw new IllegalActionException(this,
-                        "Cannot graphically edit a model "
-                        + "that is not a CompositeEntity. Model is a "
-                        + model);
-            }
-            CompositeEntity entity = (CompositeEntity)model;
+            if (model instanceof EditorIcon) {
+                EditorIcon entity = (EditorIcon)model;
 
-            ActorGraphFrame frame = new ActorGraphFrame(
-                    entity, this, defaultLibrary);
-            setFrame(frame);
-            frame.setBackground(BACKGROUND_COLOR);
+                EditIconFrame frame = new EditIconFrame(
+                        entity, this, defaultLibrary);
+                setFrame(frame);
+                frame.setBackground(BACKGROUND_COLOR);
+                return;
+            } else {
+                throw new IllegalActionException(this,
+                        "Cannot edit an icon "
+                        + "that is not an instance of EditorIcon.");
+            }
         }
     }
 
@@ -119,7 +118,7 @@ public class ActorGraphTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
 
-    /** A factory that creates graph editing tableaux for Ptolemy models.
+    /** A factory that creates icon editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
 
@@ -145,7 +144,7 @@ public class ActorGraphTableau extends Tableau {
          *  return value and call show().
          *
          *  @param effigy The model effigy.
-         *  @return A new ActorGraphTableau, if the effigy is a
+         *  @return A new EditIconTableau, if the effigy is a
          *  PtolemyEffigy, or null otherwise.
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
@@ -153,15 +152,16 @@ public class ActorGraphTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a graphTableau.
-                ActorGraphTableau tableau =
-                    (ActorGraphTableau)effigy.getEntity("graphTableau");
+                EditIconTableau tableau =
+                    (EditIconTableau)effigy.getEntity("editIconTableau");
                 if (tableau == null) {
                     // Check to see whether this factory contains a
                     // default library.
+                    // FIXME: It probabaly should!
                     LibraryAttribute library = (LibraryAttribute)getAttribute(
                             "_library", LibraryAttribute.class);
-                    tableau = new ActorGraphTableau(
-                            (PtolemyEffigy)effigy, "graphTableau", library);
+                    tableau = new EditIconTableau(
+                            (PtolemyEffigy)effigy, "editIconTableau", library);
                 }
                 // Don't call show() here, it is called for us in
                 // TableauFrame.ViewMenuListener.actionPerformed()
