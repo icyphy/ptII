@@ -74,8 +74,8 @@ import java.util.List;
 //// ASTReflect.
 /** Create an Abstract Syntax Tree (AST) for a class by using reflection.
 
-These methods operate on Java code that has been compiled
-and is available at runtime for inspection by using the Java reflection
+These methods operate on Java code that has been compiled and is
+available at runtime for inspection by using the Java reflection
 capability.
 
 @version $Id$
@@ -90,7 +90,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The ClassDeclNode of that class. 
      */
-    public static ClassDeclNode ASTClassDeclNode(Class myClass) {
+    public final static ClassDeclNode ASTClassDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 
@@ -160,7 +160,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The CompileUnitNode of that class. 
      */
-    public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
+    public final static CompileUnitNode ASTCompileUnitNode(Class myClass) {
 
         NameNode packageName = null;
         if (myClass.getPackage() == null ) {
@@ -198,11 +198,11 @@ public class ASTReflect {
     }
 
     /** Return a list of constructors where each element contains
-     *  an AST for that constructor.   
+     *  a ConstructorDeclNode for that constructor.   
      *  @param myClass The class to be analyzed.
      *  @return The List of constructors for the class.
      */
-    public static List constructorsASTList(Class myClass) {
+    public final static List constructorsASTList(Class myClass) {
 	List constructorList = new LinkedList();
 	Constructor constructors[] = myClass.getDeclaredConstructors();
 	Constructor constructor = null;
@@ -242,7 +242,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The List of fields for the class.
      */
-    public static List fieldsASTList(Class myClass) {
+    public final static List fieldsASTList(Class myClass) {
 	List fieldList = new LinkedList();
 	Field fields[] = myClass.getDeclaredFields();
 	for(int i = 0; i < fields.length; i++) {
@@ -273,7 +273,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The List of ClassDeclNodes for the inner classes of the class.
      */
-    public static List innerClassesASTList(Class myClass) {
+    public final static List innerClassesASTList(Class myClass) {
 	List innerClassList = new LinkedList();
 	// Handle inner classes
 	Class classes[] = myClass.getDeclaredClasses();
@@ -285,9 +285,9 @@ public class ASTReflect {
 
     /** Return an AST that contains an interface declaration. 
      *  @param myClass The class to be analyzed.
-     *  @return The InterfaceDeclNode of the class
+     *  @return The InterfaceDeclNode of the class.
      */
-    public static InterfaceDeclNode ASTInterfaceDeclNode(Class myClass) {
+    public final static InterfaceDeclNode ASTInterfaceDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 
@@ -344,7 +344,7 @@ public class ASTReflect {
      *  @param loadedAST The CompileUnitNode of the class
      *  @return The full package name of the class
      */
-    public static String getPackageName(CompileUnitNode loadedAST) {
+    public final static String getPackageName(CompileUnitNode loadedAST) {
 	// FIXME: This get(0) worries me.
         StringBuffer packageBuffer =
 	    new StringBuffer(((UserTypeDeclNode) loadedAST.
@@ -360,20 +360,21 @@ public class ASTReflect {
     }
 
 
-    /** Given a pathname, try to find a class that corresponds with it
-     *  by starting with the filename and adding directories from the
-     *  pathname until we find a class or run through all the directories.
+    /** Given a class name, try to find a class that corresponds with it
+     *  by first looking in the set of currently loaded packagtes and then
+     *  by searching the directories in SearchPath.NAMED_PATH.
      *  If a class is not found, return null.
      *  @param className The name of the class, which may or may
      *  not be fully qualified.
      *  @return The Class object.
+     *  @see SearchPath
      */
-    public static Class lookupClass(String className) {
+    public final static Class lookupClass(String className) {
         try {
             // The classname was something like java.lang.Object
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            // The classclassName was something like Object, so
+            // The className was something like Object, so
             // we search the loaded packages.
             // FIXME: we could try optimizing this so we
             // look in java.lang first, which is where
@@ -408,6 +409,7 @@ public class ASTReflect {
                     }
                 }
             }
+            // Generate a list of packages for use in the error message.
             StringBuffer packageBuffer = new StringBuffer();
             for(int i = 0; i < packages.length; i++) {
                 packageBuffer.append(packages[i].getName() + " ");
@@ -423,18 +425,18 @@ public class ASTReflect {
 
     /** Lookup a class by name, return the ClassDeclNode
      *  @param className The name of the class.
-     *  @return The ClassDeclNode that represents the class
+     *  @return The ClassDeclNode that represents the class.
      */
-    public static ClassDeclNode lookupClassDeclNode(String className) {
+    public final static ClassDeclNode lookupClassDeclNode(String className) {
             return ASTClassDeclNode(lookupClass(className));
     }
 
-    /** Return a list of methods where each element contains
-     *  a MethodDeclNode for that field.
+    /** Return a list of methods for a class where each element contains
+     *  a MethodDeclNode for that method
      *  @param myClass The class to be analyzed.
-     *  @return The List of Methods for the class.
+     *  @return The List of methods for the class.
      */
-    public static List methodsASTList(Class myClass) {
+    public final static List methodsASTList(Class myClass) {
 	List methodList = new LinkedList();
 	Method methods[] = myClass.getDeclaredMethods();
 	Method method = null;
@@ -474,20 +476,20 @@ public class ASTReflect {
     }
 
 
-    /** Given a pathname, try to find a class that corresponds with it
+    /** Given a path name, try to find a class that corresponds with it
      *  by starting with the filename and adding directories from the
-     *  pathname until we find a class or run through all the directories.
+     *  path name until we find a class or run through all the directories.
      *  If the class is to be found, it must be compiled an loaded into
-     *  the runtime system at the time this method runs.
+     *  the JVM runtime system at the time this method runs.
      *  If a class is not found, return null.
-     *  @param pathname  The pathname of the classname to lookup.  The
-     *  pathname consists of directories separated by File.separatorChar's
+     *  @param pathName  The path name of the classname to lookup.  The
+     *  path name consists of directories separated by File.separatorChar's
      *  with an optional suffix.
      *  @return The Class object that represents the class.
      */
-    public static Class pathnameToClass(String pathname) {
+    public final static Class pathNameToClass(String pathName) {
         try {
-            return Class.forName(new String(pathname));
+            return Class.forName(new String(pathName));
         } catch (Exception e) {}
 
 	Class myClass = null;
@@ -496,17 +498,17 @@ public class ASTReflect {
 	// and then adding directories as we go along
 
 	StringBuffer classname = null;
-	if(pathname.lastIndexOf('.') != -1) {
+	if(pathName.lastIndexOf('.') != -1) {
 	    // Strip out anything after the last '.', such as .java
 	    classname =
 		new StringBuffer(StringManip.baseFilename(
-                        StringManip.partBeforeLast(pathname, '.')));
+                        StringManip.partBeforeLast(pathName, '.')));
 	} else {
-	    classname = new StringBuffer(StringManip.baseFilename(pathname));
+	    classname = new StringBuffer(StringManip.baseFilename(pathName));
 	}
 
 	// restOfPath contains the directories that we add one by one.
-	String restOfPath = pathname;
+	String restOfPath = pathName;
 
 	while (true) {
 	    try {
@@ -532,7 +534,7 @@ public class ASTReflect {
     }
 
     /** Print the AST of the command line argument for testing purposes. */
-    public static void main(String[] args) {
+    public final static void main(String[] args) {
 	try {
 	    System.out.println("ast: " +
                     ASTCompileUnitNode(lookupClass(args[0])));
