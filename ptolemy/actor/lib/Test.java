@@ -214,7 +214,7 @@ public class Test extends NonStrictTest {
     }
 
     /** Override the base class to do nothing and return true.
-     *  @returns True.
+     *  @return True.
      */
     public boolean postfire() {
         return true;
