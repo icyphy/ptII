@@ -1,6 +1,6 @@
 /* A request to undo.
 
- Copyright (c) 2000-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,6 +44,7 @@ MoMLChangeRequest.
 <p>
 @author Edward A. Lee and Neil Smyth
 @version $Id$
+@since Ptolemy II 3.1
 */
 public class UndoChangeRequest extends ChangeRequest {
 

@@ -1,6 +1,6 @@
 /* An attribute that holds the undo/redo information about a model.
 
- Copyright (c) 2000-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -57,7 +57,7 @@ the model and so must be cleared.
 @see UndoAction
 @author Neil Smyth and Edward A. Lee
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 3.1
 */
 public class UndoStackAttribute extends SingletonAttribute {
 
@@ -86,23 +86,6 @@ public class UndoStackAttribute extends SingletonAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Merge the top two undo entries into a single action. If there
-     *  are fewer than two entries on the stack, do nothing.
-     */
-    public void mergeTopTwo() {
-        if (_undoEntries.size() > 1) {
-            final UndoAction actionLast = (UndoAction)_undoEntries.pop();
-            final UndoAction actionFirst = (UndoAction)_undoEntries.pop();
-            UndoAction newAction = new UndoAction() {
-                public void execute() throws Exception {
-                    actionFirst.execute();
-                    actionLast.execute();
-                }
-            };
-            _undoEntries.push(newAction);
-        }
-    }
-
     /** Get the UndoStackAttribute associated with the given object.
      *  This is done by searching up the containment hierarchy until
      *  such an attribute is found. If no such attribute is found,
@@ -129,17 +112,34 @@ public class UndoStackAttribute extends SingletonAttribute {
         }
     }
 
-    /** Remove the top undo action and execute it.
-     *  If there are no undo entries, do nothing.
+    /** Merge the top two undo entries into a single action. If there
+     *  are fewer than two entries on the stack, do nothing.
      */
-    public void undo() throws Exception {
-        if (_undoEntries.size() > 0) {
-            UndoAction action = (UndoAction)_undoEntries.pop();
-            try {
-                _inUndo = true;
-                action.execute();
-            } finally {
-                _inUndo = false;
+    public void mergeTopTwo() {
+        if (_undoEntries.size() > 1) {
+            final UndoAction actionLast = (UndoAction)_undoEntries.pop();
+            final UndoAction actionFirst = (UndoAction)_undoEntries.pop();
+            UndoAction newAction = new UndoAction() {
+                public void execute() throws Exception {
+                    actionFirst.execute();
+                    actionLast.execute();
+                }
+            };
+            _undoEntries.push(newAction);
+        }
+    }
+
+    /** Push an action to the undo stack, or if we are executing an undo,
+     *  onto the redo stack.
+     *  @param action The undo action.
+     */
+    public void push(UndoAction action) {
+        if (_inUndo) {
+            _redoEntries.push(action);
+        } else {
+            _undoEntries.push(action);
+            if (!_inRedo) {
+                _redoEntries.clear();
             }
         }
     }
@@ -159,17 +159,17 @@ public class UndoStackAttribute extends SingletonAttribute {
         }
     }
 
-    /** Push an action to the undo stack, or if we are executing an undo,
-     *  onto the redo stack.
-     *  @param action The undo action.
+    /** Remove the top undo action and execute it.
+     *  If there are no undo entries, do nothing.
      */
-    public void push(UndoAction action) {
-        if (_inUndo) {
-            _redoEntries.push(action);
-        } else {
-            _undoEntries.push(action);
-            if (!_inRedo) {
-                _redoEntries.clear();
+    public void undo() throws Exception {
+        if (_undoEntries.size() > 0) {
+            UndoAction action = (UndoAction)_undoEntries.pop();
+            try {
+                _inUndo = true;
+                action.execute();
+            } finally {
+                _inUndo = false;
             }
         }
     }
