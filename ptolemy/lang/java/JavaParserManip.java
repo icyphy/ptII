@@ -105,6 +105,9 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
                     " : " + e);
 	}
 
+    if (StaticResolution.traceLoading) 
+        System.out.println("Starting full loading with file '" + filename + "'"); 
+
 	p.yydebug = debug;
 	p.yyparse();
 
