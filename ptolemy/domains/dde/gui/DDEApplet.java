@@ -111,7 +111,6 @@ public class DDEApplet extends PtolemyApplet {
 	    _director = new DDEDirector(_toplevel, "DDEDirector");
 
             String stopSpec = getSingleParameter("stopTime");
-	    System.out.println("stopSpec = " + stopSpec);
             if (stopSpec != null) {
                 double stopTime = (new Double(stopSpec)).doubleValue();
                 _stopTimeGiven = true;
@@ -145,8 +144,6 @@ public class DDEApplet extends PtolemyApplet {
 	    if( params[i][0].equals(name) ) {
 		newParams[i][1] = value;
 	    }
-	    System.out.println("param " +i+ ": " + newParams[i][0] + ", "
-		    + newParams[i][1] + ", " + newParams[i][2] + ".");
 	}
 
 	_params = newParams;
@@ -177,7 +174,8 @@ public class DDEApplet extends PtolemyApplet {
             stopTimePanel.add(new Label("Stop time:"));
 
             // Process the default iterations parameter.
-            String defaultStopSpec = getSingleParameter("defaultStopTime");
+            String defaultStopSpec = 
+		    getSingleParameter("defaultStopTime");
             if (defaultStopSpec == null) {
                 defaultStopSpec = "100.0";
             }
@@ -200,7 +198,8 @@ public class DDEApplet extends PtolemyApplet {
 	if( _director == null ) {
 	    return result;
 	} else {
-	    Parameter dirStopTime = (Parameter)_director.getAttribute("stopTime");
+	    Parameter dirStopTime = 
+		    (Parameter)_director.getAttribute("stopTime");
 	    try {
 	        result = ((DoubleToken)dirStopTime.getToken()).doubleValue();
 	    } catch( IllegalActionException e ) {
@@ -224,7 +223,8 @@ public class DDEApplet extends PtolemyApplet {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
-	Parameter dirStopTime = (Parameter)_director.getAttribute("stopTime");
+	Parameter dirStopTime = 
+	        (Parameter)_director.getAttribute("stopTime");
 	dirStopTime.setToken( new DoubleToken(_getStopTime()) );
         super._go();
     }
