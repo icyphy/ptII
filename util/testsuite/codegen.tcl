@@ -389,10 +389,10 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	set javaCommand [list sh $PTII/bin/copernicus]
 #	set javaCommand [list java -classpath "$PTII$separator$PTII/lib/soot.jar$separator$PTII/lib/jasmin.jar" -Dptolemy.ptII.dir=$PTII ptolemy.copernicus.kernel.Copernicus]
 
+	set execCommand [concat $javaCommand $args]
         puts "Running Copernicus: $execCommand"
 	#    	java::new ptolemy.copernicus.kernel.Copernicus $args
 	
-	puts "length of execCommand: [llength $execCommand]"
 	set results [eval exec $execCommand]
 	puts $results
 
