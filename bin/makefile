@@ -121,8 +121,6 @@ all: ptinvoke
 	ln -s ptinvoke ptjaclapp
 	rm -f ptstartjini
 	ln -s ptinvoke ptstartjini
-	rm -f ptjini
-	ln -s ptinvoke ptjini
 	rm -f ptolemy
 	ln -s ptinvoke ptolemy
 	rm -f ptplot
