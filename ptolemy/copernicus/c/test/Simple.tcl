@@ -87,10 +87,7 @@ test Simple-1.1 {Generate all required files for Simple.java} {
             pathSeparator]$builtinClasspath[java::field java.io.File\
             pathSeparator]$rtjar
     
-    # Generate the .class file. This is not needed for built-in classes
-    # like java.lang.Object.
-    # exec javac $javaFile
-    
+    # Set the command-line arguments.
     set args [java::new {String[]} 4 \
         [list \
         $classpath \
@@ -100,9 +97,9 @@ test Simple-1.1 {Generate all required files for Simple.java} {
         ]]
 
     set errors $className-err.txt
-
-    # Take the class file to the output directory. All other files can now
-    # be generated there.
+    
+    # Generate the .class file. This is not needed for built-in classes
+    # like java.lang.Object.
     exec javac $javaFile
     
     # Generate the code.

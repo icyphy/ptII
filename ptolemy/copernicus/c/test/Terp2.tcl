@@ -50,10 +50,10 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Terp-1.1 {Generate all required files for Terp.java} {
+test Terp2-1.1 {Generate all required files for Terp2.java} {
 
-    set outputDir testOutput/Terp.out
-    set className Terp
+    set outputDir testOutput/Terp2.out
+    set className Terp2
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -87,7 +87,7 @@ test Terp-1.1 {Generate all required files for Terp.java} {
     set classpath .[java::field java.io.File\
             pathSeparator]$builtinClasspath[java::field java.io.File\
             pathSeparator]$rtjar
-   
+    
     # Set the command-line arguments.
     set args [java::new {String[]} 4 \
         [list \
@@ -98,7 +98,7 @@ test Terp-1.1 {Generate all required files for Terp.java} {
         ]]
 
     set errors $className-err.txt
-
+    
     # Generate the .class file. This is not needed for built-in classes
     # like java.lang.Object.
     exec javac $javaFile
@@ -110,15 +110,15 @@ test Terp-1.1 {Generate all required files for Terp.java} {
     exec make depend -s -f $makeFile
     #This creates the .mk file.
     exec make -s -f $mkFile
-
+    
     # Move all generated files to the output directory.
     file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
-            $mkFile $exeFile $outputDir
-    
+            $mkFile $exeFile Out.c Out.h Out_i.h $outputDir 
+
     # Run the automatically generated executible.
     cd $outputDir
     exec $exeFile
- 
+    
 } {Fear the Turtle!!!
 }
 

@@ -1,5 +1,5 @@
-# Tests Copernicus C Code generation for the Terp example that outputs a
-# string saying "Fear the Terp".
+# Tests Copernicus C Code generation for the printInt example that outputs
+# the number "42".
 #
 # @Author: Ankush Varma
 #
@@ -50,10 +50,10 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Terp-1.1 {Generate all required files for Terp.java} {
+test printInt-1.1 {Generate all required files for printInt.java} {
 
-    set outputDir testOutput/Terp.out
-    set className Terp
+    set outputDir testOutput/Array1.out
+    set className Array1
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -74,21 +74,24 @@ test Terp-1.1 {Generate all required files for Terp.java} {
     # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
 	file delete -force $outputDir
-    } 
+    }
     
     # Create the output directory.
     file mkdir $outputDir
 
 
     # We need to get the classpath so that we can run if we are running
-    # under Javascope, which includes classes in a zip file.
+    # under Javascope, which includes classes in a zip file
     set builtinClasspath [java::call System getProperty "java.class.path"]
     set rtjar [java::call System getProperty "sun.boot.class.path"]
     set classpath .[java::field java.io.File\
             pathSeparator]$builtinClasspath[java::field java.io.File\
             pathSeparator]$rtjar
-   
-    # Set the command-line arguments.
+
+    # Generate the .class file. This is not needed for built-in classes
+    # like java.lang.Object.
+    exec javac $javaFile
+    
     set args [java::new {String[]} 4 \
         [list \
         $classpath \
@@ -99,10 +102,6 @@ test Terp-1.1 {Generate all required files for Terp.java} {
 
     set errors $className-err.txt
 
-    # Generate the .class file. This is not needed for built-in classes
-    # like java.lang.Object.
-    exec javac $javaFile
-    
     # Generate the code.
     #java::call ptolemy.copernicus.c.JavaToC main $args
     exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath -lib $outputDir/j2c_lib $className
@@ -110,15 +109,26 @@ test Terp-1.1 {Generate all required files for Terp.java} {
     exec make depend -s -f $makeFile
     #This creates the .mk file.
     exec make -s -f $mkFile
+    
+    
 
     # Move all generated files to the output directory.
     file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
-            $mkFile $exeFile $outputDir
+            $mkFile $exeFile $outputDir 
     
     # Run the automatically generated executible.
     cd $outputDir
     exec $exeFile
- 
-} {Fear the Turtle!!!
+    
+} {0
+10
+20
+30
+40
+50
+60
+70
+80
+90
 }
 

@@ -40,7 +40,7 @@ ROOT =		../../../..
 
 # $PTII/configure looks for Soot and JHDL and sets
 # variables in $PTII/mk/ptII.mk
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES);.
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -50,20 +50,26 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
+# Write these in alphabetical order ONLY.
 JSRCS = \
-	Simple.java \
-	FIRSingle.java
+	FIRSingle.java \
+        Simple.java
 
-# Non-graphical Java tests written in Tcl
+# Non-graphical Java tests written in Tcl. List these in alphabetical order
+# ONLY.
 JSIMPLE_TESTS = \
-    FIR.tcl \
+	Array1.tcl \
+	CountDown.tcl \
+	FIR.tcl \
 	FIRSingle.tcl \
 	Object.tcl \
 	ObjectSingle.tcl \
+	printInt.tcl \
 	ramp.tcl \
 	Simple.tcl \
 	SimpleSingle.tcl \
-        Terp.tcl
+	Terp.tcl\
+        Terp2.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

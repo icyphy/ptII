@@ -52,8 +52,8 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test Terp-1.1 {Generate all required files for Terp.java} {
 
-    set outputDir testOutput/Terp.out
-    set className Terp
+    set outputDir testOutput/CountDown.out
+    set className CountDown
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -81,13 +81,13 @@ test Terp-1.1 {Generate all required files for Terp.java} {
 
 
     # We need to get the classpath so that we can run if we are running
-    # under Javascope, which includes classes in a zip file.
+    # under Javascope, which includes classes in a zip file
     set builtinClasspath [java::call System getProperty "java.class.path"]
     set rtjar [java::call System getProperty "sun.boot.class.path"]
     set classpath .[java::field java.io.File\
             pathSeparator]$builtinClasspath[java::field java.io.File\
             pathSeparator]$rtjar
-   
+    
     # Set the command-line arguments.
     set args [java::new {String[]} 4 \
         [list \
@@ -119,6 +119,16 @@ test Terp-1.1 {Generate all required files for Terp.java} {
     cd $outputDir
     exec $exeFile
  
-} {Fear the Turtle!!!
+} {10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
 }
 
