@@ -31,7 +31,10 @@ package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.util.Attribute;
 
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.expr.Variable;
@@ -91,11 +94,27 @@ public abstract class Action extends Attribute {
     public Action(Transition transition, String name)
             throws IllegalActionException, NameDuplicationException {
         super(transition, name);
-        _evaluationVariable = new Variable(transition, "_" + name);
+        _evalVar = new Variable(transition, "_" + name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the action into the specified workspace by calling the
+     *  base class clone() method. This does not clone the variable
+     *  for expression evaluation. It is cloned when the transition
+     *  containing this action is cloned.
+     *  @param ws The workspace for the new action.
+     *  @return A new action.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        Action newobj = (Action)super.clone(ws);
+        newobj._evalVar = null;
+        return newobj;
+    }
 
     /** Execute the action.
      *  @exception IllegalActionException If the action cannot be
@@ -128,8 +147,8 @@ public abstract class Action extends Attribute {
                     "Transition.");
         }
         super.setContainer(container);
-        if (_evaluationVariable != null) {
-            _evaluationVariable.setContainer(container);
+        if (_evalVar != null) {
+            _evalVar.setContainer(container);
         }
     }
 
@@ -148,15 +167,55 @@ public abstract class Action extends Attribute {
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
         super.setName(name);
-        if (_evaluationVariable != null) {
-            _evaluationVariable.setName("_" + name);
+        if (_evalVar != null) {
+            _evalVar.setName("_" + name);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         protected methods                 ////
+
+    /** Return the variable for expression evaluation. If there is a
+     *  variable in the transition containing this action with name
+     *  obtained by prepending an underscore to the name of this action,
+     *  return that variable. Otherwise create and return a variable
+     *  with the obtained name.
+     *  @return The variable for expression evaluation.
+     */
+    protected Variable _evaluationVariable() {
+        if (_evalVar != null) {
+            return _evalVar;
+        }
+        try {
+            Transition cont = (Transition)getContainer();
+            String vname = "_" + getName();
+            if (cont == null) {
+                // Create the variable for expression evaluation.
+                _evalVar = new Variable(workspace());
+                _evalVar.setName(vname);
+            } else {
+                Attribute attr = cont.getAttribute(vname);
+                if (attr instanceof Variable) {
+                    _evalVar = (Variable)attr;
+                } else {
+                    if (attr != null) {
+                        attr.setContainer(null);
+                    }
+                    _evalVar = new Variable(cont, vname);
+                }
+            }
+        } catch (KernelException ex) {
+            throw new InternalErrorException(getFullName()
+                    + " cannot create variable for expression"
+                    + " evaluation: " + ex.getMessage());
+        }
+        return _evalVar;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The variable for expression evaluation.
-    protected Variable _evaluationVariable = null;
+    private Variable _evalVar = null;
 
 }

@@ -29,6 +29,7 @@
 
 package ptolemy.domains.fsm.kernel;
 
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -122,8 +123,25 @@ public class SetVariable extends Action implements CommitAction {
         }
         if (attribute == expression) {
             StringToken tok = (StringToken)expression.getToken();
-            _evaluationVariable.setExpression(tok.toString());
+            _evaluationVariable().setExpression(tok.toString());
         }
+    }
+
+    /** Clone the action into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer
+     *  to the parameters of the new action.
+     *  @param ws The workspace for the new action.
+     *  @return A new action.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        SetVariable newobj = (SetVariable)super.clone(ws);
+        newobj.expression = (Parameter)newobj.getAttribute("expression");
+        newobj.variableName = (Parameter)newobj.getAttribute("variableName");
+        newobj._variableVersion = -1;
+        return newobj;
     }
 
     /** Take the token from evaluating the expression specified by the
@@ -135,7 +153,7 @@ public class SetVariable extends Action implements CommitAction {
      */
     public void execute() throws IllegalActionException {
         Variable var = _getVariable();
-        var.setToken(_evaluationVariable.getToken());
+        var.setToken(_evaluationVariable().getToken());
     }
 
     ///////////////////////////////////////////////////////////////////

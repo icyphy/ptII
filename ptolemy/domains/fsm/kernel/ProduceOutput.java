@@ -29,6 +29,7 @@
 
 package ptolemy.domains.fsm.kernel;
 
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -117,6 +118,21 @@ public class ProduceOutput extends BroadcastOutput {
         }
     }
 
+    /** Clone the action into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer
+     *  to the parameters of the new action.
+     *  @param ws The workspace for the new action.
+     *  @return A new action.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        ProduceOutput newobj = (ProduceOutput)super.clone(ws);
+        newobj.channel = (Parameter)newobj.getAttribute("channel");
+        return newobj;
+    }
+
     /** Take the token from evaluating the expression specified by the
      *  <i>expression</i> parameter and send it to all connected
      *  receivers of the channel specified by the <i>channel</i> and
@@ -128,7 +144,7 @@ public class ProduceOutput extends BroadcastOutput {
     public void execute() throws IllegalActionException {
         IOPort port = _getPort();
         try {
-            port.send(_channel, _evaluationVariable.getToken());
+            port.send(_channel, _evaluationVariable().getToken());
         } catch (NoRoomException ex) {
             throw new IllegalActionException(this, "Cannot complete "
                     + "action: " + ex.getMessage());

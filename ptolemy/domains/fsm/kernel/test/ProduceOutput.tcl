@@ -65,6 +65,19 @@ test ProduceOutput-1.2 {container must be a transition or null} {
 } {.act0 ._act0 {ptolemy.kernel.util.IllegalActionException: .r1 and .act0:
 Action can only be contained by instances of Transition.}}
 
+test ProduceOutput-1.3 {test clone} {
+    $act0 setContainer $t0
+    set w0 [java::new ptolemy.kernel.util.Workspace]
+    set t1 [java::cast ptolemy.domains.fsm.kernel.Transition \
+            [$t0 clone $w0]]
+    set act0clone [java::cast ptolemy.domains.fsm.kernel.BroadcastOutput \
+            [$t1 getAttribute act0]]
+    set v0 [java::field $act0clone expression]
+    $v0 setToken [java::new ptolemy.data.StringToken "1 + 1"]
+    set v1 [java::cast ptolemy.data.expr.Variable [$t1 getAttribute _act0]]
+    list [$v1 getExpression]
+} {{1 + 1}}
+
 ######################################################################
 ####
 #

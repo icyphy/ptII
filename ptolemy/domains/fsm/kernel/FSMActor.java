@@ -37,6 +37,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -160,6 +161,27 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             _initialStateVersion = -1;
         }
     }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer
+     *  to the parameters of the new actor.
+     *  @param ws The workspace for the new actor.
+     *  @return A new FSMActor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        FSMActor newobj = (FSMActor)super.clone(ws);
+        newobj.initialStateName =
+                (Parameter)newobj.getAttribute("initialStateName");
+        newobj._inputPortsVersion = -1;
+        newobj._outputPortsVersion = -1;
+        newobj._connectionMapsVersion = -1;
+        newobj._initialStateVersion = -1;
+        return newobj;
+    }
+
 
     /** Return the current state of this actor.
      *  @return The current state of this actor.
@@ -396,6 +418,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        _lastChosenTransition = null;
         return true;
     }
 

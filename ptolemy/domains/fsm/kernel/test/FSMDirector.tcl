@@ -311,3 +311,94 @@ test FSMDirector-6.1 {test transferInputs} {
     list $re0 $re1 $re2 $re3 $re4
 } {6 0 0 6 ..e1.fsm.s0}
 
+######################################################################
+####
+#
+test FSMDirector-7.1 {test clone a modal model} {
+    set e0 [deModel 3.5]
+    set clk [java::new ptolemy.actor.lib.Clock $e0 clk]
+    set src [java::new ptolemy.actor.lib.Ramp $e0 src]
+    set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
+    [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
+    [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
+    set tok [java::new {ptolemy.data.IntToken int} 3]
+    [java::field $src step] setToken $tok
+
+    set e1 [java::new ptolemy.actor.TypedCompositeActor]
+    $e1 setName e1
+    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
+    set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
+    set tok [java::new {ptolemy.data.IntToken int} 6]
+    [java::field $e2 value] setToken $tok
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
+    set tok [java::new ptolemy.data.StringToken fsm]
+    [java::field $dir controllerName] setToken $tok
+    set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
+    $p0 setInput true
+    set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    $p1 setInput true
+    set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    $p2 setOutput true
+    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+    $p0 link $r2
+    $p1 link $r2
+    [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
+    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+    $p3 setOutput true
+    $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+    $p2 link $r3
+    $p3 link $r3
+
+    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
+    set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
+    set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
+    set t1 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t1]
+    set t2 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t2]
+    [java::field $s0 outgoingPort] link $t0
+    [java::field $s1 incomingPort] link $t0
+    [java::field $s1 outgoingPort] link $t1
+    [java::field $s0 incomingPort] link $t1
+    [java::field $s0 outgoingPort] link $t2
+    [java::field $s1 incomingPort] link $t2
+    set tok [java::new ptolemy.data.StringToken s0]
+    [java::field $fsm initialStateName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken e2]
+    [java::field $s0 refinementName] setToken $tok
+    [java::field $s1 refinementName] setToken $tok
+    $t0 setGuardExpression "p1_V > 5"
+    $t1 setPreemptive true
+    $t1 setGuardExpression "p1_V > 0"
+    $t2 setPreemptive true
+    $t2 setGuardExpression "p1_V > 5"
+    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
+    set tok [java::new ptolemy.data.StringToken p2]
+    [java::field $act0 portName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken 1]
+    [java::field $act0 expression] setToken $tok
+    set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
+    set tok [java::new ptolemy.data.StringToken p2]
+    [java::field $act1 portName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken p1_V]
+    [java::field $act1 expression] setToken $tok
+    set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
+    set tok [java::new ptolemy.data.StringToken p2]
+    [java::field $act2 portName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken 0]
+    [java::field $act2 expression] setToken $tok
+
+    set e1clone [java::cast ptolemy.actor.TypedCompositeActor \
+            [$e1 clone]]
+    $e1clone setContainer $e0
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
+    [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
+    [$e1clone getPort p0] link $r1
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
+    [$e1clone getPort p3] link $r4
+    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
+
+    [$e0 getManager] execute
+    listToStrings [$rec getHistory 0]
+} {1 3 0 9}

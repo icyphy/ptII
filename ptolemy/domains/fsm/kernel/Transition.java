@@ -33,6 +33,7 @@ import ptolemy.kernel.ComponentRelation;
 
 import ptolemy.kernel.Port;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
@@ -96,6 +97,15 @@ public class Transition extends ComponentRelation {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    // Parameter for evaluating guard.
+    public Parameter guard = null;
+
+    // Parameter for evaluating trigger.
+    public Parameter trigger = null;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the list of choice actions contained by this transition.
@@ -106,6 +116,24 @@ public class Transition extends ComponentRelation {
             _updateActionLists();
         }
         return _choiceActionList;
+    }
+
+    /** Clone the transition into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer to
+     *  the parameters of the new transition.
+     *  @param ws The workspace for the new transition.
+     *  @return A new transition.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        Transition newobj = (Transition)super.clone(ws);
+        newobj.guard = (Parameter)newobj.getAttribute("guard");
+        newobj.trigger = (Parameter)newobj.getAttribute("trigger");
+        newobj._actionListsVersion = -1;
+        newobj._stateVersion = -1;
+        return newobj;
     }
 
     /** Return the list of commit actions contained by this transition.
@@ -236,15 +264,6 @@ public class Transition extends ComponentRelation {
         }
         return _sourceState;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    // Parameter for evaluating guard.
-    public Parameter guard = null;
-
-    // Parameter for evaluating trigger.
-    public Parameter trigger = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

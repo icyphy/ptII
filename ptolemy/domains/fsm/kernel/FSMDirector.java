@@ -160,6 +160,24 @@ public class FSMDirector extends Director {
         }
     }
 
+    /** Clone the director into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer
+     *  to the parameters of the new director.
+     *  @param ws The workspace for the new director.
+     *  @return A new director.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        FSMDirector newobj = (FSMDirector)super.clone(ws);
+        newobj.controllerName =
+                (Parameter)newobj.getAttribute("controllerName");
+        newobj._controllerVersion = -1;
+        newobj._localReceiverMapsVersion = -1;
+        return newobj;
+    }
+
     /** Set the values of input variables in the mode controller. Examine
      *  the preemptive outgoing transitions of its current state. Throw an
      *  exception if there is more than one transition enabled. If there

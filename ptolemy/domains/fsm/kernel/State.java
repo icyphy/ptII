@@ -33,6 +33,7 @@ import ptolemy.kernel.ComponentEntity;
 
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -130,6 +131,26 @@ public class State extends ComponentEntity {
         if (attribute == refinementName) {
             _refinementVersion = -1;
         }
+    }
+
+    /** Clone the state into the specified workspace. This calls the
+     *  base class and then sets the parameter and port public members
+     *  to refer to the parameters and ports of the new state.
+     *  @param ws The workspace for the new state.
+     *  @return A new state.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        State newobj = (State)super.clone(ws);
+        newobj.incomingPort = (ComponentPort)newobj.getPort("incomingPort");
+        newobj.outgoingPort = (ComponentPort)newobj.getPort("outgoingPort");
+        newobj.refinementName =
+                (Parameter)newobj.getAttribute("refinementName");
+        newobj._refinementVersion = -1;
+        newobj._transitionListVersion = -1;
+        return newobj;
     }
 
     /** Return the refinement of this state. The name of the refinement
