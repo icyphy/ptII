@@ -559,11 +559,13 @@ public class Parameter extends Attribute implements ParameterListener {
         // of the new Token is compatible with the type of this Parameter.
         ptolemy.data.Token prev = _token;
         _token = token;
-        try {
-            _checkType(_token.getClass());
-        } catch (IllegalArgumentException e) {
-            _token = prev;
-            throw e;
+        if (_token != null) {
+            try {
+                _checkType(_token.getClass());
+            } catch (IllegalArgumentException e) {
+                _token = prev;
+                throw e;
+            }
         }
 
         // New Token is compatible.
