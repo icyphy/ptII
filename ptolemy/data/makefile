@@ -72,7 +72,7 @@ JSRCS = \
 	MatrixToken.java \
 	NullToken.java \
 	ObjectToken.java \
-	Param.java \
+	Parameter.java \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
