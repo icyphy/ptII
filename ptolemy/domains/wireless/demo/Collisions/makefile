@@ -47,7 +47,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Collisions.xml
+	Collisions.xml \
+	CollisionsDeterministic.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
