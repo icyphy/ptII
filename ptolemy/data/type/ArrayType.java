@@ -274,9 +274,10 @@ public class ArrayType extends StructuredType {
 
     // FIXME: we are using this for codegen, see
     // codegen/PtolemyTypeIdentifier.java
+    public static final ArrayType ARRAY_TYPE = new ArrayType(BaseType.UNKNOWN);
     public static final ArrayType INT_ARRAY_TYPE = new ArrayType(BaseType.INT);
-    public static final ArrayType DOUBLE_ARRAY_TYPE =
-         new ArrayType(BaseType.DOUBLE);
+    public static final ArrayType DOUBLE_ARRAY_TYPE = new ArrayType(BaseType.DOUBLE);
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
