@@ -30,8 +30,13 @@
 
 package ptolemy.actor.util;
 
+// Java imports
 import java.applet.Applet;
 import java.awt.*;
+import java.awt.event.*;
+
+// Ptolemy imports
+import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplet
@@ -67,7 +72,10 @@ public class PtolemyApplet extends Applet {
         return pinfo;
     }
 
-    /** Initialize the applet.  This processes a background color parameter.
+    /** Initialize the applet. This method creates a manager and
+     *  a top-level composite actor, both of which are accessible
+     *  to derived classes via protected members.
+     *  It also processes a background color parameter.
      *  If the background color parameter has not been set, then the
      *  background color is set to white.
      */
@@ -83,6 +91,15 @@ public class PtolemyApplet extends Applet {
             report("Warning: background parameter failed: ", ex);
         }
         setBackground(_background);
+
+        try {
+            _manager = new Manager();
+            _toplevel = new TypedCompositeActor();
+            _toplevel.setName("topLevel");
+            _toplevel.setManager(_manager);
+        } catch (Exception ex) {
+            report("Setup of manager and top level actor failed:\n", ex);
+        }
     }
 
     /** Report an exception.  This prints a message to the standard error
@@ -104,9 +121,69 @@ public class PtolemyApplet extends Applet {
     }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Create run controls and add them to the specified panel.
+     *  The second argument controls exactly how many controls are
+     *  created.  A "Go" button is always created.  If the second
+     *  argument is greater than zero, then a "Stop" button is also
+     *  created.
+     */
+    protected void _createRunControls(Panel panel, int extent) {
+        _goButton = new Button("Go");
+        panel.add(_goButton);
+        _goButton.addActionListener(new GoButtonListener());
+        if (extent > 0) {
+            _stopButton = new Button("Stop");
+            panel.add(_stopButton);
+            _stopButton.addActionListener(new StopButtonListener());
+        }
+    }
+
+    /** Execute the system.
+     */
+    protected void _go() {
+        _manager.startRun();
+    }
+
+    /** Stop the execution.
+     */
+    protected void _stop() {
+        _manager.finish();
+    }
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
     /** The background color set as a parameter.
      */
     protected Color _background;
+
+    /** The manager, created in the init() method. */
+    protected Manager _manager;
+
+    /** The top-level composite actor, created in the init() method. */
+    protected TypedCompositeActor _toplevel;
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    private Button _goButton;
+    private Button _stopButton;
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                       inner classes                            ////
+
+    private class GoButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            _go();
+        }
+    }
+
+    private class StopButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            _stop();
+        }
+    }
+
 }
