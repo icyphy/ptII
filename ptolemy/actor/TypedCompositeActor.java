@@ -50,7 +50,7 @@ The container is constrained to be an instance of TypedCompositeActor.
 Derived classes may impose further constraints by overriding setContainer().
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 @see ptolemy.actors.TypedIOPort
 @see ptolemy.actors.TypedIORelation
 @see ptolemy.actors.TypedActor

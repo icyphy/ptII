@@ -36,7 +36,7 @@ import ptolemy.kernel.util.KernelException;
 Thrown on detecting a type conflict.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 public class TypeConflictException extends KernelException {
 

@@ -54,7 +54,7 @@ of this method, which should be suitable for most of the derived classes.
 
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 @see ptolemy.actors.AtomicActor
 @see ptolemy.actors.TypedCompositeActor
 @see ptolemy.actors.TypedIOPort

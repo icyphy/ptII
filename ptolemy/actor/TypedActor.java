@@ -38,7 +38,7 @@ This interface defines the method to get type constraints from
 an actor.  The ports on a TypedActor are constrainted to be TypedIOPorts.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 @see ptolemy.actors.TypedCompositeActor
 @see ptolemy.actors.TypedAtomicActor
 @see ptolemy.actors.TypedIOPort
