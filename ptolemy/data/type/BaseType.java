@@ -208,16 +208,17 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final BooleanType BOOLEAN = new BooleanType();
 
-    /** The byte data type */
-    public static class ByteType extends BaseType {
-	private ByteType() {
-	    super(ByteToken.class, "byte");
+    /** The unsigned byte data type */
+    public static class UnsignedByteType extends BaseType {
+	private UnsignedByteType() {
+	    super(UnsignedByteToken.class, "unsignedByte");
 	}
 	public Token convert(Token t) throws IllegalActionException {
-	    return ByteToken.convert(t);
+	    return UnsignedByteToken.convert(t);
 	}
     }
-    public static final ByteType BYTE = new ByteType();
+    public static final UnsignedByteType UNSIGNED_BYTE =
+        new UnsignedByteType();
 
     /** The boolean matrix data type */
     public static class BooleanMatrixType extends BaseType {

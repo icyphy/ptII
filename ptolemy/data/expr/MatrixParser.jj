@@ -3,7 +3,7 @@
 
 options {
     LOOKAHEAD=1;
-    STATIC = true;
+    STATIC = true;                             
 }
 
 
@@ -146,11 +146,11 @@ Vector matrix() :
      } else {
        jjtree.popNode();
      }
-     if (jjte000 instanceof ParseException) {
-       throw (ParseException)jjte000;
-     }
      if (jjte000 instanceof RuntimeException) {
        throw (RuntimeException)jjte000;
+     }
+     if (jjte000 instanceof ParseException) {
+       throw (ParseException)jjte000;
      }
      throw (Error)jjte000;
    } finally {
@@ -190,11 +190,11 @@ Vector row() :
      } else {
        jjtree.popNode();
      }
-     if (jjte000 instanceof ParseException) {
-       throw (ParseException)jjte000;
-     }
      if (jjte000 instanceof RuntimeException) {
        throw (RuntimeException)jjte000;
+     }
+     if (jjte000 instanceof ParseException) {
+       throw (ParseException)jjte000;
      }
      throw (Error)jjte000;
    } finally {

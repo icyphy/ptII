@@ -58,7 +58,6 @@ JSRCS = \
 	ArrayToken.java \
 	BooleanMatrixToken.java \
 	BooleanToken.java \
-        ByteToken.java \
 	ComplexMatrixToken.java \
 	ComplexToken.java \
 	DoubleMatrixToken.java \
@@ -75,7 +74,8 @@ JSRCS = \
 	RecordToken.java \
 	ScalarToken.java \
 	StringToken.java \
-	Token.java
+	Token.java \
+        UnsignedByteToken.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -52,7 +52,6 @@ JSIMPLE_TESTS = \
 	ArrayToken.tcl \
 	BooleanToken.tcl \
 	BooleanMatrixToken.tcl \
-	ByteToken.tcl \
 	ComplexMatrixToken.tcl \
 	ComplexToken.tcl \
 	DoubleMatrixToken.tcl \
@@ -66,7 +65,8 @@ JSIMPLE_TESTS = \
 	ObjectToken.tcl \
 	RecordToken.tcl \
 	StringToken.tcl \
-	Token.tcl
+	Token.tcl \
+	UnsignedByteToken.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

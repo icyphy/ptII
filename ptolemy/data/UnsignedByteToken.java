@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@robotics.eecs.berkeley.edu)
-@AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
+@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 
 */
 
@@ -42,28 +42,21 @@ import ptolemy.data.type.TypeLattice;
 //////////////////////////////////////////////////////////////////////////
 //// UnsignedByteToken
 /**
-A token that contains a byte number in the range 0 through 255.  This
-UnsignedByteToken definition is in contrast to Java's definition of a
-byte as a number in the range -128 through 127.
+A token that contains an unsigned byte number in the range 0 through 255.
+This is in contrast to Java's default that a byte is in the range
+-128 through 127.  To get our desired behavior we need only apply
+a custom conversion <i>unsignedConvert()</i> from byte to integer.
+Conversion to byte already gives the desired behavior of truncating
+the value, keeping the lowest 8 bits.  Thus, for example, the integers
+-1 and 1023 both truncate to the byte 255.  Throughout the code, casts
+(byte) to byte occur.  These are necessary because Java converts to
+integer or higher by default when doing arithmetic.  Java does this
+even when the types of both operands are byte.
 
-Overflow and underflow are handled by returning the result of all
-operations modulo 256.  Thus, the result is always in the range 0
-through 255.  Likewise, constructors of this class generate tokens
-whose values are the argument modulo 256.  Note, for example, that
-UnsignedByteToken((byte)(-100)) generates a UnsignedByteToken representing the value
-156, which is -100 modulo 256.
-
-Note, also, that the byteValue() method returns a Java byte in the
-range -128 through 127.  This is in contrast to the intValue(),
-longValue(), doubleValue(), and complexValue() methods which all
-return values in the range 0 through 255.  The value returned by
-byteValue() is the value represented by the UnsignedByteToken but with 256
-subtracted if this value is greater than 127.  In other words, the
-result and the argument are equal modulo 256.
-
-@author Winthrop Williams, Steve Neuendorffer, Contributor: Christopher Hylands
+@author Winthrop Williams
 @version $Id$
-@since Ptolemy II 2.0 */
+@since Ptolemy II 2.0
+*/
 public class UnsignedByteToken extends ScalarToken {
 
     /** Construct a token with byte 0.
@@ -72,38 +65,29 @@ public class UnsignedByteToken extends ScalarToken {
         _value = 0;
     }
 
-    /** Construct a UnsignedByteToken with the specified byte value.  The
-     *  UnsignedByteToken constructed represents a value in the range 0
-     *  through 255.  However, the byte passed in as the argument to
-     *  this method represents a value in Java in the range -128 to
-     *  127.  Due to the difference between these definitions, this
-     *  method effectively adds 256 if the argument is negative,
-     *  resulting in a positive value for the UnsignedByteToken.
+    /** Construct a UnsignedByteToken with the specified byte value.
      */
     public UnsignedByteToken(byte value) {
         _value = value;
     }
 
-    /** Construct a UnsignedByteToken with the specified integer value.  The
-     *  UnsignedByteToken constructed represents a value in the range 0
-     *  through 255.  However, the integer passed in as the argument
-     *  to this method represents a value in Java in the range -2^31
-     *  to (2^31)-1.  This method's cast to (byte) keeps only the low
-     *  order 8 bits of the integer.  This effectively adds or
-     *  subtracts a multiple of 256 to/from the argument.  The
-     *  resulting UnsignedByteToken falls in the range 0 through 255.
+    /** Construct a UnsignedByteToken from the specified integer.  This takes
+     * the low 8 bits and discards the rest.  Having this form (which
+     * takes an integer) in addition to the one above (which takes a
+     * byte) avoids us having to cast to byte when calling
+     * constructors such as those called from within the one() and
+     * zero() methods.
      */
     public UnsignedByteToken(int value) {
         _value = (byte)value;
     }
 
-    /** Construct a UnsignedByteToken from the specified string.  The string
-     *  is parsed by the valueOf() method of the Java Byte object.
+    /** Construct a UnsignedByteToken from the specified string.
      *  @exception IllegalActionException If the token could not
      *   be created from the given string.
      */
     public UnsignedByteToken(String init) throws IllegalActionException {
-        try {
+	try {
             _value = (Byte.valueOf(init)).byteValue();
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
@@ -112,6 +96,76 @@ public class UnsignedByteToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a UnsignedByteToken containing the absolute value (which, for
+     *  bytes, equals the value) of this token.  Since we have defined
+     *  the byte as ranging from 0 through 255, its absolute value is
+     *  equal to itself.  Although this method does not actually do
+     *  anything, it is included to make the UnsignedByteToken interface
+     *  compatible with the interfaces of the other types.
+     *  @return An UnsignedByteToken.
+     */
+    public ScalarToken absolute() {
+        UnsignedByteToken result;
+	result = new UnsignedByteToken(_value);
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
+    }
+
+    /** Return a new token whose value is the sum of this token
+     *  and the argument.  Type resolution also occurs here, with
+     *  the returned token type chosen to achieve a lossless conversion.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or
+     *   the units of this token and the argument token are not the same.
+     */
+    public Token add(ptolemy.data.Token rightArgument)
+            throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, rightArgument);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            UnsignedByteToken unsignedByteToken;
+            if (typeInfo == CPO.HIGHER) {
+                unsignedByteToken =
+		  (UnsignedByteToken)UnsignedByteToken.convert(rightArgument);
+            } else {
+                unsignedByteToken = (UnsignedByteToken)rightArgument;
+            }
+            byte sum = (byte)(_value + unsignedByteToken.byteValue());
+            UnsignedByteToken result = new UnsignedByteToken(sum);
+            if ( !_areUnitsEqual(unsignedByteToken)) {
+                throw new IllegalActionException(
+                        "The units of this token: " + unitsString()
+                        + " are not the same as those of the argument: "
+                        + unsignedByteToken.unitsString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.addReverse(this);
+        } else {
+            throw new IllegalActionException("annot add "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
+        }
+    }
+
+    /** Return a new token whose value is the sum of this token and
+     *  the argument. Type resolution also occurs here, with the
+     *  returned token type chosen to achieve a lossless conversion.
+     *  @param leftArgument The token to add this token to.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or
+     *   the units of this token and the argument token are not the same.
+     */
+    public Token addReverse(ptolemy.data.Token leftArgument)
+            throws IllegalActionException {
+        return this.add(leftArgument);
+    }
 
     /** Return the value of this token as a Complex. The real part
      *  of the Complex is the value of this token, the imaginary part
@@ -123,42 +177,104 @@ public class UnsignedByteToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of UnsignedByteToken.
-     *  If the argument is already an instance of UnsignedByteToken, it is
-     *  returned without any change. Otherwise, if the argument is
-     *  above UnsignedByteToken in the type hierarchy or is incomparable with
-     *  UnsignedByteToken, an exception is thrown with a message stating that
-     *  either the conversion is not supported, or the types are
-     *  incomparable.  If none of the above conditions is met, then the
-     *  argument must be below UnsignedByteToken in the type hierarchy.
-     *  However, not such types exist at this time, so an exception is
-     *  thrown with a message stating simply that the conversion is
-     *  not supported.
+     *  This method does lossless conversion, or throws an exception
+     *  if it cannot.  If the argument is already an instance of
+     *  UnsignedByteToken, it is returned without any change. Otherwise, if
+     *  the argument is below UnsignedByteToken in the type hierarchy, it is
+     *  converted to an instance of UnsignedByteToken or one of the subclasses
+     *  of UnsignedByteToken and returned. If none of the above condition is
+     *  met, an exception is thrown.
      *  @param token The token to be converted to a UnsignedByteToken.
      *  @return A UnsignedByteToken.
      *  @exception IllegalActionException If the conversion
-     *   cannot be carried out.
-     */
-    public static UnsignedByteToken convert(Token token)
-            throws IllegalActionException {
-        if (token instanceof UnsignedByteToken) {
-            return (UnsignedByteToken)token;
-        }
-
+     *   cannot be carried out.  */
+    public static Token convert(Token token) throws IllegalActionException {
         int compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "byte"));
+            throw new IllegalActionException("Type of argument: "
+		    + token.getClass().getName()
+                    + " is higher or incomparable with UnsignedByteToken "
+		    + "in the type "
+                    + "hierarchy.");
         }
 
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "byte"));
+        if (token instanceof UnsignedByteToken) {
+            return token;
+        }
+
+	// This is where conversion from a lower type (such as nibble)
+        // would be carried out.  But byte is the bottom of this string
+        // in the CPO so nothing is done here.  (However, when creating
+        // this byte type, I had to also add a section here to the int
+        // type!  Previously int was bottom.)
+
+        throw new IllegalActionException("Cannot convert from token " +
+                "type: " + token.getClass().getName()
+		+ " to an UnsignedByteToken");
     }
 
-    /** Return the value in the token as a double.  First, the
-     *  unsignedConvert() method of this class is used to
-     *  convert the byte to an integer in the range 0 through 255.
-     *  Then this integer is cast to a double.
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token.  Type resolution
+     *  also occurs here, with the returned token type chosen to
+     *  achieve a lossless conversion.  If two bytes are divided, then
+     *  the result will be a byte containing the quotient.  For
+     *  example, 255 divided by 10 returns 25.
+     *  @param divisor The token to divide this token by
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  of a type that cannot divide this token.
+     */
+    public Token divide(Token divisor) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, divisor);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            UnsignedByteToken unsignedByteToken;
+            if (typeInfo == CPO.HIGHER) {
+                unsignedByteToken =
+		  (UnsignedByteToken)UnsignedByteToken.convert(divisor);
+            } else {
+                unsignedByteToken = (UnsignedByteToken)divisor;
+            }
+            byte quotient = (byte) (unsignedConvert(_value)
+	            / unsignedConvert(unsignedByteToken.byteValue()));
+            UnsignedByteToken result = new UnsignedByteToken(quotient);
+            // compute units
+            result._unitCategoryExponents =
+                _subtractCategoryExponents(unsignedByteToken);
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return divisor.divideReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "UnsignedByteToken.divide: Cannot divide "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " by "
+                    + divisor.getClass().getName() + " " + divisor.toString());
+        }
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  divided by the value of this token. Type resolution
+     *  also occurs here, with the returned token type chosen to achieve
+     *  a lossless conversion.
+     *  @param dividend The token to be divided by the value of this token.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be divided by this token's value.
+     *  @return A new token containing the result.
+     */
+    public Token divideReverse(Token dividend) throws IllegalActionException {
+        UnsignedByteToken unsignedByteToken =
+	  (UnsignedByteToken)UnsignedByteToken.convert(dividend);
+        byte quotient = (byte)(unsignedConvert(unsignedByteToken.byteValue())
+                / unsignedConvert(_value));
+        UnsignedByteToken result = new UnsignedByteToken(quotient);
+
+        // compute units
+        result._unitCategoryExponents =
+            unsignedByteToken._subtractCategoryExponents(this);
+        return result;
+    }
+
+    /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
@@ -172,15 +288,15 @@ public class UnsignedByteToken extends ScalarToken {
      *  UnsignedByteToken with the same value.
      */
     public boolean equals(Object object) {
-        // This test rules out subclasses.
-        if (object.getClass() != UnsignedByteToken.class) {
-            return false;
-        }
+	// This test rules out subclasses.
+	if (object.getClass() != UnsignedByteToken.class) {
+	    return false;
+	}
 
-        if (((UnsignedByteToken)object).byteValue() == _value) {
-            return true;
-        }
-        return false;
+	if (((UnsignedByteToken)object).byteValue() == _value) {
+	    return true;
+	}
+	return false;
     }
 
     /** Return the type of this token.
@@ -195,40 +311,246 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        return _value;
+	return _value;
     }
 
-    /** Return the value in this token as a byte, modulo 256.  The
-     *  UnsignedByteToken being converted represents a value in the range 0
-     *  through 255.  However, the Java byte it is being converted to
-     *  represents a value in the range -128 through 127.  Thus, this
-     *  method has the effect subtracting 256 from the value if the
-     *  value is greater than 127.
-     *  @return The byte value contained in this token, modulo 256.
+    /** Test the value and units of this token and the argument token
+     *  for equality.  Units need not match, this merely causes the
+     *  test to return false.  Type resolution also occurs here, and
+     *  lossless conversion is performed prior to comparison.  The
+     *  returned type is boolean, regardless of the types compared.
+     *  @param token The token with which to test equality.
+     *  @return a boolean token that contains the value true if both
+     *   the value and the units of this token are equal to those of
+     *   the argument token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, token);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            UnsignedByteToken unsignedByteToken;
+            if (typeInfo == CPO.HIGHER) {
+                unsignedByteToken =
+		  (UnsignedByteToken)UnsignedByteToken.convert(token);
+            } else {
+                unsignedByteToken = (UnsignedByteToken)token;
+            }
+
+            if (_value == unsignedByteToken.byteValue()
+                    && _areUnitsEqual(unsignedByteToken)) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            }
+
+        } else if (typeInfo == CPO.LOWER) {
+            return token.isEqualTo(this);
+        } else {
+            throw new IllegalActionException(
+                    "Cannot compare "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + token.getClass().getName() + " " + token.toString()
+                    + " for equality.");
+        }
+    }
+
+    /** Check if the value of this token is strictly less than that of the
+     *  argument token.  Units must match or an exception is thrown.
+     *  @param token A ScalarToken.
+     *  @return A BooleanToken with value true if this token is strictly
+     *   less than the argument.
+     *  @exception IllegalActionException If the type of the argument token
+     *   is incomparable with the type of this token, or the units of this
+     *   token and the argument are not the same.
+     */
+    public BooleanToken isLessThan(ScalarToken token)
+            throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, token);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            UnsignedByteToken unsignedByteToken;
+            if (typeInfo == CPO.HIGHER) {
+                unsignedByteToken =
+		  (UnsignedByteToken)UnsignedByteToken.convert(token);
+            } else {
+                unsignedByteToken = (UnsignedByteToken)token;
+            }
+            if ( !_areUnitsEqual(unsignedByteToken)) {
+                throw new IllegalActionException(
+                        "The units of this token: " + unitsString()
+                        + " are not the same as those of the argument: "
+                        + unsignedByteToken.unitsString());
+            }
+            if (_value < unsignedByteToken.byteValue()) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            }
+        } else if (typeInfo == CPO.LOWER) {
+
+            if (token.isEqualTo(this).booleanValue()) {
+                return new BooleanToken(false);
+            } else {
+                return token.isLessThan(this).not();
+            }
+
+        } else {
+            throw new IllegalActionException(
+                    "Cannot check whether "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " is less than "
+                    + token.getClass().getName() + " " + token.toString());
+        }
+    }
+
+    /** Return the value in the token as a byte.
+     *  @return The byte value contained in this token.
      */
     public byte byteValue() {
         return _value;
     }
 
-    /** Return the value in the token as an integer.  The UnsignedByteToken
-     *  being converted to an integer represents a value in the range
-     *  0 through 255.  The unsignedConvert() method of this class is
-     *  used to convert the byte to an integer in the range 0 through
-     *  255.
-     *  @return The byte value contained in this token as a int.
+    //FIXME - Seems this caused some problem so I took it out.
+    // Now that it is back in it may cause trouble again.
+    /** Return the value in the token as an int.
+     *  @return The byte  value contained in this token as a int.
      */
     public int intValue() {
         return unsignedConvert(_value);
     }
 
-    /** Return the value in the token as a long.  The UnsignedByteToken being
-     *  converted to a long represents a value in the range 0 through
-     *  255.  The unsignedConvert() method of this class is used to
-     *  convert the byte to an integer in the range 0 through 255.
-     *  @return The byte value contained in this token as a long.
+    /** Return the value in the token as a long.
+     *  @return The byte  value contained in this token as a long.
      */
     public long longValue() {
         return (long) unsignedConvert(_value);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.  Type resolution also
+     *  occurs here, with the returned token type chosen to achieve a
+     *  lossless conversion.
+     *  @param rightArgument The token to modulo this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be  used with modulo, or the units of
+     *   this token and the argument token are not the same.
+     */
+    public Token modulo(Token rightArgument) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, rightArgument);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            UnsignedByteToken unsignedByteToken;
+            if (typeInfo == CPO.HIGHER) {
+                unsignedByteToken =
+		  (UnsignedByteToken)UnsignedByteToken.convert(rightArgument);
+            } else {
+                unsignedByteToken = (UnsignedByteToken)rightArgument;
+            }
+            byte remainder = (byte) (unsignedConvert(_value)
+                    % unsignedConvert(unsignedByteToken.byteValue()));
+            UnsignedByteToken result = new UnsignedByteToken(remainder);
+            if ( !_areUnitsEqual(unsignedByteToken)) {
+                throw new IllegalActionException(
+                        "The units of this token: " + unitsString()
+                        + " are not the same as those of the argument: "
+                        + unsignedByteToken.unitsString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.moduloReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "Cannot compute the modulo of "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
+        }
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  token modulo the value of this token.  Type resolution also
+     *  occurs here, with the returned token type chosen to achieve a
+     *  lossless conversion.
+     *  @param leftArgument The token to apply modulo to by the value of
+     *   this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can apply modulo by this token, or
+     *   if the units of this token are not the same as those of the
+     *   argument.
+     */
+    public Token moduloReverse(Token leftArgument)
+            throws IllegalActionException {
+        UnsignedByteToken unsignedByteToken =
+            (UnsignedByteToken)UnsignedByteToken.convert(leftArgument);
+
+        byte remainder = (byte) (unsignedConvert(unsignedByteToken.byteValue())
+                % unsignedConvert(_value));
+        UnsignedByteToken result = new UnsignedByteToken(remainder);
+        if ( !_areUnitsEqual(unsignedByteToken)) {
+            throw new IllegalActionException(
+                    "The units of this token: " + unitsString()
+                    + " are not the same as those of the argument: "
+                    + unsignedByteToken.unitsString());
+        }
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  Type
+     *  resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param rightFactor The token to multiply this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be multiplied to this token.
+     */
+    public Token multiply(Token rightFactor) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, rightFactor);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            UnsignedByteToken unsignedByteToken;
+            if (typeInfo == CPO.HIGHER) {
+                unsignedByteToken =
+		  (UnsignedByteToken)UnsignedByteToken.convert(rightFactor);
+            } else {
+                unsignedByteToken = (UnsignedByteToken)rightFactor;
+            }
+            byte product = (byte)(unsignedConvert(_value)
+                    * unsignedConvert(unsignedByteToken.byteValue()));
+            UnsignedByteToken result = new UnsignedByteToken(product);
+            // compute units
+            result._unitCategoryExponents =
+	      _addCategoryExponents(unsignedByteToken);
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightFactor.multiplyReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "Cannot multiply "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " with "
+                    + rightFactor.getClass().getName() + " "
+                    + rightFactor.toString());
+        }
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  token multiplied by the value of this token.  Type resolution
+     *  also occurs here, with the returned token type chosen to
+     *  achieve a lossless conversion.
+     *  @param leftFactor The token to be multiplied by the value of
+     *   this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be multiplied by this token.
+     */
+    public Token multiplyReverse(Token leftFactor)
+            throws IllegalActionException {
+        return this.multiply(leftFactor);
     }
 
     /** Returns a new UnsignedByteToken with value 1.
@@ -236,6 +558,80 @@ public class UnsignedByteToken extends ScalarToken {
      */
     public Token one() {
         return new UnsignedByteToken(1);
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  token subtracted from the value of this token.  Type
+     *  resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param rightArgument The token to subtract from this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be subtracted from this token, or the units
+     *   of this token and the argument token are not the same.
+     */
+    public Token subtract(Token rightArgument) throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, rightArgument);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            UnsignedByteToken unsignedByteToken;
+            if (typeInfo == CPO.HIGHER) {
+                unsignedByteToken =
+		  (UnsignedByteToken)UnsignedByteToken.convert(rightArgument);
+            } else {
+                unsignedByteToken = (UnsignedByteToken)rightArgument;
+            }
+            byte difference = (byte) (unsignedConvert(_value)
+                    - unsignedConvert(unsignedByteToken.byteValue()));
+            UnsignedByteToken result = new UnsignedByteToken(difference);
+            if ( !_areUnitsEqual(unsignedByteToken)) {
+                throw new IllegalActionException(
+                        "The units of this token: " + unitsString()
+                        + " are not the same as those of the argument: "
+                        + unsignedByteToken.unitsString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.subtractReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "Cannot subtract "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " by "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
+        }
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  subtracted from the value of the argument token.  Type
+     *  resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param leftArgument The token to subtract this token from.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be added to this token, or the units of
+     *  this token and the argument token are not the same.
+     *  FIXME: byte (and int too) have less code in the
+     *  subtractReverse() method.  Something is not being handled
+     *  here.  CPO is not even being checked!!
+     */
+    public Token subtractReverse(Token leftArgument)
+            throws IllegalActionException {
+        UnsignedByteToken unsignedByteToken =
+	  (UnsignedByteToken)UnsignedByteToken.convert(leftArgument);
+        byte difference =
+	  (byte) (unsignedConvert(unsignedByteToken.byteValue())
+                - unsignedConvert(_value));
+        UnsignedByteToken result = new UnsignedByteToken(difference);
+        if ( !_areUnitsEqual(unsignedByteToken)) {
+            throw new IllegalActionException(
+                    "The units of this token: " + unitsString()
+                    + " are not the same as those of the argument: "
+                    + unsignedByteToken.unitsString());
+        }
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -247,26 +643,31 @@ public class UnsignedByteToken extends ScalarToken {
      *  @see ptolemy.data.ScalarToken#unitsString
      */
     public String toString() {
-        String unitString = "";
-        if ( !_isUnitless()) {
-            unitString = " * " + unitsString();
-        }
+	String unitString = "";
+	if ( !_isUnitless()) {
+	    unitString = " * " + unitsString();
+	}
         return Byte.toString(_value) + unitString;
     }
 
-    /** Convert a byte to an integer, treating the byte as an unsigned
-     *  value in the range 0 through 255.  Note that Java defines the
-     *  byte as having a value ranging from -128 through 127, so 256
-     *  is added if this value is negative.
-     *  @param value The byte to convert as an unsigned byte.
-     *  @return An integer in the range 0 through 255.
+    /** Convert the given unsigned byte to an integer.  This is
+     *  different from the default <i>(int)</i> conversion.  The
+     *  default (int) conversion yields negative values from bytes
+     *  whose high bit is true.  This is necessary because Java, by
+     *  default, interprets bytes as signed numbers.  We are
+     *  interested in unsigned bytes.  Conversion from integers to
+     *  bytes requires no hand coding.  This is because Java converts
+     *  to bytes by keeping just the least significant 8 bits.  It
+     *  pays no attention to sign in that conversion.
+     *  @param byte The byte to convert.
+     *  @return An integer between 0 and 255.
      */
-    public static int unsignedConvert(byte value) {
+    public int unsignedConvert(byte value) {
         int intValue = value;
         if (intValue < 0) {
-            intValue += 256;
-        }
-        return intValue;
+	    intValue += 256;
+	}
+	return intValue;
     }
 
     /** Returns a new UnsignedByteToken with value 0.
@@ -276,184 +677,9 @@ public class UnsignedByteToken extends ScalarToken {
         return new UnsignedByteToken(0);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return a ScalarToken containing the absolute value of the
-     *  value of this token. If this token contains a non-negative
-     *  number, it is returned directly; otherwise, a new token is is
-     *  return.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same.  Since we have defined
-     *  the byte as ranging from 0 through 255, its absolute value is
-     *  equal to itself.  Although this method does not actually do
-     *  anything, it is included to make the UnsignedByteToken interface
-     *  compatible with the interfaces of the other types.
-     *  @return An UnsignedByteToken.
-     */
-    protected ScalarToken _absolute() {
-        return this;
-    }
-
-    /** Return a new token whose value is the value of the argument
-     *  Token added to the value of this Token.  It is assumed that
-     *  the type of the argument is an UnsignedByteToken.  Overflow is handled
-     *  by subtracting 256 so that the resulting sum falls in the
-     *  range 0 through 255.
-     *  @param rightArgument The token to add to this token.
-     *  @return A new UnsignedByteToken containing the result.
-     */
-    protected ScalarToken _add(ScalarToken rightArgument) {
-        byte sum = (byte)(_value
-			  + ((UnsignedByteToken)rightArgument).byteValue());
-        return new UnsignedByteToken(sum);
-    }
-
-    /** Returns a token representing the bitwise AND of this token and
-     *  the given token.
-     *  @return The bitwise AND.
-     */
-    protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
-        byte sum = (byte)(_value
-			  & ((UnsignedByteToken)rightArgument).byteValue());
-        return new UnsignedByteToken(sum);
-    }
-
-   /** Returns a token representing the bitwise NOT of this token.
-     *  @return The bitwise NOT of this token.
-     */
-    protected ScalarToken _bitwiseNot() {
-        UnsignedByteToken result = new UnsignedByteToken((byte)~_value);
-        return result;
-    }
-
-    /** Returns a token representing the bitwise OR of this token and
-     *  the given token.
-     *  @return The bitwise OR.
-     */
-    protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
-        byte sum = (byte)(_value
-			  | ((UnsignedByteToken)rightArgument).byteValue());
-        return new UnsignedByteToken(sum);
-    }
-
-    /** Returns a token representing the bitwise XOR of this token and
-     *  the given token.
-     *  @return The bitwise XOR.
-     */
-    protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
-        byte sum = (byte)(_value
-			  ^ ((UnsignedByteToken)rightArgument).byteValue());
-        return new UnsignedByteToken(sum);
-    }
-
-    /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is an UnsignedByteToken.  The result will be
-     *  a byte containing the quotient.  For example, 255 divided by
-     *  10 returns 25.  This method does not test for or attempt to
-     *  prevent division by 0.
-     *  @param rightArgument The token to divide this token by.
-     *  @return A new UnsignedByteToken containing the result.  */
-    protected ScalarToken _divide(ScalarToken rightArgument) {
-        byte quotient = (byte) (unsignedConvert(_value)
-                / unsignedConvert(((UnsignedByteToken)rightArgument)
-				  .byteValue()));
-        return new UnsignedByteToken(quotient);
-    }
-
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  UnsignedByteToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  UnsignedByteToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
-            throws IllegalActionException {
-        UnsignedByteToken convertedArgument = (UnsignedByteToken)rightArgument;
-        return BooleanToken.getInstance(
-                _value == convertedArgument.byteValue());
-    }
-
-    /** Test for ordering of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  UnsignedByteToken.  This method applies the unsignedConvert() method
-     *  this token's value and to the argument prior to comparison.
-     *  This ensures that the UnsignedByteTokens' values are interpreted as
-     *  being in the range 0 through 255 by the less-than operator.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result.  */
-    protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-        UnsignedByteToken convertedArgument = (UnsignedByteToken)rightArgument;
-        return BooleanToken.getInstance(
-                unsignedConvert(_value)
-		< unsignedConvert(convertedArgument.byteValue()));
-    }
-
-    /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.  It is assumed that
-     *  the type of the argument is UnsignedByteToken.  This method does not
-     *  test for or attempt to prevent division by 0.
-     *  @param rightArgument The token to modulo this token by.
-     *  @return A new UnsignedByteToken containing the result.
-     */
-    protected ScalarToken _modulo(ScalarToken rightArgument) {
-        byte remainder = (byte) (unsignedConvert(_value)
-                % unsignedConvert(((UnsignedByteToken)rightArgument)
-				  .byteValue()));
-        return new UnsignedByteToken(remainder);
-    }
-
-    /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token.  It is assumed
-     *  that the type of the argument is UnsignedByteToken.  Overflow is
-     *  handled by subtracting the multiple of 256 which puts the
-     *  result into the range 0 through 255.  In other words, return
-     *  the product modulo 256.
-     *  @param rightArgument The token to multiply this token by.
-     *  @return A new UnsignedByteToken containing the product modulo 256.
-     */
-    protected ScalarToken _multiply(ScalarToken rightArgument) {
-        byte product = (byte) (unsignedConvert(_value)
-                * unsignedConvert(((UnsignedByteToken)rightArgument)
-				  .byteValue()));
-        return new UnsignedByteToken(product);
-    }
-
-    /** Return a new token whose value is the value of the argument
-     *  token subtracted from the value of this token.  It is assumed
-     *  that the type of the argument is UnsignedByteToken.  Underflow is
-     *  handled by adding 256 to the result if it is less than 0.
-     *  Thus the result is always in the range 0 through 255.
-     *  @param rightArgument The token to subtract from this token.
-     *  @return A new UnsignedByteToken containing the difference modulo 256.
-     */
-    protected ScalarToken _subtract(ScalarToken rightArgument) {
-        byte difference = (byte) (unsignedConvert(_value)
-                * unsignedConvert(((UnsignedByteToken)rightArgument)
-				  .byteValue()));
-        return new UnsignedByteToken(difference);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private byte _value;
 }
+
