@@ -131,10 +131,9 @@ public class VergilApplication extends MoMLApplication {
 			try {
 			    new VergilApplication(args);
 			} catch (Throwable throwable) {
-			    // Using JNI to link in a native library
-			    // can result in a java.lang.UnsatistifiedLineError
-			    // which extends Error, not Exception.
-			    _errorAndExit("Command failed", args, throwabl);
+                            // If we get an Error or and Exception while
+                            // configuring, we will end up here.
+			    _errorAndExit("Command failed", args, throwable);
 			}
 		    }
  		});
