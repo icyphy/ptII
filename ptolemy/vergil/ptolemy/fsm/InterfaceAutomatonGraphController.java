@@ -146,18 +146,10 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     File file = fileDialog.getSelectedFile().getCanonicalFile();
 		    URL url = file.toURL();
 
-		    Tableau tableau = getFrame().getTableau();
-		    // NOTE: The following is mostly copied from
-		    // Tableau._read()
-                    if (tableau == null) {
-                        throw new Exception("No associated Tableau!"
-                                + " Can't open a file.");
-                    }
                     // NOTE: Used to use for the first argument the following,
 		    // but it seems to not work for relative file references:
                     // new URL("file", null, _directory.getAbsolutePath()
-                    Configuration configuration =
-		            (Configuration)tableau.toplevel();
+                    Configuration configuration = getConfiguration();
                     Tableau newAutomatonTableau =
 		       configuration.openModel(url, url, url.toExternalForm());
 
