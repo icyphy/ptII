@@ -54,7 +54,6 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../..
 
 JSRCS = \
-	AliasRelation.java \
 	ComponentEntity.java \
 	ComponentPort.java \
 	ComponentRelation.java \
@@ -75,7 +74,8 @@ JSRCS = \
 	Port.java \
 	Relation.java \
 	StringToken.java \
-	Token.java
+	Token.java \
+	Workspace.java
 
 EXTRA_SRCS =	$(JSRCS)
 
