@@ -48,5 +48,29 @@ if {[info procs enumToObjects] == "" } then {
 ####
 #
 test ActorCodeGenerator-1.1 {} {
+    set codeGeneratorClassFactory \
+	    [java::call ptolemy.codegen.CodeGeneratorClassFactory getInstance]
+    set actorCodeGeneratorInfo \
+	    [java::new ptolemy.codegen.ActorCodeGeneratorInfo]
+    set outputDirectoryName "$PTII/cg/test"
+    set outputPackageName "cg.test"
+    set actorCodeGenerator \
+	    [java::new ptolemy.codegen.ActorCodeGenerator \
+	    $codeGeneratorClassFactory \
+	    $outputDirectoryName \
+	    $outputPackageName]
+
+    # Create a Ramp
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
+    java::field $actorCodeGeneratorInfo actor $ramp
+
+    # Set up some types
+    set output [java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
+    
+    $output setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+
+    # Generate Code
+    $actorCodeGenerator pass1 $actorCodeGeneratorInfo
 } {}
 
