@@ -69,12 +69,24 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
         super.init();
     }
 
+    /** Create a new Plot object to operate on.
+     */
+    public void newPlot() {
+        _myPlotLiveDemo = new PlotLiveDemo();
+    }
+
     /** 
      * Paint the graphics.
      */
     public void paint(Graphics graphics) {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: paint");
         plot().paint(graphics);
+    }
+
+    /** Return the Plot object to operate on.
+     */  
+    public Plot plot() {
+        return _myPlotLiveDemo;
     }
 
     /** 
@@ -126,21 +138,6 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
 //         paint(graphics);
 //         super.update(graphics);
 //     }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /** Create a new Plot object to operate on.
-     */
-    protected void newPlot() {
-        _myPlotLiveDemo = new PlotLiveDemo();
-    }
-
-    /** Return the Plot object to operate on.
-     */  
-    public Plot plot() {
-        return _myPlotLiveDemo;
-    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
