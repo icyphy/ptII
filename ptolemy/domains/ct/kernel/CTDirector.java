@@ -344,6 +344,51 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public abstract boolean canBeTopLevelDirector();
 
+    /** Register a (predictable) breakpoint at a future time. Actors
+     *  that want to register a predictable breakpoint should call
+     *  this method with itself and the breakpoint time as arguments.
+     *  The director will fire exactly at each registered time point.
+     *  From this director's point of view, it is irrelevant
+     *  which actor requests the breakpoint. All actors will be
+     *  executed at every breakpoint.
+     *  The first argument is used only for reporting
+     *  exceptions in this method.
+     *  @param actor The actor that requested the fire.
+     *  @param time The fire time.
+     *  @exception IllegalActionException If the time is earlier than
+     *  the current time.
+     */
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException{
+        if (time < getCurrentTime() - getTimeResolution()) {
+            throw new IllegalActionException((Nameable)actor,
+                    "Requested fire time: " + time + " is earlier than" +
+                    " the current time." + getCurrentTime() );
+        }
+        if (Math.abs(time - getCurrentTime()) < getTimeResolution()
+                && actor != null
+                && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
+            if (_debugging) _debug(((Nameable)actor).getName(),
+                    "requests refire at current time" + getCurrentTime());
+            // These actors will be fired in the discrete phase
+            // at the current time.
+            if (_refireActors == null) {
+                _refireActors = new LinkedList();
+            }
+            _refireActors.add(actor);
+        } else {
+            // Otherwise, the fireAt request is in the future. So we
+            // insert it to the breakpoint table.
+            // Note that the _breakPoints may be null if an actor calls
+            // fireAt() in its constructor.
+            if (_breakPoints == null) {
+                _breakPoints = new TotallyOrderedSet(
+                        new FuzzyDoubleComparator(_timeResolution));
+            }
+            _breakPoints.insert(new Double(time));
+        }
+    }
+
     /** Return the breakpoint table. If the breakpoint table has never
      *  been created, then return null. This method is final
      *  for performance reason.
@@ -369,12 +414,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _currentStepSize;
     }
 
-    /** Return the begin time of the current iteration. This method is final
+    /** Return the local truncation error tolerance, used by
+     *  variable step size solvers. This method is final
      *  for performance reason.
-     *  @return The begin time of the current iteration.
+     *  @return The local truncation error tolerance.
      */
-    public final double getIterationBeginTime() {
-        return _iterationBeginTime;
+    public final double getErrorTolerance() {
+        return _errorTolerance;
     }
 
     /** Return the initial step size. This method is final
@@ -385,13 +431,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _initStepSize;
     }
 
-    /** Return the local truncation error tolerance, used by
-     *  variable step size solvers. This method is final
+    /** Return the begin time of the current iteration. This method is final
      *  for performance reason.
-     *  @return The local truncation error tolerance.
+     *  @return The begin time of the current iteration.
      */
-    public final double getErrorTolerance() {
-        return _errorTolerance;
+    public final double getIterationBeginTime() {
+        return _iterationBeginTime;
     }
 
     /** Return the maximum number of iterations in fixed point
@@ -478,51 +523,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public final double getValueResolution() {
         return _valueResolution;
-    }
-
-    /** Register a (predictable) breakpoint at a future time. Actors
-     *  that want to register a predictable breakpoint should call
-     *  this method with itself and the breakpoint time as arguments.
-     *  The director will fire exactly at each registered time point.
-     *  From this director's point of view, it is irrelevant
-     *  which actor requests the breakpoint. All actors will be
-     *  executed at every breakpoint.
-     *  The first argument is used only for reporting
-     *  exceptions in this method.
-     *  @param actor The actor that requested the fire.
-     *  @param time The fire time.
-     *  @exception IllegalActionException If the time is earlier than
-     *  the current time.
-     */
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException{
-        if (time < getCurrentTime() - getTimeResolution()) {
-            throw new IllegalActionException((Nameable)actor,
-                    "Requested fire time: " + time + " is earlier than" +
-                    " the current time." + getCurrentTime() );
-        }
-        if (Math.abs(time - getCurrentTime()) < getTimeResolution()
-                && actor != null
-                && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
-            if (_debugging) _debug(((Nameable)actor).getName(),
-                    "requests refire at current time" + getCurrentTime());
-            // These actors will be fired in the discrete phase
-            // at the current time.
-            if (_refireActors == null) {
-                _refireActors = new LinkedList();
-            }
-            _refireActors.add(actor);
-        } else {
-            // Otherwise, the fireAt request is in the future. So we
-            // insert it to the breakpoint table.
-            // Note that the _breakPoints may be null if an actor calls
-            // fireAt() in its constructor.
-            if (_breakPoints == null) {
-                _breakPoints = new TotallyOrderedSet(
-                        new FuzzyDoubleComparator(_timeResolution));
-            }
-            _breakPoints.insert(new Double(time));
-        }
     }
 
     /** Initialization after type resolution.
@@ -642,6 +642,42 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
+    /** Set the current step size. The current step size
+     *  is very import during
+     *  the simulation and should NOT be changed in the middle of an
+     *  iteration.
+     *  @param stepsize The step size to be set.
+     */
+    public void setCurrentStepSize(double stepsize) {
+        _currentStepSize = stepsize;
+    }
+
+    /** Set the current time of the model under this director.
+     *  This overrides the setCurrentTime() in the Director base class.
+     *  It is OK that the new time is less than the current time
+     *  in the director, since CT sometimes needs roll-back.
+     *  This is a critical parameter in an execution, and the
+     *  actors are not supposed to call it.
+     *  @param newTime The new current simulation time.
+     */
+    public void setCurrentTime(double newTime) {
+        _currentTime = newTime;
+    }
+
+    /** Set the suggested next step size. If the argument is
+     *  large than the maximum step size, then set the
+     *  suggested next step size to the
+     *  maximum step size.
+     *  @param stepsize The suggested next step size.
+     */
+    public void setSuggestedNextStepSize(double stepsize) {
+        if (stepsize > getMaxStepSize()) {
+            _suggestedNextStepSize = getMaxStepSize();
+        } else {
+            _suggestedNextStepSize = stepsize;
+        }
+    }
+
     /** Call postfire() on all actors in the continuous part of the model.
      *  For a correct CT simulation,
      *  the state of an actor can only change at this stage of an
@@ -681,42 +717,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             Actor actor = (Actor)actors.next();
             actor.postfire();
             if (_debugging) _debug("postfire " + (Nameable)actor);
-        }
-    }
-
-    /** Set the current step size. The current step size
-     *  is very import during
-     *  the simulation and should NOT be changed in the middle of an
-     *  iteration.
-     *  @param stepsize The step size to be set.
-     */
-    public void setCurrentStepSize(double stepsize) {
-        _currentStepSize = stepsize;
-    }
-
-    /** Set the current time of the model under this director.
-     *  This overrides the setCurrentTime() in the Director base class.
-     *  It is OK that the new time is less than the current time
-     *  in the director, since CT sometimes needs roll-back.
-     *  This is a critical parameter in an execution, and the
-     *  actors are not supposed to call it.
-     *  @param newTime The new current simulation time.
-     */
-    public void setCurrentTime(double newTime) {
-        _currentTime = newTime;
-    }
-
-    /** Set the suggested next step size. If the argument is
-     *  large than the maximum step size, then set the
-     *  suggested next step size to the
-     *  maximum step size.
-     *  @param stepsize The suggested next step size.
-     */
-    public void setSuggestedNextStepSize(double stepsize) {
-        if (stepsize > getMaxStepSize()) {
-            _suggestedNextStepSize = getMaxStepSize();
-        } else {
-            _suggestedNextStepSize = stepsize;
         }
     }
 
@@ -807,6 +807,18 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return newSolver;
     }
 
+    /** Set to indicate that this is an iteration just after a breakpoint.
+     *  A CTDirector, after finding out that a breakpoint has happened at
+     *  the current time, should call this method with a true argument.
+     *  In the next iteration,
+     *  the solver may be changed to handle the breakpoint.
+     *
+     *  @param breakpoint True if this is a breakpoint iteration.
+     */
+    protected void _setBreakpointIteration(boolean breakpoint) {
+        _breakpointIteration = breakpoint;
+    }
+
     /** Set the current ODE Solver to be the argument.
      *  Derived class may throw an exception if the argument
      *  cannot serve as the current ODE solver
@@ -820,16 +832,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _currentSolver = solver;
     }
 
-    /** Set to indicate that this is an iteration just after a breakpoint.
-     *  A CTDirector, after finding out that a breakpoint has happened at
-     *  the current time, should call this method with a true argument.
-     *  In the next iteration,
-     *  the solver may be changed to handle the breakpoint.
-     *
-     *  @param breakpoint True if this is a breakpoint iteration.
+    /** Set the current phase of execution as a discrete phase. The value
+     *  set will be returned by the isDiscretePhase() method.
+     *  @param discrete True if this is the discrete phase.
      */
-    protected void _setBreakpointIteration(boolean breakpoint) {
-        _breakpointIteration = breakpoint;
+    protected void _setDiscretePhase(boolean discrete) {
+        _discretePhase = discrete;
     }
 
     /** Set the iteration begin time. The iteration begin time is
@@ -840,14 +848,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     protected void _setIterationBeginTime(double time) {
         _iterationBeginTime = time;
-    }
-
-    /** Set the current phase of execution as a discrete phase. The value
-     *  set will be returned by the isDiscretePhase() method.
-     *  @param discrete True if this is the discrete phase.
-     */
-    protected void _setDiscretePhase(boolean discrete) {
-        _discretePhase = discrete;
     }
 
     /** Returns false always, indicating that this director does not need to
