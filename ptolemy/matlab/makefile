@@ -103,10 +103,11 @@ include $(ROOT)/mk/ptcommon.mk
 
 # $(PTCC) is set to gcc by configure in $PTII/mk/ptII.mk
 # -fno-exceptions  - see note at bottom
-
+# $(PTJNI_NO_CYGWIN) is sometimes set to -mno-cygwin and causes
+# "Invalid access to memory location" errors
 $(PTMATLAB_LIB): ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" javah -jni -o ptmatlab.h ptolemy.matlab.Engine
-	$(PTCC) -shared $(PTJNI_NO_CYGWIN) \
+	$(PTCC) -shared \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_DIR)/include" \
 		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
