@@ -115,7 +115,7 @@ public abstract class PtolemyGraphController extends AbstractGraphController
     /** Get the time delay for animation.  After highlighting,
      *  derived classes are expected to sleep for the specified amount
      *  of time, in milliseconds.
-     *  @see setAnimationDelay.
+     *  @see #setAnimationDelay
      *  @return The animation delay set by setAnimationDelay().
      */
     public long getAnimationDelay() {
