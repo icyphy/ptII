@@ -111,13 +111,6 @@ public class PxgraphApplication extends PlotApplication {
         }
     }
 
-    /** Write the current data and plot configuration to the
-     * specified stream.  This method is only used for testing.
-     */
-    public void write(OutputStream out, String dtd) {
-        plot.write(out, dtd);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

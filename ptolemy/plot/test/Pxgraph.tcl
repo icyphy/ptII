@@ -75,7 +75,9 @@ proc pxgraphTest { args } {
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
 	    {java.io.PrintStream java.io.OutputStream} $stream]
-    $pxgraph write $printStream "Usually, the DTD would go here"
+    set plotFrame [java::cast ptolemy.plot.PlotFrame $pxgraph ]
+    set plot [java::field $plotFrame plot]
+    $plot write $printStream "Usually, the DTD would go here"
     $printStream flush
     set results [$stream toString]
     set thread [java::call Thread currentThread ]
