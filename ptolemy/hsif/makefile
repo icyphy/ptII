@@ -84,7 +84,8 @@ OPTIONAL_FILES = \
 	demo
 
 # Command to run the Saxon transformer.
-XSL_TRANSFORM = CLASSPATH="$(CLASSPATH)" "$(JAVA)" \
+# Use AUXCLASSPATH in XSL_TRANSFORM so that the code coverage will work
+XSL_TRANSFORM = CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVA)" \
 			ptolemy.util.XSLTUtilities
 JCLASS = $(JSRCS:%.java=%.class)
 
