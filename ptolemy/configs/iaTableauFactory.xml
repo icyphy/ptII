@@ -8,7 +8,7 @@
         class="ptolemy.vergil.fsm.ia.InterfaceAutomatonGraphTableau$Factory">
     <!-- Specify the default library to use if the model does not         -->
     <!-- contain a library attribute.  NOTE: We do not use fsmLibrary.xml -->
-    <!-- here because it imports annotations.xml, which has utilities     -->
+    <!-- here because it imports annotation.xml, which has utilities     -->
     <!-- that are not relevant. -->
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
