@@ -87,7 +87,7 @@ derived from ComponentEntity and implementing the Actor interface.
 Subclasses may further constrain the containers by overriding
 setContainer().
 
-@authors Edward A. Lee, Jie Liu, Yuhong Xiong
+@authors Edward A. Lee, Jie Liu
 @version $Id$
 */
 public class IOPort extends ComponentPort {
