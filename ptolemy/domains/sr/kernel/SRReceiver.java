@@ -124,6 +124,8 @@ public class SRReceiver extends Mailbox {
      *  @return True if this receiver contains a token.
      */
     public boolean hasToken() {
+        // FIXME: Mailbox.hasToken(int) does not check call isKnown()
+        // but this class does?  Why?  Should we override hasToken(int)? 
         if (isKnown()) {
             return super.hasToken();
         } else {
