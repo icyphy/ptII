@@ -32,7 +32,7 @@
 # Root of the Java directory
 ROOT =		@ptII@
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/sun/commapi/comm.jar
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/sun/commapi/comm.jar$(AUXCLASSPATH)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -428,6 +428,14 @@ gcjRunStats:
 	done
 	"$(ROOT)/util/testsuite/memorystats" "$(MODEL) gcj" < $(STATSFILE);
 	@rm -f $(STATSFILE)
+
+gcj_decompile:
+	@echo "--- Decompile .class files in gcj"
+	decompilerTargetPath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
+	CLASSPATH=foo $(MAKE) \
+		AUXCLASSPATH=$(CLASSPATHSEPARATOR)$(TARGETPATH)gcj \
+		DECOMPILERTARGETPATH=$(TARGETPATH)gcj/$$decompilerTargetPath \
+		jodeDecompileDemo
 
 GDB=/usr/local/bin/gdb 
 gcjGdb:
