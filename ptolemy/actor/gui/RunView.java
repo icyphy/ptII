@@ -102,6 +102,8 @@ public class RunView extends View {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** The frame that is created by this view.
+     */
     public class RunFrame extends ModelFrame {	
 	/** Construct a frame to control the specified Ptolemy II model.
 	 *  After constructing this, it is necessary
@@ -158,6 +160,33 @@ public class RunView extends View {
 	}
     }
 
+    /** A factory that creates run control panel views for Ptolemy models.
+     */
+    public class RunViewFactory extends ViewFactory {
+	/** Create a view in the default workspace with no name for the 
+	 *  given ModelProxy.  The view will created with a new unique name
+	 *  in the given model proxy.  If this factory cannot create a view
+	 *  for the given proxy (perhaps because the proxy is not of the
+	 *  appropriate subclass) then return null.
+	 *  @param proxy The model proxy.
+	 *  @return A new RunView, if the proxy is a PtolemyModelProxy, or null
+	 *  if the proxy is not a PtolemyModelProxy, 
+	 *  or creating the view fails.
+	 */
+	public View createView(ModelProxy proxy) {
+	    if(proxy instanceof PtolemyModelProxy) {
+		try {
+		    return new RunView((PtolemyModelProxy)proxy,
+				       proxy.uniqueName("view"));
+		} catch (Exception ex) {
+		    return null;
+		}
+	    } else {
+		return null;
+	    }
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -167,7 +196,7 @@ public class RunView extends View {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
    
-    // FIXME: should be somewhere else.
+    // FIXME: should be somewhere else?
     // Default background color is a light grey.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

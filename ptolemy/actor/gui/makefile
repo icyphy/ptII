@@ -72,7 +72,8 @@ JSRCS = \
 	PtolemyTop.java \
 	RunView.java \
 	TextEditor.java \
-	View.java
+	View.java \
+	ViewFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
 
