@@ -51,7 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	EfficiencyCurve.xml \
 	EfficiencyCurve.htm \
 	EfficiencyCurveVergil.htm \
-	Transmissionx.xml
+	Transmission.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
