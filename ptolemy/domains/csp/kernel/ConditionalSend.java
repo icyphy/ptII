@@ -160,7 +160,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             // FIXME: put in check that another put or condSend is not trying
             // at this receiver
             String str = getParent().getName() + ": Starting conditionalSend ";
-            //System.out.println( str + "branch: " + getBranchNumber());
+            //System.out.println( str + "branch: " + getID());
             Random rand = new Random();
             Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
             boolean debug = true;
@@ -169,34 +169,36 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // last time condSend got there first, condRec
                     // hasn't cleared yet
                     String s = "CondSend waiting for CondRec to clear state: ";
-                    System.out.println(s + getBranchNumber());
+                    System.out.println(s + getID());
                     getReceiver()._checkAndWait();
                 }
 
                 // MAIN LOOP
                 while (true) {
                     if (!isAlive()) {
-                        getParent().branchFailed(getBranchNumber());
+                        getParent().branchFailed(getID());
                         return;
                     } else if (getReceiver().isGetWaiting()) {
                         // CASE 1: a get is already waiting
                         // A get cannot disappear, so once enter this
                         // part of the loop stay here until branch
                         // successfully rendezvous or dies.
-                        //System.out.println(getParent().getName() + "get waiting for conditional send: " + getBranchNumber());
+                        String n = getParent().getName();
+                        String s = "get waiting for conditional send: ";
+                        //System.out.println(n + s + getID());
                         while (true) {
-                            if (getParent().amIFirst(getBranchNumber())) {
+                            if (getParent().amIFirst(getID())) {
                                 // I am the branch that succeeds
-                                //System.out.println(getParent().getName() + ": conditionalSend succeeded: " + getBranchNumber());
+                                s = ": conditionalSend succeeded: ";
+                                //System.out.println(n + s + getID());
                                 getReceiver().put(_token);
-                                int id = getBranchNumber();
-                                getParent().branchSucceeded(id);
+                                getParent().branchSucceeded(getID());
                                 return;
                             } else {
                                 getReceiver()._checkAndWait();
                             }
                             if (!isAlive()) {
-                                getParent().branchFailed(getBranchNumber());
+                                getParent().branchFailed(getID());
                                 return;
                             }
                         }
@@ -208,30 +210,34 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         // A ConditionalReceive may dissappear,
                         // so if fail to rendezvous, go back to top
                         // of main loop.
-                        if (getParent().amIFirst(getBranchNumber())) {
+                        if (getParent().amIFirst(getID())) {
                             // send side ok, need to check that receive
                             // side also ok
                             CSPReceiver rec = getReceiver();
                             CSPActor side2 = getReceiver().getOtherParent();
-                            if (side2.amIFirst(getBranchNumber())) {
-                                //System.out.println(getParent().getName() + ": conditionalSend succeeding: " + getBranchNumber());
+                            if (side2.amIFirst(getID())) {
+                                String s = getParent().getName();
+                                s += ": conditionalSend succeeding: ";
+                                //System.out.println(s + getID());
                                 rec.put(_token);
                                 rec.setConditionalReceive(false, null);
-                                getParent().branchSucceeded(getBranchNumber());
+                                getParent().branchSucceeded(getID());
                                 return;
                             } else {
                                 // receive side not first, so release "first"
-                                getParent().releaseFirst(getBranchNumber());
+                                getParent().releaseFirst(getID());
                                 getReceiver().notifyAll();
                             }
                         }
-                        //System.out.println("CondSend: not first, but still alive: " + getBranchNumber());
+                        String s = "CondSend: not first, but still alive: ";
+                        //System.out.println(s + getID());
                         getReceiver()._checkAndWait();
                     } else {
                         // CASE 3: ConditionalSend got here before a get or a
                         // ConditionalReceive. Once enter this part of main
                         // loop, do not leave.
-                        //System.out.println("setting conditionalSend waiting flag: " + getBranchNumber() );
+                        String s = "setting conditionalSend waiting flag: ";
+                        //System.out.println(s + getID() );
                         getReceiver().setConditionalSend(true, getParent());
                         getReceiver()._checkAndWait();
                         while (true) {
@@ -239,20 +245,18 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 // reset state of receiver controlling
                                 // conditional rendezvous
                                 getReceiver().setConditionalSend(false, null);
-                                getParent().branchFailed(getBranchNumber());
+                                getParent().branchFailed(getID());
                                 return;
                             } else if (getReceiver().isGetWaiting()) {
-                                if (getParent().amIFirst(getBranchNumber())) {
+                                if (getParent().amIFirst(getID())) {
                                     // I am the branch that succeeds
                                     getReceiver().put(_token);
                                     CSPReceiver rec = getReceiver();
-                                    int id = getBranchNumber();
                                     rec.setConditionalSend(false, null);
-                                    getParent().branchSucceeded(id);
+                                    getParent().branchSucceeded(getID());
                                     return;
                                 }
                             }
-                            //System.out.println("CondSend:  still alive" + getBranchNumber());
                             //cannot rendezvous this time, still alive
                             getReceiver()._checkAndWait();
                         }
@@ -262,7 +266,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         } catch (InterruptedException ex) {
             System.out.println("ConditionalSend interrupted:"+ex.getMessage());
         } catch (TerminateProcessException ex) {
-            getParent().branchFailed(getBranchNumber());
+            getParent().branchFailed(getID());
         }
 
     }

@@ -71,7 +71,7 @@ public abstract class ConditionalBranch {
      *  @exception IllegalActionException thrown if the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
-    public ConditionalBranch(IOPort port, int branch)
+    public ConditionalBranch(IOPort port, int branchID)
             throws IllegalActionException {
         // FIXME: should this allow CSPCompositeActor?
         Nameable tmp = port.getContainer();
@@ -80,7 +80,7 @@ public abstract class ConditionalBranch {
             throw new IllegalActionException(port, "rt contained by CSPActor");
         }
         _parent = (CSPActor)tmp;
-        _branchNumber = branch;
+        _branchID = branchID;
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ public abstract class ConditionalBranch {
      *  parent).
      *  @return The identification number of this branch.
      */
-    public int getBranchNumber() {
+    public int getID() {
         return _branchNumber;
     }
 
@@ -145,7 +145,7 @@ public abstract class ConditionalBranch {
     private CSPActor _parent;
 
     // The identification number of this branch (according to its parent)
-    private int _branchNumber;
+    private int _branchID;
 }
 
 
