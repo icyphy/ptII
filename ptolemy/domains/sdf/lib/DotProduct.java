@@ -219,7 +219,7 @@ public class DotProduct extends TypedAtomicActor {
      *  @exception IllegalActionException If the input matrices have
      *  unequal sizes.
      */
-    public void _matrixFire() throws IllegalActionException {
+    private void _matrixFire() throws IllegalActionException {
         MatrixToken token1 = (MatrixToken)input1.get(0);
         MatrixToken token2 = (MatrixToken)input2.get(0);
 
