@@ -156,13 +156,7 @@ public class PtolemyApplet extends Applet {
      *  of the manager.
      */
     public void stop() {
-	//try {
-            _manager.finish();
-            //} catch( IllegalActionException e ) {
-	    //System.err.println("IllegalActionException thrown during " +
-            //    "Manager.finish().");
-	    //e.printStackTrace();
-            //}
+	_manager.finish();
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -216,13 +210,7 @@ public class PtolemyApplet extends Applet {
     /** Stop the execution.
      */
     protected void _stop() {
-	//try {
-            _manager.finish();
-            //} catch( IllegalActionException e ) {
-	    //System.err.println("IllegalActionException thrown during " +
-            //"Manager.finish().");
-	    //e.printStackTrace();
-            //}
+	_manager.finish();
     }
 
     ////////////////////////////////////////////////////////////////////////
