@@ -149,6 +149,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         } catch (SecurityException ex) {
             // Ignore and use the default.
         }
+	// FIXME: directory should be a file browser.
         directory = new StringAttribute(this, "directory");
         directory.setExpression(defaultDirectory);
         doc = new Documentation(directory, "tooltip");
