@@ -45,7 +45,7 @@ import java.util.EmptyStackException;
  *  Holds information about the current undo context. It is used while parsing
  *  an incremental model change to hold the following information:
  *  <ul>
- *    <li> Whether or not undo MoML should be genrated for the current context
+ *    <li> Whether or not undo MoML should be generated for the current context
  *    </li>
  *    <li> Whether or not undo MoML should be generated for any child nodes
  *    </li>
