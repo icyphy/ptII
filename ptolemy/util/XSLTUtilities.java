@@ -214,7 +214,7 @@ public class XSLTUtilities {
             // net.sf.saxon.om.DocumentBuilderImpl.parse()
             // can throw a javax.xml.transform.TransformerException
             // which extends Exception, but has  IOException as a cause,
-            // so we must catch Exception here, not IOException. 
+            // so we must catch Exception here, not IOException.
 
             // Try it as a jar url
             try {
@@ -379,7 +379,7 @@ public class XSLTUtilities {
             // net.sf.saxon.om.DocumentBuilderImpl.parse()
             // can throw a javax.xml.transform.TransformerException
             // which extends Exception, but has  IOException as a cause,
-            // so we must catch Exception here, not IOException. 
+            // so we must catch Exception here, not IOException.
 
             // Try it as a jar url
             try {

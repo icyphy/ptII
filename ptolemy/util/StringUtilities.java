@@ -229,7 +229,7 @@ public class StringUtilities {
             if (propertyName.equals("ptolemy.ptII.dir")
                     && property.indexOf("cygdrive") != -1
                     && !_printedCygwinWarning) {
-                // This error only occurs when users build their own, 
+                // This error only occurs when users build their own,
                 // so it is safe to print to stderr
                 _printedCygwinWarning = true;
                 System.err.println("ptolemy.ptII.dir property = \""
@@ -295,7 +295,7 @@ public class StringUtilities {
                 }
 
                 // Web Start, we might have
-                // RMptsupport.jar or 
+                // RMptsupport.jar or
                 // XMptsupport.jar1088483703686
                 String ptsupportJarName = File.separator + "DMptolemy"
                     + File.separator + "RMptsupport.jar";
@@ -430,7 +430,7 @@ public class StringUtilities {
      *  inserted
      */
     public static String split(String longName) {
-        return split(longName, 79); 
+        return split(longName, 79);
     }
 
     /** If the string is longer than <i>length</i> characters,
@@ -502,7 +502,7 @@ public class StringUtilities {
      *  @exception IOException If the file cannot be read, or
      *   if the file cannot be represented as a URL (e.g. System.in), or
      *   the name specification cannot be parsed.
-     *  @exception MalformedURLException If the 
+     *  @exception MalformedURLException If the
      */
     public static URL stringToURL(
             String name, URI baseDirectory, ClassLoader classLoader)
@@ -528,9 +528,9 @@ public class StringUtilities {
                         Class.forName("ptolemy.kernel.util.NamedObj");
                     classLoader = refClass.getClassLoader();
                 } catch (Exception ex) {
-                    // IOException constructor does not take a cause  
+                    // IOException constructor does not take a cause
                     IOException ioException =
-                        new IOException("Cannot find file '" + trimmedName 
+                        new IOException("Cannot find file '" + trimmedName
                                 + "' in classpath");
                     ioException.initCause(ex);
                     throw ioException;
@@ -539,7 +539,7 @@ public class StringUtilities {
             // Use Thread.currentThread()... for Web Start.
             URL result = classLoader.getResource(trimmedName);
             if (result == null) {
-                new IOException("Cannot find file '" + trimmedName 
+                new IOException("Cannot find file '" + trimmedName
                         + "' in classpath");
             }
             return result;
@@ -550,7 +550,7 @@ public class StringUtilities {
             if (!file.canRead()) {
                 // FIXME: This is a hack.
                 // Expanding the configuration with Ptolemy II installed
-                // in a directory with spaces in the name fails on 
+                // in a directory with spaces in the name fails on
                 // JAIImageReader because PtolemyII.jpg is passed in
                 // to this method as C:\Program%20Files\Ptolemy\...
                 file = new File(StringUtilities.substitute(name, "%20", " "));
