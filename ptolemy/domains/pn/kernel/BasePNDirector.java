@@ -206,6 +206,13 @@ public class BasePNDirector extends ProcessDirector {
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
+        _readBlockCount = 0;
+	_mutationBlockCount = 0;
+	_writeBlockCount = 0;
+	_writeblockedQs = new LinkedList();
+        //processlisteners is not initialized as we might want to continue
+        //with the same listeners.
+	//_processlisteners = new LinkedList();
 	//FIXME: Get all receivers and call initialize() on them.
 	Enumeration allActors = 
 	        ((CompositeActor)getContainer()).deepGetEntities();
@@ -222,11 +229,6 @@ public class BasePNDirector extends ProcessDirector {
 		}
 	    }
 	}
-	_readBlockCount = 0;
-	_mutationBlockCount = 0;
-	_writeBlockCount = 0;
-	_writeblockedQs = new LinkedList();
-	_processlisteners = new LinkedList();
     }
 
     /** Return a new receiver compatible with this director. The receiver
@@ -262,7 +264,6 @@ public class BasePNDirector extends ProcessDirector {
 	    return true;
 	}
     }
-
 
     /** Remove a process listener from this director.
      *  If the listener is not attached to this director, do nothing.
@@ -533,21 +534,27 @@ public class BasePNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
+    //The variables are initialized at declaration, despite having an \
+    //initialize() method so that the 
+
     /** The count of processes blocked on a read from a receiver. */
-    protected int _readBlockCount;
+    protected int _readBlockCount = 0;
 
     /** The count of processes waiting for the requests for topology changes
      *  to be processed. 
      */
-    protected int _mutationBlockCount;
+    protected int _mutationBlockCount = 0;
 
     /** The count of processes blocked on a write to a receiver. */
-    protected int _writeBlockCount;
+    protected int _writeBlockCount = 0;
 
     /** The list of receivers blocked on a write to a receiver. */
-    protected LinkedList _writeblockedQs;
+    protected LinkedList _writeblockedQs = new LinkedList();
 
-    private LinkedList _processlisteners;
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    private LinkedList _processlisteners = new LinkedList();
 
 }
 
