@@ -29,18 +29,15 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.Top;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Iterator;
-import java.util.List;
-import javax.swing.JTextArea;
+
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableau
@@ -68,10 +65,32 @@ public class TextEditorTableau extends Tableau {
      *   attribute already in the container.
      */
     public TextEditorTableau(TextEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
+
+        this(container, name, null);
+    }
+
+    /** Construct a new tableau for the model represented by the given effigy.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param editor The text editor to use, or null to use the default.
+     *  @exception IllegalActionException If the container does not accept
+     *   this entity (this should not occur).
+     *  @exception NameDuplicationException If the name coincides with an
+     *   attribute already in the container.
+     */
+    public TextEditorTableau(
+        TextEffigy container,
+        String name,
+        TextEditor editor)
+        throws IllegalActionException, NameDuplicationException {
+
         super(container, name);
         String title = "Unnamed";
-        TextEditor frame = new TextEditor(title, container.getDocument());
+        TextEditor frame = editor;
+        if (frame == null) {
+            frame = new TextEditor(title, container.getDocument());
+        }
         frame.text.setColumns(80);
         frame.text.setRows(40);
         setFrame(frame);
@@ -88,7 +107,7 @@ public class TextEditorTableau extends Tableau {
      */
     public void setEditable(boolean flag) {
         super.setEditable(flag);
-        TextEditor editor = (TextEditor)getFrame();
+        TextEditor editor = (TextEditor) getFrame();
         if (editor.text != null) {
             editor.text.setEditable(flag);
         }
@@ -110,13 +129,13 @@ public class TextEditorTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            
+
             String editorPreference = ".";
             try {
-                editorPreference
-                    = System.getProperty("ptolemy.user.texteditor",".");
+                editorPreference =
+                    System.getProperty("ptolemy.user.texteditor", ".");
             } catch (SecurityException security) {
                 // Ignore, we are probably running in a sandbox or as
                 // an applet
@@ -125,23 +144,29 @@ public class TextEditorTableau extends Tableau {
             Class effigyClass;
             try {
                 if (editorPreference.equals("emacs")) {
-                    tableauClass
-                        = Class.forName("ptolemy.actor.gui.ExternalTextTableau");
-                    effigyClass
-                        = Class.forName("ptolemy.actor.gui.ExternalTextEffigy");
+                    tableauClass =
+                        Class.forName("ptolemy.actor.gui.ExternalTextTableau");
+                    effigyClass =
+                        Class.forName("ptolemy.actor.gui.ExternalTextEffigy");
                 } else {
-                    tableauClass
-                        = Class.forName("ptolemy.actor.gui.TextEditorTableau");
-                    effigyClass
-                        = Class.forName("ptolemy.actor.gui.TextEffigy");
+                    tableauClass =
+                        Class.forName("ptolemy.actor.gui.TextEditorTableau");
+                    effigyClass = Class.forName("ptolemy.actor.gui.TextEffigy");
                 }
-                _tableauConstructor = tableauClass.getConstructor(
-                        new Class[]{TextEffigy.class, String.class});
-                _newTextEffigyText = effigyClass.getMethod("newTextEffigy",
-                        new Class[]{CompositeEntity.class, String.class});
-                _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
-                        new Class[]{CompositeEntity.class, URL.class,
-                                    URL.class});
+                _tableauConstructor =
+                    tableauClass.getConstructor(
+                        new Class[] { TextEffigy.class, String.class });
+                _newTextEffigyText =
+                    effigyClass.getMethod(
+                        "newTextEffigy",
+                        new Class[] { CompositeEntity.class, String.class });
+                _newTextEffigyURL =
+                    effigyClass.getMethod(
+                        "newTextEffigy",
+                        new Class[] {
+                            CompositeEntity.class,
+                            URL.class,
+                            URL.class });
 
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
@@ -181,11 +206,11 @@ public class TextEditorTableau extends Tableau {
                 // First see whether the effigy already contains a
                 // TextEditorTableau with the appropriate name.
                 TextEditorTableau tableau =
-                    (TextEditorTableau)effigy.getEntity("textTableau");
+                    (TextEditorTableau) effigy.getEntity("textTableau");
                 if (tableau == null) {
-                    tableau = (TextEditorTableau)
-                        _tableauConstructor.newInstance
-                        (new Object[]{effigy, "textTableau"});
+                    tableau =
+                        (TextEditorTableau) _tableauConstructor.newInstance(
+                            new Object[] { effigy, "textTableau" });
                 }
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
@@ -193,10 +218,10 @@ public class TextEditorTableau extends Tableau {
                 // The effigy is not an instance of TextEffigy.
                 // See whether it contains an instance of TextEffigy
                 // named "textEffigy", and if it does return that instance.
-                Iterator effigies = effigy
-                    .entityList(TextEffigy.class).iterator();
+                Iterator effigies =
+                    effigy.entityList(TextEffigy.class).iterator();
                 while (effigies.hasNext()) {
-                    TextEffigy textEffigy = (TextEffigy)effigies.next();
+                    TextEffigy textEffigy = (TextEffigy) effigies.next();
                     if (textEffigy.getName().equals("textEffigy")) {
                         return createTableau(textEffigy);
                     }
@@ -212,11 +237,12 @@ public class TextEditorTableau extends Tableau {
                     // to distinctly support MoML.  Would it make
                     // sense for the Effigy base class to have a method
                     // that gives a textual description of the data?
-                    String moml = ((PtolemyEffigy)effigy)
-                        .getModel().exportMoML();
-                    textEffigy = (TextEffigy)
-                        _newTextEffigyText.invoke
-                        (null, new Object[]{effigy, moml});
+                    String moml =
+                        ((PtolemyEffigy) effigy).getModel().exportMoML();
+                    textEffigy =
+                        (TextEffigy) _newTextEffigyText.invoke(
+                            null,
+                            new Object[] { effigy, moml });
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.
                     // But this requires having an "apply" button.
@@ -224,16 +250,16 @@ public class TextEditorTableau extends Tableau {
                     textEffigy.setName("textEffigy");
                 } else {
                     // The View Source choice of the HTMLViewer runs this code.
-                    textEffigy = (TextEffigy)
-                        _newTextEffigyURL.invoke
-                        (null, new Object[]{effigy, url, url});
+                    textEffigy =
+                        (TextEffigy) _newTextEffigyURL.invoke(
+                            null,
+                            new Object[] { effigy, url, url });
                     textEffigy.setName("textEffigy");
                 }
                 TextEditorTableau textTableau =
-                    (TextEditorTableau)createTableau(textEffigy);
+                    (TextEditorTableau) createTableau(textEffigy);
                 if (url != null) {
-                    textEffigy.identifier.setExpression(
-                            url.toExternalForm());
+                    textEffigy.identifier.setExpression(url.toExternalForm());
                 }
                 return textTableau;
             }

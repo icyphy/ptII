@@ -203,7 +203,7 @@ public class Effigy extends CompositeEntity {
      *  used to create visual renditions of or editors for the
      *  associated model.  It can be used to find out what sorts of
      *  views are available for the model.
-     *  @see #setTableauFactory(TableauFactory)
+     *  @see #setTableauFactory(TextEditorTableauFactory)
      *  @return A tableau factory offering multiple views.
      */
     public TableauFactory getTableauFactory() {
