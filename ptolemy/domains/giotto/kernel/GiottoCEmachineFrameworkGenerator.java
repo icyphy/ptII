@@ -790,7 +790,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
         File writeFCFile = new File(directoryName, "f_code.c");
         File writeFHFile = new File(directoryName, "f_code.h");
-        File writeTCFile = new File(directoryName, "task_code.c");
+        //File writeTCFile = new File(directoryName, "task_code.c"); // This file is unneeded once we have the function declarations in the header file
         File writeTHFile = new File(directoryName, "task_code.h");
         try {
             FileWriter FCwriter = new FileWriter(writeFCFile);
@@ -801,9 +801,9 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             FHwriter.write(_generateFrameworkHeaderCode(model));
             FHwriter.close();
             
-            FileWriter TCwriter = new FileWriter(writeTCFile);
-            TCwriter.write(_generateTaskImplementationCode(model));
-            TCwriter.close();
+            //FileWriter TCwriter = new FileWriter(writeTCFile);
+            //TCwriter.write(_generateTaskImplementationCode(model));
+            //TCwriter.close();
 
             FileWriter THwriter = new FileWriter(writeTHFile);
             THwriter.write(_generateTaskHeaderCode(model));
@@ -876,6 +876,9 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         codeString += "#include \"f_interface.h\"" + _endLine;
         codeString +=  _endLine;
         codeString += "// Task Frequency Definitions" + _endLine;
+        codeString += "#define SUPER_PERIOD"
+                    + _tabChar + _tabChar
+                    + "(" + ((GiottoDirector) model.getDirector()).getIntPeriod() + ")" + _endLine;
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -891,7 +894,9 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                         getToken()).intValue();
             }
     
-            codeString += "#define " + actorName + "_FREQ" + _tabChar + _tabChar + "(" + actorFreq + ")" + _endLine;
+            codeString += "#define " + actorName + "_FREQ"
+                        + _tabChar + _tabChar
+                        + "(" + actorFreq + ")" + _endLine;
         }
         codeString += _endLine;
             
@@ -1219,10 +1224,18 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                         inputPorts += ",";
                     }
                     String portID = StringUtilities.sanitizeName(
-                            port.getName(model));
+                            port.getName());
                     String portTypeID = _getTypeString(port);
+                    List sourcePortList = port.sourcePortList();
+                    if (sourcePortList.size() > 1) {
+                        throw new IllegalActionException(port, "Input port " +
+                                "cannot receive data from multiple sources in Giotto.");
+                    }
+                    TypedIOPort sport = (TypedIOPort)port.sourcePortList().get(0);
+                    String sanitizedSourceActorName = StringUtilities.sanitizeName(
+                            sport.getContainer().getName());
         
-                    inputPorts += portID;
+                    inputPorts += portTypeID + " *" + sanitizedSourceActorName + "_" + portID;
                 }
             }
     
@@ -1240,8 +1253,10 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                         outputPorts += ",";
                     }
                     String portID = StringUtilities.sanitizeName(
-                            port.getName(model));
-                    outputPorts += portID;
+                            port.getName());
+                     String portTypeID = _getTypeString(port);
+        
+                    outputPorts += portTypeID + " *" + portID;
                  }
             }
             String portSeparator = ",";
@@ -1345,7 +1360,11 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                         generateCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
-                            } catch (Exception ex) {
+                
+                // end the model execution.
+                manager.stop();
+                manager.wrapup();
+            } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
                         "Cannot generate code. Perhaps outside Vergil?");
             }
