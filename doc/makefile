@@ -59,7 +59,6 @@ EXTRA_SRCS = \
 	help.htm \
 	index.htm \
 	install.htm \
-	kvm.htm \
 	main.htm \
 	mainheader.htm \
 	ptII1.0.release.htm \
