@@ -34,10 +34,10 @@ package ptolemy.math;
 import  java.io.Serializable;
 
 /** This class provides a complex data type and a library of functions that
- *  operate on and return complex data.  Methods that modify an instance of
- *  the complex number (vs. creating a new one) are also generally available
- *  as static methods that return a new one.  Some of the
- *  more esoteric methods are available only as static methods.
+ *  operate on and return complex data.  An instance of the class is
+ *  immutable, meaning that its value is set in the constructor and
+ *  cannot then be modified.  This is similar to the Java built-in classes
+ *  like Double, Integer, etc.
  *  <p>
  *  Although this code is written from scratch, I looked at several designs
  *  and borrowed elements from each of them:
@@ -64,14 +64,16 @@ public final class Complex implements Cloneable, Serializable {
     /** Construct a Complex equal to zero.
      */
     public Complex () {
-        this(0.0, 0.0);
+        this.real = 0.0;
+        this.imag = 0.0;
     }
 
     /** Construct a Complex with a zero imaginary part.
      *  @param  real The real part.
      */
     public Complex (double real) {
-        this(real, 0.0);
+        this.real = real;
+        this.imag = 0.0;
     }
 
     /** Construct a Complex with the specified real and imaginary parts.
@@ -83,74 +85,51 @@ public final class Complex implements Cloneable, Serializable {
         this.imag = imag;
     }
 
+    // NOTE: There is no need for a constructor that takes a Complex
+    // argument because instances of this class are immutable.  There
+    // is never a need to make another instance with the same value.
+
     ////////////////////////////////////////////////////////////////////////
     ////                          public methods                        ////
 
-    /** Return the magnitude or absolute value of this complex number.
-     *  This is the square root of the norm.
-     *  @return A non-negative number.
-     */
-    public double abs () {
-        return Math.sqrt(norm());
-    }
-
-    /** Add the specified complex number to this complex number.
-     *  @param w A complex number.
-     */
-    public void add (Complex w) {
-        real += w.real;
-        imag += w.imag;
-    }
-
     /** Return a new complex number with value equal to the sum
-     *  of the two complex arguments.
+     *  of this complex number and the argument.
      *  @param z A complex number.
-     *  @param w A complex number.
      *  @return A new complex number.
      */
-    public static Complex add (Complex z, Complex w) {
-        Complex result = new Complex(z.real, z.imag);
-        result.add(w);
-        return result;
+    public Complex add (Complex z) {
+        return new Complex(real + z.real, imag + z.imag);
     }
 
     /** Return a new complex number with value equal to the principal arc cosine
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
      *   acos(z) = -i * log(z + i*sqrt(1 - z*z))
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex acos (Complex z) {
-        Complex c1 = new Complex(z.real, z.imag);
-        c1.multiply(c1);
-        Complex c2 = new Complex(1.0, 0.0);
-        c2.subtract(c1);
-        c2.sqrt();
-        c2.multiply(new Complex(0.0, 1.0));
-        c2.add(z);
-        Complex result = log(c2);
-        result.multiply(new Complex(0.0, -1.0));
-        return result;
+    public Complex acos () {
+        Complex c1 = new Complex(1.0-real*real+imag*imag,-2.0*real*imag);
+        Complex c2 = c1.sqrt();
+        Complex c3 = new Complex(real - c2.imag, imag + c2.real);
+        Complex c4 = c3.log();
+        return new Complex(c4.imag, -c4.real);
     }
 
     /** Return a new complex number with value equal to the principal
-     *  hyperbolic arc cosine of the complex argument.  This is defined by:
+     *  hyperbolic arc cosine of this complex number.  This is defined by:
      *  <pre>
-     *   asin(z) = log(z + sqrt(z*z - 1))
+     *   acosh(z) = log(z + sqrt(z*z - 1))
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex acosh (Complex z) {
-        Complex c1 = new Complex(z.real, z.imag);
-        c1.multiply(c1);
-        c1.subtract(new Complex(1.0, 0.0));
-        c1.sqrt();
-        c1.add(z);
-        Complex result = log(c1);
-        return result;
+    public Complex acosh () {
+        Complex c1 = new Complex(real*real-imag*imag-1.0, 2.0*real*imag);
+        Complex c2 = c1.sqrt();
+        Complex c3 = add(c2);
+        return c3.log();
     }
 
     /** Return the angle or argument of this complex number.
@@ -161,195 +140,164 @@ public final class Complex implements Cloneable, Serializable {
     }
 
     /** Return a new complex number with value equal to the principal arc sine
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
      *   asin(z) = -i * log(i*z + sqrt(1 - z*z))
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex asin (Complex z) {
-        Complex c1 = new Complex(z.real, z.imag);
-        c1.multiply(c1);
-        Complex c2 = new Complex(1.0, 0.0);
-        c2.subtract(c1);
-        c2.sqrt();
-        c2.add(new Complex(-z.imag, z.real));
-        Complex result = log(c2);
-        result.multiply(new Complex(0.0, -1.0));
-        return result;
+    public Complex asin () {
+        Complex c1 = new Complex(1.0-real*real+imag*imag, -2.0*real*imag);
+        Complex c2 = c1.sqrt();
+        Complex c3 = new Complex(c2.real-imag, c2.imag+real);
+        Complex c4 = c3.log();
+        return new Complex(c4.imag, -c4.real);
     }
 
     /** Return a new complex number with value equal to the principal
-     *  hyperbolic arc sine of the complex argument.  This is defined by:
+     *  hyperbolic arc sine of this complex number.  This is defined by:
      *  <pre>
-     *   asin(z) = log(z + sqrt(z*z + 1))
+     *   asinh(z) = log(z + sqrt(z*z + 1))
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex asinh (Complex z) {
-        Complex c1 = new Complex(z.real, z.imag);
-        c1.multiply(c1);
-        c1.add(new Complex(1.0, 0.0));
-        c1.sqrt();
-        c1.add(z);
-        Complex result = log(c1);
-        return result;
+    public Complex asinh () {
+        Complex c1 = new Complex(1.0+real*real-imag*imag, 2.0*real*imag);
+        Complex c2 = c1.sqrt();
+        Complex c3 = add(c2);
+        return c3.log();
     }
 
     /** Return a new complex number with value equal to the principal arc
-     *  tangent of the complex argument.  This is defined by:
+     *  tangent of this complex number.  This is defined by:
      *  <pre>
      *  atan(z) = -i/2 * log((i-z)/(i+z))
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex atan (Complex z) {
-        Complex c1 = new Complex(0.0, 1.0);
-        c1.subtract(z);
-        Complex c2 = new Complex(0.0, 1.0);
-        c2.add(z);
-        c1.divide(c2);
-        Complex result = log(c1);
-        result.multiply(new Complex(0.0, -0.5));
-        return result;
+    public Complex atan () {
+        double denom = real*real+(imag+1.0)*(imag+1.0);
+        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denom,
+                2.0*real/denom);
+        Complex c2 = c1.log();
+        return new Complex(c2.imag*0.5, -c2.real*0.5);
     }
 
     /** Return a new complex number with value equal to the principal
-     *  hyperbolic arc tangent of the complex argument.  This is defined by:
+     *  hyperbolic arc tangent of this complex number.  This is defined by:
      *  <pre>
-     *   asin(z) = 1/2 * log((1+z)/(1-z))
+     *   atanh(z) = 1/2 * log((1+z)/(1-z))
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex atanh (Complex z) {
-        Complex c1 = new Complex(1.0, 0.0);
-        c1.add(z);
-        Complex c2 = new Complex(1.0, 0.0);
-        c2.subtract(z);
-        c1.divide(c2);
-        Complex result = log(c1);
-        result.multiply(new Complex(0.5, 0.0));
-        return result;
+    public Complex atanh () {
+        double denom = (1.0-real)*(1.0-real)+imag*imag;
+        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denom,
+                2.0*imag/denom);
+        Complex c2 = c1.log();
+        return new Complex(c2.real*0.5, c2.imag*0.5);
     }
 
-    /** Return a new complex number with value equal to the cotangent
-     *  of the complex argument.  This is simply:
-     *  <pre>
-     *  cot(z) = 1/tan(z)
-     *  </pre>
-     *  @param z A complex number.
+    /** Return a new Complex with value equal to the complex conjugate of
+     *  of this complex number.
      *  @return A new complex number.
      */
-    public static Complex cot (Complex z) {
-        Complex result = tan(z);
-        result.reciprocal();
-        return result;
-    }
-
-    /** Return a new complex number with value equal to the cosecant
-     *  of the complex argument.  This is simply:
-     *  <pre>
-     *  csc(z) = 1/sin(z)
-     *  </pre>
-     *  @param z A complex number.
-     *  @return A new complex number.
-     */
-    public static Complex csc (Complex z) {
-        Complex result = sin(z);
-        result.reciprocal();
-        return result;
-    }
-
-    /** Conjugate this complex number.
-     */
-    public void conjugate () {
+    public Complex conjugate () {
         // Avoid negative zero.
-        if (imag != 0.0) imag = -imag;
-    }
-
-    /** Return a new Complex with value equal to the complex-conjugate of
-     *  of the argument.
-     *  @param z A complex number.
-     *  @return A new complex number.
-     */
-    public static Complex conjugate (Complex z) {
-        // Avoid negative zero.
-        if (z.imag != 0.0) return  new Complex(z.real, -z.imag);
-        else return new Complex(z.real, z.imag);
+        if (imag != 0.0) return  new Complex(real, -imag);
+        else return new Complex(real, imag);
     }
 
     /** Return a new complex number with value equal to the cosine
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
      *  cos(z) = (exp(i*z) + exp(-i*z))/2
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex cos (Complex z) {
-        Complex c1 = new Complex(-z.imag, z.real);
-        Complex result = exp(c1);
-        Complex c2 = new Complex(z.imag, -z.real);
-        result.add(exp(c2));
-        result.scale(0.5);
-        return result;
+    public Complex cos () {
+        Complex c1 = new Complex(-imag, real);
+        Complex c2 = c1.exp();
+        Complex c3 = new Complex(imag, -real);
+        Complex c4 = c2.add(c3.exp());
+        return new Complex(c4.real*0.5, c4.imag*0.5);
     }
 
     /** Return a new complex number with value equal to the hyperbolic cosine
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
      *  cosh(z) = (exp(z) + exp(-z))/2
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex cosh (Complex z) {
-        Complex c1 = new Complex(z.real, z.imag);
-        Complex result = exp(c1);
-        Complex c2 = new Complex(-z.real, -z.imag);
-        result.add(exp(c2));
-        Complex denom = new Complex(2.0, 0.0);
-        result.divide(denom);
-        return result;
+    public Complex cosh () {
+        Complex c1 = exp();
+        Complex c2 = new Complex(-real, -imag);
+        Complex c3 = c1.add(c2.exp());
+        return new Complex(c3.real*0.5, c3.imag*0.5);
     }
 
-    /** Divide this complex number by the argument, replacing its
-     *  value with the result.
-     *  @param divisor The denominator in the division.
+    /** Return a new complex number with value equal to the cotangent
+     *  of this complex number.  This is simply:
+     *  <pre>
+     *  cot(z) = 1/tan(z)
+     *  </pre>
+     *  where <code>z</code> is this complex number.
+     *  @return A new complex number.
      */
-    public void divide (Complex divisor) {
-        // This algorithm results from writing a/b as (ab*)/norm(b).
-        double norm = divisor.norm();
-        double re = (real*divisor.real + imag*divisor.imag)/norm;
-        double im = (divisor.real*imag - real*divisor.imag)/norm;
-        real = re;
-        imag = im;
+    public Complex cot () {
+        Complex c1 = tan();
+        return c1.reciprocal();
     }
 
-    /** Divide the first argument by the second, and return the result
+    /** Return a new complex number with value equal to the cosecant
+     *  of this complex number.  This is simply:
+     *  <pre>
+     *  csc(z) = 1/sin(z)
+     *  </pre>
+     *  where <code>z</code> is this complex number.
+     *  @return A new complex number.
+     */
+    public Complex csc () {
+        Complex c1 = sin();
+        return c1.reciprocal();
+    }
+
+    /** Divide this complex number by the argument, and return the result
      *  in a new Complex object.
-     *  @param dividend The numerator in the division.
      *  @param divisor The denominator in the division.
      *  @return A new complex number.
      */
-    public static Complex divide (Complex dividend, Complex divisor) {
-        Complex result = new Complex(dividend.real, dividend.imag);
-        result.divide(divisor);
-        return result;
+    public Complex divide (Complex divisor) {
+        // This algorithm results from writing a/b as (ab*)/magSquared(b).
+        double denom = divisor.magSquared();
+        return new Complex((real*divisor.real+imag*divisor.imag)/denom,
+                (imag*divisor.real-real*divisor.imag)/denom);
+    }
+
+    /** Return true if the real and imaginary parts of this complex number
+     *  are equal to those of the argument.
+     *  @return True if the real and imaginary parts are equal.
+     */
+    public boolean equals(Complex z) {
+        return (z.real == real && z.imag == imag);
     }
 
     /** Return a new complex number with value equal to the exponential
-     *  of the argument, or <em>e<sup>z</sup></em>.
+     *  of this complex number, or <em>e<sup>z</sup></em>,
+     *  where <code>z</code> is this complex number.
      *  @param z A complex exponent.
      *  @return A new complex number.
      */
-    public static Complex exp (Complex z) {
-        double magnitude =  Math.exp(z.real);
-        return polarToComplex(magnitude, z.imag);
+    public Complex exp () {
+        double magnitude =  Math.exp(real);
+        return polarToComplex(magnitude, imag);
     }
 
     /** Return true if either the real or imaginary part is infinite.
@@ -371,68 +319,55 @@ public final class Complex implements Cloneable, Serializable {
         return  ( Double.isNaN(real) || Double.isNaN(imag) );
     }
 
-    /** Return a new Complex with value equal to the natural logarithm
-     *  of the complex argument.  The principal value is returned, which
+    /** Return a new complex number with value equal to the natural logarithm
+     *  of this complex number.  The principal value is returned, which
      *  is
      *  <pre>
-     *  log(z) = log(abs(z)) + i * angle(z)
+     *  log(z) = log(mag(z)) + i * angle(z)
      *  </pre>
-     *  @param z A complex number
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex log (Complex z) {
-        return  new Complex( Math.log(z.abs()), z.angle() );
+    public Complex log () {
+        return  new Complex( Math.log(mag()), angle() );
+    }
+
+    /** Return the magnitude or absolute value of this complex number.
+     *  @return A non-negative number.
+     */
+    public double mag () {
+        return Math.sqrt(magSquared());
+    }
+
+    /** Return the square of the magnitude of this complex number.
+     *  This is provided for efficiency, since it is considerably easier
+     *  to compute than the magnitude (which is the square root of this
+     *  result).
+     *  @return A non-negative number.
+     */
+    public double magSquared () {
+        return (real*real) + (imag*imag);
     }
 
     /** Multiply this complex number by the specified complex number.
      *  @param w A complex number.
-     *  @see Complex#scale
-     */
-    public void multiply (Complex w) {
-        double re = w.real*real - w.imag*imag;
-        imag = w.real*imag + w.imag*real;
-        real = re;
-    }
-
-    /** Return a new complex number with value equal to the product
-     *  of the two complex arguments.
-     *  @param z A complex number.
-     *  @param w A complex number.
      *  @return A new complex number.
      *  @see Complex#scale
      */
-    public static Complex multiply (Complex z, Complex w) {
-        Complex result = new Complex(z.real, z.imag);
-        result.multiply(w);
-        return result;
+    public Complex multiply (Complex w) {
+        return new Complex(w.real*real-w.imag*imag, w.real*imag+w.imag*real);
     }
 
     /** Negate both the real and imaginary parts of this complex number.
-     */
-    public void negate () {
-        // Avoid negative zero.
-        if (real != 0.0) real = -real;
-        if (imag != 0.0) imag = -imag;
-    }
-
-    /** Return a new Complex with value equal to the negative of the argument.
-     *  @param z A complex number.
      *  @return A new complex number.
      */
-    public static Complex negate (Complex z) {
+    public Complex negate () {
         // Avoid negative zero.
-        double re = z.real;
-        double im = z.imag;
-        if (re != 0.0) re = -re;
-        if (im != 0.0) im = -im;
-        return  new Complex(re, im);
-    }
-
-    /** Return the square of the magnitude of this complex number.
-     *  @return A non-negative number.
-     */
-    public double norm () {
-        return (real*real) + (imag*imag);
+        double r = 0.0;
+        double i = 0.0;
+        if (real != 0.0) r = -real;
+        if (imag != 0.0) i = -imag;
+        return new Complex(r,i);
     }
 
     /** Return a new Complex with the specified magnitude and angle.
@@ -450,189 +385,134 @@ public final class Complex implements Cloneable, Serializable {
                 magnitude * Math.sin(angle));
     }
 
-    /** Return <em>x<sup>y</sup></em>.
-     *  @param x A complex number.
+    /** Return a new complex number with value <em>z<sup>y</sup></em>
+     *  where <em>z</em> is this complex number and <em>y</em> is the
+     *  argument.
      *  @param y A complex number.
-     *  @return A complex number.
+     *  @return A new complex number.
      */
-    public static Complex pow (Complex x, Complex y) {
+    public Complex pow (Complex y) {
         // This formula follows from expanding the input form
         //     (rho e^(j theta))^(c + dj)
         // to something of the form ae^jb.
 
-        double lnrho =  Math.log(x.abs());
-        double theta =  x.angle();
+        double lnrho =  Math.log(mag());
+        double theta =  angle();
         double magnitude = Math.exp((lnrho*y.real) - (theta*y.imag));
         double angle =  (lnrho*y.imag) + (theta*y.real);
         return polarToComplex(magnitude, angle);
     }
 
-    /** Replace the value of this complex number with its reciprocal.
+    /** Return a new complex number that is the reciprocal of this one.
+     *  @return A new complex number.
      */
-    public void reciprocal () {
-        // This algorithm results from writing 1/a as (a*)/norm(a).
-        double norm = norm();
-        real = real/norm;
-        imag = -imag/norm;
-    }
-
-    /** Return a new Complex object that is the reciprocal of the argument.
-     *  @param z A complex number
-     *  @return A new complex number, 1/z.
-     */
-    public static Complex reciprocal (Complex z) {
-        Complex result = new Complex(z.real, z.imag);
-        result.reciprocal();
-        return result;
-    }
-
-    /** Multiply this complex number by the specified real scalar.
-     *  @param scalar A real number.
-     *  @see Complex#multiply
-     */
-    public void scale (double scalar) {
-        real = scalar*real;
-        imag = scalar*imag;
+    public Complex reciprocal () {
+        // This algorithm results from writing 1/a as (a*)/magSquared(a).
+        double magSquared = magSquared();
+        return new Complex(real/magSquared, -imag/magSquared);
     }
 
     /** Return a new complex number with value equal to the product
-     *  of the complex and real arguments.
-     *  @param z A complex number.
+     *  of this complex number and the real argument.
      *  @param scalar A real number.
      *  @return A new complex number.
      *  @see Complex#multiply
      */
-    public static Complex scale (Complex z, double scalar) {
-        Complex result = new Complex(z.real, z.imag);
-        result.scale(scalar);
-        return result;
+    public Complex scale (double scalar) {
+        return new Complex(real*scalar, imag*scalar);
     }
 
     /** Return a new complex number with value equal to the secant
-     *  of the complex argument.  This is simply:
+     *  of this complex number.  This is simply:
      *  <pre>
      *  sec(z) = 1/cos(z)
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex sec (Complex z) {
-        Complex result = cos(z);
-        result.reciprocal();
-        return result;
+    public Complex sec () {
+        Complex c1 = cos();
+        return c1.reciprocal();
     }
 
     /** Return a new complex number with value equal to the sine
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
      *  sin(z) = (exp(i*z) - exp(-i*z))/(2*i)
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex sin (Complex z) {
-        Complex c1 = new Complex(-z.imag, z.real);
-        Complex result = exp(c1);
-        Complex c2 = new Complex(z.imag, -z.real);
-        result.subtract(exp(c2));
-        Complex denom = new Complex(0.0, 2.0);
-        result.divide(denom);
-        return result;
+    public Complex sin () {
+        Complex c1 = new Complex(-imag, real);
+        Complex c2 = c1.exp();
+        Complex c3 = new Complex(imag, -real);
+        Complex c4 = c2.subtract(c3.exp());
+        return new Complex(c4.imag*0.5, -c4.real*0.5);
     }
 
     /** Return a new complex number with value equal to the hyperbolic sine
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
      *  sinh(z) = (exp(z) - exp(-z))/2
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex sinh (Complex z) {
-        Complex c1 = new Complex(z.real, z.imag);
-        Complex result = exp(c1);
-        Complex c2 = new Complex(-z.real, -z.imag);
-        result.subtract(exp(c2));
-        Complex denom = new Complex(2.0, 0.0);
-        result.divide(denom);
-        return result;
-    }
-
-    /** Replace the value of this complex number with its square root.
-     *  The square root is defined to be:
-     *  <pre>
-     *  sqrt(z) = sqrt(abs(z))*(cos(angle(z)/2) + i * sin(angle(z)/2) )
-     *  </pre>
-     */
-    public void sqrt () {
-        double magnitude = Math.sqrt(abs());
-        double angle = angle()/2;
-        Complex c = polarToComplex(magnitude, angle);
-        real = c.real;
-        imag = c.imag;
+    public Complex sinh () {
+        Complex c1 = exp();
+        Complex c2 = new Complex(-real, -imag);
+        Complex c3 = c1.subtract(c2.exp());
+        return new Complex(c3.real*0.5, c3.imag*0.5);
     }
 
     /** Return a new complex number with its value equal to the
-     *  the square root of the argument.
+     *  the square root of this complex number.
      *  The square root is defined to be:
      *  <pre>
-     *  sqrt(z) = sqrt(abs(z))*(cos(angle(z)/2) + i * sin(angle(z)/2) )
+     *  sqrt(z) = sqrt(mag(z))*(cos(angle(z)/2) + i * sin(angle(z)/2) )
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex sqrt (Complex z) {
-        double magnitude = Math.sqrt(z.abs());
-        double angle = z.angle()/2;
+    public Complex sqrt () {
+        double magnitude = Math.sqrt(mag());
+        double angle = angle()*0.5;
         return polarToComplex(magnitude, angle);
     }
 
     /** Subtract the specified complex number from this complex number.
      *  @param w A complex number.
-     */
-    public void subtract (Complex w) {
-        real -= w.real;
-        imag -= w.imag;
-    }
-
-    /** Return a new complex number with value equal to the first
-     *  complex argument minus the second.
-     *  @param z A complex number.
-     *  @param w A complex number.
      *  @return A new complex number.
      */
-    public static Complex subtract (Complex z, Complex w) {
-        Complex result = new Complex(z.real, z.imag);
-        result.subtract(w);
-        return result;
+    public Complex subtract (Complex w) {
+        return new Complex(real-w.real, imag-w.imag);
     }
 
     /** Return a new complex number with value equal to the tangent
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
      *  tan(z) = sin(z)/cos(z)
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex tan (Complex z) {
-        Complex result = sin(z);
-        result.divide(cos(z));
-        return result;
+    public Complex tan () {
+        Complex c1 = sin();
+        return c1.divide(cos());
     }
 
     /** Return a new complex number with value equal to the hyberbolic tangent
-     *  of the complex argument.  This is defined by:
+     *  of this complex number.  This is defined by:
      *  <pre>
-     *  tan(z) = sinh(z)/cosh(z)
+     *  tanh(z) = sinh(z)/cosh(z)
      *  </pre>
-     *  @param z A complex number.
+     *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public static Complex tanh (Complex z) {
-        Complex result = sinh(z);
-        result.divide(cosh(z));
-        return result;
+    public Complex tanh () {
+        Complex c1 = sinh();
+        return c1.divide(cosh());
     }
 
     /** Return a string representation of this Complex.
@@ -649,8 +529,13 @@ public final class Complex implements Cloneable, Serializable {
     /////////////////////////////////////////////////////////////////////////
     ////                       public variables                          ////
 
-    /** The real part. */
-    public double real;
-    /** The imaginary part. */
-    public double imag;
+    /** The real part. This is a "blank final," which means that it
+     *  can only be set in the constructor.
+     */
+    public final double real;
+
+    /** The imaginary part. This is a "blank final," which means that it
+     *  can only be set in the constructor.
+     */
+    public final double imag;
 }
