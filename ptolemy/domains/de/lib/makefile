@@ -55,6 +55,7 @@ JSRCS = \
 	Merge.java \
 	Queue.java \
 	Sampler.java \
+	SamplerWithDefault.java \
 	Server.java \
 	SingleEvent.java \
 	TimeGap.java \

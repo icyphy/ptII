@@ -25,6 +25,9 @@
 <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
 </entity>
 
+<entity name="SamplerWithDefault" class="ptolemy.domains.de.lib.SamplerWithDefault">
+</entity>
+
 <entity name="Server" class="ptolemy.domains.de.lib.Server">
 </entity>
 
