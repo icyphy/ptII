@@ -361,9 +361,9 @@ public class Plot extends PlotBox {
             _xTop = - Double.MIN_VALUE;
             _yBottom = Double.MAX_VALUE;
             _yTop = - Double.MIN_VALUE;
-            for (int dataset=0; dataset < _points.size(); dataset++) {
+            for (int dataset = 0; dataset < _points.size(); dataset++) {
                 Vector points = (Vector)_points.elementAt(dataset);
-                for (int index=0; index < points.size(); index++) {
+                for (int index = 0; index < points.size(); index++) {
                     PlotPoint pt = (PlotPoint)points.elementAt(index);
                     if (pt.x < _xBottom) _xBottom = pt.x;
                     if (pt.x > _xTop) _xTop = pt.x;
@@ -922,7 +922,7 @@ public class Plot extends PlotBox {
                         // followed by optional arguments
                         // d <4byte float> <4byte float> - Draw a X, Y point
                         // e                             - End of a data set
-                        // n <chars> \n                  - New set name, ends in \n
+                        // n <chars> \n           - New set name, ends in \n
                         // m                             - Move to a point
 
                         switch (c) {
@@ -1064,7 +1064,7 @@ public class Plot extends PlotBox {
         _points.removeAllElements();
         _prevx.removeAllElements();
         _prevy.removeAllElements();
-        for (int i=0; i<numsets; i++) {
+        for (int i = 0; i<numsets; i++) {
             _points.addElement(new Vector());
             _prevx.addElement(new Long(0));
             _prevy.addElement(new Long(0));
@@ -1864,8 +1864,8 @@ public class Plot extends PlotBox {
 
         // Save the current point as the "previous" point for future
         // line drawing.
-        _prevx.setElementAt(new Long(xpos),dataset);
-        _prevy.setElementAt(new Long(ypos),dataset);
+        _prevx.setElementAt(new Long(xpos), dataset);
+        _prevy.setElementAt(new Long(ypos), dataset);
 
         // Draw the point & associated decorations, if appropriate.
         if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
@@ -2010,7 +2010,8 @@ public class Plot extends PlotBox {
 
     // NOTE: This strategy fails due to a bug in jdk 1.1
     // Nothing drawn to the graphics object in this other thread ever appears.
-    //     // This class spawns a thread to load the sound file in the background.
+    //     // This class spawns a thread to load the 
+    //     // sound file in the background.
     //     // NOTE: This class has to be public or Netscape 4.0 fails.
     //     public class Painter extends Thread {
     //         public Painter(Graphics graphics) {
