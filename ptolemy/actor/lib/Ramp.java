@@ -99,14 +99,10 @@ public class Ramp extends TypedAtomicActor {
     public Object clone(Workspace ws) {
         try {
             Ramp newobj = (Ramp)super.clone(ws);
-            newobj.output = new TypedIOPort(this, "output", false, true);
-            newobj.init = new Parameter(this, "init");
-            newobj.step = new Parameter(this, "step");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            newobj.init = (Parameter)newobj.getAttribute("init");
+            newobj.step = (Parameter)newobj.getAttribute("step");
             return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(
