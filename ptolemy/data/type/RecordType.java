@@ -95,15 +95,17 @@ public class RecordType extends StructuredType {
             // empty record is a constant, so this record type is not empty.
 
             // construct the labels and declared types array
-            String[] labels = (String[])_fields.keySet().toArray();
-            Type[] types = new Type[labels.length];
+            Object[] labelsObj = _fields.keySet().toArray();
+	    String[] labels = new String[labelsObj.length];
+            Type[] types = new Type[labelsObj.length];
             for (int i=0; i<labels.length; i++) {
-              FieldType fieldType = (FieldType)_fields.get(labels[i]);
-              types[i] = fieldType._declaredType;
+	        labels[i] = (String)labelsObj[i];
+                FieldType fieldType = (FieldType)_fields.get(labels[i]);
+                types[i] = fieldType._declaredType;
             }
             RecordType newObj = new RecordType(labels, types);
             try {
-              newObj.updateType(this);
+                newObj.updateType(this);
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException("RecordType.clone: Cannot " +
                         "update new instance. " + ex.getMessage());
@@ -125,13 +127,16 @@ public class RecordType extends StructuredType {
     public Token convert(Token t) throws IllegalActionException {
         if ( !isCompatible(t)) {
             throw new IllegalArgumentException("RecordType.convert: " +
-                    "Cannot convert the argument token to this type.");
+                    "Cannot convert the token " + t.toString() +
+		    " to this type " + this.toString());
         }
 
         RecordToken argRecTok = (RecordToken)t;
-        String[] labels = (String[])_fields.keySet().toArray();
-        Token[] values = new Token[labels.length];
-        for (int i=0; i<labels.length; i++) {
+        Object[] labelsObj = _fields.keySet().toArray();
+	String[] labels = new String[labelsObj.length];
+        Token[] values = new Token[labelsObj.length];
+        for (int i=0; i<labelsObj.length; i++) {
+	    labels[i] = (String)labelsObj[i];
             Token orgToken = argRecTok.get(labels[i]);
             FieldType fieldType = (FieldType)_fields.get(labels[i]);
             Type type = fieldType._resolvedType;
@@ -182,7 +187,7 @@ public class RecordType extends StructuredType {
      *  @return True if the argument is compatible with this type.
      */
     public boolean isCompatible(Token t) {
-        if ( !(t.getType() instanceof RecordToken)) {
+        if ( !(t instanceof RecordToken)) {
             return false;
         }
 
@@ -354,7 +359,7 @@ public class RecordType extends StructuredType {
             Iterator iter = _fields.keySet().iterator();
             while (iter.hasNext()) {
                 String label = (String)iter.next();
-                FieldType fieldType = (FieldType)get(label);
+                FieldType fieldType = (FieldType)_fields.get(label);
                 if (fieldType.isSettable()) {
                     fieldType.initialize(t);
                 }
@@ -384,7 +389,7 @@ public class RecordType extends StructuredType {
         Iterator iter = _fields.keySet().iterator();
         while (iter.hasNext()) {
             String label = (String)iter.next();
-            FieldType fieldType = (FieldType)this.get(label);
+            FieldType fieldType = (FieldType)_fields.get(label);
             if (fieldType.isSettable()) {
                 Type newFieldType = ((RecordType)newType).get(label);
                 fieldType.setValue(newFieldType);

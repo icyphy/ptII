@@ -213,15 +213,11 @@ public class RecordToken extends Token {
      *   supported by the element token.
      */
     public Token one() throws IllegalActionException {
-        Set labelSet = _fields.keySet();
-	int size = labelSet.size();
-	String[] labels = new String[size];
-	Token[] values = new Token[size];
-
-	Iterator iter = labelSet.iterator();
-	int i = 0;
-	while (iter.hasNext()) {
-	    labels[i] = (String)iter.next();
+        Object[] labelsObj = _fields.keySet().toArray();
+	String[] labels = new String[labelsObj.length];
+	Token[] values = new Token[labels.length];
+	for (int i=0; i<labels.length; i++) {
+	    labels[i] = (String)labelsObj[i];
 	    values[i] = this.get(labels[i]).one();
 	}
 	return new RecordToken(labels, values);
@@ -260,15 +256,11 @@ public class RecordToken extends Token {
      *   supported by the element token.
      */
     public Token zero() throws IllegalActionException {
-        Set labelSet = _fields.keySet();
-	int size = labelSet.size();
-	String[] labels = new String[size];
-	Token[] values = new Token[size];
-
-	Iterator iter = labelSet.iterator();
-	int i = 0;
-	while (iter.hasNext()) {
-	    labels[i] = (String)iter.next();
+        Object[] labelsObj = _fields.keySet().toArray();
+	String[] labels = new String[labelsObj.length];
+	Token[] values = new Token[labels.length];
+	for (int i=0; i<labels.length; i++) {
+	    labels[i] = (String)labelsObj[i];
 	    values[i] = this.get(labels[i]).zero();
 	}
 	return new RecordToken(labels, values);
