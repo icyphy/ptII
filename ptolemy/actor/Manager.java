@@ -513,6 +513,17 @@ public class Manager extends NamedObj implements Runnable {
         container.stopFire();
     }
 
+    /** Remove a change listener. If the specified listener is not
+     *  on the list, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeChangeListener(ChangeListener listener) {
+        if (_changeListeners == null) {
+            return;
+        }
+        _changeListeners.remove(listener);
+    }
+
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
      *  do nothing.
@@ -523,17 +534,6 @@ public class Manager extends NamedObj implements Runnable {
         _executionListeners.remove(listener);
     }
 
-    /** Remove a change listener. If the specified listener is not
-     *  on the list, do nothing.
-     *  @param listener The listener to remove.
-     */
-    public void removeChangeListener(ChangeListener change) {
-        if (_changeListeners == null) {
-            return;
-        }
-        _changeListeners.remove(change);
-    }
-
     /** Queue a change request.
      *  The indicated change will be executed at the next opportunity
      *  between top-level iterations of the model. For the
@@ -541,6 +541,10 @@ public class Manager extends NamedObj implements Runnable {
      *  iterations, this method also calls stopFire() on the top-level
      *  composite actor, requesting that directors in such domains
      *  return from their fire() method as soon as practical.
+     *  When the model is idle (initialize() has not yet been
+     *  invoked), carry out the change request immediately. That is,
+     *  this method will block until the change request has been
+     *  processed.
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
@@ -551,6 +555,28 @@ public class Manager extends NamedObj implements Runnable {
         _changeRequests.add(change);
         CompositeActor container = (CompositeActor) getContainer();
         container.stopFire();
+	// If the model is idle (i.e., initialize() has not yet been
+	// invoked), then process the queued change requests right now.
+	if (_state == IDLE) {
+	    try {
+		_processChangeRequests();
+                _setState(IDLE);
+	    } catch (IllegalActionException e) {
+		// FIXME: Don't catch. requestChange() should
+		// throw IllegalActionException. I am not making
+		// this change right now, since it might break
+		// a lot of code.
+		System.err.println("Manager: Error proccessing " +
+				   "change request" + e);
+	    } catch (ChangeFailedException e) {
+		// FIXME: Don't catch. requestChange() should
+		// throw IllegalActionException. I am not making
+		// this change right now, since it might break
+		// a lot of code.
+		System.err.println("Manager: Error proccessing " +
+				   "change request" + e);
+	    }
+	}
     }
 
     /** Queue an initialization request.
@@ -882,11 +908,11 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Set the state of execution and notify listeners if the state
      *  actually changes.
-     *  @param newstate The new state.
+     *  @param newState The new state.
      */
-    protected void _setState(State newstate) {
-        if (_state != newstate) {
-            _state = newstate;
+    protected void _setState(State newState) {
+        if (_state != newState) {
+            _state = newState;
             _notifyListenersOfStateChange();
         }
     }
