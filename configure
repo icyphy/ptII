@@ -18,7 +18,7 @@ ac_help="$ac_help
                            PTJAVA_DIR environment variable"
 ac_help="$ac_help
   --with-javacc=DIR       use JavaCC.zip from DIR,
-                           defaults to \$PTOLEMY/vendors/sun/JavaCC"
+                           defaults to \$PTII/vendors/sun/JavaCC"
 ac_help="$ac_help
   --with-jtclsh=SCRIPT    tclsh is atY. jtclsh is
                            used for running the test scripts"
@@ -793,7 +793,7 @@ echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
 
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where javacc is;  if
-#	not, check to see if $PTOLEMY/vendors/sun/JavaCC exists
+#	not, check to see if $PTII/vendors/sun/JavaCC exists
 #       if it is does not, look for javacc on the path.
 #--------------------------------------------------------------------
 
@@ -804,7 +804,7 @@ if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
   JAVACC_DIR=$withval
 else
-  JAVACC_DIR=$PTOLEMY/vendors/sun/JavaCC
+  JAVACC_DIR=$PTII/vendors/sun/JavaCC
 fi
 
 
