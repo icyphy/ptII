@@ -189,7 +189,7 @@ public class DataPump extends MACActorBase {
                     _inputMessage.get("kind")).intValue();
             switch (_state) {
                 case Tx_Idle:
-    		        //_getMsgType();
+                            //_getMsgType();
                     switch(_messageType) {
                         case TxRequest:
                             //Note: in OMNET++, the phy layer are strangely put
@@ -299,11 +299,11 @@ public class DataPump extends MACActorBase {
 
  /**   private void _getMsgType() throws IllegalActionException {
 
-	    if (channelStatus.hasToken(0)) {
+            if (channelStatus.hasToken(0)) {
             _inputMessage = (RecordToken) channelStatus.get(0);
         } else if (fromFilterMpdu.hasToken(0)) {
             _inputMessage = (RecordToken) fromFilterMpdu.get(0);
-	    }
+            }
         if (_inputMessage != null) {
             _messageType = ((IntToken)
             _inputMessage.get("kind")).intValue();

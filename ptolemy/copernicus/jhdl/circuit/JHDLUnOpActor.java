@@ -59,29 +59,29 @@ import soot.jimple.*;
 public class JHDLUnOpActor extends JHDLAtomicActor {
 
     JHDLUnOpActor(CompositeEntity container, int operation)
-	throws IllegalActionException, NameDuplicationException {
- 	super(container);
-	input = new JHDLIOPort(this, "input");
-	output = new JHDLIOPort(this, "output");
-	_operation = operation;
+        throws IllegalActionException, NameDuplicationException {
+         super(container);
+        input = new JHDLIOPort(this, "input");
+        output = new JHDLIOPort(this, "output");
+        _operation = operation;
     }
 
     public boolean resolve() {
-	if (!input.isResolved())
-	    return false;
-	if (output.isResolved())
-	    return true;
-	output.setSignalWidth(input.getSignalWidth());
-	output.resolveOutside();
-	return true;
+        if (!input.isResolved())
+            return false;
+        if (output.isResolved())
+            return true;
+        output.setSignalWidth(input.getSignalWidth());
+        output.resolveOutside();
+        return true;
     }
 
     public void build(Logic parent) {
-	// Assume NOT operator for now
-	Wire inputWire = input.getOutsideRelation().getJHDLWire();
-	Wire outputWire = output.getOutsideRelation().getJHDLWire();
-	Wire notWire = parent.not(inputWire);
-	parent.buf_o(notWire,outputWire);
+        // Assume NOT operator for now
+        Wire inputWire = input.getOutsideRelation().getJHDLWire();
+        Wire outputWire = output.getOutsideRelation().getJHDLWire();
+        Wire notWire = parent.not(inputWire);
+        parent.buf_o(notWire,outputWire);
     }
 
     public JHDLIOPort input;

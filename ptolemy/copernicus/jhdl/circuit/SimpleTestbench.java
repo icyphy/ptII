@@ -60,7 +60,7 @@ import soot.jimple.*;
 public class SimpleTestbench extends Logic implements TestBench {
 
     public SimpleTestbench(HWSystem parent, String name) {
-	super(parent,name);
+        super(parent,name);
     }
 
 }

@@ -133,13 +133,13 @@ public class NetworkActorBase extends TypedAtomicActor {
     protected Timer setTimer(int kind, double expirationTime)
             throws IllegalActionException {
 
-	    Timer timer=new Timer();
-	    timer.kind=kind;
-	    timer.expirationTime=expirationTime;
-	    // put all timers of this object into a queue
-	    _timersSet.add(timer);
-	    getDirector().fireAt(this, expirationTime);
-	    return timer;
+            Timer timer=new Timer();
+            timer.kind=kind;
+            timer.expirationTime=expirationTime;
+            // put all timers of this object into a queue
+            _timersSet.add(timer);
+            getDirector().fireAt(this, expirationTime);
+            return timer;
     }
 
     /** Remove the timer that matches with the <i>timerToCancel<i> argument
@@ -148,14 +148,14 @@ public class NetworkActorBase extends TypedAtomicActor {
     protected void cancelTimer(Timer timerToCancel)
             throws IllegalActionException {
         Iterator timers = _timersSet.iterator();
-	// iterate through the queue to find the timer to be canceled
+        // iterate through the queue to find the timer to be canceled
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-	        if (timer==timerToCancel) {
-	            _timersSet.remove(timer);
+                if (timer==timerToCancel) {
+                    _timersSet.remove(timer);
                 break;
             }
-	    }
+            }
     }
 
     /** Get the timer with expiration time that matches the current time.
@@ -169,19 +169,19 @@ public class NetworkActorBase extends TypedAtomicActor {
      */
     protected int whoTimeout()
             throws IllegalActionException {
-	// find the 1st timer expired
+        // find the 1st timer expired
         Iterator timers = _timersSet.iterator();
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-	        if (timer.expirationTime==getDirector().getCurrentTime())
-		    {
-		        // remove it from the set no matter that
-		        // it will be processed or ignored
-		        timers.remove();
-		        return timer.kind;
-		    }
-	    }
-	    return -1;
+                if (timer.expirationTime==getDirector().getCurrentTime())
+                    {
+                        // remove it from the set no matter that
+                        // it will be processed or ignored
+                        timers.remove();
+                        return timer.kind;
+                    }
+            }
+            return -1;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ public class NetworkActorBase extends TypedAtomicActor {
     ////                         inner classes                     ////
     protected class Timer {
 
-	    public int kind;
+            public int kind;
         public double expirationTime;
     }
 

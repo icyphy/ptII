@@ -59,38 +59,38 @@ public class JHDLIORelation extends IORelation implements Signal {
 
     public JHDLIORelation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	this(container,name, Signal.UNRESOLVED);
+        this(container,name, Signal.UNRESOLVED);
     }
 
     public JHDLIORelation(CompositeEntity container, int width)
             throws IllegalActionException, NameDuplicationException {
-	this(container,container.uniqueName("R"), width);
+        this(container,container.uniqueName("R"), width);
     }
 
     public JHDLIORelation(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-	this(container,container.uniqueName("R"), Signal.UNRESOLVED);
+        this(container,container.uniqueName("R"), Signal.UNRESOLVED);
     }
 
     public JHDLIORelation(CompositeEntity container, String name,
-			     int width)
+                             int width)
             throws IllegalActionException, NameDuplicationException {
-	super(container,name);
-	_portWidth = width;
+        super(container,name);
+        _portWidth = width;
     }
 
     public int getSignalWidth() {
-	return _portWidth;
+        return _portWidth;
     }
 
     public void setSignalWidth(int width) {
-	_portWidth = width;
+        _portWidth = width;
     }
 
     public boolean isResolved() {
-	if (_portWidth != Signal.UNRESOLVED)
-	    return true;
-	return false;
+        if (_portWidth != Signal.UNRESOLVED)
+            return true;
+        return false;
     }
 
     // Resolve strategy:
@@ -100,39 +100,39 @@ public class JHDLIORelation extends IORelation implements Signal {
     /*
     public boolean resolve() {
 
-	if (isResolved()) {
-	    return isResolved();
-	}
+        if (isResolved()) {
+            return isResolved();
+        }
 
-	// Output ports set the signal width
-	for (Iterator i = linkedPortList().iterator();i.hasNext();) {
-	    JHDLIOPort port = (JHDLIOPort) i.next();
-	    if (port.isOutput()) {
-		setSignalWidth(port.getSignalWidth());
-	    }
-	}
-	return isResolved();
+        // Output ports set the signal width
+        for (Iterator i = linkedPortList().iterator();i.hasNext();) {
+            JHDLIOPort port = (JHDLIOPort) i.next();
+            if (port.isOutput()) {
+                setSignalWidth(port.getSignalWidth());
+            }
+        }
+        return isResolved();
     }
     */
 
     public Wire getJHDLWire() {
-	return _wire;
+        return _wire;
     }
 
     public Wire buildJHDLWire(Logic parent) {
-	_wire = parent.wire(getSignalWidth(),getName());
-	System.out.println("Creating JHDL Wire for relation "+this+" wire="+
-			   _wire);
-	return _wire;
+        _wire = parent.wire(getSignalWidth(),getName());
+        System.out.println("Creating JHDL Wire for relation "+this+" wire="+
+                           _wire);
+        return _wire;
     }
 
     public void setJHDLWire(Wire wire) {
-	_wire = wire;
+        _wire = wire;
     }
 
     protected String _description(int detail, int indent, int bracket) {
-	return super._description(detail,indent,bracket) +
-	    " { relationWidth="+  _portWidth+"}";
+        return super._description(detail,indent,bracket) +
+            " { relationWidth="+  _portWidth+"}";
     }
 
     protected int _portWidth;

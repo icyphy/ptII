@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -98,8 +98,8 @@ public class StringToXML extends Transformer{
 
         /*//for test purpose, use the following code when fire.
         String in = "<?xml version='1.0' encoding='UTF-8'?> <Actors>" +
-         			"<Actor> <name>Const</name> <class>ptolemy.actor.lib.Const</class>"
-         			+ " </Actor> </Actors>";
+                                 "<Actor> <name>Const</name> <class>ptolemy.actor.lib.Const</class>"
+                                 + " </Actor> </Actors>";
         try {
             //_outToken = new XmlToken[1];
             _outToken = new XmlToken(in);

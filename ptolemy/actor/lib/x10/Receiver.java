@@ -165,15 +165,15 @@ public class Receiver extends X10Interface {
         }
     }
 
-	/** Begin listening for X10 commands.
+        /** Begin listening for X10 commands.
      *  @exception IllegalActionException If the super class throws it.
      */
-	public void initialize() throws IllegalActionException {
-		super.initialize();
+        public void initialize() throws IllegalActionException {
+                super.initialize();
         _interface.addUnitListener(_listener);
         _stopFireRequested = false;
         _fireAtCurrentTimeCalled = false;
-	}
+        }
 
     /** Override the base class to stop waiting for input data.
      */
@@ -199,8 +199,8 @@ public class Receiver extends X10Interface {
         }
     }
 
-	///////////////////////////////////////////////////////////////////
-	////                         protected methods                 ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected methods                 ////
 
     /** Remove and then return the first command from the command queue.
      *  @return The first command in the command queue, or null if there
@@ -257,12 +257,12 @@ public class Receiver extends X10Interface {
         return commandString;
     }
 
-	///////////////////////////////////////////////////////////////////
-	////                       private variables                   ////
+        ///////////////////////////////////////////////////////////////////
+        ////                       private variables                   ////
 
-	/** This is a linked list that stores any and all received commands from
+        /** This is a linked list that stores any and all received commands from
      *  a registered </i>CommandListener<i>.
-	 */
+         */
     private LinkedList _commandQueue = new LinkedList();
 
     /** Indicator that fireAtCurrentTime() has been called and not yet
@@ -270,9 +270,9 @@ public class Receiver extends X10Interface {
      */
     private boolean _fireAtCurrentTimeCalled = false;
 
-	/** This is the </i>UnitListener<i> that will be listening for commands
+        /** This is the </i>UnitListener<i> that will be listening for commands
      *  from the x10 network
-	 */
+         */
     private CommandListener _listener = new CommandListener();
 
     // Indicator that stopFire() has been called.

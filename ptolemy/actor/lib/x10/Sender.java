@@ -65,14 +65,14 @@ public class Sender extends X10Interface {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-		// Create input ports and port parameters.
-    	houseCode = new StringParameter(this, "houseCode");
+                // Create input ports and port parameters.
+            houseCode = new StringParameter(this, "houseCode");
         unitCode = new StringParameter(this, "unitCode");
 
-    	// The default value for the house code is A while the default value
+            // The default value for the house code is A while the default value
         // for the unit code is 1. This is the normal x10 default address
         // value for most x10 devices.
-		houseCode.setExpression("A");
+                houseCode.setExpression("A");
         unitCode.setExpression("1");
     }
 

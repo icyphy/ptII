@@ -61,32 +61,32 @@ public class XMLParser {
             _documentBuilder = _documentBuilderFactory.newDocumentBuilder();
     }
 
-	/** Generate the document tree for the specified XML string. The Document
-	 *  (the root of the document tree) is
-	 *  returned. An exception will be thrown if the parse fails.
-	 *  @param str The XML string to be parsed.
+        /** Generate the document tree for the specified XML string. The Document
+         *  (the root of the document tree) is
+         *  returned. An exception will be thrown if the parse fails.
+         *  @param str The XML string to be parsed.
      *  @exception Exception If the parse fails.
      *  @return The document for the parse tree.
-	 */
+         */
     public Document parser(String str) throws Exception {
         InputStream is = (InputStream) new StringBufferInputStream(str);
         //System.out.println("--- the inputStream of the XmlToken is: " + is.toString() + "\n");
         return parser(is);
     }
 
-	/** Generate the document tree for the specified input stream.
-	 * The Document (the root of the document tree) is
-	 *  returned. An exception will be thrown if the parse fails.
-	 *  @param is The input steam to be parsed.
-	 *  @exception Exception If the parse fails.
-	 *  @return The document for the parse tree.
-	 */
+        /** Generate the document tree for the specified input stream.
+         * The Document (the root of the document tree) is
+         *  returned. An exception will be thrown if the parse fails.
+         *  @param is The input steam to be parsed.
+         *  @exception Exception If the parse fails.
+         *  @return The document for the parse tree.
+         */
     public Document parser(InputStream is) throws Exception {
         return _documentBuilder.parse(is);
     }
 
-	///////////////////////////////////////////////////////////////////
-	////                         private variables                 ////
-	private DocumentBuilderFactory _documentBuilderFactory;
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+        private DocumentBuilderFactory _documentBuilderFactory;
     private DocumentBuilder _documentBuilder;
 }

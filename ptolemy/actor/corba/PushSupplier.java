@@ -81,7 +81,7 @@ public class PushSupplier extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         remoteConsumerName = new Parameter(this, "remoteConsumerName");
         remoteConsumerName.setToken(new StringToken(""));
@@ -189,33 +189,33 @@ public class PushSupplier extends Sink {
             NameComponent path[] = {namecomp};
             // locate the remote actor
             while (!_stopRequested) {
-				try {
-					_debug("before try to get remote consumer.");
-					_remoteConsumer =
-						   ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper
-						   .narrow(ncRef.resolve(path));
-					_debug("after try to get remote consumer.");
-				   if (_remoteConsumer instanceof pushConsumer) {
-						_debug("get remote consumer.");
-				    	break;
-				   }
-				   try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
+                                try {
+                                        _debug("before try to get remote consumer.");
+                                        _remoteConsumer =
+                                                   ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper
+                                                   .narrow(ncRef.resolve(path));
+                                        _debug("after try to get remote consumer.");
+                                   if (_remoteConsumer instanceof pushConsumer) {
+                                                _debug("get remote consumer.");
+                                            break;
+                                   }
+                                   try {
+                                                Thread.sleep(1000);
+                                        } catch (InterruptedException e) {
                        _debug("thread is interrupted when trying to find" +
                         "remote consumer");
-					}
-	            } catch (Exception exp) {
-				    // ignor here and retry.
+                                        }
+                    } catch (Exception exp) {
+                                    // ignor here and retry.
                     _debug("failed to resolve the remote consumer. will try again." );
-				try {
+                                try {
 
-						Thread.sleep(1000);
-					} catch (InterruptedException ex1) {
+                                                Thread.sleep(1000);
+                                        } catch (InterruptedException ex1) {
                         _debug("thread is interrupted when trying to find" +
                                 "remote consumer");
-					}
-				}
+                                        }
+                                }
             }
 
         } catch (UserException ex) {

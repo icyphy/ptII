@@ -86,7 +86,7 @@ public class PullConsumer extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         remoteSupplierName = new Parameter(this, "remoteSupplierName");
         remoteSupplierName.setToken(new StringToken(""));

@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 
 /* A CORBA compatible interface for a pull supplier.
-	 */
+         */
 public interface pullSupplier extends pullSupplierOperations, org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity
 {
 } // interface pullSupplier

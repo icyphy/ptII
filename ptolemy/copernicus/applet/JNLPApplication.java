@@ -94,7 +94,7 @@ public class JNLPApplication {
             }
         }
 
-	try {
+        try {
             // NOTE: If there are problems with updates in the HTML widget,
             // see the comment in VergilApplication about threads.
             PtExecuteApplication application = new PtExecuteApplication(args);

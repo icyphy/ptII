@@ -190,22 +190,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         try {
-	    // If the code base is the current directory, then we
-	    // copy the jar files over and set the value of _domainJar
-	    // to the names of the jar files separated by commas.
-	    // We always want to generate the list of jar files so
-	    // that if for example we use fsm, then we are sure to
-	    // include diva.jar
-	    StringBuffer jarFilesResults = new StringBuffer();
-	    Iterator jarFiles = _findJarFiles(director).iterator();
-	    while (jarFiles.hasNext()) {
-		String jarFile = (String)jarFiles.next();
-		if (jarFilesResults.length() > 0) {
-		    jarFilesResults.append(",");
-		}
-		jarFilesResults.append(jarFile);
-	    }
-	    _modelJarFiles = jarFilesResults.toString();
+            // If the code base is the current directory, then we
+            // copy the jar files over and set the value of _domainJar
+            // to the names of the jar files separated by commas.
+            // We always want to generate the list of jar files so
+            // that if for example we use fsm, then we are sure to
+            // include diva.jar
+            StringBuffer jarFilesResults = new StringBuffer();
+            Iterator jarFiles = _findJarFiles(director).iterator();
+            while (jarFiles.hasNext()) {
+                String jarFile = (String)jarFiles.next();
+                if (jarFilesResults.length() > 0) {
+                    jarFilesResults.append(",");
+                }
+                jarFilesResults.append(jarFile);
+            }
+            _modelJarFiles = jarFilesResults.toString();
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:");
@@ -467,10 +467,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
 
-	// Set to true if we need to fix up jar files because
-	// jar files are not present probably because
-	// 'make install' was not run.
-	boolean fixJarFiles = false;
+        // Set to true if we need to fix up jar files because
+        // jar files are not present probably because
+        // 'make install' was not run.
+        boolean fixJarFiles = false;
 
         Iterator classNames = classMap.keySet().iterator();
         while (classNames.hasNext()) {
@@ -580,12 +580,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 //                         + (String)classMap.get(className));
 //                 jarFilesThatHaveBeenRequired
 //                     .add((String)classMap.get(className));
-// 		if (_codeBase.equals(".")) {
-// 		    // If the codeBase is equal to the current directory,
-// 		    // we copy the jar file.
-// 		    _copyFile(classResource, _outputDirectory,
+//                 if (_codeBase.equals(".")) {
+//                     // If the codeBase is equal to the current directory,
+//                     // we copy the jar file.
+//                     _copyFile(classResource, _outputDirectory,
 //                             (String)classMap.get(className));
-// 		}
+//                 }
             }
         }
 
@@ -609,15 +609,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
         }
 
-	if (fixJarFiles) {
-	    // If the code generator was run but codeBase != . and
-	    // make install was not run, then we will not have figured
-	    // out very many jar files.  So, we fix up the list
-	    //
-	    jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
+        if (fixJarFiles) {
+            // If the code generator was run but codeBase != . and
+            // make install was not run, then we will not have figured
+            // out very many jar files.  So, we fix up the list
+            //
+            jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
             jarFilesThatHaveBeenRequired.add(_domainJar);
 
-	}
+        }
         return jarFilesThatHaveBeenRequired;
     }
 

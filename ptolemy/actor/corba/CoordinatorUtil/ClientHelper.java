@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 
 /* A CORBA compatible interface for a consumer.
-	 */
+         */
 abstract public class ClientHelper
 {
   private static String  _id = "IDL:CoordinatorUtil/Client:1.0";

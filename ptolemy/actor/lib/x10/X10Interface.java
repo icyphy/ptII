@@ -21,7 +21,7 @@ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
                                         PT_COPYRIGHT_VERSION_2
-					COPYRIGHTENDKEY
+                                        COPYRIGHTENDKEY
 
 ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
 AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)

@@ -75,14 +75,14 @@ public class XMLToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-	/** Convert the specified token into an instance of XMLToken.
-	 *  If the specified token is not an instance of XMLToken,
-	 *  an exception is thrown.
-	 *  @param token The token to be converted to a XMLToken.
-	 *  @return A XMLToken.
-	 *  @exception IllegalActionException If the conversion
-	 *   cannot be carried out.
-	 */
+        /** Convert the specified token into an instance of XMLToken.
+         *  If the specified token is not an instance of XMLToken,
+         *  an exception is thrown.
+         *  @param token The token to be converted to a XMLToken.
+         *  @return A XMLToken.
+         *  @exception IllegalActionException If the conversion
+         *   cannot be carried out.
+         */
     public static XMLToken convert(Token token)
             throws IllegalActionException {
         if (token instanceof XMLToken) {
@@ -100,9 +100,9 @@ public class XMLToken extends Token {
         return _doc;
     }
 
-	/** Return the type of this token.
-	 *  @return BaseType.XMLTOKEN.
-	 */
+        /** Return the type of this token.
+         *  @return BaseType.XMLTOKEN.
+         */
     public Type getType() {
         return BaseType.XMLTOKEN;
     }

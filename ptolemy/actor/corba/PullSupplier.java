@@ -81,7 +81,7 @@ public class PullSupplier extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         supplierName = new Parameter(this, "supplierName");
         supplierName.setToken(new StringToken(""));

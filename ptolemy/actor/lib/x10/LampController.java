@@ -129,7 +129,7 @@ public class LampController extends Sender {
         // Must call super fire here to get the destination for this command.
         super.fire();
 
-		int brightLevel = -1;
+                int brightLevel = -1;
         int dimLevel = -1;
         if (bright.getWidth() > 0 && bright.hasToken(0)) {
             brightLevel = ((IntToken)bright.get(0)).intValue();

@@ -10,14 +10,14 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 
 /* A CORBA compatible interface for a push consumer.
-	 */
+         */
 public class _pushConsumerStub extends org.omg.CORBA.portable.ObjectImpl implements ptolemy.actor.corba.CorbaIOUtil.pushConsumer
 {
 
 
   /* this method is intended to be called remotely by a push publisher,
-  	 * so that data can be delived over the network to a push consumer.
-  	 */
+           * so that data can be delived over the network to a push consumer.
+           */
   public void push (org.omg.CORBA.Any data) throws ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;

@@ -124,73 +124,73 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("\nCircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-//  	ModelGraph dg = new CompositeModelGraph(_model,options);
-//  	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-//  	toDotty.writeDotFile(".", _model.getName(), dg);
+//          ModelGraph dg = new CompositeModelGraph(_model,options);
+//          PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+//          toDotty.writeDotFile(".", _model.getName(), dg);
 
-	ptolemy.copernicus.jhdl.circuit.JHDLCompositeActor c = null;
-	ptolemy.copernicus.jhdl.circuit.JHDLActorTestbench testbench = null;
-	try {
-	    System.out.println("here");
-	    c = ptolemy.copernicus.jhdl.circuit.CompositeActor2JHDLCompositeActor.build(_model,options);
-	    System.out.println("here");
-	    boolean resolve = c.resolve();
-	    System.out.println("here");
-	    int descriptionLevel =
-		NamedObj.LINKS |
-		NamedObj.FULLNAME |
-		//NamedObj.ATTRIBUTES |
-		NamedObj.CONTENTS |
-		NamedObj.DEEP;
-	    System.out.println(c.description(descriptionLevel));
-	    if (resolve) {
-		testbench =
-		    new ptolemy.copernicus.jhdl.circuit.JHDLActorTestbench(c);
-		HWSystem hw = new HWSystem();
-		testbench.build(hw);
-		new byucc.jhdl.apps.Viewers.JL.CLIJL(testbench.getTestbench());
-	    }
-	} catch (IllegalActionException e) {
+        ptolemy.copernicus.jhdl.circuit.JHDLCompositeActor c = null;
+        ptolemy.copernicus.jhdl.circuit.JHDLActorTestbench testbench = null;
+        try {
+            System.out.println("here");
+            c = ptolemy.copernicus.jhdl.circuit.CompositeActor2JHDLCompositeActor.build(_model,options);
+            System.out.println("here");
+            boolean resolve = c.resolve();
+            System.out.println("here");
+            int descriptionLevel =
+                NamedObj.LINKS |
+                NamedObj.FULLNAME |
+                //NamedObj.ATTRIBUTES |
+                NamedObj.CONTENTS |
+                NamedObj.DEEP;
+            System.out.println(c.description(descriptionLevel));
+            if (resolve) {
+                testbench =
+                    new ptolemy.copernicus.jhdl.circuit.JHDLActorTestbench(c);
+                HWSystem hw = new HWSystem();
+                testbench.build(hw);
+                new byucc.jhdl.apps.Viewers.JL.CLIJL(testbench.getTestbench());
+            }
+        } catch (IllegalActionException e) {
             e.printStackTrace();
-	} catch (NameDuplicationException e) {
+        } catch (NameDuplicationException e) {
             e.printStackTrace();
-	}
+        }
 
-	//HWSystem hw = new HWSystem();
-	//JHDLTestbench jtb = new JHDLTestbench(hw);
+        //HWSystem hw = new HWSystem();
+        //JHDLTestbench jtb = new JHDLTestbench(hw);
 
-	/*
-	//////////////////////////////////////////////
-	// Step 1. Create a DirectedGraph that matches
-	//         the topology of the model
-	//////////////////////////////////////////////
-	DirectedGraph combinedGraph = _createModelGraph(_model);
+        /*
+        //////////////////////////////////////////////
+        // Step 1. Create a DirectedGraph that matches
+        //         the topology of the model
+        //////////////////////////////////////////////
+        DirectedGraph combinedGraph = _createModelGraph(_model);
 
-	//////////////////////////////////////////////
-	// Step 2. Create a DFG for each entity in the model.
-	//////////////////////////////////////////////
-	Map entityGraphMap = _createEntityGraphs(_model, options);
+        //////////////////////////////////////////////
+        // Step 2. Create a DFG for each entity in the model.
+        //////////////////////////////////////////////
+        Map entityGraphMap = _createEntityGraphs(_model, options);
 
-	//////////////////////////////////////////////
-	// Step 3. Create top-level testbench
-	//////////////////////////////////////////////
-	HWSystem hw = new HWSystem();
-	JHDLTestbench _jtb = new JHDLTestbench(hw);
+        //////////////////////////////////////////////
+        // Step 3. Create top-level testbench
+        //////////////////////////////////////////////
+        HWSystem hw = new HWSystem();
+        JHDLTestbench _jtb = new JHDLTestbench(hw);
 
-	//	Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
+        //        Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
 
-	//////////////////////////////////////////////
-	// Step 3. Insert each DFG into the top-level graph
-	//////////////////////////////////////////////
-	_insertEntityGraphs(_model,combinedGraph,entityGraphMap);
+        //////////////////////////////////////////////
+        // Step 3. Insert each DFG into the top-level graph
+        //////////////////////////////////////////////
+        _insertEntityGraphs(_model,combinedGraph,entityGraphMap);
 
-	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-	toDotty.writeDotFile(".", _model.getName(), combinedGraph);
-	*/
+        PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        toDotty.writeDotFile(".", _model.getName(), combinedGraph);
+        */
 
- 	System.out.println("**************************************************");
-	System.out.println("*** END JHDL");
-	System.out.println("**************************************************");
+         System.out.println("**************************************************");
+        System.out.println("*** END JHDL");
+        System.out.println("**************************************************");
     }
 
     /**

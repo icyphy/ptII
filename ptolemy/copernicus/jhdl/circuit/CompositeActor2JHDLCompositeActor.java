@@ -56,113 +56,113 @@ import ptolemy.copernicus.jhdl.util.*;
 public class CompositeActor2JHDLCompositeActor {
 
     public static JHDLCompositeActor build(CompositeActor
-					   oldTopEntity, Map options)
-	throws IllegalActionException, NameDuplicationException {
+                                           oldTopEntity, Map options)
+        throws IllegalActionException, NameDuplicationException {
 
-	Map old2newMap = new HashMap();
+        Map old2newMap = new HashMap();
 
-	// create new actor
-	JHDLCompositeActor newTopEntity = new JHDLCompositeActor();
-	newTopEntity.setName(oldTopEntity.getName());
+        // create new actor
+        JHDLCompositeActor newTopEntity = new JHDLCompositeActor();
+        newTopEntity.setName(oldTopEntity.getName());
 
-	// add matching ports to the actor
-	Map portMap = copyPorts(oldTopEntity, newTopEntity);
-	old2newMap.putAll(portMap);
-	/*
-	for (Iterator i = oldTopEntity.portList().iterator(); i.hasNext();) {
-	    IOPort port = (IOPort) i.next();
-	    JHDLIOPort newPort = (JHDLIOPort) newTopEntity.newPort(port.getName());
-	    newPort.setInput(port.isInput());
-	    old2newMap.put(port,newPort);
-	}
-	*/
+        // add matching ports to the actor
+        Map portMap = copyPorts(oldTopEntity, newTopEntity);
+        old2newMap.putAll(portMap);
+        /*
+        for (Iterator i = oldTopEntity.portList().iterator(); i.hasNext();) {
+            IOPort port = (IOPort) i.next();
+            JHDLIOPort newPort = (JHDLIOPort) newTopEntity.newPort(port.getName());
+            newPort.setInput(port.isInput());
+            old2newMap.put(port,newPort);
+        }
+        */
 
-	// iterate over entities within composite
-	for (Iterator i = oldTopEntity.entityList().iterator();
-	     i.hasNext();) {
-	    ComponentEntity oldEntity = (ComponentEntity) i.next();
-	    System.out.println("Copying entity "+oldEntity);
+        // iterate over entities within composite
+        for (Iterator i = oldTopEntity.entityList().iterator();
+             i.hasNext();) {
+            ComponentEntity oldEntity = (ComponentEntity) i.next();
+            System.out.println("Copying entity "+oldEntity);
 
-	    // create a new entity in JHDL land
-	    ComponentEntity newEntity = null;
-	    if (oldEntity instanceof CompositeActor)
-		newEntity = build((CompositeActor) oldEntity, options);
-	    else if (oldEntity instanceof AtomicActor)
-		newEntity = build((AtomicActor) oldEntity, options);
-	    else
-		System.out.print("actor not built: "+oldEntity);
-	    // else what?
-	    newEntity.setContainer(newTopEntity);
+            // create a new entity in JHDL land
+            ComponentEntity newEntity = null;
+            if (oldEntity instanceof CompositeActor)
+                newEntity = build((CompositeActor) oldEntity, options);
+            else if (oldEntity instanceof AtomicActor)
+                newEntity = build((AtomicActor) oldEntity, options);
+            else
+                System.out.print("actor not built: "+oldEntity);
+            // else what?
+            newEntity.setContainer(newTopEntity);
 
-	    old2newMap.put(oldEntity,newEntity);
+            old2newMap.put(oldEntity,newEntity);
 
-	    // create mapping between entity old ports and new ports
-	    for (Iterator k = oldEntity.portList().iterator();
-		 k.hasNext();) {
-		IOPort oldPort = (IOPort) k.next();
-		for (Iterator j = newEntity.portList().iterator();
-		     j.hasNext();) {
-		    IOPort newPort = (IOPort) j.next();
-		    if (oldPort.getName().equals(newPort.getName())) {
-			old2newMap.put(oldPort,newPort);
-			break;
-		    }
-		}
-	    }
-	}
+            // create mapping between entity old ports and new ports
+            for (Iterator k = oldEntity.portList().iterator();
+                 k.hasNext();) {
+                IOPort oldPort = (IOPort) k.next();
+                for (Iterator j = newEntity.portList().iterator();
+                     j.hasNext();) {
+                    IOPort newPort = (IOPort) j.next();
+                    if (oldPort.getName().equals(newPort.getName())) {
+                        old2newMap.put(oldPort,newPort);
+                        break;
+                    }
+                }
+            }
+        }
 
-	// iterate over all relations in the graph and copy
-	// accordingly
-	for (Iterator i = oldTopEntity.relationList().iterator();
-	     i.hasNext();) {
-	    ComponentRelation oldRelation = (ComponentRelation) i.next();
-	    ComponentRelation newRelation = newTopEntity.newRelation();
-	    old2newMap.put(oldRelation,newRelation);
-	    for (Iterator j = oldRelation.linkedPortList().iterator();
-		 j.hasNext();) {
-		IOPort oldPort = (IOPort) j.next();
-		IOPort newPort = (IOPort) old2newMap.get(oldPort);
-		newPort.link(newRelation);
-	    }
-	}
-	return newTopEntity;
+        // iterate over all relations in the graph and copy
+        // accordingly
+        for (Iterator i = oldTopEntity.relationList().iterator();
+             i.hasNext();) {
+            ComponentRelation oldRelation = (ComponentRelation) i.next();
+            ComponentRelation newRelation = newTopEntity.newRelation();
+            old2newMap.put(oldRelation,newRelation);
+            for (Iterator j = oldRelation.linkedPortList().iterator();
+                 j.hasNext();) {
+                IOPort oldPort = (IOPort) j.next();
+                IOPort newPort = (IOPort) old2newMap.get(oldPort);
+                newPort.link(newRelation);
+            }
+        }
+        return newTopEntity;
     }
 
     public static Map copyPorts(ComponentEntity oldE, ComponentEntity newE)
-	throws IllegalActionException, NameDuplicationException {
-	Map map = new HashMap();
-	for (Iterator i = oldE.portList().iterator(); i.hasNext();) {
-	    IOPort port = (IOPort) i.next();
-	    JHDLIOPort newPort = (JHDLIOPort) newE.newPort(port.getName());
-	    newPort.setInput(port.isInput());
-	    newPort.setSignalWidth(32);
-	    map.put(port,newPort);
-	    if (port instanceof TypedIOPort) {
-		Type portType = ((TypedIOPort)port).getType();
-		if (portType instanceof BaseType.IntType)
-		    newPort.setSignalWidth(32);
-		else if (portType instanceof BaseType.BooleanType)
-		    newPort.setSignalWidth(1);
-	    }
-	}
-	return map;
+        throws IllegalActionException, NameDuplicationException {
+        Map map = new HashMap();
+        for (Iterator i = oldE.portList().iterator(); i.hasNext();) {
+            IOPort port = (IOPort) i.next();
+            JHDLIOPort newPort = (JHDLIOPort) newE.newPort(port.getName());
+            newPort.setInput(port.isInput());
+            newPort.setSignalWidth(32);
+            map.put(port,newPort);
+            if (port instanceof TypedIOPort) {
+                Type portType = ((TypedIOPort)port).getType();
+                if (portType instanceof BaseType.IntType)
+                    newPort.setSignalWidth(32);
+                else if (portType instanceof BaseType.BooleanType)
+                    newPort.setSignalWidth(1);
+            }
+        }
+        return map;
     }
 
     public static JHDLCompositeActor build(AtomicActor actor, Map options)
-	throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
 
-	//JHDLCompositeActor newE = new JHDLCompositeActor();
-	//newE.setName(actor.getName());
-	//copyPorts(actor,newE);
+        //JHDLCompositeActor newE = new JHDLCompositeActor();
+        //newE.setName(actor.getName());
+        //copyPorts(actor,newE);
 
-	ActorPortDirectedGraph g = ModelGraph2Entity.createGraph(actor,options);
-	//
-	PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
-	dgToDotty.writeDotFile(".", "actor",g);
+        ActorPortDirectedGraph g = ModelGraph2Entity.createGraph(actor,options);
+        //
+        PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
+        dgToDotty.writeDotFile(".", "actor",g);
 
-	ModelGraph2Entity model = new ModelGraph2Entity(g,actor.getName());
-	JHDLCompositeActor newActor = model.getEntity();
-	return  newActor;
+        ModelGraph2Entity model = new ModelGraph2Entity(g,actor.getName());
+        JHDLCompositeActor newActor = model.getEntity();
+        return  newActor;
     }
 
 }

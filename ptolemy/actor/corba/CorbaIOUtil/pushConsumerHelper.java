@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 
 /* A CORBA compatible interface for a push consumer.
-	 */
+         */
 abstract public class pushConsumerHelper
 {
   private static String  _id = "IDL:CorbaIOUtil/pushConsumer:1.0";

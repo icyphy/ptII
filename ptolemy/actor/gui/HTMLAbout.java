@@ -338,17 +338,17 @@ public class HTMLAbout {
     // Return a list of URLs for local .xml files linked to in demosURL.
     private static List  _getModelURLs(URL demosURL) throws IOException {
 
-	BufferedReader in = new BufferedReader(
-				new InputStreamReader(
-				demosURL.openStream()));
+        BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                demosURL.openStream()));
 
         StringBuffer demosBuffer = new StringBuffer();
 
-	String inputLine;
-	while ((inputLine = in.readLine()) != null) {
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
             demosBuffer.append(inputLine);
         }
-	in.close();
+        in.close();
 
         // demos contains the contents of the html file that has
         // links to the demos we are interested in.

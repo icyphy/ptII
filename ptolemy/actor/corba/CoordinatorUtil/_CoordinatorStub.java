@@ -10,14 +10,14 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 
 /* A CORBA compatible interface for a coordinator.
-	 */
+         */
 public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl implements ptolemy.actor.corba.CoordinatorUtil.Coordinator
 {
 
 
   /* this method is intended to be called remotely by the client
-  	     * to register with the coordinator.
-  	     */
+               * to register with the coordinator.
+               */
   public void register (String clientName, ptolemy.actor.corba.CoordinatorUtil.Client clientRef) throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException
   {
             org.omg.CORBA.portable.InputStream $in = null;
@@ -43,8 +43,8 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl implemen
 
 
   /* this method is intended to be called remotely by the client,
-  	     * so that data can be delived back over the network.
-  	     */
+               * so that data can be delived back over the network.
+               */
   public void result (String clientName, org.omg.CORBA.Any data) throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException
   {
             org.omg.CORBA.portable.InputStream $in = null;
@@ -70,8 +70,8 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl implemen
 
 
   /* this method is intended to be called remotely by the client
-  	     * to unregister with this when it leaves.
-  	     */
+               * to unregister with this when it leaves.
+               */
   public void unregister (String consumerName) throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException
   {
             org.omg.CORBA.portable.InputStream $in = null;

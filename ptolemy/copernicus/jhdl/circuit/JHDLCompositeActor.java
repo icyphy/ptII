@@ -62,90 +62,90 @@ public class JHDLCompositeActor
     extends CompositeActor implements Resolve, ConstructJHDL {
 
     public JHDLCompositeActor() {
-	super();
+        super();
     }
 
     public ComponentRelation newRelation(String name)
-	throws IllegalActionException, NameDuplicationException {
-	return new JHDLIORelation(this, name);
+        throws IllegalActionException, NameDuplicationException {
+        return new JHDLIORelation(this, name);
     }
 
     public ComponentRelation newRelation()
-	throws IllegalActionException {
-	try {
-	    return new JHDLIORelation(this);
-	} catch (NameDuplicationException ex) {
+        throws IllegalActionException {
+        try {
+            return new JHDLIORelation(this);
+        } catch (NameDuplicationException ex) {
             throw new InternalErrorException(this, ex, null);
-	}
+        }
     }
 
     public Port newPort(String name)
-	throws NameDuplicationException {
-	try {
-	    JHDLIOPort port = new JHDLIOPort(this, name);
-	    return port;
-	} catch (IllegalActionException ex) {
+        throws NameDuplicationException {
+        try {
+            JHDLIOPort port = new JHDLIOPort(this, name);
+            return port;
+        } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex, null);
-	}
+        }
     }
 
     // Resolve bitwidths
     public boolean resolve() {
 
-	boolean ok;
-	// 1. Resolve top-level ports
-	for (Iterator i = portList().iterator(); i.hasNext();) {
- 	    JHDLIOPort port = (JHDLIOPort) i.next();
-	    ok = port.resolveInside();
-	    ok = port.resolveOutside();
-	}
+        boolean ok;
+        // 1. Resolve top-level ports
+        for (Iterator i = portList().iterator(); i.hasNext();) {
+             JHDLIOPort port = (JHDLIOPort) i.next();
+            ok = port.resolveInside();
+            ok = port.resolveOutside();
+        }
 
-	// 2. Iterate through all nodes until none need resolving
-	Collection unresolvedNodes = entityList();
-	Vector resolvedNodes = new Vector();;
-	do {
-	    resolvedNodes = new Vector(unresolvedNodes.size());
-	    for (Iterator i = unresolvedNodes.iterator();i.hasNext();) {
-		Resolve r = (Resolve) i.next();
-		boolean resolved = r.resolve();
-		System.out.println("Resolving "+((NamedObj)r).getName()+
-				   " "+resolved);
-		if (resolved == true) {
-		    resolvedNodes.add(r);
-		    System.out.println(resolved + " resolving "+r);
-		}
-	    }
-	    //} while (false);
-	} while (resolvedNodes.size() < unresolvedNodes.size());
+        // 2. Iterate through all nodes until none need resolving
+        Collection unresolvedNodes = entityList();
+        Vector resolvedNodes = new Vector();;
+        do {
+            resolvedNodes = new Vector(unresolvedNodes.size());
+            for (Iterator i = unresolvedNodes.iterator();i.hasNext();) {
+                Resolve r = (Resolve) i.next();
+                boolean resolved = r.resolve();
+                System.out.println("Resolving "+((NamedObj)r).getName()+
+                                   " "+resolved);
+                if (resolved == true) {
+                    resolvedNodes.add(r);
+                    System.out.println(resolved + " resolving "+r);
+                }
+            }
+            //} while (false);
+        } while (resolvedNodes.size() < unresolvedNodes.size());
 
-	return true;
+        return true;
     }
 
     public void build(Logic parent) {
 
-	// 0. Add top-level Cell
-	Logic cell = new Logic(parent,getName());
-	System.out.println("Creating hardware for "+this+" cell="+cell);
+        // 0. Add top-level Cell
+        Logic cell = new Logic(parent,getName());
+        System.out.println("Creating hardware for "+this+" cell="+cell);
 
-	// 1. Add top-level ports
-	for (Iterator i = portList().iterator(); i.hasNext();) {
-	    JHDLIOPort port = (JHDLIOPort) i.next();
-	    port.buildJHDLPort(cell);
-	}
+        // 1. Add top-level ports
+        for (Iterator i = portList().iterator(); i.hasNext();) {
+            JHDLIOPort port = (JHDLIOPort) i.next();
+            port.buildJHDLPort(cell);
+        }
 
-	// 2. Create Wires for all internal relations
-	for (Iterator i = relationList().iterator(); i.hasNext();) {
-	    JHDLIORelation r = (JHDLIORelation) i.next();
-	    if (r.getJHDLWire() == null)
-		r.buildJHDLWire(cell);
-	}
+        // 2. Create Wires for all internal relations
+        for (Iterator i = relationList().iterator(); i.hasNext();) {
+            JHDLIORelation r = (JHDLIORelation) i.next();
+            if (r.getJHDLWire() == null)
+                r.buildJHDLWire(cell);
+        }
 
-	// 3. Create each cell instance
-	for (Iterator i = entityList().iterator(); i.hasNext();) {
-	    ConstructJHDL j = (ConstructJHDL) i.next();
-	    j.build(cell);
-	}
-	System.out.println("Done building ");
+        // 3. Create each cell instance
+        for (Iterator i = entityList().iterator(); i.hasNext();) {
+            ConstructJHDL j = (ConstructJHDL) i.next();
+            j.build(cell);
+        }
+        System.out.println("Done building ");
 
     }
 
@@ -162,37 +162,37 @@ public class JHDLCompositeActor
             Entity e = (Entity) i.next();
             String name;
 
-	    sb.append("\t\""+e.getName()+"\"");
-	    /*
-	    if (source.hasWeight()) {
-		sb.append(" [label=\""
-			  +convertSpecialsToEscapes(source.getWeight().toString())
-			  +"\"]");
-	    }
-	    */
-	    sb.append(";\r\n");
+            sb.append("\t\""+e.getName()+"\"");
+            /*
+            if (source.hasWeight()) {
+                sb.append(" [label=\""
+                          +convertSpecialsToEscapes(source.getWeight().toString())
+                          +"\"]");
+            }
+            */
+            sb.append(";\r\n");
         }
 
         sb.append("\t// Edges\r\n");
         for (Iterator i=relationList().iterator(); i.hasNext();) {
             JHDLIORelation r = (JHDLIORelation) i.next();
-	    JHDLIOPort output = null;
-	    for (Iterator j = r.linkedPortList().iterator(); j.hasNext();) {
-		JHDLIOPort port = (JHDLIOPort) j.next();
-		if (port.isOutput())
-		    output = port;
-	    }
-	    Entity outputNode = (Entity) output.getContainer();
-	    for (Iterator j = r.linkedPortList().iterator(); j.hasNext();) {
-		JHDLIOPort port = (JHDLIOPort) j.next();
-		if (port.isOutput())
-		    continue;
-		Entity destNode = (Entity) port.getContainer();
-		sb.append("\t"+outputNode.getName());
+            JHDLIOPort output = null;
+            for (Iterator j = r.linkedPortList().iterator(); j.hasNext();) {
+                JHDLIOPort port = (JHDLIOPort) j.next();
+                if (port.isOutput())
+                    output = port;
+            }
+            Entity outputNode = (Entity) output.getContainer();
+            for (Iterator j = r.linkedPortList().iterator(); j.hasNext();) {
+                JHDLIOPort port = (JHDLIOPort) j.next();
+                if (port.isOutput())
+                    continue;
+                Entity destNode = (Entity) port.getContainer();
+                sb.append("\t"+outputNode.getName());
                 sb.append(" -> ");
-		sb.append(destNode.getName());
+                sb.append(destNode.getName());
                 sb.append(";\r\n");
-	    }
+            }
         }
         sb.append("}\r\n");
         return sb.toString();

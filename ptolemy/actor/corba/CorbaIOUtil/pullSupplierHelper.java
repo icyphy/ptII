@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 
 /* A CORBA compatible interface for a pull supplier.
-	 */
+         */
 abstract public class pullSupplierHelper
 {
   private static String  _id = "IDL:CorbaIOUtil/pullSupplier:1.0";

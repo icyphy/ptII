@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 
 /* A CORBA compatible interface for a coordinator.
-	 */
+         */
 public abstract class _CoordinatorImplBase extends org.omg.CORBA.portable.ObjectImpl
                 implements ptolemy.actor.corba.CoordinatorUtil.Coordinator, org.omg.CORBA.portable.InvokeHandler
 {
@@ -41,8 +41,8 @@ public abstract class _CoordinatorImplBase extends org.omg.CORBA.portable.Object
     {
 
   /* this method is intended to be called remotely by the client
-  	     * to register with the coordinator.
-  	     */
+               * to register with the coordinator.
+               */
        case 0:  // CoordinatorUtil/Coordinator/register
        {
          try {
@@ -59,8 +59,8 @@ public abstract class _CoordinatorImplBase extends org.omg.CORBA.portable.Object
 
 
   /* this method is intended to be called remotely by the client,
-  	     * so that data can be delived back over the network.
-  	     */
+               * so that data can be delived back over the network.
+               */
        case 1:  // CoordinatorUtil/Coordinator/result
        {
          try {
@@ -77,8 +77,8 @@ public abstract class _CoordinatorImplBase extends org.omg.CORBA.portable.Object
 
 
   /* this method is intended to be called remotely by the client
-  	     * to unregister with this when it leaves.
-  	     */
+               * to unregister with this when it leaves.
+               */
        case 2:  // CoordinatorUtil/Coordinator/unregister
        {
          try {

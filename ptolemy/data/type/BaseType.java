@@ -374,19 +374,19 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final ObjectType OBJECT = new ObjectType();
 
-	 /** The XmlToken data type */
-	public static class XmlTokenType extends BaseType {
-		private XmlTokenType() {
-			super(XMLToken.class, "xmltoken");
-		}
-		public Token convert(Token t) throws IllegalActionException {
-			return XMLToken.convert(t);
-		}
-		public int getTypeHash() {
-			return 8;
-		}
-	}
-	public static final XmlTokenType XMLTOKEN = new XmlTokenType();
+         /** The XmlToken data type */
+        public static class XmlTokenType extends BaseType {
+                private XmlTokenType() {
+                        super(XMLToken.class, "xmltoken");
+                }
+                public Token convert(Token t) throws IllegalActionException {
+                        return XMLToken.convert(t);
+                }
+                public int getTypeHash() {
+                        return 8;
+                }
+        }
+        public static final XmlTokenType XMLTOKEN = new XmlTokenType();
 
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static class ScalarType extends BaseType {

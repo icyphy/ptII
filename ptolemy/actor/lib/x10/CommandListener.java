@@ -21,8 +21,8 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-										PT_COPYRIGHT_VERSION_2
-										COPYRIGHTENDKEY
+                                                                                PT_COPYRIGHT_VERSION_2
+                                                                                COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@ptolemy.eecs.berkeley.edu)
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
@@ -74,20 +74,20 @@ commands that are sent out from the same serial port).
 
 public class CommandListener extends Receiver {
 
-	/** Construct an actor with the given container and name.
-	 *  @param container The container.
-	 *  @param name The name of this actor.
-	 *  @exception IllegalActionException If the actor cannot be contained
-	 *   by the proposed container.
-	 *  @exception NameDuplicationException If the container already has an
-	 *   actor with this name.
-	 */
-	public CommandListener(CompositeEntity container, String name)
-			throws NameDuplicationException, IllegalActionException  {
-		super(container, name);
+        /** Construct an actor with the given container and name.
+         *  @param container The container.
+         *  @param name The name of this actor.
+         *  @exception IllegalActionException If the actor cannot be contained
+         *   by the proposed container.
+         *  @exception NameDuplicationException If the container already has an
+         *   actor with this name.
+         */
+        public CommandListener(CompositeEntity container, String name)
+                        throws NameDuplicationException, IllegalActionException  {
+                super(container, name);
 
-		// Create output port.
-		detected = new TypedIOPort(this, "detected", false, true);
+                // Create output port.
+                detected = new TypedIOPort(this, "detected", false, true);
         // Output true if detected is detected.
         detected.setTypeEquals(BaseType.BOOLEAN);
 
@@ -101,16 +101,16 @@ public class CommandListener extends Receiver {
         command.setExpression("ON");
 
         // Parameters.
-		houseCode = new StringParameter(this, "houseCode");
+                houseCode = new StringParameter(this, "houseCode");
         houseCode.setExpression("A");
 
         unitCode = new Parameter(this, "unitCode");
         unitCode.setTypeEquals(BaseType.INT);
         unitCode.setExpression("1");
-	}
+        }
 
-	///////////////////////////////////////////////////////////////////
-	////                     ports and parameters                  ////
+        ///////////////////////////////////////////////////////////////////
+        ////                     ports and parameters                  ////
 
     /** The X10 command to listen for.  This is a string with a value
      *  that is one of ALL_LIGHTS_OFF, ALL_LIGHTS_ON, ALL_UNITS_OFF,
@@ -118,30 +118,30 @@ public class CommandListener extends Receiver {
      */
     public StringParameter command;
 
-	/** An output with value true is produced on this port when the specified
+        /** An output with value true is produced on this port when the specified
      *  X10 command is detected for the specified house and unit codes.
-	 */
-	public TypedIOPort detected;
+         */
+        public TypedIOPort detected;
 
-	/** This string is the house code for the command that this
+        /** This string is the house code for the command that this
      *  actor listens for. The default value is "A".
-	 */
-	public StringParameter houseCode;
+         */
+        public StringParameter houseCode;
 
     /** This parameter is the unit code for the command that this
      *  actor listens for. This is an integer that defaults to 1.
      */
     public Parameter unitCode;
 
-	///////////////////////////////////////////////////////////////////
-	////                         public methods                    ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
 
     /** Output true if the specified command is sensed with the specified
      *  house and unit codes, and output false otherwise.
-	 *  @exception IllegalActionException If the super class throws it.
-	 */
-	public void fire() throws IllegalActionException {
-		super.fire();
+         *  @exception IllegalActionException If the super class throws it.
+         */
+        public void fire() throws IllegalActionException {
+                super.fire();
 
         // Check whether a command is ready
         if (_commandReady()) {
@@ -174,5 +174,5 @@ public class CommandListener extends Receiver {
         } else {
             detected.send(0, BooleanToken.FALSE);
         }
-	}
+        }
 }

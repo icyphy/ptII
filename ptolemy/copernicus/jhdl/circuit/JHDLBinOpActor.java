@@ -64,12 +64,12 @@ import soot.jimple.*;
 public class JHDLBinOpActor extends JHDLAtomicActor {
 
     JHDLBinOpActor(CompositeEntity container, int operation)
-	throws IllegalActionException, NameDuplicationException {
- 	super(container);
-	input1 = new JHDLIOPort(this, "input1");
-	input2 = new JHDLIOPort(this, "input2");
-	output = new JHDLIOPort(this, "output");
-	_operation = operation;
+        throws IllegalActionException, NameDuplicationException {
+         super(container);
+        input1 = new JHDLIOPort(this, "input1");
+        input2 = new JHDLIOPort(this, "input2");
+        output = new JHDLIOPort(this, "output");
+        _operation = operation;
     }
 
     public JHDLIOPort input1;
@@ -77,82 +77,82 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
     public JHDLIOPort output;
 
     public boolean resolve() {
-	int width;
-	System.out.println("Resolving "+getName());
-	if (input1.isResolved() && input2.isResolved()) {
-	    if (input1.getSignalWidth() != input2.getSignalWidth()) {
-		System.out.println("Binop input1/input2 signal mismatch: "+
-				   input1.getSignalWidth() + " vs. "+
-				   input2.getSignalWidth());
-		return false;
-	    }
-	    if (output.isResolved()) {
-		output.resolveOutside();
-		return true;
-	    }
-	} else {
-	    width = Signal.UNRESOLVED;
-	    if (input1.isResolved()) {
-		input1.resolveOutside();
-		input2.setSignalWidth(input1.getSignalWidth());
-		input2.resolveOutside();
-	    } else if (input2.isResolved()) {
-		input2.resolveOutside();
-		input1.setSignalWidth(input2.getSignalWidth());
-		input1.resolveOutside();
-	    } else {
-		System.out.println("Both inputs unresolved");
-		return false;
-	    }
-	}
+        int width;
+        System.out.println("Resolving "+getName());
+        if (input1.isResolved() && input2.isResolved()) {
+            if (input1.getSignalWidth() != input2.getSignalWidth()) {
+                System.out.println("Binop input1/input2 signal mismatch: "+
+                                   input1.getSignalWidth() + " vs. "+
+                                   input2.getSignalWidth());
+                return false;
+            }
+            if (output.isResolved()) {
+                output.resolveOutside();
+                return true;
+            }
+        } else {
+            width = Signal.UNRESOLVED;
+            if (input1.isResolved()) {
+                input1.resolveOutside();
+                input2.setSignalWidth(input1.getSignalWidth());
+                input2.resolveOutside();
+            } else if (input2.isResolved()) {
+                input2.resolveOutside();
+                input1.setSignalWidth(input2.getSignalWidth());
+                input1.resolveOutside();
+            } else {
+                System.out.println("Both inputs unresolved");
+                return false;
+            }
+        }
 
-	output.setSignalWidth(input1.getSignalWidth());
-	output.resolveOutside();
-	return true;
+        output.setSignalWidth(input1.getSignalWidth());
+        output.resolveOutside();
+        return true;
     }
 
     public void build(Logic cell) {
-	Wire input1Wire = input1.getOutsideRelation().getJHDLWire();
-	Wire input2Wire = input2.getOutsideRelation().getJHDLWire();
-	Wire outputWire = output.getOutsideRelation().getJHDLWire();
-	Wire binOpWire = null;
+        Wire input1Wire = input1.getOutsideRelation().getJHDLWire();
+        Wire input2Wire = input2.getOutsideRelation().getJHDLWire();
+        Wire outputWire = output.getOutsideRelation().getJHDLWire();
+        Wire binOpWire = null;
 
-	switch(_operation) {
-	case ADD:
-	    binOpWire = cell.add(input1Wire,input2Wire);
-	    break;
-	case SUB:
-	    binOpWire = cell.sub(input1Wire,input2Wire);
-	    break;
-	case AND:
-	    binOpWire = cell.and(input1Wire,input2Wire);
-	    break;
-	case OR:
-	    binOpWire = cell.or(input1Wire,input2Wire);
-	    break;
-	case XOR:
-	    binOpWire = cell.xor(input1Wire,input2Wire);
-	    break;
-	case MULT:
-	    Wire allbits = cell.wire(64);
-	    new arrayMult(cell,       // parent
-			  input1Wire,       // x
-			  input2Wire,       // y
-			  null,        // clk_en
-			  allbits,     // pout
-			  true,        // signed
-			  0);          // pipedepth
-	    binOpWire = allbits.range(31,0);
-	    break;
-	}
-	cell.buf_o (binOpWire,outputWire);
-	System.out.println("Building cell with wire "+binOpWire);
+        switch(_operation) {
+        case ADD:
+            binOpWire = cell.add(input1Wire,input2Wire);
+            break;
+        case SUB:
+            binOpWire = cell.sub(input1Wire,input2Wire);
+            break;
+        case AND:
+            binOpWire = cell.and(input1Wire,input2Wire);
+            break;
+        case OR:
+            binOpWire = cell.or(input1Wire,input2Wire);
+            break;
+        case XOR:
+            binOpWire = cell.xor(input1Wire,input2Wire);
+            break;
+        case MULT:
+            Wire allbits = cell.wire(64);
+            new arrayMult(cell,       // parent
+                          input1Wire,       // x
+                          input2Wire,       // y
+                          null,        // clk_en
+                          allbits,     // pout
+                          true,        // signed
+                          0);          // pipedepth
+            binOpWire = allbits.range(31,0);
+            break;
+        }
+        cell.buf_o (binOpWire,outputWire);
+        System.out.println("Building cell with wire "+binOpWire);
 
     }
 
     protected String _description(int detail, int indent, int bracket) {
-	return super._description(detail,indent,bracket) + " { OP="
-	    +_operation+"}";
+        return super._description(detail,indent,bracket) + " { OP="
+            +_operation+"}";
     }
 
     public static final int ADD = 1;

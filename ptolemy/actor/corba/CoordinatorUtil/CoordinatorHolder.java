@@ -9,7 +9,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 
 /* A CORBA compatible interface for a coordinator.
-	 */
+         */
 public final class CoordinatorHolder implements org.omg.CORBA.portable.Streamable
 {
   public ptolemy.actor.corba.CoordinatorUtil.Coordinator value = null;

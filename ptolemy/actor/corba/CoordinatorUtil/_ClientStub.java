@@ -10,14 +10,14 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 
 /* A CORBA compatible interface for a consumer.
-	 */
+         */
 public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements ptolemy.actor.corba.CoordinatorUtil.Client
 {
 
 
   /* this method is intended to be called remotely to
-  	     * send data to it.
-  	     */
+               * send data to it.
+               */
   public void push (org.omg.CORBA.Any data) throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException
   {
             org.omg.CORBA.portable.InputStream $in = null;

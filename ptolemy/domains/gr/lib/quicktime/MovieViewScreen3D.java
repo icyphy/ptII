@@ -197,7 +197,7 @@ public class MovieViewScreen3D extends ViewScreen
             // add content
             //
             System.out.println("Doing Video Track");
-            int kNoVolume	= 0;
+            int kNoVolume        = 0;
             int kVidTimeScale = 600;
 
             _videoTrack = _movie.addTrack(_frameWidth,
@@ -226,7 +226,7 @@ public class MovieViewScreen3D extends ViewScreen
                     CodecComponent.bestFidelityCodec,
                     codecNormalQuality,
                     codecNormalQuality,
-                    _frameRateValue,	//1 key frame every second
+                    _frameRateValue,        //1 key frame every second
                     null, //cTab,
                     0);
             ImageDescription desc = _videoSequence.getDescription();
@@ -251,9 +251,9 @@ public class MovieViewScreen3D extends ViewScreen
         try {
             _videoMedia.endEdits();
 
-            int kTrackStart	= 0;
-            int kMediaTime 	= 0;
-            int kMediaRate	= 1;
+            int kTrackStart        = 0;
+            int kMediaTime         = 0;
+            int kMediaRate        = 1;
             _videoTrack.insertMedia(kTrackStart, kMediaTime,
                     _videoMedia.getDuration(), kMediaRate);
 
@@ -296,11 +296,11 @@ public class MovieViewScreen3D extends ViewScreen
     private class Painter implements Paintable {
         private Rectangle[] ret = new Rectangle[1];
 
-	public void newSizeNotified(QTImageDrawer drawer, Dimension d) {
+        public void newSizeNotified(QTImageDrawer drawer, Dimension d) {
             ret[0] = new Rectangle(_frameWidth, _frameHeight);
         }
         public Rectangle[] paint(Graphics g) {
-	    Point location = _canvas.getLocationOnScreen();
+            Point location = _canvas.getLocationOnScreen();
             _offScreenCanvas.setOffScreenLocation(location);
             BufferedImage image =
                 new BufferedImage(_frameWidth, _frameHeight,
@@ -318,7 +318,7 @@ public class MovieViewScreen3D extends ViewScreen
 
             ret[0] = new Rectangle(_frameWidth, _frameHeight);
             return ret;
-   	}
+           }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -6,8 +6,8 @@ class JJTPtParserState {
   private java.util.Stack nodes;
   private java.util.Stack marks;
 
-  private int sp;		// number of nodes on stack
-  private int mk;		// current mark
+  private int sp;                // number of nodes on stack
+  private int mk;                // current mark
   private boolean node_created;
 
   JJTPtParserState() {
@@ -108,9 +108,9 @@ class JJTPtParserState {
       int a = nodeArity();
       mk = ((Integer)marks.pop()).intValue();
       while (a-- > 0) {
-	Node c = popNode();
-	c.jjtSetParent(n);
-	n.jjtAddChild(c, a);
+        Node c = popNode();
+        c.jjtSetParent(n);
+        n.jjtAddChild(c, a);
       }
       n.jjtClose();
       pushNode(n);

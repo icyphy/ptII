@@ -133,20 +133,20 @@ public class RxCoordination extends MACActorBase {
 
     public void fire() throws IllegalActionException {
         super.fire();
-	    int dAck, ackto;
+            int dAck, ackto;
           double endRx;
           RecordToken pdu;
 
         // perform the actions/computation done in the handleMessage()
         // method
-	    switch(_currentState)
-	    {
-	        case RxC_Idle:
-		    if (fromReception.hasToken(0)) {
-			RecordToken msg= (RecordToken)fromReception.get(0);
-			switch(((IntToken)msg.get("kind")).intValue())
-			{
-			    case NeedAck:
+            switch(_currentState)
+            {
+                case RxC_Idle:
+                    if (fromReception.hasToken(0)) {
+                        RecordToken msg= (RecordToken)fromReception.get(0);
+                        switch(((IntToken)msg.get("kind")).intValue())
+                        {
+                            case NeedAck:
                            if (_debugging) {
                                _debug("Got NeedAck msg");
                            }
@@ -155,16 +155,16 @@ public class RxCoordination extends MACActorBase {
                            ackto= ((IntToken)msg.get("ackto")).intValue();
                            endRx= ((DoubleToken)msg.get("endRx")).doubleValue();
 
-			         if (dAck>0)
+                                 if (dAck>0)
                                dAck=dAck-_dRsp;
                            // create Ack
                            _rspdu=_createPacket(Ack,dAck,ackto);
                            // schedule SIFS timer
                            setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
-				   _currentState=Wait_Sifs;
+                                   _currentState=Wait_Sifs;
                        break;
 
-	                 case RxIndicate:
+                         case RxIndicate:
                             pdu= (RecordToken)msg.get("pdu");
                             endRx= ((DoubleToken)msg.get("endRx")).doubleValue();
                             int Type=((IntToken)pdu.get("Type")).intValue();
@@ -173,41 +173,41 @@ public class RxCoordination extends MACActorBase {
                             int Addr2=((IntToken)pdu.get("Addr2")).intValue();
                             _rate=((IntToken)pdu.get("rxRate")).intValue();
 
-	                      switch(Type)
-	                      {
-	                          case ControlType:
-	                               switch(Subtype)
-	                               {
-		                             case Ack:
+                              switch(Type)
+                              {
+                                  case ControlType:
+                                       switch(Subtype)
+                                       {
+                                             case Ack:
                                               Token[] GotAckvalues={
                                                       new IntToken(GotAckMsg),
                                                       new DoubleToken(endRx)};
                                               RecordToken GotAckmsg =
                                               new RecordToken(GotCtsMsgFields, GotAckvalues);
-				                      // send the message to the TxCoordination process
-				                      GotAck.send(0, GotAckmsg);
+                                                      // send the message to the TxCoordination process
+                                                      GotAck.send(0, GotAckmsg);
                                          break;
 
-		                             case Cts:
+                                             case Cts:
                                               Token[] GotCtsvalues={
                                                       new IntToken(GotCts),
                                                       new DoubleToken(endRx)};
                                               RecordToken GotCtsmsg =
                                               new RecordToken(GotCtsMsgFields, GotCtsvalues);
-				                      // send the message to the TxCoordination process
-				                      GotAck.send(0, GotCtsmsg);
+                                                      // send the message to the TxCoordination process
+                                                      GotAck.send(0, GotCtsmsg);
                                          break;
 
-	                                   case Rts:
+                                           case Rts:
                                               double currentTime =getDirector().getCurrentTime();
-	          		                      if (tNavEnd <= currentTime)
-		                                  {
+                                                        if (tNavEnd <= currentTime)
+                                                  {
                                                  // generate Cts
-	 	                                     _rspdu=_createPacket(Cts,durId-_dRsp,Addr2);
-		                                     setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
-		                                     _currentState=Wait_Sifs;
-		                                  }
-		                             break;
+                                                      _rspdu=_createPacket(Cts,durId-_dRsp,Addr2);
+                                                     setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
+                                                     _currentState=Wait_Sifs;
+                                                  }
+                                             break;
 
                                      }
                                 break;
@@ -231,7 +231,7 @@ public class RxCoordination extends MACActorBase {
               break;
 
               case Wait_Sifs:
-	             int kind=whoTimeout();	// check if a timer times out and which
+                     int kind=whoTimeout();        // check if a timer times out and which
                    if (kind==SifsTimeout)
                    {
                        Token[] TXRequestvalues={
@@ -239,8 +239,8 @@ public class RxCoordination extends MACActorBase {
                            _rspdu,
                            new IntToken(_rate)};
                        RecordToken txrq = new RecordToken(TxRequestMsgFields, TXRequestvalues);
-			     // send the message to the Transmission block
-			     RXTXRequest.send(0, txrq);
+                             // send the message to the Transmission block
+                             RXTXRequest.send(0, txrq);
                        _currentState=Wait_TxDone;
                    }
               break;

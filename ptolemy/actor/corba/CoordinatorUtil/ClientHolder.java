@@ -9,7 +9,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 
 /* A CORBA compatible interface for a consumer.
-	 */
+         */
 public final class ClientHolder implements org.omg.CORBA.portable.Streamable
 {
   public ptolemy.actor.corba.CoordinatorUtil.Client value = null;

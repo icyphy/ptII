@@ -930,10 +930,10 @@ public class PtolemyPlatform implements Platform {
             } else if (o instanceof StringToken) {
                 return String.class;
             } else if (o instanceof ObjectToken) {
-	        Object v = ((ObjectToken)o).getValue();
-		if (v instanceof ClassObject)
-		    return Class.class;
-		else
+                Object v = ((ObjectToken)o).getValue();
+                if (v instanceof ClassObject)
+                    return Class.class;
+                else
                     return v.getClass();
             } else if (o instanceof Token) {
                 return o.getClass();
@@ -952,10 +952,10 @@ public class PtolemyPlatform implements Platform {
             } else if (o instanceof StringToken) {
                 return stringValue(o);
             } else if (o instanceof ObjectToken) {
-	        Object v = ((ObjectToken)o).getValue();
-		if (v instanceof ClassObject)
-		    return ((ClassObject)v).getClassObject();
-		else
+                Object v = ((ObjectToken)o).getValue();
+                if (v instanceof ClassObject)
+                    return ((ClassObject)v).getClassObject();
+                else
                     return ((ObjectToken) o).getValue();
             } else if (o instanceof Token) {
                 return o;
@@ -978,7 +978,7 @@ public class PtolemyPlatform implements Platform {
                     return new StringToken((String) o);
                 } else if (o instanceof Class) {
                     return new ObjectToken(new ClassObject((Class)o, this));
-		} else {
+                } else {
                     return new ObjectToken(o);
                 }
             } catch (IllegalActionException ex) {

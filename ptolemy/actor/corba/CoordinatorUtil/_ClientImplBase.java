@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 
 /* A CORBA compatible interface for a consumer.
-	 */
+         */
 public abstract class _ClientImplBase extends org.omg.CORBA.portable.ObjectImpl
                 implements ptolemy.actor.corba.CoordinatorUtil.Client, org.omg.CORBA.portable.InvokeHandler
 {
@@ -41,8 +41,8 @@ public abstract class _ClientImplBase extends org.omg.CORBA.portable.ObjectImpl
     {
 
   /* this method is intended to be called remotely to
-  	     * send data to it.
-  	     */
+               * send data to it.
+               */
        case 0:  // CoordinatorUtil/Client/push
        {
          try {

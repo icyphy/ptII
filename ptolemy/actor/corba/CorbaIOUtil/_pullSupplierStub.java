@@ -10,14 +10,14 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 
 /* A CORBA compatible interface for a pull supplier.
-	 */
+         */
 public class _pullSupplierStub extends org.omg.CORBA.portable.ObjectImpl implements ptolemy.actor.corba.CorbaIOUtil.pullSupplier
 {
 
 
   /* this method is intended to be called remotely by a pull consumer
-  	 * to request data from its supplier.
-  	 */
+           * to request data from its supplier.
+           */
   public org.omg.CORBA.Any pull () throws ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException
   {
     org.omg.CORBA.portable.InputStream $in = null;

@@ -165,7 +165,7 @@ public class RelationList extends Attribute {
      *  @return the number of relations in the relation list.
      */
     public int length() {
-    	return _relationList.size();
+            return _relationList.size();
     }
 
     /** Iterating the relation list and get the maximum current

@@ -129,13 +129,13 @@ public class FilterMpdu extends MACActorBase {
                 RecordToken msgout = new RecordToken(
                         RxIndicateMessageFields,
                         new Token[] {
-				new IntToken(RxIndicate),
-				//TODO: how to implement this?
+                                new IntToken(RxIndicate),
+                                //TODO: how to implement this?
                                 //msgout->pdu=pdu->copyEncapMsg();
                                 pdu,
                                 msg.get("endRx"),
                                 msg.get("rxRate")
-				});
+                                });
                 // send RxIndicate message to the ProtocolControl block
                 toProtocolControl.send(0, msgout);
                 if (_debugging) _debug("FILTER: Sent RxIndicate");
@@ -171,12 +171,12 @@ public class FilterMpdu extends MACActorBase {
                     // if it is a data packet, an Ack is needed
                     toProtocolControl.send(0, msgout);
                     if (_debugging) _debug("FILTER: Sent NeedAck");
-		    // add this packet to the TupleCache
+                    // add this packet to the TupleCache
                     _updateTupleCache(pdu);
                 }
             }
-	    // if this packet is not for me
-	    else {
+            // if this packet is not for me
+            else {
                 if (intFieldValue(pdu, "Type") ==ControlType &&
                         intFieldValue(pdu, "Subtype") == Rts)
                     src = Rts;
@@ -190,7 +190,7 @@ public class FilterMpdu extends MACActorBase {
                                     new IntToken(dNav),
                                     new IntToken(src)});
                     //TODO: send(msgout, toChannelstateGateId+msgin->channel);
-         	    // ask the ChannelState process to make reservation
+                     // ask the ChannelState process to make reservation
                     toChannelState.send(0, msgout);
                 }
             } // end of RTS
@@ -231,15 +231,15 @@ public class FilterMpdu extends MACActorBase {
         Iterator tuples = _tupleCache.iterator();
         while (tuples.hasNext()) {
             int[] tuple = (int[])tuples.next();
-	    // if both Addr2 and SeqNum match, use this entry
-	    // but overwite its FragNum
+            // if both Addr2 and SeqNum match, use this entry
+            // but overwite its FragNum
             if (addr == tuple[0] && seqNum == tuple[1])
-	    {
-		tuple[2]=fragNum;
+            {
+                tuple[2]=fragNum;
                 return;
-	    }
+            }
         }
-	// only if no entry is found, will we add a new one
+        // only if no entry is found, will we add a new one
         int[] tuple = new int[] {
                 intFieldValue(pdu, "Addr2"),
                 intFieldValue(pdu, "SeqNum"),

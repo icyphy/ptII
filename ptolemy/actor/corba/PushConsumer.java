@@ -90,7 +90,7 @@ public class PushConsumer extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         consumerName = new Parameter(this, "consumerName");
         consumerName.setToken(new StringToken(""));

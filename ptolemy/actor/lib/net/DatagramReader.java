@@ -449,36 +449,36 @@ public class DatagramReader extends TypedAtomicActor {
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
                 //of the socket is specified larger than 1.
                 if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
-					_defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
-					_multiCast = true;
-					try {
-						_address = InetAddress.getByName(_defaultReturnAddress);
-					}
-					catch (UnknownHostException ex) {
-						throw new IllegalActionException(this, ex,
-								"The default remote "
-								+ "address specifies an unknown host");
-					}
-					if (_multicastSocket != null) {
-						try {
-							_multicastSocket.joinGroup(_address);
-						} catch (IOException exp) {
-							throw new IllegalActionException("can't join the multicast group" + exp);
-						}
-					}
-				} else {
-					//FIXME: what should it do when change from multicast to unicast...
-					_multiCast = false;
-					if (_multicastSocket != null) {
-						try {
-							_multicastSocket.leaveGroup(_address);
-						} catch (IOException exp) {
-							throw new IllegalActionException("get an err " +
-								"when disconnect from the multicast group?" + exp);
-						}
-					}
-				}
-			}
+                                        _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
+                                        _multiCast = true;
+                                        try {
+                                                _address = InetAddress.getByName(_defaultReturnAddress);
+                                        }
+                                        catch (UnknownHostException ex) {
+                                                throw new IllegalActionException(this, ex,
+                                                                "The default remote "
+                                                                + "address specifies an unknown host");
+                                        }
+                                        if (_multicastSocket != null) {
+                                                try {
+                                                        _multicastSocket.joinGroup(_address);
+                                                } catch (IOException exp) {
+                                                        throw new IllegalActionException("can't join the multicast group" + exp);
+                                                }
+                                        }
+                                } else {
+                                        //FIXME: what should it do when change from multicast to unicast...
+                                        _multiCast = false;
+                                        if (_multicastSocket != null) {
+                                                try {
+                                                        _multicastSocket.leaveGroup(_address);
+                                                } catch (IOException exp) {
+                                                        throw new IllegalActionException("get an err " +
+                                                                "when disconnect from the multicast group?" + exp);
+                                                }
+                                        }
+                                }
+                        }
 
         } else if (attribute == defaultReturnSocketNumber) {
             synchronized(_syncDefaultOutputs) {
@@ -554,43 +554,43 @@ public class DatagramReader extends TypedAtomicActor {
                     }
                     int newSocketNumber = ((IntToken)
                             (localSocketNumber.getToken())).intValue();
-					if (_multicastSocket != null &&
-							newSocketNumber != _multicastSocket.getLocalPort()) {
-						synchronized(_syncSocket) {
-							if (_inReceive) {
-								// Wait for receive to finish, if it
-								// does not take very long that is.
-								try {
-									_syncSocket.wait((long)444);
-								} catch (InterruptedException ex) {
-									throw new IllegalActionException(this, ex,
-											"Interrupted while waiting");
-								}
-								// Either I've been notified that receive()
-								// has completed, or the timeout has occurred.
-								// It does not matter which.  Either way I am
-								// now ready to close and re-open the socket.
-							}
-							_multicastSocket.close();
-							try {
-								_multicastSocket = new MulticastSocket(newSocketNumber);
-							}
-							catch (Exception ex) {
-								throw new InternalErrorException(this, ex,
-										"Couldn't open new socket number "
-										+ newSocketNumber);
+                                        if (_multicastSocket != null &&
+                                                        newSocketNumber != _multicastSocket.getLocalPort()) {
+                                                synchronized(_syncSocket) {
+                                                        if (_inReceive) {
+                                                                // Wait for receive to finish, if it
+                                                                // does not take very long that is.
+                                                                try {
+                                                                        _syncSocket.wait((long)444);
+                                                                } catch (InterruptedException ex) {
+                                                                        throw new IllegalActionException(this, ex,
+                                                                                        "Interrupted while waiting");
+                                                                }
+                                                                // Either I've been notified that receive()
+                                                                // has completed, or the timeout has occurred.
+                                                                // It does not matter which.  Either way I am
+                                                                // now ready to close and re-open the socket.
+                                                        }
+                                                        _multicastSocket.close();
+                                                        try {
+                                                                _multicastSocket = new MulticastSocket(newSocketNumber);
+                                                        }
+                                                        catch (Exception ex) {
+                                                                throw new InternalErrorException(this, ex,
+                                                                                "Couldn't open new socket number "
+                                                                                + newSocketNumber);
 
-							}
-							if (_address != null) {
-								try {
-									_multicastSocket.joinGroup(_address);
-								} catch (IOException exp) {
-									throw new IllegalActionException("can't join the multicast group" + exp);
-								}
-							}
-						}
-					} else if (_socket != null &&
-							newSocketNumber != _socket.getLocalPort()) {
+                                                        }
+                                                        if (_address != null) {
+                                                                try {
+                                                                        _multicastSocket.joinGroup(_address);
+                                                                } catch (IOException exp) {
+                                                                        throw new IllegalActionException("can't join the multicast group" + exp);
+                                                                }
+                                                        }
+                                                }
+                                        } else if (_socket != null &&
+                                                        newSocketNumber != _socket.getLocalPort()) {
                         synchronized(_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -787,71 +787,71 @@ public class DatagramReader extends TypedAtomicActor {
 
         // Reset private variables
         _packetsAlreadyAwaitingFire = 0;
-		_defaultReturnAddress = ((StringToken)
-								defaultReturnAddress.getToken()).stringValue();
-		//check whether is ip multicase datagram.
-		if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
-				_defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
-			_multiCast = true;
-		} else {
-			_multiCast = false;
-		}
-		int portNumber = ((IntToken)(localSocketNumber.getToken())).intValue();
-		if (portNumber < 0 || portNumber > 65535) {
-			throw new IllegalActionException(this, localSocketNumber
-					+ " is outside the required 0..65535 range");
-		}
-		if (_debugging) _debug(this + "portNumber = " + portNumber);
+                _defaultReturnAddress = ((StringToken)
+                                                                defaultReturnAddress.getToken()).stringValue();
+                //check whether is ip multicase datagram.
+                if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
+                                _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
+                        _multiCast = true;
+                } else {
+                        _multiCast = false;
+                }
+                int portNumber = ((IntToken)(localSocketNumber.getToken())).intValue();
+                if (portNumber < 0 || portNumber > 65535) {
+                        throw new IllegalActionException(this, localSocketNumber
+                                        + " is outside the required 0..65535 range");
+                }
+                if (_debugging) _debug(this + "portNumber = " + portNumber);
 
-		if (_multiCast == true) {
+                if (_multiCast == true) {
 
-	        // Allocate a new multicast socket.
-	        try {
-	            if (_debugging) {
-	                _debug("Trying to create a new multicast socket on port " + portNumber);
-	            }
-				_multicastSocket = new MulticastSocket(portNumber);
-	            if (_debugging) {
-	                _debug("Multicast Socket created successfully!");
-	            }
-	        }
-	        catch (Exception ex) {
-	            throw new IllegalActionException(this, ex,
-	                    "Failed to create a new multicast socket on port " + portNumber);
+                // Allocate a new multicast socket.
+                try {
+                    if (_debugging) {
+                        _debug("Trying to create a new multicast socket on port " + portNumber);
+                    }
+                                _multicastSocket = new MulticastSocket(portNumber);
+                    if (_debugging) {
+                        _debug("Multicast Socket created successfully!");
+                    }
+                }
+                catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to create a new multicast socket on port " + portNumber);
 
-	        }
-			String address =
-				((StringToken)defaultReturnAddress.getToken()).stringValue();
-			try {
-				_address = InetAddress.getByName(address);
-			}
-			catch (UnknownHostException ex) {
-				throw new IllegalActionException(this, ex,
-						"The default remote "
-						+ "address specifies an unknown host");
-			}
-			try {
-				_multicastSocket.joinGroup(_address);
-			} catch (IOException exp) {
-				throw new IllegalActionException("can't join the multicast group" + exp);
-			}
-		} else {
-			// Allocate a new socket.
-			try {
-				if (_debugging) {
-					_debug("Trying to create a new socket on port " + portNumber);
-				}
-				_socket = new DatagramSocket(portNumber);
-				if (_debugging) {
-					_debug("Socket created successfully!");
-				}
-			}
-			catch (Exception ex) {
-				throw new IllegalActionException(this, ex,
-						"Failed to create a new socket on port " + portNumber);
+                }
+                        String address =
+                                ((StringToken)defaultReturnAddress.getToken()).stringValue();
+                        try {
+                                _address = InetAddress.getByName(address);
+                        }
+                        catch (UnknownHostException ex) {
+                                throw new IllegalActionException(this, ex,
+                                                "The default remote "
+                                                + "address specifies an unknown host");
+                        }
+                        try {
+                                _multicastSocket.joinGroup(_address);
+                        } catch (IOException exp) {
+                                throw new IllegalActionException("can't join the multicast group" + exp);
+                        }
+                } else {
+                        // Allocate a new socket.
+                        try {
+                                if (_debugging) {
+                                        _debug("Trying to create a new socket on port " + portNumber);
+                                }
+                                _socket = new DatagramSocket(portNumber);
+                                if (_debugging) {
+                                        _debug("Socket created successfully!");
+                                }
+                        }
+                        catch (Exception ex) {
+                                throw new IllegalActionException(this, ex,
+                                                "Failed to create a new socket on port " + portNumber);
 
-			}
-		}
+                        }
+                }
         // Set flag so that thread will [Set and] get platform's buffer length.
         _ChangeRequestedToPlatformBufferLength = 1;
 
@@ -976,18 +976,18 @@ public class DatagramReader extends TypedAtomicActor {
         }
     }
 
-	/** Request that execution of the current iteration stop as soon
-	 *  as possible. Wake up the manager thread if it is blocking on
-	 *  fire() of this actor.
-	 */
-	public void stop() {
-		super.stop();
-		synchronized(_syncFireAndThread) {
-			if (_fireIsWaiting) {
-				_syncFireAndThread.notifyAll();
-			}
-		}
-	}
+        /** Request that execution of the current iteration stop as soon
+         *  as possible. Wake up the manager thread if it is blocking on
+         *  fire() of this actor.
+         */
+        public void stop() {
+                super.stop();
+                synchronized(_syncFireAndThread) {
+                        if (_fireIsWaiting) {
+                                _syncFireAndThread.notifyAll();
+                        }
+                }
+        }
 
     /** Release resources acquired in the initialize() method,
      *  specifically the evaluation variable, the DatagramSocket, and
@@ -1020,8 +1020,8 @@ public class DatagramReader extends TypedAtomicActor {
             _socket.close();
             _socket = null;
         }else if (_multicastSocket != null) {
-        	_multicastSocket.close();
-        	_multicastSocket = null;
+                _multicastSocket.close();
+                _multicastSocket = null;
         }
         else {
             if (_debugging) {
@@ -1123,13 +1123,13 @@ public class DatagramReader extends TypedAtomicActor {
                             // (in bytes).
                             if (((BooleanToken)setPlatformBufferLength.getToken()).booleanValue()) {
                                 if (_multiCast) {
-                               		_multicastSocket.setReceiveBufferSize(
+                                               _multicastSocket.setReceiveBufferSize(
                                         ((IntToken)platformBufferLength.getToken())
                                         .intValue());
                                 } else {
-									_socket.setReceiveBufferSize(
-										((IntToken)platformBufferLength.getToken())
-										.intValue());
+                                                                        _socket.setReceiveBufferSize(
+                                                                                ((IntToken)platformBufferLength.getToken())
+                                                                                .intValue());
                                 }
                             }
                             // Get.
@@ -1189,63 +1189,63 @@ public class DatagramReader extends TypedAtomicActor {
                     // receive a datagram no bigger than the last one.
                     _receivePacket.setLength(_actorBufferLength);
                     if (_multiCast) {
-						try {
-							// NOTE: The following call may block.
-							_multicastSocket.receive(_receivePacket);
-							// A packet was successfully received!
-							synchronized(_syncSocket) {
-								_inReceive = false;
-								_syncSocket.notifyAll();
-							}
-						} catch (IOException ex) {
-							// _inReceive is still true!  Will retry
-							// receive().  Don't retry, however, until
-							// attributeChanged() is done changing the
-							// <i>localSocketNumber</i>
-							synchronized(_syncSocket) {
-								//   System.out.println("foo");
-							}
-						} catch (NullPointerException ex) {
-							if (_debugging) {
-								_debug("--!!--" + (_socket == null));
-							}
-							return;
-							// -> --!!--true
-							//System.out.println(ex.toString());
-							// -> java.lang.NullPointerException
-							//throw new RuntimeException("-null ptr-");
-							// -> java.lang.RuntimeException: -null ptr-
-							//     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
-						}
+                                                try {
+                                                        // NOTE: The following call may block.
+                                                        _multicastSocket.receive(_receivePacket);
+                                                        // A packet was successfully received!
+                                                        synchronized(_syncSocket) {
+                                                                _inReceive = false;
+                                                                _syncSocket.notifyAll();
+                                                        }
+                                                } catch (IOException ex) {
+                                                        // _inReceive is still true!  Will retry
+                                                        // receive().  Don't retry, however, until
+                                                        // attributeChanged() is done changing the
+                                                        // <i>localSocketNumber</i>
+                                                        synchronized(_syncSocket) {
+                                                                //   System.out.println("foo");
+                                                        }
+                                                } catch (NullPointerException ex) {
+                                                        if (_debugging) {
+                                                                _debug("--!!--" + (_socket == null));
+                                                        }
+                                                        return;
+                                                        // -> --!!--true
+                                                        //System.out.println(ex.toString());
+                                                        // -> java.lang.NullPointerException
+                                                        //throw new RuntimeException("-null ptr-");
+                                                        // -> java.lang.RuntimeException: -null ptr-
+                                                        //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
+                                                }
                     }else {
-	                    try {
-	                        // NOTE: The following call may block.
-	                        _socket.receive(_receivePacket);
-	                        // A packet was successfully received!
-	                        synchronized(_syncSocket) {
-	                            _inReceive = false;
-	                            _syncSocket.notifyAll();
-	                        }
-	                    } catch (IOException ex) {
-	                        // _inReceive is still true!  Will retry
-	                        // receive().  Don't retry, however, until
-	                        // attributeChanged() is done changing the
-	                        // <i>localSocketNumber</i>
-	                        synchronized(_syncSocket) {
-	                            //   System.out.println("foo");
-	                        }
-	                    } catch (NullPointerException ex) {
-	                        if (_debugging) {
-	                            _debug("--!!--" + (_socket == null));
-	                        }
-	                        return;
-	                        // -> --!!--true
-	                        //System.out.println(ex.toString());
-	                        // -> java.lang.NullPointerException
-	                        //throw new RuntimeException("-null ptr-");
-	                        // -> java.lang.RuntimeException: -null ptr-
-	                        //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
-	                    }
+                            try {
+                                // NOTE: The following call may block.
+                                _socket.receive(_receivePacket);
+                                // A packet was successfully received!
+                                synchronized(_syncSocket) {
+                                    _inReceive = false;
+                                    _syncSocket.notifyAll();
+                                }
+                            } catch (IOException ex) {
+                                // _inReceive is still true!  Will retry
+                                // receive().  Don't retry, however, until
+                                // attributeChanged() is done changing the
+                                // <i>localSocketNumber</i>
+                                synchronized(_syncSocket) {
+                                    //   System.out.println("foo");
+                                }
+                            } catch (NullPointerException ex) {
+                                if (_debugging) {
+                                    _debug("--!!--" + (_socket == null));
+                                }
+                                return;
+                                // -> --!!--true
+                                //System.out.println(ex.toString());
+                                // -> java.lang.NullPointerException
+                                //throw new RuntimeException("-null ptr-");
+                                // -> java.lang.RuntimeException: -null ptr-
+                                //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
+                            }
                     }
                 }
 

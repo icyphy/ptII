@@ -114,91 +114,91 @@ public class ValidateMpdu extends MACActorBase {
 
     public void fire() throws IllegalActionException {
         super.fire();
-	    int UseIfs;
+            int UseIfs;
         // perform the actions/computation done in the handleMessage()
         // method
-	    int kind=whoTimeout();	// check if a timer times out and which
+            int kind=whoTimeout();        // check if a timer times out and which
         double currentTime =getDirector().getCurrentTime();
-	    switch(_currentState)
-	    {
-	        case Rx_Idle:
-		    if (kind==RtsTimeout)
-		    { // send RtsTimeout message to ChannelState process
-			    Token[] values ={
-			          new IntToken(RtsTimeout)};
-			    RecordToken msgout =new RecordToken(RtsTimeoutMsgFields, values);
-			    toChannelState.send(0, msgout);
-		    } else if  (fromPHYLayer.hasToken(0)) {
-			    RecordToken msg= (RecordToken)fromPHYLayer.get(0);
-			    if (((IntToken)msg.get("kind")).intValue()==RxStart)
-			    {
+            switch(_currentState)
+            {
+                case Rx_Idle:
+                    if (kind==RtsTimeout)
+                    { // send RtsTimeout message to ChannelState process
+                            Token[] values ={
+                                  new IntToken(RtsTimeout)};
+                            RecordToken msgout =new RecordToken(RtsTimeoutMsgFields, values);
+                            toChannelState.send(0, msgout);
+                    } else if  (fromPHYLayer.hasToken(0)) {
+                            RecordToken msg= (RecordToken)fromPHYLayer.get(0);
+                            if (((IntToken)msg.get("kind")).intValue()==RxStart)
+                            {
                     if (_debugging) {
                         _debug("the msg token received from PHY is : " +
                                msg.toString());
                     }
                     IntToken t = (IntToken)msg.get("rxRate");
-				    _rxRate= t.intValue();
-				    // cancel the RTS timer
-				    cancelTimer(_timer);
-				    _currentState=Rx_Frame;
-			    }
-		    }
-		    break;
+                                    _rxRate= t.intValue();
+                                    // cancel the RTS timer
+                                    cancelTimer(_timer);
+                                    _currentState=Rx_Frame;
+                            }
+                    }
+                    break;
 
-	        case Rx_Frame:
-		    if (fromPHYLayer.hasToken(0) )
-		    {
-		        RecordToken msg= (RecordToken)fromPHYLayer.get(0);
-		        switch(((IntToken)msg.get("kind")).intValue())
-			    {
-			        case RxEnd:
-			        _endRx=currentTime-_D1*1e-6;
-			        if ( ((IntToken)msg.get("status")).intValue()==NoError)
-				    {
-				        // if the received message is RTS, set RtsTimeout timer
-				        if (((IntToken)_pdu.get("Type")).intValue()==ControlType
-				            && ((IntToken)_pdu.get("Subtype")).intValue()==Rts)
-				        {
+                case Rx_Frame:
+                    if (fromPHYLayer.hasToken(0) )
+                    {
+                        RecordToken msg= (RecordToken)fromPHYLayer.get(0);
+                        switch(((IntToken)msg.get("kind")).intValue())
+                            {
+                                case RxEnd:
+                                _endRx=currentTime-_D1*1e-6;
+                                if ( ((IntToken)msg.get("status")).intValue()==NoError)
+                                    {
+                                        // if the received message is RTS, set RtsTimeout timer
+                                        if (((IntToken)_pdu.get("Type")).intValue()==ControlType
+                                            && ((IntToken)_pdu.get("Subtype")).intValue()==Rts)
+                                        {
                             _dRts=2*_aSifsTime+2*_aSlotTime+_sAckCtsLng/_rxRate+
-					        _aPreambleLength+_aPlcpHeaderLength;
-					        _timer=setTimer(RtsTimeout, currentTime +_dRts*1e-6);
-				        }
-				        // working with record tokens to represent messages
-				        Token[] RxMpduvalues ={
-				                new IntToken(RxMpdu),
-				                _pdu,
-				               new DoubleToken(_endRx),
-				               new IntToken(_rxRate)};
-				        RecordToken msgout =
+                                                _aPreambleLength+_aPlcpHeaderLength;
+                                                _timer=setTimer(RtsTimeout, currentTime +_dRts*1e-6);
+                                        }
+                                        // working with record tokens to represent messages
+                                        Token[] RxMpduvalues ={
+                                                new IntToken(RxMpdu),
+                                                _pdu,
+                                               new DoubleToken(_endRx),
+                                               new IntToken(_rxRate)};
+                                        RecordToken msgout =
                                 new RecordToken(RxMpduMsgFields, RxMpduvalues);
-				        // forward the packet to FilterMpdu process
-				        toFilterMpdu.send(0, msgout);
-				        // use DIFS as IFS for normal packets
-				        UseIfs=UseDifs;
-				    } else {
-				        // use EIFS as IFS if a packet is corrupted
-				        UseIfs=UseEifs;
-				    }
+                                        // forward the packet to FilterMpdu process
+                                        toFilterMpdu.send(0, msgout);
+                                        // use DIFS as IFS for normal packets
+                                        UseIfs=UseDifs;
+                                    } else {
+                                        // use EIFS as IFS if a packet is corrupted
+                                        UseIfs=UseEifs;
+                                    }
 
-			        // send UseIfs message to ChannelState process
-			        Token[] Ifsvalues ={
-				            new IntToken(UseIfs),
-				            new DoubleToken(_endRx)};
-			        RecordToken msgout =new RecordToken(UseIfsMsgFields, Ifsvalues);
-			        toChannelState.send(0, msgout);
+                                // send UseIfs message to ChannelState process
+                                Token[] Ifsvalues ={
+                                            new IntToken(UseIfs),
+                                            new DoubleToken(_endRx)};
+                                RecordToken msgout =new RecordToken(UseIfsMsgFields, Ifsvalues);
+                                toChannelState.send(0, msgout);
 
-			        // go back to Rx_Idle state
-			        _currentState=Rx_Idle;
-			        break;
+                                // go back to Rx_Idle state
+                                _currentState=Rx_Idle;
+                                break;
 
-			        case RxData:
-			        // store the packet and process it after RxEnd is received
-			        _pdu=msg;
-			        break;
-			    }
-		    }
-		    break;
-	   }
+                                case RxData:
+                                // store the packet and process it after RxEnd is received
+                                _pdu=msg;
+                                break;
+                            }
+                    }
+                    break;
+           }
     }
 
     /** Initialize the private variables.

@@ -54,21 +54,21 @@ import soot.*;
 
 public class SimpleSignal implements Signal {
     public SimpleSignal(String name, int width) {
-	_name = name;
-	_width = width;
+        _name = name;
+        _width = width;
     }
     public SimpleSignal(String name) {
-	this(name,Signal.UNRESOLVED);
+        this(name,Signal.UNRESOLVED);
     }
     public int getSignalWidth() { return _width; }
     public void setSignalWidth(int width) { _width = width; }
     public boolean isResolved() {
-	if (_width != Signal.UNRESOLVED)
-	    return true;
-	return false;
+        if (_width != Signal.UNRESOLVED)
+            return true;
+        return false;
     }
     public String toString() {
-	return "Port:"+_name+"-"+_width;
+        return "Port:"+_name+"-"+_width;
     }
     public String getName() { return _name; }
     protected String _name;

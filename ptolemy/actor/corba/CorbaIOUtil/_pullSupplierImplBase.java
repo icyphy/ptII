@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 
 /* A CORBA compatible interface for a pull supplier.
-	 */
+         */
 public abstract class _pullSupplierImplBase extends org.omg.CORBA.portable.ObjectImpl
                 implements ptolemy.actor.corba.CorbaIOUtil.pullSupplier, org.omg.CORBA.portable.InvokeHandler
 {
@@ -39,8 +39,8 @@ public abstract class _pullSupplierImplBase extends org.omg.CORBA.portable.Objec
     {
 
   /* this method is intended to be called remotely by a pull consumer
-  	 * to request data from its supplier.
-  	 */
+           * to request data from its supplier.
+           */
        case 0:  // CorbaIOUtil/pullSupplier/pull
        {
          try {

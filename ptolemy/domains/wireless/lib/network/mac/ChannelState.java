@@ -154,7 +154,7 @@ public class ChannelState extends MACActorBase {
 
         Director director = getDirector();
         _currentTime = director.getCurrentTime();
-	    int kind=whoTimeout();
+            int kind=whoTimeout();
         // if a timer is processed, should not consume the message token
         // kind = -1 means no timer event.
         if (kind == -1) {
@@ -166,8 +166,8 @@ public class ChannelState extends MACActorBase {
                 _inputMessage = (RecordToken) fromValidateMpdu.get(0);
                 _messageType = ((IntToken)_inputMessage.
                         get("kind")).intValue();
-	            if (_messageType == UseDifs || _messageType == UseEifs)
-	            {
+                    if (_messageType == UseDifs || _messageType == UseEifs)
+                    {
                     if (_messageType == UseDifs) {
                         _dIfs = _dDIfs - _aRxTxTurnaroundTime;
                     } else if (_messageType == UseEifs) {
@@ -180,13 +180,13 @@ public class ChannelState extends MACActorBase {
                     DoubleToken t = (DoubleToken) _inputMessage.get("tRxEnd");
                     double tRxEnd = t.doubleValue();
 
-	                _IfsTimer=setTimer(IfsTimeOut, _currentTime + tRxEnd + _dIfs*1e-6);
-	            }
+                        _IfsTimer=setTimer(IfsTimeOut, _currentTime + tRxEnd + _dIfs*1e-6);
+                    }
             } else if (channelStatus.hasToken(0)) {
                 _inputMessage = (RecordToken) channelStatus.get(0);
             } else if (fromFilterMpdu.hasToken(0)) {
                 _inputMessage = (RecordToken) fromFilterMpdu.get(0);
-	        }
+                }
             if (_inputMessage != null) {
                 _messageType = ((IntToken)
                         _inputMessage.get("kind")).intValue();
@@ -196,16 +196,16 @@ public class ChannelState extends MACActorBase {
 
         switch (_state) {
             case Cs_noNav:
-		        //_getMsgType();
+                        //_getMsgType();
                 switch(_messageType) {
                     case Idle:
-		                // if channel becomes idle,set timer and goes to Wait_Ifs state
-		                _IfsTimer=setTimer(IfsTimeOut,_currentTime + _dIfs*1e-6);
+                                // if channel becomes idle,set timer and goes to Wait_Ifs state
+                                _IfsTimer=setTimer(IfsTimeOut,_currentTime + _dIfs*1e-6);
                         _state = Wait_Ifs;
                     break;
 
                      case SetNav:
-			             // if a reservation is needed, make it and goes to Cs_Nav state
+                                     // if a reservation is needed, make it and goes to Cs_Nav state
                          if (_setNav()) {
                              _state = Cs_Nav;
                          }
@@ -215,13 +215,13 @@ public class ChannelState extends MACActorBase {
 
             case Wait_Ifs:
                 if (kind == IfsTimeOut) {
-		            // if channel remains idle for the whole IFS duration,
-		            // let the Transmission block know.
-  		            _changeStatus(Idle);
+                            // if channel remains idle for the whole IFS duration,
+                            // let the Transmission block know.
+                              _changeStatus(Idle);
                     _state = noCs_noNav;
                 } else {
-		            // if we have processed IfsTimer, we will not consume this token
-		            //_getMsgType();
+                            // if we have processed IfsTimer, we will not consume this token
+                            //_getMsgType();
                     switch(_messageType) {
                         case Busy:
                             _state = Cs_noNav;
@@ -240,16 +240,16 @@ public class ChannelState extends MACActorBase {
             break;
 
             case noCs_noNav:
-		        //_getMsgType();
+                        //_getMsgType();
                 switch(_messageType) {
                     case Busy:
-			            _changeStatus(Busy);
+                                    _changeStatus(Busy);
                         _state = Cs_noNav;
                     break;
 
                     case SetNav:
                         if (_setNav()) {
-			               _changeStatus(Busy);
+                                       _changeStatus(Busy);
                            _state = noCs_Nav;
                         }
                     break;
@@ -261,24 +261,24 @@ public class ChannelState extends MACActorBase {
                 if (kind == NavTimeOut) {
                     _state = Cs_noNav;
                 } else {
-		            //_getMsgType();
+                            //_getMsgType();
                     if (_messageType == Idle)
                         _state = noCs_Nav;
                     else
-			            // RtsTimeout token will be consumed if NavTimeout
-			            // is processed, but we ignore it anyway in the
-			            // to be transitioned to: noCs_Nav or Wait_Ifs.
+                                    // RtsTimeout token will be consumed if NavTimeout
+                                    // is processed, but we ignore it anyway in the
+                                    // to be transitioned to: noCs_Nav or Wait_Ifs.
                         _updateNav();
                 }
             break;
 
             case noCs_Nav:
-		          // if the reservation is over, goes to Wait_Ifs state.
+                          // if the reservation is over, goes to Wait_Ifs state.
                   if (kind == NavTimeOut) {
                       _IfsTimer = setTimer(IfsTimeOut, _currentTime + _dIfs*1e-6);
                       _state = Wait_Ifs;
                   } else {
-		              //_getMsgType();
+                              //_getMsgType();
                       if (_messageType == Busy)
                           _state = Cs_Nav;
                       else
@@ -306,8 +306,8 @@ public class ChannelState extends MACActorBase {
         //_message = null;
         _messageType = UNKNOWN;
 
-	    // First assume channel is busy until PHY sends an idle event
-	    _changeStatus(Busy);
+            // First assume channel is busy until PHY sends an idle event
+            _changeStatus(Busy);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -334,7 +334,7 @@ public class ChannelState extends MACActorBase {
              break;
 
              case ClearNav:
-		        // force the state transition to the corresponding noNav states
+                        // force the state transition to the corresponding noNav states
                 _NavTimer.expirationTime = _currentTime;
                 tNavEnd=_currentTime;
                 _curSrc=nosrc;
@@ -348,7 +348,7 @@ public class ChannelState extends MACActorBase {
                    +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
         tNavEnd=expirationTime;
         if (expirationTime > _currentTime) {
-	        _NavTimer=setTimer(NavTimeOut,expirationTime);
+                _NavTimer=setTimer(NavTimeOut,expirationTime);
             return true;
         } else {
             return false;
@@ -364,11 +364,11 @@ public class ChannelState extends MACActorBase {
 
  /**   private void _getMsgType() throws IllegalActionException {
 
-	    if (channelStatus.hasToken(0)) {
+            if (channelStatus.hasToken(0)) {
             _inputMessage = (RecordToken) channelStatus.get(0);
         } else if (fromFilterMpdu.hasToken(0)) {
             _inputMessage = (RecordToken) fromFilterMpdu.get(0);
-	    }
+            }
         if (_inputMessage != null) {
             _messageType = ((IntToken)
             _inputMessage.get("kind")).intValue();

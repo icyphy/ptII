@@ -61,31 +61,31 @@ import soot.jimple.*;
 public class JHDLActorTestbench extends JHDLCompositeActor {
 
     public JHDLActorTestbench(ComponentEntity e)
-	throws IllegalActionException, NameDuplicationException {
-	super();
-	setName("testbench");
-	_e = e;
-	_e.setContainer(this);
-	// add relation for each port
-	for (Iterator i = e.portList().iterator(); i.hasNext();) {
-	    JHDLIOPort port = (JHDLIOPort) i.next();
-	    JHDLIORelation r =  (JHDLIORelation) newRelation();
-	    r.setSignalWidth(port.getSignalWidth());
-	    port.link(r);
-	}
+        throws IllegalActionException, NameDuplicationException {
+        super();
+        setName("testbench");
+        _e = e;
+        _e.setContainer(this);
+        // add relation for each port
+        for (Iterator i = e.portList().iterator(); i.hasNext();) {
+            JHDLIOPort port = (JHDLIOPort) i.next();
+            JHDLIORelation r =  (JHDLIORelation) newRelation();
+            r.setSignalWidth(port.getSignalWidth());
+            port.link(r);
+        }
     }
 
     public Cell getTestbench() { return _testbench; }
 
     public void build(HWSystem hw) {
-	_testbench = new SimpleTestbench(hw,"testbench");
-	System.out.println("Buliding testbench "+_testbench);
-	for (Iterator i = relationList().iterator(); i.hasNext();) {
-	    JHDLIORelation r = (JHDLIORelation) i.next();
-	    if (r.getJHDLWire() == null)
-		r.buildJHDLWire(_testbench);
-	}
-	((ConstructJHDL)_e).build(_testbench);
+        _testbench = new SimpleTestbench(hw,"testbench");
+        System.out.println("Buliding testbench "+_testbench);
+        for (Iterator i = relationList().iterator(); i.hasNext();) {
+            JHDLIORelation r = (JHDLIORelation) i.next();
+            if (r.getJHDLWire() == null)
+                r.buildJHDLWire(_testbench);
+        }
+        ((ConstructJHDL)_e).build(_testbench);
     }
 
     // Component under test

@@ -61,27 +61,27 @@ import soot.*;
 public class JHDLConstantActor extends JHDLAtomicActor {
 
     JHDLConstantActor(CompositeEntity container, String name, int constant,
-		      int width)
-	throws IllegalActionException, NameDuplicationException {
-	super(container,name);
-	_constant = constant;
+                      int width)
+        throws IllegalActionException, NameDuplicationException {
+        super(container,name);
+        _constant = constant;
     }
 
     JHDLConstantActor(CompositeEntity container, int constant, int width)
-	throws IllegalActionException, NameDuplicationException {
-	this(container,container.uniqueName("C"),constant,width);
-	output = new JHDLIOPort(this, "output", width);
+        throws IllegalActionException, NameDuplicationException {
+        this(container,container.uniqueName("C"),constant,width);
+        output = new JHDLIOPort(this, "output", width);
     }
 
     public boolean resolve() {
-	boolean resolve = output.resolveOutside();
-	return resolve;
+        boolean resolve = output.resolveOutside();
+        return resolve;
     }
 
     public void build(Logic parent) {
-	Wire c = parent.constant(output.getSignalWidth(),_constant);
-	JHDLIORelation r = output.getOutsideRelation();
-	parent.buf_o(c,r.getJHDLWire());
+        Wire c = parent.constant(output.getSignalWidth(),_constant);
+        JHDLIORelation r = output.getOutsideRelation();
+        parent.buf_o(c,r.getJHDLWire());
     }
 
     protected int _constant;
