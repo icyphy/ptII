@@ -229,6 +229,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/x10/x10.jar \
+	ptolemy/actor/lib/x10/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
 	ptolemy/caltrop/caltrop.jar \
@@ -241,6 +242,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/giotto/doc/doc.jar \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
+	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
@@ -670,6 +672,8 @@ $(UNJAR_DIST_DIR):
 	done;
 	# Remove jars lie pn/demo/demo.jar, but leave pn/pn.jar
 	rm $(UNJAR_DIST_DIR)/ptolemy/domains/*/*/*.jar
+	# Fix for quicktime.jar
+	rm $(UNJAR_DIST_DIR)/ptolemy/domains/*/*/*/*.jar
 
 # Verify the jar files.  This is useful for debugging if you are
 # getting errors about unsigned applications
