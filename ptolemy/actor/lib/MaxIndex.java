@@ -89,14 +89,8 @@ public class MaxIndex extends Transformer {
      */
     public Object clone(Workspace ws)
         throws CloneNotSupportedException {
-        try {
-            MaxIndex newobj = (MaxIndex)super.clone(ws);
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        MaxIndex newobj = (MaxIndex)super.clone(ws);
+        return newobj;
     }
 
     /** If there is at least one token on the input ports, compare the

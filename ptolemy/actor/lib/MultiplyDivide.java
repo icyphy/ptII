@@ -121,17 +121,11 @@ public class MultiplyDivide extends TypedAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            MultiplyDivide newobj = (MultiplyDivide)super.clone(ws);
-            newobj.multiply = (TypedIOPort)newobj.getPort("multiply");
-            newobj.divide = (TypedIOPort)newobj.getPort("divide");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        MultiplyDivide newobj = (MultiplyDivide)super.clone(ws);
+        newobj.multiply = (TypedIOPort)newobj.getPort("multiply");
+        newobj.divide = (TypedIOPort)newobj.getPort("divide");
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        return newobj;
     }
 
     /** If there is at least one token on the input ports, multiply
