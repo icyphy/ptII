@@ -181,18 +181,18 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
 
-    public Port newPort(String name)
-            throws NameDuplicationException {
-        Port newPort = super.newPort(name);
-        try {
-            Parameter type = new Parameter(newPort, "signalType",
-                    new StringToken("CONTINUOUS"));
-        } catch (IllegalActionException ex) {
-            // This should never occur.
-            throw new InternalErrorException("Fail to add parameter signalType"
-                    + " to new Port " + newPort.getFullName());
-        }
-        return newPort;
-    }
+     public Port newPort(String name)
+     throws NameDuplicationException {
+     Port newPort = super.newPort(name);
+     try {
+     Parameter type = new Parameter(newPort, "signalType",
+     new StringToken("CONTINUOUS"));
+     } catch (IllegalActionException ex) {
+     // This should never occur.
+     throw new InternalErrorException("Fail to add parameter signalType"
+     + " to new Port " + newPort.getFullName());
+     }
+     return newPort;
+     }
     */
 }

@@ -54,7 +54,7 @@ public interface CTEventGenerator extends Actor{
      *  is no such events, do nothing.
      *  @exception IllegalActionException If the event cannot be sent.
      *
-    public void emitCurrentEvents() throws IllegalActionException;
+     public void emitCurrentEvents() throws IllegalActionException;
     */
 
     /** Implementations of this method should return

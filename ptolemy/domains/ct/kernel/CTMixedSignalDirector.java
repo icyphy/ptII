@@ -617,9 +617,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** True argument sets the phase to be an event phase.
      *  @param eventPhase True to set the current phase to an event phase.
      *
-    protected void _setEventPhase(boolean eventPhase) {
-        _inEventPhase = eventPhase;
-        }*/
+     protected void _setEventPhase(boolean eventPhase) {
+     _inEventPhase = eventPhase;
+     }*/
 
     /** Set the end time for this iteration. If the argument is
      *  less than the current time, then an InvalidStateException
