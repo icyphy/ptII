@@ -211,8 +211,8 @@ public abstract class TreeNode extends TrackedPropertyMap
             return this;
         }
         TreeNode copy = (TreeNode) super.clone();
-        copy._childList = (ChildList) TNLManip.cloneList(_childList);
-        copy._childList.setParent(this);
+        List children = TNLManip.cloneList(_childList);
+        if (children != null) copy.setChildren(children);
         return copy;
     }
 
@@ -251,7 +251,7 @@ public abstract class TreeNode extends TrackedPropertyMap
     /** Set the children of this node to the specified list.
      *  @param childList The list of children.
      */
-    public void setChildren(ArrayList childList) {
+    public void setChildren(List childList) {
         _childList = new ChildList(this);
         _childList.addAll(childList);
     }
