@@ -66,6 +66,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ContinuousSinewave.xml \
+	LevelCrossingDetectorIcon.xml \
+	ZeroCrossingDetectorIcon.xml \
 	ctentities.xml \
 	dynamics.xml \
 	eventgenerators.xml \
