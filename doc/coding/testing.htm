@@ -67,11 +67,11 @@ too.  It needs to name the test/ directory you created.  If there is a
 makefile, edit it.  Look for a line like <CODE>DIRS =</CODE> between the
 <CODE>ME =</CODE> and <CODE>ROOT =</CODE> lines.  Edit this
 line to include the new test directory.  The result might look like:
-<CODE>DIRS = 		test</CODE>.
+<CODE>DIRS = 		test</CODE>
 <p>* If no makefile exists in the directory above test/, you will need
-to create one and repeat this procedure one more directory up until
+to create one and repeat this procedure in the next directory up until
 you find an existing makefile.
- <p>When you have done all this, the test ought to be run by the nightly build.
+ <p>When you have done all this, the test ought to run in the nightly build.
  <p>The test passes if it does not throw an exception
  <p>The <a href="codeDoc/ptolemy/actor/lib/Test.html">Test actor</a>
  (located under  "more libraries") 
