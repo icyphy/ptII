@@ -60,13 +60,13 @@ should be an array of positive integers. Each integer indicates one
 polynomial.
 The n-th bit of the polynomial indicates whether the n-th tap of the delay
 line should be taken to compute the exclusive-ored parity.
-The result is also produced in an array. The n-th element is the parity
-corresponding to the n-th polynomial.
+The result is produced as a sequence of length <i>N</i>, where <i>N</i>
+is the length of the <i>polynomialArray</i>. The n-th bit in the sequence
+corresponds to the parity computed from the n-th polynomial
 <p>
-Note in this actor types of input and output port are set to be boolean
-and boolean array, respectively. True and false are converted to 1 and 0
-before computing the parity. The results are converted back to boolean
-to form a boolean array, and then sent to the output port.
+Note in this actor types of input and output port are set to be boolean. 
+True and false are converted to 1 and 0 before computing the parity.
+The results are converted back to boolean and then sent to the output port.
 <p>
 The leading zero in each polynomial indicates an octal number.
 The order is simply the index of the highest-order non-zero in the polynomial,
@@ -83,7 +83,7 @@ For more information on convolutional codes, see Proakis, Digital
 Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
 <p>
 @author Edward A. Lee and Rachel Zhou
-@version $Id$
+@version $Id: ConvolutionalCoder.java
 */
 
 public class ConvolutionalCoder extends SDFTransformer {
@@ -116,7 +116,7 @@ public class ConvolutionalCoder extends SDFTransformer {
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.BOOLEAN);
         input.setTokenConsumptionRate(1);
-        output.setTypeEquals(new ArrayType(BaseType.BOOLEAN));
+        output.setTypeEquals(BaseType.BOOLEAN);
         output.setTokenProductionRate(1);
     }
 
@@ -181,6 +181,7 @@ public class ConvolutionalCoder extends SDFTransformer {
                     "Polynomial is required to be strictly positive.");
                 }
             }
+            output.setTokenProductionRate(maskNumber);
         } else {
             super.attributeChanged(attribute);
         }
@@ -190,7 +191,7 @@ public class ConvolutionalCoder extends SDFTransformer {
      *  them into the shift register. Compute the parity for each polynomial
      *  specified in <i>polynomialArray</i>. If the parity is 1, convert it
      *  to "true"; otherwise convert it to "false". Send these boolean
-     *  values in an array to the output. The n-th element corresponds to
+     *  values in sequence to the output port. The n-th bit corresponds to
      *  the parity computed using the n-th polynomial.
      */
     public void fire() throws IllegalActionException {
@@ -227,7 +228,7 @@ public class ConvolutionalCoder extends SDFTransformer {
             }
         }
 
-        output.broadcast(new ArrayToken(result));
+        output.broadcast(result, result.length);
     }
 
 
@@ -237,7 +238,8 @@ public class ConvolutionalCoder extends SDFTransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestShiftReg = _shiftReg = ((IntToken)initial.getToken()).intValue();
+        _latestShiftReg = _shiftReg =
+            ((IntToken)initial.getToken()).intValue();
     }
 
     /** Record the most recent shift register state as the new
