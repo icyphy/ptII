@@ -155,11 +155,11 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                          "channel " + channel + " does not have a receiver " +
                          "of type CSPReceiver." );
              }
-             _receiver = (CSPReceiver)receivers[channel][0];
+             setReceiver( (CSPReceiver)receivers[channel][0] );
 	 } finally {
              port.workspace().doneReading();
 	 }
-	 _token = t;
+	 setToken(t);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                        while (true) {
                             if (getParent()._isBranchFirst(getID())) {
                                 // I am the branch that succeeds
-                                getReceiver().put(_token);
+                                getReceiver().put(getToken());
                                 getParent()._branchSucceeded(getID());
                                 return;
                             } else {
@@ -225,7 +225,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             CSPReceiver rec = getReceiver();
                             CSPActor side2 = getReceiver()._getOtherParent();
                             if (side2._isBranchFirst(getID())) {
-                                rec.put(_token);
+                                rec.put(getToken());
                                 rec._setConditionalReceive(false, null);
                                 getParent()._branchSucceeded(getID());
                                 return;
@@ -258,7 +258,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                     // flag BEFORE doing put.
                                     CSPReceiver rec = getReceiver();
                                     rec._setConditionalSend(false, null);
-                                    rec.put(_token);
+                                    rec.put(getToken());
                                     getParent()._branchSucceeded(getID());
                                     return;
                                 }
@@ -278,7 +278,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     ": ConditionalSend terminated: " + ex.getMessage());
             getParent()._branchFailed(getID());
         } finally {
-            _token = null;
+            setToken(null);
             getReceiver()._setConditionalSend(false, null);
         }
     }

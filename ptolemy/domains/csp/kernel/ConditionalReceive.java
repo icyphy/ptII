@@ -154,7 +154,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                          "channel " + channel + " does not have a receiver" +
                          " of type CSPReceiver.");
              }
-             _receiver = (CSPReceiver)receivers[channel][0];
+             setReceiver( (CSPReceiver)receivers[channel][0]);
 	 } finally {
              port.workspace().doneReading();
 	 }
@@ -198,7 +198,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         while (true) {
                             if (getParent()._isBranchFirst(getID())) {
                                 // I am the branch that succeeds
-                                _token = getReceiver().get();
+                                setToken( getReceiver().get() );
                                 getParent()._branchSucceeded(getID());
                                 return;
                             }
@@ -221,7 +221,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             // side also ok
                             CSPReceiver rec = getReceiver();
                             if (rec._getOtherParent()._isBranchFirst(getID())) {
-                                _token = getReceiver().get();
+                                setToken( getReceiver().get() );
                                 rec._setConditionalSend(false, null);
                                 getParent()._branchSucceeded(getID());
                                 return;
@@ -252,7 +252,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                     // flag BEFORE doing put.
                                     CSPReceiver rec = getReceiver();
                                     rec._setConditionalReceive(false, null);
-                                    _token = getReceiver().get();
+                                    setToken( getReceiver().get() );
                                     getParent()._branchSucceeded(getID());
                                     return;
                                 }
