@@ -27,7 +27,7 @@
 
 package pt.kernel;
 
-import collections.UpdatableSeq;
+import java.util.Hashtable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
@@ -133,24 +133,74 @@ public class Relation extends NamedObj {
     }
 
     /** Add a source port. If this is a source Relation, first verify
-     *  that the source port is not already set. 
+     *  that no other source port has already been set. 
      * @param port The port which will be added as a source port.
      * @return Return true if the port was successfully added. Return
      * false if this is a source Relation and the source was already
      * set (in which case changeSourcePort() should be used). 
      */	
     public boolean addSourcePort(GenPort port) {
+	GenPort genPortWithDuplicateName;
 	if( isSource() && _sourcePorts == null )
 	{
-	     _sourcePorts.insertFirst( port.newConnection() ); 
+	     genPortWithDuplicateName = (GenPort)
+		  _sourcePorts.put( port.getName(), port.newConnection() ); 
+	     if( genPortWithDuplicateName != null )
+	     {
+		  //FIXME: Throw exception.
+	     }
 	     return true;
 	}
 	else if( isDestination() )
 	{
-	     _sourcePorts.insertFirst( port.newConnection() ); 
+	     genPortWithDuplicateName = (GenPort)
+		  _destinationPorts.put( port.getName(), port.newConnection() );
+	     if( genPortWithDuplicateName != null )
+	     {
+		  //FIXME: Throw exception.
+	     }
 	     return true;
 	}
 	return false;
+    }
+
+    /** If this is a source Relation, make the GenPort argument the
+     *  new source port. 
+     * @param port The port which will become the new source port.
+     * @return Return true if successful. Return false if this is 
+     * not a source Relation. 
+     */	
+    public boolean changeSourcePort(GenPort port) {
+	GenPort genPortWithDuplicateName;
+	if( isSource() )
+	{
+	     _sourcePorts.clear();
+	     genPortWithDuplicateName = (GenPort)
+		  _sourcePorts.put( port.getName(), port.newConnection() ); 
+	     if( genPortWithDuplicateName != null )
+	     {
+		  //FIXME: Throw exception.
+	     }
+	     return true;
+	}
+        return false;
+    }
+
+    /** If this is a destination Relation, make the GenPort argument the
+     *  new destination port. 
+     * @param port The port which will become the new destinatino port.
+     * @return Return true if successful. Return false if this is 
+     * not a destination Relation. 
+     */	
+    public boolean changeDestinationPort(GenPort port) {
+	if( isDestination() )
+	{
+	     _destinationPorts.clear();
+	     // _destinationPorts.insertFirst( port.newConnection() ); 
+	     _destinationPorts.put( port.getName(), port.newConnection() ); 
+	     return true;
+	}
+        return false;
     }
 
     /** Clear all port references.
@@ -213,11 +263,11 @@ public class Relation extends NamedObj {
 
     /* The list of source ports connected via this Relation
      */
-    private UpdatableSeq _sourcePorts;
+    private Hashtable _sourcePorts;
 
     /* The list of destination ports connected via this Relation
      */
-    private UpdatableSeq _destinationPorts;
+    private Hashtable _destinationPorts;
 
     /* Set to 1 if this is an source relation. Set to 2 if this is a 
      * destination relation. Set to 0 by the constructor to indicate null. 
