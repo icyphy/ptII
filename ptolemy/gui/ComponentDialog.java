@@ -141,6 +141,7 @@ public class ComponentDialog extends JDialog {
             }
         });
         setVisible(true);
+	toFront();
     }
 
     ///////////////////////////////////////////////////////////////////
