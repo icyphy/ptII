@@ -70,7 +70,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         int index = 0;
         _constructorMap = new HashMap();
         for (Iterator units = g.getBody().getUnits().iterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Stmt stmt = (Stmt) units.next();
             if (stmt instanceof DefinitionStmt) {
                 Value rvalue = ((DefinitionStmt)stmt).getRightOp();
@@ -93,7 +93,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         doAnalysis();
         if (_debug) {
             for (Iterator units = g.getBody().getUnits().iterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Stmt stmt = (Stmt) units.next();
                 System.out.println("visited " + _countMap.get(stmt) +
                         " to " + stmt);
@@ -115,7 +115,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         if (map.containsNode(field)) {
             HashSet set = new HashSet();
             for (Iterator objects = map.getSuccsOf(field).iterator();
-                objects.hasNext();) {
+                 objects.hasNext();) {
                 set.addAll(map.getPredsOf(objects.next()));
             }
             return set;
@@ -129,13 +129,13 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
      *  the given unit.  If there is no alias information, meaning the
      *  field can be aliased to anything, then return null.
      */
-     public Set getAliasesOfAfter(SootField field, Unit unit) {
+    public Set getAliasesOfAfter(SootField field, Unit unit) {
         GraphFlow map =
             (GraphFlow)getFlowAfter(unit);
         if (map.containsNode(field)) {
             HashSet set = new HashSet();
             for (Iterator objects = map.getSuccsOf(field).iterator();
-                objects.hasNext();) {
+                 objects.hasNext();) {
                 set.addAll(map.getPredsOf(objects.next()));
             }
             return set;
@@ -155,7 +155,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         if (map.containsNode(local)) {
             HashSet set = new HashSet();
             for (Iterator objects = map.getSuccsOf(local).iterator();
-                objects.hasNext();) {
+                 objects.hasNext();) {
                 set.addAll(map.getPredsOf(objects.next()));
             }
             return set;
@@ -175,7 +175,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         if (map.containsNode(local)) {
             HashSet set = new HashSet();
             for (Iterator objects = map.getSuccsOf(local).iterator();
-                objects.hasNext();) {
+                 objects.hasNext();) {
                 set.addAll(map.getPredsOf(objects.next()));
             }
             return set;
@@ -220,32 +220,32 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         // This is a safe flow-insensitive approximation.
         if (unit.containsInvokeExpr()) {
             //if (_sideEffectAnalysis == null) {
-                for (Iterator nodes = out.getNodes().iterator();
-                    nodes.hasNext();) {
-                    Object node = nodes.next();
-                    if (node instanceof SootField) {
-                        SootField field = (SootField) node;
-                        // FIXME: This is not quite correct...
-                        // A private field might
-                        // be affected by a method that is called back.
-                        // We really need to figure out a cheap side effect
-                        // analysis to handle what the method call does.
-                        if (field.isPrivate()) {
-                            continue;
-                        }
-                        // If the field is final, then it can never be
-                        // changed.  This is safe.
-                        if (Modifier.isFinal(field.getModifiers())) {
-                            continue;
-                        }
-                        if (_debug) {
-                            System.out.println("unit " + unit +
-                                    " kills " + field);
-                        }
-                        _setCanPointToAnything(out, node);
+            for (Iterator nodes = out.getNodes().iterator();
+                 nodes.hasNext();) {
+                Object node = nodes.next();
+                if (node instanceof SootField) {
+                    SootField field = (SootField) node;
+                    // FIXME: This is not quite correct...
+                    // A private field might
+                    // be affected by a method that is called back.
+                    // We really need to figure out a cheap side effect
+                    // analysis to handle what the method call does.
+                    if (field.isPrivate()) {
+                        continue;
                     }
+                    // If the field is final, then it can never be
+                    // changed.  This is safe.
+                    if (Modifier.isFinal(field.getModifiers())) {
+                        continue;
+                    }
+                    if (_debug) {
+                        System.out.println("unit " + unit +
+                                " kills " + field);
+                    }
+                    _setCanPointToAnything(out, node);
                 }
-             /*  } else {
+            }
+            /*  } else {
                 InvokeExpr expr = (InvokeExpr)unit.getInvokeExpr();
                 SootMethod method = expr.getMethod();
                 if (_debug) System.out.println("invoking: " + method);
@@ -254,32 +254,32 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 // all the possible targets
                 List targets = _invokeGraph.getTargetsOf((Stmt)unit);
                 for (Iterator i = targets.iterator();
-                    i.hasNext();) {
-                    SootMethod target = (SootMethod)i.next();
+                i.hasNext();) {
+                SootMethod target = (SootMethod)i.next();
 
-                    Set newSet = _sideEffectAnalysis.getSideEffects(method);
+                Set newSet = _sideEffectAnalysis.getSideEffects(method);
 
-                    if (newSet != null) {
-                        allSideEffects.addAll(newSet);
-                    } else {
-                        allSideEffects = null;
-                        break;
-                    }
+                if (newSet != null) {
+                allSideEffects.addAll(newSet);
+                } else {
+                allSideEffects = null;
+                break;
+                }
                 }
                 if (allSideEffects != null) {
-                    // kill the alias for anything that was in the set,
-                    // and is in our flow.
-                    allSideEffects.retainAll(out.keySet());
+                // kill the alias for anything that was in the set,
+                // and is in our flow.
+                allSideEffects.retainAll(out.keySet());
                 } else {
-                    allSideEffects = out.keySet();
+                allSideEffects = out.keySet();
                 }
                 if (_debug) System.out.println("all Side effects = " + allSideEffects);
                 for (Iterator i = allSideEffects.iterator();
-                    i.hasNext();) {
-                    Object object = i.next();
-                    if (object instanceof SootField) {
-                        _killAlias(out, object);
-                    }
+                i.hasNext();) {
+                Object object = i.next();
+                if (object instanceof SootField) {
+                _killAlias(out, object);
+                }
                 }
                 }*/
         }
@@ -290,8 +290,8 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             Value rvalue = assignStmt.getRightOp();
 
             if (_debug) {
-             //   System.out.println("lvalueClass = " + lvalue.getClass());
-             //    System.out.println("rvalueClass = " + rvalue.getClass());
+                //   System.out.println("lvalueClass = " + lvalue.getClass());
+                //    System.out.println("rvalueClass = " + rvalue.getClass());
             }
 
             // If we are dealing with aliasable objects.
@@ -329,7 +329,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
         // Copy all the nodes.
         for (Iterator nodes = in.getNodes().iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             if (!out.containsNode(node)) {
                 out.addNode(node);
@@ -338,10 +338,10 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
         // Copy all the edges.
         for (Iterator nodes = in.getNodes().iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             for (Iterator successors = in.getSuccsOf(node).iterator();
-                successors.hasNext();) {
+                 successors.hasNext();) {
                 Object successor = successors.next();
                 out.addEdge(node, successor);
             }
@@ -359,7 +359,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
         // Union all the nodes.
         for (Iterator nodes = in2.getNodes().iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             if (!out.containsNode(node)) {
                 out.addNode(node);
@@ -368,10 +368,10 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
         // Union all the edges.
         for (Iterator nodes = in2.getNodes().iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             for (Iterator successors = in2.getSuccsOf(node).iterator();
-                successors.hasNext();) {
+                 successors.hasNext();) {
                 out.addEdge(node, successors.next());
             }
         }
@@ -385,7 +385,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         List list = new ArrayList();
         list.addAll(graph.getSuccsOf(lobject));
         for (Iterator successors = list.iterator();
-            successors.hasNext();) {
+             successors.hasNext();) {
             Object target = successors.next();
             graph.removeEdge(lobject, target);
         }
@@ -395,7 +395,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         list.addAll(graph.getSuccsOf(robject));
         // Add the edges from the right object.
         for (Iterator successors = list.iterator();
-            successors.hasNext();) {
+             successors.hasNext();) {
             Object target = successors.next();
             graph.addEdge(lobject, target);
         }
@@ -407,7 +407,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
         graph.addEdge(object, _universeRepresentative);
         for (Iterator constructors = _constructorMap.keySet().iterator();
-            constructors.hasNext();) {
+             constructors.hasNext();) {
             Value constructor = (Value)constructors.next();
             //  System.out.println("constructorTarget = " +
             //        _constructorMap.get(constructor));
@@ -537,7 +537,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 return false;
             }
             for (Iterator heads = flow.getNodes().iterator();
-                heads.hasNext();) {
+                 heads.hasNext();) {
                 Object head = heads.next();
                 if (!_listEquals(flow.getSuccsOf(head), getSuccsOf(head))) {
                     //  System.out.println("output from head = " + head);
@@ -551,11 +551,11 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         public String toString() {
             String string = "nodes = " + getNodes();
             for (Iterator nodes = getNodes().iterator();
-                nodes.hasNext();) {
+                 nodes.hasNext();) {
                 Object source = nodes.next();
                 string += "\nsource = " + source + " targets = ";
                 for (Iterator succs = getSuccsOf(source).iterator();
-                    succs.hasNext();) {
+                     succs.hasNext();) {
                     string += succs.next() + ",";
                 }
             }
@@ -577,18 +577,18 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         }
 
         private Comparator _comparator = new Comparator() {
-            public int compare(Object o1, Object o2) {
-                int flag = o1.toString().compareTo(o2.toString());
-                if (flag == 0) {
-                    if (o1.hashCode() < o2.hashCode()) {
-                        return -1;
-                    } else if (o1.hashCode() > o2.hashCode()) {
-                        return 1;
+                public int compare(Object o1, Object o2) {
+                    int flag = o1.toString().compareTo(o2.toString());
+                    if (flag == 0) {
+                        if (o1.hashCode() < o2.hashCode()) {
+                            return -1;
+                        } else if (o1.hashCode() > o2.hashCode()) {
+                            return 1;
+                        }
                     }
+                    return flag;
                 }
-                return flag;
-            }
-        };
+            };
     }
 
     // A map from a statement to the number of times that statement

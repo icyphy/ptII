@@ -38,15 +38,15 @@ import soot.toolkits.graph.*;
 import java.util.*;
 import java.io.*;
 /**
-Write all of the application classes out to class files.  Jasmin files
-for the classes will be created in a temporary directory and then compiled
-into bytecode using the Jasmin assembler.  The output directory is specified
-using the outDir parameter.  The class files will be placed in
-the appropriate subdirectory of that directory according to their package
-name.
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   Write all of the application classes out to class files.  Jasmin files
+   for the classes will be created in a temporary directory and then compiled
+   into bytecode using the Jasmin assembler.  The output directory is specified
+   using the outDir parameter.  The class files will be placed in
+   the appropriate subdirectory of that directory according to their package
+   name.
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class ClassWriter extends SceneTransformer {
     private static ClassWriter instance = new ClassWriter();
@@ -95,7 +95,7 @@ public class ClassWriter extends SceneTransformer {
         }
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-            classes.hasNext();) {
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
 
             theClass.write(outDir);

@@ -72,7 +72,7 @@ public class AliasAssignmentEliminator extends BodyTransformer
 
         // Loop through all the units
         for (Iterator units = body.getUnits().snapshotIterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Unit unit = (Unit)units.next();
             if (unit instanceof DefinitionStmt) {
                 DefinitionStmt stmt = (DefinitionStmt)unit;
@@ -128,21 +128,21 @@ public class AliasAssignmentEliminator extends BodyTransformer
                         body.getUnits().remove(stmt);
                     }
                 }
-                    /* Not sure what to do here.. our alias analysis doesn't
-                         handle nulls well...
-                        else if (left.getType() instanceof RefType &&
-                              right.getType() instanceof NullType) {
-                        // Then the right side is the one we must analyze.
-                        if (debug) System.out.println("Ref-Null unit = " + unit);
-                        Local local = (Local)left;
-                        if (nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
-                            binop.getOp1Box().setValue(IntConstant.v(0));
-                            binop.getOp2Box().setValue(IntConstant.v(0));
-                        } else if (nullPointerAnalysis.isNeverNullBefore(local, unit)) {
-                            binop.getOp1Box().setValue(IntConstant.v(0));
-                            binop.getOp2Box().setValue(IntConstant.v(1));
-                        }
-                        }*/
+                /* Not sure what to do here.. our alias analysis doesn't
+                   handle nulls well...
+                   else if (left.getType() instanceof RefType &&
+                   right.getType() instanceof NullType) {
+                   // Then the right side is the one we must analyze.
+                   if (debug) System.out.println("Ref-Null unit = " + unit);
+                   Local local = (Local)left;
+                   if (nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
+                   binop.getOp1Box().setValue(IntConstant.v(0));
+                   binop.getOp2Box().setValue(IntConstant.v(0));
+                   } else if (nullPointerAnalysis.isNeverNullBefore(local, unit)) {
+                   binop.getOp1Box().setValue(IntConstant.v(0));
+                   binop.getOp2Box().setValue(IntConstant.v(1));
+                   }
+                   }*/
             }
         }
     }

@@ -156,65 +156,65 @@ public class PlotFormatter extends JPanel {
 
         // Attach listeners.
         _wideQuery.addQueryListener(new QueryListener() {
-            public void changed(String name) {
-                if (name.equals("title")) {
-                    _plot.setTitle(_wideQuery.stringValue("title"));
-                } else if (name.equals("xlabel")) {
-                    _plot.setXLabel(_wideQuery.stringValue("xlabel"));
-                } else if (name.equals("ylabel")) {
-                    _plot.setYLabel(_wideQuery.stringValue("ylabel"));
-                } else if (name.equals("xrange")) {
-                    _plot.read("XRange: " + _wideQuery.stringValue("xrange"));
-                } else if (name.equals("xticks")) {
-                    String spec = _wideQuery.stringValue("xticks").trim();
-                    _plot.read("XTicks: " + spec);
-                    // FIXME: log axis format temporarily disable, see above.
-                    // if (spec.equals("")) {
-                    //    _narrowQuery.setEnabled("xlog", true);
-                    // } else {
-                    //    _narrowQuery.setBoolean("xlog", false);
-                    //    _narrowQuery.setEnabled("xlog", false);
-                    // }
-                } else if (name.equals("yticks")) {
-                    String spec = _wideQuery.stringValue("yticks").trim();
-                    _plot.read("YTicks: " + spec);
-                    // FIXME: log axis format temporarily disable, see above.
-                    // if (spec.equals("")) {
-                    //    _narrowQuery.setEnabled("ylog", true);
-                    // } else {
-                    //    _narrowQuery.setBoolean("ylog", false);
-                    //    _narrowQuery.setEnabled("ylog", false);
-                    // }
-                } else if (name.equals("yrange")) {
-                    _plot.read("YRange: " + _wideQuery.stringValue("yrange"));
-                } else if (name.equals("marks")) {
-                    ((Plot)_plot).setMarksStyle(_wideQuery.stringValue("marks"));
+                public void changed(String name) {
+                    if (name.equals("title")) {
+                        _plot.setTitle(_wideQuery.stringValue("title"));
+                    } else if (name.equals("xlabel")) {
+                        _plot.setXLabel(_wideQuery.stringValue("xlabel"));
+                    } else if (name.equals("ylabel")) {
+                        _plot.setYLabel(_wideQuery.stringValue("ylabel"));
+                    } else if (name.equals("xrange")) {
+                        _plot.read("XRange: " + _wideQuery.stringValue("xrange"));
+                    } else if (name.equals("xticks")) {
+                        String spec = _wideQuery.stringValue("xticks").trim();
+                        _plot.read("XTicks: " + spec);
+                        // FIXME: log axis format temporarily disable, see above.
+                        // if (spec.equals("")) {
+                        //    _narrowQuery.setEnabled("xlog", true);
+                        // } else {
+                        //    _narrowQuery.setBoolean("xlog", false);
+                        //    _narrowQuery.setEnabled("xlog", false);
+                        // }
+                    } else if (name.equals("yticks")) {
+                        String spec = _wideQuery.stringValue("yticks").trim();
+                        _plot.read("YTicks: " + spec);
+                        // FIXME: log axis format temporarily disable, see above.
+                        // if (spec.equals("")) {
+                        //    _narrowQuery.setEnabled("ylog", true);
+                        // } else {
+                        //    _narrowQuery.setBoolean("ylog", false);
+                        //    _narrowQuery.setEnabled("ylog", false);
+                        // }
+                    } else if (name.equals("yrange")) {
+                        _plot.read("YRange: " + _wideQuery.stringValue("yrange"));
+                    } else if (name.equals("marks")) {
+                        ((Plot)_plot).setMarksStyle(_wideQuery.stringValue("marks"));
+                    }
+                    _plot.repaint();
                 }
-                _plot.repaint();
-            }
-        });
+            });
 
         _narrowQuery.addQueryListener(new QueryListener() {
-            public void changed(String name) {
-                if (name.equals("grid")) {
-                    _plot.setGrid(_narrowQuery.booleanValue("grid"));
-                } else if (name.equals("stems")) {
-                    ((Plot)_plot).setImpulses(
-                            _narrowQuery.booleanValue("stems"));
+                public void changed(String name) {
+                    if (name.equals("grid")) {
+                        _plot.setGrid(_narrowQuery.booleanValue("grid"));
+                    } else if (name.equals("stems")) {
+                        ((Plot)_plot).setImpulses(
+                                _narrowQuery.booleanValue("stems"));
+                        _plot.repaint();
+                    } else if (name.equals("color")) {
+                        _plot.setColor(_narrowQuery.booleanValue("color"));
+                        // FIXME: log axis format temporarily disable, see above.
+                        // } else if (name.equals("xlog")) {
+                        //    _plot.setXLog(_narrowQuery.booleanValue("xlog"));
+                        // } else if (name.equals("ylog")) {
+                        //    _plot.setYLog(_narrowQuery.booleanValue("ylog"));
+                    } else if (name.equals("connected")) {
+                        _setConnected(_narrowQuery.booleanValue("connected"));
+                    }
                     _plot.repaint();
-                } else if (name.equals("color")) {
-                    _plot.setColor(_narrowQuery.booleanValue("color"));
-                    // FIXME: log axis format temporarily disable, see above.
-                    // } else if (name.equals("xlog")) {
-                    //    _plot.setXLog(_narrowQuery.booleanValue("xlog"));
-                    // } else if (name.equals("ylog")) {
-                    //    _plot.setYLog(_narrowQuery.booleanValue("ylog"));
-                } else if (name.equals("connected")) {
-                    _setConnected(_narrowQuery.booleanValue("connected"));
                 }
-                _plot.repaint();
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

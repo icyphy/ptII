@@ -78,17 +78,17 @@ public class InstanceEqualityEliminator extends SceneTransformer
         boolean debug = Options.getBoolean(options, "debug");
 
         /*  if (debug) System.out.println("building invoke graph");
-        InvokeGraph invokeGraph =
+            InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newInvokeGraph();
-        if (debug) System.out.println("done");
-        if (debug) System.out.println("building method call graph");
-        MethodCallGraph methodCallGraph =
+            if (debug) System.out.println("done");
+            if (debug) System.out.println("building method call graph");
+            MethodCallGraph methodCallGraph =
             (MethodCallGraph)invokeGraph.newMethodGraph();
-        if (debug) System.out.println("done");
-        if (debug) System.out.println("analyzing sideeffecting methods");
-        SideEffectAnalysis sideEffectAnalysis =
+            if (debug) System.out.println("done");
+            if (debug) System.out.println("analyzing sideeffecting methods");
+            SideEffectAnalysis sideEffectAnalysis =
             new SideEffectAnalysis(methodCallGraph);
-        if (debug) System.out.println("done");
+            if (debug) System.out.println("done");
         */
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
@@ -127,10 +127,10 @@ public class InstanceEqualityEliminator extends SceneTransformer
         //System.out.println("done analyzing");
         // Loop through all the unit
         for (Iterator units = body.getUnits().iterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Unit unit = (Unit)units.next();
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
 
@@ -165,7 +165,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
                                 + rightMaybeAliases);
 
                         if (leftMustAliases.contains(right) &&
-                           rightMustAliases.contains(left)) {
+                                rightMustAliases.contains(left)) {
                             if (debug) System.out.println("instances are equal");
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
@@ -187,7 +187,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
                         binop.getOp1Box().setValue(IntConstant.v(0));
                         binop.getOp2Box().setValue(IntConstant.v(0));
                     } else if (left.getType() instanceof NullType &&
-                              right.getType() instanceof RefType) {
+                            right.getType() instanceof RefType) {
                         // Then the right side is the one we must analyze.
                         if (debug) System.out.println("Null-Ref unit = " + unit);
                         Local local = (Local)right;
@@ -199,7 +199,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
                             binop.getOp2Box().setValue(IntConstant.v(1));
                         }
                     } else if (left.getType() instanceof RefType &&
-                              right.getType() instanceof NullType) {
+                            right.getType() instanceof NullType) {
                         // Then the right side is the one we must analyze.
                         if (debug) System.out.println("Ref-Null unit = " + unit);
                         Local local = (Local)left;

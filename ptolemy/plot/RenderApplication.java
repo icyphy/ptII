@@ -87,13 +87,13 @@ public class RenderApplication extends PlotFrame {
 
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                // Strangely, calling _close() here sends javac into
-                // an infinite loop (in jdk 1.1.4).
-                //              _close();
-                System.exit(0);
-            }
-        });
+                public void windowClosing(WindowEvent e) {
+                    // Strangely, calling _close() here sends javac into
+                    // an infinite loop (in jdk 1.1.4).
+                    //              _close();
+                    System.exit(0);
+                }
+            });
 
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.

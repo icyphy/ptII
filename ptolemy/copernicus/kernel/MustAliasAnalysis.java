@@ -79,7 +79,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
      *  the same object as the given field, at a point after
      *  the given unit.
      */
-     public Set getAliasesOfAfter(SootField field, Unit unit) {
+    public Set getAliasesOfAfter(SootField field, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
         Set set = new HashSet();
         if (map.get(field) != null) {
@@ -174,7 +174,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         if (unit.containsInvokeExpr()) {
             if (_sideEffectAnalysis == null) {
                 for (Iterator i = out.keySet().iterator();
-                    i.hasNext();) {
+                     i.hasNext();) {
                     Object object = i.next();
                     if (object instanceof SootField) {
                         SootField field = (SootField) object;
@@ -196,7 +196,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                 // all the possible targets
                 List targets = _invokeGraph.getTargetsOf((Stmt)unit);
                 for (Iterator i = targets.iterator();
-                    i.hasNext();) {
+                     i.hasNext();) {
                     SootMethod target = (SootMethod)i.next();
 
                     Set newSet = _sideEffectAnalysis.getSideEffects(method);
@@ -221,7 +221,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                 }
                 System.out.println("all Side effects = " + allSideEffects);
                 for (Iterator i = allSideEffects.iterator();
-                    i.hasNext();) {
+                     i.hasNext();) {
                     Object object = i.next();
                     if (object instanceof SootField) {
                         _killAlias(out, object);
@@ -275,7 +275,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                 outSet.addAll(inSet);
                 out.put(object, outSet);
                 for (Iterator i = outSet.iterator();
-                    i.hasNext();) {
+                     i.hasNext();) {
                     out.put(i.next(), outSet);
                 }
                 aliasValues.removeAll(inSet);

@@ -56,12 +56,12 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
         // CHANGED
         final HashMap indexMap = new HashMap();
         TreeSet changedUnitsSet = new TreeSet(new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Integer i1 = (Integer)indexMap.get(o1);
-                Integer i2 = (Integer)indexMap.get(o2);
-                return i1.compareTo(i2);
-            }
-        });
+                public int compare(Object o1, Object o2) {
+                    Integer i1 = (Integer)indexMap.get(o1);
+                    Integer i2 = (Integer)indexMap.get(o2);
+                    return i1.compareTo(i2);
+                }
+            });
 
         int numNodes = graph.size();
         int numComputations = 0;
@@ -71,15 +71,15 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
             Iterator it = graph.iterator();
 
             while (it.hasNext())
-            {
-                Object s = it.next();
+                {
+                    Object s = it.next();
 
-                indexMap.put(s, new Integer(index++));
-                changedUnitsSet.add(s);
+                    indexMap.put(s, new Integer(index++));
+                    changedUnitsSet.add(s);
 
-                unitToBeforeFlow.put(s, newInitialFlow());
-                unitToAfterFlow.put(s, newInitialFlow());
-            }
+                    unitToBeforeFlow.put(s, newInitialFlow());
+                    unitToAfterFlow.put(s, newInitialFlow());
+                }
         }
         // ENDCHANGE
         customizeInitialFlowGraph();
@@ -89,61 +89,61 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
             Object previousAfterFlow = newInitialFlow();
 
             while (!changedUnitsSet.isEmpty())
-            {
-                Object beforeFlow;
-                Object afterFlow;
-
-                Object s = changedUnitsSet.first();
-                changedUnitsSet.remove(s);
-
-                copy(unitToAfterFlow.get(s), previousAfterFlow);
-
-                // Compute and store beforeFlow
                 {
-                    List preds = graph.getPredsOf(s);
+                    Object beforeFlow;
+                    Object afterFlow;
 
-                    beforeFlow = unitToBeforeFlow.get(s);
+                    Object s = changedUnitsSet.first();
+                    changedUnitsSet.remove(s);
 
-                    if (preds.size() == 1)
-                        copy(unitToAfterFlow.get(preds.get(0)), beforeFlow);
-                    else if (preds.size() != 0)
+                    copy(unitToAfterFlow.get(s), previousAfterFlow);
+
+                    // Compute and store beforeFlow
                     {
-                        Iterator predIt = preds.iterator();
+                        List preds = graph.getPredsOf(s);
 
-                        copy(unitToAfterFlow.get(predIt.next()), beforeFlow);
+                        beforeFlow = unitToBeforeFlow.get(s);
 
-                        while (predIt.hasNext())
-                        {
-                            Object otherBranchFlow = unitToAfterFlow.get(predIt.
-next());
-                            merge(beforeFlow, otherBranchFlow, beforeFlow);
-                        }
+                        if (preds.size() == 1)
+                            copy(unitToAfterFlow.get(preds.get(0)), beforeFlow);
+                        else if (preds.size() != 0)
+                            {
+                                Iterator predIt = preds.iterator();
+
+                                copy(unitToAfterFlow.get(predIt.next()), beforeFlow);
+
+                                while (predIt.hasNext())
+                                    {
+                                        Object otherBranchFlow = unitToAfterFlow.get(predIt.
+                                                next());
+                                        merge(beforeFlow, otherBranchFlow, beforeFlow);
+                                    }
+                            }
                     }
-                }
 
-                // Compute afterFlow and store it.
-                {
-                    afterFlow = unitToAfterFlow.get(s);
-                    flowThrough(beforeFlow, s, afterFlow);
-                    numComputations++;
-                }
+                    // Compute afterFlow and store it.
+                    {
+                        afterFlow = unitToAfterFlow.get(s);
+                        flowThrough(beforeFlow, s, afterFlow);
+                        numComputations++;
+                    }
 
-                // Update queue appropriately
+                    // Update queue appropriately
                     if (!afterFlow.equals(previousAfterFlow))
-                    {
-                        //            System.out.println("changed = " + s);
-                        //System.out.println("from " + previousAfterFlow);
-                        //System.out.println("  to " + afterFlow);
-                        Iterator succIt = graph.getSuccsOf(s).iterator();
-
-                        while (succIt.hasNext())
                         {
-                            Object succ = succIt.next();
+                            //            System.out.println("changed = " + s);
+                            //System.out.println("from " + previousAfterFlow);
+                            //System.out.println("  to " + afterFlow);
+                            Iterator succIt = graph.getSuccsOf(s).iterator();
 
-                            changedUnitsSet.add(succ);
+                            while (succIt.hasNext())
+                                {
+                                    Object succ = succIt.next();
+
+                                    changedUnitsSet.add(succ);
+                                }
                         }
-                    }
-            }
+                }
         }
 
         // System.out.println(graph.getBody().getMethod().getSignature() + " numNodes: " + numNodes +

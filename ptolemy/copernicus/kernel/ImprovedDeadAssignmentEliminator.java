@@ -63,7 +63,7 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
         JimpleBody body = (JimpleBody)b;
         if (Main.isVerbose)
             System.out.println("[" + body.getMethod().getName() +
-                "] Eliminating dead code...");
+                    "] Eliminating dead code...");
 
         if (Main.isProfilingOptimization)
             Main.deadCodeTimer.start();
@@ -78,62 +78,62 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
             Iterator stmtIt = units.iterator();
 
             while (stmtIt.hasNext())
-            {
-                Stmt s = (Stmt) stmtIt.next();
-                boolean isEssential = true;
-
-                if (s instanceof NopStmt)
-                    isEssential = false;
-
-                if (s instanceof AssignStmt)
                 {
-                    AssignStmt as = (AssignStmt) s;
+                    Stmt s = (Stmt) stmtIt.next();
+                    boolean isEssential = true;
 
-                    if (as.getLeftOp() instanceof Local &&
-                        (!eliminateOnlyStackLocals ||
-                            ((Local) as.getLeftOp()).getName().startsWith("$")))
-                    {
-                        Value rhs = as.getRightOp();
-
+                    if (s instanceof NopStmt)
                         isEssential = false;
 
-                        // proposed change: instance field refs to this can
-                        // be removed.
-                        if (rhs instanceof InvokeExpr ||
-                                (rhs instanceof InstanceFieldRef &&
-                                        !(!b.getMethod().isStatic() &&
-                                                ((InstanceFieldRef)rhs).getBase() ==
-                                                body.getThisLocal())) ||
-                                rhs instanceof ArrayRef)
+                    if (s instanceof AssignStmt)
                         {
-                           // Note that InstanceFieldRef, ArrayRef, InvokeExpr all can
-                           // have side effects (like throwing a null pointer exception)
+                            AssignStmt as = (AssignStmt) s;
 
-                            isEssential = true;
-                        }
-                        else if (rhs instanceof DivExpr ||
-                            rhs instanceof RemExpr)
-                        {
-                            BinopExpr expr = (BinopExpr) rhs;
+                            if (as.getLeftOp() instanceof Local &&
+                                    (!eliminateOnlyStackLocals ||
+                                            ((Local) as.getLeftOp()).getName().startsWith("$")))
+                                {
+                                    Value rhs = as.getRightOp();
 
-                            if (expr.getOp1().getType().equals(IntType.v()) ||
-                                expr.getOp2().getType().equals(IntType.v()) ||
-                               expr.getOp1().getType().equals(LongType.v()) ||
-                                expr.getOp2().getType().equals(LongType.v()))
-                            {
+                                    isEssential = false;
+
+                                    // proposed change: instance field refs to this can
+                                    // be removed.
+                                    if (rhs instanceof InvokeExpr ||
+                                            (rhs instanceof InstanceFieldRef &&
+                                                    !(!b.getMethod().isStatic() &&
+                                                            ((InstanceFieldRef)rhs).getBase() ==
+                                                            body.getThisLocal())) ||
+                                            rhs instanceof ArrayRef)
+                                        {
+                                            // Note that InstanceFieldRef, ArrayRef, InvokeExpr all can
+                                            // have side effects (like throwing a null pointer exception)
+
+                                            isEssential = true;
+                                        }
+                                    else if (rhs instanceof DivExpr ||
+                                            rhs instanceof RemExpr)
+                                        {
+                                            BinopExpr expr = (BinopExpr) rhs;
+
+                                            if (expr.getOp1().getType().equals(IntType.v()) ||
+                                                    expr.getOp2().getType().equals(IntType.v()) ||
+                                                    expr.getOp1().getType().equals(LongType.v()) ||
+                                                    expr.getOp2().getType().equals(LongType.v()))
+                                                {
                                 // Can trigger a division by zero
-                                isEssential = true;
-                            }
+                                                    isEssential = true;
+                                                }
+                                        }
+                                }
                         }
-                    }
-                }
 
-                if (isEssential)
-                {
-                    essentialStmts.add(s);
-                    toVisit.addLast(s);
+                    if (isEssential)
+                        {
+                            essentialStmts.add(s);
+                            toVisit.addLast(s);
+                        }
                 }
-            }
         }
 
         CompleteUnitGraph graph = new CompleteUnitGraph(body);
@@ -145,34 +145,34 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
         {
 
             while (!toVisit.isEmpty())
-            {
-                Stmt s = (Stmt) toVisit.removeFirst();
-                Iterator boxIt = s.getUseBoxes().iterator();
-
-                while (boxIt.hasNext())
                 {
-                    ValueBox box = (ValueBox) boxIt.next();
+                    Stmt s = (Stmt) toVisit.removeFirst();
+                    Iterator boxIt = s.getUseBoxes().iterator();
 
-                    if (box.getValue() instanceof Local)
-                    {
-                        Iterator defIt = defs.getDefsOfAt(
-                            (Local) box.getValue(), s).iterator();
-
-                        while (defIt.hasNext())
+                    while (boxIt.hasNext())
                         {
-                            // Add all the definitions as essential stmts
+                            ValueBox box = (ValueBox) boxIt.next();
 
-                            Stmt def = (Stmt) defIt.next();
+                            if (box.getValue() instanceof Local)
+                                {
+                                    Iterator defIt = defs.getDefsOfAt(
+                                            (Local) box.getValue(), s).iterator();
 
-                            if (!essentialStmts.contains(def))
-                            {
-                                essentialStmts.add(def);
-                                toVisit.addLast(def);
-                            }
+                                    while (defIt.hasNext())
+                                        {
+                                            // Add all the definitions as essential stmts
+
+                                            Stmt def = (Stmt) defIt.next();
+
+                                            if (!essentialStmts.contains(def))
+                                                {
+                                                    essentialStmts.add(def);
+                                                    toVisit.addLast(def);
+                                                }
+                                        }
+                                }
                         }
-                    }
                 }
-            }
         }
 
         // Remove the dead statements
@@ -180,20 +180,20 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
             Iterator stmtIt = units.iterator();
 
             while (stmtIt.hasNext())
-            {
-                Stmt s = (Stmt) stmtIt.next();
-
-                if (!essentialStmts.contains(s))
-                    stmtIt.remove();
-                else if (s instanceof AssignStmt &&
-                    ((AssignStmt) s).getLeftOp() == ((AssignStmt) s).getRightOp() &&
-                    ((AssignStmt) s).getLeftOp() instanceof Local)
                 {
-                    // Stmt is of the form a = a which is useless
+                    Stmt s = (Stmt) stmtIt.next();
 
-                    stmtIt.remove();
+                    if (!essentialStmts.contains(s))
+                        stmtIt.remove();
+                    else if (s instanceof AssignStmt &&
+                            ((AssignStmt) s).getLeftOp() == ((AssignStmt) s).getRightOp() &&
+                            ((AssignStmt) s).getLeftOp() instanceof Local)
+                        {
+                            // Stmt is of the form a = a which is useless
+
+                            stmtIt.remove();
+                        }
                 }
-            }
         }
 
         // Eliminate dead assignments from invokes such as x = f(), where
@@ -202,43 +202,43 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
             Iterator stmtIt = units.snapshotIterator();
 
             while (stmtIt.hasNext())
-            {
-                Stmt s = (Stmt) stmtIt.next();
-
-                if (s instanceof AssignStmt &&
-                    s.containsInvokeExpr())
                 {
-                    Local l = (Local) ((AssignStmt) s).getLeftOp();
-                    InvokeExpr e = (InvokeExpr) s.getInvokeExpr();
+                    Stmt s = (Stmt) stmtIt.next();
 
-                    // Just find one use of l which is essential
-                    {
-                        Iterator useIt = uses.getUsesOf(s).iterator();
-                        boolean isEssential = false;
-
-                        while (useIt.hasNext())
+                    if (s instanceof AssignStmt &&
+                            s.containsInvokeExpr())
                         {
-                            UnitValueBoxPair pair = (UnitValueBoxPair)
-                                useIt.next();
+                            Local l = (Local) ((AssignStmt) s).getLeftOp();
+                            InvokeExpr e = (InvokeExpr) s.getInvokeExpr();
 
-                            if (essentialStmts.contains(pair.unit))
+                            // Just find one use of l which is essential
                             {
-                                isEssential = true;
-                                break;
+                                Iterator useIt = uses.getUsesOf(s).iterator();
+                                boolean isEssential = false;
+
+                                while (useIt.hasNext())
+                                    {
+                                        UnitValueBoxPair pair = (UnitValueBoxPair)
+                                            useIt.next();
+
+                                        if (essentialStmts.contains(pair.unit))
+                                            {
+                                                isEssential = true;
+                                                break;
+                                            }
+                                    }
+
+                                if (!isEssential)
+                                    {
+                                        // Transform it into a simple invoke.
+
+                                        Stmt newInvoke = Jimple.v().newInvokeStmt(e);
+
+                                        units.swapWith(s, newInvoke);
+                                    }
                             }
                         }
-
-                        if (!isEssential)
-                        {
-                            // Transform it into a simple invoke.
-
-                            Stmt newInvoke = Jimple.v().newInvokeStmt(e);
-
-                            units.swapWith(s, newInvoke);
-                        }
-                    }
                 }
-            }
         }
 
         if (Main.isProfilingOptimization)

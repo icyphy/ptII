@@ -160,20 +160,20 @@ public class KernelMain {
 	    System.getProperty("java.specification.version");
 	if (javaSpecificationVersion == null) {
 	    System.err.println("Warning: could not read "
-			       + "'java.specification.version' property. "
-			       + "Soot work best with JDK1.3.1");
+                    + "'java.specification.version' property. "
+                    + "Soot work best with JDK1.3.1");
 	} else {
 	    VersionAttribute javaSpecificationVersionAttribute =
 		new VersionAttribute(javaSpecificationVersion);
 	    if ( javaSpecificationVersionAttribute.compareTo(new VersionAttribute("1.4")) >= 0) {
 		System.err.println("Won't work with Java specification '"
-				   + javaSpecificationVersion + "'");
+                        + javaSpecificationVersion + "'");
 		throw new IllegalActionException("Soot does not work with "
-						 + " JDK 1.4. "
-						 + "java.specification.version"
-						 + " was '"
-						 + javaSpecificationVersion
-						 + "'");
+                        + " JDK 1.4. "
+                        + "java.specification.version"
+                        + " was '"
+                        + javaSpecificationVersion
+                        + "'");
 	    }
 
 	}
@@ -183,21 +183,21 @@ public class KernelMain {
 	    System.getProperty("java.version");
 	if (javaSpecificationVersion == null) {
 	    System.err.println("Warning: could not read "
-			       + "'java.version' property. "
-			       + "Soot works best with JDK1.3.1");
+                    + "'java.version' property. "
+                    + "Soot works best with JDK1.3.1");
 	} else {
 	    VersionAttribute javaVersionAttribute =
 		new VersionAttribute(javaVersion);
 	    if ( javaVersionAttribute
-		 .compareTo(new VersionAttribute("1.3.1")) < 0) {
+                    .compareTo(new VersionAttribute("1.3.1")) < 0) {
 		System.err.println("Warning: deep codegen works best with "
-				   + "JVMS that have a "
-				   + " java.version > 1.3.0. "
-				   + " java.version was '"
-				   + javaVersion + "'."
-				   + "The problem is that "
-				   + "actor.lib.auto.MathFunction3 will run "
-				   + "forever and not terminate");
+                        + "JVMS that have a "
+                        + " java.version > 1.3.0. "
+                        + " java.version was '"
+                        + javaVersion + "'."
+                        + "The problem is that "
+                        + "actor.lib.auto.MathFunction3 will run "
+                        + "forever and not terminate");
 	    }
 	}
 
@@ -207,7 +207,7 @@ public class KernelMain {
 	    String baseName = (new File(_momlClassName)).getName();
 	    if (baseName.lastIndexOf('.') != -1) {
 		baseName = baseName.substring(0,
-					      baseName.lastIndexOf('.'));
+                        baseName.lastIndexOf('.'));
 	    }
 	    _toplevel.setName(baseName);
 	}
@@ -265,7 +265,7 @@ public class KernelMain {
      *  @return The generated java code.
      */
     public static void generate(CompositeActor toplevel, String directoryName)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 	// FIXME: This name is awfully close to generateCode(), yet
 	// this method is a superset of the generateCode functionality.
 	String [] args = {
@@ -306,7 +306,7 @@ public class KernelMain {
      *  model cannot be changed to a Java identifier String.
      */
     public static void main(String[] args)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 	KernelMain kernelMain = new KernelMain(args[0]);
 	CompositeActor toplevel = kernelMain.readInModel(args[0]);
 	kernelMain.initialize(toplevel);
@@ -351,35 +351,35 @@ public class KernelMain {
         } catch (Exception exception) {
 	    StringBuffer errorMessage = new StringBuffer();
 	    errorMessage.append("\n  1. Failed to parse '" + momlClassName
-				+ "' as a top level model in\n"
-				+ source + "\n  Exception was:\n-------\n  "
-				+ exception + "\n-------\n");
+                    + "' as a top level model in\n"
+                    + source + "\n  Exception was:\n-------\n  "
+                    + exception + "\n-------\n");
 	    try {
 		// Then try it as an xml file
 		toplevel = (CompositeActor)_parser.parseFile(momlClassName);
 	    } catch (Exception exceptionTwo) {
 		errorMessage.append("  2. Failed to parse '" + momlClassName
-				    + "' as an xml file:\n  "
-				    + exceptionTwo + "\n");
+                        + "' as an xml file:\n  "
+                        + exceptionTwo + "\n");
 		try {
 		    URL momlURL = new URL(momlClassName);
 		    try {
 			// Then try it as a URL file
 			toplevel = (CompositeActor)_parser.parse(null,
-								 momlURL);
+                                momlURL);
 		    } catch (Exception exceptionThree) {
 			errorMessage.append("  3. Failed to parse '"
-					    + momlClassName
-					    + "' as a URL '"
-					    + momlURL + "':\n  "
-					    + exceptionThree + "\n");
+                                + momlClassName
+                                + "' as a URL '"
+                                + momlURL + "':\n  "
+                                + exceptionThree + "\n");
 			throw new IllegalActionException(errorMessage
-							 .toString());
+                                .toString());
 
 		    }
 		} catch (MalformedURLException malformed) {
 		    throw new IllegalActionException(errorMessage + ": "
-						     + malformed);
+                            + malformed);
 		}
 	    }
 	    if (toplevel == null) {
@@ -424,8 +424,8 @@ public class KernelMain {
          */
         protected void internalTransform(String phaseName, Map options) {
             for (Iterator classes =
-		    Scene.v().getApplicationClasses().snapshotIterator();
-                classes.hasNext();) {
+                     Scene.v().getApplicationClasses().snapshotIterator();
+                 classes.hasNext();) {
                 ((SootClass)classes.next()).setLibraryClass();
             }
         }

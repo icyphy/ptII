@@ -75,10 +75,10 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             String phaseName, Set unsafeLocalSet, boolean debug) {
 
         for (Iterator units = body.getUnits().iterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Unit unit = (Unit)units.next();
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
 
@@ -98,7 +98,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     // Skip locals that are unsafe.
                     if (castType.equals(opType) &&
-                       !unsafeLocalSet.contains(op)) {
+                            !unsafeLocalSet.contains(op)) {
                         box.setValue(op);
                     }
                 } else if (value instanceof InstanceOfExpr) {

@@ -75,7 +75,7 @@ public class JimpleWriter extends SceneTransformer {
         String outDir = Options.getString(options, "outDir");
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-            classes.hasNext();) {
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
 
             String fileName;

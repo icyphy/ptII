@@ -57,7 +57,7 @@ public interface AliasAnalysis {
      *  the same object as the given field, at a point after
      *  the given unit.
      */
-     public Set getAliasesOfAfter(SootField field, Unit unit);
+    public Set getAliasesOfAfter(SootField field, Unit unit);
 
     /** Return the set of other fields and locals that reference
      *  the same object as the given local, at a point before

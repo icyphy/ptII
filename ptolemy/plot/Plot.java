@@ -230,10 +230,10 @@ public class Plot extends PlotBox {
     public synchronized void addPoint(final int dataset, final double x,
             final double y, final boolean connected) {
         Runnable doAddPoint = new Runnable() {
-            public void run() {
-                _addPoint(dataset, x, y, 0, 0, connected, false);
-            }
-        };
+                public void run() {
+                    _addPoint(dataset, x, y, 0, 0, connected, false);
+                }
+            };
         _deferIfNecessary(doAddPoint);
     }
 
@@ -269,10 +269,10 @@ public class Plot extends PlotBox {
             final double x, final double y, final double yLowEB,
             final double yHighEB, final boolean connected) {
         Runnable doAddPoint = new Runnable() {
-            public void run() {
-                _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
-            }
-        };
+                public void run() {
+                    _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
+                }
+            };
         _deferIfNecessary(doAddPoint);
     }
 
@@ -292,10 +292,10 @@ public class Plot extends PlotBox {
      */
     public synchronized void clear(final boolean format) {
         Runnable doClear = new Runnable() {
-            public void run() {
-                _clear(format);
-            }
-        };
+                public void run() {
+                    _clear(format);
+                }
+            };
         _deferIfNecessary(doClear);
     }
 
@@ -314,10 +314,10 @@ public class Plot extends PlotBox {
      */
     public synchronized void clear(final int dataset) {
         Runnable doClear = new Runnable() {
-            public void run() {
-                _clear(dataset);
-            }
-        };
+                public void run() {
+                    _clear(dataset);
+                }
+            };
         _deferIfNecessary(doClear);
     }
 
@@ -340,10 +340,10 @@ public class Plot extends PlotBox {
      */
     public synchronized void erasePoint(final int dataset, final int index) {
         Runnable doErasePoint = new Runnable() {
-            public void run() {
-                _erasePoint(dataset, index);
-            }
-        };
+                public void run() {
+                    _erasePoint(dataset, index);
+                }
+            };
         _deferIfNecessary(doErasePoint);
     }
 
@@ -363,10 +363,10 @@ public class Plot extends PlotBox {
      */
     public synchronized void fillPlot() {
         Runnable doFill = new Runnable() {
-            public void run() {
-                _fillPlot();
-            }
-        };
+                public void run() {
+                    _fillPlot();
+                }
+            };
         _deferIfNecessary(doFill);
     }
 
@@ -459,65 +459,65 @@ public class Plot extends PlotBox {
     public synchronized void samplePlot() {
         // This needs to be done in the event thread.
         Runnable sample = new Runnable() {
-            public void run() {
-                synchronized (Plot.this) {
-                    // Create a sample plot.
-                    clear(true);
+                public void run() {
+                    synchronized (Plot.this) {
+                        // Create a sample plot.
+                        clear(true);
 
-                    setTitle("Sample plot");
-                    setYRange(-4, 4);
-                    setXRange(0, 100);
-                    setXLabel("time");
-                    setYLabel("value");
-                    addYTick("-PI", -Math.PI);
-                    addYTick("-PI/2", -Math.PI/2);
-                    addYTick("0", 0);
-                    addYTick("PI/2", Math.PI/2);
-                    addYTick("PI", Math.PI);
-                    setMarksStyle("none");
-                    setImpulses(true);
+                        setTitle("Sample plot");
+                        setYRange(-4, 4);
+                        setXRange(0, 100);
+                        setXLabel("time");
+                        setYLabel("value");
+                        addYTick("-PI", -Math.PI);
+                        addYTick("-PI/2", -Math.PI/2);
+                        addYTick("0", 0);
+                        addYTick("PI/2", Math.PI/2);
+                        addYTick("PI", Math.PI);
+                        setMarksStyle("none");
+                        setImpulses(true);
 
-                    boolean first = true;
-                    for (int i = 0; i <= 100; i++) {
-                        double xvalue = (double)i;
+                        boolean first = true;
+                        for (int i = 0; i <= 100; i++) {
+                            double xvalue = (double)i;
 
-                        // NOTE: jdk 1.3beta has a bug exhibited here.
-                        // The value of the second argument in the calls
-                        // to addPoint() below is corrupted the second
-                        // time that this method is called.  The print
-                        // statement below shows that the value is
-                        // correct before the call.
-                        // System.out.println("x value: " + xvalue);
-                        // For some bizarre reason, this problem goes
-                        // away when this code is executed in the event
-                        // dispatch thread.
+                            // NOTE: jdk 1.3beta has a bug exhibited here.
+                            // The value of the second argument in the calls
+                            // to addPoint() below is corrupted the second
+                            // time that this method is called.  The print
+                            // statement below shows that the value is
+                            // correct before the call.
+                            // System.out.println("x value: " + xvalue);
+                            // For some bizarre reason, this problem goes
+                            // away when this code is executed in the event
+                            // dispatch thread.
 
-                        addPoint(0, xvalue,
-                                5 * Math.cos(Math.PI * i/20), !first);
-                        addPoint(1, xvalue,
-                                4.5 * Math.cos(Math.PI * i/25), !first);
-                        addPoint(2, xvalue,
-                                4 * Math.cos(Math.PI * i/30), !first);
-                        addPoint(3, xvalue,
-                                3.5* Math.cos(Math.PI * i/35), !first);
-                        addPoint(4, xvalue,
-                                3 * Math.cos(Math.PI * i/40), !first);
-                        addPoint(5, xvalue,
-                                2.5 * Math.cos(Math.PI * i/45), !first);
-                        addPoint(6, xvalue,
-                                2 * Math.cos(Math.PI * i/50), !first);
-                        addPoint(7, xvalue,
-                                1.5 * Math.cos(Math.PI * i/55), !first);
-                        addPoint(8, xvalue,
-                                1 * Math.cos(Math.PI * i/60), !first);
-                        addPoint(9, xvalue,
-                                0.5 * Math.cos(Math.PI * i/65), !first);
-                        first = false;
-                    } // for
-                } // synchronized
-                repaint();
-            } // run method
-        }; // Runnable class
+                            addPoint(0, xvalue,
+                                    5 * Math.cos(Math.PI * i/20), !first);
+                            addPoint(1, xvalue,
+                                    4.5 * Math.cos(Math.PI * i/25), !first);
+                            addPoint(2, xvalue,
+                                    4 * Math.cos(Math.PI * i/30), !first);
+                            addPoint(3, xvalue,
+                                    3.5* Math.cos(Math.PI * i/35), !first);
+                            addPoint(4, xvalue,
+                                    3 * Math.cos(Math.PI * i/40), !first);
+                            addPoint(5, xvalue,
+                                    2.5 * Math.cos(Math.PI * i/45), !first);
+                            addPoint(6, xvalue,
+                                    2 * Math.cos(Math.PI * i/50), !first);
+                            addPoint(7, xvalue,
+                                    1.5 * Math.cos(Math.PI * i/55), !first);
+                            addPoint(8, xvalue,
+                                    1 * Math.cos(Math.PI * i/60), !first);
+                            addPoint(9, xvalue,
+                                    0.5 * Math.cos(Math.PI * i/65), !first);
+                            first = false;
+                        } // for
+                    } // synchronized
+                    repaint();
+                } // run method
+            }; // Runnable class
         _deferIfNecessary(sample);
     }
 
