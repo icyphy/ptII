@@ -34,7 +34,6 @@ package ptolemy.actor.util;
 import ptolemy.kernel.util.*;
 
 import collections.LinkedList;
-import collections.LinkedList;
 import collections.CollectionEnumeration;
 import java.util.NoSuchElementException;
 
@@ -99,7 +98,7 @@ public class FIFOQueue implements Cloneable {
 
     /** Enumerate the objects in the queue, beginning with the oldest.
      *  @return An enumeration of objects.
-     *  @see collections.LinkedListList#elements()
+     *  @see collections.LinkedList#elements()
      */
     public CollectionEnumeration elements() {
         return _queueList.elements();
