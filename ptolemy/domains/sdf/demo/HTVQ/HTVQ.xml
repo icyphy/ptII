@@ -7,6 +7,8 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="59.33332824707031, 41.0">
+        </property>
     </property>
     <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
     </property>
@@ -23,6 +25,8 @@
         </property>
         <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="38.66666793823242, 148.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -32,6 +36,8 @@
         </port>
     </entity>
     <entity name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
+        <property name="_location" class="ptolemy.moml.Location" value="477.0, 186.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -50,6 +56,8 @@
         <property name="partitionColumns" class="ptolemy.data.expr.Parameter" value="blockWidth">
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="146.3333282470703, 257.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -79,6 +87,8 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="230.66666412353516, 257.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -106,6 +116,8 @@
         <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="blockWidth">
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="313.0, 257.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -135,6 +147,8 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="393.3333435058594, 256.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -155,12 +169,16 @@
         </port>
     </entity>
     <entity name="Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+        <property name="_location" class="ptolemy.moml.Location" value="558.3333435058594, 256.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+        <property name="_location" class="ptolemy.moml.Location" value="555.3333435058594, 123.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -171,12 +189,16 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="554.3333435058594, 184.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="101.0, 154.0">
+        </vertex>
     </relation>
     <relation name="R2" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -185,6 +207,8 @@
     <relation name="R4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="R5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="438.6666564941406, 263.0">
+        </vertex>
     </relation>
     <relation name="R6" class="ptolemy.actor.TypedIORelation">
     </relation>
