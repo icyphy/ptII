@@ -49,6 +49,7 @@ setenv PTII /users/yourname/ptII
 <li> Run configure
 <pre>
 cd "$PTII"
+rm -f config.*
 ./configure
 </pre>
 
@@ -203,6 +204,7 @@ a GNU autoconf script that looks for your Java compiler, reads in
 <CODE>$PTII/mk/ptII.mk</CODE>:
 <pre>
 cd $PTII
+rm -f config.*
 ./configure
 </pre>
 <CODE>$PTII/configure</CODE> creates <CODE>$PTII/config.status</CODE>
@@ -320,8 +322,7 @@ to your path.
 
 
 <li> Start up Cygwin <CODE>bash</CODE>, and cd to the Ptolemy II directory.
-
-
+<li> Run <CODE>rm -f config.*</CODE>
 <li> Run <CODE>./configure</CODE>
 
 <li> Run <CODE>make</CODE>
