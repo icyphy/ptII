@@ -1129,10 +1129,10 @@ fi
 # $PTII/makefile if gcc or cc is found.
 PTJNI_DIR=
 
-if test ! -d "$PTII/jni"; then
-    AC_MSG_RESULT([$PTII/jni is not present,
+if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" ; then
+    AC_MSG_RESULT([$PTII/jni and $PTII/ptolemy/matlab are not present,
         so we need not find gcc or cc])
-else
+elseb
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" != "none"; then
         AC_MSG_RESULT([$PTCC])
