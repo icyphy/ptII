@@ -833,30 +833,33 @@ public class Pxgraph extends Frame {
 	Properties newprops= new Properties();
 	newprops.put("awt.print.destination", "file");
 	newprops.put("awt.print.fileName", "/tmp/t.ps");
+	if (_debug > 7) System.out.println("Pxgraph: before getPrintJob");
 	PrintJob printjob = getToolkit().getPrintJob(this,
 						     getTitle(),newprops);
-
+	if (_debug > 7) System.out.println("Pxgraph: printjob = "+printjob);
 	if (printjob != null) {          
 	    Graphics printgraphics = printjob.getGraphics();
 	    if (printgraphics != null) {
-		// Get the graphics context from the applet, save it
-		// substitute in the printgraphics
-		Graphics savegraphics = _plotApplet.getGraphics();
-		_plotApplet.setGraphics(printgraphics);
-
 		// Make the buttons invisible
 		_setButtonsVisibility(false);
 		_plotApplet._setButtonsVisibility(false);
 
 		// Print
+		if (_debug > 7)
+		    System.out.println("Pxgraph: before printComponents");
 		printComponents(printgraphics);
+		if (_debug > 7)
+		    System.out.println("Pxgraph: before printAll");
+
 		printAll(printgraphics);
+		if (_debug > 7)
+		    System.out.println("Pxgraph: before printgr.dispose");
+
 		printgraphics.dispose();
 
 		// Make the buttons visible, reset the graphics.
 		_plotApplet._setButtonsVisibility(true);
 		_setButtonsVisibility(true);
-		_plotApplet.setGraphics(savegraphics);
 	    }
 	    printjob.end();
 	}
