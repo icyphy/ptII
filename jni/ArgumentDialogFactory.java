@@ -56,7 +56,7 @@ import diva.gui.toolbox.JContextMenu;
 */
 public class ArgumentDialogFactory implements MenuItemFactory {
 
-    /** Default constructor*/
+    /** Construct an ArgumentDialogFactory. */
     public ArgumentDialogFactory() {
         super();
     }
@@ -68,6 +68,8 @@ public class ArgumentDialogFactory implements MenuItemFactory {
      *  to add or remove arguments from an object.
      *  @param menu The context menu.
      *  @param object The object whose ports are being manipulated.
+     *  @return The JMenuItem that was created or null if the object
+     *  is not a GenericJNIActor.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         String name = "Configure Arguments";

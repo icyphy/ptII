@@ -181,7 +181,7 @@ import ptolemy.util.StringUtilities;
    #endif
    typedef signed char jbyte;
    </pre>
-   <blockquote>
+   </blockquote>
 
 
 
@@ -232,7 +232,7 @@ public class JNIUtilities {
         return success;
     }
 
-    /** Generate JNI files for one actor in a model
+    /** Generate JNI files for one actor in a model.
      */
     public static void generateJNI(CompositeEntity model,
             GenericJNIActor actor)
@@ -354,8 +354,12 @@ public class JNIUtilities {
 
     }
 
-    // Return the value of the nativeLibrary argument with the double
-    // quotes stripped off.
+    /** Return the value of the nativeLibrary attribute with the double
+     *  quotes stripped off.
+     *  @param actor The actor that contains a nativeLibrary attribute.
+     *  @return The value of the nativeLibrary attribute with the leading
+     *  and trailing double quotes removed.
+     */
     public static String getNativeLibrary(GenericJNIActor actor)
             throws IllegalActionException {
         String nativeLibrary =
@@ -1052,8 +1056,8 @@ public class JNIUtilities {
         return javaFile;
     }
 
-    /** Export a makefile
-     *  @param actor Actor to generate a makefile for
+    /** Export a makefile.
+     *  @param actor Actor to generate a makefile for.
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static void _exportMakefile(GenericJNIActor actor,
@@ -1391,7 +1395,7 @@ public class JNIUtilities {
         return returnValue.toString();
     }
 
-    /**
+    /** Return the signature of the interface function.
      *  @return the signature of the interface function.
      */
     protected static String _signature(String typ) {
@@ -1423,7 +1427,7 @@ public class JNIUtilities {
         return returnValue.toString();
     }
 
-    /**
+    /** Return the signature of the interface function.
      *  @return the signature of the interface function.
      */
     protected static String _signatureSendResults(GenericJNIActor actor) {

@@ -59,7 +59,11 @@ import ptolemy.vergil.actor.ActorGraphTableau;
 */
 public class ThalesGraphTableau extends ActorGraphTableau {
 
-    /**
+    /** Construct a ThalesGraphTableau object in the given workspace.
+     *
+     * @param workspace The workspace. 
+     * @exception IllegalActionException If thrown by the super class. 
+     * @exception NameDuplicationException If thrown by the super class.
      */
     public ThalesGraphTableau(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -67,7 +71,15 @@ public class ThalesGraphTableau extends ActorGraphTableau {
     }
 
 
-    /**  */
+    /** Construct a ThalesGraphTableau object in the given container with
+     *  the given name.
+     * @param container The container
+     * @param name The name
+     * @exception IllegalActionException If thrown by the super classor
+     * if the container is a PtolemyEffigy and the model is not a 
+     * CompositeEntity.
+     * @exception NameDuplicationException If thrown by the super class.
+     */
     public ThalesGraphTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
