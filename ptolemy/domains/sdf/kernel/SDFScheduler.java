@@ -377,25 +377,25 @@ public class SDFScheduler extends Scheduler {
 	    IOPort ainputPort = (IOPort) ainputPorts.nextElement();
 	    _debug("checking input " +
 		   ainputPort.getFullName());
-	    
+
 	    Enumeration cports = ainputPort.deepConnectedOutPorts();
-	    
+
 	    boolean isonlyexternalport = true;
 	    while(cports.hasMoreElements()) {
 		IOPort cport = (IOPort) cports.nextElement();
 		if(actorList.includes(cport.getContainer()))
 		    isonlyexternalport = false;
 	    }
-	    
+
 	    int threshold =
 		_getTokenConsumptionRate(ainputPort);
 	    _debug("Threshold = " + threshold);
 	    int[] tokens =
 		(int []) waitingTokens.at(ainputPort);
-	    
+
 	    boolean isalreadyfulfilled = true;
 	    int channel;
-	    for(channel = 0; 
+	    for(channel = 0;
 		channel < ainputPort.getWidth();
 		channel++) {
 		_debug("Channel = " + channel);
@@ -547,7 +547,7 @@ public class SDFScheduler extends Scheduler {
                         }
                         else if(!presentFiring.equals(desiredFiring))
                             throw new NotSchedulableException("No solution " +
-                                    "exists for the balance equations.\n" + 
+                                    "exists for the balance equations.\n" +
                                     "Graph is not" +
                                     "consistent under the SDF domain");
                     }
@@ -706,21 +706,21 @@ public class SDFScheduler extends Scheduler {
      */
     private CircularList _scheduleConnectedActors(
             CircularList actorList) {
-        
+
         // A linked list containing all the actors that have no inputs
         CircularList readyToScheduleActorList = new CircularList();
         // A linked list that will contain our new schedule.
         CircularList newSchedule = new CircularList();
 
         boolean done = false;
-        
+
         // An association between All the input ports in a simulation and an
 	// array of the number of tokens waiting on each relation of that port
 	LLMap waitingTokens = new LLMap();
 
 	CircularList unscheduledActorList = new CircularList();
 	unscheduledActorList.appendElements(actorList.elements());
-	
+
         Enumeration schedulableEntities = actorList.elements();
 
         try {
@@ -728,43 +728,43 @@ public class SDFScheduler extends Scheduler {
 	    // no unfulfilled input ports, and are thus ready to fire.
 	    while(schedulableEntities.hasMoreElements()) {
 		Actor a = (Actor)schedulableEntities.nextElement();
-		
+
 		Enumeration ainputports = a.inputPorts();
 		while(ainputports.hasMoreElements()) {
 		    IOPort ainputport = (IOPort) ainputports.nextElement();
-		    // Initialize the waitingTokens at all the 
+		    // Initialize the waitingTokens at all the
 		    // inputports to zero
 		    int[] tokencount = new int[ainputport.getWidth()];
-		    for(int channel = 0; channel < tokencount.length; 
+		    for(int channel = 0; channel < tokencount.length;
 			channel++)
 			tokencount[channel] = 0;
 		    waitingTokens.putAt(ainputport, tokencount);
-		    
+
 		    Enumeration crelations = ainputport.linkedRelations();
-		    
+
 		    int channelNumber = 0;
 		    // Add the tokens from init production.
 		    while(crelations.hasMoreElements()) {
-			IORelation crelation = 
+			IORelation crelation =
 			    (IORelation) crelations.nextElement();
-			
+
 			Enumeration cports = crelation.linkedSourcePorts();
 			IOPort cport = (IOPort) cports.nextElement();
-			
-			// Check for the non-deterministic 
+
+			// Check for the non-deterministic
 			// merge when a relation
 			// is connected to multiple sources.
-			if(cports.hasMoreElements()) 
-			    throw new IllegalActionException(crelation, cport, 
+			if(cports.hasMoreElements())
+			    throw new IllegalActionException(crelation, cport,
 				"Relation is " +
 				"connected to more than one source port!");
-			
+
 			ComponentEntity cactor
 			    = (ComponentEntity) cport.getContainer();
 			int rate = _getTokenInitProduction(cport);
 			if(rate > 0) {
 			    for(int j = 0; j < crelation.getWidth(); j++)
-				tokencount[channelNumber++] += 
+				tokencount[channelNumber++] +=
 				    _getTokenProductionRate(cport);
 			}
 		    }
@@ -773,16 +773,16 @@ public class SDFScheduler extends Scheduler {
 							 waitingTokens);
 		if(inputCount == 0)
 		    readyToScheduleActorList.insertFirst((ComponentEntity) a);
-		
+
 		_debug("Actor " + ((ComponentEntity) a).getName() +
 		       " has " + (new Integer(inputCount)).toString() +
 		       " unfulfilledInputs.");
 	    }
-	    
+
 	    while(!done) {
 		_debug("waitingTokens: ");
 		_debug(waitingTokens.toString());
-		
+
 		_debug("Actors that can be scheduled:");
 		Enumeration actorsLeft = readyToScheduleActorList.elements();
 		while(actorsLeft.hasMoreElements()) {
@@ -792,31 +792,31 @@ public class SDFScheduler extends Scheduler {
 
 		// pick an actor that is ready to fire.
 		ComponentEntity currentActor
-		    = (ComponentEntity) readyToScheduleActorList.at(0);	    
+		    = (ComponentEntity) readyToScheduleActorList.at(0);
 		// remove it from the list of actors we are waiting to fire
 		readyToScheduleActorList.removeAt(0);
-		
+
 		_debug("\nScheduling Actor " + currentActor.getName());
 		_simulateInputConsumption(currentActor, waitingTokens);
-						
+
 		// add it to the schedule
 		newSchedule.insertLast(currentActor);
-		
+
 		// Get all it's outputPorts.
 		Enumeration aOutputPorts =
 		    ((Actor) currentActor).outputPorts();
-		
+
 		// And simulate the proper production of tokens.
 		while(aOutputPorts.hasMoreElements()) {
 		    IOPort aOutputPort = (IOPort) aOutputPorts.nextElement();
-		    
-		    Integer createdTokens = 
+
+		    Integer createdTokens =
 			new Integer(_getTokenProductionRate(aOutputPort));
-		    		    
+
 		    _simulateTokensCreated(aOutputPort, actorList,
 			readyToScheduleActorList, waitingTokens);
 		}
-		
+
 		// Update the firingCount for this actor.
 		int firingsRemaining = _getFiringCount(currentActor);
 		firingsRemaining -= 1;
@@ -835,7 +835,7 @@ public class SDFScheduler extends Scheduler {
 		    throw new IllegalStateException("Balance Equation " +
 			"solution does not agree with " +
 			"scheduling algorithm");
-		
+
 		// If we've fired this actor all the times that it should, then
 		// we get rid of it entirely.
 		else {
@@ -845,13 +845,13 @@ public class SDFScheduler extends Scheduler {
 		    // Otherwise the actor still has firings left
 		    else {
 			// Count the number of unfulfilled inputs.
-			int inputCount = 
+			int inputCount =
 			    _countUnfulfilledInputs((Actor)currentActor,
-						    unscheduledActorList, 
+						    unscheduledActorList,
 						    waitingTokens);
-			// We've already removed currentActor from 
+			// We've already removed currentActor from
 			// ReadytoSchedule actors
-			// so if it can be fired again right away, 
+			// so if it can be fired again right away,
 			// put it back on the list.
 			if(inputCount < 1)
 			    // if the actor can still be scheduled, then put it
@@ -1091,7 +1091,7 @@ public class SDFScheduler extends Scheduler {
 		_getTokenConsumptionRate(inputPort);
 	    for(int channel = 0; channel < inputPort.getWidth(); channel++) {
 		tokens[channel] -= tokenrate;
-		
+
 		// keep track of whether or not this actor can fire again
 		// immediately
 		if(tokens[channel] < tokenrate) stillReadyToSchedule = false;
@@ -1101,38 +1101,38 @@ public class SDFScheduler extends Scheduler {
     }
 
     /**
-     * Simulate the creation of tokens by the given output port when 
-     * it's actor fires.  If any actors that receive tokens are then ready to 
+     * Simulate the creation of tokens by the given output port when
+     * it's actor fires.  If any actors that receive tokens are then ready to
      * fire, given that only actors in the actor list are eing scheduled, then
      * add those actors to the list of actors that are ready to schedule.
-     * update the waiting tokens map with the tokens available on each 
+     * update the waiting tokens map with the tokens available on each
      * channel of each port.
      */
-    private void _simulateTokensCreated(IOPort outputPort, 
+    private void _simulateTokensCreated(IOPort outputPort,
 					CircularList actorList,
 					CircularList readyToScheduleActorList,
-					LLMap waitingTokens) 
+					LLMap waitingTokens)
 	throws IllegalActionException {
-	int createdTokens = 
+	int createdTokens =
 	    _getTokenProductionRate(outputPort);
-	_debug("Creating " + createdTokens + " on " + 
+	_debug("Creating " + createdTokens + " on " +
 	       outputPort.getFullName());
-	
+
 	// find all the relations that this one is connected to.
 	Enumeration crelations =
 	    outputPort.linkedRelations();
 
 	while(crelations.hasMoreElements()) {
-	    IORelation connectedRelation = 
+	    IORelation connectedRelation =
 		(IORelation) crelations.nextElement();
-	    
+
 	    Enumeration cports = connectedRelation.linkedPorts();
 	    while(cports.hasMoreElements()) {
 		IOPort connectedPort =
 		    (IOPort) cports.nextElement();
 		ComponentEntity connectedActor =
 		    (ComponentEntity) connectedPort.getContainer();
-		// if this is not the source port 
+		// if this is not the source port
 		if(!connectedPort.equals(outputPort)) {
 		    // Update the number of tokens waiting at the port.
 		    int[] tokens = (int[]) waitingTokens.at(connectedPort);
@@ -1141,8 +1141,8 @@ public class SDFScheduler extends Scheduler {
 		    for(int i = 0; i < connectedRelation.getWidth(); i++) {
 			tokens[startChannel++] += createdTokens;
 		    }
-		    
-		    int ival = 
+
+		    int ival =
 			_countUnfulfilledInputs((Actor)connectedActor,
 						actorList,
 						waitingTokens);
@@ -1151,7 +1151,7 @@ public class SDFScheduler extends Scheduler {
 			readyToScheduleActorList.insertLast(connectedActor);
 		    }
 		}
-	    }   
+	    }
 	}
     }
 
@@ -1267,14 +1267,14 @@ public class SDFScheduler extends Scheduler {
 	while(connectedRelations.hasMoreElements() && (!done)) {
 	    IORelation connectedRelation = (IORelation)
 		connectedRelations.nextElement();
-	    if(connectedRelation.equals(relation)) 
+	    if(connectedRelation.equals(relation))
 		done = true;
 	    else
 		channel += connectedRelation.getWidth();
 	}
 	return channel;
-    } 
-	    
+    }
+
     private LLMap _firingvector;
     private boolean _firingvectorvalid;
 
