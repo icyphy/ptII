@@ -73,7 +73,7 @@ to Java collection when we update to JDK1.2
 @version $Id$
 */
 
-public class Scheduler extends NamedObj{
+public class Scheduler extends NamedObj {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
@@ -189,6 +189,12 @@ public class Scheduler extends NamedObj{
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // The static name
+    protected static String _DEFAULT_SCHEDULER_NAME = "Scheduler";
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Make this scheduler the scheduler of the specified director, and
@@ -206,7 +212,7 @@ public class Scheduler extends NamedObj{
 
     /** Return the scheduling sequence. In this base class, it returns
      *  the containees of the CompositeActor in the order of construction.
-     *  (Same as calling CompositeActor.deepCetEntities()).
+     *  (Same as calling CompositeActor.deepGetEntities()).
      *  The derived classes should
      *  override this method and add their scheduling algorithms here.
      *  This method should not be called directly, rather the schedule()
@@ -237,6 +243,4 @@ public class Scheduler extends NamedObj{
     private boolean _valid = false;
     // The cached schedule.
     private LinkedList _cachedSchedule = null;
-    // The static name
-    private static final String _DEFAULT_SCHEDULER_NAME = "Scheduler";
 }
