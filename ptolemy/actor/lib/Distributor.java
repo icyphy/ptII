@@ -88,6 +88,9 @@ public class Distributor extends Transformer implements SequenceActor {
         // These parameters are required for SDF
         input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate", new IntToken(0));
+        input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        input_tokenConsumptionRate.setPersistent(false);
 
         output.setMultiport(true);
     }

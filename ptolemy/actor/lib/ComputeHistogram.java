@@ -124,6 +124,9 @@ public class ComputeHistogram extends TypedAtomicActor {
         input_tokenConsumptionRate =
         new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("inputCount");
+        input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        input_tokenConsumptionRate.setPersistent(false);
     }
     
     ///////////////////////////////////////////////////////////////////
