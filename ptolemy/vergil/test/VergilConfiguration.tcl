@@ -78,10 +78,12 @@ proc expandConfiguration {configuration} {
     $inputFileNamesToSkip add "/image.xml"
     $inputFileNamesToSkip add "/experimentalDirectors.xml"
     $inputFileNamesToSkip add "/lib/interactive.xml"
+    $inputFileNamesToSkip add "/line.xml"
     $inputFileNamesToSkip add "/jai/jai.xml"
     $inputFileNamesToSkip add "/jmf/jmf.xml"
     $inputFileNamesToSkip add "/joystick/jstick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
+    $inputFileNamesToSkip add "/rectangle.xml"
     $inputFileNamesToSkip add "/matlab.xml"
 
     # Tell the parser to skip inputting the above files
