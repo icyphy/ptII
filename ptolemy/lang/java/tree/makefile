@@ -76,7 +76,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 demo:
-	CLASSPATH="$(CLASSPATH)" $(JAVA) ptolemy.lang.tree.ShowTree ShowTree.java
+	CLASSPATH="$(CLASSPATH)" $(JAVA) ptolemy.lang.java.tree.ShowTree ShowTree.java
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
