@@ -44,6 +44,7 @@ import ptolemy.vergil.graph.AbstractPtolemyGraphModel;
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
 import diva.graph.GraphException;
+import diva.graph.GraphUtilities;
 import diva.graph.MutableGraphModel;
 import diva.graph.toolbox.*;
 import diva.graph.modular.ModularGraphModel;
@@ -70,6 +71,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      */
     public FSMGraphModel(CompositeEntity toplevel) {
 	super(toplevel);
+	_linkSet = new HashSet();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -206,12 +208,30 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  be an icon.
 	 */
 	public void setHead(final Object edge, final Object head) {
+	    Arc arc = (Arc)edge;
 	    try {
-		((Arc)edge).unlink();		
-		((Arc)edge).setHead(head);
-		((Arc)edge).link();
+		arc.unlink(FSMGraphModel.this);		
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
+	    }
+	    arc.setHead(head);
+	    try {
+		// This should remove the links and 
+		// must not leave the model in an inconsistent state.
+		arc.link(FSMGraphModel.this);
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+		// If we fail here, then we remove the link entirely.
+		//_linkSet.remove(link);
+		arc.setHead(null);
+		arc.setTail(null);
+		throw new GraphException(ex);
+	    }
+	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+						  FSMGraphModel.this)) {
+		_linkSet.add(edge);
+	    } else {
+		_linkSet.remove(edge);
 	    }
 	}
 	
@@ -223,12 +243,29 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  be an icon.
 	 */
 	public void setTail(final Object edge, final Object tail) {
+	    Arc arc = (Arc)edge;
 	    try {
-		((Arc)edge).unlink();		
-		((Arc)edge).setTail(tail);
-		((Arc)edge).link();
+		arc.unlink(FSMGraphModel.this);		
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
+	    }
+	    arc.setTail(tail);
+	    try {
+		// This should remove the links and 
+		// must not leave the model in an inconsistent state.
+		arc.link(FSMGraphModel.this);
+	    } catch (Exception ex) {
+		// If we fail here, then we remove the link entirely.
+		//_linkSet.remove(link);
+		arc.setHead(null);
+		arc.setTail(null);
+		throw new GraphException(ex);
+	    }
+	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+						  FSMGraphModel.this)) {
+		_linkSet.add(edge);
+	    } else {
+		_linkSet.remove(edge);
 	    }
 	}	
     }
@@ -279,8 +316,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List stateLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Arc.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Arc link = (Arc)links.next();
 		Object head = link.getHead();
@@ -324,8 +360,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List stateLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Arc.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Arc link = (Arc)links.next();
 		Object tail = link.getTail();
@@ -409,12 +444,10 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Check to make sure that there is a Link object representing
+    // Check to make sure that there is an Arc object representing
     // the given relation.
     private void _updateLinks(ComponentRelation relation) {
-	// Find the link for this relation
-	List linkList = getToplevel().attributeList(Arc.class);
-	Iterator links = linkList.iterator();
+	Iterator links = _linkSet.iterator();
 	Arc foundLink = null;
 	while(links.hasNext()) {
 	    Arc link = (Arc)links.next();
@@ -431,7 +464,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	List linkedPortList = relation.linkedPortList();
 	if(linkedPortList.size() != 2) {
 	    throw new GraphException("A transition was found connecting more "
-				     + "thwn two states.");
+				     + "than two states.");
 	}
 	Port port1 = (Port)linkedPortList.get(0);
 	Icon icon1 = _getIcon(port1);
@@ -440,7 +473,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
 	Arc link;
 	try {
-	    link = new Arc(getToplevel(), getToplevel().uniqueName("arc"));
+	    link = new Arc();
 	} 
 	catch (Exception e) {
 	    throw new InternalErrorException(
@@ -473,6 +506,9 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The set of all links in the model.
+    private Set _linkSet;
 
     // The models of the different types of nodes and edges.
     private ArcModel _arcModel = new ArcModel();

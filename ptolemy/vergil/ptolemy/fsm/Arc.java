@@ -70,7 +70,7 @@ import javax.swing.event.*;
 @author Steve Neuendorffer
 @version $Id$
 */
-public class Arc extends Attribute {
+public class Arc {
 
     /** Construct an attribute with the specified container and name.
      *  The location contained by the attribute is initially null,
@@ -82,9 +82,8 @@ public class Arc extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public Arc(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+    public Arc() {
+	super();
     }
 
     public Object getHead() {
@@ -111,7 +110,7 @@ public class Arc extends Attribute {
 	_tail = tail;
     } 
 
-    public void link() {
+    public void link(Object requestor) throws IllegalActionException {
 	ComponentPort port;
 	ComponentRelation relation;
 	Vertex vertex;
@@ -120,25 +119,41 @@ public class Arc extends Attribute {
 	// In FSM, it looks like two states are getting connected, but
 	// really we make attachments to the appropriate ports.
 	if(_head instanceof Icon && _tail instanceof Icon) {        
-	    // This may break when we start to deal with ports of composite
-	    // entity.
-	    CompositeEntity container = 
-		(CompositeEntity) getContainer();
+	    State headState = (State)((Icon)_head).getContainer();
+	    State tailState = (State)((Icon)_tail).getContainer();
+	    final CompositeEntity container = 
+		(CompositeEntity)headState.getContainer();
+	    // Linking two ports with a new relation.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<group>\n");
+	    final String relationName = container.uniqueName("relation");
+	    // Note that we use no class so that we use the container's
+	    // factory method when this gets parsed
+	    moml.append("<relation name=\"" + relationName + 
+			"\" class=\"ptolemy.domains.fsm.kernel.Transition\"/>\n");
+	    moml.append("<link port=\"" + 
+			headState.incomingPort.getName(container) + 
+			"\" relation=\"" + relationName + "\"/>\n");
+	    moml.append("<link port=\"" + 
+			tailState.outgoingPort.getName(container) + 
+			"\" relation=\"" + relationName + "\"/>\n");
+	    moml.append("</group>\n");
+	    ChangeRequest request = 
+		new MoMLChangeRequest(requestor, container, moml.toString()) {
+                    protected void _execute() throws Exception {
+			super._execute();
+			// Set the relation that this link is going to modify.
+			// I'm not sure if this asynchrony will cause
+			// things to break.
+			setRelation(container.getRelation(relationName));
+		    }
+		};
+	    container.requestChange(request);
 	    try {
-		relation = 
-                    container.newRelation(container.uniqueName("relation"));
-                setRelation(relation);
-                State headState = (State)((Icon)_head).getContainer();
-                State tailState = (State)((Icon)_tail).getContainer();
-                port = headState.incomingPort;
-                port.link(relation);
-                port = tailState.outgoingPort;
-                port.link(relation);
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex.getMessage());
-            }
+		request.waitForCompletion();
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+	    }
 	} else {
 	    throw new RuntimeException("Trying to link, " +
                     "but head is " + _head +
@@ -146,35 +161,58 @@ public class Arc extends Attribute {
 	}
     }
 
-    public void unlink() {
+    public void unlink(Object requestor) throws IllegalActionException {
 	ComponentPort port;
 	Vertex vertex;
 	ComponentRelation relation;
 
 	if(_head == null || _tail == null) return;
         if(_head instanceof Icon && _tail instanceof Icon) {
-            relation = (ComponentRelation)getRelation();
-            State headState = (State)((Icon)_head).getContainer();
-            State tailState = (State)((Icon)_tail).getContainer();
-            port = headState.incomingPort;
-            port.unlink(relation);
-            port = tailState.outgoingPort;
-            port.unlink(relation);
-
-            // blow the relation away.
-            try {
-                relation.setContainer(null);
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex.getMessage());
-            }             
-	    setRelation(null);
+	    State headState = (State)((Icon)_head).getContainer();
+	    State tailState = (State)((Icon)_tail).getContainer();
+	    final CompositeEntity container = 
+		(CompositeEntity)headState.getContainer();
+	    // Linking two ports with a new relation.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<group>\n");
+	    final String relationName = getRelation().getName(container);
+	    // Note that we use no class so that we use the container's
+	    // factory method when this gets parsed
+	    moml.append("<unlink port=\"" + 
+			headState.incomingPort.getName(container) + 
+			"\" relation=\"" + relationName + "\"/>\n");
+	    moml.append("<unlink port=\"" + 
+			tailState.outgoingPort.getName(container) + 
+			"\" relation=\"" + relationName + "\"/>\n");
+	    moml.append("<deleteRelation name=\"" + 
+			relationName + "\"/>\n");
+	    moml.append("</group>\n");
+	    ChangeRequest request = 
+		new MoMLChangeRequest(requestor, container, moml.toString()) {
+                    protected void _execute() throws Exception {
+			super._execute();
+			// Set the relation that this link is going to modify.
+			// I'm not sure if this asynchrony will cause
+			// things to break.
+			setRelation(null);
+		    }
+		};
+	    container.requestChange(request);
+	    try {
+		request.waitForCompletion();
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+	    }
         }
     }
 
-    public void exportMoML(Writer output, int depth, String name) 
-	throws IOException {
+    /** Return a string representation of this link.
+     */
+    public String toString() {
+	return "Link(" 
+	    + _head + ", " 
+	    + _tail + ", " 
+	    + _relation + ")";
     }
 
     private Object _head; 

@@ -51,6 +51,8 @@ JSRCS = \
 	Arc.java \
 	FSMGraphController.java \
 	FSMGraphModel.java \
+	FSMGraphFrame.java \
+	FSMGraphTableau.java \
 	FSMStateController.java \
 	FSMTransitionController.java \
 	FSMViewerController.java \

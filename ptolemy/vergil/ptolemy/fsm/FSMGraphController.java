@@ -118,7 +118,7 @@ public class FSMGraphController extends FSMViewerController {
 
 	    Arc link;
 	    try {
-                link = new Arc(container, container.uniqueName("link"));
+                link = new Arc();
             }
             catch (Exception ex) {
 		MessageHandler.error("Create relation failed:", ex);
