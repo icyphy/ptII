@@ -57,7 +57,8 @@ JSRCS = \
 	Particle.java \
 	Port.java \
 	Relation.java \
-	StatusArray.java
+	StatusArray.java \
+	Short.java
 
 EXTRA_SRCS =	$(JSRCS)
 
