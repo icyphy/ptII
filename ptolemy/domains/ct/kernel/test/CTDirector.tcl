@@ -334,3 +334,17 @@ test CTDirector-3.4 {BreakpointODESolver} {
     list $integratorIsAccurate $integratorPredictedStepSize
 } {1 0.1}
 
+######################################################################
+####  Test methods
+#  
+
+test CTDirector-4.1 {Test the canBeInsideDirector() method} {
+	# CTMultisolverDirector can not be inside director
+	list [$dir canBeInsideDirector]
+} {0}
+
+test CTDirector-4.1 {Test the getExecutiveCTGeneralDirector() method} {
+	# CTMultisolverDirector can not have executive CTGeneralDirector
+	set executiveCTGeneralDirector [$dir getExecutiveCTGeneralDirector]
+	list [expr {$executiveCTGeneralDirector == [java::null]}]
+} {1}
