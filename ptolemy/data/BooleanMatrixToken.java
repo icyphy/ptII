@@ -130,7 +130,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  it is returned without any change. Otherwise, if the argument
      *  is below BooleanMatrixToken in the type hierarchy, it is converted to
      *  an instance of BooleanMatrixToken or one of the subclasses of
-     *  BooleanMatrixToken and returned. If none of the above condition is
+     *  BooleanMatrixToken and returned. If none of the above conditions are
      *  met, an exception is thrown.
      *  @param token The token to be converted to a BooleanMatrixToken.
      *  @return A BooleanMatrixToken
@@ -168,6 +168,45 @@ public class BooleanMatrixToken extends MatrixToken {
 		"BooleanMatrixToken.");
     }
 
+    /** Return the number of columns in the matrix.
+     *  @return The number of columns in the matrix.
+     */
+    public int getColumnCount() {
+	return _columnCount;
+    }
+
+    /** Return the element of the matrix at the specified
+     *  row and column wrapped in a token.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return A BooleanToken containing the matrix element.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of this matrix.
+     */
+    public Token getElementAsToken(int row, int column)
+            throws ArrayIndexOutOfBoundsException {
+	return new BooleanToken(_value[row][column]);
+    }
+
+    /** Return the element of the contained matrix at the specified
+     *  row and column.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return The boolean at the specified matrix entry.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of this matrix.
+     */
+    public boolean getElementAt(int row, int column) {
+        return _value[row][column];
+    }
+
+    /** Return the number of rows in the matrix.
+     *  @return The number of rows in the matrix.
+     */
+    public int getRowCount() {
+	return _rowCount;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.BOOLEAN_MATRIX
      */
@@ -175,14 +214,15 @@ public class BooleanMatrixToken extends MatrixToken {
 	return BaseType.BOOLEAN_MATRIX;
     }
 
-    /** Test if the content of this token is equal to that of the specified
-     *  token. These two tokens are equal only if the specified token
+    /** Test whether the content of this token is equal to that of the
+     *  specified token. These two tokens are equal only if the specified token
      *  is also a BooleanMatrixToken with the same dimension, and all the
      *  corresponding elements of the matrices are equal.
      *  @param token The token with which to test equality.
-     *  @return A booleanToken containing the result.
+     *  @return A BooleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not a matrix token; or lossless conversion is not possible.
+     *   not a matrix token; or lossless conversion between this and the
+     *   specified tokens is not possible.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
 	int compare = TypeLattice.compare(this, token);
@@ -219,47 +259,6 @@ public class BooleanMatrixToken extends MatrixToken {
 	    }
 	    return new BooleanToken(true);
 	}
-    }
-
-    /** Return the element of the matrix at the specified
-     *  row and column wrapped in a token.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return A BooleanToken containing the matrix element.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained matrix.
-     */
-    public Token getElementAsToken(int row, int column)
-            throws ArrayIndexOutOfBoundsException {
-	return new BooleanToken(_value[row][column]);
-    }
-
-    /** Return the element of the contained matrix at the specified
-     *  row and column.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return The boolean at the specified matrix entry.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained matrix.
-     */
-    public boolean getElementAt(int row, int column) {
-        return _value[row][column];
-    }
-
-    /** Return the number of columns in the matrix.
-     *  @return An integer.
-     */
-    public int getColumnCount() {
-	return _columnCount;
-    }
-
-    /** Return the number of rows in the matrix.
-     *  @return An integer.
-     */
-    public int getRowCount() {
-	return _rowCount;
     }
 
     ///////////////////////////////////////////////////////////////////
