@@ -89,6 +89,8 @@ public class Main extends KernelMain {
                 ModelTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
+                InlineDirectorTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ipt",
                 InlineParameterTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",

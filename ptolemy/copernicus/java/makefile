@@ -47,6 +47,7 @@ JSRCS = \
 	CommandLineTransformer.java \
 	EntitySootClass.java \
 	FieldOptimizationTransformer.java \
+	InlineDirectorTransformer.java \
 	InlineParameterTransformer.java \
 	InlinePortTransformer.java \
 	InlineTokenTransformer.java \
@@ -127,6 +128,7 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.fot deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.idt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ipt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.iportt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \

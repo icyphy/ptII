@@ -295,7 +295,8 @@ public class ModelTransformer extends SceneTransformer {
 
                 for(int i=0; i < relation.getWidth(); i++) {
                     SootField field = new SootField("_" + 
-                            relation.getName() + "_" + i, arrayType, Modifier.PUBLIC | Modifier.STATIC);
+                            relation.getName() + "_" + i, arrayType,
+                            Modifier.PUBLIC | Modifier.STATIC);
                     modelClass.addField(field);
 
                     // Create the new buffer
@@ -440,7 +441,7 @@ public class ModelTransformer extends SceneTransformer {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ModelTransformer: entity: " + entity);
 	    String className;
-	    if(Options.getBoolean(options, "deep")) {
+            if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then use the actor
 		// classes we created earlier.
 		className = Options.getString(options, "targetPackage") +

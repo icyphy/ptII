@@ -1057,6 +1057,38 @@ public class SootUtilities {
         return convertArgumentToConstantValue(returned);
     }
 
+    /** Sanitize a String so that it can be used as a Java identifier.
+     *  Section 3.8 of the Java language spec says:
+     *  <blockquote>
+     *  "An identifier is an unlimited-length sequence of Java letters
+     *  and Java digits, the first of which must be a Java letter. An
+     *  identifier cannot have the same spelling (Unicode character
+     *  sequence) as a keyword (3.9), boolean literal (3.10.3), or
+     *  the null literal (3.10.7).  "
+     *  </blockquote>
+     *  Java characters are A-Z, a-z, $ and _.
+     *  <p> Characters that are not permitted in a Java identifier are changed
+     *  to an underscores. 
+     *  This method does not check that the returned string is a 
+     *  keyword or literal.
+     *  @param name A string with spaces and other characters that
+     *  cannot be in a Java name.
+     *  @returns A String that follows the Java identifier rules
+     *  with the same length as the initial input String.
+     */
+    public static String sanitizeName(String name) {
+	char [] nameArray = name.toCharArray();
+	if (!Character.isJavaIdentifierStart(nameArray[0])) {
+	    nameArray[0] = '_';
+	} 
+	for(int i = 1; i < nameArray.length; i++) {
+	    if (!Character.isJavaIdentifierPart(nameArray[i])) {
+		nameArray[i] = '_';
+	    }
+	}
+	return new String(nameArray);
+    }
+
     /** Get the method with the given name in the given class
      *  (or one of its super classes).
      */
