@@ -163,7 +163,8 @@ public class CompositeEntity extends ComponentEntity {
         while (relations.hasMoreElements()) {
             ComponentRelation relation =
                 (ComponentRelation)relations.nextElement();
-            ComponentRelation newrelation=(ComponentRelation)relation.clone(ws);
+            ComponentRelation newrelation = \
+                (ComponentRelation)relation.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -179,7 +180,8 @@ public class CompositeEntity extends ComponentEntity {
         // Clone the contained entities.
         Enumeration entities = getEntities();
         while (entities.hasMoreElements()) {
-            ComponentEntity entity= (ComponentEntity)entities.nextElement();
+            ComponentEntity entity = \
+                (ComponentEntity)entities.nextElement();
             ComponentEntity newsubentity = (ComponentEntity)entity.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
