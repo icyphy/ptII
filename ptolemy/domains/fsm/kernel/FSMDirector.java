@@ -569,10 +569,10 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             controller._readOutputsFromRefinement();
 
             State st = controller.currentState();
-            Transition tr = controller._checkTransition(st
+            List enabledTransitions = controller._checkTransition(st
                     .nonpreemptiveTransitionList());
 
-            if (tr == null) {
+            if (enabledTransitions.size() == 0) {
                 ModelErrorHandler container = getContainer();
 
                 if (container != null) {

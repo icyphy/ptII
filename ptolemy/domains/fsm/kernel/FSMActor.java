@@ -880,21 +880,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Return the enabled transition among the given list of transitions.
-     *  In case there are multiple enabled transitions, if all of them are
-     *  nondeterministic, return the first one found; if any of them is not
-     *  nondeterministic, throw an exception if there is more than one 
-     *  transition enabled. 
+    /** Return a list of enabled transitions among the given list of 
+     *  transitions. In case there are multiple enabled transitions, if any of 
+     *  them is not nondeterministic, throw an exception. 
      *  <p> See {@link Transition} for explanation of "nondeterministic".
      *  @param transitionList A list of transitions.
-     *  @return An enabled transition, or null if none is enabled.
+     *  @return A list of enabled transition.
      *  @exception IllegalActionException If there is more than one
-     *   transition enabled.
+     *   transition enabled and they are not all nondeterministic.
      */
-    protected Transition _checkTransition(List transitionList)
+    protected List _checkTransition(List transitionList)
             throws IllegalActionException {
         Transition result = null;
-        List enabledTransitions = new LinkedList();
+        LinkedList enabledTransitions = new LinkedList();
         boolean firstEnabledTransitionIsNondeterministic = false;
         
         Iterator transitionRelations = transitionList.iterator();
@@ -925,24 +923,43 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             enabledTransitions.add(transition);
         }
 
-        //FIXME: the current design always return the first enabled transition.
-        // A more sophisticated model will utilize the probability values to
-        // decide which enabled transition to choose if multiple transitions 
-        // are enabled.
-        return result;
+        // NOTE: It is the _chooseTransition method that decides which 
+        // enabled transition is actually taken. This method simply returns
+        // all enabled transitions.
+        return enabledTransitions;
     }
 
     /** Return the enabled transition among the given list of transitions.
      *  Execute the choice actions contained by the transition.
-     *  Throw an exception if there is more than one transition enabled.
+     *  Throw an exception if there is more than one transition enabled and 
+     *  not all of them are nondeterministic.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
-     *   transition enabled.
+     *   transition enabled and not all of them are nondeterministic.
      */
     protected Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
-        Transition result = _checkTransition(transitionList);
+        Transition result = null;
+        List enabledTransitions = _checkTransition(transitionList);
+        
+        // Randomly choose one transition from the list of the 
+        // enabled trnasitions.
+        int length = enabledTransitions.size();
+        
+        if (length != 0) {
+            // Since the size of the list of enabled transitions usually (almost 
+            // always) is less than the maximum value of integer. We can safely 
+            // do the cast from long to int in the following statement.
+            int randomChoice = (int)Math.round(Math.random()*length);
+            // There is tiny chance that randomChoice equals length. 
+            // When this happens, we deduct 1 from the randomChoice. 
+            if (randomChoice == length) {
+                randomChoice--;
+            }
+            
+            result = (Transition)enabledTransitions.get(randomChoice);
+        }
 
         if (result != null) {
             if (_debugging) {

@@ -133,8 +133,26 @@ public class NonStrictFSMDirector extends FSMDirector {
         List inputPortList = container.inputPortList();
 
         State currentState = controller.currentState();
-        Transition enabledTransition = controller._checkTransition(currentState
+        List enabledTransitions = controller._checkTransition(currentState
                 .preemptiveTransitionList());
+        Transition enabledTransition = null;
+        
+        // Randomly choose one transition from the list of the 
+        // enabled trnasitions.
+        int length = enabledTransitions.size();
+        if (length != 0) {
+            // Since the size of the list of enabled transitions usually (almost 
+            // always) is less than the maximum value of integer. We can safely 
+            // do the cast from long to int in the following statement.
+            int randomChoice = (int)Math.round(Math.random()*length);
+            // There is tiny chance that randomChoice equals length. 
+            // When this happens, we deduct 1 from the randomChoice. 
+            if (randomChoice == length) {
+                randomChoice--;
+            }
+            enabledTransition = 
+                (Transition)enabledTransitions.get(randomChoice);
+        }
         _enabledTransition = enabledTransition;
 
         if (enabledTransition == null) {
@@ -181,8 +199,24 @@ public class NonStrictFSMDirector extends FSMDirector {
             }
             
             // Choose nonpreemptive transition.
-            enabledTransition = controller
-                    ._checkTransition(currentState.nonpreemptiveTransitionList());
+            enabledTransitions = controller._checkTransition(currentState
+                    .nonpreemptiveTransitionList());
+
+            // Randomly choose one transition from the list of the 
+            // enabled trnasitions.
+            length = enabledTransitions.size();
+            if (length != 0) {
+                // Since the size of the list of enabled transitions usually (almost 
+                // always) is less than the maximum value of integer. We can safely 
+                // do the cast from long to int in the following statement.
+                int randomChoice = (int)Math.round(Math.random()*length);
+                // There is tiny chance that randomChoice equals length. 
+                // When this happens, we deduct 1 from the randomChoice. 
+                if (randomChoice == length) {
+                    randomChoice--;
+                }
+                enabledTransition = (Transition)enabledTransitions.get(randomChoice);
+            }            
             _enabledTransition = enabledTransition;
         }
 
