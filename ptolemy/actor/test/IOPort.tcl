@@ -278,6 +278,133 @@ test IOPort-7.2 {Check getReceivers} {
 
 ######################################################################
 ####
+# Test getReceivers() on opaque ports.
+# The test uses the description method to represent the results.
+
+test IOPort-7.3 {test getReceivers()} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 "E1"]
+    $e1 setDirector [java::new ptolemy.actor.Director]
+    set e2 [java::new ptolemy.actor.CompositeActor $e0 "E2"]
+    $e2 setDirector [java::new ptolemy.actor.Director]
+    set e3 [java::new ptolemy.actor.AtomicActor $e1 "E3"]
+    set e4 [java::new ptolemy.actor.AtomicActor $e2 "E4"]
+    set p1 [java::new ptolemy.actor.IOPort $e1 "P1"]
+    set p2 [java::new ptolemy.actor.IOPort $e2 "P2"]
+    set p3 [java::new ptolemy.actor.IOPort $e3 "P3"]
+    set p4 [java::new ptolemy.actor.IOPort $e4 "P4"]
+    $p1 setMultiport true
+    $p2 setMultiport true
+    $p3 setMultiport true
+    $p3 setOutput true
+    $p4 setMultiport true
+    $p4 setInput true
+    set r1 [java::cast ptolemy.actor.IORelation [$e0 connect $p1 $p2]]
+    $r1 setWidth 3
+    set r2 [java::cast ptolemy.actor.IORelation [$e1 connect $p3 $p1]]
+    $r2 setWidth 2
+    set r3 [java::cast ptolemy.actor.IORelation [$e2 connect $p2 $p4]]
+    $r3 setWidth 4
+
+    # Call preinitialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $e0 preinitialize
+    
+    set receivers [java::field ptolemy.actor.IOPort RECEIVERS]
+    set remotereceivers [java::field ptolemy.actor.IOPort REMOTERECEIVERS]
+    $p2 description $receivers
+} {receivers {
+    {
+        {ptolemy.actor.Mailbox}
+    }
+    {
+        {ptolemy.actor.Mailbox}
+    }
+    {
+        {ptolemy.actor.Mailbox}
+    }
+}}
+
+test IOPort-7.4 {test getReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p4 description $receivers
+} {receivers {
+    {
+        {ptolemy.actor.Mailbox}
+    }
+    {
+        {ptolemy.actor.Mailbox}
+    }
+    {
+        {ptolemy.actor.Mailbox}
+    }
+    {
+        {ptolemy.actor.Mailbox}
+    }
+}}
+
+test IOPort-7.5 {test getReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p1 description $receivers
+} {receivers {
+}}
+
+test IOPort-7.6 {test getReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p3 description $receivers
+} {receivers {
+}}
+
+######################################################################
+####
+# Test getRemoteReceivers() on opaque ports.
+# NOTE: Uses the same setup from the previous batch of tests.
+
+test IOPort-7.7 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p1 description $remotereceivers
+} {remotereceivers {
+    {
+        {ptolemy.actor.Mailbox in .E0.E2.P2}
+    }
+    {
+        {ptolemy.actor.Mailbox in .E0.E2.P2}
+    }
+    {
+        {ptolemy.actor.Mailbox in .E0.E2.P2}
+    }
+}}
+
+test IOPort-7.8 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p3 description $remotereceivers
+} {remotereceivers {
+    {
+        {ptolemy.actor.Mailbox in .E0.E1.P1}
+    }
+    {
+        {ptolemy.actor.Mailbox in .E0.E1.P1}
+    }
+}}
+
+test IOPort-7.9 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p2 description $remotereceivers
+} {remotereceivers {
+}}
+
+test IOPort-7.10 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p4 description $remotereceivers
+} {remotereceivers {
+}}
+
+######################################################################
+####
 #
 test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -317,7 +444,6 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
     $p1Rcvrs length
     expr {[$p1 getRemoteReceivers] == [java::null]}
 } {0}
-# JFIXME} {0}
 
 ######################################################################
 ####
@@ -1169,7 +1295,7 @@ test IOPort-13.4 {test getReceivers()} {
 
 ######################################################################
 ####
-# Test getReceivers() on transparent ports.
+# Test getRemoteReceivers() on transparent ports.
 # NOTE: Uses the same setup from the previous batch of tests.
 
 test IOPort-14.1 {test getRemoteReceivers()} {
