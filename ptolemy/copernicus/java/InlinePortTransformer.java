@@ -62,6 +62,7 @@ import ptolemy.data.expr.Variable;
 
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

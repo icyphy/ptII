@@ -63,6 +63,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.java.*;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// InlinePrimitivePortTransformer

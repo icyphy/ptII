@@ -52,6 +52,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 import soot.*;
 import soot.jimple.*;

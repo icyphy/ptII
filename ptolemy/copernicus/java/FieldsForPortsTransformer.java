@@ -62,6 +62,7 @@ import ptolemy.data.type.Typeable;
 
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForPortsTransformer

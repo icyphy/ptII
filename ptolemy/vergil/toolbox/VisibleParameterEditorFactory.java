@@ -37,6 +37,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.EditorPaneFactory;
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
 
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
