@@ -829,7 +829,7 @@ public class CalendarQueue {
                     newindex += _nBuckets;
                 }
 
-                // Zero in on the targetted bucket in the new buckets set.
+                // Zero in on the targeted bucket in the new buckets set.
                 CQLinkedList targetLL = _bucket[(int)newindex];
 
                 // Since minCell is being put at tail position, make sure
