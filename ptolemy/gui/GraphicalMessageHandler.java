@@ -79,57 +79,6 @@ public class GraphicalMessageHandler extends MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Display a stack trace dialog. The "info" argument is a
-     *  string printed at the top of the dialog instead of the Exception
-     *  message.
-     *  @param context The context.
-     *  @param exception The exception.
-     *  @param info A message.
-     */
-    public static void showStackTrace(Component context,
-					 Exception exception, String info) {
-	// This method is public static so that VergilErrorHandler can use
-	// it.
-
-        // FIXME: Eventually, the dialog should
-        // be able to email us a bug report.
-
-        // Show the stack trace in a scrollable text area.
-
-	// We don't use KernelException.stackTraceToString() here because
-	// we don't want this package to depend on ptolemy.kernel.util.
-
-	StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        exception.printStackTrace(printWriter);
-        JTextArea text = new JTextArea(stringWriter.toString(), 60, 80);
-        JScrollPane scrollPane = new JScrollPane(text);
-        scrollPane.setPreferredSize(new Dimension(600, 300));
-        text.setCaretPosition(0);
-        text.setEditable(false);
-
-        // We want to stack the text area with another message
-        Object[] message = new Object[2];
-        String string;
-        if(info != null) {
-            string = info + "\n" + exception.getMessage();
-        } else {
-            string = exception.getMessage();
-        }
-        message[0] = _ellipsis(string, 400);
-        message[1] = scrollPane;
-
-        // Show the MODAL dialog
-        JOptionPane.showMessageDialog(
-                context,
-                message,
-                "Stack trace",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Show the specified error message.
      *  @param info The message.
      */
@@ -193,7 +142,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options[0]);
 
         if(selected == 1) {
-            showStackTrace(_context, exception, info);
+            _showStackTrace(exception, info);
         }
     }
 
@@ -276,7 +225,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options[0]);
 
         if(selected == 1) {
-            showStackTrace(_context, exception, info);
+            _showStackTrace(exception, info);
         } else if(selected == 2) {
             throw new CancelException();
         }
@@ -297,10 +246,48 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  @param string The string to truncate.
      *  @param length The length to which to truncate the string.
      */
-    private static String _ellipsis(String string, int length) {
+    private String _ellipsis(String string, int length) {
 	if(string.length() > length) {
 	    return string.substring(0, length-3) + "...";
 	}
 	return string;
+    }
+
+    /** Display a stack trace dialog. The "info" argument is a
+     *  string printed at the top of the dialog instead of the Exception
+     *  message.
+     *  @param exception The exception.
+     *  @param info A message.
+     */
+    private void _showStackTrace(Exception exception, String info) {
+        // FIXME: Eventually, the dialog should
+        // be able to email us a bug report.
+        // Show the stack trace in a scrollable text area.
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        exception.printStackTrace(pw);
+        JTextArea text = new JTextArea(sw.toString(), 60, 80);
+        JScrollPane stext = new JScrollPane(text);
+        stext.setPreferredSize(new Dimension(600, 300));
+        text.setCaretPosition(0);
+        text.setEditable(false);
+
+        // We want to stack the text area with another message
+        Object[] message = new Object[2];
+        String string;
+        if(info != null) {
+            string = info + "\n" + exception.getMessage();
+        } else {
+            string = exception.getMessage();
+        }
+        message[0] = _ellipsis(string, 400);
+        message[1] = stext;
+
+        // Show the MODAL dialog
+        JOptionPane.showMessageDialog(
+                _context,
+                message,
+                "Stack trace",
+                JOptionPane.ERROR_MESSAGE);
     }
 }
