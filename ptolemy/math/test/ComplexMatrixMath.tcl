@@ -376,3 +376,16 @@ test ComplexMatrixMath-5.3.1 {ifgreater} {
     epsilonDiff $mr 0
 } {}
 
+####################################################################
+test ComplexMatrixMath-5.4.1 {arePartsWithin} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    arePartsWithin $m3 $m33 10.0]
+    epsilonDiff $mr 0
+} {}
+
+####################################################################
+test ComplexMatrixMath-5.4.2 {arePartsWithin} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    arePartsWithin $m3 $m33 15.0]
+    epsilonDiff $mr 1
+} {}
