@@ -30,6 +30,7 @@ package ptolemy.backtrack.ast;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -51,9 +52,11 @@ import net.sourceforge.jrefactory.ast.ASTBooleanLiteral;
 import net.sourceforge.jrefactory.ast.ASTCastExpression;
 import net.sourceforge.jrefactory.ast.ASTClassBody;
 import net.sourceforge.jrefactory.ast.ASTClassOrInterfaceType;
+import net.sourceforge.jrefactory.ast.ASTCompilationUnit;
 import net.sourceforge.jrefactory.ast.ASTConditionalAndExpression;
 import net.sourceforge.jrefactory.ast.ASTConditionalExpression;
 import net.sourceforge.jrefactory.ast.ASTConditionalOrExpression;
+import net.sourceforge.jrefactory.ast.ASTConstructorDeclaration;
 import net.sourceforge.jrefactory.ast.ASTEqualityExpression;
 import net.sourceforge.jrefactory.ast.ASTExclusiveOrExpression;
 import net.sourceforge.jrefactory.ast.ASTExpression;
@@ -95,6 +98,9 @@ import net.sourceforge.jrefactory.ast.ASTVariableInitializer;
 import net.sourceforge.jrefactory.ast.Node;
 import net.sourceforge.jrefactory.ast.SimpleNode;
 import net.sourceforge.jrefactory.parser.JavaParserConstants;
+
+import org.acm.seguin.summary.FileSummary;
+import org.acm.seguin.summary.TypeSummary;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnalyzer
@@ -156,6 +162,31 @@ public class TypeAnalyzer extends ASTVisitor {
     
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
+    
+    /** Visit a <tt>CompilationUnit</tt> node in the AST, and compute
+     *  the summary for the node. A <tt>CompilationUnit</tt> is the
+     *  root node of an AST tree. The summary contains all the
+     *  definitions in the AST, including all the types, and fields
+     *  and methods in those types.
+     *  <p>
+     *  Problems of anonymous class numbering in JRefactory is fixed
+     *  in this function by one extra traversal on the summary and
+     *  recounting anonymous classes. 
+     *  <p>
+     *  Grammar: <tt>CompilationUnit ::= [PackageDeclaration] ImportDeclaration*
+     *    TypeDeclaration* &lt;EOF&gt;</tt>
+     *    
+     *  @param node The node to be visited.
+     *  @param data User-defined data passed from the parent node
+     *   (not used for this function).
+     *  @return The return value of the superclass.
+     */
+    public Object visit(ASTCompilationUnit node, Object data) {
+        FileSummary summary = ASTQuery.summarize(node, null, _summaryBuilder);
+        summary.accept(_anonymousNumbers, null);
+        
+        return super.visit(node, data);
+    }
 
     /** Visit a <tt>PackageDeclaration</tt> node in the AST, and set
      *  the current package in the class loader to be the package
@@ -165,7 +196,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return Always <tt>null</tt>.
      */
     public Object visit(ASTPackageDeclaration node, Object data) {
@@ -181,15 +212,17 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return Always <tt>null</tt>.
      */
     public Object visit(ASTImportDeclaration node, Object data) {
         ASTName name = (ASTName)node.jjtGetFirstChild();
         if (node.isImportingPackage())
             _loader.importPackage(name.getImage());
-        else
+        else {
             _loader.importClass(name.getImage());
+            _importClass(name.getImage());
+        }
         return null;
     }
 
@@ -203,11 +236,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTUnmodifiedClassDeclaration node, Object data) {
-        return visitClassOrInterface(node, data);
+        return _visitClassOrInterface(node, data);
     }
     
     /** Visit an <tt>UnmodifiedInterfaceDeclaration</tt> node in the AST,
@@ -220,11 +253,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTUnmodifiedInterfaceDeclaration node, Object data) {
-        return visitClassOrInterface(node, data);
+        return _visitClassOrInterface(node, data);
     }
     
     /** Visit a <tt>MethodDeclaration</tt> node in the AST, and open
@@ -237,7 +270,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTMethodDeclaration node, Object data) {
@@ -253,7 +286,26 @@ public class TypeAnalyzer extends ASTVisitor {
                 break;
             }
         }
-        
+        return result;
+    }
+    
+    /** Visit a <tt>ConstructorDeclaration</tt> node in the AST, and open
+     *  a new scope for parameters.
+     *  <p>
+     *  Grammar: <tt>ConstructorDeclaration ::= ("@" Annotation | "public" | "protected" |
+     *    "private")* [TypeParameters] &lt;IDENTIFIER&gt; [TypeArguments] FormalParameters
+     *    ["throws" NameList] "{" [ExplicitConstructorInvocation] BlockStatement* "}" [";"]</tt>
+     *  
+     *  @param node The node to be visited.
+     *  @param data User-defined data passed from the parent node
+     *   (not used for this function).
+     *  @return The return value of the superclass.
+     */
+    public Object visit(ASTConstructorDeclaration node, Object data) {
+        // A method declaration starts a new scope.
+        _variableStack.push(new Hashtable());
+        Object result = super.visit(node, data);
+        _variableStack.pop();
         return result;
     }
     
@@ -266,12 +318,12 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTFormalParameter node, Object data) {
         Object result = super.visit(node, data);
-        recordVariableDeclaration(node);
+        _recordVariableDeclaration(node);
         return result;
     }
     
@@ -286,12 +338,12 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTFieldDeclaration node, Object data) {
         Object result = super.visit(node, data);
-        recordVariableDeclaration(node);
+        // _recordVariableDeclaration(node);
         return result;
     }
 
@@ -304,12 +356,12 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTLocalVariableDeclaration node, Object data) {
         Object result = super.visit(node, data);
-        recordVariableDeclaration(node);
+        _recordVariableDeclaration(node);
         return result;
     }
     
@@ -320,7 +372,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTResultType node, Object data) {
@@ -341,7 +393,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTBlock node, Object data) {
@@ -359,7 +411,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return Always <tt>null</tt>
      */
     public Object visit(ASTPrimitiveType node, Object data) {
@@ -376,7 +428,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return Always <tt>null</tt>
      */
     public Object visit(ASTReferenceType node, Object data) {
@@ -404,7 +456,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTClassOrInterfaceType node, Object data)
@@ -413,12 +465,9 @@ public class TypeAnalyzer extends ASTVisitor {
         
         // Do not load the actual class.
         String className = node.getImage();
-        Class c = null;
-        try {
-            c = _loader.loadClass(className);
-        } catch (ClassNotFoundException e) {
+        Class c = _lookupClass(className);
+        if (c == null)
             throw new ASTClassNotFoundException(className);
-        }
         Type.setType(node, Type.createType(c.getName()));
         
         return result;
@@ -429,9 +478,9 @@ public class TypeAnalyzer extends ASTVisitor {
      *  for field declaration. If <tt>data</tt> is not <tt>null</tt>,
      *  it represents the type in an anonymous class instantiation.
      *  <p>
-     *  For example, the <tt>data</tt> for the following class
-     *  body is considered a {@link Type} object with the name
-     *  "<tt>java.util.Hashtable</tt>":
+     *  Example: The <tt>data</tt> for the following class body
+     *  is considered a {@link Type} object with the name
+     *  "<tt>java.util.Hashtable</tt>".
      *  <pre>    Object obj = new java.util.Hashtable() { ... };</pre>
      *  <p>
      *  Grammar: <tt>ClassBody ::= "{" ClassBodyDeclaration "}"</tt>
@@ -443,31 +492,31 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The return value of the superclass.
      */
     public Object visit(ASTClassBody node, Object data) {
-        if (data != null) {
-            // Check for subclassing at instantiation.
+        if (data != null) { // Anonymous class.
+            // Create a new class declaration.
             _previousClasses.push(_currentClass);
-            String className = _currentClass.getName();
-            int dollarPos = className.indexOf("$");
+            String currentName = _currentClass.getName();
+            int dollarPos = currentName.indexOf('$');
             if (dollarPos >= 0)
-                className = className.substring(0, dollarPos);
-            className += "$" + _anonymousNumber++;
+                currentName = currentName.substring(0, dollarPos);
+            TypeSummary summary = _summaryBuilder.getSummary(node);
+            String newName = currentName + "$" + _anonymousNumbers.getSummaryNumber(summary);//_anonymousNumbers.next();
             try {
-                Class newCurrentClass = _loader.loadClass(className);
-                _loader.setCurrentClass(newCurrentClass);
-                _loader.setEnclosingClass(newCurrentClass.getName(), _currentClass);
-                Type.setType(node, Type.createType(newCurrentClass.getName()));
-                _currentClass = newCurrentClass;
+                _currentClass = _loader.searchForClass(newName);
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Cannot load class \"" + className + "\".");
+                throw new ASTClassNotFoundException(newName);
             }
+            Type.setType(node, Type.createType(_currentClass.getName()));
+            _loader.setCurrentClass(_currentClass);
             
             // A class body starts a new scope.
             _variableStack.push(new Hashtable());
+            _recordFields();
             Object result = super.visit(node, null);
             _variableStack.pop();
             
             _currentClass = (Class)_previousClasses.pop();
-            _loader.setCurrentClass(_currentClass);
+            _loader.setCurrentClass(_currentClass, false);
             return result;
         } else
             return super.visit(node, null);
@@ -509,26 +558,26 @@ public class TypeAnalyzer extends ASTVisitor {
         }
         
         if (nChildren == 0) {
-            ASTName name = String2ASTName(image);
-            resolveName(name, lastType, args);
+            ASTName name = _String2ASTName(image);
+            _resolveName(name, lastType, args);
             Type.propagateType(node, name);
             return null;
         } else if (nChildren == 1) {
             Node firstChild = node.jjtGetFirstChild();
             if (firstChild instanceof ASTResultType) {
                 // ASTPrimaryPrefix followed by ASTResultType is a ".class" expression.
-                Object result = visitSingleChild(node, data);
+                Object result = _visitSingleChild(node, data);
                 Type.setType(node, Type.createType("java.lang.Class"));
                 return result;
             } else if (firstChild instanceof ASTName) {
                 ASTName name = (ASTName)firstChild;
-                resolveName(name, lastType, args);
+                _resolveName(name, lastType, args);
                 Type.propagateType(node, name);
                 return null;
             } else if (firstChild instanceof ASTLiteral ||
                     firstChild instanceof ASTAllocationExpression ||
                     firstChild instanceof ASTExpression)
-                return visitSingleChild(node, data);
+                return _visitSingleChild(node, data);
         }
         throw new UnknownASTException();
     }
@@ -569,7 +618,7 @@ public class TypeAnalyzer extends ASTVisitor {
             ASTArguments args = (ASTArguments)dataTuple[1];
             if (args != null)   // Type-check the arguments first.
                 visit(args, null);
-            resolveName(name, lastType, args);
+            _resolveName(name, lastType, args);
             Type.propagateType(node, name);
             return null;
         } else if (nChildren == 1) {
@@ -583,7 +632,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 for (int i=0; i<coi.jjtGetNumChildren(); i++)
                     className += "." + ((ASTIdentifier)coi.jjtGetChild(i)).getImage();
                 coi.setImage(className);
-                return visitSingleChild(node, data);
+                return _visitSingleChild(node, data);
             } else if (child instanceof ASTReferenceTypeList)
                 return super.visit(node, data);
             else if (child instanceof ASTExpression) {
@@ -617,7 +666,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTArguments node, Object data) {
@@ -625,7 +674,7 @@ public class TypeAnalyzer extends ASTVisitor {
             Type.setType(node, Type.NULL);
             return null;
         } else
-            return visitSingleChild(node, data);
+            return _visitSingleChild(node, data);
     }
     
     /** Visit a <tt>Literal</tt> node in the AST, and set the type
@@ -639,7 +688,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return Always <tt>null</tt>.
      */
     public Object visit(ASTLiteral node, Object data) {
@@ -661,7 +710,7 @@ public class TypeAnalyzer extends ASTVisitor {
             else if (image.startsWith("\'") && image.endsWith("\'"))
                 Type.setType(node, Type.CHAR);
             else {  // Either int/long/short or double/float.
-                if (image.contains(".") || image.endsWith("d") || image.endsWith("f")) {  // double/float
+                if (!image.startsWith("0x") && (image.indexOf('.') != -1 || image.endsWith("d") || image.endsWith("f"))) {  // double/float
                     if (image.endsWith("f"))
                         Type.setType(node, Type.FLOAT);
                     else
@@ -686,7 +735,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return Always <tt>null</tt>.
      *  @see #visit(ASTPrimaryPrefix, Object)
      *  @see #visit(ASTPrimarySuffix, Object)
@@ -728,13 +777,13 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTAllocationExpression node, Object data) {
         int nChildren = node.jjtGetNumChildren();
         if (nChildren == 1)
-            return visitSingleChild(node, data);
+            return _visitSingleChild(node, data);
         else if (nChildren == 2) {
             Object result = super.visit(node, data);
             Type type = Type.getType(node.jjtGetFirstChild());
@@ -766,11 +815,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTType node, Object data) {
-        return visitSingleChild(node, data);
+        return _visitSingleChild(node, data);
     }
 
     /** Visit a <tt>PostfixExpression</tt> node in the AST, and set the type
@@ -780,11 +829,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTPostfixExpression node, Object data) {
-        return visitSingleChild(node, data);
+        return _visitSingleChild(node, data);
     }
 
     /** Visit a <tt>UnaryExpressionNotPlusMinus</tt> node in the AST, and set the type
@@ -795,11 +844,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTUnaryExpressionNotPlusMinus node, Object data) {
-        return visitSingleChild(node, data);
+        return _visitSingleChild(node, data);
     }
 
     /** Visit a <tt>UnaryExpression</tt> node in the AST, and set the type
@@ -810,11 +859,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTUnaryExpression node, Object data) {
-        return visitSingleChild(node, data);
+        return _visitSingleChild(node, data);
     }
     
     /** Visit a <tt>PreIncrementExpression</tt> node in the AST, and set the type
@@ -824,11 +873,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTPreIncrementExpression node, Object data) {
-        return visitSingleChild(node, data);
+        return _visitSingleChild(node, data);
     }
     
     /** Visit a <tt>PreDecrementExpression</tt> node in the AST, and set the type
@@ -838,11 +887,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTPreDecrementExpression node, Object data) {
-        return visitSingleChild(node, data);
+        return _visitSingleChild(node, data);
     }
     
     /** Visit a <tt>VariableInitializer</tt> node in the AST, and set the type
@@ -852,11 +901,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTVariableInitializer node, Object data) {
-        return visitSingleChild(node, data);
+        return _visitSingleChild(node, data);
     }
     
     /** Visit a <tt>MultiplicativeExpression</tt> node in the AST, and set the type
@@ -866,11 +915,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTMultiplicativeExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit an <tt>AdditiveExpression</tt> node in the AST, and set the type
@@ -880,11 +929,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTAdditiveExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit a <tt>ShiftExpression</tt> node in the AST, and set the type
@@ -894,11 +943,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTShiftExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit an <tt>AndExpression</tt> node in the AST, and set the type
@@ -908,11 +957,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTAndExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit an <tt>ExclusiveOrExpression</tt> node in the AST, and set the type
@@ -922,11 +971,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTExclusiveOrExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit an <tt>InclusiveOrExpression</tt> node in the AST, and set the type
@@ -936,11 +985,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTInclusiveOrExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit a <tt>ConditionalAndExpression</tt> node in the AST, and set the type
@@ -950,11 +999,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTConditionalAndExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit a <tt>ConditionalOrExpression</tt> node in the AST, and set the type
@@ -964,11 +1013,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTConditionalOrExpression node, Object data) {
-        return visitExpressionWithChildren(node, data);
+        return _visitExpressionWithChildren(node, data);
     }
     
     /** Visit an <tt>Expression</tt> node in the AST, and set the type
@@ -982,14 +1031,14 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTExpression node, Object data) {
         int nChildren = node.jjtGetNumChildren();
         if (nChildren == 1)
             // Propagate the type if only one child (ConditionalExpression).
-            return visitSingleChild(node, data);
+            return _visitSingleChild(node, data);
         else if (nChildren == 3) {
             ASTConditionalExpression child1 =
                 (ASTConditionalExpression)node.jjtGetFirstChild();
@@ -1031,14 +1080,14 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTStatementExpression node, Object data) {
         int nChildren = node.jjtGetNumChildren();
         if (nChildren == 1)
             // Propagate the type if only one child (ConditionalExpression).
-            return visitSingleChild(node, data);
+            return _visitSingleChild(node, data);
         else if (nChildren == 3) {
             ASTPrimaryExpression child1 =
                 (ASTPrimaryExpression)node.jjtGetFirstChild();
@@ -1053,15 +1102,6 @@ public class TypeAnalyzer extends ASTVisitor {
             Type type1 = Type.getType(child1);
             Type type3 = Type.getType(child3);
             
-            try {
-                if (type3.compatibility(type1, _loader) == -1)
-                    // Incompatible types in an assignments means something goes
-                    // wrong in some previous steps.
-                    throw new UnknownASTException();
-            } catch (ClassNotFoundException e) {
-                throw new UnknownASTException();
-            }
-
             Type.setType(node, type1);
             return null;
         } else
@@ -1075,11 +1115,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTCastExpression node, Object data) {
-        return visitExpressionWithChildren(node, data, false);
+        return _visitExpressionWithChildren(node, data, false);
     }
     
     /** Visit a <tt>TypeArguments</tt> node in the AST, and set the type
@@ -1090,11 +1130,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTTypeArguments node, Object data) {
-        return visitExpressionWithChildren(node, data, false);
+        return _visitExpressionWithChildren(node, data, false);
     }
     
     /** Visit a <tt>ReferenceTypeList</tt> node in the AST, and set the type
@@ -1105,11 +1145,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTReferenceTypeList node, Object data) {
-        return visitExpressionWithChildren(node, data, false);
+        return _visitExpressionWithChildren(node, data, false);
     }
     
     /** Visit an <tt>ActualTypeArgument</tt> node in the AST, and set the type
@@ -1120,11 +1160,11 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTActualTypeArgument node, Object data) {
-        return visitExpressionWithChildren(node, data, false);
+        return _visitExpressionWithChildren(node, data, false);
     }
     
     //-------------------------------------------------------------
@@ -1139,7 +1179,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTRelationalExpression node, Object data) {
@@ -1159,7 +1199,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTInstanceOfExpression node, Object data) {
@@ -1179,7 +1219,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTEqualityExpression node, Object data) {
@@ -1204,16 +1244,32 @@ public class TypeAnalyzer extends ASTVisitor {
      *  
      *  @param node The node to be visited.
      *  @param data User-defined data passed from the parent node
-     *   (not used for this function)
+     *   (not used for this function).
      *  @return The return value of the superclass.
      */
     public Object visit(ASTConditionalExpression node, Object data) {
         Object result = super.visit(node, data);
         int nChildren = node.jjtGetNumChildren();
         if (nChildren == 3) {
-            Type commonType = Type.getCommonType(
-                    Type.getType(node.jjtGetChild(1)),
-                    Type.getType(node.jjtGetChild(2)));
+            Type type1 = Type.getType(node.jjtGetChild(1));
+            Type type2 = Type.getType(node.jjtGetChild(2));
+            
+            Type commonType = Type.getCommonType(type1, type2);
+            try {
+                if (commonType == null && type1.compatibility(type2, _loader) >= 0)
+                    commonType = type2;
+            } catch (ClassNotFoundException e) {
+            }
+            
+            try {
+                if (commonType == null && type2.compatibility(type1, _loader) >= 0)
+                    commonType = type1;
+            } catch (ClassNotFoundException e) {
+            }
+            
+            if (commonType == null)
+                throw new UnknownASTException();
+            
             Type.setType(node, commonType);
         } else if (nChildren == 1)
             Type.propagateType(node, node.jjtGetFirstChild());
@@ -1233,7 +1289,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *   <tt>null</tt>.
      */
     protected Type findVariable(String name) {
-        return findVariable(name, _variableStack.iterator());
+        return _findVariable(name, _variableStack.iterator());
     }
     
     /** Get the type of a field in a class by its name. If not found
@@ -1310,6 +1366,11 @@ public class TypeAnalyzer extends ASTVisitor {
             
             for (int i=0; i<methods.length; i++) {
                 Method method = methods[i];
+                
+                // FIXME: Ignore volatile methods.
+                if (Modifier.isVolatile(method.getModifiers()))
+                    continue;
+                
                 if (method.getName().equals(name)) {
                     Class[] formalParams = method.getParameterTypes();
                     if (formalParams.length == args.length) {
@@ -1346,7 +1407,7 @@ public class TypeAnalyzer extends ASTVisitor {
             Class superClass = topClass.getSuperclass();
             if (superClass == null && !topClass.getName().equals("java.lang.Object"))
                 superClass = Object.class;
-            if (superClass != null)
+            if (superClass != null && !handledSet.contains(superClass))
                 workList.add(superClass);
             Class[] interfaces = topClass.getInterfaces();
             for (int i=0; i<interfaces.length; i++)
@@ -1372,10 +1433,10 @@ public class TypeAnalyzer extends ASTVisitor {
      *   <tt>null</tt>.
      *  @see #findVariable(String)
      */
-    private Type findVariable(String name, Iterator variableStackIter) {
+    private Type _findVariable(String name, Iterator variableStackIter) {
         if (variableStackIter.hasNext()) {
             Hashtable table = (Hashtable)variableStackIter.next();
-            Type t = findVariable(name, variableStackIter);
+            Type t = _findVariable(name, variableStackIter);
             if (t != null)
                 return t;
             else if (table.containsKey(name))
@@ -1394,10 +1455,10 @@ public class TypeAnalyzer extends ASTVisitor {
      *   (not used for this function)
      *  @return The return value of the superclass.
      */
-    private Object visitSingleChild(SimpleNode node, Object data) {
+    private Object _visitSingleChild(SimpleNode node, Object data) {
         if (node.jjtGetNumChildren() != 1)
             throw new UnknownASTException();
-        return visitExpressionWithChildren(node, data, false);
+        return _visitExpressionWithChildren(node, data, false);
     }
     
     /** Visit a node with a single child, and set the type of that node
@@ -1409,10 +1470,10 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param data User-defined data passed from the parent node
      *   (not used for this function)
      *  @return The return value of the superclass.
-     *  @see #visitExpressionWithChildren(SimpleNode, Object, boolean)
+     *  @see #_visitExpressionWithChildren(SimpleNode, Object, boolean)
      */
-    private Object visitExpressionWithChildren(SimpleNode node, Object data) {
-        return visitExpressionWithChildren(node, data, true);
+    private Object _visitExpressionWithChildren(SimpleNode node, Object data) {
+        return _visitExpressionWithChildren(node, data, true);
     }
     
     /** Visit a node with a single child, and set the type of that node
@@ -1429,7 +1490,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *   child to the node.
      *  @return The return value of the superclass.
      */
-    private Object visitExpressionWithChildren(SimpleNode node, Object data, boolean checkCommonTypes) {
+    private Object _visitExpressionWithChildren(SimpleNode node, Object data, boolean checkCommonTypes) {
         Object result = super.visit(node, data);
         int nChildren = node.jjtGetNumChildren();
         if (nChildren == 1 || !checkCommonTypes)
@@ -1455,7 +1516,7 @@ public class TypeAnalyzer extends ASTVisitor {
      * 
      *  @param node The node with variable declaration.
      */
-    private void recordVariableDeclaration(SimpleNode node) {
+    private void _recordVariableDeclaration(SimpleNode node) {
         Hashtable variableTable = (Hashtable)_variableStack.peek();
         Type type = Type.getType(node.jjtGetFirstChild());  // The first child is an ASTType.
         Type.setType(node, type);
@@ -1488,7 +1549,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The array of types of all the arguments in the
      *   node.
      */
-    private Type[] ASTArguments2Types(ASTArguments args) {
+    private Type[] _ASTArguments2Types(ASTArguments args) {
         Type[] arguments = null;
         if (args != null) {
             if (args.jjtGetNumChildren() > 0) {
@@ -1512,7 +1573,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return A <tt>Name</tt> node that represents the same
      *   name with one or more children of <tt>Identifier</tt>
      */
-    private ASTName String2ASTName(String sName) {
+    private ASTName _String2ASTName(String sName) {
         ASTName name = new ASTName();
         int dotPos = 0;
         int i = 0;
@@ -1546,10 +1607,10 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @throws ASTResolutionException The name cannot be resolved from
      *   the given type.
      */
-    private void resolveName(ASTName name, Type lastType, ASTArguments args)
+    private void _resolveName(ASTName name, Type lastType, ASTArguments args)
             throws ASTClassNotFoundException, ASTResolutionException {
         // Handle arguments.
-        Type[] arguments = ASTArguments2Types(args);
+        Type[] arguments = _ASTArguments2Types(args);
         
         // Resolve each part of the name.
         Class owner;
@@ -1565,19 +1626,16 @@ public class TypeAnalyzer extends ASTVisitor {
             ASTIdentifier id = (ASTIdentifier)name.jjtGetChild(i);
             String currentName = remainingName + id.getImage();
             
-            if (currentName.equals("ODESolver")) {
-                int x = 0;
-            }
-            
             if (currentName.equals("this")) {
-                Type.setType(id, Type.createType(owner.getName()));
+                if (owner instanceof Class)
+                    Type.setType(id, Type.createType(((Class)owner).getName()));
                 continue;
             } else if (currentName.equals("super")) {
-                Type.setType(id, Type.createType(owner.getSuperclass().getName()));
+                Type.setType(id, Type.createType(((Class)owner).getSuperclass().getName()));
                 continue;
             }
             
-            if (i == 0 && lastType == null) {
+            if (i == 0 && lastType == null && !(i == length - 1 && arguments != null)) {
                 // Look for variables or fields in the current class/method.
                 Type vtype = findVariable(currentName);
                 if (vtype != null) {
@@ -1592,19 +1650,27 @@ public class TypeAnalyzer extends ASTVisitor {
                         }
                     continue;
                 }
+                
+                // Look for nested classes declared in _currentClass.
+                Class c = _lookupClass(currentName);
+                if (c != null) {
+                    owner = c;
+                    Type.setType(id, Type.createType(c.getName()));
+                    continue;
+                }
             }
             
             // Lookup enclosing classes.
             Type idType;
             Type[] argumentsForResolution = i < length - 1 ? null : arguments;
-            idType = resolveNameFromClass(owner, currentName, argumentsForResolution);
-            if (idType == null && lastType == null && i == 0) {
-                int previousClassNum = _previousClasses.size() - 1;
-                while (idType == null && previousClassNum >= 0) {
-                    Class previousClass = (Class)_previousClasses.get(previousClassNum);
+            idType = _resolveNameFromClass(owner, currentName, argumentsForResolution);
+            
+            if (idType == null && i == 0 && lastType == null) {
+                int previousNumber = _previousClasses.size() - 1;
+                while (idType == null && previousNumber >= 0) {
+                    Class previousClass = (Class)_previousClasses.get(previousNumber--);
                     if (previousClass != null)
-                        idType = resolveNameFromClass(previousClass, currentName, argumentsForResolution);
-                    previousClassNum--;
+                        idType = _resolveNameFromClass(previousClass, currentName, argumentsForResolution);
                 }
             }
 
@@ -1627,6 +1693,67 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.propagateType(name, name.jjtGetChild(length - 1));
     }
     
+    /** Lookup a class with a partially given name as may
+     *  appear in Java source code. The name may be relative
+     *  to the current class and its enclosing classes. It
+     *  may also be a full name.
+     *  
+     *  @param partialSimpleName The partially given class
+     *   name.
+     *  @return The class; <tt>null</tt> is returned if the
+     *   class cannot be found.
+     */
+    private Class _lookupClass(String partialSimpleName) {
+        int dotPos = partialSimpleName.indexOf('.');
+        String simpleName;
+        if (dotPos == -1)
+            simpleName = partialSimpleName;
+        else
+            simpleName = partialSimpleName.substring(0, dotPos);
+        Class result = null;
+        
+        int previousNumber = _previousClasses.size();
+        for (int i=previousNumber; i>=0; i--) {
+            Class workingClass =
+                i == previousNumber ? _currentClass : (Class)_previousClasses.get(i);
+            if (workingClass != null) {
+                if (_getSimpleClassName(workingClass).equals(simpleName)) {
+                    result = workingClass;
+                    break;
+                }
+                Class[] declaredClasses = workingClass.getDeclaredClasses();
+                for (int j=0; j<declaredClasses.length; j++)
+                    if (_getSimpleClassName(declaredClasses[j]).equals(simpleName)) {
+                        result = declaredClasses[j];
+                        break;
+                    }
+                if (result != null)
+                    break;
+            }
+        }
+        
+        // Look for imported classes.
+        if (result == null && _importedClasses.containsKey(simpleName))
+            result = (Class)_importedClasses.get(simpleName);
+        
+        // A result is found for simpleName.
+        if (result != null && dotPos >= 0)
+            try {
+                result = _loader.loadClass(result.getName() + partialSimpleName.substring(dotPos));
+            } catch (ClassNotFoundException e) {
+                result = null;
+            }
+
+        // Fall back to simple class loader.
+        if (result == null)
+            try {
+                result = _loader.searchForClass(partialSimpleName);
+            } catch (ClassNotFoundException e) {
+            }
+        
+        return result;
+    }
+    
     /** Resolve a name within the scope of the given class. The name can
      *  be a field name, a method name, or a class relative to that class.
      *  If the name is a method name, arguments of the method must be given.
@@ -1637,9 +1764,9 @@ public class TypeAnalyzer extends ASTVisitor {
      *   which case it is the array of formal argument types for that
      *   method.
      *  @return The type of that name if found.
-     *  @see #resolveName(ASTName, Type, ASTArguments)
+     *  @see #_resolveName(ASTName, Type, ASTArguments)
      */
-    private Type resolveNameFromClass(Class owner, String name, Type[] args) {
+    private Type _resolveNameFromClass(Class owner, String name, Type[] args) {
         // Try to resolve special members of arrays.
         if (owner.isArray()) {
             if (name.equals("length") && args == null)
@@ -1661,7 +1788,7 @@ public class TypeAnalyzer extends ASTVisitor {
         
         // Try class name resolution.
         try {
-            Class c = _loader.loadClass(name, owner);
+            Class c = _loader.searchForClass(new StringBuffer(name), (Class)owner);
             return Type.createType(c.getName());
         } catch (ClassNotFoundException e) {
         }
@@ -1670,7 +1797,7 @@ public class TypeAnalyzer extends ASTVisitor {
         if (superclass == null && !owner.getName().equals("java.lang.Object"))
             superclass = Object.class;
         if (superclass != null) {
-            Type result = resolveNameFromClass(superclass, name, args);
+            Type result = _resolveNameFromClass(superclass, name, args);
             if (result != null)
                 return result;
         }
@@ -1689,28 +1816,29 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @see #visit(ASTUnmodifiedClassDeclaration, Object)
      *  @see #visit(ASTUnmodifiedInterfaceDeclaration, Object)
      */
-    private Object visitClassOrInterface(SimpleNode node, Object data) {
+    private Object _visitClassOrInterface(SimpleNode node, Object data) {
         String className = node.getImage();
         _previousClasses.push(_currentClass);
         try {
             if (_currentClass != null) {   // A inner class is found.
                 className = _currentClass.getName() + "$" + className;
-                _currentClass = _loader.loadClass(className);
+                _currentClass = _loader.searchForClass(className);
             } else
-                _currentClass = _loader.loadClass(className);
+                _currentClass = _loader.searchForClass(className);
             Type.setType(node, Type.createType(_currentClass.getName()));
             _loader.setCurrentClass(_currentClass);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Cannot load class \"" + className + "\".");
+            throw new ASTClassNotFoundException(className);
         }
         
         // A class declaration starts a new scope.
         _variableStack.push(new Hashtable());
+        _recordFields();
         Object result = super.visit(node, data);
         _variableStack.pop();
         
         _currentClass = (Class)_previousClasses.pop();
-        _loader.setCurrentClass(_currentClass);
+        _loader.setCurrentClass(_currentClass, false);
         return result;
     }
     
@@ -1720,9 +1848,85 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The name of the package which the class belongs
      *   to, or empty string if the class is not in any package.
      */
-    private String getPackageName(String classFullName) {
-        int dotPos = classFullName.lastIndexOf(".");
+    private String _getPackageName(String classFullName) {
+        int dotPos = classFullName.lastIndexOf('.');
         return dotPos < 0 ? "" : classFullName.substring(0, dotPos);
+    }
+    
+    /** Get the simple class name of a class (not including any
+     *  "." or "$"). The same function is provided in {@link
+     *  Class} class in Java 1.5.
+     *  
+     *  @param c The class object.
+     *  @return The simple name of the class object.
+     */
+    private String _getSimpleClassName(Class c) {
+        String name = c.getName();
+        int lastSeparator1 = name.lastIndexOf('.');
+        int lastSeparator2 = name.lastIndexOf('$');
+        int lastSeparator =
+            lastSeparator1 >= lastSeparator2 ? lastSeparator1 : lastSeparator2;
+        return name.substring(lastSeparator + 1);
+    }
+    
+    /** Import a class with its full name, using "." instead
+     *  of "$" to separate names of nested classes when they
+     *  are refered to. The imported class is added to a
+     *  {@link Hashtable} to be looked up in name resolving.
+     *  
+     *  @param classFullName The full name of the class to be
+     *   imported.
+     */
+    private void _importClass(String classFullName) {
+        int lastDotPos = classFullName.lastIndexOf('.');
+        String simpleName = classFullName.substring(lastDotPos + 1);
+        try {
+            _importedClasses.put(simpleName, _loader.loadClass(classFullName));
+        } catch (ClassNotFoundException e) {
+            throw new ASTClassNotFoundException(classFullName);
+        }
+    }
+    
+    /** Record all the fields of the currently inspecting class
+     *  ({@link #_currentClass}) in the variable table on the
+     *  top of the variable stack ({@link #_variableStack}). 
+     */
+    private void _recordFields() {
+        Class c = _currentClass;
+        Hashtable table = (Hashtable)_variableStack.peek();
+        while (c != null) {
+            Field[] fields = c.getDeclaredFields();
+            for (int i=0; i<fields.length; i++) {
+                Field field = fields[i];
+                
+                // FIXME: Ignore volatile fields.
+                if (Modifier.isVolatile(field.getModifiers()))
+                    continue;
+                
+                String fieldName = field.getName();
+                if (!table.containsKey(fieldName)) {
+                    Class fieldType = field.getType();
+                    table.put(fieldName, Type.createType(fieldType.getName()));
+                }
+            }
+            
+            Class[] interfaces = c.getInterfaces();
+            for (int i=0; i<interfaces.length; i++) {
+                fields = interfaces[i].getDeclaredFields();
+                for (int j=0; j<fields.length; j++) {
+                    String fieldName = fields[j].getName();
+                    if (!table.containsKey(fieldName)) {
+                        Class fieldType = fields[j].getType();
+                        table.put(fieldName, Type.createType(fieldType.getName()));
+                    }
+                }
+            }
+            
+            Class superclass = c.getSuperclass();
+            if (superclass == null && !c.getName().equals("java.lang.Object"))
+                superclass = Object.class;
+            c = superclass;
+        }
     }
     
     /** Remove the part of package name from a class name.
@@ -1732,7 +1936,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *   class name. If the class is not in any package, its
      *   name is returned unmodified.
      */
-    private String removePackageName(String classFullName) {
+    private String _removePackageName(String classFullName) {
         int dotPos = classFullName.lastIndexOf(".");
         return dotPos < 0 ? classFullName : classFullName.substring(dotPos + 1);
     }
@@ -1763,7 +1967,19 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     private Stack _previousClasses = new Stack();
     
-    /** The counter for anonymous classes.
+    /** Table of all the explicitly imported classes (not including
+     *  package importations). Keys are class names; values are {@link
+     *  Class} objects.
      */
-    private int _anonymousNumber = 1;
+    private Hashtable _importedClasses = new Hashtable();
+    
+    /** The {@link SummaryBuilder} object used to build the summary of
+     *  the root AST node (<tt>CompilationUnit</tt>).
+     */
+    private SummaryBuilder _summaryBuilder = new SummaryBuilder();
+    
+    /** The visitor used to visit the top level summary ({@link
+     *  FileSummary}) and fix anonymous class numbers.
+     */
+    private AnonymousClassVisitor _anonymousNumbers = new AnonymousClassVisitor();
 }
