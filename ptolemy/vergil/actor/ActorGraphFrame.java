@@ -108,6 +108,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
+
+        // Override the default help file.
+        helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,18 +159,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _controller.setFrame(this);
 	final ActorGraphModel graphModel = new ActorGraphModel(getModel());
 	return new GraphPane(_controller, graphModel);
-    }
-
-    /** Display more detailed information than given by _about().
-     */
-    protected void _help() {
-        try {
-            URL doc = getClass().getClassLoader().getResource(
-                    "ptolemy/configs/doc/vergilGraphEditorHelp.htm");
-            getConfiguration().openModel(null, doc, doc.toExternalForm());
-        } catch (Exception ex) {
-            _about();
-        }
     }
  
     ///////////////////////////////////////////////////////////////////

@@ -66,8 +66,8 @@ import java.util.List;
 /**
 This application opens run control panels for models specified on the
 command line.   
-
-<p>The exact facilities that are available are determined by an optional
+<p>
+The exact facilities that are available are determined by an optional
 command line argument that names a directory in ptolemy/configs that
 contains a configuration.xml file.  For example, if we call vergil
 -ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and

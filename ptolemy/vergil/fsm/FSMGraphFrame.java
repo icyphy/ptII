@@ -106,6 +106,9 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
             Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
+
+        // Override the default help file.
+        helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,18 +167,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         _controller.setFrame(this);
 	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
 	return new GraphPane(_controller, graphModel);
-    }
-
-    /** Display more detailed information than given by _about().
-     */
-    protected void _help() {
-        try {
-            URL doc = getClass().getClassLoader().getResource(
-                    "ptolemy/configs/doc/vergilFsmEditorHelp.htm");
-            getConfiguration().openModel(null, doc, doc.toExternalForm());
-        } catch (Exception ex) {
-            _about();
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
