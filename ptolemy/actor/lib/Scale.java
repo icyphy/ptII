@@ -55,8 +55,10 @@ type is constrained to be at least as general as both the input and the
 an array with the elements scaled. The input can be an array of array,
 in which case the elements of the inner most array will be scaled.
 For data types where multiplication is not commutative (such
-as matrices), the parameter is multiplied on the left, and the input
-on the right.
+as matrices), whether the factor is multiplied on the left is controlled
+by the <i>scaleOnLeft</i> parameter. Setting the parameter to true means 
+that the factor is  multiplied on the left, and the input
+on the right. Otherwise, the factor is multiplied on the right.
 
 @author Edward A. Lee
 @version $Id$
@@ -76,6 +78,8 @@ public class Scale extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         factor = new Parameter(this, "factor", new IntToken(1));
+        scaleOnLeft = new Parameter(this, "scaleOnLeft", 
+                new BooleanToken(true));
 
 	// set the type constraints.
 	output.setTypeAtLeast(new PortParamFunction(input, factor));
@@ -95,6 +99,14 @@ public class Scale extends Transformer {
      *  The default value of this parameter is the IntToken 1.
      */
     public Parameter factor;
+
+    /** Multiply on the left.
+     *  This parameter controls whether the scale factor is multiplied
+     *  on the left. The default value is a boolean token of value true.
+     *  Setting is to false will multiply the factor on the right.
+     */
+    public Parameter scaleOnLeft;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -123,7 +135,13 @@ public class Scale extends Transformer {
         if (input.hasToken(0)) {
             Token in = input.get(0);
             Token factorToken = factor.getToken();
-            Token result = in.multiply(factorToken);
+            Token result;
+            if(((BooleanToken)scaleOnLeft.getToken()).booleanValue()) {
+                // Scale on the left.
+                result = factorToken.multiply(in);
+            } else {
+                result = in.multiply(factorToken);
+            }
             output.send(0, result);
         }
     }
