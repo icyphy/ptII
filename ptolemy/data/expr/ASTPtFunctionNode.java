@@ -77,13 +77,12 @@ FIXME: add note about function argument types and the return type.
 @see java.lang.Math
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
-    protected String funcName;
-
+    protected String _funcName;
 
     protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int args = jjtGetNumChildren();
-        if (funcName.compareTo("eval") == 0) {
+        if (_funcName.compareTo("eval") == 0) {
             // Have a recursive call to the parser.
             String exp = "";
             try {
@@ -146,17 +145,17 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         while (allClasses.hasMoreElements()) {
             Class nextClass = (Class)allClasses.nextElement();
             try {
-                Method m = nextClass.getMethod(funcName, argTypes);
+                Method m = nextClass.getMethod(_funcName, argTypes);
                 result = m.invoke(nextClass, argValues);
                 foundMethod = true;
             } catch (Exception  ex) {
                 // FIXME: a lot of exceptions get caught here, perhaps
                 // want to specify each of them separately?
-                //System.out.println("Method " + funcName + " not found in " +
+                //System.out.println("Method " + _funcName + " not found in " +
                   //  nextClass.getName());
             }
             if (foundMethod) {
-                //System.out.println("Method " + funcName + " found in " +
+                //System.out.println("Method " + _funcName + " found in " +
                   //    nextClass.getName());
                 if (result instanceof ptolemy.data.Token) {
                     return (ptolemy.data.Token)result;
@@ -176,9 +175,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     return new ComplexToken((Complex)result);
                 } else  {
                     throw new IllegalArgumentException("FunctionNode: "+
-                        "result of function " + funcName + " not a valid type"+
-                        ": boolean, complex, double, int, long  and String" +
-                        ", or a Token.");
+                            "result of function " + _funcName +
+                            " not a valid type: boolean, complex, " +
+                            " double, int, long  and String, or a Token.");
                 }
             }
         }
@@ -192,7 +191,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 sb.append(", " + argValues[i].toString());
             }
         }
-        throw new IllegalArgumentException("Function " + funcName + "(" + sb +
+        throw new IllegalArgumentException("Function " + _funcName + "(" + sb +
                 ") cannot be executed with given arguments.");
     }
 
