@@ -106,7 +106,7 @@ public class SDFDelay extends SDFAtomicActor {
         }
     }
 
-    /* Notice that constuctors start the file.  Public methods should follow,
+    /* Notice that constructors start the file.  Public methods should follow,
      * in alphabetical order, followed by protected and private methods.
      * Instance variables come at the end of the class.
      */
