@@ -382,7 +382,9 @@ public class Main extends KernelMain {
                JimpleWriter.v(),
                "outDir:" + _outputDirectory);
        addTransform(pack, "wjtp.lur",
-                        LibraryUsageReporter.v());
+               LibraryUsageReporter.v(),
+               "outDir:" + _outputDirectory);
+
 //        addTransform(pack, "wjtp.gt",
 //                         GrimpTransformer.v());
     }

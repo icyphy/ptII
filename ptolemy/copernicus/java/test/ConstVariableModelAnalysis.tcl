@@ -300,4 +300,4 @@ test ConstVariableModelAnalysis-2.2 {test modal model.} {
 	[listToObjects [$analysis getConstVariableNames $e1]] \
 	[listToObjects [$analysis getConstVariableNames $ramp]] \
 	[listToObjects [$analysis getConstVariableNames $fsm]]
-} {init step {firingCountLimit init} p2}
+} {init step {init firingCountLimit} p2}

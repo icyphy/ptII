@@ -60,7 +60,7 @@ if {[info procs sootCodeGeneration] == "" } then {
 test QuickSmoke-1.1 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
-		 IIR.xml] "Deep" 1000 0 0 runSnapshots]
+		 IIR.xml] "Deep" 1000 0 0 smokeTest]
     list {}
 } {{}}
 
@@ -68,6 +68,6 @@ test QuickSmoke-1.1 {Compile and run the SDF IIR test} {
 test QuickSmoke-1.2 {Compile and run the SDF OrthogonalCom test} {
     set result [sootCodeGeneration \
   	    [file join $relativePathToPTII ptolemy domains sdf demo OrthogonalCom \
-		 OrthogonalCom.xml] "Deep" 1000 0 0 runSnapshots]
+		 OrthogonalCom.xml] "Deep" 1000 0 0 smokeTest]
     list {}
 } {{}}
