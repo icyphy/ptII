@@ -28,14 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast.transform;
 
-import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 
 import ptolemy.backtrack.ast.TypeAnalyzerState;
 
 //////////////////////////////////////////////////////////////////////////
-//// ConstructorHandler
+//// MethodDeclarationHandler
 /**
  
  
@@ -45,11 +43,10 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public interface ConstructorHandler {
+public interface MethodDeclarationHandler {
 
-    public void handle(MethodDeclaration node, TypeAnalyzerState state);
+    public void enter(MethodDeclaration node, TypeAnalyzerState state);
     
-    public void handle(ClassInstanceCreation node, TypeAnalyzerState state);
+    public void exit(MethodDeclaration node, TypeAnalyzerState state);
     
-    public void handle(SuperConstructorInvocation node, TypeAnalyzerState state);
 }

@@ -33,6 +33,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -55,11 +56,15 @@ import org.eclipse.jdt.core.dom.Initializer;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ParenthesizedExpression;
 import org.eclipse.jdt.core.dom.PrimitiveType;
+import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Statement;
+import org.eclipse.jdt.core.dom.SuperMethodInvocation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
@@ -89,7 +94,7 @@ import ptolemy.backtrack.util.FieldRecord;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class AssignmentTransformer extends AbstractTransformer
-        implements AssignmentHandler, ClassHandler {
+        implements AssignmentHandler, ClassHandler, CrossAnalysisHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
@@ -135,6 +140,15 @@ public class AssignmentTransformer extends AbstractTransformer
         if (leftHand instanceof FieldAccess) {
             Expression object = ((FieldAccess)leftHand).getExpression();
             name = ((FieldAccess)leftHand).getName();
+
+            Type type = Type.getType(object);
+            if (!type.getName().equals(state.getCurrentClass().getName()))
+                return;
+            
+            newObject = (Expression)ASTNode.copySubtree(ast, object);
+        } else if (leftHand instanceof QualifiedName) {
+            Name object = ((QualifiedName)leftHand).getQualifier();
+            name = ((QualifiedName)leftHand).getName();
 
             Type type = Type.getType(object);
             if (!type.getName().equals(state.getCurrentClass().getName()))
@@ -205,7 +219,24 @@ public class AssignmentTransformer extends AbstractTransformer
                 indices.size());
     }
     
-    /** Handle an anonymous class declaration, and add extra methods and fields
+    /** Enter an anonymous class declaration. Nothing is done in this method.
+     * 
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(AnonymousClassDeclaration node, 
+            TypeAnalyzerState state) {
+    }
+    
+    /** Enter an class declaration. Nothing is done in this method.
+     * 
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(TypeDeclaration node, TypeAnalyzerState state) {
+    }
+    
+    /** Exit an anonymous class declaration, and add extra methods and fields
      *  to it.
      *  <p>
      *  This function is called after all the existing methods and fields in
@@ -215,12 +246,12 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param node The AST node of the anonymous class declaration.
      *  @param state The current state of the type analyzer.
      */
-    public void handle(AnonymousClassDeclaration node, 
+    public void exit(AnonymousClassDeclaration node, 
             TypeAnalyzerState state) {
         _handleDeclaration(node, node.bodyDeclarations(), state);
     }
     
-    /** Handle a class declaration, and add extra methods and fields to it.
+    /** Exit a class declaration, and add extra methods and fields to it.
      *  <p>
      *  This function is called after all the existing methods and fields in
      *  the same class has been visited, and all the field assignments in it
@@ -229,8 +260,68 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param node The AST node of the anonymous class declaration.
      *  @param state The current state of the type analyzer.
      */
-    public void handle(TypeDeclaration node, TypeAnalyzerState state) {
+    public void exit(TypeDeclaration node, TypeAnalyzerState state) {
         _handleDeclaration(node, node.bodyDeclarations(), state);
+    }
+    
+    /** Fix the refactoring when the set of cross-analyzed types changes.
+     * 
+     *  @param state The current state of the type analyzer.
+     */
+    public void handle(TypeAnalyzerState state) {
+        Set crossAnalyzedTypes = state.getCrossAnalyzedTypes();
+        Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
+        while (crossAnalysisIter.hasNext()) {
+            String nextClassName = (String)crossAnalysisIter.next();
+            List list = (List)_checkParentFields.get(nextClassName);
+            if (list != null) {
+                Iterator nodesIter = list.iterator();
+                while (nodesIter.hasNext()) {
+                    _removeNode((ASTNode)nodesIter.next());
+                    nodesIter.remove();
+                }
+            }
+            
+            list = (List)_checkParentMethods.get(nextClassName);
+            if (list != null) {
+                Iterator nodesIter = list.iterator();
+                while (nodesIter.hasNext()) {
+                    _removeNode((ASTNode)nodesIter.next());
+                    nodesIter.remove();
+                }
+            }
+            
+            list = (List)_fixParentRestoreMethods.get(nextClassName);
+            if (list != null) {
+                Iterator nodesIter = list.iterator();
+                while (nodesIter.hasNext()) {
+                    Block body = (Block)nodesIter.next();
+                    AST ast = body.getAST();
+                    String methodName = _getRestoreMethodName(false);
+                    SuperMethodInvocation superRestore = 
+                        ast.newSuperMethodInvocation();
+                    superRestore.setName(ast.newSimpleName(methodName));
+                    superRestore.arguments().add(ast.newSimpleName("timestamp"));
+                    superRestore.arguments().add(ast.newSimpleName("trim"));
+                    body.statements().add(0, 
+                            ast.newExpressionStatement(superRestore));
+                    nodesIter.remove();
+                }
+            }
+            
+            list = (List)_fixSetCheckpoint.get(nextClassName);
+            if (list != null) {
+                Iterator nodesIter = list.iterator();
+                while (nodesIter.hasNext()) {
+                    Block body = (Block)nodesIter.next();
+                    AST ast = body.getAST();
+                    Statement invocation = _createSetCheckpointInvocation(ast);
+                    List statements = body.statements();
+                    statements.add(statements.size() - 2, invocation);
+                    nodesIter.remove();
+                }
+            }
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -269,8 +360,8 @@ public class AssignmentTransformer extends AbstractTransformer
      *  For each of those entries, an extra method is created for each
      *  different number of indices.
      * 
-     *  @param currentClass The current class.
      *  @param ast The {@link AST} object.
+     *  @param state The current state of the type analyzer.
      *  @param fieldName The name of the field to be handled.
      *  @param fieldType The type of the field to be handled.
      *  @param indices The number of indices.
@@ -279,9 +370,11 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @return The declaration of the method that handles assignment to
      *   the field.
      */
-    private MethodDeclaration _createAssignMethod(Class currentClass, AST ast, 
-            String fieldName, Type fieldType, int indices, boolean isStatic, 
-            ClassLoader loader) {
+    private MethodDeclaration _createAssignMethod(AST ast, 
+            TypeAnalyzerState state, String fieldName, Type fieldType, 
+            int indices, boolean isStatic) {
+        Class currentClass = state.getCurrentClass();
+        ClassLoader loader = state.getClassLoader();
         String methodName = _getAssignMethodName(fieldName);
         
         // Check if the method is duplicated (possibly because the source
@@ -346,8 +439,8 @@ public class AssignmentTransformer extends AbstractTransformer
         method.setModifiers(modifiers);
         
         // Create the method body.
-        Block body = _createAssignmentBlock(ast, currentClass.getName(), 
-                fieldName, fieldType, indices, dimensions);
+        Block body = _createAssignmentBlock(ast, state, fieldName, fieldType, 
+                indices, dimensions);
         method.setBody(body);
         
         return method;
@@ -365,7 +458,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param dimensions The number of dimensions of the original field type.
      *  @return The method body.
      */
-    private Block _createAssignmentBlock(AST ast, String className, 
+    private Block _createAssignmentBlock(AST ast, TypeAnalyzerState state, 
             String fieldName, Type fieldType, int indices, int dimensions) {
         Block block = ast.newBlock();
         
@@ -441,6 +534,20 @@ public class AssignmentTransformer extends AbstractTransformer
         assignment.setRightHandSide(ast.newSimpleName("newValue"));
         assignment.setOperator(Assignment.Operator.ASSIGN);
         
+        // Set the checkpoint object of the new value, if necessary.
+        Class c;
+        try {
+            c = fieldType.toClass(state.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new ASTClassNotFoundException(fieldType.getName());
+        }
+        if (_hasMethod(c, _getSetCheckpointMethodName(false), 
+                        new Class[]{Checkpoint.class}) ||
+                 state.getCrossAnalyzedTypes().contains(c.getName()))
+            block.statements().add(_createSetCheckpointInvocation(ast));
+        else
+            _addToLists(_fixSetCheckpoint, c.getName(), block);
+        
         // Return the result of the assignment.
         ReturnStatement returnStatement = ast.newReturnStatement();
         returnStatement.setExpression(assignment);
@@ -449,7 +556,22 @@ public class AssignmentTransformer extends AbstractTransformer
         return block;
     }
     
-    private FieldDeclaration _createCheckpointField(AST ast) {
+    /** Create the checkpoint field declaration for the current class.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param state The current state of the type analyzer.
+     *  @return The field declaration, or <tt>null</tt> if the field already
+     *   exists in the class or its superclasses.
+     */
+    private FieldDeclaration _createCheckpointField(AST ast, 
+            TypeAnalyzerState state) {
+        Class currentClass = state.getCurrentClass();
+        Class parent = currentClass.getSuperclass();
+        if (parent != null &&
+                (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
+                 _isFieldDuplicated(parent, CHECKPOINT_NAME)))
+            return null;
+            
         VariableDeclarationFragment fragment = 
             ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(CHECKPOINT_NAME));
@@ -461,7 +583,10 @@ public class AssignmentTransformer extends AbstractTransformer
         
         FieldDeclaration checkpointField = ast.newFieldDeclaration(fragment);
         checkpointField.setType(_createType(ast, Checkpoint.class.getName()));
-        checkpointField.setModifiers(Modifier.PRIVATE);
+        
+        checkpointField.setModifiers(Modifier.PROTECTED);
+        
+        _addToLists(_checkParentFields, parent.getName(), checkpointField);
         
         return checkpointField;
     }
@@ -584,22 +709,25 @@ public class AssignmentTransformer extends AbstractTransformer
     /** Create a restore method for a class, which restores all its state
      *  variables.
      * 
-     *  @param currentClass The current class.
      *  @param ast The {@link AST} object.
+     *  @param state The current state of the type analyzer.
      *  @param fieldNames The list of all the accessed fields.
      *  @param fieldTypes The types corresponding to the accessed fields.
      *  @param isAnonymous Whether the current class is anonymous.
      *  @return The declaration of the method that restores the old value
      *   of all the private fields.
      */
-    private MethodDeclaration _createRestoreMethod(Class currentClass, AST ast,  
-            List fieldNames, List fieldTypes, boolean isAnonymous) {
+    private MethodDeclaration _createRestoreMethod(AST ast, 
+            TypeAnalyzerState state, List fieldNames, List fieldTypes, 
+            boolean isAnonymous) {
+        Class currentClass = state.getCurrentClass();
+        Class parent = currentClass.getSuperclass();
         String methodName = _getRestoreMethodName(isAnonymous);
         
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
-        if (_isMethodDuplicated(currentClass, methodName, 
-                new Class[]{int.class, boolean.class}))
+        if (_hasMethod(currentClass, methodName, 
+                new Class[]{int.class, boolean.class}, true))
             throw new ASTDuplicatedMethodException(currentClass.getName(), 
                     methodName);
 
@@ -627,6 +755,21 @@ public class AssignmentTransformer extends AbstractTransformer
         // The method body.
         Block body = ast.newBlock();
         method.setBody(body);
+        
+        // Add a call to the restore method in the superclass, if necessary.
+        if (parent != null &&
+                (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
+                 _hasMethod(parent, methodName, 
+                         new Class[]{int.class, boolean.class}))) {
+            SuperMethodInvocation superRestore = 
+                ast.newSuperMethodInvocation();
+            superRestore.setName(
+                    ast.newSimpleName(_getRestoreMethodName(false)));
+            superRestore.arguments().add(ast.newSimpleName("timestamp"));
+            superRestore.arguments().add(ast.newSimpleName("trim"));
+            body.statements().add(ast.newExpressionStatement(superRestore));
+        } else
+            _addToLists(_fixParentRestoreMethods, parent.getName(), body);
         
         Iterator namesIter = fieldNames.iterator();
         Iterator typesIter = fieldTypes.iterator();
@@ -671,30 +814,83 @@ public class AssignmentTransformer extends AbstractTransformer
             body.statements().add(assignStatement);
         }
         
-        method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        method.setModifiers(Modifier.PUBLIC);
+        
         return method;
+    }
+    
+    /** Create a set checkpoint method invocation for an assignment block.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @return The statement that tests whether the checkpoint objects of the
+     *   current object and the new value are the same; if not, assign the
+     *   checkpoint object of the current object to the checkpoint of the new
+     *   value.
+     */
+    private Statement _createSetCheckpointInvocation(AST ast) {
+        InfixExpression test = ast.newInfixExpression();
+        
+        InfixExpression condition1 = ast.newInfixExpression();
+        condition1.setLeftOperand(ast.newSimpleName("newValue"));
+        condition1.setOperator(InfixExpression.Operator.NOT_EQUALS);
+        condition1.setRightOperand(ast.newNullLiteral());
+        
+        InfixExpression condition2 = ast.newInfixExpression();
+        condition2.setLeftOperand(ast.newSimpleName(CHECKPOINT_NAME));
+        condition2.setOperator(InfixExpression.Operator.NOT_EQUALS);
+        FieldAccess access = ast.newFieldAccess();
+        access.setExpression(ast.newSimpleName("newValue"));
+        access.setName(ast.newSimpleName(CHECKPOINT_NAME));
+        condition2.setRightOperand(access);
+        
+        test.setLeftOperand(condition1);
+        test.setOperator(InfixExpression.Operator.CONDITIONAL_AND);
+        test.setRightOperand(condition2);
+        
+        IfStatement ifStatement = ast.newIfStatement();
+        ifStatement.setExpression(test);
+        Block thenBranch = ast.newBlock();
+        ifStatement.setThenStatement(thenBranch);
+        
+        MethodInvocation setCheckpoint = ast.newMethodInvocation();
+        setCheckpoint.setExpression(ast.newSimpleName("newValue"));
+        setCheckpoint.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
+        setCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+        thenBranch.statements().add(
+                ast.newExpressionStatement(setCheckpoint));
+        
+        return ifStatement;
     }
     
     /** Create a set checkpoint method for a class, which sets its checkpoint
      *  object.
      * 
-     *  @param currentClass The current class.
      *  @param ast The {@link AST} object.
+     *  @param state The current state of the type analyzer.
      *  @param isAnonymous Whether the current class is anonymous.
      *  @return The declaration of the method that restores the old value
-     *   of all the private fields.
+     *   of all the private fields, or <tt>null</tt> if the method already
+     *   exists in the class or its superclasses.
      */
-    private MethodDeclaration _createSetCheckpointMethod(Class currentClass,  
-            AST ast, boolean isAnonymous) {
+    private MethodDeclaration _createSetCheckpointMethod(AST ast, 
+            TypeAnalyzerState state, boolean isAnonymous) {
         String methodName = _getSetCheckpointMethodName(isAnonymous);
+
+        Class currentClass = state.getCurrentClass();
+        Class parent = currentClass.getSuperclass();
         
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
-        if (_isMethodDuplicated(currentClass, methodName, 
-                new Class[]{Checkpoint.class}))
+        if (_hasMethod(currentClass, methodName, 
+                new Class[]{Checkpoint.class}, true))
             throw new ASTDuplicatedMethodException(currentClass.getName(), 
                     methodName);
-
+        
+        if (parent != null &&
+                (state.getCrossAnalyzedTypes().contains(parent.getName())) ||
+                 _hasMethod(parent, methodName, new Class[]{Checkpoint.class}))
+            return null;
+        
         MethodDeclaration method = ast.newMethodDeclaration();
         
         // Set the method name.
@@ -764,6 +960,9 @@ public class AssignmentTransformer extends AbstractTransformer
                 ast.newExpressionStatement(addInvocation));
         
         method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        
+        _addToLists(_checkParentMethods, parent.getName(), method);
+        
         return method;
     }
     
@@ -890,9 +1089,8 @@ public class AssignmentTransformer extends AbstractTransformer
                             
                             // Create an extra method for every different
                             // number of indices.
-                            newMethods.add(_createAssignMethod(currentClass, 
-                                    ast, fieldName, type, indices, isStatic, 
-                                    state.getClassLoader()));
+                            newMethods.add(_createAssignMethod(ast, state, 
+                                    fieldName, type, indices, isStatic));
                         }
                         
                         fieldNames.add(fieldName);
@@ -907,12 +1105,16 @@ public class AssignmentTransformer extends AbstractTransformer
         }
         
         AST ast = node.getAST();
+        Class parent = state.getCurrentClass().getSuperclass();
 
-        newMethods.add(_createRestoreMethod(currentClass, ast, fieldNames, 
+        newMethods.add(_createRestoreMethod(ast, state, fieldNames, 
                 fieldTypes, node instanceof AnonymousClassDeclaration));
         
-        newMethods.add(_createSetCheckpointMethod(currentClass, ast, 
-                node instanceof AnonymousClassDeclaration));
+        MethodDeclaration setCheckpoint = 
+            _createSetCheckpointMethod(ast, state, 
+                    node instanceof AnonymousClassDeclaration);
+        if (setCheckpoint != null)
+            newMethods.add(setCheckpoint);
         
         // Add an interface.
         if (node instanceof TypeDeclaration)
@@ -940,8 +1142,10 @@ public class AssignmentTransformer extends AbstractTransformer
             bodyDeclarations.add(initializer);
         } else {
             // Add a special checkpoint object field.
-            FieldDeclaration checkpointField = _createCheckpointField(ast);
-            bodyDeclarations.add(0, checkpointField);
+            FieldDeclaration checkpointField = 
+                _createCheckpointField(ast, state);
+            if (checkpointField != null)
+                 bodyDeclarations.add(0, checkpointField);
         }
     }
     
@@ -1012,4 +1216,32 @@ public class AssignmentTransformer extends AbstractTransformer
      *  are lists of indices.
      */
     private Hashtable _accessedFields = new Hashtable();
+    
+    /** Keys are names of superclasses; values are lists of AST nodes
+     *  corresponding to the fields of children classes.
+     *  <p>
+     *  Used to avoid collision with superclasses.
+     */
+    private Hashtable _checkParentFields = new Hashtable();
+    
+    /** Keys are names of superclasses; values are lists of AST nodes
+     *  corresponding to the methods of children classes.
+     *  <p>
+     *  Used to avoid collision with superclasses.
+     */
+    private Hashtable _checkParentMethods = new Hashtable();
+    
+    /** Keys are names of superclasses; values are {@link Block} nodes of
+     *  restore methods in children classes.
+     *  <p>
+     *  When the superclasses are analyzed and refactored, calls to the
+     *  restore methods in superclasses are added to the body.
+     */
+    private Hashtable _fixParentRestoreMethods = new Hashtable();
+    
+    /** Keys are names of classes; values are {@link Block} nodes of assign
+     *  method bodies. If the classes are cross-analyzed, calls to set
+     *  checkpoints need to be added to those blocks.
+     */
+    private Hashtable _fixSetCheckpoint = new Hashtable();
 }

@@ -84,6 +84,15 @@ public class HandlerList {
         _crossAnalysisHandlers.add(handler);
     }
     
+    /** Add a method declaration handler to the list.
+     * 
+     *  @param handler The method declaration handler.
+     *  @see MethodDeclarationHandler
+     */
+    public void addMethodDeclarationHandler(MethodDeclarationHandler handler) {
+        _methodDeclarationHandlers.add(handler);
+    }
+    
     /** Get the list of assignment handlers.
      * 
      *  @return The list of assignment handlers.
@@ -114,6 +123,14 @@ public class HandlerList {
      */
     public List getCrossAnalysisHandlers() {
         return _crossAnalysisHandlers;
+    }
+    
+    /** Get the list of method declaration handlers.
+     * 
+     *  @return The list of method declaration handlers.
+     */
+    public List getMethodDeclarationHandlers() {
+        return _methodDeclarationHandlers;
     }
     
     /** Test if there is any assignment handler.
@@ -148,6 +165,14 @@ public class HandlerList {
         return !_crossAnalysisHandlers.isEmpty();
     }
     
+    /** Test is there is any method declaration handler.
+     * 
+     *  @return <tt>true</tt> if there are method declaration handlers.
+     */
+    public boolean hasMethodDeclarationHandler() {
+        return !_methodDeclarationHandlers.isEmpty();
+    }
+    
     /** Remove an assignment handler.
      * 
      *  @param handler The assignment handler to be removed.
@@ -180,6 +205,14 @@ public class HandlerList {
         _crossAnalysisHandlers.remove(handler);
     }
 
+    /** Remove a method declaration handler.
+     * 
+     *  @param handler The method declaration handler to be removed.
+     */
+    public void removeMethodDeclarationHandler(CrossAnalysisHandler handler) {
+        _methodDeclarationHandlers.remove(handler);
+    }
+
     /** The list of assignment handlers.
      */
     private List _assignmentHandlers = new LinkedList();
@@ -195,4 +228,8 @@ public class HandlerList {
     /** The list of cross-analysis handlers.
      */
     private List _crossAnalysisHandlers = new LinkedList();
+    
+    /** The list of method declaration handlers.
+     */
+    private List _methodDeclarationHandlers = new LinkedList();
 }

@@ -73,10 +73,12 @@ public class AssignmentRule extends TransformRule {
         
         analyzer.getHandlers().addAssignmentHandler(transformer1);
         analyzer.getHandlers().addClassHandler(transformer1);
+        analyzer.getHandlers().addCrossAnalysisHandler(transformer1);
 
         analyzer.getHandlers().addClassHandler(transformer2);
         analyzer.getHandlers().addConstructorHandler(transformer2);
         analyzer.getHandlers().addCrossAnalysisHandler(transformer2);
+        analyzer.getHandlers().addMethodDeclarationHandler(transformer2);
     }
     
     /** The list of handlers used.

@@ -52,19 +52,34 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 */
 public interface ClassHandler {
 
-    /** Handle an anonymous class declaration.
+    /** Enter an anonymous class declaration.
      * 
      *  @param node The anonymous class declaration to be handled.
      *  @param state The current state of the analyzer.
      */
-    public void handle(AnonymousClassDeclaration node, 
+    public void enter(AnonymousClassDeclaration node, 
             TypeAnalyzerState state);
     
-    /** Handle a class declaration.
+    /** Exit an anonymous class declaration.
+     * 
+     *  @param node The anonymous class declaration to be handled.
+     *  @param state The current state of the analyzer.
+     */
+    public void exit(AnonymousClassDeclaration node, 
+            TypeAnalyzerState state);
+    
+    /** Enter a class declaration.
      * 
      *  @param node The class declaration to be handled.
      *  @param state The current state of the analyzer.
      */
-    public void handle(TypeDeclaration node, TypeAnalyzerState state);
+    public void enter(TypeDeclaration node, TypeAnalyzerState state);
+    
+    /** Exit a class declaration.
+     * 
+     *  @param node The class declaration to be handled.
+     *  @param state The current state of the analyzer.
+     */
+    public void exit(TypeDeclaration node, TypeAnalyzerState state);
     
 }

@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -45,6 +46,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import ptolemy.backtrack.Checkpoint;
@@ -63,7 +65,16 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ConstructorTransformer extends AbstractTransformer
-        implements ConstructorHandler, ClassHandler, CrossAnalysisHandler {
+        implements ConstructorHandler, ClassHandler, CrossAnalysisHandler, 
+        MethodDeclarationHandler {
+    
+    public void enter(MethodDeclaration node, TypeAnalyzerState state) {
+        _currentMethods.push(node);
+    }
+    
+    public void exit(MethodDeclaration node, TypeAnalyzerState state) {
+        _currentMethods.pop();
+    }
 
     /**
      *  @param node
@@ -138,28 +149,45 @@ public class ConstructorTransformer extends AbstractTransformer
      *  @param state
      */
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state) {
-        Type type = Type.getType(node);
-        String typeName = type.getName();
-        if (state.getCrossAnalyzedTypes().contains(typeName))
-            // The type needs to be cross-analyzed.
-            _refactor(node);
-        else {
-            List list = (List)_unhandledInstanceCreation.get(typeName);
-            if (list == null) {
-                list = new LinkedList();
-                _unhandledInstanceCreation.put(typeName, list);
-            }
-            list.add(node);
+        if (_currentMethods.peek() == null) {
+            // Do not refactor class instance creations within methods.
+            Type type = Type.getType(node);
+            String typeName = type.getName();
+            if (state.getCrossAnalyzedTypes().contains(typeName))
+                // The type needs to be cross-analyzed.
+                _refactor(node);
+            else
+                _addToLists(_unhandledNodes, typeName, node);
         }
     }
-
-    public void handle(AnonymousClassDeclaration node, 
-            TypeAnalyzerState state) {
-        _handleDeclaration(node, node.bodyDeclarations(), state);
+    
+    public void handle(SuperConstructorInvocation node, TypeAnalyzerState state) {
+        /*String superName = state.getCurrentClass().getSuperclass().getName();
+        if (state.getCrossAnalyzedTypes().contains(superName))
+            // The type needs to be cross-analyzed.
+            _refactor(node);
+        else
+            _addToLists(_unhandledNodes, superName, node);*/
     }
     
-    public void handle(TypeDeclaration node, TypeAnalyzerState state) {
+    public void enter(AnonymousClassDeclaration node, 
+            TypeAnalyzerState state) {
+        _currentMethods.push(null);
+    }
+
+    public void exit(AnonymousClassDeclaration node, 
+            TypeAnalyzerState state) {
         _handleDeclaration(node, node.bodyDeclarations(), state);
+        _currentMethods.pop();
+    }
+    
+    public void enter(TypeDeclaration node, TypeAnalyzerState state) {
+        _currentMethods.push(null);
+    }
+    
+    public void exit(TypeDeclaration node, TypeAnalyzerState state) {
+        _handleDeclaration(node, node.bodyDeclarations(), state);
+        _currentMethods.pop();
     }
     
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
@@ -190,11 +218,15 @@ public class ConstructorTransformer extends AbstractTransformer
         Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
         while (crossAnalysisIter.hasNext()) {
             String typeName = (String)crossAnalysisIter.next();
-            List list = (List)_unhandledInstanceCreation.get(typeName);
+            List list = (List)_unhandledNodes.get(typeName);
             if (list != null) {
                 Iterator nodesIter = list.iterator();
                 while (nodesIter.hasNext()) {
-                    _refactor((ClassInstanceCreation)nodesIter.next());
+                    ASTNode node = (ASTNode)nodesIter.next();
+                    if (node instanceof ClassInstanceCreation)
+                        _refactor((ClassInstanceCreation)node);
+                    else if (node instanceof SuperConstructorInvocation)
+                        _refactor((SuperConstructorInvocation)node);
                     nodesIter.remove();
                 }
             }
@@ -206,7 +238,14 @@ public class ConstructorTransformer extends AbstractTransformer
         node.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
     }
     
+    private void _refactor(SuperConstructorInvocation node) {
+        AST ast = node.getAST();
+        node.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+    }
+    
     private Hashtable _newConstructors = new Hashtable();
     
-    private Hashtable _unhandledInstanceCreation = new Hashtable();
+    private Hashtable _unhandledNodes = new Hashtable();
+    
+    private Stack _currentMethods = new Stack();
 }

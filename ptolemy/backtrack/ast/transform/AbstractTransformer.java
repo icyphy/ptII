@@ -28,13 +28,14 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast.transform;
 
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.PrimitiveType;
-import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
 import ptolemy.backtrack.ast.Type;
@@ -59,6 +60,22 @@ public abstract class AbstractTransformer {
     /** The name of the method to set a checkpoint.
      */
     public static String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
+    
+    /** Given a table of lists, add a value to the list associated with a key.
+     *  If the list does not exist, it is created and put into the table.
+     * 
+     *  @param lists The table of lists.
+     *  @param key The key.
+     *  @param value The value to be added.
+     */
+    protected void _addToLists(Hashtable lists, Object key, Object value) {
+        List list = (List)lists.get(key);
+        if (list == null) {
+            list = new LinkedList();
+            lists.put(key, list);
+        }
+        list.add(value);
+    }
     
     /** Create an AST type node with a type string (possibly partitioned with
      *  "." and "[]").
@@ -95,14 +112,19 @@ public abstract class AbstractTransformer {
      *  @return The AST name node.
      */
     protected Name _createName(AST ast, String name) {
-        int pos = _indexOf(name, new char[]{'.', '$'}, 0);
-        String subname = pos == -1 ? name : name.substring(0, pos);
-        Name fullName = ast.newSimpleName(subname);
-        while (pos != -1) {
-            pos = _indexOf(name, new char[]{'.', '$'}, pos + 1);
-            name = pos == -1 ? name : name.substring(0, pos);
-            SimpleName simpleName = ast.newSimpleName(subname);
-            fullName = ast.newQualifiedName(fullName, simpleName);
+        int oldPos = 0;
+        Name fullName = null;
+        while (oldPos != -1) {
+            int pos = _indexOf(name, new char[]{'.', '$'}, oldPos);
+            String subname = pos == -1 ? name.substring(oldPos) : name.substring(oldPos, pos);
+            if (fullName == null)
+                fullName = ast.newSimpleName(subname);
+            else
+                fullName = ast.newQualifiedName(fullName, ast.newSimpleName(subname));
+            if (pos == -1)
+                oldPos = -1;
+            else
+                oldPos = pos + 1;
         }
         return fullName;
     }
@@ -141,20 +163,55 @@ public abstract class AbstractTransformer {
         }
     }
     
-    /** Test if a method to be added already exists.
+    /** Test if a method exists in a class or its superclasses. This is the
+     *  same as <tt>_hasMethod(c, methodName, parameters, false)</tt>.
      * 
      *  @param c The current class.
      *  @param methodName The method name.
      *  @param parameters The types of parameters for the method.
      *  @return <tt>true</tt> if the method is already in the class.
      */
-    protected boolean _isMethodDuplicated(Class c, String methodName, 
+    protected boolean _hasMethod(Class c, String methodName, 
             Class[] parameters) {
+        return _hasMethod(c, methodName, parameters, false);
+    }
+    
+    /** Test if a method exists in a class.
+     * 
+     *  @param c The current class.
+     *  @param methodName The method name.
+     *  @param thisClassOnly Whether to test the given class only (but not
+     *   test its superclasses).
+     *  @param parameters The types of parameters for the method.
+     *  @return <tt>true</tt> if the method is already in the class.
+     */
+    protected boolean _hasMethod(Class c, String methodName, 
+            Class[] parameters, boolean thisClassOnly) {
         try {
-            c.getMethod(methodName, parameters);
+            if (thisClassOnly)
+                c.getMethod(methodName, parameters);
+            else
+                c.getDeclaredMethod(methodName, parameters);
             return true;
         } catch (NoSuchMethodException e) {
             return false;
+        }
+    }
+    
+    /** Remove an AST node from the its parent.
+     * 
+     *  @param node The node to be removed.
+     */
+    protected void _removeNode(ASTNode node) {
+        ASTNode parent = node.getParent();
+        StructuralPropertyDescriptor location = node.getLocationInParent();
+        if (location.isChildProperty())
+            parent.setStructuralProperty(location, null);
+        else {
+            List properties = 
+                (List)parent.getStructuralProperty(location);
+            int position = properties.indexOf(node);
+            properties.remove(position);
         }
     }
     
@@ -176,5 +233,4 @@ public abstract class AbstractTransformer {
             properties.set(position, newNode);
         }
     }
-    
 }
