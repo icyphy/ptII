@@ -137,7 +137,7 @@ test TMDirector-5.1 {run a simple model } {
 	[java::new ptolemy.domains.tm.kernel.test.TestScheduleListener]
     $d5 addScheduleListener $scheduleListener
 
-    set clock [java::new ptolemy.actor.lib.SequentialClock $e0 clock]
+    set clock [java::new ptolemy.actor.lib.Clock $e0 clock]
 
     set ramp1 [java::new ptolemy.actor.lib.Ramp $e0 ramp1]
     set priorityRamp1 [java::new ptolemy.data.expr.Parameter \
@@ -164,7 +164,7 @@ test TMDirector-5.1 {run a simple model } {
 
     set relation [java::new ptolemy.actor.TypedIORelation $e0 relation]
 
-    [java::field $clock output] link $relation
+    [$clock getPort output] link $relation
 
     [java::field [java::cast ptolemy.actor.lib.Source $ramp1] trigger] \
 	link $relation

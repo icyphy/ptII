@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Ramps" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 350]">
     </property>
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="109.0, 33.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 151, 843, 466}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 151, 843, 459}}">
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -63,7 +63,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="287.0, 258.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 250.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -71,7 +71,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="priority" class="ptolemy.data.expr.Parameter" value="3.0">
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
             </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
@@ -83,7 +83,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 348}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -108,8 +108,8 @@
 <title>Sequence</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="21.0"/>
+<yRange min="0.0" max="11.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -119,7 +119,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="upper, lower, clock">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 53, 508, 348}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -140,26 +140,34 @@
 <title>Timed</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="10.0"/>
+<yRange min="-0.5" max="11.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="SequentialClock" class="ptolemy.actor.lib.SequentialClock">
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0.5, -0.5}">
         </property>
-        <doc>A clock producing exactly one output per clock tick</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 158.0">
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 165.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -183,5 +191,5 @@
     <link port="TimedPlotter0.input" relation="relation3"/>
     <link port="TimedPlotter0.input" relation="relation5"/>
     <link port="TimedPlotter0.input" relation="relation4"/>
-    <link port="SequentialClock.output" relation="relation4"/>
+    <link port="Clock.output" relation="relation4"/>
 </entity>
