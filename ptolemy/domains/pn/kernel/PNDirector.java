@@ -31,6 +31,7 @@ import ptolemy.kernel.mutation.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
+import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.data.*;
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -51,7 +52,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector() {
         super();
-        _eventQueue = new CalendarQueue(new DoubleCQComparator());
+        _eventQueue = new TotallyOrderedSet(new DoubleCQComparator());
     }
 
     /** Construct a director in the default workspace with the given name.
@@ -62,7 +63,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector(String name) {
         super(name);
-        _eventQueue = new CalendarQueue(new DoubleCQComparator());
+        _eventQueue = new TotallyOrderedSet(new DoubleCQComparator());
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -75,7 +76,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector(Workspace workspace, String name) {
         super(workspace, name);
-        _eventQueue = new CalendarQueue(new DoubleCQComparator());
+        _eventQueue = new TotallyOrderedSet(new DoubleCQComparator());
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -120,7 +121,7 @@ public class PNDirector extends ProcessDirector {
     public synchronized void fireAfterDelay(Actor actor, double delay) 
             throws IllegalActionException {
         double newfiringtime = getCurrentTime()+delay;
-        _eventQueue.put(actor, new Double(newfiringtime));
+        _eventQueue.insert(new Double(newfiringtime));
         //FIXME: Blocked on a delay
         try {
             while (getCurrentTime() < newfiringtime) {
@@ -498,11 +499,7 @@ public class PNDirector extends ProcessDirector {
                 return true;
             } else {
                 //Advance time to next possible time.
-                try {
-                    _currenttime = ((Double)_eventQueue.take()).doubleValue();
-                } catch (IllegalAccessException e) {
-                    throw new InternalErrorException(e.toString());
-                }
+                _currenttime = ((Double)_eventQueue.take()).doubleValue();
                 synchronized(this) {
                     notifyAll();
                 }
@@ -565,7 +562,7 @@ public class PNDirector extends ProcessDirector {
     private LinkedList _writeblockedQs = new LinkedList();
     private PNActorListener _pnActorListener;
     //FIXME: This constructor doesn't work!!
-    private CalendarQueue _eventQueue; 
+    private TotallyOrderedSet _eventQueue; 
     private double _currenttime = 0;
 }
 
