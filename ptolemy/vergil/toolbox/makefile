@@ -84,7 +84,8 @@ OPTIONAL_FILES = \
 	'GraphPalette$$PaletteController$$NodeDnDInteractor.class' \
 	'GraphPalette$$PaletteController.class' \
 	'JDesignTree$$1.class' \
-	'JDesignTree$$DesignTreeDragGestureListener.class'
+	'JDesignTree$$DesignTreeDragGestureListener.class' \
+	'VisibleParameterEditorFactory$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

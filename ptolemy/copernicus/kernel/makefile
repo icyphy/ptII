@@ -83,6 +83,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'Copernicus$$_StreamReaderThread.class' \
 	'FastForwardFlowAnalysis$$1.class' \
 	'KernelMain$$_IgnoreAllApplicationClasses.class' \
 	'MaybeAliasAnalysis$$1.class' \
