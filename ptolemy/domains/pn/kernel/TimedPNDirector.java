@@ -511,13 +511,13 @@ public class TimedPNDirector extends BasePNDirector {
     // 	} catch (TypeConflictException e) {
     // 	    throw new IllegalActionException(this, e.toString());
     // 	}
-    // 	LinkedList threadlist = new LinkedList();
+    // 	LinkedList threadList = new LinkedList();
     // 	Enumeration newactors = _newActors();
     // 	while (newactors.hasMoreElements()) {
     // 	    Actor actor = (Actor)newactors.nextElement();
     // 	    actor.initialize();
     // 	    ProcessThread pnt = new ProcessThread(actor, this);
-    // 	    threadlist.insertFirst(pnt);
+    // 	    threadList.insertFirst(pnt);
     // 	    _addNewThread(pnt);
     // 	}
     // 	synchronized (this) {
@@ -527,7 +527,7 @@ public class TimedPNDirector extends BasePNDirector {
     // 	    //requests have been processed.
     // 	    notifyAll();
     // 	}
-    // 	Enumeration threads = threadlist.elements();
+    // 	Enumeration threads = threadList.elements();
     // 	//Starting threads;
     // 	while (threads.hasMoreElements()) {
     // 	    ((ProcessThread)threads.nextElement()).start();
