@@ -66,6 +66,16 @@ and you do not want to type a leading a trailing double quote.
 */
 public class StringAttribute extends Attribute implements Settable {
 
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public StringAttribute() {
+	super();
+        _value = "";
+    }
+
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
