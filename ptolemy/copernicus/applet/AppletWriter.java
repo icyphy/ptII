@@ -34,8 +34,11 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
+import ptolemy.actor.gui.JNLPUtilities;
 
 import soot.*;
 import soot.jimple.*;
@@ -57,6 +60,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
@@ -167,18 +171,29 @@ public class AppletWriter extends SceneTransformer {
 	}
 	_codeBase = buffer.toString();
 
-	try {
-	    if (!_isSubdirectory(_ptIIDirectory, _outputDirectory)) {
-                System.out.println("'" + _outputDirectory + "' is not a "
-                        + "subdirectory of '" + _ptIIDirectory + "', so "
-                        + "we copy the jar files and set the codebase to '.'");
-		copyJarFiles = true;
-		_codeBase = ".";
-	    }
-	} catch (IOException ex) {
-	    System.out.println("_isSubdirectory threw an exception: " + ex);
-	    ex.printStackTrace();
-	}
+        if (JNLPUtilities.isRunningUnderWebStart()) {
+            // If we are under WebStart, we always copy jar files 
+            // because under WebStart the jar files have munged names,
+            // and the applet will not find them even if
+            copyJarFiles = true;
+            _codeBase = ".";
+        } else {
+            try {
+                if (!_isSubdirectory(_ptIIDirectory, _outputDirectory)) {
+                    System.out.println("'" + _outputDirectory + "' is not a "
+                            + "subdirectory of '" + _ptIIDirectory + "', so "
+                            + "we copy the jar files and set the "
+                            + "codebase to '.'");
+                    copyJarFiles = true;
+                    _codeBase = ".";
+                }
+            } catch (IOException ex) {
+                System.out.println("_isSubdirectory threw an exception: "
+                        + ex);
+                ex.printStackTrace();
+            }
+        }
+
 
 	// Determine the value of _domainJar, which is the
 	// path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -370,9 +385,9 @@ public class AppletWriter extends SceneTransformer {
 	File defaultStyleSheetDirectory =
             new File(_outputDirectory + "/doc");
 	defaultStyleSheetDirectory.mkdirs();
-        // We use a Copernicus.substitute() here, but do not actually
-        // substitute anything.
-        Copernicus.substitute("doc/default.css", _substituteMap,
+
+        Copernicus.substitute(_templateDirectory + "default.css",
+                _substituteMap,
                 defaultStyleSheetDirectory.toString() + "/default.css" );
     }
 
@@ -474,7 +489,5 @@ public class AppletWriter extends SceneTransformer {
     // Initial default for _templateDirectory;
     private final String TEMPLATE_DIRECTORY_DEFAULT =
     "ptolemy/copernicus/applet/";
-
-
 }
 
