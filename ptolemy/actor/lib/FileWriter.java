@@ -93,7 +93,7 @@ public class FileWriter extends Writer {
                 if (filenameToken == null) {
                     setWriter(null);
                 } else {
-                    String newFilename = filenameToken.toString();
+                    String newFilename = filenameToken.stringValue();
                     if (newFilename.equals("")) {
                         setWriter(null);
                     } else {
