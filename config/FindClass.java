@@ -27,8 +27,8 @@ COPYRIGHTENDKEY
 */
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
-
 
 /** Search the classpath for a jar file that contains a class file
     @author Christopher Hylands Brooks
@@ -74,9 +74,40 @@ public class FindClass {
             File jarFileURLFile = new File(jarFileURL.getFile()
                     .toString().replaceAll("%20", " "));
 
-            System.out.println(jarFileURLFile.getCanonicalPath()
-                    .replace('\\', '/'));
+            // If the jar file is in the jre directory, then don't
+            // report it.  The reason is that we should not add things
+            // in the jre directory to the classpath as Eclipse will barf
+            // with a message about duplicate elements in the classpath
+            String javaHome = System.getProperty("java.home");
+            if (javaHome == null) {
+                throw new Exception("Could not look up java.home property");
+            }
 
+            boolean foundInJavaHome = false;
+
+            // Work our way up the directory tree and look for a match
+            // with the value of java.home.
+            File javaHomeFile = new File(javaHome);
+
+            File directory = jarFileURLFile.getCanonicalFile();
+            while ((directory = directory.getParentFile()) != null 
+                   && foundInJavaHome == false) {
+                if (directory.compareTo(javaHomeFile) == 0) {
+                    foundInJavaHome = true;
+                }
+            }
+
+            String jarFileURLFileName =
+                jarFileURLFile.getCanonicalPath().replace('\\', '/');
+
+            if (foundInJavaHome) {
+                System.out.println("FindClass: '" + className + "' was found "
+                        + "in '" + jarFileURLFileName + "', which is inside "
+                        + "the java.home property (" + javaHome + ")");
+            } else {
+                System.out.println(jarFileURLFileName);
+            }
+            
         } else if (entryURL.getProtocol().equals("file")) {
             // Test this with
             // java -classpath "$PTII;." FindClass ptolemy.kernel.util.NamedObj
