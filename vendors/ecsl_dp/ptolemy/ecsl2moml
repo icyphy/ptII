@@ -279,7 +279,7 @@ awk 'BEGIN {
     map["S-Function"] = "vendors.ecsl_dp.ptolemy.ECSLSFunction"
     # FIXME
     map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
-    map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLScope"
+    map["Scope"] = "vendors.ecsl_dp.ptolemy.Scope"
     map["Signum"] = "vendors.ecsl_dp.ptolemy.ECSLSignum"
     # FIXME: set to Sin
     map["Sin"] = "vendors.ecsl_dp.ptolemy.ECSLSin"
