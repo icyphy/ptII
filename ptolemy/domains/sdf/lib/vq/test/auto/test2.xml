@@ -3,12 +3,18 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF10" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="77.0, 44.0">
         </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
     <entity name="ImageSequence0" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
         <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
@@ -42,21 +48,11 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="158.0, 124.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
         </port>
@@ -72,23 +68,13 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="497.0, 122.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </port>
     </entity>
     <entity name="HTVQEncode1" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
@@ -102,22 +88,14 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="244.0, 124.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
         </port>
     </entity>
@@ -132,32 +110,32 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="336.0, 125.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
         </port>
     </entity>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="3168">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="3168">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="3168">
+        </property>
     </relation>
     <link port="ImageSequence0.output" relation="relation0"/>
     <link port="ImagePartition3.input" relation="relation0"/>
