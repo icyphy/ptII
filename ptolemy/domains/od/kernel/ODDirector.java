@@ -202,7 +202,7 @@ public class ODDirector extends ProcessDirector {
     public Receiver newReceiver() {
         ODReceiver rcvr = new ODReceiver();
 	rcvr.setCompletionTime( _completionTime );
-	System.out.println("Completion Time = " + _completionTime);
+	// System.out.println("Completion Time = " + _completionTime);
         /*
 	if( _completionTime != -1.0 ) {
 	    // System.out.println("Completion Time = " + _completionTime);

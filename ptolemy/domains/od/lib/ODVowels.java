@@ -87,13 +87,17 @@ public class ODVowels extends ODStringSource {
         
         _vowels.insertLast( new StringTime( 20.0, "e" ) );
         
-        _vowels.insertLast( new StringTime( 5000.0, ";" ) );
+        // _vowels.insertLast( new StringTime( 5000.0, ";" ) );
         
         // Up to "Hello!! The Ptolemy Domain is complete."
         
         return _vowels;
     }
     
+    public void wrapup() throws IllegalActionException {
+        // System.out.println("ODVowel current time = "+getCurrentTime() );
+        super.wrapup();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 

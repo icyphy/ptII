@@ -30,6 +30,7 @@
 
 package ptolemy.domains.od.kernel;
 
+import ptolemy.kernel.*; // For ComponentEntity
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
@@ -41,12 +42,13 @@ import ptolemy.actor.util.*;
 A FIFO queue receiver for storing tokens with time stamps. A "time stamp"
 is a time value that is associated with a token and is used to order the
 consumption of a token with respect to other time stamped tokens. To help 
-organize the tokens this queue contains, two flags are maintained: "lastTime" 
-and "rcvrTime." The lastTime flag is defined to be equivalent to the time 
-stamp of the token that was most recently placed in the queue. The rcvrTime 
-flag is defined as the time stamp of the oldest token in the queue. Both of 
-these flags must have monotonically non-decreasing values with the exception 
-that their values will be set to -1.0 at the conclusion of a simulation run. 
+organize the tokens contained by this queue, two flags are maintained: 
+"lastTime" and "rcvrTime." The lastTime flag is defined to be equivalent 
+to the time stamp of the token that was most recently placed in the queue. 
+The rcvrTime flag is defined as the time stamp of the oldest token in the 
+queue. Both of these flags must have monotonically non-decreasing values 
+with the exception that their values will be set to -1.0 at the conclusion 
+of a simulation run. 
 
 ***
 Synchronization Notes:
@@ -207,13 +209,6 @@ public class TimedQueueReceiver implements Receiver {
         return _queue.size();
     }
 
-    /** Set the priority of this receiver. 
-     * @param int The priority of this receiver.
-     */
-    public synchronized void setPriority(int priority) {
-        _priority = priority;
-    }
-
     /** Return the rcvrTime value of this receiver. The rcvrTime is 
      *  the time associated with the oldest token that is currently
      *  on the queue. If the queue is empty, then the rcvrTime value
@@ -270,9 +265,15 @@ public class TimedQueueReceiver implements Receiver {
         Event event;
         ODIOPort port = (ODIOPort)getContainer();
         ODActor actor = (ODActor)port.getContainer();
+	// String myName = ((ComponentEntity)actor).getName();
         
         synchronized(this) {
             _lastTime = time; 
+            /*
+	    if( _lastTime > 19.0 && myName.equals("printer") ) {
+                System.out.println("Update: _lastTime = " + _lastTime); 
+	    }
+            */
 
             event = new Event(token, _lastTime);
             
@@ -315,6 +316,13 @@ public class TimedQueueReceiver implements Receiver {
      */
     public void setContainer(IOPort port) {
         _container = port;
+    }
+
+    /** Set the priority of this receiver. 
+     * @param int The priority of this receiver.
+     */
+    public synchronized void setPriority(int priority) {
+        _priority = priority;
     }
 
     ///////////////////////////////////////////////////////////////////

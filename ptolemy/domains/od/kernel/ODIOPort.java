@@ -212,7 +212,7 @@ public class ODIOPort extends IOPort {
     }
             
     /** Send the specified token to all receivers connected to the
-     *  specified channel.  The first receiver gets the actual token,
+     *  specified channel. The first receiver gets the actual token,
      *  while subsequent ones get a clone.  If there are no receivers,
      *  then do nothing. The current time of the containing actor of 
      *  this port plus the specified delay will be associated with the token.
@@ -256,7 +256,7 @@ public class ODIOPort extends IOPort {
             for (int j = 0; j < farRec[channelindex].length; j++) {
                 double currentTime = ((ODActor)getContainer()).getCurrentTime(); 
                 ((ODReceiver)farRec[channelindex][j]).put(
-                        // FIXME
+                        // FIXME 
                         // token, currentTime + delay);
                         token, delay);
             }

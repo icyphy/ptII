@@ -73,7 +73,8 @@ public class ODPrintString extends ODActor {
             // System.out.println("Finished ODPrintString.getNextToken()");
             // System.out.println("\t"+ token.stringValue() );
             time = getCurrentTime();
-            System.out.println("\t"+token.stringValue() );
+            // System.out.println("\t"+token.stringValue() );
+            System.out.println("\t"+token.stringValue()+"\tTime is " + time);
 	    /*
             if( time > 6000.0 || time == -1.0 ) {
                 // System.out.println(getName() + " is finished with fire()");
@@ -96,7 +97,7 @@ public class ODPrintString extends ODActor {
 	Enumeration inputPorts = null;
 	inputPorts = inputPorts();
 	if( inputPorts == null ) {
-	    System.out.println("Queue Size = " + queue);
+	    // System.out.println("Queue Size = " + queue);
 	    return;
 	}
 	while( inputPorts.hasMoreElements() ) {
@@ -111,8 +112,8 @@ public class ODPrintString extends ODActor {
 		}
             }
 	}
-	System.out.println("Queue Size = " + queue);
 	/*
+	System.out.println("Queue Size = " + queue);
 	System.out.println("Active Actors = " 
                 + ((ODDirector)getDirector())._getActiveActorsCount() );
 	*/

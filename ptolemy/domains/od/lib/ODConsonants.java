@@ -101,11 +101,16 @@ public class ODConsonants extends ODStringSource {
         
         _consonants.insertLast( new StringTime( 19.5, "t" ) );
         
-        _consonants.insertLast( new StringTime( 5000.0, ";" ) );
+        // _consonants.insertLast( new StringTime( 5000.0, ";" ) );
         
         // Up to "Hello!! The Ptolemy Domain is complete."
         
         return _consonants;
+    }
+
+    public void wrapup() throws IllegalActionException {
+        // System.out.println("ODConsonant current time = "+getCurrentTime() );
+        super.wrapup();
     }
     
     ///////////////////////////////////////////////////////////////////

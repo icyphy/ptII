@@ -72,7 +72,10 @@ This requires the port to be of type ODIOPort and hence precludes
 polymorphic actors. A later version of this class will not have this 
 constraint.
 
+
+***
 Synchronization Notes:
+***
 This domain observes a hierarchy of synchronization locks. When multiple
 synchronization locks are required, they must be obtained in an order that
 is consistent with this hierarchy. Adherence to this hierarchical ordering
@@ -141,14 +144,26 @@ public class ODActor extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the next time of this actor.
+     */
+    public double getNextTime() {
+        if( _rcvrTimeTable.size() == 0 ) {
+            return _currentTime;
+        }
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        return triple.getTime();
+    }
+    
     /** Return the current time of this actor.
      */
     public double getCurrentTime() {
+      /*
         if( _rcvrTimeTable.size() == 0 ) {
             return _currentTime;
         }
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
         _currentTime = triple.getTime();
+      */
         return _currentTime;
     }
     
@@ -238,6 +253,9 @@ public class ODActor extends AtomicActor {
      */
     public Token getNextToken() {
         
+        // Increment the getNextToken counter
+        _cntr++;
+
         Workspace workSpc = workspace();
         ODDirector director = (ODDirector)getDirector();
         
@@ -245,10 +263,10 @@ public class ODActor extends AtomicActor {
         
         /*
         if( name.equals("printer") ) {
-            System.out.println("\n"+name+": Entered getNextToken()");
+            System.out.println("\n\n\n"+name+": Entered getNextToken()");
+	    // printRcvrTable();
         }
         */
-        //printRcvrTable();
         
         if( _rcvrTimeTable.size() == 0 ) {
             // System.out.println("No receivers. Return from getNextToken()");
@@ -266,15 +284,23 @@ public class ODActor extends AtomicActor {
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
         _currentTime = triple.getTime();
+
+        /*
+	if( _currentTime > 9.0 && name.equals("printer") ) {
+	    System.out.println("getNextToken() time = " + _currentTime);
+	    System.out.println("getNextToken() counter = "+_cntr);
+	}
+        */
+
 	if( triple.getTime() != -1.0 ) {
             _lastPort = (ODIOPort)triple.getReceiver().getContainer();
 	}
 	else {
 	    // All receivers have completed. 
 	    // Prepare to terminate.
-	    System.out.println("All receivers have completed."); 
+	    // System.out.println("All receivers have completed."); 
 	    // printRcvrTable();
-	    noticeOfTermination();
+	    // noticeOfTermination();
 	    lowestRcvr.setFinish();
 	    lowestRcvr.get();
 	    // Should never get to this point
@@ -285,15 +311,19 @@ public class ODActor extends AtomicActor {
 
         
         /*
-        if( name.equals("printer") ) {
-            System.out.println("preparing to call get");
-            printRcvrTable();
+        if( _currentTime > 9.0 && name.equals("printer") ) {
+	    // System.out.println("preparing to call get");
+	    System.out.println("getNextToken() time = " + _currentTime);
+	    System.out.println("getNextToken() counter = "+_cntr);
+            // printRcvrTable();
         }
         */
         Token token = lowestRcvr.get();
         /*
-        if( name.equals("printer") ) {
+        if( _currentTime > 9.0 && name.equals("printer") ) {
+        // if( name.equals("printer") ) {
             System.out.println("just finished calling get");
+	    System.out.println("getNextToken() time = " + _currentTime);
         }
         */
         
@@ -303,7 +333,7 @@ public class ODActor extends AtomicActor {
                 System.out.println(name+" returned a token: 1st non-null");
             }
             */
-            // updateRcvrTable( triple );
+	    // updateRcvrTable( triple );
             return token;
         } else {
             if( this.hasMinRcvrTime() ) {
@@ -314,12 +344,17 @@ public class ODActor extends AtomicActor {
                 // blocking and then received an arc time
                 // that was not the minimum.
                 
-                /*
-                if( name.equals("printer") ) {
+                // if( name.equals("printer") ) {
+	        if( _currentTime > 9.0 && name.equals("printer") ) {
                     System.out.println(name+" has minimum receiver time.");
                 }
+                /*
                 */
-                
+                /*
+	        if( _currentTime > 9.0 && name.equals("printer") ) {
+		    System.out.println("getNextToken() time = "+_currentTime);
+		}
+                */
                 return getNextToken();
                 
             } else {
@@ -327,10 +362,11 @@ public class ODActor extends AtomicActor {
                 // the same minimum arc time. Find the arc
                 // with the lowest time and priority.
                 
-                /*
-                if( name.equals("printer") ) {
+                // if( name.equals("printer") ) {
+	        if( _currentTime > 9.0 && name.equals("printer") ) {
                     System.out.println(name+" has no minimum receiver time.");
                 }
+                /*
                 */
                 
                 RcvrTimeTriple priorityTriple = getHighestPriorityTriple();
@@ -356,11 +392,12 @@ public class ODActor extends AtomicActor {
                     // had the minimum time. The result is that there 
                     // is another minimum.
                     
-                    /*
-                    if( name.equals("printer") ) {
+                    // if( name.equals("printer") ) {
+	            if( _currentTime > 9.0 && name.equals("printer") ) {
                         System.out.println(name+ 
                                 " minimum rcvrTime must have changed.");
                     }
+                    /*
                     */
                         
                     return getNextToken();
@@ -387,8 +424,8 @@ public class ODActor extends AtomicActor {
      *  Remove this eventually
      */
     public void printRcvrTable() {
-        System.out.println("\nPrint "+getName()+"'s RcvrTable.");
-        System.out.println("\tRcvrTable size = " + _rcvrTimeTable.size() );
+        System.out.println("\n***Print "+getName()+"'s RcvrTable.");
+        System.out.println("   RcvrTable size = " + _rcvrTimeTable.size() );
         if( _rcvrTimeTable.size() == 0 ) {
             System.out.println("\tTable is empty");
         }
@@ -403,18 +440,18 @@ public class ODActor extends AtomicActor {
 	    //if( testRcvr.hasToken() && getName().equals("printer") ) {
             if( getName().equals("printer") ) {
 	        // System.out.println("Printer -> hasToken() = "+testRcvr.hasToken() );
-		System.out.println("Printer -> size() = "+((ODReceiver)testRcvr)._queue.size());
+		System.out.println("   Printer -> size() = "+((ODReceiver)testRcvr)._queue.size());
 		if( ((ODReceiver)testRcvr)._queue.size() > 1 ) {
+		    /*
                     Event testEvent2 
 		      = ((Event)((ODReceiver)testRcvr)._queue.get(1));
                     StringToken testToken2 
 		      = (StringToken)testEvent2.getToken();
-		    /*
 		    testString2 = testToken2.stringValue();
-		    */
-            System.out.println("\t"+getName()+"'s Receiver " 
+                    System.out.println("\t"+getName()+"'s Receiver " 
                     + i + " has a 2nd time of "+testEvent2.getTime()
 		    +" and string: ");
+		    */
 		}
                 Event testEvent = ((Event)((ODReceiver)testRcvr)._queue.get(0));
                 StringToken testToken = (StringToken)testEvent.getToken();
@@ -431,6 +468,7 @@ public class ODActor extends AtomicActor {
                     + i + " has a time of " +time+" and string: "+testString);
             // System.out.println("\tReceiver " + testPort + " is in the rcvrTimeTable.");
         }
+        System.out.println("***End of printRcvrTable()\n");
     }
 
     /** Set the priorities of the receivers contained in the input 
@@ -540,10 +578,11 @@ public class ODActor extends AtomicActor {
 
     /** 
      FIXME: Write tests for this.
+     */
     public void wrapup() throws IllegalActionException {
+	noticeOfTermination();
         super.wrapup();
     }
-     */
     
     ///////////////////////////////////////////////////////////////////
     ////                        private methods			   ////
@@ -592,7 +631,7 @@ public class ODActor extends AtomicActor {
             */
             
 	    if( triple.getTime() == -1.0 ) {
-	        System.out.println("Triple has time of -1.0. Insert before");
+	        //System.out.println("Triple has time = -1.0 inserted before");
 	        _rcvrTimeTable.insertAt( cnt, newTriple );
 		cnt = _rcvrTimeTable.size();
                 notAddedYet = false;
@@ -671,6 +710,8 @@ public class ODActor extends AtomicActor {
     // positive rcvrTime of each input receiver. This value is 
     // updated in getNextToken().
     private double _currentTime = 0.0;
+
+    private int _cntr = 0;
 
 
 }

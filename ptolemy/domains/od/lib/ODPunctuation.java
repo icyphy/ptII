@@ -79,7 +79,7 @@ public class ODPunctuation extends ODStringSource {
         
         _punctuation.insertLast( new StringTime( 20.5, "." ) );
         
-        _punctuation.insertLast( new StringTime( 5000.0, ";" ) );
+        // _punctuation.insertLast( new StringTime( 5000.0, ";" ) );
         
         // Up to "Hello!! The Ptolemy Domain is complete."
         
@@ -87,6 +87,11 @@ public class ODPunctuation extends ODStringSource {
         return _punctuation;
     }
     
+    public void wrapup() throws IllegalActionException {
+        //System.out.println("ODPunctuation current time = "+getCurrentTime());
+        super.wrapup();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 

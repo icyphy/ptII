@@ -85,6 +85,7 @@ public abstract class ODStringSource extends ODSourceActor {
         while( cnt <= _contents.size() ) {
 	    if( cnt == _contents.size() ) {
 	        notFinishedYet = false;
+                getNextToken();
 	    }
 
 	    if( notFinishedYet ) {
@@ -92,16 +93,15 @@ public abstract class ODStringSource extends ODSourceActor {
 	    }
 
 	    if( nextOutputReady ) {
-		_output.send( 0, strToken );
-		// _output.send( 0, strToken, getCurrentTime() );
+		// _output.send( 0, strToken );
+		_output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
 
 	    if( notFinishedYet ) {
-            strTime = (StringTime)_contents.at(cnt);
-            strToken = new StringToken( strTime.getString() );
-            double fireTime = strTime.getTime();
-
+                strTime = (StringTime)_contents.at(cnt); 
+		strToken = new StringToken( strTime.getString() ); 
+		double fireTime = strTime.getTime();
                 reinvokeAfterDelay( fireTime );
 	        nextOutputReady = true;
 	    }
@@ -128,7 +128,7 @@ public abstract class ODStringSource extends ODSourceActor {
 
     private ODIOPort _output;
     private LinkedList _contents;
-    private double _endTime = 5000.0;
+  // private double _endTime = 5000.0;
     
     ///////////////////////////////////////////////////////////////////
     ////                        inner variables                    ////

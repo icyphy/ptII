@@ -1,4 +1,4 @@
-/* A receiver which stores timed tokens using blocking reads/writes.
+/* A receiver which stores time stamped tokens using blocking reads/writes.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -43,9 +43,44 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// ODReceiver
 /**
-A receiver which stores timed tokens using blocking reads/writes.
+A receiver which stores time stamped tokens using blocking reads/writes.
+A "time stamped token" is a token that has a time stamp associated with it.
+Time stamps are explained further in 
+         ptolemy/domains/od/kernel/TimedQueueReceiver.java.
+An ODReceiver stores time stamped tokens by enforcing a blocking read and
+blocking write format. Time stamped tokens are appended to the queue with 
+either of the put() methods, both of which block on a write if the queue 
+is full. Time stamped tokens are removed from the queue with the get() 
+method which blocks on a read if the queue is empty. If a process blocks on 
+a read or a write, the director is informed. Blocks are removed (and the 
+director is informed) if the conditions which led to them no longer apply. 
 
+Since ODReceiver is derived from TimedQueueReceiver, it inherits both the
+lastTime and rcvrTime flags. ODReceiver sets these flags in a manner 
+similar to TimedQueueReceiver. The key difference between ODReceiver and
+TimedQueueReceiver is that get() and put() block as described above.
+
+An additional flag in an ODReceiver is the "simultaneousIgnore" flag, the
+use of which is described in the following. In general, an actor containing 
+an ODReceiver will get a token from the receiver if the receiver has a 
+uniquely minimum rcvrTime flag value with respect to the other receivers of 
+the containing actor. If a receiver has a minimum rcvrTime w.r.t. all 
+receivers of the containing actor, then get() will return a non-null token 
+only if simultaneousIgnore is true.
+
+NOTE:
+This class (and indeed the OD MoC) does not place emphasis on blocking 
+writes and generally is designed for systems in which memory will be 
+abundant. Hence, queue capacities are assumed to be infinite. In particular, 
+it is assumed that if we want to put a token with a time stamp of -1.0 into 
+a queue, then space will be available. This assumption (which is valid given 
+infinite queue capacities) allows us to avoid certain difficult deadlock 
+situations.
+
+
+*** 
 Synchronization Notes:
+*** 
 This domain observes a hierarchy of synchronization locks. When multiple 
 synchronization locks are required, they must be obtained in an order that 
 is consistent with this hierarchy. Adherence to this hierarchical ordering
@@ -89,13 +124,13 @@ public class ODReceiver extends TimedQueueReceiver
         implements ProcessReceiver {
 
     /** Construct an empty receiver with no container.
-
      */
     public ODReceiver() {
         super();
     }
 
     /** Construct an empty receiver with the specified container.
+     * @param container The IOPort which contains this receiver.
      */
     public ODReceiver(IOPort container) {
         super(container);
@@ -104,14 +139,18 @@ public class ODReceiver extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Do a blocking read on the queue. When tokens are available, 
-     *  determine if the next token on this queue has the unique oldest 
-     *  rcvrTime associated with it. If so, return the token. Otherwise
-     *  return null. If no tokens are available, either block until 
-     *  data is available or until the system is terminated. Note: this
-     *  method should return null only where it is explicitly shown.
-     FIXME: What about addReadBlock and removeReadBlock? Are they
-            called symmetrically?
+    /** Do a blocking read on the queue. If at any point during this
+     *  method this receiver is scheduled for termination, then throw 
+     *  a TerminateProcessException which will cease activity for the 
+     *  actor that contains this receiver. If no token is available, 
+     *  then inform the director that this receiver is blocking on a 
+     *  read and wait until a token becomes available. When a token 
+     *  becomes available, determine if this queue has the unique oldest 
+     *  rcvrTime with respect to all of the receivers contained by the 
+     *  actor that contains this receiver. If so, return the token. If 
+     *  the rcvrTime is not a unique minimum but simultaneousIgnore is 
+     *  true, then return the token; otherwise return null. 
+     * @return Token The oldest token on this queue.
      */
     public Token get() {
         // System.out.println("\nCall to ODReceiver.get()");
@@ -129,12 +168,12 @@ public class ODReceiver extends TimedQueueReceiver
         
         synchronized(this) {
             if( _terminate ) {
-	      /*
+	        /*
 	        System.out.println("Get called during terminate");
                 director.addReadBlock(); 
 		notifyAll(); 
 		workspace.wait( this );
-	      */
+	        */
                 throw new TerminateProcessException( getContainer(), "This "
                         + "receiver has been terminated during get().");
             }
@@ -148,15 +187,16 @@ public class ODReceiver extends TimedQueueReceiver
                 }
                 */
 	        // FIXME: What if current time = -1.0??
-	        if( getRcvrTime() <= actor.getCurrentTime() ) {
+	        if( getRcvrTime() <= actor.getNextTime() ) {
+		// if( getRcvrTime() <= actor.getCurrentTime() ) {
                     if( actor.hasMinRcvrTime() ) {
                         token = super.get();
-                        notifyAll(); // Wake up threads waiting to write.
+                        notifyAll(); 
                         return token;
                     } else if( isSimultaneousIgnore() ) {
                         setSimultaneousIgnore(false);
                         token = super.get();
-                        notifyAll(); // Wake up threads waiting to write.
+                        notifyAll(); 
                         return token;
                     }
                     /*
@@ -193,14 +233,15 @@ public class ODReceiver extends TimedQueueReceiver
                 throw new TerminateProcessException( getContainer(), "This "
                         + "receiver has been terminated during get().");
             } else {
-	        if( getRcvrTime() <= actor.getCurrentTime() ) {
+	        if( getRcvrTime() <= actor.getNextTime() ) {
+		// if( getRcvrTime() <= actor.getCurrentTime() ) {
                     if( actor.hasMinRcvrTime() ) {
                         token = super.get();
-                        notifyAll(); // Wake up threads waiting to write.
+                        notifyAll(); 
                     } else if( isSimultaneousIgnore() ) {
                         setSimultaneousIgnore(false);
                         token = super.get();
-                        notifyAll(); // Wake up threads waiting to write.
+                        notifyAll(); 
                     }
 		}
                 director.removeReadBlock(); 
@@ -211,52 +252,63 @@ public class ODReceiver extends TimedQueueReceiver
         return token;
     }
 
-    /** Throw an IllegalActionException because polling of queues 
+    /** FIXME: Is this necessary?
+     *  Throw an IllegalActionException because polling of queues 
      *  is not allowed.
-     */
     public boolean hasRoom() {
         return true;
-        /*
-        throw new IllegalActionException( getContainer(), "This domain"
-                + " does not allow polling of input queues.");
-        */
+        // throw new IllegalActionException( getContainer(), "This domain"
+          //      + " does not allow polling of input queues.");
     }
-
-    /** Throw an IllegalActionException because polling of queues 
-     *  is not allowed.
      */
+
+    /** FIXME: Is this necessary?
+     *  Throw an IllegalActionException because polling of queues 
+     *  is not allowed.
     public boolean hasToken() {
         // FIXME: This needs to be changed back to "return true;" after testing
         return super.hasToken();
-        /*
-        throw new IllegalActionException( getContainer(), "This domain"
-                + " does not allow polling of output queues.");
-        */
+        // throw new IllegalActionException( getContainer(), "This domain"
+              //  + " does not allow polling of output queues.");
     }
-
-    /** Return true if the simultaneous pending event ignore flag is true.
-     FIXME: Make this package friendly
      */
-    public boolean isSimultaneousIgnore() {
-        return _simulIgnoreFlag;
-    }
-    
-    /** Do a blocking write to the queue. Block if the queue is full. 
-     *  Associate the current time as the time stamp of the token. 
+
+    /** Do a blocking write on the queue. If at any point during this 
+     *  method this receiver is scheduled for termination, then throw 
+     *  a TerminateProcessException which will cease activity for the 
+     *  actor that contains this receiver. Set the time stamp to the
+     *  lastTime of this receiver. If the time stamp of the token is 
+     *  greater than the completionTime of this receiver, then set the 
+     *  time stamp to -1.0 and the token to null. If the queue is full, 
+     *  then inform the director that this receiver is blocking on a 
+     *  write and wait until room becomes available. When room becomes 
+     *  available, put the token and time stamp in the queue and inform 
+     *  the director that the block no longer exists. 
      * @param token The token to put on the queue.
      */
     public void put(Token token) {
+        /* 
         double currentTime;
-        currentTime = ((ODActor)getContainer().getContainer()).getCurrentTime();
+        currentTime = 
+	        ((ODActor)getContainer().getContainer()).getCurrentTime();
         put( token, currentTime );
+        */ 
+
+        put( token, getLastTime() );
     }
 
-    /** Do a blocking write to the queue. Block if the queue is full. 
-     *  Associate the given time stamp with the token. 
-     *  @param token The token to put on the queue.
-     *  @param time The time stamp of the token.
-     FIXME: What if receiver is full but we want to put a token with
-            timestamp = -1 inside??
+    /** Do a blocking write on the queue. If at any point during this 
+     *  method this receiver is scheduled for termination, then throw 
+     *  a TerminateProcessException which will cease activity for the 
+     *  actor that contains this receiver. If the specified time stamp 
+     *  of the token is greater than the completionTime of this receiver,
+     *  then set the time stamp to -1.0 and the token to null. If 
+     *  the queue is full, then inform the director that this receiver 
+     *  is blocking on a write and wait until room becomes available. 
+     *  When room becomes available, put the token and time stamp in the 
+     *  queue and inform the director that the block no longer exists. 
+     * @param token The token to put on the queue.
+     * @param time The time stamp associated with the token.
      */
     public void put(Token token, double time) {
         // System.out.println("\nCall to ODReceiver.put()");
@@ -267,13 +319,25 @@ public class ODReceiver extends TimedQueueReceiver
         Workspace workspace = getContainer().workspace();
         ODActor actor = (ODActor)getContainer().getContainer();
         ODDirector director = (ODDirector)actor.getDirector();
+
+	/*
+	String myName = ((ComponentEntity)actor).getName();
+	if( token != null && myName.equals("printer") ) {
+	    if( (time==19.5) || (time==20.0) || (time==20.5) ) {
+	        StringToken sToken = (StringToken)token;
+	        String sValue = sToken.stringValue();
+	        System.out.println(sValue+" has been placed in "
+	        +((ComponentEntity)actor).getName()+"'s ODReceiver. "
+                +"The time is: "+time);
+	    }
+	}
+	*/
         
         synchronized(this) {
-	  /*
-	    if( time == -1.0 ) {
-	        return;
+	    if( _terminate ) {
+	        throw new TerminateProcessException( getContainer(), "This " 
+		        + "receiver has been terminated during get().");
 	    }
-	  */
 	    if( time > getCompletionTime() && getCompletionTime() != -5.0 ) {
 	        time = -1.0;
 		token = null;
@@ -332,23 +396,41 @@ public class ODReceiver extends TimedQueueReceiver
         }
     }
 
-    /** FIXME
+    /** Schedule this receiver to terminate.
      */
     public void setFinish() {
         _terminate = true;
-        // notifyAll();
+        // FIXME: Hmmm...
+	// notifyAll();
     }
     
-    /** FIXME
+    /** Set the pause flag of this receiver.
+     * @param flag The boolean pause flag of this receiver.
      */
     public void setPause(boolean flag) {
         ;
     }
     
-    /** Ignore the fact that there are simultaneous pending events
-     *  if the the argument is true. Otherwise do not ignore. 
+    ///////////////////////////////////////////////////////////////////
+    ////                  package friendly methods 		   ////
+
+    /** Return true if the simultaneousIgnore flag is set to true. See
+     *  class comments or get() method comments for an explanation of 
+     *  the use of this flag. 
+     * @return boolean The value of the simultaneousIgnore flag.
+     * @see get()
      */
-    public void setSimultaneousIgnore(boolean flag) {
+    boolean isSimultaneousIgnore() {
+        return _simulIgnoreFlag;
+    }
+    
+    /** Set the value of the simultaneousIgnore flag to the specified
+     *  boolean value. See class comments or get() method comments for 
+     *  an explanation of the use of this flag. 
+     * @param flag The value of the simultaneousIgnore flag.
+     * @see get()
+     */
+    void setSimultaneousIgnore(boolean flag) {
         _simulIgnoreFlag = flag;
     }
 
@@ -362,3 +444,7 @@ public class ODReceiver extends TimedQueueReceiver
     private boolean _terminate = false;
 
 }
+
+
+
+
