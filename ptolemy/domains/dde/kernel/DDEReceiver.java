@@ -108,6 +108,7 @@ public class DDEReceiver extends TimedQueueReceiver
      *  time keeper controlling this receiver. 
      */
     public synchronized void clearIgnoredTokens() {
+	System.out.println("Call to clearIgnoredTokens()");
 	// Remove Ignored Token
 	super.get();
 
@@ -236,7 +237,6 @@ public class DDEReceiver extends TimedQueueReceiver
         Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)
                 ((Actor)getContainer().getContainer()).getDirector();
-	// Thread thread = Thread.currentThread();
 
         synchronized(this) {
             if( time > getCompletionTime() &&
@@ -307,8 +307,10 @@ public class DDEReceiver extends TimedQueueReceiver
 
         if( timeKeeper.getNextTime() == INACTIVE ) {
             requestFinish();
+	    /*
         } else if( timeKeeper.getNextTime() == IGNORE ) {
             requestFinish();
+	    */
 	}
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
 	    /*
@@ -326,6 +328,18 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
         if( super.hasToken() && !_terminate ) {
 	    // System.out.println("Time is minimum but not unique");
+	    if( hasNullToken() ) {
+		super.get();
+		timeKeeper.sendOutNullTokens();
+		return _hasToken(workspace, director, timeKeeper);
+	    } else if ( timeKeeper.getNextTime() == IGNORE ) {
+		super.get();
+		// FIXME: Should we call clearIgnoredTokens() here???
+		return _hasToken(workspace, director, timeKeeper);
+	    } else {
+		return true;
+	    }
+	    /*
 	    if( !hasNullToken() ) {
 		return true;
 	    } else {
@@ -333,6 +347,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		timeKeeper.sendOutNullTokens();
 		return _hasToken(workspace, director, timeKeeper);
 	    }
+	    */
 	}
 	director.addReadBlock();
 	while( !super.hasToken() && !_terminate ) {
