@@ -29,16 +29,20 @@
 
 package ptolemy.actor.lib.io;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.lib.Source;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 
+import java.io.IOException;
 import java.io.BufferedReader;
 
 //////////////////////////////////////////////////////////////////////////
@@ -124,7 +128,12 @@ public class FileReader extends TypedAtomicActor{
             _debug("Invoking fire");
         }
         //just consumme the token.
-        trigger.get(0);
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
+            }
+        }
+	//trigger.get(0);
         try {
             BufferedReader reader;
             // Ignore if the fileOrUL is blank.
