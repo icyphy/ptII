@@ -1884,73 +1884,38 @@ public class SDFScheduler extends Scheduler {
             // If we've been given
             // no actors to do anything with, return an empty Map.
             return firings;
-        } else {
-            // Pick an actor as a reference
-	    // Should pick the reference actor to be one
-	    // that contains 0-valued ports, if there exists one.
-	    ComponentEntity actor = _pickZeroRatePortActor(remainingActors);
-	    if (actor == null) {
-		// We did not find an actor with any 0-rate ports,
-		// so just pick a reference actor arbitrarily.
-		actor = (ComponentEntity)remainingActors.removeFirst();
-	    } else {
-		// We found an actor with at least one 0-rate port.
-		remainingActors.remove(actor);
-	    }
+        }
 
-            // Set it's rate to one per iteration
+        // Ned Stoffel's change to support disconnected graphs:
+        // Finally, the schedule can jump from one island to another among
+        // the disconnected graphs. There is nothing to force the scheduler
+        // to finish executing all actors on one island before firing actors
+        // on another island. However, the order of execution within an
+        // island should be correct.
+
+        while (!remainingActors.isEmpty()) {
+            ComponentEntity actor = _pickZeroRatePortActor(remainingActors);
+            if (actor == null) {
+                actor = (ComponentEntity)remainingActors.removeFirst();
+            } else {
+                remainingActors.remove(actor);
+            }
+
             firings.put(actor, new Fraction(1));
-            // Start the list to recurse over.
             pendingActors.addLast(actor);
-        }
 
-        // Loop until we run out of actors that have not been
-        // propagated.
-        while (!pendingActors.isEmpty()) {
-            if (_debugging) {
-                _debug("pendingActors: ");
-                _debug(pendingActors.toString());
-            }
-            // Get the next actor to recurse over
-            Actor currentActor = (Actor) pendingActors.removeFirst();
-            if (_debugging) {
-                _debug("Balancing from " +
-                        ((ComponentEntity) currentActor).getName());
-            }
-
-            // Traverse all the input and output ports, setting the firings
-            // for the actor(s)???? connected to each port relative
-            // to currentActor.
-            Iterator AllPorts =
-                ((ComponentEntity) currentActor).portList().iterator();
-            while (AllPorts.hasNext()) {
-                IOPort currentPort = (IOPort) AllPorts.next();
-                _propagatePort(container, currentPort, firings, externalRates,
-                        remainingActors, pendingActors);
+            while (!pendingActors.isEmpty()) {
+                Actor currentActor = (Actor) pendingActors.removeFirst();
+                Iterator AllPorts =
+                    ((ComponentEntity) currentActor).portList().iterator();
+                while (AllPorts.hasNext()) {
+                    IOPort currentPort = (IOPort) AllPorts.next();
+                    _propagatePort(container, currentPort, firings,
+                        externalRates, remainingActors, pendingActors);
+                }
             }
         }
 
-        if (!remainingActors.isEmpty()) {
-            // If there are any actors left that we didn't get to, then
-            // this is not a connected graph, and we throw an exception.
-            String string = "SDF scheduler found disconnected actors!\n";
-            string += "Reached Actors:\n";
-            List reachedActorList = new LinkedList();
-            reachedActorList.addAll(actorList);
-            reachedActorList.removeAll(remainingActors);
-	    for (Iterator actors = reachedActorList.iterator();
-                 actors.hasNext();) {
-		Entity entity = (Entity)actors.next();
-		string += entity.getFullName() + "\n";
-	    }
-            string += "Unreached Actors:\n";
-            Iterator actors = remainingActors.iterator();
-            while (actors.hasNext()) {
-                NamedObj actor = (NamedObj)(actors.next());
-                string += actor.getFullName() + " ";
-            }
-            throw new NotSchedulableException(string);
-        }
         return firings;
     }
 
