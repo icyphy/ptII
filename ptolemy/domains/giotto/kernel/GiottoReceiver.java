@@ -118,7 +118,12 @@ public class GiottoReceiver extends AbstractReceiver {
     /** Put a token into this receiver. Any token which has been put
      *  into the receiver before without calling update will be lost.
      *  The token becomes available to the get() method only after
-     *  update() is called.
+     *  update() is called. 
+     *  <p>
+     *  Note that putting a null into this receiver will leave the 
+     *  receiver empty after update. The receiver does not check 
+     *  against this but expects that IOPort will always put
+     *  non-null tokens into receivers.
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this base class.
      */
@@ -133,7 +138,7 @@ public class GiottoReceiver extends AbstractReceiver {
         _token = _nextToken;
     }
 
-    /** Reset the receiver by removing any token from the receiver.
+    /** Reset the receiver by removing all tokens from the receiver.
      */
     public void reset() {
         _token = null;
