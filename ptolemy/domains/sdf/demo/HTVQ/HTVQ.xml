@@ -76,7 +76,7 @@ integer matrices</text>
         </property>
     </property>
     <entity name="Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
-        <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
+        <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
         </property>
         <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
         </property>
