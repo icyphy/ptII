@@ -1,8 +1,8 @@
 # Tests for the CSPActor class
 #
-# @Author: Christopher Hylands
+# @Author: John S. Davis II
 #
-# @Version: : NamedObj.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
+# @Version: : CSPActor.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
 #
 # @Copyright (c) 1999 The Regents of the University of California.
 # All rights reserved.
@@ -48,4 +48,39 @@ if {[info procs enumToObjects] == "" } then {
 ####
 #
 test CSPActor-2.1 {} {
-} {}
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 1] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorB" 1] 
+    set actorC [java::new ptolemy.domains.csp.kernel.test.CSPCondGet $topLevel "actorC" 2] 
+
+    set portA [$actorA getPort "output"]
+    set portB [$actorB getPort "output"]
+    set portC [$actorC getPort "input"]
+
+    set tokenA [java::new ptolemy.data.Token]
+    set tokenB [java::new ptolemy.data.Token]
+
+    $actorA setToken $tokenA 0 
+    $actorB setToken $tokenB 0 
+    $actorC setTruth 0 true
+
+    set rel [$topLevel connect $portC $portA]
+    set rel [$topLevel connect $portC $portB]
+
+    $manager run
+
+    set winner [$actorC isWinner 0]
+
+    list $winner 
+
+} {1}
+
+
+
+
+
