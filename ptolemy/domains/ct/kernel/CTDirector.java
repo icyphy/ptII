@@ -116,15 +116,15 @@ predictable breakpoints that are greater than the current time.
 The breakpoints are sorted in their chronological order in the table.
 Breakpoints at the same time (controlled by the time resolution parameter)
 are considered to be one. A breakpoint can be inserted into the table by
-calling the fireAt() method. In this class, if the fireAt() method is
-called with a specified time in the future, then <i>two</i> firings
-are scheduled, one at the specified time, and one at the specified
-time minus the <i>minStepSize</i>.  The reason for this is that
-many actors use fireAt() to produce a discontinuity on their outputs.
-The earlier firing ensures that this appears as a discontinuity on
-the output.  How breakpoints are actually handled
-depends on individual directors, but typically, all actors
-will be fired at each such breakpoint.
+calling the fireAt() method. The fireAt method may be requested
+by the director, which inserts the start time and stop time of the
+execution. In this case, the first parameter actor is null. The fireAt 
+method may also be requested by the actors and the requests are handled
+differently depending on the second parameter time. If the time is the 
+current time, and if the actors are discrete actors, the actors are
+added into a refireActor list and will be fired in the current iteration.
+Otherwise, the time will be inserted into the breakpoint table.
+<p>
 
 @author Jie Liu
 @version $Id$
@@ -349,25 +349,34 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public abstract boolean canBeTopLevelDirector();
 
-    /** Register a (predictable) breakpoint at a specified time.
+    /** Handle the firing request from the containing actors. 
      *  If the specified time is the current time (within the
      *  <i>timeResolution</i> of this director), and the actor is
      *  not null nor a step size control actor, then the actor will
-     *  be fired as part of the current execution phase.  If the
-     *  specified time is in the future, or the actor is null, or
-     *  the actor is a step size control actor, this director will fire
-     *  the specified actor in the specified time. Note, this director
-     *  does not deal with discontinuity but only handle the request
-     *  from the actors it contains. If some actor tries to produce
-     *  a discontinuity at some time, it should request to be fired at
-     *  that time as many times as necessary. For example, the Continuous
-     *  Clock actor fires twice each time its output changes.
+     *  be added into a refiredActors list and fired as part of the 
+     *  current execution phase.  If the specified time is in the 
+     *  future, or the actor is null, or the actor is a step size 
+     *  control actor, this director will register a breakpoint at 
+     *  the specified time. 
      *  <p>
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
      *  executed at every breakpoint.
-     *  @param actor The actor that requested the firing, or null
-     *   to prevent the triple firing.
+     *  <p>
+     *  If the actor is null, it indicates the time for the start or
+     *  the stop of an execution. Otherwise, it is the actor that 
+     *  requests the firing.
+     *  <p>
+     *  In CT domain, the signals may be piecewise consinuous,. They
+     *  may generate discontinuities at some time points. In order to
+     *  generate the discontinuities, the actors request to be fired at
+     *  some time as many times as necessary, and each time they produce
+     *  some outputs. The CT director does not deal with discontinuity 
+     *  but only handle the requests from the actors it contains. For 
+     *  example, the ContinuousClock actor fires twice at each offset.
+
+     *  @param actor The actor that requested the firing or null that 
+     *    indicates the time of the start or stop of an execution. 
      *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
      *   the current time.
@@ -376,6 +385,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             throws IllegalActionException{
         double resolution = getTimeResolution();
         double currentTime = getCurrentTime();
+        
+        // Check if the request fire time is later than the current time.
         if (time < currentTime - resolution) {
             throw new IllegalActionException((Nameable)actor,
                     "Requested fire time: " + time + " is earlier than" +
@@ -395,8 +406,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             }
             _refireActors.add(actor);
         } else {
-            // Otherwise, the fireAt request is in the future, we
-            // insert the time into the breakpoint table.
+            // Otherwise, the fireAt request is in the future, or 
+            // some actors try to generate discontinuities at current time. 
+            // We insert the time into the breakpoint table.
             // Note that the _breakPoints may be null if an actor calls
             // fireAt() in its constructor.
             if (_breakPoints == null) {

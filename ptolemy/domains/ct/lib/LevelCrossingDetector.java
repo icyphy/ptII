@@ -50,14 +50,16 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// LevelCrossingDetector
 /**
-A event detector that converts continuous signals to discrete events when
+An event detector that converts continuous signals to discrete events when
 the continuous signal crosses a level threshold.
+<p>
 When the <i>trigger</i> equals to the level threshold (within the specified
 <i>errorTolerance</i>), this actor outputs a discrete event with the value as
 <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the actor
 outputs a discrete event with the value as the level threshold.
-This actor controls the integration step size to
-accurately resolve the time at which the level crossing occurs.
+This actor controls the integration step size to accurately resolve the time 
+at which the level crossing occurs. So, this actor is only used in Continuous
+Time domain.
 
 @author Jie Liu, Haiyang Zheng
 @version $Id$
@@ -197,8 +199,7 @@ public class LevelCrossingDetector extends Transformer
         //consume the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
         if (_debugging) {
-            _debug(getFullName() + " consuming trigger Token" +
-                    _thisTrigger);
+            _debug("Consuming trigger Token " + _thisTrigger);
         }
         if ((input.getWidth() != 0) && input.hasToken(0)) {
             _inputToken = input.get(0);
@@ -212,13 +213,12 @@ public class LevelCrossingDetector extends Transformer
                 if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
                     output.send(0, defaultEventValue.getToken());
                     if (_debugging) {
-                        _debug(getFullName() + " Emitting event: "
-                                + defaultEventValue.getToken());
+                        _debug("Emitting event: " + defaultEventValue.getToken());
                     }
                 } else {
                     output.send(0, new DoubleToken(_level));
                     if (_debugging) {
-                        _debug(getFullName() + " Emitting event: " + _level);
+                        _debug("Emitting event: " + _level);
                     }
                 }
                 _eventNow = false;
@@ -249,7 +249,7 @@ public class LevelCrossingDetector extends Transformer
             _levelChanged = false;
         }
         if (_debugging) {
-            _debug(getFullName() + "initialize");
+            _debug("Initialization finished.");
         }
     }
 
@@ -264,33 +264,31 @@ public class LevelCrossingDetector extends Transformer
      *  then the refined integration
      *  step size is computed by linear interpolation.
      *  If this is the first iteration after initialize() is called,
-     *  then always return false, since there is no history to compare with.
+     *  then always return true, since there is no history to compare with.
      *  @return True if the trigger input in this integration step
      *          does not cross the level threshold.
      */
     public boolean isThisStepAccurate() {
         if (_first) {
             if (_debugging) {
-                _debug(this.getFullName() + " has _first as true.");
-                _debug(this.getFullName() + " has last trigger "
-                        + _lastTrigger);
-                _debug(this.getFullName() + " has current trigger "
-                        + _thisTrigger);
+                _debug("It is the first iteration, the step size is " +
+                    "assumed to be accurate.");
             }
             _first = false;
             _eventNow = false;
             return true;
         }
 
+        if (_debugging) {
+            _debug("The last trigger is " + _lastTrigger);
+            _debug("The current trigger is " + _thisTrigger);
+        }
+
         // If at breakpoints, no step size refinement is necessary.
         // The step size is 0.0, and it is always accurate.
         if (((CTDirector)getDirector()).isBreakpointIteration()) {
             if (_debugging) {
-                _debug(this.getFullName() + " is in breakpoint iteration.");
-                _debug(this.getFullName() + " has last trigger "
-                        + _lastTrigger);
-                _debug(this.getFullName() + " has current trigger "
-                        + _thisTrigger);
+                _debug("This is a breakpoint iteration.");
             }
             // Check if the discontinuity generates events.
             if ((_lastTrigger - _level) * (_thisTrigger - _level)
@@ -298,7 +296,7 @@ public class LevelCrossingDetector extends Transformer
                 if (_enabled) {
                     _eventNow = true;
                     if (_debugging)
-                        _debug(getFullName() + " detected event at "
+                        _debug("Event is detected at "
                                 + getDirector().getCurrentTime());
                     _enabled = false;
                 }
@@ -307,16 +305,11 @@ public class LevelCrossingDetector extends Transformer
             return true;
         }
 
-        if (_debugging) {
-            _debug(this.getFullName() + " This trigger " + _thisTrigger);
-            _debug(this.getFullName() + " The last trigger " + _lastTrigger);
-        }
-
         if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
             if (_enabled && _eventMissed) {
                 _eventNow = true;
                 if (_debugging)
-                    _debug(getFullName() + " detected event at "
+                    _debug("Event is detected at "
                             + getDirector().getCurrentTime());
                 _enabled = false;
             }
@@ -378,6 +371,18 @@ public class LevelCrossingDetector extends Transformer
             _levelChanged = false;
         }
         return super.prefire();
+    }
+
+    /** Make sure the actor runs inside a CT domain.
+     *  @exception IllegalActionException If the director is not
+     *  a CTDirector or the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        if (!(getDirector() instanceof CTDirector)) {
+            throw new IllegalActionException("LevelCrossingDetector can only" +
+                " be used inside CT domain.");
+        }
+        super.preinitialize();
     }
 
     /** Return the refined step size if there is a missed event,

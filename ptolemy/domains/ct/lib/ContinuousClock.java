@@ -58,15 +58,16 @@ value between 0 and 1.
 <p>
 There is a defaultValue parameter which is used as output after the
 clock reachs the number of cycles. In the triggered continuous clock which
-extends this class, the defaultValue parameter is used as output before
+extends this class, the defaultValue parameter is also used as output before
 the clock starts. The default value is 0.
 <p>
-The clock has a stopTime parameter and a numberOfCycles. If the
-stopTime is not set to 0.0, the whole model will stop execution when the
-stop time is reached. If the numberOfCycles is not set to -1, the
-clock will continue outputing the value of the defaultValue parameter.
+The clock has a stopTime parameter and a numberOfCycles parameter. If the
+stopTime is a positive double, the whole model will stop execution when the
+stop time is reached. If the numberOfCycles is set to a positive integer, 
+the clock will continue outputing the value of the defaultValue parameter
+after the number of cycles are reached.
 <p>
-@see Clock
+@see ptolemy.actor.lib.Clock
 
 @author Edward A. Lee, Haiyang Zheng
 @version $Id$
