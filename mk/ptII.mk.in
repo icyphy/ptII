@@ -3,7 +3,7 @@
 # Version identification:
 # $Id$
 #
-# Copyright (c) 1996-1999 The Regents of the University of California.
+# Copyright (c) 1996-2000 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
