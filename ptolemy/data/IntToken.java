@@ -54,7 +54,7 @@ public class IntToken extends ScalarToken {
     }
 
     /** Construct an IntToken from the specified string.
-     *  @exception IllegalArgumentException If the Token could not 
+     *  @exception IllegalArgumentException If the Token could not
      *   be created with the given String.
     public IntToken(String init) throws IllegalArgumentException {
 	try {
@@ -69,8 +69,8 @@ public class IntToken extends ScalarToken {
     ////                         public methods                    ////
 
 
-    /** Return a new token whose value is the sum of this token 
-     *  and the argument. Type resolution also occurs here, with 
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve a lossless conversion.
      *  @param tok The token to add to this Token.
      *  @exception IllegalActionException If the passed token
@@ -101,7 +101,7 @@ public class IntToken extends ScalarToken {
         }
     }
 
-    /** Return a new token whose value is the sum of this token 
+    /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve
      *  a lossless conversion.
@@ -127,12 +127,12 @@ public class IntToken extends ScalarToken {
     }
 
     /** Used to convert Token types further down the type hierarchy to
-     *  the type of this Token. There are no types below IntToken in the 
+     *  the type of this Token. There are no types below IntToken in the
      *  lossless type hierarchy, so throw an exception if reach here.
      *  @param tok The token to be converted to a IntToken.
      *  @exception IllegalActionException If the conversion
      *  cannot be carried out in a lossless fashion.
-     *  @return A new Token containing the argument Token converted 
+     *  @return A new Token containing the argument Token converted
      *   to the type of this Token.
      */
     public Token convert(Token tok) throws IllegalActionException{
@@ -141,7 +141,7 @@ public class IntToken extends ScalarToken {
         throw new IllegalActionException(str + "IntToken");
     }
 
-    /** Return a new Token whose value is the value of this token 
+    /** Return a new Token whose value is the value of this token
      *  divided by the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion. If two integers are divided,
@@ -183,7 +183,7 @@ public class IntToken extends ScalarToken {
         }
     }
 
-    /** Return a new Token whose value is the value of the argument token 
+    /** Return a new Token whose value is the value of the argument token
      *  divided by the value of this token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
@@ -266,7 +266,7 @@ public class IntToken extends ScalarToken {
 	return (long)_value;
     }
 
-    /** Return a new Token whose value is the value of this token 
+    /** Return a new Token whose value is the value of this token
      *  modulo the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
@@ -297,7 +297,7 @@ public class IntToken extends ScalarToken {
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
-    /** Return a new Token whose value is the value of the argument token 
+    /** Return a new Token whose value is the value of the argument token
      *  modulo the value of this token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
@@ -314,7 +314,7 @@ public class IntToken extends ScalarToken {
     }
 
 
-    /** Return a new Token whose value is the value of this Token 
+    /** Return a new Token whose value is the value of this Token
      *  multiplied with the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
@@ -347,11 +347,11 @@ public class IntToken extends ScalarToken {
         }
     }
 
-    /** Return a new Token whose value is the value of the argument Token 
+    /** Return a new Token whose value is the value of the argument Token
      *  multiplied with the value of this Token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
-     *  @param leftFactor The token to be multiplied by the value of 
+     *  @param leftFactor The token to be multiplied by the value of
      *   this Token.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be multiplied by this Tokens value in
@@ -364,7 +364,7 @@ public class IntToken extends ScalarToken {
         return new IntToken(result);
     }
 
-    /** Returns a new Token representing the multiplicative identity. 
+    /** Returns a new Token representing the multiplicative identity.
      *  @return A new Token containing the multiplicative identity.
      */
     public Token one() {
@@ -378,9 +378,9 @@ public class IntToken extends ScalarToken {
         return Integer.toString(_value);
     }
 
-    /** Return a new Token whose value is the value of the argument Token 
+    /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token.
-     *  Type resolution also occurs here, with the returned Token type 
+     *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
      *  @param rightArg The token to subtract to this Token.
      *  @exception IllegalActionException If the passed token is
@@ -411,7 +411,7 @@ public class IntToken extends ScalarToken {
         }
     }
 
-    /** Return a new Token whose value is the value of this Token 
+    /** Return a new Token whose value is the value of this Token
      *  subtracted from the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
@@ -435,7 +435,7 @@ public class IntToken extends ScalarToken {
         return str;
     }
 
-    /** Returns a new token representing the additive identity. 
+    /** Returns a new token representing the additive identity.
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {

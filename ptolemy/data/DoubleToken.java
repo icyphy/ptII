@@ -38,7 +38,7 @@ import java.text.NumberFormat;
 A token that contains a double precision number.
 FIXME: what do do about long in the operator overloading methods?*
 <p>
-@author Neil Smyth, Yuhong Xiong 
+@author Neil Smyth, Yuhong Xiong
 @see ptolemy.data.Token
 @see java.text.NumberFormat
 @version $Id$ %G
@@ -59,9 +59,9 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Construct an IntToken from the specified string.
-     *  @exception IllegalArgumentException If the Token could not 
+     *  @exception IllegalArgumentException If the Token could not
      *   be created with the given String.
-  
+
     public DoubleToken(String init) throws IllegalArgumentException {
 	try {
 	    _value = (Double.valueOf(init)).doubleValue();
@@ -74,8 +74,8 @@ public class DoubleToken extends ScalarToken {
     ////                         public methods                    ////
 
 
-    /** Return a new token whose value is the sum of this token 
-     *  and the argument. Type resolution also occurs here, with 
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve a lossless conversion.
      *  @param tok The token to add to this Token.
      *  @exception IllegalActionException If the passed token
@@ -106,7 +106,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Return a new token whose value is the sum of this token 
+    /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve
      *  a lossless conversion.
@@ -136,7 +136,7 @@ public class DoubleToken extends ScalarToken {
      *  @param tok The token to be converted to a DoubleToken.
      *  @exception IllegalActionException If the conversion
      *  cannot be carried out in a lossless fashion.
-     *  @return A new Token containing the argument Token converted 
+     *  @return A new Token containing the argument Token converted
      *   to the type of this Token.
      */
     public Token convert(Token tok) throws IllegalActionException{
@@ -155,7 +155,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Return a new Token whose value is the value of this token 
+    /** Return a new Token whose value is the value of this token
      *  divided by the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
@@ -188,7 +188,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-     /** Return a new Token whose value is the value of the argument token 
+     /** Return a new Token whose value is the value of the argument token
      *  divided by the value of this token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
@@ -246,7 +246,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    
+
     /** Get the double value contained by this token.
      *  @return The double value contained by this token.
      */
@@ -254,7 +254,7 @@ public class DoubleToken extends ScalarToken {
         return _value;
     }
 
-    /** Return a new Token whose value is the value of this token 
+    /** Return a new Token whose value is the value of this token
      *  modulo the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
@@ -286,7 +286,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Return a new Token whose value is the value of the argument token 
+    /** Return a new Token whose value is the value of the argument token
      *  modulo the value of this token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
@@ -303,7 +303,7 @@ public class DoubleToken extends ScalarToken {
     }
 
 
-    /** Return a new Token whose value is the value of this Token 
+    /** Return a new Token whose value is the value of this Token
      *  multiplied with the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
@@ -336,11 +336,11 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Return a new Token whose value is the value of the argument Token 
+    /** Return a new Token whose value is the value of the argument Token
      *  multiplied with the value of this Token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
-     *  @param leftFactor The token to be multiplied by the value of 
+     *  @param leftFactor The token to be multiplied by the value of
      *   this Token.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be multiplied by this Tokens value in
@@ -353,7 +353,7 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(result);
     }
 
-    /** Returns a new Token representing the multiplicative identity. 
+    /** Returns a new Token representing the multiplicative identity.
      *  @return A new Token containing the multiplicative identity.
      */
     public Token one() {
@@ -369,9 +369,9 @@ public class DoubleToken extends ScalarToken {
         return nf.format(_value);
     }
 
-    /** Return a new Token whose value is the value of the argument Token 
+    /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token.
-     *  Type resolution also occurs here, with the returned Token type 
+     *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
      *  @param rightArg The token to subtract to this Token.
      *  @exception IllegalActionException If the passed token is
@@ -402,7 +402,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Return a new Token whose value is the value of this Token 
+    /** Return a new Token whose value is the value of this Token
      *  subtracted from the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
@@ -427,7 +427,7 @@ public class DoubleToken extends ScalarToken {
         return str;
     }
 
-    /** Returns a new token representing the additive identity. 
+    /** Returns a new token representing the additive identity.
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {

@@ -53,7 +53,7 @@ public class BooleanToken extends Token {
     }
 
     /** Construct a token with the specified string.
-     
+
     public void fromString(String init) throws IllegalArgumentException {
         _value = (Boolean.valueOf(init)).booleanValue();
     }
@@ -61,11 +61,11 @@ public class BooleanToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new BooleanToken whose value depends on whether 
+    /** Return a new BooleanToken whose value depends on whether
      *  the argument Token has the same truth value as this
      *  Token.
      *  @param the Token to compare truth values against.
-     *  @exception IllegalActionException If the argument Token 
+     *  @exception IllegalActionException If the argument Token
      *  is not a BooleanToken.
      *  @return A new BooleanToken containing the result.
      */
@@ -88,7 +88,7 @@ public class BooleanToken extends Token {
         return _value;
     }
 
-    /** Return a new BooleanToken with the logical not of the value 
+    /** Return a new BooleanToken with the logical not of the value
      *  stored in this token.
      *  @return a new BooleanToken with the opposite value to this token.
     */

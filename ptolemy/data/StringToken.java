@@ -66,8 +66,8 @@ public class StringToken extends ObjectToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new StringToken whose value is the string value 
-     *  of the argument token appended to the String contained in 
+    /** Return a new StringToken whose value is the string value
+     *  of the argument token appended to the String contained in
      *  this Ttoken.
      *  @param token The token to add to this Token
      *  @exception IllegalActionException If the passed token is
@@ -98,8 +98,8 @@ public class StringToken extends ObjectToken {
         }
     }
 
-    /** Return a new StringToken whose value is the string value 
-     *  of the argument token prepended to the String contained in 
+    /** Return a new StringToken whose value is the string value
+     *  of the argument token prepended to the String contained in
      *  this Ttoken.
      *  @param token The token to concatenate this Token to.
      *  @exception IllegalActionException If the passed token
@@ -118,7 +118,7 @@ public class StringToken extends ObjectToken {
      *  @param token The token to be converted to a StringToken.
      *  @exception IllegalActionException If the conversion
      *  cannot be carried out in a lossless fashion.
-     *  @return A new Token containing the argument Token converted 
+     *  @return A new Token containing the argument Token converted
      *   to the type of this Token, if possible.
      */
     public Token convert(Token token) throws IllegalActionException{
@@ -141,7 +141,7 @@ public class StringToken extends ObjectToken {
     }
 
     /** Lexicographically test the values of this Token and the
-     *  argument Token for equality. Return a new BooleanToken containing 
+     *  argument Token for equality. Return a new BooleanToken containing
      *  the result.
      *  @param token The token to lexicographically compare the value this
      *  Token with.

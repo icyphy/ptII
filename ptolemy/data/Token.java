@@ -37,8 +37,8 @@ FIXME: This class declares that tokens are cloneable and promotes
 the protected clone() method of the Object base class to public.
 <p>
 Operator overloading between tokens is supported with methods
-for each operator. The operators that are overloaded 
-are +, -, *, / == and %. These methods carry out the operation 
+for each operator. The operators that are overloaded
+are +, -, *, / == and %. These methods carry out the operation
 if it can be performed in a lossless manner.
 Not all derived classes are required to implement these methods,
 so the default implementation in this base class triggers an exception.
@@ -46,7 +46,7 @@ so the default implementation in this base class triggers an exception.
 
 @author Neil Smyth, Edward A. Lee
 @version $Id$
- 
+
 */
 
 package ptolemy.data;
@@ -58,9 +58,9 @@ public abstract class Token implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the sum of this token 
-     *  and the argument. It should be overridden in derived 
-     *  classes to provide type specific actions for add. 
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. It should be overridden in derived
+     *  classes to provide type specific actions for add.
      *  @param a The token whose value we add to the value of this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -72,10 +72,10 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Return a new token whose value is the sum of this token 
-     *  and the argument. It should be overridden in derived classes 
-     *  to provide type specific actions for add. 
-     *  @param a The token containing the value to which we add the 
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. It should be overridden in derived classes
+     *  to provide type specific actions for add.
+     *  @param a The token containing the value to which we add the
      *   value of this token to get the value of the new token.
      *  @exception IllegalActionException Thrown if this method is not
      *   supported by the derived class.
@@ -96,7 +96,7 @@ public abstract class Token implements Cloneable {
             throws CloneNotSupportedException {
         Token result = (Token)super.clone();
         return result;
-        
+
     }
 
     /** Convert the specified token into an instance of this class.
@@ -113,11 +113,11 @@ public abstract class Token implements Cloneable {
 	return token;
     }
 
-    /** Return a new Token whose value is the value of this token 
-     *  divided by the value of the argument token. 
+    /** Return a new Token whose value is the value of this token
+     *  divided by the value of the argument token.
      *  It should be overridden in derived classes to provide type specific
-     *  actions for divide. 
-     *  @param divisor The Token whose value we divide the value of this 
+     *  actions for divide.
+     *  @param divisor The Token whose value we divide the value of this
      *   Token by.
      *  @exception IllegalActionException Thrown if this method is not
      *   supported by the derived class.
@@ -129,11 +129,11 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Return a new Token whose value is the value of the argument token 
-     *  divided by the value of this token. 
+    /** Return a new Token whose value is the value of the argument token
+     *  divided by the value of this token.
      *  It  should be overridden in derived classes to provide type specific
-     *  actions for divide. 
-     *  @param dividend The Token whose value we divide by the value of 
+     *  actions for divide.
+     *  @param dividend The Token whose value we divide by the value of
      *   this Token.
      *  @exception IllegalActionException Thrown if this method is not
      *   supported by the derived class.
@@ -147,7 +147,7 @@ public abstract class Token implements Cloneable {
 
     /** Test for equality of the values of this Token and the argument Token.
      *  It should be overridden in derived classes to provide type specific
-     *  actions for equality testing. 
+     *  actions for equality testing.
      *  @param token The token with which to test equality.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
@@ -166,7 +166,7 @@ public abstract class Token implements Cloneable {
         return false;
     }
 
-    /** Return a new Token whose value is the value of this token 
+    /** Return a new Token whose value is the value of this token
      *  modulo the value of the argument token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for modulo.
@@ -181,7 +181,7 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Return a new Token whose value is the value of the argument token 
+    /** Return a new Token whose value is the value of the argument token
      *  modulo the value of this token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for modulo.
@@ -196,7 +196,7 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Return a new Token whose value is the value of this Token 
+    /** Return a new Token whose value is the value of this Token
      *  multiplied with the value of the argument Token.
      *  @param rightFactor The token whose value we multiply the value of this
      *   Token with.
@@ -210,7 +210,7 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Return a new Token whose value is the value of the argument Token 
+    /** Return a new Token whose value is the value of the argument Token
      *  multiplied with the value of this Token.
      *  It  should be overridden in derived classes to provide type specific
      *  actions for multiply.
@@ -226,7 +226,7 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Returns a new Token representing the multiplicative identity. 
+    /** Returns a new Token representing the multiplicative identity.
      *  It should be overridden in subclasses.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
@@ -249,10 +249,10 @@ public abstract class Token implements Cloneable {
                 + myclass.getName() + " cannot be returned as a String");
     }
 
-    /** Return a new Token whose value is the value of the argument Token 
+    /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token.
      *  It should be overridden in derived classes to provide type specific
-     *  actions for subtract. 
+     *  actions for subtract.
      *  @param rightArg The token whose value we subtract from this Token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -264,10 +264,10 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Return a new Token whose value is the value of this Token 
+    /** Return a new Token whose value is the value of this Token
      *  subtracted from the value of the argument Token.
      *  It should be overridden in derived classes to provide type specific
-     *  actions for subtract. 
+     *  actions for subtract.
      *  @param leftArg The token to subtract the value of this Token from.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -287,7 +287,7 @@ public abstract class Token implements Cloneable {
         return getClass().getName();
     }
 
-    /** Returns a new token representing the additive identity. 
+    /** Returns a new token representing the additive identity.
      *  It should be overridden in subclasses.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
