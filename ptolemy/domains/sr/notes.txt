@@ -6,6 +6,7 @@ create new package actor.lib.nonstrict?
 move sr tests around
 search and replace for name changes
 cvs update
+windows update
 talk to xiaojun
 
 FIXMEs
