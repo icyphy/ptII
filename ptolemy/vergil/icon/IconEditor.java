@@ -57,6 +57,8 @@ import diva.util.java2d.Polygon2D;
 // Java imports.
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -82,6 +84,7 @@ import java.util.Vector;
 // Javax imports.
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -97,6 +100,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 // Ptolemy imports.
 import ptolemy.kernel.util.IllegalActionException;
@@ -116,28 +120,16 @@ creates java2d shapes.
 @version $Id$
 */
 public class IconEditor {
-
-    // Control begins here.
-
-    public static void main(String argv[])
-
+    /** Setup the window for the icon editor application.  This 
+     * window will include a toolbar of different shapes, a pull-down 
+     * menu of different thicknesses, pull down menus for the colors, 
+     * and the main drawing window.
+     */
+     public static void main(String argv[])
         throws NameDuplicationException, IllegalActionException {
-
-	// Setup the window for the icon editor application.  This 
-        // window will include a toolbar of different shapes, a pull-down 
-        // menu of different thicknesses, pull down menus for the colors, 
-        // and the main drawing window.
-        // For context, I used a BasicFrame with a false argument, 
-        // which tells BasicFrame not to set the size of the window or 
-        // make it visible.  The string "Edit Icon" is the name of the 
-        // default window.
-
-        AppContext context = new BasicFrame("Icon Editor", false);
-
+	 AppContext context = new BasicFrame("Icon Editor", false);
 	// Make a new instance of the IconEditor class.
-
 	IconEditor iconEditor = new IconEditor(context);
-
     }
   
     /** 
@@ -194,11 +186,8 @@ public class IconEditor {
 	// add it to the main _context frame.  Also, make another 
 	// toolbar for the different thicknesses and add that to the 
 	// main _context frame.
-	JToolBar thicknessToolBar = new JToolBar(JToolBar.VERTICAL);
-	_context.getContentPane().add("East", thicknessToolBar);
-	
-	JToolBar shapesToolBar = new JToolBar(JToolBar.HORIZONTAL);
-	_context.getContentPane().add("North", shapesToolBar);
+	JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
+	_context.getContentPane().add("North", toolBar);
 
 	// When you exit the program, here is what happens.
 	_context.setExitAction(exitIconAction);
@@ -251,19 +240,7 @@ public class IconEditor {
 	// Set up the buttons for the multiple toolbars.  These buttons 
 	// are instantiated with gif image files and these files must be 
 	// located in a sub-directory from this one named "gifs".
-	URL White = getClass().getResource("gifs/white.gif");
-	URL LightGray = getClass().getResource("gifs/lightgray.gif");
-	URL Gray = getClass().getResource("gifs/gray.gif");
-	URL DarkGray = getClass().getResource("gifs/darkgray.gif");
-	URL Black = getClass().getResource("gifs/black.gif");
-	URL Blue = getClass().getResource("gifs/blue.gif");
-	URL Cyan = getClass().getResource("gifs/cyan.gif");
-	URL Green = getClass().getResource("gifs/green.gif");
-	URL Magenta = getClass().getResource("gifs/magenta.gif");
-	URL Orange = getClass().getResource("gifs/orange.gif");
-	URL Pink = getClass().getResource("gifs/pink.gif");
-	URL Red = getClass().getResource("gifs/red.gif");
-	URL Yellow = getClass().getResource("gifs/yellow.gif");
+	
 	URL Rectangle = getClass().getResource("gifs/rect.gif");
 	URL Line = getClass().getResource("gifs/line.gif");
 	URL Quad = getClass().getResource("gifs/quad.gif");
@@ -284,27 +261,35 @@ public class IconEditor {
 	// Now that I have the names of all the gif files, 
 	// add them to the appropriate tool bars with the appropriate 
 	// actions. 
-	GUIUtilities.addToolBarButton(shapesToolBar, rectangleAction,
+	GUIUtilities.addToolBarButton(toolBar, rectangleAction,
 				       "Rectangle", new ImageIcon(Rectangle));
-	GUIUtilities.addToolBarButton(shapesToolBar, lineAction,
+	GUIUtilities.addToolBarButton(toolBar, lineAction,
 				       "Straight Line", new ImageIcon(Line));
-	GUIUtilities.addToolBarButton(shapesToolBar, quadraticAction,
+	GUIUtilities.addToolBarButton(toolBar, quadraticAction,
 				       "Quadratic Curve", new ImageIcon(Quad));
-	GUIUtilities.addToolBarButton(shapesToolBar, cubicAction,
+	GUIUtilities.addToolBarButton(toolBar, cubicAction,
 				       "Cubic Curve", new ImageIcon(Cubic));
-	GUIUtilities.addToolBarButton(shapesToolBar, circleAction, 
+	GUIUtilities.addToolBarButton(toolBar, circleAction, 
 				       "Circle", new ImageIcon(Circle));
-	GUIUtilities.addToolBarButton(shapesToolBar, ellipseAction, 
+	GUIUtilities.addToolBarButton(toolBar, ellipseAction, 
 				       "Ellipse", new ImageIcon(Ellipse));
 
 	// Now I add the pull-down menus for the colors of the outline and 
 	// fill of the shapes and the thickness of the outline.
+	BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
+	renderer.setPreferredSize(new Dimension(27, 27));
+
 	_fillComboBox = new JComboBox();
 	_outlineComboBox = new JComboBox();
 	_thicknessComboBox = new JComboBox();
-	shapesToolBar.add(_fillComboBox);
-	shapesToolBar.add(_outlineComboBox);
-	thicknessToolBar.add(_thicknessComboBox);
+	
+	_fillComboBox.setRenderer(renderer);
+	_outlineComboBox.setRenderer(renderer);
+	_thicknessComboBox.setRenderer(renderer);
+
+	toolBar.add(_fillComboBox);
+	toolBar.add(_outlineComboBox);
+	toolBar.add(_thicknessComboBox);
 
 	// And I need to fill up the thickness pull-down menu 
 	// with the appropriate images.
@@ -315,35 +300,13 @@ public class IconEditor {
 	_thicknessComboBox.addItem(new ImageIcon(thickness5));
 
 	// Similarly for the outline color pull-down menu.
-	_outlineComboBox.addItem(new ImageIcon(White));
-	_outlineComboBox.addItem(new ImageIcon(LightGray));
-	_outlineComboBox.addItem(new ImageIcon(Gray));
-	_outlineComboBox.addItem(new ImageIcon(DarkGray));
-	_outlineComboBox.addItem(new ImageIcon(Black));
-	_outlineComboBox.addItem(new ImageIcon(Blue));
-	_outlineComboBox.addItem(new ImageIcon(Cyan));
-	_outlineComboBox.addItem(new ImageIcon(Green));
-	_outlineComboBox.addItem(new ImageIcon(Magenta));
-	_outlineComboBox.addItem(new ImageIcon(Orange));
-	_outlineComboBox.addItem(new ImageIcon(Pink));
-	_outlineComboBox.addItem(new ImageIcon(Red));
-	_outlineComboBox.addItem(new ImageIcon(Yellow));
+	for(int i = 0; i < _colors.length; i++) {
+	    Icon bicon = new BlockIcon(_colors[i]);
+	    _outlineComboBox.addItem(bicon);
+	    _fillComboBox.addItem(bicon);
+	}
+	// The last entry is for "more colors"
 	_outlineComboBox.addItem(new ImageIcon(More));
-
-	// And the fill color pull-down menu.
-	_fillComboBox.addItem(new ImageIcon(White));
-	_fillComboBox.addItem(new ImageIcon(LightGray));
-	_fillComboBox.addItem(new ImageIcon(Gray));
-	_fillComboBox.addItem(new ImageIcon(DarkGray));
-	_fillComboBox.addItem(new ImageIcon(Black));
-	_fillComboBox.addItem(new ImageIcon(Blue));
-	_fillComboBox.addItem(new ImageIcon(Cyan));
-	_fillComboBox.addItem(new ImageIcon(Green));
-	_fillComboBox.addItem(new ImageIcon(Magenta));
-	_fillComboBox.addItem(new ImageIcon(Orange));
-	_fillComboBox.addItem(new ImageIcon(Pink));
-	_fillComboBox.addItem(new ImageIcon(Red));
-	_fillComboBox.addItem(new ImageIcon(Yellow));
 	_fillComboBox.addItem(new ImageIcon(More));
 
 	// A pull-down menu needs a tool tip and an associated 
@@ -362,11 +325,11 @@ public class IconEditor {
 	// an option to increment or decrement the thickness of a shape's
 	// outline.  Here are the buttons associated with those functions.
 	GUIUtilities.addToolBarButton 
-	   (thicknessToolBar, thinnerAction,
+	   (toolBar, thinnerAction,
 	     "Thinner Outline(s) for the Selected Shape(s)", 
 	     new ImageIcon(thinner));
 	GUIUtilities.addToolBarButton 
-	   (thicknessToolBar, thickerAction,
+	   (toolBar, thickerAction,
 	     "Thicker Outline(s) for the Selected Shape(s)", 
 	     new ImageIcon(thicker));
 
@@ -425,7 +388,7 @@ public class IconEditor {
     private boolean _changingFill;
 
     // The color chooser.
-    private JColorChooser _colorChooser;
+    private JColorChooser _colorChooser = new JColorChooser();
 
     // This is the current shape, line thickness, and paint colors.
     private float _outlineThickness = 3.0f;
@@ -455,6 +418,20 @@ public class IconEditor {
     // program.
     private static final String FILE_FORMAT_EXTENSION = "xml";
 
+    private Color _colors[] = {Color.black,
+			     Color.blue,
+			     Color.cyan,
+			     Color.darkGray,
+			     Color.gray,
+			     Color.green,
+			     Color.lightGray,
+			     Color.magenta,
+			     Color.orange,
+			     Color.pink,
+			     Color.red,
+			     Color.white,
+			     Color.yellow};
+    
     // The type of data that is operable via the cut, copy, and paste commands.
     public static final DataFlavor dataFlavor = 
         new DataFlavor(VersatileFigure.class, "Versatile Figure");
@@ -563,99 +540,15 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    int selection = _fillComboBox.getSelectedIndex();
 	    int itemCount = _fillComboBox.getItemCount();
-	    System.out.println("how many times?");
 	    if(selection == itemCount - 1) {
 	        _changingFill = true;
 	        _dialog = JColorChooser.createDialog 
 		   (_editorPane, "Choose A Fill Color", true, 
 		     _colorChooser, okAction, cancelAction);
-
 		_dialog.setVisible(true);
-
+	    } else {
+	        _editorPane.setFillPaint(_colors[selection]);
 	    }
-
-	    else if(selection == itemCount - 2) {
-
-	        _editorPane.setFillPaint(Color.yellow);
-
-	    }
-
-	    else if(selection == itemCount - 3) {
-
-	        _editorPane.setFillPaint(Color.red);
-
-	    }
-
-	    else if(selection == itemCount - 4) {
-
-	        _editorPane.setFillPaint(Color.pink);
-
-	    }  
-
-	    else if(selection == itemCount - 5) {
-
-	        _editorPane.setFillPaint(Color.orange);
-
-	    }  
-
-	    else if(selection == itemCount - 6) {
-
-	        _editorPane.setFillPaint(Color.magenta);
-
-	    }  
-
-	    else if(selection == itemCount - 7) {
-
-	        _editorPane.setFillPaint(Color.green);
-
-	    }  
-
-	    else if(selection == itemCount - 8) {
-
-	        _editorPane.setFillPaint(Color.cyan);
-
-	    }  
-
-	    else if(selection == itemCount - 9) {
-
-	        _editorPane.setFillPaint(Color.blue);
-
-	    }  
-
-	    else if(selection == itemCount - 10) {
-
-	        _editorPane.setFillPaint(Color.black);
-
-	    }  
-
-	    else if(selection == itemCount - 11) {
-
-	        _editorPane.setFillPaint(Color.darkGray);
-
-	    }    
-
-	    else if(selection == itemCount - 12) {
-
-	        _editorPane.setFillPaint(Color.gray);
-
-	    }  
-
-	    else if(selection == itemCount - 13) {
-
-	        _editorPane.setFillPaint(Color.lightGray);
-
-	    }  
-
-	    else if(selection == itemCount - 14) {
-
-	        _editorPane.setFillPaint(Color.white);
-
-	    }
-
-	    else {
-
-	    }
-
 	}
     };
 
@@ -670,90 +563,9 @@ public class IconEditor {
 		(_editorPane, "Choose An Outline Color", true, 
 		 _colorChooser, okAction, cancelAction);
 		_dialog.setVisible(true);
+	    } else {
+	        _editorPane.setOutlinePaint(_colors[selection]);
 	    }
-
-	    else if(selection == itemCount - 2) {
-
-	        _editorPane.setOutlinePaint(Color.yellow);
-
-	    }
-
-	    else if(selection == itemCount - 3) {
-
-	        _editorPane.setOutlinePaint(Color.red);
-
-	    }
-
-	    else if(selection == itemCount - 4) {
-
-	        _editorPane.setOutlinePaint(Color.pink);
-
-	    }  
-
-	    else if(selection == itemCount - 5) {
-
-	        _editorPane.setOutlinePaint(Color.orange);
-
-	    }  
-
-	    else if(selection == itemCount - 6) {
-
-	        _editorPane.setOutlinePaint(Color.magenta);
-
-	    }  
-
-	    else if(selection == itemCount - 7) {
-
-	        _editorPane.setOutlinePaint(Color.green);
-
-	    }  
-
-	    else if(selection == itemCount - 8) {
-
-	        _editorPane.setOutlinePaint(Color.cyan);
-
-	    }  
-
-	    else if(selection == itemCount - 9) {
-
-	        _editorPane.setOutlinePaint(Color.blue);
-
-	    }  
-
-	    else if(selection == itemCount - 10) {
-
-	        _editorPane.setOutlinePaint(Color.black);
-
-	    }  
-
-	    else if(selection == itemCount - 11) {
-
-	        _editorPane.setOutlinePaint(Color.darkGray);
-
-	    }    
-
-	    else if(selection == itemCount - 12) {
-
-	        _editorPane.setOutlinePaint(Color.gray);
-
-	    }  
-
-	    else if(selection == itemCount - 13) {
-
-	        _editorPane.setOutlinePaint(Color.lightGray);
-
-	    }  
-
-	    else if(selection == itemCount - 14) {
-
-	        _editorPane.setOutlinePaint(Color.white);
-
-	    }
-
-	    else {
-
-	    }
-
 	}
     };
 
@@ -780,10 +592,11 @@ public class IconEditor {
     // When you click ok in the color window.
     Action okAction = new AbstractAction("Ok") {
         public void actionPerformed(ActionEvent e) {
-	    Paint thisColor = _colorChooser.getColor();
+	    Color thisColor = _colorChooser.getColor();
 	    if(_changingFill) {
 	        _fillPaint = thisColor;
 		_editorPane.setFillPaint(thisColor);
+		// FIXME	_fillComboBox.setSelectedIndex(-1);
 	    } else {
 	        _strokePaint = thisColor;
 		_editorPane.setFillPaint(thisColor);
@@ -936,7 +749,27 @@ public class IconEditor {
 	    }
 	}
     };
-    
+
+    public class BlockIcon implements Icon {
+	BlockIcon(Color c) {
+	    _color = c;
+	}
+	public int getIconWidth() {
+	    return 25;
+	}
+	public int getIconHeight() {
+	    return 25;
+	}
+	public void paintIcon(Component c,
+			  Graphics g, 
+			  int x,
+			  int y) {
+	    g.setColor(_color);
+	    g.fillRect(x, y, getIconHeight(), getIconWidth());
+       	}
+	private Color _color;
+    }
+	    
     // Listen for the delete key from the keyboard.  When the delete key is 
     // pressed, the currently selected figure is removed from the _layer and 
     // unselected from the selection model.  Pressing the delete key is unlike 
