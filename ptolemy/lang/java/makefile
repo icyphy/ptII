@@ -305,6 +305,24 @@ run_codegen:
 	(cd $(ROOT)/cg/OrthogonalCom; \
 		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
 
+# Generate code for a trivial ramp demo - much faster for testing
+codegen2: generate_codegen2 compile_codegen2 run_codegen2 
+generate_codegen2:
+	@if [ ! -d $(JAVASRC_SKELETON_DIR) ]; then \
+		echo "Warning $(JAVASRC_SKELETON_DIR) does not exist"; \
+	fi
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
+	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.apps.kvm.demo.ramp.RampSystem \
+	-iterations 50 \
+	-outdir $(ROOT) -outpkg cg.RampSystem
+
+compile_codegen2:
+	(cd $(ROOT)/cg/RampSystem; $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
+run_codegen2: 	
+	(cd $(ROOT)/cg/RampSystem; \
+		$(JAVA) -classpath ../.. cg.RampSystem.CG_Main)
+
 # Read in the JDK rt.jar file and generate zero length .java files.
 generate_zero_length_stubs:
 	-mkdir stubs;
@@ -314,6 +332,9 @@ generate_zero_length_stubs:
 # Run using zero length .java files
 codegen_stubs:
 	$(MAKE) JAVASRC_SKELETON_DIR=stubs codegen
+
+codegen2_stubs:
+	$(MAKE) JAVASRC_SKELETON_DIR=stubs codegen2
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
