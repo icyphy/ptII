@@ -2,20 +2,27 @@
 <HTML>
 <HEAD>
 <title>ExampleSystem</title>
-<H1>
-An example system as shown in Figure 8 of design document
-</H1>
+<H1>An example system as shown in Figure 8 of design document</H1>
 </HEAD>
+This applet requires that
+Ptolemy be compiled with JDK1.2beta, otherwise you will get an error message
+like:
+<pre>
+java.lang.IllegalAccessError: ptolemy.kernel.util.CrossRefList$CrossRef.<init>(Lptolemy/kernel/util/CrossRefList;)V
+	at ptolemy.kernel.util.CrossRefList.link(Compiled Code)
+	at ptolemy.kernel.Port._link(Compiled Code)
+ </pre>
 <BODY>
-<img src="http://ptolemy.eecs.berkeley.edu/~ptdesign/java/wmwork/design.fm.ancA3.gif">
+<img src="../../../doc/img/cluster.gif" alt="Ptolemy II Cluster">
 <hr>
-<applet name="ExampleSystemApplet" code="pt.kernel.demo.ExampleSystemApplet"
+<applet name="ExampleSystemApplet" code="ptolemy.kernel.demo.ExampleSystemApplet"
     width=592 height=250
     codebase="../../.."
-    archive="pt/kernel/pt.kernel.jar"
+    archive="ptolemy/kernel/ptolemy.kernel.jar"
     alt="If you had a java-enabled browser, you would see an applet here."
 >
 </applet>
+
 <hr>
 Last updated $Date$. <A HREF="mailto:liuj@eecs.berkeley.edu">Jie Liu</A>
 </BODY>
