@@ -443,6 +443,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
