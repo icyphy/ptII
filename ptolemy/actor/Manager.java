@@ -137,18 +137,11 @@ public final class Manager extends NamedObj implements Runnable {
      *  CompositeActor. This thread is synchronized so that it runs atomically 
      *  with respect to other methods in Manager that control the simulation 
      *  thread. This method is non-blocking.
-     * @exception IllegalActionException if the top level CompositeActor
-     *  throws an IllegalActionException while calling finish().
      */
     public synchronized void finish() {
         _keepIterating = false;
         _isPaused = false;
-        try {
-            getToplevel().finish();
-        } catch (IllegalActionException ex) {
-            // FIXME: Should do something more sophisticated.
-            throw new InvalidStateException(this, ex.getMessage());
-        }
+	getToplevel().finish();
         if(_simulationThread != null) {
             synchronized(_simulationThread) {
                 _simulationThread.notify();
