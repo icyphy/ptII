@@ -54,9 +54,9 @@ import cern.jet.random.engine.DRand;
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bilung)
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class ColtPoisson extends ColtRandomSource {
