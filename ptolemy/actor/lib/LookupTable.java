@@ -119,7 +119,7 @@ public class LookupTable extends Transformer {
 
         // One of the Parameters contains ArrayTokens, so we need
 	// to handle cloning it.
-        ArrayType tableType = (ArrayType)table.getType();
+        ArrayType tableType = (ArrayType)newObject.table.getType();
         InequalityTerm elemTerm = tableType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elemTerm);
 
