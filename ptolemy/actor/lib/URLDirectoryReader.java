@@ -81,6 +81,7 @@ a regular expression that would allow us to filter the file names.
 @author  Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
+@deprecated Use DirectoryListing instead.
 */
 public class URLDirectoryReader extends URLReader {
 
