@@ -56,8 +56,6 @@ public class Relation extends Node {
      */	
     public Relation(String name) {
 	 super(name);
-	 _nets = null;
-	 _netAdditionCount = 0;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -65,9 +63,8 @@ public class Relation extends Node {
 
     /** Add a Port to this Relation. 
      * @param newPort The Port being added to this Relation.
-     * @exception NameDuplicationException This exception is thrown if an
-     * attempt is made to store two objects with identical names in the
-     * same container.
+     * @exception NameDuplicationException Attempt to store two instances of
+     * the same class with identical names in the same container.
      */
     public void addPort(Port newPort) throws NameDuplicationException {
 	if( isPortAMember( newPort.getName() ) ) {
@@ -81,9 +78,8 @@ public class Relation extends Node {
      * @param port1 The first port being connected to the triad.
      * @param port2 The second port being connected to the triad.
      * @param port3 The third port being connected to the triad.
-     * @exception NameDuplicationException This exception is thrown if an
-     * attempt is made to store two objects with identical names in the
-     * same container.
+     * @exception NameDuplicationException Attempt to store two instances of
+     * the same class with identical names in the same container.
      */
     public void connectThreePorts(Port port1, Port port2, Port port3) 
 	throws NameDuplicationException {
@@ -118,9 +114,8 @@ public class Relation extends Node {
     /** Connect two ports to each other through this Relation.
      * @param port1 The first port being connected.
      * @param port2 The second port being connected.
-     * @exception NameDuplicationException This exception is thrown if an
-     * attempt is made to store two objects with identical names in the
-     * same container.
+     * @exception NameDuplicationException Attempt to store two instances of
+     * the same class with identical names in the same container.
      */
     public void connectTwoPorts(Port port1, Port port2) 
 	throws NameDuplicationException {
@@ -434,7 +429,7 @@ public class Relation extends Node {
      * this only increments, even if Ports are removed. This variable is
      * used for creating unique Port names.
      */
-    private int _netAdditionCount;
+    private int _netAdditionCount = 0;
 
     /* The Nets are the elemental connection units upon which a 
      * Relation is based. 
