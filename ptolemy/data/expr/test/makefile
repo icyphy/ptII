@@ -53,6 +53,7 @@ JSIMPLE_TESTS = \
 	PtParser.tcl \
 	SetParameter.tcl \
 	UtilityFunctions.tcl \
+	FixFunctions.tcl \
 	Variable.tcl
 
 # Graphical Java tests that use Tcl.
