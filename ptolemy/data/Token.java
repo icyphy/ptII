@@ -33,17 +33,21 @@ This class declares that tokens are cloneable and promotes the
 protected clone() method of the Object base class to public.
 In addition, it defines interfaces to initialize the token from
 a string and to return a description of the token as a string.
+Operator overloading between tokens is supported with methods
+for each operator. These methods carry out the operation if it 
+can be performed in a lossless manner.
 Not all derived classes are required to implement these methods,
 so the default implementation here triggers an exception.
 
 @author Neil Smyth, Edward A. Lee
 @version $Id$
-@see java.lang.Object
+@see java.util.Observable
 */
 
 package pt.data;
 
 import pt.kernel.*;
+import java.util.Observable;
 
 public abstract class Token implements Cloneable {
 
@@ -53,7 +57,7 @@ public abstract class Token implements Cloneable {
 
     /** Add the value of the argument Token to the current Token. It should be 
      *  overridden in derived classes to provide type specific actions for 
-     *  add. It is here mainly for the parser. 
+     *  add. It is here to provide operator overloading. 
      *  @param a The token whose value we add to this Token
      *  @exception IllegalActionException Thrown if this method is not 
      *  supported by the derived class
@@ -66,7 +70,7 @@ public abstract class Token implements Cloneable {
 
     /** Subtract the value of the argument Token from the current Token. It 
      *  should be overridden in derived classes to provide type specific 
-     *  actions for subtract. It is here mainly for the parser. 
+     *  actions for subtract. It is here to provide operator overloading. 
      *  @param a The token whose value we sutract from this Token
      *  @exception IllegalActionException Thrown if this method is not 
      *  supported by the derived class
@@ -79,7 +83,7 @@ public abstract class Token implements Cloneable {
 
     /** Multiply the value of the argument Token with the value of this Token.
      *  It  should be overridden in derived classes to provide type specific 
-     *  actions for multiply. It is here mainly for the parser. 
+     *  actions for multiply. It is here to provide operator overloading. 
      *  @param a The token whose value we multiply the value of this Token with
      *  @exception IllegalActionException Thrown if this method is not 
      *  supported by the derived class
@@ -92,7 +96,7 @@ public abstract class Token implements Cloneable {
 
     /** Divide the value of this Token with the value of the argument Token.
      *  It  should be overridden in derived classes to provide type specific 
-     *  actions for divide. It is here mainly for the parser. 
+     *  actions for divide. It is here to provide operator overloading. 
      *  @param a The token whose value we divide the value of this Token by
      *  @exception IllegalActionException Thrown if this method is not 
      *  supported by the derived class
@@ -106,7 +110,7 @@ public abstract class Token implements Cloneable {
     /** Find the result of the value of this Token modulo the value of the 
      *  argument Token. Set the value of this token to the result.
      *  It  should be overridden in derived classes to provide type specific 
-     *  actions for modulo. It is here mainly for the parser. 
+     *  actions for modulo. It is here to provide operator overloading. 
      *  @param a The token whose value we do modulo with
      *  @exception IllegalActionException Thrown if this method is not 
      *  supported by the derived class
@@ -119,7 +123,7 @@ public abstract class Token implements Cloneable {
 
     /** Test for equality of the values of this Token and the argument Token.
      *  It  should be overridden in derived classes to provide type specific 
-     *  actions for equality testing. It is here mainly for the parser. 
+     *  actions for equality testing. It is here to provide operator overloading. 
      *  @param a The token with which to test equality
      *  @exception IllegalActionException Thrown if this method is not 
      *  supported by the derived class
@@ -155,8 +159,6 @@ public abstract class Token implements Cloneable {
                 + myclass.getName() + " cannot be initialized from a string.");
     }
     
-
-
     /** Return the Publisher object associated with this Token. 
      */
     public TokenPublisher getPublisher() {
@@ -178,6 +180,7 @@ public abstract class Token implements Cloneable {
      */
     public void notifySubscribers() {
         if (_publisher != null) {
+           _publisher.setChanged(); 
             _publisher.notifyObservers(this);
         }
     }
@@ -195,14 +198,7 @@ public abstract class Token implements Cloneable {
          _publisher.setToken(this);
          return old;
      }
-
-
-     /** This method should be overridden where appropriate in subclasses
-     */
-    public int size() {
-        return 1;
-    }
-
+   
     /** Return a description of the token as a string.
      *  In this base class, we return the fully qualified class name.
      */	
