@@ -39,14 +39,16 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.plot.*;
 
-/** A sequence plotter.  This plotter contains an instance of the Plot class
- *  from the Ptolemy plot package as a public member.  Data at the input, which
- *  can consist of any number of channels, is plotted on this instance.
- *  Each channel is plotted as a separate data set.
- *  The horizontal axis represents the count of the iterations.
- *  The input is of type DoubleToken.
+/** A sequence plotter.  This plotter contains an instance of the Plot
+ *  class from the Ptolemy plot package as a public member. Data at
+ *  the input, which can consist of any number of channels, is plotted
+ *  on this instance.  Each channel is plotted as a separate data set.
+ *  The horizontal axis represents the count of the iterations. The
+ *  input is of type DoubleToken. The horizontal increment between
+ *  samples can be set. Its default value is 1.0. The horizontal value
+ *  of the first sample can also be set. Its default value is 0.0.
  *
- *  @author  Edward A. Lee
+ *  @author  Edward A. Lee, Bart Kienhuis
  *  @version $Id$
  */
 public class SequencePlotter extends Plotter implements SequenceActor {
@@ -67,6 +69,14 @@ public class SequencePlotter extends Plotter implements SequenceActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
+
+        // set the parameters
+        xInit = new Parameter(this, "xInit", new DoubleToken(0.0));
+        xUnit = new Parameter(this, "xUnit", new DoubleToken(1.0));
+
+        // initialize the parameters
+        attributeChanged(xInit);
+        attributeChanged(xUnit);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,8 +85,31 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     /** @serial Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
+    /** The increment of the X axis. */
+    public Parameter xUnit;
+
+    /** The start point of the X axis. */
+    public Parameter xInit;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Notification that an attribute has changed.          
+        @exception IllegalActionException If the expression of the
+        attribute cannot be parsed or cannot be evaluated.
+     */
+    public void attributeChanged(Attribute attribute) 
+            throws IllegalActionException {
+        if (attribute == xInit) {
+            _xInit = ((DoubleToken)xInit.getToken()).doubleValue();
+        } else {
+            if (attribute == xUnit) {
+                _xUnit = ((DoubleToken)xUnit.getToken()).doubleValue();
+            } else {
+                super.attributeChanged(attribute);
+            }
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -88,6 +121,8 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         SequencePlotter newobj = (SequencePlotter)super.clone(ws);
         newobj.input = (TypedIOPort)newobj.getPort("input");
+        newobj.xInit = (Parameter)newobj.getAttribute("xInit");
+        newobj.xUnit = (Parameter)newobj.getAttribute("xUnit");
         return newobj;
     }
 
@@ -97,18 +132,21 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _xValue = -1.0;
+        _xValue = _xInit;
     }
 
-    /** Read at most one token from each input channel and plot
-     *  it as a function of the iteration number.
-     *  This is done in postfire to ensure that data has settled.
-     *  @exception IllegalActionException If there is no director, or
-     *   if the base class throws it.
+    /** Read at most one token from each input channel and plot it as
+     *  a function of the iteration number. The iteration number
+     *  starts at the value given by the <i>xInit</i> value. The
+     *  increments on the iteration numbers are given by the
+     *  <i>xUnit</i> value. The plot is generated in the postfire to
+     *  ensure that data has settled.
+     *  @exception IllegalActionException If there is no director,
+     *  or if the base class throws it.  
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        _xValue += 1.0;
+        _xValue += _xUnit;
         int width = input.getWidth();
         int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
@@ -124,6 +162,12 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** @serial X axis counter */
+    /** @serial X axis counter. */
     private double _xValue;
+
+    /** @serial Start of the X axis counter. */
+    private double _xInit;
+
+    /** @serial Increment of the X axis counter. */
+    private double _xUnit;
 }
