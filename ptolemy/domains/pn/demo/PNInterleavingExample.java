@@ -54,7 +54,7 @@ class PNInterleavingExample {
         _redirect0.setInitState(0);
         PNRedirect _redirect1 = new PNRedirect(myUniverse, "redirect1");
         _redirect1.setInitState(1);
-        //        PNPlot _plot = new PNPlot(myUniverse, "plot");
+        PNPlot _plot = new PNPlot(myUniverse, "plot");
         
         //FIXME: Find a neat way of specifying the queue length of input port!
         //FIXME: Need a nice way of doing the following.
@@ -65,7 +65,7 @@ class PNInterleavingExample {
         //portin.getQueue().setCapacity(1);
 
         //portout = (PNOutPort)_interleave.getPort("output");
-        //((PNInPort)_plot.getPort("input")).link(queue);
+        ((PNInPort)_plot.getPort("input")).link(queue);
         
         //queue = (IORelation)myUniverse.connect(portin, portout, "QPlot");
  
