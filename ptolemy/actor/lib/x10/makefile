@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/x10
 
-DIRS =		    demo
+DIRS =		    
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -43,7 +43,7 @@ CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     lib
+PTPACKAGE =     x10
 PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
@@ -69,7 +69,7 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
+		demo \
         doc
 
 JCLASS = $(JSRCS:%.java=%.class)
