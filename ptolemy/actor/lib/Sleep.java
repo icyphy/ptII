@@ -103,8 +103,8 @@ public class Sleep extends Transformer {
 	    try {
 		long sleepTimeValue =
 		    ((LongToken)sleepTime.getToken()).longValue();
-		if (_debugging) _debug(getName() + "Wait for" +
-                        sleepTimeValue + "milliseconds.");
+		if (_debugging) _debug(getName() + ": Wait for " +
+                        sleepTimeValue + " milliseconds.");
 		Thread.sleep(sleepTimeValue);
 	    } catch (InterruptedException e) {
 		// Ignore...
