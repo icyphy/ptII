@@ -83,7 +83,7 @@ be a constant, so the actor will not be very useful.
 The implementation of this actor, moreover, assumes that no more
 than one event occurs between samples.  This is not assured when the
 fireAt() method is ignored by the director.  Thus this actor should
-probably not be used in untimed domaims.  For this reason, it
+probably not be used in untimed domains.  For this reason, it
 implements the TimedActor interface, and most untimed domains will
 refuse to execute it.
 <p>
