@@ -107,8 +107,9 @@ public abstract class ChangeRequest {
      *  methods) are notified first of the status of the request, followed
      *  by global listeners that were set using the setListeners() method.
      *  If the change failed because an exception was thrown, and the
-     *  exception was not reported to any global listeners, then the
-     *  exception's stack trace is printed to System.err.
+     *  exception was not reported to any global listeners, then 
+     *  we throw an InternalErrorException because it is a bug to
+     *  not have a listeneter in this case.
      *  <p>
      *  This method should be called exactly once, by the object that
      *  the change request was queued with.  Attempting to call this
@@ -158,12 +159,19 @@ public abstract class ChangeRequest {
             }
         }
         if (needToReport) {
-            // There are no listeners, so if there was an exception,
-            // we print it to standard error.
             if (_exception != null) {
-                System.err.println(
-                        "Exception occurred executing change request:");
-                _exception.printStackTrace();
+                // We used to print to stderr, but printing to stderr
+                // is a bug if we have a UI, so we throw an InternalError.
+
+                // If the _source is a Nameable, we use it in the Exception.
+                Nameable object = null;
+                if (_source instanceof Nameable) {
+                    object = (Nameable)_source;
+                }
+                throw new InternalErrorException(object, _exception,
+                        "There was no ChangeListener associated with"
+                        + "this ChangeRequest:\n" + _description
+                        + "\n The above ChangeRequest failed.");
             }
         }
         _pending = false;
