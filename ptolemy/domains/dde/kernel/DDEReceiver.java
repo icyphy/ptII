@@ -247,54 +247,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	_put(token, time, workspace, director);
     }
 
-    /** This method provides the recursive functionality of put(Token, double).
-     */
-    private void _put(Token token, double time, Workspace workspace, 
-	    DDEDirector director) {
-	String calleeName = 
-		((Nameable)getContainer().getContainer()).getName();
-	// new FooBar( calleeName, "DDEReceiver._put()", "START", time, token);
-        synchronized(this) {
-	    new FooBar( calleeName, "DDEReceiver._put()", "SYNCHRONIZED_START", time, token);
-            if( time > getCompletionTime() &&
-                    getCompletionTime() != NOTSTARTED && !_terminate ) {
-	        time = INACTIVE;
-	    }
-
-            if( super.hasRoom() && !_terminate ) {
-                super.put(token, time);
-		if( _readPending ) {
-		    director.removeReadBlock();
-		    _readPending = false;
-		    notifyAll();
-		}
-		new FooBar( calleeName, "DDEReceiver._put()", "END", time, token);
-                return;
-            }
-
-            if ( !super.hasRoom() && !_terminate ) {
-		_writePending = true;
-		director.addWriteBlock(this);
-		while( _writePending && !_terminate ) {
-		    workspace.wait( this );
-		}
-            }
-            if( _terminate ) {
-		if( _writePending ) {
-		    _writePending = false;
-		    director.removeWriteBlock(this);
-		}
-                throw new TerminateProcessException( getContainer(),
-                        "This receiver has been terminated "
-                        + "during _put()");
-            } else {
-		new FooBar( calleeName, "DDEReceiver._put()", 
-			"RECURSIVE_START", time, token);
-                _put(token, time, workspace, director);
-            }
-	}
-    }
-
     /** Schedule this receiver to terminate. After this method is
      *  called, a TerminateProcessException will be thrown during
      *  the next call to get() or put(...) of this class.
@@ -436,6 +388,54 @@ public class DDEReceiver extends TimedQueueReceiver
 	} else {
 	    new FooBar( calleeName, "DDEReceiver._hasToken()", "RECURSIVE_START" );
             return _hasToken(workspace, director, timeKeeper, _hideNullTokens);
+	}
+    }
+
+    /** This method provides the recursive functionality of put(Token, double).
+     */
+    private void _put(Token token, double time, Workspace workspace, 
+	    DDEDirector director) {
+	String calleeName = 
+		((Nameable)getContainer().getContainer()).getName();
+	// new FooBar( calleeName, "DDEReceiver._put()", "START", time, token);
+        synchronized(this) {
+	    new FooBar( calleeName, "DDEReceiver._put()", "SYNCHRONIZED_START", time, token);
+            if( time > getCompletionTime() &&
+                    getCompletionTime() != NOTSTARTED && !_terminate ) {
+	        time = INACTIVE;
+	    }
+
+            if( super.hasRoom() && !_terminate ) {
+                super.put(token, time);
+		if( _readPending ) {
+		    director.removeReadBlock();
+		    _readPending = false;
+		    notifyAll();
+		}
+		new FooBar( calleeName, "DDEReceiver._put()", "END", time, token);
+                return;
+            }
+
+            if ( !super.hasRoom() && !_terminate ) {
+		_writePending = true;
+		director.addWriteBlock(this);
+		while( _writePending && !_terminate ) {
+		    workspace.wait( this );
+		}
+            }
+            if( _terminate ) {
+		if( _writePending ) {
+		    _writePending = false;
+		    director.removeWriteBlock(this);
+		}
+                throw new TerminateProcessException( getContainer(),
+                        "This receiver has been terminated "
+                        + "during _put()");
+            } else {
+		new FooBar( calleeName, "DDEReceiver._put()", 
+			"RECURSIVE_START", time, token);
+                _put(token, time, workspace, director);
+            }
 	}
     }
 
