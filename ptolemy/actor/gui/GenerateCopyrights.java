@@ -100,8 +100,20 @@ public class GenerateCopyrights {
                 "ptolemy/cal/saxon-copyright.htm");
 
         _addIfPresent(copyrightsMap,
+                "ptolemy.domains.gr.kernel.GRActor",
+                "ptolemy/domains/gr/lib/java3d-copyright.htm");
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.io.comm.SerialComm",
                 "ptolemy/actor/lib/io/comm/copyright.htm");
+
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.jai.JAIImageToken",
+                "ptolemy/actor/lib/jai/jai-copyright.htm");
+
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.jmf.JMFImageToken",
+                "ptolemy/actor/lib/jmf/jmf-copyright.htm");
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.joystick.Joystick",
