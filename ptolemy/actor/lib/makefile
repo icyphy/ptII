@@ -96,7 +96,6 @@ JSRCS = \
 	Minimum.java \
         Multiplexor.java \
 	MultiplyDivide.java \
-	NonStrictActor.java \
 	NonStrictTest.java \
 	PhaseUnwrap.java \
 	PoissonClock.java \
