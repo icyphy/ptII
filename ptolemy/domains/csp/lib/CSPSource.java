@@ -56,24 +56,29 @@ public class CSPSource extends AtomicActor {
     
     public CSPSource(CompositeActor cont, String name) 
             throws IllegalActionException, NameDuplicationException {
+         this(cont, name, -1, 0);
+    }
+
+    public CSPSource(CompositeActor cont, String name, int tokenCount, int
+           initValue) throws IllegalActionException, NameDuplicationException {
          super(cont, name);
+         _tokenLimit = tokenCount;
+         _value = initValue;
          output = new IOPort(this, "output", false, true);
     }
-    
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
             
     public void fire() {
         try {
             Random rand = new Random();
-            int count = 0;
-            while (count < 12 ) {
+            while ( (_value < _tokenLimit) || (_tokenLimit == -1) ) {
                 //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-                Token t = new IntToken(count);
+                Token t = new IntToken(_value);
                 //System.out.println(getName() + " sending...");
                 output.send(0,t);
                 System.out.println(getName() + " sent Token: " + t.toString());
-                count++;
+                _value++;
             }
             System.out.println("CSP(" + getName() + "):finished normally.");
             _again = false;
@@ -92,4 +97,6 @@ public class CSPSource extends AtomicActor {
     
     public IOPort output;
     private boolean _again = true;
+    private int _tokenLimit = -1;
+    private int _value = 0;
 }
