@@ -1,6 +1,6 @@
 # Makefile for the Java classes used to implement the Ptolemy PN domain
 #
-# @Version: @(#)makefile	1.7 03/01/98
+# @Version: $Id$
 # @Author: Christopher Hylands
 #
 # @Copyright (c) 1997- The Regents of the University of California.
