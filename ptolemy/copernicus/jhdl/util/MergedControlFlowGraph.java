@@ -40,7 +40,7 @@ import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.copernicus.jhdl.BlockDataFlowGraph;
+import ptolemy.copernicus.jhdl.RequiredBlockDataFlowGraph;
 
 import soot.Body;
 import soot.SootMethod;
@@ -72,25 +72,25 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	_controlFlowAnalysis();
     }
 
-    public DirectedGraph createDataFlowGraph() {
-	// 1. Create dataflow graph of each basic block
-	// 2. Determine hierarchical super block boundaries
-	// 3. Determine signal multiplexing
-	// 4. Combine dataflow graphs
+//      public DirectedGraph createDataFlowGraph() {
+//  	// 1. Create dataflow graph of each basic block
+//  	// 2. Determine hierarchical super block boundaries
+//  	// 3. Determine signal multiplexing
+//  	// 4. Combine dataflow graphs
 
-	// Create dataflow of each basic block
-	List blockList = _bbgraph.getBlocks();
-	for (int blockNum=0;blockNum<blockList.size();blockNum++) {
-	    Block block=(Block)blockList.get(blockNum);
-	    BlockDataFlowGraph dataFlowGraph=null;
-	    try {
-		dataFlowGraph = new BlockDataFlowGraph(block);
-	    } catch(IllegalActionException e) {
-		System.err.println(e);
-	    }
-	}
-	return null;
-    }
+//  	// Create dataflow of each basic block
+//  	List blockList = _bbgraph.getBlocks();
+//  	for (int blockNum=0;blockNum<blockList.size();blockNum++) {
+//  	    Block block=(Block)blockList.get(blockNum);
+//  	    BlockDataFlowGraph dataFlowGraph=null;
+//  	    try {
+//  		dataFlowGraph = new BlockDataFlowGraph(block);
+//  	    } catch(IllegalActionException e) {
+//  		System.err.println(e);
+//  	    }
+//  	}
+//  	return null;
+//      }
 
     /**
      * create the topology of the graph.
@@ -102,7 +102,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	// Create nodes
 	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
 	    Block block=(Block)blocks.next();
-	    BlockDataFlowGraph dfg = new BlockDataFlowGraph(block);
+	    RequiredBlockDataFlowGraph dfg = new RequiredBlockDataFlowGraph(block);
 	    SuperBlock sb = new SuperBlock(block,dfg);
 	    blockToSuperBlockMap.put(block, sb);
 

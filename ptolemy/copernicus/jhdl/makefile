@@ -55,6 +55,7 @@ JSRCS = \
 	Main.java \
 	Predefined.java \
 	RegisterDelay.java \
+	RequiredBlockDataFlowGraph.java \
 	BlockDataFlowGraph.java \
 	DominatorHashMap.java \
 	ConditionalControlCompactor.java \

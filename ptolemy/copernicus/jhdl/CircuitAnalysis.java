@@ -289,7 +289,7 @@ public class CircuitAnalysis {
 
 	return mcfg;
     }
-
+  
     protected DirectedGraph _extractDataFlow(DirectedGraph graph){
 
 	//Make the requiredNodeMap from each graph's requiredNodeSet
@@ -298,11 +298,10 @@ public class CircuitAnalysis {
 	    GraphNode gn = (GraphNode)((Node)i.next()).getWeight();
 	    if (gn instanceof SuperBlock){
 		SuperBlock sb = (SuperBlock)gn;
-		BlockDataFlowGraph bdfg = (BlockDataFlowGraph)sb.getGraph();
-		// MJW = FIX!
-//  		for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
-//  		    requiredNodeMap.put(j.next(), sb);
-//  		}
+		RequiredBlockDataFlowGraph bdfg = (RequiredBlockDataFlowGraph)sb.getGraph();
+  		for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
+  		    requiredNodeMap.put(j.next(), sb);
+  		}
 	    }
 	}
 

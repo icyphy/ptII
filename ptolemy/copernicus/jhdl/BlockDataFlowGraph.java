@@ -467,7 +467,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	_instanceFieldRefs.add(new_ifr,n);
 
 	// add edge between base and ifr
-	addBaseEdge(base,n);
+	//addBaseEdge(base,n);  MRK hack
 	return n;
     }
 

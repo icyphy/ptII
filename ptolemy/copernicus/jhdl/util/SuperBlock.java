@@ -152,21 +152,23 @@ public class SuperBlock implements GraphNode {
 
 	if (predecessor == this) predecessor = null; //hack to fix a hack
 	
-	if (!_graph.containsNodeWeight(value)){
-	    //This block doesn't define 'value', so pass the request to its
-	    //predecessor
-	    if (predecessor == null) return null; //No predecessor
-	    return predecessor.createDataFlow(graph, value);
-	}
+//  	if (!_graph.containsNodeWeight(value)){
 
-	Collection c=_graph.nodes(value);
+//  	  System.out.println("---------This block doesn't have it");
+//  	    //This block doesn't define 'value', so pass the request to its
+//  	    //predecessor
+//  	    if (predecessor == null) return null; //No predecessor
+//  	    return predecessor.createDataFlow(graph, value);
+//  	}
+
+	Collection c=_graph.nodes();
 	Set equalSet=new HashSet();
 	
 	for (Iterator i=c.iterator(); i.hasNext();){
-	    Object o = i.next();
-	    //if (o == value){
-		equalSet.add(o);
-		//}
+	    Node n = (Node)i.next();
+	    if (_matches(n.getWeight(),  value)){
+		equalSet.add(n);
+	    }
 	}
 
 	if (equalSet.size() == 0){
@@ -266,6 +268,24 @@ public class SuperBlock implements GraphNode {
     }
 
 
+    /**
+     *  Check to see if the two objects match
+     */
+    protected boolean _matches(Object one, Object two){
+      if ((one == two) || (one.equals(two))){
+	return true;
+      }
+
+      if ((one instanceof FieldRef) && (two instanceof FieldRef)){
+	if ( ((FieldRef)one).equivTo(two)){
+	  return true;
+	}
+	
+      }
+      
+      return false;
+    }
+    
     /** Combine Labels that have same parent label. **/
     protected void _shrinkLabels(DirectedGraph graph){
 
