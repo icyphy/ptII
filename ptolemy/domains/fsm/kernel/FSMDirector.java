@@ -196,7 +196,9 @@ public class FSMDirector extends Director {
      *   choice action.
      */
     public void fire() throws IllegalActionException {
+        if(_debugging) _debug(getName(), " fire.");
         FSMActor ctrl = getController();
+        if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
         ctrl._setInputVariables();
         State st = ctrl.currentState();
         Transition tr =
@@ -206,6 +208,8 @@ public class FSMDirector extends Director {
         }
         if (_fireRefinement) {
             TypedActor ref = st.getRefinement();
+            if(_debugging) _debug(getName(), " fire refinement" +
+                    ((ptolemy.kernel.util.NamedObj)ref).getName());
             ref.fire();
             ctrl._setInputsFromRefinement();
         }
