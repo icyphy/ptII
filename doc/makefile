@@ -156,6 +156,7 @@ COPERNICUSPACKAGES = \
 HYVISUALPACKAGES = \
 			ptolemy.actor.lib.javasound \
 			ptolemy.actor.lib \
+			ptolemy.actor.lib.comm \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.lib.io \
@@ -187,7 +188,7 @@ PTINYPACKAGES = \
 # actor.lib.comm uses the Java comm api for communicating with
 # serial ports.  javacomm is not always available, so actor.lib.comm
 # is not part of the default build	
-#COMMPACKAGES =		ptolemy.actor.lib.comm
+#COMMPACKAGES =		ptolemy.actor.lib.io.comm
 
 # GR domain uses Java 3D, which is not part of the default
 # JDK1.3 download, so we can't include the GR domain classes in
@@ -333,6 +334,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/gui/style/*.java \
 			../ptolemy/actor/hoc/*.java \
 			../ptolemy/actor/lib/*.java \
+			../ptolemy/actor/lib/comm/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
 			../ptolemy/actor/lib/hoc/*.java \
 			../ptolemy/actor/lib/io/*.java \
