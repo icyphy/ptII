@@ -473,8 +473,8 @@ public class Manager extends NamedObj implements Runnable {
      *  @param ex The exception.
      */
     public void notifyListenersOfException(Exception ex) {
-	String errorMessage = new String("Exception occurred:" + ex.getClass());
-	errorMessage += "(" + ex.getMessage() + ")";
+	String errorMessage = "Exception occurred: " + ex.getClass()
+            + "(" + ex.getMessage() + ")";
         _debug(errorMessage);
         if (_executionListeners == null) {
             System.err.println(errorMessage);
