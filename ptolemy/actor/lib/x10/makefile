@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/x10
 
-DIRS =		    
+DIRS =		demo   
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -71,7 +71,7 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-		demo \
+	demo \
         doc
 
 JCLASS = $(JSRCS:%.java=%.class)
