@@ -977,7 +977,7 @@ public class Plot extends PlotBox {
                                 "(decimal value = " + c +
                                 ") in binary file.  Last point was (" + x +
                                 "," + y + ").\nProcessed " + pointCount +
-                                " points sucessfully");
+                                " points successfully");
                         }
                         c = in.readByte();
                     }
