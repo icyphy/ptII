@@ -47,7 +47,6 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
     /** Resolve the name of the type. */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-
         Environ env = (Environ) args.get(0);
 
         NameNode name = node.getName();
@@ -60,10 +59,16 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
         return null;
     }
+    
+    /** Resolve the possible TypeNameNode that is the base class. */
+    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
+        node.getBaseType().accept(this, args);
+        
+        return null;       
+    }
 
     /** Visit the types defined in this file. */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         LinkedList childArgs = new LinkedList();
@@ -108,7 +113,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     }
 
     /** The default visit method. Visits all child nodes with the same
-     *  environment as in the argument list. Only nodes that do not have their
+     *  environment as in the argument list. Nodes that do not have their
      *  own environment should call this method.
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {

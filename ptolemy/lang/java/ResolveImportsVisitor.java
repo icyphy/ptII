@@ -52,8 +52,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         _fileEnv = (Environ) node.getDefinedProperty(ENVIRON_KEY); // file environment
 
         // initialize importedPackages property
-        if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {
-        
+        if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {        
            _importedPackages = new LinkedList();
             
            node.setProperty(IMPORTED_PACKAGES_KEY, _importedPackages);

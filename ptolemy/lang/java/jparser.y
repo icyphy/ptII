@@ -522,7 +522,7 @@ FieldVariableDeclaration :
        while (itr.hasNext()) {
          DeclaratorNode decl = (DeclaratorNode) itr.next();
          result = cons(new FieldDeclNode($1,
-                        makeArrayType((TypeNode) $2, decl.getDims()),
+                        TypeUtility.makeArrayType((TypeNode) $2, decl.getDims()),
                         decl.getName(), decl.getInitExpr()),
                        result);
        }
@@ -620,7 +620,7 @@ MethodDeclaration :
      Modifier.checkMethodModifiers($1);
       $$ = new MethodDeclNode($1, (NameNode) $3, (List) $5,
                              (List) $8, (TreeNode) $9,
-                             makeArrayType((TypeNode) $2, $7));
+                             TypeUtility.makeArrayType((TypeNode) $2, $7));
    }
   | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
     ThrowsOpt MethodBody
@@ -628,7 +628,7 @@ MethodDeclaration :
      Modifier.checkMethodModifiers($1);
       $$ = new MethodDeclNode($1, (NameNode) $3, (List) $5,
                              (List) $8, (TreeNode) $9,
-                             makeArrayType((TypeNode) $2, $7));
+                             TypeUtility.makeArrayType((TypeNode) $2, $7));
    }
  ;
 
@@ -658,7 +658,7 @@ Parameter :
     FieldModifiersOpt Type SimpleName DimsOpt
     {
       Modifier.checkParameterModifiers($1); 
-      $$ = new ParameterNode($1, makeArrayType((TypeNode) $2, $4),
+      $$ = new ParameterNode($1, TypeUtility.makeArrayType((TypeNode) $2, $4),
                              (NameNode) $3);
     }
   ;
@@ -809,7 +809,7 @@ ConstantFieldDeclaration :
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
         result = cons(new FieldDeclNode(modifiers,
-                     makeArrayType((TypeNode) $2, decl.getDims()),
+                     TypeUtility.makeArrayType((TypeNode) $2, decl.getDims()),
                       decl.getName(), decl.getInitExpr()), result);
       }
 
@@ -825,7 +825,7 @@ MethodSignatureDeclaration :
       $$ = new MethodDeclNode($1, (NameNode) $3,
                              (List) $5, (List) $8,
                              AbsentTreeNode.instance,
-                             makeArrayType((TypeNode) $2, $7));
+                             TypeUtility.makeArrayType((TypeNode) $2, $7));
    }
   | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
      ThrowsOpt ';'
@@ -834,7 +834,7 @@ MethodSignatureDeclaration :
       $$ = new MethodDeclNode($1, (NameNode) $3,
                              (List) $5, (List) $8,
                              AbsentTreeNode.instance,
-                             makeArrayType((TypeNode) $2, $7));
+                             TypeUtility.makeArrayType((TypeNode) $2, $7));
     }
   ;
 
@@ -912,7 +912,7 @@ LocalVariableDeclarationStatement :
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
         result = cons(new LocalVarDeclNode($1,
-                     makeArrayType((TypeNode) $2, decl.getDims()),
+                     TypeUtility.makeArrayType((TypeNode) $2, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
      $$ = result;
@@ -928,7 +928,7 @@ LocalVariableDeclarationStatement :
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
         result = cons(new LocalVarDeclNode(Modifier.NO_MOD,
-                     makeArrayType((TypeNode) $1, decl.getDims()),
+                     TypeUtility.makeArrayType((TypeNode) $1, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
      $$ = result;
@@ -1544,18 +1544,6 @@ protected void yyerror(String msg)
      errMsg += " on line " + _lexer.lineNumber();
   }
   ApplicationUtility.error(errMsg);
-}
-
-/** An array type with given ELEMENTTYPE and DIMS dimensions.  When
- *  DIMS=0, equals ELEMENTTYPE.
- */
-protected static TypeNode makeArrayType(TypeNode elementType, int dims)
-{
-  while (dims > 0) {
-     elementType = new ArrayTypeNode(elementType);
-     dims -= 1;
-  }
-  return elementType;
 }
 
 protected String _filename = null;

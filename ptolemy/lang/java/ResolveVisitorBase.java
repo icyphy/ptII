@@ -121,12 +121,12 @@ public abstract class ResolveVisitorBase extends JavaVisitor
     public Object visitDoubleTypeNode(DoubleTypeNode node, LinkedList args) {
         return null;
     }
-
-    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+    
+    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
         return null;
     }
 
-    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
+    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
         return null;
     }
 

@@ -103,7 +103,11 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
     }
 
     public Object visitAllocateArrayNode(AllocateArrayNode node, LinkedList args) {
-        return _setType(node, node.getDtype());
+        // returned type is an N-D array of the element type, where 
+        // N = # dimension expressions + # empty dimensions
+        return _setType(node, 
+                 TypeUtility.makeArrayType(node.getDtype(), 
+                  node.getDimExprs().size() + node.getDims()));
     }
 
     // for AllocateAnonymousClassNode, type property is already defined by ResolvePackageVisitor

@@ -245,8 +245,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     public static final JavaDecl getDecl(TreeNode node) {                 
         if (node instanceof NamedNode) {
            return getDecl((NamedNode) node);
-        } 
-    
+        }     
         return (JavaDecl) node.getProperty(DECL_KEY);
     }
 
@@ -265,8 +264,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         if (node instanceof NamedNode) {
            setDecl((NamedNode) node, decl);
            return;
-        } 
-    
+        }     
         node.setProperty(DECL_KEY, decl);
     }
 

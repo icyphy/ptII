@@ -64,10 +64,10 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         
           case TYPEFIELDACCESSNODE_ID:
           return accessedObjectType((TypeFieldAccessNode) node);
-          
+           
           case OBJECTFIELDACCESSNODE_ID:
           return accessedObjectType((ObjectFieldAccessNode) node);
-
+ 
           case THISFIELDACCESSNODE_ID:
           return accessedObjectType((ThisFieldAccessNode) node);
           
@@ -187,7 +187,6 @@ public class TypeUtility implements JavaStaticSemanticConstants {
                return false;
             }
         }
-
         return true;    
     }
 
@@ -291,9 +290,9 @@ public class TypeUtility implements JavaStaticSemanticConstants {
 
              case TYPE_KIND_INTERFACE: 
              {
-              JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);           
+               JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);           
 
-                return (decl == StaticResolution.OBJECT_DECL);
+               return (decl == StaticResolution.OBJECT_DECL);
              }
 
              case TYPE_KIND_CLASS:                          
@@ -324,8 +323,8 @@ public class TypeUtility implements JavaStaticSemanticConstants {
 
              case TYPE_KIND_CLASS:
              {
-             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);           
-             ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);           
+               ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);           
+               ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);           
 
                return doesImplement(decl2, decl1);
              }
@@ -349,11 +348,10 @@ public class TypeUtility implements JavaStaticSemanticConstants {
        return false;
     }   
     
-    /** Return the kind of the type. */
+    /** Return the kind (an integer) of the type. */
     public static int kind(TypeNode type) {
     
-       switch (type.classID()) {
-       
+       switch (type.classID()) {       
          // null type
          case NULLTYPENODE_ID:     return TYPE_KIND_NULL;              
 
@@ -389,17 +387,18 @@ public class TypeUtility implements JavaStaticSemanticConstants {
        }    
        return TYPE_KIND_CLASS;
     }
-             
+       
+    /** Return the primitive type corresponding to the argument kind. */         
     public static TypeNode primitiveKindToType(int kind) {
-       if (kind < 0) {
-          ApplicationUtility.error("unknown type is not primitive");
-       }
+        if (kind < 0) {
+           ApplicationUtility.error("unknown type is not primitive");
+        }
        
-       if (kind > NUM_PRIMITIVE_TYPES) {
-          ApplicationUtility.error("type is not primitive");
-       }
+        if (kind > NUM_PRIMITIVE_TYPES) {
+           ApplicationUtility.error("type is not primitive");
+        }
        
-       return _PRIMITIVE_KIND_TO_TYPE[kind];                    
+        return _PRIMITIVE_KIND_TO_TYPE[kind];                    
     }         
              
     public static final TypeNode type(final ExprNode expr) {
@@ -412,46 +411,46 @@ public class TypeUtility implements JavaStaticSemanticConstants {
      */
     public static boolean isSubClass(TypeNode type1, TypeNode type2) {
          
-       if (type2.classID() != TYPENAMENODE_ID) {
-          return false;       
-       }
+        if (type2.classID() != TYPENAMENODE_ID) {
+           return false;       
+        }
     
-       ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl((NamedNode) type2);
+        ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl((NamedNode) type2);
        
-       // arrays are subclasses of Object
-       if ((decl2 == StaticResolution.OBJECT_DECL) && 
-           (type1.classID() == ARRAYTYPENODE_ID)) {
-          return true;
-       } 
+        // arrays are subclasses of Object
+        if ((decl2 == StaticResolution.OBJECT_DECL) && 
+            (type1.classID() == ARRAYTYPENODE_ID)) {
+           return true;
+        } 
   
-       if (type1.classID() != TYPENAMENODE_ID) {
-          return false;
-       }   
+        if (type1.classID() != TYPENAMENODE_ID) {
+           return false;
+        }   
        
-       ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl((NamedNode) type1);
+        ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl((NamedNode) type1);
     
-       if ((decl1.category != CG_CLASS) || (decl2.category != CG_CLASS)) {
-          return false;
-       }
+        if ((decl1.category != CG_CLASS) || (decl2.category != CG_CLASS)) {
+           return false;
+        }
             
-       return isSubClass(decl1, decl2);
+        return isSubClass(decl1, decl2);
     }
 
     /** Return true iff decl1 corresponds to a class that is the same or
      *  a subclass of the class correspoinding to decl2.
      */
     public static boolean isSubClass(ClassDecl decl1, ClassDecl decl2) {
-       while (true) {
-          if (decl1 == decl2) {
-             return true;
-          }
-
-          if ((decl1 == StaticResolution.OBJECT_DECL) || (decl1 == null)) {
-             return false;
-          }
-
-          decl1 = decl1.getSuperClass();
-       }
+        while (true) {
+           if (decl1 == decl2) {
+              return true;
+           }
+ 
+           if ((decl1 == StaticResolution.OBJECT_DECL) || (decl1 == null)) {
+              return false;
+           }
+ 
+           decl1 = decl1.getSuperClass();
+        }
     }                  
     
     
@@ -459,82 +458,97 @@ public class TypeUtility implements JavaStaticSemanticConstants {
      *  interface corresponding to iFaceDecl.
      */
     public static boolean doesImplement(ClassDecl classDecl, ClassDecl iFaceDecl) {
-       Iterator iFaceItr = classDecl.getInterfaces().iterator();
+        Iterator iFaceItr = classDecl.getInterfaces().iterator();
 
-       while (iFaceItr.hasNext()) {
-          ClassDecl implIFace = (ClassDecl) iFaceItr.next();
-          if (isSuperInterface(iFaceDecl, implIFace)) {
-             return true;
-          }
-       }
+        while (iFaceItr.hasNext()) {
+           ClassDecl implIFace = (ClassDecl) iFaceItr.next();
+           if (isSuperInterface(iFaceDecl, implIFace)) {
+              return true;
+           }
+        }
 
-       if (classDecl == StaticResolution.OBJECT_DECL) {
-          return false;
-       } else {
-          return doesImplement(classDecl.getSuperClass(), iFaceDecl);
-       }      
+        if (classDecl == StaticResolution.OBJECT_DECL) {
+           return false;
+        } else {
+           return doesImplement(classDecl.getSuperClass(), iFaceDecl);
+        }      
     }
 
     public static boolean isSuperInterface(ClassDecl decl1, ClassDecl decl2) {   
-       if (decl1 == decl2) {
-          return true;
-       }
+        if (decl1 == decl2) {
+           return true;
+        }
 
-       Iterator iFaceItr = decl2.getInterfaces().iterator();
+        Iterator iFaceItr = decl2.getInterfaces().iterator();
 
-       while (iFaceItr.hasNext()) {
-          ClassDecl implIFace = (ClassDecl) iFaceItr.next();
-          if (isSuperInterface(decl1, implIFace)) {
-             return true;
-          }
-       }
-       return false;
+        while (iFaceItr.hasNext()) {
+           ClassDecl implIFace = (ClassDecl) iFaceItr.next();
+           if (isSuperInterface(decl1, implIFace)) {
+              return true;
+           }
+        }
+        return false;
     }
 
     public static TypeNode arithPromoteType(TypeNode type) {
-       switch (kind(type)) {
-         case TYPE_KIND_BYTE:      
-         case TYPE_KIND_CHAR:
-         case TYPE_KIND_SHORT:
-         case TYPE_KIND_INT:
-         return IntTypeNode.instance;
-       }
-       return type;   
+        switch (kind(type)) {
+          case TYPE_KIND_BYTE:      
+          case TYPE_KIND_CHAR:
+          case TYPE_KIND_SHORT:
+          case TYPE_KIND_INT:
+          return IntTypeNode.instance;
+        }
+        return type;   
     }
 
     public static TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
-       int kind1 = kind(type1);
-       int kind2 = kind(type2);
-
-       if ((kind1 == TYPE_KIND_DOUBLE) ||
-           (kind2 == TYPE_KIND_DOUBLE)) {
-          return DoubleTypeNode.instance;
-       }
+        int kind1 = kind(type1);
+        int kind2 = kind(type2);
+ 
+        if ((kind1 == TYPE_KIND_DOUBLE) ||
+            (kind2 == TYPE_KIND_DOUBLE)) {
+           return DoubleTypeNode.instance;
+        }
        
-       if ((kind1 == TYPE_KIND_FLOAT) ||
-           (kind2 == TYPE_KIND_FLOAT)) {
-          return FloatTypeNode.instance;
-       }
+        if ((kind1 == TYPE_KIND_FLOAT) ||
+            (kind2 == TYPE_KIND_FLOAT)) {
+           return FloatTypeNode.instance;
+        }
 
-       if ((kind1 == TYPE_KIND_LONG) ||
-           (kind2 == TYPE_KIND_LONG)) {
-          return LongTypeNode.instance;
-       }
+        if ((kind1 == TYPE_KIND_LONG) ||
+            (kind2 == TYPE_KIND_LONG)) {
+           return LongTypeNode.instance;
+        }
 
-       if ((kind1 == TYPE_KIND_BOOL) ||
-           (kind2 == TYPE_KIND_BOOL)) {     
-          return BoolTypeNode.instance;
-       }
-       return IntTypeNode.instance;
+        if ((kind1 == TYPE_KIND_BOOL) ||
+            (kind2 == TYPE_KIND_BOOL)) {     
+           return BoolTypeNode.instance;
+        }
+        return IntTypeNode.instance;
     }       
 
+    /** Return an array type with given element type and dimensions.  
+     *  If dims is 0, return the element type.
+     */
+    public static TypeNode makeArrayType(TypeNode elementType, int dims) {
+        for(int i = 0; i < dims; i++) {
+           elementType = new ArrayTypeNode(elementType);
+        }
+        return elementType;
+    }
+
+
+    /** Return true if type is one of the types contained in typeArray. The
+     *  comparison is made between references only, so this only works for
+     *  primitive types (which are singletons).
+     */
     protected static final boolean _isOneOf(TypeNode type, TypeNode[] typeArray) {
-       for (int i = 0; i < typeArray.length; i++) {
-           if (typeArray[i] == type) {
-              return true;
-           }
-       }
-       return false;          
+        for (int i = 0; i < typeArray.length; i++) {
+            if (typeArray[i] == type) {
+               return true;
+            }
+        }
+        return false;          
     }
     
     public static final int TYPE_KIND_UNKNOWN = -1;  

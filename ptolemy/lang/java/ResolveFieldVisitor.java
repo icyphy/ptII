@@ -210,7 +210,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         
         if (!(TypeUtility.isReferenceType(ot) || TypeUtility.isArrayType(ot))) {
            ApplicationUtility.error("attempt to select from non-reference type " + ot);
-        } else {                     
+        } else {                                           
            resolveAField(node, false, false, ctx);
         }
 
@@ -273,7 +273,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         FieldContext subCtx = new FieldContext(ctx);
         
         subCtx.methodArgs = node.getArgs();
-        
+                         
         node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.cons(subCtx)));
         return node;        
     }

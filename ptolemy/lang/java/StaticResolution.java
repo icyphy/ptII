@@ -207,7 +207,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
           ApplicationUtility.trace("resolveAName " + nameString(name) +
            " (user type) ok");
           return name;
-        }
+        } 
 
         case CG_FIELD:
         case CG_METHOD:

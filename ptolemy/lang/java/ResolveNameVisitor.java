@@ -51,7 +51,7 @@ import ptolemy.lang.java.nodetypes.*;
  *
  *  Code and comments taken from the Titanium project.
  * 
- *  @author ctsay@eecs.berkeley.edu
+ *  @author Jeff Tsay
  */
 public class ResolveNameVisitor extends ReplacementJavaVisitor 
        implements JavaStaticSemanticConstants {
@@ -323,7 +323,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
          
         LinkedList childArgs = TNLManip.cons(subCtx);
          
-        node.getParam().accept(this, childArgs);
+        node.setParam((ParameterNode) node.getParam().accept(this, childArgs));
+        node.setBlock((BlockNode) node.getBlock().accept(this, childArgs));
 
         return node;
     }
@@ -342,7 +343,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         
         return StaticResolution.resolveAName(name, ctx.environ, 
          ctx.currentClass, _currentPackage, 
-         ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);        
+         ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);
     }
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
@@ -350,7 +351,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.resolveAsObject = true;
         LinkedList childArgs = TNLManip.cons(subCtx);
         
-        node.setObject((ExprNode) node.getObject().accept(this, childArgs));
+        node.setObject((ExprNode) (node.getObject().accept(this, childArgs)));
         
         return node;
     }
@@ -384,7 +385,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
-        TNLManip.traverseList(this, node, args, node.getArgs());
+        node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
 
         NameContext subCtx = new NameContext((NameContext) args.get(0));
         subCtx.resolveAsObject = false;        
@@ -409,7 +410,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         LinkedList childArgs = TNLManip.cons(ctx);
 
-        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+        node.setMembers(
+         TNLManip.traverseList(this, node, childArgs, node.getMembers()));
 
         return node;
     }

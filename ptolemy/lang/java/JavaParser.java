@@ -471,21 +471,9 @@ protected void yyerror(String msg)
   ApplicationUtility.error(errMsg);
 }
 
-/** An array type with given ELEMENTTYPE and DIMS dimensions.  When
- *  DIMS=0, equals ELEMENTTYPE.
- */
-protected static TypeNode makeArrayType(TypeNode elementType, int dims)
-{
-  while (dims > 0) {
-     elementType = new ArrayTypeNode(elementType);
-     dims -= 1;
-  }
-  return elementType;
-}
-
 protected String _filename = null;
 protected Yylex _lexer = null;
-//#line 2025 "JavaParser.java"
+//#line 2013 "JavaParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -859,7 +847,7 @@ case 55:
        while (itr.hasNext()) {
          DeclaratorNode decl = (DeclaratorNode) itr.next();
          result = cons(new FieldDeclNode(val_peek(3).ival,
-                        makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
+                        TypeUtility.makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                         decl.getName(), decl.getInitExpr()),
                        result);
        }
@@ -954,7 +942,7 @@ case 77:
      Modifier.checkMethodModifiers(val_peek(8).ival);
       yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (List) val_peek(4).obj,
                              (List) val_peek(1).obj, (TreeNode) val_peek(0).obj,
-                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
+                             TypeUtility.makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
    }
 break;
 case 78:
@@ -963,7 +951,7 @@ case 78:
      Modifier.checkMethodModifiers(val_peek(8).ival);
       yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (List) val_peek(4).obj,
                              (List) val_peek(1).obj, (TreeNode) val_peek(0).obj,
-                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
+                             TypeUtility.makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
    }
 break;
 case 79:
@@ -990,7 +978,7 @@ case 84:
 //#line 659 "jparser.y"
 {
       Modifier.checkParameterModifiers(val_peek(3).ival); 
-      yyval.obj = new ParameterNode(val_peek(3).ival, makeArrayType((TypeNode) val_peek(2).obj, val_peek(0).ival),
+      yyval.obj = new ParameterNode(val_peek(3).ival, TypeUtility.makeArrayType((TypeNode) val_peek(2).obj, val_peek(0).ival),
                              (NameNode) val_peek(1).obj);
     }
 break;
@@ -1112,7 +1100,7 @@ case 109:
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
         result = cons(new FieldDeclNode(modifiers,
-                     makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
+                     TypeUtility.makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                       decl.getName(), decl.getInitExpr()), result);
       }
 
@@ -1126,7 +1114,7 @@ case 110:
       yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj,
                              (List) val_peek(4).obj, (List) val_peek(1).obj,
                              AbsentTreeNode.instance,
-                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
+                             TypeUtility.makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
    }
 break;
 case 111:
@@ -1136,7 +1124,7 @@ case 111:
       yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj,
                              (List) val_peek(4).obj, (List) val_peek(1).obj,
                              AbsentTreeNode.instance,
-                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
+                             TypeUtility.makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
     }
 break;
 case 112:
@@ -1204,7 +1192,7 @@ case 127:
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
         result = cons(new LocalVarDeclNode(val_peek(3).ival,
-                     makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
+                     TypeUtility.makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
      yyval.obj = result;
@@ -1221,7 +1209,7 @@ case 128:
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
         result = cons(new LocalVarDeclNode(Modifier.NO_MOD,
-                     makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
+                     TypeUtility.makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
      yyval.obj = result;
@@ -1803,7 +1791,7 @@ case 287:
 //#line 1470 "jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3340 "JavaParser.java"
+//#line 3328 "JavaParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
