@@ -141,9 +141,12 @@ public class PlotBox extends Applet {
     /** 
      * Add a legend (displayed at the upper right) for the specified
      * data set with the specified string.  Short strings generally
-     * fit better than long strings.
+     * fit better than long strings.  You must call <code>init()</code>
+     * before calling this method.
      */
     public void addLegend(int dataset, String legend) {
+        if (_debug) System.out.println("PlotBox addLegend: " + dataset + " " +
+                                       legend);
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
     }
@@ -459,7 +462,7 @@ public class PlotBox extends Applet {
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
             for (double xpos=xStart; xpos <= _xtickMax; xpos += xStep) {
-                String _xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)
+                String xticklabel = Double.toString(Math.floor(xpos*1000.0+0.5)
 						 * 0.001);
                 xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
@@ -469,9 +472,10 @@ public class PlotBox extends Applet {
                     graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
                     graphics.setColor(Color.black);
                 }
-                int labxpos = xCoord1 - lfm.stringWidth(_xlabel)/2;
+                int labxpos = xCoord1 - lfm.stringWidth(xticklabel)/2;
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(_xlabel, labxpos, _lry + 3 + labelheight);
+                graphics.drawString(xticklabel, labxpos,
+                                    _lry + 3 + labelheight);
             }
         } else {
             // ticks have been explicitly specified
@@ -546,7 +550,18 @@ public class PlotBox extends Applet {
 	    "Christopher Hylands, cxh@eecs.berkeley.edu\n " +
 	    "($Id$)";
     }
-       
+    /** 
+     * Get the legend for a dataset.
+     */
+    public String getLegend(int dataset) {
+        int idx = _legendDatasets.indexOf(new Integer(dataset),0);
+        if (idx != -1) {
+            return (String)_legendStrings.elementAt(idx);
+        } else {
+            return new String("");
+        }
+    }
+      
     /**
      * Return information about parameters.
      */
@@ -567,9 +582,6 @@ public class PlotBox extends Applet {
         _labelfont = new Font("Helvetica", Font.PLAIN, 12);
         _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
         _titlefont = new Font("Helvetica", Font.BOLD, 14);
-        
-        _legendStrings = new Vector();
-        _legendDatasets = new Vector();
         
         _xticks = null;
         _xticklabels = null;
@@ -593,68 +605,8 @@ public class PlotBox extends Applet {
         } catch (NullPointerException e) {
 	    dataurl = _dataurl;
 	}
+	parseFile(dataurl);
 
-	// Open up the input file, which could be stdin, a URL or a file.
-	// This code can be called from an application, which means that
-	// getDocumentBase() might fail.
-	DataInputStream in;
-	if (dataurl == null || dataurl.length() == 0) {
-	    // Open up stdin
-	    in = new DataInputStream(System.in);
-	} else {
-	   try {
-	       URL url;
-	       try {
-		   url = new URL(getDocumentBase(), dataurl);
-	       } catch (NullPointerException e) {
-		   // If we got a NullPointerException, then perhaps
-		   // we are calling this as an application, not as an applet.
-		   url = new URL(_dataurl);
-	       }
-	       in = new DataInputStream(url.openStream());
-	   } catch (MalformedURLException e) {
-	       try {
-		   // Just try to open it as a file.
-		   in = new DataInputStream(new FileInputStream(dataurl));
-	       } catch (FileNotFoundException me) {
-		   System.out.println("File not found: " + dataurl + " "+me);
-		   return;
-	       } catch (SecurityException me) {
-		   System.out.println("SecurityException: " + dataurl +" "+me);
-		   return;
-	       }
-	   } catch (IOException ioe) {
-	       System.out.println("Failure opening URL: " + dataurl + " "+ioe);
-	       return;
-	   }
-	}
-
-	// At this point, we've opened the data source, now read it in
-	try {
-	    if (_binary) {
-		_convertBinaryStream(in);
-	    } else {
-
-		String line = in.readLine(); // FIXME: readLine() is
- 		// deprecated in JDK1.1, but we need to compile under
-		//1.0.2 for netscape3.x compatibilty.
-		while (line != null) {
-		    parseLine(line);
-		    line = in.readLine(); // readLine() is deprecated.
-		}
-	    }
-	} catch (MalformedURLException e) {
-	    System.out.println("Malformed URL: " + dataurl + " "+ e);
-	} catch (IOException e) {
-	    System.out.println("Failure reading data: " + dataurl + " "+ e);
-	} catch (PlotDataException me) {
-	    System.out.println("Bad Plot Data: " + me);
-	} finally {
-	    try {
-		in.close();
-	    } catch (IOException me) {}
-	}
-        
         // Make a button that auto-scales the plot.
         // NOTE: The button infringes on the title space.
         // If more buttons are added, we may have to find some other place
@@ -663,6 +615,8 @@ public class PlotBox extends Applet {
         _fillButton = new Button("fill");
         add(_fillButton);
     }
+
+
 	
     /**
      * Set the starting point for an interactive zoom box.
@@ -827,7 +781,76 @@ public class PlotBox extends Applet {
 	super.paint(g);
 	drawPlot(true);
     }
-    
+
+     /**
+      * Open up the input file, which could be stdin, a URL or a file.
+      * This code can be called from an application, which means that
+      * getDocumentBase() might fail.
+      */
+    public void parseFile(String dataurl) {
+	DataInputStream in;
+        if (_debug) System.out.println("PlotBox parseFile "+ dataurl);
+	if (dataurl == null || dataurl.length() == 0) {
+	    // Open up stdin
+	    in = new DataInputStream(System.in);
+	} else {
+	   try {
+	       URL url;
+	       try {
+		   url = new URL(getDocumentBase(), dataurl);
+	       } catch (NullPointerException e) {
+		   // If we got a NullPointerException, then perhaps
+		   // we are calling this as an application, not as an applet.
+		   url = new URL(_dataurl);
+	       }
+	       in = new DataInputStream(url.openStream());
+	   } catch (MalformedURLException e) {
+	       try {
+		   // Just try to open it as a file.
+		   in = new DataInputStream(new FileInputStream(dataurl));
+	       } catch (FileNotFoundException me) {
+		   System.out.println("File not found: " + dataurl + " "+me);
+		   return;
+	       } catch (SecurityException me) {
+		   System.out.println("SecurityException: " + dataurl +" "+me);
+		   return;
+	       }
+	   } catch (IOException ioe) {
+	       System.out.println("Failure opening URL: " + dataurl + " "+ioe);
+	       return;
+	   }
+	}
+
+        _newFile(); // Hook for child classes to do any preprocessing.
+
+	// At this point, we've opened the data source, now read it in
+	try {
+	    if (_binary) {
+		_parseBinaryStream(in);
+	    } else {
+
+		String line = in.readLine(); // FIXME: readLine() is
+ 		// deprecated in JDK1.1, but we need to compile under
+		//1.0.2 for netscape3.x compatibilty.
+		while (line != null) {
+		    parseLine(line);
+		    line = in.readLine(); // readLine() is deprecated.
+		}
+	    }
+	} catch (MalformedURLException e) {
+	    System.out.println("Malformed URL: " + dataurl + " "+ e);
+	} catch (IOException e) {
+	    System.out.println("Failure reading data: " + dataurl + " "+ e);
+	} catch (PlotDataException me) {
+	    System.out.println("Bad Plot Data: " + me);
+	} finally {
+	    try {
+		in.close();
+	    } catch (IOException me) {}
+	}
+        
+    } 
+  
     /**
      * Parse a line that gives plotting information.  In this base
      * class, only lines pertaining to the title and labels are processed.
@@ -920,6 +943,7 @@ public class PlotBox extends Applet {
         return false;
     }
 
+
     /** Set the binary flag to true if we are reading pxgraph format binar
      * data.
      */
@@ -939,7 +963,7 @@ public class PlotBox extends Applet {
      * Control whether the grid is drawn.
      */
     public void setGrid (boolean grid) {
-        this._grid = grid;
+        _grid = grid;
     }
     
     /**
@@ -947,7 +971,7 @@ public class PlotBox extends Applet {
      * call to <code>paint()</code> or <code>drawPlot()</code>.
      */
     public void setTitle (String title) {
-        this._title = title;
+        _title = title;
     }
     
     /** 
@@ -956,7 +980,7 @@ public class PlotBox extends Applet {
      * <code>drawPlot()</code>.
      */
     public void setXLabel (String label) {
-        this._xlabel = label;
+        _xlabel = label;
     }
 
     /** 
@@ -965,7 +989,7 @@ public class PlotBox extends Applet {
      * <code>drawPlot()</code>.
      */
     public void setYLabel (String label) {
-        this._ylabel = label;
+        _ylabel = label;
     }
 
     /** 
@@ -996,17 +1020,6 @@ public class PlotBox extends Applet {
     ////                         protected methods                        ////
 
     /**
-     * Abstract method - convert a Binary Stream
-     * @exception PlotDataException if there is a serious data format problem.
-     * @exception java.io.IOException if an I/O error occurs.
-     */
-    protected void _convertBinaryStream(DataInputStream in) throws
-	PlotDataException, IOException {
-	    throw new PlotDataException("Binary data not supported in the" +
-					"baseclass");
-    }
-
-    /**
      * Put a mark corresponding to the specified dataset at the
      * specified x and y position.  In this base class, a point is a
      * filled circle 6 pixels across.  Note that marks greater than
@@ -1033,6 +1046,23 @@ public class PlotBox extends Applet {
         graphics.setColor(Color.black);
         return true;
     }
+
+    /** Hook for child classes to do any file preprocessing
+     */	
+    protected void _newFile(){
+    }
+
+    /**
+     * Hook to parse a binary stream.
+     * @exception PlotDataException if there is a serious data format problem.
+     * @exception java.io.IOException if an I/O error occurs.
+     */
+    protected void _parseBinaryStream(DataInputStream in) throws
+	PlotDataException, IOException {
+	    throw new PlotDataException("Binary data not supported in the" +
+					"baseclass");
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                           protected variables                    ////
@@ -1247,6 +1277,8 @@ public class PlotBox extends Applet {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
+
+    private boolean _debug = false;
     
     // The URL to be opened.  This variable is not used if we are running
     // as an applet, but applications should call setDataurl().
@@ -1275,8 +1307,8 @@ public class PlotBox extends Applet {
     private String _xlabel, _ylabel, _title;
     
     // Legend information.
-    private Vector _legendStrings;
-    private Vector _legendDatasets;
+    private Vector _legendStrings = new Vector();
+    private Vector _legendDatasets = new Vector();
     
     // If XTicks or YTicks are given
     private Vector _xticks, _xticklabels, _yticks, _yticklabels;
