@@ -372,7 +372,7 @@ public class Expression extends TypedAtomicActor {
 
         /** Return the function result.
          *  @return A Type.
-         *  @throws IllegalActionException If inferring types for the
+         *  @exception IllegalActionException If inferring types for the
          *  expression fails.
          */
         public Object getValue() throws IllegalActionException {
