@@ -59,7 +59,7 @@ import ptolemy.actor.util.CalendarQueue;
 public class DECQEventQueue implements DEEventQueue {
 
     /** Construct an empty event queue.  The calender queue takes its
-     *  default parameter, i.e. minBinCount is 2, binCoundFactor is 2,
+     *  default parameter, i.e. minBinCount is 2, binCountFactor is 2,
      *  and isAdaptive is true.
      */
     public DECQEventQueue() {
