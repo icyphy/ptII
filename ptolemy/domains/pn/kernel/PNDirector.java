@@ -172,7 +172,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
     /** Handles various deadlocks appropriately and performs mutations 
      *  when requested. It suspends the thread corresponding to the 
      *  director until it is notified of either a request for mutation 
-     *  or an occurence of a deadlock. On notification, it calls the 
+     *  or an occurrence of a deadlock. On notification, it calls the 
      *  appropriate methods and returns. In case it is responding to a
      *  detection of a deadlock and the deadlock detected is a real 
      *  deadlock, it sets a flag forcing the postfire() method to return
@@ -289,7 +289,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
 
     /** Add a topology change request to the request queue. These changes 
      *  are executed when the _performTopologyChanges() method is called.
-     *  After queueing the requests, it notifies the thread responsible
+     *  After queuing the requests, it notifies the thread responsible
      *  for the director of pending topology changes. This method
      *  also arranges that all additions of new actors are recorded.
      *
@@ -528,7 +528,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
 
 
     // Finds the QueueReceiver with the smallest write capacity
-    // that is blocked on a write and incrementes its capacity by 1.
+    // that is blocked on a write and increments its capacity by 1.
     private void _incrementLowestWriteCapacityPort() {
         //System.out.println("Incrementing capacity");
         PNQueueReceiver smallestCapacityQueue = null;
@@ -536,7 +536,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
         //FIXME: Should I traverse the topology and get receivers blocked on 
         // a write or should I stick with this strategy?
 	Enumeration receps = _writeblockedQs.elements();
-	//System.out.println("Enumeration receos done");
+	//System.out.println("Enumeration receps done");
 	while (receps.hasMoreElements()) {
 	    PNQueueReceiver queue = (PNQueueReceiver)receps.nextElement();
 	    if (smallestCapacity == -1) {
@@ -574,9 +574,9 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
-    protected boolean _notdone = true;
+    //protected boolean _notdone = true;
     protected int _delayBlockCount = 0;
     protected int _readBlockCount = 0;
     //private boolean _terminate = false;
