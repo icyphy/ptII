@@ -54,11 +54,9 @@ JSIMPLE_TESTS = \
 	Location.tcl \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
-	StreamErrorHandler.tcl
-
-# FIXME: removed for now
-#	MoMLWriter.tcl \
-#	MoMLWriterTiming.tcl
+	StreamErrorHandler.tcl \
+	MoMLWriter.tcl \
+	MoMLWriterTiming.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
