@@ -237,6 +237,7 @@ public class Scheduler extends NamedObj implements MutationListener{
             }
             if(!valid()) {
                 Enumeration newsche = _schedule();
+                _cachedschedule = new LinkedList();
                 while (newsche.hasMoreElements()) {
                     _cachedschedule.insertLast(newsche.nextElement());
                 }
