@@ -82,13 +82,16 @@ public abstract class ChangeRequest {
     /** Add a new change listener to this request.  The listener will get
      *  notified when the change is executed, or the change fails.  This
      *  listener is notified first, and then any listeners that were
-     *  given by setListeners.
+     *  given by setListeners.  This listener is also notified before
+     *  other listeners that have been previously registered with this
+     *  object.
+     *  @param listener The listener to add.
      */
     public void addChangeListener(ChangeListener listener) {
 	if(_localListeners == null) {
 	    _localListeners = new LinkedList();
 	}
-	_localListeners.add(listener);
+	_localListeners.add(0, listener);
     }
 
     /** Execute the change.  This method invokes the protected method

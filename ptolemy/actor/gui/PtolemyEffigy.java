@@ -90,7 +90,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         // Do not report if it has already been reported.
         if (!change.isErrorReported()) {
             change.setErrorReported(true);
-            MessageHandler.error("Change failed", exception);
+            MessageHandler.error("Change failed: " + change.getDescription(),
+                    exception);
         }
     }
 

@@ -190,8 +190,8 @@ public class MathFunction extends TypedAtomicActor {
         }
     }
 
-    /** This computes the specified math function of the input. This consumes at 
-     *  most one token on each input port during firing.
+    /** Consume at most one input token from each input channel, and
+     *  compute the specified math function of the input.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */

@@ -214,6 +214,9 @@ public class NamedObj implements Nameable, Debuggable,
      *  to the container if there is one.
      *  <p>
      *  If the listener is already in the list, do not add it again.
+     *  This listener is also notified before
+     *  other listeners that have been previously registered with the
+     *  top-level object.
      *  @param listener The listener to add.
      */
     public synchronized void addChangeListener(ChangeListener listener) {
@@ -223,9 +226,9 @@ public class NamedObj implements Nameable, Debuggable,
         } else {
             if (_changeListeners == null) {
                 _changeListeners = new LinkedList();
-                _changeListeners.add(listener);
+                _changeListeners.add(0, listener);
             } else if (!_changeListeners.contains(listener)) {
-                _changeListeners.add(listener);
+                _changeListeners.add(0, listener);
             }
         }
     }

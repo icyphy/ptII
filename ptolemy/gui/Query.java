@@ -696,6 +696,10 @@ public class Query extends JPanel {
 
     /** Get the current value in the entry with the given name,
      *  and return as a String.  All entry types support this.
+     *  Note that this method should be called from the event dispatch
+     *  thread, since it needs to query to UI widgets for their current
+     *  values.  If it is called from another thread, there is no
+     *  assurance that the value returned will be the current value.
      *  @return The value currently in the entry as a String.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -892,7 +896,7 @@ public class Query extends JPanel {
         private String _name;
     }
 
-    /** Listener for "CheckBox" entries.
+    /** Listener for "CheckBox" and "Choice" entries.
      */
     class QueryItemListener implements ItemListener {
         public QueryItemListener(String name) {

@@ -275,7 +275,9 @@ public class Variable extends Attribute implements Typeable, Settable {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
-        _valueListeners.add(listener);
+        if (!_valueListeners.contains(listener)) {
+            _valueListeners.add(listener);
+        }
     }
 
     /** Clone the variable.  This creates a new variable containing the

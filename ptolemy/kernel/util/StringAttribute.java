@@ -73,13 +73,16 @@ public class StringAttribute extends Attribute implements UserSettable {
     ////                         public methods                    ////
 
     /** Add a listener to be notified when the value of this attribute changes.
+     *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
      */
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
-        _valueListeners.add(listener);
+        if (!_valueListeners.contains(listener)) {
+            _valueListeners.add(listener);
+        }
     }
 
     /** Write a MoML description of this object.

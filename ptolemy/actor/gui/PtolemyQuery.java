@@ -52,6 +52,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
@@ -133,8 +134,9 @@ public class PtolemyQuery extends Query
         if (defaultValue == null) defaultValue = "";
 	if (!(foundStyle)) {
 	    addLine(attribute.getName(), attribute.getName(), defaultValue);
+            // The style itself does this, so we don't need to do it again.
+            attachParameter(attribute, attribute.getName());
 	}
-        attachParameter(attribute, attribute.getName());
     }
 
     /** Attach an attribute to an entry with name <i>entryName</i>,
@@ -247,8 +249,7 @@ public class PtolemyQuery extends Query
 		        this,         // originator
 		        parent,       // context
                         moml,         // MoML code
-                        null);        // base
-                
+                        null);        // base                
 	    } else {
 		// If the attribute is not a NamedObj, then we
 		// set its value directly.
@@ -284,7 +285,8 @@ public class PtolemyQuery extends Query
 
         String name = change.getDescription();
 	if (_attributes.containsKey(name)) {
-	    final UserSettable attribute = (UserSettable)(_attributes.get(name));
+	    final UserSettable attribute
+                    = (UserSettable)(_attributes.get(name));
 
             // Make a record of the successful attribute value change
             // in case some future change fails and the user chooses to revert.
@@ -300,7 +302,7 @@ public class PtolemyQuery extends Query
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
-    public void changeFailed(ChangeRequest change, Exception exception) {
+    public void changeFailed(final ChangeRequest change, Exception exception) {
         // Ignore if this was not the originator.
         if (change.getOriginator() != this) {
             return;
@@ -315,12 +317,25 @@ public class PtolemyQuery extends Query
             _query = new PtolemyQuery(_handler);
             _query.setTextWidth(getTextWidth());
             _query._isOpenErrorWindow = true;
-            _query.setMessage(exception.getMessage()
+            _query.setMessage("Change failed:\n" + change.getDescription()
+                    + "\n" + exception.getMessage()
                     + "\n\nPlease enter a new value:");
 
-            // The name of the entry is the description of the change.
-            String entryName = change.getDescription();
-            UserSettable attribute = (UserSettable)_attributes.get(entryName);
+            // Need to extract the name of the entry from the request.
+            // Default value is the description itself.
+            // NOTE: This is very fragile... depends on the particular
+            // form of the MoML change request.
+            String description = change.getDescription();
+            String tmpEntryName = description;
+            if (description.startsWith("<property name=\"")) {
+                int nextQuote = description.indexOf("\"", 16);
+                if (nextQuote > 15) {
+                    tmpEntryName = description.substring(16, nextQuote);
+                }
+            }
+            final String entryName = tmpEntryName;
+            final UserSettable attribute
+                    = (UserSettable)_attributes.get(entryName);
             if (attribute != null) {
                 _query.addStyledEntry(attribute);
             } else {
@@ -328,36 +343,45 @@ public class PtolemyQuery extends Query
                         "Expected attribute attached to entry name: "
                         + entryName);
             }
-            _dialog = new ComponentDialog(null, "Error", _query, null);
+            // NOTE: Do this in the event thread, since this might be invoked
+            // in whatever thread is processing mutations.
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
 
-            // The above returns only when the modal dialog is closing.
-            // The following will force a new dialog to
-            // be created if the value is not valid.
-            _query._isOpenErrorWindow = false;
+                    _dialog = new ComponentDialog(null, "Error", _query, null);
 
-            if (_dialog.buttonPressed().equals("Cancel")) {
-                if (_revertValue.containsKey(entryName)) {
-                    String revertValue = (String)_revertValue.get(entryName);
-                    setAndNotify(((NamedObj)attribute).getName(), revertValue);
-                }
-            } else {
-                // Force evaluation to check validity of the entry.
-                // NOTE: Normally, we would not need to force evaluation
-                // because if the value has changed, then listeners are
-                // automatically notified.  However, if the value has not
-                // changed, then they are not notified.  Since the original
-                // value was invalid, it is not acceptable to skip
-                // notification in this case.  So we force it.
-                // Too bad we have to treat instances of Variable specially
-                // here...
-                if (attribute instanceof Variable) {
-                    try {
-                        ((Variable)attribute).getToken();
-                    } catch (IllegalActionException ex) {
-                        changeFailed(change, ex);
+                    // The above returns only when the modal dialog is closing.
+                    // The following will force a new dialog to
+                    // be created if the value is not valid.
+                    _query._isOpenErrorWindow = false;
+
+                    if (_dialog.buttonPressed().equals("Cancel")) {
+                        if (_revertValue.containsKey(entryName)) {
+                            String revertValue = (String)
+                                    _revertValue.get(entryName);
+                            setAndNotify(((NamedObj)attribute).getName(),
+                                    revertValue);
+                        }
+                    } else {
+                        // Force evaluation to check validity of the entry.
+                        // NOTE: Normally, we would not need to force
+                        // evaluation because if the value has changed, then
+                        // listeners are automatically notified.  However,
+                        // if the value has not changed, then they are not
+                        // notified.  Since the original value was invalid,
+                        // it is not acceptable to skip notification in this
+                        // case.  So we force it. Too bad we have to treat
+                        // instances of Variable specially here...
+                        if (attribute instanceof Variable) {
+                            try {
+                                ((Variable)attribute).getToken();
+                            } catch (IllegalActionException ex) {
+                                changeFailed(change, ex);
+                            }
+                        }
                     }
                 }
-            }
+            });
         }
     }
 
@@ -367,29 +391,40 @@ public class PtolemyQuery extends Query
      *  all entries that are attached to the attribute.
      *  @param attribute The attribute whose value has changed.
      */
-    public void valueChanged(Settable attribute) {
+    public void valueChanged(final Settable attribute) {
+        // Do this in the event thread, since it depends on interacting
+        // with the UI.  In particular, there is no assurance that
+        // stringValue() will return the correct value if it is called
+        // from another thread.  And this method is called whenever an
+        // attribute change has occurred, which can happen in any thread.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
 
-        // Check that the attribute is attached to at least one entry.
-        if (_attributes.containsValue(attribute)) {
+                // Check that the attribute is attached to at least one entry.
+                if (_attributes.containsValue(attribute)) {
 
-            // Get the list of entry names that the attribute is attached to.
-            List entryNameList = (List)_varToListOfEntries.get(attribute);
+                    // Get the list of entry names that the attribute
+                    // is attached to.
+                    List entryNameList = (List)
+                             _varToListOfEntries.get(attribute);
 
-            // For each entry name, call set() to update its
-            // value with the value of attribute
-            Iterator entryNames = entryNameList.iterator();
+                    // For each entry name, call set() to update its
+                    // value with the value of attribute
+                    Iterator entryNames = entryNameList.iterator();
 
-            while (entryNames.hasNext()) {
-                String name = (String)entryNames.next();
-                String newValue = attribute.getExpression();
+                    while (entryNames.hasNext()) {
+                        String name = (String)entryNames.next();
+                        String newValue = attribute.getExpression();
 
-                // Compare value against what is in already to avoid
-                // changing it again.
-                if (!stringValue(name).equals(newValue)) {
-                    set(name, attribute.getExpression());
+                        // Compare value against what is in already to avoid
+                        // changing it again.
+                        if (!stringValue(name).equals(newValue)) {
+                            set(name, attribute.getExpression());
+                        }
+                    }
                 }
             }
-        }
+        });
     }
 
     /** Notify all listeners of any updated values, and then
@@ -408,6 +443,12 @@ public class PtolemyQuery extends Query
         // notifyListeners();
 
         _handler.removeChangeListener(PtolemyQuery.this);
+
+        // It's a bit bizarre that we have to remove ourselves as a listener
+        // to ourselves, since the window is closing.  But if we don't do
+        // this, then somehow we continue to be notified of changes to
+        // the attributes.
+        removeQueryListener(this);
 
         Iterator attributes = _attributes.values().iterator();
         while(attributes.hasNext()) {
