@@ -51,6 +51,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.domains.sdf.codegen.SDFCodeGenerator;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.SwingWorker;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -195,7 +196,7 @@ public class GeneratorTableau extends Tableau {
 
             // Panel for push buttons.
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new GridLayout(3, 1));
+            buttonPanel.setLayout(new GridLayout(5, 1));
             buttonPanel.setBorder(
                     BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
@@ -209,6 +210,11 @@ public class GeneratorTableau extends Tableau {
             JButton stopButton = new JButton("Cancel");
             stopButton.setToolTipText("Terminate executing processes");
             buttonPanel.add(stopButton);
+
+            buttonPanel.add(Box.createVerticalStrut(10));
+            JButton clearButton = new JButton("Clear");
+            clearButton.setToolTipText("Clear Log");
+            buttonPanel.add(clearButton);
 
             controlPanel.add(buttonPanel);
 
@@ -248,10 +254,18 @@ public class GeneratorTableau extends Tableau {
                     }
                 });
 
+            clearButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+			exec.clear();
+                    }
+                });
+
             goButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-			    System.out.println(options.toString());
+			    System.out.println("GeneratorTableau: "
+					       + "options are: " 
+					       + options.toString());
                             // Handle the directory entry.
                             String directoryName = options.directory
                                 .getExpression();
@@ -300,22 +314,23 @@ public class GeneratorTableau extends Tableau {
 				ptolemy.copernicus.java
 				    .Main.generate((CompositeActor)model,
 						   directoryName);
-				exec.updateStatusBar("Code generation "
-						     + "complete.");
 
+				exec.updateStatusBar("Soot code generation "
+						     + "complete.");
 				disassemble = true;
 			    } else if (((BooleanToken)options
 				 .generateC.getToken())
 				.booleanValue()) {
 				// FIXME: we should disable the compile
 				// button.
-
 				exec.updateStatusBar("Starting c "
 						     + "code generation");
+				// FIXME: How come the status bar
+				// does not get updated?
 				ptolemy.copernicus.c
 				    .Main.generate((CompositeActor)model,
 						   directoryName);
-				exec.updateStatusBar("Code generation "
+				exec.updateStatusBar("C Code generation "
 						     + "complete.");
 				disassemble = true;
 			    } else if (((BooleanToken)options
