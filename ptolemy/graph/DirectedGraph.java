@@ -48,7 +48,6 @@ public class DirectedGraph extends Graph {
      */
     public DirectedGraph() {
         super();
-        _inDegree = new Vector();
     }
 
     /** Constructs an empty directed graph with enough storage allocated
@@ -57,10 +56,8 @@ public class DirectedGraph extends Graph {
      *  known.
      *  @param numNodes the integer specifying the number of nodes.
      */ 
- 
     public DirectedGraph(int numNodes) {
         super(numNodes);
-        _inDegree = new Vector(numNodes);
     }
         
     ///////////////////////////////////////////////////////////////////
@@ -262,7 +259,7 @@ public class DirectedGraph extends Graph {
      *  <code>Integer</code> containing the in-degree of the corresponding
      *  node.
      */
-    protected Vector _inDegree;
+    protected Vector _inDegree = new Vector();
 
     /** A 2D boolean array representing the adjacency matrix of the
      *  transitive closure. <code>_tranClosure[i][j] = true</code>
