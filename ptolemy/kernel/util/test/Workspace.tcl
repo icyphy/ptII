@@ -1,10 +1,10 @@
 # Tests for the Workspace class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Lukito Muliadi
 #
-# @Version: $Id$
+# @Version: $Id$ 
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -160,3 +160,75 @@ T2.doneReading()
 T2.getWriteAccess()
 T2.doneWriting()
 }}
+
+######################################################################
+####
+#
+test Workspace-6.1 {Test multi-thread access with a mix of ptolemy and non-ptolemy threads} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set t [java::new ptolemy.kernel.util.test.PtestWorkspace T $w]
+    $t profile
+} {}
+
+test Workspace-6.2 {Test multi-thread access with a mix of ptolemy and non-ptolemy threads} {
+    # NOTE: Uses previous setup
+    $t start
+    # Give the thread a chance to start up.
+    sleep 1
+    $t profile
+} {T.getReadAccess()
+T.doneReading()
+T.getReadAccess()
+T.doneReading()
+T.getReadAccess()
+T.doneReading()
+T.getWriteAccess()
+T.doneWriting()
+}
+
+test Workspace-6.3 {Test multi-thread access with a mix of ptolemy and non-ptolemy threads} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set t1 [java::new ptolemy.kernel.util.test.PtestWorkspace T1 $w]
+    set t2 [java::new ptolemy.kernel.util.test.PtestWorkspace T2 $w]
+    set t3 [java::new ptolemy.kernel.util.test.TestWorkspace T3 $w]
+    set t4 [java::new ptolemy.kernel.util.test.TestWorkspace T4 $w]
+    $t1 start
+    $t2 start
+    $t3 start
+    $t4 start
+    # Give the threads a chance to start up.
+    sleep 1
+    list [$t1 profile] [$t2 profile] [$t3 profile] [$t4 profile]
+} {{T1.getReadAccess()
+T1.doneReading()
+T1.getReadAccess()
+T1.doneReading()
+T1.getReadAccess()
+T1.doneReading()
+T1.getWriteAccess()
+T1.doneWriting()
+} {T2.getReadAccess()
+T2.doneReading()
+T2.getReadAccess()
+T2.doneReading()
+T2.getReadAccess()
+T2.doneReading()
+T2.getWriteAccess()
+T2.doneWriting()
+} {T3.getReadAccess()
+T3.doneReading()
+T3.getReadAccess()
+T3.doneReading()
+T3.getReadAccess()
+T3.doneReading()
+T3.getWriteAccess()
+T3.doneWriting()
+} {T4.getReadAccess()
+T4.doneReading()
+T4.getReadAccess()
+T4.doneReading()
+T4.getReadAccess()
+T4.doneReading()
+T4.getWriteAccess()
+T4.doneWriting()
+}} 
