@@ -78,6 +78,13 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Determine whether pending tokens after a firing is allowed by the
+     *  director.
+     */
+    public void allowPendingTokens(boolean b) {
+        _isPendingTokenAllowed = b;
+    }
+
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver with a time stamp equal to or earlier than
      *  the current time.  If there is no such token, throw an
@@ -161,6 +168,7 @@ public class DEReceiver implements Receiver {
         return (!_tokens.isEmpty());
     }
 
+
     /** Put a token into the receiver with no delay.  I.e., the time stamp
      *  is equal to the current time (obtained from the director).  Note that
      *  this token does not become immediately available to the get() method.
@@ -219,6 +227,7 @@ public class DEReceiver implements Receiver {
      *
      *  @exception NoTokenException the token delay list is empty.
      */
+    /*
     protected double _getTokenDelay() {
         if(_tokendelays.isEmpty()) {
             throw new NoTokenException(getContainer(),
@@ -226,7 +235,7 @@ public class DEReceiver implements Receiver {
         }
         return ((Double)_tokendelays.take()).doubleValue();
     }
-
+    */
 
 
     /** Return true if this receiver is inside an output port of an opaque
@@ -261,12 +270,19 @@ public class DEReceiver implements Receiver {
         
     }
 
+    /**
+     */
+    protected boolean _isPendingTokenAllowed() {
+        return _isPendingTokenAllowed;
+    }
+
+
     /** Set the depth of this receiver, obtained from the topological
      *  sort.  The depth determines the priority assigned to tokens
      *  with equal time stamps.  A smaller depth corresponds to a
      *  higher priority.
      */
-    protected void setDepth(long depth) {
+    protected void _setDepth(long depth) {
         _depth = depth;
     }
 
@@ -301,5 +317,8 @@ public class DEReceiver implements Receiver {
 
     // List for storing tokens.  Access with clear(), insertFirst(), take().
     private LinkedList _tokens = new LinkedList();
-    private LinkedList _tokendelays = new LinkedList();
+    //private LinkedList _tokendelays = new LinkedList();
+
+    private boolean _isPendingTokenAllowed = false;
+
 }

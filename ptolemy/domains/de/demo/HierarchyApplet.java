@@ -235,6 +235,7 @@ public class HierarchyApplet extends Applet {
 
     private class MyExecutionListener extends DefaultExecutionListener {
         public void executionFinished(ExecutionEvent e) {
+            super.executionFinished(e);
             _isSimulationRunning = false;
         }
         
@@ -267,7 +268,7 @@ public class HierarchyApplet extends Applet {
                 _isSimulationRunning = true;
                 ctt.start();
                 
-                _manager.go();
+                _manager.startRun();
                                 
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());

@@ -104,6 +104,20 @@ public class DEIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     */
+    public void allowPendingTokens(boolean b) throws IllegalActionException {
+        Receiver[][] recs = getReceivers();
+        for (int i = 0; i < recs.length ; i++) {
+            for (int j = 0; j < recs[i].length ; j ++) {
+                ((DEReceiver)recs[i][j]).allowPendingTokens(b);
+            }
+        }
+        
+        
+    }
+
+
     /** Assert that this port has higher priority than the port in the
      *  argument.  The scheduler uses this information to ensure that
      *  if this port and the argument are to receive simultaneous events,

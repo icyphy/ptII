@@ -53,8 +53,8 @@ public class ClockSystem {
         // Set up the directors
         localDirector = new DECQDirector("DE Director");
         topLevel.setDirector(localDirector);
-        executiveDirector = new Manager("Executive Director");
-        topLevel.setManager(executiveDirector);
+        manager = new Manager("Executive Director");
+        topLevel.setManager(manager);
 
         // Set up the actors and connections
         DEClock clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
@@ -74,7 +74,7 @@ public class ClockSystem {
     public void go(double stopTime) throws IllegalActionException, 
             NameDuplicationException {
         localDirector.setStopTime(stopTime);
-        executiveDirector.go();
+        manager.startRun();
     }
 
     /** Run for 10 time units.
@@ -95,5 +95,5 @@ public class ClockSystem {
     // The top-level system.
     private TypedCompositeActor topLevel;
     private DECQDirector localDirector;
-    private Manager executiveDirector;
+    private Manager manager;
 }

@@ -71,6 +71,7 @@ JSRCS = \
 	DERegister.java \
 	DESampler.java \
 	DEServer.java \
+	DEServerAlt.java \
 	DEStatistics.java \
 	DEWaitingTime.java \
 	DEWaveForm.java \

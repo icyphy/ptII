@@ -131,7 +131,6 @@ CLOCK_CLASSFILES = \
 	collections/UpdatableSeq.class \
 	collections/UpdatableSeqImpl.class \
 	ptolemy/actor/Actor.class \
-	ptolemy/actor/ActorListener.class \
 	ptolemy/actor/AtomicActor.class \
 	ptolemy/actor/CompositeActor.class \
 	ptolemy/actor/Director.class \

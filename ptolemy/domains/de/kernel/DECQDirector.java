@@ -294,13 +294,14 @@ public class DECQDirector extends DEDirector {
                 Enumeration enum = _filledReceivers.elements();
                 while (enum.hasMoreElements()) {
                     DEReceiver r = (DEReceiver)enum.nextElement();
-                    if (r.hasToken()) {
+                    if (!r._isPendingTokenAllowed() && r.hasToken()) {
                         refire = true;
                         break;
                     }
                 }
             } while (refire);
             if (!_actorToFire.postfire()) {
+                // If one actor is dead, then stop the simulation.
                 _shouldPostfireReturnFalse = true;
             }
         } else {
@@ -308,7 +309,7 @@ public class DECQDirector extends DEDirector {
                 System.out.println(">>>");
                 System.out.println("Well... it returned false.");
             }
-            _shouldPostfireReturnFalse = true;
+            //_shouldPostfireReturnFalse = true;
         }
     
     }
@@ -318,7 +319,7 @@ public class DECQDirector extends DEDirector {
      *  @param delay The delay, relative to the current time.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public void fireAfterDelay(Actor a, double delay) 
+    public void fireAfterDelay(Actor actor, double delay) 
             throws IllegalActionException {
         // Check if the actor is in the composite actor containing this
         // director. FIXME.
@@ -329,7 +330,7 @@ public class DECQDirector extends DEDirector {
         // If this actor has no input ports, then the depth is set to
         // to be zero.
         long maxdepth = -1;
-        Enumeration iports = a.inputPorts();
+        Enumeration iports = actor.inputPorts();
         while (iports.hasMoreElements()) {
             IOPort p = (IOPort) iports.nextElement();
             Receiver[][] r = p.getReceivers();
@@ -339,7 +340,7 @@ public class DECQDirector extends DEDirector {
                 maxdepth = rr._depth;
             }
         }
-        this.enqueueEvent(a, delay, maxdepth+1);
+        this.enqueueEvent(actor, delay, maxdepth+1);
     }
 
         
@@ -404,7 +405,9 @@ public class DECQDirector extends DEDirector {
     public boolean postfire() throws IllegalActionException {
         
         if (!super.postfire()) {
-            System.out.println("Returning false in postfire()");
+            if (DEBUG) {
+                System.out.println("Returning false in postfire()");
+            }
             return false;
         } else if (isEmbedded() && !_cQueue.isEmpty()) {
             _requestFiring();
@@ -483,9 +486,11 @@ public class DECQDirector extends DEDirector {
                         // outer director should do that...
                         // FIXME: might be wrong approach
                         _shouldPostfireReturnFalse = true;
-                        System.out.println("Stopping time is met " + 
-                                "in DECQDirector.prefire() of " + 
-                                getFullName() + ".");
+                        if (DEBUG) {
+                            System.out.println("Stopping time is met " + 
+                                    "in DECQDirector.prefire() of " + 
+                                    getFullName() + ".");
+                        }
 			return false;
 		    }
 
@@ -706,7 +711,7 @@ public class DECQDirector extends DEDirector {
 	    for (int j=r.length-1; j >= 0; j--) {
                 for (int k=r[j].length-1; k >= 0; k--) {
                     DEReceiver der = (DEReceiver)r[j][k];
-                    der.setDepth(i);
+                    der._setDepth(i);
                 }
             }
 	}

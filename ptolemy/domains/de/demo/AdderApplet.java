@@ -149,8 +149,8 @@ public class AdderApplet extends Applet implements Runnable {
             // Set up the top level composite actor, director and manager
             _localDirector = new DECQDirector("DE Director");
             topLevel.setDirector(_localDirector);
-            _executiveDirector = new Manager("Executive Director");
-            topLevel.setManager(_executiveDirector);            
+            _manager = new Manager("Executive Director");
+            topLevel.setManager(_manager);            
 
             // ---------------------------------
             // Create the actors.
@@ -257,7 +257,7 @@ public class AdderApplet extends Applet implements Runnable {
                 int beforeCount = Thread.activeCount(); // HACK
                 Thread[] before = new Thread[beforeCount]; // HACK
                 Thread.enumerate(before);  // HACK
-                _executiveDirector.go(); //NON-HACK
+                _manager.go(); //NON-HACK
                 int afterCount = Thread.activeCount();  // HACK
                 Thread[] after = new Thread[afterCount]; // HACK
                 Thread.enumerate(after); // HACK
@@ -277,7 +277,7 @@ public class AdderApplet extends Applet implements Runnable {
                     } //HACK
                 } //HACK
                 */
-                _executiveDirector.run();
+                _manager.run();
                 
         } catch (Exception ex) {
             System.err.println("Run failed: " + ex.getMessage());
@@ -298,7 +298,7 @@ public class AdderApplet extends Applet implements Runnable {
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
     private DECQDirector _localDirector;
-    private Manager _executiveDirector;
+    private Manager _manager;
 
     private TextField _stopTimeBox;
     private double _stopTime = 100.0;

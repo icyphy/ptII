@@ -77,6 +77,7 @@ public class DEPlot extends DEActor {
         input.makeMultiport(true);
 
         _plot = plot;
+        _plot.setButtons(true);
 
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
@@ -91,7 +92,6 @@ public class DEPlot extends DEActor {
      */
     public void initialize() throws IllegalActionException {
         
-        // Call clear with 'true' argument, so it'll reset the legend...
         _plot.clear(true);
         _plot.setButtons(true);
         _plot.setMarksStyle("dots");
@@ -100,8 +100,13 @@ public class DEPlot extends DEActor {
         _plot.setTitle(getName());
 	
 	for (int i = 0; i < input.getWidth(); i++) {
-	  _plot.addLegend(i, "Data " + i);
-	}
+            if (_legends != null && i < _legends.length && _legends[i].length() != 0) {
+                _plot.addLegend(i, _legends[i]);
+            } else {
+                _plot.addLegend(i, "Data " + i);
+                
+            }
+        }
 
         // Initialization of the frame X-range is deferred until the fire()
         // phase, because the director doesn't know the start time until
@@ -185,6 +190,13 @@ public class DEPlot extends DEActor {
         super.wrapup();
     }
 
+    /** Set the legends.
+     */
+    public void setLegend(String[] legends) {
+        _legends = legends;
+    }
+
+
     // FIXME: This is not the right way to handle this.
     public void setYRange(double ymin, double ymax) {
         _yMin = ymin;
@@ -206,6 +218,9 @@ public class DEPlot extends DEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private String[] _legends;
+
 
     private Plot _plot;
 

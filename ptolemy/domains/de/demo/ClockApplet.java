@@ -135,7 +135,7 @@ public class ClockApplet extends Applet {
         public void actionPerformed(ActionEvent evt) {
             try {
                 _localDirector.setStopTime(_stopTime);
-                _executiveDirector.go();
+                _executiveDirector.startRun();
             } catch (Exception ex) {
                 System.err.println("Run failed: " + ex.getMessage());
                 ex.printStackTrace();

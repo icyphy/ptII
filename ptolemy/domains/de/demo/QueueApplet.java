@@ -74,6 +74,9 @@ public class QueueApplet extends Applet {
         _stopTimeBox = new TextField("30.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
+        _pauseButton = new Button(" Pause ");
+        _finishButton = new Button("Finish");
+        _terminateButton = new Button("Terminate");
 
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
@@ -126,7 +129,14 @@ public class QueueApplet extends Applet {
         
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
+        controlPanel.add(_pauseButton);
+        controlPanel.add(_finishButton);
+        controlPanel.add(_terminateButton);
+            
         _goButton.addActionListener(new GoButtonListener());        
+        _pauseButton.addActionListener(new PauseButtonListener());
+        _finishButton.addActionListener(new FinishButtonListener());
+        _terminateButton.addActionListener(new TerminateButtonListener());
         // Done adding go button
         
 
@@ -151,7 +161,7 @@ public class QueueApplet extends Applet {
             DEFIFOQueue fifo1 = new DEFIFOQueue(sys, "FIFO1", 1, true, 10);
             DEPlot plot1 = new DEPlot(sys, "Queue 1 Size", panel1);
             
-            DEServer server1 = new DEServer(sys, "Server1", 1.0);
+            DEServerAlt server1 = new DEServerAlt(sys, "Server1", 1.0);
             DEPassGate passgate = new DEPassGate(sys, "PassGate");
             DEDelay delta = new DEDelay(sys, "DEDelay", 0.0);
             
@@ -161,7 +171,7 @@ public class QueueApplet extends Applet {
             TestLevel testlevel = new TestLevel(sys, "TestLevel", true, 4);
             Not not = new Not(sys, "Not");
 
-            DEServer server2 = new DEServer(sys, "Server2", 3.0);
+            DEServerAlt server2 = new DEServerAlt(sys, "Server2", 3.0);
             
             DEPlot plot3 = new DEPlot(sys, "Blocking signal", panel3);
             DEPlot plot4 = new DEPlot(sys, "Dispositions of inputs", panel4);
@@ -215,8 +225,13 @@ public class QueueApplet extends Applet {
     private TextField _stopTimeBox;
     private double _stopTime = 100.0;
     private Button _goButton;
-    private Label _currentTimeLabel;
+    private Button _pauseButton;
+    private Button _finishButton;
+    private Button _terminateButton;
 
+
+    private Label _currentTimeLabel;
+    private boolean _isSimulationPaused = false;
     
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -241,6 +256,7 @@ public class QueueApplet extends Applet {
 
     private class MyExecutionListener extends DefaultExecutionListener {
         public void executionFinished(ExecutionEvent e) {
+            super.executionFinished(e);
             _isSimulationRunning = false;
         }
         
@@ -255,6 +271,10 @@ public class QueueApplet extends Applet {
             }
 
             try {
+                
+                // The simulation is started non-paused (of course :-) )
+                _isSimulationPaused = false;
+                _pauseButton.setLabel(" Pause ");
                 
                 // Set the stop time.
                 String timespec = _stopTimeBox.getText();
@@ -280,6 +300,36 @@ public class QueueApplet extends Applet {
                 e.printStackTrace();
             }
                 
+        }
+    }
+    
+    private class PauseButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            
+            if (_isSimulationPaused) {
+                _isSimulationPaused = false;
+                _manager.resume();
+                _pauseButton.setLabel(" Pause ");
+                    
+            } else {
+                _isSimulationPaused = true;
+                _manager.pause();
+                _pauseButton.setLabel("Resume");
+                
+            }
+            
+        }
+    }
+
+    private class FinishButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            _manager.finish();
+        }
+    }
+
+    private class TerminateButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            _manager.terminate();
         }
     }
 

@@ -99,4 +99,4 @@ set r6 [$sys connect $sampler2Out $plotIn R6]
 $dir setStopTime 10.0
 
 # Run it
-$exec go
+$exec startRun

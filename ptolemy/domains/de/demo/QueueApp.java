@@ -151,7 +151,7 @@ public class QueueApp {
                 
                 _localDirector.setStopTime(_stopTime);
 
-                _executiveDirector.blockingGo();
+                _executiveDirector.run();
 
         } catch (Exception ex) {
             System.err.println("Run failed: " + ex.getMessage());

@@ -182,6 +182,8 @@ public class HistogramApplet extends Applet implements Runnable {
             DEPoisson dePoisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);
             DEWaitingTime deWaitingTime = new DEWaitingTime(topLevel, "Wait");
             DEPlot dePlot = new DEPlot(topLevel, "Plot", plot);
+            String[] legends = {"Bus", "Passenger", "Wait time"} ;
+            dePlot.setLegend(legends);
             DEHistogram deHist = new DEHistogram(topLevel, "Histogram", 0.1, hist);
             _stat = new DEStatistics(topLevel, "Stat");
 
