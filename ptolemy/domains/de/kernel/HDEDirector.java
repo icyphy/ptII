@@ -202,30 +202,31 @@ public class HDEDirector extends DEDirector {
     }
 
     /**  Construct a director in the  workspace with an empty name.
-	 *  The director is added to the list of objects in the workspace.
-	 *  Increment the version number of the workspace.
-	 *  @param workspace The workspace of this object.
-	 */
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace of this object.
+     */
     public HDEDirector(Workspace workspace) {
 	super(workspace);
        
     }
 
     /** Construct a director in the given container with the given name.
-	 *  The container argument must not be null, or a
-	 *  NullPointerException will be thrown.
-	 *  If the name argument is null, then the name is set to the
-	 *  empty string. Increment the version number of the workspace.
-	 *
-	 *  @param container Container of the director.
-	 *  @param name Name of this director.
-	 *  @exception IllegalActionException If the
-	 *   director is not compatible with the specified container.
-	 * @exception NameDuplicationException If the container not a
-	 *   CompositeActor and the name collides with an entity in
-	 *   the container.  */
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *
+     *  @param container Container of the director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the
+     *   director is not compatible with the specified container.
+     * @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in
+     *   the container. 
+     */
     public HDEDirector(CompositeEntity container, String name)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 	super(container, name);
        
     }
@@ -233,11 +234,121 @@ public class HDEDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+   /** Advance current time to the next event in the event queue,
+     *  and fire one or more actors that have events at that time.
+     *  If <i>synchronizeToRealTime</i> is true, then before firing,
+     *  wait until real time matches or exceeds the time stamp of the event.
+     *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
+     *  until either it has no more input tokens at the current time, or
+     *  its prefire() method returns false. If there are no events in the
+     *  event queue, then the behavior depends on the
+     *  <i>stopWhenQueueIsEmpty</i> parameter.  If it is false,
+     *  then this thread will stall until events
+     *  become available on the event queue.  Otherwise, time will advance
+     *  to the stop time and the execution will halt.
+     *
+     *  @exception IllegalActionException If the firing actor throws it.
+     */
+    public void fire() throws IllegalActionException {
+        _stopRequested = false;
+        while (true) {
+
+            Actor actorToFire = _dequeueEvents();
+            if (actorToFire == null) {
+                // There is nothing more to do.
+                if (_debugging) _debug("No more events on the event queue.");
+                _noMoreActorsToFire = true;
+                return;
+            }
+            // It is possible that the next event to be processed is on
+            // an inside receiver of an output port of an opaque composite
+            // actor containing this director.  In this case, we simply
+            // return, giving the outside domain a chance to react to
+            // event.
+            if (actorToFire == getContainer()) {
+                return;
+            }
+            
+            // Fire an actor exactly once, when it has a waiting event.
+            // NOTE: There are enough tests here against the
+            // _debugging variable that it makes sense to split
+            // into two duplicate versions.
+            if (_debugging) {
+                // Debugging. Report everything.
+                if (((Nameable)actorToFire).getContainer() == null) {
+                    _debug("Actor has no container. Disabling actor.");
+                    _disableActor(actorToFire);
+                    break;
+                }
+                _debug(new FiringEvent(this, actorToFire,
+                               FiringEvent.BEFORE_PREFIRE));
+                if (!actorToFire.prefire()) {
+                    _debug("*** Prefire returned false.");
+                    break;
+                }
+                _debug(new FiringEvent(this, actorToFire,
+                               FiringEvent.AFTER_PREFIRE));
+                _debug(new FiringEvent(this, actorToFire,
+                               FiringEvent.BEFORE_FIRE));
+                actorToFire.fire();
+                _debug(new FiringEvent(this, actorToFire,
+                               FiringEvent.AFTER_FIRE));
+                _debug(new FiringEvent(this, actorToFire,
+                               FiringEvent.BEFORE_POSTFIRE));
+                if (!actorToFire.postfire()) {
+                    _debug("*** Postfire returned false:",
+                            ((Nameable)actorToFire).getName());
+                    // Actor requests that it not be fired again.
+                    _disableActor(actorToFire);
+                    }
+                _debug(new FiringEvent(this, actorToFire,
+                               FiringEvent.AFTER_POSTFIRE));
+            } else {
+                // Not debugging.
+                if (((Nameable)actorToFire).getContainer() == null) {
+                    _disableActor(actorToFire);
+                    break;
+                }
+                if (!actorToFire.prefire()) {
+                    break;
+                }
+                actorToFire.fire();
+                if (!actorToFire.postfire()) {
+                    // Actor requests that it not be fired again.
+                        _disableActor(actorToFire);
+                        //break;
+                }
+            }
+            
+
+            // Check whether the next time stamp is equal to current time.
+            synchronized(_eventQueue) {
+                if(!_eventQueue.isEmpty()) {
+                    DEEvent next = _eventQueue.get();
+                    // If the next event is in the future, 
+                    // proceed to postfire().
+
+                    if (next.timeStamp() > getCurrentTime()) {
+                        break;
+                    } else if (next.timeStamp() < getCurrentTime()) {
+                        throw new InternalErrorException(
+                                "fire(): the time stamp of the next event " 
+                                + next.timeStamp() + " is smaller than the "
+                                + "current time " + getCurrentTime() + " !");
+                    }
+                } else {
+                    // The queue is empty, proceed to postfire().
+                    break;
+                }
+            }
+        }
+    }
+
     /** Return a new receiver of a type DEReceiver.
      *  @return A new DEReceiver.
      */
     public Receiver newReceiver() {
-	if(_debugging) _debug("Creating new DE receiver.");
+	if(_debugging) _debug("Creating new HDE receiver.");
 	return new HDEReceiver();
     }
 
@@ -252,15 +363,12 @@ public class HDEDirector extends DEDirector {
      *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
-     */
-    public boolean transferOutputs(IOPort port)
+     
+        public boolean transferOutputs(IOPort port)
 	throws IllegalActionException {
-	boolean anyWereTransferred = false;
-	boolean moreTransfersRemaining = true;
-	while(moreTransfersRemaining) {
-	    moreTransfersRemaining = super.transferOutputs(port);
-	    anyWereTransferred |= moreTransfersRemaining;
+        return super.transferOutputs(port);
+        anyWereTransferred |= moreTransfersRemaining;
 	}
 	return anyWereTransferred;
-    }
+        }*/
 }

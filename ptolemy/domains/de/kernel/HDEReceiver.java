@@ -67,7 +67,7 @@ this domain.
 <p>Before firing an actor, the director is expected to put at least one
 token into at least one of the receivers contained by the actor.
 
-@author Lukito Muliadi, Edward A. Lee, Jie Liu
+@author Steve Neuendorffer, Jim Armstrong
 @version $Id$
  */
 public class HDEReceiver extends DEReceiver {
@@ -103,18 +103,14 @@ public class HDEReceiver extends DEReceiver {
      */
 
     public synchronized Token get() {
-        
         return _token;
     }
-
-
-   
 
     /** Return true if there are tokens available to the get() method.
      *  @return True if there are more tokens.
      */
     public final boolean hasToken() {
-        return (true);
+        return _token != null;
     }
 
     /** Return true if there are <i>numberOfTokens</i>
@@ -122,11 +118,8 @@ public class HDEReceiver extends DEReceiver {
      *  @return True if there are <i>numberOfTokens</i> tokens available.
      */
     public final boolean hasToken(int numberOfTokens) {
-        return (true);
+        return _token != null;
     }
-
-    
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -138,7 +131,7 @@ public class HDEReceiver extends DEReceiver {
      *  @param token The token to make available to get().
      */
     protected void _triggerEvent(Token token) {
-        _token=token;
+        _token = token;
     }
 
     ///////////////////////////////////////////////////////////////////
