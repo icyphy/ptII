@@ -153,6 +153,8 @@ PTCOLLECTIONS_CLASSES = \
 	collections/Bag.class \
 	collections/CEImpl.class \
 	collections/Cell.class \
+	collections/CLCell.class \
+	collections/CLEnumeration.class \
 	collections/CircularList.class \
 	collections/Collection.class \
 	collections/CollectionEnumeration.class \
@@ -170,6 +172,7 @@ PTCOLLECTIONS_CLASSES = \
 	collections/KeySortedCollection.class \
 	collections/LLCell.class \
 	collections/LLCellEnumeration.class \
+	collections/LLPairEnumeration.class \
 	collections/LLMap.class \
 	collections/LLPair.class \
 	collections/LinkedList.class \
