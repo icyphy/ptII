@@ -35,7 +35,10 @@ package ptolemy.kernel.util;
 /**
 A DropListener is an interface implemented by objects that are
 interested in being informed when a user interface is used to
-drop an object into them.
+change the contents of an object.  In particular, no notification
+will occur if the change is made while constructing a model reading
+a file, for instance. Only interactive changes made through a visual
+editor are expected to trigger notifications.
 
 @author Edward A. Lee
 @version $Id$
@@ -51,7 +54,7 @@ public interface DropListener {
      *  an object into an object implementing this interface. The
      *  call actually occurs when the change request is queued, so
      *  the listener (which implements this method) should react
-     *  from with a change request itself, so as to ensure that
+     *  from within a change request itself, so as to ensure that
      *  the reaction occurs after the drop has been completed.
      */
     public void dropped();
