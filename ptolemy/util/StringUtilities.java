@@ -153,6 +153,7 @@ public class StringUtilities {
         string = substitute(string, "<", "&lt;");
         string = substitute(string, ">", "&gt;");
         string = substitute(string, "\n", "&#10;");
+        string = substitute(string, "\r", "&#13;"); // Carriage return
         return string;
     }
 
