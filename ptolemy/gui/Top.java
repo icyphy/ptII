@@ -144,7 +144,7 @@ public abstract class Top extends JFrame {
     public void centerOnScreen() {
         Toolkit tk = Toolkit.getDefaultToolkit();
         setLocation((tk.getScreenSize().width - getSize().width)/2,
-               (tk.getScreenSize().height - getSize().height)/2);
+                (tk.getScreenSize().height - getSize().height)/2);
     }
 
     /** Return true if the data associated with this window has been
@@ -240,7 +240,7 @@ public abstract class Top extends JFrame {
             // Print button disabled by default, unless this class implements
 	    // one of the JDK1.2 printing interfaces.
             if(this instanceof Printable ||
-	       this instanceof Pageable) {
+                    this instanceof Pageable) {
 		_fileMenuItems[4].setEnabled(true);
 	    } else {
 		_fileMenuItems[4].setEnabled(false);

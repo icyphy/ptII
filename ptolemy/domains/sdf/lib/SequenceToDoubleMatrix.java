@@ -114,17 +114,17 @@ public class SequenceToDoubleMatrix extends SDFTransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if ((attribute == rows) || (attribute == columns)) {
-           int iRows = ((IntToken) rows.getToken()).intValue();
-           int iColumns = ((IntToken) columns.getToken()).intValue();
+            int iRows = ((IntToken) rows.getToken()).intValue();
+            int iColumns = ((IntToken) columns.getToken()).intValue();
 
-           input.setTokenConsumptionRate(iRows * iColumns);
-           Director dir = getDirector();
+            input.setTokenConsumptionRate(iRows * iColumns);
+            Director dir = getDirector();
 
-           if (dir != null) {
-              dir.invalidateSchedule();
-           }
+            if (dir != null) {
+                dir.invalidateSchedule();
+            }
         } else {
-           super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 

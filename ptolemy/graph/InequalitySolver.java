@@ -353,8 +353,8 @@ public class InequalitySolver {
 	        if (least) {
 		    updateTerm = info._ineq.getGreaterTerm();
 	            value = _cpo.leastUpperBound(
-                        	info._ineq.getLesserTerm().getValue(),
-                        	updateTerm.getValue());
+                            info._ineq.getLesserTerm().getValue(),
+                            updateTerm.getValue());
 	        } else {
 		    updateTerm = info._ineq.getLesserTerm();
 	            value = _cpo.greatestLowerBound(updateTerm.getValue(),
@@ -363,15 +363,15 @@ public class InequalitySolver {
 
                 if (value == null) {
                     throw new InvalidStateException("The CPO over which " +
-                        "the inequalities are defined is not a lattice.");
+                            "the inequalities are defined is not a lattice.");
                 }
 
 	        try {
 		    updateTerm.setValue(value);
 	        } catch (IllegalActionException ex) {
 		    throw new InvalidStateException("InequalitySolver.solve: " +
-			"Can't update variable. " +
-			ex.getMessage());
+                            "Can't update variable. " +
+                            ex.getMessage());
 	        }
 
                 // insert or drop the inequalities affected

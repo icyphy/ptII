@@ -507,7 +507,7 @@ public class Port extends NamedObj {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(Entity container)
-             throws IllegalActionException {}
+            throws IllegalActionException {}
 
     /** Check that this port is compatible with the specified relation.
      *  If the argument is null, do nothing.

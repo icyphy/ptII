@@ -184,7 +184,7 @@ public class ComponentDialog extends JDialog {
             // in centering on the screen, but it is not required to.
             Toolkit tk = Toolkit.getDefaultToolkit();
             setLocation((tk.getScreenSize().width - getSize().width)/2,
-                  (tk.getScreenSize().height - getSize().height)/2);
+                    (tk.getScreenSize().height - getSize().height)/2);
         }
 
         // The following code is based on Sun's CustomDialog example...
@@ -197,7 +197,7 @@ public class ComponentDialog extends JDialog {
                 if (isVisible()
                         && (e.getSource() == _optionPane)
                         && (prop.equals(JOptionPane.VALUE_PROPERTY) ||
-                        prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
+                                prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
 
                     Object value = _optionPane.getValue();
 

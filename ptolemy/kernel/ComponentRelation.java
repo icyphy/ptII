@@ -305,7 +305,7 @@ public class ComponentRelation extends Relation {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(CompositeEntity container)
-             throws IllegalActionException {}
+            throws IllegalActionException {}
 
     /** Throw an exception if the specified port cannot be linked to this
      *  relation (is not of class ComponentPort).

@@ -227,9 +227,9 @@ public class CompositeEntity extends ComponentEntity {
                                     "level crossing transitions.");
                         }
                         ComponentRelation newRelation =
-                                newEntity.getRelation(rel.getName());
+                            newEntity.getRelation(rel.getName());
                         Port newPort =
-                                newSubentity.getPort(port.getName());
+                            newSubentity.getPort(port.getName());
                         try {
                             newPort.link(newRelation);
                         } catch (IllegalActionException ex) {
@@ -429,7 +429,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
             return result;
-         } finally {
+        } finally {
             _workspace.doneReading();
         }
     }
@@ -486,8 +486,8 @@ public class CompositeEntity extends ComponentEntity {
                 // Apply filter.
                 if (filter == null
                         || (filter.contains(relation)
-                           && (filter.contains(port)
-                              ||  filter.contains(port.getContainer())))) {
+                                && (filter.contains(port)
+                                        ||  filter.contains(port.getContainer())))) {
 
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
@@ -535,7 +535,7 @@ public class CompositeEntity extends ComponentEntity {
                 while (relations.hasNext()) {
                     index++;
                     ComponentRelation relation
-                            = (ComponentRelation)relations.next();
+                        = (ComponentRelation)relations.next();
                     if (relation == null) {
                         // Gap in the links.  The next link has to use an
                         // explicit index.
@@ -545,8 +545,8 @@ public class CompositeEntity extends ComponentEntity {
                     // Apply filter.
                     if (filter == null
                             || (filter.contains(relation)
-                               && (filter.contains(port)
-                                  ||  filter.contains(port.getContainer())))) {
+                                    && (filter.contains(port)
+                                            ||  filter.contains(port.getContainer())))) {
 
                         // In order to support level-crossing links,
                         // consider the possibility that the relation
@@ -1056,11 +1056,11 @@ public class CompositeEntity extends ComponentEntity {
 
     private void _addIcon() {
 	_setDefaultIcon("<svg>\n" +
-               "<rect x=\"0\" y=\"0\" width=\"60\" " +
-               "height=\"40\" style=\"fill:blue\"/>\n" +
-               "<rect x=\"5\" y=\"5\" width=\"50\" " +
-               "height=\"30\" style=\"fill:white\"/>\n" +
-               "</svg>\n");
+                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "height=\"40\" style=\"fill:blue\"/>\n" +
+                "<rect x=\"5\" y=\"5\" width=\"50\" " +
+                "height=\"30\" style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -175,7 +175,7 @@ public class LineCoder extends SDFTransformer {
         if (tabletoken.length() < size) {
             throw new IllegalActionException(this, "Table parameter must " +
                     "have at least " + size + " entries, but only has " +
-                                             tabletoken.length());
+                    tabletoken.length());
         }
         _table = tabletoken.arrayValue();
     }

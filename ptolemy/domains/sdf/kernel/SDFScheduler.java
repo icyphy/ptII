@@ -1242,7 +1242,7 @@ public class SDFScheduler extends Scheduler {
             sourcechannel++) {
 	    if (_debugging) {
                 _debug("destination receivers for channel "
-                + sourcechannel + ": " + creceivers[sourcechannel].length);
+                        + sourcechannel + ": " + creceivers[sourcechannel].length);
             }
 	    int destinationreceiver;
 	    for(destinationreceiver = 0;
@@ -1401,7 +1401,7 @@ public class SDFScheduler extends Scheduler {
      *  given receiver.  If the receiver is not contained within the port,
      *  throw an InternalErrorException.
      */
-// FIXME: Move this functionality to the kernel.
+    // FIXME: Move this functionality to the kernel.
     private int _getChannel(IOPort port, Receiver receiver)
             throws IllegalActionException {
 	int width = port.getWidth();
@@ -1416,7 +1416,7 @@ public class SDFScheduler extends Scheduler {
 	    int receivernumber;
 	    if (_debugging) {
                 _debug("number of receivers in channel " + channel
-                + " = " + receivers[channel].length);
+                        + " = " + receivers[channel].length);
             }
 	    for(receivernumber = 0;
 		receivernumber < receivers[channel].length;

@@ -115,12 +115,12 @@ public class DotProduct extends TypedAtomicActor {
         double[][] doubleMatrix2 = token2.doubleMatrix();
 
         if ((doubleMatrix1.length != 1) || (doubleMatrix2.length != 1)) {
-           throw new IllegalActionException("Input to DotProduct is not " +
-                   "a matrix with one row.");
+            throw new IllegalActionException("Input to DotProduct is not " +
+                    "a matrix with one row.");
         }
 
         output.send(0, new DoubleToken(DoubleArrayMath.dotProduct(
-                                       doubleMatrix1[0], doubleMatrix2[0])));
+                doubleMatrix1[0], doubleMatrix2[0])));
     }
 }
 

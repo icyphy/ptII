@@ -119,7 +119,7 @@ public class FIR extends SDFTransformer {
         decimation.setTypeEquals(BaseType.INT);
 
         decimationPhase = new Parameter(this, "decimationPhase",
-					new IntToken(0));
+                new IntToken(0));
         decimationPhase.setTypeEquals(BaseType.INT);
 
         interpolation = new Parameter(this, "interpolation", new IntToken(1));
@@ -259,7 +259,7 @@ public class FIR extends SDFTransformer {
         output.setTokenProductionRate(_interp);
         if (_decPhase >= _dec) {
             throw new IllegalActionException(this,
-					     "decimationPhase too large");
+                    "decimationPhase too large");
         }
     }
 

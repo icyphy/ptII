@@ -479,12 +479,12 @@ public class ComponentPort extends Port {
      */
     public void unlink(Relation relation) {
         if (relation != null
-               && _isInsideLinkable(relation.getContainer())) {
-           // An inside link
-           unlinkInside(relation);
-       } else {
-           super.unlink(relation);
-       }
+                && _isInsideLinkable(relation.getContainer())) {
+            // An inside link
+            unlinkInside(relation);
+        } else {
+            super.unlink(relation);
+        }
     }
 
     /** Unlink all outside links.
@@ -692,10 +692,10 @@ public class ComponentPort extends Port {
             // yield a null relation here. EAL 7/19/00.
             if (relation != null) {
                 Iterator connectedPorts
-                        = relation.linkedPortList(this).iterator();
+                    = relation.linkedPortList(this).iterator();
                 while (connectedPorts.hasNext()) {
                     ComponentPort port
-                            = (ComponentPort)connectedPorts.next();
+                        = (ComponentPort)connectedPorts.next();
                     // NOTE: If level-crossing transitions are not allowed,
                     // then a simpler test than that of the following
                     // would work.

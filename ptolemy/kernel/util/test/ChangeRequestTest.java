@@ -55,7 +55,7 @@ public class ChangeRequestTest {
     /** Constructor.
      */
     public ChangeRequestTest()
-             throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();
@@ -94,7 +94,7 @@ public class ChangeRequestTest {
                 delay.initialOutputs.setExpression("[4, 5]");
                 _top.connect(_const.output, add.plus);
                 ComponentRelation relation =
-                       _top.connect(add.output, delay.input);
+                    _top.connect(add.output, delay.input);
                 _rec.input.link(relation);
                 // Any pre-existing input port whose connections
                 // are modified needs to have this method called.

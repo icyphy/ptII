@@ -48,7 +48,7 @@ in MoML.
 */
 
 public class TransientSingletonConfigurableAttribute
-         extends SingletonConfigurableAttribute {
+    extends SingletonConfigurableAttribute {
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the

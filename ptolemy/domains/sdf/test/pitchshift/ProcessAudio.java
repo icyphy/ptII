@@ -128,18 +128,18 @@ public class ProcessAudio implements Runnable {
 
 	SoundCapture soundCapture =
 	    new SoundCapture((float)sampleRate, sampleSizeInBits,
-			     channels, inBufferSize,
-			     getSamplesSize);
+                    channels, inBufferSize,
+                    getSamplesSize);
 
 	int putSamplesSize = getSamplesSize;
 
-// Construct a sound playback object that plays audio
+        // Construct a sound playback object that plays audio
 	//through the computer's speaker.
 	SoundPlayback soundPlayback = new SoundPlayback((float)sampleRate,
-					  sampleSizeInBits,
-					  channels,
-					  outBufferSize,
-					  putSamplesSize);
+                sampleSizeInBits,
+                channels,
+                outBufferSize,
+                putSamplesSize);
 
 	// Initialize and begin real-time capture and playback.
 	try{

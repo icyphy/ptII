@@ -311,18 +311,18 @@ public class ComponentEntity extends Entity {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(CompositeEntity container)
-             throws IllegalActionException {}
+            throws IllegalActionException {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void _addIcon() {
 	_setDefaultIcon("<svg>\n" +
-               "<rect x=\"0\" y=\"0\" width=\"60\" " +
-               "height=\"40\" style=\"fill:white\"/>\n" +
-               "<polygon points=\"10,10 50,20 10,30\" " +
-               "style=\"fill:blue\"/>\n" +
-               "</svg>\n");
+                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "height=\"40\" style=\"fill:white\"/>\n" +
+                "<polygon points=\"10,10 50,20 10,30\" " +
+                "style=\"fill:blue\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

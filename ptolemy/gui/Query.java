@@ -266,8 +266,8 @@ public class Query extends JPanel {
         }
         if ((defaultValue > maximum) || (defaultValue < minimum)) {
             throw new IllegalArgumentException("Desired default " +
-            "value \"" + defaultValue + "\" does not fall " +
-            "between the minimum and maximum.");
+                    "value \"" + defaultValue + "\" does not fall " +
+                    "between the minimum and maximum.");
         }
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
         _addPair(name, lbl, slider, slider);
@@ -290,14 +290,14 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + "\" in the query box.");
+                    name + "\" in the query box.");
         }
         if (result instanceof JRadioButton) {
             return ((JRadioButton)result).isSelected();
         } else {
             throw new IllegalArgumentException("Item named \"" +
-            name + "\" is not a radio button, and hence does not have "
-            + "a boolean value.");
+                    name + "\" is not a radio button, and hence does not have "
+                    + "a boolean value.");
         }
     }
 
@@ -322,14 +322,14 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + " \" in the query box.");
+                    name + " \" in the query box.");
         }
         if (result instanceof JTextField) {
             return (new Double(((JTextField)result).getText())).doubleValue();
         } else {
             throw new IllegalArgumentException("Item named \"" +
-            name + "\" is not a text line, and hence cannot be converted to "
-            + "a double value.");
+                    name + "\" is not a text line, and hence cannot be converted to "
+                    + "a double value.");
         }
     }
 
@@ -373,7 +373,7 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + " \" in the query box.");
+                    name + " \" in the query box.");
         }
         if (result instanceof JTextField) {
             return (new Integer(((JTextField)result).getText())).intValue();
@@ -395,9 +395,9 @@ public class Query extends JPanel {
             return -1;
         } else {
             throw new IllegalArgumentException("Item named \"" +
-            name + "\" is not a text line or slider, and hence "
-            + "cannot be converted to "
-            + "an integer value.");
+                    name + "\" is not a text line or slider, and hence "
+                    + "cannot be converted to "
+                    + "an integer value.");
         }
     }
 
@@ -470,8 +470,8 @@ public class Query extends JPanel {
             }
         } else {
             throw new IllegalArgumentException("Query class cannot set"
-            + " a string representation for entries of type "
-            + result.getClass());
+                    + " a string representation for entries of type "
+                    + result.getClass());
         }
         // Record the new value as if it was the previously notified
         // value.  Thus, any future change from this value will trigger
@@ -492,9 +492,9 @@ public class Query extends JPanel {
      */
     public void setAndNotify(String name, String value)
             throws NoSuchElementException, IllegalArgumentException {
-       set(name, value);
-       _notifyListeners(name);
-   }
+        set(name, value);
+        _notifyListeners(name);
+    }
 
     /** Set the background color for all the widgets.
      *  @param color The background color.
@@ -526,14 +526,14 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + "\" in the query box.");
+                    name + "\" in the query box.");
         }
         if (result instanceof JRadioButton) {
             ((JRadioButton)result).setSelected(value);
         } else {
             throw new IllegalArgumentException("Item named \"" +
-            name + "\" is not a radio button, and hence does not have "
-            + "a boolean value.");
+                    name + "\" is not a radio button, and hence does not have "
+                    + "a boolean value.");
         }
         _notifyListeners(name);
     }
@@ -555,15 +555,15 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + " \" in the query box.");
+                    name + " \" in the query box.");
         }
         if (result instanceof JTextArea) {
             JTextArea label = (JTextArea)result;
             label.setText(value);
         } else {
             throw new IllegalArgumentException("Item named \"" +
-            name + "\" is not a display, and hence cannot be set using "
-            + "setDisplay().");
+                    name + "\" is not a display, and hence cannot be set using "
+                    + "setDisplay().");
         }
         _notifyListeners(name);
     }
@@ -578,7 +578,7 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + " \" in the query box.");
+                    name + " \" in the query box.");
         }
         if(result instanceof JComponent) {
             ((JComponent)result).setEnabled(value);
@@ -605,15 +605,15 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + " \" in the query box.");
+                    name + " \" in the query box.");
         }
         if (result instanceof JTextField) {
             JTextField line = (JTextField)result;
             line.setText(value);
         } else {
             throw new IllegalArgumentException("Item named \"" +
-            name + "\" is not a line, and hence cannot be set using "
-            + "setLine().");
+                    name + "\" is not a line, and hence cannot be set using "
+                    + "setLine().");
         }
         _notifyListeners(name);
     }
@@ -659,7 +659,7 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + " \" in the query box.");
+                    name + " \" in the query box.");
         }
         if (result instanceof JSlider) {
             JSlider theSlider = (JSlider)result;
@@ -667,8 +667,8 @@ public class Query extends JPanel {
             theSlider.setValue(value);
         } else {
             throw new IllegalArgumentException("Item named \"" +
-            name + "\" is not a slider, and hence cannot be set using "
-            + "setSlider().");
+                    name + "\" is not a slider, and hence cannot be set using "
+                    + "setSlider().");
         }
         _notifyListeners(name);
     }
@@ -747,8 +747,8 @@ public class Query extends JPanel {
             return "";
         } else {
             throw new IllegalArgumentException("Query class cannot generate"
-            + " a string representation for entries of type "
-            + result.getClass());
+                    + " a string representation for entries of type "
+                    + result.getClass());
         }
     }
 
