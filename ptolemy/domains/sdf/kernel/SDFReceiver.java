@@ -76,7 +76,7 @@ public class SDFReceiver extends AbstractReceiver {
 
     /** Construct an empty receiver with the specified container.
      *  @param container The container of the receiver.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public SDFReceiver(IOPort container) throws IllegalActionException {
@@ -87,7 +87,7 @@ public class SDFReceiver extends AbstractReceiver {
     /** Construct an empty receiver with the specified container and size.
      *  @param container The container of the receiver.
      *  @param size The size of the queue in the receiver.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public SDFReceiver(IOPort container, int size)

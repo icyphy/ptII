@@ -154,7 +154,7 @@ public class MoMLApplet extends PtolemyApplet {
     /** Read the model from the <i>modelURL</i> applet parameter.
      *  @param workspace The workspace in which to create the model.
      *  @return A model.
-     *  @throws Exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
             throws Exception {

@@ -81,7 +81,7 @@ public class DEReceiver extends AbstractReceiver {
 
     /** Construct an empty DEReceiver with the specified container.
      *  @param container The container.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public DEReceiver(IOPort container) throws IllegalActionException {

@@ -136,7 +136,7 @@ public class State extends ComponentEntity {
      *  to refer to the attributes and ports of the new state.
      *  @param workspace The workspace for the new state.
      *  @return A new state.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)

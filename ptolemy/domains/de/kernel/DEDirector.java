@@ -1041,7 +1041,7 @@ public class DEDirector extends Director {
     }
 
     /** Return the depth of the actor.
-     *  @throws IllegalActionException If the actor is not accessible.
+     *  @exception IllegalActionException If the actor is not accessible.
      */
     protected int _getDepth(Actor actor) throws IllegalActionException {
         if (!_sortValid) {

@@ -131,7 +131,7 @@ public class SetVariable extends Action implements CommitAction {
      *  to the attributes of the new action.
      *  @param workspace The workspace for the new action.
      *  @return A new action.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)

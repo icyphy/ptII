@@ -51,7 +51,7 @@ public class Mailbox extends AbstractReceiver {
 
     /** Construct an empty Mailbox with the specified container.
      *  @param container The container.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public Mailbox(IOPort container) throws IllegalActionException {

@@ -173,7 +173,7 @@ public class RTPDirector extends ProcessDirector {
     }
 
     /** Start all actors and set the stop condition.
-     *  @throws IllegalActionException If any of the actors throws it.
+     *  @exception IllegalActionException If any of the actors throws it.
      */
     public void initialize() throws IllegalActionException {
         System.out.println("Start threads.");
@@ -191,7 +191,7 @@ public class RTPDirector extends ProcessDirector {
 
     /** Return false, since the execution must be ended by now.
      *  @return false.
-     *  @throws IllegalActionException If the iterations parameter does
+     *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {

@@ -205,7 +205,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  to the attributes of the new actor.
      *  @param workspace The workspace for the new actor.
      *  @return A new FSMActor.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)

@@ -60,7 +60,7 @@ public class GiottoReceiver extends AbstractReceiver {
 
     /** Construct an empty GiottoReceiver with the specified container.
      *  @param container The container.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public GiottoReceiver(IOPort container) throws IllegalActionException {

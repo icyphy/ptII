@@ -85,7 +85,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Construct an empty receiver with the specified container.
      *  @param container The container of this receiver.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public PNQueueReceiver(IOPort container) throws IllegalActionException {

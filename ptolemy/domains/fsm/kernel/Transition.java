@@ -232,7 +232,7 @@ public class Transition extends ComponentRelation {
      *  the attributes of the new transition.
      *  @param workspace The workspace for the new transition.
      *  @return A new transition.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)

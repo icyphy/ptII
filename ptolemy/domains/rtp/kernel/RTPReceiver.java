@@ -58,7 +58,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Construct an empty RTPReceiver with the specified container.
      *  @param container The container.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public RTPReceiver(IOPort container) throws IllegalActionException {

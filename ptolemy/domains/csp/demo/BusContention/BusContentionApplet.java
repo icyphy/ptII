@@ -112,7 +112,7 @@ public class BusContentionApplet extends PtolemyApplet {
     /** Create a model.
      *  @param workspace The workspace in which to create the model.
      *  @return A model.
-     *  @throws Exception If something goes wrong.  This is a broad
+     *  @exception Exception If something goes wrong.  This is a broad
      *   exception to allow derived classes wide lattitude as to which
      *   exception to throw.
      */

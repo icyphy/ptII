@@ -169,7 +169,7 @@ public class FSMDirector extends Director {
      *  to the attributes of the new director.
      *  @param workspace The workspace for the new director.
      *  @return A new director.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)

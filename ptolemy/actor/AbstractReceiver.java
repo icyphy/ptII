@@ -64,7 +64,7 @@ public abstract class AbstractReceiver implements Receiver {
 
     /** Construct an empty receiver with the specified container.
      *  @param container The container of the receiver.
-     *  @throws IllegalActionException If the container does
+     *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
     public AbstractReceiver(IOPort container) throws IllegalActionException {

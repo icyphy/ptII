@@ -205,7 +205,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *  function, preinitialize all the actors in the subsystem,
      *  and set the opaqueness of this actor to true.
      *  This method need the write access on the workspace.
-     *  @throws IllegalActionException If there is no CTDirector,
+     *  @exception IllegalActionException If there is no CTDirector,
      *  or any contained actors throw it in its preinitialize() method
      *  .
      */

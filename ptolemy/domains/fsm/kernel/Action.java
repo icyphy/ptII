@@ -101,7 +101,7 @@ public abstract class Action extends StringAttribute {
      *  containing this action is cloned.
      *  @param workspace The workspace for the new action.
      *  @return A new action.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
