@@ -91,7 +91,7 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 
-abstract class IncrImpl implements Immutable, Collection {
+public abstract class IncrImpl implements Immutable, Collection {
 
 /**
  * The collection performing the actual work. Null if delta'd

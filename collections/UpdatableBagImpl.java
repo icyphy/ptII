@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag {
+public abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag {
 
 
 /**

@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq {
+public abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq {
 
 
 /**
