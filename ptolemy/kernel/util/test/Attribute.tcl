@@ -1,6 +1,6 @@
 # Tests for the Attribute class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Jie Liu
 #
 # @Version: $Id$
 #
@@ -69,6 +69,26 @@ test Attribute-2.2 {Create a Attribute with a container} {
     set p [java::new ptolemy.kernel.util.Attribute $n P]
     $p getFullName
 } {.N.P}
+
+######################################################################
+####
+#
+test Attribute-3.1 {Test for NameDuplicationException on constructor} {
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    $n setName N
+    set p1 [java::new ptolemy.kernel.util.Attribute $n P]
+    catch {[java::new ptolemy.kernel.util.Attribute $n P]} msg
+    list $msg
+} {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "P" into a container that already contains an object with that name.}}
+
+test Attribute-3.2 {Test for IllegalActionException on setName} {
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    $n setName N
+    set p1 [java::new ptolemy.kernel.util.Attribute $n P1]
+    set p2 [java::new ptolemy.kernel.util.Attribute $n P2]
+    catch {$p2 setName P1} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .N: already contains an attribute with the name P1.}}
 
 ######################################################################
 ####
