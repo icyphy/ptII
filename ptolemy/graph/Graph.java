@@ -1524,6 +1524,10 @@ public class Graph implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // A list of analyses that are associated with this graph. Each
+    // element of the list is an instance of ptolemy.graph.analysis.Analysis.
+    private ArrayList _analysisList;
+
     // A counter that keeps track of changes to the graph.
     private long _changeCount;
 
@@ -1544,10 +1548,6 @@ public class Graph implements Cloneable {
     // Each key in this map is an instance of Node. Each value
     // is an instance of ArrayList whose elements are instances of Edge.
     private HashMap _incidentEdgeMap;
-
-    // A list of analyses that are associated with this graph. Each
-    // element of the list is an instance of ptolemy.graph.analysis.Analysis.
-    private ArrayList _analysisList;
 
     // A mapping from node weights to associated nodes. Unweighted
     // nodes are not represented in this map. Keys in this this map
