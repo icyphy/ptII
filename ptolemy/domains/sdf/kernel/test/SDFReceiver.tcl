@@ -153,6 +153,9 @@ test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in t
 
     # Now get the token, but don't remove it from the receiver.
     set receivedToken2 [$receiver get 1]
+    
+    # Throws an exception because the offset is out of range.
+    catch {$receiver get 2} result6
 
     # Should return true (1), since there is still a token in
     # the receiver.
@@ -170,8 +173,9 @@ test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in t
 
     catch {$receiver hasToken 0} result5
 
-    list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString] $result5
-} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0}}
+    list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString] $result5 $result6
+} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0} {ptolemy.actor.NoTokenException: :
+Offset 2 out of range with 2 tokens in the receiver and 0 in history.}}
 
 test SDFReceiver-2.3 {Check noTokenException} {
     # uses previous setup.
@@ -295,6 +299,8 @@ test SDFReceiver-5.2 {Check setCapacity} {
     # Now put a token.
     $receiver {put ptolemy.data.Token} $token
 
+    set size [$receiver size]
+
     # Should return false, since there should not be room.
     set result4 [$receiver hasRoom]
 
@@ -304,11 +310,29 @@ test SDFReceiver-5.2 {Check setCapacity} {
     # Should return false, since there should not be room.
     set result6 [$receiver hasRoom 2]
 
-    list [$receiver getCapacity] $result1 $result2 $result3 $result4 $result5 $result6
-} {1 1 1 0 0 0 0}
+    list [$receiver getCapacity] $result1 $result2 $result3 $result4 $result5 $result6 $size
+} {1 1 1 0 0 0 0 1}
 
-test SDFReceiver-5.3 {Check noRoomException} {
+test SDFReceiver-5.2 {Check noRoomException} {
+    # Uses previous setup
     catch {$receiver {put ptolemy.data.Token} $token} result1
     catch {$receiver {putArray ptolemy.data.Token[] int} $tokenArray 2} result2
     list $result1 $result2
 } {{ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot put a token.} {ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot put a token.}}
+
+test SDFReceiver-5.3 {Check setCapacity errors} {
+    set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+
+    # token to put
+    set token [java::new ptolemy.data.StringToken foo]
+
+    # Now put a token.
+    $receiver {put ptolemy.data.Token} $token
+    $receiver {put ptolemy.data.Token} $token
+
+    # Fails because receiver contains 2 tokens.
+    catch {$receiver setCapacity 1} result1
+    catch {$receiver setCapacity -2} result2
+
+    list $result1 $result2
+} {{ptolemy.kernel.util.IllegalActionException: Queue contains more elements than the proposed capacity.} {ptolemy.kernel.util.IllegalActionException: Queue Capacity cannot be negative}}

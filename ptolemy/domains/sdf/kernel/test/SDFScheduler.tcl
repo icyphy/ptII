@@ -84,21 +84,54 @@ test SDFScheduler-4.1 {Test setScheduler and getScheduler} {
     set d0 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e0 D1]
     $d0 setScheduler $s2
     set d1 [$s2 getContainer]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
+
     list [$d0 getFullName] [$d1 getFullName] [$s2 getFullName]
 } {.E0.D1 .E0.D1 .E0.D1.Scheduler}
-
-######################################################################
-####
-#
 
 test SDFScheduler-4.2 {Test setValid and isValid} {
     # NOTE: Uses the setup above
     $s1 setValid true
-    set e0 [$s1 isValid]
+    set result0 [$s1 isValid]
     $s1 setValid false
-    set e1 [$s1 isValid]
-    list $e0 $e1
+    set result1 [$s1 isValid]
+    list $result0 $result1
 } {1 0}
+
+test SDFScheduler-4.3 {Test TokenConsumptionRate methods} {
+    # NOTE: Uses the setup above
+    $p1 setInput 1
+    set result1 [$s2 getTokenConsumptionRate $p1]
+    $s2 setTokenConsumptionRate $p1 2
+    set result2 [$s2 getTokenConsumptionRate $p1]
+    $p1 setInput 0
+    set result3 [$s2 getTokenConsumptionRate $p1]
+    list $result1 $result2 $result3
+} {1 2 0}
+
+test SDFScheduler-4.4 {Test TokenProductionRate methods} {
+    # NOTE: Uses the setup above
+    $p1 setOutput 1
+    set result1 [$s2 getTokenProductionRate $p1]
+    $s2 setTokenProductionRate $p1 2
+    set result2 [$s2 getTokenProductionRate $p1]
+    $p1 setOutput 0
+    set result3 [$s2 getTokenProductionRate $p1]
+    list $result1 $result2 $result3
+} {1 2 0}
+
+test SDFScheduler-4.5 {Test TokenInitProduction methods} {
+    # NOTE: Uses the setup above
+    $p1 setOutput 1
+    set result1 [$s2 getTokenInitProduction $p1]
+    $s2 setTokenInitProduction $p1 2
+    set result2 [$s2 getTokenInitProduction $p1]
+    $p1 setOutput 0
+    set result3 [$s2 getTokenInitProduction $p1]
+    list $result1 $result2 $result3
+} {0 2 0}
+
 
 ######################################################################
 ####
@@ -1207,3 +1240,41 @@ test SDFScheduler-13.2 {Output External port connected } {
     set sched2 [_testEnums schedule $s5]
     list $sched1 $sched2
 } {{{Ramp2 Ramp1 Cont}} Consumer}
+
+test SDFScheduler-13.3 {_debugging code coverage} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
+    set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
+    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    $p1 setInput 1
+    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    $p2 setOutput 1
+    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
+    $c1 setDirector $d5
+    set s5 [$d5 getScheduler]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
+    $toplevel connect [java::field $a1 output] $p1 R1
+    $c1 connect $p1 [java::field $a2 input] R2
+    $c1 connect [java::field $a2 output] $p2 R3
+    $toplevel connect $p2 [java::field $a3 input] R4
+
+    $scheduler setValid false
+    $s5 setValid false
+
+    set debuglistener [java::new ptolemy.kernel.util.StreamListener]
+    $scheduler addDebugListener $debuglistener
+    $director addDebugListener $debuglistener
+
+    set sched1 [_getSchedule $toplevel $scheduler]
+    set sched2 [_testEnums schedule $s5]
+    list $sched1 $sched2
+} {{{Ramp Cont Consumer}} Delay}

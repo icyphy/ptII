@@ -127,9 +127,10 @@ public class SDFScheduler extends Scheduler {
         return _getFiringCount(entity);
     }
 
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor, as supplied by
-     *  by the port's "tokenConsumptionRate" Parameter.   If the parameter
+    /** Get the number of tokens that are consumed
+     *  on the given port.  If the actor is not an 
+     *  input port, then return 0.  Otherwise, return the value of
+     *  the port's "tokenConsumptionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
      *  @exception IllegalActionException If the tokenConsumptionRate
@@ -137,52 +138,146 @@ public class SDFScheduler extends Scheduler {
      */
     public static int getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("tokenConsumptionRate");
-        if(param == null) {
-            if(p.isInput())
+        if(p.isInput()) {
+            Parameter param = 
+                (Parameter)p.getAttribute("tokenConsumptionRate");
+            if(param == null) {
                 return 1;
-            else
-                return 0;
-        } else
-            return ((IntToken)param.getToken()).intValue();
+            } else {
+                return ((IntToken)param.getToken()).intValue();
+            }
+        } else 
+            return 0;
     }
 
-    /**
-     * Get the number of tokens that are produced on this output port
-     * during initialization, as supplied by
-     * by the port's "tokenInitProduction" parameter.   If the parameter
-     * does not exist, then assume the actor is zero-delay and return
+    /** Get the number of tokens that are produced on the given port
+     *  during initialization.  If the actor is not an 
+     *  output port, then return 0.  Otherwise, return the value of
+     *  the port's "tokenInitProduction" Parameter.   If the parameter
+     *  does not exist, then assume the actor is zero-delay and return
      * a value of zero.
      * @exception IllegalActionException If the tokenInitProduction
      *  parameter has an invalid expression.
      */
     public static int getTokenInitProduction(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("tokenInitProduction");
-        if(param == null)
+        if(p.isOutput()) {
+            Parameter param = 
+                (Parameter)p.getAttribute("tokenInitProduction");
+            if(param == null) {
+                return 0;
+            } else {
+                return ((IntToken)param.getToken()).intValue();
+            }
+        } else 
             return 0;
-        return ((IntToken)param.getToken()).intValue();
     }
 
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor during each firing,
-     *  as supplied by
-     *  by the port's "tokenProductionRate" Parameter.   If the parameter
+    /** Get the number of tokens that are produced
+     *  on the given port.  If the actor is not an 
+     *  output port, then return 0.  Otherwise, return the value of
+     *  the port's "tokenProductionRate" Parameter.  If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
      *  @exception IllegalActionException If the tokenProductionRate
-     *   parameter has an invalid expression.
+     *  parameter has an invalid expression. 
      */
     public static int getTokenProductionRate(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("tokenProductionRate");
-        if(param == null) {
-            if(p.isOutput())
+        if(p.isOutput()) {
+            Parameter param = 
+                (Parameter)p.getAttribute("tokenProductionRate");
+            if(param == null) {
                 return 1;
-            else
-                return 0;
+            } else {
+                return ((IntToken)param.getToken()).intValue();
+            }
+        } else 
+            return 0;
+    }
+
+    /** Set the tokenConsumptionRate parameter of the given port
+     *  to the given rate.  The port is assumedly an input port.
+     *  @exception IllegalActionException If the rate is negative.
+     */
+    public static void setTokenConsumptionRate(IOPort port, int rate)
+            throws IllegalActionException {
+        if(rate < 0) throw new IllegalActionException(
+                "tokenConsumptionRate cannot be set to " + rate 
+                + " which is negative");
+        Parameter param = (Parameter)
+            port.getAttribute("tokenConsumptionRate");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port, "tokenConsumptionRate",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
         }
-        return ((IntToken)param.getToken()).intValue();
+    }
+
+    /** Set the tokenInitProduction parameter of the given port to 
+     *  the given rate.  The port is assumedly an output port.
+     *  @exception IllegalActionException If the production is negative.
+     */
+    public static void setTokenInitProduction(IOPort port, int rate)
+            throws IllegalActionException {
+        if(rate < 0) throw new IllegalActionException(
+                "tokenInitProduction cannot be set to " + rate 
+                + " which is negative"); 
+        Parameter param = (Parameter)
+            port.getAttribute("tokenInitProduction");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port, "tokenInitProduction",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
+    }
+
+    /** Set the tokenProductionRate parameter of the given port 
+     *  to the given rate.  The port is assumedly an output port.
+     *  @exception IllegalActionException If the rate is negative.
+     */
+    public static void setTokenProductionRate(IOPort port, int rate)
+            throws IllegalActionException {
+        if(rate < 0) throw new IllegalActionException(
+                "tokenInitProduction cannot be set to " + rate 
+                + " which is negative."); 
+        Parameter param = (Parameter)
+            port.getAttribute("tokenProductionRate");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port, "tokenProductionRate",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -295,93 +390,6 @@ public class SDFScheduler extends Scheduler {
         setValid(true);
 
         return Collections.enumeration(result);
-    }
-
-    public static void setTokenConsumptionRate(Entity e, IOPort port, int rate)
-            throws NotSchedulableException {
-        if(rate <= 0) throw new NotSchedulableException(
-                "Rate must be > 0");
-        if(!port.isInput()) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not an Input Port.");
-        Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not contained in Entity " +
-                e.getName());
-        Parameter param = (Parameter)
-            port.getAttribute("tokenConsumptionRate");
-        try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
-            } else {
-                param = new Parameter(port,"tokenConsumptionRate",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // e might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
-    }
-
-    public static void setTokenProductionRate(Entity e, IOPort port, int rate)
-            throws NotSchedulableException {
-        if(rate <= 0) throw new NotSchedulableException(
-                "Rate must be > 0");
-        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not an Output Port.");
-        Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not contained in Entity " +
-                e.getName());
-        Parameter param = (Parameter)
-            port.getAttribute("tokenProductionRate");
-        try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
-            } else {
-                param = new Parameter(port,"tokenProductionRate",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // e might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
-    }
-
-    public static void setTokenInitProduction(Entity e, IOPort port, int rate)
-            throws NotSchedulableException {
-        if(rate <= 0) throw new NotSchedulableException(
-                "Rate must be > 0");
-        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not an Input Port.");
-        Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not contained in Entity " +
-                e.getName());
-        Parameter param = (Parameter)
-            port.getAttribute("tokenInitProduction");
-        try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
-            } else {
-                param = new Parameter(port,"tokenInitProduction",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // e might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
