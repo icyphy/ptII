@@ -43,9 +43,9 @@ A FIFO queue-based receiver for storing tokens with time stamps. A "time
 stamp" is a time value that is associated with a token and is used to order
 the consumption of a token with respect to other time stamped tokens. To
 help organize the tokens contained by this queue, two flags are maintained:
-"lastTime" and "rcvrTime." The lastTime flag is defined to be equivalent
+"_lastTime" and "_rcvrTime." The _lastTime flag is defined to be equivalent
 to the time stamp of the token that was most recently placed in the queue.
-The rcvrTime flag is defined as the time stamp of the oldest token in the
+The _rcvrTime flag is defined as the time stamp of the oldest token in the
 queue or the last token to be removed from the queue if the queue is empty.
 Both of these flags must have monotonically, non-decreasing values with the
 exception that their values will be set to -1.0 at the conclusion of a
@@ -53,15 +53,15 @@ simulation run.
 <P>
 To facilitate the transfer of local time information in a manner that
 is amenable to polymorphic actors, it is necessary to have a reference
-to the ODFThread that controls the actor that contains this receiver.
-The setThread() and getThread() methods serve this purpose.
+to a TimeKeeper for both the sending and receiving actors associated with
+this receiver.
 
 @author John S. Davis II
 @version $Id$
 @see ptolemy.domains.odf.kernel.ODFReceiver
 */
 
-public class TimedQueueReceiver implements Receiver {
+public class TimedQueueReceiver {
 
     /** Construct an empty queue with no container.
      */
@@ -83,7 +83,7 @@ public class TimedQueueReceiver implements Receiver {
     /** Take the the oldest token off of the queue and return it.
      *  If the queue is empty, throw a NoTokenException. If there are
      *  other tokens left on the queue after this removal, then set
-     *  the rcvrTime of this receiver to equal that of the next oldest
+     *  the _rcvrTime of this receiver to equal that of the next oldest
      *  token. Update the RcvrTimeTriple entry in the ODFThread which
      *  manages this receiver.
      * @exception NoTokenException If the queue is empty.
@@ -115,23 +115,12 @@ public class TimedQueueReceiver implements Receiver {
 
 	    // Call updateRcvrList() even if getSize()==0, so that
 	    // the triple is no longer in front.
-	    RcvrTimeTriple triple;
-	    triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
-	    /*
-	    if( thread instanceof ODFThread ) {
-	        ((ODFThread)thread).updateRcvrList( triple );
-	    }
-	    */
-	    timeKeeper.updateRcvrList( triple );
+	    // RFIXME: RcvrTimeTriple triple;
+	    // RFIXME: triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
+	    timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
+	    // timeKeeper.updateRcvrList( triple );
 	}
         return token;
-    }
-
-    /** Return the completion time of this receiver.
-     * @return double The completion time.
-     */
-    public synchronized double getCompletionTime() {
-        return _completionTime;
     }
 
     /** Return the IOPort container of this receiver.
@@ -141,11 +130,11 @@ public class TimedQueueReceiver implements Receiver {
         return _container;
     }
 
-    /** Return the lastTime value of this receiver. The lastTime is
+    /** Return the _lastTime value of this receiver. The _lastTime is
      *  the time associated with the token that was most recently
      *  placed in the queue. If no tokens have been placed on the
-     *  queue, then lastTime equals 0.0.
-     * @return double The value of the lastTime flag.
+     *  queue, then _lastTime equals 0.0.
+     * @return double The value of the _lastTime flag.
      */
     public double getLastTime() {
         return _lastTime;
@@ -158,11 +147,11 @@ public class TimedQueueReceiver implements Receiver {
         return _priority;
     }
 
-    /** Return the rcvrTime value of this receiver. The rcvrTime is
+    /** Return the _rcvrTime value of this receiver. The _rcvrTime is
      *  the time associated with the oldest token that is currently
-     *  on the queue. If the queue is empty, then the rcvrTime value
-     *  is equal to the lastTime value.
-     * @return double The value of the rcvrTime flag.
+     *  on the queue. If the queue is empty, then the _rcvrTime value
+     *  is equal to the _lastTime value.
+     * @return double The value of the _rcvrTime flag.
      */
     public double getRcvrTime() {
         return _rcvrTime;
@@ -222,28 +211,30 @@ public class TimedQueueReceiver implements Receiver {
     }
 
     /** Put a token on the queue and set the time stamp of the token to
-     *  the value of the lastTime flag of this receiver. If the queue is
+     *  the value of the _lastTime flag of this receiver. If the queue is
      *  empty immediately prior to putting the token on the queue, then
-     *  set the rcvrTime flag value to be equal to the lastTime flag value.
+     *  set the _rcvrTime flag value to be equal to the _lastTime flag value.
      *  If the queue is full, throw a NoRoomException. Update the
      *  RcvrTimeTriple entry in the ODFThread which manages this receiver.
      * @param token The token to put on the queue.
+     * @exception NoRoomException If the queue is full.
      */
-    public void put(Token token) {
+    public void put(Token token) throws NoRoomException {
         put( token, _lastTime );
     }
 
     /** Put a token on the queue with the specified time stamp and set
-     *  the value of the lastTime flag to be equal to this time stamp.
+     *  the value of the _lastTime flag to be equal to this time stamp.
      *  If the queue is empty immediately prior to putting the token on
-     *  the queue, then set the rcvrTime flag value to be equal to the
-     *  lastTime flag value. If the queue is full, throw a NoRoomException.
+     *  the queue, then set the _rcvrTime flag value to be equal to the
+     *  _lastTime flag value. If the queue is full, throw a NoRoomException.
      *  Update the RcvrTimeTriple entry in the ODFThread which manages
      *  this receiver.
      * @param token The token to put on the queue.
      * @param time The time stamp of the token.
+     * @exception NoRoomException If the queue is full.
      */
-    public void put(Token token, double time) {
+    public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != -1.0 ) {
 	    IOPort port = (IOPort)getContainer(); 
 	    NamedObj actor = (NamedObj)port.getContainer(); 
@@ -258,23 +249,11 @@ public class TimedQueueReceiver implements Receiver {
             event = new Event(token, _lastTime);
 
             if( getSize() == 0 ) {
-                RcvrTimeTriple triple;
+                // RFIXME: RcvrTimeTriple triple;
                 _rcvrTime = _lastTime;
-                triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
-		timeKeeper.updateRcvrList( triple );
-		/*
-		if( thread instanceof ODFThread ) {
-		    if( ((NamedObj)actor).getName().equals("printer") ) {
-                        System.out.println("\t\t***" + 
-				((NamedObj)actor).getName() +
-				" calling update at time " + _rcvrTime); 
-		    }
-                    ((ODFThread)thread).updateRcvrList( triple );
-		} else {
-		    System.err.println("ERROR: Non-ODFThread calling "
-			    + "TimedQueueReceiver.put()");
-		}
-		*/
+                // RFIXME: triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
+		timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
+		// timeKeeper.updateRcvrList( triple );
             }
 
             if (!_queue.put(event)) {
@@ -289,13 +268,6 @@ public class TimedQueueReceiver implements Receiver {
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         _queue.setCapacity(capacity);
-    }
-
-    /** Set the completion time of this receiver.
-     * @param time The completion time of this receiver.
-     */
-    public void setCompletionTime(double time) {
-        _completionTime = time;
     }
 
     /** Set the IOPort container.
@@ -340,6 +312,23 @@ public class TimedQueueReceiver implements Receiver {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                   package friendly methods                ////
+
+    /** Return the completion time of this receiver.
+     * @return double The completion time.
+     */
+    synchronized double getCompletionTime() {
+        return _completionTime;
+    }
+
+    /** Set the completion time of this receiver.
+     * @param time The completion time of this receiver.
+     */
+    void setCompletionTime(double time) {
+        _completionTime = time;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The time stamp of the newest token to be placed in the queue.
@@ -355,7 +344,7 @@ public class TimedQueueReceiver implements Receiver {
     private int _priority = 0;
 
     // The queue in which this receiver stores tokens.
-    public FIFOQueue _queue = new FIFOQueue();
+    private FIFOQueue _queue = new FIFOQueue();
 
     // The IOPort which contains this receiver.
     private IOPort _container;

@@ -280,32 +280,19 @@ public class ODFReceiver extends TimedQueueReceiver
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
 	    return false;
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
-            RcvrTimeTriple triple;
-            triple = timeKeeper.getHighestPriorityTriple();
-            if( this != triple.getReceiver() ) {
+            // RFIXME: RcvrTimeTriple triple;
+            // RFIXME: triple = timeKeeper.getHighestPriorityTriple();
+            // RFIXME: if( this != triple.getReceiver() ) {
+            if( this != timeKeeper.getHighestPriorityReceiver() ) {
+		/*
                 triple = new RcvrTimeTriple( this, getRcvrTime(),
                         getPriority() );
-                timeKeeper.updateRcvrList( triple );
+		*/
+                timeKeeper.updateRcvrList( this, getRcvrTime(), 
+			getPriority() );
 		return false;
 	    }
 	}
-	/*
-        if( thread.getNextTime() == -1.0 ) {
-            requestFinish();
-        }
-	if( getRcvrTime() > thread.getNextTime() && !_terminate ) {
-	    return false;
-	} else if( !thread.hasMinRcvrTime() && !_terminate ) {
-            RcvrTimeTriple triple;
-            triple = thread.getHighestPriorityTriple();
-            if( this != triple.getReceiver() ) {
-                triple = new RcvrTimeTriple( this, getRcvrTime(),
-                        getPriority() );
-                thread.updateRcvrList( triple );
-		return false;
-	    }
-	}
-	*/
         if( super.hasToken() && !_terminate ) {
             return true;
 	}
