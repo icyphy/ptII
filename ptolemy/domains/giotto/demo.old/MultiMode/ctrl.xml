@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="ctrl" extends="ptolemy.domains.fsm.kernel.FSMActor">
-    <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;State0&quot;">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State0">
     </property>
     <port name="in" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -17,7 +17,7 @@
         <property name="output"/>
     </port>
     <entity name="State0" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;mode0&quot;">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -25,7 +25,7 @@
         </port>
     </entity>
     <entity name="State1" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;mode1&quot;">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -33,56 +33,56 @@
         </port>
     </entity>
     <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;(in_S ? in_V : 1) % 4 == 0&quot;">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_S ? in_V : 1) % 4 == 0">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
             </property>
-            <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
             </property>
         </property>
 	<property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;refIn1_S ? (refIn1_V + 1) : 0&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_S ? (refIn1_V + 1) : 0">
             </property>
-            <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;ramp1.init&quot;">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
             </property>
         </property>
 	<property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;refIn2_S ? (refIn2_V + 1) : 0&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_S ? (refIn2_V + 1) : 0">
             </property>
-            <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;ramp2.init&quot;">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
             </property>
         </property>
 	<property name="act4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
 	</property>
     </relation>
     <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;(in_S ? in_V : 1) % 4 == 0&quot;">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_S ? in_V : 1) % 4 == 0">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;1&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
             </property>
-            <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
             </property>
         </property>
 	<property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;refIn1_S ? (refIn1_V + 1) : 0&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_S ? (refIn1_V + 1) : 0">
             </property>
-            <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;ramp1.init&quot;">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
             </property>
         </property>
 	<property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;refIn2_S ? (refIn2_V + 1) : 0&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_S ? (refIn2_V + 1) : 0">
             </property>
-            <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;ramp2.init&quot;">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
             </property>
         </property>
 	<property name="act4" class="ptolemy.domains.fsm.kernel.ResetRefinement">

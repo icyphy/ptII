@@ -2,16 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="lego" extends="ptolemy.actor.TypedCompositeActor">
-    <property class="ptolemy.domains.fsm.kernel.FSMDirector">
-        <property name="controllerName" value="&quot;controller&quot;">
+    <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+        <property name="controllerName" value="controller">
         </property>
     </property>
 
     <property name="legoID" class="ptolemy.data.expr.Parameter" value="1">
     </property>
     <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
-    </property>
-    <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;following&quot;">
     </property>
     <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="4">
     </property>
@@ -30,7 +28,7 @@
     </port>
 
     <entity name="maneuver" class="ptolemy.actor.TypedCompositeActor">
-        <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         </property>
 
         <port name="bumped" class="ptolemy.actor.TypedIOPort">
@@ -106,7 +104,7 @@
     </entity>
 
     <entity name="follow" class="ptolemy.actor.TypedCompositeActor">
-        <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         </property>
         <port name="bumped" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -131,7 +129,7 @@
     </entity>
 
     <entity name="controller" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="initialStateName">
+        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="initialStateName">
         </property>
         <property name="legoID" class="ptolemy.data.expr.Parameter" value="legoID">
         </property>
@@ -143,8 +141,6 @@
         </property>
         <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="evadingRoutine">
         </property>
-        <property name="notation" class="ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation">
-        </property>
         <port name="leader" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -155,7 +151,7 @@
             <property name="input"/>
         </port>
         <entity name="leading" class="ptolemy.domains.fsm.kernel.State">
-            <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;maneuver&quot;">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -163,7 +159,7 @@
             </port>
         </entity>
         <entity name="following" class="ptolemy.domains.fsm.kernel.State">
-            <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;follow&quot;">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="follow">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -171,7 +167,7 @@
             </port>
         </entity>
         <entity name="stopping" class="ptolemy.domains.fsm.kernel.State">
-            <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;maneuver&quot;">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -179,7 +175,7 @@
             </port>
         </entity>
         <entity name="evading" class="ptolemy.domains.fsm.kernel.State">
-            <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;maneuver&quot;">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -188,126 +184,126 @@
         </entity>
 
         <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;(leader_S ? leader_V : legoID) != legoID&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(leader_S ? leader_V : legoID) != legoID">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
         <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;(leader_S ? leader_V : -1) == legoID&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(leader_S ? leader_V : -1) == legoID">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
 	    <property name="action1" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;[0, 1]&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0, 1]">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.indexes&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.indexes">
                 </property>
             </property>
 	    <property name="action2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;[0, 0]&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0, 0]">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.values&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.values">
                 </property>
             </property>
 	    <property name="action3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;LegoLink.legoID&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="LegoLink.legoID">
                 </property>
             </property>
    	    <property name="action4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
 	    </property>
         </relation>
         <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;(step_S ? step_V : 0) == 1&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(step_S ? step_V : 0) == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
 	    <property name="action1" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;[0 : 1 : (evadingSteps - 1)]&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0 : 1 : (evadingSteps - 1)]">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.indexes&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.indexes">
                 </property>
             </property>
 	    <property name="action2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;evadingRoutine&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="evadingRoutine">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.values&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.values">
                 </property>
             </property>
 	    <property name="action3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;legoID&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="legoID">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;LegoLink.legoID&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="LegoLink.legoID">
                 </property>
             </property>
    	    <property name="action4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
 	    </property>
         </relation>
         <relation name="t4" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;(step_S ? step_V : 0) == (evadingSteps - 1)&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(step_S ? step_V : 0) == (evadingSteps - 1)">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
 	    <property name="action1" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;[0 : 1 : (leadingSteps - 1)]&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0 : 1 : (leadingSteps - 1)]">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.indexes&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.indexes">
                 </property>
             </property>
 	    <property name="action2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;leadingRoutine&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="leadingRoutine">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.values&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.values">
                 </property>
             </property>
 	    <property name="action3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;true&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.repeat&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.repeat">
                 </property>
             </property>
 	    <property name="action4" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;LegoLink.legoID&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="LegoLink.legoID">
                 </property>
             </property>
    	    <property name="action5" class="ptolemy.domains.fsm.kernel.ResetRefinement">
 	    </property>
         </relation>
         <relation name="t5" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;(bumped_S ? bumped_V : 0) == 1&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(bumped_S ? bumped_V : 0) == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
 	    <property name="action1" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;[0, 1]&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0, 1]">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.indexes&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.indexes">
                 </property>
             </property>
 	    <property name="action2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;[0, 0]&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0, 0]">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;routinePulse.values&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="routinePulse.values">
                 </property>
             </property>
 	    <property name="action3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
                 </property>
-                <property name="variableName" class="ptolemy.data.expr.Parameter" value="&quot;LegoLink.legoID&quot;">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="LegoLink.legoID">
                 </property>
             </property>
    	    <property name="action4" class="ptolemy.domains.fsm.kernel.ResetRefinement">

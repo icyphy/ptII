@@ -4,7 +4,7 @@
 <entity name="demo" class="ptolemy.actor.TypedCompositeActor">
   <doc>This model demonstrates the hierarchical composition of the
 FSM and Giotto domains.</doc>
-  <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
+  <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
     <property name="iterations" value="40">
         <doc>Number of iterations in an execution.</doc>
     </property>
@@ -16,8 +16,8 @@ FSM and Giotto domains.</doc>
   </entity>
 
   <entity name="dualMode" class="ptolemy.actor.TypedCompositeActor">
-    <property class="ptolemy.domains.fsm.kernel.FSMDirector">
-      <property name="controllerName" value="&quot;controller&quot;">
+    <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+      <property name="controllerName" value="controller">
       </property>
     </property>
 
@@ -34,21 +34,17 @@ FSM and Giotto domains.</doc>
         <property name="output"/>
     </port>
 
-    <import source="ctrl.xml"/>
-
-    <entity name="controller" class=".ctrl">
-      <property name="State0.refinementName" value="&quot;mode0&quot;">
+    <entity name="controller" class="ptolemy.domains.giotto.demo.MultiMode.ctrl">
+      <property name="State0.refinementName" value="mode0">
       </property>
-      <property name="State1.refinementName" value="&quot;mode1&quot;">
+      <property name="State1.refinementName" value="mode1">
       </property>
     </entity>
 
-    <import source="one_mode.xml"/>
-
-    <entity name="mode0" class=".one_mode">
+    <entity name="mode0" class="ptolemy.domains.giotto.demo.MultiMode.one_mode">
     </entity>
 
-    <entity name="mode1" class=".one_mode">
+    <entity name="mode1" class="ptolemy.domains.giotto.demo.MultiMode.one_mode">
       <property name="ramp2.frequency" value="4">
       </property>
     </entity>
