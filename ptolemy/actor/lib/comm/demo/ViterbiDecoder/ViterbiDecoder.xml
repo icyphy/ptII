@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 1032, 736}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 1032, 738}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 627]">
     </property>
@@ -574,7 +574,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Errors on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="21">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -591,7 +591,7 @@ the error rate.</text></svg></configure>
         </port>
     </entity>
     <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0011300043048">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -804,7 +804,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="411">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -821,7 +821,7 @@ the error rate.</text></svg></configure>
         </port>
     </entity>
     <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0221157985364">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0389105058366">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -857,32 +857,6 @@ the error rate.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder">
-        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="uncodedRate">
-        </property>
-        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
-        </property>
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
-        </property>
-        <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="contellation" class="ptolemy.data.expr.Parameter" value="{trueLevel, falseLevel}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 205.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="inputType" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-        </port>
-    </entity>
     <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -899,6 +873,32 @@ the error rate.</text></svg></configure>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ViterbiDecoder2" class="ptolemy.actor.lib.comm.ViterbiDecoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="uncodedRate">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
+        </property>
+        <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{trueLevel, falseLevel}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 205.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="inputType" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -977,18 +977,6 @@ the error rate.</text></svg></configure>
             </property>
         </property>
     </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -1001,9 +989,21 @@ the error rate.</text></svg></configure>
             </property>
         </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
     <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.plus" relation="relation3"/>
-    <link port="AddSubtract.output" relation="relation16"/>
+    <link port="AddSubtract.output" relation="relation2"/>
     <link port="Gaussian.output" relation="relation3"/>
     <link port="BooleanToAnything.input" relation="relation7"/>
     <link port="BooleanToAnything.output" relation="relation6"/>
@@ -1019,7 +1019,7 @@ the error rate.</text></svg></configure>
     <link port="Comparator.right" relation="relation13"/>
     <link port="Comparator.output" relation="relation11"/>
     <link port="Const.output" relation="relation13"/>
-    <link port="Count Errors.data" relation="relation2"/>
+    <link port="Count Errors.data" relation="relation16"/>
     <link port="Count Errors.reference" relation="relation8"/>
     <link port="Count Errors.errors" relation="relation5"/>
     <link port="Count Errors.rate" relation="relation9"/>
@@ -1033,7 +1033,7 @@ the error rate.</text></svg></configure>
     <link port="Error Rate on Uncoded Channel.input" relation="relation15"/>
     <link port="ConvolutionalCoder.input" relation="relation4"/>
     <link port="ConvolutionalCoder.output" relation="relation7"/>
-    <link port="ViterbiDecoder.input" relation="relation16"/>
-    <link port="ViterbiDecoder.output" relation="relation2"/>
     <link port="Gaussian2.output" relation="relation10"/>
+    <link port="ViterbiDecoder2.input" relation="relation2"/>
+    <link port="ViterbiDecoder2.output" relation="relation16"/>
 </entity>
