@@ -180,22 +180,21 @@ public class ProcessDirector extends Director {
                 _threadList.insertFirst(pnt);
 		_newthreads.insertFirst(pnt);
                 actor.createReceivers();
-	        
+                //Actors should be initialized after creating receivers so 
+		//that they can transmit data in their initialize methods.
+                actor.initialize();
+
 		// Reset the receivers
                 Enumeration ports = actor.inputPorts(); 
 		while (ports.hasMoreElements()) {
 		    IOPort port = (IOPort)ports.nextElement(); 
 		    Receiver[][] receivers = port.getReceivers(); 
 		    for (int i = 0; i < receivers.length; i++) {
-		        for (int j = 0; j < receivers[i].length; j++) {
+		       for (int j = 0; j < receivers[i].length; j++) {
 			    ((ProcessReceiver)receivers[i][j]).reset();
 			}
 		    }
 		}
-
-                //Actors should be initialized after creating receivers so that
-                //they can transmit data in their initialize methods.
-                actor.initialize();
             }
 
 	    CompositeActor topOfContainer = 
@@ -352,20 +351,16 @@ public class ProcessDirector extends Director {
 
 
     /** Ends the execution of the model under the control of this
-     *  director. A flag is set in all the receivers
-     *  which causes each process to terminate at the earliest
-     *  communication point.
-     *  <p>
+     *  director. A flag is set in all the receivers which causes 
+     *  each process to terminate at the earliest communication point.
+     *  <P>
      *  This method is not synchronized on the workspace, so the caller
      *  should be.
-     *  Note that the wrapup methods are not invoked on the actors
-     *  under control of this director as each actor is executed by a
-     *  separate thread. They are called from the thread itself.
-     *  <p>
-     *  @exception IllegalActionException if a method accessing the topology
-     *   throws it.
+     * @exception IllegalActionException if an error occurs while
+     *  accessing the receivers of all actors under the contol of
+     *  this director.
      */
-    public void wrapup() throws IllegalActionException {
+    public void finish() throws IllegalActionException {
 	CompositeActor cont = (CompositeActor)getContainer();
         Enumeration allMyActors = cont.deepGetEntities();
         Enumeration actorPorts;
