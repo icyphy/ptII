@@ -195,7 +195,7 @@ public class Clock extends TimedSource {
                 previous = offsetsValue[0][j];
             }
         } else if (attribute == period) {
-            double periodValud =
+            double periodValue =
                 ((DoubleToken)period.getToken()).doubleValue();
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
