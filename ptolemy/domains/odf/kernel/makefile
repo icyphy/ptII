@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
         Event.java \
+	NullToken.java \
         ODFActor.java \
         ODFDirector.java \
         ODFIOPort.java \
