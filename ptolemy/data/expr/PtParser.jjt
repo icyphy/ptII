@@ -940,7 +940,7 @@ String tidied, x;
             } else {
                 // System.out.println("Defining <" + token.image + ">");
                 _undefined.add(token.image);
-                jjtThis._var = new Variable();
+                jjtThis._var = null;
             }
 
         }
