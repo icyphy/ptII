@@ -565,6 +565,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
+        // NOTE: There is no need to validate attributes because the
+        // attributes of atomic actors will be validated, and will
+        // force evaluation of any attributes they depend on.
+        // Ultimately, it is in the atomic actors that attributes are
+        // used, so this is sufficient.
         try {
             _workspace.getReadAccess();
             _createReceivers();
