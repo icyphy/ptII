@@ -63,9 +63,7 @@ MoML from shipped code.
 public class Main extends KernelMain {
 
     /** Read in a MoML model.
-     *  @param args The first element of the array is the MoML class
-     *  name or file name, subsequent optional arguments are Soot
-     *  command line options, see the superclass documentation for details.
+     *  @param modelName The MoML class name or file name.
      *  @exception IllegalActionException If the model cannot be parsed.
      */
     public Main(String modelName) throws IllegalActionException {
