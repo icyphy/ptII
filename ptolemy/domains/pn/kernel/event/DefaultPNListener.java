@@ -58,7 +58,7 @@ public class DefaultPNListener implements PNProcessListener {
      *  @param event A PNProcessEvent that contains a reference to an
      *  actor.
      */
-    public void processFinished(PNProcessEvent event){
+    public void processFinished(PNProcessEvent event) {
         System.out.println(event.toString());
     }
 
