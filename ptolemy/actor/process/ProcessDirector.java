@@ -333,7 +333,8 @@ public class ProcessDirector extends Director {
         // Set this before calling stopThread(), in case the thread
         // needs to distinguish between stopFire() and this method.
         if (_debugging) {
-            _debug("stop() has been called.");
+            _debug("stop() has been called. Active thread count is: "
+                    + _activeActorCount);
         }
         _stopRequested = true;
         _stopFireRequested = true;
@@ -508,7 +509,6 @@ public class ProcessDirector extends Director {
         notifyAll();
     }
 
-
     /** Decrease the count of stopped actors by one.  This method is
      *  called by instances of ProcessThread after detecting that the
      *  stopFire() flag has been cleared. This method may be
@@ -588,6 +588,9 @@ public class ProcessDirector extends Director {
                     + " is deactivating.");
         }
         _activeActorCount--;
+        if (_debugging) {
+            _debug("Decreasing active count to: " + _activeActorCount);
+        }
         notifyAll();
     }
 
@@ -630,7 +633,7 @@ public class ProcessDirector extends Director {
         return new ProcessThread(actor, director);
     }
 
-    /** Increases the count of active actors in the composite actor
+    /** Increase the count of active actors in the composite actor
      *  corresponding to this director by 1. This method should be
      *  called when a new thread corresponding to an actor is started
      *  in the model under the control of this director. This method
@@ -640,6 +643,9 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _increaseActiveCount() {
         _activeActorCount++;
+        if (_debugging) {
+        	_debug("Increasing active count to: " + _activeActorCount);
+        }
         notifyAll();
     }
 
@@ -659,9 +665,15 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // A flag for determining whether successive iterations will be
-    // permitted.
+    /** A flag for determining whether successive iterations will be
+     *  permitted.
+     */
     protected boolean _notDone = true;
+
+    /** Indicator that a stopFire has been requested by a call to
+     *  stopFire().
+     */
+    protected boolean _stopFireRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -675,10 +687,6 @@ public class ProcessDirector extends Director {
 
     // The count of stopped actors
     private int _stoppedActorCount = 0;
-
-    // Indicator that a stopFire has been requested by a call to
-    // stopFire().
-    private boolean _stopFireRequested = false;
 
     // The threads started by this director.
     private LinkedList _actorThreadList;
