@@ -7,14 +7,14 @@
 <!-- The top-level element can be either model or class. -->
 
 <!ELEMENT model (class | configure | deleteEntity | deletePort |
-		deleteRelation | director | doc | entity | import | link |
-                property | relation | rendition | unlink)*>
+		deleteRelation | director | doc | entity | group | import |
+                input | link | property | relation | rendition | unlink)*>
 <!ATTLIST model name CDATA #REQUIRED
                 class CDATA #IMPLIED>
 
 <!ELEMENT class (class | configure | deleteEntity | deletePort |
 		 deleteRelation | director | doc |
-                 entity | import | link |
+                 entity | group | import | input | link |
                  property | relation | rendition | unlink)*>
 <!ATTLIST class name CDATA #REQUIRED
                 extends CDATA #IMPLIED>
@@ -43,7 +43,7 @@
 
 <!ELEMENT entity (class | configure | deleteEntity | deletePort |
 		  deleteRelation | director | doc |
-                  entity | import | link | port |
+                  entity | group | import | input | link | port |
                   property | relation | rendition | unlink)*>
 <!ATTLIST entity name CDATA #REQUIRED
                  class CDATA #IMPLIED>
@@ -53,6 +53,10 @@
 <!ELEMENT import EMPTY>
 <!ATTLIST import source CDATA #REQUIRED
                  base CDATA #IMPLIED>
+
+<!ELEMENT input EMPTY>
+<!ATTLIST input source CDATA #REQUIRED
+                base CDATA #IMPLIED>
 
 <!ELEMENT link EMPTY>
 <!ATTLIST link insertAt CDATA #IMPLIED

@@ -196,7 +196,7 @@ public class PtolemyDocument extends AbstractDocument
 	// First copy everyrhing onto the clipboard.
 	copy(c);
 
-	/*
+	/* FIXME
 	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
@@ -268,6 +268,7 @@ public class PtolemyDocument extends AbstractDocument
      * or if the I/O operation failed.
      */
     public void open() throws Exception {
+        // FIXME: Do not open the file if it is already open.
         if (getFile() == null) {
             throw new IllegalStateException(
 	        "PtolemyDocument " + getTitle() + " has no current file");
@@ -414,7 +415,8 @@ public class PtolemyDocument extends AbstractDocument
 	toplevel.addChangeListener(new IsDirtyListener());
     }
 
-    /** Print information about the graph document.
+    /** Return information about the model.
+     *  @return The classname, title, file, URL, MoML, and description.
      */
     public String toString() {
         return getClass().getName() + "["
@@ -443,6 +445,7 @@ public class PtolemyDocument extends AbstractDocument
      * The factory for Ptolemy documents.
      */
     public static class Factory implements VergilDocumentFactory {
+
         /** Create a document with an empty typed composite actor for
          * its model.
          */
@@ -462,25 +465,30 @@ public class PtolemyDocument extends AbstractDocument
          * If the URL's are not supported.
          */
         public Document createDocument(Application app, URL url) {
+            // FIXME: Support URLs.
             throw new UnsupportedOperationException(
-                    "Graph documents cannot yet be loaded from a URL");
+                    "Models cannot yet be loaded from a URL");
         }
 
         /** Create a document and create a new model using the information
          * in the given file.
          */
         public Document createDocument(Application app, File file) {
+            // FIXME: This should check to see whether the file is already
+            // open, and return that if it is.  Make sure that the open()
+            // method of the document does not open something that is
+            // already open.
             PtolemyDocument d = new PtolemyDocument(app);
             d.setFile(file);
             return d;
         }
 
-	/** Return a string which is the name associated with this document
-	 * factory.
-         * @returns The string "Ptolemy II".
+	/** Return a string that is the name associated with this document
+	 *  factory.
+         *  @returns The string "Block Diagram Model".
 	 */
 	public String getName() {
-	    return "Ptolemy II";
+	    return "Block Diagram Model";
 	}
     }
 
@@ -508,11 +516,11 @@ public class PtolemyDocument extends AbstractDocument
         }
 
 	/** Return a string which is the name associated with this document
-	 * factory.
-         * @returns The string "Ptolemy II FSM".
+	 *  factory.
+         *  @returns The string "State Machine Model".
 	 */
 	public String getName() {
-	    return "Ptolemy II FSM";
+	    return "State Machine Model";
 	}
     }
        

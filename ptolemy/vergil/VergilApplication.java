@@ -30,11 +30,13 @@
 
 package ptolemy.vergil;
 
-import ptolemy.vergil.toolbox.*;
+// FIXME: Trim this import list.
+import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
-import ptolemy.actor.*;
 import ptolemy.moml.MoMLParser;
+import ptolemy.vergil.toolbox.*;
+import ptolemy.vergil.tree.LibraryTreeModel;
 
 import diva.graph.*;
 import diva.gui.*;
@@ -59,6 +61,7 @@ import java.awt.print.PageFormat;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.DataOutputStream;
@@ -214,8 +217,12 @@ public class VergilApplication extends MDIApplication {
                 setCurrentDocument(doc);
             }
         };
-	// FIXME: shortcuts?
-	_fileNewMenu.add(action);
+        // NOTE: The first character of the action name is used as a mnemonic,
+        // so some care is needed in choosing the name to maintain
+        // a distinction.
+        // FIXME: Need tooltips (replace null argument below).
+        GUIUtilities.addMenuItem(
+               _fileNewMenu, action, (int)(f.getName().charAt(0)), null);
     }
 
     /**
@@ -254,9 +261,9 @@ public class VergilApplication extends MDIApplication {
     }
 
     /** 
-     * Display the given document. In addition to the normal stuff, this
-     * class in addition adds a listener which keeps the title of the
-     * internal frame representing the document the same as the title of the
+     * Display the given document. This calls the base class and
+     * adds a listener that keeps the title of the internal frame
+     * representing the document the same as the title of the
      * document.
      */
     public void displayDocument (Document d) {
@@ -437,7 +444,8 @@ public class VergilApplication extends MDIApplication {
 
     /** 
      * Initialize the given menubar. Create a new File menu with 
-     * "New", "Open", "Close", "Save", "Save As", and "Exit" items.
+     * "New", "Open", "Import Library", "Close", "Close Library", "Save",
+     * "Save As", and "Exit" items.
      * The "New" item is a submenu that contains one item for each
      * document factory contained in this application.  The other items
      * are actions that defer to the current document for their
@@ -463,7 +471,7 @@ public class VergilApplication extends MDIApplication {
 	
 	action = DefaultActions.newAction(this);
         addAction(action);
-	GUIUtilities.addToolBarButton(toolBar, action, null, 
+	GUIUtilities.addToolBarButton(toolBar, action, "Open a new model", 
 			 resources.getImageIcon("NewImage"));
 
 	// File->Open and associated toolbar button.
@@ -471,14 +479,48 @@ public class VergilApplication extends MDIApplication {
         addAction(action);
 	GUIUtilities.addHotKey(getAppContext().getRootPane(), action, 
  	    KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));	
-        GUIUtilities.addMenuItem(menuFile, action, 'O', "Open a graph document");
+        GUIUtilities.addMenuItem(menuFile, action, 'O', "Open a model");
         GUIUtilities.addToolBarButton(toolBar, action, null, 
 				      resources.getImageIcon("OpenImage"));
-		
+
+        // File->Import Library.
+        action = new AbstractAction("Import Library") {
+            public void actionPerformed(ActionEvent e) {
+                // NOTE: Regrettably, the StoragePolicy interface does
+                // not give access to the directory and file chooser,
+                // so we have to cast.  This will create problems if
+                // we later change the storage policy without extending
+                // DefaultStoragePolicy.
+                DefaultStoragePolicy policy
+                       = (DefaultStoragePolicy)getStoragePolicy();
+                String directory = policy.getDirectory();
+                JFileChooser chooser = policy.getOpenFileChooser();
+                chooser.setCurrentDirectory(new File(directory));
+                int result = chooser.showOpenDialog(
+                        getAppContext().makeComponent());
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        File file = chooser.getSelectedFile();
+                        MoMLParser parser = new MoMLParser();
+                        CompositeEntity toplevel = (CompositeEntity)
+                                parser.parse(
+                                    chooser.getCurrentDirectory().toURL(),
+                                    new FileReader(file));
+                        LibraryTreeModel.addLibrary(toplevel);
+                    } catch (Exception ex) {
+                        showError("Library import failed.", ex);
+                    }
+                }
+            }
+        };
+        GUIUtilities.addMenuItem(menuFile, action, 'L',
+               "Import a library and add to the tree");
+
 	// File->Close
         action = DefaultActions.closeAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'C', "Close the current graph document");
+        GUIUtilities.addMenuItem(menuFile, action, 'C',
+                "Close the current model");
 
         menuFile.addSeparator();
 
@@ -487,7 +529,7 @@ public class VergilApplication extends MDIApplication {
         addAction(action);
 	GUIUtilities.addHotKey(getAppContext().getRootPane(), action, 
  	    KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));	
-        GUIUtilities.addMenuItem(menuFile, action, 'S', "Save the current graph document");
+        GUIUtilities.addMenuItem(menuFile, action, 'S', "Save the current model");
         GUIUtilities.addToolBarButton(toolBar, action, null, 
 			 resources.getImageIcon("SaveImage"));
 	
@@ -495,7 +537,7 @@ public class VergilApplication extends MDIApplication {
         action = DefaultActions.saveAsAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'A',
-                "Save the current graph document to a different file");
+                "Save the current model to a different file");
 
 	// File->Print
         action = DefaultActions.printAction(this);
@@ -581,7 +623,7 @@ public class VergilApplication extends MDIApplication {
     // The layout selection combobox.
     private JComboBox _layoutComboBox;
 
-    // The list of factories that create graph documents.
+    // The list of factories that create models.
     private List _documentFactoryList = new LinkedList();
 
     // The File->New menu.  Each document factory will appear in this menu.
@@ -590,7 +632,7 @@ public class VergilApplication extends MDIApplication {
     // The instance of this application.
     private static VergilApplication _instance = null;
 
-    // The list of factories that create graph documents.
+    // The list of factories that create models.
     private List _serviceList = new LinkedList();
 
     // The title changer used by this application.  This listener will

@@ -522,8 +522,6 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.12.2 {test import with a relative source } {
-    # The bug here is that <import source="testClass2.xml"/>
-    # should work
     $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
@@ -540,6 +538,35 @@ test MoMLParser-1.12.2 {test import with a relative source } {
 </entity>
 }}
 
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <!-- Note that here, we are searching relative to the cwd -->
+    <import source="testClass.xml"/>
+    <entity name="b" class=".a"/>
+    <import source="testClass2.xml"/>
+    <entity name="c" class=".a"/>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.12.3 {test import with a relative source } {
+    $parser reset
+    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser parse $moml]]
+    set b [$toplevel getEntity b]
+    set c [$toplevel getEntity c]
+    list [$b exportMoML] [$c exportMoML]
+} {{<entity name="b" class=".a">
+    <property name="prop" class="ptolemy.data.expr.Parameter">
+    </property>
+</entity>
+} {<entity name="c" class=".a">
+    <property name="x" class="ptolemy.kernel.util.Attribute">
+    </property>
+</entity>
+}}
 
 #----------------------------------------------------------------------
 set body {
@@ -1632,3 +1659,54 @@ test MoMLParser-7.1 {Test setContext()} {
     </entity>
 </model>
 }
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <!-- Note that here, we are searching using the classpath -->
+    <input source="ptolemy/moml/test/testClass2.xml"/>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-8.1 {test input with a relative source } {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="a" extends="ptolemy.kernel.CompositeEntity">
+        <property name="x" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </class>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <!-- Note that here, we are searching relative to the cwd -->
+    <input source="testClass2.xml"/>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-8.2 {test input with a relative source } {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="a" extends="ptolemy.kernel.CompositeEntity">
+        <property name="x" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </class>
+</model>
+}
+

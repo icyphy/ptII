@@ -1,10 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model SYSTEM "../../moml/moml.dtd">
+<entity name="sources" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Domain-polymorphic sources</doc>
+  <configure>
+    <?moml
+      <group>
 
-<class name="sources" extends="ptolemy.actor.TypedCompositeActor">
-<doc>Generic domain polymorphic sources</doc>
-
-<!-- Sources -->
 <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.source</configure>
@@ -26,13 +27,18 @@
 <doc>Create a constant sequence</doc>
 </entity>
 
-<!--
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.source</configure>
 </rendition>
 </entity>
--->
+
+<entity name="DiscreteRandomSource"
+        class="ptolemy.actor.lib.DiscreteRandomSource">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
 
 <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
@@ -79,5 +85,10 @@
 </rendition>
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
-</class>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model SYSTEM "../../moml/moml.dtd">
-
-<class name="sinks" extends="ptolemy.actor.TypedCompositeActor">
-<doc>Generic domain polymorphic sources</doc>
-
-<!-- Sinks -->
+<entity name="sinks" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Domain-polymorphic sinks</doc>
+  <configure>
+    <?moml
+      <group>
 <entity name="Display" class="ptolemy.actor.gui.Display">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
@@ -64,6 +64,8 @@
 <configure>generic.sink</configure>
 </rendition>
 </entity>
-</class>
 
-
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -654,46 +654,12 @@ public class MoMLParser extends HandlerBase {
                     base = new URL(base, baseSpec);
                 }
 
-                // Read external model definition.
+                // Read external model definition in a new parser,
+                // rather than in the current context.
                 MoMLParser newParser =
 		    new MoMLParser(_workspace, null, _classLoader);
-                URL xmlFile = new URL(base, source);
-                InputStream input = null;
-                Exception thrown = null;
-                try {
-                    input = xmlFile.openStream();
-                } catch (IOException ex) {
-                    // Cannot open the file. Try to open it relative
-                    // to the classpath.
-                    try {
-                        xmlFile = _classLoader.getResource(source);
-                        try {
-                            input = xmlFile.openStream();
-                        } catch (NullPointerException e) {
-                            // We did not find the file, so we will
-                            // throw an XmlException below
-                            input = null;
-                        }
-                    } catch (SecurityException exception) {
-                        // FIXME: I believe that getResource() called above
-                        // is allowed in an applet.  Why are we catching
-                        // this exception?  EAL
-                        // FIXME: Is there any way, suspecting now that we are
-                        // in an applet, that we can get the code base
-                        // and try to read the file relative to that?
-                        // Rethrow the original exception.
-                        throw ex;
-                    }
-                }
-                if (input == null) {
-                    throw new XmlException("Cannot open import file: "
-                           + source + "\nUsing base: " + base,
-                           _currentExternalEntity(),
-                           _parser.getLineNumber(),
-                           _parser.getColumnNumber());
-                }
-                NamedObj reference =
-                        newParser.parse(xmlFile, xmlFile.openStream());
+                NamedObj reference = _parse(newParser, base, source);
+
                 if (_imports == null) {
                     _imports = new LinkedList();
                 }
@@ -706,6 +672,25 @@ public class MoMLParser extends HandlerBase {
                        _current.uniqueName("_import"));
                 attr.setSource(source);
                 attr.setBase(_base);
+
+            } else if (elementName.equals("input")) {
+                String source = (String)_attributes.get("source");
+                _checkForNull(source, "No source for element \"input\"");
+
+                // If the base is specified, use that.
+                // Otherwise, use this document's base.
+                String baseSpec = (String)_attributes.get("base");
+                URL base = _base;
+                if (baseSpec != null) {
+                    base = new URL(base, baseSpec);
+                }
+
+                // Read external file in the current context, but with
+                // a new parser.
+                MoMLParser newParser =
+		    new MoMLParser(_workspace, null, _classLoader);
+                newParser.setContext(_current);
+                _parse(newParser, base, source);
 
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
@@ -1140,7 +1125,7 @@ public class MoMLParser extends HandlerBase {
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc_\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT group ANY><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc_\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT group ANY><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT input EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
@@ -1400,6 +1385,55 @@ public class MoMLParser extends HandlerBase {
             container = candidate.getContainer();
         }
         return candidate;
+    }
+
+    /** Use the specified parser to parse the a file or URL,
+     *  which contains MoML, using the specified base to find the URL.
+     *  If the URL cannot be found relative to this base, then it
+     *  is searched for relative to the current working directory
+     *  (if this is permitted with the current security restrictions),
+     *  and then relative to the classpath.
+     *  @param parser The parser to use.
+     *  @param base The base URL for relative references, or null if
+     *   not known.
+     *  @param source The URL from which to read MoML.
+     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @exception Exception If the parser fails.
+     */
+    private NamedObj _parse(MoMLParser parser, URL base, String source)
+            throws Exception {
+        URL xmlFile = new URL(base, source);
+        InputStream input = null;
+        try {
+            input = xmlFile.openStream();
+        } catch (IOException ex) {
+            // Cannot open the file. Try to open it relative
+            // to the current working directory.
+            try {
+                String cwd = System.getProperty("user.dir");
+                if (cwd != null) {
+                    base = new URL("file", null, cwd);
+                    xmlFile = new URL(base, source);
+                    input = xmlFile.openStream();
+                }
+            } catch (Exception exception) {
+                // That failed.  Try opening it relative to the classpath.
+                try {
+                    xmlFile = _classLoader.getResource(source);
+                    if (xmlFile != null) {
+                        input = xmlFile.openStream();
+                    }
+                } catch (Exception anotherException) {}
+            }
+        }
+        if (input == null) {
+            throw new XmlException("Cannot open import file: "
+                   + source + "\nUsing base: " + base,
+                   _currentExternalEntity(),
+                   _parser.getLineNumber(),
+                   _parser.getColumnNumber());
+        }
+        return parser.parse(xmlFile, xmlFile.openStream());
     }
 
     // Given a name that is either absolute (with a leading period)

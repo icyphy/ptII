@@ -45,6 +45,8 @@ import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.icon.*;
+import ptolemy.vergil.tree.LibraryTreeModel;
+import ptolemy.vergil.tree.PTree;
 
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -115,7 +117,7 @@ public class PtolemyModule implements Module {
     public PtolemyModule(VergilApplication application) {
 	_application = application;
 
-	_statusListener = new VergilExecutionListener(getApplication());
+	_statusListener = new VergilExecutionListener(application);
 	_streamListener = new StreamExecutionListener();
 
 	Action action;
@@ -207,12 +209,28 @@ public class PtolemyModule implements Module {
 	    url = new URL("file:" + ptII + 
 			  "/vendors/sun/jini/jini1_0_1/lib/mahalo-dl.jar");
 	    application.classLoadingService.addToClassPath(url);
+
 	} catch (Exception ex2) {
 	    ex2.printStackTrace();
 	}
 	*/
-	SwingUtilities.invokeLater(new PaletteInitializer());
 
+        // Create the library browser.
+        JTree pTree = LibraryTreeModel.createTree(application);
+        pTree.setBackground(BACKGROUND_COLOR);
+        JScrollPane scrollPane = new JScrollPane(pTree);
+        scrollPane.setMinimumSize(new Dimension(200, 200));
+        scrollPane.setPreferredSize(new Dimension(200, 200));
+        DesktopContext frame = application.getDesktopContext();
+        JPanel palettePane = (JPanel)frame.getPalettePane();
+        // add at zero because the panner should stay at the bottom.
+        palettePane.add(scrollPane, 0);
+        JSplitPane splitPane = frame.getSplitPane();
+        splitPane.resetToPreferredSizes();
+        splitPane.validate();
+        splitPane.repaint();
+        
+	SwingUtilities.invokeLater(new PaletteInitializer());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -230,13 +248,6 @@ public class PtolemyModule implements Module {
      */
     public VergilApplication getApplication() {
         return _application;
-    }
-
-    /** 
-     * Return the entity library for this application.
-     */
-    public CompositeEntity getEntityLibrary() {
-        return _entityLibrary;
     }
 
     /** 
@@ -561,6 +572,8 @@ public class PtolemyModule implements Module {
     // A Runnable object that is responsible for initializing the 
     // design palette.  This is done in a separate
     // thread, because loading the libraries can take quite a while.
+    // FIXME: I don't think this needs to be a separate thread anymore
+    // (now that we are using library objects).
     private class PaletteInitializer implements Runnable {
 	/** 
 	 * Parse the icon and entity libraries and populate the 
@@ -573,25 +586,6 @@ public class PtolemyModule implements Module {
 	    _parseLibraries();
 
 	    //System.out.println("Icons = " + _iconLibrary.description());
-
-	    CompositeEntity library = getEntityLibrary();
-
-	    // We have "" because that is the name that was given in the
-	    // treepane constructor.
-	    //System.out.println("lib = " + lib.description());
-	    // createNodes(pane, "TreePane", library);
-	    JTree designTree = new JDesignTree(library);
-	    designTree.setBackground(BACKGROUND_COLOR);
-	    JScrollPane scrollPane = new JScrollPane(designTree);
-	    scrollPane.setMinimumSize(new Dimension(200, 200));
-	    scrollPane.setPreferredSize(new Dimension(200, 200));
-	    // add at zero because the panner should stay at the bottom.
-	    pane.add(scrollPane, 0);
-	    
-	    JSplitPane splitPane = frame.getSplitPane();
-	    splitPane.resetToPreferredSizes();
-	    splitPane.validate();
-	    splitPane.repaint();
 	} 
     }
 
@@ -785,32 +779,16 @@ public class PtolemyModule implements Module {
     // libraries for this application.
     private void _parseLibraries() {
         URL iconlibURL = null;
-        URL entitylibURL = null;
         try {
             iconlibURL = 
 		getModuleResources().getResource("rootIconLibrary");
-            entitylibURL = 
-		getModuleResources().getResource("rootEntityLibrary");
 
-	    MoMLParser parser;
-	    parser = new MoMLParser();
-		//new MoMLParser(null, null, 
-		//((VergilApplication)getApplication()).classLoadingService.getClassLoader());
-	    _iconLibrary =
-                (CompositeEntity) parser.parse(iconlibURL,
-                        iconlibURL.openStream());
+	    MoMLParser parser = new MoMLParser();
+	    _iconLibrary = (CompositeEntity) parser.parse(
+                    iconlibURL, iconlibURL.openStream());
             LibraryIcon.setIconLibrary(_iconLibrary);
-
-            //FIXME: this is bogus  The parser should be reusable.
-            parser = new MoMLParser();
-	    // new MoMLParser(null, null, 
-		//((VergilApplication)getApplication()).classLoadingService.getClassLoader());
-            _entityLibrary =
-                (CompositeEntity) parser.parse(entitylibURL,
-                        entitylibURL.openStream());
-        }
-        catch (Exception e) {
-           getApplication().showError("Failed to parse libraries", e);
+        } catch (Exception e) {
+           getApplication().showError("Failed to parse icon library", e);
         }
     }
 
@@ -849,9 +827,6 @@ public class PtolemyModule implements Module {
 
     // The Icon Library.
     private CompositeEntity _iconLibrary;
-
-    // The Entity Library.
-    private CompositeEntity _entityLibrary;
 
     // The resources for this module.
     private RelativeBundle _moduleResources =

@@ -1,20 +1,22 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../moml/moml.dtd">
-<class name="generic" extends="ptolemy.actor.TypedCompositeActor">
-  <doc>
-	Generic domain polymorphic actors
-  </doc>
-  <import source="sources.xml"/>
-  <import source="sinks.xml"/>
-  <import source="transformers.xml"/>
-
-  <entity name="sources" class=".sources"/>
-  <entity name="sinks" class=".sinks"/>
-  <entity name="transformers" class=".transformers"/>
-
-  <entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor"/>
-  <entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
-  <property name="notation" class="ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation"/>
-  </entity> 
-  <entity name="IOPort" class="ptolemy.actor.TypedIOPort"/>
-</class>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="generic" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Generic domain-polymorphic actors</doc>
+  <configure>
+    <?moml
+      <group>
+        <input source="sources.xml"/>
+        <input source="sinks.xml"/>
+        <input source="transformers.xml"/>
+        <input source="conversions/conversions.xml"/>
+        <entity name="TypedCompositeActor"
+                class="ptolemy.actor.TypedCompositeActor"/>
+        <entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
+           <property name="notation"
+                     class="ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation"/>
+        </entity>
+      </group>
+    ?>
+  </configure>
+</entity>

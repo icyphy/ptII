@@ -84,3 +84,34 @@ test TypedActorLibrary-1.1 {Test TypedActorLibrary class with configure element}
     </entity>
 </model>
 }
+
+#----------------------------------------------------------------------
+test TypedActorLibrary-1.2 {Test TypedActorLibrary at top level} {
+    set moml_1 "$header
+<model name=\"top\" class=\"ptolemy.moml.TypedActorLibrary\">
+    <configure>
+        <?moml
+            <group>
+                <entity name=\"a\" class=\"ptolemy.actor.lib.Const\"/>
+                <entity name=\"b\" class=\"ptolemy.actor.lib.Ramp\"/>
+            </group>
+        ?>
+    </configure>
+</model>
+"
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml_1]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.moml.TypedActorLibrary">
+    <configure>
+        <?moml <group>
+                <entity name="a" class="ptolemy.actor.lib.Const"/>
+                <entity name="b" class="ptolemy.actor.lib.Ramp"/>
+            </group>
+        ?>
+    </configure>
+</model>
+}

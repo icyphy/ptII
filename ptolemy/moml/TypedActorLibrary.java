@@ -98,6 +98,26 @@ be thrown is not a testable precondition.
 public class TypedActorLibrary
         extends TypedCompositeActor implements Configurable {
 
+    /** Construct a library in the default workspace with no
+     *  container and an empty string as its name. Add the library to the
+     *  workspace directory.
+     *  Increment the version number of the workspace.
+     */
+    public TypedActorLibrary() {
+        super();
+    }
+
+    /** Construct a library in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public TypedActorLibrary(Workspace workspace) {
+	super(workspace);
+    }
+
     /** Construct a library with the given container and name.
      *  @param container The container.
      *  @param name The name of this library.
@@ -218,7 +238,7 @@ public class TypedActorLibrary
                 if (_source != null && !_source.equals("")) {
                     URL xmlFile = new URL(_base, _source);
                     InputStream stream = xmlFile.openStream();
-                    _parser.parse(_base, stream);
+                    _parser.parse(xmlFile, stream);
                     stream.close();
                 }
                 if (_text != null && !_text.equals("")) {

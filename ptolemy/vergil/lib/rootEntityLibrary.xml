@@ -1,23 +1,20 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../moml/moml.dtd">
-<class name="" extends="ptolemy.actor.TypedCompositeActor">
-  <doc>
-	root entity library
-  </doc>
-  <import source="../../actor/lib/genericentities.xml"/>
-  <import source="../../domains/sdf/lib/sdfentities.xml"/>
-  <import source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
-  <import source="../../domains/ct/lib/ctentities.xml"/>
-  <import source="../../domains/de/lib/deentities.xml"/>
-  <import source="../../domains/fsm/lib/fsmentities.xml"/>
-  <import source="../../apps/lego/legoentities.xml"/>
-  <import source="../../apps/agilent/agilententities.xml"/>
-  <entity name="generic" class=".generic"/>
-  <entity name="sdf" class=".sdf"/>
-  <entity name="sdfvq" class=".sdfvq"/>
-  <entity name="ct" class=".ct"/>
-  <entity name="de" class=".de"/>
-  <entity name="fsm" class=".fsm"/>
-  <entity name="lego" class=".lego"/>
-  <entity name="agilent" class=".agilent"/>
-</class>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="actors" class="ptolemy.moml.TypedActorLibrary">
+  <doc>default entity library</doc>
+  <configure>
+    <?moml
+      <group>
+        <input source="../../actor/lib/genericentities.xml"/>
+        <input source="../../domains/sdf/lib/sdfentities.xml"/>
+        <input source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
+        <input source="../../domains/ct/lib/ctentities.xml"/>
+        <input source="../../domains/de/lib/deentities.xml"/>
+        <input source="../../domains/fsm/lib/fsmentities.xml"/>
+        <input source="../../apps/lego/legoentities.xml"/>
+        <input source="../../apps/agilent/agilententities.xml"/>
+      </group>
+    ?>
+  </configure>
+</model>
