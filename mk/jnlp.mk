@@ -139,8 +139,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/tm/demo/demo.jar \
+	ptolemy/matlab/demo/demo.jar \
 	$(SIGNED_DIR)/lib/matlab.jar
-
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
