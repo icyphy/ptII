@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/schematic/test/util
+ME =		ptolemy/schematic/util/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -46,13 +46,15 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	Icon.tcl \
 	IconLibrary.tcl \
 	PTMLObjectFactory.tcl \
+	SchematicEntity.tcl \
+	SchematicLink.tcl \
+	SchematicRelation.tcl \
 	Terminal.tcl \
 	TerminalStyle.tcl
 
@@ -67,7 +69,10 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl
+MISC_FILES =	alljtests.tcl \
+		examplelibrary.ptml \
+		exampleschematic.ptml \
+		ptolemyicon.dtd
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
