@@ -74,7 +74,7 @@ local truncation error.
 @author  Jie Liu
 @version $Id$
 */
-public class ExplicitRK23Solver extends ODESolver{
+public class ExplicitRK23Solver extends ODESolver {
 
     /** Construct a solver in the default workspace.
      *  The solver is added to the list of objects in

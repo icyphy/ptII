@@ -189,7 +189,7 @@ public abstract class ODESolver extends NamedObj {
     }
 
     /** Return true if the state of the system is resolved successfully.
-     *  Different solver may implement it differently.
+     *  Different solvers may implement it differently.
      *
      * @exception IllegalActionException Not thrown in this base class.
      * May be needed by the derived class.

@@ -46,7 +46,7 @@ all fixed-stepsize solvers.
 @author Jie Liu
 @version $Id$
 */
-public abstract class FixedStepSolver extends ODESolver{
+public abstract class FixedStepSolver extends ODESolver {
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
