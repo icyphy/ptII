@@ -191,27 +191,6 @@ public class ProcessDirector extends Director {
         return true;
     }
 
-    /** Request the director to process topology change requests
-     *  immediately. This should be called by clients that have
-     *  queued a request and require that the request be processed
-     *  immediately. The method does not return until requests
-     *  have been processed.
-     *  <p>
-     *  @exception TopologyChangeFailedException If the mutations could not 
-     *   be completed.
-     */
-    public void processTopologyRequests() throws TopologyChangeFailedException{
-	try {
-	    setPauseRequested();
-	    synchronized(this) {
-		_urgentMutations = true;
-		notifyAll();
-	    } 
-	} catch (IllegalActionException e) {
-	    System.err.println(e.toString());
-	}
-    }
-
     /** Pause the simulation. This method iterates through the set of 
      *  actors in the compositeActor and sets the pause flag of all 
      *  the receivers. It also sets the pause flag in all the output 
@@ -478,9 +457,6 @@ public class ProcessDirector extends Director {
 
     protected boolean _pauseRequested = false;
     protected boolean _paused = false;
-
-    // FIXME: this should not be here?
-    protected boolean _urgentMutations = false;
 
     protected LinkedList _pausedReceivers = new LinkedList();
   
