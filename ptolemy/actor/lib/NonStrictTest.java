@@ -180,7 +180,10 @@ public class NonStrictTest extends Transformer {
      *  model is being run as part of the test suite, then throw an exception.
      *  This method merely checks to see if
      *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
-
+     *  To run the test suite in the Nightly Build mode, use
+     *  <pre>
+     *  make JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true tests
+     *  </pre>
      */   
     public static boolean isRunningNightlyBuild() {
         if (StringUtilities
@@ -275,6 +278,9 @@ public class NonStrictTest extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Exception message that is used if we are running under
+     *  the nightly build and the trainingMode parameter is true.
+     */
     public static String TRAINING_MODE_ERROR_MESSAGE =
         "Training Mode set for test actor and isRunningNightlyBuild()\n"
         + "  returned true, indicating that the\n" 
