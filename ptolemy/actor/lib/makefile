@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib
 
-DIRS = 		test
+DIRS = 		conversions test 
 
 # Root of the Java directory
 ROOT =		../../..
@@ -108,3 +108,9 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
+
+
+
