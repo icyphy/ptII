@@ -378,16 +378,32 @@ public class Audio {
     }
 
     /** Write the audio data to an output stream in the Sun audio format.
+     *
+     *  @param output The output stream.
+     *  @exception IOException If an error occurs writing to the stream.
+     */
+    public void write(DataOutputStream output) throws IOException {
+        output.write(magic, 0, 4);
+        output.writeInt(offset);
+        output.writeInt(size);
+        output.writeInt(format);
+        output.writeInt(sampleRate);
+        output.writeInt(numChannels);
+        output.write(info, 0, offset-24);
+        output.write(audio[0], 0, size);
+    }
+
+    /** Write the raw audio data to an output stream.
      *  This method can be used to play the audio data using the
      *  (undocumented and unsupported) sun.audio package as follows:
      *  <pre>
      *      // The constructor argument below is optional
      *      ByteArrayOutputStream out =
-     *               new ByteArrayOutputStream(sound.size + sound.offset);
+     *               new ByteArrayOutputStream(sound.size);
      *      try {
-     *          sound.write(new DataOutputStream(out));
+     *          sound.writeRaw(new DataOutputStream(out));
      *      } catch (IOException ex) {
-     *          throw new RuntimeException("message here");
+     *          throw new RuntimeException("Audio output failed");
      *      }
      *      byte[] iobuffer = out.toByteArray();
      *      ByteArrayInputStream instream =
@@ -404,14 +420,7 @@ public class Audio {
      *  @param output The output stream.
      *  @exception IOException If an error occurs writing to the stream.
      */
-    public void write(DataOutputStream output) throws IOException {
-        output.write(magic, 0, 4);
-        output.writeInt(offset);
-        output.writeInt(size);
-        output.writeInt(format);
-        output.writeInt(sampleRate);
-        output.writeInt(numChannels);
-        output.write(info, 0, offset-24);
+    public void writeRaw(DataOutputStream output) throws IOException {
         output.write(audio[0], 0, size);
     }
 

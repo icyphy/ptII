@@ -48,9 +48,9 @@ DIRS =
 CLASSPATH =	../..
 
 # Used to build zip files
-PTPACKAGE = 	ptolemy.audio
+PTPACKAGE = 	ptolemy.media
 PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/audio
+PTPACKAGE_DIR = ptolemy/media
 PTVERSION =	1.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip

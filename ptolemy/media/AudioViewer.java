@@ -40,12 +40,20 @@ import java.util.StringTokenizer;
 /**
 Display sound files.
 
-@see Plot
-@see PlotBox
+@see PlotApplication
 @author Edward A. Lee
 @version $Id$
 */
 public class AudioViewer extends PlotApplication {
+
+    public AudioViewer() {
+        super();
+        MenuItem play = new MenuItem("Play", new MenuShortcut(KeyEvent.VK_H));
+        play.setActionCommand("Play");
+        PlayListener playlistener = new PlayListener();
+        play.addActionListener(playlistener);
+        _specialMenu.add(play);
+    }
 
     public AudioViewer(String args[]) {
         super(args);
@@ -57,27 +65,23 @@ public class AudioViewer extends PlotApplication {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Display basic information about the application.
      */
     protected void _about() {
         Message message = new Message(
-                "Ptolemy AudioViewer\n" +
+                "Ptolemy AudioViewer (ptaudio program)\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "Version 2.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot");
-        message.setTitle("About Ptolemy Plot");
+        message.setTitle("About Ptolemy AudioViewer");
     }
 
     /** Display some help.
      */
     protected void _help() {
-        // FIXME:  This is a pretty lame excuse for help...
         Message message = new Message("Use Control-P to play the sound");
         message.setTitle("Usage of Ptolemy AudioViewer");
     }
@@ -107,99 +111,21 @@ public class AudioViewer extends PlotApplication {
         _filename = filename;
 
         // Configure the plot.
-        plot.clear(true);
-        plot.setTitle(new String(_sound.info));
+        Plot plt = (Plot)plot;
+        plt.clear(true);
+        plt.setTitle(new String(_sound.info));
         setTitle(filename);
-        plot.setXRange(0, (_sound.size - 1)/8000.0);
-        plot.setXLabel("Time in seconds");
-        plot.setYRange(-1.0, 1.0);
-        double[] plotdata = _sound.toDouble(0);
-        if (plotdata != null) {
-            plot.addPoint(0, 0, plotdata[0], false);
-            for (int i = 1; i < plotdata.length; i++) {
-                plot.addPoint(0, i/8000.0, plotdata[i], true);
+        plt.setXRange(0, (_sound.size - 1)/8000.0);
+        plt.setXLabel("Time in seconds");
+        plt.setYRange(-1.0, 1.0);
+        double[] pltdata = _sound.toDouble(0);
+        if (pltdata != null) {
+            plt.addPoint(0, 0, pltdata[0], false);
+            for (int i = 1; i < pltdata.length; i++) {
+                plt.addPoint(0, i/8000.0, pltdata[i], true);
             }
         }
-        plot.repaint();
-    }
-
-    /** Parse the command-line
-     *  arguments and make calls to the Plot class accordingly.
-     *  @return The number of arguments read.
-     */
-    protected int _parseArgs(String args[]) throws CmdLineArgException,
-            FileNotFoundException, IOException {
-        // FIXME: Need a much smaller set...
-        int i = 0, j, argsread;
-        String arg;
-        String title = "Ptolemy plot";
-
-        int width = 400;      // Default width of the graph
-        int height = 300;     // Default height of the graph
-
-        // Although most of the arguments are handled by the Plot class,
-        // a few are dealt with here.
-        while (i < args.length) {
-            arg = args[i++];
-
-            if (arg.equals("-help")) {
-                // -help is not in the original X11 pxgraph.
-                System.out.println(_usage());
-                continue;
-            } else if (arg.equals("-test")) {
-                // -test is not in the original X11 pxgraph.
-                // FIXME
-                // _test = true;
-                continue;
-            } else if (arg.equals("-t")) {
-                // -t <title> TitleText "An X Graph"
-                title =  args[i++];
-                continue;
-            } else if (arg.equals("-v") || arg.equals("-version")) {
-                // -version is not in the original X11 pxgraph.
-                _about();
-                continue;
-            } else if (arg.startsWith("=")) {
-                // Process =WxH+X+Y
-                int xscreen = 1, yscreen = 1;
-                boolean screenlocationgiven = false;
-                StringTokenizer stoken =
-                    new StringTokenizer(arg.substring(1, arg.length()),
-                            "=x-+");
-                if (stoken.hasMoreTokens()) {
-                    width = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
-                }
-                if (stoken.hasMoreTokens()) {
-                    height = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
-                }
-                if (stoken.hasMoreTokens()) {
-                    xscreen = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
-                    screenlocationgiven = true;
-                }
-                if (stoken.hasMoreTokens()) {
-                    yscreen = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
-                    screenlocationgiven = true;
-                }
-                if (screenlocationgiven) {
-                    // Note: we add one so that =800x200+0+0 will show up
-                    // in the proper location.
-                    setLocation(new Point(xscreen+1, yscreen+1));
-                }
-                continue;
-            }
-        }
-
-        setSize(width, height);
-        setTitle(title);
-
-        argsread = i++;
-
-        plot.parseArgs(args);
-        return argsread;
+        plt.repaint();
     }
 
     /** Play the sound.
@@ -208,9 +134,9 @@ public class AudioViewer extends PlotApplication {
         if (_instream == null) {
             // Fill the iobuffer with audio data.
             ByteArrayOutputStream out =
-                    new ByteArrayOutputStream(_sound.size + _sound.offset);
+                    new ByteArrayOutputStream(_sound.size);
             try {
-                _sound.write(new DataOutputStream(out));
+                _sound.writeRaw(new DataOutputStream(out));
             } catch (IOException ex) {
                 throw new RuntimeException(
                     "Failed to convert audio data to stream.");
@@ -226,12 +152,11 @@ public class AudioViewer extends PlotApplication {
      *  and _filename protected variables.
      */
     protected void _save() {
-        // FIXME: Save the sound file only...
         if (_filename != null) {
             File file = new File(_directory, _filename);
             try {
                 FileOutputStream fout = new FileOutputStream(file);
-                plot.write(fout);
+                _sound.write(new DataOutputStream(fout));
             } catch (IOException ex) {
                 Message msg = new Message("Error writing file: " + ex);
             }
@@ -243,81 +168,10 @@ public class AudioViewer extends PlotApplication {
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
-//     protected String _usage() {
-//         // FIXME: need a simpler profile...
-//
-//         // We use a table here to keep things neat.
-//         // If we have:
-//         //  {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
-//         // -bd       - The argument
-//         // <color>   - The description of the value of the argument
-//         // Border    - The Xgraph file directive (not supported at this time).
-//         // White     - The default (not supported at this time)
-//         // "(Unsupported)" - The string that is printed to indicate if
-//         //                   a option is unsupported.
-//         String commandOptions[][] = {
-//             {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
-//             {"-bg",  "<color>", "BackGround",  "White", ""},
-//             {"-brb", "<base>", "BarBase",  "0", "(Unsupported)"},
-//             {"-brw", "<width>", "BarWidth",  "1", ""},
-//             {"-bw",  "<size>", "BorderSize",  "1", "(Unsupported)"},
-//             {"-fg",  "<color>", "Foreground",  "Black", ""},
-//             {"-gw",  "<pixels>", "GridStyle",  "1", "(Unsupported)"},
-//             {"-lf",  "<fontname>", "LabelFont",  "helvetica-12", ""},
-//             {"-lw",  "<width>", "LineWidth",  "0", "(Unsupported)"},
-//             {"-lx",  "<xl,xh>", "XLowLimit, XHighLimit",  "0", ""},
-//             {"-ly",  "<yl,yh>", "YLowLimit, YHighLimit",  "0", ""},
-//             // -o is not in the original X11 pxgraph.
-//             {"-o",   "<output filename>", "",  "/tmp/t.ps", ""},
-//             {"-t",   "<title>", "TitleText",  "An X Graph", ""},
-//             {"-tf",  "<fontname>", "TitleFont",  "helvetica-b-14", ""},
-//             {"-x",   "<unitName>", "XUnitText",  "X", ""},
-//             {"-y",   "<unitName>", "YUnitText",  "Y", ""},
-//             {"-zg",  "<color>", "ZeroColor",  "Black", "(Unsupported)"},
-//             {"-zw",  "<width>", "ZeroWidth",  "0", "(Unsupported)"},
-//         };
-//
-//         String commandFlags[][] = {
-//             {"-bar", "BarGraph",  ""},
-//             {"-bb", "BoundBox",  "(Ignored)"},
-//             {"-binary", "Binary",  ""},
-//             // -impulses is not in the original X11 pxgraph.
-//             {"-impulses", "Impulses",  ""},
-//             {"-lnx", "XLog",  ""},
-//             {"-lny", "YLog",  ""},
-//             {"-m", "Markers",  ""},
-//             {"-M", "StyleMarkers",  ""},
-//             {"-nl", "NoLines",  ""},
-//             {"-p", "PixelMarkers",  ""},
-//             {"-P", "LargePixel",  ""},
-//             {"-rv", "ReverseVideo",  ""},
-//             // -test is not in the original X11 pxgraph.  We use it for testing
-//             {"-test", "Test",  ""},
-//             {"-tk", "Ticks",  ""},
-//             // -v is not in the original X11 pxgraph.
-//             {"-v", "Version",  ""},
-//             {"-version", "Version",  ""},
-//         };
-//         String result = "Usage: plot [ options ] [=WxH+X+Y] [file ...]\n\n"
-//                 + " options that take values as second args:\n";
-//
-//         int i;
-//         for(i = 0; i < commandOptions.length; i++) {
-//             result += " " + commandOptions[i][0] +
-//                     " " + commandOptions[i][1] +
-//                     " " + commandOptions[i][4] + "\n";
-//         }
-//         result += "\nBoolean flags:\n";
-//         for(i = 0; i < commandFlags.length; i++) {
-//             result += " " + commandFlags[i][0] +
-//                     " " + commandFlags[i][2] + "\n";
-//         }
-//         result += "\nThe following pxgraph features are not supported:\n"
-//                 + " * Directives in pxgraph input files\n"
-//                 + " * Xresources\n"
-//                 + "For complete documentation, see the pxgraph program docs.";
-//         return result;
-//     }
+     protected String _usage() {
+         String result = "Usage: ptaudio file";
+         return result;
+     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
