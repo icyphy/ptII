@@ -370,7 +370,7 @@ public class DatagramWriter extends TypedAtomicActor {
                 for (int j = 0; j < dataIntArrayToken.length(); j++) {
 		    if (false) {
 			System.out.println("array token null? "
-			        + (null==dataIntArrayToken));
+			        + (null == dataIntArrayToken));
 			System.out.println("array token length "
 			        + dataIntArrayToken.length());
 			System.out.println("j " + j);
