@@ -58,7 +58,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	design.pdf \
-	html
+	html \
+	src
 
 all: suball
 install: all
