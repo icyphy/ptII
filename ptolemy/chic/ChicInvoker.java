@@ -399,6 +399,9 @@ public class ChicInvoker extends Attribute {
         }
         
         if (!(chicInterface = new String(collectedInterfaces)).equals("")) {
+
+            System.out.println(chicInterface + "\n");
+
             ChicForPtolemy chic = new ChicForPtolemy(
                     new String(collectedInterfaces), compiler, !silent);
             if (chic.areCompatible()) {

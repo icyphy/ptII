@@ -31,7 +31,7 @@
 ME =		ptolemy/chic/demo
 
 # Keep these alphabetical please.
-DIRS = 		TokenRing
+DIRS = 		Math TokenRing
 
 # Root of Ptolemy II directory
 ROOT =		../../..
