@@ -50,28 +50,22 @@ public class PNRamp extends PNStar{
         super(workspace);
     }
 
-    /** Constructor
+    /** Constructor Adds ports to the star
+     * @param initValue is the initial token that the star puts in the stream
+     * @exception NameDuplicationException indicates that an attempt to add
+     *  two ports with the same name has been made
      */
     public PNRamp(CompositeEntity container, String name)
              throws NameDuplicationException {
         super(container, name);
+        _output = newOutPort(this, "output");
     }
  
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Initializes and adds ports to the star
-     * @param initValue is the initial token that the star puts in the stream
-     * @exception NameDuplicationException indicates that an attempt to add
-     *  two ports with the same name has been made
-     * @exception IllegalActionException a port with name null is being added
-     *  to the star
-     */
-    public void initialize(int seed)
-            throws NameDuplicationException, IllegalActionException {
+    public void setInitState(int seed) {
         _seed = seed;
-        _output = newOutPort(this, "output");
-        super.initialize(this);
     }
     
     /** Writes successive integers to the output
@@ -79,6 +73,7 @@ public class PNRamp extends PNStar{
     public void run() {
         int i;
         IntToken data;
+        setCycles(((PNUniverse)getContainer()).getCycles());
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 data = new IntToken(_seed);
