@@ -136,6 +136,10 @@ public class Constants {
                             StringUtilities.getProperty("ptolemy.ptII.dir")));
         } catch (Exception e) {}
 
+        // Infinities and NaN
+        _table.put("NaN", new DoubleToken(Double.NaN));
+        _table.put("Infinity", new DoubleToken(Double.POSITIVE_INFINITY));
+
         // Type constants.
         _table.put("boolean", BooleanToken.FALSE);
         _table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
