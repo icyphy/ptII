@@ -48,4 +48,5 @@ test ImportAttribute-1.1 {Call constructor, setSource, exportMoML} {
     set output [java::new java.io.StringWriter]
     $i1 exportMoML $output 1
     list [$i1 toString] [$output toString]
-} {{ptolemy.moml.ImportAttribute {..myImportAttribute}} {    <import source="foo.xml"/>}
+} {{ptolemy.moml.ImportAttribute {..myImportAttribute}} {    <import source="foo.xml"/>
+}}
