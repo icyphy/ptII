@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Tycho system, java/doc/coding
+# Makefile for Ptolemy II coding standards documentation
 #
 # Version: $Id$
 # Makefile Author: Christopher Hylands
