@@ -67,10 +67,16 @@ MISC_FILES =	#$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	demo \
+	doc \
+	'ComponentDialog$$1.class' \
 	'Message$$1.class' \
 	'Message$$2.class' \
 	'Query$$CheckBoxListener.class' \
-	'Query$$LineListener.class'
+	'Query$$LineListener.class' \
+	'Query$$QueryActionListener.class' \
+	'Query$$QueryFocusListener.class' \
+	'Query$$QueryItemListener.class' \
+	'Query$$SliderListener.class
 
 JCLASS = $(JSRCS:%.java=%.class)
 
