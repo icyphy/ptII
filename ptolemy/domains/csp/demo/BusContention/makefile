@@ -70,6 +70,7 @@ OPTIONAL_FILES = \
 	'BusContentionApplet$$2.class' \
 	'BusContentionApplet$$3.class' \
 	'BusContentionApplet$$4.class' \
+	'BusContentionApplet$$BusContentionGraphController.class' \
 	'BusContentionApplet$$LayoutListener.class' \
 	'BusContentionApplet$$LocalEdgeRenderer.class' \
 	'BusContentionApplet$$StateListener.class' \
