@@ -1,6 +1,6 @@
 /** A class defining quantization to a FixPoint number.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -65,7 +65,7 @@ the separation between values is given by
 <i>(maximum - minimum) / (modulo - 1)</i>. Whether values beyond the
 <i>maximum</i> and <i>minimum</i> wrap-around is determined by the overflow
 strategy. FixedQuantization therefore describes the requirements of a
-single fixed point range comprising just a mantissa. 
+single fixed point range comprising just a mantissa.
 <p>
 FloatingQuantization adds an exponent to support multiple
 floating point ranges; <i>maximum</i> defines the upper limit of the
@@ -92,16 +92,15 @@ that its value is set in the constructor and cannot then be modified.
 
 @author Ed Willink
 @version $Id$
-@since Ptolemy II 2.2
+@since Ptolemy II 2.1
 @see FixPoint
 @see FixPointQuantization
 @see Precision
 @see Overflow
 @see Rounding
 */
-
 public abstract class Quantization implements Cloneable, Serializable {
-    // Default implemntations suit the typical 
+    // Default implemntations suit the typical
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -303,7 +302,7 @@ public abstract class Quantization implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                 ////
 
-    /** Define the overflow strategy during construction. 
+    /** Define the overflow strategy during construction.
      *
      *  @param string The string representing the overflow strategy.
      *  @exception IllegalArgumentException If the overflow strategy
@@ -314,7 +313,7 @@ public abstract class Quantization implements Cloneable, Serializable {
         _overflow = Overflow.getName(string);
     }
 
-    /** Define the rounding strategy during construction. 
+    /** Define the rounding strategy during construction.
      *
      *  @param string The string representing the rounding strategy.
      *  @exception IllegalArgumentException If the rounding strategy

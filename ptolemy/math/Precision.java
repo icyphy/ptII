@@ -195,7 +195,7 @@ public class Precision implements Cloneable, Serializable {
      *  @return The maximum value obtainable for this precision.
      */
     public BigDecimal findMaximum() {
-        
+
         // FIXME: Why does this return a BigDecimal instead of a FixPoint?
         // Because it's intended for internal use.
         // It should be package friendly.

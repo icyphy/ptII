@@ -1,6 +1,6 @@
 /* The overflow strategy classes.
 
- Copyright (c) 1997-2002 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ nearest extreme value.
 <i>trap</i> or <i>throw</i>: Out of range values throw an exception.
 </ul>
 <p>
-A specific strategy may be chosen dynamically by invoking forName() or 
+A specific strategy may be chosen dynamically by invoking forName() or
 getName() with one of the above strategy names. Alternatively a strategy
 may be selected by using one of the static singletons.
 <p>
@@ -71,12 +71,11 @@ and <i>saturate</i> strategies for which infinity is well-defined.
 
 @author Ed Willink
 @version $Id$
-@since Ptolemy II 2.2
+@since Ptolemy II 2.1
 @see FixPoint
 @see Quantization
 @see Rounding
 */
-
 public abstract class Overflow implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
@@ -144,20 +143,20 @@ public abstract class Overflow implements Cloneable, Serializable {
 //        int typeInfo = OverflowLattice.compare(this, type);
 //        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
 //    }
-    
+
     /** Return the value of minus infinity, or null if unrepresentable.
      *  <p>
      *  The saturation value is returned for the <i>saturate</i> and
      *  <i>to_zero</i> strategies for which infinity is quantizable.
      *  Null is returned for other strategies.
-     * 
+     *
      *  @param quant The quantization specification.
      *  @return The value if defined, null if not..
      */
     public BigInteger minusInfinity(Quantization quant) {
 	return null;
     }
-    
+
     /** Return the value of plus infinity, or null if unrepresentable.
      *  <p>
      *  The saturation value is returned for the <i>saturate</i> and
@@ -169,7 +168,7 @@ public abstract class Overflow implements Cloneable, Serializable {
     public BigInteger plusInfinity(Quantization quant) {
 	return null;
     }
-    
+
     /** Return the integerValue after applying the overflow constraints of
      *  quant.
      *  @param integerValue The unbounded integer value.
@@ -328,7 +327,7 @@ public abstract class Overflow implements Cloneable, Serializable {
         }
     }
     public static final Unknown UNKNOWN = new Unknown();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
 

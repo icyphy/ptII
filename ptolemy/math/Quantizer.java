@@ -409,7 +409,7 @@ public class Quantizer {
      *  number does not fit within the range possible with the
      *  specified precision. In that case, the returned value is
      *  either the maximum or minimum value possible with the given
-     *  precision, depending on the sign of the specified number.  
+     *  precision, depending on the sign of the specified number.
      *
      *  <p> Note: This method does NOT perform truncation per most
      *  fixed-point DSP implementations, which simply drop the

@@ -1,6 +1,6 @@
 /* The numeric rounding strategy classes.
 
- Copyright (c) 1997-2002 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -74,7 +74,7 @@ half-way value to an even value.
 <i>unnecessary</i>: Generate an exception for any inexact value.
 </ul>
 
-A specific strategy may be chosen dynamically by invoking forName() or 
+A specific strategy may be chosen dynamically by invoking forName() or
 getName() with one of the above strategy names. Alternatively a strategy
 may be selected by using one of the static singletons.
 <p>
@@ -87,9 +87,8 @@ normally invoked from Quantization.quantize.
 
 @author Ed Willink
 @version $Id$
-@since Ptolemy II 2.2
+@since Ptolemy II 2.1
 */
-
 public abstract class Rounding implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
@@ -157,7 +156,7 @@ public abstract class Rounding implements Cloneable, Serializable {
 //        int typeInfo = RoundingLattice.compare(this, type);
 //        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
 //    }
-    
+
     /** Return the value of intPart after adjustment for loss of fracPart.
      *  @return The rounded value.
      */
@@ -350,7 +349,7 @@ public abstract class Rounding implements Cloneable, Serializable {
         }
     }
     public static final Unknown UNKNOWN = new Unknown();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
 

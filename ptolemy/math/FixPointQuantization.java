@@ -1,6 +1,6 @@
 /** A class defining quantization to a FixPoint number.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,7 +37,7 @@ import java.util.StringTokenizer;
 /**
 The FixPointQuantization class defines the mapping of numeric values
 with unlimited precision to the finite precision supported by arithmetic
-using the FixPoint class. 
+using the FixPoint class.
 <p>
 It comprises a
 <ul>
@@ -57,13 +57,12 @@ that its value is set in the constructor and cannot then be modified.
 
 @author Ed Willink
 @version $Id$
-@since Ptolemy II 2.2
+@since Ptolemy II 2.1
 @see FixPoint
 @see Precision
 @see Overflow
 @see Rounding
 */
-
 public class FixPointQuantization extends Quantization {
 
     /** Construct a FixPointQuantization object based on the provided
@@ -77,10 +76,10 @@ public class FixPointQuantization extends Quantization {
      *  <i>integer-bits.fraction-bits</i> or
      *  <i>total-bits/integer-bits</i>.
      *  <p>
-     *  <i>overflow</i> must be one of the Overflow stategies; e.g. 
+     *  <i>overflow</i> must be one of the Overflow stategies; e.g.
      *  <i>saturate</i> or <i>modulo</i> or <i>trap</i>.
      *  <p>
-     *  <i>rounding</i> must be one of the Rounding stategies; e.g. 
+     *  <i>rounding</i> must be one of the Rounding stategies; e.g.
      *  <i>up</i> or <i>half_even</i> or <i>unnecessary</i>.
      *  <p>
      *  Omitted strategies default to <i>saturate</i> and <i>nearest</i>.

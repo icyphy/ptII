@@ -52,7 +52,7 @@ number of fractional bits.
 [For compatibility with an earlier implementation and in order to
 support the current use of a FixPoint as a type exemplar, a FixPoint
 also maintains a count of the number integer bits and consequently
-the number of bits needed for the representation. This is 
+the number of bits needed for the representation. This is
 an annotation since it has no effect on the arithmetic results, which
 is important since the annotations fail to account for numeric growth.]
 <p>
@@ -90,7 +90,7 @@ of bits in the representation of a value.
 public class FixPoint implements Cloneable, Serializable {
 
     /** Construct a FixPoint by converting a double to comply
-     *  with a quantization specification. 
+     *  with a quantization specification.
      *
      *  @param doubleValue The floating point value.
      *  @param quant The quantization specification.
@@ -215,7 +215,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  this FixPoint by the argument. The operation is <b>not</b>
      *  lossless.
      *  <p>
-     *  The fractional precision of the result is equal to the maximum of 
+     *  The fractional precision of the result is equal to the maximum of
      *  the fractional precision of the divisor and dividend. Thus when a
      *  number with 3 fractional bits is divided by a FixPoint with 4
      *  fractional bits, the resulting FixPoint will be rounded to 4
@@ -247,7 +247,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  Division by zero results in a value of plus or minus infinity,
      *  which throws an exception if the overflow strategy defined by
      *  the quantization specification returns
-     *  null for plusInfinity or minusInfinity. 
+     *  null for plusInfinity or minusInfinity.
      *
      *  @param arg The FixPoint.divisor.
      *  @param quant The quantization specification.
@@ -310,7 +310,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @deprecated Overflow and rounding status no longer form part of
      *  the functionality. Use an overflow and rounding mode that gives the
      *  required behaviour or use Overflow.TRAP and/or Rounding.UNNECESSARY
-     *  to throw exceptions if external interaction is required. 
+     *  to throw exceptions if external interaction is required.
      */
     public Error getError() { return _error; }
 
@@ -428,7 +428,7 @@ public class FixPoint implements Cloneable, Serializable {
     }
 
     /** Return a bit string representation of this number.
-     *  The string takes the form "<i>sign integerBits . fractionBits</i>", 
+     *  The string takes the form "<i>sign integerBits . fractionBits</i>",
      *  where <i>sign</i> is - or nothing, <i>integerBits</i>
      *  and  <i>fractionBits</i> are
      *  each a sequence of "0" and "1". <i>integerBits</i> comprises no
@@ -468,7 +468,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  This is calculated by first converting the number to a BigDecimal,
      *  and then returning its string representation. In order to avoid
      *  loss there may be as many decimal digits following the decimal
-     *  point as there fractional bits in this FixPoint. 
+     *  point as there fractional bits in this FixPoint.
      * @return A decimal string representation of the value.
      */
     public String toString() {
@@ -529,7 +529,7 @@ public class FixPoint implements Cloneable, Serializable {
         // Since this is a private method we know that number is positive.
         if (number < _twoRaisedTo.length)
             return _twoRaisedTo[number];
-        else 
+        else
             return new BigDecimal(BigInteger.ZERO.setBit(number));
     }
 
@@ -568,13 +568,13 @@ public class FixPoint implements Cloneable, Serializable {
     private int _frac_bits;
 
 
-    /** The number of integer bits within _value 
+    /** The number of integer bits within _value
      *  This valiue is maintained to support FixType which relies on a
      *  value exemplar to define the full type characteristics. It only
      *  affects this class in so far as newe instnmaces may have a changed
      *  value, but this changed value is of limited utility since it just
      *  Maintains backward compatibility. It is cerytainly wrong
-     *  for cases such as the abs of max negative. 
+     *  for cases such as the abs of max negative.
      */
     private int _int_bits;
 
