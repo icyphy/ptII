@@ -62,7 +62,7 @@ import java.lang.reflect.Constructor;
 //// TMCompositeFacade
 /**
 A facade for a composite actor that creates and executes its internal
-model a backgroud process
+model a background process
 <P>
 FIXME: EXPERIMENTAL.
 <P>
@@ -92,7 +92,7 @@ public class TMCompositeFacade extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The defaut execution time.
+    /** The default execution time.
      */
     public Parameter executionTime;
 
@@ -124,7 +124,7 @@ public class TMCompositeFacade extends TypedCompositeActor
 
     /** Create the execution thread.
      */
-    public void preinitilize() throws IllegalActionException {
+    public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _directorThread = new PtolemyThread(
                 new RunnableDirector());
@@ -136,7 +136,7 @@ public class TMCompositeFacade extends TypedCompositeActor
             return false;
         }
         // Notice that prefire returns false will prevent this
-        // actor to be further exectued. But the event has already
+        // actor to be further executed. But the event has already
         // been delivered to the input receiver.
         if (!super.prefire()) {
             return false;
@@ -174,8 +174,8 @@ public class TMCompositeFacade extends TypedCompositeActor
             throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
         while(inputPorts.hasNext()) {
-            IOPort p = (IOPort)inputPorts.next();
-            getDirector().transferInputs(p);
+            IOPort port = (IOPort)inputPorts.next();
+            getDirector().transferInputs(port);
         }
     }
 

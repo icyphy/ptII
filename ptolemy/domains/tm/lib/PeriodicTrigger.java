@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Attribute;
 
 /**
-This actor produces a ramp at 2Hz.
+This actor produces a ramp at 2 Hz.
 @author: Edward A. Lee
 @version: $Id$
 */
@@ -103,12 +103,13 @@ public class PeriodicTrigger extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == period) {
-            long f = ((LongToken)period.getToken()).longValue();
-            if (f < 100) {
+            long periodValue = ((LongToken)period.getToken()).longValue();
+            if (periodValue < 100) {
                 throw new IllegalActionException(this,
-                        "does not support period lower than 100.");
+                        "does not support period lower than 100, value was:"
+                                                 + periodValue);
             }
-            _period = f;
+            _period = periodValue;
         }
     }
 
@@ -149,7 +150,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
                     _container.iterate(1);
                 } catch (IllegalActionException ex) {
                     throw new InvalidStateException((NamedObj)_container,
-                    "IlleglActionException at execution" + ex.getMessage());
+                    "IllegalActionException at execution" + ex.getMessage());
                 }
             }
         }
