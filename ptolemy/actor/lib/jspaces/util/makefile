@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/jspaces/util
 
-DIRS =
+DIRS =	
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -48,14 +48,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	util
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = 
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = 
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -67,7 +67,8 @@ EXTRA_SRCS =	$(JSRCS)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS) \
-	cleanspace
+	cleanspace \
+	startjini.gui
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
