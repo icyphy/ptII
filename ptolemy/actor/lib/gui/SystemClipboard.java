@@ -1,6 +1,6 @@
 /* An actor which copies to, and pastes from, the system clipboard.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -69,7 +69,6 @@ import java.awt.event.KeyEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// SystemClipboard
-
 /**
 This actor copies, to the system clipboard, the contents of any token received
 at its <i>input</i> port.  It pastes, from the system clipboard, to the 
@@ -77,13 +76,22 @@ at its <i>input</i> port.  It pastes, from the system clipboard, to the
 If both inputs receive tokens during the same firing, the paste is done 
 before the copy.  This ordering insures that the contents of the clipboard 
 are not lost in the event of a simultaneous copy-paste operation.  This 
-actor is designed to work with KeystrokeSensor.java.  <p>
+actor is designed to work with KeystrokeSensor.java.
 
 @author Winthrop Williams
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner {
 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public SystemClipboard(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -103,17 +111,24 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
         output.setOutput(true);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Input port, which has type StringToken. */
     public TypedIOPort input;
 
+    /** Input port, which has type Token. */
     public TypedIOPort trigger;
 
+    /** Output port, which has type StringToken. */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire this actor.
-     *  Blah, blah, blah.
+    /** Copy any <i>input</i> token to the clipboard and, if 
+     *  <i>trigger</i>-ed, paste the clipboard to the 
+     *  <i>output</i>.  Paste is done before copy.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
@@ -162,28 +177,27 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
      *             (java.awt.datatransfer.StringSelection,
      *              ptolemy.actor.lib.net.Wormhole)
      */
-    /*
-CLASSPATH="../../../..;c:\cygwin\home\winthrop\8Feb\ptII/lib/diva.jar" "/cygdriv
-e/c/jdk1.4/bin/javac" -g -O Wormhole.java
-Wormhole.java:137: cannot resolve symbol
-symbol  : variable _myFrame
-location: class ptolemy.actor.lib.net.Wormhole
-            Transferable transferable = clipboard.getContents(_myFrame);
-                                                              ^
-1 error
-make: *** [Wormhole.class] Error 1
-bash-2.04$ emacs Wormhole.java
-
-When I have '_myframe' in place of 'this' in getContents( ) call.
-Seems "requestor" who calls this must implement the ClipboardOwner interface.
-    */
-
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
     }
+    /*
+      CLASSPATH="../../../..;c:\cygwin\home\winthrop\8Feb\ptII/lib/diva.jar" "/cygdrive/c/jdk1.4/bin/javac" -g -O Wormhole.java
+      Wormhole.java:137: cannot resolve symbol
+      symbol  : variable _myFrame
+location: class ptolemy.actor.lib.net.Wormhole
+                  Transferable transferable = clipboard.getContents(_myFrame);
+                                                                    ^
+      1 error
+      make: *** [Wormhole.class] Error 1
+      bash-2.04$ 
+
+  When I have '_myframe' in place of 'this' in getContents( ) call.
+  Seems "requestor" who calls this must implement the ClipboardOwner interface.
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
+    // No private variables.
 }
 
 
