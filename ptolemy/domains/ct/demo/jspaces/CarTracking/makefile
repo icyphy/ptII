@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/CarTracking
+ME =		ptolemy/domains/ct/demo/jspaces/CarTracking
 
 # Root of the Java directory
 ROOT =		../../../../../..
