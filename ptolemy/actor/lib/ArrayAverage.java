@@ -59,7 +59,7 @@ exception will be thrown in the fire() method.
 
 @author Mark Oliver, Edward A. Lee
 @version $ID: ArrayAverage.java,v0.1 2003/07/01
-@since Ptolemy II 3.0.2
+@since Ptolemy II 3.1
 */
 
 public class ArrayAverage extends Transformer {
