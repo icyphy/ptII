@@ -136,16 +136,6 @@ public class InteractiveShell extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is <i>legend</i>, then parse the string
-     *  and set the legend.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        // FIXME: Placeholder
-        super.attributeChanged(attribute);
-    }
-
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -206,10 +196,7 @@ public class InteractiveShell extends TypedAtomicActor
         }
         output.broadcast(new StringToken(userCommand));
     }
-    
-    // FIXME
-    public TableauFrame getFrame() {return _frame;}
-    
+      
     /** Get the output string to be sent. This does not
      *  return until a value is entered on the shell by the user.
      *  @return The output string to be sent.
@@ -234,8 +221,6 @@ public class InteractiveShell extends TypedAtomicActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // FIXME
-        System.out.println("Calling initialize with shell: " + shell);
         if (shell == null) {
             // No container has been specified for the shell.
             // Place the shell in its own frame.
@@ -492,9 +477,7 @@ public class InteractiveShell extends TypedAtomicActor
          *  @return False if the user cancels on a save query.
          */
         protected boolean _close() {
-            // FIXME:
-            System.out.println("close");
-            if (getFrame() != null) {
+            if (_frame != null) {
                 _windowProperties.setProperties(_frame);
             }
             // Return value can be ignored since there is no issue of saving.
