@@ -4,18 +4,18 @@
 <schematic name="hello world" version="1.0">
 <description>ramp-recorder...  a good first start</description>
 
-<director name="director" template="sdf.director">
+<director name="director" implementation="ptolemy.domains.sdf.kernel.SDFDirector">
 <parameter name="iterations" value="4" type="ptolemy.data.IntToken"/>
 </director>
 
-<entity name="Ramp1" template="generic.ramp">
+<entity name="Ramp1" icon="generic.source" terminalstyle="generic.source" implementation="ptolemy.actor.lib.Ramp">
 <terminalmap ports="output"/>
 <parameter name="init" value="0" type="ptolemy.data.IntToken"/>
 <parameter name="step" value="4" type="ptolemy.data.IntToken"/>
 <port name="output" output="true" type="double"/>
 </entity>
 
-<entity name="Recorder1" template="generic.recorder">
+<entity name="Recorder1" icon="generic.sink" terminalstyle="generic.sink" implementation="ptolemy.actor.lib.Recorder">
 <terminalmap ports="input"/>
 <port name="input" input="true" type="double"/>
 </entity>
