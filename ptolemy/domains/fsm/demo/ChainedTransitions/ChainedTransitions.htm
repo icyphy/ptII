@@ -11,6 +11,8 @@
 
 
 <P>
+This model shows how Ptolemy II handles the "chained" transitions.
+
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <center>
@@ -35,8 +37,8 @@ applet is displayed on a XGA screen-->
     if (_ie == true) document.writeln('\
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "450" \
-            height = "400"  \
+            width = "550" \
+            height = "600"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_1_02-windows-i586.cab#Version=1,4,1,02"> \
             <PARAM NAME = "code" \
                    VALUE = "ptolemy.actor.gui.MoMLApplet" > \
@@ -48,7 +50,7 @@ applet is displayed on a XGA screen-->
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "ChainedTransitions" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
-	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
 	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "ChainedTransitions.xml" > \
             <a href="ChainedTransitions.xml">MoML specification for this model.</a> \
@@ -62,9 +64,9 @@ applet is displayed on a XGA screen-->
             code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "../../../../.." \
             archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
-            width = "450" \
-            height = "400" \
-            NAME = "ChainedTransitions" background = "#faf0e6" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "ChainedTransitions.xml"  \
+            width = "550" \
+            height = "600" \
+            NAME = "ChainedTransitions" background = "#faf0e6" controls = "buttons, directorParameters" orientation = "vertical" modelURL = "ChainedTransitions.xml"  \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.1/download.html"> \
               <NOEMBED> \
@@ -78,12 +80,12 @@ applet is displayed on a XGA screen-->
             code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "../../../../.." \
             archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
-            width = "450" \
-            height = "400" \
+            width = "550" \
+            height = "600" \
             > \
             <PARAM NAME = "NAME" VALUE = "ChainedTransitions" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
-	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
 	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "ChainedTransitions.xml" > \
             <a href="ChainedTransitions.xml">MoML specification for this model.</a> \
@@ -92,7 +94,16 @@ applet is displayed on a XGA screen-->
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
-The <a href="ChainedTransitionsVergil.htm">block diagram</a>
+
+<p>By chained transitions, it means that when a state is entered through
+an incoming transition, at least one of its outgoing transitions is 
+enabled, and the enabled transition is taken immediately without 
+advancing the time. The state is called a "transient" state.
+
+<p>Note, the actions associated with both the incoming and outgoing 
+transitions are executed.
+
+<p>The <a href="ChainedTransitionsVergil.htm">block diagram</a>
 for the model was constructed using the Ptolemy II schematic editor
 called Vergil.
 </p>
