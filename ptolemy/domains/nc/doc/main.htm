@@ -1,0 +1,114 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>NC domain</h1>
+<h2>How to install nc2momllib </h2>
+<ol>
+<li> The ptiny
+<pre>
+mkdir -p $PTII/vendors/ptinyos/src
+</pre>
+
+<li> Get the TinyOS CVS tree:
+<a href="http://sourceforge.net/cvs/?group_id=28656"><CODE>http://sourceforge.net/cvs/?group_id=28656</CODE></a>
+<pre>
+$PTII/vendors/ptinyos/src
+cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos login
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos co tinyos-1.x
+</pre>
+
+<li> Set TOSROOT to the location of the TinyOS source tree
+Under bash:
+<pre>
+export TOSROOT=$PTII/vendors/ptinyos/src/tinyos-1.x
+export TOSDIR=$TOSROOT/tos
+</pre>
+Under Windows with Cygwin, you can permanently set environment variables from
+the System control panel.  For details, see 
+<a href="../../../doc/install.htm#settingptII">Set the value of the PTII environment variable</a>.  
+
+Under csh or tcsh:
+<pre>
+setenv TOSROOT $PTII/vendors/ptinyos/src/tinyos-1.x
+setenv TOSDIR $TOSROOT/tos
+</pre>
+
+
+<li> Get the nesC CVS Tree, see
+<a href="http://sourceforge.net/cvs/?group_id=56288"><CODE>http://sourceforge.net/cvs/?group_id=56288</CODE></a>
+<pre>
+cd $PTII/vendors/ptinyos/src
+cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/nescc login
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/nescc co -r nc2momllib nesc
+</pre>
+
+
+<li> Make and install the nesC CVS tree
+ <br>nesC requires automake, autoconf 2.50 or later, emacs, and gperf.
+  You will probably not have gperf on your system.  Please install it first.
+ <br>If you are using Cygwin, you can run the Cygwin setup.exe file
+and update your installation.
+ <br>For details, see the <a href="../../../doc/install.htm#cygwin">Ptolemy II Cygwin Instructions</a>.  
+ <br>Note: If you rerun Cygwin <CODE>setup.exe</CODE>, you may
+want to exit any running bash shells
+ <br>You will need the following packages
+<menu>
+<li> autoconf
+<li> autoconf-stable
+<li> emacs
+<li> emacs-el
+<li> gperf
+</menu>
+
+
+<li> Boostrap nesC
+<pre>
+cd $PTII/vendors/ptinyos/src/nesc
+./Bootstrap
+</pre>
+
+<li> Run configure for nesc
+<pre>
+./configure --prefix=$PTII/vendors/ptinyos
+</pre>
+
+
+<li> Install nesc 
+<pre>
+make 
+make install
+</pre>
+
+<li> Set another variable that points to the nesc installation
+Under csh or tcsh
+<pre>
+setenv NC2MOMLLIB_NESC $PTII/vendors/ptinyos
+</pre>
+
+
+<li> Run the example
+<pre>
+cd $TOSROOT/contrib/momllib
+make momllib mica
+</pre>
+
+
+<li> See if the examples worked:
+<menu>
+<li> - You should see some valid MoML code in
+<CODE>$TOSROOT/contrib/momllib/build/momllib/Counters.xml</CODE>
+
+<li> It should correspond to the contents of <CODE>$TOSDIR/lib/Counters</CODE>
+
+</menu>
+
+</ol>
+
+
+</body>
+</html>
