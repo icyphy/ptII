@@ -78,7 +78,7 @@ public class DEFIRfilter extends DEActor {
         super(container, name);
         // set the parameters.
         //double[][] taps2d = new double[1][];
-        //taps2d[0]=taps;
+        //taps2d[0] = taps;
         String tapString  =  new String();
         for (int i = 0; i < taps.length; i++) {
             tapString = tapString + (new Double(taps[i])).toString() + " ";
@@ -114,7 +114,7 @@ public class DEFIRfilter extends DEActor {
 
         // set the parameters.
         //double[][] taps2d = new double[1][];
-        //taps2d[0]=dtaps;
+        //taps2d[0] = dtaps;
 
         _paramTaps = new Parameter(this, "taps", new StringToken(taps));
         _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
