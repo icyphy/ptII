@@ -54,8 +54,9 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  be added to the child list later.
      */
     public TreeNode() {
-        // the list will grow as needed
-        this(0);
+        // the list will grow as needed, and should be trimmed after
+        // all members are added
+        _childList = new ArrayList();
     }
 
     /** Construct a TreeNode with the specified number of children to be
@@ -158,9 +159,9 @@ public abstract class TreeNode extends TrackedPropertyMap
         return _childList.get(0);
     }
 
-    /** Return true iff this subclass of TreeNode is a singleton, i.e. there exists only
-     *  one object of the subclass. This method needs to be overridden by 
-     *  singleton classes.
+    /** Return true iff this subclass of TreeNode is a singleton, i.e. there 
+     *  exists only one object of the subclass. This method needs to be 
+     *  overridden by  singleton classes.
      */
     public boolean isSingleton() { return false; }
 
@@ -169,7 +170,7 @@ public abstract class TreeNode extends TrackedPropertyMap
         _childList.set(index, child);
     }
 
-    /** Visit all nodes or lists in in the argument list, and place the list of 
+    /** Visit all nodes or lists in in the argument list, and place the list of
      *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
      */
     public void traverseChildren(IVisitor v, LinkedList args) {
@@ -227,7 +228,8 @@ public abstract class TreeNode extends TrackedPropertyMap
               
                String methodLabel = methodName.substring(3);
           
-               String totalIndent = nextIndent + _makeSpaceString(methodLabel.length()) + "  ";
+               String totalIndent = nextIndent + 
+                _makeSpaceString(methodLabel.length()) + "  ";
                        
                sb.append(nextIndent + methodLabel + ": ");
 
@@ -235,7 +237,8 @@ public abstract class TreeNode extends TrackedPropertyMap
                try {
                   retval = method.invoke(this, null);
                } catch (Exception e) {
-                  throw new RuntimeException("Error invoking method " + methodName);
+                  throw new RuntimeException("Error invoking method " + 
+                   methodName);
                }
 
                if (retval instanceof TreeNode) {
@@ -261,15 +264,16 @@ public abstract class TreeNode extends TrackedPropertyMap
         return sb.toString();
     }
 
-    /** Accept a visitor at this node only. This method uses reflection and therefore
-     *  suffers a performance penalty. This method should be overridden in concrete
-     *  subclasses of TreeNode for better performance.
+    /** Accept a visitor at this node only. This method uses reflection and 
+     *  therefore suffers a performance penalty. This method should be 
+     *  overridden in concrete subclasses of TreeNode for better performance.
      */
     protected Object _acceptHere(IVisitor v, LinkedList visitArgs) {      
         if (_myClass == null) {
            _myClass = getClass();
 
-           String myClassName = StringManip.unqualifiedPart(_myClass.getName());
+           String myClassName = StringManip.unqualifiedPart(
+            _myClass.getName());
            _visitMethodName = "visit" + myClassName;
 
            _visitParamTypes[0] = _myClass;
@@ -304,7 +308,9 @@ public abstract class TreeNode extends TrackedPropertyMap
   
     // protected methods
   
-    /** Return a String of spaces, the number of which is specified by the argument. */
+    /** Return a String of spaces, the number of which is specified by the 
+     *  argument. 
+     */
     protected static String _makeSpaceString(int spaces) {
         StringBuffer sb = new StringBuffer();
     
