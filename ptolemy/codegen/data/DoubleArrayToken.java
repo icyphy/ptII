@@ -62,4 +62,23 @@ public class DoubleArrayToken extends ArrayToken {
     public DoubleArrayToken(DoubleToken[] value) {
 	super(value);
     }
+
+    public DoubleArrayToken(double[] value) {
+	// SpecializedTokenVisitor._visitCastNode() needs this constructor
+	super(new DoubleToken[]{new DoubleToken(value[0])});
+
+	// FIXME: what if the array is greater than length 1?
+	if (value.length != 1) {
+	    // FIXME: is this the right exception?
+	    throw new RuntimeException("DoubleArrayToken(double[] value): "
+				       + "length is ' " + value.length 
+				       + "', which is != 1");
+	}
+
+    }
+
+    //public DoubleArrayToken(double value) {
+	// SpecializedTokenVisitor._visitCastNode() needs this constructor
+    //super(new DoubleToken[]{new DoubleToken(value)});
+    //}
 }
