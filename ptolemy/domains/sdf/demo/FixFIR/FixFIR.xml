@@ -136,7 +136,7 @@ shows the effects of the use of finite precision.
            "http://ptolemy.eecs.berkeley.edu/xml/dtd/plotml.dtd">
       <plot>
         <size width="450" height="300"/>
-        <title>Fixed-point FIR Filter Transfer Function</title>
+        <title>Fixpoint FIR Filter Transfer Function</title>
       </plot>
     ]]></configure>
   </entity>
