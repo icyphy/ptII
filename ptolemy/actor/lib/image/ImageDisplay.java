@@ -232,6 +232,7 @@ public class ImageDisplay extends Sink implements Placeable {
         }
         if (_frame != null) {
             _frame.setVisible(true);
+            _frame.toFront();
         }
     }
 

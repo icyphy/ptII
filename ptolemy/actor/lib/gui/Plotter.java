@@ -183,11 +183,9 @@ public class Plotter extends PlotterBase {
                 plot.repaint();
             }
         }
-        /* NOTE: This causes a bug where manual resizes of the window
-           get overridden on re-run.
-           if (_frame != null) {
-           _frame.show();
-           }
-        */
+        if (_frame != null) {
+            // Do not use show() here as it overrides manual placement.
+           _frame.toFront();
+        }
     }
 }

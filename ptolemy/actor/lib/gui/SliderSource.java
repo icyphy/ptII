@@ -179,6 +179,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         }
         if (_frame != null) {
             _frame.setVisible(true);
+            _frame.toFront();
         }
     }
 

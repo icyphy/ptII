@@ -114,6 +114,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
         }
         if (_frame != null) {
             _frame.setVisible(true);
+            _frame.toFront();
         }
     }
 

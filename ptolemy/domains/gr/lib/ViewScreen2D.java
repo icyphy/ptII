@@ -243,6 +243,7 @@ public class ViewScreen2D extends GRActor2D
         // Make the frame visible.
         if (_frame != null) {
             _frame.setVisible(true);
+            _frame.toFront();
         }
 
         _canvas.setBackground(backgroundColor.asColor());

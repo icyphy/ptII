@@ -258,12 +258,10 @@ public class InteractiveShell extends TypedAtomicActor
         } else {
             shell.clearJTextArea();
         }
-        /* NOTE: This causes a bug where manual resizes of the window
-           get overridden on re-run.
-           if (_frame != null) {
-           _frame.show();
-           }
-        */
+        if (_frame != null) {
+            // Do not use show() as it overrides manual placement.
+            _frame.toFront();
+        }
         _firstTime = true;
         _returnFalseInPostfire = false;
     }

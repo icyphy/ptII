@@ -215,7 +215,10 @@ public class MatrixViewer extends Sink implements Placeable {
             } else {
                 // Erase previous text.
                 _effigy.clear();
-                _tableau.show();
+                if (_frame != null) {
+                    // Do not use show() as it overrides manual placement.
+                    _frame.toFront();
+                }
             }
         }
     }

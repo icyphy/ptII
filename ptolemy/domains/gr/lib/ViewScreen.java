@@ -246,6 +246,7 @@ public class ViewScreen extends GRActor3D
         // Make the frame visible.
         if (_frame != null) {
             _frame.setVisible(true);
+            _frame.toFront();
         }
 
         Enumeration branches

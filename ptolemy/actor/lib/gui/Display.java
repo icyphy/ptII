@@ -266,12 +266,10 @@ public class Display extends Sink implements Placeable {
             // Erase previous text.
             textArea.setText(null);
         }
-        /** NOTE: This causes a bug where manual placement
-         *  gets overridden on re-run.
-         if (_frame != null) {
-         _frame.show();
-         }
-        */
+        if (_frame != null) {
+            // Do not use show() as it overrides manual placement.
+            _frame.toFront();
+        }
         /*
           int tab = ((IntToken)tabSize.getToken()).intValue();
           // NOTE: As of jdk 1.3beta the following is ignored.
