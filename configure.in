@@ -786,6 +786,45 @@ fi
 
 
 #--------------------------------------------------------------------
+#       GMP - GNU arbitrary precision arithmetic library, needed only by mescal
+#       
+#--------------------------------------------------------------------
+# We only need to look for GMP if mescal/relsat is present
+MESCAL_RELSAT_USER_DIR="$PTII/mescal/relsat"
+
+if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
+    AC_MSG_RESULT([$MESCAL_RELSAT_USER_DIR is not present,
+	so we need not find GMP.])
+else
+    AC_MSG_CHECKING([for GMP])
+    AC_CHECK_HEADERS(gmp.h, PT_GMP=yes, PT_GMP=no)
+    if test "$PT_GMP" = "yes"; then
+           AC_MSG_RESULT(yes)
+    else
+           # FIXME: We could look for gmp.h in vendors/misc
+           AC_MSG_WARN([Failed to find gmp.h, which is only
+    needed to compile $MESCAL_RELSAT_USER_DIR
+    gmp can be found at http://www.swox.com/gmp/
+    Under cygwin, you should configure with
+       ./configure --disable-static --enable-shared])
+    fi
+    AC_MSG_CHECKING([for gcc])
+    AC_PATH_PROG(PTCC, gcc)
+    if test "${PTCC:-none}" != "none"; then
+        PTMATLAB_DIR=matlab
+    else    
+        AC_MSG_WARN([Failed to find gcc])
+	AC_PATH_PROG(PTCC, cc)
+	if test "${PTCC:-none}" != "none"; then
+	    PTMATLAB_DIR=matlab
+	else	
+	    AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab]);
+	fi
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       JAI is the Java Advanced Imaging Framework
 #	For more information, 
 #       see http://java.sun.com/products/java-media/jai/
@@ -1745,6 +1784,19 @@ fi
 
 
 #--------------------------------------------------------------------
+#       Mescal - 
+#       
+#--------------------------------------------------------------------
+# PTMESCAL_DIR is set to mescal and used in $PTII/makefile 
+# if $PTII/mescal was found
+PTMESCAL_DIR=
+
+MESCAL_USER_DIR="$PTII/mescal"
+if test -d "$MESCAL_USER_DIR"; then
+   PTMESCAL_DIR=mescal
+fi
+
+#--------------------------------------------------------------------
 #	Test for quicktime
 #--------------------------------------------------------------------
 # PTQUICKTIME_DIR is set to quicktime and used in
@@ -2384,6 +2436,10 @@ AC_SUBST(PTLEJOS_DIR)
 # Set to matlab and used in
 # $PTII/ptolemy/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_DIR)
+
+# Set to mescal and used in $PTII/makefile 
+# if $PTII/mescal was found
+AC_SUBST(PTMESCAL_DIR)
 
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
