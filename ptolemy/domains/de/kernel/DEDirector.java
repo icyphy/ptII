@@ -59,6 +59,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -371,6 +372,8 @@ public class DEDirector extends Director implements TimedDirector {
      *  backwards.
      */
     public void fire() throws IllegalActionException {
+        
+        _mutationEnabled = false;
 
         // NOTE: This fire method does not call super.fire()
         // because this method is very different from that of the super class.
@@ -503,6 +506,10 @@ public class DEDirector extends Director implements TimedDirector {
                         break;
                     }
                 }
+                
+                // NOTE: if we want to support mutation inside an iteration,
+                // uncomment the following statement.
+                // _validateSchedule();
 
                 // Check all the input ports of the actor to see whether there
                 // are more input tokens to be processed.
@@ -565,6 +572,10 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
         } // Close the BIG while loop.
+        
+        _mutationEnabled = true;
+        _validateSchedule();
+        _mutationEnabled = false;
 
         if (_debugging) {
             _debug("DE director fired!");
@@ -731,6 +742,7 @@ public class DEDirector extends Director implements TimedDirector {
         _disabledActors = null;
         _exceedStopTime = false;
         _microstep = 0;
+        _mutationEnabled = false;
         _noMoreActorsToFire = false;
         _realStartTime = System.currentTimeMillis();
 
@@ -871,9 +883,6 @@ public class DEDirector extends Director implements TimedDirector {
 
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
-            if (_debugging) {
-            	_debug("Prefire returns: " + result);
-            }
             return result;
         }
 
@@ -885,6 +894,15 @@ public class DEDirector extends Director implements TimedDirector {
             nextEventTime =  _eventQueue.get().timeStamp();
         }
 
+        while (modelTime.compareTo(nextEventTime) > 0) {
+            _eventQueue.take();
+            if (!_eventQueue.isEmpty()) {
+                nextEventTime = _eventQueue.get().timeStamp();
+            } else {
+                nextEventTime = Time.POSITIVE_INFINITY;
+            }
+        }
+        
         // If the model time is larger (later) than the first event
         // in the queue, then there's a missing firing.
         if (modelTime.compareTo(nextEventTime) > 0) {
@@ -929,9 +947,6 @@ public class DEDirector extends Director implements TimedDirector {
                 // For example, a DE model in a Giotto model.
                 result = result &&  false;
             }
-        }
-        if (_debugging) {
-            _debug("Prefire returns: " + result);
         }
         return result;
     }
@@ -1310,18 +1325,31 @@ public class DEDirector extends Director implements TimedDirector {
             IOPort ioPort = (IOPort)sort[i];
             // Get the container actor of the current output port.
             Actor portContainer = (Actor)ioPort.getContainer();
+            // get the strictnessAttribute of actor.
+            Attribute strictnessAttribute =
+                ((NamedObj)portContainer).getAttribute(STRICT_ATTRIBUTE_NAME);
             // Normally, we adjust port depths based on output ports.
             // However, if this input port belongs to a sink actor, and 
             // the sink actor has more than one input ports, adjust the depths
             // of all the input ports to their maximum value.
+            // By default, all composite actors are non-strict. However, if 
+            // a composite actor declares its strictness with an attribute,
+            // we adjust its input ports depths to their maximum. One example 
+            // is the ModalModel.
             if (ioPort.isInput()) {
+                boolean needAdjust = false;
                 // TESTIT: with the WirelessSoundDetection demo.
                 int numberOfOutputPorts = portContainer.outputPortList().size();
-                if (numberOfOutputPorts != 0) {
-                    // we skip actors with output ports and will adjust the 
-                    // depths of their input ports based on their output ports.
-                    continue;
-                } else {
+                // If an actor has no output ports, adjustment is necessary. 
+                if (numberOfOutputPorts == 0) {
+                    needAdjust = true;
+                }
+                // If the actor declares itself as a strict actor, 
+                // adjustment is necessary.
+                if (strictnessAttribute != null) {
+                    needAdjust = true;
+                } 
+                if (needAdjust) {
                     List inputPorts = portContainer.inputPortList();
                     if (inputPorts.size() <= 1) {
                         // If the sink actor has only one input port, there is
@@ -1352,7 +1380,7 @@ public class DEDirector extends Director implements TimedDirector {
                         IOPort input = (IOPort)inputsIterator.next();
                         if (_debugging && _verbose) {
                             _debug(((Nameable)input).getFullName(),
-                                    "depth is adjusted to: " + maximumPortDepth);
+                                "depth is adjusted to: " + maximumPortDepth);
                         }
                         // Insert the hashtable entry.
                         _portToDepth.put(input, new Integer(maximumPortDepth));
@@ -1474,8 +1502,9 @@ public class DEDirector extends Director implements TimedDirector {
      *  is not sorted.
      */
     private int _getDepthOfActor(Actor actor) throws IllegalActionException {
-        if (_sortValid != workspace().getVersion()
+        if ((_mutationEnabled && _sortValid != workspace().getVersion()) 
                 || _actorToDepth == null) {
+            _computePortDepth();
             _computeActorDepth();
         }
         Integer depth = (Integer)_actorToDepth.get(actor);
@@ -1496,8 +1525,10 @@ public class DEDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If the ioPort is not sorted.
      */
     private int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
-        if (_sortValid != workspace().getVersion()) {
+        if ((_mutationEnabled && _sortValid != workspace().getVersion())
+                || _portToDepth == null) {
             _computePortDepth();
+            _computeActorDepth();
         }
         Integer depth = (Integer)_portToDepth.get(ioPort);
         if (depth != null) {
@@ -1812,6 +1843,8 @@ public class DEDirector extends Director implements TimedDirector {
             binCountFactor = new Parameter(this, "binCountFactor");
             binCountFactor.setExpression("2");
             binCountFactor.setTypeEquals(BaseType.INT);
+
+            timePrecisionInDigits.setVisibility(Settable.FULL);
         } catch (KernelException e) {
             throw new InternalErrorException(
                     "Cannot set parameter:\n" + e.getMessage());
@@ -1838,6 +1871,15 @@ public class DEDirector extends Director implements TimedDirector {
             .fireAt(container, nextEvent.timeStamp());
     }
 
+    // Validate schedule, calculate depths for ports and actors if necessary.
+    private void _validateSchedule() throws IllegalActionException {
+        if (_sortValid != workspace().getVersion()
+                || _actorToDepth == null || _portToDepth == null) {
+            _computePortDepth();
+            _computeActorDepth();
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1870,7 +1912,10 @@ public class DEDirector extends Director implements TimedDirector {
      * The current microstep.
      */
     private int _microstep = 0;
-
+    
+    // boolean variable indicating whether mutation can happen
+    private boolean _mutationEnabled = false;
+    
     /**
      * Set to true when it is time to end the execution.
      */
@@ -1908,4 +1953,10 @@ public class DEDirector extends Director implements TimedDirector {
      * catch up with model time.
      */
     private boolean _synchronizeToRealTime;
+
+    // The name of an attribute that marks an actor as nonstrict.
+    private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
+
+    // The name of an attribute that marks an actor as strict.
+    private static final String STRICT_ATTRIBUTE_NAME = "_strictMarker";
 }
