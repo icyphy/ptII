@@ -196,7 +196,8 @@ FULL_ONLY_JNLP_JARS = \
 	lib/ptjacl.jar \
 	ptolemy/actor/gui/python/python.jar \
 	vendors/jython/jython.jar \
-	ptolemy/actor/lib/comm/comm.jar \
+	ptolemy/actor/lib/io/comm/comm.jar \
+	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
