@@ -66,7 +66,7 @@ fi
 # Find all the lines that contain *** but not compileDemo or runDemo
 # Print out the Entering directory line that precedes the *** line as well
 $AWK ' $0 ~ /Entering directory/ { indir=$0 }
-      $0 ~ /\*\*\*/ { 	if ( $0 !~ /compileDemo/ && $0 !~ /runDemo/ ) {
+      $0 ~ /\*\*\*/ { 	if ( $0 !~ /runTreeShakeWithoutCodeGen/ && $0 !~ /treeShakeAndRunSnapshots/ && $0 !~ /runTreeShakeCodegen/) {
 			    print indir
 			    print $0
 			}
