@@ -402,13 +402,13 @@ public class DirectedGraph extends Graph {
             }
         }
 
-        ArrayList sccs = new ArrayList(numberOfSCCs);
-	for (int i = 0; i < numberOfSCCs; i++) {
+        DirectedGraph sccs[] = new DirectedGraph[numberOfSCCs];
+        for (int i = 0; i < numberOfSCCs; i++) {
             ArrayList nodeList = (ArrayList) (sortedSCCNodeLists.get(i));
-            sccs.add(subgraph(nodeList.toArray()));
+            sccs[i] = subgraph(nodeList.toArray());
         }
 
-        return ((DirectedGraph[]) (sccs.toArray()));
+        return sccs;
     }
 
     /** Compute the subgraph of the graph containing only the specified nodes.
