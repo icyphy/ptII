@@ -230,9 +230,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // Because this director runs ahead of time, this director has to
             // register the current time as a breakpoint such that the executive
             // director will fire the container again at the current time.
-            CompositeActor container = (CompositeActor) getContainer();
-            Director executiveDirector = container.getExecutiveDirector();
-            executiveDirector.fireAt(container, getModelTime());
+            getBreakPoints().insert(getModelTime());
         }
         return super.postfire();
     }
