@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm
-PTVERSION =	5.1p3
+PTVERSION =	5.2p1
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -159,6 +159,7 @@ OPTIONAL_FILES = \
 	'PlotApplication$$1.class' \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
+	'PlotFrame$$PLTOrXMLFileFilter.class' \
 	'PlotFrame$$SpecialMenuListener.class' \
 	'Render$$1.class' \
 	'RenderApplication$$1.class' \
