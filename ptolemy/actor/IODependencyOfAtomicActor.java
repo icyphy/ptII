@@ -33,6 +33,7 @@ package ptolemy.actor;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
+import ptolemy.graph.Node;
 
 import java.util.Iterator;
 
@@ -82,12 +83,20 @@ public class IODependencyOfAtomicActor extends IODependency {
         // Since this method is called from the _constructDirectedGraph 
         // method, where the validity is checked, we may not need this check.
         // validate();
-        Object[] incidentEdgeArray = 
-            _directedGraph.incidentEdges(_directedGraph.node(inputPort)).toArray();
-        for (int i = 0; i < incidentEdgeArray.length; i++) {
-            Edge edge = (Edge)(incidentEdgeArray[i]);
-            if (edge.sink().equals(_directedGraph.node(outputPort))) {
-                _directedGraph.removeEdge(edge);
+        Iterator inputPorts = _directedGraph.nodes(inputPort).iterator();
+        while (inputPorts.hasNext()) {
+            Node input = (Node) inputPorts.next();
+            Iterator outputPorts = _directedGraph.nodes(outputPort).iterator();
+            while (outputPorts.hasNext()) {
+                Node output = (Node) outputPorts.next();
+                Object[] incidentEdgeArray = 
+                    _directedGraph.incidentEdges(input).toArray();
+                for (int i = 0; i < incidentEdgeArray.length; i++) {
+                    Edge edge = (Edge)(incidentEdgeArray[i]);
+                    if (edge.sink().equals(output)) {
+                        _directedGraph.removeEdge(edge);
+                    }
+                }
             }
         }
     }
