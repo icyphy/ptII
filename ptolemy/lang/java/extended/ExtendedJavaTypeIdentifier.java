@@ -216,5 +216,9 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // Set to true to turn on debugging messages.
     protected final static boolean _debug = false;
 }
