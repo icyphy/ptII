@@ -70,19 +70,25 @@ test SearchPath-1.1 {create a search path} {
 ####
 #
 test SearchPath-1.2 {create a search path with a bogus propertyName} {
-    set searchPath [java::new ptolemy.lang.java.SearchPath \
-	    "not-a-property" "."]
-    list [$searchPath toString]
-} {{[.\]}}
+    set searchPath [java::new ptolemy.lang.java.SearchPath "not-a-property" "."]
+    
+    set knownResults "\[.[java::call System getProperty "file.separator"]\]"
+    set results [$searchPath toString]
+    #puts "$knownResults == $results"
+    expr {"$knownResults" == "$results"}
+} {1}
 
 ######################################################################
 ####
 #
 test SearchPath-1.3 {create a search path with a null propertyName} {
-    set searchPath [java::new ptolemy.lang.java.SearchPath \
-	    [java::null] "."]
-    list [$searchPath toString]
-} {{[.\]}}
+    set searchPath [java::new ptolemy.lang.java.SearchPath "not-a-property" "."]
+    
+    set knownResults "\[.[java::call System getProperty "file.separator"]\]"
+    set results [$searchPath toString]
+    #puts "$knownResults == $results"
+    expr {"$knownResults" == "$results"}
+} {1}
 
 ######################################################################
 ####
