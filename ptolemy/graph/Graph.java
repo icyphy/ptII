@@ -686,9 +686,9 @@ public class Graph implements Cloneable {
         }
         if (graph.getClass() != getClass()) {
             return false;
-        } 
+        }
         Graph argumentGraph = (Graph)graph;
-        if ((argumentGraph.nodeCount() != nodeCount()) || 
+        if ((argumentGraph.nodeCount() != nodeCount()) ||
                    (argumentGraph.edgeCount() != edgeCount())) {
             return false;
         }
@@ -1384,17 +1384,17 @@ public class Graph implements Cloneable {
      *  updates, if necessary, the internal mapping of weights into
      *  their associated nodes.
      *  This updating operation is necessary for correct operation of
-     *  {@link #containsNodeWeight(Object)}, 
-     *  {@link #node(Object)}, 
+     *  {@link #containsNodeWeight(Object)},
+     *  {@link #node(Object)},
      *  {@link #nodes(Collection)}, and
-     *  {@link #nodes(Object)}, 
+     *  {@link #nodes(Object)},
      *  if the node weight has changed in a way
      *  that affects comparison under the equals method.
      *  This method returns true if the node weight has changed (as determined
      *  by the equals() method) since the last time the graph was notified
      *  of the node's weight. Furthermore, if the node weight has changed in
      *  this way,  a graph change is registered.
-     *  This is an <em>O(n)</em> operation. 
+     *  This is an <em>O(n)</em> operation.
      *  @param node The node whose weight is to be validated.
      *  @return True if the node weight has changed, as determined by the equals
      *  method.
@@ -1414,18 +1414,18 @@ public class Graph implements Cloneable {
 
     /** Validate the weight of a node given the node and its previous weight
      *  (i.e, the weight of the node when the node was last added
-     *  to the graph or had its node validated, whichever was more recent). 
+     *  to the graph or had its node validated, whichever was more recent).
      *  Operation is equivalent to {@link #validateWeight(Node)}
      *  except that the additional argument is used to improve efficiency.
      *  The previous node weight should be set to null to incidate that
-     *  the node was previously unweighted. 
+     *  the node was previously unweighted.
      *
      *  <p>Consider an example in which a given Node <em>node</em> is contained
      *  in two graphs <em>graph1</em> and <em> graph2 </em>, and suppose that we
      *  wish to change the weight of the node. Below is a sample code fragment
      *  that achieves such a weight change with proper notification to the
      *  containing graphs.
-     *  
+     *
      * <pre>
      * Object oldWeight = node.weight();
      * node.setWeight(newWeight);
@@ -1437,7 +1437,7 @@ public class Graph implements Cloneable {
      * (e.g., if the previous weight <em>oldWeight</em> was not available)
      * in place of #validateNodeWeight(Node, Object),
      * but the efficiency would be lower.
-     * 
+     *
      * <p>A similar example can be used to demostrate the use of
      * {@link #validateWeight(Edge)} and {@link #validateWeight(Edge, Object)}.
      *
@@ -1447,7 +1447,7 @@ public class Graph implements Cloneable {
          List nodeList = (List) _nodeWeightMap.get(oldWeight);
          // FIXME: need to implement this
      }
-     
+
 
     /** Given a collection of graph elements (nodes and edges), return an array
      * of weights associated with these elements.
@@ -1884,11 +1884,11 @@ public class Graph implements Cloneable {
             nextWeight = weights.next();
             nextList = (List)weightMap.get(nextWeight);
             removed = nextList.remove(weightedObject);
-        }  
+        }
         if (removed) {
             // Note that the weight can change without the weight value,
             // as referenced here, changing if the change does not affect
-            // comparison under the equals method. 
+            // comparison under the equals method.
             weightValueHasChanged = !nextWeight.equals(weight);
             if (nextList.size() == 0) {
                 weightMap.remove(weight);
@@ -1971,7 +1971,7 @@ public class Graph implements Cloneable {
     private LabeledList _edges;
 
     // An unmodifiable, empty collection.
-    private static final Collection _emptyCollection = 
+    private static final Collection _emptyCollection =
             Collections.unmodifiableCollection(new ArrayList(0));
 
     // The set of hidden edges. Each element is an Edge.
@@ -2001,8 +2001,8 @@ public class Graph implements Cloneable {
     private SelfLoopAnalysis _selfLoopAnalysis;
 
     // The set of edges that do not have weights. Each element is a Edge.
-    private HashSet _unweightedEdgeSet; 
+    private HashSet _unweightedEdgeSet;
 
     // The set of nodes that do not have weights. Each element is a Node.
-    private HashSet _unweightedNodeSet; 
+    private HashSet _unweightedNodeSet;
 }
