@@ -38,6 +38,7 @@ import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import ptolemy.automata.util.*;
 import ptolemy.domains.sc.kernel.*;
+import ptolemy.domains.ct.kernel.*;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -138,10 +139,17 @@ public class HSController extends SCController {
 
         // execute the transition actions
         _takenTransition.executeTransitionActions();
-	Actor actor = currentRefinement();
+	CTCompositeActor actor = (CTCompositeActor)currentRefinement();
 	if (actor != null) {
 	    actor.postfire();
         }
+
+        CTDirector emb = (CTDirector)actor.getDirector();
+        CTCompositeActor hs = (CTCompositeActor)actor.getContainer();
+        CTDirector out = (CTDirector)hs.getExecutiveDirector();
+
+        emb.fireAt(null, out.getCurrentTime());
+        out.fireAt(null, out.getCurrentTime());
 
         if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {   
             // Initialize the refinement.
