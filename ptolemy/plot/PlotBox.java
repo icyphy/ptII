@@ -1189,13 +1189,14 @@ public class PlotBox extends Panel {
 
         _newFile(); // Hook for child classes to do any preprocessing.
 
-        Cursor oldCursor = getCursor();
+        // Can't use cursors with jdk1.0.2, which we require for netscape4
+        //Cursor oldCursor = getCursor();
 
         // At this point, we've opened the data source, now read it in
         try {
             if (dataurl != null) {
                 // We are not reading from stdin, so set the wait cursor.
-                setCursor(new Cursor(Cursor.WAIT_CURSOR));
+                //setCursor(new Cursor(Cursor.WAIT_CURSOR));
             }
 
             if (_binary) {
@@ -1223,7 +1224,7 @@ public class PlotBox extends Panel {
             _errorMsg[0] = "Incorrectly formatted plot data in " + dataurl;
             _errorMsg[1] = e.getMessage();
         } finally {
-            setCursor(oldCursor);
+            //setCursor(oldCursor);
             try {
                 in.close();
             } catch (IOException me) {}
