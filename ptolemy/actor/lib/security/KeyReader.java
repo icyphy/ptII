@@ -72,7 +72,7 @@ which will create a keystore store password and key password is
 
 <p>For more information, see
 <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
-<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html">Keytool</a.
+<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keyotol.html">Keytool</a.
 @see PrivateKeyReader
 @see PublicKeyReader
 @author  Christopher Hylands Brooks
@@ -107,7 +107,7 @@ public class KeyReader extends Source {
 
         getPublicKey = new Parameter(this, "getPublicKey",
                 new BooleanToken(true));
-
+        getPublicKey.setTypeEquals(BaseType.BOOLEAN);                
 
         keyPassword = new StringParameter(this, "keyPassword");
         keyPassword.setExpression(
@@ -132,6 +132,10 @@ public class KeyReader extends Source {
                 "Unknown, will be set after first run");
         signatureAlgorithm.setVisibility(Settable.NOT_EDITABLE);
         signatureAlgorithm.setPersistent(false);
+
+        verifyCertificate = new Parameter(this, "verifyCertificate",
+                new BooleanToken(true));
+        verifyCertificate.setTypeEquals(BaseType.BOOLEAN);                
     }
 
 
@@ -174,6 +178,19 @@ public class KeyReader extends Source {
      */
     public StringParameter storePassword;
 
+    /** True if the certificate associated with a key should be verified.
+     *  False if the certificate (if any) need not be verified.
+     *  <br>Public Keys must be associated with a certificate, so
+     *  if <i>getPublicKey</i> is true, then this Parameter should
+     *  be true as well.
+     *  <br>Private keys are usually associated with a certificate, so
+     *  verifying the certificate is a good idea.
+     *  <br>Secret keys do not usually have a certficate, so if the
+     *  key is a secret key, then usually <i>verifyCertificate</i>
+     *  is set to false.
+     */
+    public Parameter verifyCertificate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -198,6 +215,10 @@ public class KeyReader extends Source {
             _updateKeyNeeded = true;
             _getPublicKey =
                 ((BooleanToken)getPublicKey.getToken()).booleanValue();
+        } else if (attribute == verifyCertificate) {
+            _updateKeyNeeded = true;
+            _verifyCertificate = 
+                ((BooleanToken)verifyCertificate.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -236,6 +257,7 @@ public class KeyReader extends Source {
             try {
                 _keyStore.load(keyStoreStream,
                         storePassword.getExpression().toCharArray());
+                alias.removeAllChoices();
                 // Add all the aliases as possible choices.
                 for (Enumeration aliases = _keyStore.aliases();
                      aliases.hasMoreElements() ;) {
@@ -243,29 +265,39 @@ public class KeyReader extends Source {
                     alias.addChoice(aliasName);
                 }
 
-                Certificate certificate = _keyStore.getCertificate(_alias);
-                if (certificate == null) {
-                    throw new KeyStoreException("Failed to get certificate "
-                            + "for alias '"
-                            + _alias + "' from  keystore '" + _url + "'");
-                }
-
-                PublicKey publicKey = certificate.getPublicKey();
-                // FIXME: The testsuite needs to test this with an invalid cert.
-                certificate.verify(publicKey);
-
-                if (certificate instanceof X509Certificate) {
-                    signatureAlgorithm.setExpression(
-                            ((X509Certificate)certificate)
-                            .getSigAlgName());
+                if (!_verifyCertificate) {
+                    if (_getPublicKey) {
+                        throw new IllegalActionException(this,
+                                "To get the public key, one must use "
+                                + "certificates, so the verifyCertificate "
+                                + "parameter must be set to true if the "
+                                + "getPublicKey parameter is true.");
+                    }
                 } else {
-                    signatureAlgorithm.setExpression(
-                            "Unknown, certificate was not a X509 cert.");
-                }
+                    Certificate certificate = _keyStore.getCertificate(_alias);
+                    if (certificate == null) {
+                        throw new KeyStoreException("Failed to get certificate "
+                                + "for alias '"
+                                + _alias + "' from  keystore '" + _url + "'");
+                    }
 
-                if (_getPublicKey) {
+                    PublicKey publicKey = certificate.getPublicKey();
+
+                    // FIXME: The testsuite needs to test this with an
+                    // invalid certificate.
+                    certificate.verify(publicKey);
+
+                    if (certificate instanceof X509Certificate) {
+                        signatureAlgorithm.setExpression(
+                                ((X509Certificate)certificate)
+                                .getSigAlgName());
+                    } else {
+                        signatureAlgorithm.setExpression(
+                                "Unknown, certificate was not a X509 cert.");
+                    }
                     _key = publicKey;
-                } else {
+                }                    
+                if (!_getPublicKey) {
                     _key = _keyStore.getKey(_alias,
                             keyPassword.getExpression().toCharArray());
                 }
@@ -284,7 +316,7 @@ public class KeyReader extends Source {
     private String _alias;
 
     // True if we should get the public key, false if we should get
-    // the private key.
+    // the private key or secret key.
     private boolean _getPublicKey;
 
     // The KeyStore itself.
@@ -299,5 +331,8 @@ public class KeyReader extends Source {
 
     // The URL of the keystore file.
     private URL _url;
+
+    // True if we should verify the certificate
+    private boolean _verifyCertificate;
 
 }

@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II SDF Security Actors
+# Makefile for Ptolemy II Security Actors
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -52,6 +52,9 @@ JSRCS = \
 	CryptographyActor.java \
 	Key.java \
 	KeyReader.java \
+	KeyStoreActor.java \
+	KeyToken.java \
+	KeyWriter.java \
 	PrivateKeyReader.java \
 	PublicKeyReader.java \
 	SignatureActor.java \

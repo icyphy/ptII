@@ -10,6 +10,12 @@
 	  <doc>Create a key and output it.</doc>
 	</entity>  	  
 
+	<entity name="KeyWriter"
+	        class="ptolemy.actor.lib.security.KeyWriter">
+	  <doc>Read a secret key or public key and write it to a key store.
+	   </doc>
+	</entity>  	  
+
 	<entity name="PublicKeyReader"
 	        class="ptolemy.actor.lib.security.PublicKeyReader">
 	  <doc>Read a public key from a key store and output it.</doc>
