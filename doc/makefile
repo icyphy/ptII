@@ -226,7 +226,8 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.ct.kernel.solver \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
-			ptolemy.domains.dt.kernel \
+			ptolemy.domains.de.kernel \
+			ptolemy.domains.de.lib \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.fsm.modal \
 			ptolemy.domains.sdf.kernel \
@@ -247,8 +248,10 @@ HYVISUALPACKAGES = \
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
 			$(HYVISUALPACKAGES) \
-			ptolemy.domains.de.kernel \
-			ptolemy.domains.de.lib \
+			ptolemy.domains.csp.kernel \
+			ptolemy.domains.csp.lib \
+			ptolemy.domains.pn.kernel \
+			ptolemy.domains.pn.lib \
 
 # Packages for the SUPERB classes
 #SUPERBPACKAGES = \
@@ -306,15 +309,12 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.caltrop.util \
 			ptolemy.domains.ci.kernel \
 			ptolemy.domains.ci.lib \
-			ptolemy.domains.csp.kernel \
-			ptolemy.domains.csp.lib \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
 			ptolemy.domains.ddf.kernel \
 			ptolemy.domains.ddf.lib \
+			ptolemy.domains.dt.kernel \
 			ptolemy.domains.giotto.kernel \
-			ptolemy.domains.pn.kernel \
-			ptolemy.domains.pn.kernel.event \
 			ptolemy.domains.petrinet.kernel \
 			ptolemy.domains.psdf.kernel \
 			ptolemy.domains.sr.kernel \
