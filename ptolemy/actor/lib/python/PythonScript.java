@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.python.core.PyClass;
+import org.python.core.PyException;
 import org.python.core.PyJavaInstance;
 import org.python.core.PyMethod;
 import org.python.core.PyObject;
@@ -438,15 +439,13 @@ public class PythonScript extends TypedAtomicActor {
             try {
                 _interpreter.exec(pythonScript);
             } catch (Exception ex) {
-                String message = ex.toString();
-                int i = message.indexOf("SyntaxError");
-                if (i >= 0) {
-                    message = message.substring(i);
+                if (ex instanceof PyException) {
+                    _reportScriptError((PyException)ex,
+                            "Error in evaluating script:\n");
+                } else {
+                    throw new IllegalActionException(this, ex,
+                            "Error in evaluating script:\n");
                 }
-                throw new IllegalActionException(
-                    this,
-                    ex,
-                    "Error in evaluating script:\n" + message);
             }
             // get the class defined by the script
             try {
@@ -489,10 +488,13 @@ public class PythonScript extends TypedAtomicActor {
                     returnValue = _object.__call__(convertedArgs);
                 }
             } catch (Exception ex) {
-                throw new IllegalActionException(
-                    this,
-                    ex,
-                    "Error in calling the " + methodName + " method:");
+                String messagePrefix =
+                        "Error in invoking the " + methodName + " method:\n";
+                if (ex instanceof PyException) {
+                    _reportScriptError((PyException)ex, messagePrefix);
+                } else {
+                    throw new IllegalActionException(this, ex, messagePrefix);
+                }
             }
         }
         return returnValue;
@@ -515,6 +517,20 @@ public class PythonScript extends TypedAtomicActor {
             return new String(nameChars);
         }
         return name;
+    }
+
+    /*  Report an error in evaluating the script or calling a method defined
+     *  in the script.
+     */
+    private void _reportScriptError(PyException ex, String messagePrefix)
+            throws IllegalActionException {
+        String message = ex.toString();
+        int i = message.indexOf("line");
+        if (i >= 0) {
+            message = message.substring(i);
+        }
+        System.out.println(ex.toString());
+        throw new IllegalActionException(this, ex, messagePrefix + message);
     }
 
     ///////////////////////////////////////////////////////////////////
