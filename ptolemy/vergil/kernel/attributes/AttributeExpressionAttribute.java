@@ -27,16 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +44,8 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-public class AttributeExpressionAttribute extends AbstractTextAttribute {
+public class AttributeExpressionAttribute extends AttributeValueAttribute {
+    
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -68,44 +62,6 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
     public AttributeExpressionAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        attributeName = new StringAttribute(this, "attributeName");
-        displayWidth = new Parameter(this, "displayWidth");
-        displayWidth.setExpression("6");
-        displayWidth.setTypeEquals(BaseType.INT);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The name of the attribute of the container whose value to display. */
-    public StringAttribute attributeName;
-
-    /** The number of characters to display. This is an integer, with
-     *  default value 6.
-     */
-    public Parameter displayWidth;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** React to a changes in the attributes by changing
-     *  the icon.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (should not be thrown).
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == attributeName) {
-            _attributeName = attributeName.getExpression();
-            _icon.setText(_getText());
-        } else if (attribute == displayWidth) {
-            _displayWidth = ((IntToken) displayWidth.getToken()).intValue();
-            _icon.setText(_getText());
-        } else {
-            super.attributeChanged(attribute);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,38 +72,21 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
      *  @return A new shape.
      */
     protected String _getText() {
-        NamedObj container = (NamedObj) getContainer();
+        if (_attribute != null) {
+            String value = _attribute.getExpression();
+            String truncated = value;
+            int width = _displayWidth;
 
-        if (container != null) {
-            Attribute associatedAttribute = ModelScope.getScopedVariable(null,
-                    container, _attributeName);
-
-            if (associatedAttribute instanceof Settable) {
-                String value = ((Settable) associatedAttribute).getExpression();
-                String truncated = value;
-                int width = _displayWidth;
-
-                if (value.length() > width) {
-                    truncated = value.substring(0, width) + "...";
-                }
-
-                if (truncated.length() == 0) {
-                    truncated = " ";
-                }
-
-                return truncated;
+            if (value.length() > width) {
+                truncated = value.substring(0, width) + "...";
             }
-        }
 
+            if (truncated.length() == 0) {
+                truncated = " ";
+            }
+
+            return truncated;
+        }
         return "???";
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected members                  ////
-
-    /** Most recent value of the rounding parameter. */
-    protected int _displayWidth = 0;
-
-    /** The name of the attribute. Defaults to the empty string. */
-    protected String _attributeName = "";
 }

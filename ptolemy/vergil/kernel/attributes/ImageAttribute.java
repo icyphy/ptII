@@ -93,6 +93,10 @@ public class ImageAttribute extends Attribute {
         scale.setTypeEquals(BaseType.DOUBLE);
         scale.setExpression("100.0");
 
+        // FIXME: The scale attribute doesn't actually work, regrettably.
+        // Hide it.
+        scale.setVisibility(Settable.EXPERT);
+
         // Create a custom controller.
         // NOTE: This doesn't actually work with the scale parameter.
         // It gets overridden by the scale parameter.

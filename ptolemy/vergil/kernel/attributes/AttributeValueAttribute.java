@@ -45,7 +45,7 @@ import ptolemy.kernel.util.ValueListener;
 //// AttributeValueAttribute
 
 /**
-   This is a text attribute whose text string is derived from the
+   This is a text attribute whose text string shows the
    value of a parameter. <p>
 
    @author Steve Neuendorffer
@@ -55,7 +55,8 @@ import ptolemy.kernel.util.ValueListener;
    @Pt.AcceptedRating Red (cxh)
 */
 public class AttributeValueAttribute extends AbstractTextAttribute
-    implements ValueListener, Settable {
+        implements ValueListener, Settable {
+    
     // NOTE: This attribute only implements settable as a workaround
     // to ensure that it gets notified of the start of execution.
     // Unfortunately, most of the code in the Variable class is
@@ -123,10 +124,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     }
 
     /** Add a listener to be notified when the value of this settable
-     *  object changes. An implementation of this method should ignore
-     *  the call if the specified listener is already on the list of
-     *  listeners.  In other words, it should not be possible for the
-     *  same listener to be notified twice of a value update.
+     *  object changes. This implementation ignores the argument, so
+     *  listeners to this object are not notified of changes in value.
      *  @param listener The listener to add.
      *  @see #removeValueListener(ValueListener)
      */
@@ -165,8 +164,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     }
 
     /** Remove a listener from the list of listeners that are
-     *  notified when the value of this variable changes.  If no such listener
-     *  exists, do nothing.
+     *  notified when the value of this variable changes. This
+     *  implementation ignores the argument.
      *  @param listener The listener to remove.
      *  @see #addValueListener(ValueListener)
      */
@@ -174,22 +173,14 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     }
 
     /** Set the value of the attribute by giving some expression.
-     *  In some implementations, the listeners and the container will
-     *  be notified immediately.  However, some implementations may
-     *  defer notification until validate() is called.
-     *  @param expression The value of the attribute.  In this base
-     *  class, the expression parameter is ignored.
+     *  In this implementation, the specified value is ignored.
+     *  @param expression The value of the attribute, which is ignored.
      *  @exception IllegalActionException If the expression is invalid.
      */
     public void setExpression(String expression) throws IllegalActionException {
     }
 
-    /** Set the visibility of this Settable.  The argument should be one
-     *  of the static public instances of the inner class Visibility.
-     *  This is enforced by making it impossible to construct instances
-     *  of this inner class outside this interface definition.
-     *  If this method is not called, then implementations of
-     *  this interface should return some default, not null.
+    /** Set the visibility of this Settable.  This call does nothing.
      *  @param visibility The visibility of this Settable.
      */
     public void setVisibility(Settable.Visibility visibility) {
@@ -237,7 +228,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
         _icon.setText(_getText());
     }
 
-    /** Return the a new string that contains the expression of the
+    /** Return a new string that contains the expression of the
      *  referred to attribute.
      *  @return A new shape.
      */
