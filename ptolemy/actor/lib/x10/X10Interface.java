@@ -102,6 +102,14 @@ public class X10Interface extends TypedAtomicActor {
     
     // NOTE: This class has a bit of duplication with actor.lib.io.SerialComm.
     // These should probably be consolidated.
+    
+    // FIXME: The x10 library that this relies on has a number of problems.
+    // First, it takes down connections only in finalize(), which we can't
+    // force to run.  Second, it has concurrency errors.  You might get
+    // a ConcurrentModificationException at
+    // x10.UnitEventDispatcher.run(UnitEventDispatcher:83).
+    // The only recourse is to exit the application and restart.
+    // We should remove the dependence on this package.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -145,11 +153,6 @@ public class X10Interface extends TypedAtomicActor {
             serialPortName.addChoice(defaultChoice);
         }
         serialPortName.setExpression(defaultChoice);
-        
-        // FIXME: Make sure fireAtCurrentTime() is not called multiple times.
-        // FIXME: set up a blocking parameter.
-        // FIXME: set up a parameter to produce only the most recent command.
-        // FIXME: override stop() and stopFire().
     }
     
     ///////////////////////////////////////////////////////////////////

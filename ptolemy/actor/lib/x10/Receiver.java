@@ -124,9 +124,15 @@ public class Receiver extends X10Interface {
         }
         boolean blockingValue = ((BooleanToken)blocking.getToken()).booleanValue();
         if (blockingValue) {
+            if (_debugging) {
+                _debug("Acquiring synchronization lock on this actor.");
+            }
             synchronized(this) {
                 try {
                     while (!_commandReady() && !_stopRequested && !_stopFireRequested) {
+                        if (_debugging) {
+                            _debug("Waiting for an X10 command.");
+                        }
                         wait();
                     }
                 } catch (InterruptedException ex) {
@@ -134,17 +140,26 @@ public class Receiver extends X10Interface {
                     "Thread interrupted while waiting for X10 data.");
                 }
             }
+            if (_commandReady()) {
+                _debug("Got an X10 command.");
+            }
         }
         boolean discardOldDataValue
                 = ((BooleanToken)discardOldData.getToken()).booleanValue();
         if (discardOldDataValue) {
             while (_commandQueue.size() > 1) {
+                if (_debugging) {
+                    _debug("Discarding an X10 command.");
+                }
                 _getCommand();
             }
         } else {
             if (_commandQueue.size() > 1) {
                 // Request another firing, as there will be data left over.
                 _fireAtCurrentTimeCalled = true;
+                if (_debugging) {
+                    _debug("Calling fireAtCurrentTime() to deal with additional pending commands.");
+                }
                 getDirector().fireAtCurrentTime(this);
             }
         }
