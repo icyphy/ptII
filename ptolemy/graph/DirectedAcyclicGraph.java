@@ -512,11 +512,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         // (3) (candidate == -1 && list not empty)
         //         if (CE > any element in list) {
         //             discard CE;
-        //         } else if (CE < all element in list) {
+        //         } else if (CE < all elements in list) {
         //             empty list and candidate = CE;
         //         } else {
+	//	       // CE is less than some elements in list, but
+	//	       // incomparable with others
         //             remove all elements in list that > CE;
-        //             insert CUB in list;
+        //             insert CE in list;
         //         }
         //  (4) (candidate != -1 && list not empty)
         //         ERROR!
@@ -528,8 +530,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         for (int i = 0; i < ids.length; i++) {
             boolean listEmpty = incompList.size() == 0;
             if (candidate == -1 && listEmpty) {
+		// case (1)
                 candidate = ids[i];
             } else if (candidate != -1 && listEmpty) {
+		// case (2)
                 int result = _compareNodeId(ids[i], candidate);
                 if (result == LOWER) {
                     candidate = ids[i];
@@ -547,6 +551,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                     candidate = -1;
                 }
             } else if (candidate == -1 && !listEmpty) {
+		// case (3)
+		// flag indicating if the current element should be discarded
                 boolean discard = false;
 
 		// FIXME: restore the following for loop when moving to jdk1.2
@@ -575,6 +581,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 			newList.insertLast(node);
                         break;
                     } else {
+			// incomparable
 			newList.insertLast(node);
 		    }
                 }
@@ -588,15 +595,17 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
 		    // FIXME: restore the following line when moving
 		    // to jdk1.2
-                    //      incompList.addLast(_getNodeObject(ids[i]));
+                    //      incompList.addLast(new Integer(ids[i]));
 
 		    // FIXME: remove the following line when moving
 		    // to jdk1.2
-                    incompList.insertLast(_getNodeObject(ids[i]));
+                    incompList.insertLast(new Integer(ids[i]));
 
 
                 }
-            } else {     // candidate != -1 && !listEmpty
+            } else {
+		// case (4)
+		// candidate != -1 && !listEmpty
                 throw new InvalidStateException("bug in code! " +
                         "Inconsistent data structure!");
             }
