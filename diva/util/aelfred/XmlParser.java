@@ -2441,7 +2441,7 @@ public class XmlParser {
             } else if (array instanceof Object[]) {
                 newArray = new Object[newSize];
             } else {
-                throw new RuntimeException("Array must be char[] or Object[]")
+                throw new RuntimeException("Array must be char[] or Object[]");
             }
 
             System.arraycopy(array, 0, newArray, 0, currentSize);
