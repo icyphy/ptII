@@ -102,7 +102,7 @@ create refinements for the states. Each refinement needs a director.</text></svg
       <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
       <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
       <!-- No DT -->
-      <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
+      <!-- No PN -->
       <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
       <!-- No Giotto -->
       <!-- No RTOS -->
