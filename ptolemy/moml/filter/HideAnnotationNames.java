@@ -32,6 +32,7 @@ package ptolemy.moml.filter;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
@@ -77,7 +78,6 @@ public class HideAnnotationNames implements MoMLFilter {
                 // We found a line like
                 // <property name="13:0:0:annotation1"
                 //          class="ptolemy.kernel.util.Attribute">
-
                 _currentlyProcessingAnnotation = true;
                 _currentAnnotationFullName = container.getFullName()
                     + "." + attributeValue;
@@ -86,6 +86,7 @@ public class HideAnnotationNames implements MoMLFilter {
                 // We are processing an annotation and it already
                 // has _hideName
                 _currentlyProcessingAnnotation = false;
+		_currentAnnotationFullName = null;
             }
         }
         if ( _currentlyProcessingAnnotation
@@ -99,8 +100,9 @@ public class HideAnnotationNames implements MoMLFilter {
 
             // We found another class in a different container
             // while handling an annotation.
-
             _currentlyProcessingAnnotation = false;
+	    _currentAnnotationFullName = null;
+
         }
         return attributeValue;
     }
@@ -122,7 +124,13 @@ public class HideAnnotationNames implements MoMLFilter {
                 && container.getFullName()
                 .equals(_currentAnnotationFullName)) {
             _currentlyProcessingAnnotation = false;
-            Parameter hideName = new Parameter(container, "_hideName");
+	    _currentAnnotationFullName = null;
+	    try {
+		Parameter hideName = new Parameter(container, "_hideName");
+	    } catch (NameDuplicationException ex) {
+		// Ignore, the container already has a _hideName.
+		// The Network model has this problem.
+	    }
             MoMLParser.setModified(true);
         }
         return elementName;
@@ -133,7 +141,7 @@ public class HideAnnotationNames implements MoMLFilter {
     ////                         private variables                 ////
 
     // True if we are currently processing an annotation.
-    private boolean _currentlyProcessingAnnotation = false;
+    private static boolean _currentlyProcessingAnnotation = false;
 
     // The the full name of the annotation we are currently processing
     private static String _currentAnnotationFullName;
