@@ -44,7 +44,7 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in tycho.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS = 		test doc demo
+DIRS = 		test demo #doc
 
 # Used to build zip files
 JPACKAGE = 	pt.graph
