@@ -79,6 +79,7 @@ JSRCS = \
 	NoRoomException.java \
 	NotSchedulableException.java \
 	NoTokenException.java \
+	NotifyThread.java \
 	ProcessDirector.java \
 	ProcessReceiver.java \
 	ProcessThread.java \
