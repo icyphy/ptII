@@ -46,7 +46,7 @@ import caltrop.interpreter.environment.Environment;
 import caltrop.interpreter.environment.HashEnvironment;
 import caltrop.interpreter.environment.PackageEnvironment;
 import caltrop.interpreter.environment.SingleClassEnvironment;
-import caltrop.interpreter.util.ActorFactory;
+import caltrop.interpreter.util.ASTFactory;
 import caltrop.parser.Lexer;
 import caltrop.parser.Parser;
 import ptolemy.actor.IOPort;
@@ -234,10 +234,7 @@ public class CalInterpreter extends TypedAtomicActor {
     }
 
     private static Actor _stringToActor(String code) throws Throwable {
-        StringReader stringReader = new StringReader(code);
-        Lexer calLexer = new Lexer(stringReader);
-        Parser calParser = new Parser(calLexer);
-        return ActorFactory.create(calParser.parseActor());
+        return caltrop.interpreter.util.SourceReader.readActor(code);
     }
 
     private void _bindActorParameters(Environment env)
@@ -419,8 +416,8 @@ public class CalInterpreter extends TypedAtomicActor {
     private Actor  _actor;
     private DDI _ddi;
     private Environment _env;
-    private final static Context _theContext = PtolemyPlatform._theContext;
-    private final static Environment _globalEnv = PtolemyPlatform._createGlobalEnvironment();
+    private final static Context _theContext = PtolemyPlatform.thePlatform.context();
+    private final static Environment _globalEnv = PtolemyPlatform.thePlatform.createGlobalEnvironment();
     private final static Map _directorDDIMap = new HashMap();
 
     private String _lastGeneratedActorName = null;
