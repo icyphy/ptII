@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </director>
+    <entity name="AudioSink0" class="ptolemy.actor.lib.javasound.AudioSink">
+        <property name="pathName" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="44100">
+        </property>
+        <property name="sampleSizeInBits" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="channels" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="4096">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="348.0, 136.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const1" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="165.0, 136.0"/>
+            <configure>generic.source</configure>
+        </rendition>
+        <doc>Create a constant sequence</doc>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AudioSink0.input" relation="relation3"/>
+    <link port="Const1.output" relation="relation3"/>
+</model>

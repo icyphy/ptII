@@ -445,20 +445,20 @@ public class AudioSource extends Source {
      */
     public void wrapup() throws IllegalActionException {
 	if(_debugging) _debug("AudioSource: wrapup(): invoked");
-	System.out.println("AudioSource: wrapup(): invoked");
+	//System.out.println("AudioSource: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundCapture != null) {
 	    try {
-		System.out.println("AudioSource: wrapup(): shuting down audio.");
+		//System.out.println("AudioSource: wrapup(): shuting down audio.");
 		_soundCapture.stopCapture();
-		System.out.println("AudioSource: wrapup(): shuting down audio succeeded.");
+		//System.out.println("AudioSource: wrapup(): shuting down audio succeeded.");
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
 		    "Cannot capture audio:\n" +
 		    ex.getMessage());
 	    }
 	}
-	System.out.println("AudioSource: wrapup(): returning now...");
+	//System.out.println("AudioSource: wrapup(): returning now...");
     }
 
     ///////////////////////////////////////////////////////////////////
