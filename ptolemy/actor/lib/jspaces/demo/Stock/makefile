@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/jspaces/demo/Stock
 
-DIRS = 	
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -63,11 +63,14 @@ JSRCS = \
 	StockServer.java 
 
 EXTRA_SRCS =	$(JSRCS) \
+	README.txt \
 	StockReader.xml \
 	StockServer.xml \
 	plotConfigure.xml \
+	policy.all \
 	server \
 	reader
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -76,7 +79,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc 
+	doc \
+	'StockServer$$DummySink.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
