@@ -47,8 +47,8 @@ This actor converts a string token to an xml token.
        It should ???.
 
 @author  Yang Zhao
-@version $ $
-@since Ptolemy II 1.0
+@version $Id$
+@since Ptolemy II 3.1
 */
 public class StringToXml extends Transformer{
 
@@ -91,9 +91,9 @@ public class StringToXml extends Transformer{
         return newObject;
     }
 
-	/** Output the XMLToken constucted from the input string.
-	 *  @exception IllegalActionException if the superclass throws it..
-	 */
+    /** Output the XMLToken constucted from the input string.
+     *  @exception IllegalActionException if the superclass throws it..
+     */
     public void fire() throws IllegalActionException {
         //int k = 0;
         for (int i = 0; i < input.getWidth(); i++) {
@@ -104,9 +104,9 @@ public class StringToXml extends Transformer{
                 output.broadcast(_outToken);
                 //k++;
                 }
-                catch (java.lang.Exception e){
-                    System.out.println("### can't construct an XmlToken from: " + in.stringValue() + "\n");
-                    throw new IllegalActionException(this, e.getMessage());
+                catch (java.lang.Exception ex){
+                    throw new IllegalActionException(this, ex,
+                            "Can't construct an XML Token from '" +  in + "'");
                 }
             }
         }
@@ -129,10 +129,10 @@ public class StringToXml extends Transformer{
         output.broadcast(_outToken); */
     }
 	
-	/** Return true if there is token at the <i>input<i> input.
-	 *  Otherwise, return false.
-	 *  @exception IllegalActionException if the superclass throws it.
-	 */
+    /** Return true if there is token at the <i>input<i> input.
+     *  Otherwise, return false.
+     *  @exception IllegalActionException if the superclass throws it.
+     */
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
@@ -147,5 +147,4 @@ public class StringToXml extends Transformer{
     ////                         private members                   ////
 
     private XmlToken _outToken;
-
 }
