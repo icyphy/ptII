@@ -1,32 +1,32 @@
 /* An actor that does assertion specific for CT domain.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1998-2002 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
-*/
+   @ProposedRating Red (hyzheng@eecs.berkeley.edu)
+   @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
+ */
 
 package ptolemy.domains.ct.lib;
 
@@ -58,42 +58,42 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// CTAssertion
 /**
-The CTAssertion actor evaluates an assertion that includes references
-to the inputs. The ports are referenced by the variables that have
-the same name as the port. If the assertion is satisfied, nothing
-happens. If not, an exception will be thrown.
-To use this class, instantiate it, then add ports (instances of TypedIOPort).
-In vergil, you can add ports by right clicking on the icon and selecting
-"Configure Ports".  In MoML you can add ports by just including ports
-of class TypedIOPort, set to be inputs, as in the following example:
-<p>
-<pre>
+   The CTAssertion actor evaluates an assertion that includes references
+   to the inputs. The ports are referenced by the variables that have
+   the same name as the port. If the assertion is satisfied, nothing
+   happens. If not, an exception will be thrown.
+   To use this class, instantiate it, then add ports (instances of TypedIOPort).
+   In vergil, you can add ports by right clicking on the icon and selecting
+   "Configure Ports".  In MoML you can add ports by just including ports
+   of class TypedIOPort, set to be inputs, as in the following example:
+   <p>
+   <pre>
    &lt;entity name="ctAssertion" class="ptolemy.domain.ct.lib.CTAssertion"&gt;
-      &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
-          &lt;property name="input"/&gt;
-      &lt;/port&gt;
+   &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
+   &lt;property name="input"/&gt;
+   &lt;/port&gt;
    &lt;/entity&gt;
-</pre>
-<p>
-The <i>assertion</i> parameter specifies an assertion that can
-refer to the inputs by name.  By default, the assertion
-is empty, and attempting
-to execute the actor without setting it triggers an exception.
-<p>
-The <i>errorTolerance</i> parameter specifies the accuracy of
-inputs referenced by the assertion. By default, the errorTolerance
-is 1e-4.
-<p>
-NOTE: There are a number of important things to be pointed out.
-First, the errorTolerance adds constraints on the accuracy of the
-inputs. An alternative way is to leave the evaluator to handle
-the errorTolerance. Which one is better is still under discussion.
-Second, the CTAssertion actor is also a CTStepSizeControlActor.
+   </pre>
+   <p>
+   The <i>assertion</i> parameter specifies an assertion that can
+   refer to the inputs by name.  By default, the assertion
+   is empty, and attempting
+   to execute the actor without setting it triggers an exception.
+   <p>
+   The <i>errorTolerance</i> parameter specifies the accuracy of
+   inputs referenced by the assertion. By default, the errorTolerance
+   is 1e-4.
+   <p>
+   NOTE: There are a number of important things to be pointed out.
+   First, the errorTolerance adds constraints on the accuracy of the
+   inputs. An alternative way is to leave the evaluator to handle
+   the errorTolerance. Which one is better is still under discussion.
+   Second, the CTAssertion actor is also a CTStepSizeControlActor.
 
-@author Haiyang Zheng
-@version $Id$
-@since Ptolemy II 2.0
-*/
+   @author Haiyang Zheng
+   @version $Id$
+   @since Ptolemy II 2.0
+ */
 
 public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 
@@ -106,7 +106,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      *   actor with this name.
      */
     public CTAssertion(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }
 
@@ -122,7 +122,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      */
 
     public Object clone(Workspace workspace)
-        throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         CTAssertion newObject = (CTAssertion) super.clone(workspace);
         return newObject;
     }
