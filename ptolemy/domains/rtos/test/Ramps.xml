@@ -42,7 +42,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="303.0, 224.0">
+        <property name="_location" class="ptolemy.moml.Location" value="287.0, 258.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -77,39 +77,19 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title></title>
+<title>Sequence</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="19.0"/>
-<yRange min="0.0" max="10.0"/>
+<xRange min="0.0" max="9.0"/>
+<yRange min="0.0" max="9.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="Clock0" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
-        </property>
-        <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="133.0, 160.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="TimedPlotter0" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="upper, lower, clock">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -125,14 +105,30 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title></title>
+<title>Timed</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.08" max="9.033"/>
-<yRange min="0.0" max="10.0"/>
+<xRange min="0.991" max="9.884"/>
+<yRange min="-0.5" max="8.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
+    </entity>
+    <entity name="SequentialClock" class="ptolemy.actor.lib.SequentialClock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[0.5, -0.5]">
+        </property>
+        <doc>A clock producing exactly one output per clock tick</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="135.0, 158.0">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="232.0, 165.0">
@@ -152,7 +148,8 @@
     <link port="6:Ramp3.trigger" relation="relation4"/>
     <link port="SequencePlotter0.input" relation="relation3"/>
     <link port="SequencePlotter0.input" relation="relation5"/>
-    <link port="Clock0.output" relation="relation4"/>
     <link port="TimedPlotter0.input" relation="relation3"/>
     <link port="TimedPlotter0.input" relation="relation5"/>
+    <link port="TimedPlotter0.input" relation="relation4"/>
+    <link port="SequentialClock.output" relation="relation4"/>
 </entity>

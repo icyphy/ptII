@@ -214,15 +214,20 @@ public class RTOSDirector extends DEDirector {
                     "Actor has no container. Disabling actor.");
             _disableActor(actorToFire);
         } else {
-            if (!actorToFire.prefire()) {
-                if (_debugging) _debug("Prefire returned false.");
-            } else {
-                actorToFire.fire();
-                if (!actorToFire.postfire()) {
-                    if (_debugging) _debug("Postfire returned false:",
-                           ((Nameable)actorToFire).getName());
-                    // Actor requests that it not be fired again.
-                    _disableActor(actorToFire);
+            // Synchronize so that multiple firing don't step on one
+            // another, and particularly, don't step on the firings
+            // triggered by timers.
+            synchronized(actorToFire) {
+                if (!actorToFire.prefire()) {
+                    if (_debugging) _debug("Prefire returned false.");
+                } else {
+                    actorToFire.fire();
+                    if (!actorToFire.postfire()) {
+                        if (_debugging) _debug("Postfire returned false:",
+                                ((Nameable)actorToFire).getName());
+                        // Actor requests that it not be fired again.
+                        _disableActor(actorToFire);
+                    }
                 }
             }
         }
@@ -290,7 +295,7 @@ public class RTOSDirector extends DEDirector {
             while(timers.hasNext()) {
                 Timer next = (Timer)timers.next();
                 next.cancel();
-                System.out.println("Cancel timer");
+                // System.out.println("Cancel timer");
             }
             _actorTimers.clear();
         }
@@ -417,7 +422,11 @@ public class RTOSDirector extends DEDirector {
                         _debug("Timer expired.  Invoking "
                                 + ((Nameable)_actor).getFullName());
                     }
-                    _actor.iterate(1);
+                    // Synchronize on the actor so that an invocation
+                    // of the actor doesn't step on a prior invocation.
+                    synchronized(_actor) {
+                        _actor.iterate(1);
+                    }
                 } catch (IllegalActionException ex) {
                     throw new InvalidStateException((NamedObj)_actor,
                             ex.getMessage());
