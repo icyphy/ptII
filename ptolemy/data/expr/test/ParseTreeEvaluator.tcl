@@ -235,8 +235,10 @@ test ParseTreeEvaluator-7.4 {Test many levels of parenthesis nesting} {
 ####
 # 
 test ParseTreeEvaluator-8.1 {Test bitwise operators} {
-    list [theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"]
-} {0 7 1 -6}
+    list [theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"] \
+	[theTest "5ub&2ub"] [theTest "5ub|2ub"] [theTest "5ub\#4ub"] \
+	[theTest "~5ub"]
+} {0 7 1 -6 0ub 7ub 1ub 250ub}
 
 ######################################################################
 ####
