@@ -1,4 +1,5 @@
-/* A library for statistical operations on arrays of doubles.
+/*
+A library of statistical operations on arrays of doubles.
 
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
@@ -37,7 +38,11 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleArrayStat
 /**
- * This class provides a library for statistical operations on double arrays.
+ * This class provides a library for statistical operations on arrays of
+ * doubles.
+ * Unless explicity noted otherwise, all array arguments are assumed to be
+ * non-null. If a null array is passed to a method, a NullPointerException 
+ * will be thrown in the method or called methods.
  * <p>
  * @author Jeff Tsay
  * @version $Id$
@@ -154,6 +159,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param array An array of doubles.
      *  @return A double.
      */
+    /* FIXME, have a version that normalized by length-1 */
     public static double variance(double[] array) {
         int length = array.length;
         double ex2 = 0.0;
@@ -370,7 +376,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param q An array of doubles representing the second pmf.
      *  @return A double representing the relative entropy of the
      *  random variable.
-     *  @see DoubleArrayStat.entropy
      */
     public static final double relativeEntropy(double[] p, double[] q) {
 

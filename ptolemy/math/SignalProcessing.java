@@ -54,7 +54,9 @@ public class SignalProcessing {
      *  specified mean and standard deviation.  
      *  The function computed is :
      *  <p>
-     *  h(t) = exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
+     *  <pre>
+     *  h(t) = (1/(sqrt(2*PI) * stdDev) * exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
+     *  </pre>
      *  </p>
      */
     public static class GaussianSampleGenerator implements SampleGenerator {
@@ -63,27 +65,33 @@ public class SignalProcessing {
        *  @param mean The mean of the Gaussian function.
        *  @param phase The standard deviation of the Gaussian function.
        */
-      GaussianSampleGenerator(double mean, double standardDeviation) {
+      public GaussianSampleGenerator(double mean, double standardDeviation) {
         _mean = mean;
         _oneOverVariance = 1.0 / (standardDeviation * standardDeviation);
+        _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
       }
 
       /** Return a sample of the Gaussian function, sampled at the
        *  specified time.
        */
-      public double sampleAt(double time) {
+      public final double sampleAt(double time) {
         double shiftedTime = time - _mean; 
-        return Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
+        return _factor * 
+         Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
       } 
       
-      private final double _mean, _oneOverVariance;
+      private final double _mean, _oneOverVariance, _factor;
+      private static final double ONE_OVER_SQRT_TWO_PI = 
+       1.0 / Math.sqrt(2 * Math.PI);
     }
 
     /** This class generates samples of a line with the specified
      *  slope and y-intercept.
      *  The function computed is :
      *  <p>
+     *  <pre>
      *  h(t) = slope * t + yIntercept
+     *  </pre>
      *  </p>
      */    
     public static class LineSampleGenerator implements SampleGenerator {
@@ -92,14 +100,14 @@ public class SignalProcessing {
        *  @param slope The slope of the line.
        *  @param yIntercept The y-intercept of the line.
        */
-      LineSampleGenerator(double slope, double yIntercept) {
+      public LineSampleGenerator(double slope, double yIntercept) {
         _slope = slope;
         _yIntercept = yIntercept;
       }
 
       /** Return a sample of the line, sampled at the specified time.
        */
-      public double sampleAt(double time) { 
+      public final double sampleAt(double time) { 
         return _slope * time + _yIntercept;
       } 
       
@@ -126,7 +134,7 @@ public class SignalProcessing {
         /** Return a sample of the sawtooth wave, sampled at the
          *  specified time.
          */
-        public double sampleAt(double time) {
+        public final double sampleAt(double time) {
           double point = ((time / _period) + _phase + 0.5) % 1.0;
           return 2.0 * point - 1.0;
         }
@@ -137,7 +145,9 @@ public class SignalProcessing {
     /** This class generates samples of a sinusoidal wave.
      *  The function computed is :
      *  <p>
+     *  <pre>
      *  h(t) = cos(frequency * t + phase)
+     *  </pre>
      *  </p>
      *  To use this class to generate a sine wave, simply subtract PI/2 from the
      *  phase, since sin(t) = cos(t - PI/2).
@@ -164,13 +174,7 @@ public class SignalProcessing {
     }
 
     /** This class generates samples of a raised cosine pulse, or if the
-     *  excess is zero, a modified sinc function.  The argument <em>t</em> is
-     *  the time of the sample (the pulse is centered at zero). The
-     *  argument <em>T</em> is the time of the first zero crossing.
-     *  This would be the symbol interval in a communications application
-     *  of this pulse. The argument <em>excess</em> is the excess
-     *  bandwidth, which is normally in the range of 0.0 to 1.0, corresponding
-     *  to 0% to 100% excess bandwidth.
+     *  excess is zero, a modified sinc function.  
      *  <p>
      *  The function that is computed is:
      *  <p>
@@ -183,6 +187,10 @@ public class SignalProcessing {
      *  This is called a "raised cosine pulse" because in the frequency
      *  domain its shape is that of a raised cosine.
      *  <p>
+     *  For some applications, you may wish to apply a window function to this
+     *  impulse response, since it is rather abruptly terminated at the two \
+     *  ends.
+     *  <p>
      *  This implementation is ported from the Ptolemy 0.x implementation
      *  by Joe Buck, Brian Evans, and Edward A. Lee.
      *  Reference: <a href=http://www.amazon.com/exec/obidos/ASIN/0792393910/qid%3D910596335/002-4907626-8092437>E. A. Lee and D. G. Messerschmitt,
@@ -194,7 +202,8 @@ public class SignalProcessing {
 
       /*  Construct a RaisedCosineSampleGenerator.
        *  @param firstZeroCrossing The time of the first zero crossing,
-       *  after time zero.
+       *  after time zero. This would be the symbol interval in a 
+       *  communications application of this pulse.
        *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
        */
       public RaisedCosineSampleGenerator(double firstZeroCrossing,
@@ -203,7 +212,7 @@ public class SignalProcessing {
         _excess = excess;
       }
 
-      /*  Return a sample of the raised cosine pulse, sampled at the
+      /**  Return a sample of the raised cosine pulse, sampled at the
        *  specified time.
        */
       public final double sampleAt(double time) {
@@ -242,9 +251,9 @@ public class SignalProcessing {
      *  The function computed is:
      *  <p>
      *  <pre>
-     *                 4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
-     *  h(t) = scale * ---------------------------------------------------
-     *                       PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
+     *           4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
+     *  h(t) =  ---------------------------------------------------
+     *                PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
      *  </pre>
      *  <p>
      *  where <i>x</i> is the the excess bandwidth.
@@ -1124,53 +1133,6 @@ public class SignalProcessing {
         return 1 << exp;
     }
 
-    public static double raisedCosine(double t, double T, double excess) {
-        if (t == 0.0) return 1.0;
-        double x = t/T;
-        double s = Math.sin(Math.PI * x) / (Math.PI * x);
-        if (excess == 0.0) return s;
-        x *= excess;
-        double denominator = 1.0 - 4 * x * x;
-        // If the denominator is close to zero, take it to be zero.
-        if (close(denominator, 0.0)) {
-            return s * Math.PI/4.0;
-        }
-        return s * Math.cos (Math.PI * x) / denominator;
-    }
-
-
-    /** Return a new array containing a raised cosine pulse, computed using
-     *  the raisedCosine() method. The first argument is the time of the first
-     *  sample.  The second is the number of desired samples.
-     *  The third argument is the sample period.
-     *  The fourth arguments is the time is the time of the first zero crossing
-     *  (after time zero).
-     *  This would be the symbol interval in a communications application
-     *  of this pulse. The fifth argument is the excess
-     *  bandwidth, which is normally in the range of 0.0 to 1.0, corresponding
-     *  to 0% to 100% excess bandwidth.  Note that the pulse is centered
-     *  at time zero.
-     *  <p>
-     *  For some applications, you may wish to apply a window function to
-     *  this impulse response, since it is rather abruptly terminated
-     *  at the two ends.
-     *
-     *  @param start The time of the first sample.
-     *  @param length The number of desired samples.
-     *  @param period The sample period.
-     *  @param T The time of the first zero crossing.
-     *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
-     *  @return An array containing a raised cosine pulse.
-     */
-    public static final double[] raisedCosinePulse(double start, int length,
-            double period, double T, double excess) {
-        double[] result = new double[length];
-        for (int i = 0; i < length; i++) {
-            result[i] = raisedCosine(start + i*period, T, excess);
-        }
-        return result;
-    }
-
     /** Return a sample of a sawtooth wave with the specified period and
      *  phase at the specified time.  The returned value ranges between
      *  -1.0 and 1.0.  The phase is given as a fraction of a cycle,
@@ -1273,38 +1235,6 @@ public class SignalProcessing {
         return (4 * excess / (Math.PI*sqrtT)) *
             (Math.cos(oneplus * t) + Math.sin(oneminus * t)/(x * 4 * excess)) /
             (1.0 - 16 * excess * excess * x * x);
-    }
-
-    /** Return a new array containing a square-root raised cosine pulse,
-     *  computed using the sqrtRaisedCosine() method. The first
-     *  argument is the time of the first sample. The second is
-     *  the number of desired samples.  The third argument is the sample period.
-     *  The fourth arguments is the time is the time of the first zero crossing
-     *  (after time zero) of the corresponding raised-cosine pulse (the square).
-     *  This would be the symbol interval in a communications application
-     *  of this pulse. The fifth argument is the excess
-     *  bandwidth, which is normally in the range of 0.0 to 1.0, corresponding
-     *  to 0% to 100% excess bandwidth.  Note that the pulse is centered
-     *  at time zero.
-     *  <p>
-     *  For some applications, you may wish to apply a window function to
-     *  this impulse response, since it is rather abruptly terminated
-     *  at the two ends.
-     *
-     *  @param start The time of the starting sample.
-     *  @param length The number of desired samples.
-     *  @param period The sample period.
-     *  @param T The time of the first zero crossing.
-     *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
-     *  @return An array containing a raised cosine pulse.
-     */
-    public static final double[] sqrtRaisedCosinePulse(double start, int length,
-     double period, double T, double excess) {
-      double[] result = new double[length];
-      for (int i = 0; i < length; i++) {
-          result[i] = sqrtRaisedCosine(start + i*period, T, excess);
-      }
-      return result;
     }
 
     /** Return a sample of a triangle wave with the specified period and

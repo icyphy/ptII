@@ -1,4 +1,5 @@
-/* A library for mathematical operations on arrays of doubles.
+/* 
+A library for mathematical operations on arrays of doubles.
 
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
@@ -38,9 +39,10 @@ import java.lang.Double;              /* Needed by javadoc */
 //////////////////////////////////////////////////////////////////////////
 //// DoubleArrayMath
 /**
- * This class provides library for mathematical operations on double arrays.
+ * This class provides a library for mathematical operations on double arrays.
  * Unless explicity noted otherwise, all array arguments are assumed to be
- * non-null.
+ * non-null. If a null array is passed to a method, a NullPointerException 
+ * will be thrown in the method or called methods.
  * <p>
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  * @version $Id$

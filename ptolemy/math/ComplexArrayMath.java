@@ -1,5 +1,6 @@
-/* A library for mathematical operations on arrays of Complex's.
-
+/*
+A library for mathematical operations on arrays of complex numbers.
+ 
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
 
@@ -34,6 +35,19 @@ package ptolemy.math;
 import java.lang.*;
 import java.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// ComplexArrayMath
+/**
+ * This class a provides a library for mathematical operations on arrays of
+ * complex numbers, in particular arrays of instances of class 
+ * ptolemy.math.Complex.
+ * Unless explicity noted otherwise, all array arguments are assumed to be
+ * non-null. If a null array is passed to a method, a NullPointerException 
+ * will be thrown in the method or called methods.
+ * <p>
+ * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+ * @version $Id$
+ */
 public class ComplexArrayMath {
 
     // Protected constructor prevents construction of this class.
