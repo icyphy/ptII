@@ -38,14 +38,18 @@ the Ptolemy II test suite.
 The primary difference between Ptjacl and Jacl1.1 is that Ptjacl
 is shipped as one jar file.
 
+ <p>The Ptjacl jar file at <CODE>$PTII/lib/ptjacl.jar</CODE>
+is shipped with Ptolemy II.  Below are instructions about
+how to update <CODE>ptjacl.jar</CODE> and how to run Jacl.
+
 <ol>
 <li> Download ptjacl.jar from <a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html</CODE></a>
 
 <li> Unzip it with Winzip or info-zip
 
-<li> Copy the <CODE>ptjacl.jar</CODE> file to $PTII
+<li> Copy the <CODE>ptjacl.jar</CODE> file to <CODE>$PTII/lib</CODE>
 <pre>
-cp ptjacl.jar $PTII
+cp ptjacl.jar $PTII/lib
 </pre>
 
 <li> Rerun <CODE>configure</CODE>
@@ -63,14 +67,14 @@ make tests
 
 To run Jacl in Bourne Shell
 <pre>
-CLASSPATH=ptjava.jar
+CLASSPATH=$PTII/lib/ptjacl.jar
 export CLASSPATH
 java tcl.lang.Shell
 </pre>
 
 To run Jacl in the C shell
 <pre>
-setenv CLASSPATH ptjava.jar
+setenv CLASSPATH $PTII/lib/ptjacl.jar
 java tcl.lang.Shell
 </pre>
 
@@ -78,7 +82,7 @@ java tcl.lang.Shell
 To run Jacl as a standalone window in Bourne Shell, use
 the tcl.lang.PanelShellApp class instead of tcl.lang.Shell:
 <pre>
-CLASSPATH=$PTII/ptjava.jar
+CLASSPATH=$PTII/lib/ptjacl.jar
 export CLASSPATH
 java tcl.lang.PanelShellApp
 </pre>
