@@ -272,7 +272,7 @@ PACKAGE_BUGREPORT=
 
 ac_unique_file="mk/ptII.mk.in"
 ac_default_prefix=$PTII
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT JJTREE MATLAB CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MATLAB_DIR MATLAB_LIBDIR PTCOPERNICUS_DIR PTCOMM_DIR PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTII_LOCALURL SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT JJTREE MATLAB CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTCOPERNICUS_DIR PTCOMM_DIR PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTII_LOCALURL SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4398,6 +4398,29 @@ echo "$as_me: WARNING: Failed to find '${MATLAB_DIR}'
 	    If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable." >&2;};
 	    else
+
+	    cd "$srcdir/config"
+	    if "$JAVAC" MajorOSName.java ; then
+	        echo "$as_me:$LINENO: checking the which major type of OS we are running under" >&5
+echo $ECHO_N "checking the which major type of OS we are running under... $ECHO_C" >&6
+		# Older versions of cygwin might not have env, but 1.1 does
+		if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
+		    # Run it again and get the results
+		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
+		    echo "$as_me:$LINENO: result: $MAJOR_OS_NAME" >&5
+echo "${ECHO_T}$MAJOR_OS_NAME" >&6
+		else
+		    { echo "$as_me:$LINENO: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
+    The Matlab interface will build fine, but not being able to determine
+    the major operating system name could cause problems with running
+    (cd $PTII/ptolemy/matlab; make install)" >&5
+echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
+    The Matlab interface will build fine, but not being able to determine
+    the major operating system name could cause problems with running
+    (cd $PTII/ptolemy/matlab; make install)" >&2;};
+		fi
+	    fi
+	    cd "$startdir"
 		echo "$as_me:$LINENO: result: $MATLAB_DIR" >&5
 echo "${ECHO_T}$MATLAB_DIR" >&6
 		case "`uname -s`" in
@@ -4458,8 +4481,6 @@ echo "${ECHO_T}no" >&6
 fi
 
 		if test "${PTCC:-none}" != "none"; then
-			echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6
 			PTMATLAB_DIR=matlab
 		else
 			{ echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
@@ -4504,8 +4525,6 @@ echo "${ECHO_T}no" >&6
 fi
 
 			if test "${PTCC:-none}" != "none"; then
-			    echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6
 			    PTMATLAB_DIR=matlab
 			else
 			    { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
@@ -4947,6 +4966,11 @@ fi
 
 # Set to the location of the lejos installation, usually in
 # $PTII/vendors/lejos
+
+
+# The major type of OS we are running under.
+# Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
+# Used in ptolemy/matlab/makefile
 
 
 # Set to the location of the matlab installation, e.g. /matlabr11
@@ -5761,6 +5785,7 @@ s,@JXTA_DIR@,$JXTA_DIR,;t t
 s,@KVM_CLASSES@,$KVM_CLASSES,;t t
 s,@KVM_DIR@,$KVM_DIR,;t t
 s,@LEJOS_DIR@,$LEJOS_DIR,;t t
+s,@MAJOR_OS_NAME@,$MAJOR_OS_NAME,;t t
 s,@MATLAB_DIR@,$MATLAB_DIR,;t t
 s,@MATLAB_LIBDIR@,$MATLAB_LIBDIR,;t t
 s,@PTCOPERNICUS_DIR@,$PTCOPERNICUS_DIR,;t t
