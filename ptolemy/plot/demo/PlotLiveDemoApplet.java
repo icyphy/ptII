@@ -78,6 +78,20 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
             height = 400;
         }
 
+        // Process the background parameter.
+        try {
+            Color background = Color.white;
+            background = PlotBox.getColorByName(getParameter("background"));
+            setBackground(background);
+        } catch (NullPointerException e) {}
+
+        // Process the foreground parameter.
+        try {
+            Color foreground = Color.white;
+            foreground = PlotBox.getColorByName(getParameter("foreground"));
+            setForeground(foreground);
+        } catch (NullPointerException e) {}
+
         _myPlotLiveDemo.resize(width,height); // FIXME: resize() is deprecated.
         _myPlotLiveDemo.init();
         super.init();
