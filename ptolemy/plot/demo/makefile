@@ -65,6 +65,7 @@ EXTRA_SRCS = $(JSRCS) \
 	ErrorBars.html \
 	FourierSeries.html \
 	Live.html \
+	LogAxes.html \
 	Marks.html \
 	Ptplot.html \
 	Ptplot.js \
@@ -73,7 +74,8 @@ EXTRA_SRCS = $(JSRCS) \
 	bargraph.plt \
 	data.plt \
 	errorbars.plt \
-	index.html
+	index.html \
+	logaxes.plt
 
 # The data directory contains binary plot files that cannot be checked
 # into sccs.
