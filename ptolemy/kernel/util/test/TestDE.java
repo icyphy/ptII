@@ -35,7 +35,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.actor.*;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.Merge;
-import ptolemy.domains.de.lib.Delay;
+import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 
