@@ -81,6 +81,7 @@ done
 
 if [ "$fileListingClasses" = "" ]; then
     #set -x
+    shift
     ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
         egrep '^\[Loaded ' | \
         egrep 'Loaded (ptolemy|com.microstar|diva)' | \
