@@ -31,7 +31,7 @@
 
 ME =		ptolemy/plot
 
-DIRS = 		$(SRCDIRS) doc test
+DIRS = 		$(SRCDIRS) doc test plotml
 SRCDIRS = 	demo
 
 # Root of the Ptolemy II directory
@@ -134,11 +134,11 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources ptplot jclass $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR)
+all: sources ptplot jclass 
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
-install: all jars bin_install_dir
+install: all $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR) jars bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
