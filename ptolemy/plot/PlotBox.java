@@ -102,7 +102,7 @@ be done, call repaint().
 A small set of key bindings are provided for convenience.
 They are:
 <ul>
-<li> Cntrl-c: Export the plot to the clipboard (in PlotML).
+<li> Cntrl-c: copy plot to clipboard (EPS format), if permitted.
 <li> D: Dump the plot to standard output (in PlotML).
 <li> E: Export the plot to standard output in EPS format.
 <li> F: Fill the plot.
@@ -2331,6 +2331,8 @@ public class PlotBox extends JPanel implements Printable {
     /** Display basic information in its own window.
      */
     protected void _help() {
+        // If you change this, be sure to update the class comment
+        // and the Framemaker documentatoin
         String message =
             "Ptolemy plot package\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
@@ -2339,7 +2341,7 @@ public class PlotBox extends JPanel implements Printable {
             ", Build: $Id$\n\n" +
             "Key bindings:\n" +
             "   Cntrl-c:  copy plot to clipboard (EPS format), if permitted\n" +
-            "   D: dump plot data to standard out\n" +
+            "   D: dump plot data to standard out (in PlotML) \n" +
             "   E: export plot to standard out (EPS format)\n" +
             "   F: fill plot\n" +
             "   H or ?: print help message (this message)\n" +
