@@ -32,3 +32,15 @@ on 8/19, Attila Vizhanyo <viza@isis.vanderbilt.edu> wrote:
 
 10/19
 You need GME 4.8.25
+
+XML2ECSL users might find these documents useful:
+
+Sandeep Neema, Gabor Karsai, Embedded Control Systems Language for Distributed Processing(ECSL-DP) ISIS-04-505
+http://www.isis.vanderbilt.edu/publications/archive/Neema_S_5_12_2004_Embedded_C.pdf
+
+Mobies assesment of tools, includes a description of ECSL
+http://vehicle.me.berkeley.edu/mobies/interaction/IntegratedBerkeleyCommentsv2.1.doc
+
+ECSL (Embedded Control System Modeling Language) can be found at
+http://www.isis.vanderbilt.edu/projects/mobies/downloads.asp
+That download includes MDL2XML 
