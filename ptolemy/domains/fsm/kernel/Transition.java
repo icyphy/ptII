@@ -60,11 +60,8 @@ import ptolemy.kernel.util.Workspace;
 //// Transition
 /**
    A Transition has a source state and a destination state. A
-   transition has a guard expression and a trigger expression. Both
-   expressions should evaluate to a boolean value. The trigger of a
-   transition must be true whenever the guard is true. A transition is
-   enabled and can be taken when its guard is true.  A transition is
-   triggered and must be taken when its trigger is true.
+   transition has a guard expression, which is evaluated to a boolean value. 
+   Whenever a transition is enabled, it must be taken immediately.
 
    <p> A transition can contain actions. The way to specify actions is
    to give value to the <i>outputActions</i> parameter and the
@@ -88,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
    </pre>
    Here, <i>portName</i> is the name of a port of the FSM actor,
    If no <i>channelNumber</i> is given, then the value
-   is broadcast to all channels of the port.
+   is broadcasted to all channels of the port.
    <p>
    For the <i>setActions</i> parameter, <i>destination</i> is
    <pre>
@@ -133,11 +130,11 @@ import ptolemy.kernel.util.Workspace;
    Actor interface, so the initialize() method of the refinement is called. Please
    note that this feature is still under development.
 
-   @author Xiaojun Liu and Edward A. Lee
+   @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (liuxj)
-   @Pt.AcceptedRating Yellow (liuxj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
    @see State
    @see Action
    @see ChoiceAction
@@ -263,15 +260,7 @@ public class Transition extends ComponentRelation {
         // _guard and _trigger are the variables that do the evaluation.
         if (attribute == guardExpression) {
             _guardParseTree = null;
-
-            // If the executive director is HSDirector,
-            if (_exeDirectorIsHSDirector) {
-                // Invalid a relation list for the transition.
-                _relationList.destroy();
-                // Reconstruct the relation list.
-                ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                    .setConstructionMode(true);
-            }
+            _guardVersion = -1;
         }
         if (attribute == triggerExpression) {
             _triggerParseTree = null;
@@ -280,10 +269,16 @@ public class Transition extends ComponentRelation {
             _refinementVersion = -1;
         }
 
-        if (attribute == outputActions && _debugging)
+        if (attribute == outputActions || attribute == setActions) {
+            _actionListsVersion = -1;
+        }
+        
+        if (attribute == outputActions && _debugging) {
             outputActions.addDebugListener(new StreamListener());
-        if (attribute == setActions && _debugging)
+        }
+        if (attribute == setActions && _debugging) {
             setActions.addDebugListener(new StreamListener());
+        }
     }
 
     /** Return the list of choice actions contained by this transition.
@@ -319,6 +314,7 @@ public class Transition extends ComponentRelation {
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
         newObject._stateVersion = -1;
+        newObject._guardVersion = -1;
         return newObject;
     }
 
@@ -450,6 +446,9 @@ public class Transition extends ComponentRelation {
      *  @return The trigger expression.
      */
     public RelationList getRelationList() {
+        if (_guardVersion != workspace().getVersion()) {
+            _updateRelationList();
+        }
         return _relationList;
     }
 
@@ -485,7 +484,7 @@ public class Transition extends ComponentRelation {
                 // FIXME: when could this happen??
                 return false;
             }
-            //FIXME: deal with continuous variables and discrete variables
+            //FIXME: deal with continuous and discrete variables
             // using signalType.
             boolean result = ((BooleanToken)token).booleanValue();
             return result;
@@ -704,41 +703,12 @@ public class Transition extends ComponentRelation {
 
         _exeDirectorIsHSDirector = false;
 
-        // Depending on whether the director is FSM director
-        // or HSDirector, we configure the Transitions with
-        // different ParseTreeEvaluators.
-
         CompositeEntity container = (CompositeEntity) getContainer();
 
         _parseTreeEvaluator = new ParseTreeEvaluator();
 
-        // If the executive director is HSDirector,
-        if (container != null) {
-            TypedCompositeActor modalModel =
-                (TypedCompositeActor)container.getContainer();
-            if (modalModel != null
-                    && modalModel.getDirector() instanceof HSDirector) {
-
-                // FIXME: This is wrong...  what if the director changes?
-                _exeDirectorIsHSDirector = true;
-
-                // construct a relation list for the transition;
-                _relationList = new RelationList(this, "relationList");
-
-                // associate the relation list with the
-                // ParseTreeEvaluatorForGuardExpression
-
-                // FIXME: how to get the error tolerance
-                // If we limite the HSDirector only works under CT model
-                // or Modal Models, we can use the error tolerance from
-                // the top level CT director.
-
-                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
-                        _relationList, 1e-4);
-            }
-        }
-
-        // If the executive director is FSMDirector, do nothing.
+        // construct a relation list for the transition;
+        _relationList = new RelationList(this, "relationList");
 
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
@@ -767,6 +737,48 @@ public class Transition extends ComponentRelation {
         }
     }
 
+    // Update the relation list of guard expression depending on which
+    // director the modal model is using.
+    private void _updateRelationList() {
+        try {
+            workspace().getReadAccess();
+            CompositeEntity container = (CompositeEntity) getContainer();
+            if (container != null) {
+                TypedCompositeActor modalModel =
+                    (TypedCompositeActor)container.getContainer();
+                if (modalModel != null
+                        && modalModel.getDirector() instanceof HSDirector) {
+                    _exeDirectorIsHSDirector = true;
+                } else {
+                    _exeDirectorIsHSDirector = false;
+                }
+            }
+            if (_exeDirectorIsHSDirector) {
+                // associate the relation list with the
+                // ParseTreeEvaluatorForGuardExpression
+
+                // FIXME: how to get the error tolerance
+                // If we limite the HSDirector only works under CT model
+                // or Modal Models, we can use the error tolerance from
+                // the top level CT director.
+                // Add a getErrorTolerance() method to the CTGeneralDirector
+                // class.
+                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
+                        _relationList, 1e-4);
+                // Invalid a relation list for the transition.
+                _relationList.destroy();
+                // Reconstruct the relation list.
+                ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
+                    .setConstructionMode(true);
+            } else {
+                _parseTreeEvaluator = new ParseTreeEvaluator(); 
+            }
+            _guardVersion = workspace().getVersion();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -787,6 +799,9 @@ public class Transition extends ComponentRelation {
 
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
+    
+    // Version of the cached list of relations of a guard expression
+    private long _guardVersion = -1;
 
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
