@@ -405,7 +405,7 @@ public class LongMatrixMath {
      *  (row, column), the entries of the array are in the following order
      *  for a (m, n) matrix :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
-     *  @param A matrix of longs.
+     *  @param matrix A matrix of longs.
      *  @return A new array of longs.
      */
     public static final long[] fromMatrixToArray(final long[][] matrix) {
@@ -775,7 +775,7 @@ public class LongMatrixMath {
      *  has a real part equal to the value in the argument matrix and a
      *  zero imaginary part.
      *
-     *  @param array A matrix of long values.
+     *  @param matrix A matrix of long values.
      *  @return A new matrix of complex numbers.
      */
     public static final Complex[][] toComplexMatrix(final long[][] matrix) {
@@ -794,7 +794,7 @@ public class LongMatrixMath {
 
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to doubles.
-     *  @param array An matrix of long.
+     *  @param matrix An matrix of long.
      *  @return A new matrix of doubles.
      */
     public static final double[][] toDoubleMatrix(final long[][] matrix) {
@@ -813,7 +813,7 @@ public class LongMatrixMath {
 
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to floats.
-     *  @param array An matrix of long.
+     *  @param matrix An matrix of long.
      *  @return A new matrix of floats.
      */
     public static final float[][] toFloatMatrix(final long[][] matrix) {
@@ -832,7 +832,7 @@ public class LongMatrixMath {
 
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to integers.
-     *  @param array An matrix of long.
+     *  @param matrix An matrix of long.
      *  @return A new matrix of integers.
      */
     public static final int[][] toIntegerMatrix(final long[][] matrix) {

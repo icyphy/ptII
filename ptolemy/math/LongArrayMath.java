@@ -589,7 +589,7 @@ public class LongArrayMath {
      *  the second argument. If the second argument is 0, no operation
      *  is performed (the array is just copied).
      *
-     *  @param matrix A first array of longs.
+     *  @param array A first array of longs.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new array of longs.
@@ -788,8 +788,8 @@ public class LongArrayMath {
      *  or if either array is null. An exception is NOT thrown if both
      *  arrays are of length 0. If no exception is thrown, return the common
      *  length of the arrays.
-     *  @param array The first array of longs.
-     *  @param array The second array of longs.
+     *  @param array1 The first array of longs.
+     *  @param array2 The second array of longs.
      *  @param methodName A String representing the method name of the caller,
      *  without parentheses.
      *  @return The common length of both arrays.

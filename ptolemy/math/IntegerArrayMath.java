@@ -566,7 +566,7 @@ public class IntegerArrayMath {
      *  of the second argument. If the second argument is 0, no
      *  operation is performed (the array is just copied).
      *
-     *  @param matrix A first array of ints.
+     *  @param array A first array of ints.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new array of ints.
@@ -596,7 +596,7 @@ public class IntegerArrayMath {
      *  the second argument. If the second argument is 0, no operation
      *  is performed (the array is just copied).
      *
-     *  @param matrix A first array of ints.
+     *  @param array A first array of ints.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new array of ints.
@@ -795,8 +795,8 @@ public class IntegerArrayMath {
      *  or if either array is null. An exception is NOT thrown if both
      *  arrays are of length 0. If no exception is thrown, return the common
      *  length of the arrays.
-     *  @param array The first array of ints.
-     *  @param array The second array of ints.
+     *  @param array1 The first array of ints.
+     *  @param array2 The second array of ints.
      *  @param methodName A String representing the method name of the caller,
      *  without parentheses.
      *  @return The common length of both arrays.

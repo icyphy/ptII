@@ -331,7 +331,7 @@ public class FloatMatrixMath {
      *  (row, column), the entries of the array are in the following order
      *  for a (m, n) matrix :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
-     *  @param A matrix of floats.
+     *  @param matrix A matrix of floats.
      *  @return A new array of floats.
      */
     public static final float[] fromMatrixToArray(final float[][] matrix) {
@@ -805,7 +805,7 @@ public class FloatMatrixMath {
      *  has a real part equal to the value in the argument matrix and a
      *  zero imaginary part.
      *
-     *  @param array A matrix of floats.
+     *  @param matrix A matrix of floats.
      *  @return A new matrix of complex numbers.
      */
     public static final Complex[][] toComplexMatrix(final float[][] matrix) {
@@ -824,7 +824,7 @@ public class FloatMatrixMath {
 
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to doubles.
-     *  @param array An matrix of float.
+     *  @param matrix An matrix of float.
      *  @return A new matrix of doubles.
      */
     public static final double[][] toDoubleMatrix(final float[][] matrix) {
@@ -844,7 +844,7 @@ public class FloatMatrixMath {
 
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to integers.
-     *  @param array An matrix of float.
+     *  @param matrix An matrix of float.
      *  @return A new matrix of integers.
      */
     public static final int[][] toIntegerMatrix(final float[][] matrix) {
@@ -864,7 +864,7 @@ public class FloatMatrixMath {
 
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to longs.
-     *  @param array An matrix of float.
+     *  @param matrix An matrix of float.
      *  @return A new matrix of longs.
      */
     public static final long[][] toLongMatrix(final float[][] matrix) {

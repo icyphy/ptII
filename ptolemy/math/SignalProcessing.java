@@ -1206,8 +1206,8 @@ public class SignalProcessing {
         implements DoubleUnaryOperation {
 
         /** Construct a GaussianSampleGenerator.
-         *  @param mean The mean of the Gaussian function.
-         *  @param phase The standard deviation of the Gaussian function.
+         *  @param standardDeviation The standard deviation of the
+         *  Gaussian function.
          */
         public GaussianSampleGenerator(double mean, double standardDeviation) {
             _mean = mean;
@@ -1347,7 +1347,6 @@ public class SignalProcessing {
          *  @param frequency The frequency of the cosine wave, in radians per
          *  unit time.
          *  @param phase The phase shift, in radians.
-         *  @param range The absolute value of the range of the wave.
          */
         public SinusoidSampleGenerator(double frequency, double phase) {
             _frequency = frequency;
