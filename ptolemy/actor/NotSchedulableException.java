@@ -82,7 +82,7 @@ public class NotSchedulableException extends InvalidStateException {
     public NotSchedulableException(Nameable obj, String detail,
             Enumeration actors) {
         super(obj, detail);
-        _actors= actors;
+        _actors = actors;
     }
 
     ///////////////////////////////////////////////////////////////////
