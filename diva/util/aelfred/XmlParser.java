@@ -2435,10 +2435,11 @@ public class XmlParser {
                 newSize = requiredSize + 1;
             }
 
+            // Dwight Richards pointed out that newSize was ignored (11/03)
             if (array instanceof char[]) {
-                newArray = new char[currentSize * 2];
+                newArray = new char[newSize];
             } else if (array instanceof Object[]) {
-                newArray = new Object[currentSize * 2];
+                newArray = new Object[newSize];
             }
 
             System.arraycopy(array, 0, newArray, 0, currentSize);
