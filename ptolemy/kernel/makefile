@@ -55,11 +55,7 @@ JSRCS = \
 	CentralizedExecutive.java \
 	CrossRefList.java \
 	DataPort.java \
-	DistributedExecutive.java \
 	Entity.java \
-	Executive.java \
-	GenericPort.java \
-	GraphElement.java \
 	GraphException.java \
 	HasValue.java \
 	IntervalTag.java \
@@ -97,8 +93,13 @@ JSRCS = \
 	#FIXME: Galaxy.java \
 	#FIXME: MultiPort.java \
 	#FIXME: Star.java \
-	#FIXME: Target.java \
 	#FIXME: Universe.java \
+	#Removed GraphElement.java on 11/11/97 by davisj
+	#Removed GenericPort.java on 11/11/97 by davisj 
+	#Moved DistributedExecutive.java to kernel/copies 
+	#Moved Executive.java to kernel/copies 
+	#Moved Target.java to kernel/copies
+
 
 EXTRA_SRCS =	$(JSRCS)
 
