@@ -243,6 +243,7 @@ include $(ROOT)/mk/ptcommon.mk
 # Include rules necessary to build a distribution
 include $(ROOT)/mk/ptdist.mk
 
+PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
 # Fix the temporary directory used when building a distribution
 fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
@@ -250,7 +251,7 @@ fixtmpdist:
 	echo '	cd ptolemy/plot; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo "realclean itcldocs tests idocs weblint dists:" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
-	echo "	echo \"Nothing need be done for $$@ in ptolemy/plot\"" >> \
+	echo "	echo \"Nothing need be done for $$@ in ptolemy/plot)\"" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
 	echo "$(PTDIST) - A Java plotting package" > \
 		$(PTTMPDIR)/$(PTDIST)/README
@@ -259,15 +260,15 @@ fixtmpdist:
 	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README
 	echo "Ptplot is embeddable in applets and applications." >> \
 		$(PTTMPDIR)/$(PTDIST)/README
-	echo "For more information, see ptolemy/plot/index.htm" >> \
+	echo "For more information, see ptolemy/plot/doc/index.htm" >> \
 		$(PTTMPDIR)/$(PTDIST)/README
 	@echo "Remove LogicAnalyzer from makefile"
 	grep -v LogicAnalyzer \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile > /tmp/ptplotfix
-	mv /tmp/ptplotfix $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile
-	rm -f $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/LogicAnalyzer*
+		$(PTTMPME)/makefile > /tmp/ptplotfix
+	mv /tmp/ptplotfix $(PTTMPME)/makefile
+	rm -f $(PTTMPME)/LogicAnalyzer*
 	@echo "JShield needs the ico file to be in the top level directory"
-	cp $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/img/ptplot.ico \
+	cp $(PTTMPME)/doc/img/ptplot.ico \
 		$(PTTMPDIR)/$(PTDIST)
 	@echo "Copy over xml stuff"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/com
@@ -275,20 +276,52 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/com
 	@echo "Copy over gui stuff"
 	cp -r $(PTII)/ptolemy/gui $(PTTMPDIR)/$(PTDIST)/ptolemy
-	@echo "Setting up doc directory"
+	#
+	# Setting up top level doc directory
+	#
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/img
+	cp -r $(PTII)/doc/banner.htm \
+		$(PTII)/doc/contentsheader.htm \
+		$(PTII)/doc/default.css \
+		$(PTII)/doc/footer.htm \
+		$(PTII)/doc/mainheader.htm \
+		$(PTII)/doc/toc.css \
+		 $(PTTMPDIR)/$(PTDIST)/doc
+	cp -r $(PTII)/doc/img/ptIIplanetIcon.gif \
+		$(PTII)/doc/img/ptIIbanner2.gif \
+		$(PTII)/doc/img/prev.gif \
+		$(PTTMPDIR)/$(PTDIST)/doc/img
+	# Create a file in the top level doc directory that points to
+	# the real docs
+	echo "<html>" > $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	echo "<head>" >> $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	echo "<title>Ptplot</title>" > $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	echo "</head>" >> $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	echo "<h1>Ptplot</h1>" >> $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	echo 'The Ptplot documentation is in <a href="../ptolemy/plot/doc/index.htm"><code>../ptolemy/plot/doc</code>' >> $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	echo "</body>" >> $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	echo "</htmp>" >> $(PTTMPDIR)/$(PTDIST)/doc/index.htm
+	#
+	# Setting up doc/codeDoc directory
+	#
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/codeDoc
 	cd $(PTTMPDIR)/$(PTDIST); \
-	CLASSPATH=. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc ptolemy.plot
+	CLASSPATH=. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc \
+		com.microstar.xml \
+		ptolemy.gui \
+		ptolemy.plot \
+		ptolemy.plot.compat \
+		ptolemy.plot.plotml
 	@echo "Fixing up doc/download directory"
-	rm -rf $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
-	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
-	echo "<html>" > $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo "<head>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo "<title>Download Ptplot</title>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo '<body bgcolor="#faf0e6">'  >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo "<H1>Download Ptplot<H1>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/ptplot/download"><code>http://ptolemy.eecs.berkeley.edu/ptplot/download</code></a>' >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo "<hr>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo "</body>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
-	echo "</html>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	rm -rf $(PTTMPME)/doc/download
+	mkdir $(PTTMPME)/doc/download
+	echo "<html>" > $(PTTMPME)/doc/download/index.htm
+	echo "<head>" >> $(PTTMPME)/doc/download/index.htm
+	echo "<title>Download Ptplot</title>" >> $(PTTMPME)/doc/download/index.htm
+	echo '<body bgcolor="#faf0e6">'  >> $(PTTMPME)/doc/download/index.htm
+	echo "<H1>Download Ptplot<H1>" >> $(PTTMPME)/doc/download/index.htm
+	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPME)/doc/download/index.htm
+	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/ptplot/download"><code>http://ptolemy.eecs.berkeley.edu/ptplot/download</code></a>' >> $(PTTMPME)/doc/download/index.htm
+	echo "<hr>" >> $(PTTMPME)/doc/download/index.htm
+	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
+	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
