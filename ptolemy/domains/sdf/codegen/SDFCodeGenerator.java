@@ -38,22 +38,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.CompositeActorApplication;
-import ptolemy.kernel.Entity;
+import ptolemy.codegen.*;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.lang.ApplicationUtility;
+
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// CodeGenerator
+//// SDFCodeGenerator
 /** A code generator for SDF.
  *
  *  @author Jeff Tsay
  */
-public class CodeGenerator extends CompositeActorApplication {
+public class SDFCodeGenerator extends CompositeActorApplication {
 
-    public CodeGenerator(String[] args) throws Exception {
+    public SDFCodeGenerator(String[] args) throws Exception {
         super(args, false);                         
     }
     
@@ -62,9 +66,12 @@ public class CodeGenerator extends CompositeActorApplication {
         
         TypedCompositeActor compositeActor = (TypedCompositeActor) _models.get(0);
         
-        // start the model to ensure the schedule is computed
-        startRun(compositeActor);        
-        waitForFinish();
+        try {
+          // initialize the model to ensure type resolution and scheduling are done
+          compositeActor.getManager().initialize();
+        } catch (Exception e) {
+          ApplicationUtility.error("could not initialize composite actor");         
+        }
                 
         // get the schedule for the model
         SDFDirector dir = (SDFDirector) compositeActor.getDirector();
@@ -73,66 +80,68 @@ public class CodeGenerator extends CompositeActorApplication {
         
         Enumeration schedule = schedule = scheduler.schedule();
                               
-        // build a mapping between each entity and the firing count
+        // build a mapping between each actor and the firing count
   
-        Entity lastEntity = null;
+        TypedAtomicActor lastActor = null;
         
         while (schedule.hasMoreElements()) {
         
-            Entity entity = (Entity) schedule.nextElement();
+            TypedAtomicActor actor = (TypedAtomicActor) schedule.nextElement();
             
-            _entityList.addLast(entity);
+            _actorList.addLast(actor);
             
-            // see if this is the first appearance of this entity                                    
-            if (_entitySet.add(entity)) { 
-               PerActorCodeGeneratorInfo actorInfo = new PerActorCodeGeneratorInfo();                       
+            // see if this is the first appearance of this actor                                    
+            if (_actorSet.add(actor)) { 
+               SDFActorCodeGeneratorInfo actorInfo = new SDFActorCodeGeneratorInfo();                       
                
-               actorInfo.actor = entity;                       
+               actorInfo.actor = actor;                       
                actorInfo.disjointAppearances = 1;                                             
-               actorInfo.totalFirings = scheduler.getFiringCount(entity);               
+               actorInfo.totalFirings = scheduler.getFiringCount(actor);               
                
-               _makeBufferInfo(entity, actorInfo);
+               _makeBufferInfo(actor, actorInfo);
                               
-               _entityInfoMap.put(entity, actorInfo);            
+               _actorInfoMap.put(actor, actorInfo);            
       
-               System.out.println("entity " + entity + " fires " + 
+               ApplicationUtility.trace("actor " + actor + " fires " + 
                 actorInfo.totalFirings + " time(s).");
                                                         
             }  else {
-               if (entity != lastEntity) {
+               if (actor != lastActor) {
                   // update the disjoint appearance count
-                  PerActorCodeGeneratorInfo actorInfo = 
-                   (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);
+                  SDFActorCodeGeneratorInfo actorInfo = 
+                   (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);
                    
                   actorInfo.disjointAppearances++; 
                }                                            
             }
-            lastEntity = entity;
+            lastActor = actor;
         }           
         
-        Iterator entityItr = _entitySet.iterator();
+        Iterator actorItr = _actorSet.iterator();
         
-        ActorCodeGenerator actorCodeGen = new ActorCodeGenerator();        
+        ActorCodeGenerator actorCodeGen = new ActorCodeGenerator(
+         SDFCodeGeneratorClassFactory.getInstance());        
+         
         LinkedList renamedSourceList = new LinkedList();
         
-        while (entityItr.hasNext()) {
-             Entity entity = (Entity) entityItr.next();  
-             PerActorCodeGeneratorInfo actorInfo = 
-              (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);        
+        while (actorItr.hasNext()) {
+             TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();  
+             SDFActorCodeGeneratorInfo actorInfo = 
+              (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);        
                           
-             _makeInputInfo(entity, actorInfo);
+             _makeInputInfo(actor, actorInfo);
                           
              String renamedSource = actorCodeGen.generateCode(actorInfo);
              renamedSourceList.addLast(renamedSource);
         }                                                           
         
-        entityItr = _entitySet.iterator();
+        actorItr = _actorSet.iterator();
         Iterator renamedSourceItr = renamedSourceList.iterator();
         
-        while (entityItr.hasNext()) {
-             Entity entity = (Entity) entityItr.next();  
-             PerActorCodeGeneratorInfo actorInfo = 
-              (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);        
+        while (actorItr.hasNext()) {
+             TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();  
+             SDFActorCodeGeneratorInfo actorInfo = 
+              (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);        
               
              String renamedSource = (String) renamedSourceItr.next(); 
                                                    
@@ -141,14 +150,14 @@ public class CodeGenerator extends CompositeActorApplication {
     }
 
     /** Figure out which buffers are connected to each input port of a given 
-     *  Entity, and add the information to the instance of 
-     *  PerActorCodeGeneratorInfo argument.
+     *  TypedAtomicActor, and add the information to the instance of 
+     *  SDFActorCodeGeneratorInfo argument.
      */
-    protected void _makeInputInfo(Entity entity, 
-         PerActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
+    protected void _makeInputInfo(TypedAtomicActor actor, 
+         SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
      
-        // iterate over the ports of this entity
-        Iterator portItr = entity.portList().iterator();
+        // iterate over the ports of this actor
+        Iterator portItr = actor.portList().iterator();
            
         while (portItr.hasNext()) {              
            TypedIOPort port = (TypedIOPort) portItr.next();
@@ -218,7 +227,7 @@ public class CodeGenerator extends CompositeActorApplication {
                   if (outputPort == null) {
                      throw new InternalError("could not find output port associated " +
                       "with channel " + channel + " for port " + port.getName() +
-                      " of entity " + entity + '.');
+                      " of actor " + actor + '.');
                   }
                                      
                   BufferInfo bufferInfo = 
@@ -234,8 +243,8 @@ public class CodeGenerator extends CompositeActorApplication {
               } // for (int channel = 0; channel < inputWidth; channel++) ...
 
 
-              System.out.println("connected buffers for port " + port.getName() + 
-               " of entity " + entity.getName());
+              ApplicationUtility.trace("connected buffers for port " + port.getName() + 
+               " of actor " + actor.getName());
               for (int ch = 0; ch < inputWidth; ch++) {
                  System.out.println("ch " + ch + ": " + bufferNames[ch]);
               }
@@ -246,12 +255,12 @@ public class CodeGenerator extends CompositeActorApplication {
         } // while (portItr.hasNext()) ...                                     
     }
          
-    protected void _makeBufferInfo(Entity entity, 
-         PerActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
+    protected void _makeBufferInfo(TypedAtomicActor actor, 
+         SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
         
         int firings = actorInfo.totalFirings;
                  
-        Iterator portItr = entity.portList().iterator();
+        Iterator portItr = actor.portList().iterator();
            
         while (portItr.hasNext()) {              
            TypedIOPort port = (TypedIOPort) portItr.next();
@@ -306,10 +315,10 @@ public class CodeGenerator extends CompositeActorApplication {
 
     
     public static void main(String[] args) {
-        CodeGenerator codeGen = null;
+        SDFCodeGenerator codeGen = null;
     
         try {
-            codeGen = new CodeGenerator(args);
+            codeGen = new SDFCodeGenerator(args);
             
             codeGen.generateCode();        
         } catch (Exception ex) {
@@ -318,16 +327,16 @@ public class CodeGenerator extends CompositeActorApplication {
         }               
     }    
 
-    protected HashSet _entitySet = new HashSet();
-    protected LinkedList _entityList = new LinkedList();        
+    protected HashSet _actorSet = new HashSet();
+    protected LinkedList _actorList = new LinkedList();        
         
-    /** A map containing instances of PerActorCodeGeneratorInfo,
-     *  using the corresponding Entity's as keys.
+    /** A map containing instances of SDFActorCodeGeneratorInfo,
+     *  using the corresponding Actors as keys.
      */
-    protected HashMap _entityInfoMap = new HashMap();
+    protected HashMap _actorInfoMap = new HashMap();
     
     /** A map containing instances of BufferInfo, using the corresponding
-     *  ports as keys. This map contains all BufferInfo's for all output
+     *  ports as keys. This map contains all BufferInfos for all output
      *  ports in the CompositeActor.
      */
     protected HashMap _bufferInfoMap = new HashMap();

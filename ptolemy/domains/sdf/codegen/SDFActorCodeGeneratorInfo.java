@@ -34,14 +34,19 @@ package ptolemy.domains.sdf.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
-import ptolemy.kernel.Entity;
+import ptolemy.codegen.ActorCodeGeneratorInfo;
 
-public class PerActorCodeGeneratorInfo {
-    public PerActorCodeGeneratorInfo() {}
+/** An object that hold information used as an argument to a 
+ *  code generator that operates on the actor level.
+ *
+ *  @author Jeff Tsay
+ */
+public class SDFActorCodeGeneratorInfo extends ActorCodeGeneratorInfo {
 
-    /** The actor itself. */
-    public Entity actor = null;
-    
+    public SDFActorCodeGeneratorInfo() {
+        super();
+    }
+
     /** The number of times the actor appears disjointly in the schedule
      *  for one iteration. By "disjointly" we mean that each disjoint
      *  appearance contains the maximum number of ordinary consecutive 
@@ -49,6 +54,9 @@ public class PerActorCodeGeneratorInfo {
      *  are possible.
      */
     public int disjointAppearances = 1;
+    
+    /** The number of times that the actor is fired in one iteration. */
+    public int totalFirings = 0;
 
     /** A map containing arrays of Strings indexed by channel, using
      *  the corresponding input ports as keys. The Strings
@@ -61,18 +69,4 @@ public class PerActorCodeGeneratorInfo {
      *  ports as keys.
      */
     public final Map outputInfoMap = new HashMap();
-    
-    
-    /** A map containing instances of TypedIOPort or SDFIOPort which uses
-     *  port names as keys.
-     */
-    public final Map portNameToPortMap = new HashMap();
-    
-    /** A map containing instances of Tokens, corresponding to the value
-     *  of Parameters, whose names are keys.
-     */
-    public final Map parameterNameToTokenMap = new HashMap();
- 
-    /** The total number of times the actor is fired in one iteration. */    
-    public int totalFirings = -1;   
 }
