@@ -61,6 +61,7 @@ JSRCS = \
 	Debuggable.java \
 	DebugEvent.java \
 	DebugListener.java \
+	DropListener.java \
 	KernelException.java \
 	KernelRuntimeException.java \
 	IllegalActionException.java \
@@ -77,6 +78,7 @@ JSRCS = \
 	PtolemyThread.java \
 	RecorderListener.java \
 	Settable.java \
+	Singleton.java \
 	SingletonAttribute.java \
 	SingletonConfigurableAttribute.java \
 	StreamChangeListener.java \

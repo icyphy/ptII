@@ -47,7 +47,8 @@ replaces any previous description in the container.
 @since Ptolemy II 1.0
 */
 
-public class SingletonConfigurableAttribute extends ConfigurableAttribute {
+public class SingletonConfigurableAttribute extends ConfigurableAttribute
+        implements Singleton {
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the

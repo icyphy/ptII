@@ -42,7 +42,7 @@ existing attribute in the container that has the same name.
 @since Ptolemy II 1.0
 */
 
-public class SingletonAttribute extends Attribute {
+public class SingletonAttribute extends Attribute implements Singleton {
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
