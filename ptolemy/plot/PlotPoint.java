@@ -32,6 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot;
 
+import java.io.Serializable;
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotPoint
 /**
@@ -39,7 +41,7 @@ package ptolemy.plot;
  * @author Edward A. Lee
  * @version $Id$
  */
-public class PlotPoint {
+public class PlotPoint implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
