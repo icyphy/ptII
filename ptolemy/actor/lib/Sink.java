@@ -50,7 +50,7 @@ and are correctly handled in cloned actors.
 @since Ptolemy II 0.3
 */
 
-public class Sink extends TypedAtomicActor {
+public abstract class Sink extends TypedAtomicActor {
 
     /** Construct an actor with an input multiport.
      *  @param container The container.
