@@ -374,13 +374,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         }
     }
 
-    /** Return an empty DAG.
-     *  @return An empty DAG.
-     */
-    protected Graph _emptyGraph() {
-        return new DirectedAcyclicGraph();
-    }
-
     /** Create and register all of the change listeners for this graph, and
      *  initialize the change counter of the graph.
      */

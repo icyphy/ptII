@@ -780,13 +780,6 @@ public class DirectedGraph extends Graph {
         _removeIfPresent(_outputEdgeList(node), edge);
     }
 
-    /** Return an empty directed graph.
-     *  @return An empty directed graph.
-     */
-    protected Graph _emptyGraph() {
-        return new DirectedGraph();
-    }
-
     /** Create and register all of the change listeners for this graph, and
      *  initialize the change counter of the graph.
      */

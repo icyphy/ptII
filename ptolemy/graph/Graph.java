@@ -1146,12 +1146,18 @@ public class Graph implements Cloneable {
         _removeIfPresent(_incidentEdgeList(node), edge);
     }
 
-    /** Return an empty graph. This method should be overridden in derived
-     *  classes to return an empty graph of the appropriate type.
+    /** Return an empty graph that has the same run-time type as this graph. 
      *  @return An empty graph.
      */
     protected Graph _emptyGraph() {
-        return new Graph();
+        Graph graph = null;
+        try {
+            graph = (Graph)(getClass().newInstance());
+        } catch (Exception exception) {
+            throw new RuntimeException("Could not create an empty graph from "
+                    + "this one.\n" + exception + "\n" + _graphDump());
+        }
+        return graph;
     }
 
     /** Create and register all of the change listeners for this graph, and
@@ -1284,7 +1290,7 @@ public class Graph implements Cloneable {
 
     // Return a dump of this graph suitable to be appended to an error message.
     private String _graphDump() {
-        return "\nA Dump of the offending graph follows.\n" + this.description()
+        return "\nA Dump of the offending graph follows.\n" + toString()
             + "\n";
     }
 
