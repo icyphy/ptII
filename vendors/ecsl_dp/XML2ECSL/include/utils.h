@@ -13,6 +13,25 @@ const int GME_Y_OFFSET= 100;
 const int GME_X_DEFAULT_POS= 400;
 const int GME_Y_DEFAULT_POS= 400;
 
+
+//
+class UseXSD
+{
+public:
+	// Returns true if the file 'fname' uses dtd file to open/ create.
+	bool operator()( const std::string& fname)
+	{
+		std::string ext( fname);
+		std::string::size_type findExt= ext.rfind( '.');
+		if ( findExt != std::string::npos)
+			if( *(ext.begin()+ findExt+ 1) != '\\')
+				ext.erase( ext.begin(), ext.begin()+ ++findExt);	// delete '.' too.
+			else
+				ext.clear();
+		return ext == "xml";
+	}
+};
+
 //
 extern std::string mangle( const std::string& expr);
 //

@@ -53,6 +53,7 @@ END
 //
 
 Matlab.XSD              XSD     DISCARDABLE     "matlab.xsd"
+ECSL_DP.XSD             XSD     DISCARDABLE     "ECSL_DP.xsd"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

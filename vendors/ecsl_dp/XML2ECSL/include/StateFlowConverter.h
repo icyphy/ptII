@@ -60,6 +60,8 @@ protected:
 	//
 	void createStateRef( const matlab::chart& mc, ECSL_DP::State& es);
 	//
+	void calculateOrder( const std::set< matlab::state>& substates);
+	//
 	template< class T>
 	void createEvents( const T& eventsParent, ECSL_DP::State& es);
 	template< class T>

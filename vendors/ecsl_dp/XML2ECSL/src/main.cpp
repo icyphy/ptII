@@ -37,14 +37,14 @@ int main( int argc, char* argv[])
 		return usage();
 	}
 	std::cerr << "Converting " << argv[1] << " ..." << std::endl;
-//	try {
+	try {
 		Matlab2EcslDP matlab2EcslDP( argv[ 1], (argc == 3 ? argv[ 2] : dropExtension( argv[ 1])+ ".mga"));
 		matlab2EcslDP();
-//	}
-//	catch(const udm_exception &e) {
-//		std::cerr << "Exception: " << e.what();
-//		return 1;
-//	}
+	}
+	catch(const udm_exception &e) {
+		std::cerr << "Exception: " << e.what() << std::endl;
+		return 1;
+	}
 	std::cerr << "Done." << std::endl;
 	return 0;
 }

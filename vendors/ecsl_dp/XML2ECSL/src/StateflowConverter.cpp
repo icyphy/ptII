@@ -87,6 +87,8 @@ void StateflowConverter::machinePass1( const matlab::machine& matlabMachine, ECS
 	createEvents( matlabMachine, ecslDPState);
 	createData( matlabMachine, ecslDPState);
 	createCharts( matlabMachine, ecslDPState);
+	// !!VIZA 0-level state: 'ecslDPState'. The root state
+	//ecslDPState.Order= num_to_string( 0);
 }
 
 void StateflowConverter::machinePass2( ECSL_DP::State& ecslDPState)
@@ -113,6 +115,7 @@ void StateflowConverter::createCharts( const matlab::machine& mm, ECSL_DP::State
 		// create state
 		ECSL_DP::State new_es = ECSL_DP::State::Create( es);
 		chartPass1( currMc ,new_es);
+		// !!VIZA 1-level states: 'new_es'. Created for each matlab chart.
 		// positioning
 		new_es.position() = MakeGMEPosString( xPos, yPos);
 		xPos= ( xPos >= 800) ? ( xPos+= CHART_X_OFFSET) : ( CHART_X_INIT_POSITION);
@@ -220,6 +223,7 @@ void StateflowConverter::chartPass1( const matlab::chart& mc, ECSL_DP::State& es
 	createTransitions( mc, es);
 	std::set< matlab::state> mss = mc.states();
 	createSubStates( mss, es);
+	calculateOrder( mss);
 	createStateRef( mc, es);
 }
 
@@ -286,7 +290,9 @@ void StateflowConverter::StatePass1( const matlab::state& ms, ECSL_DP::State& es
 	createJunctions( ms, es, JunctCreateHandler( es, _historyMap));
 	createTransitions( ms, es);
 	std::set< matlab::state> substates= ms.subStates();
+int sz= substates.size();
 	createSubStates( substates, es);
+	calculateOrder( substates);
 }
 
 void StateflowConverter::StatePass2( ECSL_DP::State& es)
@@ -469,11 +475,13 @@ void StateflowConverter::setTransitionEndPoints(
 	)
 {
 	if ( ( ECSL_DP::State)srcConn.State_parent() == ( ECSL_DP::State)dstConn.State_parent()) {
-		et.srcTransition_end()= srcConn;
-		et.dstTransition_end()= dstConn;
+		setTransitionEndPoints( srcConn, dstConn, et);
 		return;
 	}
 	// cross hierarchy transition; reference needed
+	// create reference to the destination always
+	setTransitionEndPoints( srcConn, createConnectorRef( ( ECSL_DP::State)srcConn.State_parent(), dstConn, xPos, yPos), et);
+	/*
 	if ( ( ECSL_DP::State)srcConn.State_parent() == es) {
 		// create ref to dst
 		setTransitionEndPoints( srcConn, createConnectorRef( ( ECSL_DP::State)srcConn.State_parent(), dstConn, xPos, yPos), et);
@@ -486,6 +494,7 @@ void StateflowConverter::setTransitionEndPoints(
 	}
 	// create refs to both
 	setTransitionEndPoints( createConnectorRef( es, srcConn, xPos, yPos), createConnectorRef( es, dstConn, xPos, yPos), et);
+	*/
 }
 
 void StateflowConverter::setTransitionEndPoints( const ECSL_DP::TransConnector& etcSrc, const ECSL_DP::TransConnector& etcDst, ECSL_DP::Transition& et)
@@ -502,6 +511,7 @@ ECSL_DP::ConnectorRef StateflowConverter::createConnectorRef( ECSL_DP::State& pa
 	xPos+= CONNREF_X_OFFSET;
 	return ecr;
 }
+
 void StateflowConverter::translateState( const matlab::state& ms, ECSL_DP::State& es)
 {
 	_matlabStateMap[ ms]= es;
@@ -513,6 +523,99 @@ void StateflowConverter::translateState( const matlab::state& ms, ECSL_DP::State
 	es.ExitAction()= ms.exitAction();
 	// es.Order()= ??? !!VIZA
 	// es.Decomposition()= computed in pass2!
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// OrderFunctor used in StateflowConverter::calculateOrder()
+class OrderFunctor : public binary_function< matlab::state, matlab::state, bool>
+{
+public:
+	bool operator()( const matlab::state& ms1, const matlab::state ms2) const {
+		std::string pos1= ms1.position();
+		std::string pos2= ms2.position();
+		int x1= 0, y1= 0, x2= 0, y2= 0;
+		ParseMatlabPosString( pos1, "[", " ", "]", x1, y1);
+		ParseMatlabPosString( pos2, "[", " ", "]", x2, y2);
+		if ( x1 < x2)
+			return true;
+		if ( x1 > x2)
+			return false;
+		// equal x pos -> y pos will decide
+		return y1 < y2;
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// OrderCounter used in StateflowConverter::calculateOrder()
+class OrderCounter
+{
+public:
+	OrderCounter( const std::map< matlab::state, ECSL_DP::State>& msm, unsigned int cnt= 0) :
+	  _matlabStateMapRef( msm), _cnt( cnt)
+	  {}
+	//
+	void operator()( const matlab::state& ms) {
+		MatlabStateMap_t::const_iterator itFindMs= _matlabStateMapRef.find( ms);
+		if( _matlabStateMapRef.end() != itFindMs) {
+			const ECSL_DP::State& es= itFindMs->second;
+			es.Order()= num_to_string( _cnt++);
+		} else {
+			std::cerr << "State not found error. " << ( std::string)ms.name() << std::endl;
+			ASSERT(false);
+		}
+	}
+private:
+	//
+	typedef std::map< matlab::state, ECSL_DP::State> MatlabStateMap_t;
+	const MatlabStateMap_t& _matlabStateMapRef;
+	//
+	unsigned int _cnt;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// OrderPrinter used in StateflowConverter::calculateOrder()
+class OrderPrinter
+{
+public:
+	OrderPrinter( const std::map< matlab::state, ECSL_DP::State>& msm) :
+	  _matlabStateMapRef( msm)
+	  {}
+	//
+	void operator()( const matlab::state& ms) {
+		MatlabStateMap_t::const_iterator itFindMs= _matlabStateMapRef.find( ms);
+		if( _matlabStateMapRef.end() != itFindMs) {
+			const ECSL_DP::State& es= itFindMs->second;
+			std::cout << "\t" << ( std::string) es.name() << ": " << ( std::string) es.Order() << std::endl;
+		} else {
+			std::cerr << "State not found error. " << ( std::string)ms.name() << std::endl;
+			ASSERT(false);
+		}
+	}
+private:
+	//
+	typedef std::map< matlab::state, ECSL_DP::State> MatlabStateMap_t;
+	const MatlabStateMap_t& _matlabStateMapRef;
+};
+
+void StateflowConverter::calculateOrder( const std::set< matlab::state>& substates)
+{
+// logging
+//if ( substates.empty())
+//	return;
+//Udm::Object parent= (*substates.begin()).parent();
+//if ( parent.type() == matlab::state::meta) {
+//	std::cout << "Calculate order for states in state: " << ( std::string) matlab::state::Cast( parent).name() << std::endl;
+//} else if ( parent.type() == matlab::chart::meta) {
+//	std::cout << "Calculate order for states in state: " << ( std::string) matlab::chart::Cast( parent).name() << std::endl;
+//}
+
+	std::set< matlab::state, OrderFunctor> orderedStates;
+	std::copy( substates.begin(), substates.end(), std::inserter( orderedStates, orderedStates.begin()));
+	for_each( orderedStates.begin(), orderedStates.end(), OrderCounter( _matlabStateMap));
+
+// logging
+//std::cout << "Sub states: " << orderedStates.size() << std::endl;
+//for_each( orderedStates.begin(), orderedStates.end(), OrderPrinter( _matlabStateMap));
 }
 
 template< class T>

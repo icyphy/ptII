@@ -8,7 +8,7 @@ Matlab2EcslDP::Matlab2EcslDP( const std::string& matlabFileName, const std::stri
 {
 	// open and create the source and target data networks.
 	_dnMatlab.OpenExisting( matlabFileName, "Matlab.XSD", Udm::CHANGES_LOST_DEFAULT);
-	_dnEcslDP.CreateNew( ecslDPFileName, "ECSL_DP", ECSL_DP::RootFolder::meta, Udm::CHANGES_PERSIST_ALWAYS);
+	_dnEcslDP.CreateNew( ecslDPFileName, UseXSD()( ecslDPFileName) ? "ECSL_DP.XSD" : "ECSL_DP", ECSL_DP::RootFolder::meta, Udm::CHANGES_PERSIST_ALWAYS);
 }
 
 Matlab2EcslDP::~Matlab2EcslDP()
