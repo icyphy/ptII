@@ -209,22 +209,6 @@ public class CTScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the specified actor is in the discrete cluster of
-     *  the model.
-     *  @param actor The specified actor.
-     *  @return True if the actor is a discrete actor.
-     *  @exception IllegalActionException If this method is called before
-     *  initialization, where the schedule is computed.
-     */
-    public boolean isDiscrete(Actor actor) throws IllegalActionException {
-        if (_signalTypeMap == null) {
-            throw new IllegalActionException(this, " isDiscrete() can only "
-                    + "be called after initialization.");
-        }
-        List discreteActors = _signalTypeMap.getDiscreteActors();
-        return discreteActors.contains(actor);
-    }
-
     /** Return true if the specified actor is in the continuous cluster of
      *  the model.
      *  @param actor The specified actor.
@@ -242,37 +226,20 @@ public class CTScheduler extends Scheduler {
     }
 
 
-    /** Return the predecessors of the given actor in the topology within
-     *  this opaque composite actor.
-     *  If the argument is null, returns null.
-     *  If the actor is a source, returns an empty list.
-     *  @param The specified actor.
-     *  @return The list of predecessors, unordered.
+    /** Return true if the specified actor is in the discrete cluster of
+     *  the model.
+     *  @param actor The specified actor.
+     *  @return True if the actor is a discrete actor.
+     *  @exception IllegalActionException If this method is called before
+     *  initialization, where the schedule is computed.
      */
-    public List predecessorList(Actor actor) {
-        if (actor == null) {
-            return null;
+    public boolean isDiscrete(Actor actor) throws IllegalActionException {
+        if (_signalTypeMap == null) {
+            throw new IllegalActionException(this, " isDiscrete() can only "
+                    + "be called after initialization.");
         }
-        LinkedList predecessors = new LinkedList();
-        Iterator inPorts = actor.inputPortList().iterator();
-        while (inPorts.hasNext()) {
-            IOPort port = (IOPort) inPorts.next();
-            Iterator outPorts = port.deepConnectedOutPortList().iterator();
-            while (outPorts.hasNext()) {
-                IOPort outPort = (IOPort)outPorts.next();
-                Actor pre = (Actor)outPort.getContainer();
-                // NOTE: This could be done by using
-                // NamedObj.depthInHierarchy() instead of comparing the
-                // executive directors, but its tested this way, so we
-                // leave it alone.
-                if ((actor.getExecutiveDirector()
-                        == pre.getExecutiveDirector()) &&
-                        !predecessors.contains(pre)) {
-                    predecessors.addLast(pre);
-                }
-            }
-        }
-        return predecessors;
+        List discreteActors = _signalTypeMap.getDiscreteActors();
+        return discreteActors.contains(actor);
     }
 
     /** Return the successive actors of the given actor in the topology.
@@ -305,6 +272,39 @@ public class CTScheduler extends Scheduler {
             }
         }
         return successors;
+    }
+
+    /** Return the predecessors of the given actor in the topology within
+     *  this opaque composite actor.
+     *  If the argument is null, returns null.
+     *  If the actor is a source, returns an empty list.
+     *  @param The specified actor.
+     *  @return The list of predecessors, unordered.
+     */
+    public List predecessorList(Actor actor) {
+        if (actor == null) {
+            return null;
+        }
+        LinkedList predecessors = new LinkedList();
+        Iterator inPorts = actor.inputPortList().iterator();
+        while (inPorts.hasNext()) {
+            IOPort port = (IOPort) inPorts.next();
+            Iterator outPorts = port.deepConnectedOutPortList().iterator();
+            while (outPorts.hasNext()) {
+                IOPort outPort = (IOPort)outPorts.next();
+                Actor pre = (Actor)outPort.getContainer();
+                // NOTE: This could be done by using
+                // NamedObj.depthInHierarchy() instead of comparing the
+                // executive directors, but its tested this way, so we
+                // leave it alone.
+                if ((actor.getExecutiveDirector()
+                        == pre.getExecutiveDirector()) &&
+                        !predecessors.contains(pre)) {
+                    predecessors.addLast(pre);
+                }
+            }
+        }
+        return predecessors;
     }
 
     /** Return the SignalType as a String */
@@ -391,7 +391,8 @@ public class CTScheduler extends Scheduler {
                         _signalTypeMap.setType(inPort, DISCRETE);
                     } else {
                         throw new IllegalActionException(inPort,
-                                "Unrecognized signal type. It should be a String of "
+                                "Unrecognized signal type. "
+                                + "It should be a String of "
                                 + "either \"CONTINUOUS\" or \"DISCRETE\".");
                     }
                 } else {
