@@ -95,72 +95,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringFunction" class="ptolemy.apps.superb.actor.lib.StringFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="trim">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="trim" class="ptolemy.kernel.util.StringAttribute" value="trim">
-                </property>
-                <property name="toUpperCase" class="ptolemy.kernel.util.StringAttribute" value="toUpperCase">
-                </property>
-                <property name="toLowerCase" class="ptolemy.kernel.util.StringAttribute" value="toLowerCase">
-                </property>
-            </property>
-        </property>
-        <doc>Trim a string, convert a string to uppercase, or convert a string to
-            lowercase depending on the user's selection.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 140.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="StringFunction2" class="ptolemy.apps.superb.actor.lib.StringFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="toUpperCase">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="trim" class="ptolemy.kernel.util.StringAttribute" value="trim">
-                </property>
-                <property name="toUpperCase" class="ptolemy.kernel.util.StringAttribute" value="toUpperCase">
-                </property>
-                <property name="toLowerCase" class="ptolemy.kernel.util.StringAttribute" value="toLowerCase">
-                </property>
-            </property>
-        </property>
-        <doc>Trim a string, convert a string to uppercase, or convert a string to
-            lowercase depending on the user's selection.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 215.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="StringFunction3" class="ptolemy.apps.superb.actor.lib.StringFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="toLowerCase">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="trim" class="ptolemy.kernel.util.StringAttribute" value="trim">
-                </property>
-                <property name="toUpperCase" class="ptolemy.kernel.util.StringAttribute" value="toUpperCase">
-                </property>
-                <property name="toLowerCase" class="ptolemy.kernel.util.StringAttribute" value="toLowerCase">
-                </property>
-            </property>
-        </property>
-        <doc>Trim a string, convert a string to uppercase, or convert a string to
-            lowercase depending on the user's selection.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 295.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test Trim FunctionTEST TO UPPERCASEtest to lowercase&quot;}">
         </property>
@@ -177,56 +111,92 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+    <entity name="StringFunction4" class="ptolemy.actor.lib.string.StringFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="trim">
+        </property>
+        <doc>Trim a string, convert a string to uppercase, or convert a string to
+            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 140.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringFunction3" class="ptolemy.actor.lib.string.StringFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="toLowerCase">
+        </property>
+        <doc>Trim a string, convert a string to uppercase, or convert a string to
+            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
             </property>
         </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 295.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="toUpperCase">
+        </property>
+        <doc>Trim a string, convert a string to uppercase, or convert a string to
+            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
             </property>
         </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 215.0">
         </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Const.output" relation="relation"/>
-    <link port="Const2.output" relation="relation3"/>
-    <link port="Const3.output" relation="relation5"/>
-    <link port="AddSubtract.plus" relation="relation2"/>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation7"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="Const3.output" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
     <link port="AddSubtract.plus" relation="relation4"/>
-    <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.output" relation="relation8"/>
-    <link port="StringFunction.input" relation="relation"/>
-    <link port="StringFunction.output" relation="relation2"/>
-    <link port="StringFunction2.input" relation="relation3"/>
-    <link port="StringFunction2.output" relation="relation4"/>
-    <link port="StringFunction3.input" relation="relation5"/>
-    <link port="StringFunction3.output" relation="relation6"/>
     <link port="NonStrictTest.input" relation="relation8"/>
+    <link port="StringFunction4.input" relation="relation7"/>
+    <link port="StringFunction4.output" relation="relation"/>
+    <link port="StringFunction3.input" relation="relation6"/>
+    <link port="StringFunction3.output" relation="relation4"/>
+    <link port="StringFunction.input" relation="relation2"/>
+    <link port="StringFunction.output" relation="relation3"/>
 </entity>

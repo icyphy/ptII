@@ -74,14 +74,14 @@ public class StringIndexOf extends TypedAtomicActor {
         super(container, name);
 
         searchFor = new PortParameter(this, "searchFor");
-        searchFor.setTypeEquals(BaseType.STRING);
+        searchFor.setStringMode(true);
         searchFor.setExpression("");
-        new Attribute(searchFor, "_showName");
+        new Attribute(searchFor.getPort(), "_showName");
 
         inText = new PortParameter(this, "inText");
-        inText.setTypeEquals(BaseType.STRING);
+        inText.setStringMode(true);
         inText.setExpression("");
-        new Attribute(inText, "_showName");
+        new Attribute(inText.getPort(), "_showName");
         
         ignoreCase = new Parameter(this, "ignoreCase");
         ignoreCase.setTypeEquals(BaseType.BOOLEAN);
@@ -90,7 +90,7 @@ public class StringIndexOf extends TypedAtomicActor {
         startIndex = new PortParameter(this, "startIndex");
         startIndex.setTypeEquals(BaseType.INT);
         startIndex.setExpression("0");
-        new Attribute(startIndex, "_showName");
+        new Attribute(startIndex.getPort(), "_showName");
         
         // Create new parameters and ports, then set default values and/or
         // types of parameters and ports.

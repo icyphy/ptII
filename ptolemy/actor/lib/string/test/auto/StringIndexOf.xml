@@ -13,12 +13,12 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 70.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1202, 22, 815, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 97, 968, 509}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[753, 400]">
     </property>
     <entity name="fsm actor2" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="S">
@@ -32,7 +32,7 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 85.0">
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -201,7 +201,7 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 210.0">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
         </property>
@@ -416,7 +416,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 260.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -433,7 +433,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 170.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -442,63 +442,63 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringIndexOf" class="ptolemy.apps.superb.actor.lib.StringIndexOf">
-        <property name="searchForward" class="ptolemy.data.expr.Parameter" value="true">
+    <entity name="StringIndexOf2" class="ptolemy.actor.lib.string.StringIndexOf">
+        <property name="searchFor" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
         </property>
-        <doc>Output index of given substring</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 120.0">
+        <property name="inText" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
         </property>
-        <port name="text" class="ptolemy.actor.TypedIOPort">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="searchForwards" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Output the length of an input string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 170.0">
+        </property>
+        <port name="searchFor" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
         </port>
-        <port name="startIndex" class="ptolemy.actor.TypedIOPort">
+        <port name="inText" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
         </port>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="fsm actor2.out" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="fsm actor2.out" relation="relation3"/>
     <link port="fsm actor2.st" relation="relation4"/>
-    <link port="fsm actor3.port" relation="relation5"/>
+    <link port="fsm actor3.port" relation="relation6"/>
     <link port="fsm actor3.i" relation="relation4"/>
-    <link port="Const.output" relation="relation3"/>
+    <link port="Const.output" relation="relation5"/>
     <link port="NonStrictTest.input" relation="relation"/>
-    <link port="StringIndexOf.text" relation="relation3"/>
-    <link port="StringIndexOf.startIndex" relation="relation5"/>
-    <link port="StringIndexOf.input" relation="relation2"/>
-    <link port="StringIndexOf.output" relation="relation"/>
+    <link port="StringIndexOf2.searchFor" relation="relation3"/>
+    <link port="StringIndexOf2.inText" relation="relation5"/>
+    <link port="StringIndexOf2.startIndex" relation="relation6"/>
+    <link port="StringIndexOf2.output" relation="relation"/>
 </entity>

@@ -20,18 +20,18 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 466]">
     </property>
-    <entity name="StringSubstring" class="ptolemy.apps.superb.actor.lib.StringSubstring">
-        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+    <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="stopIndex" class="ptolemy.actor.parameters.PortParameter" value="3">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="3">
         </property>
         <doc>Output a substring of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 60.0">
         </property>
-        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="stopIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="stop" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -93,18 +93,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringSubstring2" class="ptolemy.apps.superb.actor.lib.StringSubstring">
-        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="4">
+    <entity name="StringSubstring2" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="4">
         </property>
-        <property name="stopIndex" class="ptolemy.actor.parameters.PortParameter" value="7">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="7">
         </property>
         <doc>Output a substring of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 130.0">
         </property>
-        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="stopIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="stop" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -130,18 +130,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringSubstring3" class="ptolemy.apps.superb.actor.lib.StringSubstring">
-        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="8">
+    <entity name="StringSubstring3" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="8">
         </property>
-        <property name="stopIndex" class="ptolemy.actor.parameters.PortParameter" value="11">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="11">
         </property>
         <doc>Output a substring of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 200.0">
         </property>
-        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="stopIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="stop" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -151,18 +151,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringSubstring4" class="ptolemy.apps.superb.actor.lib.StringSubstring">
-        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="12">
+    <entity name="StringSubstring4" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="12">
         </property>
-        <property name="stopIndex" class="ptolemy.actor.parameters.PortParameter" value="15">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="15">
         </property>
         <doc>Output a substring of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 270.0">
         </property>
-        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="stopIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="stop" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -188,18 +188,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="zeroZero" class="ptolemy.apps.superb.actor.lib.StringSubstring">
-        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+    <entity name="zeroZero" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="stopIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <doc>Output a substring of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 335.0">
         </property>
-        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="stopIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="stop" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -225,18 +225,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringSubstring5" class="ptolemy.apps.superb.actor.lib.StringSubstring">
-        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="12">
+    <entity name="StringSubstring5" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="12">
         </property>
-        <property name="stopIndex" class="ptolemy.actor.parameters.PortParameter" value="15">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="15">
         </property>
         <doc>Output a substring of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 395.0">
         </property>
-        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="stopIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="stop" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">

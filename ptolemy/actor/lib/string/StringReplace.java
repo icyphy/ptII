@@ -87,25 +87,26 @@ public class StringReplace extends TypedAtomicActor {
         // Create new parameters and ports.
         // Set default values of the parameters and type constraints.
         pattern = new PortParameter(this, "pattern");
+        pattern.setStringMode(true);
         pattern.setExpression("");
-        new Attribute(pattern, "_showName");
+        new Attribute(pattern.getPort(), "_showName");
 
         replaceAll = new Parameter(this, "replaceAll");
         replaceAll.setExpression("true");
         replaceAll.setTypeEquals(BaseType.BOOLEAN);
 
         replacement = new PortParameter(this, "replacement");
-        replacement.setExpression("\"\"");
-        replacement.setTypeEquals(BaseType.STRING);
+        replacement.setStringMode(true);
+        replacement.setExpression("");
+        new Attribute(replacement.getPort(), "_showName");
         
         stringToEdit = new PortParameter(this, "stringToEdit");
-        stringToEdit.setExpression("\"\"");
-        stringToEdit.setTypeEquals(BaseType.STRING);
+        stringToEdit.setStringMode(true);
+        stringToEdit.setExpression("");
+        new Attribute(stringToEdit.getPort(), "_showName");
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-        
-        // FIXME: Make the port names show.
     }
 
     ///////////////////////////////////////////////////////////////////

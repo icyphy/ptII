@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 739}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 630]">
     </property>
@@ -60,28 +60,6 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="StringReplace" class="ptolemy.apps.superb.actor.lib.StringReplace">
-        <property name="regularExpression" class="ptolemy.kernel.util.StringAttribute" value="Peter">
-        </property>
-        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
-        </property>
-        <property name="all" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 170.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Replacement2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Phillip&quot;">
         </property>
@@ -100,28 +78,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="StringReplace2" class="ptolemy.apps.superb.actor.lib.StringReplace">
-        <property name="regularExpression" class="ptolemy.kernel.util.StringAttribute" value="Smith">
-        </property>
-        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
-        </property>
-        <property name="all" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 300.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
         </port>
     </entity>
     <entity name="Input2" class="ptolemy.actor.lib.Const">
@@ -164,28 +120,6 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="StringReplace3" class="ptolemy.apps.superb.actor.lib.StringReplace">
-        <property name="regularExpression" class="ptolemy.kernel.util.StringAttribute" value="\d">
-        </property>
-        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
-        </property>
-        <property name="all" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 425.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Input3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Countdown 3, 2, 1&quot;">
         </property>
@@ -226,28 +160,6 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="StringReplace4" class="ptolemy.apps.superb.actor.lib.StringReplace">
-        <property name="regularExpression" class="ptolemy.kernel.util.StringAttribute" value="\d">
-        </property>
-        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
-        </property>
-        <property name="all" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 550.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Input4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Countdown 3, 2, 1&quot;">
         </property>
@@ -285,100 +197,176 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
+    <entity name="StringReplace5" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="Peter">
         </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 130.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="stringToEdit" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="Smith">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 260.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="stringToEdit" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\d">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 385.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="stringToEdit" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringReplace3" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\d">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 510.0">
+        </property>
+        <port name="pattern" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="replacement" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="stringToEdit" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
-    <link port="Replacement.output" relation="relation2"/>
-    <link port="Input.output" relation="relation3"/>
-    <link port="StringReplace.input" relation="relation3"/>
-    <link port="StringReplace.output" relation="relation"/>
-    <link port="StringReplace.replacement" relation="relation2"/>
-    <link port="Replacement2.output" relation="relation5"/>
-    <link port="StringReplace2.input" relation="relation4"/>
-    <link port="StringReplace2.output" relation="relation6"/>
-    <link port="StringReplace2.replacement" relation="relation5"/>
-    <link port="Input2.output" relation="relation4"/>
-    <link port="Replacement3.output" relation="relation8"/>
-    <link port="StringReplace3.input" relation="relation7"/>
-    <link port="StringReplace3.output" relation="relation9"/>
-    <link port="StringReplace3.replacement" relation="relation8"/>
-    <link port="Input3.output" relation="relation7"/>
-    <link port="Replacement4.output" relation="relation10"/>
-    <link port="StringReplace4.input" relation="relation11"/>
-    <link port="StringReplace4.output" relation="relation12"/>
-    <link port="StringReplace4.replacement" relation="relation10"/>
-    <link port="Input4.output" relation="relation11"/>
-    <link port="Test.input" relation="relation"/>
-    <link port="Test.input" relation="relation6"/>
-    <link port="Test.input" relation="relation9"/>
-    <link port="Test.input" relation="relation12"/>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Replacement.output" relation="relation13"/>
+    <link port="Input.output" relation="relation2"/>
+    <link port="Replacement2.output" relation="relation"/>
+    <link port="Input2.output" relation="relation5"/>
+    <link port="Replacement3.output" relation="relation6"/>
+    <link port="Input3.output" relation="relation8"/>
+    <link port="Replacement4.output" relation="relation9"/>
+    <link port="Input4.output" relation="relation10"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation7"/>
+    <link port="Test.input" relation="relation11"/>
+    <link port="StringReplace5.replacement" relation="relation13"/>
+    <link port="StringReplace5.stringToEdit" relation="relation2"/>
+    <link port="StringReplace5.output" relation="relation3"/>
+    <link port="StringReplace.replacement" relation="relation"/>
+    <link port="StringReplace.stringToEdit" relation="relation5"/>
+    <link port="StringReplace.output" relation="relation4"/>
+    <link port="StringReplace2.replacement" relation="relation6"/>
+    <link port="StringReplace2.stringToEdit" relation="relation8"/>
+    <link port="StringReplace2.output" relation="relation7"/>
+    <link port="StringReplace3.replacement" relation="relation9"/>
+    <link port="StringReplace3.stringToEdit" relation="relation10"/>
+    <link port="StringReplace3.output" relation="relation11"/>
 </entity>

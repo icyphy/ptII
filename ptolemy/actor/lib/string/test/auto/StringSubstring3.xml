@@ -36,10 +36,10 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringSubstring" class="ptolemy.apps.superb.actor.lib.StringSubstring">
-        <property name="startIndex" class="ptolemy.actor.parameters.PortParameter" value="0">
+    <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="stopIndex" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <doc>Output a substring of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 220.0">
@@ -50,10 +50,10 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="startIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="stopIndex" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="stop" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
     </entity>
@@ -125,7 +125,7 @@
     <link port="NonStrictTest.input" relation="relation3"/>
     <link port="StringSubstring.input" relation="relation"/>
     <link port="StringSubstring.output" relation="relation3"/>
-    <link port="StringSubstring.startIndex" relation="relation4"/>
+    <link port="StringSubstring.start" relation="relation4"/>
     <link port="Ramp.output" relation="relation4"/>
     <link port="Const.output" relation="relation"/>
 </entity>

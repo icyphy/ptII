@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <entity name="StringLength" class="ptolemy.apps.superb.actor.lib.StringLength">
+    <entity name="StringLength" class="ptolemy.actor.lib.string.StringLength">
         <doc>Output the length of an input string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 165.0">
         </property>

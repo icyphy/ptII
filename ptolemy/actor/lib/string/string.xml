@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="superb" class="ptolemy.moml.EntityLibrary">
+<entity name="string" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
 
-      <entity name="StringCompare" class="ptolemy.apps.superb.actor.lib.StringCompare">
+      <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
        	<doc>Output a comparison function of two strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
           <property name="attributeName" value="function"/>
@@ -14,28 +14,32 @@
         </property>
       </entity>
       
-      <entity name="StringFunction" class="ptolemy.apps.superb.actor.lib.StringFunction">
+      <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
         <doc>Trim a string, convert a string to uppercase, or convert a string to
             lowercase depending on the user's selection.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
           <property name="attributeName" value="function"/>
-          <property name="displayWidth" value="10"/>
+          <property name="displayWidth" value="11"/>
         </property>
       </entity>
 
-      <entity name="StringLength" class="ptolemy.apps.superb.actor.lib.StringLength">
+      <entity name="StringIndexOf" class="ptolemy.actor.lib.string.StringIndexOf">
+       <doc>Output the length of an input string</doc>
+      </entity>
+
+      <entity name="StringLength" class="ptolemy.actor.lib.string.StringLength">
        <doc>Output the length of an input string</doc>
       </entity>
       
-      <entity name="StringMatches" class="ptolemy.apps.superb.actor.lib.StringMatches">
+      <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
        <doc>Determine if a string matches a regular expression</doc>
       </entity>
       
-      <entity name="StringReplace" class="ptolemy.apps.superb.actor.lib.StringReplace">
+      <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
        <doc>Replace the patterns that match a regular expression</doc>
       </entity>
       
-      <entity name="StringSubstring" class="ptolemy.apps.superb.actor.lib.StringSubstring">
+      <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
        <doc>Output a substring of an input string</doc>
       </entity>
 

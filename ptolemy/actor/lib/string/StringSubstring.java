@@ -37,6 +37,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -44,12 +45,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// StringSubstring
 /**
 Output a substring of the string provided at the input.  The position of the
-substring within the input string is determined by the <i>startIndex</i> and
-<i>stopIndex</i> port parameters. Following Java convention, the character at
-<i>startIndex</i> is included, but the character at <i>stopIndex</i> is not.
-If the <i>stopIndex</i> is less than <i>startIndex</i>, then
-the substring starts at <i>startIndex</i> and extends to the end of the
-string. The default values for <i>startIndex</i> and <i>stopIndex</i> are
+substring within the input string is determined by the <i>start</i> and
+<i>stop</i> port parameters. Following Java convention, the character at
+<i>start</i> is included, but the character at <i>stop</i> is not.
+If the <i>stop</i> is less than <i>start</i>, then
+the substring starts at <i>start</i> and extends to the end of the
+string. The default values for <i>start</i> and <i>stop</i> are
 both 0; this results in an empty string at the output.
 
 @author Neil E. Turner and Edward A. Lee
@@ -72,13 +73,15 @@ public class StringSubstring extends Transformer {
 
         // Create new parameters and ports.
         // Set default values of the parameters and type constraints.
-        startIndex = new PortParameter(this, "startIndex");
-        startIndex.setExpression("0");
-        startIndex.setTypeEquals(BaseType.INT);
+        start = new PortParameter(this, "start");
+        start.setExpression("0");
+        start.setTypeEquals(BaseType.INT);
+        new Attribute(start.getPort(), "_showName");
 
-        stopIndex = new PortParameter(this, "stopIndex");
-        stopIndex.setExpression("0");
-        stopIndex.setTypeEquals(BaseType.INT);
+        stop = new PortParameter(this, "stop");
+        stop.setExpression("0");
+        stop.setTypeEquals(BaseType.INT);
+        new Attribute(stop.getPort(), "_showName");
 
         input.setTypeEquals(BaseType.STRING);
         output.setTypeEquals(BaseType.STRING);
@@ -91,21 +94,21 @@ public class StringSubstring extends Transformer {
      *  first character of the desired substring.  Its default value is 0,
      *  type int.
      */
-    public PortParameter startIndex;
+    public PortParameter start;
 
     /** The ending index of the input string, which is 1 greater than the
      *  position of last letter of the desired substring.  Its default value
      *  is 0, type int.
      */
-    public PortParameter stopIndex;
+    public PortParameter stop;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If there is an input string, find a substring according to the indices
-     *  given by the port parameters <i>startIndex</i> and <i>stopIndex</i>
-     *  and produce the substring at the output.  If the <i>stopIndex</i>
-     *  is -1 , then the substring starts at <i>startIndex</i> and extends to
+     *  given by the port parameters <i>start</i> and <i>stop</i>
+     *  and produce the substring at the output.  If the <i>stop</i>
+     *  is -1 , then the substring starts at <i>start</i> and extends to
      *  the end of the string.  In the event that the indices do not exist in
      *  the input string, throw IndexOutOfBoundsException.
      *  @exception IllegalActionException If the superclass throws it, or
@@ -113,19 +116,19 @@ public class StringSubstring extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        startIndex.update();
-        stopIndex.update();
+        start.update();
+        stop.update();
         if (input.hasToken(0)) {
             StringToken inputToken = (StringToken)input.get(0);
             String value = inputToken.stringValue();
-            int startIndexValue = ((IntToken)startIndex.getToken()).intValue();
-            int stopIndexValue = ((IntToken)stopIndex.getToken()).intValue();
+            int startValue = ((IntToken)start.getToken()).intValue();
+            int stopValue = ((IntToken)stop.getToken()).intValue();
             String substringValue;
-            if (stopIndexValue == -1) {
-                substringValue = value.substring(startIndexValue);
+            if (stopValue == -1) {
+                substringValue = value.substring(startValue);
             } else {
-                substringValue = value.substring(startIndexValue,
-                        stopIndexValue);
+                substringValue = value.substring(startValue,
+                        stopValue);
             }
             output.send(0, new StringToken(substringValue));
         }

@@ -53,11 +53,6 @@ matches and a false if it does not. For a reference on regular
 expression syntax see:
 <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
 http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
-<p>
-FIXME:
-Note, there could be problems using backslashes in the regular expression.
-Use double backslashes instead of single backslashes and remember to enclose
-the regular expression in quotes.
 
 @author Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee)
 @version $Id$
@@ -82,14 +77,14 @@ public class StringMatches extends TypedAtomicActor {
 
         // Create one matchString portParameter, one matchString port, and one output port.
         pattern = new PortParameter(this, "pattern");
+        pattern.setStringMode(true);
         pattern.setExpression("");
-        pattern.setTypeEquals(BaseType.STRING);
-        new Attribute(pattern, "_showName");
+        new Attribute(pattern.getPort(), "_showName");
                 
         matchString = new PortParameter(this, "matchString");
+        matchString.setStringMode(true);
         matchString.setExpression("");
-        matchString.setTypeEquals(BaseType.STRING);
-        new Attribute(matchString, "_showName");
+        new Attribute(matchString.getPort(), "_showName");
         
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);

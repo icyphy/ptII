@@ -33,14 +33,13 @@ package ptolemy.actor.lib.string;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringFunction
@@ -86,22 +85,29 @@ public class StringFunction extends Transformer {
         input.setTypeEquals(BaseType.STRING);
         output.setTypeEquals(BaseType.STRING);
 
-        function = new ChoiceAttribute(this, "function");
+        function = new Parameter(this, "function");
+        function.setStringMode(true);
         function.setExpression("trim");
         function.addChoice("toLowerCase");
         function.addChoice("toUpperCase");
         function.addChoice("trim");
         _function = _TRIM;
+        
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-30\" y=\"-15\" "
+                + "width=\"80\" height=\"30\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** StringAttribute that stores the string function to be performed
+    /** Parameter that stores the string function to be performed
      *  on the input string. The possible values are "trim" (the default),
      * "toUpperCase", or "toLowerCase".
      */
-    public ChoiceAttribute function;
+    public Parameter function;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -114,7 +120,8 @@ public class StringFunction extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String functionName = function.getExpression();
+            // Use getToken() rather than getExpression() so substitutions occur.
+            String functionName = ((StringToken)function.getToken()).stringValue();
 
             if (functionName.equals("trim")) {
                 _function = _TRIM;

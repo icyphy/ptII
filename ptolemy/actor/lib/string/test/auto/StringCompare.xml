@@ -4,7 +4,7 @@
 <entity name="StringCompare" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 175, 1032, 746}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 1, 1032, 739}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 630]">
     </property>
@@ -20,22 +20,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 45.0">
         </property>
     </property>
-    <entity name="StringCompare" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="equals">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -136,22 +128,14 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="StringCompare2" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="equals">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare2" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -172,22 +156,14 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringCompare3" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare3" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="startsWith">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -208,22 +184,14 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringCompare5" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare5" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="startsWith">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ends Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -244,22 +212,14 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringCompare6" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare6" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="endsWith">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ends Ptolemy&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -280,22 +240,14 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringCompare4" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare4" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="endsWith">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -316,22 +268,14 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringCompare7" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="contains">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare7" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="contains">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;The Ptolemy Project&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -352,22 +296,14 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringCompare8" class="ptolemy.apps.superb.actor.lib.StringCompare">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="contains">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
+    <entity name="StringCompare8" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="contains">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&quot;The Ptolemy Project&quot;">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&quot;Ptolemy starts&quot;">
         </property>
         <doc>Output a comparison function of 2 strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
@@ -564,150 +500,58 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="200.0, 145.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="215.0, 200.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="230.0, 255.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="250.0, 305.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex" value="715.0, 275.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="StringCompare.firstString" relation="relation3"/>
     <link port="StringCompare.secondString" relation="relation3"/>

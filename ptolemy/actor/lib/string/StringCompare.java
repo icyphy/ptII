@@ -40,7 +40,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -89,7 +88,8 @@ public class StringCompare extends TypedAtomicActor {
         super(container, name);
 
         // Parameters
-        function = new ChoiceAttribute(this, "function");
+        function = new Parameter(this, "function");
+        function.setStringMode(true);
         function.setExpression("equals");
         function.addChoice("equals");
         function.addChoice("startsWith");
@@ -104,11 +104,11 @@ public class StringCompare extends TypedAtomicActor {
         // Ports
         firstString = new PortParameter(this, "firstString");
         firstString.setToken(new StringToken(""));
-        firstString.setTypeEquals(BaseType.STRING);
+        firstString.setStringMode(true);
 
         secondString = new PortParameter(this, "secondString");
         secondString.setToken(new StringToken(""));
-        secondString.setTypeEquals(BaseType.STRING);
+        secondString.setStringMode(true);
 
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
@@ -132,7 +132,7 @@ public class StringCompare extends TypedAtomicActor {
      * <li> <b>contains</b>: Tests whether firstString contains secondString.
      * </ul>
      */
-    public ChoiceAttribute function;
+    public Parameter function;
 
     /** The input PortParameter for the first string of type string.
      */
@@ -162,7 +162,8 @@ public class StringCompare extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String functionName = function.getExpression();
+            // Use getToken() not getExpression() so that substitutions happen.
+            String functionName = ((StringToken)function.getToken()).stringValue();
             if (functionName.equals("equals")) {
                 _function = _EQUALS;
             } else if (functionName.equals("startsWith")) {
