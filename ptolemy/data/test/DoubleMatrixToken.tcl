@@ -1,6 +1,6 @@
 # Tests for the DoubleMatrixToken class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, Shuvra S. Bhattacharyya 
 #
 # @Version $Id$
 #
@@ -58,7 +58,7 @@ test DoubleMatrixToken-1.0 {Create an empty instance} {
 ######################################################################
 ####
 # 
-test DoubleMatrixToken-1.1 {Create a non-empty instance from an double} {
+test DoubleMatrixToken-1.1 {Create a non-empty instance from a double} {
     set a [java::new {double[][]} {2 2} {{5 4} {3 2}}]
     set p [java::new {ptolemy.data.DoubleMatrixToken double[][]} $a]
     $p toString
@@ -67,10 +67,20 @@ test DoubleMatrixToken-1.1 {Create a non-empty instance from an double} {
 ######################################################################
 ####
 # 
-test DoubleMatrixToken-1.2 {Create a non-empty instance from an String} {
+test DoubleMatrixToken-1.2 {Create a non-empty instance from a String} {
     set p [java::new {ptolemy.data.DoubleMatrixToken String} "\[5.0, 4.0; 3.0, 2.0\]"]
     $p toString
 } {[5.0, 4.0; 3.0, 2.0]}
+
+######################################################################
+####
+# 
+test DoubleMatrixToken-1.3 {Create a non-empty instance from a double array} {
+    set a2 [java::new {double[]} {5} {2 5.5 4 3 2}]
+    set p2 [java::new {ptolemy.data.DoubleMatrixToken double[] int int} $a2 5 1]
+    $p2 toString
+} {[2.0; 5.5; 4.0; 3.0; 2.0]}
+
 
 ######################################################################
 ####
