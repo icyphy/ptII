@@ -44,7 +44,8 @@ if {[string compare test [info procs test]] == 1} then {
 test Server-1.1 {test constructor and clone} {
     set e0 [deModel 3.0]
     set serverbase [java::new ptolemy.domains.de.lib.Server $e0 server]
-    set server [java::cast ptolemy.domains.de.lib.Server [$serverbase clone]]
+    set server [java::cast ptolemy.domains.de.lib.Server \
+		    [$serverbase clone [$e0 workspace]]]
     $serverbase setContainer [java::null]
     $server setContainer $e0
     # Success here is just not throwing an exception.

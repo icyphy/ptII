@@ -151,7 +151,7 @@ test SDFIOPort-2.2 {set resolved types} {
 #
 test SDFIOPort-3.1 {test clone} {
     # use set up above
-    set p2 [_testClone $p1]
+    set p2 [_testClone $p1 [$e0 workspace]]
     set rt2 [[$p2 getType] toString]
 
     set isUndec1 [[$p1 getTypeTerm] isSettable]

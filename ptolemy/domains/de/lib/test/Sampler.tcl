@@ -46,7 +46,8 @@ if {[string compare test [info procs test]] == 1} then {
 test Sampler-1.1 {test constructor and clone} {
     set e0 [deModel 3.0]
     set samplerbase [java::new ptolemy.domains.de.lib.Sampler $e0 sampler]
-    set sampler [java::cast ptolemy.domains.de.lib.Sampler [$samplerbase clone]]
+    set sampler [java::cast ptolemy.domains.de.lib.Sampler \
+		     [$samplerbase clone [$e0 workspace]]]
     $samplerbase setContainer [java::null]
     $sampler setContainer $e0
     # Success here is just not throwing an exception.

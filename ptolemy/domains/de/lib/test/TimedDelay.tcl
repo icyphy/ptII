@@ -46,7 +46,8 @@ if {[string compare test [info procs test]] == 1} then {
 test TimedDelay-1.1 {test constructor and clone} {
     set e0 [deModel 3.0]
     set timedDelayBase [java::new ptolemy.domains.de.lib.TimedDelay $e0 TimedDelay]
-    set timedDelay [java::cast ptolemy.domains.de.lib.TimedDelay [$timedDelayBase clone]]
+    set timedDelay [java::cast ptolemy.domains.de.lib.TimedDelay \
+			[$timedDelayBase clone [$e0 workspace]]]
     $timedDelayBase setContainer [java::null]
     $timedDelay setContainer $e0
     # Success here is just not throwing an exception.

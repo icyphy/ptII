@@ -46,7 +46,8 @@ if {[string compare test [info procs test]] == 1} then {
 test WaitingTime-1.1 {test constructor and clone} {
     set e0 [deModel 3.0]
     set waitbase [java::new ptolemy.domains.de.lib.WaitingTime $e0 wait]
-    set wait [java::cast ptolemy.domains.de.lib.WaitingTime [$waitbase clone]]
+    set wait [java::cast ptolemy.domains.de.lib.WaitingTime \
+		  [$waitbase clone [$e0 workspace]]]
     $waitbase setContainer [java::null]
     $wait setContainer $e0
     # Success here is just not throwing an exception.
