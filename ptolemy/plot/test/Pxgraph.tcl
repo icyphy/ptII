@@ -45,11 +45,11 @@ if {[string compare test [info procs test]] == 1} then {
 proc pxgraphFiles {} {
     global pxgraphfile1 pxgraphfile2 tcl_platform
     if { $tcl_platform(host_platform) == "windows"} {
-	set pxgraphfile1 pxgrapfile1.plt
-	set pxgraphfile2 pxgrapfile2.plt
+	set pxgraphfile1 pxgraphfile1.plt
+	set pxgraphfile2 pxgraphfile2.plt
     } else {
-	set pxgraphfile1 /tmp/pxgrapfile1.plt
-	set pxgraphfile2 /tmp/pxgrapfile2.plt
+	set pxgraphfile1 /tmp/pxgraphfile1.plt
+	set pxgraphfile2 /tmp/pxgraphfile2.plt
     }
 
     set fd [open $pxgraphfile1 w]
@@ -1116,4 +1116,48 @@ move: 0.0, 0.0
 18.0, 29.899999618530273
 19.0, 39.93000030517578}
 
-file delete -force pxgraphfile1 pxgraphfile2
+######################################################################
+####
+#
+test Pxgraph-6.1 {Reusedatasets} {
+    global pxgraphfile3 pxgraphfile4 tcl_platform
+    if { $tcl_platform(host_platform) == "windows"} {
+	set pxgraphfile3 pxgraphfile3.plt
+	set pxgraphfile4 pxgraphfile4.plt
+    } else {
+	set pxgraphfile3 /tmp/pxgraphfile3.plt
+	set pxgraphfile4 /tmp/pxgraphfile4.plt
+    }
+
+    set fd [open $pxgraphfile3 w]
+    puts $fd "Reusedatasets: on\nDataset: first\n1 1\n2 10\n 3 25\n\nDataset: second\n1 1.5\n2 15\n3 30\n"
+    close $fd
+
+    set fd [open $pxgraphfile4 w]
+    puts $fd "Dataset: first\n5 35\n6 40 \n7 42\n"
+    close $fd
+    pxgraphTest $pxgraphfile3 $pxgraphfile4
+
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
+<plot>
+<!-- Ptolemy plot, version 3.1, PlotML format. -->
+<reuseDatasets/>
+<dataset name="first">
+<m x="1.0" y="1.0"/>
+<p x="2.0" y="10.0"/>
+<p x="3.0" y="25.0"/>
+<p x="5.0" y="35.0"/>
+<p x="6.0" y="40.0"/>
+<p x="7.0" y="42.0"/>
+</dataset>
+<dataset name="second">
+<m x="1.0" y="1.5"/>
+<p x="2.0" y="15.0"/>
+<p x="3.0" y="30.0"/>
+</dataset>
+</plot>
+}
+
+# Clean up
+file delete -force $pxgraphfile1 $pxgraphfile2 $pxgraphfile3 $pxgraphfile4
