@@ -95,6 +95,9 @@ install: all
 
 demo: demo_jgraphical
 
+bus: 
+	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
+
 # These demos do not require a graphics terminal, but do use TclBlend and Java
 demo_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
