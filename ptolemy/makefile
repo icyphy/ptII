@@ -36,7 +36,7 @@ ME =		ptolemy
 # any classes in other directories that we depend on.
 
 DIRS = kernel plot graph data actor automata gui math media \
-	moml domains schematic #filter
+	moml domains #filter
 
 # Root of Ptolemy II directory
 ROOT =		..
