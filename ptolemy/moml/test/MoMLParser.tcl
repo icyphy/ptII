@@ -499,7 +499,8 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <import base="../../.." source="ptolemy/moml/test/testClass.xml"/>
+    <!-- Note that here, we are searching using the classpath -->
+    <import source="ptolemy/moml/test/testClass.xml"/>
     <entity name="b" class=".a"/>
     <import source="testClass2.xml"/>
     <entity name="c" class=".a"/>
