@@ -16,6 +16,7 @@ including links to Applet resources on the net
 Contents
 <menu>
 
+<li> <a href="#vergil">Troubleshooting Vergil</a>
 <li> <a href="#build">Troubleshooting Build problems</a>
 <li> <a href="#applets">Troubleshooting Applets</a>
 	<menu>
@@ -27,6 +28,24 @@ Contents
 	<li> <a href="#Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a>
 	</menu>
 </menu>
+
+<h2><a href="#vergil">Troubleshooting Vergil</a></h2>
+<dl>
+<dt> The user interface appears to be frozen, but windows are redrawn.
+
+<dd> A modal dialog may be open.  Unfortunately, these dialogs do not
+appear in the task bar on windows systems, so the only way to find
+them is to put windows in the background until they appear.  You can
+do this by repeatedly hitting Alt-Escape.</li>
+
+<dt> My model hangs, failing to make progress.
+
+<dd> In the DE domain, if an actor has input tokens that it fails to
+consume when it is fired, then it the director will continue to fire
+it repeatedly until those tokens are consumed.  Actors in the DE
+domain must consume pending input tokens.
+
+</dl>
 
 <H2><a name="build">Troubleshooting Build problems</a></H2>
 The <a href="install.htm">Ptolemy II Installation page</a> describes
