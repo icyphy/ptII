@@ -363,7 +363,8 @@ public abstract class Top extends JFrame {
         return _queryForSave();
     }
 
-    /** Close the window.
+    /** Close the window.  Derived classes should override this to
+     *  release any resources or remove any listeners.
      */
     protected void _close() {
         // NOTE: We use dispose() here rather than just hiding the

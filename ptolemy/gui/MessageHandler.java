@@ -86,6 +86,12 @@ public class MessageHandler {
      */
     public static void error(String info, Exception exception) {
         if (exception instanceof CancelException) return;
+
+        // Sometimes you find that errors are reported multiple times.
+        // To find out who is calling this method, uncomment the following.
+        // System.out.println("------ reporting error:");
+        // (new Exception()).printStackTrace();
+
         Object[] message = new Object[1];
 	String string;
 	if(info != null) {
