@@ -1,4 +1,4 @@
-/* An actor that displays input data in a text area on the screen.
+/* An actor that displays the inputs on the screen.
 
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -32,22 +32,31 @@ package ptolemy.actor.lib;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
+import ptolemy.actor.util.Table;
 import java.awt.*;
 
-/** Display the values of the tokens arriving on the input channels
- *  in a text area on the screen.
+/** Show the inputs on the screen.  This actor reads tokens from any number
+ *  of input channels and displays their string values in a tabular
+ *  format with labels specified by a parameter.  The input type
+ *  is StringToken.  Since any other type of token can be converted
+ *  to a StringToken, this imposes no constraints on the types of the
+ *  upstream actors.
  *  <p>
- *  The input type is StringToken.  Since any other type of token
- *  can be converted to a StringToken, this imposes no constraints
- *  on the types of the upstream actors.
+ *  The "labels" parameter gives a comma-separated list of labels
+ *  to display next to the input values.  Each label, of course, cannot
+ *  contain a comma.  If there are more labels than input channels,
+ *  then the last few labels will be ignored.  If there are fewer
+ *  labels than input channels, then the missing labels will be automatically
+ *  generated.
  *
- *  @author  Yuhong Xiong, Edward A. Lee
+ *  @author  Edward A. Lee
  *  @version $Id$
  */
-public class Print extends TypedAtomicActor implements Placeable {
+public class Show extends TypedAtomicActor implements Placeable {
 
-    public Print(TypedCompositeActor container, String name)
+    public Show(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -55,6 +64,9 @@ public class Print extends TypedAtomicActor implements Placeable {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setDeclaredType(StringToken.class);
+
+        // create the parameter and make it a string.
+        labels = new Parameter(this, "labels", new StringToken(""));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -63,22 +75,23 @@ public class Print extends TypedAtomicActor implements Placeable {
     /** Input port, which has type StringToken. */
     public TypedIOPort input;
 
-    /** The text area in which the data will be displayed. */
-    public TextArea textArea;
+    /** A comma separated list of labels. */
+    public Parameter labels;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports.
+     *  base class and sets the public port and parameter variables
+     *  to the cloned ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
         try {
-            Print newobj = (Print)super.clone(ws);
+            Show newobj = (Show)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
-            textArea = null;
+            newobj.labels = (Parameter)newobj.getAttribute("labels");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -87,9 +100,8 @@ public class Print extends TypedAtomicActor implements Placeable {
         }
     }
 
-    /** Read at most one token from each input channel and display its
-     *  string value on the screen.  Each value is terminated
-     *  with a newline character.
+    /** Read at most one token from each input channel and update
+     *  the display with its value.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -98,51 +110,77 @@ public class Print extends TypedAtomicActor implements Placeable {
             if (input.hasToken(i)) {
                 StringToken token = (StringToken)input.get(i);
                 String value = token.stringValue();
-                textArea.append(value + "\n");
+                _table.set(getFullName() + "_" + i, value);
             }
         }
     }
 
-    /** Create a text area on the screen, if necessary, or clear the
-     *  previously existing text area.
-     *  If a panel has not been specified, place the text area into
+    /** Create a display table on the screen, if necessary, or clear the
+     *  previously existing table.
+     *  If a panel has not been specified, place the table into
      *  its own frame.  Otherwise, place it in the specified panel.
+     *  If the panel is itself an instance of Table, then use that
+     *  instance.
      */
     public void initialize() {
-        if (textArea == null) {
+        if (_table == null) {
             setPanel(_panel);
+        }
+        // FIXME: This doesn't deal with mutations, even between runs!
+        if (!_populated) {
+            int width = input.getWidth();
+            for (int i = 0; i < width; i++) {
+                // FIXME: Parse the parameter "labels"
+                _table.line(getFullName() + "_" + i, "Input " + i + ":", "");
+            }            
         } else {
-            // FIXME: Incredibly, TextArea has no clear method!
-            // textArea.clear();
+            int width = input.getWidth();
+            for (int i = 0; i < width; i++) {
+                _table.set(getFullName() + "_" + i, "");
+            }
         }
     }
 
     /** Specify the panel in which the data should be displayed.
-     *  An instance of TextArea will be added to that panel.
      *  This method needs to be called before the first call to initialize().
-     *  Otherwise, an instance of TextArea will be placed in its own frame.
-     *  The text area is also placed in its own frame if this method
-     *  is called with a null argument.
+     *  Otherwise, the data will be displayed in its own frame.
+     *  The data is also placed in its own frame if this method
+     *  is called with a null argument.  If the argument is an
+     *  instance of Table, then that object is used to display the data.
      *
-     *  @param panel The panel into which to place the text area.
+     *  @param panel The panel into which to display the data.
      */
     public void setPanel(Panel panel) {
         _panel = panel;
         if (_panel == null) {
-            // place the text area in its own frame.
+            if (_table == null) {
+                _table = new Table();
+                _populated = false;
+            }
+            // place the data in its own frame.
             // FIXME: This probably needs to be a PtolemyFrame, when one
             // exists, so that the close button is dealt with, etc.
+            // FIXME: This does not actually result in a Frame appearing.
             Frame frame = new Frame(getFullName());
-            frame.add(textArea);
+            frame.add(_table);
         } else {
-            textArea = new TextArea();
-            _panel.add(textArea);
+            if (_panel instanceof Table) {
+                _table = (Table)_panel;
+            } else {
+                if (_table == null) {
+                    _table = new Table();
+                    _populated = false;
+                }
+                _panel.add(_table);
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    private Panel _panel;
+    private Panel _panel = null;
+    private Table _table = null;
+    private boolean _populated = false;
 }
 

@@ -52,17 +52,22 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Add.java \
+	AddSub.java \
+	Average.java \
 	CoinFlip.java \
 	Commutator.java \
 	Const.java \
 	Distributor.java \
 	Expression.java \
+	FileWrite.java \
 	Gaussian.java \
+	HistogramActor.java \
+	PlotActor.java \
 	Print.java \
 	Pulse.java \
 	Ramp.java \
 	Sin.java \
-	TimePlot.java
+	Show.java
 
 EXTRA_SRCS =	$(JSRCS)
 

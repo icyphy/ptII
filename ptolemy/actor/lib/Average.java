@@ -1,4 +1,4 @@
-/* An actor that outputs the sine of the input.
+/* An actor that outputs the average of the inputs so far.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -33,20 +33,23 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
-//// Sin
+//// Average
 /**
-Produce an output token on each firing with a value that is
-equal to the sine of the input.  This actor assumes that it is fired
-only when there is a token at its input.
+Output the average of the inputs so far.
+One output is produced each time the actor fires.
+The inputs can be any token type that supports addition and division.
+<p>
+Note that the type system is currently fairly tolerant. Static type
+checking may result in a resolved type that does not support addition
+and division.  In this case, a run-time error will occur.
 
 @author Edward A. Lee
 @version $Id$
 */
 
-public class Sin extends TypedAtomicActor {
+public class Average extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -56,14 +59,12 @@ public class Sin extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Sin(TypedCompositeActor container, String name)
+    public Average(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,11 +86,9 @@ public class Sin extends TypedAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            Sin newobj = (Sin)super.clone(ws);
+            Average newobj = (Average)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.input.setDeclaredType(DoubleToken.class);
             newobj.output = (TypedIOPort)newobj.getPort("output");
-            newobj.output.setDeclaredType(DoubleToken.class);
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -98,17 +97,35 @@ public class Sin extends TypedAtomicActor {
         }
     }
 
-    /** Compute the sine of the input.
+    /** Compute the average of the inputs so far.
      */
     public void fire() {
         try {
-            DoubleToken in = (DoubleToken)input.get(0);
-            double result = Math.sin(in.doubleValue());
-            output.broadcast(new DoubleToken(result));
+            while(input.hasToken(0)) {
+                Token in = input.get(0);
+                if (_accum == null) {
+                    _accum = in.zero();
+                }
+                _accum = _accum.add(in);
+                Token out = _accum.divide(new IntToken(_count++));
+                output.broadcast(out);
+            }
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());
         }
     }
+
+    /** Reset the count of inputs.
+     */
+    public void initialize() {
+        _count = 1;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    Token _accum;
+    int _count = 1;
 }
 
