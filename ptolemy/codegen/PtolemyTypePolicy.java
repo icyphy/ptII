@@ -141,12 +141,25 @@ public class PtolemyTypePolicy extends TypePolicy {
         case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+            throw new RuntimeException("PtolemyTypePolicy."
+				       + "moreGeneralTokenKind(): "
+				       + " Abstract types are not permitted"
+				       + " kind1 = "
+				       + kind1
+				       + " " + _ptTypeID.typeNodeForKind(kind1).getName().getIdent()
+				       + " is abstract."
+				       + " kind2 = " + kind2 
+				       + " " + _ptTypeID.typeNodeForKind(kind2).getName().getIdent());
 
             // types that are already as general as possible
         case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN: // change this when we change the type lattice
-            throw new RuntimeException("moreGeneralTokenKind() : kind1 = " + kind1 +
-                    " kind2 = " + kind2);
+            throw new RuntimeException("moreGeneralTokenKind(): kind1 = "
+				       + kind1
+				       + " " + _ptTypeID.typeNodeForKind(kind1).getName().getIdent()
+				       + " is already as general as possible,"
+				       + " kind2 = " + kind2 
+				       + " " + _ptTypeID.typeNodeForKind(kind2).getName().getIdent());
 
         default:
             throw new RuntimeException("moreGeneralTokenKind() : kind unknown :  " + kind1);
