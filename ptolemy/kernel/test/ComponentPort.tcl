@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,7 +33,7 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
@@ -51,7 +51,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-2.1 {Construct Ports} {
     set e1 [java::new pt.kernel.ComponentEntity]
     set p1 [java::new pt.kernel.ComponentPort]
@@ -61,7 +61,7 @@ test ComponentPort-2.1 {Construct Ports} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-2.2 {Construct Ports} {
     set e1 [java::new pt.kernel.ComponentEntity]
     $e1 setName E1
@@ -72,7 +72,7 @@ test ComponentPort-2.2 {Construct Ports} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-2.3 {Check getInsidePorts on opaque ports} {
     set e1 [java::new pt.kernel.ComponentEntity]
     $e1 setName E1
@@ -82,7 +82,7 @@ test ComponentPort-2.3 {Check getInsidePorts on opaque ports} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-2.3 {Check deepInsidePorts on opaque ports} {
     set e1 [java::new pt.kernel.ComponentEntity]
     $e1 setName E1
@@ -92,7 +92,7 @@ test ComponentPort-2.3 {Check deepInsidePorts on opaque ports} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-3.1 {Make transparent port} {
     set e1 [java::new pt.kernel.CompositeEntity]
     $e1 setName E1
@@ -107,7 +107,7 @@ test ComponentPort-3.1 {Make transparent port} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-3.2 {Make multiple aliases and test deepInsidePorts} {
     set e1 [java::new pt.kernel.CompositeEntity]
     $e1 setName E1
@@ -125,7 +125,7 @@ test ComponentPort-3.2 {Make multiple aliases and test deepInsidePorts} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-3.3 {test connectedPorts} {
     set e1 [java::new pt.kernel.CompositeEntity]
     $e1 setName E1
@@ -144,7 +144,7 @@ test ComponentPort-3.3 {test connectedPorts} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-3.4 {Level-crossing link error} {
     set e1 [java::new pt.kernel.CompositeEntity]
     $e1 setName E1
@@ -158,7 +158,7 @@ test ComponentPort-3.4 {Level-crossing link error} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-3.5 {Level-crossing link} {
     set e1 [java::new pt.kernel.CompositeEntity]
     $e1 setName E1
@@ -172,7 +172,7 @@ test ComponentPort-3.5 {Level-crossing link} {
 
 ######################################################################
 ####
-# 
+#
 test ComponentPort-3.6 {Construct transparent ports, then modify them} {
     set e0 [java::new pt.kernel.CompositeEntity]
     $e0 setName E0
@@ -215,7 +215,7 @@ test ComponentPort-3.6 {Construct transparent ports, then modify them} {
 } {{P2 {} P4 {} {P2 P1} {P4 P3} {P2 P3} {} {P2 P2 P1} {} {P2 P1 P3} {P3 P2}}}
 
 ######################################################################
-#### 
+####
 #
 test ComponentPort-4.1 {Cross Level Link} {
     # Create objects
@@ -237,7 +237,7 @@ test ComponentPort-4.1 {Cross Level Link} {
 } {R1 R1}
 
 ######################################################################
-#### 
+####
 # Example from figure of design document.
 test ComponentPort-5.1 {Transparent entity} {
     # Create objects

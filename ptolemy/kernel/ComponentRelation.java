@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -36,7 +36,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentRelation
-/** 
+/**
 This class defines a relation supporting hierarchy (clustered graphs).
 Specifically, a method is added for defining a container and for
 performing deep traversals of
@@ -97,8 +97,8 @@ public class ComponentRelation extends Relation {
      *   with this relation.
      *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
-     */	
-    public ComponentRelation(CompositeEntity container, String name) 
+     */
+    public ComponentRelation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         try {
@@ -134,7 +134,7 @@ public class ComponentRelation extends Relation {
      *  all transparent ports and return only opaque ports.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPorts.
-     */	
+     */
     public Enumeration deepLinkedPorts() {
         try {
             workspace().read();
@@ -144,7 +144,7 @@ public class ComponentRelation extends Relation {
             }
             Enumeration nearports = linkedPorts();
             _deeplinkedports = new LinkedList();
-            
+
             while( nearports.hasMoreElements() ) {
                 ComponentPort port = (ComponentPort)nearports.nextElement();
                 if (port._outside(this.getContainer())) {
@@ -176,7 +176,7 @@ public class ComponentRelation extends Relation {
         return _container;
     }
 
-    /** Specify the container entity, adding the relation to the list 
+    /** Specify the container entity, adding the relation to the list
      *  of relations in the container.  If the container already contains
      *  a relation with the same name, then throw an exception and do not make
      *  any changes.  Similarly, if the container is not in the same
@@ -195,9 +195,9 @@ public class ComponentRelation extends Relation {
      *  @param container The proposed container.
      *  @exception IllegalActionException
      *   If this entity and the container are not in the same workspace.
-     *  @exception NameDuplicationException If the name collides with a name 
+     *  @exception NameDuplicationException If the name collides with a name
      *   already on the contents list of the container.
-     */	
+     */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container != null && workspace() != container.workspace()) {
@@ -245,7 +245,7 @@ public class ComponentRelation extends Relation {
 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which results
-     *  in invalid references to objects. 
+     *  in invalid references to objects.
      *  In this class, this method reinitializes the private member
      *  _container.
      *  @param ws The workspace the cloned object is to be placed in.

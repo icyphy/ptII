@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -32,7 +32,7 @@ package pt.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// NoSuchItemException
-/** 
+/**
 Thrown on access (by name) to an item that doesn't exist.
 E.g., attempt to remove a port by name and no such port exists.
 
@@ -42,7 +42,7 @@ E.g., attempt to remove a port by name and no such port exists.
 public class NoSuchItemException extends KernelException {
     /** Constructs an Exception with a detail message.
      *  @param detail A message.
-     */  
+     */
     public NoSuchItemException(String detail) {
         super(detail);
     }
@@ -51,7 +51,7 @@ public class NoSuchItemException extends KernelException {
      *  name of the argument.
      *  @param obj An object in which the item might have been.
      *  @param detail A message.
-     */  
+     */
     public NoSuchItemException(Nameable obj, String detail) {
         super(obj, detail);
     }

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompositeActor
-/** 
+/**
 A CompositeActor is an aggregation of actors.  It may have a <i>director</i>,
 which is an object of class Director that is responsible for executing
 the contained actors.  It may also have an <i>executive Director</i>,
@@ -188,7 +188,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
      *  @return The executive director.
      */
     public Director getExecutiveDirector() {
-        return _execdirector;            
+        return _execdirector;
     }
 
     /** If there is a director, invoke its initialize() method.
@@ -204,7 +204,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
     /** Return an enumeration of the input ports.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of IOPort objects.
-     */ 
+     */
     public Enumeration inputPorts() {
         synchronized(workspace()) {
             if(_inputPortsVersion != workspace().getVersion()) {
@@ -225,7 +225,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
 
     /** Return true if this contains a director.  Otherwise, return false.
      *  This method is synchronized on the workspace.
-     */	
+     */
     public boolean isAtomic() {
         synchronized(workspace()) {
             return _director != null;
@@ -239,10 +239,10 @@ public class CompositeActor extends CompositeEntity implements Executable {
      *  @param name The name of the newly created port.
      *  @return The new port.
      *  @exception IllegalActionException if the argument is null.
-     *  @exception NameDuplicationException if the entity already has a port 
+     *  @exception NameDuplicationException if the entity already has a port
      *   with the specified name.
-     */	
-    public Port newPort(String name) 
+     */
+    public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
             IOPort port = new IOPort(this, name);
@@ -280,7 +280,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
                 Enumeration ports = getPorts();
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
-                    if( p.isOutput()) { 
+                    if( p.isOutput()) {
                         outports.insertLast(p);
                     }
                 }
@@ -321,7 +321,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
             }
         }
     }
-  
+
     /** Set the director for execution of this CompositeActor.
      *  This method increments the workspace version.
      *  This method is synchronized on the workspace.
@@ -372,7 +372,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
             getDirector().wrapup();
         }
     }
-        
+
     ///////////////////////////////////////////////////////////////////////
     ////                      protected methods                        ////
 
@@ -384,7 +384,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
      *  @exception IllegalActionException Argument has no name.
      *  @exception NameDuplicationException Name collides with a name already
      *  on the entity contents list.
-     */	
+     */
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
@@ -402,7 +402,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
      *  nothing happens). This method does not alter the entity in any way.
      *  This method is sychronized on the workspace.
      *  @param entity Entity to be removed.
-     */	
+     */
     protected void _removeEntity(ComponentEntity entity) {
         synchronized(workspace()) {
             super._removeEntity(entity);

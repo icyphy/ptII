@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,7 +33,7 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
@@ -42,14 +42,14 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
 ######################################################################
 ####
-# 
+#
 # FIXME: set the following test
 # test IOPort-1.1 {Get information about an instance of IOPort} {
 #     # If anything changes, we want to know about it so we can write tests.
@@ -64,7 +64,7 @@ set director [java::new pt.actor.Director]
 
 ######################################################################
 ####
-# 
+#
 test IOPort-2.1 {Construct Ports} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.Actor $e0 E1]
@@ -91,7 +91,7 @@ test IOPort-2.3 {Attempt to set erroneous container} {
 
 ######################################################################
 ####
-# 
+#
 test IOPort-3.1 {Test input/output predicates} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.Actor $e0 E1]
@@ -123,7 +123,7 @@ test IOPort-3.3 {Test input/output predicates on transparent ports} {
 
 ######################################################################
 ####
-# 
+#
 test IOPort-4.1 {Test multiport predicate} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.Actor $e0 E1]
@@ -147,7 +147,7 @@ test IOPort-4.2 {Test multiport predicate on transparent port} {
 
 ######################################################################
 ####
-# 
+#
 test IOPort-5.1 {Test getWidth} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.Actor $e0 E1]
@@ -204,7 +204,7 @@ test IOPort-5.4 {Test getWidth after unlinking} {
 
 ######################################################################
 ####
-# 
+#
 test IOPort-6.1 {Make sure multiple links not allowed on single ports} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.Actor $e0 E1]
@@ -218,7 +218,7 @@ test IOPort-6.1 {Make sure multiple links not allowed on single ports} {
 
 ######################################################################
 ####
-# 
+#
 test IOPort-7.1 {Check getReceivers on an unlinked port} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.Actor $e0 E1]
@@ -237,7 +237,7 @@ test IOPort-7.2 {Check getReceivers} {
 
 ######################################################################
 ####
-# 
+#
 test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.Actor $e0 E1]
@@ -266,7 +266,7 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
 
 ######################################################################
 ####
-# 
+#
 test IOPort-9.1 {Check connectivity via send} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sending entity
@@ -366,11 +366,11 @@ test IOPort-10.3 {Check description use test-9.1 topology} {
     # set r1 [$e0 connect $p1 $p2 R1]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $p1 link $r1
-    $p2 link $r1    
-    list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8] 
+    $p2 link $r1
+    list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8]
 } {{null
-} {..E1.P2.pt.actor.Mailbox 
-} {..E1.P2.pt.actor.Mailbox 
+} {..E1.P2.pt.actor.Mailbox
+} {..E1.P2.pt.actor.Mailbox
 } {null
 }}
 
@@ -388,14 +388,14 @@ test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     # connection
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $p1 link $r1
-    $p2 link $r1    
+    $p2 link $r1
     $p3 link $r1
-    list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8] [$p3 description 7] [$p3 description 8] 
+    list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8] [$p3 description 7] [$p3 description 8]
 } {{null
-} {..E2.P2.pt.actor.Mailbox ..E3.P3.pt.actor.Mailbox 
-} {..E2.P2.pt.actor.Mailbox 
+} {..E2.P2.pt.actor.Mailbox ..E3.P3.pt.actor.Mailbox
+} {..E2.P2.pt.actor.Mailbox
 } {null
-} {..E3.P3.pt.actor.Mailbox 
+} {..E3.P3.pt.actor.Mailbox
 } {null
 }}
 
@@ -414,19 +414,19 @@ test IOPort-10.5 {Check description use multi-output port} {
     # connection
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $p1 link $r1
-    $p2 link $r1    
+    $p2 link $r1
     set r2 [java::new pt.actor.IORelation $e0 R2]
     $p1 link $r2
     $p3 link $r2
     list [$p1 description 7] [$p1 description 8] \
           [$p2 description 7] [$p2 description 8] \
-          [$p3 description 7] [$p3 description 8] 
+          [$p3 description 7] [$p3 description 8]
 } {{null
-} {..E2.P2.pt.actor.Mailbox 
-..E3.P3.pt.actor.Mailbox 
-} {..E2.P2.pt.actor.Mailbox 
+} {..E2.P2.pt.actor.Mailbox
+..E3.P3.pt.actor.Mailbox
+} {..E2.P2.pt.actor.Mailbox
 } {null
-} {..E3.P3.pt.actor.Mailbox 
+} {..E3.P3.pt.actor.Mailbox
 } {null
 }}
 
@@ -453,7 +453,7 @@ test IOPort-10.6 {Check description use the example in design doc} {
     $p8 makeMultiport true
     set p9 [java::new pt.actor.IOPort $e5 P9 true false]
     $p9 makeMultiport true
-    
+
     set e6 [java::new pt.actor.Actor $e0 E6]
     set p7 [java::new pt.actor.IOPort $e6 P7 true false]
     $p7 makeMultiport true
@@ -461,7 +461,7 @@ test IOPort-10.6 {Check description use the example in design doc} {
     set e7 [java::new pt.actor.Actor $e0 E7]
     set p10 [java::new pt.actor.IOPort $e7 P10 false true]
     $p10 makeMultiport true
-    
+
     # connection
     set r1 [java::new pt.actor.IORelation $e1 R1]
     $r1 setWidth 0
@@ -497,15 +497,15 @@ test IOPort-10.6 {Check description use the example in design doc} {
     list [$p1 description 7] [$p1 description 8] \
          [$p10 description 7] [$p10 description 8]
 } {{null
-} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
-..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
-..E3.E4.P8.pt.actor.Mailbox 
-..E3.E5.P9.pt.actor.Mailbox ..E3.E5.P9.pt.actor.Mailbox 
+} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
+..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
+..E3.E4.P8.pt.actor.Mailbox
+..E3.E5.P9.pt.actor.Mailbox ..E3.E5.P9.pt.actor.Mailbox
 } {null
-} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
-..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
+} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
+..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
 }}
-    
+
 ######################################################################
 ####
 #   Check liberalLink with galaxy

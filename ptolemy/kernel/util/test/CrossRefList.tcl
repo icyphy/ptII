@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,16 +33,16 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
 # Load up Tcl Procs to print out enums
-if {[info procs _testCrossRefListGetLinks] == "" } then { 
+if {[info procs _testCrossRefListGetLinks] == "" } then {
     source testEnums.tcl
 }
 
-if {[info procs enumToNames] == "" } then { 
+if {[info procs enumToNames] == "" } then {
     source enums.tcl
 }
 
@@ -51,14 +51,14 @@ if {[info procs enumToNames] == "" } then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-2.1 {Create a CrossRefList, copy it} {
     set owner [java::new Object]
     set crlone [java::new pt.kernel.util.CrossRefList $owner]
@@ -68,7 +68,7 @@ test CrossRefList-2.1 {Create a CrossRefList, copy it} {
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
     set owner [java::new Object]
     set crlone [java::new pt.kernel.util.CrossRefList $owner]
@@ -79,7 +79,7 @@ test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-3.1 {link CrossRefLists, check out isLinked} {
     set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
     set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
@@ -98,7 +98,7 @@ test CrossRefList-3.1 {link CrossRefLists, check out isLinked} {
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-4.1 {link CrossRefLists, check out unlink} {
     # Create Three CrossRefLists, link the first to the other two,
     # then unlink
@@ -138,7 +138,7 @@ result4 = $result4\n\
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-4.2 {link CrossRefLists, check out unlink} {
     set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
     set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
@@ -155,7 +155,7 @@ test CrossRefList-4.2 {link CrossRefLists, check out unlink} {
     $crlthree link $crltwo
     set result1 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
 
-    $crltwo unlinkAll 
+    $crltwo unlinkAll
     set result2 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
 
     $crlone link $crltwo
@@ -180,7 +180,7 @@ unlink 1 = $result4\n\
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-4.3 {link two CrossLists many times, then unlink} {
     set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
     set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
@@ -194,7 +194,7 @@ test CrossRefList-4.3 {link two CrossLists many times, then unlink} {
     $crlone link $crltwo
     $crlone link $crltwo
     set result1 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
- 
+
     $crlone unlink $ownertwo
     $crlone unlink $ownertwo
     set result2 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
@@ -219,7 +219,7 @@ unlink 1->2 4 times = $result3\n\
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-5.1 {link CrossRefLists, then use the copy constructor} {
     set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
     set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
@@ -233,7 +233,7 @@ test CrossRefList-5.1 {link CrossRefLists, then use the copy constructor} {
     $crlone link $crltwo
     $crlone link $crlthree
     set result1 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
- 
+
     set ownerfour [java::new pt.kernel.util.NamedObj "Owner Four"]
     set crlfour [java::new pt.kernel.util.CrossRefList $ownerfour $crlone]
     set result2 [_testCrossRefListGetLinks $crlone $crltwo $crlthree $crlfour]
@@ -260,7 +260,7 @@ unlink 4->3 = $result4\n\
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
     set a1 [java::new pt.kernel.util.NamedObj A1]
     set c1 [java::new pt.kernel.util.CrossRefList $a1]
@@ -276,7 +276,7 @@ test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
 
 ######################################################################
 ####
-# 
+#
 test CrossRefList-5.3 {link CrossRefList to itself} {
     set a1 [java::new pt.kernel.util.NamedObj A1]
     set c1 [java::new pt.kernel.util.CrossRefList $a1]

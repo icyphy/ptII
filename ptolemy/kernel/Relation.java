@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -103,7 +103,7 @@ public class Relation extends NamedObj {
     /** Clone the object into the specified workspace and add the clone
      *  to the directory of that workspace.
      *  The result is a new relation with no links and no container.
-     *  @param ws The workspace in which to place the cloned object. 
+     *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      *  @return A new Relation.
      */
@@ -118,7 +118,7 @@ public class Relation extends NamedObj {
      *  once if more than on link to it has been established.
      *  This method is read-synchronized on the workspace.
      *  @return An Enumeration of Port objects.
-     */	
+     */
     public Enumeration linkedPorts() {
         try {
             workspace().read();
@@ -134,18 +134,18 @@ public class Relation extends NamedObj {
      *  This method is read-synchronized on the workspace.
      *  @param except Port to exclude from the enumeration.
      *  @return An Enumeration of Port objects.
-     */	
+     */
     public Enumeration linkedPorts(Port except) {
         // This works by constructing a linked list and then enumerating it.
         try {
             workspace().read();
             LinkedList storedPorts = new LinkedList();
             Enumeration ports = _portList.getLinks();
-        
+
             while(ports.hasMoreElements()) {
                 Port p = (Port)ports.nextElement();
                 if(p != except)
-                    storedPorts.insertLast(p); 
+                    storedPorts.insertLast(p);
             }
             return storedPorts.elements();
         } finally {
@@ -156,7 +156,7 @@ public class Relation extends NamedObj {
     /** Return the number of links to ports.
      *  This method is read-synchronized on the workspace.
      *  @return The number of links.
-     */	
+     */
     public int numLinks() {
         try {
             workspace().read();
@@ -169,7 +169,7 @@ public class Relation extends NamedObj {
     /** Unlink all ports.
      *  This method is write-synchronized on the workspace and increments
      *  its version number.
-     */	
+     */
     public void unlinkAll() {
         try {
             workspace().write();
@@ -195,7 +195,7 @@ public class Relation extends NamedObj {
 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which results
-     *  in invalid references to objects. 
+     *  in invalid references to objects.
      *  In this class, this method reinitializes the private member
      *  _portList.
      *  @param ws The workspace the cloned object is to be placed in.

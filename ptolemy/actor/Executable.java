@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -32,8 +32,8 @@ import pt.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Executable
-/** 
-This interface defines how an object can be invoked. This should be 
+/**
+This interface defines how an object can be invoked. This should be
 implemented by classes Actor and Director
 @author Mudit Goel
 @version $Id$
@@ -43,7 +43,7 @@ public interface Executable {
     ///////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** This fires an actor and maybe invoked several times between 
+    /** This fires an actor and maybe invoked several times between
      *  invocations of prefire() and postfire().
      * @exception IllegalActionException Throw by derived classes.
      */
@@ -51,19 +51,19 @@ public interface Executable {
 
     /** This method should be invoked exactly once during the lifetime of
      *  an application. It maybe invoked again to restart an execution
-     */	
+     */
     public void initialize();
 
     /** This should be invoked before the first fire()
-     * @return the state of the actor. TRUE indicates that the fire() and 
+     * @return the state of the actor. TRUE indicates that the fire() and
      *  postfire() methods can be invoked while FALSE indicates the opposite.
      */
     public boolean prefire();
-    
-    /** This should be invoked after the last fire() 
+
+    /** This should be invoked after the last fire()
      */
     public void postfire();
-    
+
     /** This should be called at the end of the execution
      */
     public void wrapup();

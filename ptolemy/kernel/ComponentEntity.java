@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -36,7 +36,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentEntity
-/** 
+/**
 A ComponentEntity is a component in a CompositeEntity.
 It might itself be composite, but in this base class it is assumed to
 be atomic (meaning that it contains no components).
@@ -89,8 +89,8 @@ public class ComponentEntity extends Entity {
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
-     */	
-    public ComponentEntity(CompositeEntity container, String name) 
+     */
+    public ComponentEntity(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         try {
@@ -139,7 +139,7 @@ public class ComponentEntity extends Entity {
      *  classes derived from CompositeEntity may also return true.
      *  @return True if the entity is atomic.
      *  @see pt.kernel.CompositeEntity
-     */	
+     */
     public boolean isAtomic() {
 	return true;
     }
@@ -155,8 +155,8 @@ public class ComponentEntity extends Entity {
      *  @exception IllegalActionException If the argument is null.
      *  @exception NameDuplicationException If this entity already has a
      *   port with the specified name.
-     */	
-    public Port newPort(String name) 
+     */
+    public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
             workspace().write();
@@ -167,7 +167,7 @@ public class ComponentEntity extends Entity {
         }
     }
 
-    /** Specify the container, adding the entity to the list 
+    /** Specify the container, adding the entity to the list
      *  of entities in the container.  If the container already contains
      *  an entity with the same name, then throw an exception and do not make
      *  any changes.  Similarly, if the container is not in the same
@@ -189,8 +189,8 @@ public class ComponentEntity extends Entity {
      *   this entity and container are not in the same workspace..
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
-     */	
-    public void setContainer(CompositeEntity container) 
+     */
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container != null && workspace() != container.workspace()) {
             throw new IllegalActionException(this, container,
@@ -247,9 +247,9 @@ public class ComponentEntity extends Entity {
      *  @param port The port to add to this entity.
      *  @exception IllegalActionException If the port class is not
      *   acceptable to this entity, or the port has no name.
-     *  @exception NameDuplicationException If the port name collides with a 
+     *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
-     */	
+     */
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof ComponentPort)) {
@@ -261,7 +261,7 @@ public class ComponentEntity extends Entity {
 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which results
-     *  in invalid references to objects. 
+     *  in invalid references to objects.
      *  In this class, this method resets the private member _container.
      *  @param ws The workspace the cloned object is to be placed in.
      */

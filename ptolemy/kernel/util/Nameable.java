@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -32,7 +32,7 @@ package pt.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// Nameable
-/** 
+/**
 This is an interface for objects with a name and a container. A simple
 name is an arbitrary string. In addition, the interface supports a
 "full name" which in implementation should identify both the container
@@ -74,7 +74,7 @@ public interface Nameable {
 
     /** Return the name of the object.
      *  @return The name of the object.
-     */	
+     */
     public String getName();
 
     /** Set or change the name. By convention, if the argument is null,

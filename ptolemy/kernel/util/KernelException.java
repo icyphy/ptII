@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -45,7 +45,7 @@ references are ignored.
 */
 public class KernelException extends Exception {
 
-    /** Constructs an Exception with no names or message. */  
+    /** Constructs an Exception with no names or message. */
     public KernelException() {
         this(null, null, null);
     }
@@ -60,7 +60,7 @@ public class KernelException extends Exception {
     /** Constructs an Exception with a message that is only the
      *  name of the argument.
      *  @param obj The object.
-     */  
+     */
     public KernelException(Nameable obj) {
         this(obj, null, null);
     }
@@ -69,7 +69,7 @@ public class KernelException extends Exception {
      *  name of the first argument and the second argument string.
      *  @param obj The object.
      *  @param detail The message.
-     */  
+     */
     public KernelException(Nameable obj, String detail) {
         this(obj, null, detail);
     }
@@ -78,7 +78,7 @@ public class KernelException extends Exception {
      *  only the names of the two arguments.
      *  @param obj1 The first object.
      *  @param obj2 The second object.
-     */  
+     */
     public KernelException(Nameable obj1, Nameable obj2)  {
         this(obj1, obj2, null);
     }
@@ -88,7 +88,7 @@ public class KernelException extends Exception {
      *  @param obj1 The first object.
      *  @param obj2 The second object.
      *  @param detail The message.
-     */  
+     */
     public KernelException(Nameable obj1, Nameable obj2,
             String detail) {
         String obj1string = _getFullName(obj1);
@@ -114,7 +114,7 @@ public class KernelException extends Exception {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////////
     ////                      public methods                           ////
 
@@ -168,11 +168,11 @@ public class KernelException extends Exception {
 
     /** Sets the error message to the specified string.
      *  @param msg The message.
-     */  
+     */
     protected void _setMessage(String msg) {
         _message = msg;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 

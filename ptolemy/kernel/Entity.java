@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Entity
-/** 
+/**
 An Entity is a vertex in a generalized graph. It is an aggregation
 of ports. The ports can be linked to relations. The
 relations thus represent connections between ports, and hence,
@@ -139,14 +139,14 @@ public class Entity extends NamedObj {
     }
 
     /** Enumerate all ports that are connected to contained ports.
-     *  Ports in this entity is not included unless there is a loopback, 
+     *  Ports in this entity is not included unless there is a loopback,
      *  meaning that two distinct ports of this entity are linked to the same
      *  relation.   The connected entities can be obtained from the ports
      *  using getContainer().  Note that a port may be listed more than
      *  once if there is more than one connection to it.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Port objects.
-     */	
+     */
     public Enumeration connectedPorts() {
         try {
             workspace().read();
@@ -158,8 +158,8 @@ public class Entity extends NamedObj {
             if (workspace().getVersion() != _connectedportsversion) {
                 // Cache is not valid, so update it.
                 _connectedports = new LinkedList();
-                Enumeration ports = _portList.getElements(); 
-                
+                Enumeration ports = _portList.getElements();
+
                 while( ports.hasMoreElements() ) {
                     Port port = (Port)ports.nextElement();
                     _connectedports.appendElements( port.connectedPorts() );
@@ -177,7 +177,7 @@ public class Entity extends NamedObj {
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired port.
      *  @return A port with the given name, or null if none exists.
-     */	
+     */
     public Port getPort(String name) {
         try {
             workspace().read();
@@ -191,7 +191,7 @@ public class Entity extends NamedObj {
      *  The order is the order in which they became contained by this entity.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Port objects.
-     */	
+     */
     public Enumeration getPorts() {
         try {
             workspace().read();
@@ -202,10 +202,10 @@ public class Entity extends NamedObj {
     }
 
     /** Enumerate relations that are linked to ports contained by this
-     *  entity. Note that a relation may be listed more once. 
+     *  entity. Note that a relation may be listed more once.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Relation objects.
-     */	
+     */
     public Enumeration linkedRelations() {
         try {
             workspace().read();
@@ -214,10 +214,10 @@ public class Entity extends NamedObj {
             if (workspace().getVersion() != _linkedrelationsversion) {
                 // Cache is not valid.  Update it.
                 _linkedrelations = new LinkedList();
-                Enumeration ports = _portList.getElements(); 
+                Enumeration ports = _portList.getElements();
 
                 while( ports.hasMoreElements() ) {
-                    Port port = (Port)ports.nextElement(); 
+                    Port port = (Port)ports.nextElement();
                     _linkedrelations.appendElements( port.linkedRelations() );
                 }
                 _linkedrelationsversion = workspace().getVersion();
@@ -239,10 +239,10 @@ public class Entity extends NamedObj {
      *  @exception IllegalActionException If the port created is not
      *   of an acceptable class (this is a programming
      *   error; failed to override this method in derived classes).
-     *  @exception NameDuplicationException If the entity already has a port 
+     *  @exception NameDuplicationException If the entity already has a port
      *   with the specified name.
-     */	
-    public Port newPort(String name) 
+     */
+    public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
             workspace().write();
@@ -257,7 +257,7 @@ public class Entity extends NamedObj {
      *  As a side effect, the ports will be unlinked from all relations.
      *  This method is write-synchronized on the workspace, and increments
      *  its version number.
-     */	
+     */
     public void removeAllPorts() {
         try {
             workspace().write();
@@ -265,7 +265,7 @@ public class Entity extends NamedObj {
             // NOTE: Is this still true?  Or was this a bug in in NamedList?
             NamedList portListCopy = new NamedList(_portList);
             Enumeration ports = portListCopy.getElements();
-            
+
             while (ports.hasMoreElements()) {
                 Port port = (Port)ports.nextElement();
                 try {
@@ -295,9 +295,9 @@ public class Entity extends NamedObj {
      *  caller should be.
      *  @param port The port to add to this entity.
      *  @exception IllegalActionException If the port has no name.
-     *  @exception NameDuplicationException If the port name collides with a 
+     *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
-     */	
+     */
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
         _portList.append(port);
@@ -305,7 +305,7 @@ public class Entity extends NamedObj {
 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method in Object makes a field-by-field copy, which results
-     *  in invalid references to objects. 
+     *  in invalid references to objects.
      *  In this class, this method reinitializes the private member
      *  _portList.
      *  @param ws The workspace the cloned object is to be placed in.
@@ -354,7 +354,7 @@ public class Entity extends NamedObj {
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *  @param port The port being removed from this entity.
-     */	
+     */
     protected void _removePort(Port port) {
         _portList.remove(port);
     }

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -38,7 +38,7 @@ import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IORelation
-/** 
+/**
 This class mediates connections between ports that can send data to
 one another via message passing. One purpose of this relation is to
 ensure that IOPorts are only connected to IOPorts. A second purpose
@@ -99,7 +99,7 @@ public class IORelation extends ComponentRelation {
      *   with this relation.
      *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
-     */	
+     */
     public IORelation(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -107,7 +107,7 @@ public class IORelation extends ComponentRelation {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-    
+
     /** Return the receivers of all input ports linked to this
      *  relation, directly or indirectly, except those in the port
      *  given as an argument. The returned value is an array of
@@ -133,7 +133,7 @@ public class IORelation extends ComponentRelation {
         Receiver[][] recvrs = null;
         while(inputs.hasMoreElements()) {
             IOPort p = (IOPort) inputs.nextElement();
-            
+
             if(p.isInsideLinked(this)) {
                 // if p is a transparent port and this relation links from
                 // the inside, then get the Receivers outside p.
@@ -155,7 +155,7 @@ public class IORelation extends ComponentRelation {
         }
         return result;
     }
-            
+
     /** Return the width of the IORelation, which is always at least one.
      *  If the width has been set to zero, then the relation is a bus with
      *  unspecified width, and the width needs to be inferred from the
@@ -169,7 +169,7 @@ public class IORelation extends ComponentRelation {
      *  @return width
      *  @exception InvalidStateException If a port has more than one
      *   inside relation with unspecified width.
-     */	
+     */
     public int getWidth() {
         if (_width == 0) {
             return _inferWidth();
@@ -183,7 +183,7 @@ public class IORelation extends ComponentRelation {
      *  This method synchronizes on the workspace.
      *  @see pt.kernel.Relation#linkedPorts
      *  @return An enumeration of the linked input ports
-     */	
+     */
     public Enumeration linkedDestinationPorts() {
         return linkedDestinationPorts(null);
     }
@@ -198,7 +198,7 @@ public class IORelation extends ComponentRelation {
      *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
-     */	
+     */
     public Enumeration linkedDestinationPorts(IOPort except) {
         synchronized(workspace()) {
             // NOTE: The result could be cached for efficiency.
@@ -226,7 +226,7 @@ public class IORelation extends ComponentRelation {
      *  This method synchronizes on the workspace.
      *  @see pt.kernel.Relation#linkedPorts
      *  @return Ann enumeration of the linked input ports
-     */	
+     */
     public Enumeration linkedSourcePorts() {
         return linkedSourcePorts(null);
     }
@@ -240,7 +240,7 @@ public class IORelation extends ComponentRelation {
      *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
-     */	
+     */
     public Enumeration linkedSourcePorts(IOPort except) {
         synchronized(workspace()) {
             // NOTE: The result could be cached for efficiency.
@@ -261,8 +261,8 @@ public class IORelation extends ComponentRelation {
         }
     }
 
-    /** Specify the container, adding the relation to the list 
-     *  of relations in the container.  
+    /** Specify the container, adding the relation to the list
+     *  of relations in the container.
      *  If this relation already has a container, remove it
      *  from that container first.  Otherwise, remove it from
      *  the list of objects in the workspace. If the argument is null, then
@@ -281,9 +281,9 @@ public class IORelation extends ComponentRelation {
      *  @exception IllegalActionException If the container is not a
      *   CompositeActor, or this entity and the container are not in
      *   the same workspace.
-     *  @exception NameDuplicationException If the name collides with a name 
+     *  @exception NameDuplicationException If the name collides with a name
      *   already on the contents list of the container.
-     */	
+     */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof CompositeActor)) {
@@ -358,10 +358,10 @@ public class IORelation extends ComponentRelation {
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
-    /** Cascade two Receiver arrays to form a new array. For each row, each 
+    /** Cascade two Receiver arrays to form a new array. For each row, each
      *  element of the second array is appended behind the elements of the
      *  first array. This method is solely for deepReceivers.
-     *  The two input arrays must have the same number of rows. 
+     *  The two input arrays must have the same number of rows.
      *  @param array1 the first array.
      *  @param array2 the second array.
      *  @exception InvalidStateException If the two arrays do not have
@@ -377,7 +377,7 @@ public class IORelation extends ComponentRelation {
         }
         int width = getWidth();
         Receiver[][] result = new Receiver[width][];
-        
+
         for (int i = 0; i < width; i++) {
             if(array1[i] == null) {
                 result[i]= array2[i];
@@ -426,6 +426,6 @@ public class IORelation extends ComponentRelation {
     // whether the relation is a bus
     private boolean _bus = false;
 
-    // width of the relation. 
+    // width of the relation.
     private int _width = 1;
 }

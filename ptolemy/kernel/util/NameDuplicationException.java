@@ -1,5 +1,5 @@
 /* Exception thrown on an attempt to add a named object to a collection that
-requires unique names, and finding that there already is an object by that 
+requires unique names, and finding that there already is an object by that
 name in the collection.
 
  Copyright (c) 1997- The Regents of the University of California.
@@ -22,7 +22,7 @@ name in the collection.
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -34,8 +34,8 @@ package pt.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// NameDuplicationException
-/** Thrown on an attempt to add a named object to a collection that 
-requires unique names, and finding that there already is an object 
+/** Thrown on an attempt to add a named object to a collection that
+requires unique names, and finding that there already is an object
 by that name in the collection.
 Constructors are provided that take 1 or 2 Nameable references
 plus an arbitrary String.  The constructors are robust in that null
@@ -51,7 +51,7 @@ public class NameDuplicationException extends KernelException {
 
     /** Given containee only.
      *  @param wouldBeContainee The would be containee.
-     */  
+     */
     public NameDuplicationException(Nameable wouldBeContainee) {
         _setMessage("Attempt to insert object named \"" +
                 _getName(wouldBeContainee) +
@@ -62,7 +62,7 @@ public class NameDuplicationException extends KernelException {
     /** Given containee and string.
      *  @param wouldBeContainee The would be containee.
      *  @param moreInfo A message.
-     */  
+     */
     public NameDuplicationException(Nameable wouldBeContainee,
             String moreInfo) {
         _setMessage("Attempt to insert object named \"" +
@@ -75,8 +75,8 @@ public class NameDuplicationException extends KernelException {
     /** Given container and containee.
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
-     */  
-    public NameDuplicationException(Nameable container, 
+     */
+    public NameDuplicationException(Nameable container,
             Nameable wouldBeContainee) {
         if (_getFullName(container).equals("")) {
             _setMessage("Attempt to insert object named \"" +
@@ -96,8 +96,8 @@ public class NameDuplicationException extends KernelException {
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
      *  @param moreInfo A message.
-     */  
-    public NameDuplicationException(Nameable container, 
+     */
+    public NameDuplicationException(Nameable container,
             Nameable wouldBeContainee, String moreInfo) {
         if (_getFullName(container).equals("")) {
             _setMessage("Attempt to insert object named \"" +

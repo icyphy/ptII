@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,7 +33,7 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
@@ -43,14 +43,14 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-2.0 {Construct CompositeEntities, call a few methods} {
     set e1 [java::new pt.kernel.CompositeEntity]
     set e2 [java::new pt.kernel.CompositeEntity]
@@ -65,7 +65,7 @@ test CompositeEntity-2.0 {Construct CompositeEntities, call a few methods} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-2.1 {Create a 3 level deep tree using constructors} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -79,7 +79,7 @@ test CompositeEntity-2.1 {Create a 3 level deep tree using constructors} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-2.2 {Create a 3 level deep tree after construction} {
     # entity serving as a workspace
     set w [java::new pt.kernel.CompositeEntity]
@@ -97,7 +97,7 @@ test CompositeEntity-2.2 {Create a 3 level deep tree after construction} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-3.1 {Test deepGetEntities} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -110,7 +110,7 @@ test CompositeEntity-3.1 {Test deepGetEntities} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-3.2 {Test numEntities} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -122,7 +122,7 @@ test CompositeEntity-3.2 {Test numEntities} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-3.3 {Test getEntity by name} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -135,7 +135,7 @@ test CompositeEntity-3.3 {Test getEntity by name} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-4.1 {Test deepContains} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -148,7 +148,7 @@ test CompositeEntity-4.1 {Test deepContains} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-5.1 {Test reparenting} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -163,7 +163,7 @@ test CompositeEntity-5.1 {Test reparenting} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-5.2 {Test reparenting with an error} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -176,7 +176,7 @@ test CompositeEntity-5.2 {Test reparenting with an error} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-6.1 {Test removing entities} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -191,7 +191,7 @@ test CompositeEntity-6.1 {Test removing entities} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-6.3 {Test removing entities by name} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -204,7 +204,7 @@ test CompositeEntity-6.3 {Test removing entities by name} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-7.1 {Add relations} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -215,7 +215,7 @@ test CompositeEntity-7.1 {Add relations} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-7.2 {Add relations after creation} {
     # Workspace entity
     set w [java::new pt.kernel.CompositeEntity]
@@ -229,7 +229,7 @@ test CompositeEntity-7.2 {Add relations after creation} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-7.3 {Get relations by name} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -241,7 +241,7 @@ test CompositeEntity-7.3 {Get relations by name} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-7.4 {Add relations using newRelation} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -252,7 +252,7 @@ test CompositeEntity-7.4 {Add relations using newRelation} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-8.1 {Remove relations} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -264,7 +264,7 @@ test CompositeEntity-8.1 {Remove relations} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-8.3 {Remove relations by name} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -276,7 +276,7 @@ test CompositeEntity-8.3 {Remove relations by name} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-8.5 {Test removing all entities} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -289,7 +289,7 @@ test CompositeEntity-8.5 {Test removing all entities} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-8.6 {Remove all relations} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -301,7 +301,7 @@ test CompositeEntity-8.6 {Remove all relations} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-9.1 {Test transparent port} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -318,7 +318,7 @@ test CompositeEntity-9.1 {Test transparent port} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-10.1 {Test multiple relation naming} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -335,7 +335,7 @@ test CompositeEntity-10.1 {Test multiple relation naming} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-10.3 {Create and then remove a transparent port} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -355,7 +355,7 @@ test CompositeEntity-10.3 {Create and then remove a transparent port} {
 
 ######################################################################
 ####
-# 
+#
 test CompositeEntity-10.4 {Create and then remove ports with given names} {
     set a [java::new pt.kernel.CompositeEntity]
     $a setName A
@@ -724,7 +724,7 @@ test CompositeEntity-11.6 {Test full description} {
 #     set desc0 [description2TclBlend [$e0 description \
 # 	    [java::field pt.kernel.Nameable PRETTYPRINT]]]
 #     eval $desc0
-# 
+#
 #     # Note that description2TclBlend uses the names of entities
 #     # as variables, so what was $e0 in 11.1 is $E0
 #     set desc1 [description2TclBlend [$E0 description \

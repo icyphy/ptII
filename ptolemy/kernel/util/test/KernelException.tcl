@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,7 +33,7 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
@@ -42,14 +42,14 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
 ######################################################################
 ####
-# 
+#
 test KernelException-2.1 {Create a KernelException} {
     set pe [java::new pt.kernel.util.KernelException]
     list [$pe getMessage] [$pe getLocalizedMessage]
@@ -57,7 +57,7 @@ test KernelException-2.1 {Create a KernelException} {
 
 ######################################################################
 ####
-# 
+#
 test KernelException-3.1 {Create a KernelException with a detail message} {
     set pe [java::new {pt.kernel.util.KernelException String} "A message"]
     list [$pe getMessage] [$pe getLocalizedMessage]
@@ -65,7 +65,7 @@ test KernelException-3.1 {Create a KernelException with a detail message} {
 
 ######################################################################
 ####
-# 
+#
 test KernelException-3.2 {Create a KernelException with a null detail message} {
     set pe [java::new {pt.kernel.util.KernelException String} [java::null]]
     list [$pe getMessage]
@@ -84,7 +84,7 @@ test KernelException-3.3 {Create a KernelException with a detail message \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-4.1 {Create a KernelException with a Nameable \
 	that has no name} {
     set n1 [java::new pt.kernel.util.NamedObj]
@@ -94,7 +94,7 @@ test KernelException-4.1 {Create a KernelException with a Nameable \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-4.2 {Create a KernelException with a NamedObj \
 	that has a name} {
     set n1 [java::new pt.kernel.util.NamedObj "My NamedObj"]
@@ -104,7 +104,7 @@ test KernelException-4.2 {Create a KernelException with a NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-4.3 {Create a KernelException with a null NamedObj} {
     set pe [java::new {pt.kernel.util.KernelException pt.kernel.util.Nameable} \
 	    [java::null]]
@@ -113,7 +113,7 @@ test KernelException-4.3 {Create a KernelException with a null NamedObj} {
 
 ######################################################################
 ####
-# 
+#
 test KernelException-5.1 {Create a KernelException with a NamedObj \
 	that has no name and a detail string} {
     set n1 [java::new pt.kernel.util.NamedObj]
@@ -123,7 +123,7 @@ test KernelException-5.1 {Create a KernelException with a NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-5.2 {Create a KernelException with a NamedObj \
 	that has a name  and a detail string} {
     set n1 [java::new pt.kernel.util.NamedObj "My NamedObj"]
@@ -133,7 +133,7 @@ test KernelException-5.2 {Create a KernelException with a NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-6.1 {Create a KernelException with an unamed NamedObj \
 	and an unamed NamedObj} {
     set n1 [java::new pt.kernel.util.NamedObj]
@@ -146,7 +146,7 @@ test KernelException-6.1 {Create a KernelException with an unamed NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-6.2 {Create a KernelException with a named NamedObj \
 	and an unamed NamedObj} {
     set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
@@ -159,7 +159,7 @@ test KernelException-6.2 {Create a KernelException with a named NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-6.3 {Create a KernelException with an unamed NamedObj \
 	and a named NamedObj} {
     set n1 [java::new pt.kernel.util.NamedObj]
@@ -172,7 +172,7 @@ test KernelException-6.3 {Create a KernelException with an unamed NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-6.4 {Create a KernelException with a named NamedObj \
 	and a named NamedObj} {
     set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
@@ -186,7 +186,7 @@ test KernelException-6.4 {Create a KernelException with a named NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-7.1 {Create a KernelException with an unamed NamedObj \
 	and an unamed NamedObj and a detail message} {
     set n1 [java::new pt.kernel.util.NamedObj]
@@ -197,7 +197,7 @@ test KernelException-7.1 {Create a KernelException with an unamed NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-7.2 {Create a KernelException with a named NamedObj \
 	and an unamed NamedObj and a detail Message} {
     set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
@@ -208,7 +208,7 @@ test KernelException-7.2 {Create a KernelException with a named NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-7.3 {Create a KernelException with an unamed NamedObj \
 	and a named NamedObj and a detail message} {
     set n1 [java::new pt.kernel.util.NamedObj]
@@ -219,7 +219,7 @@ test KernelException-7.3 {Create a KernelException with an unamed NamedObj \
 
 ######################################################################
 ####
-# 
+#
 test KernelException-7.4 {Create a KernelException with a named NamedObj \
 	and a named NamedObj and a detail message} {
     set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]

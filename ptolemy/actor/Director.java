@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -38,8 +38,8 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director
-/** 
-A Director governs the execution of a CompositeActor. This should be 
+/**
+A Director governs the execution of a CompositeActor. This should be
 associated with the top-level container of every executable application
 
 @author Mudit Goel, Edward A. Lee
@@ -54,15 +54,15 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Constructor
-     */	
+     */
     public Director(CompositeActor container, String name) {
         super(name);
         _container = container;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-    
+
     /** Adds a new Mutation Listener to the list of listeners to be informed
      *  about any mutation that occurs in the graph for which this director
      *  is responsible
@@ -82,7 +82,7 @@ public class Director extends NamedObj implements Executable {
     public void clearNewActors() {
         _newactors = null;
     }
-    
+
     /** Indicates whether the execution is complete or not
      * @return true indicates that execution is complete
      */
@@ -90,14 +90,14 @@ public class Director extends NamedObj implements Executable {
         return _complete;
     }
 
-    /** This should invoke the fire methods of the actors according to a 
+    /** This should invoke the fire methods of the actors according to a
      *  schedule. This can be called more than once in the same iteration.
      * @exception IllegalActionException would be required by subclasses
-     */	
+     */
     public void fire() throws IllegalActionException {
     }
-    
-    /** Returns the top-level container, of the executable application 
+
+    /** Returns the top-level container, of the executable application
      *  that this director is responsible for.
      * @return the top-level CompositeActor
      */
@@ -113,10 +113,10 @@ public class Director extends NamedObj implements Executable {
             if (_newactors == null) {
                 _newactors = new LinkedList();
             }
-            return _newactors.elements();    
+            return _newactors.elements();
         }
     }
-    
+
     /** Test if there are new actors waiting to be scheduled.
      * @return true if there are new actors
      */
@@ -125,21 +125,21 @@ public class Director extends NamedObj implements Executable {
             return (_newactors != null);
         }
     }
-    
+
     /** This does the initialization for the entire simulation. This should
      *  be called exactly once at the start of the entire execution
      */
     public void initialize() {
     }
 
-    /** This sets a flag, indicating that on the next execution, the 
+    /** This sets a flag, indicating that on the next execution, the
      *  static schedule schedule should be recomputed
      */
     public void invalidateSchedule() {
         _schedulevalid = false;
     }
-    
-    /** This controls the execution. 
+
+    /** This controls the execution.
      * @return true if the execution is complete and should be terminated
      * @exception IllegalActionException is thrown.
      * @see #fire()
@@ -148,10 +148,10 @@ public class Director extends NamedObj implements Executable {
         if (prefire()) {
             fire();
             postfire();
-        } 
+        }
         return _complete;
     }
- 
+
     /** This should be called after the fire methods have been called. This
      *  should invoke the postfire methods of actors according to a schedule
      */
@@ -167,11 +167,11 @@ public class Director extends NamedObj implements Executable {
     public boolean prefire() {
         return true;
     }
-    
+
     /** This does all the mutations and informs the listeners of the mutations
-     *  @exception IllegalActionException if the port is not of the expected 
+     *  @exception IllegalActionException if the port is not of the expected
      *   class, or the port has no name.
-     *  @exception NameDuplicationException if the name collides with a name 
+     *  @exception NameDuplicationException if the name collides with a name
      *   already on the port list.
      */
     public final void processPendingMutations()
@@ -198,12 +198,12 @@ public class Director extends NamedObj implements Executable {
                 // Clear the mutations
                 _pendingMutations = null;
             }
-        }                    
+        }
     }
 
     /** This adds a mutation object to the director queue. These mutations
      *  are finally incorporated when the processPendingMutations() is called
-     * @param mutation The new Mutation objects that contains a list of 
+     * @param mutation The new Mutation objects that contains a list of
      *  mutations that should be executed later
      * @see #processPendingMutations()
      */
@@ -216,8 +216,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** This maintains a list of all the new actors that have been created 
-     *  after the last call to the iterate method, and have not begun 
+    /** This maintains a list of all the new actors that have been created
+     *  after the last call to the iterate method, and have not begun
      *  execution
      * @param actor is the new actor that has just been created
      */
@@ -231,7 +231,7 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** This removes the Mutation listener that does not want to be informed
-     *  of any future mutations by this director. This does not do anything 
+     *  of any future mutations by this director. This does not do anything
      *  if the listener was not listed with this director
      * @param listener is the MutationListener to be removed
      */
@@ -272,8 +272,8 @@ public class Director extends NamedObj implements Executable {
     public void validateSchedule() {
         _schedulevalid = true;
     }
-    
-    /** This invokes the corresponding methods of all the actors at the end 
+
+    /** This invokes the corresponding methods of all the actors at the end
      *  of simulation
      */
     public void wrapup() {
@@ -293,7 +293,7 @@ public class Director extends NamedObj implements Executable {
     private boolean _schedulevalid;
     private CompositeActor _subsystem;
     private LinkedList _newactors = null;
-    
+
     private LinkedList _pendingMutations = null;
     private LinkedList _mutationListeners = null;
 }

@@ -1,5 +1,5 @@
 /* An executable entity.
-   
+
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -7,20 +7,20 @@
  software and its documentation for any purpose, provided that the above
  copyright notice and the following two paragraphs appear in all copies
  of this software.
- 
+
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
- 
+
  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Actor
-/** 
+/**
 An Actor is an executable entity. The Ports of Actors are
 constrained to be IOPorts.
 An actor is always contained by a CompositeActor (its container
@@ -56,27 +56,27 @@ public class Actor extends ComponentEntity implements Executable {
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. 
+     *  NullPointerException will be thrown.
      *  @param container The containing CompositeActor.
      *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
-     */    
-    public Actor(CompositeActor container, String name) 
+     */
+    public Actor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-    
-    /** Return the director responsible for the execution of this actor. 
+
+    /** Return the director responsible for the execution of this actor.
      * @return The director that invokes this actor.
      */
     public Director getDirector() {
-        return ((CompositeActor)getContainer()).getDirector();            
+        return ((CompositeActor)getContainer()).getDirector();
     }
 
     /** This is where the actors would normally define their actions
@@ -85,7 +85,7 @@ public class Actor extends ComponentEntity implements Executable {
     public void fire() throws IllegalActionException {
     }
 
-    /** The actors would be initialized in this method before their execution 
+    /** The actors would be initialized in this method before their execution
      *  begins
      */
     public void initialize() {
@@ -94,7 +94,7 @@ public class Actor extends ComponentEntity implements Executable {
     /** Return an enumeration of the input ports.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of IOPort objects.
-     */ 
+     */
     public Enumeration inputPorts() {
         synchronized(workspace()) {
             if(_inputPortsVersion != workspace().getVersion()) {
@@ -121,10 +121,10 @@ public class Actor extends ComponentEntity implements Executable {
      *  @param name The name of the newly created port.
      *  @return The new port.
      *  @exception IllegalActionException if the argument is null.
-     *  @exception NameDuplicationException if the actor already has a port 
+     *  @exception NameDuplicationException if the actor already has a port
      *   with the specified name.
-     */	
-    public Port newPort(String name) 
+     */
+    public Port newPort(String name)
             throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
             IOPort port = new IOPort(this, name);
@@ -144,7 +144,7 @@ public class Actor extends ComponentEntity implements Executable {
                 Enumeration ports = getPorts();
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
-                    if( p.isOutput()) { 
+                    if( p.isOutput()) {
                         outports.insertLast(p);
                     }
                 }
@@ -162,7 +162,7 @@ public class Actor extends ComponentEntity implements Executable {
     }
 
     /** This would define the actions of an actor in the beginning of every
-     *  iteration of it's execution. 
+     *  iteration of it's execution.
      * @return true if the star is ready for firing, false otherwise.
      */
     public boolean prefire() {
@@ -171,14 +171,14 @@ public class Actor extends ComponentEntity implements Executable {
 
     // FIXME: Override setContainer to ensure types.
     // Also, newPort... what else?
-  
-    /** This is called at the end of every execution of the star. This is for 
+
+    /** This is called at the end of every execution of the star. This is for
      *  cleanups and freeing resources that the actor currently has access to
      */
     public void wrapup() {
         return;
     }
-        
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 

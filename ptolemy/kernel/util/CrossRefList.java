@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -65,16 +65,16 @@ public final class CrossRefList implements Serializable  {
      *  @param container The container of the object to be constructed.
      *  @exception IllegalActionException If the argument is null.
      */
-    public CrossRefList(Object container) 
+    public CrossRefList(Object container)
             throws IllegalActionException {
         if (container == null) {
             throw new IllegalActionException(
                     "Attempt to create CrossRefList with a null container.");
         }
-        _container = container; 
+        _container = container;
     }
-    
-    /** Copy constructor. 
+
+    /** Copy constructor.
      *  Create a new list that duplicates an original list except that it
      *  has a new container.  This method synchronizes on the original list.
      *  @param container The container of the object to be constructed.
@@ -102,7 +102,7 @@ public final class CrossRefList implements Serializable  {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-    
+
     /** Return the first remote object referenced by this list, or null if the
      *  list is empty.
      *  Time complexity: O(1).
@@ -115,18 +115,18 @@ public final class CrossRefList implements Serializable  {
             return null;
         }
     }
-    
+
     /** Enumerate the objects referenced by this list. Note that
      *  an object may be enumerated more than once if more than one
      *  link to it has been established.
      *  Time complexity: O(1).
      *  @return An enumeration of remote referenced objects.
      */
-    public synchronized Enumeration getLinks() { 
+    public synchronized Enumeration getLinks() {
         return new CrossRefEnumeration();
     }
-    
-    /** Return true if the specified object is referenced on this list. 
+
+    /** Return true if the specified object is referenced on this list.
      *  Time complexity: O(n).
      *  @param obj An object that might be referenced.
      *  @return A boolean indicating whether the object is referenced.
@@ -140,7 +140,7 @@ public final class CrossRefList implements Serializable  {
         }
         return false;
     }
-    
+
     /** Link to a remote object. Redundant links are allowed.
      *  Note that this method does not synchronize on the remote object.
      *  Thus, this method should be called within a write-synchronization of
@@ -150,7 +150,7 @@ public final class CrossRefList implements Serializable  {
      *  @exception IllegalActionException If the remote object is the container
      *   of this cross reference list.
      */
-    public synchronized void link(CrossRefList farList) 
+    public synchronized void link(CrossRefList farList)
             throws IllegalActionException {
         if(farList == this) {
             throw new IllegalActionException(
@@ -164,8 +164,8 @@ public final class CrossRefList implements Serializable  {
         // This would prevent modifications.
         localCrossRef._far = farList.new CrossRef(localCrossRef);
     }
-    
-    /** Return size of this list. 
+
+    /** Return size of this list.
      *  Time complexity: O(1).
      *  @return A non-negative integer.
      */
@@ -194,24 +194,24 @@ public final class CrossRefList implements Serializable  {
             p = n;
         }
     }
-    
+
     /** Delete all cross references.
      *  Time complexity: O(n).
      */
     public synchronized void unlinkAll() {
         if(_size == 0) return;
         ++_listVersion;
-        
+
         CrossRef deadHead = _headNode; // _deadHead is marked for deletion.
-        
+
         // As long as there's a next element.
         while( (_headNode = deadHead._next) != null) {
             deadHead._dissociate();     // Delete old head and its partner.
             deadHead = _headNode;
         }
         // Delete the last CrossRef.
-        deadHead._dissociate(); 
-        
+        deadHead._dissociate();
+
         // Mark the list empty.
         _headNode = null;
         _lastNode = null;
@@ -220,73 +220,73 @@ public final class CrossRefList implements Serializable  {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
-    
+
     // Version number is incremented each time the list is modified.
     // This is used to make sure that elements accessed via an enumeration
     // are valid.  This is inspired by a similar mechanism in Doug Lea's
     // Java Collections.
     private int _listVersion = 0;
-    
+
     // The code ensures that if this is non-zero, then _headNode is non-null.
     private int _size = 0;
-    
+
     private CrossRef _headNode;
-    
+
     private CrossRef _lastNode;
-    
+
     // NOTE: In jdk 1.2 or higher, this could be made final to prohibit
     // what is called "reference reseating" (not resetting), i.e. to
     // make the variable immutable.
     private Object _container;
-    
+
     //////////////////////////////////////////////////////////////////////////
     ////                         inner classes                            ////
-    
+
     // Class CrossRef.
     // Objects of this type form the elements of the list.
     // They occur in pairs, one in each list at each end of a link.
     protected class CrossRef implements Serializable{
-        
+
         protected CrossRef _far;
-        
+
         private CrossRef _next;
-        
+
         private CrossRef _previous;
-        
+
         public CrossRef() { this(null); }
-        
+
         public  CrossRef(CrossRef spouse) {
             _far = spouse;
             if(_size > 0) {
                 _previous = _lastNode;
                 _lastNode._next = this;
                 _lastNode = this;
-            } else { 
+            } else {
                 // List is empty.
                 _lastNode = this;
                 _headNode = this;
             }
             ++_size;
         }
-        
+
         private synchronized Object _nearContainer() {
             return _container;
         }
-        
+
         private synchronized Object _farContainer() {
             // Returning null shouldn't happen.
-            return _far != null ? _far._nearContainer() : null; 
+            return _far != null ? _far._nearContainer() : null;
         }
-        
+
         private synchronized CrossRefList _nearList() {
             return CrossRefList.this;
         }
-        
+
         private synchronized void _dissociate() {
             _unlink(); // Remove *this.
-            if(_far != null) _far._unlink(); // Remove far 
+            if(_far != null) _far._unlink(); // Remove far
         }
-        
+
         private synchronized void _unlink() {
             ++_listVersion;
             // Removes *this from enclosing CrossRefList.
@@ -303,13 +303,13 @@ public final class CrossRefList implements Serializable  {
      *  @see CrossRefList
      */
     private class CrossRefEnumeration implements Enumeration {
-        
+
         public CrossRefEnumeration() {
             _enumeratorVersion = _listVersion;
             _startAtHead = true;
             _ref = null;
         }
-        
+
         /** Return true if there are more elements to enumerate. */
         public boolean hasMoreElements() {
             if(_enumeratorVersion != _listVersion) {
@@ -327,9 +327,9 @@ public final class CrossRefList implements Serializable  {
             _startAtHead = tmp2; // Restore state.
             return tmpObj != null;
         }
-        
-        /** Return the next element in the enumeration. 
-         *  @exception java.util.NoSuchElementException Exhausted enumeration.  
+
+        /** Return the next element in the enumeration.
+         *  @exception java.util.NoSuchElementException Exhausted enumeration.
          */
         public Object nextElement()
                 throws NoSuchElementException {
@@ -351,7 +351,7 @@ public final class CrossRefList implements Serializable  {
                 // Not at beginning of list.
                 if (_ref != _lastNode) {
                     // Not at end of list.
-                    if (_ref != null) { 
+                    if (_ref != null) {
                         // If pointer to element not NULL, return next.
                         _ref = _ref._next;
                         return _ref._farContainer();
@@ -367,11 +367,11 @@ public final class CrossRefList implements Serializable  {
                 }
             }
         }
-        
+
         private int _enumeratorVersion;
-        
+
         private CrossRef _ref;
-        
+
         private boolean _startAtHead;
     }
 }

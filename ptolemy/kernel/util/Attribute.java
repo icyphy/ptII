@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -81,7 +81,7 @@ public class Attribute extends NamedObj {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public Attribute(NamedObj container, String name) 
+    public Attribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
@@ -110,15 +110,15 @@ public class Attribute extends NamedObj {
     public Nameable getContainer() {
         return _container;
     }
-    
-    /** Specify the container NamedObj, adding this attribute to the 
-     *  list of attributes in the container.  If the container already 
-     *  contains an attribute with the same name, then throw an exception 
-     *  and do not make any changes.  Similarly, if the container is 
+
+    /** Specify the container NamedObj, adding this attribute to the
+     *  list of attributes in the container.  If the container already
+     *  contains an attribute with the same name, then throw an exception
+     *  and do not make any changes.  Similarly, if the container is
      *  not in the same workspace as this attribute, throw an exception.
      *  If this attribute is already contained by the NamedObj, do nothing.
      *  If the attribute already has a container, remove
-     *  this attribute from its attribute list first.  Otherwise, remove 
+     *  this attribute from its attribute list first.  Otherwise, remove
      *  it from the directory of the workspace, if it is present.
      *  If the argument is null, then remove it from its container.
      *  It is not added to the workspace directory, so this could result in
@@ -170,10 +170,10 @@ public class Attribute extends NamedObj {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
-    
+
     /** Clear references that are not valid in a cloned object. The clone()
      *  method makes a field-by-field copy, which results
-     *  in invalid references to objects. 
+     *  in invalid references to objects.
      *  In this class, this method reinitializes the private member, the
      *  container, so that it is null.
      *  @param ws The workspace that the cloned object is to be listed in.

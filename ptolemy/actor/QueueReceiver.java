@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -40,7 +40,7 @@ import collections.CollectionEnumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver
-/** 
+/**
 A first-in, first-out (FIFO) queue with optional capacity and
 history. Objects are appended to the queue with the put() method,
 and removed from the queue with the take() method. The object
@@ -57,7 +57,7 @@ capacity is zero.
 public class QueueReceiver extends NamedObj implements Receiver {
 
     /** Construct an empty queue with the specified container.
-     */	
+     */
     public QueueReceiver(IOPort container) {
         super();
 	_container = container;
@@ -72,8 +72,8 @@ public class QueueReceiver extends NamedObj implements Receiver {
      *  If the offset is 1, return second most recent the object, etc.
      *  If there is no such element on the queue (the offset is greater
      *  than or equal to the size, or is negative), throw an exception.
-     */	
-    public Token get() { 
+     */
+    public Token get() {
         synchronized (workspace()) {
 	    return (Token)_queue.take();
 	}
@@ -82,16 +82,16 @@ public class QueueReceiver extends NamedObj implements Receiver {
     /** Does not remove the element
      *  @exception NoSuchItemException The offset is out of range.
      */
-    public Token get(int offset) 
+    public Token get(int offset)
             throws NoSuchItemException {
 	synchronized (workspace()) {
 	    return (Token)_queue.get(offset);
 	}
     }
-      
+
 
     /** Return the container of the queue, or null if there is none.
-     */	
+     */
     public Nameable getContainer() {
         return _container;
     }
@@ -108,8 +108,8 @@ public class QueueReceiver extends NamedObj implements Receiver {
      *  @param element An object to put on the queue.
      *  @return A boolean indicating success.
      *  @exception TokenHolderFullException The size of the queue is greater
-     *  than the capacity.  
-     */	
+     *  than the capacity.
+     */
     public void put(Token element) throws TokenHolderFullException {
         synchronized (workspace()){
 	    if (_queue.size() >= _queue.capacity()) {

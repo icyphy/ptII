@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -34,19 +34,19 @@ import pt.kernel.util.NoSuchItemException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
-/** 
-The Receiver with capacity one. Used in MailboxPort to hold incoming 
+/**
+The Receiver with capacity one. Used in MailboxPort to hold incoming
 token. Implement the Receiver interface.
 
 @author Jie Liu
 @version $Id$
 */
 public class Mailbox implements Receiver {
-    /** Construct an empty Mailbox. The Mailbox must have a container, 
+    /** Construct an empty Mailbox. The Mailbox must have a container,
      * which is an IOPort. The container, once set, can't be changed.
      * FIXME: what if container = null?
      * @param container Container of Mailbox to be constructed.
-     */	
+     */
     public Mailbox(IOPort container) {
         _container = container;
         _isEmpty = true;
@@ -60,7 +60,7 @@ public class Mailbox implements Receiver {
      * @see put
      * @return token
      * @exception NoSuchItemException if the Mailbox is empty.
-     */	
+     */
     public Token get() throws NoSuchItemException {
         if(_isEmpty) {
             throw new NoSuchItemException(getContainer(),
@@ -72,14 +72,14 @@ public class Mailbox implements Receiver {
 
     /** return the IOPort that contains this Mailbox
      * @return container
-     */	
+     */
     public Nameable getContainer() {
         return _container;
     }
 
     /** Return ture if the Mailbox is empty.
      * @return ture if the Mailbox is empty.
-     */	
+     */
     public boolean isEmpty() {
         return _isEmpty;
     }
@@ -87,15 +87,15 @@ public class Mailbox implements Receiver {
     /** Put a token in the Mailbox
      * @see get
      * @param token The token to be put in.
-     * @exception TokenHolderFullException if the Mailbox has 
+     * @exception TokenHolderFullException if the Mailbox has
      *            unconsumed token.
-     */	
+     */
     public void put(Token token) throws TokenHolderFullException{
         if(!_isEmpty) {
             throw new TokenHolderFullException();
         }
         _token = token;
-        _isEmpty = false;    
+        _isEmpty = false;
     }
 
     ////////////////////////////////////////////////////////////////////////

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Port
-/** 
+/**
 A Port is the interface of an Entity to any number of Relations.
 Normally, a Port is contained by an Entity, although a port
 may exist with no container.  The role of a port is to aggregate
@@ -105,8 +105,8 @@ public class Port extends NamedObj {
      *   class for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
-     */	
-    public Port(Entity container, String name) 
+     */
+    public Port(Entity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
@@ -136,7 +136,7 @@ public class Port extends NamedObj {
     /** Enumerate the connected ports.  Note that a port may be listed
      *  more than once if more than one connection to it has been established.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of Port objects. 
+     *  @return An enumeration of Port objects.
      */
     public Enumeration connectedPorts() {
         try {
@@ -185,11 +185,11 @@ public class Port extends NamedObj {
             workspace().doneReading();
         }
     }
-    
+
     /** Enumerate the linked relations.  Note that a relation may appear
      *  more than once if more than one link to it has been established.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of Relation objects. 
+     *  @return An enumeration of Relation objects.
      */
     public Enumeration linkedRelations() {
         try {
@@ -217,8 +217,8 @@ public class Port extends NamedObj {
      *   the hierarchy, or the relation is incompatible,
      *   or the port has no container, or the port is not in the
      *   same workspace as the relation.
-     */	
-    public void link(Relation relation) 
+     */
+    public void link(Relation relation)
             throws IllegalActionException {
         if (relation == null) return;
         if (workspace() != relation.workspace()) {
@@ -317,12 +317,12 @@ public class Port extends NamedObj {
         } finally {
             workspace().doneWriting();
         }
-    } 
+    }
 
     /** Unlink all relations.
      *  This method is write-synchronized on the
      *  workspace and increments its version number.
-     */	
+     */
     public void unlinkAll() {
         try {
             workspace().write();
@@ -338,7 +338,7 @@ public class Port extends NamedObj {
 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which results
-     *  in invalid references to objects. 
+     *  in invalid references to objects.
      *  In this class, this method resets the private members _relationsList
      *  and _container.
      *  @param ws The workspace the cloned object is to be placed in.
@@ -398,8 +398,8 @@ public class Port extends NamedObj {
      *  workspace, so the caller should be.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container.
-     */	
-    protected void _link(Relation relation) 
+     */
+    protected void _link(Relation relation)
             throws IllegalActionException {
         if (relation != null) {
             if (getContainer() == null) {

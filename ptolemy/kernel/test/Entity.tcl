@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,7 +33,7 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
@@ -42,7 +42,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
@@ -50,16 +50,16 @@ if {[string compare test [info procs test]] == 1} then {
 
 ######################################################################
 ####
-# 
+#
 test Entity-2.1 {Construct Entities} {
     set e1 [java::new pt.kernel.Entity]
     set e2 [java::new pt.kernel.Entity "My Entity"]
-    list [$e1 getName] [$e2 getName] 
+    list [$e1 getName] [$e2 getName]
 } {{} {My Entity}}
 
 ######################################################################
 ####
-# 
+#
 test Entity-2.2 {Construct Entities, call getPorts} {
     set e1 [java::new pt.kernel.Entity]
     set e2 [java::new pt.kernel.Entity "My Entity"]
@@ -68,7 +68,7 @@ test Entity-2.2 {Construct Entities, call getPorts} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-4.0 {Connect Entities} {
     # Create objects
     set ramp [java::new pt.kernel.Entity "Ramp"]
@@ -86,7 +86,7 @@ test Entity-4.0 {Connect Entities} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-5.0 {move port from one entity to another} {
     # Workspace
     set w [java::new pt.kernel.util.Workspace]
@@ -104,7 +104,7 @@ test Entity-5.0 {move port from one entity to another} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-5.1 {move port without a name from one entity to another} {
     set w [java::new pt.kernel.util.Workspace]
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
@@ -117,7 +117,7 @@ test Entity-5.1 {move port without a name from one entity to another} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-5.2 {move port twice} {
     set w [java::new pt.kernel.util.Workspace]
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
@@ -130,7 +130,7 @@ test Entity-5.2 {move port twice} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-6.0 {remove port by name} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
@@ -145,7 +145,7 @@ test Entity-6.0 {remove port by name} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-6.2 {remove port by reference} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
@@ -164,7 +164,7 @@ test Entity-6.2 {remove port by reference} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-6.6 {remove port twice by reference, then check state} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
@@ -178,7 +178,7 @@ test Entity-6.6 {remove port twice by reference, then check state} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-6.7 {set the name of a port to null, then check state} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
@@ -191,7 +191,7 @@ test Entity-6.7 {set the name of a port to null, then check state} {
 } {{{{} b}} Ramp}
 
 ######################################################################
-# 
+#
 test Entity-6.8 {remove all ports} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
@@ -207,7 +207,7 @@ test Entity-6.8 {remove all ports} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-6.9 {remove port set in the constructor by reference} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
@@ -222,7 +222,7 @@ test Entity-6.9 {remove port set in the constructor by reference} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-7.0 {Connect Entities, then remove a port} {
     # Create objects
     set ramp [java::new pt.kernel.Entity "Ramp"]
@@ -244,7 +244,7 @@ test Entity-7.0 {Connect Entities, then remove a port} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-8.0 {Create new ports} {
     set e1 [java::new pt.kernel.Entity X]
     set p1 [$e1 newPort A]
@@ -254,7 +254,7 @@ test Entity-8.0 {Create new ports} {
 
 ######################################################################
 ####
-# 
+#
 test Entity-9.0 {Test description} {
     set w [java::new pt.kernel.util.Workspace W]
     set e1 [java::new pt.kernel.Entity $w E1]

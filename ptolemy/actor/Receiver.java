@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -34,10 +34,10 @@ import pt.kernel.util.NoSuchItemException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
-/** 
-Interface for objects that can hold tokens. The implementation of this 
+/**
+Interface for objects that can hold tokens. The implementation of this
 interface should support two key methods: put and get. Put is the method
-that put a token in. Get is the method that can get a token out. The order 
+that put a token in. Get is the method that can get a token out. The order
 the tokens are stored and the order of retreiving depends on specific
 implementations. In addition, objects that implement this method are supposed
 to be contained in an IOPort. So the getContainer method is defined.

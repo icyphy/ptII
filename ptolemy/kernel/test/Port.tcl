@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -33,7 +33,7 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
@@ -42,14 +42,14 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
 ######################################################################
 ####
-# 
+#
 test Port-2.1 {Construct Ports} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
@@ -60,7 +60,7 @@ test Port-2.1 {Construct Ports} {
 
 ######################################################################
 ####
-# 
+#
 test Port-3.1 {Test link with one port, one relation} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
@@ -74,7 +74,7 @@ test Port-3.1 {Test link with one port, one relation} {
 
 ######################################################################
 ####
-# 
+#
 test Port-3.1.1 {Test link with one port, one relation twice} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
@@ -88,7 +88,7 @@ test Port-3.1.1 {Test link with one port, one relation twice} {
 
 ######################################################################
 ####
-# 
+#
 test Port-3.1.2 {Test link with one port to a null relation} {
     set p1 [java::new pt.kernel.Port]
     $p1 link [java::null]
@@ -98,7 +98,7 @@ test Port-3.1.2 {Test link with one port to a null relation} {
 
 ######################################################################
 ####
-# 
+#
 test Port-3.2 {Test link with one port, two relations} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
@@ -113,7 +113,7 @@ test Port-3.2 {Test link with one port, two relations} {
 
 ######################################################################
 ####
-# 
+#
 test Port-3.3 {Test link with two ports, one relation} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port $e1 P1]
@@ -127,7 +127,7 @@ test Port-3.3 {Test link with two ports, one relation} {
 
 ######################################################################
 ####
-# 
+#
 test Port-3.4 {Test link with two ports, two relations} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port $e1 P1]
@@ -148,7 +148,7 @@ test Port-3.4 {Test link with two ports, two relations} {
 
 ######################################################################
 ####
-# 
+#
 test Port-4.1 {Test unlinkAll} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
@@ -166,7 +166,7 @@ test Port-4.1 {Test unlinkAll} {
     # we don't cause an error.
     $p1 unlinkAll
     set result2 [_testPortLinkedRelations $p1 $p2]
-    $p2 unlinkAll 
+    $p2 unlinkAll
     set result3 [_testPortLinkedRelations $p1 $p2]
    list "$result1\n$result2\n$result3"
 } {{{} {relation1 relation2}
@@ -175,14 +175,14 @@ test Port-4.1 {Test unlinkAll} {
 
 ######################################################################
 ####
-# 
+#
 test Port-5.1 {Test unlink} {
     set p3 [java::new pt.kernel.Port]
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port $e1 P1]
     # FIXME: Bug in TclBlend: If p3 is set below instead of above,
     # TclBlend gives an error on Unix machines, but not on NT.
-    # The error is: 
+    # The error is:
     # wrong # args for calling constructor "pt.kernel.Port"
     # set p3 [java::new pt.kernel.Port]
     $p3 setContainer $e1
@@ -215,7 +215,7 @@ relation2 {}
 
 ######################################################################
 ####
-# 
+#
 test Port-5.2 {Test unlink on a relation we are not connected to} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
@@ -229,7 +229,7 @@ test Port-5.2 {Test unlink on a relation we are not connected to} {
 
 ######################################################################
 ####
-# 
+#
 test Port-6.1 {Test linkedRelations} {
     set p1 [java::new pt.kernel.Port]
     set enum [$p1 linkedRelations]
@@ -239,7 +239,7 @@ test Port-6.1 {Test linkedRelations} {
 
 ######################################################################
 ####
-# 
+#
 test Port-7.1 {Test getContainer on a Port that has no container } {
     set p1 [java::new pt.kernel.Port]
     list [expr { [java::null] == [$p1 getContainer] } ]
@@ -247,7 +247,7 @@ test Port-7.1 {Test getContainer on a Port that has no container } {
 
 ######################################################################
 ####
-# 
+#
 test Port-7.2 {Test getContainer on a Port that has a container } {
     set p1 [java::new pt.kernel.Port]
     set e1 [java::new pt.kernel.Entity "entity1"]
@@ -257,7 +257,7 @@ test Port-7.2 {Test getContainer on a Port that has a container } {
 
 ######################################################################
 ####
-# 
+#
 test Port-8.1 {Build a topology consiting of a Ramp and a Print Entity} {
     # Create objects
     set ramp [java::new pt.kernel.Entity "Ramp"]
@@ -278,7 +278,7 @@ test Port-8.1 {Build a topology consiting of a Ramp and a Print Entity} {
 
 ######################################################################
 ####
-# 
+#
 test Port-9.1 {Remove a port from its container} {
     # Create objects
     set ramp [java::new pt.kernel.Entity "Ramp"]
@@ -301,7 +301,7 @@ test Port-9.1 {Remove a port from its container} {
 
 ######################################################################
 ####
-# 
+#
 test Port-10.1 {Reassign a port to a new container} {
     # Create objects
     set ramp [java::new pt.kernel.Entity "Ramp"]
@@ -324,7 +324,7 @@ test Port-10.1 {Reassign a port to a new container} {
 
 ######################################################################
 ####
-# 
+#
 test Port-11.1 {Move Port in and out of the workspace} {
     set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
@@ -343,7 +343,7 @@ test Port-11.1 {Move Port in and out of the workspace} {
 
 ######################################################################
 ####
-# 
+#
 test Port-12.1 {Test description} {
     set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
@@ -393,7 +393,7 @@ test Port-12.4 {Test description on workspace} {
 
 ######################################################################
 ####
-# 
+#
 test Port-13.1 {Test clone} {
     set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
@@ -407,7 +407,7 @@ test Port-13.1 {Test clone} {
 
 ######################################################################
 ####
-# 
+#
 test Port-14.1 {Test double link with one port, one relations} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]

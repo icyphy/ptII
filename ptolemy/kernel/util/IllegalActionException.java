@@ -22,7 +22,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -34,7 +34,7 @@ package pt.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// IllegalActionException
-/** 
+/**
 Thrown on an attempt to perform an action that would result in an
 inconsistent or contradictory data structure if it were allowed to
 complete. E.g., attempt to remove a port from an entity when the
@@ -45,14 +45,14 @@ attempt to add an item with no name to a named list.
 @version $Id$
 */
 public class IllegalActionException extends KernelException {
-    /** Constructs an Exception with no detail message. */  
+    /** Constructs an Exception with no detail message. */
     public IllegalActionException() {
         super();
     }
 
     /** Constructs an Exception with a detail message.
      *  @param detail The message.
-     */  
+     */
     public IllegalActionException(String detail) {
         super(detail);
     }
@@ -60,7 +60,7 @@ public class IllegalActionException extends KernelException {
     /** Constructs an Exception with a detail message that is only the
      *  name of the argument.
      *  @param obj The object.
-     */  
+     */
     public IllegalActionException(Nameable obj) {
         super(obj);
     }
@@ -69,7 +69,7 @@ public class IllegalActionException extends KernelException {
      *  name of the first argument.
      *  @param obj The object.
      *  @param detail The message.
-     */  
+     */
     public IllegalActionException(Nameable obj, String detail) {
         super(obj, detail);
     }
@@ -78,7 +78,7 @@ public class IllegalActionException extends KernelException {
      *  only the names of the obj1 and obj2 arguments.
      *  @param obj1 The first object.
      *  @param obj2 The second object.
-     */  
+     */
     public IllegalActionException(Nameable obj1, Nameable obj2)  {
         super(obj1, obj2);
     }
@@ -88,7 +88,7 @@ public class IllegalActionException extends KernelException {
      *  @param obj1 The first object.
      *  @param obj2 The second object.
      *  @param detail The message.
-     */  
+     */
     public IllegalActionException(Nameable obj1, Nameable obj2,
             String detail) {
         super(obj1, obj2, detail);

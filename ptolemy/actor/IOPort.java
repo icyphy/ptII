@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -41,7 +41,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
-/** 
+/**
 This class supports exchanging data between
 entities via message passing. It can serve as an input port,
 an output port, or both. If it is an input port, then it
@@ -75,7 +75,7 @@ sum for the outside links, or an exception will be thrown.
 <p>
 An IOPort can link to any instance of IORelation. An attempt to
 link to an instance of Relation or ComponentRelation will trigger an
-exception. Derived classes may wish to further constrain links to a 
+exception. Derived classes may wish to further constrain links to a
 subclass of IORelation.  To do this, subclasses should override the
 protected methods _link() and _linkInside() to throw an exception
 if their arguments are relations that are not of the appropriate
@@ -92,12 +92,12 @@ public class IOPort extends ComponentPort {
 
     /** Construct an IOPort with no container and no name that is
      *  neither an input nor an output.
-     */	
+     */
     public IOPort() {
         super();
     }
 
-    /** Construct an IOPort with a containing actor and a name 
+    /** Construct an IOPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
      *  must be an instance of Actor or CompositeActor or an exception
      *  will be thrown.
@@ -108,8 +108,8 @@ public class IOPort extends ComponentPort {
      *   nor a CompositeActor.
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
-     */	
-    public IOPort(ComponentEntity container, String name) 
+     */
+    public IOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
@@ -150,13 +150,13 @@ public class IOPort extends ComponentPort {
      *  @exception CloneNotSupportedException If the token cannot be cloned
      *   and there is more than one destination.
      *  @exception IllegalActionException If the port is not an output.
-     */	
-    public void broadcast(Token token) 
+     */
+    public void broadcast(Token token)
 	    throws CloneNotSupportedException, IllegalActionException {
         synchronized(workspace()) {
             if (!isOutput()) {
                 throw new IllegalActionException(this,
-                        "broadcast: Tokens can only be sent from an " + 
+                        "broadcast: Tokens can only be sent from an " +
                         "output port.");
             }
             Receiver fr[][] = getRemoteReceivers();
@@ -164,7 +164,7 @@ public class IOPort extends ComponentPort {
                 return;
             }
             boolean first = true;
-                
+
             for (int j = 0; j < fr.length; j++) {
                 if (first) {
                     send(j, token);
@@ -178,25 +178,25 @@ public class IOPort extends ComponentPort {
 
     /** Return a description of the object specified by verbosity.
      *  If verbosity = RECEIVERS(7), then returns a String containing
-     *  the receivers of this port. The returned String has the same 
-     *  format as the Receivers array, i.e. each row corresponding to 
-     *  a channel, and all the elements in a row are receiving the 
-     *  clone of the same token. Each element in the receivers array 
-     *  has the form: container's_full_name.receiver_type, 
-     *  e.g. e0.p0.pt.actors.Mailbox. Every null element in the array is 
-     *  is a string "null" in the returned String. 
+     *  the receivers of this port. The returned String has the same
+     *  format as the Receivers array, i.e. each row corresponding to
+     *  a channel, and all the elements in a row are receiving the
+     *  clone of the same token. Each element in the receivers array
+     *  has the form: container's_full_name.receiver_type,
+     *  e.g. e0.p0.pt.actors.Mailbox. Every null element in the array is
+     *  is a string "null" in the returned String.
      *
-     *  If verbosity = REMOTE_RECEIVERS(8), then returns a String 
+     *  If verbosity = REMOTE_RECEIVERS(8), then returns a String
      *  containing the remote receivers of this port.
-     *  The returned String has the same 
-     *  format as the remoteReceivers array, i.e. each row corresponding to 
-     *  a channel, and all the elements in a row are the destination 
-     *  receiving the 
-     *  clone of the same token. Each element in the receivers array 
-     *  has the form: container's_full_name.receiver_type, 
-     *  e.g. e0.p0.pt.acotrs.Mailbox. 
-     * 
-     *  NOTE: The information of getReceivers(IORelation) and 
+     *  The returned String has the same
+     *  format as the remoteReceivers array, i.e. each row corresponding to
+     *  a channel, and all the elements in a row are the destination
+     *  receiving the
+     *  clone of the same token. Each element in the receivers array
+     *  has the form: container's_full_name.receiver_type,
+     *  e.g. e0.p0.pt.acotrs.Mailbox.
+     *
+     *  NOTE: The information of getReceivers(IORelation) and
      *  getRemoteReceivers(IORelation) is not included.
      *  @param verbosity The level of verbosity.
      */
@@ -229,7 +229,7 @@ public class IOPort extends ComponentPort {
             }
             results += "\n";
         }
-        return results; 
+        return results;
     }
 
     /** Get a token from the specified channel.
@@ -240,12 +240,12 @@ public class IOPort extends ComponentPort {
      *  This method is synchronized on the workspace.
      *  @exception NoSuchItemException If there is no token, or the
      *   port is not an input port, or the channel index is out of range.
-     */	
+     */
     public Token get(int channelindex) throws NoSuchItemException {
         synchronized(workspace()) {
             if (!isInput()) {
                 throw new NoSuchItemException(this,
-                        "get: Tokens can only be retreived from " + 
+                        "get: Tokens can only be retreived from " +
                         "an input port.");
             }
             if (channelindex >= getWidth()) {
@@ -302,7 +302,7 @@ public class IOPort extends ComponentPort {
                 if (_localReceiversVersion == workspace().getVersion()) {
                     return _localReceivers;
                 }
-            
+
                 // Cache not valid.  Reconstruct it.
                 _localReceivers = new Receiver[width][];
                 int index = 0;
@@ -343,14 +343,14 @@ public class IOPort extends ComponentPort {
             }
         }
     }
-       
+
     /** If the port is an input, return the receivers that handle incoming
-     *  channels from the specified relation, otherwise return null.  For an 
+     *  channels from the specified relation, otherwise return null.  For an
      *  input port, the returned value is an array of arrays.  The first index
      *  (the row) specifies the channel number.  The second index (the
      *  column) specifies the receiver number within the group of
-     *  receivers that get copies of the same channel.  If the port has no 
-     *  inside links (is not transparent), then the group size is one (the 
+     *  receivers that get copies of the same channel.  If the port has no
+     *  inside links (is not transparent), then the group size is one (the
      *  second index is always zero).  For transparent ports, the group size is
      *  arbitrary, and can be different for each channel.  The number of
      *  channels (rows) is the width of the relation.  If the width is zero,
@@ -362,7 +362,7 @@ public class IOPort extends ComponentPort {
      *  if there no receivers or the number of receivers does not match
      *  the width of the port.  Previous receivers are lost, together
      *  with any data they may contain.
-     * 
+     *
      *  For a transparent port, this method returns the receivers
      *  corresponding to the given IORelation contained by ports connected
      *  to this port from inside. If there are fewer inside Receivers
@@ -379,7 +379,7 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         synchronized(workspace()) {
             if (!isLinked(relation)) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "getReceivers: Relation argument is not " +
                         "linked to me.");
             }
@@ -420,7 +420,7 @@ public class IOPort extends ComponentPort {
                 return result;
             } else {
                 // If not an atomic port, ask its all inside receivers,
-                // and trim the returned Receivers array to get the 
+                // and trim the returned Receivers array to get the
                 // part corresponding to the IORelation
                 Receiver[][] insideRecvrs = getReceivers();
                 if(insideRecvrs == null) {
@@ -428,20 +428,20 @@ public class IOPort extends ComponentPort {
                 }
                 int insideWidth = insideRecvrs.length;
                 int index = 0;
-                Receiver[][] result = new Receiver[width][];  
+                Receiver[][] result = new Receiver[width][];
                 Enumeration outsideRels = linkedRelations();
                 while(outsideRels.hasMoreElements()) {
                     IORelation r = (IORelation) outsideRels.nextElement();
                     if(r == relation) {
-                        result = new Receiver[width][];    
-                        int rstSize = 
+                        result = new Receiver[width][];
+                        int rstSize =
                             java.lang.Math.min(width, insideWidth-index);
                         for (int i = 0; i< rstSize; i++) {
                             result[i] = insideRecvrs[index++];
                         }
                         break;
                     } else {
-                        index += r.getWidth();                        
+                        index += r.getWidth();
                         if(index > insideWidth) break;
                     }
                 }
@@ -475,10 +475,10 @@ public class IOPort extends ComponentPort {
 
             int width = getWidth();
             if (width <= 0) return null;
-            
+
             // For atomic port, try the cached _farReceivers
             // Check validity of cached version
-            if(isOpaque() && 
+            if(isOpaque() &&
                     _farReceiversVersion == workspace().getVersion()) {
                 return _farReceivers;
             }
@@ -514,17 +514,17 @@ public class IOPort extends ComponentPort {
             }
             return farReceivers;
         }
-    }   
+    }
 
     /** If this port is an output, return the remote receivers that can
-     *  receive data from this port through the specified relation, 
+     *  receive data from this port through the specified relation,
      *  otherwise return null.  The relation should linked to the port
      *  from the inside, otherwise an exception is thrown. For an output
      *  port, the returned value is an array of arrays.  The first index
      *  (the row) specifies the stream number.  The second index (the
      *  column) specifies the receiver number within the group of
      *  receivers that get copies of the same channel.  The number of
-     *  channels (rows) is the width of the specified relation.  
+     *  channels (rows) is the width of the specified relation.
      *  If this width is zero, or if the port is not connected to
      *  any outside input ports through the relation,
      *  this method will return null, as if the port were not an output
@@ -547,12 +547,12 @@ public class IOPort extends ComponentPort {
                 throw new IllegalActionException(this, relation,
                         "not linked from the inside.");
             }
-                
+
             if (!isOutput()) return null;
 
             int width = relation.getWidth();
             if (width <= 0) return null;
-            
+
             // no cache used.
             Receiver[][] outsideRecvrs = getRemoteReceivers();
             if(outsideRecvrs == null) {
@@ -604,7 +604,7 @@ public class IOPort extends ComponentPort {
      *  if either makeInput() has been called with a true argument, or
      *  it is connected on the inside to an input port, or if it is
      *  connected on the inside to the inside of an output port.
-     */	
+     */
     public boolean isInput() {
         if (_insideinputversion != workspace().getVersion()) {
             // Check to see whether any port linked on the inside is an input.
@@ -630,7 +630,7 @@ public class IOPort extends ComponentPort {
      *  if either makeOutput() has been called with a true argument, or
      *  it is connected on the inside to an output port, or it is
      *  connected on the inside to the inside of an input port.
-     */	
+     */
     public boolean isOutput() {
         if (_insideoutputversion != workspace().getVersion()) {
             // Check to see whether any port linked on the inside is an output.
@@ -652,7 +652,7 @@ public class IOPort extends ComponentPort {
      *  is an input port regardless of whether and how this method is called.
      *  This method is synchronized on the workspace and increments
      *  its version.
-     */	
+     */
     public void makeInput(boolean isinput) {
         synchronized(workspace()) {
             _isinput = isinput;
@@ -661,8 +661,8 @@ public class IOPort extends ComponentPort {
     }
 
     /** If the argument is true, make the port a multiport.
-     *  That is, make it capable of linking with multiple IORelations, 
-     *  or with IORelations that have width greater than one. 
+     *  That is, make it capable of linking with multiple IORelations,
+     *  or with IORelations that have width greater than one.
      *  If the argument is false, allow only links with a single
      *  IORelation of width one.
      *  This has no effect if the port is a transparent port that is
@@ -670,7 +670,7 @@ public class IOPort extends ComponentPort {
      *  is a multiport regardless of whether and how this method is called.
      *  This method is synchronized on the workspace and increments
      *  its version.
-     */	
+     */
     public void makeMultiport(boolean ismultiport) {
         synchronized(workspace()) {
             _ismultiport = ismultiport;
@@ -686,14 +686,14 @@ public class IOPort extends ComponentPort {
      *  is an output port regardless of whether and how this method is called.
      *  This method is synchronized on the workspace and increments
      *  its version.
-     */	
+     */
     public void makeOutput(boolean isoutput) {
         synchronized(workspace()) {
             _isoutput = isoutput;
             workspace().incrVersion();
         }
     }
-    
+
     /** Create a new local Receiver.  In this base class, the default
      *  receiver is a Mailbox.  Derived classes should override this to
      *  create receivers appropriate to their model of computation.
@@ -713,7 +713,7 @@ public class IOPort extends ComponentPort {
      *   and there is more than one destination.
      *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range.
-     */	
+     */
     public void send(int channelindex, Token token)
             throws CloneNotSupportedException, IllegalActionException {
         synchronized(workspace()) {
@@ -771,12 +771,12 @@ public class IOPort extends ComponentPort {
                 _localReceiversTable.remove(relation);
             }
         }
-    } 
+    }
 
     /** Unlink all relations.
      *  This method is synchronized on the
      *  workspace and increments its version number.
-     */	
+     */
     public void unlinkAll() {
         synchronized(workspace()) {
             super.unlinkAll();
@@ -794,12 +794,12 @@ public class IOPort extends ComponentPort {
 
     /**
      * The description() method returns the receivers of this port.
-     */ 
+     */
     public static final int RECEIVERS = 7;
 
     /**
      * The description() method returns the remote receivers of this port.
-     */ 
+     */
     public static final int REMOTE_RECEIVERS = 8;
 
     ////////////////////////////////////////////////////////////////////////
@@ -837,7 +837,7 @@ public class IOPort extends ComponentPort {
      *  relation is required to be specified to be one. This method assumes
      *  that the relation is outside the port, so this is an outside link.
      *  <p>
-     *  This method should not be used directly.  Use the public version 
+     *  This method should not be used directly.  Use the public version
      *  instead. It is synchronized on the workspace.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container or
@@ -893,13 +893,13 @@ public class IOPort extends ComponentPort {
      *  relation is required to be specified to be one.  This method assumes
      *  that the relation is inside the port, so this is an inside link.
      *  <p>
-     *  This method should not be used directly.  Use the public version 
+     *  This method should not be used directly.  Use the public version
      *  instead. It is synchronized on the workspace.
      *  @param relation The relation to link to on the inside.
      *  @exception IllegalActionException If this port has no container or
      *   the relation is not an IORelation, or the port already linked to a
      *   relation and is not a multiport, or the relation has width
-     *   not exactly one and the port is not a multiport, or the 
+     *   not exactly one and the port is not a multiport, or the
      *   relation is incompatible with this port, or the port is not
      *   in the same workspace as the relation.
      */

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,15 +37,15 @@ import collections.CollectionEnumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
-/** 
-An instance of Workspace is used for synchronization and version tracking 
+/**
+An instance of Workspace is used for synchronization and version tracking
 of interdependent groups of objects.  These objects are said to be in the
 workspace. This is not the same as the <i>container</i> association
 in Ptolemy II.  A workspace is never returned by a getContainer() method.
 <p>
 The workspace provides a rudimentary directory service that can
 be used to keep track of the objects within it.  It is not required to use
-it in order to use the workspace for synchronization. Items are added 
+it in order to use the workspace for synchronization. Items are added
 to the directory by calling add().
 The names of the items in the directory are not required to be unique.
 <p>
@@ -96,7 +96,7 @@ thread reading an inconsistent state.
 public class Workspace implements Nameable, Serializable {
 
     /** Create a workspace with an empty string as its name.
-     */	
+     */
     public Workspace() {
         setName("");
         _directory = new LinkedList();
@@ -106,7 +106,7 @@ public class Workspace implements Nameable, Serializable {
      *  prefix of the full name of all contained objects. If the name
      *  argument is null, then an empty string "" is used as the name.
      *  @param name Name of the workspace.
-     */	
+     */
     public Workspace(String name) {
         setName(name);
         _directory = new LinkedList();
@@ -125,7 +125,7 @@ public class Workspace implements Nameable, Serializable {
      *  @param item Item to list in the directory.
      *  @exception IllegalActionException If the item has a container, is
      *   already in the directory, or is not in this workspace.
-     */	
+     */
     public synchronized void add(NamedObj item)
             throws IllegalActionException {
         if (item.workspace() != this) {
@@ -178,7 +178,7 @@ public class Workspace implements Nameable, Serializable {
     /** Enumerate the items in the directory, in the order in which
      *  they were added.
      *  @return An enumeration of NamedObj objects.
-     */	
+     */
     public synchronized CollectionEnumeration directory() {
         return _directory.elements();
     }
@@ -235,20 +235,20 @@ public class Workspace implements Nameable, Serializable {
     }
 
     /** Get the name.
-     *  @return The name of the workspace. 
-     */	
-    public String getName() { 
-        return _name; 
+     *  @return The name of the workspace.
+     */
+    public String getName() {
+        return _name;
     }
     /** Get a the version number
      *  @return A non-negative long integer.
-     */	
+     */
     public synchronized long getVersion() {
         return _version;
     }
 
     /** Increment the version number by one.
-     */	
+     */
     public synchronized void incrVersion() {
         _version++;
     }
@@ -260,7 +260,7 @@ public class Workspace implements Nameable, Serializable {
      *  have requested write permission and not gotten it yet.
      *  It is essential that doneReading() be called
      *  after this, or write permission may never again be granted in
-     *  this workspace. 
+     *  this workspace.
      */
     public synchronized void read() {
         while (true) {
@@ -290,7 +290,7 @@ public class Workspace implements Nameable, Serializable {
      *  its workspace (its workspace is immutable).  If the object is
      *  not in the directory, do nothing.
      *  Increment the version number.
-     */	
+     */
     public synchronized void remove(NamedObj item) {
         _directory.removeOneOf(item);
         incrVersion();
@@ -300,7 +300,7 @@ public class Workspace implements Nameable, Serializable {
      *  Note that those items will still refer to this workspace as
      *  their workspace (their workspace is immutable).
      *  Increment the version number.
-     */	
+     */
     public synchronized void removeAll() {
         _directory.clear();
         incrVersion();
@@ -321,13 +321,13 @@ public class Workspace implements Nameable, Serializable {
 
     /** Return a concise description of the object.
      *  @return The classname and name.
-     */ 
+     */
     public String toString() {
         return "pt.kernel.Workspace {" + getFullName()+ "}";
     }
 
     /** Obtain permission to write to objects in the workspace.
-     *  Permission is granted if there are no other threads that currently 
+     *  Permission is granted if there are no other threads that currently
      *  have read or write permission.  In particular, it <i>is</i> granted
      *  if this thread already has write permission, or if it is the only
      *  thread with read permission.
@@ -431,7 +431,7 @@ public class Workspace implements Nameable, Serializable {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         inner classes                            ////
-    
+
     // Class ReadCount
     // Keeps track of the number of reader permissions that a thread has.
     // This is used instead of the Integer class because Integer has no

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentPort
-/** 
+/**
 A port supporting hierarchy. A component port can have "inside"
 links as well as the usual "outside" links supported by the base
 class. An inside link is a link to a relation that is within the
@@ -113,7 +113,7 @@ public class ComponentPort extends Port {
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This port will use the
      *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty 
+     *  If the name argument is null, then the name is set to the empty
      *  string.  Increment the version of the workspace.
      *  @param container The container entity.
      *  @param name The name of the port.
@@ -121,8 +121,8 @@ public class ComponentPort extends Port {
      *   class for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
-     */	
-    public ComponentPort(ComponentEntity container, String name) 
+     */
+    public ComponentPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
         // Ignore exception because "this" cannot be null.
@@ -156,7 +156,7 @@ public class ComponentPort extends Port {
      *  be listed more than once.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
-     */	
+     */
     public Enumeration deepConnectedPorts() {
         try {
             workspace().read();
@@ -166,7 +166,7 @@ public class ComponentPort extends Port {
             }
             Enumeration nearrelations = linkedRelations();
             LinkedList result = new LinkedList();
-            
+
             while( nearrelations.hasMoreElements() ) {
                 ComponentRelation relation =
                     (ComponentRelation)nearrelations.nextElement();
@@ -215,7 +215,7 @@ public class ComponentPort extends Port {
      *  inside connection to it has been established.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
-     */	
+     */
     public Enumeration deepInsidePorts() {
         try {
             workspace().read();
@@ -271,7 +271,7 @@ public class ComponentPort extends Port {
      *  has been established to it.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
-     */	
+     */
     public Enumeration insidePorts() {
         try {
             workspace().read();
@@ -292,7 +292,7 @@ public class ComponentPort extends Port {
      *  to it has been established.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentRelation objects.
-     */	
+     */
     public Enumeration insideRelations() {
         try {
             workspace().read();
@@ -317,14 +317,14 @@ public class ComponentPort extends Port {
             workspace().doneReading();
         }
     }
-    
+
     /** Return true if the given relation is linked from inside.
      *  @return True if the given relation is linked from inside.
      */
     public boolean isInsideLinked(Relation relation) {
         return _insideLinks.isLinked(relation);
     }
-    
+
     /** Return true if the container entity is atomic.
      *  @return True if the container entity is atomic.
      */
@@ -355,10 +355,10 @@ public class ComponentPort extends Port {
      *  This method is write-synchronized on the workspace
      *  and increments its version number.
      *  @param relation The relation to link to.
-     *  @exception IllegalActionException If the relation does not share 
+     *  @exception IllegalActionException If the relation does not share
      *   the same workspace, or the port has no container.
-     */	
-    public void liberalLink(ComponentRelation relation) 
+     */
+    public void liberalLink(ComponentRelation relation)
             throws IllegalActionException {
         if (relation == null) return;
         if (workspace() != relation.workspace()) {
@@ -388,12 +388,12 @@ public class ComponentPort extends Port {
      *  method.  If the argument is null, do nothing.
      *  This method is write-synchronized on the workspace
      *  and increments its version number.
-     *  @param relation The relation to link to. 
+     *  @param relation The relation to link to.
      *  @exception IllegalActionException If the link crosses levels of
      *   the hierarchy, or the port has no container, or the relation
      *   is not a ComponentRelation.
-     */	
-    public void link(Relation relation) 
+     */
+    public void link(Relation relation)
             throws IllegalActionException {
         if (relation == null) return;
         if (!(relation instanceof ComponentRelation)) {
@@ -468,12 +468,12 @@ public class ComponentPort extends Port {
         } finally {
             workspace().doneWriting();
         }
-    } 
+    }
 
     /** Unlink all relations, inside and out.
      *  This method is write-synchronized on the workspace
      *  and increments its version number.
-     */	
+     */
     public void unlinkAll() {
         try {
             workspace().write();
@@ -489,7 +489,7 @@ public class ComponentPort extends Port {
 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which results
-     *  in invalid references to objects. 
+     *  in invalid references to objects.
      *  In this class, this method resets the private member _insideLinks.
      *  @param ws The workspace the cloned object is to be placed in.
      */
@@ -544,8 +544,8 @@ public class ComponentPort extends Port {
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container or
      *   the relation is not a ComponentRelation.
-     */	
-    protected void _link(Relation relation) 
+     */
+    protected void _link(Relation relation)
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this,
@@ -567,8 +567,8 @@ public class ComponentPort extends Port {
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container or
      *   is not a ComponentPort.
-     */	
-    protected void _linkInside(ComponentRelation relation) 
+     */
+    protected void _linkInside(ComponentRelation relation)
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this,
@@ -590,7 +590,7 @@ public class ComponentPort extends Port {
      *  This method is read-synchronized on the workspace.
      *  @param entity A possible container.
      *  @return True if this port is outside the entity.
-     */	
+     */
     protected boolean _outside(Nameable entity) {
         try {
             workspace().read();

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import pt.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestWorkspace
-/** 
+/**
 This object implements a thread that obtains read permission to
 a workspace three times sequentially, then obtains write permission.
 To use it, create an instance and then call its start() method.
@@ -89,4 +89,4 @@ public class TestWorkspace extends Thread {
     private Workspace _workspace;
     private String _profile = "";
 }
-      
+

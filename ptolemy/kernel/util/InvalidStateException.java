@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -32,7 +32,7 @@ package pt.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// InvalidStateException
-/** 
+/**
 Some object or set of objects has a state that in theory is not
 permitted. E.g., a NamedObj has a null name. Or a topology has
 inconsistent or contradictory information in it, e.g. an entity
@@ -52,7 +52,7 @@ public class InvalidStateException extends RuntimeException {
     // be no way to avoid this.  Should there be an interface defined
     // for the commonality?
 
-    /** Constructs an Exception with no names or message. */  
+    /** Constructs an Exception with no names or message. */
     public InvalidStateException() {
         this(null, null, "Serious internal error!");
     }
@@ -67,7 +67,7 @@ public class InvalidStateException extends RuntimeException {
     /** Constructs an Exception with a message that is only the
      *  name of the first argument.
      *  @param obj The object.
-     */  
+     */
     public InvalidStateException(Nameable obj) {
         this(obj, null, "Serious internal error!");
     }
@@ -76,7 +76,7 @@ public class InvalidStateException extends RuntimeException {
      *  name of the first argument and the second argument string.
      *  @param obj The object.
      *  @param detail The message.
-     */  
+     */
     public InvalidStateException(Nameable obj, String detail) {
         this(obj, null, detail);
     }
@@ -85,7 +85,7 @@ public class InvalidStateException extends RuntimeException {
      *  only the names of the two arguments.
      *  @param obj1 The first object.
      *  @param obj2 The second object.
-     */  
+     */
     public InvalidStateException(Nameable obj1, Nameable obj2)  {
         this(obj1, obj2, "Serious internal error!");
     }
@@ -95,7 +95,7 @@ public class InvalidStateException extends RuntimeException {
      *  @param obj1 The first object.
      *  @param obj2 The second object.
      *  @param detail The message.
-     */  
+     */
     public InvalidStateException(Nameable obj1, Nameable obj2,
             String detail) {
         String obj1string = _getFullName(obj1);
@@ -121,7 +121,7 @@ public class InvalidStateException extends RuntimeException {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////////
     ////                      public methods                           ////
 
@@ -173,11 +173,11 @@ public class InvalidStateException extends RuntimeException {
 
     /** Sets the error message to the specified string.
      *  @param msg The message.
-     */  
+     */
     protected void _setMessage(String msg) {
         _message = msg;
     }
-    
+
     ///////////////////////////////////////////////////////////////////////
     ////                      private variables                        ////
 

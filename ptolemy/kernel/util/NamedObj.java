@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -35,7 +35,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
-/** 
+/**
 This is a base class for objects with a name. A simple name is an arbitrary
 string. If no simple name is provided, the name is taken to be an
 empty string (not a null reference). The class also has a full name,
@@ -96,7 +96,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Construct an object in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty 
+     *  If the name argument is null, then the name is set to the empty
      *  string. The object is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param name Name of this object.
@@ -196,7 +196,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 Attribute p = (Attribute)params.nextElement();
                 Attribute np = (Attribute)p.clone(ws);
                 try {
-                    np.setContainer(result);         
+                    np.setContainer(result);
                 } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
                             "Failed to clone an Attribute of " +
@@ -219,7 +219,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  This method is read-synchronized on the workspace.
      *  @see CompositeEntity.isAtomic
      *  @return True if this contains the argument, directly or indirectly.
-     */	
+     */
     public boolean deepContains(NamedObj inside) {
         if (workspace() != inside.workspace()) return false;
         try {
@@ -262,7 +262,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Get the container.  Always return null in this base class.
-     *  A null returned value should be interpreted as indicating 
+     *  A null returned value should be interpreted as indicating
      *  that there is no container.
      *  @return null.
      */
@@ -276,7 +276,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  of this other name of this object, if there are containers.
      *  A recursive structure, where this object is directly or indirectly
      *  contained by itself, results in a runtime exception of class
-     *  InvalidStateException.  Note that it is 
+     *  InvalidStateException.  Note that it is
      *  not possible to construct a recursive structure using this class alone,
      *  since there is no container.
      *  But derived classes might erroneously permit recursive structures,
@@ -316,10 +316,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
 
     /** Get the name. If no name has been given, or null has been given,
      *  then return an empty string, "".
-     *  @return The name of the object. 
-     */	
-    public String getName() { 
-        return _name; 
+     *  @return The name of the object.
+     */
+    public String getName() {
+        return _name;
     }
 
     /** Get the attribute with the given name.
@@ -352,7 +352,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             workspace().doneReading();
         }
     }
-    
+
     /** Set or change the name.  If a null argument is given the
      *  name is set to an empty string.
      *  Increment the version of the workspace.
@@ -373,7 +373,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
 
     /** Return the class name and the full name of the object,
      *  with syntax "classname {fullname}".
-     *  @return The class name and the full name. */ 
+     *  @return The class name and the full name. */
     public String toString() {
         return getClass().getName() + " {" + getFullName()+ "}";
     }
@@ -381,25 +381,25 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     /** Get the workspace. This method never returns null, since there
      *  is always a workpace.
      *  @return The workspace responsible for this object.
-     */	
+     */
     public Workspace workspace() {
-        return _workspace; 
+        return _workspace;
     }
 
     /////////////////////////////////////////////////////////////////////////
     ////                         public variables                        ////
 
     /** Indicate that the description(int) method should include everything.
-     */ 
+     */
     public static final int ALL = ~0;
 
     /** Indicate that the description(int) method should include the class name.
-     */ 
+     */
     public static final int CLASSNAME = 1;
 
     /** Indicate that the description(int) method should include the full name.
      *  The full name is surrounded by braces "{name}" in case it has spaces.
-     */ 
+     */
     public static final int FULLNAME = 2;
 
     /** Indicate that the description(int) method should include the links
@@ -408,7 +408,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  This may force some of the contents to be listed.  For example,
      *  a description of an entity will include the ports if this is set,
      *  irrespective of whether the CONTENTS bit is set.
-     */ 
+     */
     public static final int LINKS = 4;
 
     /** Indicate that the description(int) method should include the contained
@@ -416,19 +416,19 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  "keyword {{class {name}} {class {name}} ... }" where the keyword
      *  can be ports, entities, relations, or anything else that might
      *  indicate what the object contains.
-     */ 
+     */
     public static final int CONTENTS = 8;
 
     /** Indicate that the description(int) method should include the contained
      *  objects (if any) that the contained objects have.  This has no effect
      *  if CONTENTS is not also specified.  The returned string has the form
      *  "keyword {{class {name} keyword {...}} ... }".
-     */ 
+     */
     public static final int DEEP = 16;
 
     /** Indicate that the description(int) method should include attributes
      *  (if any).
-     */ 
+     */
     public static final int ATTRIBUTES = 32;
 
     //////////////////////////////////////////////////////////////////////////
@@ -456,7 +456,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                     _attributes = new NamedList();
                 }
                 _attributes.append(p);
-            } catch (IllegalActionException ex) {   
+            } catch (IllegalActionException ex) {
                 // a Attribute cannot be constructed without a name, so we can
                 // ignore the exception.
             }
@@ -464,7 +464,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             workspace().doneWriting();
         }
     }
- 
+
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which in derived classes results
      *  in invalid references to objects.  For example, Port has a private
@@ -554,7 +554,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             workspace().doneWriting();
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
