@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class TestProcessActor extends TestActor {
 

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 0.4
    @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class DETimer extends TypedAtomicActor {
 

@@ -49,7 +49,7 @@ import caltrop.interpreter.environment.Environment;
 //////////////////////////////////////////////////////////////////////////
 //// Dataflow
 /**
-   @author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
+   @author J&#246;rn W. Janneck 
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

@@ -106,7 +106,7 @@ public class MethodListGenerator {
      *  @return The class initializer method.
      *  @since Ptolemy II 2.0
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public static SootMethod getClassInitializer(SootClass source) {
         if (!_classInitializerMap.containsKey(source)) _generate(source);

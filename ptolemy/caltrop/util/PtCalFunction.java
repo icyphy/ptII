@@ -41,7 +41,7 @@ import caltrop.interpreter.Function;
    <tt>ptolemy.data.Function</tt> interface. It allows them to be
    seamlessly used with Ptolemy II-generated function objects.
 
-   @author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
+   @author J&#246;rn W. Janneck 
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)

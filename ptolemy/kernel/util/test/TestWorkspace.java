@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 
 */
 public class TestWorkspace extends Thread {

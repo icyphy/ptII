@@ -68,7 +68,7 @@ import thales.vergil.navigable.NavigationPTree;
    @version $Id$
    @since Ptolemy II 3.1
    @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class SingleWindowHTMLViewer
     extends HTMLViewer

@@ -56,7 +56,7 @@ import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    University of Wisconsin at Madison, August 1993.
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
    @author Shuvra S. Bhattacharyya, Ming Yung Ko and Shahrooz Shahparnia
    @version $Id$
 */

@@ -47,7 +47,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 @version $Id$
 @since Ptolemy II 0.2
 @Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+@Pt.AcceptedRating Red (cxh)
 
 */
 public class PtestWorkspace extends PtolemyThread {

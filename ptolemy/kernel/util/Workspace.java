@@ -494,7 +494,7 @@ public final class Workspace implements Nameable, Serializable {
      *   as an argument is always thrown.
      *  @since Ptolemy II 2.1
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public boolean handleModelError(
             NamedObj context,

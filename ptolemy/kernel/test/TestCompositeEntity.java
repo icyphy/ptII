@@ -39,7 +39,7 @@ import ptolemy.kernel.CompositeEntity;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class TestCompositeEntity extends CompositeEntity {
     public String uniqueEntityName() {

@@ -4,7 +4,7 @@
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 
    This example is adapted from the FIR actor implementation in the
    Ptolemy II SDF domain. It is convenient for translation to C because

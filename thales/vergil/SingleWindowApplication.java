@@ -44,7 +44,7 @@ import thales.actor.gui.SingleWindowHTMLViewer;
    @version $Id$
    @since
    @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class SingleWindowApplication extends VergilApplication {
 

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (acataldo@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Red (acataldo)
+@AcceptedRating Red (reviewmoderator)
 */
 
 package ptolemy.apps.softwalls;

@@ -658,7 +658,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @return The legend dataset, or -1 if not found.
      *  @since Ptplot 5.2p1
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public synchronized int getLegendDataset(String legend) {
         int index = _legendStrings.indexOf(legend);

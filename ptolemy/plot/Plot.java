@@ -463,7 +463,7 @@ public class Plot extends PlotBox {
      *  or if setReuseDatasets(false) has been called.
      *  @since Ptplot 5.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      *  @see #setReuseDatasets(boolean)
      */
     public boolean getReuseDatasets() {

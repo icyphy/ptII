@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @version $Id$
 @since Ptolemy II 0.3
 @Pt.ProposedRating Red (davisj)
-@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+@Pt.AcceptedRating Red (cxh)
 */
 public class DDEGetToken extends DDEGet {
 

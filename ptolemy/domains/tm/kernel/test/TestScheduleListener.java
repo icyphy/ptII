@@ -43,7 +43,7 @@ import ptolemy.domains.tm.kernel.ScheduleListener;
    @version $Id$
    @since Ptolemy II 2.1
    @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class TestScheduleListener implements ScheduleListener {
 

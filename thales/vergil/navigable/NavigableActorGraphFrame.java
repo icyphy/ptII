@@ -61,7 +61,7 @@ import thales.vergil.SingleWindowApplication;
    01 sept. 2003
    @since Ptolemy II 3.1
    @Pt.ProposedRating Red (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class NavigableActorGraphFrame extends ActorGraphFrame {
 

@@ -72,7 +72,7 @@ false on <tt>prefire()</tt>).
 This implementation allows proper rollback, i.e. it may be repeatedly fired without intervening <tt>postfire()</tt>
 and it restores the queues to their original state.
 
-@author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
+@author J&#246;rn W. Janneck 
 @version $Id$
 @ProposedRating Red (janneck)
 @AcceptedRating Red (reviewmoderator)

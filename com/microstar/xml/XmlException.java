@@ -26,8 +26,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (cxh)
+@AcceptedRating Red (cxh)
 */
 
 package com.microstar.xml;

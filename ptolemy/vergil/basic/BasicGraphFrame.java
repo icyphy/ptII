@@ -1088,7 +1088,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
+@ProposedRating Red (hyzheng)
+@AcceptedRating Red (hyzheng)
 */
 package ptolemy.apps.charon;
 

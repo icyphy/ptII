@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class IdentityActor extends AtomicActor {
     /** Create a new actor in the specified container with the specified

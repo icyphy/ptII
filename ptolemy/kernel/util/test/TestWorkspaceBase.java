@@ -45,7 +45,7 @@ import java.util.List;
    @version $Id$
    @since Ptolemy II 3.0
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 
 */
 public abstract class TestWorkspaceBase {

@@ -90,7 +90,7 @@ public class Constants {
      *  @return A record with the constants and their values.
      *  @since Ptolemy II 2.1
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public static RecordToken constants() {
         // This should be called toString(), but we cannot have a static

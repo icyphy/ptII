@@ -126,7 +126,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @see #removeDebugListener(DebugListener)
      *  @since Ptolemy II 2.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public synchronized void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -147,7 +147,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @see #addDebugListener(DebugListener)
      *  @since Ptolemy II 2.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public synchronized void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -167,7 +167,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @param event The event.
      *  @since Ptolemy II 2.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     protected final void _debug(DebugEvent event) {
         if (_debugging) {
@@ -197,7 +197,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @param message The message.
      *  @since Ptolemy II 2.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     protected final void _debug(String message) {
         if (_debugging) {
@@ -222,14 +222,14 @@ public class PtolemyThread extends Thread implements Debuggable {
     /** Flag that is true if there are debug listeners.
      *  @since Ptolemy II 2.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     protected boolean _debugging = false;
 
     /** The list of DebugListeners registered with this object.
      *  @since Ptolemy II 2.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     protected LinkedList _debugListeners = null;
 }

@@ -58,7 +58,7 @@ import java.util.HashMap;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class UnitUtilities {
 

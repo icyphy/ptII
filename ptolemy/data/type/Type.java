@@ -130,7 +130,7 @@ public interface Type {
     /** Used to indicate that the type comparison cache is invalid
      *  @since Ptolemy II 2.1
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public static final int HASH_INVALID = Integer.MIN_VALUE;
     public static final int HASH_MAX = 12;

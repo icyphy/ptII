@@ -56,7 +56,7 @@ import thales.vergil.SingleWindowApplication;
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class SingleWindowConfiguration extends Configuration {
 

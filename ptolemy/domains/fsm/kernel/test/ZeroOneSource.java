@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 1.0
    @Pt.ProposedRating Red (liuxj)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.AcceptedRating Red (cxh)
 */
 public class ZeroOneSource extends SequenceSource {
 

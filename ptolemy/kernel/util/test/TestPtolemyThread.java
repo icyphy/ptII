@@ -139,7 +139,7 @@ public class TestPtolemyThread extends PtolemyThread {
      *  @param message The message.
      *  @since Ptolemy II 2.3
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public void debug(String message) {
         _debug(message);

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (sanjeev@eecs.berkeley.edu)
-@AcceptedRating Red (sanjeev@eecs.berkeley.edu)
+@ProposedRating Red (sanjeev)
+@AcceptedRating Red (sanjeev)
 */
 
 package ptolemy.apps.cacheAwareScheduler.kernel;

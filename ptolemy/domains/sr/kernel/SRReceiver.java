@@ -193,7 +193,7 @@ public class SRReceiver extends AbstractReceiver {
      *  @see #hasToken()
      *  @since Ptolemy II 2.1
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {

@@ -251,7 +251,7 @@ public abstract class ChangeRequest {
      *  @param description The description.
      *  @since Ptolemy II 3.1
      *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+     *  @Pt.AcceptedRating Red (cxh)
      */
     public void setDescription(String description) {
         _description = description;
