@@ -244,7 +244,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         //             Variable variable = (Variable)variables.next();
         //             variable.removeValueListener(this);
         //         }
-        //        System.out.println("rate value changed: " + settable.getFullName());
+        //         System.out.println("rate value changed: " + settable.getFullName());
         //   _rateVariables.clear();
         setValid(false);
     }
@@ -683,16 +683,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             throws IllegalActionException {
         boolean allowRateChanges = ((BooleanToken)
                 ((SDFDirector)getContainer()).allowRateChanges.getToken()).booleanValue();
-        if (allowRateChanges) {
-            // The schedule depends on the rate parameter.
-            if (!rateVariables.contains(variable)) {
-                if (_debugging) {
-                    _debug("Listening to rate variable " + variable);
-                }
-                variable.addValueListener(this);
-                rateVariables.add(variable);
-            }
-        } else {
+        if (!allowRateChanges) {
             throw new IllegalActionException(variable,
                     "The SDF rate parameter may change." +
                     " This is not allowed in SDF models " +
@@ -731,18 +722,22 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 Variable variable;
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenInitProduction");
+                _listenToRateVariable(variable, rateVariables);
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
                 }
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenConsumptionRate");
+                _listenToRateVariable(variable, rateVariables);
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
                 }
+
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenProductionRate");
+                _listenToRateVariable(variable, rateVariables);
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
@@ -862,6 +857,25 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         return ((Integer) _firingVector.get(entity)).intValue();
     }
 
+    /** Add this scheduler as a value listener to the given variable
+     * and add the variable to the given list.  If the list already
+     * includes the variable, or the variable is null, then do
+     * nothing.
+     * @param variable A variable, which is a rate variable that this scheduler
+     * uses for scheduling.
+     * @param rateVariables A list of rate variables.
+     */
+    private void _listenToRateVariable(Variable variable, List rateVariables) {
+        // The schedule depends on the rate parameter.
+        if (variable != null && !rateVariables.contains(variable)) {
+            if (_debugging) {
+                _debug("Listening to rate variable " + variable);
+            }
+            variable.addValueListener(this);
+            rateVariables.add(variable);
+        }
+    }
+        
     /** Search the given list of actors for one that contains at least
      *  one port that has zero rate.
      *
@@ -1804,5 +1818,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     private Map _externalRates =
     new TreeMap(new SDFUtilities.NamedObjComparator());
 
+    // The list of rate variables that this scheduler is listening to
+    // for rate changes.
     private List _rateVariables = new LinkedList();
 }

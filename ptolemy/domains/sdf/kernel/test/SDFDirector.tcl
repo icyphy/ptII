@@ -46,7 +46,7 @@ proc setTokenConsumptionRate {port rate} {
     set attribute [$port getAttribute tokenConsumptionRate]
     set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
     $parameter setExpression $rate
-    $parameter getToken
+    $parameter validate
 }
 
 proc setTokenProductionRate {port rate} {
@@ -364,3 +364,110 @@ test SDFDirector-8.1 {_writeAccessRequired} {
     set d1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDirector]
     $d1 writeAccessRequired
 } {0}
+
+######################################################################
+####
+#
+test SDFDirector-9.0 {parameter changes} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName E0
+    $e0 setManager $manager
+    set d0 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e0 D0]
+    $e0 setDirector $d0
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e0 Consumer]
+    $e0 connect [java::field $a1 output] [java::field $a2 input] R1
+    $manager initialize
+    set s0 [[$d0 getScheduler] getSchedule]
+    $manager iterate
+    setTokenConsumptionRate [java::field $a2 input] 2
+    set s1 [[$d0 getScheduler] getSchedule]
+    $manager iterate
+    setTokenConsumptionRate [java::field $a2 input] 3
+    set s2 [[$d0 getScheduler] getSchedule]
+    $manager wrapup
+    list [$s0 toString] [$s1 toString] [$s2 toString]
+} {{Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp}
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer}
+}} {Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp} 2 times
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer}
+}} {Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp} 3 times
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer}
+}}}
+
+test SDFDirector-9.1 {parameter changes} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName E0
+    $e0 setManager $manager
+    set d0 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e0 D0]
+    $e0 setDirector $d0
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e0 Consumer]
+    $e0 connect [java::field $a1 output] [java::field $a2 input] R1
+    $manager initialize
+    set s0 [[$d0 getScheduler] getSchedule]
+    $manager iterate
+    setTokenProductionRate [java::field $a1 output] 2
+    set s1 [[$d0 getScheduler] getSchedule]
+    $manager iterate
+    setTokenProductionRate [java::field $a1 output] 3
+    set s2 [[$d0 getScheduler] getSchedule]
+    $manager wrapup
+    list [$s0 toString] [$s1 toString] [$s2 toString]
+} {{Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp}
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer}
+}} {Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp}
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer} 2 times
+}} {Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp}
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer} 3 times
+}}}
+
+test SDFDirector-9.2 {parameter changes} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName E0
+    $e0 setManager $manager
+    set d0 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e0 D0]
+    $e0 setDirector $d0
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e0 Consumer]
+    $e0 connect [java::field $a1 output] [java::field $a2 input] R1
+    $manager initialize
+    set s0 [[$d0 getScheduler] getSchedule]
+    $manager iterate
+    set attribute [$d0 getAttribute vectorizationFactor]
+    set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
+    $parameter setExpression 2
+    $parameter validate
+
+    set s1 [[$d0 getScheduler] getSchedule]
+    $manager iterate
+
+    $parameter setExpression 3
+    $parameter validate
+    set s2 [[$d0 getScheduler] getSchedule]
+    $manager wrapup
+    list [$s0 toString] [$s1 toString] [$s2 toString]
+} {{Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp}
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer}
+}} {Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp} 2 times
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer} 2 times
+}} {Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestRamp {.E0.Ramp} 3 times
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestConsumer {.E0.Consumer} 3 times
+}}}
+
+
