@@ -6,7 +6,7 @@
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>Hybrid system demo: 2D-Helicopter Control System</H1>
+<H1>2D-Helicopter Control System: A hierarchical hybrid control system</H1>
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
@@ -48,15 +48,27 @@ applet is displayed on a XGA screen-->
 </OBJECT>
 </center>
 
-<h2>Simulate a 2D helicopter climbing</h2>
+<h2>To run the demo, click "Go."</h2>
 
-To run the simulaton:
+This applet models a high-attitude take off motion of a helicopter with a modal controller. Only the motion along longitudinal and vertical axes is considered (so we call it a 2-D helicopter). 
+<P>
+The x, z-axes of the spatial frame are pointing north and down. The body x-axis is defined from the center of gravity to the nose of the helicopter, and body z-axis is pointing down from the center of gravity (CG). The motion of the helicopter is controlled by the main rotor thrust, and the longitudinal tilt path angle.
+<P>
+Flight modes represent different modes of operation of the helicopter and they correspond to controlling different variables in the dynamic. We define the following flight modes: Hover, Cruise, Acc/ALH, Dec/ALH, Climb, and Descend, where ALH stands for "ALtitude Hold."
+<P>
+The control uses approximate feedback linearization and pole placement. 
+The top level system looks like.
+<CENTER><img src="toplevel.gif"></CENTER>
+<P>
+The climb action consists of a sequence of flight modes. Inside the contrller
+block is the FSM domain, where each FSM state represents a flight mode. Each 
+flight mode is further refined into a continuous time controller. The model 
+inside the controller is shown below.
+<CENTER><img src="modes.gif"></CENTER>
+<hr>
 
-<ol>
-<li> Click "Go"
-<li> Wait until Pz is about 2.0
-<li> Click "Action"
-</ol>
+
+
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
