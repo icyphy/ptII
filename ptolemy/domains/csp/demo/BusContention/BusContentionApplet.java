@@ -424,6 +424,14 @@ public class BusContentionApplet extends CSPApplet {
 	    _edgeController = new EdgeController(this);
 	}
 	
+	public void clearEdge(Edge edge) {
+	    _edgeController.clearEdge(edge);
+	}
+	
+	public void clearNode(Node node) {
+	    _nodeController.clearNode(node);
+	}
+	
 	public Figure drawEdge(Edge edge) {
 	    return _edgeController.drawEdge(edge);
 	}
