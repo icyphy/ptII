@@ -59,11 +59,6 @@ public class TypeConstant implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Do nothing, since this term is a constant.
-     */
-    public void fixValue() {
-    }
-
     /** Return null.
      *  @return null.
      */
@@ -88,8 +83,7 @@ public class TypeConstant implements InequalityTerm {
     /** Throw an Exception since type constant cannot be initialized.
      *  @exception IllegalActionException Always thrown.
      */
-    public void initialize(Object e)
-	    throws IllegalActionException {
+    public void initialize(Object e) throws IllegalActionException {
 	throw new IllegalActionException("TypeConstant.initialize: " +
                 "Type constant cannot be initialized.");
     }
@@ -117,8 +111,7 @@ public class TypeConstant implements InequalityTerm {
      *  cannot be changed.
      *  @exception IllegalActionException Always thrown.
      */
-    public void setValue(Object e)
-	    throws IllegalActionException {
+    public void setValue(Object e) throws IllegalActionException {
 	throw new IllegalActionException("TypeConstant.setValue: Cannot set "
                 + "the value of a type constant.");
     }
@@ -128,11 +121,6 @@ public class TypeConstant implements InequalityTerm {
      */
     public String toString() {
 	return "(TypeConstant, " + getValue() + ")";
-    }
-
-    /** Do nothing, since this term is a constant.
-     */
-    public void unfixValue() {
     }
 
     ///////////////////////////////////////////////////////////////////
