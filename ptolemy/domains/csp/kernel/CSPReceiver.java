@@ -153,18 +153,19 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         return tmp;
     }
 
-    /** True if a get is waiting to rendezvous.
-     *  @return True if a get is waiting to rendezvous.
+    /** Return true. This method returns true in all cases
+     *  to prevent the possibility of busy waiting with 
+     *  polymorphic actors.
+     *  @return True. 
      */
     public synchronized boolean hasRoom() {
-        return _isGetWaiting();
+        return true;
     }
 
-
-    /** Return true if the receiver has room for putting the given number of 
-     *  tokens into it (via the put() method).
-     *  Returning true in this method should also guarantee that calling
-     *  the put() method will not result in an exception.
+    /** Return true. This method returns true in all cases
+     *  to prevent the possibility of busy waiting with 
+     *  polymorphic actors.
+     *  @return True. 
      */
     public boolean hasRoom(int tokens) {
 	return true;
@@ -175,9 +176,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True if a put is waiting to rendezvous.
      */
     public synchronized boolean hasToken() {
-        return _isPutWaiting();
+        return true;
     }
-
 
     /** Return true if the receiver contains the given number of tokens
      *  that can be obtained by calling the get() method.
