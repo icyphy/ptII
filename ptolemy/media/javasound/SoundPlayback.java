@@ -90,7 +90,7 @@ import javax.sound.sampled.*;
    write native files by default. The .java.policy file must be
    modified to grant applets more privileges.
    <p>
-   Note: Requires Java 2 v1.3.0 RC1 or later.
+   Note: Requires Java 2 v1.3.0 or later.
    @author Brian K. Vogel
    @version $Id$
    @see ptolemy.media.javasound.SoundCapture
@@ -151,11 +151,15 @@ public class SoundPlayback {
     }
 
     /** Construct a sound playback object that writes audio to 
-     *  a sound file. To create a new
-     *  sound file, call the startPlayback() method.
+     *  a sound file with the specified name.  Valid sound file
+     *  formats are WAVE (.wav), AIFF (.aif, .aiff), AU (.au). The file
+     *  format is automatically determined from the file extension.
+     *  The sound file will be initialized when startPlayback() is
+     *  called. If there is a problem creating the sound file, an 
+     *  IOException will be thrown in startPlayback(). 
      *  Thereafter, each call to putSamples() will add
-     *  <i>putSamplesSize</i> many samples to the sound file. To
-     *  close and save the sound file, call method stopPlayback().
+     *  <i>putSamplesSize</i> samples to the sound file. To
+     *  close and save the sound file, call stopPlayback().
      *  <p>
      *  Note that the audio data will not actually be saved to file,
      *  <i>fileName</i>, until stopPlayback() is called. If an
@@ -170,7 +174,7 @@ public class SoundPlayback {
      *  @param sampleSizeInBits Number of bits per sample (valid choices are
      *  8 or 16).
      *  @param channels Number of audio channels. 1 for mono, 2 for
-     *  stereo, etc.
+     *  stereo.
      *  @param putSamplesSize Size of the array parameter of
      *   putSamples(). There is no restriction on the value of
      *   this parameter, but typical values are 64-2024.
@@ -525,16 +529,13 @@ public class SoundPlayback {
 	File outFile = new File(_fileName);
 
 	try {
-
 	    StringTokenizer st = new StringTokenizer(_fileName, ".");
-
 	    // Do error checking:
 	    if (st.countTokens() != 2) {
 		throw new  IOException("Error: Incorrect " +
 					    "file name format. " +
 					    "Format: filename.extension");
 	    }
-
 	    st.nextToken(); // Advance to the file extension.
 
 	    String fileExtension = st.nextToken();
@@ -606,7 +607,6 @@ public class SoundPlayback {
 	    // Should not happen.
 	    maxSample = 0;
 	}
-
 	byte[] byteArray =
 	    new byte[lengthInSamples * bytesPerSample * channels];
 	byte[] b = new byte[bytesPerSample];
@@ -626,8 +626,6 @@ public class SoundPlayback {
 		    l =
 			(int)(doubleArray[currChannel][currSamp] * maxSample);
 		}
-
-		
 		// Create byte representation of current sample.
 		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
 		    b[bytesPerSample - i - 1] = (byte) l;

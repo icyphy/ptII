@@ -103,7 +103,7 @@ import javax.sound.sampled.*;
    read or write native files. The .java.policy file must be
    modified to grant applets more privileges.
    <p>
-   Note: Requires Java 2 v1.3.0 RC1 or later.
+   Note: Requires Java 2 v1.3.0 or later.
 
    @author Brian K. Vogel
    @version $Id$
@@ -167,9 +167,9 @@ public class SoundCapture {
 
     /** Construct a sound capture object that captures audio from a
      *  sound file specified as a URL. Note that it is still possible
-     *  to capture audio from a file on the native file system, even
-     *  though a URL is required. For example, to capture from a
-     *  sound file located at "C:\someDir\someFile.wave", <i>pathName</i>
+     *  to capture audio from a file on the local file system. For 
+     *  example, to capture from a sound file located at 
+     *  "C:\someDir\someFile.wave", <i>pathName</i>
      *  should be set to "file:///C:/someDir/someFile.wave".
      *  <p>
      *  Note the startCapture() must be called before the
@@ -273,7 +273,7 @@ public class SoundCapture {
      *  from a sound file, it is not possible for overflow to
      *  occur.
      *  <p>
-     *   The array size
+     *  The array size
      *  is set by the <i>getSamplesSize</i> parameter in the
      *  constructor. For the case where audio is captured from
      *  the computer's audio-in port (mic or line-in), this
@@ -561,10 +561,6 @@ public class SoundCapture {
             _frameSizeInBytes;
 	//System.out.println("frameSizeInBytes = " + _frameSizeInBytes);
 
-	DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
-                format,
-                AudioSystem.NOT_SPECIFIED);
-
 	// The following works under Windows Java 1.3.0 RC2 but
 	// not under Tritonus under Linux, so comment out.
 	//if (!AudioSystem.isLineSupported(sourceInfo)) {
@@ -781,7 +777,6 @@ public class SoundCapture {
     private TargetDataLine _targetLine;
     private int _bytesPerSample;
     private boolean _isAudioCaptureActive;
-
     private byte[] _b = new byte[1];
     private double[][] _doubleArray = new double[1][1];
     private int[][] _intArray = new int[1][1];
