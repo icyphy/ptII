@@ -22,9 +22,12 @@
 0xf7
 0xff
 ACOS
+AIFF
 ASIN
 ATAN
 ALT
+ANYTYPE
+AST
 Agha
 Agha's
 Agilent
@@ -33,6 +36,7 @@ Applets
 Appletviewer
 Arial
 Autoconf
+BGCOLOR
 BNeD
 Bagrodia
 Banerjea
@@ -43,12 +47,15 @@ Bhattacharyya
 Bicheng
 Bilung
 Blackdown
+CDATA
 CELLPADDING
 CELLSPACING
 CFLAG
+CHARSET
 CLASSNAME
 CLASSPATH
 CLASSPATHSEPARATOR
+COLSPAN
 COMMAPI
 CONFIG
 COPYRIGHTENDKEY
@@ -73,6 +80,8 @@ DATABITS
 DISTCLEAN
 DOCTYPE
 Dataflow
+Dataset
+Datasets
 Davey
 Debuggable
 Dequeue
@@ -81,8 +90,10 @@ Desktop
 Diaz
 Dingbats
 Disraeli
+Downsample
 Downsampler
 Dresden
+Dykstra
 EAL
 EECS
 EXP
@@ -131,6 +142,7 @@ Hinchey
 Holger
 Htmlchek
 Hylands
+Hz
 IEEE
 IEEEremainder
 Iconified
@@ -163,9 +175,11 @@ Jini
 Joern
 KRUFT
 Kachina
+Karnopp
 Kees
 Khoros
 Kienhuis
+Kirchhoff
 Kirchhoff's
 Kirsch
 Kluwer
@@ -176,6 +190,7 @@ Kubota
 Kupferman
 Lavagno
 LOG
+LUSTRE
 Lego
 Lemkin
 Lenzmann
@@ -206,6 +221,7 @@ Mozilla
 Mudit
 Muliadi
 Murthy
+NOEMBED
 NaN
 Nagal
 Nanni
@@ -213,12 +229,14 @@ Netscape
 Neuendorffer
 Newsgroup
 O'Reilly
+OCCAM
 Occam
 Octtools
 Ogielski
 Oppenheim
 Optronics
 Ousterhout
+PCDATA
 PDF
 PN
 POSTFIRE
@@ -239,6 +257,7 @@ Packman
 Passerone
 Pauer
 Perl
+Perumalla
 Photonics
 Pilaud
 Pino
@@ -254,6 +273,7 @@ Queueing
 README
 REMAINDER
 REMOTERECEIVER
+ROWSPAN
 RTOS
 Rao
 Rapide
@@ -270,6 +290,7 @@ SIN
 SQRT
 SQUARE
 STOPBITS
+STYLESHEET
 Sangiovanni
 Saracco
 Sartre
@@ -282,6 +303,7 @@ Shilman
 Shuvra
 Simulink
 Sinegen
+Sinewave
 Sinopoli
 Smyth
 Solaris
@@ -305,6 +327,7 @@ Typeables
 U
 UCB
 UML
+URL
 Varaiya
 Vergil
 Verilog
@@ -406,6 +429,9 @@ dde
 demultiplexor
 dequeue
 dequeued
+deselected
+deselecting
+deselection
 designix
 designtoc
 desktop
@@ -477,6 +503,7 @@ javafaq
 javalinks
 javascope
 javasoft
+javasound
 javax
 jdk
 jindent
