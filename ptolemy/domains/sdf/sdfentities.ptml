@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entitylibrary SYSTEM "../../schematic/lib/ptml.dtd">
+
+<entitylibrary name="sdf" version="1.0">
+<description>root sdf library</description>
+
+<director name="director" icon="generic.director" implementation="ptolemy.domains.sdf.kernel.SDFDirector">
+<description>The basic SDFScheduler</description>
+<parameter name="iterations" value="1" type="ptolemy.data.IntToken"/>
+</director>
+
+</entitylibrary>
+
