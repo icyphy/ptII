@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.math;
+package ptolemy.math.filter;
 
 //////////////////////////////////////////////////////////////////////////
 //// Filter
