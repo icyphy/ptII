@@ -362,6 +362,7 @@ nonjsall:
 			( cd $(PTIIHOME)/$$x ; \
 			echo making tests  in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 				tests \
 			);  \
 		    fi ; \
@@ -622,6 +623,7 @@ remote1distjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -1239,6 +1241,7 @@ remote6buildjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 				jsoriginal clean jsbuild JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
