@@ -173,25 +173,25 @@ rename() {
     sed "s@$sourcePackage@$destinationPackage@" \
 	< $sourceFullFile > $destinationFullFile
 
-    if [ $destinationPackage != $sourcePackage ]; then
-	# Moving packages, so add an import for the old package
-	              awk '{  if ($0 ~ /^package/) {
-				print $0
-				sawPackage=1
-			    } else {
-				if (sawPackage == 1) {
-				    print $0
-				    print "import", sourcePackage ".*; // FIXME: This class was moved from this package, so we might not need the import"
-				    sawPackage = 0
-				} else {
-				    print $0
-				}
-			    }
-		    }' sourcePackage=${sourcePackage} \
-			$destinationFullFile > /tmp/renamefiles.tmp
-		    #diff $destinationFullFile /tmp/renamefiles.tmp
-		    cp /tmp/renamefiles.tmp $destinationFullFile 
-    fi
+#      if [ $destinationPackage != $sourcePackage ]; then
+#  	# Moving packages, so add an import for the old package
+#  	              awk '{  if ($0 ~ /^package/) {
+#  				print $0
+#  				sawPackage=1
+#  			    } else {
+#  				if (sawPackage == 1) {
+#  				    print $0
+#  				    print "import", sourcePackage ".*; // FIXME: This class was moved from this package, so we might not need the import"
+#  				    sawPackage = 0
+#  				} else {
+#  				    print $0
+#  				}
+#  			    }
+#  		    }' sourcePackage=${sourcePackage} \
+#  			$destinationFullFile > /tmp/renamefiles.tmp
+#  		    #diff $destinationFullFile /tmp/renamefiles.tmp
+#  		    cp /tmp/renamefiles.tmp $destinationFullFile 
+#      fi
 }
 
 # The sedScript is updated when we run rename, we remove the sedScript file
