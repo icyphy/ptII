@@ -88,7 +88,7 @@ JSRCS = \
 	Minimum.java \
         Multiplexor.java \
 	MultiplyDivide.java \
-	Poisson.java \
+	PoissonClock.java \
 	Pulse.java \
 	Quantizer.java \
 	Ramp.java \

@@ -33,7 +33,7 @@
 <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
 </entity>
 
-<entity name="Poisson" class="ptolemy.actor.lib.Poisson">
+<entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
 </entity>
 
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse">

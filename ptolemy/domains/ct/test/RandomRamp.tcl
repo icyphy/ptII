@@ -76,7 +76,7 @@ $sampout link $rc3
 $subout link $rc3
 
 # construct the DE system
-set poisson [java::new ptolemy.actor.lib.Poisson $sys Poisson]
+set poisson [java::new ptolemy.actor.lib.PoissonClock $sys PoissonClock]
 set lambda [$poisson getAttribute lambda]
 $lambda setExpression 1.0
 set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp]

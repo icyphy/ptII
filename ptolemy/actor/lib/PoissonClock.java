@@ -1,4 +1,4 @@
-/* A Poisson process source.
+/* A Poisson process clock source.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -40,7 +40,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.graph.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// Poisson
+//// PoissonClock
 /**
 This actor produces a signal that is piecewise constant, with transitions
 between levels taken at times given by a Poisson process.
@@ -82,7 +82,7 @@ the element type of the <i>values</i> parameter.
 @version $Id$
 */
 
-public class Poisson extends TimedSource {
+public class PoissonClock extends TimedSource {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -92,7 +92,7 @@ public class Poisson extends TimedSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Poisson(CompositeEntity container, String name)
+    public PoissonClock(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
@@ -164,7 +164,7 @@ public class Poisson extends TimedSource {
      */
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        Poisson newObject = (Poisson)super.clone(workspace);
+        PoissonClock newObject = (PoissonClock)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
