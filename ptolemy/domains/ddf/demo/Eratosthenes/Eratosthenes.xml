@@ -7,10 +7,10 @@
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {376, 336, 815, 535}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {405, 140, 815, 535}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,15 +19,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes prime numbers using the sieve of Eratosthenes.&#10;It uses the ActorRecursion actor, which clones a composite actor into&#10;itself upon firing, thus dynamically expanding the topology of the model.&#10; ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes prime numbers using the sieve of Eratosthenes.&#10;It uses the ActorRecursion actor, which clones a composite actor into&#10;itself upon firing, thus dynamically expanding the topology of the model.&#10;Each iteration outputs one prime number. Change the parameter&#10;iterations in DDF Director to specify number of iterations desired.   ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 15.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: if you save the model after execution, the whole expanded topology will &#10;be saved. Therefore, make any desired modification and save it first before &#10;execution.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 10.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -36,17 +30,19 @@
         <property name="init" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 180.0]">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {220, 55, 410, 294}, maximized = false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 220.0]">
         </property>
         <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </entity>
     <entity name="Prime_Number_Filter" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 220.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {432, 6, 815, 535}, maximized = false}">
         </property>
@@ -109,18 +105,12 @@
             </property>
         </entity>
         <entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion">
-            <property name="DDFDirector" class="ptolemy.domains.ddf.kernel.DDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-                </property>
-            </property>
             <property name="resursionActor" class="ptolemy.data.expr.StringParameter" value="Prime_Number_Filter">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 55.0]">
             </property>
             <port name="in" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -128,11 +118,13 @@
             </port>
             <port name="out" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="{1}">
                 </property>
             </port>
         </entity>
@@ -169,15 +161,11 @@
             </port>
             <port name="in2" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
             <port name="in1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
