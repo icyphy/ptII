@@ -217,9 +217,9 @@ public class VideoCamera extends Source implements ControllerListener {
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to create a processor for the media locator. "
-                    "Note that you may need to run jmfinit, which is found "
-                    "in the JMF directory, for example c:/Program Files/"
-                    "JMF2.1.1/bin.  The orginal exception was: "
+                    + "Note that you may need to run jmfinit, which is found "
+                    + "in the JMF directory, for example c:/Program Files/"
+                    + "JMF2.1.1/bin.  The orginal exception was: "
                     + locator);
         }
 
