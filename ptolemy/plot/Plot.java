@@ -1343,6 +1343,9 @@ public class Plot extends PlotBox {
         if (_connected) connected = true;
         // parse only if the super class does not recognize the line.
         if (super._parseLine(line)) {
+            // We saw a non-pxgraph file directive, so blank lines 
+            // no longer mean new datasets.
+            _pxgraphBlankLineMode = false;
             return true;
         } else {
             // We convert the line to lower case so that the command
@@ -1351,6 +1354,7 @@ public class Plot extends PlotBox {
             if (lcLine.startsWith("marks:")) {
                 String style = (line.substring(6)).trim();
                 setMarksStyle(style);
+                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("numsets:")) {
                 String num = (line.substring(8)).trim();
@@ -1360,9 +1364,13 @@ public class Plot extends PlotBox {
                 catch (NumberFormatException e) {
                     // ignore bogons
                 }
+                _pxgraphBlankLineMode = false;
                 return true;
-            } else if (lcLine.startsWith("dataset:")) {
+            } else if (lcLine.startsWith("dataset:")
+                    || (_pxgraphBlankLineMode && lcLine.length() == 0)) {
                 // new data set
+                // If we have not yet seen a non-pxgraph file directive,
+                // and the line is blank, then this is a new data set.
                 _firstinset = true;
                 _sawfirstdataset = true;
                 if (!_datasetoverflow)
@@ -1375,8 +1383,11 @@ public class Plot extends PlotBox {
                     _datasetoverflow = true;
                     _currentdataset = -1;
                 }
-                String legend = (line.substring(8)).trim();
-                addLegend(_currentdataset, legend);
+                if (lcLine.length() > 0) {
+                    String legend = (line.substring(8)).trim();
+                    addLegend(_currentdataset, legend);
+                }
+                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("lines:")) {
                 if (lcLine.indexOf("off",6) >= 0) {
@@ -1384,6 +1395,7 @@ public class Plot extends PlotBox {
                 } else {
                     setConnected(true);
                 }
+                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("impulses:")) {
                 if (lcLine.indexOf("off",9) >= 0) {
@@ -1391,6 +1403,7 @@ public class Plot extends PlotBox {
                 } else {
                     setImpulses(true);
                 }
+                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("bars:")) {
                 if (lcLine.indexOf("off",5) >= 0) {
@@ -1421,6 +1434,7 @@ public class Plot extends PlotBox {
                         // ignore if format is bogus.
                     }
                 }
+                _pxgraphBlankLineMode = false;
                 return true;
             } else if (line.startsWith("move:")) {
                 // a disconnected point
@@ -1766,6 +1780,10 @@ public class Plot extends PlotBox {
     private int _diameter = 6;
     
     private Vector _dataurls = null;
+
+    // If _pxgraphBlankLineMode is true, then we have not yet seen
+    // a non-pxgraph file directive, so blank lines mean new datasets.
+    private boolean _pxgraphBlankLineMode = true;
 
     // Check the osarch and use the appropriate endian
     private static final int NATIVE_ENDIAN = 0;
