@@ -154,6 +154,11 @@ public class HTMLViewerTableau extends Tableau {
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
 	    if(effigy instanceof HTMLEffigy) {
+
+                // Indicate to the effigy that this factory contains effigies
+                // offering multiple views of the effigy data.
+                effigy.setTableauFactory(this);
+
                 // First see whether the effigy already contains an
                 // HTMLViewerTableau.
                 HTMLViewerTableau tableau =

@@ -186,11 +186,13 @@ public abstract class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add a View menu if a Tableau was given in the constructor.
+    /** Add a View menu and items to the File:New menu
+     *  if a tableau was given in the constructor.
      */
     protected void _addMenus() {
         super._addMenus();
         if (_tableau != null) {
+            // Start with the File:New menu.
 	    // Check to see if we have an effigy factory, and whether it
             // is capable of creating blank effigies.
 	    final Configuration configuration = getConfiguration();
@@ -238,6 +240,7 @@ public abstract class TableauFrame extends Top {
 		_fileMenuItems[1].setEnabled(true);
 	    }
 
+            // Next do the View menu.
 	    Effigy tableauContainer = (Effigy)_tableau.getContainer();
             if (tableauContainer != null) {
                 _factoryContainer = tableauContainer.getTableauFactory();
