@@ -145,7 +145,7 @@ public interface Exportable extends Nameable {
      *  @see #setClassName(String)
      */
     public String getClassName();
-    
+
     /** Get the MoML element name.  Implementors should provide the
      *  appropriate XML element name to use when exporting the implementor.
      *  @return The MoML element name for this object.
@@ -181,7 +181,7 @@ public interface Exportable extends Nameable {
     /** Set the persistence of this object.
      *  A persistent object has a non-empty MoML description that can be used
      *  to re-create the object. To make an instance non-persistent,
-     *  call this method with the argument <i>false</i>. 
+     *  call this method with the argument <i>false</i>.
      *  @param isPersistent False to make this object non-persistent.
      *  @see #isPersistent()
      */

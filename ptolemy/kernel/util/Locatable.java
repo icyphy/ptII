@@ -36,7 +36,7 @@ package ptolemy.kernel.util;
 An interface for objects storing a location.
 
 <p>This interface is generally implemented by attributes of objects
-in a model and is used by the Vergil user interface to store 
+in a model and is used by the Vergil user interface to store
 the location of objects in the visual editor.
 
 @author Edward A. Lee

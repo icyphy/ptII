@@ -596,7 +596,7 @@ public class Entity extends Prototype {
     protected void _removePort(Port port) {
         _portList.remove(port);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -610,10 +610,10 @@ public class Entity extends Prototype {
     // @serial Cached list of linked relations.
     private transient LinkedList _linkedRelations;
     private transient long _linkedRelationsVersion = -1;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** This class is an iterator over all the contained objects
      *  (all instances of NamedObj). In this class, the contained
      *  objects are attributes first, then ports. In derived classes,
@@ -622,7 +622,7 @@ public class Entity extends Prototype {
     protected class ContainedObjectsIterator
             extends NamedObj.ContainedObjectsIterator {
 
-        /** Return true if the iteration has more elements. 
+        /** Return true if the iteration has more elements.
          *  In this base class, this returns true if there are more
          *  attributes or ports.
          *  @return True if there are more attributes or ports.
@@ -636,11 +636,11 @@ public class Entity extends Prototype {
             }
             return _portListIterator.hasNext();
         }
-        
+
         /** Return the next element in the iteration.
          *  In this base class, this is the next attribute or port.
-         *  @return The next attribute or port. 
-         */        
+         *  @return The next attribute or port.
+         */
         public Object next() {
             if (super.hasNext()) {
                 return super.next();
@@ -653,7 +653,7 @@ public class Entity extends Prototype {
         }
 
         /** Remove from the underlying collection the last element
-         *  returned by the iterator. 
+         *  returned by the iterator.
          */
         public void remove() {
             if (_lastElementWasMine) {

@@ -111,7 +111,7 @@ public class Prototype extends NamedObj implements Instantiable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -125,7 +125,7 @@ public class Prototype extends NamedObj implements Instantiable {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Prototype newObject = (Prototype)super.clone(workspace);
-        
+
         if (getParent() != null) {
             try {
                 newObject.setParent(getParent());
@@ -189,7 +189,7 @@ public class Prototype extends NamedObj implements Instantiable {
             super.exportMoML(output, depth, name);
             return;
         }
-        
+
         if (depth == 0 && getContainer() == null) {
             // No container, and this is a top level moml element.
             // Generate header information.
@@ -347,7 +347,7 @@ public class Prototype extends NamedObj implements Instantiable {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Create an instance by cloning this prototype and then adjust
      *  the deferral relationship between the the clone and its parent.
      *  Specifically, the
@@ -394,7 +394,7 @@ public class Prototype extends NamedObj implements Instantiable {
         clone.setParent(this);
         clone.setClassDefinition(false);
         clone.setClassName(getFullName());
-        
+
         return clone;
     }
 
@@ -462,18 +462,17 @@ public class Prototype extends NamedObj implements Instantiable {
         }
         return super._getDeferralDepth(definedObject);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** List of prototypes that defer their definition to this object. */
     private List _children;
-    
+
     /** Prototype to which this object defers its definition to, or
      *  null if none.
      */
     private Prototype _parent;
-    
+
     /** Indicator of whether this is a class definition. */
     private boolean _isClassDefinition;
-}

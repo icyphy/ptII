@@ -122,7 +122,7 @@ public interface Heritable extends Nameable {
      *  @return True if the object is an inherited object.
      */
     public boolean isInherited();
-    
+
     /** Return true if this object is an inherited object that has been
      *  modified locally.
      *  @return True if this object is an inherited object and it has
@@ -130,7 +130,7 @@ public interface Heritable extends Nameable {
      *  @see #setModifiedHeritage(boolean)
      */
     public boolean isModifiedHeritage();
-        
+
     /** Set whether this object is an inherited object.  If an object
      *  is an inherited object, then normally has no persistent representation
      *  when it is exported (unless it is changed) and cannot have its name

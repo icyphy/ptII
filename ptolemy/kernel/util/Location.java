@@ -184,7 +184,7 @@ public class Location extends SingletonAttribute
      *  <p>If setExpression(String value) was called, then the return
      *  value is exactly what ever was passed in as the argument to
      *  setExpression.  This means that there is no guarantee that
-     *  the return value of getExpression() is a well formed Ptolemy 
+     *  the return value of getExpression() is a well formed Ptolemy
      *  array expression.
      *
      *  <p>If setLocation(double[] location) was called, then the
@@ -260,8 +260,8 @@ public class Location extends SingletonAttribute
 
     /** Set the location in some cartesian coordinate system, and notify
      *  the container and any value listeners of the new location. Setting
-     *  the location involves maintaining a local copy of the passed 
-     *  parameter. No notification is done if the location is the same 
+     *  the location involves maintaining a local copy of the passed
+     *  parameter. No notification is done if the location is the same
      *  as before.
      *  @param location The location.
      *  @exception IllegalActionException If throw when attributeChanged()
@@ -336,7 +336,7 @@ public class Location extends SingletonAttribute
         // FIXME: If _setLocation() returns true, should we call
         // setModifiedFromClass() like we do elsewhere?
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
 
@@ -363,7 +363,7 @@ public class Location extends SingletonAttribute
                 return false;
             }
         }
-        
+
         if (_location.length != location.length) {
             // If location is of size 3, then we end up here.
             _location = new double[location.length];

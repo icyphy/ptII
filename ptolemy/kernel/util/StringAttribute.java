@@ -88,7 +88,7 @@ public class StringAttribute extends Attribute implements Settable {
         super(workspace);
         _value = "";
     }
- 
+
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

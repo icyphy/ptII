@@ -170,7 +170,7 @@ public class ComponentEntity extends Entity {
         }
         ComponentEntity clone = (ComponentEntity)
                 super.instantiate(container, name);
-        clone.setContainer((CompositeEntity)container);        
+        clone.setContainer((CompositeEntity)container);
         return clone;
     }
 
@@ -364,7 +364,7 @@ public class ComponentEntity extends Entity {
         }
         super._addPort(port);
     }
-        
+
     /** Check the specified container.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the container is not an
@@ -408,7 +408,7 @@ public class ComponentEntity extends Entity {
             }
         }
     }
-    
+
     /** Get an entity with the specified name in the specified container.
      *  The returned object is assured of being an
      *  instance of the same class as this object.
@@ -455,7 +455,7 @@ public class ComponentEntity extends Entity {
                 "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

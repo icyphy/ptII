@@ -321,7 +321,7 @@ public final class Workspace implements Nameable, Serializable {
     public String getName() {
         return _name;
     }
-    
+
     /** Get the name. Since this can have no container, the relative
      *  name is always the same as the name.
      *  @return The name of the workspace.

@@ -227,7 +227,7 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneReading();
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -268,7 +268,7 @@ public class CompositeEntity extends ComponentEntity {
                         ex.getMessage());
             }
         }
-        
+
         // Clone the contained classes.
         Iterator classes = classDefinitionList().iterator();
         while (classes.hasNext()) {
@@ -1202,7 +1202,7 @@ public class CompositeEntity extends ComponentEntity {
         }
         _containedEntities.append(entity);
     }
-    
+
     /** Add a relation to this container. This method should not be used
      *  directly.  Call the setContainer() method of the relation instead.
      *  This method does not set
@@ -1218,7 +1218,7 @@ public class CompositeEntity extends ComponentEntity {
             throws IllegalActionException, NameDuplicationException {
         _containedRelations.append(relation);
     }
-        
+
     /** Return an iterator over contained objects. In this class,
      *  this is an iterator over attributes, ports, entities, and
      *  relations, in that order.
@@ -1230,7 +1230,7 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Notify this entity that the given entity has been added inside it.
-     *  This base class does nothing.   Derived classes may override it to 
+     *  This base class does nothing.   Derived classes may override it to
      *  do something useful in responds to the notification.
      *  It is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -1469,7 +1469,7 @@ public class CompositeEntity extends ComponentEntity {
     protected void _adjustDeferrals(
             CompositeEntity prototype, CompositeEntity clone) {
         super._adjustDeferrals(prototype, clone);
-        
+
         // Adjust the contained class definitions.
         Iterator classes = classDefinitionList().iterator();
         while (classes.hasNext()) {
@@ -1484,7 +1484,7 @@ public class CompositeEntity extends ComponentEntity {
             ComponentEntity entity
                     = (ComponentEntity)entities.next();
             entity._adjustDeferrals(prototype, clone);
-        }         
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1492,25 +1492,25 @@ public class CompositeEntity extends ComponentEntity {
 
     /** @serial List of contained ports. */
     private NamedList _containedRelations = new NamedList(this);
-    
+
     /** Cache of class definition list. */
     private transient List _classDefinitionListCache;
-    
+
     /** Workspace version for cache. */
     private transient long _classDefinitionListVersion = -1L;
 
     /** Cache of entity list. */
     private transient List _entityListCache;
-    
+
     /** Workspace version for cache. */
     private transient long _entityListVersion = -1L;
 
     /** @serial Flag indicating whether level-crossing connect is permitted. */
     private boolean _levelCrossingConnectAllowed = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** This class is an iterator over all the contained objects
      *  (all instances of NamedObj). In this class, the contained
      *  objects are attributes first, then ports, then entities,
@@ -1519,7 +1519,7 @@ public class CompositeEntity extends ComponentEntity {
     protected class ContainedObjectsIterator
             extends Entity.ContainedObjectsIterator {
 
-        /** Return true if the iteration has more elements. 
+        /** Return true if the iteration has more elements.
          *  In this class, this returns true if there are more
          *  attributes, ports, entities, or relations.
          *  @return True if there are more elements.
@@ -1545,11 +1545,11 @@ public class CompositeEntity extends ComponentEntity {
             }
             return _relationListIterator.hasNext();
         }
-        
+
         /** Return the next element in the iteration.
          *  In this base class, this is the next attribute or port.
-         *  @return The next attribute or port. 
-         */        
+         *  @return The next attribute or port.
+         */
         public Object next() {
             if (super.hasNext()) {
                 return super.next();
@@ -1576,7 +1576,7 @@ public class CompositeEntity extends ComponentEntity {
         }
 
         /** Remove from the underlying collection the last element
-         *  returned by the iterator. 
+         *  returned by the iterator.
          */
         public void remove() {
             if (_lastElementWasClass) {

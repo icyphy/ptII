@@ -111,7 +111,7 @@ public abstract class ChangeRequest {
      *  methods) are notified first of the status of the request, followed
      *  by global listeners that were set using the setListeners() method.
      *  If the change failed because an exception was thrown, and the
-     *  exception was not reported to any global listeners, then 
+     *  exception was not reported to any global listeners, then
      *  we throw an InternalErrorException because it is a bug to
      *  not have a listeneter in this case.
      *  <p>
@@ -246,7 +246,7 @@ public abstract class ChangeRequest {
             _localListeners.remove(listener);
         }
     }
-    
+
     /** Set the description.
      *  @param description The description.
      *  @since Ptolemy II 3.1

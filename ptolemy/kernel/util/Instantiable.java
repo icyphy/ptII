@@ -65,7 +65,7 @@ public interface Instantiable extends Heritable {
      *   instances of Instantiable or null if no object defers to this one.
      */
     public List getChildren();
-    
+
     /** Get the instance to which this object defers its definition.
      *  @return A prototype or null to indicate that this object does
      *   not defer its definition.

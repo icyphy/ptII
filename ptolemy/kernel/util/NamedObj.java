@@ -400,11 +400,11 @@ public class NamedObj implements
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
             newObject._attributes = null;
-            
+
             // Make sure the new object is not marked as a class.
             // It may have been cloned from a class.
             newObject._isInherited = false;
-            
+
             if(workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
             } else {
@@ -450,7 +450,7 @@ public class NamedObj implements
             newObject.setClassName(getClassName());
 
             _cloneFixAttributeFields(newObject);
-         
+
             return newObject;
         } finally {
             _workspace.doneReading();
@@ -583,7 +583,7 @@ public class NamedObj implements
                     _workspace.getWriteAccess();
 
                     // Defer change requests so that if changes are
-                    // requested during execution, they get queued.                    
+                    // requested during execution, they get queued.
                     setDeferringChangeRequests(true);
                     while (requests.hasNext()) {
                         ChangeRequest change = (ChangeRequest)requests.next();
@@ -599,14 +599,14 @@ public class NamedObj implements
                     _workspace.doneWriting();
                     setDeferringChangeRequests(previousDeferStatus);
                 }
-                
+
                 // Change requests may have been queued during the execute.
                 // Execute those by a recursive call.
                 executeChangeRequests();
             }
         }
     }
-    
+
     /** Get a MoML description of this object.  This might be an empty string
      *  if there is no MoML description of this object or if this object is
      *  not persistent or if this object is an inherited object.  This uses the
@@ -877,7 +877,7 @@ public class NamedObj implements
     public NamedObj getContainer() {
         return null;
     }
-    
+
     /** Get the MoML element name. This defaults to "entity"
      *  but can be set to something else by subclasses.
      *  @return The MoML element name for this object.
@@ -934,7 +934,7 @@ public class NamedObj implements
             _workspace.doneReading();
         }
     }
-    
+
     /** Return a list of objects to which a change to this
      *  object should propagate, which is the list of objects that
      *  are created as a side effect of creating this one (that is, they
@@ -956,7 +956,7 @@ public class NamedObj implements
     public List getHeritageList() {
         return _getHeritageList(null, false, this, null);
     }
-    
+
     /** Get the model error handler specified by setErrorHandler().
      *  @return The error handler, or null if none.
      *  @see #setModelErrorHandler(ModelErrorHandler handler)
@@ -1132,7 +1132,7 @@ public class NamedObj implements
         // NOTE: New method added. EAL 12/03
         return _isInherited;
     }
-    
+
     /** Return true if setDeferringChangeRequests() has been called
      *  to specify that change requests should be deferred.
      *  @return True if change requests are being deferred.
@@ -1259,7 +1259,7 @@ public class NamedObj implements
             }
         }
     }
-    
+
     /** Set whether this object is an inherited object.  If an object
      *  is an inherited object, then it exports no MoML (unless it is
      *  changed) and cannot have its name or container changed.
@@ -1385,7 +1385,7 @@ public class NamedObj implements
      *  By default, instances of NamedObj are persistent, meaning
      *  that they have non-empty MoML descriptions that can be used
      *  to re-create the object. To make an instance non-persistent,
-     *  call this method with the argument <i>false</i>. 
+     *  call this method with the argument <i>false</i>.
      *  @param persistent False to make this object non-persistent.
      *  @see #isPersistent()
      */
@@ -1621,7 +1621,7 @@ public class NamedObj implements
                     }
                 }
             } catch (IllegalAccessException e) {
-                
+
                 // FIXME: This would be a nice
                 // place for exception chaining.
                 throw new CloneNotSupportedException(
@@ -1633,7 +1633,7 @@ public class NamedObj implements
             }
         }
     }
-        
+
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
      */
@@ -1850,7 +1850,7 @@ public class NamedObj implements
             throws InternalErrorException {
         return null;
     }
-    
+
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.
@@ -1878,7 +1878,7 @@ public class NamedObj implements
             _workspace.doneWriting();
         }
     }
-    
+
     /** Split the specified name at the first period and return the
      *  two parts as a two-element array.  If there is no period, the second
      *  element is null.
@@ -1938,7 +1938,7 @@ public class NamedObj implements
             return string;
         }
     }
-    
+
     /** Return true if this class should not export a MoML description.
      *  This will return true if setPersistent() has been called
      *  with argument false, or it is an inherited object that has not
@@ -2002,13 +2002,13 @@ public class NamedObj implements
      *  truly unfortunate to have to carry this in every NamedObj.
      */
     protected Object _changeLock = new Object();
-    
+
     /** A list of pending change requests. */
     protected List _changeRequests;
-    
+
     /** A list of weak references to change listeners. */
     protected List _changeListeners;
-    
+
     /** Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
@@ -2017,14 +2017,14 @@ public class NamedObj implements
      *  never be reset to null after the first list is created.
      */
     protected LinkedList _debugListeners = null;
-    
+
     /** The MoML element name. This defaults to "entity".
      *  Subclasses that wish this to be different should set it
      *  in their constructor, or override getElementName()
      *  to return the desired value.
      */
     protected String _elementName = "entity";
-    
+
     /** The workspace for this object.
      *  This should be set by the constructor and never changed.
      */
@@ -2051,9 +2051,9 @@ public class NamedObj implements
      *   return non-empty lists.
      */
     private List _getHeritageList(
-            HashSet visited, 
-            boolean shadow, 
-            NamedObj context, 
+            HashSet visited,
+            boolean shadow,
+            NamedObj context,
             String relativeName) {
         try {
             workspace().getReadAccess();
@@ -2116,20 +2116,20 @@ public class NamedObj implements
                         }
                         // We may have done this already.  Check this
                         // by finding the object that will be affected by
-                        // this propagation.                           
+                        // this propagation.
                         if (visited.contains(candidate)) {
                             // Skip this candidate. We've done it already.
                             // Continue to the next deferral in the list.
                             continue;
                         }
-                    
+
                         // Is it shadowed?
                         if (shadow && candidate.isModifiedHeritage()) {
                             // Yes, it is.
                             continue;
                         }
                         result.add(candidate);
-                    
+
                         // Add objects that this defers to.
                         // Note that if this candidate is modified from
                         // class and shadow is true, then it shadows other changes.
@@ -2153,10 +2153,10 @@ public class NamedObj implements
 
     /** The Attributes attached to this object. */
     private NamedList _attributes;
-    
+
     /** The class name for MoML exports. */
     private String _className;
-    
+
     /** Instance of a workspace that can be used if no other
      *  is specified.
      */
@@ -2180,7 +2180,7 @@ public class NamedObj implements
     // Boolean variable to indicate the persistence of the object.
     // By default, instances of NamedObj are persistent.
     private boolean _isPersistent = true;
-    
+
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
 
@@ -2189,13 +2189,13 @@ public class NamedObj implements
 
     /** The name */
     private String _name;
-    
+
     /** The value for the source MoML attribute. */
     private String _source;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** This class is an iterator over all the contained objects
      *  (all instances of NamedObj). In this base class, the contained
      *  objects are attributes.  In derived classes, they include
@@ -2203,7 +2203,7 @@ public class NamedObj implements
      */
     protected class ContainedObjectsIterator implements Iterator {
 
-        /** Return true if the iteration has more elements. 
+        /** Return true if the iteration has more elements.
          *  In this base class, this returns true if there are more
          *  attributes.
          *  @return True if there are more attributes.
@@ -2214,11 +2214,11 @@ public class NamedObj implements
             }
             return _attributeListIterator.hasNext();
         }
-        
+
         /** Return the next element in the iteration.
          *  In this base class, this is the next attribute.
-         *  @return The next attribute. 
-         */        
+         *  @return The next attribute.
+         */
         public Object next() {
             if (_attributeListIterator == null) {
                 _attributeListIterator = attributeList().iterator();
@@ -2227,7 +2227,7 @@ public class NamedObj implements
         }
 
         /** Remove from the underlying collection the last element
-         *  returned by the iterator. 
+         *  returned by the iterator.
          */
         public void remove() {
             _attributeListIterator.remove();

@@ -81,7 +81,7 @@ public interface Nameable extends ModelErrorHandler {
      *  @return The name of the object.
      */
     public String getName();
-    
+
     /** Get the name of this object relative to the specified container.
      *  If this object is contained directly by the specified container,
      *  this is just its name, as returned by getName().  If it is deeply
