@@ -103,7 +103,7 @@ foreach i $configs {
 
     set URL [$loader getResource ptolemy/configs/$i]
     set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
-    puts " force everything to get expanded ptolemy/configs/$i"
+    puts " Force everything to get expanded ptolemy/configs/$i"
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
     
     test "$i-1.1" "Test to see if $i contains any bad XML" {
