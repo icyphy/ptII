@@ -44,8 +44,7 @@ import ptolemy.actor.Director;
 */
 public final class TimeConstants {
     
-    /** Construct a Time object with 0.0 as the time value in
-     *  the given director. 
+    /** Constructor that generate a set of useful constant time objects.
      *  @param container The director that contains this time object.
      */
     public TimeConstants(Director container) {
