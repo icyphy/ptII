@@ -320,10 +320,7 @@ public class AudioReadBuffer extends Transformer {
 
     private SoundReader _soundReader;
     private int _channels;
-    private double[][] _audioInDoubleArray;
     private boolean _haveASample;
-    private int _getSamplesArrayPointer;
-    private DoubleToken[] _audioSendArray = new DoubleToken[1];
     private boolean _safeToInitialize = false;
     private double[] _audioBuffer;
     private boolean _postfireReturn = true;
