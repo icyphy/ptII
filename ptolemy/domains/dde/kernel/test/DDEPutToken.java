@@ -79,8 +79,10 @@ public class DDEPutToken extends DDEPut {
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-		    // System.out.println("DDEPutToken receiver["+i+"]["+j+
-		    // "]; cnt = "+cnt);
+		    /*
+		    System.out.println("DDEPutToken receiver["+i+"]["+j+
+		    "]; cnt = "+cnt);
+		    */
                     if( _oneArg ) {
                         rcvr.put( _tokens[cnt] );
                     } else {
