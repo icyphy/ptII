@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CompositeActorApplication.java \
 	Configurer.java \
+	Documentation.java \
 	EditorPaneFactory.java \
 	ModelFrame.java \
 	ModelPane.java \
