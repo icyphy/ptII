@@ -1480,7 +1480,8 @@ public class PlotBox extends Panel {
 
                         // Draw the label.
                         // NOTE: 3 pixel spacing between axis and labels.
-                        graphics.drawString(label, labxpos, _lry + 3 + labelheight);
+                        graphics.drawString(label,
+                                labxpos, _lry + 3 + labelheight);
 
                         // Draw the label mark on the axis
                         graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
@@ -1489,7 +1490,8 @@ public class PlotBox extends Panel {
                         // Draw the grid line
                         if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                             graphics.setColor(Color.lightGray);
-                            graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
+                            graphics.drawLine(xCoord1, yCoord1,
+                                    xCoord1, yCoord2);
                             graphics.setColor(_foreground);
                         }
                 }
