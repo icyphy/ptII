@@ -68,7 +68,7 @@ NOTE: All operators have
 a single input port, which is a multiport, and a single output port, which
 is not a multiport.  All ports have type boolean.
 <p>
-This actor is not strict.  That is, it does not require that each input
+This actor does not require that each input
 channel have a token upon firing.  As long as one channel contains a
 token, output will be produced.  If no input tokens are available at
 all, then no output is produced.  At most one token is consumed

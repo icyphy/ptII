@@ -68,7 +68,7 @@ be subtracted.  In these cases, a run-time error will occur.
 In the future, we hope that the type system will intercept such errors
 before run time.
 <p>
-This actor is not strict. That is, it does not require that each input
+This actor does not require that each input
 channel have a token upon firing. It will add or subtract available
 tokens at the inputs and ignore the channels that do not have tokens.
 It consumes at most one input token from each port.
