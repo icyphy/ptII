@@ -40,7 +40,8 @@ ME =		ptolemy/domains/de/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+# auto/fsm_de_test.xml uses fsms, which require diva
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
