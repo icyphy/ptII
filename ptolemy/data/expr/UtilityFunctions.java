@@ -48,10 +48,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Vector;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -247,6 +244,28 @@ public class UtilityFunctions {
         ASTPtRootNode parseTree = parser.generateParseTree(string);
         ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
         return typeInference.inferTypes(parseTree).toString();
+    }
+
+    /** Find the intersection of two records. The field names are intersected, and the values are
+     *  taken from the first record.<p>
+     *  Example: intersect({a = 1, b = 2}, {a = 3, c = 4}) returns {a = 1}.
+     *  @param record1 The first record to intersect. The result gets its values from this record.
+     *  @param record2 The second record to intersect.
+     *  @return A RecordToken containing the result.
+     */
+    public static Token intersect(RecordToken record1, RecordToken record2)
+            throws IllegalActionException {
+        Set commonNames = new HashSet(record1.labelSet());
+        commonNames.retainAll(record2.labelSet());
+        Token [] values = new Token[commonNames.size()];
+        String [] names = new String[values.length];
+        int i = 0;
+        for (Iterator iterator = commonNames.iterator(); iterator.hasNext(); i++) {
+            String name = (String) iterator.next();
+            values[i] = record1.get(name);
+            names[i] = name;
+        }
+        return new RecordToken(names, values);
     }
 
     /** Load a library by first using the default platform dependent
