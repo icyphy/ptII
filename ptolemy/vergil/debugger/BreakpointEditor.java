@@ -175,7 +175,7 @@ public class BreakpointEditor extends JFrame implements ActionListener {
     ////                         public methods                    ////
 
     /**
-     * Get the condition from the text field and make the necessery changes
+     * Get the condition from the text field and make the necessary changes
      * to the value of the breakpoint.
      */
     public void actionPerformed(ActionEvent e) {
