@@ -83,7 +83,18 @@ java::call System setOut $printStream
 #$printStream flush
 #puts "The error was [$stream toString]"
 
+# If description2DAG is not present, load it
+if {[info procs description2DAG] == "" } {
+    puts sourcing
+    source [file join $TYCHO java pt kernel test description.tcl]
+}
+
 set myUniverse [java::new pt.domains.pn.kernel.PNUniverse]
+
+# Save the universe handle so that we can call back to Tcl Blend
+# while inspecting Entities and Relations in the DAG
+
+setCurrentUniverse $myUniverse
 
 # Find the number of primes up to this number
 if ![info exists numberOfCycles] {
@@ -111,12 +122,6 @@ $port link $queue
 set port [$ramp getPort "output"]
 $port link $queue
 
-
-# If description2DAG is not present, load it
-if {[info procs description2DAG] == "" } {
-    puts sourcing
-    	source [file join $TYCHO java pt kernel test description.tcl]
-}
 
 # DAG filenames to be created.
 if ![info exists initialDAGFileName] {
