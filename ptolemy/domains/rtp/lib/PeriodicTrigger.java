@@ -44,8 +44,13 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 
+//////////////////////////////////////////////////////////////////////////
+//// PeriodicTrigger
 /**
 This actor produces a ramp at 2Hz.
+
+@author  Jie Liu
+@version $Id$
 */
 public class PeriodicTrigger extends TypedAtomicActor {
 
