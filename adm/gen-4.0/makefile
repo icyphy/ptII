@@ -273,12 +273,12 @@ JAR=c:/j2sdk1.4.2_04/bin/jar
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
-	(cd src_jar/ptII$(VERSION); $(JAR) -cvf ../../ptII$(VERSION).src.jar .)
+	(cd src_jar/ptII$(VERSION); $(JAR) -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
 src_jar: $(PTII_SRC) 
 	mkdir src_jar;
-	tar -xf $(PTII_SRC)
+	(cd src_jar; tar -zxf $(PTII_SRC))
 	rm -f src_jar/ptII$(VERSION)/doc/design/hyvisual.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign1-intro.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
