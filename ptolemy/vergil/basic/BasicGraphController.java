@@ -238,13 +238,26 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable) {
-        if (settable instanceof Locatable) {
+        if (settable instanceof Locatable && !_inValueChanged) {
             Locatable location = (Locatable)settable;
             Figure figure = getFigure(location);
-            double originalUpperLeftX = figure.getOrigin().getX();
-            double originalUpperLeftY = figure.getOrigin().getY();
+            Point2D origin = figure.getOrigin();
+            double originalUpperLeftX = origin.getX();
+            double originalUpperLeftY = origin.getY();
 
-            double[] newLocation = location.getLocation();
+            // NOTE: the following call may trigger an evaluation,
+            // which results in another recursive call to this method.
+            // This seems to cause a bug in diva resulting in the
+            // translation being done twice to two different places.
+            // Thus, we ignore the inside call and detect it with a
+            // private variable.
+            double[] newLocation;
+            try {
+                _inValueChanged = true;
+                newLocation = location.getLocation();
+            } finally {
+                _inValueChanged = false;
+            }
 
             double translationX = newLocation[0] - originalUpperLeftX;
             double translationY = newLocation[1] - originalUpperLeftY;
@@ -253,31 +266,36 @@ public abstract class BasicGraphController extends AbstractGraphController
 
             // Reroute edges linked to this figure.
             GraphModel model = getGraphModel();
-            Iterator inEdges = model.inEdges(figure.getUserObject());
-            while(inEdges.hasNext()) {
-                Figure connector = getFigure(inEdges.next());
-                if (connector instanceof Connector) {
-                    ((Connector)connector).reroute();
-                }
-            }
-            Iterator outEdges = model.outEdges(figure.getUserObject());
-            while(outEdges.hasNext()) {
-                Figure connector = getFigure(outEdges.next());
-                if (connector instanceof Connector) {
-                    ((Connector)connector).reroute();
-                }
-            }
-            if(model.isComposite(figure.getUserObject())) {
-                Iterator edges = GraphUtilities.partiallyContainedEdges(
-                        figure.getUserObject(), model);
-                while(edges.hasNext()) {
-                    Figure connector = getFigure(edges.next());
+            Object userObject = figure.getUserObject();
+            if (userObject != null) {
+                Iterator inEdges = model.inEdges(userObject);
+                while(inEdges.hasNext()) {
+                    Figure connector = getFigure(inEdges.next());
                     if (connector instanceof Connector) {
                         ((Connector)connector).reroute();
                     }
                 }
+                Iterator outEdges = model.outEdges(userObject);
+                while(outEdges.hasNext()) {
+                    Figure connector = getFigure(outEdges.next());
+                    if (connector instanceof Connector) {
+                        ((Connector)connector).reroute();
+                    }
+                }
+                if(model.isComposite(userObject)) {
+                    Iterator edges = GraphUtilities.partiallyContainedEdges(
+                            userObject, model);
+                    while(edges.hasNext()) {
+                        Figure connector = getFigure(edges.next());
+                        if (connector instanceof Connector) {
+                            ((Connector)connector).reroute();
+                        }
+                    }
+                }
             }
-            // FIXME: Apparently, we need to repaint.
+            // NOTE: Apparently, we need to repaint.
+            // FIXME: This is not a very elegant way to do this.
+            // It's accessing a protected member of BasicGraphFrame.
             getFrame()._jgraph.repaint();
         }
     }
@@ -354,6 +372,9 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     // The graph frame, if there is one.
     private BasicGraphFrame _frame;
+
+    // Flag to prevent double rendering upon setting location.
+    private boolean _inValueChanged = false;
 
     /** Offset of ports from the visible border. */
     private static double _PORT_OFFSET = 20.0;
