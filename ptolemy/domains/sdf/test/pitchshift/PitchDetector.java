@@ -34,7 +34,8 @@ import ptolemy.math.SignalProcessing;
 //////////////////////////////////////////////////////////////////////////
 //// PitchDetector
 /** Perform pitch detection on an input signal using cepstrum analysis.
-    The real cepstrum is computed as the IDFT(log(magnitude(DFT(input_signal)))).
+    The real cepstrum is computed as the
+    IDFT(log(magnitude(DFT(input_signal)))).
     The maxumim value of the high-time part of the cepstrum is converted to
     the corresponding pitch value. The current implementation searches for
     pitches between 70 and 300 Hz. The latency of the pitch detector is 2048
@@ -92,7 +93,8 @@ import ptolemy.math.SignalProcessing;
 
 	/** Constructor
 	    Initialize the pitch detector.
-	    Parameter <i>vectorSize</i> sets the vector size to be used by <i>performPitchDetect()</i>. <i>vectorSize</i> may be any length.
+	    Parameter <i>vectorSize</i> sets the vector size to be used by
+	    <i>performPitchDetect()</i>. <i>vectorSize</i> may be any length.
 	*/
 	public PitchDetector(int vectorSize,int sampleRate) {
 	    this.sampleRate = sampleRate;
@@ -108,14 +110,17 @@ import ptolemy.math.SignalProcessing;
 	}
 
 	/**
-	   Perform pitch detection. The input signal should uniformly partitioned
-	   into <i>vectorSize</i> length chunks of data. <i>performPitchDetect()</i>
+	   Perform pitch detection. The input signal should uniformly
+	   partitioned
+	   into <i>vectorSize</i> length chunks of data.
+	   <i>performPitchDetect()</i>
 	   should be called on each consecutive vector of input data. A
 	   <i>vectorSize</i> length array of doubles containing the data is
 	   passed to <i>performPitchDetect()</i> via <i>inputArray[]</i>. Each
 	   element of <i>inputArray[]</i> is assumes to contain a single data
 	   sample. The <i>sampleRate</i> parameter contains that sample rate,
-	   in Hz.  <i>performPitchDetect()</i> returns a <i>vectorSize</i> length
+	   in Hz.  <i>performPitchDetect()</i> returns a <i>vectorSize</i>
+	   length
 	   array of doubles containing the pitch estimates.
 	   <p>
 	   Note that there is a 2048 sample delay between an element of 
@@ -131,13 +136,15 @@ import ptolemy.math.SignalProcessing;
 	    //tempCmplxArray = FFTComplexOut(inputArray); // ???
 
 	    // Main loop.
-	    for (vectorLoopPos = 0; vectorLoopPos < inputArray.length; vectorLoopPos++) {
+	    for (vectorLoopPos = 0; vectorLoopPos < inputArray.length;
+		 vectorLoopPos++) {
 		//System.out.println("vectorLoopPos " + vectorLoopPos);
 		if (recentInputArrayPos < recentInputArraySize) {
 		    // Ok to read in another samples, array not full yet.
 		     
 		    // Read in an input sample.
-		    recentInputArray[recentInputArrayPos] = inputArray[vectorLoopPos];
+		    recentInputArray[recentInputArrayPos] =
+			inputArray[vectorLoopPos];
 		   
 		    recentInputArrayPos++;
 		} else {
@@ -146,33 +153,46 @@ import ptolemy.math.SignalProcessing;
 		    // Perforam pitch detection using Cepstral Analysis.
 		    
 		    // Step 1. Window recent input with a hamming window.
-		    for (int ind1 = 0; ind1 < recentInputArray.length; ind1++) {
+		    for (int ind1 = 0; ind1 <
+			     recentInputArray.length; ind1++) {
 			
-			windowedInput[ind1] = recentInputArray[ind1]*hammingWindow[ind1];
+			windowedInput[ind1] =
+			    recentInputArray[ind1]*hammingWindow[ind1];
 		    }	
 		    
 		    // Step 2. Take DFT of recent input.
 		    dftInput = SignalProcessing.FFTComplexOut(windowedInput);
 		    // Step 3. Take log of magnitude of dftInput.
-		    for (int ind2 = 0; ind2 < recentInputArray.length; ind2++) {
-			logMagDFTWinInputArray[ind2] = Math.log(dftInput[ind2].magnitude());
+		    for (int ind2 = 0; ind2 <
+			     recentInputArray.length; ind2++) {
+			logMagDFTWinInputArray[ind2] =
+			    Math.log(dftInput[ind2].magnitude());
 		    }
 		    // Step 4. Take IDFT of logMagDFTWinInputArray.
 		    // FIXME: Is real idft correct? or complex?
-		    cepstrumArray = SignalProcessing.IFFTRealOut(logMagDFTWinInputArray);
+		    cepstrumArray =
+			SignalProcessing.IFFTRealOut(logMagDFTWinInputArray);
 		    // Step 5. Find the peak in the high time part. This is
 		    // the pitch. FIXME: clean this up.
 		    voiced = 0; 
-		    double largest = 0; // Initialize largest element found so far to 0.
 
-		    // Ignore the low-time part of cepstrum. FIXME: 12-16 is somwhat
-		    // arbitrary. Should be higher than 16 for vocal signals (like 50-100).
-		    int startCepstralIndex = (int)(Math.ceil((double)sampleRate/maxAllowablePitch));
-		    int stopCepstralIndex = (int)Math.min((double)sampleRate/minAllowablePitch, (double)recentInputArray.length/3);
+		    // Initialize largest element found so far to 0.
+		    double largest = 0;
+
+		    // Ignore the low-time part of cepstrum.
+		    // FIXME: 12-16 is somwhat
+		    // arbitrary. Should be higher than 16 for vocal
+		    // signals (like 50-100).
+		    int startCepstralIndex =
+			(int)(Math.ceil((double)sampleRate/maxAllowablePitch));
+		    int stopCepstralIndex =
+			(int)Math.min((double)sampleRate/minAllowablePitch,
+				      (double)recentInputArray.length/3);
 		    
 		    int pitchIndex = 0; // Index corresp to the pitch.
 		    int foundAPeak = 0;
-		    double linearLength2 = cepstrumArray.length/4 - startCepstralIndex;
+		    double linearLength2 = cepstrumArray.length/4 -
+			startCepstralIndex;
 		     double fadeFactor2;
 		     double octaveLargest = 0;
 		     double thirdOctaveLargest = 0;
@@ -184,7 +204,8 @@ import ptolemy.math.SignalProcessing;
 		     int searchRange;
 		    // IMPORTANT NOTE: Increasing index number corresponds to
 		    // decreasing pitch!
-		    for (pitchIndex = startCepstralIndex; pitchIndex < stopCepstralIndex; pitchIndex++) {
+		    for (pitchIndex = startCepstralIndex; pitchIndex <
+			     stopCepstralIndex; pitchIndex++) {
 			
 			// Now find the largest element in the high-time
 			// part of the cepstrum.
@@ -200,10 +221,13 @@ import ptolemy.math.SignalProcessing;
 		    // of the length of the cepstrum, I do not check that
 		    // largest > cepstralCutoff. This is because peaks
 		    // higher in the high-time are more significant.
-		    //if ((initialPitchInd > .125*cepstrumArray.length) && (cepstrumArray[initialPitchInd] > cepstralCutoff)) {
-		    if ((initialPitchInd > startCepstralIndex) && (cepstrumArray[initialPitchInd] > cepstralCutoff)) {
-			voiced = 1; // Current windowed signal is voiced (pitched).
-			currentPitch = (double)sampleRate/(double)initialPitchInd;
+		   
+		    if ((initialPitchInd > startCepstralIndex) &&
+			(cepstrumArray[initialPitchInd] > cepstralCutoff)) {
+			// Current windowed signal is voiced (pitched).
+			voiced = 1;
+			currentPitch =
+			    (double)sampleRate/(double)initialPitchInd;
 		    // Now check that largest is greater than cepstralCutoff.
 		    }
 		    
@@ -213,12 +237,22 @@ import ptolemy.math.SignalProcessing;
 			currentPitch = -1;
 			//System.out.println("UNVOICED" );
 		    } else {
-			//System.out.println(" " );
-			//System.out.println("i1 i2 i3 = " + thirdEstPitchInd + " " + secondEstPitchInd + " " + initialPitchInd);
-			//System.out.println("n1 n2 n3 = " + cepstrumArray[thirdEstPitchInd] + " " + cepstrumArray[secondEstPitchInd] + " " + cepstrumArray[initialPitchInd]); 
-			//System.out.println("p1 p2 p3 = " + (double)sampleRate/(double)thirdEstPitchInd + " " + (double)sampleRate/(double)secondEstPitchInd + " " + (double)sampleRate/(double)initialPitchInd);
-			//System.out.println("currentPitch = " + currentPitch);
-			//System.out.println(" " );
+			/*
+			System.out.println(" " );
+			System.out.println("i1 i2 i3 = " +
+			thirdEstPitchInd + " " + secondEstPitchInd +
+			" " + initialPitchInd);
+			System.out.println("n1 n2 n3 = " +
+			cepstrumArray[thirdEstPitchInd] + " " +
+			cepstrumArray[secondEstPitchInd] + " " +
+			cepstrumArray[initialPitchInd]); 
+			System.out.println("p1 p2 p3 = " +
+			(double)sampleRate/(double)thirdEstPitchInd +
+			" " + (double)sampleRate/(double)secondEstPitchInd +
+			" " + (double)sampleRate/(double)initialPitchInd);
+			System.out.println("currentPitch = " + currentPitch);
+			System.out.println(" " );
+			*/
 		    }
 	
 		    recentInputArrayPos = 0;
