@@ -3,9 +3,11 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="memory" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[603, 455]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[103, 99]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[103, 100]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -189,8 +191,8 @@ View -> JVM Properties and hit the
 <title>JVM Memory Usage</title>
 <xLabel>Time (ms.)</xLabel>
 <yLabel>Bytes</yLabel>
-<xRange min="0.0" max="870000.0"/>
-<yRange min="443976.0" max="1.366016E7"/>
+<xRange min="0.0" max="560000.0"/>
+<yRange min="805160.0" max="5500928.0"/>
 <wrap/>
 <default marks="points"/>
 </plot>?>
