@@ -147,18 +147,32 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             _source = AbsentTreeNode.instance;
 
             String fileName = fullName(File.separatorChar);
-            File file = _pickLibrary(_container).openSource(fileName);
 
-            ApplicationUtility.trace("ClassDecl: Reading in user type : " +
-				     fullName() + " from " + fileName);
+            if (SearchPath.systemClassSet.contains(fileName) /* ||
+                                                                SearchPath.ptolemyCoreClassSet.contains(fileName))*/ {
+                // The class is either a JVM system class or Ptolemy core class
+                //System.out.println("ClassDecl: Reading in user type : " +
+                //        fileName + " by loadClassName");
+                StaticResolution.loadClassName(fileName, 0);
+                if (_source == AbsentTreeNode.instance) {
+                    ApplicationUtility.error("Could not load " +
+                            fullName());
+                }
+            } else {
 
-            StaticResolution.load(file, 0); // should set the source
+                File file = _pickLibrary(_container).openSource(fileName);
 
-            if (_source == AbsentTreeNode.instance) {
-                ApplicationUtility.error("file " + fileName +
-                        " doesn't contain class or interface " + fullName());
+                //System.out.println("ClassDecl: Reading in user type : " +
+                //        fullName() + " from " + fileName);
+
+                StaticResolution.loadFile(file, 0); // should set the source
+
+                if (_source == AbsentTreeNode.instance) {
+                    ApplicationUtility.error("file " + fileName +
+                            " doesn't contain class or interface " +
+                            fullName());
+                }
             }
-
             ApplicationUtility.trace(">Done reading class " + fullName());
         }
     }
