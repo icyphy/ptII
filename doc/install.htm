@@ -412,7 +412,41 @@ If you have installed Cygwin in c:/cygwin, and your Ptolemy II installation
 is in a directory outside of the c:/cygwin tree, then Cygwin may
 change your PTII variable to include "/cygdrive/c".  This
 will cause problems with non-Cygwin tools like javac that do
-not understand /cygdrive/c
+not understand /cygdrive/c.
+ <p>The best fix for this is to move your home directory outside
+of c:/cygwin.  An alternative is to place your Ptolemy II tree
+outside of c:/cygwin.
+<h3>How to tell Cygwin where your home directory is</h3>
+
+<ol>
+<li> Cygwin gets the location of your home directory from 
+a line that contains your login in
+<CODE>c:/cygwin/etc/passwd</CODE>.  If your login is
+not listed, then run
+<pre>
+mkpasswd -l
+</pre>
+To list all the local accounts and add the line for your account
+to <CODE>c:/cygwin/etc/passwd</CODE> using <CODE>workdpad</CODE>.
+To start <CODE>wordpad</CODE>, do Start -&gt; Run and type in
+<CODE>wordpad</CODE>.  
+ <br>Note: you can use <CODE>mkpasswd -help</CODE> to get help.
+If you are logged in to the domain and not the local machine, try
+<pre>
+mkpasswd -d | grep <I>yourlogin</I>
+</pre>
+to get just your login
+
+<li> Edit <CODE>c:/cygwin/etc/passwd</CODE> with wordpad and
+change the home directory from <CODE>/home/<I>yourlogin</I></CODE>
+to <CODE>/cygdrive/c/users/<I>yourlogin</I></CODE>, which
+will set your home directory as <CODE>c:/users/<I>yourlogin</I></CODE>
+ <br> Save<CODE>c:/cyginw/etc/passwd</CODE>
+
+<li> Start up a new bash shell and see where your home directory
+is by typing <CODE>pwd</CODE>
+</ol>
+
 </BLOCKQUOTE>
 
 
