@@ -27,6 +27,10 @@
 
 package pt.kernel;
 
+import java.util.Enumeration;
+import pt.exceptions.NameDuplicationException;
+import pt.exceptions.NullReferenceException;
+
 //////////////////////////////////////////////////////////////////////////
 //// Port
 /** 
@@ -36,16 +40,40 @@ A Port is the interface between Entities and Relations.
 */
 public class Port extends GenericPort {
     /** 
-     * @param name - The name of the Port.
+     * @param name The name of the Port.
      */	
     public Port(String name) {
 	 super(name);
-	 _connected = false;
-	 _multiPortContainer = null;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
+
+    /** Return the MultiPort which contains this Port. Return null if
+     *  this Port is not part of a MultiPort.
+     * @param relation The Relation to which this Port will be connected.
+     * @exception NullReferenceException Attempt to pass null object 
+     * references as arguments.
+     * @exception NameDuplicationException Attempt to store two instances of
+     * the same class with identical names in the same container.
+     */	
+    public void connectToRelation(Relation relation) 
+	throws NullReferenceException, NameDuplicationException {
+	_relation = relation;
+	if( _relation == null ) {
+	     throw new NullReferenceException( 
+	     "Null Relation passed to Port.connectToRelation()" );
+	}
+	_relation.connectPort( this );
+        return;
+    }
+
+    /** Return the Ports that are connected to this Port through its Relation.
+     *  Return null if no connections exist.
+     */	
+    public Enumeration getConnectedPorts() {
+	return _relation.getPorts();
+    }
 
     /** Return the MultiPort which contains this Port.
      */	
@@ -57,20 +85,25 @@ public class Port extends GenericPort {
      *  otherwise.
      */	
     public boolean isConnected() {
-	MultiPort multiPort = null;
-	setMultiPortContainer( multiPort );
-        return _connected;
+	if( _relation != null ) {
+	     if( !_relation.isDangling() ) {
+		  return true;
+	     }
+	}
+        return false;
     }
 
     /** Set the MuliPort which contains this Port.
+     * @param multiPort The MultiPort which will be the container of this Port.
+     * @exception NullReferenceException Attempt to pass null object 
+     * references as arguments.
      */	
-    public void setMultiPortContainer(MultiPort multiPort) {
-	/*
-	if( multiPort == null )
-	{
-	     // FIXME: Throw an exception here!
+    public void setMultiPortContainer(MultiPort multiPort) 
+	throws NullReferenceException {
+	if( multiPort == null ) {
+	     throw new NullReferenceException( 
+	     "Null Multiport passed to Port.setMultiPortContainer()" );
 	}
-	*/
 	_multiPortContainer = multiPort;
         return; 
     }
@@ -87,12 +120,14 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* This variable is set to true if it is connected through a relation
-     * to another port.  
-     */
-    private boolean _connected;
 
     /* The MultiPort which contains this Port.
      */
     private MultiPort _multiPortContainer;
+
+    /* This is the Relation through which this Port connects to other
+     * Ports. The Relation is non-null only for Ports at the lowest level
+     * of the hierarchy.
+     */
+    private Relation _relation;
 }
