@@ -86,13 +86,15 @@ public class Picture extends Canvas {
      *  now OK to display the new image.
      */
     public void displayImage() {
-        if(_imageSource == null) {
+        if(_imageSource == null && _image == null) {
             _imageSource = new MemoryImageSource(_width, _height,
                     ColorModel.getRGBdefault(), _pixels, 0, _width);
             _imageSource.setAnimated(true);
             _image = createImage(_imageSource);
         }
-        _imageSource.newPixels();
+	if(_imageSource != null) {
+	    _imageSource.newPixels();
+	}
     }
 
     /** Paint this component.  If no pixels have been set, do nothing.
@@ -102,6 +104,14 @@ public class Picture extends Canvas {
         if (_image != null) {
             graphics.drawImage(_image, 0, 0, this);
         }
+    }
+
+    /** Specify the java.awt.Image representation of the image.
+     *  @param image A java.awt.Image object
+     *  @exception IllegalArgumentException If the image size does not
+     */
+    public void setImage(Image image) throws IllegalArgumentException {
+	_image = image;
     }
 
     /** Specify the packed ARGB representation of the image.
