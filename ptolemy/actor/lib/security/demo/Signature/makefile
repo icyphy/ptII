@@ -65,6 +65,9 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# 'make fast' will create $(EXTRA_TARGETS)
+EXTRA_TARGETS = ptKeystore
+
 # Make clean removes $(KRUFT)
 KRUFT = ptKeystore
 
