@@ -495,65 +495,92 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-   private Object FindAndRunMethod(
-	String funcName, 
-        Class[] argTypes,
-        Object[] argValues
-	) throws IllegalActionException {
+    private Object FindAndRunMethod
+        (String funcName, 
+         Class[] argTypes,
+         Object[] argValues
+         ) throws IllegalActionException {
+        
+	// First try to find the method in the cache...
 
-	// First try to find a matching method with argTypes as is...
+        // "Real" methods exist in classes registered with PtParser.
+        // "Constructed" methods are methods "constructed" by FindAndRunMethod
+        // using the argument dimension reduction technique.
+        // "Missing" methods are the ones for which the search has failed.
+        // The existence of either of these in the cache avoids the expensive
+        // search through all the registered function classes.
 
 	Object result = null;
-	Method method = null;
-        Iterator allClasses = PtParser.getRegisteredClasses().iterator();
-        while (allClasses.hasNext() && result == null) {
-            Class nextClass = (Class)allClasses.next();
-	    //System.out.println("ASTPtFunctionNode: " + nextClass);
-	    // First we look for the method, and if we get an exception,
-	    // we ignore it and keep looking.
-	    try {
-		method = nextClass.getMethod(_funcName, argTypes);
-		result = method.invoke(nextClass, argValues);
-	    } catch (NoSuchMethodException ex) {
-		// We haven't found the correct function.
-                // Try matching on argument type sub-classes.
+        Method method = null;
+        CachedMethod cachedMethod = CachedMethod.get(funcName, argTypes);
+        if (cachedMethod != null ) {
+            if (cachedMethod.getType() == CachedMethod.REAL) {
                 try {
-                    method = _polymorphicGetMethod
-                        (nextClass, _funcName, argTypes);
-                    if (method != null) {
-                        result = method.invoke(nextClass, argValues);
-                    }
-		} catch (SecurityException security) {
-		    // If we are running under an Applet, then we
-		    // may end up here if, for example, we try
-		    // to invoke the non-existent quantize function on
-		    // java.lang.Math.
-                } catch (InvocationTargetException exception) {
+                    method = cachedMethod.getMethod();
+                    result = method.invoke(method.getDeclaringClass(), argValues);
+                } catch (InvocationTargetException ex) {
                     // get the exception produced by the invoked function
-                    exception.getTargetException().printStackTrace();
-                    throw new IllegalActionException(
-                        "Error invoking function " + _funcName + "\n" +
-                        exception.getTargetException().getMessage());
-		} catch (Exception exception)  {
-		     throw new IllegalActionException(null, exception,
-			      "Error invoking function " + _funcName
-						      + " on " + nextClass);
-		}
-
-	    } catch (InvocationTargetException ex) {
-		// get the exception produced by the invoked function
-                ex.getTargetException().printStackTrace();
-		throw new IllegalActionException(
-                        "Error invoking function " + _funcName + "\n" +
-                        ex.getTargetException().getMessage());
-	    } catch (Exception ex)  {
-		throw new IllegalActionException(ex.getMessage());
-	    }
+                    ex.getTargetException().printStackTrace();
+                    throw new IllegalActionException
+                        ("Error invoking function " + funcName + "\n" +
+                         ex.getTargetException().getMessage());
+                } catch (Exception ex)  {
+                    throw new IllegalActionException(ex.getMessage());
+                }
+                return result;
+            } else if (cachedMethod.getType() == CachedMethod.MISSING) {
+                return null;
+            }
+        } else {
+            // Not found in the cache. Search the registered function classes
+            Iterator allClasses = PtParser.getRegisteredClasses().iterator();
+            while (allClasses.hasNext() && result == null) {
+                Class nextClass = (Class)allClasses.next();
+                //System.out.println("ASTPtFunctionNode: " + nextClass);
+                // First we look for the method, and if we get an exception,
+                // we ignore it and keep looking.
+                try {
+                    method = nextClass.getMethod(funcName, argTypes);
+                    result = method.invoke(nextClass, argValues);
+                } catch (NoSuchMethodException ex) {
+                    // We haven't found the correct function.
+                    // Try matching on argument type sub-classes.
+                    try {
+                        method = _polymorphicGetMethod
+                            (nextClass, funcName, argTypes);
+                        if (method != null) {
+                            result = method.invoke(nextClass, argValues);
+                        }
+                    } catch (SecurityException security) {
+                        // If we are running under an Applet, then we
+                        // may end up here if, for example, we try
+                        // to invoke the non-existent quantize function on
+                        // java.lang.Math.
+                    } catch (InvocationTargetException exception) {
+                        // get the exception produced by the invoked function
+                        exception.getTargetException().printStackTrace();
+                        throw new IllegalActionException
+                            ("Error invoking function " + funcName + "\n" +
+                             exception.getTargetException().getMessage());
+                    } catch (Exception exception)  {
+                        throw new IllegalActionException
+                            (null, exception, "Error invoking function " +
+                             funcName + " on " + nextClass);
+                    }
+                } catch (InvocationTargetException ex) {
+                    // get the exception produced by the invoked function
+                    ex.getTargetException().printStackTrace();
+                    throw new IllegalActionException
+                        ("Error invoking function " + funcName + "\n" +
+                         ex.getTargetException().getMessage());
+                } catch (Exception ex)  {
+                    throw new IllegalActionException(ex.getMessage());
+                }
+            }
         }
 
 	// If that failed, then try to reduce argument dimensions if possible
 	// and try again (recursively)
-
 	if (result == null) {
 	    // Check if any arguments are of array type and, if any are, that they
 	    // all have the same length.
@@ -606,7 +633,22 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 else
                     Array.set(result,d,a);
 	    }
-	}
+            if (cachedMethod == null) {
+                if (result != null) {
+                    // Add newly found "constructed" method to the cache
+                    CachedMethod.add(funcName, argTypes, method,
+                                     CachedMethod.CONSTRUCTED);
+                } else {
+                    // Add missing method to cache so we don't search for it
+                    // again 
+                    CachedMethod.add(funcName, argTypes, method,
+                                     CachedMethod.MISSING);
+                }
+            }
+	} else if (cachedMethod == null) {
+            // Add newly found real method to the cache
+            CachedMethod.add(funcName, argTypes, method, CachedMethod.REAL);
+        }
 	return result;
     }
 

@@ -11,7 +11,7 @@ NODE_USES_PARSER = true;
 }
 
 PARSER_BEGIN(PtParser)
-/*
+/* 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -32,7 +32,7 @@ PARSER_BEGIN(PtParser)
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
-
+ 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -57,30 +57,30 @@ import java.io.*;
 
 //////////////////////////////////////////////////////////////////////
 //// PTParser.jjt
-/**
-This file implements an expression parser for Ptolemy II using the
+/** 
+This file implements an expression parser for Ptolemy II using the 
 JavaCC parser generator. It can handle all the basic arithmetic operators
-(*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical
-operators(&&, ||, !), bitwise operators (&, |, ^, ~)  and, using
-reflection, all of the functionality available in the java.lang.Math
-package.
+(*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical 
+operators(&&, ||, !), bitwise operators (&, |, ^, ~)  and, using 
+reflection, all of the functionality available in the java.lang.Math 
+package. 
 <p>
-By editing the ASTFunctionNode file it is also relatively
-easy to allow references to other functions. This provides an easy mechanism
-to extend the range to the parser e.g. have a tcl(...) function
+By editing the ASTFunctionNode file it is also relatively 
+easy to allow references to other functions. This provides an easy mechanism 
+to extend the range to the parser e.g. have a tcl(...) function 
 that passes the string to a Tcl interpreter and retuns the result.
 <p>
 Functional if is supported via the following syntax:
         (boolean) ? (value1) : (value2)
 <p>
 Extensibility is also supported by allowing method calls on the Tokens,
-the syntax is
+the syntax is 
         (value1).method(comma separated arguments)
 <p>
-JavaCC by itself simply generates a file (and support files) that allow an
-input to be parsed, it does not return a parse tree. For the purposes of
-type checking we require a parse tree, and this is obtained using JJTree, a
-preprocesssor for JavaCC.
+JavaCC by itself simply generates a file (and support files) that allow an 
+input to be parsed, it does not return a parse tree. For the purposes of 
+type checking we require a parse tree, and this is obtained using JJTree, a 
+preprocesssor for JavaCC. 
 <p>
 JJtree operates by annotating the grammar file to support the generation
 of the parse tree. Thus the process is
@@ -98,17 +98,17 @@ characters, as well as other special characters, can be escaped using the
 standard Java syntax (\n, \t, \077, etc.).
 <p>
 The expressions recognized follow as close as possible the syntax of Java.
-In particular the operator precedences implemented here follow exactly
-those in Java. Any type conversions that are performed are lossless. If
+In particular the operator precedences implemented here follow exactly 
+those in Java. Any type conversions that are performed are lossless. If 
 the user wants lossy conversions, explicit casts will be necessary.
 <p>
-Complex number are specified by an i or j after the imaginary part
-of the number. Long numbers are specified by an l or L after an
+Complex number are specified by an i or j after the imaginary part 
+of the number. Long numbers are specified by an l or L after an 
 integer number.
 <p>
 Users can register constants with the parser and also register classes
-where functions that may be called are defined. For a more
-thorough description of what the Parser is designed to do,
+where functions that may be called are defined. For a more 
+thorough description of what the Parser is designed to do, 
 please consult the Ptolemy II design document (or contact nsmyth@eecs)
 <p>
 @author Neil Smyth
@@ -125,12 +125,12 @@ please consult the Ptolemy II design document (or contact nsmyth@eecs)
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.ASTPtSumNode
 @see ptolemy.data.expr.ASTPtUnaryNode
-@see ptolemy.data.Token
+@see ptolemy.data.Token 
 */
 public class PtParser {
-
+    
     boolean debug = false;
-
+    
     public PtParser(Variable owner) {
         this(new ByteArrayInputStream("a hack!!".getBytes()));
         _initialize();
@@ -141,9 +141,33 @@ public class PtParser {
         this(new ByteArrayInputStream("a hack!!".getBytes()));
         _initialize();
     }
+   
+    /** Returns the list of undefined variables after parsing the given String.
+     *  @param stringIn The expression to be parsed
+     *  @exception IllegalActionException If the parse fails.
+     *  @return The list of undefined variables.
+     */
+    public LinkedList getUndefinedList(String stringIn)
+            throws IllegalActionException {
+        InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
+        _scope = null;
+	this.ReInit(stream);
+        //debug = true;
+        String str = stringIn.replace('\n', ' ');
+        try {
+            // Parse the expression to obtain the parse tree
+            _undefined = new LinkedList();
+            ASTPtRootNode rootNode = start();
+            if (debug) rootNode.displayParseTree(" ");
+            return _undefined;
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
+        }
+    }  
 
-
-    /** Generates a parse tree from the given String. The root node is
+   
+    /** Generates a parse tree from the given String. The root node is 
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed
@@ -159,6 +183,7 @@ public class PtParser {
         String str = stringIn.replace('\n', ' ');
         try {
             // Parse the expression to obtain the parse tree
+            _undefined = null;
             ASTPtRootNode rootNode = start();
             if (debug) rootNode.displayParseTree(" ");
             return rootNode;
@@ -166,9 +191,9 @@ public class PtParser {
             throw new IllegalActionException("Error parsing expression \""
                     + stringIn + "\":\n" + x.getMessage());
         }
-    }
+    }  
 
-    /** Generates a parse tree from the given String. The root node is
+    /** Generates a parse tree from the given String. The root node is 
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed.
@@ -176,7 +201,7 @@ public class PtParser {
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
      */
-    public ASTPtRootNode generateParseTree(String stringIn, NamedList scope)
+    public ASTPtRootNode generateParseTree(String stringIn, NamedList scope) 
             throws IllegalActionException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
         _scope = scope;
@@ -185,6 +210,7 @@ public class PtParser {
 	ASTPtRootNode rootNode;
         try {
             // Parse the expression to obtain the parse tree
+            _undefined = null;
             rootNode = start();
             if (debug) rootNode.displayParseTree(" ");
         } catch (ParseException x) {
@@ -193,12 +219,12 @@ public class PtParser {
         }
         return rootNode;
     }
-
-    /** Return the list of classes the parser searches
-     *  when a function call is encountered.
-     *  It is a static method. It stores the classes in a LinkedList. The
-     *  classes are searched in the same order that they were registered
-     *  with the parser, so the classes that are most likely to be
+               
+    /** Return the list of classes the parser searches 
+     *  when a function call is encountered. 
+     *  It is a static method. It stores the classes in a LinkedList. The 
+     *  classes are searched in the same order that they were registered 
+     *  with the parser, so the classes that are most likely to be 
      *  searched should be registered first.
      */
     public static LinkedList getRegisteredClasses() {
@@ -207,28 +233,28 @@ public class PtParser {
         }
         return _classesSearched;
     }
-
+    
     /** Return the list of Variables that comprise the current scope.
      *  @return The current scope.
-     */
+     */	
      public NamedList getScope() {
 	return _scope;
      }
-
+	
 
     /** Add a constant to the list of constants that the parser recognizes.
      *  It is a static method. The constants are stored in a hash table by
-     *  the Constants class. The entry for each name is a ptolemy.data.Token
+     *  the Constants class. The entry for each name is a ptolemy.data.Token 
      *  of the appropriate type. The value for the constant can be given
-     *  in a ptolemy.data.Token or in one of the data wrapper classes
+     *  in a ptolemy.data.Token or in one of the data wrapper classes 
      *  in java.lang.
      *  @param name The string name that the parser will recognize.
-     *  @param value An Object constraining the value associated with
+     *  @param value An Object constraining the value associated with 
      *   the constant.
      *  @exception IllegalArgumentException If the constant cannot
      *   be registered with the parser.
      */
-    public static void registerConstant(String name, Object value)
+    public static void registerConstant(String name, Object value) 
             throws IllegalArgumentException {
         if ( (value == null) || (name == null)) {
             throw new IllegalArgumentException("PtParser: cannot register " +
@@ -240,11 +266,11 @@ public class PtParser {
         } else if (value instanceof Integer) {
             tmp = new IntToken(((Integer)value).intValue());
         } else if (value instanceof Double) {
-            tmp = new DoubleToken(((Double)value).doubleValue());
+            tmp = new DoubleToken(((Double)value).doubleValue());   
         } else if (value instanceof Long) {
-            tmp = new LongToken(((Long)value).longValue());
+            tmp = new LongToken(((Long)value).longValue());   
         } else if (value instanceof String) {
-            tmp = new StringToken((String)value);
+            tmp = new StringToken((String)value);   
         } else if (value instanceof Boolean) {
             tmp = new BooleanToken(((Boolean)value).booleanValue());
         } else if (value instanceof Complex) {
@@ -253,19 +279,19 @@ public class PtParser {
             throw new IllegalArgumentException("PtParser: cannot register " +
                     name + "  as a constant of the parser.");
         }
-        Constants.add(name, tmp);
+        Constants.add(name, tmp); 
         return;
     }
-
-    /** Add a class to the list of classes that the parser searches
-     *  when a function call is encountered.
-     *  It is a static method. It stores the classes in a LinkedList. The
-     *  classes are searched in the same order that they were registered
-     *  with the parser, so the classes that are most likely to be
+      
+    /** Add a class to the list of classes that the parser searches 
+     *  when a function call is encountered. 
+     *  It is a static method. It stores the classes in a LinkedList. The 
+     *  classes are searched in the same order that they were registered 
+     *  with the parser, so the classes that are most likely to be 
      *  searched should be registered first.
-     *  @param newClassName The fully qualified name of the Class to
+     *  @param newClassName The fully qualified name of the Class to 
      *   be added to the search path for functions.
-     *  @exception IllegalArgumentException If the Class named by the
+     *  @exception IllegalArgumentException If the Class named by the 
      *   argument cannot not be found.
      */
     public static void registerFunctionClass(String newClassName)
@@ -280,11 +306,12 @@ public class PtParser {
             throw new IllegalArgumentException("PtParser.registerClass: " +
                      "Could not find " + newClassName + ".");
         }
+        CachedMethod.clear();
     }
 
-    /*  The Variable creating the parser.
-     *  Each time another variable is referenced in the input expression,
-     *  this Variable is registered as a listener of that Variable.
+    /*  The Variable creating the parser. 
+     *  Each time another variable is referenced in the input expression, 
+     *  this Variable is registered as a listener of that Variable. 
      *  If null, then no dependency is registered.
      */
     protected Variable _owner;
@@ -314,7 +341,7 @@ public class PtParser {
             registerFunctionClass("ptolemy.math.FixPoint");
         }
     }
-
+    
     /* Return true if the id is a variable name in scope or a registered
      * constant.
      */
@@ -331,13 +358,13 @@ public class PtParser {
         return result;
     }
 
-    /* Flag indicating whether the default set of classes searched
+    /* Flag indicating whether the default set of classes searched 
      * by the parser has already been loaded.
      */
     private static boolean _alreadyInitialized = false;
 
-    /*  Stores the classes that are searched by the parser when a
-     *  function call is parsed. It is static, and by default only
+    /*  Stores the classes that are searched by the parser when a 
+     *  function call is parsed. It is static, and by default only 
      *  contains the java.lang.Math class.
      */
     private static LinkedList _classesSearched;
@@ -346,7 +373,11 @@ public class PtParser {
      */
     private NamedList _scope;
 
+    /* Keeps track of undefined variables if not null
+     */
+    private LinkedList _undefined;
 
+    
     }
 
 PARSER_END(PtParser)
@@ -420,10 +451,10 @@ TOKEN : /* Boolean & bitwise operators */
 	< COND_AND: "&&" >
   |	< COND_OR: "||" >
   |     < BOOL_NOT: "!" >
-  |     < BITWISE_NOT: "~" >
+  |     < BITWISE_NOT: "~" >                          
   |	< AND: "&" >
   |     < OR: "|" >
-  |     < XOR: "#" >
+  |     < XOR: "#" >  
 
 }
 
@@ -466,8 +497,8 @@ TOKEN : /*Boolean literals */
 TOKEN : /* Function names */
 {
 	< ID: ( <LETTER> )+ (["0"-"9", "$", "@", "#" ] | <LETTER> )* >
-  | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] >
-}
+  | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
+} 
 
 TOKEN : /* literal strings */
 {
@@ -516,7 +547,7 @@ void logicalOr() #void :
 {Token x;}
 {
    (
-           logicalAnd() (
+           logicalAnd() ( 
                    x = <COND_OR> logicalAnd()
                    {  jjtThis._lexicalTokens.add(x); }
            )*
@@ -527,7 +558,7 @@ void logicalAnd() #void :
 {Token x;}
 {
    (
-           bitwiseOr() (
+           bitwiseOr() ( 
                    x = <COND_AND> bitwiseOr()
                    {  jjtThis._lexicalTokens.add(x); }
            )*
@@ -538,7 +569,7 @@ void bitwiseOr() #void :
 {Token x;}
 {
    (
-           bitwiseXor() (
+           bitwiseXor() ( 
                    x = <OR> bitwiseXor()
                    {  jjtThis._lexicalTokens.add(x); }
            )*
@@ -549,7 +580,7 @@ void bitwiseXor() #void :
 {Token x;}
 {
    (
-           bitwiseAnd() (
+           bitwiseAnd() ( 
                    x = <XOR> bitwiseAnd()
                    {  jjtThis._lexicalTokens.add(x); }
            )*
@@ -560,7 +591,7 @@ void bitwiseAnd() #void :
 {Token x;}
 {
    (
-           logicalEquals() (
+           logicalEquals() ( 
                    x = <AND> logicalEquals()
                    {  jjtThis._lexicalTokens.add(x); }
            )*
@@ -571,7 +602,7 @@ void logicalEquals() #void :
 {Token x;}
 {
    (
-           relational() (
+           relational() ( 
                    ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
                    {
                        jjtThis._lexicalTokens.add(x);
@@ -585,7 +616,7 @@ void relational() #void :
 {Token x;}
 {
    (
-           sum() (
+           sum() ( 
                    ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
                    {
                        jjtThis._lexicalTokens.add(x);
@@ -598,7 +629,7 @@ void sum() #void :
 {Token x;}
 {
    (
-           term() (
+           term() ( 
                    ( x = <PLUS> | x = <MINUS> ) term()
                    {
                        jjtThis._lexicalTokens.add(x);
@@ -611,7 +642,7 @@ void term() #void :
 {Token x;}
 {
    (
-           unary() (
+           unary() ( 
                    ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> | x = <POWER> ) unary()
                    {
                        jjtThis._lexicalTokens.add(x);
@@ -629,25 +660,25 @@ void unary() #void :
            { jjtThis._isMinus = true;}
    ) #PtUnaryNode
 
- |
+ |  
    (
            <BOOL_NOT> element()
-           { jjtThis._isNot = true;}
+           { jjtThis._isNot = true;} 
    ) #PtUnaryNode
- |
+ |  
    (
            <BITWISE_NOT> element()
-           { jjtThis._isBitwiseNot = true;}
+           { jjtThis._isBitwiseNot = true;} 
    ) #PtUnaryNode
 
  |  element()
 }
 
 void element() #void :
-{
+{  
   boolean isMethodCall = false;
 }
-{
+{ 
   ( primaryElement()
     [ "." <ID> {jjtThis._methodName = token.image; isMethodCall = true;}
       "(" [ funcIf() ( "," funcIf() )* ] ")" ]
@@ -660,9 +691,9 @@ int len;
 String tidied, x;
 }
 {
-   (
+   ( 
       <COMPLEX>
-	{   try
+	{   try 
             {
                 x = token.image.toLowerCase();
                 len = x.length();
@@ -672,25 +703,25 @@ String tidied, x;
 		jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
-                        "Unable to convert token " + token.image +
+                        "Unable to convert token " + token.image + 
                         " to a complex number.");
             }
         }
    ) #PtLeafNode
-  |
+  |  
    (
      <DOUBLE>
-	{   try
+	{   try 
             {
                 x = token.image.toLowerCase();
                 len = x.length();
-                if ( x.endsWith("d") || x.endsWith("f") ) {
+                if ( x.endsWith("d") || x.endsWith("f") ) {   
                     // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
                     jjtThis._ptToken = new DoubleToken(value.doubleValue());
                 } else {
                    Double value = new Double(x);
-                   jjtThis._ptToken = new DoubleToken(value.doubleValue());
+                   jjtThis._ptToken = new DoubleToken(value.doubleValue()); 
                 }
 	        jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
@@ -701,17 +732,17 @@ String tidied, x;
         }
    ) #PtLeafNode
 
-  |
+  |  
    (
      <INTEGER>
-	{   try
+	{   try 
             {
                 x = token.image.toLowerCase();
                 len = x.length();
 
                 // special case of hex
                 if ( x.startsWith("0x") ) {
-                    if ( x.endsWith("l") ) {
+                    if ( x.endsWith("l") ) {                   
                         // long case
                         String hex = x.substring(2, len-1);
                         long value = Long.parseLong(hex, 16);
@@ -725,9 +756,9 @@ String tidied, x;
                     Long value = new Long(x.substring(0, len-1 ));
                     jjtThis._ptToken = new LongToken(value.longValue());
                 } else {
-		    try {
+		    try { 
                         Integer value = new Integer(x);
-                        jjtThis._ptToken = new IntToken(value.intValue());
+                        jjtThis._ptToken = new IntToken(value.intValue()); 
                     } catch (NumberFormatException nfe) {
                         Long value = new Long(x);
                         jjtThis._ptToken = new LongToken(value.longValue());
@@ -736,13 +767,13 @@ String tidied, x;
 		jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
-                        "Unable to convert token " + token.image +
+                        "Unable to convert token " + token.image + 
                         " to an integer or long");
 	    }
 	}
    ) #PtLeafNode
 
-  |
+  | 
    (
       <STRING>
       {
@@ -813,38 +844,38 @@ String tidied, x;
       }
    ) #PtLeafNode
 
-  |
+  |  
    (
      <BOOLEAN>
-      {
+      { 
           if (token.image.equalsIgnoreCase("TRUE")) {
               jjtThis._ptToken = new BooleanToken(true);
           } else if (token.image.equalsIgnoreCase("FALSE")) {
-              jjtThis._ptToken = new BooleanToken(false);
+              jjtThis._ptToken = new BooleanToken(false);   
           }
 	  jjtThis._isConstant = true;
       }
-   ) #PtLeafNode
+   ) #PtLeafNode   
 
 
   | "(" funcIf() ")"
-
+ 
   |   LOOKAHEAD( <ID> "(" )
       function()
-
-  |
+    
+  | 
    (
      <ID>
-     {
+     { 
         Variable referredVar = null;
 	if (_scope != null) {
            referredVar = (Variable)_scope.get(token.image);
 	}
         if (referredVar != null) {
-           // The Variable is stored in the node so that the tree
-	   // does not have to be reparsed whenever the Token in
+           // The Variable is stored in the node so that the tree 
+	   // does not have to be reparsed whenever the Token in 
 	   // the Variable changes.
-           jjtThis._var   = referredVar;
+           jjtThis._var   = referredVar; 
            // Register the calling Variable as a listener
 	   // of the Variable this ID references.
            if (_owner != null) {
@@ -855,9 +886,15 @@ String tidied, x;
             jjtThis._ptToken = Constants.get(token.image);
 	    jjtThis._isConstant = true;
         } else {
-            if (true) {
-		throw new ParseException("The ID " + token.image +
-			" is undefined.");}
+            if (_undefined == null) {
+                // System.out.println("Undefined <" + token.image + ">");
+		throw new ParseException("The ID " + token.image + 
+			" is undefined.");
+            } else {
+                // System.out.println("Defining <" + token.image + ">");
+                _undefined.add(token.image);
+                jjtThis._var = new Variable();
+            }
 
         }
     }
@@ -868,7 +905,7 @@ String tidied, x;
 
   |   LOOKAHEAD( "{" <ID> "=" )
       recordConstruct()
-
+  
   |   LOOKAHEAD( "{" )
       arrayConstruct()
 
@@ -879,19 +916,19 @@ void function() #PtFunctionNode :
   Token x = null;
   boolean isArrayRef = false;
 }
-{
-    ( x = <ID>
+{    
+    ( x = <ID> 
       {
         Variable referredVar = null;
 	if (_scope != null) {
            referredVar = (Variable)_scope.get(x.image);
 	}
         if (referredVar != null) {
-          // The Parameter is stored in the node so that the tree
-	  // does not have to be reparsed whenever the Token in
+          // The Parameter is stored in the node so that the tree 
+	  // does not have to be reparsed whenever the Token in 
 	  // the Parameter changes.
-          jjtThis._var   = referredVar;
-          // Register the calling parameter as a listener
+          jjtThis._var   = referredVar; 
+          // Register the calling parameter as a listener 
           // of this Parameter this ID references.
           if (_owner != null) {
        	    referredVar._addValueDependent(_owner);
@@ -905,12 +942,12 @@ void function() #PtFunctionNode :
         }
       }
     ) #PtLeafNode(_isKnownID(x.image))
-    {
+    { 
       jjtThis._funcName = x.image;
       jjtThis._isArrayRef = isArrayRef;
     }
     "(" [ funcIf() ( "," funcIf() )* ] ")"
-    {
+    { 
       int nch = jjtThis.jjtGetNumChildren();
       if (isArrayRef && !(nch == 2 || nch == 3)) {
         throw new ParseException("PtParser: Parsed an array reference to "
@@ -922,15 +959,15 @@ void function() #PtFunctionNode :
 }
 
 void matrixConstruct() #PtMatrixConstructNode :
-{
+{ 
   int i;
   int nRows = 0; }
 {
   "[" { ++jjtThis._nColumns; ++nRows; } funcIf()  /* first term */
   (
-   (
+   (  
     ( "," { ++jjtThis._nColumns; } funcIf() )*  /* first row */
-    ( ";" { ++nRows; i = 0; } funcIf() { ++i; }
+    ( ";" { ++nRows; i = 0; } funcIf() { ++i; } 
     ( "," funcIf() { ++i; } )*  /* one more row */
       { /* Assert that the following rows have the same number of terms as the
          first row. */
@@ -943,10 +980,10 @@ void matrixConstruct() #PtMatrixConstructNode :
       }
     )* "]" { jjtThis._form = 1; jjtThis._nRows = nRows; }
    )
-   |
+   | 
    (
-    ":" funcIf() ":" funcIf()
-    ( ";" { ++nRows; } funcIf() ":" funcIf() ":" funcIf() )*
+    ":" funcIf() ":" funcIf() 
+    ( ";" { ++nRows; } funcIf() ":" funcIf() ":" funcIf() )* 
     "]" { jjtThis._form = 2; jjtThis._nRows = nRows; }
    )
   )
