@@ -43,7 +43,7 @@ this composite actor is an instance of CTEmbeddedDirector, then the
 CTStepSizeControlActor calls will be delegated to its local director.
 Otherwise, it returns defaullt values. 
 @author  Jie Liu
-@version %Id%
+@version $Id$
 */
 public class CTCompositeActor extends TypedCompositeActor 
         implements CTStepSizeControlActor {

@@ -37,7 +37,7 @@ outside CTDirector. The methods are about step size control. After the internal
 CT subsystem finishes one integration step, its step size control information
 should be accessable from the outside CT director.
 @author  Jie Liu
-@version %Id%
+@version $Id$
 
 */
 public interface CTEmbeddedDirector {

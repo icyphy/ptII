@@ -59,7 +59,7 @@ the controller. The outputs are ddPx/dtt, ddPz/dtt, and ddth/dtt, they
 will be fed into integrators to get Px, Pz, and th.
 
 @author  Jie Liu, John Koo
-@version %Id%
+@version $Id$
 */
 public class HelicopterActor extends CTActor{
     /** Construct the actor, all parameters take the default value.

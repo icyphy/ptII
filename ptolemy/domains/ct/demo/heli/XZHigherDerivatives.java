@@ -54,7 +54,7 @@ DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m +
    (2*Dotth*DotTM*Math.sin[th))/m + (TM*(a*MM + hM*TM*Math.sin[a))*Math.sin[th))/(Iy*m)
 
 @author  liuj
-@version %Id%
+@version $Id$
 
 */
 public class XZHigherDerivatives extends CTActor{

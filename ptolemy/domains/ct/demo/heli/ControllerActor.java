@@ -90,7 +90,7 @@ b2 = (3*Dotth^2*DotTM*Cos[th])/m +
 The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
 The outputs are DDDTm, and DA
 @author  Jie Liu
-@version %Id%
+@version $Id$
 
 */
 public class ControllerActor extends CTActor{
