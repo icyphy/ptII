@@ -36,7 +36,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.*;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.*;
-import ptolemy.domains.dt.kernel.DTDebug;
 import ptolemy.domains.gr.kernel.*;
 
 import com.sun.j3d.utils.geometry.*;

@@ -36,7 +36,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
-import ptolemy.domains.dt.kernel.DTDebug;
 
 import javax.media.j3d.*;
 import javax.vecmath.*;

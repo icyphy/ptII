@@ -36,7 +36,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.dt.kernel.DTDebug;
 import ptolemy.domains.gr.kernel.*;
 
 import javax.media.j3d.*;

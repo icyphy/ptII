@@ -38,7 +38,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.*;
-import ptolemy.domains.dt.kernel.DTDebug;
 
 import javax.swing.JTextArea;
 import javax.swing.JFrame;
