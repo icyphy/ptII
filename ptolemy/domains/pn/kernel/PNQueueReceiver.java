@@ -90,14 +90,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clear the tokens in the queue contained in this receiver. This is used
-     *  to reinitialize the receiver.
-     *  @deprecated
-     */
-    public void clear() {
-        super.reset();
-    }
-
     /** Remove and return the oldest token from the FIFO queue contained 
      *  in the receiver. Terminate the calling process by throwing a 
      *  TerminateProcessException if requested. 
@@ -270,6 +262,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void reset() {
 	super.reset();
+	_readblockedactor = null;
+	_writeblockedactor = null;
 	_readpending = false;
 	_writepending = false;
 	_pause = false;
