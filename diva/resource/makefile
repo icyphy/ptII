@@ -51,7 +51,6 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	Defaults.properties \
-	commands.tc \
 	dtd_graph.dtd \
 	dtd_sketch.dtd \
 	dtd_test.dtd \
