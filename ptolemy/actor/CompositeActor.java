@@ -503,13 +503,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this entity and container are not in the same workspace, or
-     *   if the argument is not a CompositeActor.
+     *   if the argument is not a CompositeActor or null.
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeActor)) {
+        if (!(container instanceof CompositeActor) || (container != null)) {
             throw new IllegalActionException(container, this,
                     "CompositeActor can only be contained by instances of " +
                     "CompositeActor.");
