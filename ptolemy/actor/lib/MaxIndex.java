@@ -102,9 +102,9 @@ public class MaxIndex extends Transformer {
     /** If there is at least one token on the input ports, compare the
      *  tokens by converting them into doubles, and output the index of
      *  the port that has the Token with the largest double value.
-     *  At most one token is read from each channel, so if more than one token is
-     *  pending, the rest are left for future firings.  If none of the input
-     *  channels has a token, do nothing.
+     *  At most one token is read from each channel, so if more than one
+     *  token is pending, the rest are left for future firings.
+     *  If none of the input channels has a token, do nothing.
      *
      *  @exception IllegalActionException If there is no director,
      *  or if conversion to DoubleToken is not supported by the input tokens.
