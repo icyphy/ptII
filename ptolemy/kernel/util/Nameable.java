@@ -99,7 +99,7 @@ public interface Nameable {
      *   encountered, where this object directly or indirectly contains
      *   itself. Note that this is a runtime exception so it need not
      *   be declared explicitly.
-     *  @see #setName(name)
+     *  @see #setName(String)
      */
     public String getName(NamedObj relativeTo) throws InvalidStateException;
 

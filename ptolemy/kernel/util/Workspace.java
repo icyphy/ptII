@@ -326,7 +326,6 @@ public final class Workspace implements Nameable, Serializable {
      *  name is always the same as the name.
      *  @param relativeTo This argument is ignored.
      *  @return The name of the workspace.
-     *  @see #setName()
      *  @see #setName(String)
      */
     public String getName(NamedObj relativeTo) {
