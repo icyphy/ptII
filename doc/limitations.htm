@@ -32,6 +32,12 @@ and add the appropriate property by hand.
 Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
 <br>Under Windows, we recommend using gcc-3.2.
 
+<li>
+<b>Copernicus does not work will if there are spaces in $PTII</b>
+If Ptolemy is installed in a directory that has a space in the pathname,
+then the Copernicus code generator does not work well.
+<br>The problem is because Soot uses the StringTokenizer to process
+options. The space character is a delimiter, which causes problems.
 
 <li>
 <b>Plot windows don't resize when control panel is resized</b>.
