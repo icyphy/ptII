@@ -35,6 +35,7 @@ import java.lang.System;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -120,14 +121,23 @@ public class MoMLApplication extends CompositeActorApplication {
                 base = inurl;
                 instream = inurl.openStream();
             } catch (MalformedURLException ex) {
-                File file = new File(arg);
-                instream = new FileInputStream(file);
+                try {
+                    File file = new File(arg);
+                    instream = new FileInputStream(file);
 
-                // Strangely, the XmlParser does not want as base the
-                // directory containing the file, but rather the file itself.
-                File directory = new File(file.getAbsolutePath());
-                // base = new URL("file", null, directory);
-                base = file.toURL();
+                    // Strangely, the XmlParser does not want as base the
+                    // directory containing the file, but rather the
+                    // file itself.
+                    File directory = new File(file.getAbsolutePath());
+                    // base = new URL("file", null, directory);
+                    base = file.toURL();
+                } catch (FileNotFoundException ex2) { 
+                    System.out.println("About to try getResource");
+                    URL inurl = Class.forName("ptolemy.kernel.util.NamedObj").
+                        getClassLoader().getResource(arg);
+                    instream = inurl.openStream();
+                    base = inurl;
+                }
             }
             _read(base, instream);
         } else {
