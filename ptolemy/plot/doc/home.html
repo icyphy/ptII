@@ -8,7 +8,7 @@
 <table>
 <tr>
 
-<td><img alt="Screenshot of PtPlot applet plotting a FourierSeries" width=507 height=315 src="doc/img/ptplot.gif">
+<td><img alt="Screenshot of PtPlot applet plotting a FourierSeries" width=507 height=315 src="img/ptplot.gif">
 
 <td align=center>
 <b>Authors</b><br>
@@ -21,19 +21,6 @@
 <br>
 <i>William Wu</i>
 </table>
- <hr>
-
-<MENU>
-<LI> <A HREF="demo/index.html">Applet Demonstrations</A>
-<LI> <A HREF="doc/codeDoc/tree.html">The Java documentation for these classes</A>
-<LI> <A HREF="doc/download/index.html">Download sources and class files</a>
-<LI> Miscellaneous
-<A HREF="doc/index.html">Ptplot documentation</A>, including
-the <A HREF="doc/internals/ptplotfaq.html">Ptplot faq</A>, instructions
-on joining the
-<A HREF="doc/internals/ptplotfaq.html#mailing list"><CODE>ptplot-announce</CODE></A>
-mailing list and the list of
-<A HREF="doc/internals/changes.html">Ptplot Changes</A>.
 
 </MENU>
  <hr>
@@ -62,31 +49,31 @@ application classes can read data from a URL and use command-line
 arguments to format the plot.  The command-line arguments are
 compatible with the popular Unix signal plotter <CODE>xgraph</CODE>.
 
-<p>There is a set of <a href="demo/index.html">demonstrations</a>
+<p>There is a set of <a href="../demo/toc.html target="contents"">demonstrations</a>
 of these classes.
-The main class implementing the plotter component is <a
-href="Plot.java">Plot</a>.  It is derived from <a
-href="PlotBox.java">PlotBox</a>, which provides only the axes and
+The main class implementing the plotter component is 
+<a href="../Plot.java">Plot</a>.  It is derived from 
+<a href="../PlotBox.java">PlotBox</a>, which provides only the axes and
 decorations of the plot.  This is implemented in a base class so that
 it can be reused for different kinds of plots.  Live (animated) data
-plots are supported by the <a href="PlotLive.java">PlotLive</a> class.
+plots are supported by the <a href="../PlotLive.java">PlotLive</a> class.
 This class is abstract; a derived class must be created to generate
 the data to plot (or collect it from some other application).  <p>
 
- <p><a href="demo/TwoPlotExample.java">TwoPlotExample</CODE></a>
+ <p><a href="../demo/TwoPlotExample.java">TwoPlotExample</CODE></a>
 is a very simple sample Ptplot application.
 
  <p>A more complex application is implemented by the
-<a href="PlotApplication.java">PlotApplication</a> class.
+<a href="../PlotApplication.java">PlotApplication</a> class.
 The PlotApplication class
 includes support for printing and generating HTML for use with the
-Plot applet.  The <a href="ptplot"><CODE>ptplot</CODE></a>
+Plot applet.  The <a href="../ptplot"><CODE>ptplot</CODE></a>
 shell script starts up PlotApplication from a Unix
 shell prompt.
 
  <p>Backward compatibility with the C <CODE>pxgraph</CODE> program
 is provided by the 
-<a href="Pxgraph.java">Pxgraph</a> class.
+<a href="../Pxgraph.java">Pxgraph</a> class.
 
  <P><A NAME="xgraph">This</A> code owes a heavy debt to David
 Harrison, the original author of <CODE>xgraph</CODE>, which runs under
@@ -101,9 +88,6 @@ window system.  We have provided a DOS batch file called
 <CODE>pxgraph.bat</CODE> that brings <CODE>pxgraph</CODE> capability
 to Windows platforms.
 
-<hr>
-<A HREF="http://ptolemy.eecs.berkeley.edu/java">Up</A> to the Ptolemy Java Website -
-<A HREF="demo">Forward</A> to the Demonstrations
 
 <HR>
 Last updated: $Date$,
@@ -112,3 +96,4 @@ Last updated: $Date$,
 <A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>
 </body>
 </html>
+

@@ -57,7 +57,7 @@ infrastructure.
 <DT> <A NAME="ptplot description (short)"><B>1.1 What Is Ptplot?</B></A>
 <DD> Ptplot is a Java 2-D graphing component.  Ptplot can be used
 in applets and applications.  The
-<A HREF="../../index.html">top-level Ptplot page</A> describes Ptplot
+<A HREF="home.html">top-level Ptplot page</A> describes Ptplot
 further.
 
 <DT> <A NAME="ptplot pronunciation"><B>1.2 How do I pronounce 'ptplot'?</B></A>
@@ -66,7 +66,7 @@ further.
 <DT> <A NAME="ptplot copyright"><B>1.3 What is the copyright?</B></A>
 <DD> Ptplot is released under the fairly liberal UC Berkeley copyright.
 Most files have the copyright at the top, for example, see
-<A HREF="../../Plot.java"><CODE>Plot.java</CODE></A>
+<A HREF="../Plot.java"><CODE>Plot.java</CODE></A>
 
 <DT> <A NAME="contact"><B>1.4 How do I contact the authors?</B></A>
 <DD> The primary author of Ptplot is Professor Edward A. Lee.
@@ -83,7 +83,7 @@ send email to <A HREF="mailto:ptplot-announce-request@ptolemy.eecs.berkeley.edu"
 with the word <CODE>subscribe</CODE> in the body, not the header.
 
 <DT> <A NAME="xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>
-<DD> The introduction contains a <A HREF="../../index.html#xgraph">description</A> of the relationship between <CODE>xgraph</CODE> and ptplot.
+<DD> The introduction contains a <A HREF="home.html#xgraph">description</A> of the relationship between <CODE>xgraph</CODE> and ptplot.
  <br> Note that you can download sources and binaries for <CODE>pxgraph</CODE>, an extension to <CODE>xgraph</CODE> from
 <A HREF="ftp://ptolemy.eecs.berkeley.edu/pub/misc/pxgraph/index.html"><CODE>ftp://ptolemy.eecs.berkeley.edu/pub/misc/pxgraph/index.html</CODE></A>
  <br> Note that if you type a <CODE>x</CODE> while the mouse is
@@ -117,7 +117,7 @@ supported JDK1.0.2, you can find those releases in
 To use Ptplot, you will need the Java Development kit (JDK), which
 can be downloaded from
 <A HREF="http://www.javasoft.com"><CODE>http://www.javasoft.com</CODE></A>.
-The <A HREF="../codeDoc/ptplot.Pxgraph.html#Installation Instructions">Pxgraph documentation</A> contains further installation instructions.
+The <A HREF="codeDoc/ptplot.Pxgraph.html#Installation Instructions">Pxgraph documentation</A> contains further installation instructions.
  <P>You can also run Ptplot as an applet in your local browser.
 
 
@@ -140,9 +140,9 @@ Your mail should include:
 <DD>
 <MENU>
  <LI>Most of the known bugs and limitations are listed in the
-<A HREF="../codeDoc/ptplot.Plot.java#ptplot limitations">javadoc Plot documentation</A>
+<A HREF="codeDoc/ptplot.Plot.java#ptplot limitations">javadoc Plot documentation</A>
  <LI>The Todo list is at the top of the
-<A HREF="../../Plot.java"><CODE>Plot.java</CODE></A> file.
+<A HREF="../Plot.java"><CODE>Plot.java</CODE></A> file.
 </MENU>
 
 </DL>
@@ -158,26 +158,26 @@ There are several ways to plot data using ptplot.
 
  <P>One is to create a datafile that consists of datasets and x,y pairs
 See:
-<A HREF="../../demo/bargraph.plt"><CODE>demo/bargraph.plt</CODE></A>
+<A HREF="../demo/bargraph.plt"><CODE>demo/bargraph.plt</CODE></A>
 
  <P>Binary data files are also supported, see
 <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 
  <P>Another ways it to call <CODE>plot().addPoint</CODE>.
-The <A HREF="../../demo/FourierSeries.html">Fourier Series demo</A>
+The <A HREF="../demo/FourierSeries.html">Fourier Series demo</A>
 uses this method.
 
 The PlotFourierSeries class at
-<A HREF="../../demo/PlotFourierSeries.java"><CODE>demo/PlotFourierSeries.java</CODE></A> is what actually does the plotting.
+<A HREF="../demo/PlotFourierSeries.java"><CODE>demo/PlotFourierSeries.java</CODE></A> is what actually does the plotting.
 
  <P> You can also plot data dynamically by creating a class that has a
 <CODE>addPoints()</CODE> method which gets called by the PlotLive class.
 
 The
-<A HREF="../../demo/Live.html"><CODE>demo/Live.html</CODE></A> demo
+<A HREF="../demo/Live.html"><CODE>demo/Live.html</CODE></A> demo
 illustrates live plotting.
 The PlotLiveDemo class at
-<A HREF="../../demo/PlotLiveDemo.java"><CODE>demo/PlotLiveDemo.java</CODE></A>
+<A HREF="../demo/PlotLiveDemo.java"><CODE>demo/PlotLiveDemo.java</CODE></A>
 is what actually does the plotting.
 
 <DT> <A NAME="binarydata"><B>3.2 How do I plot binary data?</B></A>
@@ -188,9 +188,9 @@ For details on the format.  Ptplot 1.2 and later can also
 plot data that consists of raw 4 byte floats.
 For more information, see the description of the
 <CODE>-binary</CODE> option in
-<A HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>.  You might
+<A HREF="../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>.  You might
 find the
-<A HREF="../codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
+<A HREF="codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
 easier to read.
  <p>Note that PlotApplication <B>cannot</B> plot binary data yet, only
 applets and Pxgraph can handle binary data.
@@ -251,7 +251,7 @@ convert it if the Java virtual machine is running on a big-endian machine.
 
 </menu>
 
-See the <a href="../../demo/Endian.html">Endian Examples</a> for
+See the <a href="../demo/Endian.html">Endian Examples</a> for
 example that use the above flags.
 
 The
@@ -325,45 +325,38 @@ of the plot would be <CODE>Two datafiles</CODE>.
 </PRE>
 
 <dt>  <A NAME="twoplots"><B>3.6 How do I have two separate plots?</B></A>
-<dd> See <a href="../../demo/LogAxes.html"><CODE>LogAxes.html</CODE></a>
+<dd> See <a href="../demo/LogAxes.html"><CODE>LogAxes.html</CODE></a>
 for an applet that has two separate plots side by side.
 <p>
 See
-<a href="../../demo/TwoPlotExample.java"><CODE>TwoPlotExample.java</CODE></a>
+<a href="../demo/TwoPlotExample.java"><CODE>TwoPlotExample.java</CODE></a>
 for a standalone application that has two separate plots side by side.
 
 <dt>  <A NAME="simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
 <dd> 
-<A HREF="../../PlotApplication.java"><CODE>PlotApplication.java</CODE></A>
+<A HREF="../PlotApplication.java"><CODE>PlotApplication.java</CODE></A>
 is a standalone application with a menu interface.  PlotApplication
-is started by the <a href="../../ptplot"><CODE>ptplot</CODE></a>
+is started by the <a href="../ptplot"><CODE>ptplot</CODE></a>
 startup script.
 
- <p><A HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>
+ <p><A HREF="../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>
  is a standalone application that uses the Plot class.
 Pxgraph.java is fairly large, but most of the code is for argument
 parsing and backward compatibility with an older program.
 Most of the real work is done in the <CODE>Pxgraph</CODE> constructor
 and in <CODE>main()</CODE>.  Pxgraph can be started from
 the <CODE>pxgraph</CODE> script, which is merely a link to
-the <a href="../../ptplot"><CODE>ptplot</CODE></a> script.
+the <a href="../ptplot"><CODE>ptplot</CODE></a> script.
 
- <p><a href="../../demo/TwoPlotExample.java"><CODE>ptolemy/plot/demo/TwoPlotExample.java</CODE></a>
+ <p><a href="../demo/TwoPlotExample.java"><CODE>ptolemy/plot/demo/TwoPlotExample.java</CODE></a>
 is a simple standalone Java application that uses the Plot class.
 The comment towards the top of the file contains instructions about
 how to compile it.
 </ol>
 </DL>
 
-<p>
 <HR>
-<a href="index.html">Ptplot infrastructure</a><br>
-<p>
-<HR>
-Copyright &#169 1997-1999 The Regents of the University of California.
-All rights reserved.
-<br>
 Last updated: $Date$,
-comments to: <author>cxh@eecs.berkeley.edu</author>
+ <br>Comments to: <A HREF="mailto:ptplot@ptolemy.eecs.berkeley.edu"><author>ptplot@eecs.berkeley.edu</author></A>
 </body>
 </html>
