@@ -10,6 +10,13 @@
 
 <H2>The changes between ptplot5.2 and ptplot5.2p1</H2>
 <menu>
+
+<li> Helge Weissig:
+Moved checks for <CODE>original<I>{X,Y}</I>RangeGiven</CODE> from
+<CODE> set<I>{X,Y}</I>Range()</CODE> to
+<CODE>_set<I>{X,Y}</I>Range()</CODE> so that if we have a simple plot
+consisting only of data, then Reset Axes works properly.
+
 <li> Peter Carr: getData() and _setData() incorrectly were using
 _dataset instead of dataset.
 </menu>
