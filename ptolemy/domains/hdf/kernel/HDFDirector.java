@@ -43,8 +43,10 @@ import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -166,7 +168,8 @@ public class HDFDirector extends SDFDirector {
     ////                         public methods                    ////
 
     /** Get the number of firings of current director per global
-     *  iteration.
+     *  iteration. 
+     *  Note: This method is used only for HDFActors and maybe removed.
      *  @return The number of firings of current director per global
      *  iteration.
      */
@@ -216,6 +219,9 @@ public class HDFDirector extends SDFDirector {
                 IOPort outputPort = (IOPort)outputPorts.next();
                 int rate =
                     SDFUtilities.getTokenProductionRate(outputPort);
+                rates = rates + String.valueOf(rate);
+                int initRate =
+                    SDFUtilities.getTokenInitProduction(outputPort);
                 rates = rates + String.valueOf(rate);
             }
             String rateKey = rates;
@@ -275,24 +281,6 @@ public class HDFDirector extends SDFDirector {
         return schedule;
     }
 
-    /** Initialize the actors associated with this director.
-     *  @exception IllegalActionException If the initialize() method of
-     *  one of the associated actors throws it, or if there is no
-     *  scheduler, or if the cache size parameter is not set to
-     *  a valid value.
-     */
-    /*
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        if (_preinitializeFlag) {
-            _preinitializeFlag = false;
-        } else {
-            SDFScheduler scheduler = (SDFScheduler)getScheduler();
-            getSchedule();
-        }
-    }*/
-
     /** Get the HDF schedule since schedule may change in the postfire.
      *  If this director is at the top level, then update the number of
      *  firings per global iteration for each actor from the top level
@@ -307,8 +295,16 @@ public class HDFDirector extends SDFDirector {
         // The sub-controller may change modes but the upper controller
         // will not be aware of it. Use SDF instead of HDF where
         // everything has fixed port rates. This is more efficient.
-        getSchedule();
         CompositeActor container = (CompositeActor)getContainer();
+        ChangeRequest request =
+            new ChangeRequest(this, "choose transition") {
+            protected void _execute() throws KernelException {
+                
+            }
+        };
+        request.setPersistent(false);
+        container.requestChange(request);
+        getSchedule();
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null
             || ((! (exeDirector instanceof SDFDirector))

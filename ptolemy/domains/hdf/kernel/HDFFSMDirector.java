@@ -57,8 +57,10 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -168,9 +170,10 @@ public class HDFFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If there is no controller.
      */
     public void fire() throws IllegalActionException {
+        CompositeActor container = (CompositeActor)getContainer();
         FSMActor ctrl = getController();
         ctrl.setFiringsSoFar(_firingsSoFar);
-        ctrl.setFiringsPerIteration(_firingsPerIteration);
+        //ctrl.setFiringsPerIteration(_firingsPerIteration);
         _setInputVariables();
         State st = ctrl.currentState();
         // FIXME
@@ -199,22 +202,16 @@ public class HDFFSMDirector extends FSMDirector {
         if (_firingsSoFar == _firingsPerIteration - 1) {
             _chooseTransition(st.nonpreemptiveTransitionList());
         }
+        ChangeRequest request =
+            new ChangeRequest(this, "choose transition") {
+            protected void _execute() throws KernelException {
+                
+            }
+        };
+        request.setPersistent(false);
+        container.requestChange(request);
         return;
     }
-
-    /** Get the number of firings per iteration of this director.
-     *  @return The number of firings per iteration of this director.
-     */
-    //public int getFiringsPerIteration() {
-    //    return _firingsPerIteration;
-    //}
-
-    /** Get the number of firings so far of this director.
-     *  @return The number of firings so far.
-     */
-    //public int getFiringsSoFar() {
-    //    return _firingsSoFar;
-    //}
 
     /** If this method is called immediately after preinitialze(),
      *  initialize the mode controller and all the refinements.
@@ -231,7 +228,6 @@ public class HDFFSMDirector extends FSMDirector {
         if (!_reinitialize){
             super.initialize();
             _reinitialize = true;
-            //if (!_resetCurrentHDFFSM) 
         } else {
             // This is a sub-layer HDFFSMDirector.
             // Reinitialize all the refinements in the sub-layer
@@ -244,9 +240,6 @@ public class HDFFSMDirector extends FSMDirector {
                 // FIXME
                 //(TypedCompositeActor)initialState.getRefinement();
                 (TypedCompositeActor)(initialState.getRefinement())[0];
-            //_setCurrentConnectionMap();
-            //_currentLocalReceiverMap =
-            //    (Map)_localReceiverMaps.get(initialState);
             if (curRefinement != null) {
                 Director refinementDir = curRefinement.getDirector();
                 if (refinementDir instanceof HDFFSMDirector) {
@@ -350,6 +343,7 @@ public class HDFFSMDirector extends FSMDirector {
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
         State curState = ctrl.currentState();
+        CompositeActor container = (CompositeActor)getContainer();
         // FIXME
         //TypedActor currentRefinement =
         TypedActor[] currentRefinement = curState.getRefinement();
@@ -364,6 +358,14 @@ public class HDFFSMDirector extends FSMDirector {
         boolean superPostfire;
         _firingsSoFar++;
 
+        ChangeRequest request =
+            new ChangeRequest(this, "commit transition") {
+            protected void _execute() throws KernelException {   
+            }
+        };
+        request.setPersistent(false);
+        //container.requestChange(request);
+        container.requestChange(request);
         if (_firingsSoFar == _firingsPerIteration) {
             // One global iteration has finished.
             // A state transition can now occur.
@@ -384,21 +386,8 @@ public class HDFFSMDirector extends FSMDirector {
                 State newState = lastChosenTr.destinationState();
                 _setCurrentState(newState);
 
-                //superPostfire = super.postfire();
-                //BooleanToken resetToken =
-                //    (BooleanToken)lastChosenTr.reset.getToken();
-                //if (resetToken.booleanValue()) {
-                //setCurrentHDFFSMReset(true);
-                //initialize();
-                //}
-                //setCurrentHDFFSMReset(false);
-
                 superPostfire = super.postfire();
                 curState = newState;
-                // Set up the new connection map and receivers.
-                //_setCurrentConnectionMap();
-                //_currentLocalReceiverMap =
-                //  (Map)_localReceiverMaps.get(ctrl.currentState());
 
                 // Get the new current refinement actor.
                 // FIXME
@@ -462,7 +451,6 @@ public class HDFFSMDirector extends FSMDirector {
     public void preinitialize() throws IllegalActionException {
         _firingsPerIteration = 1;
         _firingsSoFar = 0;
-        //_resetCurrentHDFFSM = true;
         _reinitialize = false;
         super.preinitialize();
 
@@ -485,56 +473,14 @@ public class HDFFSMDirector extends FSMDirector {
                         + "allowed in the refinement.");
             }
 
-            /*
-              if (refinementDir instanceof HDFFSMDirector) {
-              refinementDir.preinitialize();
-              } else if (refinementDir instanceof HDFDirector) {
-              Scheduler refinmentSched = ((StaticSchedulingDirector)
-              refinementDir).getScheduler();
-              refinmentSched.setValid(false);
-              ((HDFDirector)refinementDir).getSchedule();
-              if (_debug_info) System.out.println(getName() +
-              " : preinitialize(): refinement's director : " +
-              refinementDir.getFullName());
-
-              if (_debug_info) {
-              CompositeActor container =
-              (CompositeActor)getContainer();
-              System.out.println(getName() +
-              " : preinitialize(): Name of HDF composite actor: " +
-              ((Nameable)container).getName());
-              }
-              } else if (refinementDir instanceof SDFDirector) {
-              Scheduler refinmentSched = ((StaticSchedulingDirector)
-              refinementDir).getScheduler();
-              refinmentSched.setValid(true);
-              ((SDFScheduler)refinmentSched).getSchedule();
-              } else {
-             */
-
             _updateInputTokenConsumptionRates(curRefinement);
             _updateOutputTokenProductionRates(curRefinement);
 
-            // Tell the scheduler that the current schedule is no
-            // longer valid.
-            //CompositeActor hdfActor = _getHighestFSM();
-            //Director director = hdfActor.getExecutiveDirector();
-            //((StaticSchedulingDirector)director).invalidateSchedule();
         } else {
             throw new IllegalActionException(this,
                     "current refinement is null.");
         }
     }
-
-    /** Set the boolean flag that indicates whether the transition
-     *  in the current HDFFSMDirector resets the refinement.
-     *  @param resetCurrentHDFFSM The boolean flag indicating whether
-     *  the transition in the current HDFFSMDirector resets the
-     *  refinement.
-     */
-    //public void setCurrentHDFFSMReset(boolean resetCurrentHDFFSM) {
-    //_resetCurrentHDFFSM = resetCurrentHDFFSM;
-    //}
 
     /** Set the number of firings per iteration of this director.
      *  @param firings Number of firings per iteration of this director.
@@ -655,18 +601,12 @@ public class HDFFSMDirector extends FSMDirector {
         State currentState;
 
         TypedCompositeActor currentRefinement;
-        // Get the current refinement.
-        //if (preinitializeFlag) {
-        //    currentState = ctrl.getInitialState();
-        //    currentRefinement =
-        //        (TypedCompositeActor)(currentState.getRefinement())[0];
-        //} else {
+        
         currentState = ctrl.currentState();
         currentRefinement =
             // FIXME
             //(TypedCompositeActor)currentState.getRefinement();
-            (TypedCompositeActor)(currentState.getRefinement())[0];
-        //}
+        (TypedCompositeActor)(currentState.getRefinement())[0];
         if (currentRefinement != null) {
             Director refinementDir = currentRefinement.getDirector();
             if (refinementDir instanceof HDFFSMDirector) {
@@ -839,7 +779,8 @@ public class HDFFSMDirector extends FSMDirector {
 
     /** Extract the token production rates from the output
      *  ports of the current refinement and update the
-     *  rates of the output ports of the HDF opaque composite actor
+     *  production and initial production rates of the output
+     *  ports of the HDF opaque composite actor
      *  containing the refinment. The resulting mutation will cause
      *  the SDF scheduler to compute a new schedule using the
      *  updated rate information.
@@ -891,8 +832,12 @@ public class HDFFSMDirector extends FSMDirector {
                     // of the refinement.
                     int portRateToSet = SDFUtilities
                         .getTokenProductionRate(refineOutPort);
+                    int portInitRateToSet = SDFUtilities
+                        .getTokenInitProduction(refineOutPort);
                     SDFUtilities.setTokenProductionRate
                         (outputPortOutside, portRateToSet);
+                    SDFUtilities.setTokenInitProduction
+                        (outputPortOutside, portInitRateToSet);
                 } else if (temp.equals(thisPortContainer.getFullName())) {
                     // set the outside port rate equal to the port rate of
                     // the refinement.
@@ -915,10 +860,6 @@ public class HDFFSMDirector extends FSMDirector {
     // The number of firings of this HDFFSM controller per
     // global iteration.
     private int _firingsPerIteration = 1;
-
-    // A flag indicating whether the current director
-    // has made a transition with "reset" set to be true.
-    // private boolean _resetCurrentHDFFSM = false;
 
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
