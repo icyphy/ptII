@@ -49,9 +49,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	HTVQEncode.java \
-	ImageContrast.java \
 	ImageDisplay.java \
 	ImagePartition.java \
+	ImageScale.java \
 	ImageSequence.java \
 	ImageToken.java \
 	ImageUnpartition.java \
