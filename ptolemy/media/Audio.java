@@ -169,7 +169,7 @@ public class Audio {
     ////                      public members                         ////
 
     /** The file type identifier, 0x2E736E64 or '.snd' in ASCII. */
-    public byte magic[] = {'.', 's', 'n', 'd'};
+    public byte magic[] = {(byte)'.', (byte)'s', (byte)'n', (byte)'d'};
 
     /** Offset of audio data relative to the start of the stream. */
     public int offset;
