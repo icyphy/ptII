@@ -173,7 +173,8 @@ public class FIR extends SDFTransformer {
             _interp = token.intValue();
             if (_interp <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid interpolation: " + _interp + ". Must be positive.");
+                        "Invalid interpolation: " + _interp
+                        + ". Must be positive.");
             }
             output.setTokenProductionRate(_interp);
             Director director = getDirector();
@@ -186,7 +187,8 @@ public class FIR extends SDFTransformer {
             _dec = token.intValue();
             if (_dec <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimation: " + _interp + ". Must be positive.");
+                        "Invalid decimation: " + _interp
+                        + ". Must be positive.");
             }
             input.setTokenConsumptionRate(_dec);
             Director director = getDirector();
@@ -199,7 +201,8 @@ public class FIR extends SDFTransformer {
             _decPhase = token.intValue();
             if (_decPhase < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimation: " + _interp + ". Must be nonnegative.");
+                        "Invalid decimation: " + _interp
+                        + ". Must be nonnegative.");
             }
             _reinitializeNeeded = true;
         } else if (attribute == taps) {
