@@ -213,11 +213,11 @@ public class Expression extends TypedAtomicActor {
                  + "requires that Matlab be installed on the local machine."
                  + "Refer to $PTII/ptolemy/matlab/makefile for more"
                  + "information.");
-        } catch (NoClassDefFound ex2) {
+        } catch (Exception ex2) {
             // If we get a LinkageError the first time we run, then
             // the second and subsequent times we run we may get a 
             // NoClassDefFound exception 
-            throw new IllegalActionException(this, ex2
+            throw new IllegalActionException(this, ex2,
                  "There was a problem invoking the Ptolemy II Matlab interface"
                  + ".\nThe interface has been tested under Windows and Linux,\n"
                  + "requires that Matlab be installed on the local machine."
