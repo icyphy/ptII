@@ -1389,15 +1389,16 @@ public class SootUtilities {
      */
     public static String sanitizeName(String name) {
 	char [] nameArray = name.toCharArray();
-	if (!Character.isJavaIdentifierStart(nameArray[0])) {
-	    nameArray[0] = '_';
-	} 
-	for(int i = 1; i < nameArray.length; i++) {
+       	for(int i = 0; i < nameArray.length; i++) {
 	    if (!Character.isJavaIdentifierPart(nameArray[i])) {
 		nameArray[i] = '_';
 	    }
 	}
-	return new String(nameArray);
+      	if (!Character.isJavaIdentifierStart(nameArray[0])) {
+            return "_" + new String(nameArray);
+	} else {
+            return new String(nameArray);
+        }
     }
 
     /** Get the method with the given name in the given class
