@@ -41,6 +41,7 @@ a descriptor.
   written work is not subject to copyright.  His contributions to 
   this work fall within the scope of 17 U.S.C. A7 105. <P>
 
+@version $Id$
 @version @(#)JavaTemplate.java	1.6	02/14/97
 @see classname
 @see full-classname */
