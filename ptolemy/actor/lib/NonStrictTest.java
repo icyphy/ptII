@@ -72,12 +72,11 @@ be, within the specified <i>tolerance</i> (which defaults to
 10<sup>-9</sup>.  The input data type is undeclared, so it can
 resolve to anything.
 
-@see Test
 @author Paul Whitaker, Edward A. Lee
 @version $Id$
 */
 
-public class NonStrictTest extends Sink {
+public class NonStrictTest extends Test {
 
     /** Construct an actor with an input multiport.
      *  @param container The container.
@@ -90,30 +89,7 @@ public class NonStrictTest extends Sink {
     public NonStrictTest(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        Token[] defaultEntries = new Token[1];
-        defaultEntries[0] = new BooleanToken(true);
-        ArrayToken defaultArray = new ArrayToken(defaultEntries);
-        correctValues = new Parameter(this, "correctValues", defaultArray);
-	correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-        tolerance = new Parameter(this, "tolerance", new DoubleToken(1e-9));
-        tolerance.setTypeEquals(BaseType.DOUBLE);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** A matrix specifying what the input should be.
-     *  This defaults to a one-by-one array containing a boolean true.
-     */
-    public Parameter correctValues;
-
-    /** A double specifying how close the input has to be to the value
-     *  given by <i>correctValues</i>.  This is a double, with default
-     *  value 10<sup>-9</sup>.
-     */
-    public Parameter tolerance;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -124,7 +100,6 @@ public class NonStrictTest extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iteration = 0;
-        _count = 0;
     }
 
     /** Read one token from each input channel and compare against
@@ -132,7 +107,7 @@ public class NonStrictTest extends Sink {
      *  is larger than the length of <i>correctValues</i>, then return
      *  immediately, declaring success on the test.
      *  @exception IllegalActionException If an input does not match
-     *   the required value.
+     *   the required value or if the width is not 1.
      */
     public boolean postfire() throws IllegalActionException {
         if (input.getWidth() != 1) {
@@ -160,57 +135,8 @@ public class NonStrictTest extends Sink {
         if (input.hasToken(0)) {
             Token token = input.get(0);
             _count++;
-            if (token instanceof DoubleToken) {
-                // Check using tolerance.
-                try {
-                    double correct =
-                        ((DoubleToken)referenceToken).doubleValue();
-                    double seen = ((DoubleToken)token).doubleValue();
-                    double ok
-                        = ((DoubleToken)(tolerance.getToken())).doubleValue();
-                    if (Math.abs(correct - seen) > ok) {
-                        throw new IllegalActionException(this,
-                                "Test fails in iteration " + _iteration + ".\n"
-                                + "Value was: " + seen
-                                + ". Should have been: " + correct);
-                    }
-                } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration " + _iteration + ".\n"
-                            + "Input is a double but correct value is not: "
-                            + referenceToken.toString());
-                }
-            } else if (token instanceof ComplexToken) {
-                // Check using tolerance.
-                try {
-                    Complex correct
-                        = ((ComplexToken)referenceToken).complexValue();
-                    Complex seen
-                        = ((ComplexToken)token).complexValue();
-                    double ok
-                        = ((DoubleToken)(tolerance.getToken())).doubleValue();
-                    if (Math.abs(correct.real - seen.real) > ok ||
-                            Math.abs(correct.imag - seen.imag) > ok) {
-                        throw new IllegalActionException(this,
-                                "Test fails in iteration " + _iteration + ".\n"
-                                + "Value was: " + seen
-                                + ". Should have been: " + correct);
-                    }
-                } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration " + _iteration + ".\n"
-                            + "Input is complex but correct value is not: "
-                            + referenceToken.toString());
-                }
-            } else {
-                BooleanToken result = token.isEqualTo(referenceToken);
-                if (!result.booleanValue()) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration " + _iteration + ".\n"
-                            + "Value was: " + token
-                            + ". Should have been: " + referenceToken);
-                }
-            }
+            _checkTokenAgainstReference(token, referenceToken,
+                    tolerance, _iteration);
         }
         _iteration++;
         return true;
@@ -219,13 +145,6 @@ public class NonStrictTest extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Array of number of tokens received.
-    private int _count;
-
     // Count of iterations.
     private int _iteration;
 }
-
-
-
-
