@@ -76,7 +76,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
         // System.out.println("filterAttributeValue: " + container + "\t"
-        //        +  attributeName + "\t" + attributeValue);
+        //   +  attributeName + "\t" + attributeValue);
 
         if (attributeValue == null) {
             return null;
