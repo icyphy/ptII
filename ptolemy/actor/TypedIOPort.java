@@ -752,22 +752,23 @@ public class TypedIOPort extends IOPort implements Typeable {
 
         /** Set the type of this port.
          *  @parameter e A Type.
-         *  @exception IllegalActionException If the argument is not a
-         *   substitution instance of the type of this port.
+         *  @exception IllegalActionException If the new type violates
+         *   the declared type of this port.
          */
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
                 throw new IllegalActionException(
-                        "TypedIOPort$TypeTerm.setValue: The type is not " +
-                        "settable.");
+                        "TypedIOPort$TypeTerm.setValue: The type is not "
+                        + "settable.");
             }
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
                 throw new IllegalActionException(
-                        "TypedIOPort$TypeTerm.setValue: The new type is not" +
-                        " a substitution instance of the type of this port. " +
-                        "port: " + _port.getFullName() + " portType: " +
-                        getValue() + " newType: " + e.toString());
+                        "TypedIOPort$TypeTerm.setValue: The new type "
+			+ "violates the declared type of this port. "
+                        + "Port: " + _port.getFullName()
+			+ ", Port Type: " + getValue()
+			+ ", newType: " + e.toString());
             }
 
             Type oldType = _resolvedType;

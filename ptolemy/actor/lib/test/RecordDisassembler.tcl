@@ -84,7 +84,7 @@ test RecordDisassembler-2.1 {run with one input port, has label error} {
     set m [$e0 getManager]
     catch {$m execute} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: InequalitySolver.solve: Can't update variable. TypedIOPort$TypeTerm.setValue: The new type is not a substitution instance of the type of this port. port: .top.disassembler.input portType: {disRampOut:NaT} newType: {}}}
+} {{ptolemy.kernel.util.InvalidStateException: InequalitySolver.solve: Can't update variable. TypedIOPort$TypeTerm.setValue: The new type violates the declared type of this port. Port: .top.disassembler.input, Port Type: {disRampOut:NaT}, newType: {}}}
 
 test RecordDisassembler-2.2 {correct above label error} {
     $disRampOut setName fromRamp
