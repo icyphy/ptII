@@ -111,7 +111,8 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+# Use subinstall here so that we create tutorial/doc-file
+install: jclass subinstall jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
