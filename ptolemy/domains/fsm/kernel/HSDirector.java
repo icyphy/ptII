@@ -223,13 +223,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 return;
             }
 
-            // Check whether a preemptive transition is enabled.
+            // Check whether there exits some enabled preemptive transition.
             // If so, we need to skip the firing of refinements and return
             // immediately.
             List enabledPreemptiveTransitions = 
                 _ctrl._checkTransition(_currentState.preemptiveTransitionList());
 
-            if (enabledPreemptiveTransitions.size() != 0) {
+            if (enabledPreemptiveTransitions.size() > 0) {
                 return;
             }
 
@@ -555,29 +555,29 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // The reason is that when refining step size, we want to find the
         // largest step size that satisfies all the step size constraints to
         // reduce the computation cost.
-        // Not all non-preemptive and preemptive transitions are checked below,
-        // because if a non-preemptive transition is enabled, the preemptive
-        // transitions never even get a chance to evaluate.
+        // All non-preemptive and preemptive transitions are checked below,
+        // because even if a preemptive transition is enabled, the non-preemptive
+        // transitions never even get a chance to be evaluated.
         try {
-            List enabledTransitions;
-
             // Check if there is any preemptive transition enabled.
-            enabledTransitions = _ctrl._checkTransition(_currentState
-                    .preemptiveTransitionList());
+            List preemptiveEnabledTransitions = 
+                _ctrl._checkTransition(
+                        _currentState.preemptiveTransitionList());
 
-            if (enabledTransitions.size() != 0) {
+            if (preemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
                     _debug("Find enabled preemptive transitions.");
                 }
-            } else {
-                // Check if there is any non-preemptive transition enabled.
-                enabledTransitions = _ctrl._checkTransition(_currentState
-                        .nonpreemptiveTransitionList());
+            } 
 
-                if (enabledTransitions.size() != 0) {
-                    if (_debugging && _verbose) {
-                        _debug("Find enabled non-preemptive transitions.");
-                    }
+            // Check if there is any non-preemptive transition enabled.
+            List nonpreemptiveEnabledTransitions = 
+                _ctrl._checkTransition(
+                        _currentState.nonpreemptiveTransitionList());
+            
+            if (nonpreemptiveEnabledTransitions.size() != 0) {
+                if (_debugging && _verbose) {
+                    _debug("Find enabled non-preemptive transitions.");
                 }
             }
 
@@ -609,7 +609,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // If there is no transition enabled, the last step size is
             // accurate for transitions. The states will be committed at
             // the postfire method.
-            if ((enabledTransitions.size() == 0) 
+            if ((preemptiveEnabledTransitions.size() == 0)
+                    && (nonpreemptiveEnabledTransitions.size() == 0)
                     && (preemptiveTrWithEvent == null)
                     && (nonPreemptiveTrWithEvent == null)) {
                 _transitionHasEvent = false;
@@ -622,7 +623,21 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // their status for step size refinement.
                 _distanceToBoundary = Double.MIN_VALUE;
 
-                Iterator iterator = enabledTransitions.iterator();
+                Iterator iterator = preemptiveEnabledTransitions.iterator();
+                while (iterator.hasNext()) {
+                    Transition transition = (Transition)iterator.next();
+                    RelationList relationList = transition.getRelationList();
+
+                    double distanceToBoundary = relationList.maximumDifference();
+                    if (distanceToBoundary > _distanceToBoundary) {
+                        _distanceToBoundary = distanceToBoundary;
+                        _lastDistanceToBoundary = relationList
+                            .getPreviousMaximumDistance();
+                        enabledTransition = transition;
+                    }
+                }
+
+                iterator = nonpreemptiveEnabledTransitions.iterator();
                 while (iterator.hasNext()) {
                     Transition transition = (Transition)iterator.next();
                     RelationList relationList = transition.getRelationList();
@@ -683,8 +698,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
             return result && _outputAccurate;
         } catch (Exception e) {
-            // Can not request refirng
-            // or multiple enabled transitions are found.
+            // Can not evaluate guard expression.
             throw new InternalErrorException(e);
         }
     }

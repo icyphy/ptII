@@ -881,59 +881,39 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Return a list of enabled transitions among the given list of 
-     *  transitions. In case there are multiple enabled transitions, if any of 
-     *  them is not nondeterministic, throw an exception. 
-     *  <p> See {@link Transition} for explanation of "nondeterministic".
+     *  transitions. 
      *  @param transitionList A list of transitions.
      *  @return A list of enabled transition.
-     *  @exception IllegalActionException If there is more than one
-     *   transition enabled and they are not all nondeterministic.
+     *  @exception IllegalActionException If the guard expression of any
+     *  transition can not be evaluated.
      */
     protected List _checkTransition(List transitionList)
             throws IllegalActionException {
-        Transition result = null;
         LinkedList enabledTransitions = new LinkedList();
-        boolean firstEnabledTransitionIsNondeterministic = false;
         
         Iterator transitionRelations = transitionList.iterator();
-
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
-
             if (!transition.isEnabled()) {
                 continue;
             }
-
-            if (enabledTransitions.size() == 0) {
-                // the first found enabled transition.
-                firstEnabledTransitionIsNondeterministic = 
-                    transition.isNondeterministic();
-                result = transition;
-            } else {
-                // not the first found enabled transition.
-                if (!firstEnabledTransitionIsNondeterministic || 
-                        !transition.isNondeterministic()) {
-                    throw new MultipleEnabledTransitionsException(
-                            currentState(),
-                            "Multiple enabled transitions: " 
-                            + result.getName()
-                            + " and " + transition.getName() + ".");
-                }
-            }
             enabledTransitions.add(transition);
         }
-
         // NOTE: It is the _chooseTransition method that decides which 
         // enabled transition is actually taken. This method simply returns
         // all enabled transitions.
         return enabledTransitions;
     }
 
-    /** Return an enabled transition among the given list of transitions.
-     *  If there are multiple enabled transitions, randomly choose one.  
-     *  Execute the choice actions contained by the transition.
-     *  Throw an exception if there is more than one transition enabled and 
-     *  not all of them are nondeterministic.
+    /** Return an enabled transition among the given list of transitions. 
+     *  <p>
+     *  If there is only transition enabled, return that transition.
+     *  In case there are multiple enabled transitions, if any of 
+     *  them is not nondeterministic, throw an exception. See {@link Transition} 
+     *  for the explanation of "nondeterministic". Otherwise, randomly choose
+     *  one from the enabled transitions and return it. 
+     *  <p> 
+     *  Execute the choice actions contained by the returned transition.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
@@ -942,7 +922,23 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     protected Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
         Transition result = null;
+        
         List enabledTransitions = _checkTransition(transitionList);
+        // Ensure that if there are multiple enabled transitions, all of them
+        // must be nondeterministic.
+        if (enabledTransitions.size() > 1) {
+            Iterator transitions = enabledTransitions.iterator();
+            while (transitions.hasNext()) {
+                Transition enabledTransition = (Transition)transitions.next();
+                if (!enabledTransition.isNondeterministic()) {
+                    throw new MultipleEnabledTransitionsException(
+                            currentState(),
+                            "Multiple enabled transitions found but " 
+                            + enabledTransition.getName()
+                            + " is deterministic.");
+                }
+            }
+        }
         
         // Randomly choose one transition from the list of the 
         // enabled trnasitions.
@@ -953,7 +949,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // always) is less than the maximum value of integer. We can safely 
             // do the cast from long to int in the following statement.
             int randomChoice = (int)Math.floor(Math.random()*length);
-            // There is tiny chance that randomChoice equals length. 
+            // There is a tiny chance that randomChoice equals length. 
             // When this happens, we deduct 1 from the randomChoice. 
             if (randomChoice == length) {
                 randomChoice--;

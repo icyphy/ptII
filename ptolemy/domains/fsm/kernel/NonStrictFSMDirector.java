@@ -136,6 +136,23 @@ public class NonStrictFSMDirector extends FSMDirector {
         // Choose a nonpreemptive transition.
         List enabledTransitions = controller._checkTransition(currentState
                 .preemptiveTransitionList());
+        
+        // Ensure that if there are multiple enabled transitions, all of them
+        // must be nondeterministic.
+        if (enabledTransitions.size() > 1) {
+            Iterator transitions = enabledTransitions.iterator();
+            while (transitions.hasNext()) {
+                Transition enabledTransition = (Transition)transitions.next();
+                if (!enabledTransition.isNondeterministic()) {
+                    throw new MultipleEnabledTransitionsException(
+                            controller.currentState(),
+                            "Multiple enabled transitions found but " 
+                            + enabledTransition.getName()
+                            + " is deterministic.");
+                }
+            }
+        }
+
         Transition enabledTransition = null;
         
         // Randomly choose one transition from the list of the 
@@ -201,6 +218,22 @@ public class NonStrictFSMDirector extends FSMDirector {
             // Choose a nonpreemptive transition.
             enabledTransitions = controller._checkTransition(currentState
                     .nonpreemptiveTransitionList());
+
+            // Ensure that if there are multiple enabled transitions, all of them
+            // must be nondeterministic.
+            if (enabledTransitions.size() > 1) {
+                Iterator transitions = enabledTransitions.iterator();
+                while (transitions.hasNext()) {
+                    Transition transition = (Transition)transitions.next();
+                    if (!enabledTransition.isNondeterministic()) {
+                        throw new MultipleEnabledTransitionsException(
+                                controller.currentState(),
+                                "Multiple enabled transitions found but " 
+                                + transition.getName()
+                                + " is deterministic.");
+                    }
+                }
+            }
 
             // Randomly choose one transition from the list of the 
             // enabled trnasitions.
