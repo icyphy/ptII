@@ -1053,6 +1053,30 @@ test Function-repeat {Test repeat} {
         } {{{1, 1}} {{1.0, 1.0}} {{0.0 + 1.0i, 0.0 + 1.0i}} {{1L, 1L}} {{[1], [1]}} {{{1}, {1}}}}
 
 ####################################################################
+# sort
+
+test Function-sort {Test sort} {
+    list [evaluate {sort({2, 1, 3})}] \
+    	 [evaluate {sort({"b", "xx", "aaa"})}] \
+    } {{{1, 2, 3}} {{"aaa", "b", "xx"}}}
+
+####################################################################
+# sortAscending
+
+test Function-sortAscending {Test sortAscending} {
+    list [evaluate {sortAscending({2, 1, 3})}] \
+    	 [evaluate {sortAscending({"b", "xx", "aaa"})}] \
+    } {{{1, 2, 3}} {{"aaa", "b", "xx"}}}
+
+####################################################################
+# sortDescending
+
+test Function-sortDescending {Test sortDescending} {
+    list [evaluate {sortDescending({2, 1, 3})}] \
+    	 [evaluate {sortDescending({"b", "xx", "aaa"})}] \
+    } {{{3, 2, 1}} {{"xx", "b", "aaa"}}}
+
+####################################################################
 # sum
 
 test Function-sum {Test sum} {
@@ -1364,7 +1388,6 @@ test Function-iterate {Test iterate} {
 test Function-map {Test map} {
     list [evaluate {map(function(x:int) x+3, {0, 2, 3})}]
 } {{{3, 5, 6}}}
-
 
 ####################################################################
 ####################################################################
