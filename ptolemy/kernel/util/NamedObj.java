@@ -68,8 +68,8 @@ public class NamedObj {
      *  If the object has no container,
      *  the full name is the object name preceded by a dot.
      *
-     *  If the object has a container,
-     *  the full name is the name of the container
+     *  If the object has a container, 
+     *  the full name is the full name of the container
      *  followed by a dot and the object name.
      */
     public String getFullName() {
@@ -116,7 +116,7 @@ public class NamedObj {
      * of inclusion.
      * @return Return the new cntVariable.
      */
-    protected int createNewName_(String newName, int countVariable) {
+    protected int _createNewName(String newName, int countVariable) {
         countVariable++;
         newName = newName + "#" + countVariable;
         return countVariable;
@@ -126,10 +126,8 @@ public class NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
-
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
-
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
