@@ -40,12 +40,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	StickyMasses
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-JSRCS = \
-	StickyMasses.java
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
@@ -65,8 +60,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'StickyMassesApplet$$ParameterListener.class'
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
