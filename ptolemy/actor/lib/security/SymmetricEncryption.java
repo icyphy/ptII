@@ -241,11 +241,11 @@ public class SymmetricEncryption extends CipherActor {
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
         //      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         _byteArrayOutputStream.reset();
-        //        bais = new ByteArrayInputStream(initialData);
+        //        byteArrayInputStream = new ByteArrayInputStream(initialData);
         //        int length = 0;
         //        byte [] buffer = new byte [BUFFER_SIZE];
         //        try{
-        //            while ((length = bais.read(buffer)) != -1) {
+        //            while ((length = byteArrayInputStream.read(buffer)) != -1) {
         //                _cos.write(buffer, 0, length);
         //            }
         //            _cos.flush();
@@ -296,5 +296,5 @@ public class SymmetricEncryption extends CipherActor {
 
     private ByteArrayOutputStream _byteArrayOutputStream;
 
-    private ByteArrayInputStream bais;
+    private ByteArrayInputStream byteArrayInputStream;
 }

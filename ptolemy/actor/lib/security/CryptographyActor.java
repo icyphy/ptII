@@ -218,11 +218,11 @@ public class CryptographyActor extends TypedAtomicActor {
      */
     protected Key _bytesToKey(byte keyBytes[])throws IllegalActionException{
         try{
-            ByteArrayInputStream bais;
+            ByteArrayInputStream byteArrayInputStream;
             ObjectInputStream ois;
             Key key;
-            bais = new ByteArrayInputStream(keyBytes);
-            ois = new ObjectInputStream(bais);
+            byteArrayInputStream = new ByteArrayInputStream(keyBytes);
+            ois = new ObjectInputStream(byteArrayInputStream);
             key =(Key)ois.readObject();
             return key;
         } catch (IOException e){
