@@ -25,6 +25,7 @@
 */
 package diva.graph.modular;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import diva.graph.AbstractGraphModel;
 
@@ -99,11 +100,13 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * null if there is no parent.
      */
     public Object getParent(Object node) {
-        if (node == _root) {
-            return null;
-        } else {
-            return getNodeModel(node).getParent(node);
+        if (node != _root) {
+            NodeModel model = getNodeModel(node);
+            if (model != null) {
+                return model.getParent(node);
+            }
         }
+        return null;
     }
 
     /**
@@ -179,7 +182,11 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * returned.
      */
     public Iterator inEdges(Object node) {
-        return getNodeModel(node).inEdges(node);
+        NodeModel model = getNodeModel(node);
+        if (model != null) {
+            return model.inEdges(node);
+        }
+        return (new LinkedList()).iterator();
     }
 
     /**
@@ -189,7 +196,11 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * returned.
      */
     public Iterator outEdges(Object node) {
-        return getNodeModel(node).outEdges(node);
+        NodeModel model = getNodeModel(node);
+        if (model != null) {
+            return model.outEdges(node);
+        }
+        return (new LinkedList()).iterator();
     }
 
     /**
