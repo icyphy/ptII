@@ -95,6 +95,23 @@ public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Convert the argument from a fileName to a URL that begins with "file:".
+     *  @param fileName The name of the file to be converted.
+     *  @return the URL that is equivalent to the file
+     */
+    public static String asURL(String fileName) {
+        File file = new File(fileName);
+        try {
+            URL url = file.toURL();
+            return url.toString();
+        } catch (java.net.MalformedURLException malformed) {
+            throw new RuntimeException(
+                    "could not convert '"
+                    + file + "' to a URL",
+                    malformed);
+        }
+    }
+
     /** Convert the second token to the type of the first.
      *  @exception IllegalActionException If the token cannot be converted.
      */
