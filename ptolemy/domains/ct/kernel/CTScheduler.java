@@ -31,6 +31,7 @@ package ptolemy.domains.ct.kernel;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
+import ptolemy.actor.sched.*;
 import ptolemy.graph.*;
 import java.util.*;
 import collections.LinkedList;
