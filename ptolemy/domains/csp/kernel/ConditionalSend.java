@@ -222,42 +222,42 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         }
     }
     
-    ////////////////////////////////////////////////////////////////////////
-            ////                       protected methods                        ////
+    /////////////////////////////////////////////////////////////////////
+    ////                         protected methods                   ////
 
-            /**
-             * @param parent The csp actor that contains this conditional
-             *  receive.
-             * @param rcvr The CSPReceiver through which a rendezvous attempt is
-             *  taking place.
-             */
-            protected boolean arriveAfterCondRec(CSPReceiver rcvr, CSPActor parent ) 
+    /**
+     * @param parent The csp actor that contains this conditional
+     *  receive.
+     * @param rcvr The CSPReceiver through which a rendezvous attempt is
+     *  taking place.
+     */
+    protected boolean arriveAfterCondRec(CSPReceiver rcvr, CSPActor parent ) 
                     throws InterruptedException {
-                // CASE 2: a conditionalReceive is already waiting. 
-                // As this conditionalSend arrived second, it has 
-                // to check if both branches are "first" and if 
-                // so perform transfer & reset state of the receiver. 
-                // A ConditionalReceive may disappear, 
-                // so if fail to rendezvous, go back to top 
-                // of main loop.
-                if (parent._isBranchFirst(getID())) {
-                    // send side ok, need to check that receive
-                    // side also ok
-                    CSPActor side2 = rcvr._getOtherParent();
-                    if (side2._isBranchFirst(getID())) {
-                        rcvr.put(getToken());
-                        rcvr._setConditionalReceive(false, null);
-                        parent._branchSucceeded(getID());
-                        return false;
-                    } else {
-                        // receive side not first, so release "first"
-                        parent._releaseFirst(getID());
-                        rcvr.notifyAll();
-                    }
-                }
-                _registerBlockAndWait();
-                return true;
+        // CASE 2: a conditionalReceive is already waiting. 
+        // As this conditionalSend arrived second, it has 
+        // to check if both branches are "first" and if 
+        // so perform transfer & reset state of the receiver. 
+        // A ConditionalReceive may disappear, 
+        // so if fail to rendezvous, go back to top 
+        // of main loop.
+        if (parent._isBranchFirst(getID())) {
+            // send side ok, need to check that receive
+            // side also ok
+            CSPActor side2 = rcvr._getOtherParent();
+            if (side2._isBranchFirst(getID())) {
+                rcvr.put(getToken());
+                rcvr._setConditionalReceive(false, null);
+                parent._branchSucceeded(getID());
+                return false;
+            } else {
+                // receive side not first, so release "first"
+                parent._releaseFirst(getID());
+                rcvr.notifyAll();
             }
+        }
+        _registerBlockAndWait();
+        return true;
+    }
     
     /**
      * @param parent The csp actor that contains this conditional
