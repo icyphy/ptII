@@ -80,7 +80,7 @@ demo:
 	CLASSPATH="$(CLASSPATH)" java ptolemy.kvm.kernel.util.test.TestNamedObj
 
 TestNamedObjSpotlet.prc: TestNamedObjSpotlet.class
-	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath "$(CLASSPATH)" -v -skiplist java.lang:com.sun.kjava ptolemy.kvm.kernel.util.test.TestNamedObjSpotlet
+	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath "$(CLASSPATH)" -icon $(ROOT)/doc/img/ptolemy32bw.bin -smallicon $(ROOT)/doc/img/ptolemy32bw.bin -v -skiplist java.lang:com.sun.kjava ptolemy.kvm.kernel.util.test.TestNamedObjSpotlet
 
 depend:
 	@echo "no dependencies in this directory"
