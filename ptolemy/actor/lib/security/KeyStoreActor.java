@@ -348,15 +348,19 @@ public class KeyStoreActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected members                   ////
+
+    /** Set to true if fileOrURL has changed and the keyStore needs to be
+     * read in again and the aliases updated. */
+    protected boolean _loadKeyStoreNeeded = true;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     // Set to true if either the keyStoreType or provider attribute changed
     // and _keyStore needs to be updated.
     private boolean _initializeKeyStoreNeeded = true;
-
-    // Set to true if fileOrURL has changed and the keyStore needs to be
-    // read in again and the aliases updated.
-    private boolean _loadKeyStoreNeeded = true;
 
     // The URL of the file.
     private URL _url;
