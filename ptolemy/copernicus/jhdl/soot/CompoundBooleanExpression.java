@@ -68,10 +68,10 @@ import soot.UnitPrinter;
  *
  * @author Mike Wirthlin
  * @version $Id$
- * @since Ptolemy II 2.0 */
+ * @since Ptolemy II 2.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
-
+*/
 public abstract class CompoundBooleanExpression implements Value, ConditionExpr {
 
     public abstract CompoundBooleanExpression invert() throws IllegalActionException;
