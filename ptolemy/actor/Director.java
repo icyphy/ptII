@@ -812,7 +812,7 @@ public class Director extends Attribute implements Executable {
 
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
-	_setDefaultIcon("<svg>\n" +
+	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"10\" "
                 + "width=\"100\" height=\"30\" "
                 + "style=\"fill:green\"/>\n" +
