@@ -199,55 +199,56 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
         if(value != null || functionName == null) {
             // The value of the first child should be either a FunctionToken,
-			// an ArrayToken, or a MatrixToken.
+            // an ArrayToken, or a MatrixToken.
             ptolemy.data.Token result;
             _evaluateAllChildren(node);
 			
-			value = node.jjtGetChild(0).getToken();
-
-			int numChildren = node.jjtGetNumChildren();
-			if(value instanceof ArrayToken) {
-				if(numChildren == 2) {
-					result = _evaluateArrayIndex(node, value,
-                    node.jjtGetChild(1).getToken());
-				} else {
-					//FIXME need better error message when the first child
-					// is, say, an array expression
-					throw new IllegalActionException("Wrong number of indices "
-							+ "when referencing " + node.getFunctionName());
-				}
+            value = node.jjtGetChild(0).getToken();
+            
+            int numChildren = node.jjtGetNumChildren();
+            if(value instanceof ArrayToken) {
+                if(numChildren == 2) {
+                    result = _evaluateArrayIndex(node, value,
+                            node.jjtGetChild(1).getToken());
+                } else {
+                    //FIXME need better error message when the first child
+                    // is, say, an array expression
+                    throw new IllegalActionException("Wrong number of indices "
+                            + "when referencing " + node.getFunctionName());
+                }
             } else if(value instanceof MatrixToken) {
-				if (numChildren == 3) {
-					result = _evaluateMatrixIndex(node, value,
-                        	node.jjtGetChild(1).getToken(),
-							node.jjtGetChild(2).getToken());
-				} else {
-					//FIXME need better error message when the first child
-					// is, say, a matrix expression
-					throw new IllegalActionException("Wrong number of indices "
-							+ "when referencing " + node.getFunctionName());
-				}
-			} else if(value instanceof FunctionToken) {
-				FunctionToken function = (FunctionToken)value;
-				// check number of children against number of arguments of
-				// function
-				if (function.getNumberOfArguments() != numChildren - 1) {
-					throw new IllegalActionException("Wrong number of "
-							+ "arguments when applying function "
-							+ value.toString());
-				}
-				// apply the function token to the arguments
-				ArrayList argList = new ArrayList(numChildren - 1);
-				for(int i = 0; i < numChildren - 1; ++i) {
-					argList.add(i, node.jjtGetChild(i + 1).getToken());
-				}
-				result = function.apply(argList);
-			} else {
-				// the value cannot be indexed or applied
-				// throw exception
-				throw new IllegalActionException("Cannot index or apply arguments to "
-						+ value.toString());
-			}
+                if (numChildren == 3) {
+                    result = _evaluateMatrixIndex(node, value,
+                            node.jjtGetChild(1).getToken(),
+                            node.jjtGetChild(2).getToken());
+                } else {
+                    //FIXME need better error message when the first child
+                    // is, say, a matrix expression
+                    throw new IllegalActionException("Wrong number of indices "
+                            + "when referencing " + node.getFunctionName());
+                }
+            } else if(value instanceof FunctionToken) {
+                FunctionToken function = (FunctionToken)value;
+                // check number of children against number of arguments of
+                // function
+                if (function.getNumberOfArguments() != numChildren - 1) {
+                    throw new IllegalActionException("Wrong number of "
+                            + "arguments when applying function "
+                            + value.toString());
+                }
+                // apply the function token to the arguments
+                ArrayList argList = new ArrayList(numChildren - 1);
+                for(int i = 0; i < numChildren - 1; ++i) {
+                    argList.add(i, node.jjtGetChild(i + 1).getToken());
+                }
+                result = function.apply(argList);
+            } else {
+                // the value cannot be indexed or applied
+                // throw exception
+                throw new IllegalActionException(
+                        "Cannot index or apply arguments to "
+                        + value.toString());
+            }
             node.setToken(result);
             return;
         }
@@ -364,7 +365,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 	    }
         }
 
-		// the first child contains the function name as an id
+        // the first child contains the function name as an id
         int argCount = node.jjtGetNumChildren() - 1;
 
         // If not a special function, then reflect the name of the function.
@@ -385,37 +386,37 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         node.setToken(result);
     }
 	
-	public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-			throws IllegalActionException {
-		// collect all free variables in the function definition
-		ParseTreeFreeVariableCollector collector =
-				new ParseTreeFreeVariableCollector();
-		Set freeVariableNames = collector.collectFreeVariables(node);
-		// construct a NamedConstantsScope that maps the free variables to
-		// their current value in the scope
-		Map map = new HashMap();
-		Iterator variableNameIterator = freeVariableNames.iterator();
-		while (variableNameIterator.hasNext()) {
-			String name = (String)variableNameIterator.next();
-			if(_scope != null) {
-				ptolemy.data.Token value = _scope.get(name);
-				if(value != null) {
-					map.put(name, value);
-					continue;
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+            throws IllegalActionException {
+        // collect all free variables in the function definition
+        ParseTreeFreeVariableCollector collector =
+            new ParseTreeFreeVariableCollector();
+        Set freeVariableNames = collector.collectFreeVariables(node);
+        // construct a NamedConstantsScope that maps the free variables to
+        // their current value in the scope
+        Map map = new HashMap();
+        Iterator variableNameIterator = freeVariableNames.iterator();
+        while (variableNameIterator.hasNext()) {
+            String name = (String)variableNameIterator.next();
+            if(_scope != null) {
+                ptolemy.data.Token value = _scope.get(name);
+                if(value != null) {
+                    map.put(name, value);
+                    continue;
                 }
-			}
-			throw new IllegalActionException(
-                	"The ID " + name + " is undefined.");
-		}
-		NamedConstantsScope constantsScope = new NamedConstantsScope(map);
-		ExpressionFunction definedFunction =
-				new ExpressionFunction(node.getArgumentNameList(),
-						(ASTPtRootNode)node.jjtGetChild(0), constantsScope);
-		FunctionToken result = new FunctionToken(definedFunction);
-		node.setToken(result);
-		return;
-	}
-
+            }
+            throw new IllegalActionException(
+                    "The ID " + name + " is undefined.");
+        }
+        NamedConstantsScope constantsScope = new NamedConstantsScope(map);
+        ExpressionFunction definedFunction =
+            new ExpressionFunction(node.getArgumentNameList(),
+                    (ASTPtRootNode)node.jjtGetChild(0), constantsScope);
+        FunctionToken result = new FunctionToken(definedFunction);
+        node.setToken(result);
+        return;
+    }
+    
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
