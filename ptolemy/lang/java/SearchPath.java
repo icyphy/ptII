@@ -35,8 +35,14 @@ package ptolemy.lang.java;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
+import java.util.Enumeration;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import ptolemy.lang.ApplicationUtility;
+import ptolemy.lang.StringManip;
 
 /** A vector containing paths to search for when resolving an import or
 package.
@@ -80,13 +86,16 @@ public class SearchPath extends Vector {
 
     /** Open the Java source file with the qualified class name. The name may
      *  either be qualified by the '.' character or by the value of
-     *  File.pathSeparatorChar. Try to open a skeleton version of the source
+     *  File.pathSeparatorChar. 
+     *  The syteTry to open a skeleton version of the source
      *  code before trying the ordinary version. Return an instance of File
      *  associated with the path of the source code. If the source code
      *  cannot be found, return null. This method simply calls
      *  openSource(target, true).
      */
     public File openSource(String target) {
+        // StaticResolutoin.resolveAName() and _requireClass() 
+        // call ClassDecl.loadSource(), which in turn call this method
         return openSource(target, true);
     }
 
@@ -105,6 +114,7 @@ public class SearchPath extends Vector {
 	// file extension. For example, "ptolemy.lang.java.SearchPath" is
 	// converted to "ptolemy/lang/java/SearchPath" under Unix
         String targetPath = target.replace('.', File.separatorChar);
+
 
         for (int i = 0; i < size(); i++) {
             String candidate = (String) get(i);
@@ -141,6 +151,108 @@ public class SearchPath extends Vector {
         return null;
     }
 
+    /** Return a Set that contains an entry for each class in the
+     * in the Ptolemy II core as listed in ptolemyCorePackages.
+     * The entry will be of the form ptolemy/kernel/util/NamedObj
+     */
+    public static Set ptolemyCoreClasses() {
+        // Create a HashSet with a size of 281
+        // The number of .class files in the Ptolemy core is 139
+        // Determine that the number of .class files in rt.jar with:
+        // find . -name "*.java" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v test | wc
+        // The Collections tutorial suggests a prime number slighly
+        // larger than twice the size of the Set.
+        Set classSet = new HashSet(281);
+
+        // As we find packages, we mark them as done in this array
+        // so as to avoid duplication
+        boolean [] foundPackages = new boolean [ptolemyCorePackages.length];
+
+        for (int i = 0; i < NAMED_PATH.size(); i++) {
+            String path = (String) NAMED_PATH.get(i);        
+            for(int p = 0; p < ptolemyCorePackages.length &&
+                    !foundPackages[p];
+                    p++) {
+                String dirName = path + ptolemyCorePackages[p];
+                File dir = new File(dirName);
+                if (dir.isDirectory()) {
+                    String[] nameList = dir.list();
+                    foundPackages[p] = true;
+                    for (int j = 0; j < nameList.length; j++) {
+                        String name = nameList[j];
+                        int length = name.length();
+                        String className = null;
+                            if ((length > 5) && 
+                                    name.substring(length - 5).
+                                    equals(".java")) {
+                                className = name.substring(0, length - 5);
+                            }
+                        classSet.add(ptolemyCorePackages[p] +
+                                className);
+                    }
+                }
+            }
+        }
+        // Check that we found all the packages.
+        for (int p = 0; p < ptolemyCorePackages.length; p++) {
+            if (!foundPackages[p]) {
+                throw new RuntimeException("SearchPath.ptolemyCoreClasses():" +
+                        " Could not find package " + ptolemyCorePackages[p] +
+                        " Searched in " + NAMED_PATH.toString());
+            }
+        }
+        return classSet;
+    }
+
+
+    /** Return a Set that contains an entry for each class in the
+     * system jar file. 
+     * Note that classes will have entries like java/lang/Object, they
+     * will not have extension like .class or .java
+     */
+    public static Set systemClasses() {
+        // Create a HashSet with a size of 10427.
+        // The number of .class files in rt.jar is 5213.
+        // Determine that the number of .class files in rt.jar with:
+        // jar -tvf rt.jar | grep '.class' | wc -l
+        // The Collections tutorial at
+        // http://www.javasoft.com/docs/books/tutorial/collections/implementations/general.html
+        // says:
+        // "If you accept the default load factor but you do want to
+        // specify an initial capacity, pick a number that's 
+        // about twice the size that you expect the Set to grow to."
+        // It also suggests selecting a prime number just larger.
+        // Primes can be found at
+        // http://www.utm.edu/research/primes/lists/small/10000.txt
+        Set classSet = new HashSet(10427); 
+
+        // Now read in the system jar file (jre/lib/rt.jar) and
+        // add each .class file to the set
+	File systemJarFile = _getSystemJar();
+	JarFile systemJar = null;
+	try {
+	    systemJar = new JarFile(systemJarFile);
+	} catch (IOException e) {
+	    throw new RuntimeException("Failed to read '" + systemJarFile +
+				       "': " + e);
+	}
+
+	for (Enumeration enumeration = systemJar.entries();
+	     enumeration.hasMoreElements();) {
+	    JarEntry jarEntry = (JarEntry)enumeration.nextElement();
+	    //System.out.println(jarEntry.getName());
+	    File jarFile = new File(jarEntry.getName());
+	    if (!jarEntry.isDirectory()) {
+                if (jarFile.getPath().endsWith(".class")) {
+		    // Strip off the .class
+                    classSet.add(StringManip.partBeforeLast(jarFile.getPath(),
+                            '.'));
+                }
+            }
+	}
+        return classSet;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -149,6 +261,29 @@ public class SearchPath extends Vector {
 
     public static final SearchPath UNNAMED_PATH =
 	new SearchPath(null, ".");
+
+    /** Set of Strings that name all class files in the system jar file.
+     */
+    public static Set systemClassSet = systemClasses();
+
+    /** Set of Strings that name the .java files in the Ptolemy II core
+     */
+    public static Set ptolemyClassSet = ptolemyCoreClasses();
+
+    /** Array of names of packages that are in the Ptolemy core.
+     * We don't parse java files in these packages, we use
+     * reflection instead.
+     */
+    public static final String [] ptolemyCorePackages = {
+	"ptolemy/actor/sched/",
+	"ptolemy/actor/util/",
+	"ptolemy/kernel/",
+	"ptolemy/kernel/util/",
+	"ptolemy/data/",
+	"ptolemy/data/type/",
+	"ptolemy/graph/",
+	"ptolemy/math/" 
+    };
 
 
     ///////////////////////////////////////////////////////////////////
@@ -166,16 +301,33 @@ public class SearchPath extends Vector {
             if (end == -1) {
                 path = paths.substring(begin);
                 if (path.length() > 0) {
+                    System.out.println("adding " + path + File.separatorChar);
 		    add(path + File.separatorChar);
                 }
             } else {
                 path = paths.substring(begin, end);
                 if (path.length() > 0) {
+                    System.out.println("adding " + path + File.separatorChar);
 		    add(path + File.separatorChar);
                 }
                 begin = end + 1;
             }
         } while (end > -1);
+    }
+
+    // Return the pathname to the system jar file, usually rt.jar.
+    private static File _getSystemJar() {
+	String systemJarPathName =
+	    new String(System.getProperty("java.home") + "/lib/rt.jar");
+	File systemJar = new File(systemJarPathName);
+
+	// This would be a good place to search in other places, perhaps
+        // by reading a property like ptolemy.system.jar
+	if ( ! systemJar.canRead()) {
+	    throw new RuntimeException("Can't read '" + systemJarPathName +
+				       "'");
+	}
+	return systemJar;
     }
 
     /* Try to open a file in directory, with a filename target
