@@ -81,13 +81,14 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 10
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
-	ptolemy/actor/parameters/demo/demo.jar \
 	ptolemy/domains/domains.jar \
-	ptolemy/domains/sdf/demo/demo.jar \
-	ptolemy/domains/sdf/doc/doc.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	$(DOC_CODEDOC_JAR)
+	ptolemy/domains/sdf/demo/demo.jar \
+	ptolemy/domains/sdf/doc/doc.jar \
+	ptolemy/actor/parameters/demo/demo.jar
+
 
 #######
 # DSP - The smallest runtime
@@ -116,10 +117,6 @@ DSP_JNLP_JARS =	\
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	doc/design/hyvisual.jar \
 	doc/codeDocHyVisual.jar \
-	ptolemy/domains/ct/ct.jar \
-	ptolemy/domains/fsm/fsm.jar \
-	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar \
 	ptolemy/hsif/hsif.jar \
 	ptolemy/hsif/demo/demo.jar
 
@@ -140,6 +137,10 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	doc/docConfig.jar \
 	lib/diva.jar \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/fsm/fsm.jar \
+	ptolemy/domains/sdf/lib/lib.jar \
+	ptolemy/domains/sdf/kernel/kernel.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
