@@ -117,7 +117,7 @@ depend:
 $(OPTIONAL_JSRCS): PtParser.java
 
 PtParser.java: PtParser.jj 
-	CLASSPATH="$(CLASSPATH") $(JAVACC) PtParser.jj
+	CLASSPATH="$(CLASSPATH)" $(JAVACC) PtParser.jj
 
 PtParser.jj: $(EXTRA_SRCS)
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
