@@ -62,7 +62,7 @@ public class NamedObj {
 
     /** Return the Entity object that contains this object.
      *  Return null if this object has no container. */	
-    public Entity getContainer() { return _container; }
+    public Entity getContainer() { return container_; }
 
     /** Return the object's full name.
      *  If the object has no container,
@@ -73,15 +73,15 @@ public class NamedObj {
      *  followed by a dot and the object name.
      */
     public String getFullName() {
-        if(_container == null) { return "." + _name; }
-        else { return _container.getFullName() + "." + _name; }
+        if(container_ == null) { return "." + name_; }
+        else { return container_.getFullName() + "." + name_; }
     }
 
     /** Get the name of the object. */	
-    public String getName() { return _name; }
+    public String getName() { return name_; }
 
     /** Specify the Entity object that contains this object. */	
-    public void setContainer(Entity container) { _container = container; }
+    public void setContainer(Entity container) { container_ = container; }
 
    /** Specify the name of the object.
     *  The name may not have an embedded dot. */
@@ -90,7 +90,7 @@ public class NamedObj {
 	  throw new IllegalArgumentException
 	    ("NamedObj name (" + name + ") has illegal embedded dot (.)");
 	}
-        _name = name;
+        name_ = name;
     }
 
     /** Return a description of the object.
@@ -134,6 +134,6 @@ public class NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-     private String _name;
-     private Entity _container;
+     private String name_;
+     private Entity container_;
 }
