@@ -46,8 +46,41 @@ set PI [java::field java.lang.Math PI]
 # set VERBOSE 1
 
 ####################################################################
+#### ExtendedMathApply
+# Apply mathop to a number of arguments, returning the results.
+#
+proc ExtendedMathApply {mathoperation expectedresults {testvalues {}}} {
+    set results {}
+    set operationresults {}
+    if {$testvalues == {} } {
+	set testvalues [list -1.01 -0.5 0 0.5 .99 1.2 \
+		[java::field java.lang.Math PI]]
+    }
+    foreach testvalue $testvalues expectedresult $expectedresults {
+	if [catch { set operationresult [java::call ptolemy.math.ExtendedMath \
+		$mathoperation $testvalue]} errMsg] {
+	    set diffresult $errMsg
+	} else {
+	    lappend operationresults $operationresult
+	    set diffresult [epsilonDiff $operationresult $expectedresult]
+	}
+	if {"$diffresult" != ""} {
+	    lappend results $diffresult
+	}
+    }
+
+    if {"$results" != ""} {
+	# If we got an error, include the results that was actually returned
+	set results "Result was:$operationresults\nErrors:$results"
+    }
+
+    return $results
+}
+
+####################################################################
 test ExtendedMath-1.1 {acosh} {
-    epsilonDiff [java::call ptolemy.math.ExtendedMath acosh 1.2] 0.622362503715
+    ExtendedMathApply acosh {0.622362503715 1.81152627246} \
+	    [list 1.2 [java::field java.lang.Math PI]]
 } {}
 
 ####################################################################
@@ -57,19 +90,21 @@ test ExtendedMath-1.2 {acosh} {
 } {{java.lang.IllegalArgumentException: ExtendedMath.acosh: Argument is required to be greater than 1.  Got 0.99}}
 
 ####################################################################
-test ExtendedMath-2.1 {asinh} {
-    epsilonDiff [java::call ptolemy.math.ExtendedMath asinh 1.2] 1.01597313418
+test ExtendedMath-2.0 {asinh} {
+    ExtendedMathApply asinh {-0.888427006734 -0.48121182506 0.0 0.48121182506 0.874284812187 1.01597313418 1.86229574331}
 } {}
 
 ####################################################################
-test ExtendedMath-2.2 {asinh} {
-    epsilonDiff [java::call ptolemy.math.ExtendedMath asinh .99] 0.874284812187
+test ExtendedMath-3.0 {cosh} {
+    ExtendedMathApply cosh {1.55490999729 1.12762596521 1.0 1.12762596521 1.53140558169 1.81065556732 11.5919532755}
 } {}
 
 ####################################################################
-test ExtendedMath-2.3 {asinh} {
-    epsilonDiff [java::call ptolemy.math.ExtendedMath asinh -0.5] -0.48121182506
+test ExtendedMath-4.0 {sinh} {
+    ExtendedMathApply sinh {-1.19069101772 -0.521095305494 0.0 0.521095305494 1.15982889066 1.50946135541 11.5487393573}
 } {}
 
-
-
+####################################################################
+test ExtendedMath-5.0 {sgn} {
+    ExtendedMathApply sgn {-1 -1 1 1 1 1 1}
+} {}
