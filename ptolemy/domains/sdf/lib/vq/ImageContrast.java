@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ImageContrast
 /**
-Change the constrast of an image.
+Change the contrast of an image.
 
 <p>If the input image has a lot of pixels with the same or similar color,
 This actor uses gray scale equalization to redistribute the value of each

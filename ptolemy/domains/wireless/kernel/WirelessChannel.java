@@ -48,7 +48,7 @@ tokens from the transmiter to receiver(s). This interface
 defines a set of methods for the wireless channel components.
 <p>
 The transmiter can call the channel's transmit() method to 
-deliver data to its correspoding receivers. It can specify
+deliver data to its corresponding receivers. It can specify
 the transmission properties by a record token including the
 transimission range, transmission power. The transmit 
 properties may be modified by the channel model or by some

@@ -79,7 +79,7 @@ only supports a small subset of SVG.
 public class XMLIcon extends DynamicEditorIcon implements ValueListener {
 
     /** Construct an icon in the specified workspace and name.
-     *  This constructor is typically used in conjuction with
+     *  This constructor is typically used in conjunction with
      *  setContainerToBe() and createFigure() to create an icon
      *  and generate a figure without having to have write access
      *  to the workspace.

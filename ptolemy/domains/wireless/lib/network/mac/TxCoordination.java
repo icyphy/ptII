@@ -61,7 +61,7 @@ message in the sequence, which is RTS, retransmitted data or data if RTS is not
 used. TXCoordination gets the channel status by sending a backoff signal with
 count 0 to the Backoff process in the Transmission block.If the channel turns
 to be busy, TXCoordination will send another backoff signal with count -1 to
-start the real backoff. If CTS or ACK is not received in time, the corrresponding
+start the real backoff. If CTS or ACK is not received in time, the correspondng
 RTS or data will neeed to be retransmitted. TXCoordination will increase the
 corresponding retry counters. The backoff window size is also exponentially
 increased Retransmission will not start until another backoff is completed to
