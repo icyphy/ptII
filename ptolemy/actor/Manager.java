@@ -271,15 +271,6 @@ public final class Manager extends NamedObj implements Runnable {
         
     }   
 
-
-    /** This method is deprecated, use the run() method instead for the same
-     *  exact result.
-     *  @deprecated Use run() method instead for the same exact result.
-     */
-    public void blockingGo() {
-        run();
-    }
-     
     /** Set a flag to request that the thread in which execution is running 
      *  complete by calling wrapup() and then terminating.   
      *  This thread is synchronized so that it runs atomically with respect to 
@@ -362,14 +353,6 @@ public final class Manager extends NamedObj implements Runnable {
         futureRunningThread.start();
     }
     
-    /** This method is deprecated, use the startRun() method instead for the
-     *  same exact result.
-     *  @deprecated Use startRun() method instead for the same exact result.
-     */
-    public synchronized void go() {
-        startRun();
-    }
-
     /** If an execution is currently running, then set a flag requesting that
      *  execution pause at the next available opportunity between toplevel 
      *  iterations.   When the pause flag is detected, the 
