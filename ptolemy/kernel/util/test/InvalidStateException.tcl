@@ -164,7 +164,8 @@ test InvalidStateException-8.1 {Create a InvalidStateException with a \
     $dir prepend $n1
     $dir prepend $n2
     $dir prepend $n3
-    set pe [java::new ptolemy.kernel.util.InvalidStateException \
+    set pe [java::new {ptolemy.kernel.util.InvalidStateException \
+	    java.util.Enumeration java.lang.String} \
 	    [$dir elements] \
 	    "Detail Message"]
     list [$pe getMessage]
