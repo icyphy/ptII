@@ -18,56 +18,63 @@ Quick Tour of What's New in Version 5.0
 <ul>
 
 <li> CT and DE work
+<i>FIXME: Need description</i>
 <pre>
-ptolemy/actor/TimedActor.java
-ptolemy/actor/TimedDirector.java
-ptolemy/actor/util/Time.java
-ptolemy/domains/ct/kernel/CTExecutionPhase.java
-ptolemy/domains/ct/kernel/CTGeneralDirector.java
-ptolemy/domains/ct/kernel/util/GeneralComparator.java
-ptolemy/domains/de/lib/NonInterruptibleTimer.java
-ptolemy/domains/de/lib/Register.java
-</pre>
-New CT and DE demos
+<li> <a href="../../../doc/codeDoc/ptolemy/actor/TimedActor.html">TimedActor</a>
+<li> <a href="../../../doc/codeDoc/ptolemy/actor/TimedDirector.html">TimedDirector</a>
+<li> <a href="../../../doc/codeDoc/ptolemy/actor/util/Time.html">Time</a>
+<li> <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/CTExecutionPhase.html">CTExecutionPhase</a>
+<li> <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/CTGeneralDirector.html">CTGeneralDirector</a>
+<li> <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/util/GeneralComparator.html">GeneralComparator</a>
+<li> <a href="../../../doc/codeDoc/ptolemy/domains/de/lib/NonInterruptibleTimer.html">NonInterruptibleTimer</a>
+<li> <a href="../../../doc/codeDoc/ptolemy/domains/de/lib/Register.html">Register</a>
+</ul>
+
+<li>New CT and DE demos
 <ul>
 <li> <a href="../../domains/ct/demo/ContinuousClock/ContinuousClock.xml">Continuous Clock</a>
 <li> <a href="../../domains/ct/demo/HierarchicalExecution/HierarchicalExecution.xml">Hierarchical Execution</a>
 <li> <a href="../../domains/ct/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">Level Crossing Detector Detects Glitches</a>
 <li> <a href="../../domains/ct/demo/V2V/V2V.xml">Vehicle 2 Vehicle</a>
 </ul>
-New Discrete Event demos
+
+<li>New Discrete Event demos
 <ul>
-<li><a href="../../domains/de/demo/AssemblyLine/AssemblyLine.xml">Assembly Line</a> 
-<li><a href="../../domains/de/demo/HierarchicalModel/HierarchicalModel.xml">Hierarchical Model</a> 
+ <li><a href="../../domains/de/demo/AssemblyLine/AssemblyLine.xml">Assembly Line</a> 
+ <li><a href="../../domains/de/demo/HierarchicalModel/HierarchicalModel.xml">Hierarchical Model</a> 
 </ul>
 
 
 <li> Dynamic Dataflow (ddf)
 <ul>
-<li><a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>
-<li><a href="../../domains/ddf/demo/Factorial/Factorial.xml">Factorial</a>
-<li><a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
-<li><a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>
-<li><a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>
-<li><a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>
-<li><a href="../../domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>
-<li><a href="../../domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">RijndaelEncryption</a>
+ <li><a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>
+ <li><a href="../../domains/ddf/demo/Factorial/Factorial.xml">Factorial</a>
+ <li><a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
+ <li><a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>
+ <li><a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>
+ <li><a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>
+ <li><a href="../../domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>
+ <li><a href="../../domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">RijndaelEncryption</a>
 </ul>
 
 <li> Heterochronous Dataflow
 <I>Need description</I>
 
-<li> java 1.5.0
-<li>New Parameters
-<pre>
-ptolemy/actor/parameters/DoubleRangeParameter.java
-ptolemy/actor/parameters/FilePortParameter.java
-</pre>
+<li> Ptolemy II can be compiled under Java 1.5.0_01.  Java 1.4.2_07
+is preferred though.
+
+<li>New Parameters 
+<ul>
+<li> <a href="../../../doc/codeDoc/ ptolemy/actor/parameters/DoubleRangeParameter.html">DoubleRangeParameter</a>
+ <li> <a href="../../../doc/codeDoc/ ptolemy/actor/parameters/FilePortParameter.html">FilePortParameter</a>
+</ul>
+
 <li>Fractional math
-<pre>
-ptolemy/math/FractionArrayMath.java
-ptolemy/math/FractionMatrixMath.java
-</pre>
+<ul>
+ <li> <a href="../../../doc/codeDoc/ ptolemy/math/FractionArrayMath.html">FractionArrayMath</a>
+ <li> <a href="../../../doc/codeDoc/ ptolemy/math/FractionMatrixMath.html">FractionMatrixMath</a>
+</ul>
+
 <li> Colt is an
 "Open Source Libraries for High Performance
 Scientific and Technical Computing in Java" from
@@ -75,47 +82,68 @@ Scientific and Technical Computing in Java" from
 David Bauer and Kostas Oikonomou from AT&amp;T Research implemented 
 a set of random number generators using Colt.
 
-<li> lib/comm actors
+<li> New Actors:
 <pre>
-ptolemy/actor/lib/comm/HuffmanBasic.java
-ptolemy/actor/lib/comm/HuffmanCoder.java
-ptolemy/actor/lib/comm/HuffmanDecoder.java
-ptolemy/actor/lib/comm/LempelZivCoder.java
-ptolemy/actor/lib/comm/LempelZivDecoder.java
+<li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/Sequence.html">Sequence</a>
 </pre>
+<li> lib/comm actors
+<ul>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanBasic.html">HuffmanBasic</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanCoder.html">HuffmanCoder</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanDecoder.html">HuffmanDecoder</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivCoder.html">LempelZivCoder</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivDecoder.html">LempelZivDecoder</a>
+</ul>
 
 <li> New Higher Order Components (hoc)
-<pre>
-ptolemy/actor/lib/hoc/ApplyFilterOverArray.java
-ptolemy/actor/lib/hoc/ApplyFunction.java
-ptolemy/actor/lib/hoc/ApplyFunctionOverSequence.java
-ptolemy/actor/lib/hoc/IterateOverArray.java
-</pre>
+<ul>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFilterOverArray.html">ApplyFilterOverArray</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunction.html">ApplyFunction</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunctionOverSequence.html">ApplyFunctionOverSequence</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/IterateOverArray.html">IterateOverArray</a>
+</ul>
 Hoc demos
 <ul>
 <li><a href="../../actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>
 </ul>
 
-<li> GR texture mapping?
+<li> Extensive revisions of GR
+<ul>
+ <li>transparency
+ <li>shininess
+ <li>colors use ColorAttribute
+ <li>more colors can be set
+ <li>settable resolution
+ <li>wireframe option for shapes
+ <li>flat facets option for shapes
+ <li>run-time changes of parameter values
+ <li>parameters in Text3D
+</ul>
 
-<li>Giotto demos?
+<li>Escher work
+<li>Giotto Codegen work
+<li>New Giotto demos?
 <pre>
 ptolemy/domains/giotto/demo/FireAtDE
 ptolemy/domains/giotto/demo/MultiMode
 </pre>
-<li> sr work
-<pre>
-ptolemy/domains/sr/lib/Current.java
-ptolemy/domains/sr/lib/Default.java
-ptolemy/domains/sr/lib/EnabledComposite.java
-ptolemy/domains/sr/lib/Pre.java
-ptolemy/domains/sr/lib/When.java
-</pre>
+
+<li> New actors in the Synchronous Reactive domain:
+<ul>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Current.html">Current</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Default.html">Default</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/EnabledComposite.html">EnabledComposite</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Pre.html">Pre</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/When.html">When</a>
+</ul>
 New sr demo
 <ul>
 <li><a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a> 
 </ul>
-<li>pn work? Edward's changes, new pn demo
+Fixed bug in SR where SROptimizedScheduler could not be
+used inside a composite actor.
+
+<li>New PN deno
 <ul>
 <li><a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">Nondeterministic Merge</a>
 </ul>
@@ -125,75 +153,33 @@ New sr demo
 <ul>
 <li> <a href="../../domains/wireless/demo/SmartParking/SmartParking.xml">SmartParking</a>
 </ul>
-
-
-<li> Merge these in
-<pre>
-Not in 4.0.1:
-
-New actors in SR domain:
-   - Pre
-   - Current
-   - Default
-   - EnabledComposite
-   - When
-
-New demos in SR:
-   - GuardedCount
-
-Fixed bug in SR where SROptimizedScheduler could not be
-used inside a composite actor.
-
-New capabilities:
-   - FilePortParameter
-   - DoubleRangeParameter
-
-New actors:
-   - Sequence
-
-Fixed a number of potential deadlock situations:
-   - deadlock while dragging actors during a run.
-   - deadlocks in PN when exceptions occur in the model.
-
-PN now has a NondeterministicMerge actor.
-
-Added external source (URL) option to the Instantiate Entity
+<li>Fixed a number of potential deadlock situations:
+<ul>
+ <li> deadlock while dragging actors during a run.
+ <li> deadlocks in PN when exceptions occur in the model.
+</ul>
+<li>Added external source (URL) option to the Instantiate Entity
 command in the Graph menu.
 
-Fixed "Restore Defaults" when actors and directors
+<li>Fixed "Restore Defaults" when actors and directors
 use the three argument constructor for parameters.
 
-DDF domain.
-
-Extensive revisions of GR:
-  - transparency
-  - shininess
-  - colors use ColorAttribute
-  - more colors can be set
-  - settable resolution
-  - wireframe option for shapes
-  - flat facets option for shapes
-  - run-time changes of parameter values
-  - parameters in Text3D
-  - option to set parameters at run time.
-
-Previously, if a class definition were to show the name
+<li>Previously, if a class definition were to show the name
 of ports, there was no way to turn this off (the attribute
 _showName) could not be removed. Now, marker attributes
 such as _showName are boolean valued parameters, so they
 can be turned off by overriding their value.
 
-Support changing the order of attributes, ports, etc., and
+<li>Support changing the order of attributes, ports, etc., and
 support moving objects towards the foreground or background
 in the user interface.
 
-Fixed long standing bug in copy where objects are represented
+<li>Fixed long standing bug in copy where objects are represented
 in the wrong order in the exported MoML.
 
-Fixed some subtle bugs in ModalModel, where changes to
+<li>Fixed some subtle bugs in ModalModel, where changes to
 input/output status and ordering of ports were not properly
 reflected in the mirror ports.
-</pre>
 
 <li> Other New java files
 <pre>
@@ -202,7 +188,6 @@ ptolemy/actor/TypeOpaqueCompositeActor.java
 ptolemy/actor/gui/CompositeActorSimpleApplication.java
 ptolemy/actor/gui/PasswordAttribute.java
 ptolemy/actor/gui/QueryUtilities.java
-ptolemy/actor/lib/Sequence.java
 ptolemy/actor/lib/UnaryMathFunction.java
 ptolemy/actor/util/DFUtilities.java
 ptolemy/caltrop/actors/AbstractCalInterpreter.java
@@ -212,8 +197,6 @@ ptolemy/domains/gr/lib/ViewScreen3D.java
 ptolemy/domains/pn/kernel/NondeterministicMerge.java
 ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.java
 ptolemy/kernel/util/Moveable.java
-ptolemy/math/FractionArrayMath.java
-ptolemy/math/FractionMatrixMath.java
 ptolemy/moml/filter/GRColorChanges.java
 ptolemy/vergil/kernel/attributes/AbstractTextAttribute.java
 ptolemy/vergil/kernel/attributes/AttributeExpressionAttribute.java
