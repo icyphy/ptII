@@ -163,7 +163,7 @@ public class MoMLApplet extends PtolemyApplet {
             URL xmlFile = new URL(docBase, modelURL);
             _toplevel = null;
             _manager = null;
-            NamedObj toplevel = parser.parse(docBase, xmlFile.openStream());
+            NamedObj toplevel = parser.parse(docBase, xmlFile);
             _workspace = toplevel.workspace();
             if (toplevel instanceof TypedCompositeActor) {
                 _toplevel = (TypedCompositeActor)toplevel;

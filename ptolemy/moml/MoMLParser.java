@@ -236,6 +236,48 @@ public class MoMLParser extends HandlerBase {
         throw new XmlException(message, _currentExternalEntity(), line, column);
     }
 
+    /** Parse the MoML file at the given URL, which may be a file
+     *  on the local file system, using the specified base
+     *  to expand any relative references within the MoML file.
+     *  That is, relative URLs are interpreted relative to the
+     *  first argument. For example, the base might be the document
+     *  base of an applet.  An applet might use
+     *  this method as follows:
+     *  <pre>
+     *     MoMLParser parser = new MoMLParser();
+     *     URL docBase = getDocumentBase();
+     *     URL xmlFile = new URL(docBase, modelURL);
+     *     NamedObj toplevel = parser.parse(docBase, xmlFile);
+     *  </pre>
+     *  If the first argument to parse() is null, then it is assumed that
+     *  all URLs in the MoML file are absolute.
+     *  <p>
+     *  This version of the parse() method records the URL from which
+     *  the file is read in the top-level entity that is created using
+     *  the Origin attribute.  FIXME: More information here.
+     *  <p>
+     *  A variety of exceptions might be thrown if the parsed
+     *  data does not represent a valid MoML file.
+     *  @param base The base URL for relative references, or null if
+     *   not known.
+     *  @param input The stream from which to read XML.
+     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @throws Exception If the parser fails.
+     */
+    public NamedObj parse(URL base, URL input)
+            throws Exception {
+System.out.println(input.toExternalForm());
+System.out.println("toString(): " + input.toExternalForm());
+System.out.println("getRef() (anchor): " + input.getRef());
+System.out.println("getQuery(): " + input.getQuery());
+System.out.println("getUserInfo(): " + input.getUserInfo());
+System.out.println("getProtocol(): " + input.getProtocol());
+System.out.println("getPath(): " + input.getPath());
+System.out.println("getFile(): " + input.getFile());
+
+        return parse(base, input.openStream());
+    }
+
     /** Parse the given stream, using the specified url as the base
      *  to expand any external references within the MoML file.
      *  That is, relative URLs are interpreted relative to the
@@ -299,6 +341,8 @@ public class MoMLParser extends HandlerBase {
      *  (it does not need to include the "&lt;?xml ... &gt;"
      *  element nor the DOCTYPE specification).
      *  The top-level element must be "model" or "class".
+     *  If there are external references in the MoML, they are interpreted
+     *  relative to the current working directory.
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent valid MoML data.
      *  @param input The string from which to read MoML.
@@ -306,10 +350,20 @@ public class MoMLParser extends HandlerBase {
      *  @throws Exception If the parser fails.
      */
     public NamedObj parse(String input) throws Exception {
-        return parse(null, new StringReader(input));
+        URL base = null;
+        // Use the current working directory as a base.
+        String cwd = System.getProperty("user.dir");
+        if (cwd != null) {
+            base = new URL("file", null, cwd);
+        }
+        return parse(base, new StringReader(input));
     }
 
-    /** Resolve an external entity.  This method returns null,
+    /** Resolve an external entity.  If the first argument is the
+     *  name of the MoML PUBLIC DTD ("-//UC Berkeley//DTD MoML 1//EN"),
+     *  then return a StringReader
+     *  that will read the locally cached version of this DTD
+     *  (the public variable MoML_DTD_1). Otherwise, return null,
      *  which has the effect of defering to &AElig;lfred for
      *  resolution of the URI.  Derived classes may return a
      *  a modified URI (a string), an InputStream, or a Reader.
@@ -483,7 +537,7 @@ public class MoMLParser extends HandlerBase {
                         "Element \"entity\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
                         + _current);
-                Object newEntity = _createEntity(className, entityName);
+                NamedObj newEntity = _createEntity(className, entityName);
                 if (_panel != null && newEntity instanceof Placeable) {
                     ((Placeable)newEntity).place(_panel);
                 }
@@ -494,11 +548,19 @@ public class MoMLParser extends HandlerBase {
                 String source = (String)_attributes.get("source");
                 _checkForNull(source, "No source for element \"import\"");
 
-                // Read external model definition and then clone it.
+                // If the base is specified, use that.
+                // Otherwise, use this document's base.
+                String baseSpec = (String)_attributes.get("base");
+                URL base = _base;
+                if (baseSpec != null) {
+                    base = new URL(_base, baseSpec);
+                }
+
+                // Read external model definition.
                 MoMLParser newParser = new MoMLParser(_workspace);
-                URL xmlFile = new URL(_base, source);
+                URL xmlFile = new URL(base, source);
                 NamedObj reference =
-                        newParser.parse(_base, xmlFile.openStream());
+                        newParser.parse(base, xmlFile.openStream());
                 if (_imports == null) {
                     _imports = new LinkedList();
                 }
@@ -506,6 +568,14 @@ public class MoMLParser extends HandlerBase {
                 // are name duplications in the imports, the most recent
                 // import prevails.
                 _imports.add(0, reference);
+
+                if (_current instanceof NamedObj) {
+                    NamedObj container = (NamedObj)_current;
+                    Import attr = new Import(container,
+                           container.uniqueName("_import")); 
+                    attr.setSource(source);
+                    attr.setBase(_base);
+                }
 
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
@@ -734,7 +804,7 @@ public class MoMLParser extends HandlerBase {
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (property | class | configure | doc | director | entity | import | link | relation)*><!ATTLIST model name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT class (property | configure | director | doc | entity | link)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #REQUIRED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT director (property | configure)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (property | class | configure | doc | director | entity | rendition | relation)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED><!ELEMENT link EMPTY><!ATTLIST link port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location x CDATA #REQUIRED y CDATA #IMPLIED z CDATA #IMPLIED><!ELEMENT port (doc | configure)*><!ATTLIST port name CDATA #REQUIRED class CDATA #IMPLIED direction (input | output | both) #IMPLIED><!ELEMENT property (doc | configure)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (vertex*)><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT vertex (location?)><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (property | class | configure | doc | director | entity | import | link | relation)*><!ATTLIST model name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT class (property | configure | director | doc | entity | link)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #REQUIRED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT director (property | configure)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (property | class | configure | doc | director | entity | rendition | relation)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location x CDATA #REQUIRED y CDATA #IMPLIED z CDATA #IMPLIED><!ELEMENT port (doc | configure)*><!ATTLIST port name CDATA #REQUIRED class CDATA #IMPLIED direction (input | output | both) #IMPLIED><!ELEMENT property (doc | configure)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (vertex*)><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT vertex (location?)><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/moml.dtd.  If modified, it needs to be also
@@ -836,6 +906,9 @@ public class MoMLParser extends HandlerBase {
         } else {
             // Extending a previously defined entity.  Clone it.
             ComponentEntity newEntity = (ComponentEntity)reference.clone();
+            // The master may have an entity name "class" (or "model"?), and
+            // that name will be cloned, so we need to change this.
+            newEntity.setMoMLElementName("entity");
             
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no

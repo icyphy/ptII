@@ -216,3 +216,125 @@ test MoMLParser-1.9 {test with changed parameter value from default} {
     $toplevel exportMoML
 } $result
 
+#----------------------------------------------------------------------
+set moml {
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="foo" class="ptolemy.actor.TypedCompositeActor">
+   <port name="C" class="ptolemy.actor.TypedIOPort"></port>
+   <relation name="R2" class="ptolemy.actor.TypedIORelation"></relation>
+   <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
+       <port name="A" class="ptolemy.actor.TypedIOPort"></port>
+       <relation name="R1" class="ptolemy.actor.TypedIORelation"></relation>
+       <entity name="C2" class="ptolemy.actor.TypedCompositeActor">
+           <port name="B" class="ptolemy.actor.TypedIOPort"></port>
+       </entity>
+   </entity>
+   <link port="C" relation="R2"/>
+   <link port="C1.A" relation="R2"/>
+   <link port="C1.A" relation="C1.R1"/>
+   <link port="C1.C2.B" relation="C1.R1"/>
+</model>
+}
+test MoMLParser-1.10 {test with hierarchy} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="foo" class="ptolemy.actor.TypedCompositeActor">
+    <port name="C" class="ptolemy.actor.TypedIOPort">
+    </port>
+    <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
+        <port name="A" class="ptolemy.actor.TypedIOPort">
+        </port>
+        <entity name="C2" class="ptolemy.actor.TypedCompositeActor">
+            <port name="B" class="ptolemy.actor.TypedIOPort">
+            </port>
+        </entity>
+        <relation name="R1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="A" relation="R1"/>
+        <link port="C2.B" relation="R1"/>
+    </entity>
+    <relation name="R2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="C" relation="R2"/>
+    <link port="C1.A" relation="R2"/>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="a" extends="ptolemy.kernel.CompositeEntity">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+        </property>
+        <port name="port" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <entity name="c" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <entity name="b" class="a">
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.11 {test instantiation of a class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="a" extends="ptolemy.kernel.CompositeEntity">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+        </property>
+        <port name="port" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <entity name="c" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <entity name="b" class=".top.a">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+        </property>
+        <port name="port" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <import source="testClass.xml"/>
+    <entity name="b" class=".a">
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.12 {test instantiation of a class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <import base="file:D:\ptII\ptolemy\moml\test" source="testClass.xml"/>
+    <entity name="b" class=".a">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+        </property>
+        <port name="port" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+</model>
+}
+

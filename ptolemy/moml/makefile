@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = Documentation.java \
 	Icon.java \
+	Import.java \
 	Locatable.java \
 	Vertex.java \
 	MoMLApplet.java \
