@@ -129,17 +129,6 @@ public class Director extends Attribute implements Executable {
         _initializeParameters();
     }
 
-    /** Construct a director in the workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace of this object.
-     */
-    public Director(Workspace workspace) {
-        super(workspace);
-        _addIcon();
-        _initializeParameters();
-    }
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -158,6 +147,17 @@ public class Director extends Attribute implements Executable {
     public Director(CompositeEntity container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _addIcon();
+        _initializeParameters();
+    }
+
+    /** Construct a director in the workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace of this object.
+     */
+    public Director(Workspace workspace) {
+        super(workspace);
         _addIcon();
         _initializeParameters();
     }
@@ -207,13 +207,43 @@ public class Director extends Attribute implements Executable {
                             DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE
                             );
                 }
+
+                // NOTE: when the time value is too big a multiple of the 
+                // resolution, the division fails to deliver adequate precision. 
+
+                // Here is an example: if time resolution is 1E-12,
+                // any double that is bigger than 8191.999999999999 cannot 
+                // distinguish itself from any other bigger values (even 
+                // slightly bigger with the difference as small as the time 
+                // resolution). Therefore, 8191.999999999999 is the LUB of the 
+                // set of double values have the specified time resolution.
+
+                // NOTE: The strategy to find the LUB for a given time 
+                // resolution r: find the smallest N such that time resolution 
+                // r >=  2^(-1*N); get M = 52 - N, which is the multiplication 
+                // we can apply on the significand without loss of time 
+                // resolution; the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
+                
+                // For example: with the above example time resolution 1e-12, 
+                // we get N = 40, M = 12. Then we get the LUB as 
+                // 8191.999999999999. For time resolution as 1e-10, the lub is
+                // 524287.99999999994.
+                
+                // NOTE: according to the IEEE754 floating point standard, 
+                // the formula to calculate a decimal value from a binary
+                // representation is 
+                // (-1)^(sign)x(1+significand)x2^(exponent-127) for 
+                // signal precision and 
+                // (-1)^(sign)x(1+significand)x2^(exponent-1023) 
+                // for double presision.
+                
+                int minimumNumberOfBits = 
+                    (int)Math.floor(-1*ExtendedMath.log2(newResolution)) + 1;
+                int maximumGain = 52 - minimumNumberOfBits;
+                double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
+                    * Math.pow(2.0, maximumGain);
                 // If the time resolution is reduced, give a warning.
                 if (newResolution < _timeResolution) {
-                    int minimumNumberOfBits = 
-                        (int)Math.floor(-1*ExtendedMath.log2(newResolution)) + 1;
-                    int maximumGain = 52 - minimumNumberOfBits;
-                    double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
-                        * Math.pow(2.0, maximumGain);
                     String warningMessage = "The time resolution is reduced to "
                         + newResolution + ". The maximum double value that can " 
                         + "have this time resolution is also reduced to " + lub 
@@ -232,6 +262,7 @@ public class Director extends Attribute implements Executable {
                         return;
                     }
                 }
+                _maximumAllowedTimeValueAsDouble = lub;
                 _timeResolution = newResolution;               
             }
         }
@@ -485,6 +516,65 @@ public class Director extends Attribute implements Executable {
         return getModelTime().getDoubleValue();
     }
 
+    /** Get the maximum allowed double value for a time object with the 
+     *  specified time resolution of the model. The time resoultion is
+     *  the value of the <i>timeResolution</i> parameter, which is the
+     *  smallest time unit for the model.
+     *  @return The aximum allowed double value for a time object with the 
+     *  specified time resolution of the model.
+     */
+    public final double getMaximumAllowedTimeValueAsDouble() {
+        // This method is final for performance reason.
+        return _maximumAllowedTimeValueAsDouble;
+    }
+
+    /** Return the next time of interest in the model being executed by
+     *  this director. This method is useful for domains that perform
+     *  speculative execution (such as CT).  Such a domain in a hierarchical
+     *  model (i.e. CT inside DE) uses this method to determine how far
+     *  into the future to execute.
+     *  <p>
+     *  In this base class, we return the current time.
+     *  Derived classes should override this method to provide an appropriate
+     *  value, if possible.
+     *  <p>
+     *  Note that this method is not made abstract to facilitate the use
+     *  of the test suite.
+     *  @return The time of the next iteration.
+     */
+    public Time getModelNextIterationTime() {
+        return _currentTime;
+    }
+
+    /** Get the start time of the model. This base class returns
+     *  a Time object with 0.0 as the value of the start time.
+     *  Subclasses need to override this method to get a different
+     *  start time.
+     *  For example, CT director and DE director use the value of
+     *  the <i>startTime</i> parameter to specify the real start time.
+     *  @return The start time of the model.
+     *  @exception IllegalActionException If the specified start time
+     *   is invalid.
+     */
+    public Time getModelStartTime() throws IllegalActionException {
+        return new Time(this);
+    }
+
+    /** Get the stop time of the model. This base class returns
+     *  a new Time object with Double.POSITIVE_INFINITY as the value of the
+     *  stop time.
+     *  Subclasses need to override this method to get a different
+     *  stop time.
+     *  For example, CT director and DE director use the value of
+     *  the stopTime parameter to specify the real stop time.
+     *  @return The stop time of the model.
+     *  @exception IllegalActionException If the specified stop time
+     *   is invalid.
+     */
+    public Time getModelStopTime() throws IllegalActionException {
+        return new Time(this, Double.POSITIVE_INFINITY);
+    }
+
     /** Return the current time object of the model being executed by this
      *  director.
      *  This time can be set with the setModelTime method. In this base
@@ -517,33 +607,6 @@ public class Director extends Attribute implements Executable {
         return getModelNextIterationTime().getDoubleValue();
     }
 
-    /** Return the next time of interest in the model being executed by
-     *  this director. This method is useful for domains that perform
-     *  speculative execution (such as CT).  Such a domain in a hierarchical
-     *  model (i.e. CT inside DE) uses this method to determine how far
-     *  into the future to execute.
-     *  <p>
-     *  In this base class, we return the current time.
-     *  Derived classes should override this method to provide an appropriate
-     *  value, if possible.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of the test suite.
-     *  @return The time of the next iteration.
-     */
-    public Time getModelNextIterationTime() {
-        return _currentTime;
-    }
-
-    /** Get the time resolution of the model. The time resoultion is
-     *  the value of the <i>timeResolution</i> parameter. This is the
-     *  smallest time unit for the model.
-     *  @return The time resolution of the model.
-     */
-    public final double getTimeResolution() {
-        return _timeResolution;
-    }
-
     /** Get the start time of the model. This base class returns
      *  a Time object with 0.0 as the value of the start time.
      *  Subclasses need to override this method to get a different
@@ -558,20 +621,6 @@ public class Director extends Attribute implements Executable {
      */
     public double getStartTime() throws IllegalActionException {
         return 0.0;
-    }
-
-    /** Get the start time of the model. This base class returns
-     *  a Time object with 0.0 as the value of the start time.
-     *  Subclasses need to override this method to get a different
-     *  start time.
-     *  For example, CT director and DE director use the value of
-     *  the <i>startTime</i> parameter to specify the real start time.
-     *  @return The start time of the model.
-     *  @exception IllegalActionException If the specified start time
-     *   is invalid.
-     */
-    public Time getModelStartTime() throws IllegalActionException {
-        return new Time(this);
     }
 
     /** Get the stop time of the model. This base class returns
@@ -591,19 +640,14 @@ public class Director extends Attribute implements Executable {
         return getModelStopTime().getDoubleValue();
     }
 
-    /** Get the stop time of the model. This base class returns
-     *  a new Time object with Double.POSITIVE_INFINITY as the value of the
-     *  stop time.
-     *  Subclasses need to override this method to get a different
-     *  stop time.
-     *  For example, CT director and DE director use the value of
-     *  the stopTime parameter to specify the real stop time.
-     *  @return The stop time of the model.
-     *  @exception IllegalActionException If the specified stop time
-     *   is invalid.
+    /** Get the time resolution of the model. The time resoultion is
+     *  the value of the <i>timeResolution</i> parameter. This is the
+     *  smallest time unit for the model.
+     *  @return The time resolution of the model.
      */
-    public Time getModelStopTime() throws IllegalActionException {
-        return new Time(this, Double.POSITIVE_INFINITY);
+    public final double getTimeResolution() {
+        // This method is final for performance reason.
+        return _timeResolution;
     }
 
     /** Initialize the model controlled by this director.  Set the
@@ -1270,12 +1314,15 @@ public class Director extends Attribute implements Executable {
         return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+    
     /** The current time of the model. */
     protected Time _currentTime;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
@@ -1308,6 +1355,11 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
     
+    // The maximum allowed double value for a time object with the specified
+    // time resolution. Given the default time resolution as 1e-10, the 
+    // maximum double value is 524287.99999999994.
+    private double _maximumAllowedTimeValueAsDouble = 524287.99999999994;
+
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
 }

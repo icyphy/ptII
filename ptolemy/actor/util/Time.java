@@ -32,7 +32,6 @@ import java.math.BigInteger;
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.math.ExtendedMath;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -592,18 +591,9 @@ public class Time implements Comparable {
         // for double presision.
         
 		double precision = _director.getTimeResolution();
-        
-        // Calculate the minimum number of bits in the significand to represent
-        // the part after the decimal point. A double is presented with 64 bits 
-        // in computer while 52 bits are allocated for the siginicand. 
-        // Therefore we can safely cast the number of bits into int.
-        int minimumNumberOfBits = 
-            (int)Math.floor(-1*ExtendedMath.log2(precision)) + 1;
-        // the maximum multiplication we can apply on the
-        // significand without loss of time resolution
-        int maximumGain = 52 - minimumNumberOfBits;
-        double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY * 
-            Math.pow(2.0, maximumGain);
+        // Note that the calculation of the lub is performed when the time
+        // resolution parameter changes.
+        double lub = _director.getMaximumAllowedTimeValueAsDouble();
         
         if (value > lub) {
             throw new IllegalActionException("The given time value " + value +
