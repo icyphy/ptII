@@ -474,8 +474,10 @@ if [ "$windows" = "yes" ]; then
     # It would be nice to check if the PTII_CYGDRIVE was already in the PATH.
     PATH="${PTII_CYGDRIVE};$PATH"
     export PATH
+    base=`/usr/bin/basename "$0"`
 else
     PTII_DIR=$PTII
+    base=`basename "$0"`
 fi
 
 # Add the user classpath (we prepend to be able to override classes,
@@ -486,7 +488,8 @@ else
     CLASSPATH="$PTII_DIR$CLASSPATHSEPARATOR$jarfile"
 fi
 
-if [ "`basename $0`" = "decompile" -a ! -f "$JODE_JAR" ]; then
+
+if [ "$base" = "decompile" -a ! -f "$JODE_JAR" ]; then
     str="\"$JAVAHOME/bin/javap\" -classpath \"$CLASSPATH\" ${1+"$@"}"
 
 else
