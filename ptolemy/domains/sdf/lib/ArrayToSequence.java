@@ -80,10 +80,10 @@ public class ArrayToSequence extends SDFAtomicActor {
         output = new SDFIOPort(this, "output", false, true);
 
 	// TokenConsumptionRate is 1.
-	setTokenConsumptionRate(input, 1);
+	input.setTokenConsumptionRate(1);
 
 	// set the TokenProductionRate to default 1.
-	setTokenProductionRate(output, 1);
+	output.setTokenProductionRate(1);
 
 	// set type constraints.
 	input.setTypeEquals(new ArrayType(BaseType.NAT));
@@ -136,7 +136,7 @@ public class ArrayToSequence extends SDFAtomicActor {
      */
     public void fire() throws IllegalActionException {
 	ArrayToken token = (ArrayToken)input.get(0);
-	int rate = getTokenProductionRate(output);
+	int rate = output.getTokenProductionRate();
 	if (token.length() != rate) {
 	    throw new IllegalActionException("ArrayToSequence.fire: The " +
 		"number of elements in the input ArrayToken (" +
