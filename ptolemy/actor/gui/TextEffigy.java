@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -45,9 +46,11 @@ import javax.swing.text.Document;
 //////////////////////////////////////////////////////////////////////////
 //// TextEffigy
 /**
-An effigy for a text file.
+An effigy for a text file.  If the ptolemy.user.texteditor property
+is set to "emacs", then {@link ExternalTextEffigy} is used as an Effigy,
+otherwise this class is used as an Effigy.
 
-@author Edward A. Lee
+@author Edward A. Lee, contributor Zoltan Kemenczy
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -228,6 +231,28 @@ public class TextEffigy extends Effigy {
 	public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
+            String editorPreference = 
+                System.getProperty("ptolemy.user.texteditor",".");
+            Class effigyClass;
+            try {
+
+            if (editorPreference.equals("emacs")) {
+                effigyClass = Class.forName
+                    ("ptolemy.actor.gui.ExternalTextEffigy");
+            } else {
+                effigyClass = Class.forName
+                    ("ptolemy.actor.gui.TextEffigy");
+            }
+            _newTextEffigyURL =
+                effigyClass.getMethod
+                ("newTextEffigy",
+                 new Class[]{CompositeEntity.class, URL.class, URL.class});
+
+            } catch (ClassNotFoundException ex) {
+                throw new IllegalActionException(ex.toString());
+            } catch (NoSuchMethodException ex) {
+                throw new IllegalActionException(ex.toString());
+            }
 	}
 
         ///////////////////////////////////////////////////////////////
@@ -262,7 +287,10 @@ public class TextEffigy extends Effigy {
                 CompositeEntity container, URL base, URL in)
                 throws Exception {
             // Create a new effigy.
-            return newTextEffigy(container, base, in);
+            return (Effigy) _newTextEffigyURL.invoke
+                (null, new Object[]{container, base, in});
 	}
+
+        private Method _newTextEffigyURL;
     }
 }

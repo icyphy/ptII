@@ -78,6 +78,8 @@ JSRCS = \
 	EditParametersDialog.java \
 	Effigy.java \
 	EffigyFactory.java \
+	ExternalTextEffigy.java \
+	ExternalTextTableau.java \
 	HTMLEffigy.java \
 	HTMLEffigyFactory.java \
 	HTMLViewer.java \
@@ -155,6 +157,10 @@ OPTIONAL_FILES = \
 	'JVMTableau$$1.class' \
 	'JVMTableau$$Factory.class' \
 	'JVMTableau$$JVMFrame.class' \
+	'MatrixPane$$1.class' \
+	'MatrixPane$$EmptyTableModel.class' \
+	'MatrixPane$$MatrixAsTable.class' \
+	'MatrixTokenTableau$$Factory.class' \
 	'ModelFrame$$FileMenuListener.class' \
 	'ModelFrame$$HelpMenuListener.class' \
 	'ModelPane$$1.class' \
@@ -163,6 +169,11 @@ OPTIONAL_FILES = \
 	'ModelPane$$4.class' \
 	'ModelPane$$ClickListener.class' \
 	'ModelPane$$CommandListener.class' \
+	'PlotEffigy$$Factory.class' \
+	'PlotTableau$$Factory.class' \
+	'PlotTableauFrame$$EPSFileFilter.class' \
+	'PlotTableauFrame$$FormatAction.class' \
+	'PlotTableauFrame$$SpecialMenuListener.class' \
 	'PtolemyApplet$$1.class' \
 	'PtolemyApplet$$ExportButtonListener.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
@@ -170,9 +181,11 @@ OPTIONAL_FILES = \
 	'PtolemyApplication$$1.class' \
 	'PtolemyEffigy$$Factory.class' \
 	'PtolemyFrame$$XMLOrMoMLFileFilter.class' \
+	'PtolemyFrame$$1.class' \
 	'PtolemyQuery$$1.class' \
 	'PtolemyQuery$$2.class' \
 	'PtolemyQuery$$3.class' \
+	'PtolemyQuery$$4.class' \
 	'PtolemyTop$$ViewMenuListener.class' \
 	'RunTableau$$Factory.class' \
 	'RunTableau$$RunFrame$$DebugMenuListener.class' \
@@ -180,7 +193,10 @@ OPTIONAL_FILES = \
 	'RunTableau$$TopFactory.class' \
 	'Tableau$$1.class' \
 	'TableauFrame$$1.class' \
+	'TableauFrame$$ExtensionFileFilter.class' \
 	'TableauFrame$$ViewMenuListener.class' \
+	'TokenEffigy$$Factory.class' \
+	'TokenTableau$$Factory.class' \
 	'TextEditorTableau$$Factory.class' \
 	'TextEffigy$$Factory.class'
 

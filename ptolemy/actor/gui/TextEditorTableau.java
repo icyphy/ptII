@@ -30,10 +30,13 @@
 package ptolemy.actor.gui;
 
 import ptolemy.gui.Top;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -109,6 +112,40 @@ public class TextEditorTableau extends Tableau {
 	public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
+            String editorPreference = 
+                System.getProperty("ptolemy.user.texteditor",".");
+            Class tableauClass;
+            Class effigyClass;
+            try {
+
+            if (editorPreference.equals("emacs")) {
+                tableauClass = Class.forName
+                    ("ptolemy.actor.gui.ExternalTextTableau");
+                effigyClass = Class.forName
+                    ("ptolemy.actor.gui.ExternalTextEffigy");
+            } else {
+                tableauClass = Class.forName
+                    ("ptolemy.actor.gui.TextEditorTableau");
+                effigyClass = Class.forName
+                    ("ptolemy.actor.gui.TextEffigy");
+            }
+            _tableauConstructor = 
+                tableauClass.getConstructor
+                (new Class[]{TextEffigy.class, String.class});
+            _newTextEffigyText =
+                effigyClass.getMethod
+                ("newTextEffigy",
+                 new Class[]{CompositeEntity.class, String.class});
+            _newTextEffigyURL =
+                effigyClass.getMethod
+                ("newTextEffigy",
+                 new Class[]{CompositeEntity.class, URL.class, URL.class});
+
+            } catch (ClassNotFoundException ex) {
+                throw new IllegalActionException(ex.toString());
+            } catch (NoSuchMethodException ex) {
+                throw new IllegalActionException(ex.toString());
+            }
 	}
 
         ///////////////////////////////////////////////////////////////////
@@ -144,8 +181,9 @@ public class TextEditorTableau extends Tableau {
                 TextEditorTableau tableau =
                     (TextEditorTableau)effigy.getEntity("textTableau");
                 if (tableau == null) {
-                    tableau = new TextEditorTableau(
-                            (TextEffigy)effigy, "textTableau");
+                    tableau = (TextEditorTableau)
+                        _tableauConstructor.newInstance
+                        (new Object[]{effigy, "textTableau"});
                 }
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
@@ -174,16 +212,18 @@ public class TextEditorTableau extends Tableau {
                     // that gives a textual description of the data?
                     String moml = ((PtolemyEffigy)effigy)
                         .getModel().exportMoML();
-                    textEffigy =
-                        TextEffigy.newTextEffigy(effigy, moml);
+                    textEffigy = (TextEffigy)
+                        _newTextEffigyText.invoke
+                        (null, new Object[]{effigy, moml});
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.
                     // But this requires having an "apply" button.
                     textEffigy.setModifiable(false);
                     textEffigy.setName("textEffigy");
                 } else {
-                    textEffigy =
-                        TextEffigy.newTextEffigy(effigy, url, url);
+                    textEffigy = (TextEffigy)
+                        _newTextEffigyText.invoke
+                        (null, new Object[]{effigy, url, url});
                     textEffigy.setName("textEffigy");
                 }
                 TextEditorTableau textTableau =
@@ -195,5 +235,9 @@ public class TextEditorTableau extends Tableau {
                 return textTableau;
             }
 	}
+
+        private Constructor _tableauConstructor;
+        private Method _newTextEffigyText;
+        private Method _newTextEffigyURL;
     }
 }
