@@ -359,15 +359,17 @@ public class NavigableActorGraphFrame extends ExtendedGraphFrame {
             }
         }
 
-        //THALES CORRECTION
-        //In the TableauFrame class, if the topLevel effigy has been modified
-        //and if you have other Tableaux opened, nothing is saved
-        //and all the opened Tableaux are closed ... so your modifications are loosed
+        // THALES CORRECTION 
+        // In the TableauFrame class, if the topLevel
+        // effigy has been modified and if you have other Tableaux
+        // opened, nothing is saved and all the opened Tableaux are
+        // closed ... so your modifications are loosed
 
-        //To avoid this, we force the topLevel effigy (wich is a NavigableEffigy for us)
-        //to answer 1 at the numberOfOpenTableaux in this case (and only this one)
-        //we hope that this bug will be fixed in a future version of Ptolemy
-        //to stop this silly thing ;)
+        // To avoid this, we force the topLevel effigy (wich is a
+        // NavigableEffigy for us) to answer 1 at the
+        // numberOfOpenTableaux in this case (and only this one) we
+        // hope that this bug will be fixed in a future version of
+        // Ptolemy to stop this silly thing ;)
 
         Effigy topEffigy = getEffigy().topEffigy();
         if (topEffigy instanceof NavigableEffigy
