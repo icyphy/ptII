@@ -938,24 +938,6 @@ JavaCC can be downloaded from http://www.sun.com/suntest'" 1>&2
 fi
 
 #--------------------------------------------------------------------
-#	Only build in ptolemy/media/javasound if we are under JDK1.3beta
-#	
-#
-#--------------------------------------------------------------------
-
-if test "$JVERSION" != "1.3beta"; then
-	echo "configure: warning: JVERSION = $JVERSION, but ptolemy/media/javasound
-is only supported under JDK 1.3beta" 1>&2
-	# Directories that require javasound.
-	# JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
-	# to add the javasound directory to the list of directories
-	# to run submakes in if we found sound.jar
-	JAVASOUND_NEEDED_DIRS=""
-else 
-	JAVASOUND_NEEDED_DIRS="javasound"
-fi
-
-#--------------------------------------------------------------------
 #	See if there was a command-line option for where Jacl is
 #--------------------------------------------------------------------
 
@@ -973,7 +955,7 @@ if test ! -d "$PTII/util/testsuite"; then
 find Jacl" 1>&6
 else
     echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
-echo "configure:977: checking for ptjacl.jar" >&5
+echo "configure:959: checking for ptjacl.jar" >&5
     # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
 if test "${with_ptjacl_jar+set}" = set; then
   withval="$with_ptjacl_jar"
@@ -986,7 +968,7 @@ fi
     if test -f "$PTJACL_JAR"; then
 	echo "$ac_t""$PTJACL_JAR" 1>&6
 	echo $ac_n "checking for how to run jacl""... $ac_c" 1>&6
-echo "configure:990: checking for how to run jacl" >&5
+echo "configure:972: checking for how to run jacl" >&5
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell" 1>&6
@@ -1021,7 +1003,7 @@ find the PalmOS kvm" 1>&6
     KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1025: checking for kvm directory" >&5
+echo "configure:1007: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1034,7 +1016,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/tools/classes.zip""... $ac_c" 1>&6
-echo "configure:1038: checking for \$KVM_DIR/tools/classes.zip" >&5
+echo "configure:1020: checking for \$KVM_DIR/tools/classes.zip" >&5
 	if test -f "$KVM_DIR/tools/classes.zip"; then
 	    KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1065,11 +1047,6 @@ fi
 
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
-
-
-# JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
-# to add the javasound directory to the list of directories
-# to run submakes in if we found sound.jar
 
 
 # Arguments to pass to javac.  Usually something like '-g -depend'
@@ -1251,7 +1228,6 @@ s%@JJTREE@%$JJTREE%g
 s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
 s%@JAVACC@%$JAVACC%g
 s%@JAVACC_DIR@%$JAVACC_DIR%g
-s%@JAVASOUND_NEEDED_DIRS@%$JAVASOUND_NEEDED_DIRS%g
 s%@JDEPENDFLAG@%$JDEPENDFLAG%g
 s%@JTCLSH@%$JTCLSH%g
 s%@JTREE@%$JTREE%g
