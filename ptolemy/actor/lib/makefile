@@ -166,6 +166,7 @@ JSRCS = \
 	Rician.java \
 	Scale.java \
 	Select.java \
+	Sequence.java \
 	SequenceActor.java \
 	Sequencer.java \
 	SequenceSource.java \
@@ -221,6 +222,7 @@ OTHER_FILES_TO_BE_JARED = \
 	random.xml \
 	realtime.xml \
 	sequencecontrol.xml \
+	SequenceIcon.xml \
 	sequencesinks.xml \
 	sequencesources.xml \
 	signalprocessing.xml \

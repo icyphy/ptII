@@ -21,6 +21,8 @@
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
 
+<entity name="Sequence" class="ptolemy.actor.lib.Sequence"/>
+
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 
 <entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
