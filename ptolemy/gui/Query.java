@@ -353,18 +353,7 @@ public class Query extends JPanel {
      */
     public boolean booleanValue(String name)
             throws NoSuchElementException, IllegalArgumentException {
-        Object result = _entries.get(name);
-        if (result == null) {
-            throw new NoSuchElementException("No item named \"" +
-                    name + "\" in the query box.");
-        }
-        if (result instanceof JRadioButton) {
-            return ((JRadioButton)result).isSelected();
-        } else {
-            throw new IllegalArgumentException("Item named \"" +
-                    name + "\" is not a radio button, and hence does not have "
-                    + "a boolean value.");
-        }
+        return getBooleanValue(name);
     }
 
     /** Get the current value in the entry with the given name
@@ -386,18 +375,7 @@ public class Query extends JPanel {
     public double doubleValue(String name)
             throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
-        Object result = _entries.get(name);
-        if (result == null) {
-            throw new NoSuchElementException("No item named \"" +
-                    name + " \" in the query box.");
-        }
-        if (result instanceof JTextField) {
-            return (new Double(((JTextField)result).getText())).doubleValue();
-        } else {
-            throw new IllegalArgumentException("Item named \"" +
-                    name + "\" is not a text line, and hence cannot be converted to "
-                    + "a double value.");
-        }
+        return getDoubleValue(name);
     }
 
     /** Get the current value in the entry with the given name
@@ -649,35 +627,7 @@ public class Query extends JPanel {
     public int intValue(String name)
             throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
-        Object result = _entries.get(name);
-        if (result == null) {
-            throw new NoSuchElementException("No item named \"" +
-                    name + " \" in the query box.");
-        }
-        if (result instanceof JTextField) {
-            return (new Integer(((JTextField)result).getText())).intValue();
-        } else if (result instanceof JSlider) {
-            return ((JSlider)result).getValue();
-        } else if (result instanceof JComboBox) {
-            return ((JComboBox)result).getSelectedIndex();
-        } else if (result instanceof JRadioButton[]) {
-            // Regrettably, ButtonGroup gives no way to determine
-            // which button is selected, so we have to search...
-            JRadioButton[] buttons = (JRadioButton[])result;
-            for (int i = 0; i < buttons.length; i++) {
-                if (buttons[i].isSelected()) {
-                    return i;
-                }
-            }
-            // In theory, we shouldn't get here, but the compiler
-            // is unhappy without a return.
-            return -1;
-        } else {
-            throw new IllegalArgumentException("Item named \"" +
-                    name + "\" is not a text line or slider, and hence "
-                    + "cannot be converted to "
-                    + "an integer value.");
-        }
+        return getIntValue(name);
     }
 
     /** Nofify listeners of the current value of all entries, unless
@@ -1034,91 +984,7 @@ public class Query extends JPanel {
      */
     public String stringValue(String name)
             throws NoSuchElementException, IllegalArgumentException {
-        Object result = _entries.get(name);
-        if (result == null) {
-            throw new NoSuchElementException("No item named \"" +
-                    name + " \" in the query box.");
-        }
-        // FIXME: Surely there is a better way to do this...
-        // We should define a set of inner classes, one for each entry type.
-        // Currently, this has to be updated each time a new entry type
-        // is added.
-        if (result instanceof JTextField) {
-            return ((JTextField)result).getText();
-        } else if (result instanceof JFileChooser) {
-	    if (((JFileChooser)result).getSelectedFile() == null) {
-		return "";
-	    } else {
-		File files[] = ((JFileChooser)result).getSelectedFiles();
-		// FIXME: How do we handle multiple files being returned
-		// 1. We could return "file:/c:/foo/bar" if only one file
-		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
-		// if two files were selected
-		// 2. We could return "{file:/c:/foo/bar}" if only one file
-		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
-		// if two files were selected
-		// 3. We could have various FileChoosers, one for single
-		// files, one for multiple files, one for urls, one for
-		// files.  This would point to some sort of configuration
-		// mechanism being used in the style.
-		StringBuffer urls = new StringBuffer();
-		// If only one file is chosen, then return
-		// "file:/c:/foor/bar"
-		// If there was more than one file chosen, then return
-		// an array of strings of the format
-		// {"file:/c:/foo/bar", "file:c:/foo/bar"}
-		for ( int i = 0; i < files.length; i++ ) {
-		    if (i == 0 && files.length > 1) {
-			urls.append("{");
-		    }
-		    if (i > 0) {
-			// If we throw an exception below, then
-			// urls will have a trailing comma.
-			urls.append(", ");
-		    }
-		    try {
-			urls.append("\"" + files[i].toURL().toString() + "\"");
-		    } catch (MalformedURLException malformed) {
-			// FIXME: this can't be right
-			throw new IllegalArgumentException(malformed.toString());
-		    }
-		}
-		if (files.length > 1) {
-		    urls.append("}");
-		}
-		return urls.toString();
-	    }
-        } else if (result instanceof JTextArea) {
-            return ((JTextArea)result).getText();
-        } else if (result instanceof JRadioButton) {
-            JRadioButton radioButton = (JRadioButton)result;
-            if (radioButton.isSelected()) {
-                return "true";
-            } else {
-                return "false";
-            }
-        } else if (result instanceof JSlider) {
-            return "" + ((JSlider)result).getValue();
-        } else if (result instanceof JComboBox) {
-            return (String)(((JComboBox)result).getSelectedItem());
-        } else if (result instanceof JRadioButton[]) {
-            // Regrettably, ButtonGroup gives no way to determine
-            // which button is selected, so we have to search...
-            JRadioButton[] buttons = (JRadioButton[])result;
-            String toReturn = null;
-            for (int i = 0; i < buttons.length; i++) {
-                if (buttons[i].isSelected()) {
-                    if (toReturn == null) toReturn = buttons[i].getText();
-                    else toReturn = toReturn + ", " + buttons[i].getText();
-                }
-            }
-            if (toReturn == null) toReturn = "";
-            return toReturn;
-        } else {
-            throw new IllegalArgumentException("Query class cannot generate"
-                    + " a string representation for entries of type "
-                    + result.getClass());
-        }
+        return getStringValue(name);
     }
 
     ///////////////////////////////////////////////////////////////////
