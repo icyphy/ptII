@@ -1,4 +1,4 @@
-/* An attribute for specifying that a parameter is edited with an entry line.
+/* An attribute for specifying that a parameter is a display only.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
