@@ -113,13 +113,14 @@ public final class ASTReflect {
 	// Get the AST for all the inner classes or inner interfaces
 	memberList.addAll(innerClassesOrInterfacesASTList(myClass));
 
-	TypeNameNode superClass = null;
+	TreeNode superClass = null;
         if (myClass.getSuperclass() == null ) {
             // "If this Class represents either the Object class, an
             // interface, a primitive type, or void, then null is
             // returned"
-            superClass =
-                new TypeNameNode(new NameNode(AbsentTreeNode.instance,""));
+            superClass = AbsentTreeNode.instance;
+	    
+		/*new TypeNameNode(new NameNode(AbsentTreeNode.instance,""));*/
         } else {
             superClass =
 		new TypeNameNode((NameNode)_makeNameNode(
