@@ -845,8 +845,13 @@ public class CTScheduler extends Scheduler {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
 
-            if (!(actor instanceof CTDynamicActor) &&
-                    !(actor instanceof CTEventGenerator)) {
+            // CTCompositeActor is basically everything,
+            // it may be an event generator, or a state transition
+            // actor.
+            if ((actor instanceof CTCompositeActor) || 
+                (!(actor instanceof CTDynamicActor) &&
+                    !(actor instanceof CTEventGenerator))
+                     ) {
                 // Find the successors of the actor
                 Iterator successors = successorList(actor).iterator();
                 while (successors.hasNext()) {
