@@ -33,8 +33,7 @@ package ptolemy.domains.ct.demo.Thermostat;
 import java.awt.BorderLayout;
 import java.awt.event.*;
 
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.domains.fsm.lib.*;
+import ptolemy.domains.hs.kernel.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;

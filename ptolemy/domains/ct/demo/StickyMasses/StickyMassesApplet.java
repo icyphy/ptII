@@ -186,8 +186,8 @@ public class StickyMassesApplet extends CTApplet {
             ctIncE2.expression.setExpression("2.0*2.0 + In - 2.0*P2");
 
             AddSubtract ctIncE3 = new AddSubtract(ctInc, "E3");
-            CTZeroCrossingDetector ctIncD =
-                new CTZeroCrossingDetector(ctInc, "ZD");
+            ZeroCrossingDetector ctIncD =
+                new ZeroCrossingDetector(ctInc, "ZD");
 
             // the ports
             // Force on ball 1
