@@ -96,7 +96,7 @@ public class Bernoulli extends RandomSource {
 
     /** Send a random boolean to the output.
      *  This number is only changed in the prefire() method, so it will
-     *  remain constant throughout an interation.
+     *  remain constant throughout an iteration.
      */
     public void fire() {
         try {

@@ -246,7 +246,7 @@ public final class MathWizard {
                     return;
               }
           }
-          System.out.println("WARNING: Exceed interation !!!");
+          System.out.println("WARNING: Exceed iteration !!!");
           return;
     }
 

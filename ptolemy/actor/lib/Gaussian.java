@@ -103,7 +103,7 @@ public class Gaussian extends RandomSource {
 
     /** Send a random number with a Gaussian distribution to the output.
      *  This number is only changed in the prefire() method, so it will
-     *  remain constant throughout an interation.
+     *  remain constant throughout an iteration.
      */
     public void fire() {
         try {
