@@ -273,14 +273,16 @@ public class SerialComm extends TypedAtomicActor
                 = ((IntToken)minimumOutputSize.getToken()).intValue();
             if (_minimumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                        "minimumOutputSize is required to be strictly positive.");
+                        "minimumOutputSize is required "
+                        + "to be strictly positive.");
             }
         } else if (attribute == maximumOutputSize) {
             _maximumOutputSize
                 = ((IntToken)maximumOutputSize.getToken()).intValue();
             if (_maximumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                        "maximumOutputSize is required to be strictly positive.");
+                        "maximumOutputSize is required "
+                        + "to be strictly positive.");
             }
         } else if (attribute == discardOldData) {
             _discardOldData
