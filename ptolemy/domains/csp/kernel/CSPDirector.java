@@ -261,7 +261,7 @@ public class CSPDirector extends ProcessDirector {
         }
         */
         _actorsBlocked++;
-        if (_isDeadlocked()) {
+        if (_areActorsDeadlocked()) {
 	    notifyAll();
 	}
     }
@@ -278,7 +278,7 @@ public class CSPDirector extends ProcessDirector {
         } else {
             _extReadBlockCount++;
         }
-        if (_isDeadlocked()) {
+        if (_areActorsDeadlocked()) {
 	    notifyAll();
 	}
     }
@@ -287,7 +287,7 @@ public class CSPDirector extends ProcessDirector {
     /** Increase the count of blocked processes and check for deadlock.
     protected synchronized void _actorWriteBlocked(CSPReceiver rcvr) {
         _writeBlockCount++;
-        if (_isDeadlocked()) {
+        if (_areActorsDeadlocked()) {
 	    notifyAll();
 	}
     }
@@ -316,7 +316,7 @@ public class CSPDirector extends ProcessDirector {
 	    // Enter the actor and the time to wake it up into the
 	    // LinkedList of delayed actors.
 	    _registerDelayedActor( (getCurrentTime() + delta), actor);
-	    if (_isDeadlocked()) {
+	    if (_areActorsDeadlocked()) {
 	        notifyAll();
 	    }
 	    return;
@@ -366,7 +366,7 @@ public class CSPDirector extends ProcessDirector {
      * @return True if all active threads containing actors controlled
      *  by this thread have stopped; otherwise return false.
      */
-    protected synchronized boolean _areAllThreadsStopped() {
+    protected synchronized boolean _areActorsStopped() {
 	long threadsStopped = _getStoppedProcessesCount();
 	long actorsActive = _getActiveActorsCount();
 
@@ -391,7 +391,7 @@ public class CSPDirector extends ProcessDirector {
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
      */
-    protected synchronized boolean _isDeadlocked() {
+    protected synchronized boolean _areActorsDeadlocked() {
         /*
         if (_getActiveActorsCount() == (_intReadBlockCount +
         	_extReadBlockCount + _writeBlockCount + _actorsDelayed)) {
