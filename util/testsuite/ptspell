@@ -72,6 +72,7 @@ else
     # The sed calls split up words with internal capitalization
     spell +$LOCALFILE ${1+"$@"} | \
 	sed -e 's/\./ /g' \
+	    -e 's/&amp;/ /g' \
 	    -e 's/&nbsp;/ /g' \
 	    -e 's/nbsp;/ /g' \
 	    -e 's/&lt;/ /g' \
