@@ -1,0 +1,140 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="deInsideDT" class="ptolemy.actor.TypedCompositeActor">
+    <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="60.0, 44.0"/>
+        </rendition>
+    </property>
+    <entity name="DT_model" class="ptolemy.actor.TypedCompositeActor">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="164.0, 208.0"/>
+        </rendition>
+        <property name="DE0" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+            </property>
+            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <location value="75.0, 51.0"/>
+            </rendition>
+        </property>
+        <port name="port1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="location1" class="ptolemy.moml.Location">
+                <location value="418.0, 173.0"/>
+            </property>
+        </port>
+        <entity name="Clock0" class="ptolemy.actor.lib.Clock">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+            </property>
+            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+                <location value="76.0, 168.0"/>
+            </rendition>
+            <doc>Create a generalized square wave</doc>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="CurrentTime0" class="ptolemy.actor.lib.CurrentTime">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+                <location value="215.0, 168.0"/>
+                <configure>generic.source</configure>
+            </rendition>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port1" relation="relation2"/>
+        <link port="Clock0.output" relation="relation1"/>
+        <link port="CurrentTime0.output" relation="relation2"/>
+        <link port="CurrentTime0.trigger" relation="relation1"/>
+    </entity>
+    <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="306.0, 292.0"/>
+        </rendition>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Discard1" class="ptolemy.actor.lib.Discard">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="394.0, 209.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0,10.0,20.0,30.0,40.0]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="425.0, 292.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex">
+            <location value="261.0, 214.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DT_model.port1" relation="relation1"/>
+    <link port="CurrentTime3.output" relation="relation3"/>
+    <link port="CurrentTime3.trigger" relation="relation1"/>
+    <link port="Discard1.input" relation="relation1"/>
+    <link port="Test2.input" relation="relation3"/>
+</model>
