@@ -30,11 +30,9 @@ package ptolemy.domains.de.lib;
 
 import java.util.LinkedList;
 
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -70,7 +68,7 @@ import ptolemy.kernel.util.StringAttribute;
    stamp (larger than current time by <i>newServiceTime</i>). 
    If the service time is always zero and several event arrrive at the same,
    the server will output the first available input and queue the other inputs
-   to process in the future microsteps. Thus, a service time of zero can be 
+   to process in the future microsteps. A service time of zero can be 
    usefully viewed as an infinitesimal service time.
 
    @see ptolemy.domains.de.lib.TimedDelay
@@ -86,7 +84,7 @@ import ptolemy.kernel.util.StringAttribute;
 public class Server extends VariableDelay {
 
     /** Construct an actor with the specified container and name.
-     *  @param container The composite actor to contain this one.
+     *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -137,11 +135,9 @@ public class Server extends VariableDelay {
             } else {
                 // no tokens to be produced at the current time.
             }
-        } else {
+        } else if (_delay == 0 && _delayedInputTokensList.size() > 0) {
             // The server is not busy.
-            if (_delay == 0 && _delayedInputTokensList.size() > 0) {
-                output.send(0, (Token)_delayedInputTokensList.removeFirst());
-            }
+            output.send(0, (Token)_delayedInputTokensList.removeFirst());
         }
     }
 
@@ -171,7 +167,7 @@ public class Server extends VariableDelay {
         if (_currentOutput != null) {
             _delayedTokens.remove(currentTime);
         }
-        // If the delayedTokensList is not empty, and the delayedTokens
+        // If the delayedInputTokensList is not empty, and the delayedTokens
         // is empty (ready for a new service), get the first token
         // and put it into service. Schedule a refiring to wave up 
         // after the service finishes.
@@ -191,26 +187,22 @@ public class Server extends VariableDelay {
      */
     protected void _init() 
         throws NameDuplicationException, IllegalActionException  {
-        // FIXME: can not call super._init() and delay.setName(newName).
-        // The port does not get the new name. This is a bug.
-        delay = new PortParameter(this, "newServiceTime");
-        delay.setExpression("1.0");
-        delay.setTypeEquals(BaseType.DOUBLE);
+        super._init();
+        delay.getPort().setName("newServiceTime");
         // Put the delay port at the bottom of the icon by default.
         StringAttribute cardinality
                 = new StringAttribute(delay.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
-        output.setTypeSameAs(input);
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         private variables                 ////
 
     /** Next time the server becomes free.
      */
-    protected Time _nextTimeFree;
+    private Time _nextTimeFree;
     
     /** List of delayed input tokens, whose finishing times can not be decided.
      */
-    protected LinkedList _delayedInputTokensList;
+    private LinkedList _delayedInputTokensList;
 }

@@ -46,15 +46,17 @@ import ptolemy.kernel.util.Workspace;
 /**
    This actor delays the input by a specified amount of time. The amount 
    of the time is required to be non-negative and has a default value 1.0.
-   The input and output types are unconstrained, except that the
-   output type must be at least that of the input.
+   The input and output types are unconstrained, except that the output type 
+   must be the same as that of the input.
    <p>
    The behavior of this actor on each firing is to read a token from the input,
-   if there is one, and to produce the token on the corresponding output
-   channel after the appropriate time delay. Note that if the value of delay
-   is 0.0, the output is procduced immediately. If there is no input token, 
-   then no output token is produced. NOTE: The output is produced in the fire() 
-   method. 
+   if there is one, and schedule itself to fire again to produce that token 
+   on the corresponding output channel after the appropriate time delay. 
+   Note that if the value of delay is 0.0, and there is no output scheduled 
+   to produce at the same time the input arrives, the output is procduced 
+   immediately. Otherwise, the input is produced in the immediately next firing
+   at the same model time. If there is no input token, then no output token is 
+   produced. 
    <p>
    Occasionally, this actor is used inside a feedback loop just for scheduling
    perpose, where the delay parameter is set to zero. This implies that no
@@ -65,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
    of this zero-valued delay as an infinitesimal delay.
    <p> 
    The output may have the same microstep with the input, if there is
-   no queued event scheduled to produce at the same time the input arrives. 
+   no queued output scheduled to produce at the same time the input arrives. 
    Otherwise, the output is produced one microstep later. This guarantees that
    a DE signal is functional in the sense that there for any tag, there is 
    at most one value. 
@@ -73,7 +75,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
    @see ptolemy.domains.de.lib.VariableDelay
    @see ptolemy.domains.de.lib.Server
-   @see ptolemy.domains.sdf.lib.SampleDelay
 
    @author Edward A. Lee, Lukito Muliadi, Haiyang Zheng
    @version $Id$
@@ -84,7 +85,8 @@ import ptolemy.kernel.util.Workspace;
 public class TimedDelay extends DETransformer {
 
     /** Construct an actor with the specified container and name.
-     *  @param container The composite actor to contain this one.
+     *  Constrain that the output type to be the same as the input type. 
+     *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -95,12 +97,7 @@ public class TimedDelay extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         _init();
-        
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,7 +112,7 @@ public class TimedDelay extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is <i>delay</i>, then check that the value
+    /** If the attribute is <i>delay</i>, then ensure that the value
      *  is non-negative.
      *  NOTE: the newDelay may be 0.0, which may change the causality 
      *  property of the model. We leave the model designers to decide 
@@ -132,10 +129,6 @@ public class TimedDelay extends DETransformer {
                         "Cannot have negative delay: "
                         + newDelay);
             } else {
-                // NOTE: the newDelay may be 0.0, which may change
-                // the causality property of the model. 
-                // We leave the model designers to decide whether the
-                // zero delay is really what they want. 
                 _delay = newDelay;
             }
         } else {
@@ -171,9 +164,9 @@ public class TimedDelay extends DETransformer {
             _currentInput = null;
         }
         // produce output
-        // NOTE: the delay may be zero. however, if there is some other event 
-        // scheduled to produce at current time before the current firing, 
-        // the current input is delayed to the next firing to produce.
+        // NOTE: the delay may be zero. However, if there is already some output  
+        // scheduled to produce at the current time before the current input
+        // arrives, the current input is delayed to the next firing to produce.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
@@ -214,11 +207,8 @@ public class TimedDelay extends DETransformer {
        if (_delayedTokens.size() > 0 && 
            _currentOutput != null) {
            _delayedTokens.remove(currentTime);
-           // Schedule refiring at current time if the multiple tokens
-           // are scheduled to produce at the current time.
-           if (_delayedTokens.get(currentTime) != null) {
-               getDirector().fireAtCurrentTime(this);
-           }
+           // FIXME: handle the refiring of the multiple tokens
+           // that are scheduled to produce at the same time.
        }
        // Schedule the not handled current input for future firing.
        if (_currentInput != null) {
@@ -266,6 +256,4 @@ public class TimedDelay extends DETransformer {
     /** Current output.
      */
     protected Token _currentOutput;    
-
-
 }

@@ -29,10 +29,12 @@ COPYRIGHTENDKEY
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.FIFOQueue;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueueWithNextOut
@@ -90,6 +92,20 @@ public class QueueWithNextOut extends Queue {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        QueueWithNextOut newObject = (QueueWithNextOut)super.clone(workspace);
+        newObject.nextOut.setTypeAtLeast(newObject.input);
+        return newObject;
+    }
 
     /** If there is a token in the <i>trigger</i> port, emit on the
      *  <i>output</i> port the most recent token from the <i>input</i>

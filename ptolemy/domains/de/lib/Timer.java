@@ -1,4 +1,4 @@
-/* An actor that produces an event with a time delay specified by the input.
+/* A timer that produces an event with a time delay specified by the input.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -28,7 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.Director;
+import java.util.HashMap;
+
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -36,24 +37,27 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Timer
 /**
-   A timer actor extends TimedDelay actor and produces an event with a time 
-   delay specified by the input instead by the delay parameter.
+   A timer actor extends the DETransformer actor and produces an event with 
+   a time delay specified by its input. 
+   <p>
    When a timer actor receives an input, if the input value is bigger than 
-   0.0, it schedules itself to fire again some time later (introducing a
-   delay) to produce an output specified by the value parameter. The delay 
-   is specified by the input value. If the input value is 0.0, an output is
-   produced immediately. If there is no input token, then no output token 
-   is produced.
-   @see TimedDelay
+   0.0, the timer schedules itself to fire again some time later to produce 
+   an output specified by the value parameter. The amount of delay is 
+   specified by the input value. If the input value is 0.0, an output is 
+   produced immediately. If there is no input token, then no output is produced.
+   <p>
+   This actor is different from the {@link 
+   ptolemy.domains.de.lib.NonInterruptibleTimer} actor. If the 
+   NonInterruptibleTimer actor has not finished processing the previous input,
+   a new input has to be delayed for processing. The Timer actor begins 
+   processing inputs upon their arrival. 
 
    @author Jie Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -61,9 +65,11 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (liuj)
 */
-public class Timer extends TimedDelay {
+public class Timer extends DETransformer {
 
     /** Construct an actor with the specified container and name.
+     *  Declare that the input can only receive double tokens and the output
+     *  has a data type the same as the value parameter.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -74,9 +80,8 @@ public class Timer extends TimedDelay {
     public Timer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        delay.setVisibility(Settable.NONE);
-        input.setTypeEquals(BaseType.DOUBLE);
         value = new Parameter(this, "value", new BooleanToken(true));
+        input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeSameAs(value);
     }
 
@@ -91,26 +96,9 @@ public class Timer extends TimedDelay {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Allow type changes on the <i>value</i> parameter, and notify
-     *  the director that resolved types are invalid.
-     *  @param attribute The attribute whose type changed.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == value) {
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateResolvedTypes();
-            }
-        } else {
-            super.attributeTypeChanged(attribute);
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then links the type of the <i>value</i> parameter
-     *  to the output.
+     *  base class, links the type of the <i>value</i> parameter
+     *  to the output and sets the data type of the input to be double.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
@@ -120,12 +108,21 @@ public class Timer extends TimedDelay {
             throws CloneNotSupportedException {
         Timer newObject = (Timer)super.clone(workspace);
         newObject.output.setTypeSameAs(value);
+        newObject.input.setTypeEquals(BaseType.DOUBLE);
         return newObject;
     }
 
-    /** Read one token from the input and save it so that the
-     *  postfire method can produce an output.
-     *  @exception IllegalActionException If there is no director.
+    /** Read one token from the input. If the value of the input is bigger than
+     *  0.0, save the input to be processed in the postfire method. Otherwise, 
+     *  check whether there is any output scheduled to be produced at the 
+     *  current time. If there is one, send out that output and save the 
+     *  current input for future processing in the postfire method. If there 
+     *  is no output to produce and the input value is 0.0, send an output 
+     *  immediately and reset the current input to null, indicating no further 
+     *  processing of the current input is necessary.
+     *  
+     *  @exception IllegalActionException If there is no director, or can not
+     *  send or get tokens from ports.
      */
     public void fire() throws IllegalActionException {
         _delay = -1.0;
@@ -157,5 +154,67 @@ public class Timer extends TimedDelay {
             _currentInput = null;
         }
     }
+
+    /** Initialize the internal states of this actor.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _currentInput = null;
+        _currentOutput = null;
+        _delayedTokens = new HashMap();
+    }
+
+    /** Update the internal states of this actor. If the current input 
+     *  is not processed in the fire method, schedule a refiring of this
+     *  actor to produce an output in a future time, 
+     * (the current model time + delay specified by the input value).  
+     * 
+     *  @exception IllegalActionException If scheduling to refire cannot
+     *  be performed or the superclass throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+       Time currentTime = getDirector().getModelTime();
+       Time delayToTime = currentTime.add(_delay);
+       // Remove the token that is already sent at the current time.
+       if (_delayedTokens.size() > 0 && 
+           _currentOutput != null) {
+           _delayedTokens.remove(currentTime);
+       }
+       // If the current input is processed, schedule a future firing
+       // to process it.
+       if (_currentInput != null) {
+           _delayedTokens.put(delayToTime, _currentInput);
+           getDirector().fireAt(this, delayToTime);
+       }
+       return super.postfire();
+    }    
+
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     */
+    public void pruneDependencies() {
+        super.pruneDependencies();
+        removeDependency(input, output);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    /** The amount of delay.
+     */ 
+    protected double _delay;
+
+    /** A hash map to store the delayed tokens.
+    */
+    protected HashMap _delayedTokens;
+
+    /** Current input.
+     */
+    protected Token _currentInput;
+    
+    /** Current output.
+     */
+    protected Token _currentOutput;
 
 }

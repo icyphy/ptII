@@ -42,12 +42,9 @@ import ptolemy.kernel.util.Workspace;
    This actor extends from the TimedDelay actor.
    It works in a similar way as the TimedDelay actor except that the 
    amount of time delayed is specified by an incoming token through 
-   the delay port parameter.
+   the delay port (a parameter port).
 
-   @see ptolemy.actor.util.FunctionDependency
    @see ptolemy.domains.de.lib.TimedDelay
-   @see ptolemy.domains.de.lib.Server
-   @see ptolemy.domains.sdf.lib.SampleDelay
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
@@ -57,8 +54,7 @@ import ptolemy.kernel.util.Workspace;
 public class VariableDelay extends TimedDelay {
 
     /** Construct an actor with the specified container and name.
-     *  Specify the IODependence attribute of the input and output ports.
-     *  @param container The composite actor to contain this one.
+     *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -68,12 +64,6 @@ public class VariableDelay extends TimedDelay {
     public VariableDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
- 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,14 +86,12 @@ public class VariableDelay extends TimedDelay {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         VariableDelay newObject = (VariableDelay)super.clone(workspace);
-        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
-    /** Read one token from the input and save it so that the
-     *  postfire method can produce it to the output.
-     *  Read one token from the delay input, if there is any.
-     *  Use the new delay for later input tokens.
+    /** Update the delay parameter from the delay port and ensure the delay 
+     *  is not negative. Call super.fire method to consume inputs and generate
+     *  outputs. 
      *  @exception IllegalActionException If there is no director, 
      *  or a negative delay is received.
      */
@@ -141,6 +129,5 @@ public class VariableDelay extends TimedDelay {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeSameAs(input);
     }
 }
