@@ -31,7 +31,7 @@
 
 ME =		ptolemy/util
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../..
@@ -56,7 +56,7 @@ EXTRA_SRCS =	$(JSRCS)
 # want make checkjunk to barf on them.
 # Don't include DIRS here, since demo is in DIRS, so 'make sources' will
 # try to run 'make demo', which is wrong.
-MISC_FILES =	#$(DIRS)
+MISC_FILES =	test #$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
