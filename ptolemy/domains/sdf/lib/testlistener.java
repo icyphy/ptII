@@ -15,6 +15,8 @@ public class testlistener implements ExecutionListener {
      */
     public void executionError(ExecutionEvent event) {
         Debug.println("testlistener: executionError");
+        Exception e = event.getException();
+        e.printStackTrace();
     }
 
     /** Called to report a successful pause of execution
@@ -44,7 +46,7 @@ public class testlistener implements ExecutionListener {
     /** Called to report that the current iteration finished and 
      *  the wrapup sequence completed normally.
      */
-    public void executionWrappedup(ExecutionEvent event) {
+    public void executionFinished(ExecutionEvent event) {
         Debug.println("testlistener: executionWrappedup");
     }
 
