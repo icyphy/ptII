@@ -6,6 +6,8 @@
   </doc>
   <import source="../../actor/lib/genericentities.xml"/>
   <import source="../../domains/sdf/lib/sdfentities.xml"/>
+  <import source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
   <entity name="generic" class=".generic"/>
   <entity name="sdf" class=".sdf"/>
+  <entity name="sdfvq" class=".sdfvq"/>
 </class>
