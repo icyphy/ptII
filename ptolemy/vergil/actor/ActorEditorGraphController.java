@@ -328,8 +328,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     private PortDialogFactory _portDialogFactory;
 
     /** The interactor for creating new relations. */
-    private RelationCreator _relationCreator;  // For control-click
-    //  private RelationCreator _relationCreator2;  // For shift-click
+    private RelationCreator _relationCreator; 
 
     /** The filter for shift operations. */
     private MouseFilter _shiftFilter = new MouseFilter(
