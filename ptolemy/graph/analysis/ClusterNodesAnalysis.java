@@ -73,7 +73,7 @@ public class ClusterNodesAnalysis extends Analysis {
 
     /** Construct an instance of this class with a given analyzer.
      *
-     *  @param analyzer The analyzer to use.
+     *  @param analyzer The default Analyzer.
      */
     public ClusterNodesAnalysis(ClusterNodesTransformer analyzer) {
         super(analyzer);;

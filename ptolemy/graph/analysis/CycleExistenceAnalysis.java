@@ -58,7 +58,7 @@ public class CycleExistenceAnalysis extends Analysis {
 
     /** Construct an instance of this class with a given analyzer.
      *
-     *  @param analyzer The analyzer to use
+     *  @param analyzer The default Analyzer.
      */
     public CycleExistenceAnalysis(CycleExistenceAnalyzer analyzer) {
         super(analyzer);
