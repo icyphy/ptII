@@ -249,6 +249,11 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	        TypedIOPort port =
 			(TypedIOPort)farRec[channelindex][j].getContainer();
 	        Class farType = port.getResolvedType();
+
+		// farType might be "Token", since the base class Token
+		// does not have a convert method, the convert method
+		// should only be invoked if the token being tranported
+		// is not an instance of farType.
 	        if (farType.isInstance(token)) {
                     farRec[channelindex][j].put(token);
                 } else {
