@@ -341,6 +341,9 @@ public class FSMActor extends CompositeEntity
                 TypedActor[] refinements = _currentState.getRefinement();
                 //FIXME: we assume there is only one refinement.
                 // If there are many refinements, we choose the first one.
+                if (refinements == null) {
+                    return null; 
+                }
                 if (refinements.length > 0) {
                     _functionDependency = refinements[0].getFunctionDependencies();
                 } else {
