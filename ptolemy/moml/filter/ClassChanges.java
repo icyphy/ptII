@@ -127,7 +127,7 @@ public class ClassChanges implements MoMLFilter {
 	while (classNames.hasNext()) {
 	    String className = (String)classNames.next();
 	    results.append("\t" + className + "\t -> "
-                    + _classChanges.get(className));
+                    + _classChanges.get(className) + "\n");
 	}
 	return results.toString();
     }
