@@ -326,6 +326,39 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sr.kernel.Director",
                 srDirectorClassChanges);
 
+        // There is only one BreakpointODESolver. Some old models have the
+        // wrong choices of break point ODE solvers. The following filters 
+        // remove them.
+        // CTEmbeddedDirector
+        HashMap CTEmbeddedDirectorClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        CTEmbeddedDirectorClassChanges.put("breakpointODESolver", null);
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.ct.kernel.CTEmbeddedDirector",
+                CTEmbeddedDirectorClassChanges);
+
+        // CTMixedSignalDirector
+        HashMap ctMixedSignalDirectorClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        ctMixedSignalDirectorClassChanges.put("breakpointODESolver", null);
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.ct.kernel.CTMixedSignalDirector",
+                ctMixedSignalDirectorClassChanges);
+
+        // CTMultiSolverDirector
+        HashMap CTMultiSolverDirectorClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        CTMultiSolverDirectorClassChanges.put("breakpointODESolver", null);
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.ct.kernel.CTMultiSolverDirector",
+                CTMultiSolverDirectorClassChanges);
+
         // ModalModel
         HashMap modalModelClassChanges = new HashMap();
 
@@ -346,7 +379,6 @@ public class PropertyClassChanges implements MoMLFilter {
         // LevelCrossingDetector
         HashMap levelCrossingDetectorClassChanges = new HashMap();
         levelCrossingDetectorClassChanges.put("useEventValue", null);
-        levelCrossingDetectorClassChanges.put("useDefaultEventValue", null);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.ct.lib.LevelCrossingDetector",
                 levelCrossingDetectorClassChanges);
 
