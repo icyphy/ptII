@@ -39,6 +39,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.unit.UnitSystem;
+import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 
 import java.util.Arrays;
@@ -92,7 +93,7 @@ public abstract class ScalarToken extends Token {
      */
     public final ScalarToken absolute() {
         ScalarToken result = _absolute();
-        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
     }
 
@@ -827,60 +828,7 @@ public abstract class ScalarToken extends Token {
      *  @return A string representation of the units of this token.
      */
     public String unitsString() {
-        if (_isUnitless(_unitCategoryExponents)) {
-            return "";
-        }
-
-        String positiveUnits = "";
-        String negativeUnits = "";
-        boolean justOnePositive = true;
-        boolean justOneNegative = true;
-        for (int i = 0; i<_unitCategoryExponents.length; i++) {
-            int exponent = _unitCategoryExponents[i];
-            if (exponent != 0) {
-                String baseString = null;
-                baseString = UnitSystem.getBaseUnitName(i);
-                if (exponent > 0) {
-                    for (int j = 0; j < exponent; j++) {
-                        if (positiveUnits.equals("")) {
-                            positiveUnits = baseString;
-                        } else {
-                            positiveUnits += " * " + baseString;
-                            justOnePositive = false;
-                        }
-                    }
-                } else {
-                    for (int j = 0; j < -exponent; j++) {
-                        if (negativeUnits.equals("")) {
-                            negativeUnits = baseString;
-                        } else {
-                            negativeUnits += " * " + baseString;
-                            justOneNegative = false;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (positiveUnits.equals("") && negativeUnits.equals("")) {
-            return "";
-        }
-
-        if (positiveUnits.equals("")) {
-            positiveUnits = "1";
-        } else if (justOnePositive) {
-            positiveUnits = positiveUnits;
-        } else {
-            positiveUnits = "(" + positiveUnits + ")";
-        }
-
-        if (negativeUnits.equals("")) {
-            return positiveUnits;
-        } else if (justOneNegative) {
-            return positiveUnits + " / " + negativeUnits;
-        } else {
-            return positiveUnits + " / (" + negativeUnits + ")";
-        }
+        return UnitUtilities.unitsString(_unitCategoryExponents);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -918,7 +866,8 @@ public abstract class ScalarToken extends Token {
      *   if the result is unitless.
      */
     protected int[] _addCategoryExponents(ScalarToken token) {
-        return _addCategoryExponents(token._unitCategoryExponents);
+        return UnitUtilities.addUnitsArray(
+                _unitCategoryExponents, token._unitCategoryExponents);
     }
 
     /** Return a copy of the unit category exponents array. If this
@@ -927,14 +876,7 @@ public abstract class ScalarToken extends Token {
      *   exponents of this token.
      */
     protected int[] _copyOfCategoryExponents() {
-        if (_isUnitless()) {
-            return null;
-        }
-
-        int length = _unitCategoryExponents.length;
-        int[] exponents = new int[length];
-        System.arraycopy(_unitCategoryExponents, 0, exponents, 0, length);
-        return exponents;
+        return UnitUtilities.copyUnitsArray(_unitCategoryExponents);
     }
 
     /** Return true if the units of this token are the same as that of the
@@ -944,42 +886,8 @@ public abstract class ScalarToken extends Token {
      *   argument token; false otherwise.
      */
     protected boolean _areUnitsEqual(ScalarToken scalarToken) {
-        boolean isThisUnitless = _isUnitless(this._unitCategoryExponents);
-        boolean isArgumentUnitless =
-            _isUnitless(scalarToken._unitCategoryExponents);
-
-        // Either this token, or the argument token, or both have non null
-        // exponent arrays.
-        if (isThisUnitless && isArgumentUnitless) {
-            return true;
-        } else if (isThisUnitless || isArgumentUnitless) {
-            // one is unitless, the other is not.
-            return false;
-        } else {
-            // both have units.
-            int thisLength = _unitCategoryExponents.length;
-            int argumentLength = scalarToken._unitCategoryExponents.length;
-            int shorterLength = (thisLength <= argumentLength) ? thisLength :
-                argumentLength;
-            for (int i = 0; i < shorterLength; i++) {
-                if (_unitCategoryExponents[i] !=
-                        scalarToken._unitCategoryExponents[i]) {
-                    return false;
-                }
-            }
-
-            for (int i = shorterLength; i < thisLength; i++) {
-                if (_unitCategoryExponents[i] != 0) {
-                    return false;
-                }
-            }
-            for (int i = shorterLength; i < argumentLength; i++) {
-                if (scalarToken._unitCategoryExponents[i] != 0) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return UnitUtilities.areUnitArraysEqual(
+                _unitCategoryExponents, scalarToken._unitCategoryExponents);
     }
 
     /** Return a new token whose value is the value of this token
@@ -1040,7 +948,7 @@ public abstract class ScalarToken extends Token {
      *  @return True if this token does not have a unit.
      */
     protected boolean _isUnitless() {
-        return _isUnitless(_unitCategoryExponents);
+        return UnitUtilities.isUnitless(_unitCategoryExponents);
     }
 
     /** Return a new token whose value is the value of this token
@@ -1093,17 +1001,8 @@ public abstract class ScalarToken extends Token {
      *  result is unitless.
      */
     protected int[] _subtractCategoryExponents(ScalarToken token) {
-        // negate the exponents of the argument token and add to
-        // this token.
-        int[] negation = null;
-        if ( !token._isUnitless()) {
-            int length = token._unitCategoryExponents.length;
-            negation = new int[length];
-            for (int i = 0; i < length; i++) {
-                negation[i] = -token._unitCategoryExponents[i];
-            }
-        }
-        return _addCategoryExponents(negation);
+        return UnitUtilities.subtractUnitsArray(
+                _unitCategoryExponents, token._unitCategoryExponents);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1128,57 +1027,6 @@ public abstract class ScalarToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // Add the exponent array of this token with the argument array,
-    // and return the result in a new array.
-    private int[] _addCategoryExponents(int[] exponents) {
-        boolean isThisUnitless = _isUnitless(this._unitCategoryExponents);
-        boolean isArgumentUnitless = _isUnitless(exponents);
-
-        if (isThisUnitless && isArgumentUnitless) {
-            return null;
-        }
-
-        // Either this token, or the argument token, or both have non null
-        // exponent arrays.
-        if (isThisUnitless) {
-            // exponents is not unitless.
-            int length = exponents.length;
-            int[] result = new int[length];
-            System.arraycopy(exponents, 0, result, 0, length);
-            return result;
-        }
-        if (isArgumentUnitless) {
-            // this._unitCategoryExponents is not unitless.
-            int length = this._unitCategoryExponents.length;
-            int[] result = new int[length];
-            System.arraycopy(_unitCategoryExponents, 0, result, 0, length);
-            return result;
-        }
-
-        // both have units.
-        int thisLength = _unitCategoryExponents.length;
-        int argumentLength = exponents.length;
-        int[] result;
-        if (thisLength <= argumentLength) {
-            result = new int[argumentLength];
-            System.arraycopy(exponents, 0, result, 0, argumentLength);
-            for (int i = 0; i < thisLength; i++) {
-                result[i] += _unitCategoryExponents[i];
-            }
-        } else {
-            result = new int[thisLength];
-            System.arraycopy(_unitCategoryExponents, 0, result, 0, thisLength);
-            for (int i = 0; i < argumentLength; i++) {
-                result[i] += exponents[i];
-            }
-        }
-
-        if (_isUnitless(result)) {
-            return null;
-        }
-        return result;
-    }
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of this Token.  It is assumed that
@@ -1388,17 +1236,5 @@ public abstract class ScalarToken extends Token {
         }
         result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
-    }
-
-    // Return true if this token does not have a unit.
-    private boolean _isUnitless(int[] exponents) {
-        if (exponents != null) {
-            for (int i = 0; i < exponents.length; i++) {
-                if (exponents[i] != 0) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }
