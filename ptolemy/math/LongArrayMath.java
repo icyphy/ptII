@@ -518,13 +518,13 @@ public class LongArrayMath {
     }
 
     /** Return a new array of longs produced by scaling the input
-     *  array elements by scalefactor.
+     *  array elements by scaleFactor.
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final long[] scale(long[] array, long scalefactor) {
+    public static final long[] scale(long[] array, long scaleFactor) {
         long[] retval = new long[array.length];
         for (int i = 0; i < array.length; i++) {
-            retval[i] = scalefactor * array[i];
+            retval[i] = scaleFactor * array[i];
         }
         return retval;
     }

@@ -479,17 +479,17 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a scalefactor.
+     *  by a scaleFactor.
      */
     public static final int[][] multiply(final int[][] matrix,
-            final int scalefactor) {
+            final int scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         int[][] retval = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j] * scalefactor;
+                retval[i][j] = matrix[i][j] * scaleFactor;
             }
         }
         return retval;

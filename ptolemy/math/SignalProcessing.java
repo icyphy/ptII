@@ -321,7 +321,7 @@ public class SignalProcessing {
         int size    = 1 << order;
         int twoSize = 2 << order;
 
-        // Generate scalefactors if necessary
+        // Generate scaleFactors if necessary
         if (_IDCTfactors[type][order] == null) {
             _IDCTfactors[type][order] = new Complex[twoSize];
 
@@ -359,7 +359,7 @@ public class SignalProcessing {
         Complex[] evenX = new Complex[twoSize];
         Complex[] myFactors = _IDCTfactors[type][order];
 
-        // Convert to Complex, while multiplying by scalefactors
+        // Convert to Complex, while multiplying by scaleFactors
 
         evenX[0] = myFactors[0].scale(x[0]);
         for (int k = 1; k < size; k++) {
@@ -1812,7 +1812,7 @@ public class SignalProcessing {
     private static final double _CTable[][]  = new double[32][];
     private static int _FFCTGenLimit = 0;
 
-    // Table of scalefactors for the IDCT.
+    // Table of scaleFactors for the IDCT.
     private static final Complex _IDCTfactors[][][] =
     new Complex[DCT_TYPES][32][];
 

@@ -502,17 +502,17 @@ public class FloatMatrixMath {
 
 
     /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a scalefactor.
+     *  by a scaleFactor.
      */
     public static final float[][] multiply(final float[][] matrix,
-            final float scalefactor) {
+            final float scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         float[][] retval = new float[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j] * scalefactor;
+                retval[i][j] = matrix[i][j] * scaleFactor;
             }
         }
         return retval;

@@ -485,17 +485,17 @@ public class LongMatrixMath {
 
 
     /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a scalefactor.
+     *  by a scaleFactor.
      */
     public static final long[][] multiply(final long[][] matrix,
-            final long scalefactor) {
+            final long scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         long[][] retval = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j] * scalefactor;
+                retval[i][j] = matrix[i][j] * scaleFactor;
             }
         }
         return retval;

@@ -524,13 +524,13 @@ public class IntegerArrayMath {
     }
 
     /** Return a new array of ints produced by scaling the input
-     *  array elements by scalefactor.
+     *  array elements by scaleFactor.
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final int[] scale(int[] array, int scalefactor) {
+    public static final int[] scale(int[] array, int scaleFactor) {
         int[] retval = new int[array.length];
         for (int i = 0; i < array.length; i++) {
-            retval[i] = scalefactor * array[i];
+            retval[i] = scaleFactor * array[i];
         }
         return retval;
     }
