@@ -46,7 +46,9 @@ TCL_SRCS = \
 
 JSRCS = \
 	ComSystem.java \
+	ExpressionApplet.java \
 	VideoTest.java \
+	SDFApplet.java \
 	SDFdemo.java \
 	SDFdemo2.java \
 	SDFdemo3.java

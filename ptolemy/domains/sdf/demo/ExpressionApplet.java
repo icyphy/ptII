@@ -44,14 +44,14 @@ import ptolemy.domains.sdf.lib.*;
 import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ComSystem
+//// ExpressionApplet
 /**
 An applet that uses Ptolemy II SDF domain.
 
 @author Edward A. Lee
 @version $Id$
 */
-public class ComSystem extends SDFApplet {
+public class ExpressionApplet extends SDFApplet {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -63,34 +63,29 @@ public class ComSystem extends SDFApplet {
         try {
             // Create and configure ramp
             Ramp ramp = new Ramp(_toplevel, "ramp");
-            ramp.init.setToken(new DoubleToken(0.0));
-            ramp.step.setToken(new DoubleToken(0.1*Math.PI));
+            ramp.init.setToken(new DoubleToken(1.0));
+            ramp.step.setToken(new DoubleToken(1.0));
 
-            // Create and configure sin
-            Sin sin = new Sin(_toplevel, "sin");
-
-            // Create and configure noise source
-            Gaussian noise = new Gaussian(_toplevel, "noise");
-            noise.stddev.setToken(new DoubleToken(0.1));
-
-            // Create the adder.
-            Add add = new Add(_toplevel, "add");
+            // Create and configure expr
+            Expression expr = new Expression(_toplevel, "expr");
+            TypedIOPort exprinput = new TypedIOPort(expr,"input");
+            expr.expression.setToken(new StringToken("3.0*input"));
 
             // Create and configure plotter
             TimePlot myplot = new TimePlot(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
-            myplot.plot.setTitle("Noisy Sinusoid");
-            myplot.plot.setXRange(0.0, 20.0);
+            myplot.plot.setMarksStyle("dots");
+            myplot.plot.setTitle("Eye Diagram");
+            myplot.plot.setXRange(0.0, 10.0);
             myplot.plot.setWrap(true);
-            myplot.plot.setYRange(-1.3, 1.3);
+            myplot.plot.setYRange(-100.0, 1.0);
             myplot.plot.setPointsPersistence(100);
+
             myplot.timed.setToken(new BooleanToken(false));
 
-            _toplevel.connect(ramp.output, sin.input);
-            _toplevel.connect(sin.output, add.input);
-            _toplevel.connect(noise.output, add.input);
-            _toplevel.connect(add.output, myplot.input);
+            _toplevel.connect(ramp.output, exprinput, "R1");
+            _toplevel.connect(expr.output, myplot.input, "R2");
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
