@@ -31,7 +31,7 @@ import ptolemy.kernel.mutation.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
-import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
+//import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.data.*;
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -52,7 +52,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector() {
         super();
-        _eventQueue = new TotallyOrderedSet(new DoubleCQComparator());
+        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
 
     /** Construct a director in the default workspace with the given name.
@@ -63,7 +63,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector(String name) {
         super(name);
-        _eventQueue = new TotallyOrderedSet(new DoubleCQComparator());
+        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -76,7 +76,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector(Workspace workspace, String name) {
         super(workspace, name);
-        _eventQueue = new TotallyOrderedSet(new DoubleCQComparator());
+        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -121,7 +121,8 @@ public class PNDirector extends ProcessDirector {
     public synchronized void fireAfterDelay(Actor actor, double delay) 
             throws IllegalActionException {
         double newfiringtime = getCurrentTime()+delay;
-        _eventQueue.insert(new Double(newfiringtime));
+        _eventQueue.put(new Double(newfiringtime), actor);
+        //_eventQueue.insert(new Double(newfiringtime));
         //FIXME: Blocked on a delay
         delayBlock();
         try {
@@ -129,7 +130,8 @@ public class PNDirector extends ProcessDirector {
                 wait(); //Should I call workspace().wait(this) ?
             }
         } catch (InterruptedException e) {}
-        delayUnblock();
+        //System.out.println("Currenttime is "+_currenttime);
+        //delayUnblock();
         //FIXME: Unblocked on a delay
     }
 
@@ -258,6 +260,9 @@ public class PNDirector extends ProcessDirector {
     public void queueMutation(Mutation mutation) {
 	try {
 	    super.queueMutation(mutation);
+            //FIXME: I am not sure about making a local copy.
+            //What if two threads try to make mutations together and list gets
+            //corrupted?
 	    _pausedRecs = setPause();
 	    synchronized(this) {
 		_urgentMutations = true;
@@ -508,11 +513,38 @@ public class PNDirector extends ProcessDirector {
                 //Advance time to next possible time.
                 synchronized(this) {
                     _deadlock = false;
-                    if (!_eventQueue.isEmpty()) {
-                        _currenttime = ((Double)_eventQueue.take()).doubleValue();
-                        //System.out.println("Currenttime is "+_currenttime);
-                        notifyAll();
+                    try {
+                        _eventQueue.take();
+                        _currenttime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
+                    } catch (IllegalAccessException e) {
+                        throw new IllegalActionException(this, "Inconsistency"+
+                                " in number of actors blocked on delays count"+
+                                " and the entries in the CalendarQueue");
                     }
+                    
+                    delayUnblock();
+                    boolean sametime = true;
+                    while (sametime) {
+                        if (!_eventQueue.isEmpty()) {
+                            try {
+                                Actor actor = (Actor)_eventQueue.take();
+                                
+                                double newtime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
+                                if (newtime != _currenttime) {
+                                    _eventQueue.put(new Double(newtime), actor);
+                                    sametime = false;
+                                } else {
+                                    delayUnblock();
+                                }
+                            } catch (IllegalAccessException e) {
+                                throw new InternalErrorException(e.toString());
+                            }
+                        } else {
+                            sametime = false;
+                        }
+                    }
+                    //Wake up all delayed actors
+                    notifyAll();
                 }
             }
         } else {
@@ -572,8 +604,7 @@ public class PNDirector extends ProcessDirector {
     private LinkedList _pausedRecs = new LinkedList();
     private LinkedList _writeblockedQs = new LinkedList();
     private PNActorListener _pnActorListener;
-    //FIXME: This constructor doesn't work!!
-    private TotallyOrderedSet _eventQueue; 
+    private CalendarQueue _eventQueue; 
     private double _currenttime = 0;
 }
 
