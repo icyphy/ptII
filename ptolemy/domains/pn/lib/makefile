@@ -68,7 +68,13 @@ JSRCS = \
 	PNRDDecider.java \
 	PNRDDecoder.java \
 	PNRDInfo.java \
-	PNRDMainController.java 
+	PNRDMainController.java \
+	PNImageSink.java \
+	PNImageSource.java \
+	MatrixPacker.java \
+	MatrixUnpacker.java \
+	RLDecoder.java \
+	RLEncoder.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
