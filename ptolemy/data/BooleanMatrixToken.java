@@ -295,8 +295,70 @@ public class BooleanMatrixToken extends MatrixToken {
         return code;
     }
 
+    /** Return a new Token representing the left multiplicative
+     *  identity. The returned token contains an identity matrix
+     *  whose dimensions are the same as the number of rows of
+     *  the matrix contained in this token.
+     *  @return A new BooleanMatrixToken containing the left multiplicative
+     *   identity.
+     */
+    public Token one() {
+        try {
+            return new BooleanMatrixToken(_createIdentity(_rowCount));
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("BooleanMatrixToken.one: "
+                    + "Cannot create identity matrix.");
+        }
+    }
+
+    /** Return a new Token representing the right multiplicative
+     *  identity. The returned token contains an identity matrix
+     *  whose dimensions are the same as the number of columns of
+     *  the matrix contained in this token.
+     *  @return A new BooleanMatrixToken containing the right multiplicative
+     *   identity.
+     */
+    public Token oneRight() {
+        try {
+            return new BooleanMatrixToken(_createIdentity(_columnCount));
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("BooleanMatrixToken.oneRight: "
+                    + "Cannot create identity matrix.");
+        }
+    }
+
+    /** Return a new Token representing the additive identity.
+     *  The returned token contains a matrix whose elements are
+     *  all zero, and the size of the matrix is the same as the
+     *  matrix contained in this token.
+     *  @return A new IntMatrixToken containing the additive identity.
+     */
+    public Token zero() {
+        try {
+            return new BooleanMatrixToken(new boolean [_rowCount][_columnCount]);
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("BooleanMatrixToken.zero: "
+                    + "Cannot create zero matrix.");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
+
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    protected boolean [][] _createIdentity(int dim) {
+        boolean [][] a = new boolean[dim][dim];
+        // we rely on the fact Java fills the allocated matrix with false.
+        for (int i = 0; i < dim; i++) {
+            a[i][i] = true;
+        }
+        return a;
+    }
 
     /** Test for closeness of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
