@@ -2,7 +2,7 @@
 #
 # @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile	1.8 03/01/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
@@ -32,7 +32,7 @@
 # Root of the Java directory
 ROOT =		../../../../..
 
-ME =		java/pt/domains/pn/kernel
+ME =		java/pt/domains/pn/stars
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -41,8 +41,8 @@ include $(CONFIG)
 DIRS = 		demo #test doc
 
 # Used to build zip files
-JPACKAGE = 	pt.domains.pn.kernel
-JPACKAGE_DIR = 	pt/domains/pn/kernel
+JPACKAGE = 	pt.domains.pn.stars
+JPACKAGE_DIR = 	pt/domains/pn/stars
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
@@ -52,18 +52,10 @@ CLASSPATH = ../../../..
 
 JSRCS = \
 	PNAlternate.java \
-	PNExecutive.java \
-	PNInPort.java \
 	PNInterleave.java \
-	PNInterleavingExample.java \
-	PNOutPort.java \
-	PNPort.java \
-	PNPrimeExample.java \
 	PNRamp.java \
 	PNRedirect.java \
-	PNSieve.java \
-	PNStar.java \
-	PNUniverse.java 
+	PNSieve.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
