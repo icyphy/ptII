@@ -57,7 +57,7 @@ This actor extends the TypedCompositeActor. It contains another model
 that is defined as a Ptolemy composite actor to its inputs. Rather than
 specified before executing, the inside model can be dynamically changed
 either locally or remotely. Currently, the model that dynamically applied
-to this actor is specified by a moml string from the <i>modelString<i>
+to this actor is specified by a moml string from the <i>modelString</i>
 input.
 
 Currently, it only accepts models with one input and one output, and
@@ -65,7 +65,7 @@ requires the model name its input port as "input", output port as "output".
 
 @author Yang Zhao
 @version $Id$
-@since Ptolemy II 3.0
+@since Ptolemy II 3.1
 */
 public class MobileModel extends TypedCompositeActor {
 
