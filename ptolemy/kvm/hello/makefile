@@ -74,7 +74,15 @@ install: jclass subinstall $(PTCLASSJAR)
 	cp $(BINNAME).prc $(PALM_ADD_ON_DIR)
 
 Hello.prc: Hello.class
-	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.hello.Hello
+	$(JAVA) \
+	 -classpath "/j2me_cldc/tools/palm/src;$(CLASSPATH)" \
+	 palm.database.MakePalmApp \
+	-v -v \
+	-version "1.0" \
+	-bootclasspath $(J2ME_CLDC)/bin/api/classes  \
+	-classpath "$(CLASSPATH)" \
+	ptolemy.kvm.hello.Hello
+	# java palm.database.MakePalmApp -classpath "$(CLASSPATH)" \ ptolemy.kvm.hello.Hello
 
 depend:
 	@echo "no dependencies in this directory"
