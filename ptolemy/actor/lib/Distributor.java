@@ -1,5 +1,4 @@
-/* The actor that distributes its input data cyclically to different
-   output ports
+/* A polymorphic distributor.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -40,109 +39,135 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Distributor
 /**
-The actor reads tokens from its input stream and redirects those tokens to
-the different relations connected to the output port in a cyclic way.
-This actor is a polymorphic actor and should work with most of the domains.
-It reads a token from the input stream and writes a token to an output
-relation. On reading the next token from the input, it sends this token to the
-next relation. The order of the relations on the output side is the order
-of their creation.
+A polymorphic distributor.
 
-This actor can handle mutations of some types.
-The smallest granularity of mutations that this can handle are the mutations
-that can occur between every read from the input channel.
+The distributor has an input port and an output port which is a multiport.
+The types of the ports are undeclared and will be resolved by the type 
+resolution mechanism. During each call to the fire method of the actor, the 
+actor reads tokens from the input channel if it has tokens and 
+redirects them to the output channels. The order in which the tokens are sent 
+to the various output channels is determined by the order in which they were 
+connected to the port according to the behaviour of a multiport.
+<p>
+This actor is not strict. If no input tokens are
+available at all, then no output is produced. If there are more tokens at the
+input channel than required for the current firing, then the tokens are left
+on the input channel for future firings.
 
+<p>
 In case of domains like SDF, which need to know the token consumption or
 production rate for all ports before they can construct a firing schedule,
 this actor defines and sets three different port parameters, namely:
 <UL>
-<LI>TokenConsumptionRate
-<LI>TokenProductionRate
-<LI>TokenInitProduction
+<LI>TokenConsumptionRate =  number of output channels (for the input port).
+<LI>TokenProductionRate = 1 (for the output port).
+<LI>TokenInitProduction = 0 (for output port)
 </UL>
-These parameters can be ignored by domains that do not require this information.
+These parameters are set in the initialize() method of the actor and can be 
+safely used only after a call to initialize(). These parameters can be ignored
+by domains that do not require this information.
+<p>
+In the current form, this actor might not be safe with mutations for some of 
+the domains like SDF, as the SDF parameters are set only by a call to the 
+initialize() method.
 
-These parameters are safe for computing a schedule only after a call to the
-initialize() method of the actor, as they are computed and set in that method.
 
 @author Mudit Goel
 @version $Id$
 */
-public class Distributor extends AtomicActor {
+public class Distributor extends TypedAtomicActor {
 
-    /** Constructor. Creates ports and makes the output port a multiport.
+    /** Construct an actor in the specified container with the specified
+     *  name. Create ports and make the input port a multiport. Create 
+     *  the actor parameters.
      *
-     *  @param container CompositeActor containing this actor
-     *  @param name Name of this actor.
-     *  @exception IllegalActionException If one of the
-     *  called methods throws it.
-     *  @exception NameDuplicationException If more than one port
-     *  with the same name is added to the actor or if another actor with an
-     *  an identical name already exists.
+     *  @param container The container.
+     *  @param name This is the name of this distributor within the container.
+     *  @exception NameDuplicationException If an actor
+     *  with an identical name already exists in the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *  by the proposed container.
      */
-    public Distributor(CompositeActor container, String name)
+    public Distributor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         //These parameters are required for SDF
-        Parameter param = new Parameter(_input, "TokenConsumptionRate",
+        Parameter param = new Parameter(input, "TokenConsumptionRate",
                 new IntToken(1));
-        param = new Parameter(_input,"TokenProductionRate",
-                new IntToken(1));
-        param = new Parameter(_input,"TokenInitProduction",
-                new IntToken(0));
 
-        _output = new IOPort(this, "output", false, true);
-        _output.setMultiport(true);
-        //These parameters are required for SDF
-        param = new Parameter(_output, "TokenConsumptionRate",
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        param = new Parameter(output,"TokenProductionRate",
                 new IntToken(1));
-        param = new Parameter(_output,"TokenProductionRate",
-                new IntToken(1));
-        param = new Parameter(_output,"TokenInitProduction",
+        param = new Parameter(output,"TokenInitProduction",
                 new IntToken(0));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    // Input ports
+    public TypedIOPort input;
+    // Output port
+    public TypedIOPort output;
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reads one token from its input port and writes this token to
-     *  one of the relations  connected to the output port.
-     *  Needs to read one token for every relation connected to the
-     *  output port.
+    /** Clone the actor into the specified workspace. This calls the base
+     *  class method and sets the public variables to point to the new ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            Distributor newobj = (Distributor)super.clone(ws);
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+    
+    /** Read as many tokens from its input port as the width of its output
+     *  port. Write one token to each of the output channels. If  there are
+     *  more tokens than required on the input channel, then they are left
+     *  in the channel for future firings. If there are less tokens than
+     *  required for the firing, then the behavior is specified by the 
+     *  behavior of the get method in the receivers of that domain.
+     *  The order in which the tokens are
+     *  written to various channels is according to the behaviour of a 
+     *  multiport. 
      *
      *  @exception IllegalActionException If there is an error in reading
      *  data from the input or writing data to the output.
      */
     public void fire() throws IllegalActionException {
-        for (int i = 0; i < _output.getWidth(); i++) {
-            _output.send(i, _input.get(0));
+        for (int i = 0; i < output.getWidth(); i++) {
+            output.send(i, input.get(0));
         }
     }
 
-    /** Initializes the actor. Sets the parameter representing the number of
-     *  tokens that the input port will consume. This parameter is required
-     *  only for domains like SDF that need this information to calculate
-     *  a static schedule.
+    /** Initialize the actor. Call the base class method. Set the parameter 
+     *  representing the number of tokens that the input port will consume to
+     *  the number of output channels (as returned by the getWidth() method of 
+     *  the port). This parameter is required only for domains like SDF that 
+     *  need this information to calculate a static schedule.
      *
      *  @exception IllegalActionException Not thrown in this class
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        Parameter param = (Parameter)_input.getAttribute("Token " +
-                "Consumption Rate");
-        param.setToken(new IntToken(_output.getWidth()));
+        Parameter param = (Parameter)input.getAttribute("Token" +
+                "ConsumptionRate");
+        param.setToken(new IntToken(output.getWidth()));
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The input port
-    private IOPort _input;
-    // The output port
-    private IOPort _output;
 }
 
 
