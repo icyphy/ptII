@@ -335,7 +335,7 @@ $(HYVISUAL_SRC_TAR): src_jar/hyvisual$(VERSION)
 	(cd src_jar; \
 		cp $(PTII)/doc/design/hyvisual.pdf \
 			hyvisual$(VERSION)/doc/design/hyvisual.pdf; \
-		$(TAR) -cf ../../hyvisual$(VERSION).src.tar.gz \
+		$(TAR) -cf ../hyvisual$(VERSION).src.tar.gz \
 		hyvisual$(VERSION) \
 	)
 
