@@ -106,7 +106,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _ND_36 = new ND_36(_toplevel,"ND_36");
 	    _ND_86 = new ND_86(_toplevel,"ND_86");
 
-	    _copy = new Pass12(_toplevel,"Copy");
+
 	    _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
 
             _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
@@ -130,13 +130,12 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _toplevel.connect(_ND_66.out3, _ND_66.in2);
 	    _toplevel.connect(_ND_66.out4, _ND_66.in4);
 
-	    _toplevel.connect(_ND_86.out0, _copy.in0);
+	    Relation t = _toplevel.connect(_ND_86.out0, _eventplot.input);
+	    _s2m.input.link( t );
 
-
-	    _toplevel.connect(_copy.out0, _eventplot.input);
-	    _toplevel.connect(_copy.out1,  _s2m.input);
 	    _toplevel.connect(_s2m.output, _matrixViewer.input);
 
+            System.out.println(_toplevel.exportMoML());
             _initCompleted = true;
 
             // The 2 argument requests a go and stop button.
@@ -191,10 +190,8 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    }
 	    
 	    if ( name == "N" ) {
-
 		_s2m.dimension.
 			setToken(new IntToken((int)_query.intValue("N")));
-
 		_ND_6.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
 		_ND_14.parameter_N.
@@ -205,9 +202,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 			setToken(new IntToken((int)_query.intValue("N")));
 		_ND_86.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
-
 	    }
-
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
         }
@@ -223,7 +218,6 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
     private ND_14    _ND_14;
     private ND_36    _ND_36;
     private ND_86    _ND_86;
-    private Pass12   _copy;
  
     private MatrixViewer   _matrixViewer;
     private StreamToMatrix _s2m;
