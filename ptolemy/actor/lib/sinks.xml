@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../../moml/moml.dtd">
+
+<model name="sinks" class="ptolemy.actor.TypedCompositeActor">
+
+<class name="actors" extends="ptolemy.actor.TypedCompositeActor">
+<doc>Generic domain polymorphic sources</doc>
+
+<!-- Sources -->
+<entity name="recorder" class="ptolemy.actor.lib.Recorder">
+<rendition class="ptolemy.schematic.util.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
+<entity name="sequenceplot" class="ptolemy.actor.gui.SequencePlotter">
+<rendition class="ptolemy.schematic.util.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
+</class>
+</model>
+

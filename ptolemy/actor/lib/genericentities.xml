@@ -1,20 +1,25 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model SYSTEM "../../moml/moml.dtd">
-<model name="modulation" class="ptolemy.actor.TypedCompositeActor">
+<model name="generic" class="ptolemy.actor.TypedCompositeActor">
   <doc>
 	Generic domain polymorphic actors
   </doc>
+  <import source="sources.xml"/>
+  <import source="sinks.xml"/>
+
+  <entity name="sources" class=".sources.actors"/>
+  <entity name="sinks" class=".sinks.actors"/>
 
   <!-- Define the actors -->
   <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide">
-    <rendition class="ptolemy.schematic.util.EditorIcon">
-<!--    	<configure src="generic.transformer"/>-->
+    <rendition class="ptolemy.schematic.util.LibraryIcon">
+		<configure>generic.transformer</configure>
     </rendition>
   </entity>
   
   <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
     <rendition class="ptolemy.schematic.util.EditorIcon">
-  <!--  	<configure src="generic.sink"/> -->
+      <!--	<configure src="generic.sink"/>-->
     </rendition>
   </entity>
 
