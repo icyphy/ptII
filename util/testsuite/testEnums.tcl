@@ -1,4 +1,4 @@
-# Tcl procs for accessing Enums in pt.kernel classes
+# Tcl procs for accessing Enums in ptolemy.kernel classes
 #
 # @Author: Christopher Hylands
 #
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# This file contains Tcl procs for accessing Enums in pt.kernel classes.
+# This file contains Tcl procs for accessing Enums in ptolemy.kernel classes.
 # These procs are not included in testDefs.tcl so that we can use them
 # in other locations without including the test definitions.
 #
@@ -76,7 +76,7 @@ proc _testEnums {enummethod args} {
 		    [$enum hasMoreElements] == 1} \
 		    {} {
 		set enumelement [$enum nextElement]
-		if [ java::instanceof $enumelement pt.kernel.util.NamedObj] {
+		if [ java::instanceof $enumelement ptolemy.kernel.util.NamedObj] {
 		    lappend lresults [$enumelement getName]
 		} else {
 		    lappend lresults $enumElement

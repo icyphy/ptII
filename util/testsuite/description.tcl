@@ -1,4 +1,4 @@
-# Tcl Procs that for use with the Java pt.kernel.Nameable description() method
+# Tcl Procs that for use with the Java ptolemy.kernel.Nameable description() method
 #
 # @Author: Christopher Hylands
 #
@@ -40,13 +40,13 @@
 
 ######################################################################
 ####
-# Given a string description returned by the pt.kernel.Nameable description()
+# Given a string description returned by the ptolemy.kernel.Nameable description()
 # method, return a Tcl Blend script that will regenerate the description
 #
 # An example use would be:
 # set filename [tmpFileName ptII .dag]
 # source ExampleSystem.tcl
-# set desc [$e0 description [java::field pt.kernel.Nameable LIST_PRETTYPRINT]]]
+# set desc [$e0 description [java::field ptolemy.kernel.Nameable LIST_PRETTYPRINT]]]
 # description2DAG "Ptolemy II Entities" $filename $desc
 # 
 proc description2DAG {title filename desc} {
@@ -157,12 +157,12 @@ proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
 
 ######################################################################
 ####
-# Given a string description returned by the pt.kernel.Nameable description()
+# Given a string description returned by the ptolemy.kernel.Nameable description()
 # method, return a Tcl Blend script that will regenerate the description
 #
 # An example use would be:
 # set desc [description2TclBlend [$e0 description \
-#	[java::field pt.kernel.Nameable PRETTYPRINT]]]
+#	[java::field ptolemy.kernel.Nameable PRETTYPRINT]]]
 # eval $desc
 #
 proc description2TclBlend {descriptionString} {
@@ -189,7 +189,7 @@ proc description2TclBlend {descriptionString} {
 	set parentName [lindex $nameList [expr {[llength $nameList] - 2}]]
 
 	switch -regexp $line {
-	    ^pt.kernel.CompositeEntity {
+	    ^ptolemy.kernel.CompositeEntity {
 		if { "$parentName" == "" } {
 		    # Handle the case where the entity has no parent
 		    append results "set $name\
@@ -200,11 +200,11 @@ proc description2TclBlend {descriptionString} {
 			    \[java::new $className \$$parentName $name\]\n"
 		}
 	    }
-	    ^pt.kernel.ComponentEntity {
+	    ^ptolemy.kernel.ComponentEntity {
 		append results "set $name\
 			\[java::new $className \$$parentName $name\]\n"
 	    }
-	    ^pt.kernel.ComponentRelation {
+	    ^ptolemy.kernel.ComponentRelation {
 		# Relations appear more than once in the output
 		# of description().  This is because the Relation
 		# appears once for each port the Relation is connected to.
@@ -217,7 +217,7 @@ proc description2TclBlend {descriptionString} {
 			    \[java::new $className \$$parentName $name\]\n"
 		}
 	    }
-	    ^pt.kernel.ComponentPort {
+	    ^ptolemy.kernel.ComponentPort {
 		if {[llength $line] == 2} {
 		    # Construct a port
 		    append results "set $name\
@@ -286,7 +286,7 @@ proc getEntityByName {name} {
 
     # Do a little error checking.
     set description [$universe description \
-	    [java::field pt.kernel.Nameable CONTENTS]]
+	    [java::field ptolemy.kernel.Nameable CONTENTS]]
     set index [lsearch $description $name]
     if {$index == -1} {
 	# Not found
@@ -363,7 +363,7 @@ proc fullName2HTML {className fullName} {
 #
 proc setCurrentUniverse { universe} {
     if {[lsearch [package names] java] != -1 } {
-	if ![java::instanceof $universe pt.kernel.CompositeEntity] {
+	if ![java::instanceof $universe ptolemy.kernel.CompositeEntity] {
 	    error "$universe is not a CompositeEntity.\nIt is a:\n\
 		    [java::info class $universe]"
 	}
