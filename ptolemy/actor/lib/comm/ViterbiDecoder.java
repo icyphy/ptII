@@ -349,17 +349,16 @@ public class ViterbiDecoder extends Transformer {
 
         }
 
+        // Send all-zero tokens for the first "D" firings.
+        // If the waiting time has reached "D", the decoder starts to send
+        // the decoded bits to the output port.
         if (_flag < _depth) {
             IntToken[] initialOutput = new IntToken[_inputNumber];
             for (int i = 0; i < _inputNumber; i ++) {
                 initialOutput[i] = _tokenZero;
             }
             output.broadcast(initialOutput, _inputNumber);
-        }
-
-        // If the waiting time has reached "D", the decoder starts to send
-        // the decoded bits to the output port.
-        if (_flag >= _depth) {
+        } else {
             // make a "final" decision among minimum distances of all states.
             double minD = 0;
             int minIndex = 0;
