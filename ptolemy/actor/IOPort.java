@@ -1467,7 +1467,7 @@ public class IOPort extends ComponentPort {
         // there's no director.
         Receiver[][] receivers = getReceivers();
         boolean result = false;
-        if (channelIndex >= receivers.length) {
+        if (receivers != null && channelIndex >= receivers.length) {
             if (!isInput()) {
                 throw new IllegalActionException(this,
                         "Port is not an input port!");
