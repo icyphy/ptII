@@ -59,7 +59,7 @@ form as the following equation:
 where m and n are the number of numerator and denominator coefficients,
 respectively. This actors has two parameters -- numerator and denominator --
 containing the coefficients of the numerator and denominator in
-descending powers of s. These coefficents are double numbers.
+descending powers of s. These coefficients are double numbers.
 The order of the denominator (n) must be greater
 than or equal to the order of the numerator (m).
 <p>
@@ -67,14 +67,12 @@ This actor extends TypedCompositeActor and works as a higher-order function.
 Whenever the parameters are changed, the actor will build a transparent
 subsystem inside it using integrators, adders, and scales. This is called
 a realization of the transfer function. Notice that there are infinite
-number of realizations of a transfter function, and they are equivalent if and
+number of realizations of a transfer function, and they are equivalent if and
 only if the initial conditions are all zero. Here we choose the controllable
 canonical form and preset all initial states of the integrators to zero.
-These initial states should not be changed.
-If you need to specify initial conditions, you have to build the system
-from scratch using individual integrators. We will later suport state-
-space representation of continuous system, and setting arbitrary initial
-conditions is not a problem with the state-space representation.
+If you need to set arbitrary initial
+conditions you have to use the state-space representation, for example,
+use the LinearStateSpace actor.
 
 @author Jie Liu
 @version $Id$
@@ -107,7 +105,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         denominator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         // Do not use TypedCompositeActor as the MoML name for this actor.
-        getMoMLInfo().className = 
+        getMoMLInfo().className =
             "ptolemy.domains.ct.lib.ContinuousTransferFunction";
 
         // icon
@@ -133,13 +131,13 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     /** Single output port.
      */
     public TypedIOPort output;
-    
-    /** The coefficients of the numerator, containing an array of 
+
+    /** The coefficients of the numerator, containing an array of
      *  DoubleTokens.
      *  The default value is {1.0}.
      */
     public Parameter numerator;
-    
+
     /** The coefficients of the denominator, containing an array
      *  of DoubleTokens.
      *  The array must have a length greater
@@ -152,12 +150,12 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     ////                      public methods                          ////
 
     /** If the argument is the <i>numerator</i> or the <i>denominator</i>
-     *  parameters, request for initialization from the director if 
+     *  parameters, request for initialization from the director if
      *  there is one. Also check that the <i>denominator</i> vector
      *  cannot start with 0.
-     *  Other sanity checks, like that the denominator must have a higher 
+     *  Other sanity checks, like that the denominator must have a higher
      *  order than that of the numerator, and that the first element of the
-     *  denominator should not be zero, are done in the preinitialize() 
+     *  denominator should not be zero, are done in the preinitialize()
      *  method.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the numerator and the
@@ -188,7 +186,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                 dir.requestInitialization(this);
             }
         } else {
-             super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 
@@ -268,7 +266,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                             DoubleToken((b[i+1] - d * a[i+1])/a[0]));
                     // connections
                     nodes[i] = (IORelation)connect(integrators[i].output,
-                                feedforward[i].input, "node" + i);
+                            feedforward[i].input, "node" + i);
                     feedback[i].input.link(nodes[i]);
                     connect(feedback[i].output, inputAdder.plus);
                     connect(feedforward[i].output, outputAdder.plus);
@@ -315,10 +313,12 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         }
     }
 
-    /** Wrapup.
+    /** Set the opaqueness to true and wrapup.
+     *  @exception IllegalActionException If there is no director.
      */
     public void wrapup() throws IllegalActionException {
         _opaque = true;
+        super.wrapup();
     }
 
     //////////////////////////////////////////////////////////////////////

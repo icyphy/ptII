@@ -20,6 +20,8 @@
 </entity>
 <entity name="CTTriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
 </entity>
+<entity name="RateLimiter" class="ptolemy.domains.ct.lib.CTRateLimiter">
+</entity>
 <entity name="ThresholdMonitor" class="ptolemy.domains.ct.lib.ThresholdMonitor">
 </entity>
 <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">

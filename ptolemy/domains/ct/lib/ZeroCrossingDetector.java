@@ -1,4 +1,4 @@
-/* A CT actor that detects zero crossing of input signal.
+/* A CT actor that detects zero crossings of its trigger input signal.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -43,8 +43,8 @@ import ptolemy.actor.lib.Transformer;
 //// ZeroCrossingDetector
 /**
 This is an event detector that monitors the signal coming in from the
-"trigger" input. If the trigger is zero, then output the token from
-the "input." port.
+trigger input. If the trigger is zero (within an accuracy), then output
+the token from the "input" port when emitCurrentEvent() is called.
 This actor controls the integration step size to accurately resolve
 the time that the zero crossing happens.
 It has a parameter "errorTolerance," which controls how accurate the
@@ -59,9 +59,6 @@ public class ZeroCrossingDetector extends Transformer
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  The actor has two input, "trigger" and "input", and one output,
-     *  "output." Both of them are single ports. All the ports has type
-     *  DoubleToken.
      *
      *  @param container The subsystem that this actor is lived in
      *  @param name The actor's name
@@ -87,22 +84,26 @@ public class ZeroCrossingDetector extends Transformer
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    /** The trigger port. Single port with type DoubleToken.
+    /** The trigger port. Single port with type double.
      */
     public TypedIOPort trigger;
 
-    /** The parameter of error tolerance
+    /** The parameter of error tolerance of type double. By default,
+     *  it contains a DoubleToken of 1e-4.
      */
     public Parameter errorTolerance;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Update the parameter if it has been changed.
-     *  The new parameter will be used only after this method is called.
+    /** Update the attribute if it has been changed. If the attribute
+     *  is <i>errorTolerance<i> then update the local cache.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the attribute change failed.
      */
-    public void attributeChanged(Attribute att) throws IllegalActionException{
-        if (att == errorTolerance) {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException{
+        if (attribute == errorTolerance) {
             double p = ((DoubleToken)errorTolerance.getToken()
                         ).doubleValue();
             if(p <= 0) {
@@ -111,7 +112,7 @@ public class ZeroCrossingDetector extends Transformer
             }
             _errorTolerance = p;
         } else {
-            super.attributeChanged(att);
+            super.attributeChanged(attribute);
         }
     }
 
@@ -133,14 +134,17 @@ public class ZeroCrossingDetector extends Transformer
     }
 
     /** Consume the input token and the trigger token. The trigger token
-     *  will be used for finding the zero crossing in isThisStepAccurate()
-     *  method.
+     *  will be used for finding the zero crossing in the isThisStepAccurate()
+     *  method to control the step size. The input token will be
+     *  used in emitCurrentEvent() if the trigger is zero (within the
+     *  given error tolerance). Notice that this method does not
+     *  produce any output.
      *  @exception IllegalActionException If no token is available.
      */
     public void fire() throws IllegalActionException {
-        _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
+        _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
         if(_debugging)
-            _debug(getFullName() + " consuming trigger Token" +  _thisTrg);
+            _debug(getFullName() + " consuming trigger Token" +  _thisTrigger);
         _inputToken = input.get(0);
     }
 
@@ -151,8 +155,7 @@ public class ZeroCrossingDetector extends Transformer
         return _eventNow;
     }
 
-    /** Set up parameters and internal state, so that it has no history
-     *  before the first firing.
+    /** Initialize the execution.
      *
      *  @exception IllegalActionException If thrown by the super class.
      */
@@ -165,10 +168,12 @@ public class ZeroCrossingDetector extends Transformer
     /** Return true if this step does not cross zero. The current trigger
      *  token will be compared to the previous trigger token. If they
      *  cross the zero threshold, this step is not accurate.
-     *  A special case is taken care such that if the previous trigger
+     *  A special case is taken care so that if the previous trigger
      *  and the current trigger are both zero, then no new event is
      *  detected. If this step crosses zero, then the refined integration
      *  step size is computed by linear interpolation.
+     *  If this is the first iteration after initialize() is called,
+     *  then always return false, since there is no history to compare with.
      *  @return True if the trigger input in this integration step
      *          does not cross zero.
      */
@@ -178,10 +183,10 @@ public class ZeroCrossingDetector extends Transformer
             return true;
         }
         if(_debugging) {
-            _debug(this.getFullName() + " This trigger " + _thisTrg);
-            _debug(this.getFullName() + " The last trigger " + _lastTrg);
+            _debug(this.getFullName() + " This trigger " + _thisTrigger);
+            _debug(this.getFullName() + " The last trigger " + _lastTrigger);
         }
-        if (Math.abs(_thisTrg) < _errorTolerance) {
+        if (Math.abs(_thisTrigger) < _errorTolerance) {
             if (_enabled) {
                 _eventNow = true;
                 if(_debugging)
@@ -195,12 +200,12 @@ public class ZeroCrossingDetector extends Transformer
             if(!_enabled) {  // if last step is a zero, always accurate.
                 _enabled = true;
             } else {
-                if ((_lastTrg * _thisTrg) < 0.0) {
+                if ((_lastTrigger * _thisTrigger) < 0.0) {
 
                     CTDirector dir = (CTDirector)getDirector();
                     _eventMissed = true;
-                    _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
-                        (_thisTrg-_lastTrg);
+                    _refineStep = (-_lastTrigger*dir.getCurrentStepSize())/
+                        (_thisTrigger-_lastTrigger);
                     if(_debugging) _debug(getFullName() +
                             " Event Missed: refined step at" +  _refineStep);
                     return false;
@@ -211,13 +216,13 @@ public class ZeroCrossingDetector extends Transformer
         }
     }
 
-    /** Make the current trigger token the history trigger token. Prepare
-     *  for the next iteration.
+    /** Prepare for the next iteration, by making the current trigger
+     *  token to be the history trigger token.
      *  @return True always.
      */
     public boolean postfire() {
         if(!_eventMissed) {
-            _lastTrg = _thisTrg;
+            _lastTrigger = _thisTrigger;
         }
         return true;
     }
@@ -255,10 +260,10 @@ public class ZeroCrossingDetector extends Transformer
     private double _refineStep;
 
     // last trigger input.
-    private double _lastTrg;
+    private double _lastTrigger;
 
     // this trigger input.
-    private double _thisTrg;
+    private double _thisTrigger;
 
     // flag indicating if the event detection is enable for this step
     private boolean _enabled;
