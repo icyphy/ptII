@@ -348,7 +348,8 @@ PTJACL_JAR =	@PTJACL_JAR@
 # when we are running the nightly build.
 JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" @JTCLSH@
 
-# At runtime, ptolemy.util.XSLTUtilities uses Saxon
+# Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
+# At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif uses Saxon.
 SAXON_JAR =	$(ROOT)/lib/saxon7.jar
 
 # Set to jai and used in 
