@@ -255,7 +255,7 @@ public class PtParser {
         }
         try {
             Class newClass = Class.forName(newClassName);
-            _classesSearched.insertFirst(newClass);
+            _classesSearched.insertLast(newClass);
         } catch (ClassNotFoundException ex) {
             throw new IllegalArgumentException("PtParser.registerClass: " +
                      "Could not find " + newClassName + ".");

@@ -101,7 +101,6 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Enumeration allClasses = PtParser.getRegisteredClasses().elements();
         boolean foundMethod = false;
         Object result = null;
-        System.out.println("About to start looking for function " + funcName);
         while (allClasses.hasMoreElements()) {
             Class nextClass = (Class)allClasses.nextElement();
             try {
@@ -111,13 +110,15 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } catch (Exception  ex) {
                 // FIXME: a lot of exceptions get caught here, perhaps 
                 // want to specify each of them seperately?
-                System.out.println("Method " + funcName + " not found in " +
-                        nextClass.getName());
+                //System.out.println("Method " + funcName + " not found in " +
+                  //  nextClass.getName());
             }
             if (foundMethod) {
-                System.out.println("Method " + funcName + " found in " +
-                        nextClass.getName());
-                if (result instanceof Double) {
+                //System.out.println("Method " + funcName + " found in " +
+                  //    nextClass.getName());
+                if (result instanceof ptolemy.data.Token) {
+                    return (ptolemy.data.Token)result;
+                } else if (result instanceof Double) {
                     return new DoubleToken(((Double)result).doubleValue());
                 } else if (result instanceof Integer) {
                     return new IntToken(((Integer)result).intValue());
@@ -132,7 +133,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 } else  {
                     throw new IllegalArgumentException("FunctionNode: "+
                         "result of function " + funcName + " not a valid type"+
-                        ": boolean, complex, double, int, long  and String");
+                        ": boolean, complex, double, int, long  and String" + 
+                        ", or a Token.");
                 }
             }
         }
