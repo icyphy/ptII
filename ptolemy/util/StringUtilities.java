@@ -488,17 +488,45 @@ public class StringUtilities {
             // Try relative to the base directory.
             if (baseDirectory != null) {
                 // Try to resolve the URI.
-                URI newURI = baseDirectory.resolve(name);
+                URI newURI;
+                try {
+                    newURI = baseDirectory.resolve(name);
+                } catch (IllegalArgumentException ex) {
+                    // FIXME: Another hack
+                    // This time, if we try to open some of the JAI
+                    // demos that have actors that have defaults FileParameters
+                    // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
+                    // bombs.
+                    String name2 =
+                        StringUtilities.substitute(name, "%20", " ");
+                    try {
+                        newURI = baseDirectory.resolve(name2);
+                        name = name2;
+                    } catch (IllegalArgumentException ex2) {
+                    IOException io = new IOException(
+                            "Problem with URI format in '" + name + "'. "
+                            + "and '" + name2 + "'"
+                            + "This can happen if the file name "
+                            + " is not absolute"
+                            + " and is not present relative to the directory"
+                            + " in which the specified model was read"
+                            + " (which was '" + baseDirectory + "')");
+                    io.initCause(ex2);
+                    throw io;
+                    }
+                }
                 try {
                     return newURI.toURL();
-                } catch (IllegalArgumentException ex2) {
-                    throw new IOException(
+                } catch (IllegalArgumentException ex3) {
+                    IOException io = new IOException(
                             "Problem with URI format in '" + name + "'. "
                             + "This can happen if the '" + name
                             + "' is not absolute"
                             + " and is not present relative to the directory"
                             + " in which the specified model was read"
                             + " (which was '" + baseDirectory + "')");
+                    io.initCause(ex3);
+                    throw io;
                 }
             }
 
