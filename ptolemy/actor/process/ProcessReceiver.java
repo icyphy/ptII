@@ -29,11 +29,12 @@
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.process;
 
-import ptolemy.data.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.util.*;
+import ptolemy.actor.*;
+import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver

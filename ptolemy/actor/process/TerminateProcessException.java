@@ -29,7 +29,7 @@
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.process;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
