@@ -328,9 +328,8 @@ public class CompositeEntity extends ComponentEntity {
             return connect(port1, port2, uniqueName("_R"));
         } catch (NameDuplicationException ex) {
             // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in ComponentRelation connect() method!"
-                    + ex.getMessage());
+            throw new InternalErrorException(this, ex,
+                    "Internal error in CompositeEntity.connect() method!");
         }
     }
 
@@ -877,10 +876,9 @@ public class CompositeEntity extends ComponentEntity {
                     entity.setContainer(null);
                 } catch (KernelException ex) {
                     // This exception should not be thrown.
-                    throw new InternalErrorException(
-                            "Internal error in ComponentRelation "
-                            + "removeAllEntities() method!"
-                            + ex.getMessage());
+                    throw new InternalErrorException(this, ex,
+                            "Internal error in CompositeEntity."
+                            + "removeAllEntities() method!");
                 }
             }
         } finally {
@@ -905,10 +903,9 @@ public class CompositeEntity extends ComponentEntity {
                     relation.setContainer(null);
                 } catch (KernelException ex) {
                     // This exception should not be thrown.
-                    throw new InternalErrorException(
-                            "Internal error in ComponentRelation "
-                            + "removeAllRelations() method!"
-                            + ex.getMessage());
+                    throw new InternalErrorException(this, ex,
+                            "Internal error in CompositeEntity."
+                            + "removeAllRelations() method!");
                 }
             }
         } finally {
