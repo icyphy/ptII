@@ -4,14 +4,14 @@
 <entity name="MobileModelTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 31, 896, 653}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 31, 896, 662}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 544]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -115,11 +115,11 @@ to this actor over the network. </text></svg></configure>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 190.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -142,19 +142,23 @@ to this actor over the network. </text></svg></configure>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 200.0">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="fileOrURL" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="6.0">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="7.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 270.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -166,21 +170,25 @@ to this actor over the network. </text></svg></configure>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 280.0">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="fileOrURL" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 1.5, 12.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 1.5, 12.0, 15.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -190,24 +198,36 @@ to this actor over the network. </text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="MobileModel" class="ptolemy.actor.MobileModel">
+    <entity name="MobileModel" class="ptolemy.actor.hoc.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="defaultDirector" class="ptolemy.actor.Director">
+        <property name="connectPorts" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.actor.Director&quot;">
+        <property name="refresh" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="defaultDirector" class="ptolemy.actor.Director">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 85.0">
+            </property>
+        </property>
+        <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.de.kernel.DEDirector&quot;">
         </property>
         <doc>The inside model of this composite actor can be dynamically defined.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 155.0">
+            </property>
         </port>
         <port name="modelString" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 205.0">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 40.0">
+            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -224,7 +244,7 @@ to this actor over the network. </text></svg></configure>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation6"/>
     <link port="Ramp.trigger" relation="relation"/>
@@ -233,13 +253,13 @@ to this actor over the network. </text></svg></configure>
     <link port="Merge.input" relation="relation4"/>
     <link port="Merge.input" relation="relation8"/>
     <link port="Merge.output" relation="relation9"/>
-    <link port="FileReader.trigger" relation="relation3"/>
     <link port="FileReader.output" relation="relation4"/>
+    <link port="FileReader.trigger" relation="relation3"/>
     <link port="SingleEvent2.output" relation="relation7"/>
-    <link port="FileReader2.trigger" relation="relation7"/>
     <link port="FileReader2.output" relation="relation8"/>
-    <link port="Test.input" relation="relation5"/>
+    <link port="FileReader2.trigger" relation="relation7"/>
+    <link port="Test.input" relation="relation2"/>
     <link port="MobileModel.input" relation="relation6"/>
     <link port="MobileModel.modelString" relation="relation9"/>
-    <link port="MobileModel.output" relation="relation5"/>
+    <link port="MobileModel.output" relation="relation2"/>
 </entity>
