@@ -45,6 +45,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -61,59 +62,61 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// SerialComm
 /**
-Sends and receive bytes via the serial port.  Which serial port and
-baud rate to use are set by parameters.  If the specified serial port
+Sends and receive bytes via the serial port.  The choice of serial port and
+baud rate to use are made by parameters.  If the specified serial port
 is not successfully opened, then another one will automatically be
 chosen if available.  
-<p>
-FIXME: Does not find any ports from which to 
-choose!  Find out why & fix.  If problem is that laptop may not have 
-any ports, then find a way to list other kinds of ports with serial 
-ports in the mix.  That way at least, one would know it is working.
-<p>
-Aha!  Was getting (& failing to notice) this error printed to console!  
-This error shows up when the comm library is opened to reveal the 
-SerialComm actor.  Error loading win32com: java.lang.UnsatisfiedLinkError: 
-no win32com in java.library.path
-<p>
-ptII/vendors/sun/commapi/PlatformSpecific.html describes (maybe) how 
-to activate win32com.
-<p>
-Cool!  Problem was resolved when I copied the file win32com.dll to yet 
-another directory, my c:\jdk1.4\bin directory.  Now it DOES choose an 
-available serial port (not necessarily the lowest numbered one!).  And,
-when I start with a silly port name like COM7, listen to the actor, 
-and then run, I get a list of available ports!!
 
-<p>
-This actor is designed for use in DE.  It can be used in other domains, 
-such as SDF, with interesting behavior.  This actor does not block in 
-fire().  When fired, if no data is available for the serial port, then
-no token is produced.
-<p>
-Bytes to be sent must enter the actor as an array of integers.
+<p>NOTE: If you get the following error on the console:
+ Error loading win32com: java.lang.UnsatisfiedLinkError: 
+ no win32com in java.library.path
+Then you need to copy the win32com.dll file to some additional directory,
+such as c:\jdk1.3\bin.  @see vendors/sun/commapi/PlatformSpecific.html
+
+<p>This actor is designed for use in DE and SDF.  By default, this actor 
+does not block in fire().  When fired, if no data is available on the 
+serial port, then no token is produced.  However, when using this actor in
+SDF, you may want to experiment with the <i>blocking</i> parameter.
+Setting this true has the actor block in fire() ultil data arrives.
+
+<p>Bytes to be sent must enter the actor as an array of integers.
 The lowest order byte from each integer is used.  (Negative numbers
-are treated as though 256 has been added enough times to make them
+are treated as though 256 has been just added enough times to make them
 non-negative.)  Likewise, bytes received are broadcast out of the actor
-as an integer array of which only the low bytes carry data.
-<p>
-This actor is a class which implements SerialPortEventListener.
+as an integer array of which only the low bytes carry data.  This
+actor makes no guarantee as to the contents of the other three bytes
+of the integer.
+
+<p>This actor is a class which implements SerialPortEventListener.
 This means that when serial events (such as DATA_AVAILABLE) occur,
 this actor's serialEvent() method gets called.  the serialEvent()
 method calls the director's fireAtCurrentTime() method, triggering 
 a call to fire().
-<p>
-By the time fire() executes, there may be several bytes of available
-data.  These are packaged by fire() into an array of integers (one int
-per byte) and broadcast.
-<p>
-This approach assumes that the DATA_AVAILABLE event is defined so that
-it will occur only once until the available data has been consumed.
-It also assumes that if additional bytes come in between fire()'s call to
-.available() (which says how many bytes are available) and its call to
-.read() (which retrieves them) that the DATA_AVAILABLE event DOES occur
-again, even though the serial buffer was never really empty.
-<p>
+
+<p>By the time fire() executes, there may be several bytes of available
+data.  This is primarily because the UART only signals the software every
+8 bytes or so.  These are packaged by fire() into an array of integers 
+(one int per byte) and broadcast.
+
+<p>The fire() method's reading of serial data is also governed by the
+<i>blocking</i>, <i>threshold</i>, and <i>truncation</i> parameters.
+Fire() first tests to see if there are at least <i>threshold</i> bytes
+of data available.  If so, it reads them, or the <i>truncation</i>
+most recent bytes, whichever is fewer.  (Or all the bytes, regardless
+of how many, if <i>truncation</i> is set to zero.)  If fewer than
+<i>threshold</i> bytes are available, then if <i>blocking</i> is false
+it will not read any data, but if <i>blocking</i> is true it will wait
+until at least <i>threshold</i> bytes are available.
+
+<p>Because the DATA_AVAILABLE event typically occurs every 8 bytes,
+continuous data arriving at 115200 baud can wake up the actor 1440 
+times per second!  This is to often to be calling fireAt*() on
+the director of a DE model.  Thus, after the first fireAtCurrentTime()
+call, the serialEvent() callback only notifys the fire() method
+(in case it is awaiting additional data to meet its <i>threshold</i>)
+and does not call fireAt*() again until the actor has completed a
+firing since the last time fireAt*() was called.
+
 @param baudRate the baud rate (integer such as 19200) to use (applies
 to both input and output)
 @param serialPortName the name (string such as "COM2") of the serial
@@ -158,7 +161,18 @@ public class SerialComm extends TypedAtomicActor
         baudRate.setTypeEquals(BaseType.INT);
         baudRate.setToken(new IntToken(19200));
 
-	// FIXME: Enumeration is empty, yet ports DO exits!
+        threshold = new Parameter(this, "threshold");
+        threshold.setTypeEquals(BaseType.INT);
+        threshold.setToken(new IntToken(1));
+
+        truncation = new Parameter(this, "truncation");
+        truncation.setTypeEquals(BaseType.INT);
+        truncation.setToken(new IntToken(0));
+
+        blocking = new Parameter(this, "blocking");
+        blocking.setTypeEquals(BaseType.BOOLEAN);
+        blocking.setToken(new BooleanToken(false));
+
 	if (false) System.out.println("<>1<>");
         Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
         while (allPorts.hasMoreElements()) {
@@ -200,6 +214,23 @@ public class SerialComm extends TypedAtomicActor
      */
     public Parameter baudRate;
 
+    /** The threshold, default value 1, for reading data from the
+     *  serial port.  Data will not be read until threshold is 
+     *  reached or surpassed.
+     */
+    public Parameter threshold;
+
+    /** The truncation cut.  When reading, older bytes are discarded 
+     *  until <i>truncation</i> or fewer remain.  Caveat: If this
+     *  parameter equals 0, than no data is discarded.
+     */
+    public Parameter truncation;
+
+    /** Whether fire methof is blocking.  If true, fire waits until
+     *  <i>threshold</i> bytes have arrived.  Type is boolean.
+     */
+    public Parameter blocking;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -228,6 +259,10 @@ public class SerialComm extends TypedAtomicActor
             // its baud rate, then it is desirable to be able to quickly
             // change one's own baud rate so as to catch the reply at the
             // new rate.
+	} else if (attribute == threshold) {
+	    _threshold = ((IntToken)threshold.getToken()).intValue();
+	} else if (attribute == truncation) {
+	    _truncation = ((IntToken)truncation.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -251,13 +286,30 @@ public class SerialComm extends TypedAtomicActor
      *  of each integer and send the byte stream to the serial port.
      *  @exception IllegalActionException Thrown if the try fails.
      */
-    public void fire() throws IllegalActionException {
+    public synchronized void fire() throws IllegalActionException {
         if (_debugging) _debug("Actor is fired");
         try {
 
             InputStream in = _serialPort.getInputStream();
-            int bytesAvailable = in.available();
-            if (bytesAvailable > 0) {
+            int bytesAvailable;
+	    // Note: This needs _threshold to be at least 1.
+	    while ((bytesAvailable = in.available()) < _threshold
+		   && _blocking) {
+		try{
+		    wait();
+		} catch (InterruptedException ex) {
+		    throw new IllegalActionException(this,"wait interrupted");
+		}
+	    }
+
+            if (bytesAvailable >= _threshold) {
+		// Read only if the at least desired amount of data is present.
+		if (_truncation != 0 && bytesAvailable > _truncation) {
+		    // Attempt to skip excess bytes if more than _truncation.
+		    // Reduce bytesAvailable by the actual number skipped.
+		    bytesAvailable -= (int)in.skip((long)
+                            (bytesAvailable-_truncation));
+		}
                 byte[] dataBytes = new byte[bytesAvailable];
                 in.read(dataBytes, 0, bytesAvailable);
                 Token[] dataIntTokens = new Token[bytesAvailable];
@@ -297,6 +349,7 @@ public class SerialComm extends TypedAtomicActor
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+	_directorFiredAtAlready = false;
         try {
 
             String serialPortNameValue =
@@ -315,7 +368,11 @@ public class SerialComm extends TypedAtomicActor
 
             _serialPort.addEventListener(this);
             _serialPort.notifyOnDataAvailable(true);
-            // Directs serial events on this port to my serialEvent() method.
+            _serialPort.notifyOnDSR(true);//DataSetReady isDSR
+            _serialPort.notifyOnCTS(true);//ClearToSend isCTS
+            _serialPort.notifyOnCarrierDetect(true);//isCD
+            _serialPort.notifyOnRingIndicator(true);//isRI
+            // Direct serial events on this port to my serialEvent() method.
 
         } catch (Exception ex) {
 	    // Maybe the port was the problem, _debug() the available ports.
@@ -344,6 +401,14 @@ public class SerialComm extends TypedAtomicActor
 		    + " for available ports, 'listen' to actor & rerun "
                     + ex);
         }
+	
+	/*
+	System.out.println("------");
+	System.out.println(_serialPort.isReceiveThresholdEnabled());
+	System.out.println(_serialPort.getReceiveThreshold());
+	System.out.println(_serialPort.getInputBufferSize());
+	System.out.println("------");
+	*/
     }
 
 
@@ -356,11 +421,30 @@ public class SerialComm extends TypedAtomicActor
      *  However, runtime exceptions are always permitted anyway.  Thus
      *  KernelRuntimeException is permitted.  
      */
-    public void serialEvent(SerialPortEvent e) {
+    public synchronized void serialEvent(SerialPortEvent e) {
+	if (false) {
+	    if (e.getEventType() == SerialPortEvent.CD) {
+		System.out.println("+++CD+++");
+	    }
+	    if (e.getEventType() == SerialPortEvent.CTS) {
+		System.out.println("+++CTS+++");
+	    }
+	    if (e.getEventType() == SerialPortEvent.RI) {
+		System.out.println("+++RI+++");
+	    }
+	    if (e.getEventType() == SerialPortEvent.DSR) {
+		System.out.println("+++DSR+++");
+	    }
+	}
+
         try {
             if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-                getDirector().fireAtCurrentTime(this);
-                //getDirector().fireAt(this, getDirector().getCurrentTime());
+	    //if (e.getEventType() == SerialPortEvent.RI && !_serialPort.isRI()) {
+                if (!_directorFiredAtAlready) {
+		    _directorFiredAtAlready = true;
+		    getDirector().fireAtCurrentTime(this);
+		}
+		notifyAll();
             }
         } catch (Exception ex) {
             // This class implements
@@ -390,6 +474,23 @@ public class SerialComm extends TypedAtomicActor
     // Pointer/handle thingy for the serial port.
     private SerialPort _serialPort;
 
+    // Threshold for reading serial port data.  Don't read unless.
+    // at least this many bytes are available.
+    private int _threshold;
+
+    // Truncation cut for older data.  Bytes older than the most
+    // recent <i>truncation</i> bytes are skipped.  Exception:
+    // If <i>truncation</i> == 0, than nothing is skipped.
+    private int _truncation;
+
+    // Whether this actor is blocking (Vs non-blocking).
+    private boolean _blocking;
+
+    // True iff fireAtCurrentTime() has been called on the direcror
+    // but either director has not yet fired this actor, or it has
+    // been fired but fire() has not completed.  Could be in wait().
+    private boolean _directorFiredAtAlready;
+
     // Required for accessing the serial port.
     // Somehow the .initialize() call must do something crucial.
     // Removing this code makes things fail.  Specifically,
@@ -400,3 +501,5 @@ public class SerialComm extends TypedAtomicActor
         new com.sun.comm.Win32Driver().initialize();
     }
 }
+
+
