@@ -107,7 +107,7 @@ public class JAIIDFT extends Transformer {
     /** A parameter that describes the nature of the input and output
      *  data.  The default is <i>complexToReal</i> (so that the output
      *  can be saved and/or displayed after putting it through the
-     *  {@link JAIDataConvert actor).  The setting
+     *  {@link JAIDataConvert actor}.  The setting
      *  <i>complexToComplex</i> can also be used.  The setting
      *  <i>realToComplex</i> should probably not be used.
      */
