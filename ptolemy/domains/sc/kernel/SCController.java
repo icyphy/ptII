@@ -50,7 +50,7 @@ FIXME: Clean handling of the refinement of the state left.
 @authors Xiaojun Liu
 @version $Id$
 */
-public class SCController extends CompositeEntity implements Actor {
+public class SCController extends CompositeEntity implements TypedActor {
 
 
     public SCController() {
@@ -68,6 +68,16 @@ public class SCController extends CompositeEntity implements Actor {
         super(container, name);
     }
 
+    /** Return the type constraints of this actor.
+     *  The constraints is an enumeration of inequalities.
+     *  @return an enumeration of Inequality.
+     *  @exception IllegalActionException If type conflict is detected
+     *   during static type checking.
+     *  @see ptolemy.graph.Inequality
+     */
+    public Enumeration typeConstraints() {
+        return (new LinkedList()).elements();
+    }
 
     public void addLocalVariable(String name, Token initialValue) 
             throws IllegalActionException, NameDuplicationException {
@@ -314,8 +324,8 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
             // Delegate to the director or just call initialize() on
             // the refinement?
             // Now we are doing initialization in SC system.
-            currentRefinement().createReceivers();
-            currentRefinement().initialize();
+            //currentRefinement().createReceivers();
+            //currentRefinement().initialize();
 
 System.out.println("Initializing refinement "+((ComponentEntity)currentRefinement()).getFullName());
 
