@@ -38,20 +38,21 @@ import collections.LinkedList;
 //// PtolemySystem
 /** 
 This class provides information about the Ptolemy system. 
-The User Interface can use this information for creating and display
+The User Interface can use this information for creating and displaying
 domains and actors. A "configuration" can be read from a default place
-or an input stream, and saved to a default place or an output stream.
+or an input stream, and saved to the default place or an output stream.
 The configuration has the grammar:
-
-configuration: domain_definitions
+<P>
+configuration: domain_definitions<BR>
 domain_definitions: domain_definition
-                  | domain_definitions domain_definition
+                  | domain_definitions domain_definition<BR>
 domain_definition: domain_classname
-                 | domain_classname actor_packages
-domain_classname: <B>Domain</B> <I>classname</I>
+                 | domain_classname actor_packages<BR>
+domain_classname: <B>Domain</B> <I>classname</I><BR>
 actor_packages: actor_package
-              | actor_packages actor_package
+              | actor_packages actor_package<BR>
 actor_package: <B>ActorPackage</B> <I>package</I>
+<P>
 
 The domains are created after reading each domain_classname, then all the
 actor_packages are added to this domain. 
