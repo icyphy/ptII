@@ -96,6 +96,7 @@ OPTIONAL_FILES = \
 	doc \
 	cg \
 	'CommandLineTemplate$$1.class' \
+	'NamedObjConstructorAnalysis.class' \
 	'TypeSpecializer$$ConstantTerm.class' \
 	'TypeSpecializer$$VariableTerm.class' \
 	'TypeSpecializerAnalysis$$ConstantTerm.class' \
