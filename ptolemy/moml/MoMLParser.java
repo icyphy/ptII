@@ -705,11 +705,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Propagation failed. Restore previous value.
                     castCurrent.configure(_base, previousSource, previousText);
                     throw ex;
-                }                        
-
-                // Force MoML export, since this is being set directly.
-                _current.setPersistent(true);
-
+                }
             } catch (NoClassDefFoundError e) {
                 // If we are running without a display and diva.jar
                 // is not in the classpath, then we may get"
@@ -760,18 +756,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             previous.setExpression(previousValue);
                             throw ex;
                         }
-                        // Force MoML export since this is being set directly.
-                        previous.setPersistent(true);
-
                     } else {
                         
                         Documentation doc
                             = new Documentation(_current, _currentDocName);
                         doc.setValue(_currentCharData.toString());
-                        doc.setPersistent(true);
 
                         // Propagate.
                         doc.propagateExistence();
+                        doc.propagateValue();
                     }
                 }
                 if (_undoEnabled && _undoContext.isUndoable()) {
@@ -1614,8 +1607,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             _handler.enableErrorSkipping(true);
         }
         if (_toplevel != null) {
-            _previousDeferStatus = _toplevel.isDeferringChangeRequests();
-            _toplevel.setDeferringChangeRequests(true);
+            _previousDeferStatus = _toplevel.setDeferringChangeRequests(true);
         } else {
             // Make sure a default is provided.
             _previousDeferStatus = false;
@@ -2708,8 +2700,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     try {
                         vertex.propagateValue();
                         // Force MoML export since this is being set directly.
-                        // FIXME: Is this needed?
-                        vertex.setPersistent(true);
                         _paramsToParse.add(vertex);
                     } catch (IllegalActionException ex) {
                         // Propagation failed. Restore previous value.
@@ -3290,10 +3280,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 arguments[0] = _current;
                 arguments[1] = entityName;
                 NamedObj newEntity = _createInstance(newClass, arguments);
-                _loadIconForClass(className, newEntity);
                 
                 newEntity.propagateExistence();
                 _addParamsToParamsToParse(newEntity);
+                _loadIconForClass(className, newEntity);
 
                 return newEntity;
             } else {
@@ -4380,10 +4370,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         }
                         Settable settable = (Settable)property;
                         settable.setExpression(value);
-                        // Since the value is being set directly,
-                        // force MoML export.
-                        // FIXME: Is this necessary?
-                        property.setPersistent(true);
                         _paramsToParse.add(property);
 
                         // Propagate.
@@ -4428,10 +4414,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Propagate.
                     property.propagateValue();
                     
-                    // Force MoML export, since this value is
-                    // being set directly.
-                    // FIXME: Is this necessary?
-                    property.setPersistent(true);
                     _paramsToParse.add(property);
                 }
             }
@@ -4539,8 +4521,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** If the file with the specified name exists, parse it in
      *  the context of the specified instance. If it does not
-     *  exist, do nothing.  If the file creates an attribute
-     *  named "_icon", then that attribute is marked as a class
+     *  exist, do nothing.  If the file creates new objects
+     *  then mark those as a class
      *  element with the same depth as the context.
      *  @param fileName The file name.
      *  @param context The context into which to load the file.
@@ -4606,7 +4588,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  This method also adds all (deeply) contained instances
      *  of Settable to the _paramsToParse list, which ensures
      *  that they will be validated.
-     *  @param entity The instance that is defined by a class.
+     *  @param object The instance that is defined by a class.
      *  @param depth The depth (normally 0).
      */
     private void _markContentsDerived(NamedObj object, int depth) {
