@@ -15,7 +15,7 @@
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
 
-	    <input source="ptolemy/domains/fsm/lib/fsmentities.xml"/>
+	    <!-- fsm is shipped with ptiny, so no need to list fsm here -->
 	    <!-- GR depends on the 3D graphics package of Java being present-->            <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	    <input source="ptolemy/domains/rtp/lib/rtpentities.xml"/>
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
