@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-1998 The Regents of the University of California.
+# @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -33,48 +33,24 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 if [info exist env(PTOLEMY)] {
-    set TYCHO $env(PTOLEMY)/tycho
+    set PTII $env(PTOLEMY)/tycho/java
 }
 
 if [info exist env(TYCHO)] {
-    set TYCHO $env(TYCHO)
+    set PTII $env(TYCHO)/java
 }
 
-if {![info exist TYCHO]} {
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
+
+if {![info exist PTII]} {
     # If we are here, then we are probably running jacl and we can't
     # read environment variables
-    set TYCHO [file join [pwd] .. .. .. ..]
+    set PTII [file join [pwd] .. .. .. .. ]
 }
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source [file join $TYCHO kernel test testDefs.tcl]
+    source [file join $PTII util testsuite testDefs.tcl]
 } {}
-
-######################################################################
-#### 
-# Split a string into shorter lines separated by newlines.
-#
-proc _splitline {str} {
-    set results ""
-    for {set i 0} {$i < [string length $str] } {incr i 55} {
-	append results "[string range $str $i [expr {$i + 54}]]\n    "
-    }
-    return $results
-}
-
-######################################################################
-####
-# Return a string that contains all of the information for an object
-# that we can retrieve with java::info
-#
-proc getJavaInfo {obj} {
-    return "\n \
-    class:         [java::info class $obj]\n \
-    fields:        [_splitline [lsort [java::info fields $obj]]]\n \
-    methods:       [_splitline [lsort [java::info methods $obj]]]\n \
-    constructors:  [_splitline [lsort [java::info constructors $obj]]]\n \
-    properties:    [_splitline [lsort [java::info properties $obj]]]\n \
-    superclass:    [_splitline [java::info superclass $obj]]\n"
-}
-
