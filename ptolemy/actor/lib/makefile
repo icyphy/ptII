@@ -105,7 +105,6 @@ JSRCS = \
 	Select.java \
 	Sink.java \
 	Source.java \
-	SquareRoot.java \
 	Switch.java \
 	Synchronizer.java \
 	Test.java \

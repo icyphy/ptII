@@ -56,9 +56,6 @@
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
   </entity>
 
-  <entity name="SquareRoot" class="ptolemy.actor.lib.SquareRoot">
-  </entity>
-
   <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">

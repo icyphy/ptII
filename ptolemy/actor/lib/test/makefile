@@ -73,7 +73,6 @@ JSIMPLE_TESTS = \
 	RecordAssembler.tcl \
 	RecordDisassembler.tcl \
 	Scale.tcl \
-	SquareRoot.tcl \
 	VariableClock.tcl
 
 # Graphical Java tests that use Tcl.
