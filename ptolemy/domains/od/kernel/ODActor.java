@@ -266,7 +266,7 @@ public class ODActor extends AtomicActor {
             }
         } 
         
-        System.out.println("# of Ports = " + listOfPorts.size());
+        System.out.println("Number of Ports = " + listOfPorts.size());
         
         //
         // Now Set The Priorities Of Each Port's Receiver
@@ -276,17 +276,15 @@ public class ODActor extends AtomicActor {
         while( cnt < listOfPorts.size() ) {
             ODIOPort port = (ODIOPort)listOfPorts.at(cnt);
             Receiver[][] rcvrs = port.getReceivers();
-            if( rcvrs == null ) {
-                System.out.println("rcvrs are null");
-            }
-            System.out.println("rcvrs.length() = " + rcvrs.length);
-	    System.out.println("Prioritizing ports");
             for( int i = 0; i < rcvrs.length; i++ ) {
-                System.out.println("rcvrs[i].length() = " + rcvrs[i].length);
-                ((ODReceiver)rcvrs[i][0]).setPriority(currentPriority);
-                // FIXME: What about rcvrs[i][j != 0]??
-                currentPriority++;
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+                    System.out.println("Port "+port.getName()+": " + cnt +
+                            "  rcvr["+i+"]["+j+"] priority = "+currentPriority);
+                    ((ODReceiver)rcvrs[i][j]).setPriority(currentPriority); 
+                    currentPriority++;
+                }
             }
+            cnt++;
         }
     }
 
