@@ -73,7 +73,7 @@ test InvalidStateException-1.1 {Get information about an instance of InvalidStat
     
   properties:    class localizedMessage message
     
-  superclass:    pt.kernel.KernelException
+  superclass:    java.lang.RuntimeException
     
 }}
 
