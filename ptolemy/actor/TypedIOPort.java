@@ -270,7 +270,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                     throw new IllegalArgumentException(
                             "Run-time type checking failed. token type: "
                             + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: " + getType().toString());
+                            + getFullName() + ", port type: "
+                            + getType().toString());
                 }
 
                 // Note that the getRemoteReceivers() method doesn't throw
@@ -366,7 +367,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                     throw new IllegalArgumentException(
                             "Run-time type checking failed. token type: "
                             + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: " + getType().toString());
+                            + getFullName() + ", port type: "
+                            + getType().toString());
                 }
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
@@ -747,8 +749,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
                 // FIXME: should throw TypeConflictException.
                 throw new IllegalActionException(
-                        "TypedIOPort$TypeTerm.setValue: The new type is not a " +
-                        "substitution instance of the type of this port. " +
+                        "TypedIOPort$TypeTerm.setValue: The new type is not" +
+                        " a substitution instance of the type of this port. " +
                         "port: " + _port.getFullName() + " portType: " +
                         getValue() + " newType: " + e.toString());
             }
