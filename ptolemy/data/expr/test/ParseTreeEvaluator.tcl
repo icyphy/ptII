@@ -276,8 +276,12 @@ test ParseTreeFreeVariableCollector-16.2 {Test record indexing} {
 } {2 3}
 
 test ParseTreeEvaluator-16.3 {Test property} {
-    list [theTest "getProperty(\"ptolemy.ptII.dir\")"] [theTest "property(\"ptolemy.ptII.dir\") + \"foo\""]
-} {{"c:/users/neuendor/ptII"} {"c:/users/neuendor/ptIIfoo"}}
+    set ptolemy_ptII_dir \
+	[java::call ptolemy.util.StringUtilities getProperty ptolemy.ptII.dir]
+
+   list [expr {[theTest "getProperty(\"ptolemy.ptII.dir\")"] == "\"$ptolemy_ptII_dir\""}] \
+	[expr {[theTest "property(\"ptolemy.ptII.dir\") + \"foo\""] == "\"${ptolemy_ptII_dir}foo\""}]
+} {1 1}
 
 ####################################################################
 
