@@ -557,7 +557,7 @@ htmlchek:
 
 checkjunk:
 	@checkextra -v $(SRCS) $(HDRS) $(EXTRA_SRCS) $(MISC_FILES) \
-		$(OPTIONAL_FILES) $(JSRCS) makefile SCCS \
+		$(OPTIONAL_FILES) $(JSRCS) makefile SCCS CVS \
 		$(JCLASS) $(OBJS) $(LIBR) $(PTDISTS) $(PTCLASSJAR)
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
