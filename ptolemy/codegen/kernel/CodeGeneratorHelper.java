@@ -184,15 +184,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             // The channel is specified as $ref(port#channelNumber).
             if (port.getName().equals(refName)) {
                 result.append(port.getFullName().replace('.', '_'));
-                int[] channelAndOffset = _getChannelAndOffset(name);
-                if (channelAndOffset[0] >= 0) {
+                String[] channelAndOffset = _getChannelAndOffset(name);
+                if (!channelAndOffset[0].equals("")) {
                     // Channel number specified. This must be a multiport.
                     result.append("[" + channelAndOffset[0] + "]");
                 }
-                if (channelAndOffset[1] >= 0) {
-                    int offset = channelAndOffset[1] +
-                        _firingCount * DFUtilities.getRate(port);
-                    result.append("[" + channelAndOffset[1] + "]");
+                if (!channelAndOffset[1].equals("")) {
+                    int temp = _firingCount * DFUtilities.getRate(port);
+                    String offset = channelAndOffset[1] + " + " + temp;
+                    result.append("[" + offset + "]");
                 } else if (_firingsPerIteration > 1) {
                     // Did not specify offset, so the receiver buffer size is 1.
                     // This is multiple firing.
@@ -216,13 +216,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     return result.toString();
                 }
 
-                int[] channelAndOffset = _getChannelAndOffset(name);
-                if (channelAndOffset[0] < 0) {
+                String[] channelAndOffset = _getChannelAndOffset(name);
+                if (channelAndOffset[0].equals("")) {
                     result.append(getSinkChannels(port, 0));
                 } else {
-                    result.append(getSinkChannels(port, channelAndOffset[0]));
+                    int channel = (new Integer(channelAndOffset[0])).intValue();
+                    result.append(getSinkChannels(port, channel));
                 }
-                if (channelAndOffset[1] >= 0) {
+                if (!channelAndOffset[1].equals("")) {
                     result.append("[" + channelAndOffset[1] + "]");
                 } else if (_firingsPerIteration > 1) {
                     // Did not specify offset, so the receiver buffer size is 1.
@@ -240,12 +241,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 _referencedParameters.add(attribute);
             }
             result.append(attribute.getFullName().replace('.', '_'));
-            int[] channelAndOffset = _getChannelAndOffset(name);
-            if (channelAndOffset[0] != -1) {
+            String[] channelAndOffset = _getChannelAndOffset(name);
+            if (!channelAndOffset[0].equals("")) {
                 throw new IllegalActionException(_component,
                         "a parameter cannot have channel number.");
             }
-            if (channelAndOffset[1] >= 0) {
+            if (!channelAndOffset[1].equals("")) {
                 result.append("[" + channelAndOffset[1] + "]");
             }
             return result.toString();
@@ -467,40 +468,22 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException If the channel number or offset
      *  specified in the given string is illegal.
      */
-    private int[] _getChannelAndOffset(String name)
+    private String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
-        int[] result = {-1, -1};
+        String[] result = {"", ""};
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
         tokenizer.nextToken();
         if (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             if (token.equals("#")) {
-                int channel = new Integer(tokenizer.nextToken().trim())
-                    .intValue();
-                if (channel < 0) {
-                    throw new IllegalActionException(_component,
-                            "Invalid channel number in " + name);
-                }
-                result[0] = channel;
+                result[0] = tokenizer.nextToken().trim();
                 if (tokenizer.hasMoreTokens()) {
                     if (tokenizer.nextToken().equals(",")) {
-                        int offset = new Integer(tokenizer.nextToken().trim())
-                            .intValue();
-                        if (offset < 0) {
-                            throw new IllegalActionException(_component,
-                                    "Invalid offset in" + name);
-                        }
-                        result[1] = offset;
+                        result[1] = tokenizer.nextToken().trim();
                     }
                 }
             } else if (token.equals(",")) {
-                int offset = new Integer(tokenizer.nextToken().trim())
-                    .intValue();
-                if (offset < 0 || tokenizer.hasMoreTokens()) {
-                    throw new IllegalActionException(_component,
-                            "Invalid offset in " + name);
-                }
-                result[1] = offset;
+                result[1] = tokenizer.nextToken().trim();
             }
         }
         return result;
