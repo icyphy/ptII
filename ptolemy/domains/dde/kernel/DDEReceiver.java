@@ -431,6 +431,8 @@ public class DDEReceiver extends TimedQueueReceiver
 	    DDEDirector director, TimeKeeper timeKeeper,
 	    boolean _hideNullTokens ) {
 
+        Actor actor = (Actor)getContainer().getContainer();
+        String actorName = ((Nameable)actor).getName();
 	//////////////////////////////////////////////////////
 	// Resort the TimeKeeper to account for recents puts()
 	//////////////////////////////////////////////////////
@@ -451,11 +453,13 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
         if( getRcvrTime() == IGNORE && !_terminate ) {
 	    if( _ignoreNotSeen ) {
+		timeKeeper.setIgnoredTokens(true);
 		_ignoreNotSeen = false;
 		return false;
 	    } else {
 		_ignoreNotSeen = true;
-		clearIgnoredTokens();
+		// clearIgnoredTokens();
+		timeKeeper.updateIgnoredReceivers();
 		// Call the next line since
                 // TimeKeeper.updateIgnoredReceivers()
 		// has not been called.
@@ -513,9 +517,15 @@ public class DDEReceiver extends TimedQueueReceiver
             } else {
                 director.addInternalReadBlock();
             }
+            System.out.println("***Actor: " + actorName + " has blocked."
+                    + "  Number of blocks = " + 
+                    director._internalReadBlocks );
 	    while( _readPending && !_terminate ) {
 		workspace.wait( this );
 	    }
+            System.out.println("***Actor: " + actorName + " no longer blocked."
+                    + "  Number of blocks = " + 
+                    director._internalReadBlocks );
 	}
 
 	////////////////////
@@ -556,7 +566,7 @@ public class DDEReceiver extends TimedQueueReceiver
 			port.getContainer()).getExecutiveDirector();
 		if( outsideDir instanceof DDEDirector ) {
 		    Receiver[][] rcvrs = null; 
-		   rcvrs = port.getRemoteReceivers();
+		    rcvrs = port.getRemoteReceivers();
 		    for(int i = 0; i < rcvrs.length; i++ ) {
 			for(int j = 0; j < rcvrs[i].length; j++ ) {
 			    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
@@ -564,11 +574,13 @@ public class DDEReceiver extends TimedQueueReceiver
 			}
 		    }
 		}
+		timeKeeper.setIgnoredTokens(true);
 		_ignoreNotSeen = false;
 		return false;
 	    } else {
 		_ignoreNotSeen = true;
-		clearIgnoredTokens();
+		// clearIgnoredTokens();
+		timeKeeper.updateIgnoredReceivers();
 		// Call the next line since
                 // TimeKeeper.updateIgnoredReceivers()
 		// has not been called.
@@ -769,6 +781,9 @@ public class DDEReceiver extends TimedQueueReceiver
                     } else {
 		        director.removeInternalReadBlock();
                     }
+                    System.out.println("***Actor: " + name + 
+                            " no longer blocked." + "  Number of blocks = " + 
+                            director._internalReadBlocks );
 		    _readPending = false;
 		    notifyAll();
 		}
@@ -802,6 +817,6 @@ public class DDEReceiver extends TimedQueueReceiver
     private boolean _terminate = false;
     private boolean _readPending = false;
     private boolean _writePending = false;
-    private boolean _ignoreNotSeen = true;
+    boolean _ignoreNotSeen = true;
     private boolean _hideNullTokens = true;
 }
