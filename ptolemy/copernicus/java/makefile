@@ -48,6 +48,7 @@ DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
+	ActorTransformer.java \
 	CommandLineTemplate.java \
 	CommandLineTransformer.java \
 	ConstantLoopUnroller.java \
@@ -65,6 +66,7 @@ JSRCS = \
 	TokenToNativeTransformer.java \
 	TokenTypeAnalysis.java \
 	TypeSpecializer.java \
+	TypeTag.java \
 	UnreachableMethodRemover.java \
 	ValueTag.java	
 
