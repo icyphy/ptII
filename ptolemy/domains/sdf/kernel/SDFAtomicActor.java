@@ -45,14 +45,14 @@ import java.util.Enumeration;
 An SDFAtomicActor is an atomic actor that is valid in the SDF domain.  This
 implies that it supports a static notion of the "Rate" of a port.
 i.e. a number of tokens are created or
-destroyed on a port during any firing.//   This information is contained in
+destroyed on a port during any firing.   This information is contained in
 parameters on each of the Actors ports.
 <ul>
-<li> TokenConsumptionRate: The number of tokens consumed on an input port
+<li> tokenConsumptionRate: The number of tokens consumed on an input port
 during each firing.
-<li> TokenProductionRate: The number of tokens produced on an output port
+<li> tokenProductionRate: The number of tokens produced on an output port
 during each firing.
-<li> TokenInitProduction: The number of tokens produced on an output port
+<li> tokenInitProduction: The number of tokens produced on an output port
 during initialization.
 </ul>
 The SDF director uses these parameters to calculate a static schedule based
@@ -129,9 +129,9 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained in
      *  this actor, or the port is not an input port.
      *  @return The number of tokens consumed on the port, as specified in
-     *  the TokenConsumptionRate Parameter, or DEFAULT_CONSUMPTION_RATE if the
+     *  the tokenConsumptionRate Parameter, or DEFAULT_CONSUMPTION_RATE if the
      *  parameter does not exist.
-     *  @deprecated
+     *  @deprecated Use the method in SDFIOPort instead.
      */
     public int getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
@@ -143,7 +143,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.isInput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Input Port.");
 
-        Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
+        Parameter param = (Parameter)p.getAttribute("tokenConsumptionRate");
         if(param != null) {
             return ((IntToken)param.getToken()).intValue();
         } else {
@@ -157,9 +157,9 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, or the port is not an output port.
      *  @return The number of tokens produced on the port, as specified in
-     *  the TokenInitProduction Parameter, or DEFAULT_INIT_PRODUCTION if the
+     *  the tokenInitProduction Parameter, or DEFAULT_INIT_PRODUCTION if the
      *  parameter does not exist.
-     *  @deprecated
+     *  @deprecated Use the method in SDFIOPort instead.
      */
     public int getTokenInitProduction(IOPort p)
             throws IllegalActionException {
@@ -171,7 +171,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Output Port.");
 
-        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
+        Parameter param = (Parameter)p.getAttribute("tokenInitProduction");
         if(param != null) {
             return ((IntToken)param.getToken()).intValue();
         } else {
@@ -186,9 +186,9 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, or the port is not an output port.
      *  @return The number of tokens produced on the port, as specified in
-     *  the TokenProductionRate Parameter, or DEFAULT_PRODUCTION_RATE if the
+     *  the tokenProductionRate Parameter, or DEFAULT_PRODUCTION_RATE if the
      *  parameter does not exist.
-     *  @deprecated
+     *  @deprecated Use the method in SDFIOPort instead.
      */
     public int getTokenProductionRate(IOPort p)
             throws IllegalActionException {
@@ -200,7 +200,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Output Port.");
 
-        Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
+        Parameter param = (Parameter)p.getAttribute("tokenProductionRate");
         if(param != null) {
             return ((IntToken)param.getToken()).intValue();
         } else {
@@ -238,7 +238,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an input port.
-     *  @deprecated
+     *  @deprecated Use the method in SDFIOPort instead.
      */
     public void setTokenConsumptionRate(IOPort p, int r)
             throws IllegalActionException {
@@ -251,12 +251,12 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
-        Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
+        Parameter param = (Parameter)p.getAttribute("tokenConsumptionRate");
         if(param != null)
             param.setToken(new IntToken(r));
         else {
             try {
-                param = new Parameter(p, "TokenConsumptionRate",
+                param = new Parameter(p, "tokenConsumptionRate",
                         new IntToken(r));
             }
             catch (NameDuplicationException e) {
@@ -275,7 +275,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
-     *  @deprecated
+     *  @deprecated Use the method in SDFIOPort instead.
      */
     public void setTokenInitProduction(IOPort p, int r)
             throws IllegalActionException {
@@ -287,12 +287,12 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
-        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
+        Parameter param = (Parameter)p.getAttribute("tokenInitProduction");
         if(param != null)
             param.setToken(new IntToken(r));
         else {
             try {
-                param = new Parameter(p, "TokenInitProduction",
+                param = new Parameter(p, "tokenInitProduction",
                         new IntToken(r));
             }
             catch (NameDuplicationException e) {
@@ -308,7 +308,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
-     *  @deprecated
+     *  @deprecated Use the method in SDFIOPort instead.
      */
     public void setTokenProductionRate(IOPort p, int r)
             throws IllegalActionException {
@@ -320,12 +320,12 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
-        Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
+        Parameter param = (Parameter)p.getAttribute("tokenProductionRate");
         if(param != null)
             param.setToken(new IntToken(r));
         else {
             try {
-                param = new Parameter(p, "TokenProductionRate",
+                param = new Parameter(p, "tokenProductionRate",
                         new IntToken(r));
             }
             catch (NameDuplicationException e) {

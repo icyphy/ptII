@@ -79,10 +79,10 @@ public class ArrayToSequence extends SDFAtomicActor {
         input = new SDFIOPort(this, "input", true, false);
         output = new SDFIOPort(this, "output", false, true);
 
-	// TokenConsumptionRate is 1.
+	// tokenConsumptionRate is 1.
 	input.setTokenConsumptionRate(1);
 
-	// set the TokenProductionRate to default 1.
+	// set the tokenProductionRate to default 1.
 	output.setTokenProductionRate(1);
 
 	// set type constraints.

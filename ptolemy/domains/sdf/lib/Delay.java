@@ -57,7 +57,7 @@ public class Delay extends Transformer {
     public Delay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Parameter(output, "TokenInitProduction", new IntToken(1));
+        new Parameter(output, "tokenInitProduction", new IntToken(1));
         initialOutputs = new Parameter(this, "initialOutputs",
                 _defaultInitialOutputs);
         _dummy = new Variable(this, "_dummy", new IntToken(0));
@@ -160,7 +160,7 @@ public class Delay extends Transformer {
         }
         _columnCount = _outputsArray.getColumnCount();
         Parameter production =
-            (Parameter)output.getAttribute("TokenInitProduction");
+            (Parameter)output.getAttribute("tokenInitProduction");
         production.setToken(new IntToken(_columnCount));
 
         // Set _dummy so that type constraints work properly.
