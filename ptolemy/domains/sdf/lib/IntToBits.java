@@ -31,18 +31,28 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////
 /// IntToBits
 /**
-This actor converts an IntToken into a sequence of 32 consecutive
-BooleanTokens.  The most significant bit is the first boolean
-token send out.  The least significant bit is the last boolean token send out.
+This actor converts an IntToken into a sequence of Boolean tokens. 
+The number of Boolean tokens is specified by the <i>numberOfBits</i>
+parameter. It should be a positive integer not bigger than 32.
+The most significant bit (the sign bit) is the first boolean
+token send out. It is "false" if the input integer is non-negative,
+otherwise it is "true". The least significant bit is the last boolean
+token send out.
+
+Let <i>k</i> denotes the value of the <i>numberOfBits</i> parameter.
+An exception is thrown if the input integer is smaller than
+-2<sup><i>k</i></sup> or greater 2<sup><i>k</i></sup> - 1.
 
 @author Michael Leung
 @version $Id$
@@ -65,38 +75,74 @@ public class IntToBits extends SDFConverter {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT);
-
-        output_tokenProductionRate.setExpression("32");
+        
+        numberOfBits = new Parameter(this, "numberOfBits");
+        numberOfBits.setExpression("32");
+ 
+        output_tokenProductionRate.setExpression("numberOfBits");
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The number of Boolean tokens that the input integer is coverted to.
+     */
+    public Parameter numberOfBits;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume a single IntToken on the input. Produce 32 consecutive
+    /** If the argument is the <i>numberOfBits</i> parameter, then
+     *  set the production rate of the output port.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameter is out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == numberOfBits) {
+            int rate = ((IntToken)numberOfBits.getToken()).intValue();
+            if (rate < 1 || rate > 32) {
+                throw new IllegalActionException(this,
+                        "Invalid number of bits: " + rate);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Consume a single IntToken on the input. Produce <i>numberOfBits</i>
      *  BooleanTokens on the output port which is the bitwise
      *  representation of the input IntToken.
-     *  The most significant bit is the first boolean
+     *  The most significant bit (the sign bit) is the first boolean
      *  token send out. The least significant bit is the last
      *  boolean token send out.
      *
      *  @exception IllegalActionException If there is no director.
+     *  or if the input integer is out of range.
      */
     public final void fire() throws IllegalActionException  {
         super.fire();
-        BooleanToken[] bits = new BooleanToken[32];
+        int rate = ((IntToken)numberOfBits.getToken()).intValue();
+        BooleanToken[] bits = new BooleanToken[rate];
         IntToken token = (IntToken) (input.get(0));
         int integer = token.intValue();
 
         if (integer < 0) {
+            if (integer < - (1 << (rate - 1)))
+                throw new IllegalActionException(this,
+                   "integer is out of range.");
             bits[0] = new BooleanToken(true);
-            integer = (int)(2147483648L + integer);
+            //integer = (int)(2147483648L + integer);
+            integer = (int)((1 << (rate - 1)) + integer);
         } else {
+            if (integer > (1 << (rate - 1)) - 1 )
+                throw new IllegalActionException(this,
+                    "integer is out of range.");
             bits[0] = new BooleanToken(false);
         }
 
-
-        for (int i = 31; i >= 1; i--) {
+        for (int i = rate - 1; i > 0; i--) {
             int remainder = integer % 2;
             integer = integer / 2;
             if (remainder == 0)
