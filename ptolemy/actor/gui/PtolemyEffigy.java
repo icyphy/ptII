@@ -396,6 +396,18 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // Hence, we handle the error if there are 3 or fewer.
                         
                         if (effigies.size() <= 3) {
+
+                            // FIXME: This could cause problems with
+                            // systems that do not load the user
+                            // library.  Currently, VergilApplication
+                            // loads the user library, but other
+                            // applications like PtolemyApplication do
+                            // not.  We could check to see if the
+                            // names of two of the three Effigies were
+                            // .configuration.directory.configuration
+                            // and.configuration.directory.user
+                            // library, but this seems like overkill.
+
                             MessageHandler.error("Failed to read " + input, e);
                         } else {
                             // Let the caller handle the error.
