@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.VergilApplication;
 import ptolemy.vergil.toolbox.BasicContextMenu;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -144,8 +145,9 @@ public class EditorGraphController extends ViewerGraphController {
 		    port = toplevel.newPort(toplevel.uniqueName("port"));
 		}
 		catch (Exception ex) {
-		    ex.printStackTrace();
-		    throw new RuntimeException(ex.getMessage());
+		    VergilApplication.getInstance().showError(
+		        "Create relation failed:", ex);
+		    return;
 		}
 	    }
             Node node = getPortController().createNode(port);
@@ -174,9 +176,10 @@ public class EditorGraphController extends ViewerGraphController {
                         relation.uniqueName("vertex"));
             }
             catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex.getMessage());
-            }
+		VergilApplication.getInstance().showError(
+		    "Create relation failed:", ex);
+		return;
+	    }
             Node node = getRelationController().createNode(vertex);
             getRelationController().addNode(
                     node, e.getLayerX(), e.getLayerY());

@@ -231,7 +231,7 @@ public class EntityController extends LocatableNodeController {
 	}
     }
 
-    public class EntityRenderer implements NodeRenderer {
+    public static class EntityRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    Figure figure;
 	    EditorIcon icon = (EditorIcon)n.getSemanticObject();

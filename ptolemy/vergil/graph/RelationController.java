@@ -108,7 +108,7 @@ public class RelationController extends LocatableNodeController {
      * The renderer for relation node.  This class creates a Figure that 
      * looks like a black diamond.
      */
-    public class RelationRenderer implements NodeRenderer {
+    public static class RelationRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    double h = 12.0;
 	    double w = 12.0;

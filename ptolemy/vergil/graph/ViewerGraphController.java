@@ -231,14 +231,10 @@ public class ViewerGraphController extends CompositeGraphController {
 		super.initialize();
 		NamedObj target = getTarget();
 		Action action;
-		/* final CompositeEntity entity = (CompositeEntity)target;
-		action = new AbstractAction("New External Port") {
-		    public void actionPerformed(ActionEvent e) {
-			Application app = getApplication();
-			PtolemyDocument doc = new PtolemyDocument(app);
-		};
-		add(action, "New External Port");*/
+		final CompositeEntity entity = (CompositeEntity)target;
+		//action = _portAction;
+		//add(action, "New External Port");		
 	    }
 	}
-    }
+    };
 }

@@ -37,6 +37,7 @@ import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
 import ptolemy.gui.*;
+import ptolemy.moml.Vertex;
 import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
@@ -134,7 +135,7 @@ public class PtolemyPackage implements Module {
                 }
             }
         };
-	_application.addMenuItem(menuDevel, action, 'I',
+	GUIUtilities.addMenuItem(menuDevel, action, 'I',
 				 "Print current document info");
 
         action = new AbstractAction("Execute System") {
@@ -220,7 +221,7 @@ public class PtolemyPackage implements Module {
 
             }
         };
-	_application.addMenuItem(menuDevel, action, 'E', "Execute System");
+	GUIUtilities.addMenuItem(menuDevel, action, 'E', "Execute System");
 
 	action = new AbstractAction("Automatic Layout") {
             public void actionPerformed(ActionEvent e) {
@@ -230,7 +231,7 @@ public class PtolemyPackage implements Module {
 		_redoLayout(jg);
 	    }
         };
-	_application.addMenuItem(menuDevel, action, 'L', 
+        GUIUtilities.addMenuItem(menuDevel, action, 'L', 
 				 "Automatically layout the model");
 	
 	JToolBar tb = new JToolBar();
@@ -239,7 +240,19 @@ public class PtolemyPackage implements Module {
 	pane.add(tb);
 	
 	String dflt = "";
-	
+	NodeRenderer renderer = new PortController.PortRenderer();
+	Figure figure = renderer.render(null);
+	Icon icon = 
+	    new FigureIcon(figure, 20, 20);
+	GUIUtilities.addToolBarButton(tb, new newPortAction(), 
+				      "New External Port", icon);
+
+	renderer = new RelationController.RelationRenderer();
+	figure = renderer.render(null);
+	icon = new FigureIcon(figure, 20, 20);
+	GUIUtilities.addToolBarButton(tb, new newRelationAction(), 
+				      "New Relation", icon);
+
 	_directorModel = new DefaultComboBoxModel();
 	try {
 	    Director dir;
@@ -427,6 +440,89 @@ public class PtolemyPackage implements Module {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
+    // An action to create a new port.
+    private class newPortAction extends AbstractAction {
+	public newPortAction() {
+	    super("New External Port");
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    VergilApplication app = (VergilApplication)getApplication();
+	    Document doc = app.getCurrentDocument();
+	    // Only create ports for ptolemy documents.
+	    if(!(doc instanceof PtolemyDocument)) return;
+	    JGraph jgraph = (JGraph)app.getView(doc);
+	    GraphPane pane = jgraph.getGraphPane();
+	    Point2D point = pane.getSize();
+	    double x = point.getX()/2;
+	    double y = point.getY()/2;
+	    EditorGraphController controller = 
+		(EditorGraphController)pane.getGraphController();
+	    Graph graph = controller.getGraph();
+	    CompositeEntity toplevel =
+	    (CompositeEntity)graph.getSemanticObject();
+	    Port port = null;
+	    if(toplevel == null)
+		return;
+	    else {
+		try {
+		    port = toplevel.newPort(toplevel.uniqueName("port"));
+		}
+		catch (Exception ex) {
+		    VergilApplication.getInstance().showError(
+			 "Create port failed:", ex);
+		    return;
+		}
+	    }
+	    Node node = controller.getPortController().createNode(port);
+	    controller.getPortController().addNode(node, x, y);
+	}
+    }
+    
+    // An action to create a new relation.
+    private class newRelationAction extends AbstractAction {
+	public newRelationAction() {
+	    super("New Relation");
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    VergilApplication app = (VergilApplication)getApplication();
+	    Document doc = app.getCurrentDocument();
+	    // Only create ports for ptolemy documents.
+	    if(!(doc instanceof PtolemyDocument)) return;
+	    JGraph jgraph = (JGraph)app.getView(doc);
+	    GraphPane pane = jgraph.getGraphPane();
+	    Point2D point = pane.getSize();
+	    double x = point.getX()/2;
+	    double y = point.getY()/2;
+	    EditorGraphController controller = 
+		(EditorGraphController)pane.getGraphController();
+	    Graph graph = controller.getGraph();
+	    CompositeEntity toplevel =
+	    (CompositeEntity)graph.getSemanticObject();
+	    Relation relation = null;
+	    Vertex vertex = null;
+	    if(toplevel == null)
+		return;
+	    else {
+		try {
+		    relation = 
+			toplevel.newRelation(toplevel.uniqueName("relation"));
+		    vertex = new Vertex(relation,
+                        relation.uniqueName("vertex"));
+		}
+		catch (Exception ex) {
+		    VergilApplication.getInstance().showError(
+			 "Create relation failed:", ex);
+		    return;
+		}
+	    }
+	    Node node = 
+		controller.getRelationController().createNode(vertex);
+	    controller.getRelationController().addNode(node, x, y);
+	}
+    }
+    
     // A Runnable object that is responsible for initializing the 
     // design palette.  This is done in a separate
     // thread, because loading the libraries can take quite a while.

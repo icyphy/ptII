@@ -117,7 +117,7 @@ public class EntityPortController extends NodeController {
 	parentFigure.add(figure);
     }
 
-    public class EntityPortRenderer implements NodeRenderer {
+    public static class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-4, 4);

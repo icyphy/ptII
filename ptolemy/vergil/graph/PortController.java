@@ -83,10 +83,8 @@ public class PortController extends NodeController {
 	interactor.addInteractor(_menuCreator);
     }
 
-    public class PortRenderer implements NodeRenderer {
+    public static class PortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
-            Port port = (Port) n.getSemanticObject();
-
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-6, 6);
 	    polygon.lineTo(0, 6);
@@ -96,13 +94,16 @@ public class PortController extends NodeController {
 	    polygon.closePath();
 	    Figure figure = new BasicFigure(polygon, Color.black);
 
-	   // Note that these are reversed from the normals that are
+	    // Note that these are reversed from the normals that are
 	    // set when a port is in an entity.
 	    int direction = SwingConstants.NORTH;	    
-	    if(port instanceof IOPort) {
-		IOPort ioport = (IOPort) port;
-		if(ioport.isInput()) direction = SwingConstants.EAST;
-		if(ioport.isOutput()) direction = SwingConstants.WEST;
+	    if(n != null) {
+		Port port = (Port) n.getSemanticObject();
+		if(port instanceof IOPort) {
+		    IOPort ioport = (IOPort) port;
+		    if(ioport.isInput()) direction = SwingConstants.EAST;
+		    if(ioport.isOutput()) direction = SwingConstants.WEST;
+		}
 	    }
 		
 	    double normal = CanvasUtilities.getNormal(direction);	    
