@@ -51,11 +51,14 @@ OTHER_FILES_TO_BE_JARED = \
 	ptIIdesign3-domains.pdf
 
 EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 	body.htm \
 	buttons.htm \
+	hyvisual.jar \
 	index.htm \
 	main.htm \
-	toc.htm
+	toc.htm \
+	visualsense.jar
 
 
 # Sources that may or may not be present, but if they are present, we don't
