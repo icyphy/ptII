@@ -443,7 +443,7 @@ public class TimedPNDirector extends BasePNDirector {
      //Remove any other process waiting to be resumed at the new
      //advanced time (the new currenttime).
      boolean sametime = true;
-     while (sametime) {
+     while (sameTime) {
      //If queue is not empty, then determine the resumption
      //time of the next process.
      if (!_eventQueue.isEmpty()) {
@@ -462,13 +462,13 @@ public class TimedPNDirector extends BasePNDirector {
      _informOfDelayUnblock();
      } else {
      _eventQueue.put (new Double(newtime), actor);
-     sametime = false;
+     sameTime = false;
      }
      } catch (IllegalActionException e) {
      throw new InternalErrorException(e.toString());
      }
      } else {
-     sametime = false;
+     sameTime = false;
      }
      }
      //Wake up all delayed actors
@@ -564,8 +564,8 @@ public class TimedPNDirector extends BasePNDirector {
 
 		//Remove any other process waiting to be resumed at the new
 		//advanced time (the new currenttime).
-		boolean sametime = true;
-		while (sametime) {
+		boolean sameTime = true;
+		while (sameTime) {
 		    //If queue is not empty, then determine the resumption
 		    //time of the next process.
 		    if (!_eventQueue.isEmpty()) {
@@ -584,13 +584,13 @@ public class TimedPNDirector extends BasePNDirector {
 				_informOfDelayUnblock();
 			    } else {
 				_eventQueue.put(new TimedEvent(newtime, actor));
-				sametime = false;
+				sameTime = false;
 			    }
 			} catch (IllegalActionException e) {
 			    throw new InternalErrorException(e.toString());
 			}
 		    } else {
-			sametime = false;
+			sameTime = false;
 		    }
 		}
 		//Wake up all delayed actors
