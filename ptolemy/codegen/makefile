@@ -66,6 +66,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'ActorCodeGenerator$$FindSuperClassDecl.class' \
+	'SpecializeTokenVisitor$$ConstantTerm.class' \
+	'SpecializeTokenVisitor$$VariableTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
