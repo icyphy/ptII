@@ -56,6 +56,7 @@ PTCLASSALLJAR = ptolemy.jar
 
 JSRCS = \
 	CompaanNotation.java \
+	CompaanPerformance.java \
 	DirectorService.java \
 	FrameAttribute.java \
 	PtolemyDocument.java \

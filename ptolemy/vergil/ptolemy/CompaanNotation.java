@@ -75,6 +75,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
      */
     public CompaanNotation() {
 	super();
+        _performance = new CompaanPerformance();
     }
 
     /** Construct an attribute in the specified workspace with an empty
@@ -88,6 +89,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
     public CompaanNotation(Workspace workspace) {
 	super(workspace);
         setMoMLElementName("notation");
+        _performance = new CompaanPerformance();
     }
 
     /** Construct an attribute with the given name contained by the specified
@@ -108,6 +110,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
     public CompaanNotation(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
                 super(container, name);
+        _performance = new CompaanPerformance();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,7 +123,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	    return createView((PtolemyDocument) d);
 	} 
 	throw new InternalErrorException("Ptolemy Notation is only " +
-                    "compatible with Ptolemy documents.");
+                "compatible with Ptolemy documents.");
     }
 
     /** Construct a view on the given document.
@@ -129,11 +132,13 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	
 	// These two things control the view of a ptolemy model.
 	EditorGraphController controller = new EditorGraphController();
+
+        // This 
 	controller.getEntityController().setNodeRenderer(
                 new CompaanEntityRenderer());        
 
-
-	//controller.getLinkController().setEdgeRenderer(new CompaanEdgeRenderer());
+	controller.getLinkController().setEdgeRenderer(
+                new CompaanEdgeRenderer());
 
         // Basically, make sure all Node references should become links.
 	CompositeActor toplevel = (CompositeActor)d.getModel();
@@ -162,7 +167,80 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 
 	return pane;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
+    /** */
+    private CompaanListener _listener;
+
+    /** The Compaan Performance collector object. */
+    private CompaanPerformance _performance = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+
+    /** This inner class implements... */
+    private class CompaanListener implements ExecutionListener {
+
+        /** Construct a CompaanListeren wich a particular controller.
+         *
+         * @param controller the graph controller.
+         */
+        public CompaanListener(GraphController controller) {
+            _controller = controller; 
+        }
+        
+
+        /** Execute Error is called upon when an error occurs when
+         *  executing the model.
+         *
+         *  @param manager the manager of this model          
+         *  @param exeception the exeception that occured when
+         *  executing the model.
+         */
+        public void executionError(Manager manager, Exception exception) {
+        }
+
+        /** Execute finished is called upon when the model has
+         *  finished execution. This is a moment to obtained global
+         *  information about the model, that will influence the way
+         *  the model is presented after being rerender.
+         * 
+         *  @param manager the manager of this model.
+         */
+        public void executionFinished(Manager manager) {
+            if ( manager != null ) {
+
+                // Obtain the global performance metrics of this model.
+                _performance.determineGlobalPerformanceMetrics(manager);
+
+                // Anonymous innnerclass to invoke at the appriopriate
+                // time the rerendering of the model.
+                SwingUtilities.invokeLater(
+                        new Runnable() {
+                    public void run() {
+                        _controller.rerender();
+                    }
+                });
+            }
+        }
+
+        /** Manager State Changed is called upon when the state in
+         *  which the modek resides has changed. 
+         * 
+         *  @param manager the manager of this model.
+         */
+        public void managerStateChanged(Manager manager) { }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+
+        /** The graph controller of this model in vergil. */
+        private GraphController _controller;
+    }
+
+    /** */
     public class CompaanEntityRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 
@@ -172,51 +250,15 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	    Rectangle2D bounds = figure.getBounds();
 	    Entity entity = (Entity)icon.getContainer();
 
-            Variable f = (Variable)entity.getAttribute("ehrhart");
-            Color c = _getColor( f );
+            Variable ehrhartVariable = 
+                (Variable)entity.getAttribute("ehrhart");
+            Color actorColor = _performance.getActorColor( ehrhartVariable );
             figure.setBackgroundFigure(new BasicRectangle(0, 0, 
-                    bounds.getWidth(), bounds.getHeight(), c ));
+                    bounds.getWidth(), bounds.getHeight(), actorColor ));
             
-            
-            Variable p = (Variable)entity.getAttribute("ehrhart");
-            if (p != null) {
+            if (ehrhartVariable != null) {
                 try {
-                    String s = p.getToken().toString();
-                    _getColor( p );
-                    Figure background = figure.getBackgroundFigure();
-                    Rectangle2D backBounds = background.getBounds();
-                    LabelFigure label = new LabelFigure("fire: " + s);
-                    label.setFont(new Font("SansSerif", Font.PLAIN, 12));
-                    label.setPadding(1);
-                    // Attach the label at the upper left corner.
-                    label.setAnchor(SwingConstants.NORTH_WEST);
-                     // Put the label's upper left corner at the lower right
-                    // corner of rht efigure.
-                    label.translateTo(backBounds.getX(), 
-                            backBounds.getY() + backBounds.getHeight());
-                    figure.add(label);
-                } catch (IllegalActionException e) { }  
-            }
-
-	    return figure;
-	}
-    }
-    
-    
-    public class CompaanEdgeRenderer extends LinkController.LinkRenderer {
-	public Connector render(Object n, Site tailSite, Site headSite) {
-            AbstractConnector connector = (AbstractConnector) 
-                super.render(n, tailSite, headSite);
-
-            // adorn the connector
-            connector.setLabel("100.0");
-
-            /*
-            Variable p = (Variable)entity.getAttribute("ehrhart");
-            if (p != null) {
-                try {
-                    String s = p.getToken().toString();
-                    _getColor( p );
+                    String s = ehrhartVariable.getToken().toString();
                     Figure background = figure.getBackgroundFigure();
                     Rectangle2D backBounds = background.getBounds();
                     LabelFigure label = new LabelFigure("fire: " + s);
@@ -231,159 +273,40 @@ public class CompaanNotation extends Attribute implements VisualNotation {
                     figure.add(label);
                 } catch (IllegalActionException e) { }  
             }
-            */
-            
-            return connector;
+	    return figure;
 	}
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inne Class                       ////
-
-    private class CompaanListener implements ExecutionListener {
-
-        public CompaanListener(GraphController controller) {
-            _controller = controller;
-        }
-
-        public void executionError(Manager manager, Exception exception) {
-        }
-
-        /** */
-        public void executionFinished(Manager manager) {
-            if ( manager != null ) {
-                _getGlobalPerformanceMetrics(manager);
-                SwingUtilities.invokeLater(
-                        new Runnable() {
-                    public void run() {
-                        _controller.rerender();
-                    }
-                });
-            }
-        }
-
-        public void managerStateChanged(Manager manager) {
-        }
-
-        private GraphController _controller;
-    }
-
+    
     /** */
-    private Color _getColor( Variable a ) {
-        int c = 0;
-        if ( a != null ) {
-            if ( _min != Integer.MAX_VALUE ) {
+    public class CompaanEdgeRenderer extends LinkController.LinkRenderer {
+	public Connector render(Object n, Site tailSite, Site headSite) {
+            AbstractConnector connector = (AbstractConnector) 
+                super.render(n, tailSite, headSite);
+
+            // adorn the connector
+            // connector.setLabelFigure(new LabelFigure("100.0"));
+            // connector.setStrokePaint(Color.blue);
+
+            Link link = (Link)n;
+            Relation relation = link.getRelation();
+
+            Variable communicationVariable = 
+                (Variable)relation.getAttribute("communication");
+            Color relationColor = _performance.getRelationColor( 
+                    communicationVariable );
+            connector.setStrokePaint(relationColor);
+
+            if (communicationVariable != null) {
                 try {
-                    Token t = a.getToken();
-                    double l = 0;
-                    if ( t instanceof IntToken ) {
-                        l = ((IntToken)t).intValue();
-                    }
-                    if ( t instanceof DoubleToken ) {
-                        l = ((DoubleToken)t).doubleValue();
-                    }                     
-
-                    // Determine the color....
-                    c = (int) Math.floor( (double)(l - _min) /(double)_bin);
-                    
-                    //System.out.println(" GC fire: " + l );
-                    //System.out.println(" GC color: " + c );
-
+                    String s = communicationVariable.getToken().toString();
+                    LabelFigure label = new LabelFigure(s);
+                    label.setFont(new Font("Helvetica", Font.PLAIN, 9));
+                    label.setPadding(8);
+                    connector.setLabelFigure(label);
                 } catch (IllegalActionException e) { }  
-                return (Color)colorList.get(new Integer(c));
-            } else {
-                return Color.yellow;
-            }             
-        } else {
-            return Color.pink;
-        }
-    }
-
-    /** Extract global Performance information from a model. This is
-        done by traversing all the actors in the model in a recursive
-        way. At each actor, a number of Variable values is check
-        (e.g. fire). On the basis of these variable values, a global
-        value like max and min are set. This is done before the model
-        is rerendered by Vergil.
-        @param manager The manager of the model.
-    */
-    private void _getGlobalPerformanceMetrics(Manager manager) {
-        //System.out.println(" &&&&& RERENDER &&&& ");
-
-        if ( manager != null ) {
-            // A linked list containing all the actors
-            LinkedList AllActors = new LinkedList();
-            Iterator entities = ((CompositeActor)manager.getContainer())
-                .deepEntityList().iterator();
-
-            // Initialize the value
-            _max = 0;
-            _min = Integer.MAX_VALUE;
-            
-            // Walk through the model
-            while(entities.hasNext()) {
-                ComponentEntity a = (ComponentEntity)entities.next();
-                if(a instanceof Actor) {
-                    Variable f = (Variable)a.getAttribute("fire");
-                    if ( f != null ) {
-                        try {
-                            Token t = f.getToken();
-                            double l = 0;
-                            if ( t instanceof IntToken ) {
-                                l = ((IntToken)t).intValue();
-                            }
-                            if ( t instanceof DoubleToken ) {
-                                l = ((DoubleToken)t).doubleValue();
-                            }                      
-                            //System.out.println(" fire: " + l );
-                            if ( l > _max ) {
-                                _max = (int)l;
-                            }
-                            if ( l < _min ) {
-                                _min = (int)l;
-                            }
-                        } catch (IllegalActionException e) { }  
-                    }
-                }
-            }
-
-            if ( _max != 0 ) {
-                _bin = (_max - _min)/(colorList.size()-1);
-                System.out.print("\n\n Global Info: max firings: " + _max );
-                System.out.print(" min firings: " + _min );        
-                System.out.print(" bin size: " + _bin + "\n\n");
-            }
-
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private CompaanListener _listener;
-
-    private static Map colorList = new HashMap();
-
-    private int _max = 0;
-    private int _min = Integer.MAX_VALUE;
-    private int _bin = 1;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         static functions                  ////
-
-    static {
-        colorList.put(new Integer(0), Color.blue );
-        colorList.put(new Integer(1), Color.cyan );
-        colorList.put(new Integer(2), Color.green );
-        colorList.put(new Integer(3), Color.yellow );
-        colorList.put(new Integer(4), Color.pink );
-        colorList.put(new Integer(5), Color.orange );
-        colorList.put(new Integer(6), Color.red );        
+            }                       
+            return connector;
+	}
     }
 
 
