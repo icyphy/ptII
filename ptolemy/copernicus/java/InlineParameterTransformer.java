@@ -256,6 +256,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                             // attempt to get the constant value of the variable.
                             Attribute attribute =
                                 getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
+                            if(debug) System.out.println("Settable base = " + attribute);
 
                             // If the attribute resolves to null, then replace the invocation with 
                             // an exception throw.
@@ -330,6 +331,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     doneSomething = true;
 
                                 } else if(r.getMethod().getName().equals("getToken")) {
+                                    if(debug) System.out.println("Replacing getToken on Variable");
                                     // replace the method call with a field ref.
                                     SootField tokenField = (SootField)attributeToValueFieldMap.get(attribute);
                                     if(tokenField == null) {
@@ -338,6 +340,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     box.setValue(Jimple.v().newStaticFieldRef(tokenField));
                                     doneSomething = true;
                                 } else if(r.getMethod().getName().equals("setToken")) {
+                                    if(debug) System.out.println("Replacing setToken on Variable");
                                     // Call attribute changed AFTER we set the token.
                                     PtolemyUtilities.callAttributeChanged(
                                             (Local)r.getBase(), theClass, method, body, 
@@ -356,7 +359,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                     Jimple.v().newStaticFieldRef(tokenField),
                                                     r.getArg(0)));
                                     doneSomething = true;
-                                } else if(r.getMethod().getName().equals("getExpression")) {
+                                } else if(r.getMethod().getSubSignature().equals(
+                                        PtolemyUtilities.getExpressionMethod.getSubSignature())) {
+                                    if(debug) System.out.println("Replacing getExpression on Variable");
                                     // First get the token out of the field, and then insert a call
                                     // to its toString method to get the expression.
                                     SootField tokenField = 
@@ -377,7 +382,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                             PtolemyUtilities.toStringMethod));
                                     doneSomething = true;
                                     // FIXME null result => ""
-                                } else if(r.getMethod().getName().equals("setExpression")) {
+                                } else if(r.getMethod().getSubSignature().equals(
+                                        PtolemyUtilities.setExpressionMethod.getSubSignature())) {
+                                    if(debug) System.out.println("Replacing setExpression on Variable");
                                     // Call attribute changed AFTER we set the token.
                                     PtolemyUtilities.callAttributeChanged(
                                             (Local)r.getBase(), theClass, method, body, 
@@ -412,16 +419,15 @@ public class InlineParameterTransformer extends SceneTransformer {
                                 }
                             } else {
                                 // It's just settable, so handle get/setExpression
-                                if(r.getMethod().equals(PtolemyUtilities.getExpressionMethod)) {
-                                    // Call attribute changed AFTER we set the expression
-                                    PtolemyUtilities.callAttributeChanged(
-                                            (Local)r.getBase(), theClass, method, body, 
-                                            body.getUnits().getSuccOf(stmt));
-                                            
+                                if(r.getMethod().getSubSignature().equals(
+                                        PtolemyUtilities.getExpressionMethod.getSubSignature())) {
+                                    if(debug) System.out.println("Replacing getExpression on Settable");
                                     box.setValue(Jimple.v().newStaticFieldRef(
                                             (SootField)attributeToValueFieldMap.get(attribute)));
                                     doneSomething = true;
-                                } else if(r.getMethod().equals(PtolemyUtilities.setExpressionMethod)) {
+                                } else if(r.getMethod().getSubSignature().equals(
+                                        PtolemyUtilities.setExpressionMethod.getSubSignature())) {
+                                    if(debug) System.out.println("Replacing setExpression on Settable");
                                     // Call attribute changed AFTER we set the token.
                                     PtolemyUtilities.callAttributeChanged(
                                             (Local)r.getBase(), theClass, method, body, 
