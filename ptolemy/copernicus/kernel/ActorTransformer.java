@@ -183,15 +183,11 @@ public class ActorTransformer extends SceneTransformer {
             Local thisLocal = body.getThisLocal();
             
             // insert code to initialize the settable
-            // parameters of this instance
-            // FIXME don't assume that the parameter has already been
-            // created.
+            // parameters of this instance and
             // create fields for attributes.
-            //ModelTransformer.createFieldsForAttributes(body, entity, thisLocal, 
-            //        entity, entityInstanceClass);
-            _initializeParameters(body, 
-                    entity, entity, thisLocal);
-            
+            ModelTransformer.createFieldsForAttributes(body, entity, thisLocal, 
+                    entity, thisLocal, entityInstanceClass);
+                    
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
 
@@ -209,66 +205,6 @@ public class ActorTransformer extends SceneTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
-    // FIXME: duplicate with ModelTransformer.
-    // Generate code in the given body to initialize all of the attributes
-    // in the given entity.
-    private static void _initializeParameters(JimpleBody body,
-            NamedObj context, NamedObj container, Local contextLocal) {
-        SootClass namedObjClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-        SootClass attributeClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-
-        SootClass settableClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
-        Type settableType = RefType.v(settableClass);
-        SootMethod setExpressionMethod =
-            settableClass.getMethodByName("setExpression");
-
-        Chain units = body.getUnits();
-        // First create a local variable.
-        Local attributeLocal = Jimple.v().newLocal("attribute",
-                attributeType);
-        body.getLocals().add(attributeLocal);
-
-        Local settableLocal = Jimple.v().newLocal("settable",
-                settableType);
-        body.getLocals().add(settableLocal);
-
-        // now initialize each settable.
-        for(Iterator attributes =
-                container.attributeList(Settable.class).iterator();
-            attributes.hasNext();) {
-            Attribute attribute = (Attribute)attributes.next();
-            if(attribute instanceof ptolemy.moml.Location) {
-                // ignore locations.
-                // FIXME: this is a bit of a hack.
-                continue;
-            }
-            Settable settable = (Settable)attribute;
-
-            // first assign to temp
-            units.add(Jimple.v().newAssignStmt(attributeLocal,
-                    Jimple.v().newVirtualInvokeExpr(contextLocal,
-                            getAttributeMethod,
-                            StringConstant.v(attribute.getName(context)))));
-            // cast to Settable.
-            units.add(Jimple.v().newAssignStmt(settableLocal,
-                    Jimple.v().newCastExpr(attributeLocal,
-                            settableType)));
-            // call setExpression.
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newInterfaceInvokeExpr(settableLocal,
-                            setExpressionMethod,
-                            StringConstant.v(((Settable)attribute)
-                                    .getExpression()))));
-        }
-    }
 
     private static void _implementExecutableInterface(SootClass theClass) {
         // Loop through all the methods and remove calls to super.

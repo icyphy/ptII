@@ -302,6 +302,7 @@ public class KernelMain {
             toplevel = (CompositeActor)_parser.parse(source);
 
         } catch (Exception exception) {
+        
 	    try {
 		// Then try it as an xml file
 		toplevel = (CompositeActor)_parser.parseFile(momlClassName);
