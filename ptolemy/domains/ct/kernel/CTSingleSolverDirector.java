@@ -325,7 +325,7 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public void wrapup() throws IllegalActionException{
         if(STAT) {
-            System.out.println("**************STATISTICS***************");
+            System.out.println("################STATISTICS################");
             System.out.println("Total # of STEPS "+NSTEP);
             System.out.println("Total # of Function Evaluation "+NFUNC);
             System.out.println("Total # of Failed Steps "+NFAIL);

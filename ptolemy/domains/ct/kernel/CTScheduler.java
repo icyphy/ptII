@@ -615,9 +615,9 @@ public class CTScheduler extends Scheduler{
         if(!g.isAcyclic()) {
             throw new NotSchedulableException("Arithmatic loop found.");
         }
-        //System.out.println("CTScheduler***********************" +
+        //System.out.println("CTScheduler#######################" +
         //        "number of edges" + g.getEdgeCount());
-        //System.out.println("CTScheduler***********************" +
+        //System.out.println("CTScheduler#######################" +
         //        "number of nodes" + g.getNodeCount());          
         // construct an array of dynamic actors.
         int numofdyn = _dynam.size();
