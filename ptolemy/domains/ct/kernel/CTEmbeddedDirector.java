@@ -133,6 +133,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  it during one iteration.
      */
     public void fire() throws IllegalActionException {
+        // update local iteration begin time by the top level.
+        // this can not be put inside prefire method since 
+        // this reset is necessary if the current step size
+        // is not accurate.
+        _setIterationBeginTime(getIterationBeginTime());
+        
         // FIXME: A rough design.
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         if (isDiscretePhase()) {
@@ -142,8 +148,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             }
             if (isWaveformGeneratingPhase()) {
                 // NOTE: the time a discrete phase execution (waveform phase) 
-                // starts is the the time the iteration time starts.
+                // starts is the same time the iteration time starts.
                 // NOTE: A ct composite actor is also a waveform generator.
+                
+                // FIXME: why update here? should this go to the prefire method?
+                // The time update only happen once!
                 CompositeActor container = (CompositeActor)getContainer();
                 Director exe = container.getExecutiveDirector();
                 Time time = exe.getCurrentTimeObject();
@@ -161,8 +170,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // set the current time to the iteration begin time because the upper
             // level hierarchy may request refiring with a smaller step size.
             
-            // FIXME: this director may not even has its own time.
-            // setCurrentTime(getIterationBeginTime());
+            // FIXME: the embedded director needs to update its current time to
+            // the time iteration begins.
+            // setCurrentTimeObject(getIterationBeginTime());
             
             // The following statement is decomposed into a set of actions with
             // conditions.
@@ -181,15 +191,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 }
                 if (isFiringStateTransitionActorsPhase()) {
                     getODESolver().fireStateTransitionActors();
+                    // No seperate phase for producing output, because
+                    // a CT subsystem needs to produce output if it works
+                    // as a state transition actor. 
                     super.produceOutput();
                 }
             }
-            // No seperate phase for producing output, because
-            // a CT subsystem need to produce output if it works
-            // as one of the state transition actors. 
-//            if (isProducingOutputsPhase()) {
-//                super.produceOutput();
-//            }
             if (isUpdatingContinuousStatesPhase()) {
                 super.updateContinuousStates();
             }
@@ -201,6 +208,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
          
     }
 
+    /** Return the begin time of the current iteration. This method is final
+     *  for performance reason.
+     *  @return The begin time of the current iteration.
+     */
+    public Time getIterationBeginTime() {
+        CompositeActor container = (CompositeActor)getContainer();
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.getIterationBeginTime();
+    }
 
     /** Return the current integration step size. This method is final
      *  for performance reason.
@@ -446,12 +462,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
 
     // The current time of the outer domain.
     private Time _outsideTime;
-
+    
+    private Time _savedIterationBeginTime;
+    
     /* (non-Javadoc)
      * @see ptolemy.domains.ct.kernel.CTTransparentDirector#markState()
      */
     public void markState() {
         try {
+            _savedIterationBeginTime = getCurrentTimeObject();
             Iterator statefulActors = getScheduler().getSchedule().get(
                     CTSchedule.STATEFUL_ACTORS).actorIterator();
             while (statefulActors.hasNext() && !_stopRequested) {
@@ -486,6 +505,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public void goToMarkedState() {
         try {
+            setCurrentTimeObject(_savedIterationBeginTime);
             Iterator statefulActors = getScheduler().getSchedule().get(
                     CTSchedule.STATEFUL_ACTORS).actorIterator();
             while (statefulActors.hasNext() && !_stopRequested) {
@@ -502,14 +522,16 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isStateAccurate()
      */
     public boolean isStateAccurate() {
-        return _isStateAccurate();
+        _stateAcceptable = _isStateAccurate();
+        return _stateAcceptable;
     }
 
     /* (non-Javadoc)
      * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isOutputAccurate()
      */
     public boolean isOutputAccurate() {
-        return _isOutputAccurate();
+        _outputAcceptable = _isOutputAccurate();
+        return _outputAcceptable;
     }
 }
 

@@ -190,6 +190,13 @@ public abstract class ODESolver extends NamedObj {
         _roundCount = 0;
     }
 
+    /** Reset the iteration start time. This is used when the current
+     *  step size is not accurate to resolve states and outputs.
+     */
+    public void resetIterationBeginTime() {
+        _container.setCurrentTimeObject(
+            _container.getIterationBeginTime());
+    }
     /** Return true if the state of the system is resolved successfully.
      *  Different solvers may implement it differently. Implementations
      *  of this method will fire STATE_TRANSITION_ACTORS and
@@ -211,7 +218,7 @@ public abstract class ODESolver extends NamedObj {
      *
      *  @param dir The CT director
      */
-    protected void _makeSolverOf(Director dir) {
+    protected void _makeSolverOf(CTDirector dir) {
         _container = dir;
         if (dir != null) {
             workspace().remove(this);
@@ -244,7 +251,7 @@ public abstract class ODESolver extends NamedObj {
     ////                         private variables                 ////
 
     // The CT director that contains this solver.
-    private Director _container = null;
+    private CTDirector _container = null;
     // The round counter.
     private int _roundCount = 0;
     private boolean _isConverged = false;
@@ -260,7 +267,11 @@ public abstract class ODESolver extends NamedObj {
         return _isConverged;
     }
 
-    /** Set the convergence flag. Integrators may call this method
+    /** Set a flag to indicate that all the integrators agree that the
+     *  fixed point has been reached.
+     *  // FIXME: change name to converged. 
+     *  make protected. 
+     *  Set the convergence flag. Integrators may call this method
      *  to change the convergence.
      *  @param convergence The flag setting.
      */

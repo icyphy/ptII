@@ -27,25 +27,21 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.actor.util.Time;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CTGeneralDirector
 /**
-   Interface for CT transparent directors. Transparent directors in the CT
-   domain can transfer its internal step size control information to the
-   executive director. It defines methods to support the step size control
-   queries by the executive CTDirector, such that after the internal
-   CT subsystem finishes one integration step, its step size control information
-   will be accessible by the outside CT director.
-   <P>
-   Implementations of this interface are typically contained by CTCompositeActors.
+   Interface for CT directors. This interface defines the methods for lower 
+   level CT directors to access information of the top level CT director.    
 
-   @see CTGeneralDirector
+   @see CTDirector, CTTransparentDirector
    @author  Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (chf)
+   @Pt.ProposedRating Red (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 
 */
 public interface CTGeneralDirector {
@@ -150,5 +146,10 @@ public interface CTGeneralDirector {
      *  waveform generator actors only.
      */
     public boolean isWaveformGeneratingPhase();
+
+    /** Return the current time the current iteration starts.
+     * @return The time the current iteration starts.
+     */
+    public Time getIterationBeginTime();
 }
 

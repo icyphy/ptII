@@ -351,31 +351,18 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public void fire() throws IllegalActionException {
     }
     
-    /** Handle the firing request from the containing actors.
-     *  If the specified time is the current time (within the
-     *  <i>timeResolution</i> of this director), and the actor is
-     *  not null nor a step size control actor, then the actor will
-     *  be added into a refiredActors list and fired as part of the
-     *  current execution phase.  If the specified time is in the
-     *  future, or the actor is null, or the actor is a step size
-     *  control actor, this director will register a breakpoint at
-     *  the specified time.
+    /** Handle the firing request from the contained actors.
+     *  If the specified time is earlier than the current time, throw
+     *  an exception. Otherwise, insert the specified time into the
+     *  breakpoint table. 
      *  <p>
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
-     *  executed at every breakpoint.
+     *  executed at every breakpoint. FIXME: difference between CT and DE.
      *  <p>
      *  If the actor is null, it indicates the time for the start or
      *  the stop of an execution. Otherwise, it is the actor that
      *  requests the firing.
-     *  <p>
-     *  In CT domain, the signals may be piecewise continuous. They
-     *  may generate discontinuities at some time points. In order to
-     *  generate the discontinuities, the actors request to be fired at
-     *  some time as many times as necessary, and each time they produce
-     *  some outputs. The CT director does not deal with discontinuity
-     *  but only handle the requests from the actors it contains. For
-     *  example, the ContinuousClock actor fires twice at each offset.
 
      *  @param actor The actor that requested the firing or null that
      *    indicates the time of the start or stop of an execution.
@@ -385,7 +372,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException{
-        double resolution = getTimeResolution();
         Time currentTime = getCurrentTimeObject();
 
         // Check if the request time is earlier than the current time.
@@ -400,8 +386,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _breakPoints = new TotallyOrderedSet(new GeneralComparator());
         }
         
+        // Debug information
         if (_debugging) {
-            String name = "Director";
+            String name = getName();
             if (actor != null) {
                 name = ((Nameable)actor).getName();
             }
@@ -410,6 +397,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
                     + time);
         }
         
+        // insert a new breakpoint into the breakpoints table.
         _breakPoints.insert(time);
     }
 
@@ -455,19 +443,17 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _initStepSize;
     }
 
-    /** Return the begin time of the current iteration. This method is final
-     *  for performance reason.
+    /** Return the begin time of the current iteration.
      *  @return The begin time of the current iteration.
      */
-    public final Time getIterationBeginTime() {
+    public Time getIterationBeginTime() {
         return _iterationBeginTime;
     }
 
-    /** Return the end time of the current iteration. This method is final
-     *  for performance reason.
+    /** Return the end time of the current iteration. 
      *  @return The end time of the current iteration.
      */
-    public final Time getIterationEndTime() {
+    public Time getIterationEndTime() {
         return _iterationEndTime;
     }
 
@@ -506,7 +492,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return The iteration begin time plus the current step size.
      */
     public double getNextIterationTime() {
-        return getIterationBeginTime().add(getCurrentStepSize()).getTimeValue();
+        return getNextIterationTimeObject().getTimeValue();
     }
 
     /** Return the current iteration begin time plus the current
@@ -527,7 +513,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return the start time.
      */
     public final double getStartTime() {
-        return _startTime.getTimeValue();
+        return getStartTimeObject().getTimeValue();
     }
 
     /** Return the start time parameter value. This method is final
@@ -543,7 +529,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return the stop time.
      */
     public final double getStopTime() {
-        return _stopTime.getTimeValue();
+        return getStopTimeObject().getTimeValue();
     }
 
     /** Return the stop time. This method is final
@@ -578,10 +564,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Initialization after type resolution.
-     *  In addition to calling the initialize() method of its super class,
+     *  In addition to calling the initialize() method of the super class,
      *  this method records the current system time as the "real" starting
      *  time of the execution. This starting time is used when the
-     *  execution is synchronized to real time. This method also reset 
+     *  execution is synchronized to real time. This method also resets 
      *  the protected variables. 
      *  
      *  @exception IllegalActionException If the super class throws it.
@@ -593,6 +579,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
         
+        // set current time and initialize the contained actors.
         super.initialize();
     }
 
@@ -629,17 +616,18 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return new CTReceiver();
     }
 
-    // FIXME: postfire method, request refiring if not at top level.
     /** If this director is not at top level, request a refiring at
      *  the first breakpoint. 
+     *  
      *  FIXME: the rest of the breakpoints may not be interesting...
-     *  However, the stop time is important. 
-     *  Return true if the director wishes to be scheduled for another
-     *  iteration. This base class returns true if all of the actors
-     *  iterated since the last call to prefire returned true from their
-     *  postfire() method and if stop() has not been called. Subclasses
-     *  may override this method to perform additional
-     *  domain-specific behavior.
+     *  However, the stop time is important.
+     *  // If we constraint that  
+     * 
+     *  Otherwise, if the stop() method has not been called and all the
+     *  actors return true at postfire, return true. 
+     * 
+     *  FIXME: make this method finale.
+     * 
      *  @return True if the Director wants to be fired again in the
      *  future.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -649,6 +637,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
             Time time = (Time) getBreakPoints().removeFirst();
             CompositeActor container = (CompositeActor)getContainer();
             container.getExecutiveDirector().fireAt(container, time);
+        }
+        if (_debugging) {
+            _debug("Postfire returns " + (_postfireReturns && !_stopRequested) 
+                + " at: " + getCurrentTimeObject());
         }
         return _postfireReturns && !_stopRequested;
     }
@@ -726,6 +718,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // FIXME: we may not need to do this... since a small difference
         // of step size does not matter considering the value error tolerance
         // of the solvers...
+        // However, it does affect the stop time of the current iteration.
         double newStepsize = Utilities.round(stepsize, getTimeResolution());
         if (_debugging) {
             _debug("----- Setting current step size to (adjusted) " 
@@ -776,6 +769,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _suggestedNextStepSize = stepsize;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Create and initialize all parameters to their default values.
      */
@@ -1002,6 +998,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ////                         private variables                 ////
 
     // FIXME: are all the following private variables initialized before using?
+    // Yes, in the _initializeLocalVariables() method.
     
     // Current ODE solver.
     private ODESolver _currentSolver = null;
