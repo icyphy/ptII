@@ -191,38 +191,61 @@ public class Parameter extends Attribute implements ParameterListener {
 
     /** Evaluate the current expression to a Token. If this parameter
      *  was last set directly with a Token do nothing. This method is also
-     *  called after a Parameter is cloned.
+     *  called after a Parameter is cloned. 
+     *  <p>
+     *  This method is defined by The ParameterListener interface which
+     *  all Parameters implement. When a Parameter changes, it calls 
+     *  this method on all ParameterListeners registered with it. This 
+     *  method also detects dependency loops between Parameters.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
      *  @exception IllegalArgumentException If the token resulting
      *   from evaluating the expression cannot be stored in this parameter.
      */
     public void evaluate() throws IllegalArgumentException {
-        if (_needsEvaluation) {
-            _needsEvaluation = false;
-            if (_parser == null) {
-                _parser = new PtParser(this);
-            }
-            try {
-                workspace().getReadAccess(); {
-                    _parseTree = _parser.generateParseTree(
-                            _currentExpression, getScope());
-                    _token = _parseTree.evaluateParseTree();
-                }
-                if (_noTokenYet) {
-                    // This is the first token stored in this parameter.
-                    _initialExpression = _currentExpression;
-                    _noTokenYet = false;
-                    setType(_token.getClass());
-                    // don't need to check type as first token in
-                } else {
-                    _checkType(_token);
-                }
-                _notifyListeners();
-            } finally {
-                workspace().doneReading();
-            }
+        if (_currentExpression == null) {
+	    return;
+	} 
+	if (_dependencyLoop) {
+            throw new IllegalArgumentException("Found dependency loop in " +
+		    getFullName() +  ": " + _currentExpression);
         }
-    }
+        _dependencyLoop = true;
 
+        try {
+	    workspace().getReadAccess(); 
+	    // if an expression was placed in this parameter but has not
+	    // yet been evaluated, do it now
+	    if (_needsEvaluation) {
+		_needsEvaluation = false;
+		if (_parser == null) {
+		    _parser = new PtParser(this);
+		}
+		_parseTree = _parser.generateParseTree(
+			_currentExpression, getScope());
+	    }
+	    if ( _parseTree == null){
+		// ERROR: should not get here.
+		throw new InternalErrorException("Parameter.evaluate():" +
+			"reached a point which should not be reached.");
+	    }
+	    _token = _parseTree.evaluateParseTree();
+	    if (_noTokenYet) {
+		// This is the first token stored in this parameter.
+		_initialExpression = _currentExpression;
+		_noTokenYet = false;
+		setType(_token.getClass());
+		// don't need to check type as first token in
+	    } else {
+		_checkType(_token);
+	    }
+	    _notifyListeners();
+        } finally {
+	    _dependencyLoop = false;
+	    workspace().doneReading();
+	}
+    }
+    
     /** Obtain a NamedList of the parameters that the value of this
      *  Parameter can depend on. The scope is limited to the parameters in the
      *  same NamedObj and those one level up in the hierarchy.
@@ -304,37 +327,6 @@ public class Parameter extends Attribute implements ParameterListener {
      */
     public Class getType() {
         return _paramType;
-    }
-
-    /** This method is called by a Parameter this Parameter is
-     *  observing.
-     *  @param o the Observable object that called this method.
-     *  @param t not used.
-     *  @exception IllegalArgumentException If type of the
-     *   resulting Token is not allowed in this Parameter.
-     */
-    public void reEvaluate() throws IllegalArgumentException {
-        if (_currentExpression == null) {
-            return;
-        }
-        if (_dependencyLoop) {
-            String str = "Found dependency loop in " + getFullName();
-            str += ": " + _currentExpression;
-            throw new IllegalArgumentException(str);
-        }
-        _dependencyLoop = true;
-        // if an expression was placed in this parameter but has not
-        // yet been evaluated, do it now
-        if (_needsEvaluation ) {
-            evaluate();
-        } else if ( _parseTree != null) {
-            _token = _parseTree.evaluateParseTree();
-            _checkType(_token.getClass());
-            _notifyListeners();
-        } else {
-            // ERROR: should not get here. What exception should be thrown?
-        }
-        _dependencyLoop = false;
     }
 
     /** Register an interest with this Parameter.
@@ -494,7 +486,7 @@ public class Parameter extends Attribute implements ParameterListener {
         }
         Enumeration list = _listeners.elements();
         while (list.hasMoreElements()) {
-            ((ParameterListener)list.nextElement()).reEvaluate();
+            ((ParameterListener)list.nextElement()).evaluate();
         }
     }
 
