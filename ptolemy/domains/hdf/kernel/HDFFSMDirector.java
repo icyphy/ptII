@@ -220,10 +220,10 @@ public class HDFFSMDirector extends FSMDirector {
         return destinationState;
     }
 
-   /**
-    * 
-    * @param currentState
-    * @throws IllegalActionException
+   /** Choose the next intransient state given the current state.
+    * @param currentState The current state.
+    * @throws IllegalActionException If a transient state is reached
+    *  but no further transition is enabled.
     */
     public void chooseTransitions(State currentState) 
         throws IllegalActionException {
@@ -275,19 +275,6 @@ public class HDFFSMDirector extends FSMDirector {
 
         if (_embeddedInSDF) {
             chooseTransitions(currentState);
-            /*
-            state = chooseStateTransition(state);
-            actors = state.getRefinement();
-            while (actors == null) {
-                super.postfire();
-                state = chooseStateTransition(state);
-                transition = _getLastChosenTransition();
-                if (transition == null)
-                    throw new IllegalActionException(this,
-                        "Reached a transient state" +
-                        "without enabled transition.");
-                actors = (transition.destinationState()).getRefinement();
-            }*/
         }
         if (_sendRequest && !_embeddedInSDF) {
             ChangeRequest request =
@@ -297,26 +284,6 @@ public class HDFFSMDirector extends FSMDirector {
                         FSMActor controller = getController();
                         State currentState = controller.currentState();
                         chooseTransitions(currentState);
-                        //TypedActor[] actors;
-                        //Transition transition;
-                        /*
-                        state = chooseStateTransition(state);
-                        
-                        actors = state.getRefinement();
-                        
-                        while (actors == null) {
-                            superPostfire();
-                            state = chooseStateTransition(state);
-                            transition = _getLastChosenTransition();
-                            
-                            if (transition == null){
-                                throwTransientException();
-                            }
-                            else {
-                                actors = (transition.destinationState())
-                                    .getRefinement();
-                            }
-                        }*/
                     }
                 };
             request.setPersistent(false);
@@ -630,28 +597,6 @@ public class HDFFSMDirector extends FSMDirector {
             }
         }
     }
-
-    /** Execute super.postfire(). This is used to commit action
-     *  and set up new connection map when transitions through
-     *  a transient state is made.
-     * @throws IllegalActionException If the super class throws it.
-     */
-    //public void superPostfire() throws IllegalActionException {
-      //  super.postfire();
-    //}
-    
-    /** Throw IllegalActionException when a transient state
-     *  is reached but no further transition is enabled. This
-     *  method is called in ChangRequest.
-     * @throws IllegalActionException
-     */
-    /*
-    public void throwTransientException() throws IllegalActionException {
-        throw new IllegalActionException(this,
-            "Reached a transient state" +
-            "without enabled transition.");  
-    }*/
-    
 
     /** Return true if data are transferred from the input port of
      *  the container to the connected ports of the controller and
