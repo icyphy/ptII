@@ -86,3 +86,19 @@ test IntegerList-1.6 {Access an IntegerList with an out of bounds} {
     list $errMsg
 } {{java.lang.IndexOutOfBoundsException: 2 + 7 is greater than 8}}
 
+test IntegerList-1.7 {Length of a singleton IntegerList} {
+    set context [[java::new ptolemy.caltrop.PtolemyPlatform] context]
+    set list [java::new {ptolemy.caltrop.util.IntegerList \
+	    caltrop.interpreter.Context int int} $context 2 2]
+    $list size
+} {1}
+
+test IntegerList-1.8 {Access element of a singleton IntegerList} {
+    set context [[java::new ptolemy.caltrop.PtolemyPlatform] context]
+    set list [java::new {ptolemy.caltrop.util.IntegerList \
+	    caltrop.interpreter.Context int int} $context 2 2]
+    set n [$list {get int} 0]
+    $n toString
+} {2}
+
+
