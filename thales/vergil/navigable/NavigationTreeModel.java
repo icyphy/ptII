@@ -1,6 +1,5 @@
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson
- @version $Id$
- @since Ptolemy II 4.0
+/* Navigation Tree Model
+
  Copyright (c) 2003-2004 THALES.
  All rights reserved.
 

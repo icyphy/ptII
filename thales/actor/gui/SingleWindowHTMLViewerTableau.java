@@ -1,3 +1,5 @@
+/* Single Window HTML Viewer
+
  Copyright (c) 2003-2004 THALES.
  All rights reserved.
 
