@@ -154,11 +154,10 @@ public class TimeKeeper {
 	boolean rcvrNotFound = true;
         RcvrTimeTriple highPriorityTriple = null;
 
-	while( rcvrNotFound ) {
-	    if( cnt == _rcvrTimeList.size() ) {
-	        return null;
-	    }
-
+	if( _rcvrTimeList.size() == 0 ) {
+	    return null;
+	}
+	while( cnt < _rcvrTimeList.size() ) {
 	    RcvrTimeTriple triple = 
 		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	    if( time == -10.0 ) {
@@ -173,7 +172,7 @@ public class TimeKeeper {
 	    if( time > firstTime || 
 		    time == TimedQueueReceiver.INACTIVE || 
 			    time == TimedQueueReceiver.IGNORE ) {
-	        rcvrNotFound = false;
+		return highPriorityTriple.getReceiver();
 	    } else if( maxPriority < triple.getPriority() ) {
 		maxPriority = triple.getPriority();
 		highPriorityTriple = triple;
@@ -181,6 +180,67 @@ public class TimeKeeper {
 	    cnt++;
 	}
 	return highPriorityTriple.getReceiver();
+    }
+
+    /** Return the TimedQueueReceiver of this time keeper's list such that
+     *  the returned receiver has the highest priority given that it has 
+     *  the lowest nonnegative receiver time of all receivers managed by 
+     *  this TimeKeeper. Return null if this time keeper's list of receivers 
+     *  is empty.
+     * @return The TimedQueueReceiver with the highest priority 
+     *  and lowest nonnegative rcvrTime. If no receivers exist, 
+     *  return null.
+     */
+    public synchronized TimedQueueReceiver getHighestPriorityReal() {
+        double time = -10.0;
+	double firstTime = -10.0;
+        int maxPriority = -1;
+	int cnt = 0;
+	boolean rcvrNotFound = true;
+        RcvrTimeTriple highPriorityTriple = null;
+
+	if( _rcvrTimeList.size() == 0 ) {
+	    return null;
+	}
+	while( cnt < _rcvrTimeList.size() ) {
+	    RcvrTimeTriple triple = 
+		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+	    if( time == -10.0 ) {
+	        time = triple.getTime();
+	        firstTime = time;
+		TimedQueueReceiver tmpRcvr = 
+		        (TimedQueueReceiver)triple.getReceiver();
+		if( !tmpRcvr.hasNullToken() ) {
+		    maxPriority = triple.getPriority();
+		    highPriorityTriple = triple;
+		}
+	    } else {
+	        time = triple.getTime();
+	    }
+
+	    if( time > firstTime || 
+		    time == TimedQueueReceiver.INACTIVE || 
+			    time == TimedQueueReceiver.IGNORE ) {
+		if( highPriorityTriple != null ) {
+		    return highPriorityTriple.getReceiver();
+		} else {
+		    return null;
+		}
+	    } else if( maxPriority < triple.getPriority() ) {
+		TimedQueueReceiver tmpRcvr = 
+		        (TimedQueueReceiver)triple.getReceiver();
+		if( !tmpRcvr.hasNullToken() ) {
+		    maxPriority = triple.getPriority();
+		    highPriorityTriple = triple;
+		}
+	    }
+	    cnt++;
+	}
+	if( highPriorityTriple != null ) {
+	    return highPriorityTriple.getReceiver();
+	} else {
+	    return null;
+	}
     }
 
     /** Return the earliest possible time stamp of the next token to be
@@ -368,6 +428,12 @@ public class TimeKeeper {
 	return _searchingForIgnoredTokens;
     }
 
+    /** FIXME
+     */
+    void setIgnoredTokens(boolean ignore) {
+	_ignoredReceivers = ignore;
+    }
+
     /** Update receivers controlled by this time keeper that have 
      *  a receiver time equal to TimedQueueReceiver.IGNORE. For 
      *  each such receiver, call DDEReceiver.clearIgnoredTokens().
@@ -378,7 +444,7 @@ public class TimeKeeper {
 	}
 	_searchingForIgnoredTokens = true;
 	if( _ignoredReceivers ) {
-	    // System.out.println("###Call to updateIgnoredReceivers()###");
+	    // System.out.println("***Call to updateIgnoredReceivers()***");
 	    RcvrTimeTriple triple; 
 	    DDEReceiver rcvr; 
 	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -386,7 +452,7 @@ public class TimeKeeper {
 		rcvr = (DDEReceiver)triple.getReceiver(); 
 		if( rcvr.getRcvrTime() == 
 			TimedQueueReceiver.IGNORE ) {
-		    System.out.println("###Ignore Token Found!!!###");
+		    // System.out.println("***Ignore Token Found!!!***");
 		    rcvr.clearIgnoredTokens();
 		}
 	    }
@@ -425,12 +491,12 @@ public class TimeKeeper {
      */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
-        System.out.println("\n###Print "+name+"'s RcvrList.");
+        System.out.println("\n***Print "+name+"'s RcvrList.");
         System.out.println("   Number of Receivers in RcvrList = "
                 + _rcvrTimeList.size() );
         if( _rcvrTimeList.size() == 0 ) {
             System.out.println("\tList is empty");
-            System.out.println("###End of printRcvrList()\n");
+            System.out.println("***End of printRcvrList()\n");
 	    return;
         }
         for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -442,7 +508,7 @@ public class TimeKeeper {
             System.out.println("\t"+name+"'s Receiver "+i+
 	            " has a time of " +time+" and string: "+testString);
         }
-        System.out.println("###End of printRcvrList()\n");
+        System.out.println("***End of printRcvrList()\n");
     }
 
     /** Set a flag indicating whether a search for ignored
