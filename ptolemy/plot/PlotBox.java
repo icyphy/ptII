@@ -864,7 +864,7 @@ public class PlotBox extends Applet {
         boolean pointinside = y <= _lry && y >= _uly &&
 	    x <= _lrx && x >= _ulx;
         boolean handled = false;
-        if (_zoomin == true){  
+        if ((_zoomin == true) && (_drawn == true)){  
             if (_zoomxn != -1 || _zoomyn != -1) {
                 // erase previous rectangle.
                 int minx = Math.min(_zoomx, _zoomxn);
@@ -875,7 +875,8 @@ public class PlotBox extends Applet {
                 graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 graphics.setPaintMode();
                 // if in range, zoom
-                if (pointinside) {
+                if ((pointinside) && (Math.abs(_zoomx-x) > 5) 
+                                  && (Math.abs(_zoomy-y) > 5)) {
                     double a = _xMin + (_zoomx - _ulx)/_xscale;
                     double b = _xMin + (x - _ulx)/_xscale;
                     if (a < b) setXRange(a, b);
@@ -884,11 +885,11 @@ public class PlotBox extends Applet {
                     b = _yMax - (y - _uly)/_yscale;
                     if (a < b) setYRange(a, b);
                     else setYRange(b, a);
-                    drawPlot(true);
                 }
+                drawPlot(true);
                 handled = true;
             }
-        } else if (_zoomout == true){
+        } else if ((_zoomout == true) && (_drawn == true)){
             // Erase previous rectangle.
             graphics.setXORMode(_background);
             int x_diff = Math.abs(_zoomx-_zoomxn);
@@ -912,6 +913,9 @@ public class PlotBox extends Applet {
                 setYRange(newy2, newy1);
                 drawPlot(true);
             } 
+            handled = true;
+        } else if (_drawn == false){
+            drawPlot(true);
             handled = true;
         }
         _drawn = false;
