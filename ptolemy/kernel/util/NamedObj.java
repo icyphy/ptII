@@ -30,11 +30,12 @@ package pt.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
 /** 
+
 NamedObj is the baseclass for most of the common Ptolemy objects.  A
 NamedObj is, simply put, a named object; in addition to a name, a
-NamedObj has a reference to a parent object, which is always a Block
-(a type of NamedObj). This reference can be null. A NamedObj also has
-a descriptor.
+NamedObj has a reference to a container object, which is always an
+Entity (derived from Node and then, in turn, from NamedObj). This
+reference can be null.
 
 @author Richard Stevens
 <P>  Richard Stevens is an employee of the U.S. Government, whose
@@ -44,59 +45,24 @@ a descriptor.
 @version $Id$
 @see classname
 @see full-classname */
-public abstract class NamedObj {
-    /** no-arg Constructor - Construct a blank NamedObj
-     * @see full-classname/method-name
-     * @return Reference to created named object
-     * @exception full-classname description
-     */	
-    public NamedObj() {
-        this("", null, "");
-    }
-
-    /** Constructor with 3 arguments - Set the name, parent, 
-     * and descriptor to the respective arguments
-     * @see full-classname/method-name
-     * @param n name
-     * @param p parent
-     * @param d descriptor
+public class NamedObj {
+    /** Constructor with 1 argument - Set the name
+     * @param name newName
      * @return Reference to created named object
      */	
-    public NamedObj(String n, Block p, String d) {
+    public NamedObj(String newName) {
         super();
-        setName(n);
-        setParent(p);
-        setDescriptor(d);
+	name = newName;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
     /** Get the name of the object
-     * @see full-classname/method-name
      * @return The object name
-     * @exception full-classname description
      */	
     public String getName() {
-        return nm;
-    }
-
-    /** Get the descriptor
-     * @see full-classname/method-name
-     * @return The descriptor
-     * @exception full-classname description
-     */	
-    public String getDescriptor() {
-        return dscrptr;
-    }
-
-    /** Get the parent block
-     * @see full-classname/method-name
-     * @return The parent block
-     * @exception full-classname description
-     */	
-    public Block getParent() {
-        return prnt;
+        return name;
     }
 
     /** Specify the specific instance's place in the
@@ -105,91 +71,49 @@ public abstract class NamedObj {
      * 
      * <P> universe.galaxy.star.port <P>
      * 
-     * for a porthole; the output is the fullName of the parent, plus
+     * for a porthole; the output is the fullName of the container, plus
      * a period, plus the name of the NamedObj it is called on.
      * This has no relation to the class name.
      *
-     * @see full-classname/method-name
      * @return The full object name
-     * @exception full-classname description 
      */
     public String getFullName() {
-        if(prnt == null) { return nm; }
-        else { return new String(prnt.getFullName() + "." + nm); }
+        if(container == null) { return "." + name; }
+        else { return container.getFullName() + "." + name; }
     }
 
-    /** Set the object name
-     * @see full-classname/method-name
-     * @param myName A String to be the new object name
-     * @return void
-     * @exception full-classname description
+    /** Get the container entity
+     * @return The container entity
      */	
-    public void setName (String myName) {
-        nm = myName;
+    public Entity getContainer() {
+        return container;
     }
 
-    /** Description Set the parent block
-     * @see full-classname/method-name
-     * @param myParent A Block to be the new parent
+    /** Set the container entity
+     * @param newContainer An entity to be the new container
      * @return void
-     * @exception full-classname description
      */	
-    public void setParent(Block myParent) {
-        prnt = myParent;
-    }
-
-    /** Set the name and parent
-     * @see full-classname/method-name
-     * @param myName A String to be the new object name
-     * @param myParent A Block to be the new parent
-     * @return void
-     * @exception full-classname description
-     */	
-    public void setNameParent(String myName, Block myParent) {
-        setName(myName);
-        setParent(myParent);
+    public void setContainer(Entity newContainer) {
+        container = newContainer;
     }
 
     /** Prepare the object for system execution 
-     * (abstract - must be defined in derived class)
-     * @see full-classname/method-name
+     * (do nothing at this level - define in derived class)
      * @return void
-     * @exception full-classname description
      */	
-    abstract public void initialize();
+    public void reset() {}
 
     /** Print a description of the object
-     * @see full-classname/method-name
-     * @param verbose If true, verbose description, else less verbose
      * @return A String describing the object
-     * @exception full-classname description
      */	
-    public String print(boolean verbose) {
-        return new String(getFullName() + ": " + getClassName() + "\n");
-    }
-
-    /** Print the object's class name
-     * @see full-classname/method-name
-     * @return A String giving the class name of the object
-     * @exception full-classname description
-     */	
-    public String getClassName() {
-        return getClass().getName();
+    public String toString() {
+        return new String(getFullName() + ": " + getClass().getName());
     }
 
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Set the descriptor
-     * @see full-classname/method-name
-     * @param myDescriptor A String giving the new descriptor
-     * @return void
-     * @exception full-classname description
-     */	
-     protected void setDescriptor(String myDescriptor) {
-         dscrptr = myDescriptor;
-     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
@@ -205,7 +129,6 @@ public abstract class NamedObj {
     /* Private variables should not have doc comments, they should
      * have regular comments.
      */
-     private String nm;            // name
-     private Block prnt;           // parent
-     private String dscrptr;       // descriptor
+     private String name;            // name
+     private Entity container;       // container
 }
