@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jmf
 
-DIRS = 		#test
+DIRS = 		demo #test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -74,7 +74,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
+	demo \
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
