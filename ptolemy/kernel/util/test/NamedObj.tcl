@@ -57,9 +57,9 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedObj
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParam
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams
   constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String}
-  properties:    class name param
+  properties:    class params name
   superclass:    java.lang.Object
 }}
 
@@ -109,7 +109,7 @@ test NamedObj-2.3 { Check names with dots} {
 # 
 test NamedObj-3.1 {Experiment with Parameters} {
     set n [java::new pt.kernel.NamedObj]
-    set paramlist [$n getParam]
+    set paramlist [$n getParams]
 
     # Create two ParamTest objects, add them to the ParamList
     set paramtest1 [java::new pt.kernel.test.ParamTest]
@@ -124,7 +124,7 @@ test NamedObj-3.1 {Experiment with Parameters} {
     $paramlist prepend $paramtest1
 
     # Get the ParamList again.
-    set paramlist1a [$n getParam]
+    set paramlist1a [$n getParams]
     set paramtest1a [$paramlist1a get "first param"]
     set paramtest2a [$paramlist1a get "second param"]
     list [$paramtest1a getName] [$paramtest1a getValue] \
