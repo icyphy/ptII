@@ -507,7 +507,12 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	// FIXME: just becuase _soundPlayback is not null does not mean
 	// that playback is active. This check may be unessesary.
 	if (LiveSound.isPlaybackActive()) {
-	    LiveSound.stopPlayback(this);
+	    throw new IllegalActionException(this,
+               "This actor cannot start audio playback because " +
+               "another actor currently has access to the audio " +
+               "playback resource. Only one AudioPlayback actor may " +
+					     "be used at a time.");
+	    //LiveSound.stopPlayback(this);
 	}
 	if (_debugInfo) {
 	    System.out.println("AudioPlayer: _initializePlayback() "

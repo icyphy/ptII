@@ -469,8 +469,8 @@ public class AudioCapture extends Source implements LiveSoundListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize/Reinitialize audio resources. First stop playback,
-     *  and. Then reread all parameters, and start audio capture.
+    /** Initialize audio resources. Reread all parameters, and start 
+     *  audio capture.
      *  <p>
      *  This method is synchronized since it is not safe to call
      *  LiveSound methods while this method is executing.
@@ -478,14 +478,16 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *   audio capture.
      */
     private synchronized void _initializeCapture() throws IllegalActionException, IOException {
-	// Stop playback, if necessary. If we were writing to a sound
-	// file, this will save it.
 	if (_debugInfo) {
 	    System.out.println("AudioCapture: _initializeCapture() invoked.");
 	}
 	if (LiveSound.isCaptureActive()) {
-
-	    LiveSound.stopCapture(this);
+	    throw new IllegalActionException(this,
+               "This actor cannot start audio capture because " +
+               "another actor currently has access to the audio " +
+               "capture resource. Only one AudioCapture actor may " +
+					     "be used at a time.");
+	    //LiveSound.stopCapture(this);
 
 	}
 	// Now initialize audio capture.
