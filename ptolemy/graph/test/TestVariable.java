@@ -100,6 +100,15 @@ public class TestVariable implements InequalityTerm {
 	return true;
     }
 
+    /** Check whether the current type of this term is acceptable,
+     *  and return true if it is.  In this class, a type is always
+     *  acceptable.
+     *  @return True.
+     */
+    public boolean isTypeAcceptable() {
+        return true;
+    }
+
     /** Set the name of this variable. If the specified String is null,
      *  Set the name to an empty String.
      *  @param A String

@@ -83,7 +83,7 @@ public class ComSystem extends SDFApplet {
             noise.standardDeviation.setToken(new DoubleToken(0.1));
 
             // Create the adder.
-            Add add = new Add(_toplevel, "add");
+            AddSubtract add = new AddSubtract(_toplevel, "add");
 
             // Create the pulse-shaping filter.
             RaisedCosine shaper = new RaisedCosine(_toplevel, "shaper");
@@ -109,8 +109,8 @@ public class ComSystem extends SDFApplet {
 
             _toplevel.connect(data.output, coder.input);
             _toplevel.connect(coder.output, shaper.input);
-            _toplevel.connect(shaper.output, add.input);
-            _toplevel.connect(noise.output, add.input);
+            _toplevel.connect(shaper.output, add.plus);
+            _toplevel.connect(noise.output, add.plus);
             _toplevel.connect(add.output, matched.input);
             _toplevel.connect(matched.output, myplot.input);
         } catch (Exception ex) {

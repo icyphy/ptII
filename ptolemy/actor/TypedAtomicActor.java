@@ -179,7 +179,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  declared must be less than or equal to the type of any output port
      *  that does not have its type declared.
      *  In addition, this method also collects type constraints from the
-     *  contained Typeables (ports and parameters).
+     *  contained Typeables (ports, variables, and parameters).
      *  This method is read-synchronized on the workspace.
      *  @return an Enumeration of Inequality.
      *  @see ptolemy.graph.Inequality

@@ -606,6 +606,24 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    return false;
         }
 
+        /** Check whether the current type of this term is acceptable,
+         *  and return true if it is.  A type is acceptable
+         *  if it represents an instantiable object.  Any type is
+         *  acceptable (including non-instantiable types) if the associated
+         *  port is not connected to anything.
+         *  @return True if the current type is acceptable.
+         */
+        public boolean isTypeAcceptable() {
+            if (TypeLattice.isInstantiableType(getType())) {
+                return true;
+            }
+            // For a disconnected port, any type is acceptable.
+            if (_port.numLinks() == 0) {
+                return true;
+            }
+            return false;
+        }
+
         /** Set the type of this port if it is not set throught
 	 *  setTypeEquals().
          *  @exception IllegalActionException If the type is already set

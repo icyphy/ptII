@@ -260,12 +260,12 @@ public final class Manager extends NamedObj implements Runnable {
 		    }
                 }
 
-	        // check if any resolved type is NaT, or abstract, or interface
+	        // check whether resolved types are acceptable.
+                // They might be, for example, NaT.
 	        Enumeration var = solver.variables();
 	        while (var.hasMoreElements()) {
 		    InequalityTerm term = (InequalityTerm)var.nextElement();
-		    Class type = (Class)term.getValue();
-		    if ( !TypeLattice.isInstantiableType(type)) {
+		    if ( !term.isTypeAcceptable()) {
 		        conflicts.insertLast(term.getAssociatedObject());
 		    }
 	        }

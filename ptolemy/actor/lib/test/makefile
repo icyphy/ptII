@@ -49,6 +49,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	AddSubtract.tcl \
 	Average.tcl \
 	Bernoulli.tcl \
 	Const.tcl \

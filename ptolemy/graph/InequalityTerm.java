@@ -77,13 +77,20 @@ public interface InequalityTerm {
      */
     public InequalityTerm[] getVariables();
 
-    /** Check if this term can be set to a specific element of the
+    /** Check whether this term can be set to a specific element of the
      *  underline CPO. Only variable terms are settable, constant
      *  and function terms are not.
      *  @return <code>true</code> if this term is a variable;
      *   <code>false</code> otherwise.
      */
     public boolean isSettable();
+
+    /** Check whether the current type of this term is acceptable,
+     *  and return true if it is.  Normally, a type is acceptable
+     *  if it represents an instantiable object.
+     *  @return True if the current type is acceptable.
+     */
+    public boolean isTypeAcceptable();
 
     /** Set the value of this term to the specified CPO element.
      *  Only terms consisting of a single variable can have their

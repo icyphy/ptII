@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
@@ -38,36 +38,50 @@ import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSub
+//// AddSubtract
 /**
 A polymorphic adder/subtractor.
 This adder has two input ports, both of which are multiports,
-and an output port, which is not.
+and one output port, which is not.
 The types on the ports are undeclared and will be resolved by
 the type resolution mechanism. Data that arrives on the
-input port named "plus" will be added, and data that arrives
-on the input port named "minus" will be subtracted.
+input port named <i>plus</i> will be added, and data that arrives
+on the input port named <i>minus</i> will be subtracted.
+Any token type supporting addition and subtraction can be used.
+In most domains, either input port can be left unconnected.
+Thus, to get a simple adder (with no subtractor), just leave the
+<i>minus</i> input unconnected.
 <p>
-This actor is not strict. That is, it does not require that each input
-channel have a token upon firing. It will add or subtract the available
-tokens at the inputs and ignore the channels that do not have tokens.
-If no input tokens are available at all, then no output is produced.
+The <i>plus</i> input port will typically resolve to the least upper bound
+of the types presented to it.  Thus, for example, if one input channel
+comes from a source of type BooleanToken and another comes from a source
+of type IntToken, the resolved type will be StringToken, and addition
+will be that implemented in StringToken (which concatenates strings).
+Notice that StringToken does not support subtraction, so if any
+inputs are presented to the <i>minus</i> port, an exception will
+be thrown at run time.
 <p>
 Currently, the type system is quite liberal about the resolved
 types it will permit at the inputs. In particular, it may permit the
-"plus" and "minus" inputs to resolve to types that cannot in fact
+<i>plus</i> and <i>minus</i> inputs to resolve to types that cannot in fact
 be subtracted.  In these cases, a run-time error will occur.
-In the future, we hope that the type system will intercept such errors.
+In the future, we hope that the type system will intercept such errors
+before run time.
+<p>
+This actor is not strict. That is, it does not require that each input
+channel have a token upon firing. It will add or subtract available
+tokens at the inputs and ignore the channels that do not have tokens.
+It consumes at most one input token from each port.
+If no input tokens are available at all, then no output is produced.
 
 @author Yuhong Xiong and Edward A. Lee
 @version $Id$
 */
 
-public class AddSub extends TypedAtomicActor {
+public class AddSubtract extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
-     *
      *  @param container The container.
      *  @param name The name of this adder within the container.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -75,7 +89,7 @@ public class AddSub extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public AddSub(TypedCompositeActor container, String name)
+    public AddSubtract(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	plus = new TypedIOPort(this, "plus", true, false);
@@ -88,9 +102,19 @@ public class AddSub extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
 
-    public TypedIOPort plus = null;
+    /** Input for tokens to be subtracted.  This is a multiport, and its
+     *  type is inferred from the connections.
+     */
     public TypedIOPort minus = null;
+
+    /** Output port.  The type is inferred from the connections.
+     */
     public TypedIOPort output = null;
+
+    /** Input for tokens to be added.  This is a multiport, and its
+     *  type is inferred from the connections.
+     */
+    public TypedIOPort plus = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,7 +126,7 @@ public class AddSub extends TypedAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            AddSub newobj = (AddSub)super.clone(ws);
+            AddSubtract newobj = (AddSubtract)super.clone(ws);
             newobj.plus = (TypedIOPort)newobj.getPort("plus");
             newobj.minus = (TypedIOPort)newobj.getPort("minus");
             newobj.output = (TypedIOPort)newobj.getPort("output");
@@ -114,10 +138,10 @@ public class AddSub extends TypedAtomicActor {
         }
     }
 
-    /** If there is at least one token in the input ports, add the
-     *  tokens on all the channels of the plus port, subtract the
-     *  tokens on the minus port, and send
-     *  the result to the output port. At most one token is read
+    /** If there is at least one token on the input ports, add
+     *  tokens from the <i>plus</i> port, subtract tokens from the
+     *  <i>minus</i> port, and send the result to the
+     *  <i>output</i> port. At most one token is read
      *  from each channel, so if more than one token is pending, the
      *  rest are left for future firings.  If none of the input
      *  channels has a token, do nothing.  If none of the plus channels
@@ -145,10 +169,9 @@ public class AddSub extends TypedAtomicActor {
                 Token in = minus.get(i);
 		if (sum == null) {
 		    sum = in.zero();
-		} else {
-		    sum = sum.subtract(in);
 		}
-	    }
+                sum = sum.subtract(in);
+            }
 	}
 
 	if (sum != null) {

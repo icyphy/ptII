@@ -51,15 +51,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AddSub.java \
+	AddSubtract.java \
 	Average.java \
 	Bernoulli.java \
-	Commutator.java \
 	Const.java \
-	Distributor.java \
 	Expression.java \
 	FileWrite.java \
 	Gaussian.java \
+	MultiplyDivide.java \
 	Pulse.java \
 	Ramp.java \
 	RandomSource.java \
