@@ -386,7 +386,7 @@ public final class Complex implements Cloneable, Serializable {
 
     /** Multiply this complex number by the specified complex number.
      *  @param w A complex number.
-     *  @see scale
+     *  @see Complex#scale
      */
     public void multiply (Complex w) {
         double re = w.real*real - w.imag*imag;
@@ -399,7 +399,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param z A complex number.
      *  @param w A complex number.
      *  @return A new complex number.
-     *  @see scale
+     *  @see Complex#scale
      */
     public static Complex multiply (Complex z, Complex w) {
         Complex result = new Complex(z.real, z.imag);
@@ -488,7 +488,7 @@ public final class Complex implements Cloneable, Serializable {
 
     /** Multiply this complex number by the specified real scalar.
      *  @param scalar A real number.
-     *  @see multiply
+     *  @see Complex#multiply
      */
     public void scale (double scalar) {
         real = scalar*real;
@@ -500,7 +500,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param z A complex number.
      *  @param scalar A real number.
      *  @return A new complex number.
-     *  @see multiply
+     *  @see Complex#multiply
      */
     public static Complex scale (Complex z, double scalar) {
         Complex result = new Complex(z.real, z.imag);
