@@ -1112,15 +1112,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     private void _init() {
         // Create a more reasonable default icon.
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:red\"/>\n" +
-                "<rect x=\"2\" y=\"2\" width=\"56\" " +
+                "<rect x=\"-28\" y=\"-18\" width=\"56\" " +
                 "height=\"36\" style=\"fill:lightgrey\"/>\n" +
-                "<ellipse cx=\"30\" cy=\"20\"" +
+                "<ellipse cx=\"0\" cy=\"0\"" +
                 " rx=\"15\" ry=\"10\"/>\n" +
-                "<circle cx=\"15\" cy=\"20\"" +
+                "<circle cx=\"-15\" cy=\"0\"" +
                 " r=\"5\" style=\"fill:white\"/>\n" +
-                "<circle cx=\"45\" cy=\"20\"" +
+                "<circle cx=\"15\" cy=\"0\"" +
                 " r=\"5\" style=\"fill:white\"/>\n" +
                 "</svg>\n");
         try {

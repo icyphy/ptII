@@ -118,10 +118,10 @@ public class Integrator extends CTBaseIntegrator {
         Parameter outputType = new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-15\" y=\"-20\" "
                 + "width=\"30\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
-                + "<image x=\"11\" y=\"0\" width=\"8\" height=\"40\""
+                + "<image x=\"-4\" y=\"-20\" width=\"8\" height=\"40\""
                 + "xlink:href=\"ptolemy/domains/ct/lib/integral.gif\"/>\n"
                 + "</svg>\n");
     }

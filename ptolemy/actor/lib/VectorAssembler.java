@@ -117,7 +117,7 @@ public class VectorAssembler extends Transformer {
 
     private void _addIcon() {
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"10\" " +
+                "<rect x=\"-5\" y=\"-15\" width=\"10\" " +
                 "height=\"30\" style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }

@@ -121,10 +121,10 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
         // icon
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-30\" y=\"-20\" "
                 + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
-                + "<text x=\"5\" y=\"20\" "
+                + "<text x=\"-25\" y=\"0\" "
                 + "style=\"font-size:14\">\n"
                 + "b(s)/a(s) \n"
                 + "</text>\n"

@@ -118,14 +118,14 @@ public class LinearDifferenceEquationSystem extends Transformer {
         _initialStateChanged = true;
         // icon
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-75\" y=\"-30\" "
                 + "width=\"150\" height=\"60\" "
                 + "style=\"fill:white\"/>\n"
-                + "<text x=\"5\" y=\"20\" "
+                + "<text x=\"-70\" y=\"-10\" "
                 + "style=\"font-size:14\">\n"
                 + "x(k+1) = Ax(k) + Bu(k) "
                 + "</text>\n"
-                + "<text x=\"5\" y=\"40\" "
+                + "<text x=\"-70\" y=\"10\" "
                 + "style=\"font-size:14\">\n"
                 + "    y(k) = Cx(k) + Du(k)"
                 + "</text>\n"

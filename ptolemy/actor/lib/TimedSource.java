@@ -77,17 +77,17 @@ public class TimedSource extends Source implements TimedActor {
 	stopTime.setTypeEquals(BaseType.DOUBLE);
 
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n"
-                + "<circle cx=\"20\" cy=\"20\" r=\"17\""
+                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
                 + "style=\"fill:white\"/>\n"
-                + "<line x1=\"20\" y1=\"5\" x2=\"20\" y2=\"7\"/>\n"
-                + "<line x1=\"20\" y1=\"34\" x2=\"20\" y2=\"36\"/>\n"
-                + "<line x1=\"5\" y1=\"20\" x2=\"7\" y2=\"20\"/>\n"
-                + "<line x1=\"34\" y1=\"20\" x2=\"36\" y2=\"20\"/>\n"
-                + "<line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"20\"/>\n"
-                + "<line x1=\"20\" y1=\"20\" x2=\"31.26\" y2=\"13.5\"/>\n"
+                + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"
+                + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"
+                + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"
+                + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"
+                + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"
+                + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"
                 + "</svg>\n");
     }
 

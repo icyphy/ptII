@@ -95,19 +95,19 @@ public class Display extends Sink implements Placeable {
         title.setExpression("");
 
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-20\" y=\"-15\" "
                 + "width=\"40\" height=\"30\" "
                 + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"5\" y=\"5\" "
+                + "<rect x=\"-15\" y=\"-10\" "
                 + "width=\"30\" height=\"20\" "
                 + "style=\"fill:white\"/>\n"
-                + "<line x1=\"7\" y1=\"9\" x2=\"16\" y2=\"9\" "
+                + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
                 + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"7\" y1=\"13\" x2=\"20\" y2=\"13\" "
+                + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
                 + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"7\" y1=\"17\" x2=\"12\" y2=\"17\" "
+                + "<line x1=\"-13\" y1=\"2\" x2=\"-8\" y2=\"2\" "
                 + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"7\" y1=\"21\" x2=\"24\" y2=\"21\" "
+                + "<line x1=\"-13\" y1=\"6\" x2=\"4\" y2=\"6\" "
                 + "style=\"stroke:grey\"/>\n"
                 + "</svg>\n");
     }

@@ -107,22 +107,22 @@ public class Plotter extends TypedAtomicActor
         startingDataset.setTypeEquals(BaseType.INT);
 
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"8\" y=\"8\" "
+                + "<rect x=\"-12\" y=\"-12\" "
                 + "width=\"24\" height=\"24\" "
                 + "style=\"fill:white\"/>\n"
-                + "<rect x=\"22\" y=\"2\" "
+                + "<rect x=\"2\" y=\"-18\" "
                 + "width=\"4\" height=\"4\" "
                 + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"28\" y=\"2\" "
+                + "<rect x=\"8\" y=\"-18\" "
                 + "width=\"4\" height=\"4\" "
                 + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"34\" y=\"2\" "
+                + "<rect x=\"14\" y=\"-18\" "
                 + "width=\"4\" height=\"4\" "
                 + "style=\"fill:grey\"/>\n"
-                + "<polyline points=\"10,20, 15,12, 25,28, 30,20\" "
+                + "<polyline points=\"-10,0, -5,-8, 5,8, 10,0\" "
                 + "style=\"stroke:red\"/>\n"
                 + "</svg>\n");
     }

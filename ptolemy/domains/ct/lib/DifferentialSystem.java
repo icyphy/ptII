@@ -125,14 +125,14 @@ public class DifferentialSystem extends TypedCompositeActor {
 
         // icon
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-50\" y=\"-30\" "
                 + "width=\"100\" height=\"60\" "
                 + "style=\"fill:white\"/>\n"
-                + "<text x=\"5\" y=\"20\" "
+                + "<text x=\"-45\" y=\"-10\" "
                 + "style=\"font-size:14\">\n"
                 + "dx/dt=f(x, u, t)"
                 + "</text>\n"
-                + "<text x=\"5\" y=\"40\" "
+                + "<text x=\"-45\" y=\"10\" "
                 + "style=\"font-size:14\">\n"
                 + "     y=g(x, u, t)"
                 + "</text>\n"

@@ -86,7 +86,7 @@ public class Scale extends Transformer {
 
          // icon
 	_attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"0,0 60,16 60,24 0,40\" "
+                + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
                 + "style=\"fill:white\"/>\n"
                 + "</svg>\n");
     }

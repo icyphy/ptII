@@ -127,7 +127,7 @@ public class TrigFunction extends Transformer {
         output.setTypeEquals(BaseType.DOUBLE);
 
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-30\" y=\"-15\" "
                 + "width=\"60\" height=\"30\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");

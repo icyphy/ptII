@@ -77,11 +77,11 @@ public class Ramp extends SequenceSource {
 	output.setTypeAtLeast(step);
 
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
+                "<rect x=\"-30\" y=\"-20\" "
                 + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n" +
-                "<polygon points=\"10,30 50,10 50,30\" "
-                + "style=\"fill:blue\"/>\n" +
+                "<polygon points=\"-20,10 20,-10 20,10\" "
+                + "style=\"fill:grey\"/>\n" +
                 "</svg>\n");
         _resultArray = new Token[1];
 

@@ -1089,20 +1089,20 @@ public class CompositeEntity extends ComponentEntity {
 
     private void _addIcon() {
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:red\"/>\n" +
-                "<rect x=\"2\" y=\"2\" width=\"56\" " +
+                "<rect x=\"-28\" y=\"-18\" width=\"56\" " +
                 "height=\"36\" style=\"fill:lightgrey\"/>\n" +
-                "<rect x=\"15\" y=\"10\" width=\"10\" height=\"8\" " +
+                "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" " +
                 "style=\"fill:white\"/>\n" +
-                "<rect x=\"15\" y=\"22\" width=\"10\" height=\"8\" " +
+                "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" " +
                 "style=\"fill:white\"/>\n" +
-                "<rect x=\"35\" y=\"16\" width=\"10\" height=\"8\" " +
+                "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" " +
                 "style=\"fill:white\"/>\n" +
-                "<line x1=\"25\" y1=\"14\" x2=\"30\" y2=\"14\"/>" +
-                "<line x1=\"25\" y1=\"26\" x2=\"30\" y2=\"26\"/>" +
-                "<line x1=\"30\" y1=\"14\" x2=\"30\" y2=\"26\"/>" +
-                "<line x1=\"30\" y1=\"20\" x2=\"35\" y2=\"20\"/>" +
+                "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>" +
+                "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>" +
+                "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>" +
+                "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" +
                 "</svg>\n");
     }
 

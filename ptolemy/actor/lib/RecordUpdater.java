@@ -197,7 +197,7 @@ public class RecordUpdater extends TypedAtomicActor {
 
     private void _addIcon() {
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"10\" " +
+                "<rect x=\"-5\" y=\"-30\" width=\"10\" " +
                 "height=\"60\" style=\"fill:red\"/>\n" +
                 "</svg>\n");
     }
