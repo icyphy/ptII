@@ -43,21 +43,9 @@ import java.util.Set;
 /**
 Generate an HTML file that contains links to the appropriate
 copyrights for entities in the configuration.
-
-<p>This class expands a Ptolemy II configuration and looks for
-FileAttributes named _copyright.
-
-<pre>
-        &lt;property name="_copyright" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/ptolemy/actor/lib/python/copyright.htm"&gt;
-        &lt;/property&gt;
-<pre>
-
-If it finds such an attribute it makes a note of the value, which
-should point to a file that contains the copyright information.
-
-After all the entities are processed, an HTML file is generated that
-maps the entity to the copyright
-
+This class looks for particular classes, and if the class is found
+in the classpath, then a corresponding html file is included 
+in the list of copyrights.
 
 @author Christopher Hylands
 @version $Id$
