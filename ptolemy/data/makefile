@@ -75,7 +75,8 @@ JSRCS = \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
-	TokenPublisher.java 
+	TokenPublisher.java \
+	TypeCpo.java
 	
 
 
