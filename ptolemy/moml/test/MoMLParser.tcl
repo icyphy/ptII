@@ -78,6 +78,18 @@ test MoMLParser-1.2 {parse simple model with doc only} {
 } $moml_2
 
 #----------------------------------------------------------------------
+set moml_2_1 "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc><?html <H1>HTML Markup</H1><I>italics</I>.?></doc>
+</model>
+"
+test MoMLParser-1.2.1 {parse simple model with HTML markup in CDATA} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml_2_1]
+    $toplevel exportMoML
+} $moml_2_1
+
+#----------------------------------------------------------------------
 set moml_3 "$header
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
@@ -213,8 +225,8 @@ set moml_3_6 "$header
 test MoMLParser-1.3.6 {check multiple reference with absolute name} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {$parser parse $moml_3_6]} msg
-    list $msg
-} {{com.microstar.xml.XmlException: Sorry: Ptolemy II does not support multiple containment.  Attempt to place .lib.top into .lib.another in file:c:/users/neuendor/ptII/ptolemy/moml/test at line 9 and column 56}}
+    string range $msg 0 29
+} {com.microstar.xml.XmlException}
 
 #----------------------------------------------------------------------
 set moml_4 {    <class name="top" extends="ptolemy.actor.TypedCompositeActor">
@@ -309,8 +321,8 @@ set moml "$header
 test MoMLParser-1.8 {test with a pre-existing port given, with wrong class} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {set toplevel [$parser parse $moml]} msg
-    list $msg
-} {{com.microstar.xml.XmlException: port named "output" exists and is not an instance of ptolemy.actor.lib.Ramp in file:c:/users/neuendor/ptII/ptolemy/moml/test at line 6 and column 51}}
+    string range $msg 0 29
+} {com.microstar.xml.XmlException}
 
 #----------------------------------------------------------------------
 set moml "$header
@@ -518,7 +530,15 @@ test MoMLParser-1.12.2 {test import with a relative source } {
     set b [$toplevel getEntity b]
     set c [$toplevel getEntity c]
     list [$b exportMoML] [$c exportMoML]
-} {} {KNOW_ERROR}
+} {{<entity name="b" class=".a">
+    <property name="prop" class="ptolemy.data.expr.Parameter">
+    </property>
+</entity>
+} {<entity name="c" class=".a">
+    <property name="x" class="ptolemy.kernel.util.Attribute">
+    </property>
+</entity>
+}}
 
 
 #----------------------------------------------------------------------
@@ -573,8 +593,8 @@ set moml "$header $body"
 test MoMLParser-1.14 {test that instantiation of an entity fails} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {set toplevel [$parser parse $moml]} msg
-    list $msg
-} {{com.microstar.xml.XmlException: Attempt to extend an entity that is not a class: .top.master in file:c:/users/neuendor/ptII/ptolemy/moml/test at line 7 and column 32}}
+    string range $msg 0 29
+} {com.microstar.xml.XmlException}
 
 #----------------------------------------------------------------------
 set body {

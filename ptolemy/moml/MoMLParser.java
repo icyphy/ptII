@@ -375,6 +375,21 @@ public class MoMLParser extends HandlerBase {
         return parse(base, new StringReader(input));
     }
 
+    /** Handle a processing instruction.  Processing instructions
+     *  are allowed in doc and configure elements, and are passed through
+     *  unchanged.  In the case of the doc element, they will be stored
+     *  in the Documentation attribute.  In the case of the configure
+     *  element, they will be passed to the configure() method
+     *  of the parent object.
+     *  @param target The name of the processing instruction.
+     *  @param data The body of the processing instruction.
+     */
+    public void processingInstruction (String target, String data) {
+        if (_currentCharData != null) {
+            _currentCharData.append("<?" + target + " " + data + "?>");
+        }
+    }
+
     /** Resolve an external entity.  If the first argument is the
      *  name of the MoML PUBLIC DTD ("-//UC Berkeley//DTD MoML 1//EN"),
      *  then return a StringReader
@@ -519,21 +534,21 @@ public class MoMLParser extends HandlerBase {
                 try {
                     input = xmlFile.openStream();
                 } catch (IOException ex) {
-                    // Cannot open the file.  Iterate through the
-                    // classpath to attempt to open the file.
+                    // Cannot open the file. Try to open it relative
+                    // to the classpath.
                     try {
                         xmlFile = _classLoader.getResource(source);
-			    //                            Class.forName("ptolemy.kernel.util.NamedObj").
-                            //getClassLoader().getResource(source);
-			    
                         try {
                             input = xmlFile.openStream();
                         } catch (NullPointerException e) {
-                                // We did not find the file, so we will
-                                // throw an XmlException below
+                            // We did not find the file, so we will
+                            // throw an XmlException below
                             input = null;
                         }
                     } catch (SecurityException exception) {
+                        // FIXME: I believe that getResource() called above
+                        // is allowed in an applet.  Why are we catching
+                        // this exception?  EAL
                         // FIXME: Is there any way, suspecting now that we are
                         // in an applet, that we can get the code base
                         // and try to read the file relative to that?
@@ -1017,7 +1032,7 @@ public class MoMLParser extends HandlerBase {
         // No previous entity.  Class name is required.
         _checkForNull(className, "Cannot create entity without a class name.");
 
-        // Next check to see if the class extends a named entity.
+        // Next check to see whether the class extends a named entity.
         if (reference == null) {
             // Not a named entity. Invoke the class loader.
             if (_current != null) {
@@ -1083,8 +1098,6 @@ public class MoMLParser extends HandlerBase {
     //  invoking the constructor triggers an exception.
     private NamedObj _createInstance(Class newClass, Object[] arguments)
             throws Exception {
-	//System.out.println("class = " + newClass);
-	//System.out.println("class's classloader = " + newClass.getClassLoader());
         Constructor[] constructors = newClass.getConstructors();
         for (int i = 0; i < constructors.length; i++) {
             Constructor constructor = constructors[i];
