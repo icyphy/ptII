@@ -35,6 +35,8 @@ executed in a separate thread.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <entity name="RTOSCompositeFacade" class="ptolemy.actor.TypedCompositeActor">
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.25">
@@ -119,8 +121,7 @@ executed in a separate thread.</text>
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequenceScope</title>
@@ -129,8 +130,7 @@ executed in a separate thread.</text>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
-            </configure>
-        </entity>
+                        </configure>        </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.moml.Location" value="147.0, 196.0">
             </property>
@@ -221,8 +221,7 @@ executed in a separate thread.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
@@ -231,8 +230,7 @@ executed in a separate thread.</text>
 <xRange min="1.0E-4" max="9.9922875"/>
 <yRange min="-1.7675101890654452" max="2.1545375117972467"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="atomic composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="243.0, 189.0">
         </property>
@@ -383,16 +381,14 @@ executed in a separate thread.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>RealTimePlotter</title>
 <xRange min="90.0" max="9994.0"/>
 <yRange min="-1.7675101890654452" max="2.1545375117972467"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="342.0, 195.0">
         </vertex>

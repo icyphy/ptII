@@ -3,6 +3,8 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixFIR" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -10,9 +12,9 @@
         <property name="_location" class="ptolemy.moml.Location" value="67.71429443359375, 39.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 341]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 138]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
     <property name="9:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="388.0, 44.0">
@@ -27,6 +29,8 @@ has quantized coefficients, but performs arithmetic
 using double precision.</text>
            </svg>
            </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <entity name="Impulse" class="ptolemy.actor.lib.Pulse">
@@ -165,8 +169,7 @@ using double precision.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Fixed Point FIR Filter Transfer Function</title>
@@ -176,8 +179,7 @@ using double precision.</text>
 <yRange min="-100.0" max="0.22265302530877568"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Spectrum1" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -198,6 +200,8 @@ frequencies from -pi to pi radians per second,
 centered at zero frequency.</text>
            </svg>
            </configure>
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.Parameter">
             </property>
         </property>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
@@ -227,6 +231,8 @@ centered at zero frequency.</text>
            </svg>
            </configure>
             </property>
+            <property name="_hideName" class="ptolemy.data.expr.Parameter">
+            </property>
         </property>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
@@ -254,6 +260,8 @@ frequencies from -pi to pi radians per second,
 centered at zero frequency.</text>
            </svg>
            </configure>
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.Parameter">
             </property>
         </property>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">

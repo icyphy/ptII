@@ -43,6 +43,8 @@ are feeded back. The accumulation of the quantized values is the digital output.
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
@@ -127,9 +129,13 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
         </entity>
         <entity name="Add1" class="ptolemy.actor.lib.AddSubtract">
@@ -154,9 +160,13 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
@@ -166,9 +176,13 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
         </entity>
         <entity name="Scale0" class="ptolemy.actor.lib.Scale">
@@ -251,7 +265,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
 <xRange min="0.0" max="15.0"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
-                                                </configure>        </entity>
+                                                            </configure>        </entity>
         <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
             </property>
@@ -260,10 +274,14 @@ are feeded back. The accumulation of the quantized values is the digital output.
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
             </port>
         </entity>
         <relation name="_R0" class="ptolemy.actor.TypedIORelation">
@@ -454,7 +472,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                                </configure>    </entity>
+                                        </configure>    </entity>
     <entity name="Moving Average" class="ptolemy.domains.sdf.lib.FIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
         </property>

@@ -18,6 +18,8 @@ filter. The output display is known as an "eye diagram."</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="excess_bandwidth" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
@@ -37,6 +39,8 @@ is one symbol interval.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="111.0, 363.0">
@@ -50,8 +54,12 @@ an actor, right click and select
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="Discrete Time (DT) Director" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -73,6 +81,8 @@ the actor. To discover a port name,
 linger over the port.</text>
            </svg>
            </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -224,8 +234,7 @@ linger over the port.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Eye Diagram</title>
@@ -237,8 +246,7 @@ linger over the port.</text>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

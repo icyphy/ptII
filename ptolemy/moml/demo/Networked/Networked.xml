@@ -11,6 +11,8 @@ by a higher frequency one (the carrier).</doc>
         <doc>Frequency of the sinusoidal signal</doc>
     </property>
     <property name="Synchronous Dataflow (SDF) Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
             <doc>Number of iterations in an execution.</doc>
         </property>
@@ -29,6 +31,8 @@ by a higher frequency one (the carrier).</doc>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="1:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="113.0, 247.0">
@@ -44,6 +48,12 @@ is defined remotely.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
     <entity name="Carrier" class="ptolemy.actor.lib.Sinewave">
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
@@ -54,6 +64,30 @@ is defined remotely.</text>
         </property>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Generate a sine wave.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="112.0, 50.0">
+            </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.moml.Location" value="58.0, 162.0">
@@ -68,6 +102,33 @@ is defined remotely.</text>
         </property>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
+        </property>
+        <property name="0:1:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+            <property name="_location" class="ptolemy.moml.Location" value="139.0, 275.0">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">This example generates a squared
+sinusoid and adds Gaussian noise to it.</text>
+           </svg>
+           </configure>
+            </property>
+        </property>
+        <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+            <property name="_location" class="ptolemy.moml.Location" value="214.0, 65.0">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This simple composite actor resides on the
+Ptolemy website, and is used to illustrate that
+Ptolemy II models may contain components that
+are defined elsewhere on the net.  Its URL is:
+http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</text>
+           </svg>
+           </configure>
+            </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.moml.Location" value="115.0, 94.0">
@@ -115,7 +176,7 @@ is defined remotely.</text>
 <yRange min="-1.0026543082159949" max="1.085040899188929"/>
 <noGrid/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="182.0, 95.0">
         </vertex>

@@ -169,9 +169,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="Position" class="ptolemy.domains.ct.lib.Integrator">
@@ -181,9 +185,13 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
@@ -193,12 +201,18 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -237,9 +251,9 @@
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="322.0, 116.0">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 454]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[144, 131]">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <property name="elasticity" class="ptolemy.data.expr.Parameter" value="elasticity">
             </property>
@@ -249,23 +263,25 @@
             </property>
             <port name="position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="81.5, 136.0">
+                <property name="_location" class="ptolemy.moml.Location" value="31.5, 86.0">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="82.0, 247.0">
+                <property name="_location" class="ptolemy.moml.Location" value="32.0, 132.0">
                 </property>
             </port>
             <port name="bump" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="69.0, 57.0">
+                <property name="_location" class="ptolemy.moml.Location" value="24.0, 42.0">
                 </property>
             </port>
             <entity name="free" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Dynamics">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="241.0, 187.0">
+                <property name="_location" class="ptolemy.moml.Location" value="210.0, 169.5">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.Parameter">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -275,17 +291,21 @@
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="456.0, 168.0">
+                <property name="_location" class="ptolemy.moml.Location" value="625.0, 174.5">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.Parameter">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <entity name="stopped" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="stop" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="458.0, 254.0">
+                <property name="_location" class="ptolemy.moml.Location" value="212.0, 63.5">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.Parameter">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -298,6 +318,8 @@
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Dynamics.initialVelocity = -elasticity * velocity; Dynamics.initialPosition = position">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.9433629385640829">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -313,6 +335,8 @@
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Dynamics.initialPosition = initialPosition; Dynamics.initialVelocity = 0.0">
                 </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3533051309429125">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -327,6 +351,8 @@
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -339,7 +365,7 @@
             <link port="free.outgoingPort" relation="relation"/>
             <link port="free.outgoingPort" relation="relation3"/>
             <link port="init.outgoingPort" relation="relation2"/>
-            <link port="stopped.incomingPort" relation="relation3"/>
+            <link port="stop.incomingPort" relation="relation3"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" class="ptolemy.moml.Vertex" value="223.0, 104.0">
@@ -390,11 +416,13 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
-            <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
+            <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
+            </property>
+            <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="80.0, 41.0">
             </property>
@@ -598,10 +626,14 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">

@@ -43,6 +43,8 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="114.0, 38.0">
         </property>
     </property>
@@ -57,6 +59,8 @@ The transfer function is specified by the transfer function actor,
 which takes the parameters and construct a Ptolemy model for you.</text>
            </svg>
            </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -125,7 +129,7 @@ which takes the parameters and construct a Ptolemy model for you.</text>
 <xRange min="0.0" max="6.0"/>
 <yRange min="-2.20116729694037" max="2.1987177099956607"/>
 </plot>?>
-                                </configure>    </entity>
+                                        </configure>    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

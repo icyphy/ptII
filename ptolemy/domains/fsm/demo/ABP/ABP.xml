@@ -132,7 +132,7 @@
             </port>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="2.2502873">
+            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="3.2884555">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="185.0, 229.0">
             </property>
@@ -250,7 +250,7 @@
             </port>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="1.3032414">
+            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="1.5638655">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="206.0, 234.0">
             </property>
@@ -308,7 +308,8 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Events</title>
@@ -319,7 +320,8 @@
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Sender" class="ptolemy.actor.TypedCompositeActor">
         <property name="SenderDirector" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
@@ -399,31 +401,37 @@
         <entity name="Controller" class="ptolemy.domains.fsm.demo.ABP.SenderController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Connecting">
             </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 454]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, 116]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="363.0, 74.0">
+            <property name="_location" class="ptolemy.moml.Location" value="375.0, 109.5">
             </property>
         </entity>
         <entity name="Connect" class="ptolemy.domains.fsm.demo.ABP.ConnectComponent">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
             </property>
-            <property name="count" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="count" class="ptolemy.data.expr.Parameter" value="5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 265]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 168]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="262.0, 136.0">
+            <property name="_location" class="ptolemy.moml.Location" value="260.0, 131.5">
             </property>
         </entity>
         <entity name="Send" class="ptolemy.domains.fsm.demo.ABP.SendComponent">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="S0">
             </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
             <property name="trying" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="17">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="12">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -490,6 +498,8 @@
     </entity>
     <entity name="Receiver" class="ptolemy.domains.fsm.demo.ABP.Receiver">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="389.0, 155.0">
         </property>

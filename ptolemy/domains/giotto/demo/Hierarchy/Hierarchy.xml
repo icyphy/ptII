@@ -3,6 +3,8 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="hierarchy" class="ptolemy.actor.TypedCompositeActor">
     <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -11,9 +13,9 @@
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 248]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[109, 152]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="376.0, 44.0">
@@ -28,6 +30,8 @@ source and the upper composite.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="1:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="222.0, 235.0">
@@ -39,6 +43,8 @@ source and the upper composite.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="0:1:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="374.0, 193.0">
@@ -49,6 +55,8 @@ source and the upper composite.</text>
            <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">Frequency = 2.</text>
            </svg>
            </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <entity name="Source" class="ptolemy.actor.lib.Const">
@@ -66,6 +74,8 @@ source and the upper composite.</text>
     </entity>
     <entity name="Upper Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
         <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -84,6 +94,8 @@ source and the upper composite.</text>
     </entity>
     <entity name="Lower Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
         <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -127,7 +139,7 @@ source and the upper composite.</text>
 <yRange min="1.8206278026905807" max="5.451121076233186"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="165.0, 169.0">
         </vertex>

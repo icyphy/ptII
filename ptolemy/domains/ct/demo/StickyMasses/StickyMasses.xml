@@ -25,6 +25,8 @@
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
         </property>
+        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="112.0, 192.0">
         </property>
     </property>
@@ -44,6 +46,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -55,7 +59,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[111, 213]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -70,8 +74,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Displacement of Masses</title>
@@ -81,8 +84,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
 <yRange min="-0.12474148181146817" max="2.99980004"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Hybrid System" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="Hybrid System (HS) Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
@@ -94,7 +96,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[214, 271]">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
         </property>
         <property name="p1" class="ptolemy.data.expr.Parameter" value="position1">
         </property>
@@ -106,22 +108,24 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         </property>
         <port name="P1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="494.99998474121094, 108.0">
+            <property name="_location" class="ptolemy.moml.Location" value="439.99998474121094, 108.0">
             </property>
         </port>
         <port name="P2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="495.99998474121094, 73.00001525878906">
+            <property name="_location" class="ptolemy.moml.Location" value="440.99998474121094, 48.00001525878906">
             </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="468.99998474121094, 157.0">
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[760, 287]">
+            <property name="_location" class="ptolemy.moml.Location" value="491.5, 215.0">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[52, 92]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[568, 350]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[24, 152]">
             </property>
             <property name="p1" class="ptolemy.data.expr.Parameter" value="p1">
             </property>
@@ -164,7 +168,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="location1" class="ptolemy.moml.Location" value="106.0, 254.0">
+                <property name="location1" class="ptolemy.moml.Location" value="144.0, 146.0">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.Parameter">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -174,7 +180,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <entity name="Separate" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Separate">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="283.0, 105.0">
+                <property name="_location" class="ptolemy.moml.Location" value="237.0, 131.5">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.Parameter">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -184,7 +192,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <entity name="Together" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Together">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="619.0, 105.0">
+                <property name="_location" class="ptolemy.moml.Location" value="415.0, 125.0">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.Parameter">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -194,33 +204,47 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <relation name="Tr1" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_isPresent">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.075688889563163">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="Tr2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(Force) &gt; Stickiness">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8969035588556836">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="initTransition" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -258,10 +282,12 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                 </property>
+                <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="70.0, 46.5">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="254.0, 67.0">
+            <property name="_location" class="ptolemy.moml.Location" value="248.5, 65.5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 385]">
             </property>
@@ -307,9 +333,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
@@ -319,9 +349,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="E1" class="ptolemy.actor.lib.Expression">
@@ -343,9 +377,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="P2" class="ptolemy.domains.ct.lib.Integrator">
@@ -355,9 +393,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="E2" class="ptolemy.actor.lib.Expression">
@@ -394,12 +436,18 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <relation name="_R1" class="ptolemy.actor.TypedIORelation">
@@ -476,10 +524,12 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                 </property>
+                <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="74.0, 39.5">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="255.0, 248.0">
+            <property name="_location" class="ptolemy.moml.Location" value="248.5, 250.5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 370]">
             </property>
@@ -523,9 +573,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
@@ -535,9 +589,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="STI" class="ptolemy.domains.ct.lib.Integrator">
@@ -547,9 +605,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
                 </port>
             </entity>
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
@@ -628,44 +690,48 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <link port="E2.output" relation="_R5"/>
             <link port="E2.P1" relation="_R4"/>
         </entity>
-        <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="314.0, 159.71428680419922">
-            </vertex>
-        </relation>
-        <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="327.0, 74.28570556640625">
-            </vertex>
-        </relation>
-        <relation name="HSV1" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="305.0, 146.1428565979004">
-            </vertex>
-        </relation>
-        <relation name="HSV2" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="HSTouched" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="HSF" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="HSSTI" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="P1" relation="_R2"/>
-        <link port="P2" relation="_R3"/>
-        <link port="Controller.V1" relation="HSV1"/>
-        <link port="Controller.V2" relation="HSV2"/>
-        <link port="Controller.P1" relation="_R2"/>
-        <link port="Controller.Force" relation="HSF"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="305.0, 185.0">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="325.0, 205.0">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="315.0, 195.0">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="335.0, 70.0">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="355.0, 225.0">
+            </vertex>
+        </relation>
+        <link port="P1" relation="relation2"/>
+        <link port="P2" relation="relation4"/>
+        <link port="Controller.V1" relation="relation"/>
+        <link port="Controller.V2" relation="relation3"/>
+        <link port="Controller.P1" relation="relation2"/>
+        <link port="Controller.Force" relation="relation5"/>
         <link port="Controller.Stickiness" relation="HSSTI"/>
         <link port="Controller.touched" relation="HSTouched"/>
         <link port="Separate.touched" relation="HSTouched"/>
-        <link port="Separate.P1" relation="_R2"/>
-        <link port="Separate.P2" relation="_R3"/>
-        <link port="Separate.V1" relation="HSV1"/>
-        <link port="Separate.V2" relation="HSV2"/>
+        <link port="Separate.P1" relation="relation2"/>
+        <link port="Separate.P2" relation="relation4"/>
+        <link port="Separate.V1" relation="relation"/>
+        <link port="Separate.V2" relation="relation3"/>
         <link port="Together.STI" relation="HSSTI"/>
-        <link port="Together.F" relation="HSF"/>
-        <link port="Together.P1" relation="_R2"/>
-        <link port="Together.P2" relation="_R3"/>
-        <link port="Together.V1" relation="HSV1"/>
+        <link port="Together.F" relation="relation5"/>
+        <link port="Together.P1" relation="relation2"/>
+        <link port="Together.P2" relation="relation4"/>
+        <link port="Together.V1" relation="relation"/>
     </entity>
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
     </relation>

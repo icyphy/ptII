@@ -35,6 +35,8 @@ of samples need to be processed.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="233.0, 347.0">
@@ -47,6 +49,8 @@ an actor, right click and select
 "Get Documentation".</text>
            </svg>
            </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -61,6 +65,8 @@ with value zero.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="492.0, 345.0">
@@ -73,6 +79,8 @@ resulting R matrix for the number
 of antennas used.</text>
            </svg>
            </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -103,7 +111,7 @@ of antennas used.</text>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                                        </configure>    </entity>
+                                                </configure>    </entity>
     <entity name="Zeros" class="ptolemy.domains.pn.demo.QR.ND_1">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>

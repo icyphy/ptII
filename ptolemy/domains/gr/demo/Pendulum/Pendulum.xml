@@ -1,13 +1,15 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="pendulum2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="damped pendulum ODE" class="ptolemy.actor.TypedCompositeActor">
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
-        <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
+        <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="78.0, 48.0">
         </property>
@@ -22,6 +24,8 @@
 the 3-D graphics and ODE capabilities of Ptolemy II."</text>
            </svg>
            </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 360]">
@@ -258,19 +262,19 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="111.0, 306.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[537, 228]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[537, 350]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[217, 311]">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[136, 152]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location" value="453.99998474121094, 56.0">
+            <property name="_location0" class="ptolemy.moml.Location" value="453.99998474121094, 66.0">
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="-15.0*sin(x) -0.1*y">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="336.0, 121.0">
+            <property name="_location" class="ptolemy.moml.Location" value="340.0, 128.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -285,15 +289,19 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <entity name="Periodic Sampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="360.0, 54.0">
+            <property name="_location" class="ptolemy.moml.Location" value="355.5, 58.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
             </port>
         </entity>
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
@@ -303,9 +311,13 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
@@ -315,9 +327,13 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
             </port>
         </entity>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
@@ -348,9 +364,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
     <entity name="Stage" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="321.0, 115.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -367,7 +383,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="289.0000009536743, 230.0">
+            <property name="_location" class="ptolemy.moml.Location" value="292.0, 256.5">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -395,7 +411,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="289.0000009536743, 177.0">
+            <property name="_location" class="ptolemy.moml.Location" value="279.5, 191.5">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -425,7 +441,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="96.0, 163.5">
+            <property name="_location" class="ptolemy.moml.Location" value="118.5, 169.5">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -440,7 +456,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="285.0000009536743, 69.0">
+            <property name="_location" class="ptolemy.moml.Location" value="292.0, 61.5">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -470,7 +486,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="96.0, 55.5">
+            <property name="_location" class="ptolemy.moml.Location" value="118.5, 39.5">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -487,7 +503,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="94.0, 111.5">
+            <property name="_location" class="ptolemy.moml.Location" value="118.5, 104.5">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -504,7 +520,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="97.0, 216.5">
+            <property name="_location" class="ptolemy.moml.Location" value="118.5, 234.5">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -519,7 +535,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="288.0000009536743, 125.0">
+            <property name="_location" class="ptolemy.moml.Location" value="276.0, 126.5">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -549,7 +565,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="424.0, 133.0">
+            <property name="_location" class="ptolemy.moml.Location" value="430.0, 164.5">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

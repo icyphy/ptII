@@ -18,8 +18,12 @@ include:
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -27,7 +31,7 @@ include:
         <property name="_location" class="ptolemy.moml.Location" value="73.0, 25.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 230]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[76, 152]">
     </property>
@@ -97,7 +101,8 @@ include:
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -105,12 +110,19 @@ include:
 <yRange min="-1.9510565162951554" max="2.0"/>
 <noGrid/>
 </plot>?>
-                                                                </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="slow.output" relation="_R0"/>
     <link port="fast.output" relation="_R1"/>
