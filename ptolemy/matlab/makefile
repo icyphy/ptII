@@ -106,11 +106,36 @@ include $(ROOT)/mk/ptcommon.mk
 
 #--- Specialized part of the makefile: ---
 
+# $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
+$(PTLIB): ptmatlab.cc Engine.class
+	CLASSPATH="$(CLASSPATH)" javah -jni -o ptmatlab.h ptolemy.matlab.Engine
+	"$(PTMATLAB_CC)" \
+		"-I$(MATLAB_DIR)/extern/include" \
+		"-I$(PTJAVA_HOME)/../include" \
+		"-I$(PTJAVA_HOME)/../include/win32" \
+		$(PTMATLAB_LD_ARGS)
+
+# Rule to build under Microsoft Visual C
+$(PTLIB)_msvc: ptmatlab.cc Engine.class
+	CLASSPATH="$(CLASSPATH)" javah -jni -o ptmatlab.h ptolemy.matlab.Engine
+	cl \
+		"-I$(MATLAB_DIR)/extern/include" \
+		"-I$(PTJAVA_HOME)/../include" \
+		"-I$(PTJAVA_HOME)/../include/win32" \
+		/Tpptmatlab.cc \
+		-Fe$@ \
+		/link /dll \
+		/libpath:$(MATLAB_DIR)/extern/lib/win32/microsoft/msvc70 \
+		libeng.lib libmx.lib
+
+# Build using gcc
+# Note that the Matlab interface does not work under Cygwin with gcc-3.3.3.
+#
 # $(PTCC) is set to gcc by configure in $PTII/mk/ptII.mk
 # -fno-exceptions  - see note at bottom
 # $(PTJNI_NO_CYGWIN) is sometimes set to -mno-cygwin and causes
 # "Invalid access to memory location" errors
-$(PTLIB): ptmatlab.cc Engine.class
+$(PTLIB)_gcc: ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" javah -jni -o ptmatlab.h ptolemy.matlab.Engine
 	$(PTCC) -shared \
 		"-I$(MATLAB_DIR)/extern/include" \
