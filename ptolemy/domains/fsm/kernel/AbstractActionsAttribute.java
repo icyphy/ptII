@@ -36,9 +36,18 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.MonotonicFunction;
+import ptolemy.data.expr.ParseTreeTypeInference;
+import ptolemy.data.expr.ParseTreeFreeVariableCollector;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.HasTypeConstraints;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -83,7 +92,8 @@ to variables and parameters contained by the FSM actor.
 @see Transition
 @see FSMActor
 */
-public abstract class AbstractActionsAttribute extends Action {
+public abstract class AbstractActionsAttribute extends Action 
+    implements HasTypeConstraints {
 
     /** Construct an action with the given name contained
      *  by the specified transition. The <i>transition</i> argument must not
@@ -253,6 +263,30 @@ public abstract class AbstractActionsAttribute extends Action {
         }
     }
 
+    /** Return the type constraints of this object.
+     *  The constraints are a list of inequalities.
+     *  @return a list of instances of Inequality.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList() {
+        List list = new LinkedList();
+        for (Iterator names = getDestinationNameList().iterator();
+             names.hasNext();) {
+            String name = (String)names.next();
+            try {
+                NamedObj object = getDestination(name);
+                if (object instanceof Typeable) {
+                    InequalityTerm term = ((Typeable)object).getTypeTerm();
+                    list.add(new Inequality(new TypeFunction(name), term));
+                }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        System.out.println("list = " + list);
+        return list;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -321,7 +355,11 @@ public abstract class AbstractActionsAttribute extends Action {
         }
     }
 
-
+    /** This class implements a scope, which is used to evaluate the 
+     *  parsed expressions.  This class is currently rather simple, 
+     *  but in the future should allow the values of input ports to 
+     *  be referenced without having shadow variables.
+     */
     private class ActionScope extends ModelScope {
 
         /** Look up and return the attribute with the specified name in the
@@ -369,4 +407,116 @@ public abstract class AbstractActionsAttribute extends Action {
                     (NamedObj)AbstractActionsAttribute.this);
         }
     }
+
+    // This class implements a monotonic function of the type of
+    // the output port.
+    // The function value is determined by type inference on the
+    // expression, in the scope of this Expression actor.
+    private class TypeFunction extends MonotonicFunction {
+        /** Create a new type function.  This function represents a
+         * constraint on the type of the destination with the given
+         * name.
+         */
+        public TypeFunction(String name) {
+            _name = name;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
+
+        /** Return the function result.
+         *  @return A Type.
+         *  @exception IllegalActionException If inferring types for the
+         *  expression fails.
+         */
+        public Object getValue() throws IllegalActionException {
+            try {
+                // Deal with the singularity at UNKNOWN..  Assume that if
+                // any variable that the expression depends on is UNKNOWN,
+                // then the type of the whole expression is unknown..
+                // This allows us to properly find functions that do exist
+                // (but not for UNKNOWN arguments), and to give good error
+                // messages when functions are not found.
+                InequalityTerm[] terms = getVariables();
+                for (int i = 0; i < terms.length; i++) {
+                    InequalityTerm term = terms[i];
+                    if (term != this && term.getValue() == BaseType.UNKNOWN) {
+                        return BaseType.UNKNOWN;
+                    }
+                }
+                
+                ASTPtRootNode parseTree =
+                    (ASTPtRootNode)_parseTrees.get(
+                            _destinationNames.indexOf(_name));
+                if (_scope == null) {
+                    _scope = new ActionScope();
+                }
+                Type type = _typeInference.inferTypes(parseTree, _scope);
+                return type;
+            } catch (Exception ex) {
+                throw new IllegalActionException(AbstractActionsAttribute.this, ex, 
+                        "An error occured during expression type inference");
+            }
+        }
+
+        /** Return the type variable in this inequality term. If the type
+         *  of input ports are not declared, return an one element array
+         *  containing the inequality term representing the type of the port;
+         *  otherwise, return an empty array.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            // Return an array that contains type terms for all of the
+            // inputs and all of the parameters that are free variables for
+            // the expression.
+            try {
+                ASTPtRootNode parseTree =
+                    (ASTPtRootNode)_parseTrees.get(
+                            _destinationNames.indexOf(_name));
+
+                if (_scope == null) {
+                    _scope = new ActionScope();
+                }
+                Set set = _variableCollector.collectFreeVariables(
+                        parseTree, _scope);
+                List termList = new LinkedList();
+                for (Iterator elements = set.iterator();
+                     elements.hasNext();) {
+                    String name = (String)elements.next();
+
+                    Variable result = ModelScope.getScopedVariable(
+                            null, AbstractActionsAttribute.this, name);
+                    if (result != null) {
+                        InequalityTerm[] terms =
+                            result.getTypeTerm().getVariables();
+                        for (int i = 0; i < terms.length; i++) {
+                            termList.add(terms[i]);
+                        }
+                        continue;
+                    }
+                }
+                return (InequalityTerm[])termList.toArray(
+                        new InequalityTerm[termList.size()]);
+            } catch (IllegalActionException ex) {
+                return new InequalityTerm[0];
+            }
+        }
+
+        /** Override the base class to give a description of this term.
+         *  @return A description of this term.
+         */
+        public String getVerboseString() {
+            return _name;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private inner variable          ////
+
+        private String _name;
+        private ParseTreeTypeInference _typeInference =
+        new ParseTreeTypeInference();
+        private ParseTreeFreeVariableCollector _variableCollector =
+        new ParseTreeFreeVariableCollector();
+    }
+
 }

@@ -45,6 +45,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.Typeable;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.graph.Inequality;
@@ -733,9 +734,11 @@ public class FSMActor extends CompositeEntity
                 result.addAll(port.typeConstraintList());
             }
 
-            Iterator attributes = attributeList(Typeable.class).iterator();
+            Iterator attributes = 
+                attributeList(HasTypeConstraints.class).iterator();
             while (attributes.hasNext()) {
-                Typeable typeableAttribute = (Typeable)attributes.next();
+                HasTypeConstraints typeableAttribute = 
+                    (HasTypeConstraints)attributes.next();
                 result.addAll(typeableAttribute.typeConstraintList());
             }
 
@@ -743,9 +746,12 @@ public class FSMActor extends CompositeEntity
             Iterator transitionRelations = relationList().iterator();
             while (transitionRelations.hasNext()) {
                 Relation tr = (Relation)transitionRelations.next();
-                attributes = tr.attributeList(Typeable.class).iterator();
+                attributes = 
+                    tr.attributeList(HasTypeConstraints.class).iterator();
                 while (attributes.hasNext()) {
-                    Typeable typeableAttribute = (Typeable)attributes.next();
+                    HasTypeConstraints typeableAttribute = 
+                        (HasTypeConstraints)attributes.next();
+                    System.out.println("attr = " + typeableAttribute);
                     result.addAll(typeableAttribute.typeConstraintList());
                 }
             }
