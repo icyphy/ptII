@@ -972,13 +972,13 @@ public class PlotBox extends Panel {
                     in = new DataInputStream(new FileInputStream(dataurl));
                 } catch (FileNotFoundException me) {
                     _errorMsg = new String [2];
-                    _errorMsg[0] = "Malformed URL: " + dataurl;
-                    _errorMsg[1] = e.getMessage();
+                    _errorMsg[0] = "File not found: " + dataurl;
+                    _errorMsg[1] = me.getMessage();
                     return;
                 } catch (SecurityException me) {
                     _errorMsg = new String [2];
                     _errorMsg[0] = "Security Exception: " + dataurl;
-                    _errorMsg[1] = e.getMessage();
+                    _errorMsg[1] = me.getMessage();
                     return;
                 }
             } catch (IOException ioe) {
