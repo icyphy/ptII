@@ -285,7 +285,7 @@ proc objectsToFullNames {objlist} {
 proc objectsToStrings {objlist} {
     set results {}
     foreach obj $objlist {
-        lappend results $obj
+        lappend results [$obj toString]
     }
     return $results
 }
