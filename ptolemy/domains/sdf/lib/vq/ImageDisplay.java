@@ -170,10 +170,10 @@ public class ImageDisplay extends Sink implements Placeable {
         _picture.repaint();
 
         Runnable painter = new Runnable() {
-            public void run() {
-                _container.paint(_container.getGraphics());
-            }
-        };
+                public void run() {
+                    _container.paint(_container.getGraphics());
+                }
+            };
         // Make sure the image gets updated.
         SwingUtilities.invokeLater(painter);
         Thread.yield();

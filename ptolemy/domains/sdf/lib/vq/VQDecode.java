@@ -154,7 +154,7 @@ public class VQDecode extends Transformer {
         for(j = 0; j < _blockCount; j++) {
             _blocks[j] =
                 new IntMatrixToken(
-                      _codebook[stage][((IntToken)_codewords[j]).intValue()]);
+                        _codebook[stage][((IntToken)_codewords[j]).intValue()]);
         }
 
         output.send(0, _blocks, _blocks.length);
@@ -257,25 +257,25 @@ public class VQDecode extends Transformer {
             }
             remaining -= bytesRead;
             length += bytesRead;
-         }
-         return length;
-     }
+        }
+        return length;
+    }
 
-     /** Given a vector of the given length, compute the codebook stage
-      *  appropriate.  Basically, compute log base 2 of length, assuming
-      *  length is a power of 2.
-      */
-     private int _stages(int length) {
-         int x = 0;
-         if(length < 2) {
-             throw new RuntimeException(
-                     "Vector length of " + length +
-                     "must be greater than 1");
-         }
-         while(length > 2) {
-             length = length >> 1;
-             x++;
-         }
+    /** Given a vector of the given length, compute the codebook stage
+     *  appropriate.  Basically, compute log base 2 of length, assuming
+     *  length is a power of 2.
+     */
+    private int _stages(int length) {
+        int x = 0;
+        if(length < 2) {
+            throw new RuntimeException(
+                    "Vector length of " + length +
+                    "must be greater than 1");
+        }
+        while(length > 2) {
+            length = length >> 1;
+            x++;
+        }
         return x;
     }
 
