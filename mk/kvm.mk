@@ -77,7 +77,7 @@
 
 # Run the demo via the usual method without any codegen.
 demo_interpreted: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) \
+	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS)
