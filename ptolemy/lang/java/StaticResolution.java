@@ -261,8 +261,15 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (!possibles.hasNext()) {
-           ApplicationUtility.error(name.getIdent() + 
-            " undefined in environ " + env.toString());
+            String message = "";
+            if ((categories & CG_PACKAGE) != 0) {
+                message += "\n\nClasspath error?\n\n";
+            }
+           message += "Symbol name: \"" +
+                  name.getIdent() + "\" is undefined in the environment.\n" +
+                  "Able to find: " + (env.toString()).substring(100) + "...";
+
+           ApplicationUtility.error(message);
         }
 
         JavaDecl d = (JavaDecl) possibles.head();
