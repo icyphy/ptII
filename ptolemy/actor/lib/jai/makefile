@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = JAIBMPWriter.java \
+	JAIDataCaster.java \
 	JAIDCT.java \
 	JAIDFT.java \
 	JAIEdgeDetection.java \

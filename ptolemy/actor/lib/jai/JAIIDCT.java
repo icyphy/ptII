@@ -34,9 +34,9 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-
+import java.awt.image.DataBuffer;
 import java.awt.image.renderable.ParameterBlock;
-
+import javax.media.jai.PlanarImage;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
@@ -55,12 +55,19 @@ public class JAIIDCT extends Transformer {
         parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         image =  jaiImageToken.getValue();
+        //parameters.addSource((PlanarImage)image);
         parameters.addSource(image);
-        RenderedOp IDCT = JAI.create("idct", parameters, null);
+        RenderedOp IDCT = JAI.create("idct", parameters);
+ 	//_parameters = new ParameterBlock();
+ 	//_parameters.addSource(IDCT);
+ 	//_parameters.add(DataBuffer.TYPE_BYTE);
+ 	//RenderedOp newerImage = JAI.create("format", _parameters); 
+ 	
         output.send(0, new JAIImageToken(IDCT));
     }
 
     public RenderedOp image;
     public ParameterBlock parameters;
+    private ParameterBlock _parameters;
 
 }
