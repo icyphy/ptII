@@ -171,7 +171,7 @@ public class DDEReceiver extends TimedQueueReceiver
     /** Do a blocking write on the queue. Set the time stamp to be the
      *  current time of the sending actor. If the time stamp of the 
      *  token is greater than the completionTime of this receiver, then 
-     *  set the time stamp to -1.0 and the token to null. If the queue 
+     *  set the time stamp to INACTIVE and the token to null. If the queue 
      *  is full, then inform the director that this receiver is blocking 
      *  on a write and wait until room becomes available. When room 
      *  becomes available, put the token and time stamp in the queue and 
@@ -200,7 +200,7 @@ public class DDEReceiver extends TimedQueueReceiver
      *  a TerminateProcessException which will cease activity for the
      *  actor that contains this receiver. If the specified time stamp
      *  of the token is greater than the completionTime of this receiver,
-     *  then set the time stamp to -1.0. If the queue is full, then
+     *  then set the time stamp to INACTIVE. If the queue is full, then
      *  inform the director that this receiver is blocking on a write
      *  and wait until room becomes available. When room becomes
      *  available, put the token and time stamp in the queue and inform
@@ -283,7 +283,9 @@ public class DDEReceiver extends TimedQueueReceiver
 
         if( timeKeeper.getNextTime() == INACTIVE ) {
             requestFinish();
-        }
+        } else if( timeKeeper.getNextTime() == IGNORE ) {
+            requestFinish();
+	}
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
 	    /*
 	    System.out.println("Time is not minimum");
