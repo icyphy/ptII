@@ -230,14 +230,14 @@ public class FileAttribute extends StringAttribute {
             }
         }
         if (_writer != null) {
-            if (_writer != _stdOut) {
-                try {
-                    _writer.flush();
+            try {
+                _writer.flush();
+                if (_writer != _stdOut) {
                     _writer.close();
-                } catch (IOException ex) {
-                    // This is typically caused by the stream being
-                    // already closed, so we ignore.
                 }
+            } catch (IOException ex) {
+                // This is typically caused by the stream being
+                // already closed, so we ignore.
             }
         }
     }
