@@ -185,7 +185,7 @@ public class SDFReceiver extends AbstractReceiver {
     public Token[] getArray(int count) {
 	// Check if we need to reallocate the cached
 	// token array.
-	if (count > _tokenArray.length) {
+	if (_tokenArray == null || count > _tokenArray.length) {
 	    // Reallocate token array.
 	    _tokenArray = new Token[count];
 	}
@@ -376,5 +376,5 @@ public class SDFReceiver extends AbstractReceiver {
 
     private ArrayFIFOQueue _queue;
     private IOPort _container;
-    private Token[] _tokenArray = new Token[1];
+    private Token[] _tokenArray;
 }
