@@ -74,3 +74,9 @@ test Quantization-1.0 {gets} {
 modulo
 half_ceiling
 0.5 }}
+
+####################################################################
+test Quantization-2.0 {clone} {
+    set clone [$q0 clone]
+    $clone equals $q0
+} {1}
