@@ -46,6 +46,7 @@ import soot.jimple.LeExpr;
 import soot.jimple.LtExpr;
 import soot.jimple.NeExpr;
 
+import soot.UnitPrinter;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompoundBooleanExpression
@@ -77,6 +78,7 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
     public abstract Object clone();
     public abstract Value getOp1();
     public abstract Value getOp2();
+    public abstract void toString(UnitPrinter up);
 
     /**
      * This method will "invert" the Value passed as an argument. The

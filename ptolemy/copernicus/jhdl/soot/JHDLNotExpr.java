@@ -97,11 +97,31 @@ public class JHDLNotExpr implements UnopExpr {
         return "!" + " " + op.toString();
     }
 
+    public void toString( UnitPrinter up ) {
+        up.literal("!" + " ");
+        op.toString(up);
+        /*
+        Value val1 = op1Box.getValue();
+        Value val2 = op2Box.getValue();
+
+        up.literal("(");
+        op1Box.toString(up);
+        up.literal(")");
+
+        up.literal(getSymbol());
+        
+        up.literal("(");
+        op2Box.toString(up);        
+        up.literal(")");
+        */
+    }
+
+    /*
     public String toBriefString()
     {
         return "!" + " " + ((ToBriefString) op).toBriefString();
     }
-
+    */
 
     public Type getType()
     {

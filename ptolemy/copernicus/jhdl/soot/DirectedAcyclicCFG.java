@@ -186,9 +186,8 @@ public class DirectedAcyclicCFG extends DirectedGraph {
             soot.Body body = testMethod.retrieveActiveBody();
             BriefBlockGraph bbgraph = new BriefBlockGraph(body);
             BlockGraphToDotty toDotty = new BlockGraphToDotty();
-            toDotty.writeDotFile(".", "bbgraph", bbgraph);
+            //toDotty.writeDotFile(".", "bbgraph", bbgraph);
             _cfg = new DirectedAcyclicCFG(bbgraph);
-
             PtDirectedGraphToDotty dgToDotty =
                 new PtDirectedGraphToDotty();
             dgToDotty.writeDotFile(".", testMethod.getName(), _cfg);

@@ -34,7 +34,7 @@ import soot.*;
 import soot.jimple.*;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+//import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
@@ -115,7 +115,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -124,7 +124,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
 
         _options = options;
         _phaseName = phaseName;
-        _debug = Options.getBoolean(options, "debug");
+        _debug = PhaseOptions.getBoolean(options, "debug");
 
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
@@ -174,7 +174,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
                             portToTypeNameToInsideBufferField,
                             portToInsideIndexArrayField, _debug);
                     LocalNameStandardizer.v().transform(body,
-                            _phaseName + ".lns", "");
+                            _phaseName + ".lns");
                 }
             }
 

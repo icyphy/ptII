@@ -30,6 +30,7 @@
 package ptolemy.copernicus.jhdl.soot;
 
 import soot.Value;
+import soot.UnitPrinter;
 import soot.jimple.internal.AbstractIntBinopExpr;
 import soot.jimple.Jimple;
 import soot.util.Switch;
@@ -38,7 +39,7 @@ import soot.jimple.ConditionExpr;
 
 // imports I need for copy
 import soot.IntType;
-import soot.ToBriefString;
+//import soot.ToBriefString;
 import java.util.List;
 import java.util.ArrayList;
 import soot.jimple.Expr;
@@ -62,9 +63,9 @@ import soot.ValueBox;
 @since Ptolemy II 2.0
 */
 
-public abstract class AbstractCompoundExpression
-    extends CompoundBooleanExpression
-    implements Expr, ToBriefString {
+public abstract class AbstractCompoundExpression extends CompoundBooleanExpression
+            //implements Expr, ToBriefString {
+    implements Expr {
 
     public AbstractCompoundExpression(Value op1, Value op2) {
         if (op1 instanceof ConditionExpr)
@@ -164,6 +165,22 @@ public abstract class AbstractCompoundExpression
         return "(" + leftOp + getSymbol() + rightOp +")";
     }
 
+    public void toString( UnitPrinter up ) {
+        Value val1 = op1Box.getValue();
+        Value val2 = op2Box.getValue();
+
+        up.literal("(");
+        op1Box.toString(up);
+        up.literal(")");
+
+        up.literal(getSymbol());
+        
+        up.literal("(");
+        op2Box.toString(up);        
+        up.literal(")");
+    }
+    
+    /*
     public String toBriefString()
     {
         Value op1 = op1Box.getValue(), op2 = op2Box.getValue();
@@ -172,4 +189,5 @@ public abstract class AbstractCompoundExpression
 
         return "(" + leftOp + getSymbol() + rightOp + ")";
     }
+    */
 }

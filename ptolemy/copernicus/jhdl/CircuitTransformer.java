@@ -35,14 +35,14 @@ import byucc.jhdl.Logic.Logic;
 
 import soot.*;
 import soot.jimple.*;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
+//import soot.jimple.toolkits.invoke.MethodCallGraph;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
-import soot.jimple.toolkits.invoke.VTATypeGraph;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+//import soot.jimple.toolkits.invoke.InvokeGraph;
+//import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+//import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
+//import soot.jimple.toolkits.invoke.VTATypeGraph;
+//import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
 
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
@@ -69,7 +69,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.graph.*;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.copernicus.kernel.MustAliasAnalysis;
+//import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.java.ModelTransformer;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.soot.*;
@@ -104,7 +104,7 @@ public class CircuitTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage outDir";
+        return "targetPackage outDir";
     }
 
     /**
@@ -115,8 +115,9 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("CircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        _outDir = Options.getString(options, "outDir");
-
+        //_outDir = Options.getString(options, "outDir");
+        _outDir = PhaseOptions.getString(options, "outDir");
+        
         System.out.println("**************************************************");
         System.out.println("*** START JHDL");
         System.out.println("**************************************************");

@@ -75,14 +75,14 @@ import soot.jimple.internal.JAndExpr;
 import soot.jimple.internal.JOrExpr;
 import soot.jimple.internal.JimpleLocal;
 
-import soot.jimple.toolkits.invoke.MethodCallGraph;
+//import soot.jimple.toolkits.invoke.MethodCallGraph;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
-import soot.jimple.toolkits.invoke.VTATypeGraph;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+//import soot.jimple.toolkits.invoke.InvokeGraph;
+//import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+//import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
+//import soot.jimple.toolkits.invoke.VTATypeGraph;
+//import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
 
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
