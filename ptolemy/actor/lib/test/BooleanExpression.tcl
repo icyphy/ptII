@@ -97,4 +97,4 @@ test BooleanExpression-5.1 {run with a non BooleanExpression} {
     $BooleanExpression setExpression "time + 5"
     catch {$m execute} err
     list $err
-} {{java.lang.IllegalArgumentException: Run-time type checking failed. token type: double, port: .top.expr.output, port type: boolean}}
+} {{ptolemy.kernel.util.IllegalActionException: Run-time type checking failed. Token type: double, port: .top.expr.output, port type: boolean}}

@@ -195,7 +195,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  reference to the same token and no clones are made.
      *  The transfer is accomplished by calling getRemoteReceivers()
      *  to determine the number of channels with valid receivers and
-     *  then calling send on the appropriate channels.
+     *  then calling send() on the appropriate channels.
      *  It would probably be faster to call put() directly on the receivers.
      *  If there are no destination receivers, then nothing is sent.
      *  If the port is not connected to anything, or receivers have not been
@@ -208,7 +208,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  read access on the workspace before calling put.
      *
      *  @param token The token to send
-     *  @exception IllegalActionException If the port is not an output.
+     *  @exception IllegalActionException If the port is not an output, or
+     *   the token to be sent cannot be converted to the type of this port
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
      */
@@ -220,8 +221,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             int compare = TypeLattice.compare(token.getType(),
                     _resolvedType);
             if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                throw new IllegalArgumentException(
-                        "Run-time type checking failed. token type: "
+                throw new IllegalActionException(
+                        "Run-time type checking failed. Token type: "
                         + token.getType().toString() + ", port: "
                         + getFullName() + ", port type: "
                         + getType().toString());
@@ -284,10 +285,11 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  read access on the workspace before calling put.
      *
      *  @param tokenArray The token array to send
-     *  @param vectorLength The number of elements of of the token
+     *  @param vectorLength The number of elements of the token
      *   array to send.
      *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the tokens to be sent cannot
+     *   be converted to the type of this port
      */
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
@@ -301,8 +303,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             int compare = TypeLattice.compare(token.getType(),
                     _resolvedType);
             if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                throw new IllegalArgumentException(
-                        "Run-time type checking failed. token type: "
+                throw new IllegalActionException(
+                        "Run-time type checking failed. Token type: "
                         + token.getType().toString() + ", port: "
                         + getFullName() + ", port type: "
                         + getType().toString());
@@ -378,7 +380,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  returns the resolved type of this port; if this port is a transparent
      *  input port, this method returns the greatest lower bound of the types
      *  of the inside ports; if this port is a transparent output port, this
-     *  method returns the least upper bound of the typs of the inside ports.
+     *  method returns the least upper bound of the types of the inside ports.
      *  This method is read-synchronized on the workspace.
      *  @return An instance of Type.
      */
@@ -501,8 +503,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 int compare = TypeLattice.compare(token.getType(),
                         _resolvedType);
                 if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new IllegalArgumentException(
-                            "Run-time type checking failed. token type: "
+                    throw new IllegalActionException(
+                            "Run-time type checking failed. Token type: "
                             + token.getType().toString() + ", port: "
                             + getFullName() + ", port type: "
                             + getType().toString());
@@ -580,7 +582,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *
      *  @param channelIndex The index of the channel, from 0 to width-1
      *  @param tokenArray The token array to send
-     *  @param vectorLength The number of elements of of the token
+     *  @param vectorLength The number of elements of the token
      *   array to send.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException If the tokens to be sent cannot
@@ -599,8 +601,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 int compare = TypeLattice.compare(token.getType(),
                         _resolvedType);
                 if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new IllegalArgumentException(
-                            "Run-time type checking failed. token type: "
+                    throw new IllegalActionException(
+                            "Run-time type checking failed. Token type: "
                             + token.getType().toString() + ", port: "
                             + getFullName() + ", port type: "
                             + getType().toString());
@@ -640,17 +642,17 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
-    /** Constrain that the type of this port to be equal to or greater
+    /** Constrain the type of this port to be equal to or greater
      *  than the type of the specified Typeable object.
-     *  @param less A Typeable object.
+     *  @param lesser A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
-        Inequality ineq = new Inequality(lesser.getTypeTerm(),
+        Inequality inequality = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
-        _constraints.add(ineq);
+        _constraints.add(inequality);
     }
 
-    /** Constrain that the type of this port to be equal to or greater
+    /** Constrain the type of this port to be equal to or greater
      *  than the type represented by the specified InequalityTerm.
      *  @param typeTerm An InequalityTerm.
      */
@@ -659,7 +661,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         _constraints.add(ineq);
     }
 
-    /** Constrain that the type of this port to be equal to or less
+    /** Constrain the type of this port to be equal to or less
      *  than the argument.
      */
     public void setTypeAtMost(Type type) {
@@ -698,7 +700,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
-    /** Constrain that the type of this port is the same as the type
+    /** Constrain the type of this port to be the same as the type
      *  of the specified Typeable object.
      *  @param equal A Typeable object.
      */
@@ -730,8 +732,8 @@ public class TypedIOPort extends IOPort implements Typeable {
     public boolean transferInputs() throws IllegalActionException {
         if (!this.isInput() || !this.isOpaque()) {
             throw new IllegalActionException(this,
-                    "transferInputs: this port is not an opaque" +
-                    "input port.");
+                    "transferInputs: this port is not an opaque "
+		    + "input port.");
         }
         boolean wasTransferred = false;
         Receiver[][] insideReceivers = this.deepGetReceivers();
@@ -814,8 +816,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
-    /** Override parent method to ensure compatibility of the relation.
-     *  This method is <i>not</i> synchronized on the
+    /** Override the method in the super class to ensure compatibility of
+     *  the relation. This method is <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *
      *  @param relation The relation to link to on the inside.
@@ -836,8 +838,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         super._checkLiberalLink((TypedIORelation)relation);
     }
 
-    /** Override parent method to ensure compatibility of the relation.
-     *  This method is <i>not</i> synchronized on the
+    /** Override the method in the super class to ensure compatibility of
+     *  the relation. This method is <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *
      *  @param relation The relation to link to.
@@ -983,28 +985,28 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         /** Reset the variable part of this type to the specified type.
-         *  @param e A Type.
+         *  @param type A Type.
          *  @exception IllegalActionException If the type is not settable,
          *   or the argument is not a Type.
          */
-        public void initialize(Object e)
+        public void initialize(Object type)
                 throws IllegalActionException {
             if ( !isSettable()) {
                 throw new IllegalActionException("TypeTerm.initialize: " +
                         "Cannot initialize a constant type.");
             }
 
-            if ( !(e instanceof Type)) {
+            if ( !(type instanceof Type)) {
                 throw new IllegalActionException("TypeTerm.initialize: " +
                         "The argument is not a Type.");
             }
 
             Type oldType = _resolvedType;
             if (_declaredType == BaseType.UNKNOWN) {
-                _resolvedType = (Type)e;
+                _resolvedType = (Type)type;
             } else {
                 // _declaredType is a StructuredType
-                ((StructuredType)_resolvedType).initialize((Type)e);
+                ((StructuredType)_resolvedType).initialize((Type)type);
             }
 
             if (!oldType.equals(_resolvedType)) {
@@ -1040,35 +1042,36 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         /** Set the type of this port.
-         *  @parameter e A Type.
+         *  @parameter type A Type.
          *  @exception IllegalActionException If the new type violates
          *   the declared type of this port.
          */
-        public void setValue(Object e) throws IllegalActionException {
+        public void setValue(Object type) throws IllegalActionException {
             if ( !isSettable()) {
                 throw new IllegalActionException(
                         "TypedIOPort$TypeTerm.setValue: The type is not "
                         + "settable.");
             }
 
-            if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+            if ( !_declaredType.isSubstitutionInstance((Type)type)) {
                 throw new IllegalActionException(
                         "Type conflict on port " + _port.getFullName() + ".\n"
 			+ "Declared type is " + _declaredType.toString()
 			+ ".\n"
                         + "The connection or type constraints, however, "
-			+ "requires type " + e.toString());
+			+ "requires type " + type.toString());
             }
 
             Type oldType = _resolvedType;
             if (_declaredType == BaseType.UNKNOWN) {
-                _resolvedType = (Type)e;
+                _resolvedType = (Type)type;
             } else {
                 // _declaredType is a StructuredType
-                ((StructuredType)_resolvedType).updateType((StructuredType)e);
+                ((StructuredType)_resolvedType).updateType(
+		                                     (StructuredType)type);
             }
 
-            if (!oldType.equals((Type)e)) {
+            if (!oldType.equals((Type)type)) {
                 _notifyTypeListener(oldType, _resolvedType);
             }
         }
