@@ -56,6 +56,7 @@ JSRCS = \
 	ImageDisplay.java \
 	ImagePartition.java \
 	ImageSequence.java \
+	ImageToken.java \
 	ImageUnpartition.java \
 	VQDecode.java \
 	VQEncode.java 

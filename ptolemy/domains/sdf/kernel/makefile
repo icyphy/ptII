@@ -53,12 +53,14 @@ PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ArrayFIFOQueue.java \
 	DataflowActor.java \
 	Debug.java \
 	DebugListener.java \
 	SDFAtomicActor.java \
 	SDFCompositeActor.java \
 	SDFDirector.java \
+	SDFIOPort.java \
 	SDFReceiver.java \
 	SDFScheduler.java 
 

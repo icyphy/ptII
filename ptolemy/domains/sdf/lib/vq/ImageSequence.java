@@ -129,19 +129,17 @@ public final class ImageSequence extends SDFAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
-        int i, j, n, m;
+        int i, j, n;
         workspace().setReadOnly(true);
        
         System.out.println("frame " + framenumber);
         // This is necessary to convert from bytes to ints
-        // and to flip the image
-        for(i = ysize - 1, n = 0; i >= 0; i--) {
-            m = i * xsize;
-            for(j = 0; j < xsize; j++, n++, m++)
-                frame[n] = frames[framenumber][m];
+        for(i = 0, n = 0; i < ysize; i++) {
+            for(j = 0; j < xsize; j++, n++)
+                frame[n] = frames[framenumber][n];
         }
 
-        IntMatrixToken message = new IntMatrixToken(frame, ysize, xsize);
+        ImageToken message = new ImageToken(frame, ysize, xsize);
         port_image.send(0, message);
 
         framenumber++; 

@@ -47,13 +47,13 @@ public class HTVQEncode extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container,name);
-        IOPort outputport = (IOPort) newPort("index");
+        SDFIOPort outputport = (SDFIOPort) newPort("index");
         outputport.setOutput(true);
-        setTokenProductionRate(outputport, 1);
+        setTokenProductionRate(outputport, 3168);
 
-        IOPort inputport = (IOPort) newPort("imagepart");
+        SDFIOPort inputport = (SDFIOPort) newPort("imagepart");
         inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 1);
+        setTokenConsumptionRate(inputport, 3168);
 
         Parameter p = new Parameter(this, "Codebook", 
                 new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
@@ -65,24 +65,18 @@ public class HTVQEncode extends SDFAtomicActor {
 
 
     public void fire() throws IllegalActionException {
-        ObjectToken t = (ObjectToken) ((IOPort) getPort("imagepart")).get(0);
-
-        _partitions = (int[][]) t.getValue();
         int numpartitions = 
             _xframesize * _yframesize / _xpartsize / _ypartsize;
 
         int j;
+        ((SDFIOPort) getPort("imagepart")).getArray(0, _tokens); 
+
         for(j = 0; j < numpartitions; j++) {
-            try {
-                _codewords[j] = _encode(_partitions[j], _xpartsize * _ypartsize);
-            }
-            catch (RuntimeException e) {
-                System.out.println("partition = " + j);
-                throw e;
-            }
+           _codewords[j] = new IntToken(
+                _encode(_tokens[j].intArrayRef(), _xpartsize * _ypartsize));
         }
-        ObjectToken ot = new ObjectToken(_codewords);
-        ((IOPort) getPort("index")).send(0,ot);
+
+        ((SDFIOPort) getPort("index")).sendArray(0, _codewords);
 
     }
 
@@ -101,7 +95,9 @@ public class HTVQEncode extends SDFAtomicActor {
         _ypartsize = ((IntToken)p.getToken()).intValue();
 
         _codewords = 
-            new int[_yframesize * _xframesize / _ypartsize / _xpartsize];
+            new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+        _tokens =
+            new ImageToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
 
         p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
@@ -335,8 +331,8 @@ public class HTVQEncode extends SDFAtomicActor {
 
     private int _codebook[][][] = new int[6][256][];
     private int _lookup_table[][] = new int[6][65536];
-    private int _codewords[];
-    private int _partitions[][];
+    private IntToken _codewords[];
+    private ImageToken _tokens[];
     private int _part[];
     private int _xframesize;
     private int _yframesize;

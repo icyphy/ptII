@@ -63,7 +63,7 @@ public class SDFReceiver implements Receiver {
      */
     public SDFReceiver() {
         super();
-        _queue = new ArrayFIFOQueue();
+        _queue = new ArrayFIFOQueue(10);
     }
 
     /** Construct an empty receiver with no container and given size.
@@ -137,12 +137,24 @@ public class SDFReceiver implements Receiver {
          history.
      *  @exception NoTokenException If the offset is out of range.
      */
-    public Token get(int offset) {
+    /*    public Token get(int offset) {
         try {
             return (Token)_queue.get(offset);
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
                     "Offset " + offset + " out of range with " + _queue.size()
+                    + " tokens in the receiver and " + _queue.historySize()
+                    + " in history.");
+        }
+    }
+    */
+
+    public Token[] get(int count) {
+       try {
+            return (Token[])_queue.take(count);
+        } catch (NoSuchElementException ex) {
+            throw new NoTokenException(getContainer(),
+                    "Count " + count + " out of range with " + _queue.size()
                     + " tokens in the receiver and " + _queue.historySize()
                     + " in history.");
         }
@@ -212,6 +224,19 @@ public class SDFReceiver implements Receiver {
      *  @exception NoRoomException If the receiver is full.
      */
     public void put(Token token) {
+        if (!_queue.put(token)) {
+            throw new NoRoomException(getContainer(),
+                    "Queue is at capacity. Cannot put a token.");
+        }
+    }
+
+    /** Put an array of tokens in the receiver. 
+     *  If the receiver is full, throw an
+     *  exception.
+     *  @param token The token to be put to the receiver.
+     *  @exception NoRoomException If the receiver is full.
+     */
+    public void put(Token token[]) {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");

@@ -39,7 +39,7 @@ import ptolemy.data.*;
 import ptolemy.math.Fraction;
 
 import java.util.*;
-import collections.LinkedList;
+import collections.CircularList;
 import collections.HashedMap;
 import collections.HashedSet;
 
@@ -49,7 +49,7 @@ import collections.HashedSet;
 A scheduler than implements scheduling of SDF networks by solving the
 balance equations for SDFActors.
 
-FIXME: This class uses LinkedList in the collections package. Change it
+FIXME: This class uses CircularList in the collections package. Change it
 to Java collection when update to JDK1.2
 @see ptolemy.actor.Scheduler
 @author Stephen Neuendorffer
@@ -131,6 +131,50 @@ public class SDFScheduler extends Scheduler{
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
+    /** Count the number of inputports in the Actor that must be
+     *  fulfilled before the actor can fire.   Ports
+     *  that are connected to actors that we are not scheduling right now are
+     *  assumed to be fulfilled.   Ports that have more tokens waiting than
+     *  their input consumption rate are also already fulfilled.
+     *
+     *  @param a The actor
+     *  @param unscheduledactors The set of actors that we are scheduling.
+     *  @param waitingTokens The Map of tokens currently waiting on all the
+     *  input ports.
+     *  @return The number of unfulfilled inputs of a.
+     *  @exception IllegalActionException if any called method throws it.
+     */
+    protected int _countUnfulfilledInputs(Actor a,
+            HashedSet unscheduledactors, HashedMap waitingTokens)
+            throws IllegalActionException {
+               Enumeration ainputPorts = a.inputPorts();
+
+            int InputCount = 0;
+            while(ainputPorts.hasMoreElements()) {
+                IOPort ainputPort = (IOPort) ainputPorts.nextElement();
+                Enumeration cports = ainputPort.deepConnectedOutPorts();
+
+                boolean isonlyexternalport = true;
+                while(cports.hasMoreElements()) {
+                    IOPort cport = (IOPort) cports.nextElement();
+                    if(unscheduledactors.includes(cport.getContainer()))
+                        isonlyexternalport = false;
+                }
+
+                boolean isalreadyfulfilled = false;
+                int threshold
+                    = _getTokenConsumptionRate(ainputPort);
+                int tokens
+                    = ((Integer) waitingTokens.at(ainputPort)).intValue();
+                if(tokens >= threshold)
+                    isalreadyfulfilled = true;
+
+                if(!isonlyexternalport && !isalreadyfulfilled)
+                    InputCount++;
+            }
+            return InputCount;
+    }
+
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
      *  by the port's "Token Consumption Rate" Parameter.   If the parameter
@@ -169,156 +213,147 @@ public class SDFScheduler extends Scheduler{
         return ((IntToken)param.getToken()).intValue();
     }
 
-    /** Return the scheduling sequence. In this base class, it returns
-     *  the containees of the CompositeActor in the order of construction.
-     *  (Same as calling deepCetEntities()). The derived classes will
-     *  override this method and add their scheduling algorithms here.
-     *  This method should not be called directly, rather the schedule()
-     *  will call it when the schedule is not valid. So it is not
-     *  synchronized on the workspace.
+    /** Normalize fractional firing ratios into a firing vector that
+     *  corresponds to a single SDF iteration.   Multiplies all of the
+     *  fractions by the GCD of their denominators.
      *
-     * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
-     * @return An Enumeration of the deeply contained opaque entities
-     *  in the firing order.
-     * @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. Not thrown in this base class, but may be needed
-     *  by the derived scheduler.
+     *  @param Firings HashedMap of firing ratios to be normalized
+     *  @return The normalized firing vector.
+     *  @exception ArithmeticException If the calculated GCD does not
+     *  normalize all of the fractions.
      */
+    protected HashedMap _normalizeFirings(HashedMap Firings) {
+        Enumeration unnormalizedFirings = Firings.elements();
+        int lcm = 1;
 
-     protected Enumeration _schedule() throws NotSchedulableException {
-        StaticSchedulingDirector dir =
-            (StaticSchedulingDirector)getContainer();
-        CompositeActor ca = (CompositeActor)(dir.getContainer());
-
-        // A linked list containing all the actors
-        HashedSet AllActors = new HashedSet();
-        Enumeration Entities = ca.deepGetEntities();
-
-
-        while(Entities.hasMoreElements()) {
-            ComponentEntity a = (ComponentEntity)Entities.nextElement();
-
-            // Fill AllActors with the list of things that we can schedule
-            // CHECKME: What if other things can be scheduled than actors?
-            if(a instanceof Actor) AllActors.include(a);
+        Debug.println("Normalizing Firings");
+        // First find the lcm of all the denominators
+        while(unnormalizedFirings.hasMoreElements()) {
+            Fraction f = (Fraction) unnormalizedFirings.nextElement();
+            int den = f.getDenominator();
+            lcm = Fraction.lcm(lcm, den);
         }
 
-        // First solve the balance equations
-        HashedMap Firings = _solveBalanceEquations(AllActors.elements());
-        Firings = _normalizeFirings(Firings);
+        Debug.println("lcm = " + (new Integer(lcm)).toString());
+        Enumeration Actors = Firings.keys();
 
-        setFiringVector(Firings);
+        Fraction lcmFraction = new Fraction(lcm);
+        // now go back through and multiply by the lcm we just found, which
+        // should normalize all the fractions to integers.
+        while(Actors.hasMoreElements()) {
 
-        Debug.print("Firing Vector:");
-        Debug.println(Firings.toString());
-
-        // Schedule all the actors using the calculated firings.
-        LinkedList result = _scheduleConnectedActors(AllActors);
-
-        setFiringVector(Firings);
-
-        Debug.print("Firing Vector:");
-        Debug.println(Firings.toString());
-
-        setValid(true);
-
-        return result.elements();
-    }
-
-    /** Solve the Balance Equations for the list of connected Actors.
-     *  For each actor, determine the ratio that determines the rate at
-     *  which it should fire relative to the other actors for the graph to
-     *  be live and operate within bounded memory.   This ratio is known as the
-     *  fractional firing of the actor.
-     *
-     *  @param Actors The actors that we are interested in
-     *  @return A HashedMap that associates each actor with its fractional
-     *  firing.
-     *  @exception NotScheduleableExecption If the graph is not consistant
-     *  under the synchronous dataflow model.
-     *  @exception NotScheduleableException If the graph is not connected.
-     */
-    protected HashedMap _solveBalanceEquations(Enumeration Actors)
-            throws NotSchedulableException {
-
-        // Firings contains the HashedMap that we will return.
-        // It gets populated with the fraction firing ratios for
-        // each actor
-        HashedMap Firings = new HashedMap();
-
-        // RemainingActors contains the pool of Actors that have not been
-        // touched yet. (i.e. all their firings are still set to Fraction.ZERO)
-        HashedSet RemainingActors = new HashedSet();
-
-        // PendingActors have their Firings set, but have not had their
-        // ports explored yet.
-        HashedSet PendingActors = new HashedSet();
-
-        // Are we done?  (Is PendingActors Empty?)
-        boolean Done = false;
-
-        // Initialize RemainingActors to contain all the actors we were given
-        RemainingActors.includeElements(Actors);
-
-        // Initialize Firings for everybody to Zero
-        Enumeration enumActors = RemainingActors.elements();
-        while(enumActors.hasMoreElements()) {
-            ComponentEntity e = (ComponentEntity) enumActors.nextElement();
-            Firings.putAt(e, Fraction.ZERO);
-        }
-
-        try {
-            // Pick an actor as a reference
-            Actor a = (Actor) RemainingActors.take();
-            // And set it's rate to one per iteration
-            Firings.putAt(a,new Fraction(1));
-            // And start the list to recurse over.
-            PendingActors.include(a);
-        }
-        catch (NoSuchElementException e) {
-            // if RemainingActors.take() fails, then we've been given
-            // no actors to do anything with, so return an empty HashedMap
-            return Firings;
-        }
-
-        while(! Done) try {
-            Debug.print("PendingActors: ");
-            Debug.println(PendingActors.toString());
-            // Get the next actor to recurse over
-            Actor currentActor = (Actor) PendingActors.take();
-            Debug.println("Balancing from " +
-                    ((ComponentEntity) currentActor).getName());
-
-            // traverse all the input and output ports, setting the firings
-            // for the actor(s)???? that each port is connected to relative
-            // to currentActor.
-            Enumeration AllPorts =
-                ((ComponentEntity) currentActor).getPorts();
-            while(AllPorts.hasMoreElements()) {
-                IOPort currentPort = (IOPort) AllPorts.nextElement();
-
-                if(currentPort.isInput())
-                    _propagateInputPort(currentPort, Firings,
-                            RemainingActors, PendingActors);
-
-                if(currentPort.isOutput())
-                    _propagateOutputPort(currentPort, Firings,
-                            RemainingActors, PendingActors);
-            }
-        }
-        catch (NoSuchElementException e) {
-            // Once we've exhausted PendingActors, this exception will be
-            // thrown, causing us to terminate the loop.
-            Done = true;
-
-            // If there are any Actors left that we didn't get to, then
-            // this is not a connected graph, and we throw an exception.
-            if(RemainingActors.elements().hasMoreElements())
-                throw new NotSchedulableException("The graph cannot " +
-                        "be scheduled using the SDF scheduler because " +
-                        "it is not connected");
+            Object actor = Actors.nextElement();
+            Debug.println("normalizing Actor " + 
+                    ((ComponentEntity) actor).getName());
+            Fraction reps = (Fraction) Firings.at(actor);
+            reps = Fraction.multiply(reps,lcmFraction);
+            reps.simplify();
+            if(reps.getDenominator() != 1)
+                throw new ArithmeticException("Failed to properly perform " +
+                        "fraction normalization");
+            Firings = (HashedMap) 
+                Firings.puttingAt(actor,new Integer(reps.getNumerator()));
         }
         return Firings;
+    }
+
+    /** Initialize the local data members of this object.
+     */
+    private void _localMemberInitialize() {
+        HashedMap _firingvector = new HashedMap();
+        _firingvectorvalid = true;
+    }
+
+    /** Propagate the number of fractional firing decided for this actor
+     *  through the specified input port.   Set and verify the fractional
+     *  firing for each Actor that is connected through this input port.
+     *  Any actors that we calculate their firing vector for the first time
+     *  are moved from RemainingActors to PendingActors.
+     *
+     *  @param currentPort The port that we are propagating from.
+     *  @param Firings The current HashedMap of fractional firings for each
+     *  Actor
+     *  @param RemainingActors The set of actors that have not had their
+     *  fractional firing set.
+     *  @param PendingActors The set of actors that have had their rate
+     *  set, but have not been propagated onwards.
+     */
+    protected void _propagateInputPort(IOPort currentPort,
+            HashedMap Firings,
+            HashedSet RemainingActors,
+            HashedSet PendingActors)
+        throws NotSchedulableException {
+
+            ComponentEntity currentActor =
+                (ComponentEntity) currentPort.getContainer();
+
+            //Calculate over all the output ports of this actor.
+            int currentRate =
+                _getTokenConsumptionRate(currentPort);
+
+            if(currentRate>0) {
+                // Compute the rate for the Actor currentPort is connected to
+                Enumeration connectedPorts =
+                    currentPort.deepConnectedOutPorts();
+
+                while(connectedPorts.hasMoreElements()) {
+                    IOPort connectedPort =
+                        (IOPort) connectedPorts.nextElement();
+
+                    ComponentEntity connectedActor =
+                        (ComponentEntity) connectedPort.getContainer();
+
+                    Debug.println("Propagating input to " +
+                            connectedActor.getName());
+
+                    int connectedRate =
+                        _getTokenProductionRate(connectedPort);
+
+                    // currentFiring is the firing that we've already
+                    // calculated for currentactor
+                    Fraction currentFiring =
+                        (Fraction) Firings.at(currentActor);
+
+                    // the firing that we think the connected actor should be,
+                    // based on currentActor
+                    Fraction desiredFiring =
+                        Fraction.multiply(currentFiring,
+                                new Fraction(currentRate,connectedRate));
+
+                    // What the firing for connectedActor already is set to.
+                    // This should be either 0, or equal to desiredFiring.
+                    try {
+                        Fraction presentFiring =
+                            (Fraction) Firings.at(connectedActor);
+
+                        desiredFiring.simplify();
+
+                        if(Fraction.equals(presentFiring,Fraction.ZERO)) {
+                            // create the entry in the firing table
+                            Firings.putAt(connectedActor,desiredFiring);
+
+                            // Remove them from RemainingActors
+                            RemainingActors.exclude(connectedActor);
+
+                            // and add them to the PendingActors.
+                            PendingActors.include(connectedActor);
+                        }
+
+                        else if(!Fraction.equals(presentFiring,desiredFiring))
+                            throw new NotSchedulableException("Graph is not" +
+                                    "consistent under the SDF domain");
+                    }
+                    catch (NoSuchElementException e) {
+                        throw new InvalidStateException("SDFScheduler: " +
+                                "connectedActor " +
+                                ((ComponentEntity) connectedActor).getName() +
+                                "does not appear in the Firings hashedmap");
+                    }
+
+                    Debug.print("New Firing: ");
+                    Debug.println(Firings.toString());
+                }
+            }
     }
 
     /** Propagate the number of fractional firing decided for this actor
@@ -413,228 +448,63 @@ public class SDFScheduler extends Scheduler{
             }
     }
 
-
-    /** Propagate the number of fractional firing decided for this actor
-     *  through the specified input port.   Set and verify the fractional
-     *  firing for each Actor that is connected through this input port.
-     *  Any actors that we calculate their firing vector for the first time
-     *  are moved from RemainingActors to PendingActors.
+    /** Return the scheduling sequence. In this base class, it returns
+     *  the containees of the CompositeActor in the order of construction.
+     *  (Same as calling deepCetEntities()). The derived classes will
+     *  override this method and add their scheduling algorithms here.
+     *  This method should not be called directly, rather the schedule()
+     *  will call it when the schedule is not valid. So it is not
+     *  synchronized on the workspace.
      *
-     *  @param currentPort The port that we are propagating from.
-     *  @param Firings The current HashedMap of fractional firings for each
-     *  Actor
-     *  @param RemainingActors The set of actors that have not had their
-     *  fractional firing set.
-     *  @param PendingActors The set of actors that have had their rate
-     *  set, but have not been propagated onwards.
+     * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
+     * @return An Enumeration of the deeply contained opaque entities
+     *  in the firing order.
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. Not thrown in this base class, but may be needed
+     *  by the derived scheduler.
      */
-    protected void _propagateInputPort(IOPort currentPort,
-            HashedMap Firings,
-            HashedSet RemainingActors,
-            HashedSet PendingActors)
-        throws NotSchedulableException {
 
-            ComponentEntity currentActor =
-                (ComponentEntity) currentPort.getContainer();
+     protected Enumeration _schedule() throws NotSchedulableException {
+        StaticSchedulingDirector dir =
+            (StaticSchedulingDirector)getContainer();
+        CompositeActor ca = (CompositeActor)(dir.getContainer());
 
-            //Calculate over all the output ports of this actor.
-            int currentRate =
-                _getTokenConsumptionRate(currentPort);
-
-            if(currentRate>0) {
-                // Compute the rate for the Actor currentPort is connected to
-                Enumeration connectedPorts =
-                    currentPort.deepConnectedOutPorts();
-
-                while(connectedPorts.hasMoreElements()) {
-                    IOPort connectedPort =
-                        (IOPort) connectedPorts.nextElement();
-
-                    ComponentEntity connectedActor =
-                        (ComponentEntity) connectedPort.getContainer();
-
-                    Debug.println("Propagating input to " +
-                            connectedActor.getName());
-
-                    int connectedRate =
-                        _getTokenProductionRate(connectedPort);
-
-                    // currentFiring is the firing that we've already
-                    // calculated for currentactor
-                    Fraction currentFiring =
-                        (Fraction) Firings.at(currentActor);
-
-                    // the firing that we think the connected actor should be,
-                    // based on currentActor
-                    Fraction desiredFiring =
-                        Fraction.multiply(currentFiring,
-                                new Fraction(currentRate,connectedRate));
-
-                    // What the firing for connectedActor already is set to.
-                    // This should be either 0, or equal to desiredFiring.
-                    try {
-                        Fraction presentFiring =
-                            (Fraction) Firings.at(connectedActor);
-
-                        desiredFiring.simplify();
-
-                        if(Fraction.equals(presentFiring,Fraction.ZERO)) {
-                            // create the entry in the firing table
-                            Firings.putAt(connectedActor,desiredFiring);
-
-                            // Remove them from RemainingActors
-                            RemainingActors.exclude(connectedActor);
-
-                            // and add them to the PendingActors.
-                            PendingActors.include(connectedActor);
-                        }
-
-                        else if(!Fraction.equals(presentFiring,desiredFiring))
-                            throw new NotSchedulableException("Graph is not" +
-                                    "consistent under the SDF domain");
-                    }
-                    catch (NoSuchElementException e) {
-                        throw new InvalidStateException("SDFScheduler: " +
-                                "connectedActor " +
-                                ((ComponentEntity) connectedActor).getName() +
-                                "does not appear in the Firings hashedmap");
-                    }
-
-                    Debug.print("New Firing: ");
-                    Debug.println(Firings.toString());
-                }
-            }
-    }
+        // A linked list containing all the actors
+        HashedSet AllActors = new HashedSet();
+        Enumeration Entities = ca.deepGetEntities();
 
 
-    /** Normalize fractional firing ratios into a firing vector that
-     *  corresponds to a single SDF iteration.   Multiplies all of the
-     *  fractions by the GCD of their denominators.
-     *
-     *  @param Firings HashedMap of firing ratios to be normalized
-     *  @return The normalized firing vector.
-     *  @exception ArithmeticException If the calculated GCD does not
-     *  normalize all of the fractions.
-     */
-    //Fixme: lcm should be moved into the math package.
-    protected HashedMap _normalizeFirings(HashedMap Firings) {
-        Enumeration unnormalizedFirings = Firings.elements();
-        int lcm = 1;
+        while(Entities.hasMoreElements()) {
+            ComponentEntity a = (ComponentEntity)Entities.nextElement();
 
-        Debug.println("Normalizing Firings");
-        // First find the lcm of all the denominators
-        while(unnormalizedFirings.hasMoreElements()) {
-            Fraction f = (Fraction) unnormalizedFirings.nextElement();
-            int den = f.getDenominator();
-            lcm = Fraction.lcm(lcm, den);
+            // Fill AllActors with the list of things that we can schedule
+            // CHECKME: What if other things can be scheduled than actors?
+            if(a instanceof Actor) AllActors.include(a);
         }
 
-        Debug.println("lcm = " + (new Integer(lcm)).toString());
-        Enumeration Actors = Firings.keys();
+        // First solve the balance equations
+        HashedMap Firings = _solveBalanceEquations(AllActors.elements());
+        Firings = _normalizeFirings(Firings);
 
-        Fraction lcmFraction = new Fraction(lcm);
-        // now go back through and multiply by the lcm we just found, which
-        // should normalize all the fractions to integers.
-        while(Actors.hasMoreElements()) {
+        setFiringVector(Firings);
 
-            Object actor = Actors.nextElement();
-            Debug.println("normalizing Actor " + ((ComponentEntity) actor).getName());
-            Fraction reps = (Fraction) Firings.at(actor);
-            reps = Fraction.multiply(reps,lcmFraction);
-            reps.simplify();
-            if(reps.getDenominator() != 1)
-                throw new ArithmeticException("Failed to properly perform " +
-                        "fraction normalization");
-            Firings = (HashedMap) Firings.puttingAt(actor,new Integer(reps.getNumerator()));
-        }
-        return Firings;
+        Debug.print("Firing Vector:");
+        Debug.println(Firings.toString());
+
+        // Schedule all the actors using the calculated firings.
+        CircularList result = _scheduleConnectedActors(AllActors);
+
+        setFiringVector(Firings);
+
+        Debug.print("Firing Vector:");
+        Debug.println(Firings.toString());
+
+        setValid(true);
+
+        return result.elements();
     }
 
-    /** Count the number of inputports in the Actor that must be
-     *  fulfilled before the actor can fire.   Ports
-     *  that are connected to actors that we are not scheduling right now are
-     *  assumed to be fulfilled.   Ports that have more tokens waiting than
-     *  their input consumption rate are also already fulfilled.
-     *
-     *  @param a The actor
-     *  @param unscheduledactors The set of actors that we are scheduling.
-     *  @param waitingTokens The Map of tokens currently waiting on all the
-     *  input ports.
-     *  @return The number of unfulfilled inputs of a.
-     *  @exception IllegalActionException if any called method throws it.
-     */
-    protected int _countUnfulfilledInputs(Actor a,
-            HashedSet unscheduledactors, HashedMap waitingTokens)
-            throws IllegalActionException {
-               Enumeration ainputPorts = a.inputPorts();
-
-            int InputCount = 0;
-            while(ainputPorts.hasMoreElements()) {
-                IOPort ainputPort = (IOPort) ainputPorts.nextElement();
-                Enumeration cports = ainputPort.deepConnectedOutPorts();
-
-                boolean isonlyexternalport = true;
-                while(cports.hasMoreElements()) {
-                    IOPort cport = (IOPort) cports.nextElement();
-                    if(unscheduledactors.includes(cport.getContainer()))
-                        isonlyexternalport = false;
-                }
-
-                boolean isalreadyfulfilled = false;
-                int threshold
-                    = _getTokenConsumptionRate(ainputPort);
-                int tokens
-                    = ((Integer) waitingTokens.at(ainputPort)).intValue();
-                if(tokens >= threshold)
-                    isalreadyfulfilled = true;
-
-                if(!isonlyexternalport && !isalreadyfulfilled)
-                    InputCount++;
-            }
-            return InputCount;
-    }
-
-    /** Simulate the consumption of tokens by the actor during an execution.
-     *  The entries in HashedMap will be modified to reflect the number of
-     *  tokens still waiting after the actor has consumed tokens for a firing.
-     *  Also determine if enough tokens still remain at the inputs of the actor
-     *  for it to fire again immediately.
-     *
-     *  @param currentActor The actor that is being simulated
-     *  @param waitingTokens A Map between each input IOPort and the number of
-     *  tokens in the queue for that port.
-     *  @return boolean Whether or not the actor can fire again right away
-     *  after it has consumed tokens.
-     *  @exception IllegalActionException if any called method throws it.
-     */
-    protected boolean _simulateInputConsumption(ComponentEntity currentActor,
-            HashedMap waitingTokens)
-        throws IllegalActionException {
-
-        boolean stillReadyToSchedule = true;
-        // update tokensWaiting on the actor's input ports.
-
-        Enumeration inputPorts = ((Actor) currentActor).inputPorts();
-        while(inputPorts.hasMoreElements()) {
-            IOPort inputPort = (IOPort) inputPorts.nextElement();
-            int tokens =
-                        ((Integer) waitingTokens.at(inputPort)).intValue();
-                    int tokenrate =
-                        _getTokenConsumptionRate(inputPort);
-                    tokens -= tokenrate;
-
-                    // keep track of whether or not this actor can fire again
-                    // immediately
-                    if(tokens < tokenrate) stillReadyToSchedule = false;
-
-                    // update the number of pseudo-tokens waiting on each input
-                    waitingTokens.putAt(inputPort, new Integer(tokens));
-                }
-        return stillReadyToSchedule;
-     }
-
-
-    /** Create a schedule for a set of UnscheduledActors.  Given a valid
+     /** Create a schedule for a set of UnscheduledActors.  Given a valid
      *  firing vector, simulate the scheduling of the actors until the
      *  end of one synchronous dataflow iteration.
      *  Each actor will appear in the schedule exactly the number of times that
@@ -644,19 +514,19 @@ public class SDFScheduler extends Scheduler{
      *  FIXME: This method destroys the firing vector.  This is not nice.
      *
      *  @param UnscheduledActors The Actors that need to be scheduled.
-     *  @return A LinkedList of the Actors in the order they should fire.
+     *  @return A CircularList of the Actors in the order they should fire.
      *  @exception InvalidStateException If the algorithm encounters an SDF
      *  graph that is not consistant with the firing vector, or detects an
      *  inconsistant internal state.
      */
 
-    protected LinkedList _scheduleConnectedActors(
+    protected CircularList _scheduleConnectedActors(
             HashedSet UnscheduledActors) {
 
         // A linked list containing all the actors that have no inputs
-        LinkedList ReadyToScheduleActors = new LinkedList();
+        CircularList ReadyToScheduleActors = new CircularList();
         // A linked list that will contain our new schedule.
-        LinkedList newSchedule = new LinkedList();
+        CircularList newSchedule = new CircularList();
 
         boolean Done = false;
 
@@ -846,27 +716,29 @@ public class SDFScheduler extends Scheduler{
                 }
             }
         }
-                // This will get thrown by the removeFirst
-                // call if we've run out of things to schedule.
-                // FIXME: This should probably throw another exception if
-                // unscheduledActors still contains elements.
-            catch (NoSuchElementException e) {
-                Debug.print("Caught NSEE:");
-                Debug.println(e.getMessage());
-                Done = true;
-            }
-            catch (IllegalActionException iae) {
-                // This could happen if we call _getTokenConsumptionRate on a
-                // port that isn't a part of the actor.   This probably means
-                // the graph is screwed up, or somebody else is mucking
-                // with it.
-                throw new InvalidStateException("SDF Scheduler Failed " +
-                        "Internal consistancy check: " + iae.getMessage());
-            }
-            finally {
-                Debug.println("finishing loop");
-            }
 
+        // This will get thrown by the removeFirst
+        // call if we've run out of things to schedule.
+        // FIXME: This should probably throw another exception if
+        // unscheduledActors still contains elements.
+        catch (NoSuchElementException e) {
+            Debug.print("Caught NSEE:");
+            Debug.println(e.getMessage());
+            Done = true;
+        }
+        catch (IllegalActionException iae) {
+            // This could happen if we call _getTokenConsumptionRate on a
+
+            // port that isn't a part of the actor.   This probably means
+            // the graph is screwed up, or somebody else is mucking
+            // with it.
+            throw new InvalidStateException("SDF Scheduler Failed " +
+                    "Internal consistancy check: " + iae.getMessage());
+        }
+        finally {
+            Debug.println("finishing loop");
+        }
+        
         Enumeration eschedule = newSchedule.elements();
         Debug.println("Schedule is:");
         while(eschedule.hasMoreElements())
@@ -874,13 +746,140 @@ public class SDFScheduler extends Scheduler{
                     ((ComponentEntity) eschedule.nextElement()).toString());
         return newSchedule;
     }
-
-
-    /** Initialize the local data members of this object.
+    
+    /** Simulate the consumption of tokens by the actor during an execution.
+     *  The entries in HashedMap will be modified to reflect the number of
+     *  tokens still waiting after the actor has consumed tokens for a firing.
+     *  Also determine if enough tokens still remain at the inputs of the actor
+     *  for it to fire again immediately.
+     *
+     *  @param currentActor The actor that is being simulated
+     *  @param waitingTokens A Map between each input IOPort and the number of
+     *  tokens in the queue for that port.
+     *  @return boolean Whether or not the actor can fire again right away
+     *  after it has consumed tokens.
+     *  @exception IllegalActionException if any called method throws it.
      */
-    private void _localMemberInitialize() {
-        HashedMap _firingvector = new HashedMap();
-        _firingvectorvalid = true;
+    protected boolean _simulateInputConsumption(ComponentEntity currentActor,
+            HashedMap waitingTokens)
+        throws IllegalActionException {
+
+        boolean stillReadyToSchedule = true;
+        // update tokensWaiting on the actor's input ports.
+
+        Enumeration inputPorts = ((Actor) currentActor).inputPorts();
+        while(inputPorts.hasMoreElements()) {
+            IOPort inputPort = (IOPort) inputPorts.nextElement();
+            int tokens =
+                        ((Integer) waitingTokens.at(inputPort)).intValue();
+                    int tokenrate =
+                        _getTokenConsumptionRate(inputPort);
+                    tokens -= tokenrate;
+
+                    // keep track of whether or not this actor can fire again
+                    // immediately
+                    if(tokens < tokenrate) stillReadyToSchedule = false;
+
+                    // update the number of pseudo-tokens waiting on each input
+                    waitingTokens.putAt(inputPort, new Integer(tokens));
+                }
+        return stillReadyToSchedule;
+     }
+
+    /** Solve the Balance Equations for the list of connected Actors.
+     *  For each actor, determine the ratio that determines the rate at
+     *  which it should fire relative to the other actors for the graph to
+     *  be live and operate within bounded memory.   This ratio is known as the
+     *  fractional firing of the actor.
+     *
+     *  @param Actors The actors that we are interested in
+     *  @return A HashedMap that associates each actor with its fractional
+     *  firing.
+     *  @exception NotScheduleableExecption If the graph is not consistant
+     *  under the synchronous dataflow model.
+     *  @exception NotScheduleableException If the graph is not connected.
+     */
+    protected HashedMap _solveBalanceEquations(Enumeration Actors)
+            throws NotSchedulableException {
+
+        // Firings contains the HashedMap that we will return.
+        // It gets populated with the fraction firing ratios for
+        // each actor
+        HashedMap Firings = new HashedMap();
+
+        // RemainingActors contains the pool of Actors that have not been
+        // touched yet. (i.e. all their firings are still set to Fraction.ZERO)
+        HashedSet RemainingActors = new HashedSet();
+
+        // PendingActors have their Firings set, but have not had their
+        // ports explored yet.
+        HashedSet PendingActors = new HashedSet();
+
+        // Are we done?  (Is PendingActors Empty?)
+        boolean Done = false;
+
+        // Initialize RemainingActors to contain all the actors we were given
+        RemainingActors.includeElements(Actors);
+
+        // Initialize Firings for everybody to Zero
+        Enumeration enumActors = RemainingActors.elements();
+        while(enumActors.hasMoreElements()) {
+            ComponentEntity e = (ComponentEntity) enumActors.nextElement();
+            Firings.putAt(e, Fraction.ZERO);
+        }
+
+        try {
+            // Pick an actor as a reference
+            Actor a = (Actor) RemainingActors.take();
+            // And set it's rate to one per iteration
+            Firings.putAt(a,new Fraction(1));
+            // And start the list to recurse over.
+            PendingActors.include(a);
+        }
+        catch (NoSuchElementException e) {
+            // if RemainingActors.take() fails, then we've been given
+            // no actors to do anything with, so return an empty HashedMap
+            return Firings;
+        }
+
+        while(! Done) try {
+            Debug.print("PendingActors: ");
+            Debug.println(PendingActors.toString());
+            // Get the next actor to recurse over
+            Actor currentActor = (Actor) PendingActors.take();
+            Debug.println("Balancing from " +
+                    ((ComponentEntity) currentActor).getName());
+
+            // traverse all the input and output ports, setting the firings
+            // for the actor(s)???? that each port is connected to relative
+            // to currentActor.
+            Enumeration AllPorts =
+                ((ComponentEntity) currentActor).getPorts();
+            while(AllPorts.hasMoreElements()) {
+                IOPort currentPort = (IOPort) AllPorts.nextElement();
+
+                if(currentPort.isInput())
+                    _propagateInputPort(currentPort, Firings,
+                            RemainingActors, PendingActors);
+
+                if(currentPort.isOutput())
+                    _propagateOutputPort(currentPort, Firings,
+                            RemainingActors, PendingActors);
+            }
+        }
+        catch (NoSuchElementException e) {
+            // Once we've exhausted PendingActors, this exception will be
+            // thrown, causing us to terminate the loop.
+            Done = true;
+
+            // If there are any Actors left that we didn't get to, then
+            // this is not a connected graph, and we throw an exception.
+            if(RemainingActors.elements().hasMoreElements())
+                throw new NotSchedulableException("The graph cannot " +
+                        "be scheduled using the SDF scheduler because " +
+                        "it is not connected");
+        }
+        return Firings;
     }
 
     protected HashedMap _firingvector;

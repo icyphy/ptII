@@ -41,16 +41,6 @@ import collections.HashedMap;
 //////////////////////////////////////////////////////////////////////////
 //// SDFAtomicActor
 /**
-An AtomicActor is an executable entity that cannot itself contain
-other actors. The container is required to be an instance of CompositeActor.
-Derived classes may further constrain the container by overriding
-setContainer(). The Ports of AtomicActors are constrained to be IOPorts.
-Derived classes may further constrain the ports by overriding the public
-method newPort() to create a port of the appropriate subclass, and the
-protected method _addPort() to throw an exception if its argument is a
-port that is not of the appropriate subclass. In this base class, the
-actor does nothing in the action methods (prefire, fire, ...).
-
 An SDFAtomicActor is an AtomicActor that is valid in the SDF domain.  This
 implies that is supports a static notion of the "Rate" of a port, as defined
 in the DataflowActor interface. i.e. a number of tokens are created or
@@ -174,6 +164,24 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
 
     }
 
+    /** Create ports for this object.  SDFIOPorts support getArray() and
+     *  sendArray
+     */
+    public Port newPort(String name) throws NameDuplicationException {
+        try {
+            workspace().getWriteAccess();
+            IOPort port = new SDFIOPort(this, name);
+            return port;
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(
+                    "SDFAtomicActor.newPort: Internal error: " + ex.getMessage());
+        } finally {
+            workspace().doneWriting();
+        }
+    }
+    
 
     /** Set the number of tokens that are produced or consumed
      *  on the appropriate port of this Actor.

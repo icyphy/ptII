@@ -69,7 +69,7 @@ public final class ImageDisplay extends SDFAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
-        IntMatrixToken message = (IntMatrixToken)
+        ImageToken message = (ImageToken)
             _port_image.get(0);
         int frame[][] = message.intMatrix();
         int xsize = message.getColumnCount();
@@ -95,7 +95,7 @@ public final class ImageDisplay extends SDFAtomicActor {
        
         // convert the B/W image to a packed RGB image
         int i, j, index = 0;
-        for(j = 0; j < ysize; j++) {
+        for(j = ysize - 1; j >= 0; j--) {
             for(i = 0; i < xsize; i++, index++) 
                 _RGBbuffer[index] = (255 << 24) |
                     ((frame[j][i] & 255) << 16) | 

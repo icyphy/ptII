@@ -37,7 +37,7 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ImageSequence
+//// ImageUnPartition
 /**
 @author Steve Neuendorffer
 @version $Id$
@@ -54,11 +54,11 @@ public final class ImageUnpartition extends SDFAtomicActor {
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
  
-        IOPort inputport = (IOPort) newPort("partition");
+        SDFIOPort inputport = (SDFIOPort) newPort("partition");
         inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 1);
+        setTokenConsumptionRate(inputport, 3168);
 
-        IOPort outputport = (IOPort) newPort("image");
+        SDFIOPort outputport = (SDFIOPort) newPort("image");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
     }
@@ -74,10 +74,10 @@ public final class ImageUnpartition extends SDFAtomicActor {
         p = (Parameter) getAttribute("YPartitionSize");
         ypartsize = ((IntToken)p.getToken()).intValue();
 
-        partition = ((IOPort) getPort("partition"));
-        image = ((IOPort) getPort("image"));
+        partition = ((SDFIOPort) getPort("partition"));
+        image = ((SDFIOPort) getPort("image"));
         frame = new int[yframesize * xframesize];
-
+        message = new ImageToken[3168];
     }
 
     public void fire() throws IllegalActionException {
@@ -85,26 +85,24 @@ public final class ImageUnpartition extends SDFAtomicActor {
 	int x, y;
         int a;
 
-        ObjectToken message = 
-            (ObjectToken)partition.get(0);
-        partitions = (int[][]) message.getValue();
+        partition.getArray(0, message);
 
 	for(j = 0, a = 0; j < yframesize; j += ypartsize)
             for(i = 0; i < xframesize; i += xpartsize, a++) {
-                part = partitions[a];
+                part = message[a].intArray();
                 for(y = 0; y < ypartsize; y++)
                     System.arraycopy(part, y * xpartsize, 
                             frame, (j + y) * xframesize + i, xpartsize);
 	    }
 	
-        IntMatrixToken omessage = new IntMatrixToken(frame, 144, 176);
+        ImageToken omessage = new ImageToken(frame, 144, 176);
 	image.send(0, omessage);
 	
     }
 
-    IntMatrixToken message;
-    IOPort partition;
-    IOPort image;
+    ImageToken message[];
+    SDFIOPort partition;
+    SDFIOPort image;
     private int partitions[][];
     private int part[];
     private int frame[];

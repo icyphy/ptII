@@ -37,7 +37,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 
-import collections.LinkedList;
+import collections.CircularList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,7 +101,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         @return A new FIFOQueue
         */
     public Receiver newReceiver() {
-        return new QueueReceiver();
+        return new SDFReceiver();
     }
 
     /** Prepare for firing and return true if firing can proceed.
@@ -249,7 +249,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     private Parameter _parameteriterations;
 
     // Support for mutations.
-    // private LinkedList _pendingMutations = null;
-    // private LinkedList _mutationListeners = null;
+    // private CircularList _pendingMutations = null;
+    // private CircularList _mutationListeners = null;
 //    private ActorListener _actorListener = null;
 }

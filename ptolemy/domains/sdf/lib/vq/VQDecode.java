@@ -47,13 +47,13 @@ public class VQDecode extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container,name);
-        IOPort inputport = (IOPort) newPort("index");
+        SDFIOPort inputport = (SDFIOPort) newPort("index");
         inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 1);
+        setTokenConsumptionRate(inputport, 3168);
 
-        IOPort outputport = (IOPort) newPort("imagepart");
+        SDFIOPort outputport = (SDFIOPort) newPort("imagepart");
         outputport.setOutput(true);
-        setTokenProductionRate(outputport, 1);
+        setTokenProductionRate(outputport, 3168);
 
         Parameter p = new Parameter(this, "Codebook", 
                 new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
@@ -66,22 +66,25 @@ public class VQDecode extends SDFAtomicActor {
 
 
     public void fire() throws IllegalActionException {
-        ObjectToken t = 
-            (ObjectToken) ((IOPort) getPort("index")).get(0);
-        _codewords = (int[]) t.getValue();
-        
+        int j;
         int numpartitions = 
             _xframesize * _yframesize / _xpartsize / _ypartsize;
-        
-        int j;
+
+        //for(j = 0; j < numpartitions; j++) {
+        //    _codewords[j] = (IntToken) ((SDFIOPort) getPort("index")).get(0);
+        //}
+        ((SDFIOPort) getPort("index")).getArray(0, _codewords); 
+
         for(j = 0; j < numpartitions; j++) {
-            _part = _partitions[j];
-            System.arraycopy(_codebook[2][_codewords[j]], 0, _part, 0,
+            System.arraycopy(_codebook[2][_codewords[j].intValue()], 0, _part, 0,
                     _xpartsize * _ypartsize);
+            _partitions[j] = new ImageToken(_part, _ypartsize, _xpartsize);
         }
-        
-        ObjectToken ot = new ObjectToken(_partitions);
-        ((IOPort) getPort("imagepart")).send(0,ot);
+
+        ((SDFIOPort) getPort("imagepart")).sendArray(0, _partitions);      
+        //        for(j = 0; j < numpartitions; j++) {
+        //            ((SDFIOPort) getPort("imagepart")).send(0, _partitions[j]);            
+        //}
     }
     
     public void initialize() throws IllegalActionException {
@@ -99,9 +102,13 @@ public class VQDecode extends SDFAtomicActor {
         _ypartsize = ((IntToken)p.getToken()).intValue();
         
         _partitions = 
-            new int[_yframesize * _xframesize / _ypartsize / _xpartsize]
-            [_ypartsize * _xpartsize];
-        
+            new ImageToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+
+        _codewords = 
+            new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+       
+        _part = new int[_ypartsize * _xpartsize];
+
         p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
         try {
@@ -146,8 +153,8 @@ public class VQDecode extends SDFAtomicActor {
     }
     
     private int _codebook[][][] = new int[6][256][];
-    private int _codewords[];
-    private int _partitions[][];
+    private IntToken _codewords[];
+    private ImageToken _partitions[];
     private int _part[];
     private int _xframesize;
     private int _yframesize;

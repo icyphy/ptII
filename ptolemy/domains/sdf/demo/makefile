@@ -51,8 +51,8 @@ JSRCS = \
 	VideoTest.java \
 	SDFdemo.java \
 	SDFdemo2.java \
-	SDFdemo3.java \
-	TokenTest.java
+	SDFdemo3.java 
+
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)

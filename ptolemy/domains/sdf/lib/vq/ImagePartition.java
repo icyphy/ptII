@@ -7,7 +7,7 @@ license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the
 above copyright notice and the following two paragraphs appear in all
 copies of this software.
-
+ 
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -37,64 +37,81 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ImageSequence
+//// ImagePartition
 /**
 @author Steve Neuendorffer
 @version $Id$
 */
 
-public class ImagePartition extends SDFAtomicActor {
+public final class ImagePartition extends SDFAtomicActor {
     public ImagePartition(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
+
         super(container,name);
     
-	new Parameter(this, "X Image Size", new IntToken("176"));
-        new Parameter(this, "Y Image Size", new IntToken("144"));
-        new Parameter(this, "X Partition Size", new IntToken("4"));
-        new Parameter(this, "Y Partition Size", new IntToken("2"));
+	new Parameter(this, "XFramesize", new IntToken("176"));
+        new Parameter(this, "YFramesize", new IntToken("144"));
+        new Parameter(this, "XPartitionSize", new IntToken("4"));
+        new Parameter(this, "YPartitionSize", new IntToken("2"));
  
-        IOPort outputport = (IOPort) newPort("partitions");
+        SDFIOPort outputport = (SDFIOPort) newPort("partition");
         outputport.setOutput(true);
-        setTokenProductionRate(outputport, 176*144/4/2);
+        setTokenProductionRate(outputport, 3168);
 
-        IOPort inputport = (IOPort) newPort("image");
-        outputport.setInput(true);
+        SDFIOPort inputport = (SDFIOPort) newPort("image");
+        inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
     }
 
     public void initialize() throws IllegalActionException {
 	Parameter p;
-	p = (Parameter) getAttribute("X Image Size");
-        ximagesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("Y Image Size");
-        yimagesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("X Partition Size");
+	p = (Parameter) getAttribute("XFramesize");
+        xframesize = ((IntToken)p.getToken()).intValue();
+        p = (Parameter) getAttribute("YFramesize");
+        yframesize = ((IntToken)p.getToken()).intValue();
+        p = (Parameter) getAttribute("XPartitionSize");
         xpartsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("Y Partition Size");
+        p = (Parameter) getAttribute("YPartitionSize");
         ypartsize = ((IntToken)p.getToken()).intValue();
- 
+
+        partition = ((SDFIOPort) getPort("partition"));
+        image = ((SDFIOPort) getPort("image"));
+        part = new int[xpartsize*ypartsize];
+        partitions = new ImageToken[3168];
     }
 
     public void fire() throws IllegalActionException {
-        int part[][] = new int[xpartsize][ypartsize];
         int i, j;
 	int x, y;
-	IntMatrixToken message = 
-	    (IntMatrixToken)((IOPort) getPort("image")).get(0);
-	int frame[][] = message.intMatrix();
+        int a;
+        int numpartitions = xframesize * yframesize / xpartsize / ypartsize;
+
+        message = (ImageToken) image.get(0);
+        frame = message.intArrayRef();
+
+	//for(j = 0, a = numpartitions - 1 ; j < yframesize; j += ypartsize)
+        //    for(i = 0; i < xframesize; i += xpartsize, a--) {
+        for(j = 0, a = 0 ; j < yframesize; j += ypartsize)
+            for(i = 0; i < xframesize; i += xpartsize, a++) {
+                for(y = 0; y < ypartsize; y++)
+                    System.arraycopy(frame, (j + y) * xframesize + i,
+                            part, y * xpartsize, xpartsize);
+                partitions[a] = new ImageToken(part, ypartsize, xpartsize);
+            }
 	
-	for(j = 0; j < yimagesize; j += ypartsize)
-            for(i = 0; i < ximagesize; i += ypartsize) {
-		for(y = 0; y < ypartsize; y++)
-		    for(x = 0; x < xpartsize; x++)
-			part[y][x] = frame[j + y][i + x];
-       		IntMatrixToken omessage = new IntMatrixToken(part);
-		((IOPort) getPort("output")).send(0, omessage);
-	    }
+        partition.sendArray(0, partitions);
+	
     }
-    int ximagesize;
-    int yimagesize;
-    int xpartsize;
-    int ypartsize;
+
+    ImageToken message;
+    SDFIOPort partition;
+    SDFIOPort image;
+    private ImageToken partitions[];
+    private int part[];
+    private int frame[];
+    private int xframesize;
+    private int yframesize;
+    private int xpartsize;
+    private int ypartsize;
 
 }

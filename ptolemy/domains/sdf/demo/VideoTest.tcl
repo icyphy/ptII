@@ -73,6 +73,8 @@ set r3 [$sys connect $unpart_image $display_image R3]
 #set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
 #java::call $debug register $debugger
 
+#set s [$sys description]
+#puts $s
 # Run it
 set param [$dir getAttribute Iterations]
 $param setToken [java::new {ptolemy.data.IntToken int} 60]
