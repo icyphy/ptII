@@ -132,8 +132,8 @@ public class SignalProcessing {
             for (int j = 0; j < array2.length; j++) {
                 reals[i+j] += array1[i].real * array2[j].real
                     - array1[i].imag * array2[j].imag;
-                    imags[i+j] += array1[i].imag * array2[j].real
-                        + array1[i].real * array2[j].imag;
+                imags[i+j] += array1[i].imag * array2[j].real
+                    + array1[i].real * array2[j].imag;
             }
         }
 
