@@ -326,6 +326,11 @@ remote1coverage: $(PTII_SRC) $(GENLOGDIR)
 
 
 bldmastrcoverage:
+	# Hack because /usr/ccs/bin/barfs on the "-deprecation -g" args
+	# and we end up with make: Warning: Ignoring DistributedMake -g option
+	$(MAKE) REMOTE1HOME=/home/bldmastr \
+		VERSION= \
+		remote1distclean
 	$(MAKE) REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
@@ -334,7 +339,6 @@ bldmastrcoverage:
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
-		remote1distclean \
 		remote1configure \
 		remote1distjsall \
 		remote1distjsrestore \
