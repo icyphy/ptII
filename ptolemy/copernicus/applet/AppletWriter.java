@@ -40,7 +40,8 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
-import soot.Options;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
 import soot.SceneTransformer;
 
 import java.io.BufferedInputStream;
@@ -74,7 +75,7 @@ outDir parameter.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class AppletWriter extends SceneTransformer {
+public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private AppletWriter(CompositeActor model) {
@@ -91,14 +92,18 @@ public class AppletWriter extends SceneTransformer {
     }
 
     public String getDefaultOptions() {
-        return super.getDefaultOptions() + "templateDirectory:" +
+        return "templateDirectory:" +
             TEMPLATE_DIRECTORY_DEFAULT;
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage outDir templateDirectory";
+        return "targetPackage outDir templateDirectory";
     }
 
+
+    public String getPhaseName() {
+        return "";
+    }
 
     /** Save the model as an applet.
      *  <p>For example, if the model is called MyModel, and
@@ -122,7 +127,7 @@ public class AppletWriter extends SceneTransformer {
         System.out.println("AppletWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        _outputDirectory = Options.getString(options, "outDir");
+        _outputDirectory = PhaseOptions.getString(options, "outDir");
 
         // Determine where $PTII is so that we can find the right directory.
         _ptIIDirectory = null;
@@ -142,7 +147,7 @@ public class AppletWriter extends SceneTransformer {
 
         // If the targetPackage is foo.bar, and the model is Bif,
         // the we will do mkdir $PTII/foo/bar/Bif/
-        _targetPackage = Options.getString(options, "targetPackage");
+        _targetPackage = PhaseOptions.getString(options, "targetPackage");
 
         // Determine the value of _domainJar, which is the
         // path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -234,10 +239,11 @@ public class AppletWriter extends SceneTransformer {
         // FIXME: this could be a Ptolemy parameter?
 
         //_templateDirectory =
-        //    StringUtilities.substitute(Options.getString(options,
+        //    StringUtilities.substitute(PhaseOptions.getString(options,
         //            "templateDirectory"),
         //            "$PTII", _ptIIDirectory);
-        _templateDirectory = Options.getString(options, "templateDirectory");
+        _templateDirectory =
+            PhaseOptions.getString(options, "templateDirectory");
 
         System.out.println("AppletWriter: _templateDirectory: '"
                 + _templateDirectory + "'");
