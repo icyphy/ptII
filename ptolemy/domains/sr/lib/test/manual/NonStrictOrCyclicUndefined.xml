@@ -72,6 +72,8 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="527.0, 293.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

@@ -15,6 +15,8 @@
         </property>
     </property>
     <entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="133.0, 235.0">
         </property>
         <port name="dataInput" class="ptolemy.actor.TypedIOPort">
@@ -45,6 +47,8 @@
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="363.0, 291.0">
         </property>

@@ -55,6 +55,8 @@
                 </property>
             </property>
         </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="234.0, 253.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -72,6 +74,8 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="215.0, 140.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -86,6 +90,8 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="428.0, 153.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -99,6 +105,8 @@
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="644.0, 356.0">
         </property>

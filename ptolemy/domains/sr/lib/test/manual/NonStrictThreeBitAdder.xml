@@ -13,6 +13,8 @@
         </property>
     </property>
     <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="344.0, 152.0">
         </property>
         <port name="inputBits" class="ptolemy.actor.TypedIOPort">
@@ -33,6 +35,8 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="498.0, 143.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -46,6 +50,8 @@
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="501.0, 236.0">
         </property>
@@ -72,6 +78,8 @@
                 <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
                 </property>
             </property>
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="63.0, 195.0">
         </property>
