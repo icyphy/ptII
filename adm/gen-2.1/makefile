@@ -257,7 +257,8 @@ nightly: ptclean ptbuild \
 	jnlp \
 	remote2 \
 	remote4 \
-	remote5
+	remote5 \
+	remote6
 
 ####################################
 # Rules that operate in ~ptII
@@ -884,16 +885,19 @@ remotealldone:
 	if [ -f $(REMOTE2DONEFILE) \
 		-a -f $(REMOTE4DONEFILE) \
 		-a -f $(REMOTE5DONEFILE) \
+		-a -f $(REMOTE6DONEFILE) \
 			]; then \
 		date; \
 		echo "Remote processes finished"; \
 		cat $(REMOTE2LOG) $(REMOTE4LOG) $(REMOTE5LOG) \
+			$(REMOTE6LOG) \
 			>> $(PTIINIGHTLY_TXT); \
 		/bin/sh $(PTIIADM)/bin/ptIInightly-mail $(EMAILTO) ; \
 	else \
 		date; \
 		echo "Still waiting"; \
-		ls -l $(REMOTE2DONEFILE) $(REMOTE4DONEFILE) $(REMOTE5DONEFILE); \
+		ls -l $(REMOTE2DONEFILE) $(REMOTE4DONEFILE) \
+			$(REMOTE5DONEFILE) $(REMOTE6DONEFILE); \
 	fi
 
 ##########################################################################
