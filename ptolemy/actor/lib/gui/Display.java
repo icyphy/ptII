@@ -82,6 +82,10 @@ window, then, unlike the plotters, the new size will not be persistent.
 That is, if you save the model and then re-open it, the new size is
 forgotten.  To control the size, you should set the <i>rowsDisplayed</i>
 and <i>columnsDisplayed</i> parameters.
+<p>
+Note that this actor internally uses JTextArea, a Java Swing object
+that is known to consume large amounts of memory. It is not advisable
+to use this actor to log large output streams.
 
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
