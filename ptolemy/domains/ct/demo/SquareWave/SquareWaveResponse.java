@@ -1,4 +1,4 @@
-/* A second order system for profile the performance.
+/* The square wave response of a second order CT system.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -25,17 +25,21 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cx@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.demo.SquareWave;
+
+import java.awt.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
+import ptolemy.gui.Query;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.domains.ct.kernel.*;
+import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.kernel.solver.*;
 import ptolemy.domains.ct.lib.*;
 
@@ -43,84 +47,92 @@ import ptolemy.domains.ct.lib.*;
 //////////////////////////////////////////////////////////////////////////
 //// SquareWaveResponse
 /**
-A second order system simulation. For performance testing.
+The square wave response of a second order CT system. This simple 
+CT system demonstrate the use of ODE solvers and domain polymorephic
+actors in the CT domain. 
+The solvers are not allowed to change during the execution.
+It is also useful for correctness and performancs testing.
 @author  Jie Liu
 @version $Id$
 */
-public class SquareWaveResponse {
-    public static void main(String[] args) {
+public class SquareWaveResponse extends CTApplet {
 
-        String _breaksolver = new String();
-        String _solver = new String();
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-        if(args.length == 0) {
-            _breaksolver = new String(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            _solver = new String(
-                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-        }else if(args.length == 1) {
-            _solver = new String(
-                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-            _breaksolver = "ptolemy.domains.ct.kernel.solver."+args[0];
-        }else if(args.length == 2) {
-            _solver = "ptolemy.domains.ct.kernel.solver." + args[1];
-            _breaksolver = "ptolemy.domains.ct.kernel.solver."+args[0];
-        } else {
-            System.out.println(
-                    "Usage: WaveBERK23 [breakpointODESolver] [ODESolver]");
-            return;
-        }
+    /** Initialize the applet.
+     */
+    public void init() {
+        super.init();
+        Panel controlpanel = new Panel();
+        controlpanel.setLayout(new BorderLayout());
+        add(controlpanel);
+
+        _query = new Query();
+        _query.setBackground(_getBackground());
+        //_query.addQueryListener(new ParameterListener());
+        controlpanel.add("West", _query);
+        _query.addLine("stopT", "Stop Time", "4.0");
+        _query.addLine("solver", "DefaultSolver",
+                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+        _query.addLine("bpsolver", "BreakpointSolver",
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+
+        Panel runcontrols = new Panel();
+        controlpanel.add("East",runcontrols);
+        runcontrols.add(_createRunControls(2));
 
         try {
-            TypedCompositeActor sys = new TypedCompositeActor();
-            sys.setName( "system");
-            Manager man = new Manager();
-            sys.setManager(man);
+            _toplevel.setName( "system");
 
-            CTMultiSolverDirector dir = new CTMultiSolverDirector(
-                    sys, "DIR");
+            _dir = new CTMultiSolverDirector(
+                    _toplevel, "DIR");
             //dir.addDebugListener(new StreamListener());
-            CTSquareWave sqwv = new CTSquareWave(sys, "SQWV");
-            AddSubtract add1 = new AddSubtract( sys, "Add1");
-            CTIntegrator intgl1 = new CTIntegrator(sys, "Integrator1");
-            CTIntegrator intgl2 = new CTIntegrator(sys, "Integrator2");
-            Scale gain1 = new Scale( sys, "Gain1");
-            Scale gain2 = new Scale( sys, "Gain2");
-            Scale gain3 = new Scale( sys, "Gain3");
-            TimedPlotter plot = new TimedPlotter( sys, "Sink");
+            Clock sqwv = new Clock(_toplevel, "SQWV");
+            AddSubtract add1 = new AddSubtract( _toplevel, "Add1");
+            Integrator intgl1 = new Integrator(_toplevel, "Integrator1");
+            Integrator intgl2 = new Integrator(_toplevel, "Integrator2");
+            Scale gain1 = new Scale( _toplevel, "Gain1");
+            Scale gain2 = new Scale( _toplevel, "Gain2");
+            Scale gain3 = new Scale( _toplevel, "Gain3");
+            TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
+            myplot.setPanel(this);
+            myplot.plot.setGrid(true);
+            myplot.plot.setXRange(0.0, 5.0);
+            myplot.plot.setYRange(-2.0, 2.0);
+            myplot.plot.setSize(600, 400);
+            myplot.plot.addLegend(0,"response");
 
             IORelation r1 = (IORelation)
-                sys.connect(sqwv.output, gain1.input, "R1");
+                _toplevel.connect(sqwv.output, gain1.input, "R1");
             IORelation r2 = (IORelation)
-                sys.connect(gain1.output, add1.plus, "R2");
+                _toplevel.connect(gain1.output, add1.plus, "R2");
             IORelation r3 = (IORelation)
-                sys.connect(add1.output, intgl1.input, "R3");
+                _toplevel.connect(add1.output, intgl1.input, "R3");
             IORelation r4 = (IORelation)
-                sys.connect(intgl1.output, intgl2.input, "R4");
+                _toplevel.connect(intgl1.output, intgl2.input, "R4");
             IORelation r5 = (IORelation)
-                sys.connect(intgl2.output, plot.input, "R5");
+                _toplevel.connect(intgl2.output, myplot.input, "R5");
             gain2.input.link(r4);
             gain3.input.link(r5);
             IORelation r6 = (IORelation)
-                sys.connect(gain2.output, add1.plus, "R6");
+                _toplevel.connect(gain2.output, add1.plus, "R6");
             IORelation r7 = (IORelation)
-                sys.connect(gain3.output, add1.plus, "R7");
-            plot.input.link(r1);
+                _toplevel.connect(gain3.output, add1.plus, "R7");
+            myplot.input.link(r1);
 
-            dir.StartTime.setToken(new DoubleToken(0.0));
+            _dir.StartTime.setToken(new DoubleToken(0.0));
 
-            dir.InitStepSize.setToken(new DoubleToken(0.000001));
+            _dir.InitStepSize.setToken(new DoubleToken(0.000001));
 
-            dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
 
-            dir.StopTime.setToken(new DoubleToken(4.0));
+            sqwv.period.setToken(new DoubleToken(4));
+            double offsets[][] = {{0.0, 2.0}};
+            sqwv.offsets.setToken(new DoubleMatrixToken(offsets));
+            double values[][] = {{2.0, -2.0}};
+            sqwv.values.setToken(new DoubleMatrixToken(values));
 
-            dir.BreakpointODESolver.setToken(new StringToken(_breaksolver ));
-
-            dir.ODESolver.setToken(new StringToken(_solver));
-
-            Parameter freq = (Parameter)sqwv.getAttribute("Frequency");
-            sqwv.Frequency.setToken(new DoubleToken(0.25));
 
             gain1.gain.setToken(new DoubleToken(500.0));
 
@@ -128,7 +140,6 @@ public class SquareWaveResponse {
 
             gain3.gain.setToken(new DoubleToken(-2500.0));
 
-            man.startRun();
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("NameDuplication");
         } catch (IllegalActionException ex) {
@@ -136,4 +147,31 @@ public class SquareWaveResponse {
                     ex.getMessage());
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Execute the system.  This overrides the base class to read the
+     *  values in the query box first.
+     *  @exception IllegalActionException Not thrown.
+     */
+    protected void _go() throws IllegalActionException {
+        try {
+            _dir.StopTime.setToken(new DoubleToken(
+                    _query.doubleValue("stopT")));
+            _dir.BreakpointODESolver.setToken(new StringToken(
+                    _query.stringValue("bpsolver")));
+            _dir.ODESolver.setToken(new StringToken(
+                    _query.stringValue("solver")));
+            super._go();
+        } catch (Exception ex) {
+            report(ex);
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private CTMultiSolverDirector _dir;
+    private Query _query;
 }
