@@ -41,6 +41,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLAttribute
@@ -55,6 +56,18 @@ MoML description, call setMoMLDescription().
 @version $Id$
 */
 public class MoMLAttribute extends Attribute {
+
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public MoMLAttribute(Workspace workspace) {
+	super(workspace);
+    }
 
     /** Construct an attribute with the specified container and name.
      *  @param container The container.
@@ -76,10 +89,28 @@ public class MoMLAttribute extends Attribute {
      *  @param moml The MoML description of this object.
      */
     public void appendMoMLDescription(String moml) {
-        // FIXME: Is the "\n" the right thing here? Want platform independence.
         StringTokenizer tokenizer = new StringTokenizer(moml, "\n");
         while (tokenizer.hasMoreTokens()) {
             _momlDescription.add(tokenizer.nextToken());
+        }
+    }
+
+    /** Write the MoML description of this object, which consists of
+     *  whatever has been specified using the appendMoMLDescription() method.
+     *  If that method has not been called, then nothing is written.
+     *  The written MoML is indented to the specified depth and terminated
+     *  with a newline.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     */
+    public void writeMoMLDescription(Writer output, int depth)
+            throws IOException {
+        if (_momlDescription.size() > 0) {
+            Iterator strings = _momlDescription.iterator();
+            while(strings.hasNext()) {
+                String string = (String)strings.next();
+                output.write(_getIndentPrefix(depth) + string + "\n");
+            }
         }
     }
 
@@ -95,13 +126,7 @@ public class MoMLAttribute extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_momlDescription.size() > 0) {
-            Iterator strings = _momlDescription.iterator();
-            while(strings.hasNext()) {
-                String string = (String)strings.next();
-                output.write(_getIndentPrefix(depth) + string + "\n");
-            }
-        }
+        writeMoMLDescription(output, depth);
     }
 
     ///////////////////////////////////////////////////////////////////
