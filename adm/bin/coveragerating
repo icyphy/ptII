@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Fri Feb 22 09:12:01 2002 by cxh]-
+# -[Mon Mar 18 11:34:34 2002 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -27,7 +27,7 @@ find /tmp -name "$ratingfile" -mtime +1 -exec rm {} \;
 	find $tree -xdev -name adm -prune -o -name '*.java' -print > $javafiles
 
 	echo "Regenerating $ratingfile"
-	grep AcceptedRating `cat $javafiles`  | 
+	cat $javafiles | xargs grep AcceptedRating | 
 		awk '{split($1,f,":"); print f[1], $2 }' |
 		# Remove the leading part of the tree name
 		sed -e "s=$tree==" \
