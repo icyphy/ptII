@@ -49,22 +49,14 @@ Created : May 1998
 */
 
 package pt.data.parser;
+
+import pt.kernel.IllegalActionException;
 import java.lang.reflect.*;
 
 public class ASTPtFunctionNode extends ASTPtSimpleNode {
     protected String funcName;
 
-    protected pt.data.Token _resolveType() throws Exception {
-        // assuming only double types as function arguments
-        for (int i = 0; i< jjtGetNumChildren(); i++){
-            if (!( childTokens[i] instanceof pt.data.DoubleToken)) {
-                throw new Exception();
-            }
-        }
-        return new pt.data.DoubleToken(0);
-    }
-
-    protected void _resolveValue() throws Exception {
+    protected pt.data.Token _resolveNode() throws IllegalActionException {
         int args = jjtGetNumChildren();
         Class[] argTypes = new Class[args];
         Double[] argValues = new Double[args];
@@ -78,7 +70,7 @@ public class ASTPtFunctionNode extends ASTPtSimpleNode {
             Class tmp = Class.forName("java.lang.Math");
             Method m = tmp.getMethod(funcName, argTypes);
             Double result = (Double)m.invoke(tmp, argValues);
-            _ptToken = new pt.data.DoubleToken(result.doubleValue());
+            return new pt.data.DoubleToken(result.doubleValue());
         } catch (Exception ex) {
             StringBuffer sb = new StringBuffer();
             for (int i=0; i<args; i++) {
@@ -88,9 +80,9 @@ public class ASTPtFunctionNode extends ASTPtSimpleNode {
                     sb.append(", " + argValues[i].doubleValue());
                 }
             }  
-            System.out.print("Function "+funcName+"(");
-            System.out.println(sb + ") cannot be executed with given arguments");
-            throw new Exception();
+            String str = "Function " + funcName + "(" + sb;
+            str = str + ") cannot be executed with given arguments";
+            throw new IllegalActionException(str + ": " + ex.getMessage());
         } 
     }
 

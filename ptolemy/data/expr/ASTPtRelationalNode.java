@@ -73,8 +73,8 @@ public class ASTPtRelationalNode extends ASTPtSimpleNode {
             return result;
         } else  {
             // relational operators only make sense on types below double
-            double a = ((pt.data.RealToken)childTokens[0]).doubleValue();
-            double b = ((pt.data.RealToken)childTokens[1]).doubleValue();
+            double a = ((pt.data.ScalarToken)childTokens[0]).doubleValue();
+            double b = ((pt.data.ScalarToken)childTokens[1]).doubleValue();
             boolean res = false;
             if (x.image.compareTo(">=") == 0) {
                 if (a>=b) res = true;
