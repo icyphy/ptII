@@ -55,7 +55,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// TableauFrame
@@ -627,26 +626,9 @@ public class TableauFrame extends Top {
         if (_tableau == null) {
             throw new InternalErrorException("No associated Tableau! Can't save.");
         }
-        JFileChooser fileDialog = new JFileChooser();
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
-        fileDialog.setDialogTitle("Save as...");
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
-            // So we use the current directory instead.
-            // NOTE: This will probably fail with a security exception in
-            // applets.
-            String currentWorkingDirectory =
-                StringUtilities.getProperty("user.dir");
-            if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(
-                        new File(currentWorkingDirectory));
-            }
-        }
+        // Use the strategy pattern here to create the actual
+        // dialog so that subclasses can customize this dialog.
+        JFileChooser fileDialog = _saveAsFileDialog();
 
         if (_initialSaveAsFileName != null) {
             fileDialog.setSelectedFile(
@@ -655,7 +637,9 @@ public class TableauFrame extends Top {
                             _initialSaveAsFileName));
         }
 
+        // Show the dialog.
         int returnVal = fileDialog.showSaveDialog(this);
+        
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
 
@@ -663,10 +647,26 @@ public class TableauFrame extends Top {
                 URL newURL = file.toURL();
                 String newKey = newURL.toExternalForm();
                 Effigy previousOpen = getDirectory().getEffigy(newKey);
+                // If there is a previous open, and it's not the same,
+                // then we need to close the previous.
                 // If we do save as to the same file, then we will get
                 // the current effigy, and we don't want to close it.
                 if (previousOpen != null && previousOpen != getEffigy()) {
                     // The destination file is already open.
+
+                    // NOTE: If the model being saved is a submodel of the
+                    // model associated with previousOpen, then we will close
+                    // it before we save it, which will result in an error
+                    // like "can't find an effigy to delegate writing to."
+                    // I don't have a good workaround for this, so for now,
+                    // disallow this type of save.
+                    if (previousOpen.deepContains(getEffigy())) {
+                        MessageHandler.error(
+                                "Cannot replace a model with a submodel." +
+                                " Please choose a different file name.");
+                        return false;
+                    }
+
                     if (previousOpen.isModified()) {
                         // Bring any visible tableaux to the foreground,
                         // then ask if it's OK to discard the changes?
