@@ -67,8 +67,12 @@ in it or it is given a new expression which is evaluated.
 <p>
 To create a parameter from an expression, create the parameter with the
 appropriate container and name, then call setExpression() to set its value.
-
-FIXME:  synchronization issues
+<p>
+FIXME: Need to override the setContainer method so that when the 
+Parameters container is set to null to notifies any registered 
+listeners that it has been removed.
+FIXME: this class comment needs to be cleaned up.
+<p>
 
 @author Neil Smyth
 @version $Id$
