@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/hoc
 
-DIRS = 		test
+DIRS = 		demo test
 
 # Root of the Java directory
 ROOT =		../../../..
