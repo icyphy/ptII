@@ -134,6 +134,11 @@ public class MoMLApplication {
         // Create a parser to use.
         _parser = new MoMLParser();
 
+
+        // We reset the filters here so that if we call MoMLApplication 
+        // more than once, we do not add a filter each time.
+        parser.setMoMLFilters(null);
+
 	// Handle Backward Compatibility.
 	_parser.addMoMLFilter(new FilterBackwardCompatibility());
 
