@@ -208,21 +208,4 @@ public class PetriNetActor extends TypedCompositeActor  {
 
 }
 
-<<<<<<< PetriNetActor.java
-/*               LinkedList componentList = _findTransitions(pnActor);
-                Iterator components = componentList.iterator();
-                while (components.hasNext()) {
-
-                    Nameable component1 = (Nameable) components.next();
-                    if (component1 instanceof TypedCompositeActor) {
-                        TypedCompositeActor transitionComponent
-                                 = (TypedCompositeActor) component1;
-		        if(_testReadyTransition(transitionComponent))
-                            readyComponentList.add(transitionComponent);
-                    }
-                }
-=======
-
-
->>>>>>> 1.17
 
