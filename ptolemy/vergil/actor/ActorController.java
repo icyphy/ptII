@@ -39,18 +39,25 @@ import diva.graph.GraphViewListener;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.graph.layout.GlobalLayout;
+import diva.graph.layout.IncrLayoutAdapter;
 import diva.graph.layout.IncrementalLayout;
 import diva.graph.layout.IncrementalLayoutListener;
-import diva.graph.layout.IncrLayoutAdapter;
 import diva.graph.layout.LayoutTarget;
 import diva.util.Filter;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
+import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -115,6 +122,8 @@ public class ActorController extends AttributeController {
         // will report an error.
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new LookInsideAction()));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new DebugListenerAction()));
 
 	// The filter for the layout algorithm of the ports within this
 	// entity. This returns true only if the argument is a Port
@@ -342,6 +351,47 @@ public class ActorController extends AttributeController {
                 _configuration.openModel(entity);
             } catch (Exception ex) {
                 MessageHandler.error("Look inside failed: ", ex);
+            }
+	}
+    }
+   // An action to look inside a composite.
+    // NOTE: This requires that the configuration be non null, or it
+    // will report an error with a fairly cryptic message.
+    private class DebugListenerAction extends FigureAction {
+	public DebugListenerAction() {
+	    super("Listen to Actor");
+	}
+	public void actionPerformed(ActionEvent e) {
+
+            if (_configuration == null) {
+                MessageHandler.error(
+                        "Cannot look inside without a configuration.");
+                return;
+            }
+
+	    // Figure out what entity.
+	    super.actionPerformed(e);
+            try {
+                NamedObj object = getTarget();
+                
+                BasicGraphController controller =
+                    (BasicGraphController)getController();
+                BasicGraphFrame frame = controller.getFrame();
+                Tableau tableau = frame.getTableau();
+                Effigy effigy = (Effigy)tableau.getContainer();
+                // Create a new text effigy inside this one.
+                Effigy textEffigy = new TextEffigy(effigy,
+                        effigy.uniqueName("debug listener"));
+                DebugListenerTableau debugTableau =
+                    new DebugListenerTableau(textEffigy,
+                            textEffigy.uniqueName("debugListener"));
+                debugTableau.setDebuggable(object);
+            }
+            catch (KernelException ex) {
+                try {
+                    MessageHandler.warning(
+                            "Failed to create debug listener: " + ex);
+                } catch (CancelException exception) {}
             }
 	}
     }
