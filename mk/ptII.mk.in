@@ -114,6 +114,9 @@ TINI_CLASSES = @TINI_CLASSES@
 # Directory that contains the TINI installation
 TINI_DIR = @TINI_DIR@
 
+# Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
+TOOLS_JAR =	@TOOLS_JAR@
+
 # Waba is another JDK for PalmOS, see
 # http://www.wabasoft.clom
 WABA_CLASSES = @WABA_CLASSES@
@@ -175,7 +178,8 @@ JDOCMEMORY =	-J-Xmx132m
 JDOCTAG = 	-tag Pt.AcceptedRating -tag Pt.ProposedRating
 
 # Javadoc taglet
-JDOCTAGLET =	-tagletpath $(PTII) -taglet doc.doclets.RatingTaglet
+# Usually -tagletpath $(PTII) -taglet doc.doclets.RatingTaglet
+JDOCTAGLET = 	@JDOCTAGLET@
 
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
@@ -284,6 +288,10 @@ PTCOMM_PACKAGES =	@PTCOMM_PACKAGES@
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
+
+# PTDOCLETS_DIR is set to doclets and used in 
+# $PTII/doc if tools.jar can be found.
+PTDOCLETS_DIR =		@PTDOCLET_DIR@ 	
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files

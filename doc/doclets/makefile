@@ -36,7 +36,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVA_HOME)/../lib/tools.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(TOOLS_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

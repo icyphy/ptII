@@ -419,6 +419,31 @@ if test "$UPGRADE_JVM" = "yes"; then
 fi
 
 
+# Set PTJAVA_HOME
+# Under Cygwin, PTJAVA_HOME will not contain /cygdrive/c
+# Under Cygwin, PTJAVA_DIR _will_ contain /cygdrive/c
+# We need to run javac in the config directory so that javac from
+# jdk1.1.6 under NT and cygwin works properly
+startdir=`pwd`
+cd "$srcdir/config"
+AC_MSG_CHECKING([for java.home prop by compiling a test program ])
+# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+if "$JAVAC" JavaHome.java ; then
+   AC_MSG_RESULT(ok)
+   AC_MSG_CHECKING([for java.home prop by running a test program ])
+   if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
+      # Run it again and get the results with \ converted to /
+      PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome`
+      AC_MSG_RESULT($PTJAVA_HOME)
+      PTDOCLETS_DIR=doclets
+   else   
+      AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA JavaHome' failed.
+   Since we cannot determine where the JRE is, we cannot set PTJAVA_HOME.
+   for use with doclets or the serial communications protocol])
+    fi
+fi
+
+
 #
 # Check that jar can handle the -i argument
 #
@@ -764,58 +789,33 @@ else
 	'$COMMAPI_DIR/comm.jar'])
     fi
 
-    # Set PTJAVA_HOME
-    # Under Cygwin, PTJAVA_HOME will not contain /cygdrive/c
-    # Under Cygwin, PTJAVA_DIR _will_ contain /cygdrive/c
-    # We need to run javac in the config directory so that javac from
-    # jdk1.1.6 under NT and cygwin works properly
-    startdir=`pwd`
-    cd "$srcdir/config"
-    AC_MSG_CHECKING([for java.home prop by compiling a test program ])
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" JavaHome.java ; then
-        AC_MSG_RESULT(ok)
-	AC_MSG_CHECKING([for java.home prop by running a test program ])
-	if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
-	    # Run it again and get the results with \ converted to /
-	    PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome`
-	    AC_MSG_RESULT($PTJAVA_HOME)
-
-	    AC_MSG_CHECKING([for javax.comm.properties ])
-	    if test -f "$PTJAVA_HOME/lib/javax.comm.properties"; then
-	       AC_MSG_RESULT([$PTJAVA_HOME/lib/javax.comm.properties])
-	    else   
-	       AC_MSG_WARN([$PTJAVA_HOME/lib/javax.comm.properties
+    AC_MSG_CHECKING([for javax.comm.properties ])
+    if test -f "$PTJAVA_HOME/lib/javax.comm.properties"; then
+        AC_MSG_RESULT([$PTJAVA_HOME/lib/javax.comm.properties])
+    else   
+        AC_MSG_WARN([$PTJAVA_HOME/lib/javax.comm.properties
     not found.
     If you try to access a serial port and get 'No serial ports found!',
     then the problem is that javax.comm.properties is not being found.
     Download the Java Comm API from http://java.sun.com/products/javacomm/
     and place javax.comm.properties in $PTJAVA_HOME/lib])
-	    fi  
-	    case "`uname -s`" in
-	    CYGWIN*)	 PTCYGWIN=yes;;
-	    *) PTCYGWIN=no;
-	    esac
-	    if test $PTCYGWIN = "yes"; then
-	       AC_MSG_CHECKING([for win32com.dll ])
-	       if test -f "$PTJAVA_HOME/jre/bin/win32com.dll"; then
-	           AC_MSG_RESULT([$PTJAVA_HOME/jre/bin/win32com.dll])
-   	       else   
-	           AC_MSG_WARN([$PTJAVA_HOME/jre/bin/win32com.dll
+    fi  
+
+    case "`uname -s`" in
+    CYGWIN*)	 PTCYGWIN=yes;;
+    *) PTCYGWIN=no;
+    esac
+    if test $PTCYGWIN = "yes"; then
+       AC_MSG_CHECKING([for win32com.dll ])
+       if test -f "$PTJAVA_HOME/jre/bin/win32com.dll"; then
+           AC_MSG_RESULT([$PTJAVA_HOME/jre/bin/win32com.dll])
+       else   
+           AC_MSG_WARN([$PTJAVA_HOME/jre/bin/win32com.dll
     not found.
     Download the Java Comm API from http://java.sun.com/products/javacomm/
     and place win32com.dll in $PTJAVA_HOME/jre/bin])
-	       fi
-	    fi
-	else   
-	    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA JavaHome' failed.
-    Running models that access the serial port from within a sandbox
-    might fail.  This is usually only important if you plan on using
-    the sandbox feature, see $PTII/doc/sandbox.htm]);
-	fi
+       fi
     fi
-    cd "$startdir"
-
 
     if test "$COMMAPI_PRESENT" = "no"; then
         AC_MSG_WARN([Perhaps commapi is not installed?
@@ -830,6 +830,60 @@ if test -z "$PTCOMM_DIR"; then
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$COMMAPI_DIR/comm.jar\"/>"
+fi 
+
+#--------------------------------------------------------------------
+#       doclets are used to control javadoc
+#	The Ptolemy II doclets are in $PTII/doc/doclets
+#	and use $PTJAVA_HOME/../tools.jar to compile
+#--------------------------------------------------------------------
+
+# We only need to look for doclet if $PTII/doc/doclets is present
+DOCLETS_USER_DIR="$PTII/doc/doclets"
+DOCLETS_PRESENT=no
+
+# Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
+TOOLS_JAR=
+
+# PTDOCLETS_DIR is set to doclets and used in 
+# $PTII/doc if com.sun.tools.doclets.Taglet can be found
+PTDOCLETS_DIR=
+
+# If we can compile in doc/doclets, we set JDOCTAGLET appropriately
+# and use JDOCTAGLET in doc/makefile
+JDOCTAGLET=
+
+if test ! -d "$DOCLETS_USER_DIR"; then
+    AC_MSG_RESULT([$DOCLETS_USER_DIR is not present,
+	so we need not find tools.jar in the JRE.])
+    # Use curly brackets around PTII so that if tools.jar is not present
+
+    TOOLS_JAR='${PTJAVA_HOME}/../lib/tools.jar'
+else
+    AC_MSG_CHECKING([for tools.jar directory])
+    AC_ARG_WITH(DOCLETS, [  --with-tools_jar=DIR    use tools.jar from DIR,
+                          defaults to \$PTJAVA_HOME/../lib/tools.jar],
+	TOOLS_JAR=$withval,
+	TOOLS_JAR=$(PTJAVA_HOME}/../lib/tools.jar)
+    if test -f "$TOOLS_JAR"; then
+	AC_MSG_RESULT([$TOOLS_JAR])
+	PTDOCLETS_DIR=doclets
+	# Use curly brackets so PTII gets expanded in the makefile
+	JDOCTAGLET='-tagletpath ${PTII} -taglet doc.doclets.RatingTaglet'
+    else	
+	AC_MSG_WARN([Could not find tools.jar.
+    PTJAVA_HOME = $PTJAVA_HOME
+    Usually, tools.jar is in PTJAVA_HOME/../lib/tools.jar
+    Since tools.jar cannot be found, we will not use doclets from
+    ptII/doc/doclets])
+    fi	
+fi
+
+if test -z "$PTDOCLETS_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|doc/doclets/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$TOOLS_JAR"/>"
 fi 
 
 #--------------------------------------------------------------------
@@ -2562,6 +2616,10 @@ AC_SUBST(JAVACC_DIR)
 # If we are running under JDK1.4, then set JDOCBREAKITERATOR = -breakiterator
 AC_SUBST(JDOCBREAKITERATOR)
 
+# If we can compile in doc/doclets, we set JDOCTAGLET appropriately
+# and use JDOCTAGLET in doc/makefile
+AC_SUBST(JDOCTAGLET)
+
 # Jar file that contains JDHL, see http://www.jhdl.org
 AC_SUBST(JHDL_JAR)
 
@@ -2650,6 +2708,10 @@ AC_SUBST(PTCOMM_PACKAGES)
 
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
 AC_SUBST(PTCHIC_DIR)
+
+# PTDOCLETS_DIR is set to doclets and used in 
+# $PTII/doc if tools.jar can be found.
+AC_SUBST(PTDOCLETS_DIR)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
@@ -2825,6 +2887,9 @@ AC_SUBST(TINI_CLASSES)
 
 # Directory that contains the Tini installation
 AC_SUBST(TINI_DIR)
+
+# Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
+AC_SUBST(TOOLS_JAR)
 
 # giotto/gdk.jar file used by GiottoSDK
 AC_SUBST(GIOTTO_CLASSES)
