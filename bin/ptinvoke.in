@@ -129,7 +129,7 @@ case "`basename $0`" in
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
 	jarfile=$JINI_JARS
-	javaflag="-Djava.security.policy=$PTII/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=file:${PTII}"
+	javaflag="-Djava.security.policy=$PTII/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=file:${PTII}/"
 	;;
     ptolemy)
 	# Ptolemy II Application
