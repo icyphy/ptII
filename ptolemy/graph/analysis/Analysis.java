@@ -38,8 +38,18 @@ of an analysis is directly accessible only by derived classes; however,
 its status can be queried with the {@link #obsolete()} method to determine
 if a subsequent invocation of {@link #result()} will trigger recomputation
 of the analysis.
-<p>
-[1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis, 
+
+<p> The graph changes tracked by an analysis are restricted to changes in the
+graph topology (the set of nodes and edges). For example, changes to edge/node
+weights that may affect the result of an analysis are not tracked, since
+analyses have no specific knowledge of weights.  In such cases, it is the
+responsibility of the client (or derived analysis class) to invalidate the
+cached result (see {@link #reset()}) when changes to graph weights or other
+non-topology information render the cached result obsolete.  For this reason,
+caution is generally required when using analyses whose results depend on more
+than just the graph topology.
+
+<p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis, 
 University of Wisconsin at Madison, August 1993.
 
 @author Shuvra S. Bhattacharyya and Mingyung Ko
