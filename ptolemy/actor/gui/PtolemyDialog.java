@@ -1,28 +1,28 @@
 /* A frame for presenting a dialog
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -60,11 +60,11 @@ import ptolemy.kernel.Entity;
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     public PtolemyDialog(
-        String title,
-        DialogTableau dialogTableau,
-        Frame owner,
-        Entity target,
-        Configuration configuration) {
+            String title,
+            DialogTableau dialogTableau,
+            Frame owner,
+            Entity target,
+            Configuration configuration) {
 
         super(title);
         _owner = owner;
@@ -81,19 +81,19 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         JPanel _buttons = _createButtonsPanel();
         getContentPane().add(_buttons, BorderLayout.SOUTH);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                _cancel();
-            }
-        });
+                public void windowClosing(WindowEvent e) {
+                    _cancel();
+                }
+            });
 
         _owner.addWindowListener(new WindowAdapter() {
-            public void windowIconified(WindowEvent e) {
-                _iconify();
-            }
-            public void windowDeiconified(WindowEvent e) {
-                _deiconify();
-            }
-        });
+                public void windowIconified(WindowEvent e) {
+                    _iconify();
+                }
+                public void windowDeiconified(WindowEvent e) {
+                    _deiconify();
+                }
+            });
         setLocationRelativeTo(_owner);
     }
 

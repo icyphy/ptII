@@ -1,32 +1,32 @@
 /* An instance of FunctionDependencyOfCompositeActor describes the
-function dependency information of a composite actor.
+   function dependency information of a composite actor.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
+   @ProposedRating Red (hyzheng@eecs.berkeley.edu)
+   @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -40,14 +40,14 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor
 /** An instance of FunctionDependencyOfCompositeActor describes the function
-dependency information of a composite actor. The construction of the ports
-graph is in a bottom-up way by composing the FunctionDependencies of the
-contained actors, which may be either atomic or composite.
+    dependency information of a composite actor. The construction of the ports
+    graph is in a bottom-up way by composing the FunctionDependencies of the
+    contained actors, which may be either atomic or composite.
 
-@see FunctionDependency
-@author Haiyang Zheng
-@version $Id $
-@since Ptolemy II 3.1
+    @see FunctionDependency
+    @author Haiyang Zheng
+    @version $Id $
+    @since Ptolemy II 3.1
 */
 public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
@@ -108,10 +108,10 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
             // merge the ports graph of the embedded actor into current one
             if (functionDependency != null) {
                 _directedGraph.addGraph(
-                    functionDependency.getAbstractPortsGraph());
+                        functionDependency.getAbstractPortsGraph());
             } else {
                 throw new InternalErrorException("FunctionDependency can "
-                    + "not be null. Check all four types of function " +
+                        + "not be null. Check all four types of function " +
                     "dependencies. There must be something wrong.");
             }
         }
@@ -133,12 +133,12 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                 // connected (as in wireless ports).  Hence, we
                 // use getRemoteReceivers() here. EAL
                 /*
-                Iterator inPortIterator =
-                    outPort.sinkPortList().iterator();
-                while (inPortIterator.hasNext()) {
-                    // connected them
-                    _directedGraph.addEdge(outPort, inPortIterator.next());
-                }
+                  Iterator inPortIterator =
+                  outPort.sinkPortList().iterator();
+                  while (inPortIterator.hasNext()) {
+                  // connected them
+                  _directedGraph.addEdge(outPort, inPortIterator.next());
+                  }
                 */
                 Receiver[][] receivers = outPort.getRemoteReceivers();
                 for (int i = 0; i < receivers.length; i++) {
@@ -151,9 +151,9 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                             IOPort ioPort =
                                 receivers[i][j].getContainer();
                             if (embeddedActors.contains(ioPort.getContainer())
-                                || outputPorts.contains(ioPort)) {
+                                    || outputPorts.contains(ioPort)) {
                                 _directedGraph.addEdge(
-                                    outPort, ioPort);
+                                        outPort, ioPort);
                             }
                         }
                     }
@@ -172,12 +172,12 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
             // connected (as in wireless ports).  Hence, we
             // use deepGetReceivers() here. EAL
             /*
-            Iterator inPortIterator =
-                inputPort.insideSinkPortList().iterator();
-            while (inPortIterator.hasNext()) {
-                // connected them
-                _directedGraph.addEdge(inputPort, inPortIterator.next());
-            }
+              Iterator inPortIterator =
+              inputPort.insideSinkPortList().iterator();
+              while (inPortIterator.hasNext()) {
+              // connected them
+              _directedGraph.addEdge(inputPort, inPortIterator.next());
+              }
             */
             Receiver[][] receivers = inputPort.deepGetReceivers();
             for (int i = 0; i < receivers.length; i++) {
@@ -187,9 +187,9 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                     // The receivers may belong to either the inputs of
                     // contained actors, or the outputs of the containter.
                     if (embeddedActors.contains(ioPort.getContainer()) ||
-                        _container.equals(ioPort.getContainer())) {
+                            _container.equals(ioPort.getContainer())) {
                         _directedGraph.addEdge(inputPort,
-                            receivers[i][j].getContainer());
+                                receivers[i][j].getContainer());
                     }
                 }
             }

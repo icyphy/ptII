@@ -1,28 +1,28 @@
 /* A composite actor that executes a submodel in fire().
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
@@ -43,14 +43,14 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// RunCompositeActor
 /**
-A composite actor that performs a complete execution of the submodel
-in the fire() method.
-<p>
-FIXME: More details.
-<P>
+   A composite actor that performs a complete execution of the submodel
+   in the fire() method.
+   <p>
+   FIXME: More details.
+   <P>
 
-@author Edward A. Lee, (Contributor: Yang Zhao)
-@version $Id$
+   @author Edward A. Lee, (Contributor: Yang Zhao)
+   @version $Id$
 */
 public class RunCompositeActor extends TypedCompositeActor {
 
@@ -355,7 +355,7 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  @exception IllegalActionException If super.initialize() throws it.
      */
     //protected void _callSuperInitialize() throws IllegalActionException {
-      //  super.initialize();
+    //  super.initialize();
     //}
 
     /** Run a complete execution of the contained model.  A complete
@@ -370,31 +370,31 @@ public class RunCompositeActor extends TypedCompositeActor {
      */
     protected void _executeInsideModel() throws IllegalActionException {
         // FIXME: Should preinitialize() also be called?
-         // FIXME: Reset time to zero.
-         // NOTE: Use the superclass initialize() because this method overrides
-         // initialize() and does not initialize the model.
-         super.initialize();
+        // FIXME: Reset time to zero.
+        // NOTE: Use the superclass initialize() because this method overrides
+        // initialize() and does not initialize the model.
+        super.initialize();
 
 
-         // Call iterate() until finish() is called or postfire()
-         // returns false.
-         _debug("-- RunCompositeActor beginning to iterate.");
+        // Call iterate() until finish() is called or postfire()
+        // returns false.
+        _debug("-- RunCompositeActor beginning to iterate.");
 
-         // FIXME: This result is not used... Should it be to determine postfire() result?
-         _lastIterateResult = COMPLETED;
-         while (!_stopRequested) {
-             executeChangeRequests();
-             if (super.prefire()) {
-                 super.fire();
-                 if (!super.postfire()) {
-                     _lastIterateResult = STOP_ITERATING;
-                     break;
-                 }
-             } else {
-                 _lastIterateResult = NOT_READY;
-                 break;
-             }
-         }
+        // FIXME: This result is not used... Should it be to determine postfire() result?
+        _lastIterateResult = COMPLETED;
+        while (!_stopRequested) {
+            executeChangeRequests();
+            if (super.prefire()) {
+                super.fire();
+                if (!super.postfire()) {
+                    _lastIterateResult = STOP_ITERATING;
+                    break;
+                }
+            } else {
+                _lastIterateResult = NOT_READY;
+                break;
+            }
+        }
     }
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
