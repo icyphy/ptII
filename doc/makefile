@@ -117,7 +117,6 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.data.type \
 			ptolemy.graph \
 			ptolemy.gui \
-			ptolemy.codegen \
 			ptolemy.lang \
 			ptolemy.lang.java \
 			ptolemy.lang.java.extended \
