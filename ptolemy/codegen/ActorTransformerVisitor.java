@@ -217,6 +217,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
         String methodName = node.getName().getIdent();
 
+
         // get rid of the following methods
         if ( methodName.equals("attributeChanged") ||
                 methodName.equals("attributeTypeChanged") ||
@@ -557,11 +558,19 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                         new NameNode(AbsentTreeNode.instance, "length"),
                         accessedObj);
             } else if (methodName.equals("getElementAsToken") ||
-                    methodName.equals("getElement") ||
-                    methodName.equals("getElementAt")) {
+		       methodName.equals("getElementAt")) {
                 ExprNode secondArg = (ExprNode) methodArgs.get(1);
                 return new ArrayAccessNode(
                         new ArrayAccessNode(accessedObj, firstArg), secondArg);
+	    } else if(methodName.equals("getElement")) {
+		if (_debug) {
+		    System.out.println("ActorTransformerVistor."
+				       + "visitMethodCallNode(): "
+				       + "getElement(): accessedObj"
+				       + accessedObj
+				       + " firstArg: " + firstArg);
+		}
+                return new ArrayAccessNode(accessedObj, firstArg);
             } else if (methodName.equals("stringValue") ||
                     methodName.equals("toString")) {
                 switch (accessedObjKind) {
@@ -1875,5 +1884,5 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
      */
     protected boolean _isBaseClass = false;
 
-    protected final boolean _debug = false;
+    protected final static boolean _debug = false;
 }
