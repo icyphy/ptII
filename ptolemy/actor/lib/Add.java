@@ -39,9 +39,12 @@ import collections.LinkedList;
 /**
 A polymorphic scalar adder.
 
-This adder has multiple input ports and a single output port.
+This adder has an input port which is a multiport and an output port.
 The types on the ports are undeclared and will be resolved by
-the type resolution mechanism.
+the type resolution mechanism.<p>
+
+This adder is not strict. That is, it does not require all the input
+channels to have a token upon firing.
 
 @author Yuhong Xiong
 @version $Id$
@@ -70,8 +73,10 @@ public class Add extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the tokens on the two input ports and send the result to
-     *  the output port.
+    /** If there is at least one token in the input port, add the
+     *  tokens on all the channels of the input port and send
+     *  the result to the output port. If none of the input port
+     *  channels has a token, do nothing.
      *
      *  @exception IllegalActionException If there is no director,
      *   and hence no receivers have been created.
@@ -80,14 +85,18 @@ public class Add extends TypedAtomicActor {
 	    throws IllegalActionException {
 	Token sum = null;
 	for (int i = 0; i < input.getWidth(); i++) {
-	    if (i == 0) {
-		sum = input.get(i);
-	    } else {
-		sum = sum.add(input.get(i));
+	    if (input.hasToken(i)) {
+		if (sum == null) {
+		    sum = input.get(i);
+		} else {
+		    sum = sum.add(input.get(i));
+		}
 	    }
 	}
 
-	output.broadcast(sum);
+	if (sum != null) {
+	    output.broadcast(sum);
+	}
     }
 
     /** Return the type constraints: Input <= Output; Output <= Scalar.
