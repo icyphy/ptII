@@ -125,8 +125,8 @@ test NamedObj-3.1 {Experiment with Parameters} {
 
     # Get the NamedList again.
     set paramlist1a [$n getParams]
-    set paramtest1a [$paramlist1a get "first param"]
-    set paramtest2a [$paramlist1a get "second param"]
+    set paramtest1a [$paramlist1a {get String} "first param"]
+    set paramtest2a [$paramlist1a {get String} "second param"]
     list [$paramtest1a getName] [$paramtest1a getValue] \
 	    [$paramtest2a getName] [$paramtest2a getValue]
 } {{first param} 42 {second param} -4}
