@@ -33,6 +33,8 @@ package ptolemy.domains.sdf.lib.javasound;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.*;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
@@ -43,7 +45,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.Enumeration;
-import collections.LinkedList;
+//import collections.LinkedList;
 
 //import ptolemy.media.*;
 import javax.media.sound.sampled.*;
@@ -80,25 +82,25 @@ public class AudioSink extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new SDFIOPort(this, "input", true, false);
-        input.setTypeEquals(DoubleToken.class);
+        input.setTypeEquals(BaseType.DOUBLE);
 	// FIXME: Allow this to be set as parameter.
 	consumptionRate = 512;
 	input.setTokenConsumptionRate(consumptionRate);
 
         fileName = new Parameter(this, "fileName", new StringToken("audioFile.au"));
-        fileName.setTypeEquals(StringToken.class);
+        fileName.setTypeEquals(BaseType.STRING);
 
         sampRate = new Parameter(this, "sampRate", new IntToken(22050));
-        sampRate.setTypeEquals(IntToken.class);
+        sampRate.setTypeEquals(BaseType.INT);
 
         playAudio = new Parameter(this, "playAudio", new BooleanToken(true));
-        playAudio.setTypeEquals(BooleanToken.class);
+        playAudio.setTypeEquals(BaseType.BOOLEAN);
 
         saveAudio = new Parameter(this, "saveAudio", new BooleanToken(true));
-        saveAudio.setTypeEquals(BooleanToken.class);
+        saveAudio.setTypeEquals(BaseType.BOOLEAN);
 
         sampleSizeInBits = new Parameter(this, "sampleSizeInBits", new IntToken(16));
-        sampleSizeInBits.setTypeEquals(IntToken.class);
+        sampleSizeInBits.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
