@@ -1106,8 +1106,17 @@ public class MoMLParser extends HandlerBase {
                     String className = (String)_attributes.get("class");
                     Class newClass = null;
                     if (className != null) {
-                        newClass =
-			    Class.forName(className, true, _classLoader);
+			try {
+			    newClass =
+				Class.forName(className, true, _classLoader);
+			} catch (NoClassDefFoundError ex) {
+			    throw new XmlException("Failed to find class '"
+				   + className + "': " 
+				   + KernelException.stackTraceToString(ex),
+                                   _currentExternalEntity(),
+                                   _parser.getLineNumber(),
+                                   _parser.getColumnNumber());
+			}
                     }
 
                     // If there is a previous property with this name
