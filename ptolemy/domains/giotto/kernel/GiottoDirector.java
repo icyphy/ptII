@@ -268,11 +268,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
         // Grab the next schedule to execute.
         Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex++);
-        if (_unitIndex >= _schedule.size()) {
-            _unitIndex = 0;
-            // Iteration is complete when the unit index wraps around.
-            _iterationCount++;
-        }
+
 
         // Find the actors that will be invoked in this minor cycle (unit)
         // and update the receivers that are their destinations.
@@ -289,40 +285,43 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // of committing any data values that the actor may have produced
         // in its initialize() method.
         Iterator scheduleIterator = unitSchedule.iterator();
-        while (scheduleIterator.hasNext()) {
-            Actor actor = ((Firing) scheduleIterator.next()).getActor();
-            if (_debugging) {
-                _debug("Updating destination receivers of "
-                        + ((NamedObj)actor).getFullName());
-            }
-            List outputPortList = actor.outputPortList();
-            Iterator outputPorts = outputPortList.iterator();
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
-                Receiver[][] channelArray = port.getRemoteReceivers();
-                for (int i = 0; i < channelArray.length; i++) {
-                    Receiver[] receiverArray = channelArray[i];
-                    for (int j = 0; j < receiverArray.length; j++) {
-                        GiottoReceiver receiver =
-                            (GiottoReceiver) receiverArray[j];
-                        receiver.update();
-                    }
-                }
-            }
+	if (_iterationCount != 0 || _transferOutputsOnly) {
+	    while (scheduleIterator.hasNext()) {
+		Actor actor = ((Firing) scheduleIterator.next()).getActor();
+		if (_debugging) {
+		    _debug("Updating destination receivers of "
+			    + ((NamedObj)actor).getFullName());
+		}
+		List outputPortList = actor.outputPortList();
+		Iterator outputPorts = outputPortList.iterator();
+		while (outputPorts.hasNext()) {
+		    IOPort port = (IOPort) outputPorts.next();
+		    Receiver[][] channelArray = port.getRemoteReceivers();
+		    for (int i = 0; i < channelArray.length; i++) {
+			Receiver[] receiverArray = channelArray[i];
+			for (int j = 0; j < receiverArray.length; j++) {
+			    GiottoReceiver receiver =
+				(GiottoReceiver) receiverArray[j];
+			    receiver.update();
+			}
+		    }
+		}
+	    }
 	}
 
-        scheduleIterator = unitSchedule.iterator();
-        while (scheduleIterator.hasNext()) {
-            Actor actor = ((Firing) scheduleIterator.next()).getActor();
-            int actorFrequency = GiottoScheduler.getFrequency(actor);
-            if (_debugging) {
-                _debug("Iterating " + ((NamedObj)actor).getFullName());
-            }
-            if (actor.iterate(1) == STOP_ITERATING) {
-                // FIXME: put the actor on a no-fire hashtable.
-            }
-	}
-
+	if (!_transferOutputsOnly) {
+	    scheduleIterator = unitSchedule.iterator();
+	    while (scheduleIterator.hasNext()) {
+		Actor actor = ((Firing) scheduleIterator.next()).getActor();
+		int actorFrequency = GiottoScheduler.getFrequency(actor);
+		if (_debugging) {
+		    _debug("Iterating " + ((NamedObj)actor).getFullName());
+		}
+		if (actor.iterate(1) == STOP_ITERATING) {
+		    // FIXME: put the actor on a no-fire hashtable.
+		}
+	    }
+        }
 	// We only do synchronization to real time here
 	// and leave time update to upper level directors or the postfile process.
 
@@ -349,6 +348,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		}
 	    }
 	}
+
+	if (_unitIndex >= _schedule.size()) {
+            _unitIndex = 0;
+            // Iteration is complete when the unit index wraps around.
+            _iterationCount++;
+        }
+
     }
 
     /** Initialize the actors associated with this director.
@@ -430,8 +436,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	}
 
 	if ((numberOfIterations > 0)
-                && (_iterationCount >= numberOfIterations)) {
+                && (_iterationCount > numberOfIterations)) {
 	    _iterationCount = 0;
+	    _transferOutputsOnly = false;
 	    if (_isEmbedded()) {
 	        return true;
 	    } else {
@@ -439,6 +446,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    }
 	} else {
 
+	    if ((numberOfIterations > 0)
+		    && (_iterationCount == numberOfIterations)) {
+		_transferOutputsOnly = true;
+	    }
 	    if (_isEmbedded()) {
 
 		_requestFiring();
@@ -638,4 +649,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
     // Counter for minimum time steps.
     private int _unitIndex = 0;
+
+    // Boolean value to indicate the last operation of transfer of outputs
+    private boolean _transferOutputsOnly = false;
 }
