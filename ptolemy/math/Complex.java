@@ -112,32 +112,32 @@ Complex implements Cloneable, Serializable {
     public    static final String          REMARK              =  "Class available from http://www.netlib.org/";
 
     /**
-    * Switches on debugging information.
-    * <p>
-    **/
+     * Switches on debugging information.
+     * <p>
+     **/
     // protected static       boolean         debug               =  false;
 
     /**
-    * Whilst debugging:  the nesting level when tracing method calls.
-    * <p>
-    **/
+     * Whilst debugging:  the nesting level when tracing method calls.
+     * <p>
+     **/
     // private   static       int             trace_nesting       =  0;
 
     /**
-    * Twice <a
-    * href="http://cad.ucla.edu/repository/useful/PI.txt"><tt><b>PI</b></tt></a>
-    * radians is the same thing as 360 degrees.
-    * <p>
-    **/
+     * Twice <a
+     * href="http://cad.ucla.edu/repository/useful/PI.txt"><tt><b>PI</b></tt></a>
+     * radians is the same thing as 360 degrees.
+     * <p>
+     **/
     protected static final double          TWO_PI              =  2.0 * Math.PI;
 
     /**
-    * A constant representing <i><b>i</b></i>, the famous square root of
-    * <i>-1</i>.
-    * <p>
-    * The other square root of <i>-1</i> is - <i><b>i</b></i>.
-    * <p>
-    **/
+     * A constant representing <i><b>i</b></i>, the famous square root of
+     * <i>-1</i>.
+     * <p>
+     * The other square root of <i>-1</i> is - <i><b>i</b></i>.
+     * <p>
+     **/
     public    static final Complex         i                   =  new Complex(0.0, 1.0);
 
     // private   static final Complex         one                 =  new Complex(1.0, 0.0);
@@ -159,10 +159,10 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Constructs a <tt>Complex</tt> representing the number zero.
-    *
-    * <p>
-    **/
+     * Constructs a <tt>Complex</tt> representing the number zero.
+     *
+     * <p>
+     **/
 
     public Complex () {
         this(0.0, 0.0);
@@ -171,13 +171,13 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Constructs a <tt>Complex</tt> representing a real number.
-    *
-    * <p>
-    * @param  re               The real number
-    * <p>
-    * @see                     Complex#real(double)
-    **/
+     * Constructs a <tt>Complex</tt> representing a real number.
+     *
+     * <p>
+     * @param  re               The real number
+     * <p>
+     * @see                     Complex#real(double)
+     **/
 
     public Complex (double re) {
         this(re, 0.0);
@@ -186,13 +186,13 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Constructs a separate new <tt>Complex</tt> from an existing
-    * <tt>Complex</tt>.
-    *
-    * <p>
-    * @param  z                A <tt>Complex</tt> number
-    * <p>
-    **/
+     * Constructs a separate new <tt>Complex</tt> from an existing
+     * <tt>Complex</tt>.
+     *
+     * <p>
+     * @param  z                A <tt>Complex</tt> number
+     * <p>
+     **/
 
     public Complex (Complex z) {
         this(z.re, z.im);
@@ -201,22 +201,22 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Constructs a <tt>Complex</tt> from real and imaginary parts.
-    *
-    * <p>
-    * <i><b>Note:</b><ul> <font color="000080">All methods in class
-    * <tt>Complex</tt> which deliver a <tt>Complex</tt> are written such that
-    * no intermediate <tt>Complex</tt> objects get generated.  This means that
-    * you can easily anticipate the likely effects on garbage collection caused
-    * by your own coding.</font>
-    * </ul></i>
-    * <p>
-    * @param  re               Real part
-    * @param  im               Imaginary part
-    * <p>
-    * @see                     Complex#cart(double, double)
-    * @see                     Complex#polar(double, double)
-    **/
+     * Constructs a <tt>Complex</tt> from real and imaginary parts.
+     *
+     * <p>
+     * <i><b>Note:</b><ul> <font color="000080">All methods in class
+     * <tt>Complex</tt> which deliver a <tt>Complex</tt> are written such that
+     * no intermediate <tt>Complex</tt> objects get generated.  This means that
+     * you can easily anticipate the likely effects on garbage collection caused
+     * by your own coding.</font>
+     * </ul></i>
+     * <p>
+     * @param  re               Real part
+     * @param  im               Imaginary part
+     * <p>
+     * @see                     Complex#cart(double, double)
+     * @see                     Complex#polar(double, double)
+     **/
 
     public Complex (double re, double im) {
         this.re =  re;
@@ -235,103 +235,103 @@ Complex implements Cloneable, Serializable {
 
     /*
 
-    // BETA Debugging methods...
+      // BETA Debugging methods...
 
-    private static void
-    entering (String what) {
-        System.out.print(indent(trace_nesting) + what);
-        trace_nesting++;
-    }//end entering(String)
+      private static void
+      entering (String what) {
+      System.out.print(indent(trace_nesting) + what);
+      trace_nesting++;
+      }//end entering(String)
 
-    private static void
-    enter (String what, double param1, double param2) {
-        entering(what);
-        System.out.println("(" + param1 + ", " + param2 + ") ");
-    }//end enter(String,double,double)
+      private static void
+      enter (String what, double param1, double param2) {
+      entering(what);
+      System.out.println("(" + param1 + ", " + param2 + ") ");
+      }//end enter(String,double,double)
 
-    private static void
-    enter (String what, double param) {
-        entering(what);
-        System.out.println("(" + param + ") ");
-    }//end enter(String,double)
+      private static void
+      enter (String what, double param) {
+      entering(what);
+      System.out.println("(" + param + ") ");
+      }//end enter(String,double)
 
-    private static void
-    enter (String what, Complex z) {
-        entering(what);
-        System.out.println("(" + z + ") ");
-    }//end enter(String,ORG.netlib.math.complex.Complex)
+      private static void
+      enter (String what, Complex z) {
+      entering(what);
+      System.out.println("(" + z + ") ");
+      }//end enter(String,ORG.netlib.math.complex.Complex)
 
-    private static void
-    enter (String what, Complex z1, Complex z2) {
-        entering(what);
-        System.out.println("(" + z1 + ", " + z2 + ") ");
-    }//end enter(String,Complex,ORG.netlib.math.complex.Complex)
+      private static void
+      enter (String what, Complex z1, Complex z2) {
+      entering(what);
+      System.out.println("(" + z1 + ", " + z2 + ") ");
+      }//end enter(String,Complex,ORG.netlib.math.complex.Complex)
 
-    private static void
-    enter (String what, Complex z, double x) {
-        entering(what);
-        System.out.println("(" + z + ", " + x + ") ");
-    }//end enter(String,Complex,double)
+      private static void
+      enter (String what, Complex z, double x) {
+      entering(what);
+      System.out.println("(" + z + ", " + x + ") ");
+      }//end enter(String,Complex,double)
 
-    private static void
-    enter (String what, Complex z, double x, double y) {
-        entering(what);
-        System.out.println("(" + z + ", " + cart(x, y) + ") ");
-    }//end enter(String,Complex,double)
+      private static void
+      enter (String what, Complex z, double x, double y) {
+      entering(what);
+      System.out.println("(" + z + ", " + cart(x, y) + ") ");
+      }//end enter(String,Complex,double)
 
-    private static void
-    enter (String what, Complex z1, Complex z2, double x) {
-        entering(what);
-        System.out.println("(" + z1 + ", " + z2 + ", " + x + ") ");
-    }//end enter(String,Complex,Complex,double)
+      private static void
+      enter (String what, Complex z1, Complex z2, double x) {
+      entering(what);
+      System.out.println("(" + z1 + ", " + z2 + ", " + x + ") ");
+      }//end enter(String,Complex,Complex,double)
 
-    private static void
-    leaving (String what) {
-        trace_nesting--;
-        System.out.print(indent(trace_nesting) + "is ");
-    }//end leaving(String)
+      private static void
+      leaving (String what) {
+      trace_nesting--;
+      System.out.print(indent(trace_nesting) + "is ");
+      }//end leaving(String)
 
-    private static void
-    leave (String what, boolean result) {
-        leaving(what);
-        System.out.println(result);
-    }//end leave(String,boolean)
+      private static void
+      leave (String what, boolean result) {
+      leaving(what);
+      System.out.println(result);
+      }//end leave(String,boolean)
 
-    private static void
-    leave (String what, double result) {
-        leaving(what);
-        System.out.println(result);
-    }//end leave(String,double)
+      private static void
+      leave (String what, double result) {
+      leaving(what);
+      System.out.println(result);
+      }//end leave(String,double)
 
-    private static void
-    leave (String what, Complex result) {
-        leaving(what);
-        System.out.println(result);
-    }//end leave(String,ORG.netlib.math.complex.Complex)
+      private static void
+      leave (String what, Complex result) {
+      leaving(what);
+      System.out.println(result);
+      }//end leave(String,ORG.netlib.math.complex.Complex)
 
-    private static String
-    indent (int nesting) {
-        StringBuffer indention =  new StringBuffer("");
+      private static String
+      indent (int nesting) {
+      StringBuffer indention =  new StringBuffer("");
 
-        for (int i =  0; i < nesting; i++) {
-            indention.append("    ");
-        }//endfor
+      for (int i =  0; i < nesting; i++) {
+      indention.append("    ");
+      }//endfor
 
-        return  indention.toString();
-    }//end indent(int)
+      return  indention.toString();
+      }//end indent(int)
 
     */
 
 
 
     /**
-    * Useful for checking up on the exact version.
-    *
-    * <p>
-    **/
+     * Useful for checking up on the exact version.
+     *
+     * <p>
+     **/
 
     public static void
-    main (String[] args) {
+        main (String[] args) {
         System.out.println();
         System.out.println("Module : " + Complex.class.getName());
         System.out.println("Version: " + Complex.VERSION);
@@ -352,62 +352,62 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns a <tt>Complex</tt> representing a real number.
-    *
-    * <p>
-    * @param  real             The real number
-    * <p>
-    * @return                  <tt>Complex</tt> representation of the real
-    * <p>
-    * @see                     Complex#re()
-    * @see                     Complex#cart(double, double)
-    **/
+     * Returns a <tt>Complex</tt> representing a real number.
+     *
+     * <p>
+     * @param  real             The real number
+     * <p>
+     * @return                  <tt>Complex</tt> representation of the real
+     * <p>
+     * @see                     Complex#re()
+     * @see                     Complex#cart(double, double)
+     **/
 
     public static Complex
-    real (double real) {
+        real (double real) {
         return  new Complex(real, 0.0);
     }//end real(double)
 
 
 
     /**
-    * Returns a <tt>Complex</tt> from real and imaginary parts.
-    *
-    * <p>
-    * @param  re               Real part
-    * @param  im               Imaginary part
-    * <p>
-    * @return                  <tt>Complex</tt> from Cartesian coordinates
-    * <p>
-    * @see                     Complex#re()
-    * @see                     Complex#im()
-    * @see                     Complex#polar(double, double)
-    * @see                     Complex#toString()
-    **/
+     * Returns a <tt>Complex</tt> from real and imaginary parts.
+     *
+     * <p>
+     * @param  re               Real part
+     * @param  im               Imaginary part
+     * <p>
+     * @return                  <tt>Complex</tt> from Cartesian coordinates
+     * <p>
+     * @see                     Complex#re()
+     * @see                     Complex#im()
+     * @see                     Complex#polar(double, double)
+     * @see                     Complex#toString()
+     **/
 
     public static Complex
-    cart (double re, double im) {
+        cart (double re, double im) {
         return  new Complex(re, im);
     }//end cart(double,double)
 
 
 
     /**
-    * Returns a <tt>Complex</tt> from a size and direction.
-    *
-    * <p>
-    * @param  r                Size
-    * @param  theta            Direction (in <i>radians</i>)
-    * <p>
-    * @return                  <tt>Complex</tt> from Polar coordinates
-    * <p>
-    * @see                     Complex#abs()
-    * @see                     Complex#arg()
-    * @see                     Complex#cart(double, double)
-    **/
+     * Returns a <tt>Complex</tt> from a size and direction.
+     *
+     * <p>
+     * @param  r                Size
+     * @param  theta            Direction (in <i>radians</i>)
+     * <p>
+     * @return                  <tt>Complex</tt> from Polar coordinates
+     * <p>
+     * @see                     Complex#abs()
+     * @see                     Complex#arg()
+     * @see                     Complex#cart(double, double)
+     **/
 
     public static Complex
-    polar (double r, double theta) {
+        polar (double r, double theta) {
         if (r < 0.0) {
             theta +=  Math.PI;
             r      =  -r;
@@ -421,19 +421,19 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns the <tt>Complex</tt> base raised to the power of the exponent.
-    *
-    * <p>
-    * @param  base             The base "to raise"
-    * @param  exponent         The exponent "by which to raise"
-    * <p>
-    * @return                  base "raised to the power of" exponent
-    * <p>
-    * @see                     Complex#pow(double, ORG.netlib.math.complex.Complex)
-    **/
+     * Returns the <tt>Complex</tt> base raised to the power of the exponent.
+     *
+     * <p>
+     * @param  base             The base "to raise"
+     * @param  exponent         The exponent "by which to raise"
+     * <p>
+     * @return                  base "raised to the power of" exponent
+     * <p>
+     * @see                     Complex#pow(double, ORG.netlib.math.complex.Complex)
+     **/
 
     public static Complex
-    pow (Complex base, double exponent) {
+        pow (Complex base, double exponent) {
         // return  base.log().scale(exponent).exp();
 
         double re =  exponent * Math.log(base.abs());
@@ -447,20 +447,20 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns the base raised to the power of the <tt>Complex</tt> exponent.
-    *
-    * <p>
-    * @param  base             The base "to raise"
-    * @param  exponent         The exponent "by which to raise"
-    * <p>
-    * @return                  base "raised to the power of" exponent
-    * <p>
-    * @see                     Complex#pow(ORG.netlib.math.complex.Complex, ORG.netlib.math.complex.Complex)
-    * @see                     Complex#exp()
-    **/
+     * Returns the base raised to the power of the <tt>Complex</tt> exponent.
+     *
+     * <p>
+     * @param  base             The base "to raise"
+     * @param  exponent         The exponent "by which to raise"
+     * <p>
+     * @return                  base "raised to the power of" exponent
+     * <p>
+     * @see                     Complex#pow(ORG.netlib.math.complex.Complex, ORG.netlib.math.complex.Complex)
+     * @see                     Complex#exp()
+     **/
 
     public static Complex
-    pow (double base, Complex exponent) {
+        pow (double base, Complex exponent) {
         // return  real(base).log().mul(exponent).exp();
 
         double re =  Math.log(Math.abs(base));
@@ -477,20 +477,20 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns the <tt>Complex</tt> base raised to the power of the <tt>Complex</tt> exponent.
-    *
-    * <p>
-    * @param  base             The base "to raise"
-    * @param  exponent         The exponent "by which to raise"
-    * <p>
-    * @return                  base "raised to the power of" exponent
-    * <p>
-    * @see                     Complex#pow(ORG.netlib.math.complex.Complex, double)
-    * @see                     Complex#pow(ORG.netlib.math.complex.Complex)
-    **/
+     * Returns the <tt>Complex</tt> base raised to the power of the <tt>Complex</tt> exponent.
+     *
+     * <p>
+     * @param  base             The base "to raise"
+     * @param  exponent         The exponent "by which to raise"
+     * <p>
+     * @return                  base "raised to the power of" exponent
+     * <p>
+     * @see                     Complex#pow(ORG.netlib.math.complex.Complex, double)
+     * @see                     Complex#pow(ORG.netlib.math.complex.Complex)
+     **/
 
     public static Complex
-    pow (Complex base, Complex exponent) {
+        pow (Complex base, Complex exponent) {
         // return  base.log().mul(exponent).exp();
 
         double re =  Math.log(base.abs());
@@ -513,67 +513,67 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns <tt>true</tt> if either the real or imaginary component of this
-    * <tt>Complex</tt> is an infinite value.
-    *
-    * <p>
-    * @return                  <tt>true</tt> if either component of the <tt>Complex</tt> object is infinite; <tt>false</tt>, otherwise.
-    * <p>
-    **/
+     * Returns <tt>true</tt> if either the real or imaginary component of this
+     * <tt>Complex</tt> is an infinite value.
+     *
+     * <p>
+     * @return                  <tt>true</tt> if either component of the <tt>Complex</tt> object is infinite; <tt>false</tt>, otherwise.
+     * <p>
+     **/
 
     public boolean
-    isInfinite () {
+        isInfinite () {
         return  ( Double.isInfinite(re) || Double.isInfinite(im) );
     }//end isInfinite()
 
 
 
     /**
-    * Returns <tt>true</tt> if either the real or imaginary component of this
-    * <tt>Complex</tt> is a Not-a-Number (<tt>NaN</tt>) value.
-    *
-    * <p>
-    * @return                  <tt>true</tt> if either component of the <tt>Complex</tt> object is <tt>NaN</tt>; <tt>false</tt>, otherwise.
-    * <p>
-    **/
+     * Returns <tt>true</tt> if either the real or imaginary component of this
+     * <tt>Complex</tt> is a Not-a-Number (<tt>NaN</tt>) value.
+     *
+     * <p>
+     * @return                  <tt>true</tt> if either component of the <tt>Complex</tt> object is <tt>NaN</tt>; <tt>false</tt>, otherwise.
+     * <p>
+     **/
 
     public boolean
-    isNaN () {
+        isNaN () {
         return  ( Double.isNaN(re) || Double.isNaN(im) );
     }//end isNaN()
 
 
 
     /**
-    * Decides if two <tt>Complex</tt> numbers are "sufficiently" alike to be
-    * considered equal.
-    *
-    * <p>
-    * <tt>tolerance</tt> is the maximum magnitude of the difference between
-    * them before they are considered <i>not</i> equal.
-    * <p>
-    * Checking for equality between two real numbers on computer hardware is a
-    * tricky business.  Try
-    * <p>
-    * <pre>    System.out.println((1.0/3.0 * 3.0));</pre>
-    * <p>
-    * and you'll see the nature of the problem!  It's just as tricky with
-    * <tt>Complex</tt> numbers.
-    * <p>
-    * Realize that because of these complications, it's possible to find that
-    * the magnitude of one <tt>Complex</tt> number <tt>a</tt> is less than
-    * another, <tt>b</tt>, and yet <tt>a.equals(b, myTolerance)</tt> returns
-    * <tt>true</tt>.  Be aware!
-    * <p>
-    * @param  z                The <tt>Complex</tt> to compare with
-    * @param  tolerance        The tolerance for equality
-    * <p>
-    * @return                  <tt>true</tt>, or <tt>false</tt>
-    * <p>
-    **/
+     * Decides if two <tt>Complex</tt> numbers are "sufficiently" alike to be
+     * considered equal.
+     *
+     * <p>
+     * <tt>tolerance</tt> is the maximum magnitude of the difference between
+     * them before they are considered <i>not</i> equal.
+     * <p>
+     * Checking for equality between two real numbers on computer hardware is a
+     * tricky business.  Try
+     * <p>
+     * <pre>    System.out.println((1.0/3.0 * 3.0));</pre>
+     * <p>
+     * and you'll see the nature of the problem!  It's just as tricky with
+     * <tt>Complex</tt> numbers.
+     * <p>
+     * Realize that because of these complications, it's possible to find that
+     * the magnitude of one <tt>Complex</tt> number <tt>a</tt> is less than
+     * another, <tt>b</tt>, and yet <tt>a.equals(b, myTolerance)</tt> returns
+     * <tt>true</tt>.  Be aware!
+     * <p>
+     * @param  z                The <tt>Complex</tt> to compare with
+     * @param  tolerance        The tolerance for equality
+     * <p>
+     * @return                  <tt>true</tt>, or <tt>false</tt>
+     * <p>
+     **/
 
     public boolean
-    equals (Complex z, double tolerance) {
+        equals (Complex z, double tolerance) {
         // still true when _equal_ to tolerance? ...
         return  abs(re - z.re, im -z.im) <= Math.abs(tolerance);
         // ...and tolerance is always non-negative
@@ -582,101 +582,101 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Extracts the real part of a <tt>Complex</tt> as a <tt>double</tt>.
-    *
-    * <p>
-    * <pre>
-    *     re(x + <i><b>i</b></i>*y)  =  x
-    * </pre>
-    * <p>
-    * @return                  The real part
-    * <p>
-    * @see                     Complex#im()
-    * @see                     Complex#cart(double, double)
-    * @see                     Complex#real(double)
-    **/
+     * Extracts the real part of a <tt>Complex</tt> as a <tt>double</tt>.
+     *
+     * <p>
+     * <pre>
+     *     re(x + <i><b>i</b></i>*y)  =  x
+     * </pre>
+     * <p>
+     * @return                  The real part
+     * <p>
+     * @see                     Complex#im()
+     * @see                     Complex#cart(double, double)
+     * @see                     Complex#real(double)
+     **/
 
     public double
-    re () {
+        re () {
         return  re;
     }//end re()
 
 
 
     /**
-    * Extracts the imaginary part of a <tt>Complex</tt> as a <tt>double</tt>.
-    *
-    * <p>
-    * <pre>
-    *     im(x + <i><b>i</b></i>*y)  =  y
-    * </pre>
-    * <p>
-    * @return                  The imaginary part
-    * <p>
-    * @see                     Complex#re()
-    * @see                     Complex#cart(double, double)
-    **/
+     * Extracts the imaginary part of a <tt>Complex</tt> as a <tt>double</tt>.
+     *
+     * <p>
+     * <pre>
+     *     im(x + <i><b>i</b></i>*y)  =  y
+     * </pre>
+     * <p>
+     * @return                  The imaginary part
+     * <p>
+     * @see                     Complex#re()
+     * @see                     Complex#cart(double, double)
+     **/
 
     public double
-    im () {
+        im () {
         return  im;
     }//end im()
 
 
 
     /**
-    * Returns the square of the "length" of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     norm(x + <i><b>i</b></i>*y)  =  x*x + y*y
-    * </pre>
-    * <p>
-    * Always non-negative.
-    * <p>
-    * @return                  The norm
-    * <p>
-    * @see                     Complex#abs()
-    **/
+     * Returns the square of the "length" of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     norm(x + <i><b>i</b></i>*y)  =  x*x + y*y
+     * </pre>
+     * <p>
+     * Always non-negative.
+     * <p>
+     * @return                  The norm
+     * <p>
+     * @see                     Complex#abs()
+     **/
 
     public double
-    norm () {
+        norm () {
         return  (re*re) + (im*im);
     }//end norm()
 
 
 
     /**
-    * Returns the magnitude of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     abs(z)  =  sqrt(norm(z))
-    * </pre>
-    * <p>
-    * In other words, it's Pythagorean distance from the origin
-    * (<i>0 + 0<b>i</b></i>, or zero).
-    * <p>
-    * The magnitude is also referred to as the "modulus" or "length".
-    * <p>
-    * Always non-negative.
-    * <p>
-    * @return                  The magnitude (or "length")
-    * <p>
-    * @see                     Complex#arg()
-    * @see                     Complex#polar(double, double)
-    * @see                     Complex#norm()
-    **/
+     * Returns the magnitude of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     abs(z)  =  sqrt(norm(z))
+     * </pre>
+     * <p>
+     * In other words, it's Pythagorean distance from the origin
+     * (<i>0 + 0<b>i</b></i>, or zero).
+     * <p>
+     * The magnitude is also referred to as the "modulus" or "length".
+     * <p>
+     * Always non-negative.
+     * <p>
+     * @return                  The magnitude (or "length")
+     * <p>
+     * @see                     Complex#arg()
+     * @see                     Complex#polar(double, double)
+     * @see                     Complex#norm()
+     **/
 
     public double
-    abs () {
+        abs () {
         return  abs(re, im);
     }//end abs()
 
 
 
     static private double
-    abs (double x, double y) {
+        abs (double x, double y) {
         //  abs(z)  =  sqrt(norm(z))
 
         // Adapted from "Numerical Recipes in Fortran 77: The Art of Scientific Computing" (ISBN 0-521-43064-X)
@@ -698,111 +698,111 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns the <i>principal</i> angle of a <tt>Complex</tt> number, in
-    * radians, measured counter-clockwise from the real axis.  (Think of the
-    * reals as the x-axis, and the imaginaries as the y-axis.)
-    *
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>A</b> is the principal solution of <i>arg(z)</i>, the others are of
-    * the form:
-    * <p>
-    * <pre>
-    *     <b>A</b> + 2*k*<b>PI</b>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * <tt>arg()</tt> always returns a <tt>double</tt> between
-    * -<tt><b>PI</b></tt> and +<tt><b>PI</b></tt>.
-    * <p>
-    * <i><b>Note:</b><ul> 2*<tt><b>PI</b></tt> radians is the same as 360 degrees.
-    * </ul></i>
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> There are no restrictions: the
-    * class defines arg(0) to be 0
-    * </ul></i>
-    * <p>
-    * @return                  Principal angle (in radians)
-    * <p>
-    * @see                     Complex#abs()
-    * @see                     Complex#polar(double, double)
-    **/
+     * Returns the <i>principal</i> angle of a <tt>Complex</tt> number, in
+     * radians, measured counter-clockwise from the real axis.  (Think of the
+     * reals as the x-axis, and the imaginaries as the y-axis.)
+     *
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>A</b> is the principal solution of <i>arg(z)</i>, the others are of
+     * the form:
+     * <p>
+     * <pre>
+     *     <b>A</b> + 2*k*<b>PI</b>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * <tt>arg()</tt> always returns a <tt>double</tt> between
+     * -<tt><b>PI</b></tt> and +<tt><b>PI</b></tt>.
+     * <p>
+     * <i><b>Note:</b><ul> 2*<tt><b>PI</b></tt> radians is the same as 360 degrees.
+     * </ul></i>
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> There are no restrictions: the
+     * class defines arg(0) to be 0
+     * </ul></i>
+     * <p>
+     * @return                  Principal angle (in radians)
+     * <p>
+     * @see                     Complex#abs()
+     * @see                     Complex#polar(double, double)
+     **/
 
     public double
-    arg () {
+        arg () {
         return  Math.atan2(im, re);
     }//end arg()
 
 
 
     /**
-    * Returns the "negative" of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     neg(a + <i><b>i</b></i>*b)  =  -a - <i><b>i</b></i>*b
-    * </pre>
-    * <p>
-    * The magnitude of the negative is the same, but the angle is flipped
-    * through <tt><b>PI</b></tt> (or 180 degrees).
-    * <p>
-    * @return                  Negative of the <tt>Complex</tt>
-    * <p>
-    * @see                     Complex#scale(double)
-    **/
+     * Returns the "negative" of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     neg(a + <i><b>i</b></i>*b)  =  -a - <i><b>i</b></i>*b
+     * </pre>
+     * <p>
+     * The magnitude of the negative is the same, but the angle is flipped
+     * through <tt><b>PI</b></tt> (or 180 degrees).
+     * <p>
+     * @return                  Negative of the <tt>Complex</tt>
+     * <p>
+     * @see                     Complex#scale(double)
+     **/
 
     public Complex
-    neg () {
+        neg () {
         return  this.scale(-1.0);
     }//end neg()
 
 
 
     /**
-    * Returns the <tt>Complex</tt> "conjugate".
-    *
-    * <p>
-    * <pre>
-    *     conj(x + <i><b>i</b></i>*y)  =  x - <i><b>i</b></i>*y
-    * </pre>
-    * <p>
-    * The conjugate appears "flipped" across the real axis.
-    * <p>
-    * @return                  The <tt>Complex</tt> conjugate
-    *<p>
-    **/
+     * Returns the <tt>Complex</tt> "conjugate".
+     *
+     * <p>
+     * <pre>
+     *     conj(x + <i><b>i</b></i>*y)  =  x - <i><b>i</b></i>*y
+     * </pre>
+     * <p>
+     * The conjugate appears "flipped" across the real axis.
+     * <p>
+     * @return                  The <tt>Complex</tt> conjugate
+     *<p>
+     **/
 
     public Complex
-    conj () {
+        conj () {
         return  cart(re, -im);
     }//end conj()
 
 
 
     /**
-    * Returns the <tt>Complex</tt> multiplicative inverse.
-    *
-    * <p>
-    * <pre>
-    *     inv(z)  =  1 / z
-    * </pre>
-    * <p>
-    * @return                  The <tt>Complex</tt> reciprocal
-    *<p>
-    **/
+     * Returns the <tt>Complex</tt> multiplicative inverse.
+     *
+     * <p>
+     * <pre>
+     *     inv(z)  =  1 / z
+     * </pre>
+     * <p>
+     * @return                  The <tt>Complex</tt> reciprocal
+     *<p>
+     **/
 
-/* DEPRECATED !!!
-    public Complex
-    inv () {
-        double scalar =  1.0 / ((re*re)+(im*im));
-        return  cart(re*scalar, - im*scalar);
-    }//end inv()
-/* */
+    /* DEPRECATED !!!
+       public Complex
+       inv () {
+       double scalar =  1.0 / ((re*re)+(im*im));
+       return  cart(re*scalar, - im*scalar);
+       }//end inv()
+       /* */
 
 
     static private void
-    inv (Complex z) {
+        inv (Complex z) {
         double zRe, zIm;
         double scalar;
 
@@ -825,80 +825,80 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns the <tt>Complex</tt> scaled by a real number.
-    *
-    * <p>
-    * <pre>
-    *     scale((x + <i><b>i</b></i>*y), s)  =  (x*s + <i><b>i</b></i>*y*s)
-    * </pre>
-    * <p>
-    * Scaling by the real number <i>2.0</i>, doubles the magnitude, but leaves
-    * the <tt>arg()</tt> unchanged.  Scaling by <i>-1.0</i> keeps the magnitude
-    * the same, but flips the <tt>arg()</tt> by <tt><b>PI</b></tt> (180 degrees).
-    * <p>
-    * @param  scalar           A real number scale factor
-    * <p>
-    * @return                  <tt>Complex</tt> scaled by a real number
-    * <p>
-    * @see                     Complex#mul(ORG.netlib.math.complex.Complex)
-    * @see                     Complex#div(ORG.netlib.math.complex.Complex)
-    * @see                     Complex#neg()
-    **/
+     * Returns the <tt>Complex</tt> scaled by a real number.
+     *
+     * <p>
+     * <pre>
+     *     scale((x + <i><b>i</b></i>*y), s)  =  (x*s + <i><b>i</b></i>*y*s)
+     * </pre>
+     * <p>
+     * Scaling by the real number <i>2.0</i>, doubles the magnitude, but leaves
+     * the <tt>arg()</tt> unchanged.  Scaling by <i>-1.0</i> keeps the magnitude
+     * the same, but flips the <tt>arg()</tt> by <tt><b>PI</b></tt> (180 degrees).
+     * <p>
+     * @param  scalar           A real number scale factor
+     * <p>
+     * @return                  <tt>Complex</tt> scaled by a real number
+     * <p>
+     * @see                     Complex#mul(ORG.netlib.math.complex.Complex)
+     * @see                     Complex#div(ORG.netlib.math.complex.Complex)
+     * @see                     Complex#neg()
+     **/
 
     public Complex
-    scale (double scalar) {
+        scale (double scalar) {
         return  cart(scalar*re, scalar*im);
     }//end scale(double)
 
 
 
     /**
-    * To perform z1 + z2, you write <tt>z1.add(z2)</tt> .
-    *
-    * <p>
-    * <pre>
-    *     (a + <i><b>i</b></i>*b) + (c + <i><b>i</b></i>*d)  =  ((a+c) + <i><b>i</b></i>*(b+d))
-    * </pre>
-    * <p>
-    **/
+     * To perform z1 + z2, you write <tt>z1.add(z2)</tt> .
+     *
+     * <p>
+     * <pre>
+     *     (a + <i><b>i</b></i>*b) + (c + <i><b>i</b></i>*d)  =  ((a+c) + <i><b>i</b></i>*(b+d))
+     * </pre>
+     * <p>
+     **/
 
     public Complex
-    add (Complex z) {
+        add (Complex z) {
         return  cart(re + z.re, im + z.im);
     }//end add(Complex)
 
 
 
     /**
-    * To perform z1 - z2, you write <tt>z1.sub(z2)</tt> .
-    *
-    * <p>
-    * <pre>
-    *     (a + <i><b>i</b></i>*b) - (c + <i><b>i</b></i>*d)  =  ((a-c) + <i><b>i</b></i>*(b-d))
-    * </pre>
-    * <p>
-    **/
+     * To perform z1 - z2, you write <tt>z1.sub(z2)</tt> .
+     *
+     * <p>
+     * <pre>
+     *     (a + <i><b>i</b></i>*b) - (c + <i><b>i</b></i>*d)  =  ((a-c) + <i><b>i</b></i>*(b-d))
+     * </pre>
+     * <p>
+     **/
 
     public Complex
-    sub (Complex z) {
+        sub (Complex z) {
         return  cart(re - z.re, im - z.im);
     }//end sub(Complex)
 
 
 
     /**
-    * To perform z1 * z2, you write <tt>z1.mul(z2)</tt> .
-    *
-    * <p>
-    * <pre>
-    *     (a + <i><b>i</b></i>*b) * (c + <i><b>i</b></i>*d)  =  ( (a*c) - (b*d) + <i><b>i</b></i>*((a*d) + (b*c)) )
-    * </pre>
-    * <p>
-    * @see                     Complex#scale(double)
-    **/
+     * To perform z1 * z2, you write <tt>z1.mul(z2)</tt> .
+     *
+     * <p>
+     * <pre>
+     *     (a + <i><b>i</b></i>*b) * (c + <i><b>i</b></i>*d)  =  ( (a*c) - (b*d) + <i><b>i</b></i>*((a*d) + (b*c)) )
+     * </pre>
+     * <p>
+     * @see                     Complex#scale(double)
+     **/
 
     public Complex
-    mul (Complex z) {
+        mul (Complex z) {
         return  cart( (re*z.re) - (im*z.im), (re*z.im) + (im*z.re) );
         // return  cart( (re*z.re) - (im*z.im), (re + im)*(z.re + z.im) - re*z.re - im*z.im);
     }//end mul(Complex)
@@ -906,28 +906,28 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * To perform z1 / z2, you write <tt>z1.div(z2)</tt> .
-    *
-    * <p>
-    * <pre>
-    *     (a + <i><b>i</b></i>*b) / (c + <i><b>i</b></i>*d)  =  ( (a*c) + (b*d) + <i><b>i</b></i>*((b*c) - (a*d)) ) / norm(c + <i><b>i</b></i>*d)
-    * </pre>
-    * <p>
-    * <i><b>Take care not to divide by zero!</b></i>
-    * <p>
-    * <i><b>Note:</b><ul> <tt>Complex</tt> arithmetic in Java never causes
-    * exceptions.  You have to deliberately check for overflow, division by
-    * zero, and so on, <u>for yourself</u>.
-    * </ul></i>
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> z1/z2 is undefined if z2 = 0
-    * </ul></i>
-    * <p>
-    * @see                     Complex#scale(double)
-    **/
+     * To perform z1 / z2, you write <tt>z1.div(z2)</tt> .
+     *
+     * <p>
+     * <pre>
+     *     (a + <i><b>i</b></i>*b) / (c + <i><b>i</b></i>*d)  =  ( (a*c) + (b*d) + <i><b>i</b></i>*((b*c) - (a*d)) ) / norm(c + <i><b>i</b></i>*d)
+     * </pre>
+     * <p>
+     * <i><b>Take care not to divide by zero!</b></i>
+     * <p>
+     * <i><b>Note:</b><ul> <tt>Complex</tt> arithmetic in Java never causes
+     * exceptions.  You have to deliberately check for overflow, division by
+     * zero, and so on, <u>for yourself</u>.
+     * </ul></i>
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> z1/z2 is undefined if z2 = 0
+     * </ul></i>
+     * <p>
+     * @see                     Complex#scale(double)
+     **/
 
     public Complex
-    div (Complex z) {
+        div (Complex z) {
         Complex result =  new Complex(this);
         div(result, z.re, z.im);
         return  result;
@@ -936,8 +936,8 @@ Complex implements Cloneable, Serializable {
 
 
     static private void
-    div (Complex z, double x, double y) {
-         // Adapted from "Numerical Recipes in Fortran 77: The Art of Scientific Computing" (ISBN 0-521-43064-X)
+        div (Complex z, double x, double y) {
+        // Adapted from "Numerical Recipes in Fortran 77: The Art of Scientific Computing" (ISBN 0-521-43064-X)
 
         double zRe, zIm;
         double scalar;
@@ -962,29 +962,29 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns a <tt>Complex</tt> representing one of the two square roots.
-    *
-    * <p>
-    * <pre>
-    *     sqrt(z)  =  sqrt(abs(z)) * ( cos(arg(z)/2) + <i><b>i</b></i> * sin(arg(z)/2) )
-    * </pre>
-    * <p>
-    * For any <i>complex</i> number <i>z</i>, <i>sqrt(z)</i> will return the
-    * <i>complex</i> root whose <i>arg</i> is <i>arg(z)/2</i>.
-    * <p>
-    * <i><b>Note:</b><ul> There are always two square roots for each
-    * <tt>Complex</tt> number, except for 0 + 0<b>i</b>, or zero.  The other
-    * root is the <tt>neg()</tt> of the first one.  Just as the two roots of
-    * 4 are 2 and -2, the two roots of -1 are <b>i</b> and - <b>i</b>.
-    * </ul></i>
-    * <p>
-    * @return                  The square root whose <i>arg</i> is <i>arg(z)/2</i>.
-    * <p>
-    * @see                     Complex#pow(ORG.netlib.math.complex.Complex, double)
-    **/
+     * Returns a <tt>Complex</tt> representing one of the two square roots.
+     *
+     * <p>
+     * <pre>
+     *     sqrt(z)  =  sqrt(abs(z)) * ( cos(arg(z)/2) + <i><b>i</b></i> * sin(arg(z)/2) )
+     * </pre>
+     * <p>
+     * For any <i>complex</i> number <i>z</i>, <i>sqrt(z)</i> will return the
+     * <i>complex</i> root whose <i>arg</i> is <i>arg(z)/2</i>.
+     * <p>
+     * <i><b>Note:</b><ul> There are always two square roots for each
+     * <tt>Complex</tt> number, except for 0 + 0<b>i</b>, or zero.  The other
+     * root is the <tt>neg()</tt> of the first one.  Just as the two roots of
+     * 4 are 2 and -2, the two roots of -1 are <b>i</b> and - <b>i</b>.
+     * </ul></i>
+     * <p>
+     * @return                  The square root whose <i>arg</i> is <i>arg(z)/2</i>.
+     * <p>
+     * @see                     Complex#pow(ORG.netlib.math.complex.Complex, double)
+     **/
 
     public Complex
-    sqrt () {
+        sqrt () {
         Complex result =  new Complex(this);
         sqrt(result);
         return  result;
@@ -992,7 +992,7 @@ Complex implements Cloneable, Serializable {
 
 
     static private void
-    sqrt (Complex z) {
+        sqrt (Complex z) {
         // Jim Shapiro <jnshapi@argo.ecte.uswc.uswest.com>
         // adapted from "Numerical Recipies in C" (ISBN 0-521-43108-5) by William H. Press et al
 
@@ -1025,50 +1025,50 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns this <tt>Complex</tt> raised to the power of a <tt>Complex</tt> exponent.
-    *
-    * <p>
-    * @param  exponent         The exponent "by which to raise"
-    * <p>
-    * @return                  this <tt>Complex</tt> "raised to the power of" the exponent
-    * <p>
-    * @see                     Complex#pow(ORG.netlib.math.complex.Complex, ORG.netlib.math.complex.Complex)
-    **/
+     * Returns this <tt>Complex</tt> raised to the power of a <tt>Complex</tt> exponent.
+     *
+     * <p>
+     * @param  exponent         The exponent "by which to raise"
+     * <p>
+     * @return                  this <tt>Complex</tt> "raised to the power of" the exponent
+     * <p>
+     * @see                     Complex#pow(ORG.netlib.math.complex.Complex, ORG.netlib.math.complex.Complex)
+     **/
 
     public Complex
-    pow (Complex exponent) {
+        pow (Complex exponent) {
         return  Complex.pow(this, exponent);
     }//end pow(Complex)
 
 
 
     /**
-    * Returns the number <i><b>e</b></i> "raised to" a <tt>Complex</tt> power.
-    *
-    * <p>
-    * <pre>
-    *     exp(x + <i><b>i</b></i>*y)  =  exp(x) * ( cos(y) + <i><b>i</b></i> * sin(y) )
-    * </pre>
-    * <p>
-    * <i><b>Note:</b><ul> The value of <i><b>e</b></i>, a transcendental number, is
-    * roughly 2.71828182846...
-    * <p>
-    *
-    * Also, the following is quietly amazing:
-    * <pre>
-    *     <i><b>e</b></i><sup><font size=+0><b>PI</b>*<i><b>i</b></i></font></sup>    =    - 1
-    * </pre>
-    * </ul>
-    * </i>
-    * <p>
-    * @return                  <i><b>e</b></i> "raised to the power of" this <tt>Complex</tt>
-    * <p>
-    * @see                     Complex#log()
-    * @see                     Complex#pow(double, ORG.netlib.math.complex.Complex)
-    **/
+     * Returns the number <i><b>e</b></i> "raised to" a <tt>Complex</tt> power.
+     *
+     * <p>
+     * <pre>
+     *     exp(x + <i><b>i</b></i>*y)  =  exp(x) * ( cos(y) + <i><b>i</b></i> * sin(y) )
+     * </pre>
+     * <p>
+     * <i><b>Note:</b><ul> The value of <i><b>e</b></i>, a transcendental number, is
+     * roughly 2.71828182846...
+     * <p>
+     *
+     * Also, the following is quietly amazing:
+     * <pre>
+     *     <i><b>e</b></i><sup><font size=+0><b>PI</b>*<i><b>i</b></i></font></sup>    =    - 1
+     * </pre>
+     * </ul>
+     * </i>
+     * <p>
+     * @return                  <i><b>e</b></i> "raised to the power of" this <tt>Complex</tt>
+     * <p>
+     * @see                     Complex#log()
+     * @see                     Complex#pow(double, ORG.netlib.math.complex.Complex)
+     **/
 
     public Complex
-    exp () {
+        exp () {
         double scalar =  Math.exp(re);                                         // e^ix = cis x
         return  cart( scalar * Math.cos(im), scalar * Math.sin(im) );
     }//end exp()
@@ -1076,127 +1076,127 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns the <i>principal</i> natural logarithm of a <tt>Complex</tt>
-    * number.
-    *
-    * <p>
-    * <pre>
-    *     log(z)  =  log(abs(z)) + <i><b>i</b></i> * arg(z)
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>L</b> is the principal solution of <i>log(z)</i>, the others are of
-    * the form:
-    * <p>
-    * <pre>
-    *     <b>L</b> + (2*k*<b>PI</b>)*<i><b>i</b></i>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * @return                  Principal <tt>Complex</tt> natural logarithm
-    * <p>
-    * @see                     Complex#exp()
-    **/
+     * Returns the <i>principal</i> natural logarithm of a <tt>Complex</tt>
+     * number.
+     *
+     * <p>
+     * <pre>
+     *     log(z)  =  log(abs(z)) + <i><b>i</b></i> * arg(z)
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>L</b> is the principal solution of <i>log(z)</i>, the others are of
+     * the form:
+     * <p>
+     * <pre>
+     *     <b>L</b> + (2*k*<b>PI</b>)*<i><b>i</b></i>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * @return                  Principal <tt>Complex</tt> natural logarithm
+     * <p>
+     * @see                     Complex#exp()
+     **/
 
     public Complex
-    log () {
+        log () {
         return  cart( Math.log(this.abs()), this.arg() );                      // principal value
     }//end log()
 
 
 
     /**
-    * Returns the <i>principal</i> logarithm (<i>base 10</i>) of a
-    * <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     log10(z)  =  log(z) / log(10)
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>L</b> is the principal solution of <i>log10(z)</i>, the others are
-    * of the form:
-    * <p>
-    * <pre>
-    *     <b>L</b> + (2*k*<b>PI</b>)*<i><b>i</b></i>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * @return                  Principal <tt>Complex</tt> logarithm (base 10)
-    * <p>
-    * @see                     Complex#exp()
-    * @see                     Complex#log()
-    **/
-/* DEPRECATED !!!
-    public Complex
-    log10 () {
-        Complex result;
-        // if (debug) enter("log10", this);
+     * Returns the <i>principal</i> logarithm (<i>base 10</i>) of a
+     * <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     log10(z)  =  log(z) / log(10)
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>L</b> is the principal solution of <i>log10(z)</i>, the others are
+     * of the form:
+     * <p>
+     * <pre>
+     *     <b>L</b> + (2*k*<b>PI</b>)*<i><b>i</b></i>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * @return                  Principal <tt>Complex</tt> logarithm (base 10)
+     * <p>
+     * @see                     Complex#exp()
+     * @see                     Complex#log()
+     **/
+    /* DEPRECATED !!!
+       public Complex
+       log10 () {
+       Complex result;
+       // if (debug) enter("log10", this);
 
-            double scalar =  1.0/Math.log(10.0);
+       double scalar =  1.0/Math.log(10.0);
 
-            // result =  this.log().scale(scalar);
+       // result =  this.log().scale(scalar);
 
-            result =  cart( scalar * Math.log(this.abs()), scalar * this.arg() );
+       result =  cart( scalar * Math.log(this.abs()), scalar * this.arg() );
 
-        // if (debug) leave("log10", result);
-        return  result;
-    }//end log10()
-/* */
+       // if (debug) leave("log10", result);
+       return  result;
+       }//end log10()
+       /* */
 
 
     /**
-    * Returns the sine of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     sin(z)  =  ( exp(<i><b>i</b></i>*z) - exp(-<i><b>i</b></i>*z) ) / (2*<i><b>i</b></i>)
-    * </pre>
-    * <p>
-    * @return                  The <tt>Complex</tt> sine
-    * <p>
-    * @see                     Complex#asin()
-    * @see                     Complex#sinh()
-    * @see                     Complex#cosec()
-    * @see                     Complex#cos()
-    * @see                     Complex#tan()
-    **/
+     * Returns the sine of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     sin(z)  =  ( exp(<i><b>i</b></i>*z) - exp(-<i><b>i</b></i>*z) ) / (2*<i><b>i</b></i>)
+     * </pre>
+     * <p>
+     * @return                  The <tt>Complex</tt> sine
+     * <p>
+     * @see                     Complex#asin()
+     * @see                     Complex#sinh()
+     * @see                     Complex#cosec()
+     * @see                     Complex#cos()
+     * @see                     Complex#tan()
+     **/
 
     public Complex
-    sin () {
+        sin () {
         Complex result;
-            //  sin(z)  =  ( exp(i*z) - exp(-i*z) ) / (2*i)
+        //  sin(z)  =  ( exp(i*z) - exp(-i*z) ) / (2*i)
 
-            double scalar;
-            double iz_re, iz_im;
-            double _re1, _im1;
-            double _re2, _im2;
+        double scalar;
+        double iz_re, iz_im;
+        double _re1, _im1;
+        double _re2, _im2;
 
-            // iz:      i.mul(z) ...
-            iz_re =  -im;
-            iz_im =   re;
+        // iz:      i.mul(z) ...
+        iz_re =  -im;
+        iz_im =   re;
 
-            // _1:      iz.exp() ...
-            scalar =  Math.exp(iz_re);
-            _re1 =  scalar * Math.cos(iz_im);
-            _im1 =  scalar * Math.sin(iz_im);
+        // _1:      iz.exp() ...
+        scalar =  Math.exp(iz_re);
+        _re1 =  scalar * Math.cos(iz_im);
+        _im1 =  scalar * Math.sin(iz_im);
 
-            // _2:      iz.neg().exp() ...
-            scalar =  Math.exp(-iz_re);
-            _re2 =  scalar * Math.cos(-iz_im);
-            _im2 =  scalar * Math.sin(-iz_im);
+        // _2:      iz.neg().exp() ...
+        scalar =  Math.exp(-iz_re);
+        _re2 =  scalar * Math.cos(-iz_im);
+        _im2 =  scalar * Math.sin(-iz_im);
 
-            // _1:      _1.sub(_2) ...
-            _re1 = _re1 - _re2;                                                // !!!
-            _im1 = _im1 - _im2;                                                // !!!
+        // _1:      _1.sub(_2) ...
+        _re1 = _re1 - _re2;                                                // !!!
+        _im1 = _im1 - _im2;                                                // !!!
 
-            // result:  _1.div(2*i) ...
-            result =  cart( 0.5*_im1, -0.5*_re1 );
-            // result =  cart(_re1, _im1);
-            // div(result, 0.0, 2.0);
+        // result:  _1.div(2*i) ...
+        result =  cart( 0.5*_im1, -0.5*_re1 );
+        // result =  cart(_re1, _im1);
+        // div(result, 0.0, 2.0);
 
 
         return  result;
@@ -1205,847 +1205,847 @@ Complex implements Cloneable, Serializable {
 
 
     /**
-    * Returns the cosine of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     cos(z)  =  ( exp(<i><b>i</b></i>*z) + exp(-<i><b>i</b></i>*z) ) / 2
-    * </pre>
-    * <p>
-    * @return                  The <tt>Complex</tt> cosine
-    * <p>
-    * @see                     Complex#acos()
-    * @see                     Complex#cosh()
-    * @see                     Complex#sec()
-    * @see                     Complex#sin()
-    * @see                     Complex#tan()
-    **/
+     * Returns the cosine of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     cos(z)  =  ( exp(<i><b>i</b></i>*z) + exp(-<i><b>i</b></i>*z) ) / 2
+     * </pre>
+     * <p>
+     * @return                  The <tt>Complex</tt> cosine
+     * <p>
+     * @see                     Complex#acos()
+     * @see                     Complex#cosh()
+     * @see                     Complex#sec()
+     * @see                     Complex#sin()
+     * @see                     Complex#tan()
+     **/
 
     public Complex
-    cos () {
+        cos () {
         Complex result;
-            //  cos(z)  =  ( exp(i*z) + exp(-i*z) ) / 2
+        //  cos(z)  =  ( exp(i*z) + exp(-i*z) ) / 2
 
-            double scalar;
-            double iz_re, iz_im;
-            double _re1, _im1;
-            double _re2, _im2;
+        double scalar;
+        double iz_re, iz_im;
+        double _re1, _im1;
+        double _re2, _im2;
 
-            // iz:      i.mul(z) ...
-            iz_re =  -im;
-            iz_im =   re;
+        // iz:      i.mul(z) ...
+        iz_re =  -im;
+        iz_im =   re;
 
-            // _1:      iz.exp() ...
-            scalar =  Math.exp(iz_re);
-            _re1 =  scalar * Math.cos(iz_im);
-            _im1 =  scalar * Math.sin(iz_im);
+        // _1:      iz.exp() ...
+        scalar =  Math.exp(iz_re);
+        _re1 =  scalar * Math.cos(iz_im);
+        _im1 =  scalar * Math.sin(iz_im);
 
-            // _2:      iz.neg().exp() ...
-            scalar =  Math.exp(-iz_re);
-            _re2 =  scalar * Math.cos(-iz_im);
-            _im2 =  scalar * Math.sin(-iz_im);
+        // _2:      iz.neg().exp() ...
+        scalar =  Math.exp(-iz_re);
+        _re2 =  scalar * Math.cos(-iz_im);
+        _im2 =  scalar * Math.sin(-iz_im);
 
-            // _1:      _1.add(_2) ...
-            _re1 = _re1 + _re2;                                                // !!!
-            _im1 = _im1 + _im2;                                                // !!!
+        // _1:      _1.add(_2) ...
+        _re1 = _re1 + _re2;                                                // !!!
+        _im1 = _im1 + _im2;                                                // !!!
 
-            // result:  _1.scale(0.5) ...
-            result =  cart( 0.5 * _re1, 0.5 * _im1 );
+        // result:  _1.scale(0.5) ...
+        result =  cart( 0.5 * _re1, 0.5 * _im1 );
         return  result;
     }//end cos()
 
 
 
     /**
-    * Returns the tangent of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     tan(z)  =  sin(z) / cos(z)
-    * </pre>
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> tan(z) is undefined whenever z = (k + 1/2) * <tt><b>PI</b></tt><br>
-    * where k is any integer
-    * </ul></i>
-    * <p>
-    * @return                  The <tt>Complex</tt> tangent
-    * <p>
-    * @see                     Complex#atan()
-    * @see                     Complex#tanh()
-    * @see                     Complex#cot()
-    * @see                     Complex#sin()
-    * @see                     Complex#cos()
-    **/
+     * Returns the tangent of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     tan(z)  =  sin(z) / cos(z)
+     * </pre>
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> tan(z) is undefined whenever z = (k + 1/2) * <tt><b>PI</b></tt><br>
+     * where k is any integer
+     * </ul></i>
+     * <p>
+     * @return                  The <tt>Complex</tt> tangent
+     * <p>
+     * @see                     Complex#atan()
+     * @see                     Complex#tanh()
+     * @see                     Complex#cot()
+     * @see                     Complex#sin()
+     * @see                     Complex#cos()
+     **/
 
     public Complex
-    tan () {
+        tan () {
         Complex result;
-            //  tan(z)  =  sin(z) / cos(z)
+        //  tan(z)  =  sin(z) / cos(z)
 
-            double scalar;
-            double iz_re, iz_im;
-            double _re1, _im1;
-            double _re2, _im2;
-            double _re3, _im3;
+        double scalar;
+        double iz_re, iz_im;
+        double _re1, _im1;
+        double _re2, _im2;
+        double _re3, _im3;
 
-            double cs_re, cs_im;
+        double cs_re, cs_im;
 
-            // sin() ...
+        // sin() ...
 
-            // iz:      i.mul(z) ...
-            iz_re =  -im;
-            iz_im =   re;
+        // iz:      i.mul(z) ...
+        iz_re =  -im;
+        iz_im =   re;
 
-            // _1:      iz.exp() ...
-            scalar =  Math.exp(iz_re);
-            _re1 =  scalar * Math.cos(iz_im);
-            _im1 =  scalar * Math.sin(iz_im);
+        // _1:      iz.exp() ...
+        scalar =  Math.exp(iz_re);
+        _re1 =  scalar * Math.cos(iz_im);
+        _im1 =  scalar * Math.sin(iz_im);
 
-            // _2:      iz.neg().exp() ...
-            scalar =  Math.exp(-iz_re);
-            _re2 =  scalar * Math.cos(-iz_im);
-            _im2 =  scalar * Math.sin(-iz_im);
+        // _2:      iz.neg().exp() ...
+        scalar =  Math.exp(-iz_re);
+        _re2 =  scalar * Math.cos(-iz_im);
+        _im2 =  scalar * Math.sin(-iz_im);
 
-            // _3:      _1.sub(_2) ...
-            _re3 = _re1 - _re2;
-            _im3 = _im1 - _im2;
+        // _3:      _1.sub(_2) ...
+        _re3 = _re1 - _re2;
+        _im3 = _im1 - _im2;
 
-            // result:  _3.div(2*i) ...
-            result =  cart( 0.5*_im3, -0.5*_re3 );
-            // result =  cart(_re3, _im3);
-            // div(result, 0.0, 2.0);
+        // result:  _3.div(2*i) ...
+        result =  cart( 0.5*_im3, -0.5*_re3 );
+        // result =  cart(_re3, _im3);
+        // div(result, 0.0, 2.0);
 
-            // cos() ...
+        // cos() ...
 
-            // _3:      _1.add(_2) ...
-            _re3 = _re1 + _re2;
-            _im3 = _im1 + _im2;
+        // _3:      _1.add(_2) ...
+        _re3 = _re1 + _re2;
+        _im3 = _im1 + _im2;
 
-            // cs:      _3.scale(0.5) ...
-            cs_re =  0.5 * _re3;
-            cs_im =  0.5 * _im3;
+        // cs:      _3.scale(0.5) ...
+        cs_re =  0.5 * _re3;
+        cs_im =  0.5 * _im3;
 
-            // result:  result.div(cs) ...
-            div(result, cs_re, cs_im);
+        // result:  result.div(cs) ...
+        div(result, cs_re, cs_im);
         return  result;
     }//end tan()
 
 
 
     /**
-    * Returns the cosecant of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     cosec(z)  =  1 / sin(z)
-    * </pre>
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> cosec(z) is undefined whenever z = k * <tt><b>PI</b></tt><br>
-    * where k is any integer
-    * </ul></i>
-    * <p>
-    * @return                  The <tt>Complex</tt> cosecant
-    * <p>
-    * @see                     Complex#sin()
-    * @see                     Complex#sec()
-    * @see                     Complex#cot()
-    **/
+     * Returns the cosecant of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     cosec(z)  =  1 / sin(z)
+     * </pre>
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> cosec(z) is undefined whenever z = k * <tt><b>PI</b></tt><br>
+     * where k is any integer
+     * </ul></i>
+     * <p>
+     * @return                  The <tt>Complex</tt> cosecant
+     * <p>
+     * @see                     Complex#sin()
+     * @see                     Complex#sec()
+     * @see                     Complex#cot()
+     **/
 
     public Complex
-    cosec () {
+        cosec () {
         Complex result;
-            //  cosec(z)  =  1 / sin(z)
+        //  cosec(z)  =  1 / sin(z)
 
-            double scalar;
-            double iz_re, iz_im;
-            double _re1, _im1;
-            double _re2, _im2;
+        double scalar;
+        double iz_re, iz_im;
+        double _re1, _im1;
+        double _re2, _im2;
 
-            // iz:      i.mul(z) ...
-            iz_re =  -im;
-            iz_im =   re;
+        // iz:      i.mul(z) ...
+        iz_re =  -im;
+        iz_im =   re;
 
-            // _1:      iz.exp() ...
-            scalar =  Math.exp(iz_re);
-            _re1 =  scalar * Math.cos(iz_im);
-            _im1 =  scalar * Math.sin(iz_im);
+        // _1:      iz.exp() ...
+        scalar =  Math.exp(iz_re);
+        _re1 =  scalar * Math.cos(iz_im);
+        _im1 =  scalar * Math.sin(iz_im);
 
-            // _2:      iz.neg().exp() ...
-            scalar =  Math.exp(-iz_re);
-            _re2 =  scalar * Math.cos(-iz_im);
-            _im2 =  scalar * Math.sin(-iz_im);
+        // _2:      iz.neg().exp() ...
+        scalar =  Math.exp(-iz_re);
+        _re2 =  scalar * Math.cos(-iz_im);
+        _im2 =  scalar * Math.sin(-iz_im);
 
-            // _1:      _1.sub(_2) ...
-            _re1 = _re1 - _re2;                                                // !!!
-            _im1 = _im1 - _im2;                                                // !!!
+        // _1:      _1.sub(_2) ...
+        _re1 = _re1 - _re2;                                                // !!!
+        _im1 = _im1 - _im2;                                                // !!!
 
-            // _result: _1.div(2*i) ...
-            result =  cart( 0.5*_im1, -0.5*_re1 );
-            // result =  cart(_re1, _im1);
-            // div(result, 0.0, 2.0);
+        // _result: _1.div(2*i) ...
+        result =  cart( 0.5*_im1, -0.5*_re1 );
+        // result =  cart(_re1, _im1);
+        // div(result, 0.0, 2.0);
 
-            // result:  one.div(_result) ...
-            inv(result);
+        // result:  one.div(_result) ...
+        inv(result);
         return  result;
     }//end cosec()
 
 
 
     /**
-    * Returns the secant of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     sec(z)  =  1 / cos(z)
-    * </pre>
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> sec(z) is undefined whenever z = (k + 1/2) * <tt><b>PI</b></tt><br>
-    * where k is any integer
-    * </ul></i>
-    * <p>
-    * @return                  The <tt>Complex</tt> secant
-    * <p>
-    * @see                     Complex#cos()
-    * @see                     Complex#cosec()
-    * @see                     Complex#cot()
-    **/
+     * Returns the secant of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     sec(z)  =  1 / cos(z)
+     * </pre>
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> sec(z) is undefined whenever z = (k + 1/2) * <tt><b>PI</b></tt><br>
+     * where k is any integer
+     * </ul></i>
+     * <p>
+     * @return                  The <tt>Complex</tt> secant
+     * <p>
+     * @see                     Complex#cos()
+     * @see                     Complex#cosec()
+     * @see                     Complex#cot()
+     **/
 
     public Complex
-    sec () {
+        sec () {
         Complex result;
-            //  sec(z)  =  1 / cos(z)
+        //  sec(z)  =  1 / cos(z)
 
-            double scalar;
-            double iz_re, iz_im;
-            double _re1, _im1;
-            double _re2, _im2;
+        double scalar;
+        double iz_re, iz_im;
+        double _re1, _im1;
+        double _re2, _im2;
 
-            // iz:      i.mul(z) ...
-            iz_re =  -im;
-            iz_im =   re;
+        // iz:      i.mul(z) ...
+        iz_re =  -im;
+        iz_im =   re;
 
-            // _1:      iz.exp() ...
-            scalar =  Math.exp(iz_re);
-            _re1 =  scalar * Math.cos(iz_im);
-            _im1 =  scalar * Math.sin(iz_im);
+        // _1:      iz.exp() ...
+        scalar =  Math.exp(iz_re);
+        _re1 =  scalar * Math.cos(iz_im);
+        _im1 =  scalar * Math.sin(iz_im);
 
-            // _2:      iz.neg().exp() ...
-            scalar =  Math.exp(-iz_re);
-            _re2 =  scalar * Math.cos(-iz_im);
-            _im2 =  scalar * Math.sin(-iz_im);
+        // _2:      iz.neg().exp() ...
+        scalar =  Math.exp(-iz_re);
+        _re2 =  scalar * Math.cos(-iz_im);
+        _im2 =  scalar * Math.sin(-iz_im);
 
-            // _1:      _1.add(_2) ...
-            _re1 = _re1 + _re2;
-            _im1 = _im1 + _im2;
+        // _1:      _1.add(_2) ...
+        _re1 = _re1 + _re2;
+        _im1 = _im1 + _im2;
 
-            // result: _1.scale(0.5) ...
-            result =  cart(0.5*_re1, 0.5*_im1);
+        // result: _1.scale(0.5) ...
+        result =  cart(0.5*_re1, 0.5*_im1);
 
-            // result:  one.div(result) ...
-            inv(result);
+        // result:  one.div(result) ...
+        inv(result);
         return  result;
     }//end sec()
 
 
 
     /**
-    * Returns the cotangent of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     cot(z)  =  1 / tan(z)
-    * </pre>
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> cot(z) is undefined whenever z = k * <tt><b>PI</b></tt><br>
-    * where k is any integer
-    * </ul></i>
-    * <p>
-    * @return                  The <tt>Complex</tt> cotangent
-    * <p>
-    * @see                     Complex#tan()
-    * @see                     Complex#cosec()
-    * @see                     Complex#sec()
-    **/
+     * Returns the cotangent of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     cot(z)  =  1 / tan(z)
+     * </pre>
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> cot(z) is undefined whenever z = k * <tt><b>PI</b></tt><br>
+     * where k is any integer
+     * </ul></i>
+     * <p>
+     * @return                  The <tt>Complex</tt> cotangent
+     * <p>
+     * @see                     Complex#tan()
+     * @see                     Complex#cosec()
+     * @see                     Complex#sec()
+     **/
 
     public Complex
-    cot () {
+        cot () {
         Complex result;
-            //  cot(z)  =  1 / tan(z)  =  cos(z) / sin(z)
+        //  cot(z)  =  1 / tan(z)  =  cos(z) / sin(z)
 
-            double scalar;
-            double iz_re, iz_im;
-            double _re1, _im1;
-            double _re2, _im2;
-            double _re3, _im3;
+        double scalar;
+        double iz_re, iz_im;
+        double _re1, _im1;
+        double _re2, _im2;
+        double _re3, _im3;
 
-            double sn_re, sn_im;
+        double sn_re, sn_im;
 
-            // cos() ...
+        // cos() ...
 
-            // iz:      i.mul(z) ...
-            iz_re =  -im;
-            iz_im =   re;
+        // iz:      i.mul(z) ...
+        iz_re =  -im;
+        iz_im =   re;
 
-            // _1:      iz.exp() ...
-            scalar =  Math.exp(iz_re);
-            _re1 =  scalar * Math.cos(iz_im);
-            _im1 =  scalar * Math.sin(iz_im);
+        // _1:      iz.exp() ...
+        scalar =  Math.exp(iz_re);
+        _re1 =  scalar * Math.cos(iz_im);
+        _im1 =  scalar * Math.sin(iz_im);
 
-            // _2:      iz.neg().exp() ...
-            scalar =  Math.exp(-iz_re);
-            _re2 =  scalar * Math.cos(-iz_im);
-            _im2 =  scalar * Math.sin(-iz_im);
+        // _2:      iz.neg().exp() ...
+        scalar =  Math.exp(-iz_re);
+        _re2 =  scalar * Math.cos(-iz_im);
+        _im2 =  scalar * Math.sin(-iz_im);
 
-            // _3:      _1.add(_2) ...
-            _re3 = _re1 + _re2;
-            _im3 = _im1 + _im2;
+        // _3:      _1.add(_2) ...
+        _re3 = _re1 + _re2;
+        _im3 = _im1 + _im2;
 
-            // result:  _3.scale(0.5) ...
-            result =  cart( 0.5*_re3, 0.5*_im3 );
+        // result:  _3.scale(0.5) ...
+        result =  cart( 0.5*_re3, 0.5*_im3 );
 
-            // sin() ...
+        // sin() ...
 
-            // _3:      _1.sub(_2) ...
-            _re3 = _re1 - _re2;
-            _im3 = _im1 - _im2;
+        // _3:      _1.sub(_2) ...
+        _re3 = _re1 - _re2;
+        _im3 = _im1 - _im2;
 
-            // sn:      _3.div(2*i) ...
-            sn_re =    0.5 * _im3;                                             // !!!
-            sn_im =  - 0.5 * _re3;                                             // !!!
+        // sn:      _3.div(2*i) ...
+        sn_re =    0.5 * _im3;                                             // !!!
+        sn_im =  - 0.5 * _re3;                                             // !!!
 
-            // result:  result.div(sn) ...
-            div(result, sn_re, sn_im);
+        // result:  result.div(sn) ...
+        div(result, sn_re, sn_im);
         return  result;
     }//end cot()
 
 
 
     /**
-    * Returns the hyperbolic sine of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     sinh(z)  =  ( exp(z) - exp(-z) ) / 2
-    * </pre>
-    * <p>
-    * @return                  The <tt>Complex</tt> hyperbolic sine
-    * <p>
-    * @see                     Complex#sin()
-    * @see                     Complex#asinh()
-    **/
+     * Returns the hyperbolic sine of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     sinh(z)  =  ( exp(z) - exp(-z) ) / 2
+     * </pre>
+     * <p>
+     * @return                  The <tt>Complex</tt> hyperbolic sine
+     * <p>
+     * @see                     Complex#sin()
+     * @see                     Complex#asinh()
+     **/
 
     public Complex
-    sinh () {
+        sinh () {
         Complex result;
-            //  sinh(z)  =  ( exp(z) - exp(-z) ) / 2
+        //  sinh(z)  =  ( exp(z) - exp(-z) ) / 2
 
-            double scalar;
-            double _re1, _im1;
-            double _re2, _im2;
+        double scalar;
+        double _re1, _im1;
+        double _re2, _im2;
 
-            // _1:      z.exp() ...
-            scalar =  Math.exp(re);
-            _re1 =  scalar * Math.cos(im);
-            _im1 =  scalar * Math.sin(im);
+        // _1:      z.exp() ...
+        scalar =  Math.exp(re);
+        _re1 =  scalar * Math.cos(im);
+        _im1 =  scalar * Math.sin(im);
 
-            // _2:      z.neg().exp() ...
-            scalar =  Math.exp(-re);
-            _re2 =  scalar * Math.cos(-im);
-            _im2 =  scalar * Math.sin(-im);
+        // _2:      z.neg().exp() ...
+        scalar =  Math.exp(-re);
+        _re2 =  scalar * Math.cos(-im);
+        _im2 =  scalar * Math.sin(-im);
 
-            // _1:      _1.sub(_2) ...
-            _re1 = _re1 - _re2;                                                // !!!
-            _im1 = _im1 - _im2;                                                // !!!
+        // _1:      _1.sub(_2) ...
+        _re1 = _re1 - _re2;                                                // !!!
+        _im1 = _im1 - _im2;                                                // !!!
 
-            // result:  _1.scale(0.5) ...
-            result =  cart( 0.5 * _re1, 0.5 * _im1 );
+        // result:  _1.scale(0.5) ...
+        result =  cart( 0.5 * _re1, 0.5 * _im1 );
         return  result;
     }//end sinh()
 
 
 
     /**
-    * Returns the hyperbolic cosine of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     cosh(z)  =  ( exp(z) + exp(-z) ) / 2
-    * </pre>
-    * <p>
-    * @return                  The <tt>Complex</tt> hyperbolic cosine
-    * <p>
-    * @see                     Complex#cos()
-    * @see                     Complex#acosh()
-    **/
+     * Returns the hyperbolic cosine of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     cosh(z)  =  ( exp(z) + exp(-z) ) / 2
+     * </pre>
+     * <p>
+     * @return                  The <tt>Complex</tt> hyperbolic cosine
+     * <p>
+     * @see                     Complex#cos()
+     * @see                     Complex#acosh()
+     **/
 
     public Complex
-    cosh () {
+        cosh () {
         Complex result;
-            //  cosh(z)  =  ( exp(z) + exp(-z) ) / 2
+        //  cosh(z)  =  ( exp(z) + exp(-z) ) / 2
 
-            double scalar;
-            double _re1, _im1;
-            double _re2, _im2;
+        double scalar;
+        double _re1, _im1;
+        double _re2, _im2;
 
-            // _1:      z.exp() ...
-            scalar =  Math.exp(re);
-            _re1 =  scalar * Math.cos(im);
-            _im1 =  scalar * Math.sin(im);
+        // _1:      z.exp() ...
+        scalar =  Math.exp(re);
+        _re1 =  scalar * Math.cos(im);
+        _im1 =  scalar * Math.sin(im);
 
-            // _2:      z.neg().exp() ...
-            scalar =  Math.exp(-re);
-            _re2 =  scalar * Math.cos(-im);
-            _im2 =  scalar * Math.sin(-im);
+        // _2:      z.neg().exp() ...
+        scalar =  Math.exp(-re);
+        _re2 =  scalar * Math.cos(-im);
+        _im2 =  scalar * Math.sin(-im);
 
-            // _1:  _1.add(_2) ...
-            _re1 = _re1 + _re2;                                                // !!!
-            _im1 = _im1 + _im2;                                                // !!!
+        // _1:  _1.add(_2) ...
+        _re1 = _re1 + _re2;                                                // !!!
+        _im1 = _im1 + _im2;                                                // !!!
 
-            // result:  _1.scale(0.5) ...
-            result =  cart( 0.5 * _re1, 0.5 * _im1 );
+        // result:  _1.scale(0.5) ...
+        result =  cart( 0.5 * _re1, 0.5 * _im1 );
         return  result;
     }//end cosh()
 
 
 
     /**
-    * Returns the hyperbolic tangent of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     tanh(z)  =  sinh(z) / cosh(z)
-    * </pre>
-    * <p>
-    * @return                  The <tt>Complex</tt> hyperbolic tangent
-    * <p>
-    * @see                     Complex#tan()
-    * @see                     Complex#atanh()
-    **/
+     * Returns the hyperbolic tangent of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     tanh(z)  =  sinh(z) / cosh(z)
+     * </pre>
+     * <p>
+     * @return                  The <tt>Complex</tt> hyperbolic tangent
+     * <p>
+     * @see                     Complex#tan()
+     * @see                     Complex#atanh()
+     **/
 
     public Complex
-    tanh () {
+        tanh () {
         Complex result;
-            //  tanh(z)  =  sinh(z) / cosh(z)
+        //  tanh(z)  =  sinh(z) / cosh(z)
 
-            double scalar;
-            double _re1, _im1;
-            double _re2, _im2;
-            double _re3, _im3;
+        double scalar;
+        double _re1, _im1;
+        double _re2, _im2;
+        double _re3, _im3;
 
-            double ch_re, ch_im;
+        double ch_re, ch_im;
 
-            // sinh() ...
+        // sinh() ...
 
-            // _1:      z.exp() ...
-            scalar =  Math.exp(re);
-            _re1 =  scalar * Math.cos(im);
-            _im1 =  scalar * Math.sin(im);
+        // _1:      z.exp() ...
+        scalar =  Math.exp(re);
+        _re1 =  scalar * Math.cos(im);
+        _im1 =  scalar * Math.sin(im);
 
-            // _2:      z.neg().exp() ...
-            scalar =  Math.exp(-re);
-            _re2 =  scalar * Math.cos(-im);
-            _im2 =  scalar * Math.sin(-im);
+        // _2:      z.neg().exp() ...
+        scalar =  Math.exp(-re);
+        _re2 =  scalar * Math.cos(-im);
+        _im2 =  scalar * Math.sin(-im);
 
-            // _3:      _1.sub(_2) ...
-            _re3 =  _re1 - _re2;
-            _im3 =  _im1 - _im2;
+        // _3:      _1.sub(_2) ...
+        _re3 =  _re1 - _re2;
+        _im3 =  _im1 - _im2;
 
-            // result:  _3.scale(0.5) ...
-            result =  cart(0.5*_re3, 0.5*_im3);
+        // result:  _3.scale(0.5) ...
+        result =  cart(0.5*_re3, 0.5*_im3);
 
-            // cosh() ...
+        // cosh() ...
 
-            // _3:      _1.add(_2) ...
-            _re3 =  _re1 + _re2;
-            _im3 =  _im1 + _im2;
+        // _3:      _1.add(_2) ...
+        _re3 =  _re1 + _re2;
+        _im3 =  _im1 + _im2;
 
-            // ch:      _3.scale(0.5) ...
-            ch_re =  0.5 * _re3;
-            ch_im =  0.5 * _im3;
+        // ch:      _3.scale(0.5) ...
+        ch_re =  0.5 * _re3;
+        ch_im =  0.5 * _im3;
 
-            // result:  result.div(ch) ...
-            div(result, ch_re, ch_im);
+        // result:  result.div(ch) ...
+        div(result, ch_re, ch_im);
         return  result;
     }//end tanh()
 
 
 
     /**
-    * Returns the <i>principal</i> arc sine of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     asin(z)  =  -<i><b>i</b></i> * log(<i><b>i</b></i>*z + sqrt(1 - z*z))
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>A</b> is the principal solution of <i>asin(z)</i>, the others are
-    * of the form:
-    * <p>
-    * <pre>
-    *     k*<b>PI</b> + (-1)<sup><font size=-1>k</font></sup>  * <b>A</b>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * @return                  Principal <tt>Complex</tt> arc sine
-    * <p>
-    * @see                     Complex#sin()
-    * @see                     Complex#sinh()
-    **/
+     * Returns the <i>principal</i> arc sine of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     asin(z)  =  -<i><b>i</b></i> * log(<i><b>i</b></i>*z + sqrt(1 - z*z))
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>A</b> is the principal solution of <i>asin(z)</i>, the others are
+     * of the form:
+     * <p>
+     * <pre>
+     *     k*<b>PI</b> + (-1)<sup><font size=-1>k</font></sup>  * <b>A</b>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * @return                  Principal <tt>Complex</tt> arc sine
+     * <p>
+     * @see                     Complex#sin()
+     * @see                     Complex#sinh()
+     **/
 
     public Complex
-    asin () {
+        asin () {
         Complex result;
-            //  asin(z)  =  -i * log(i*z + sqrt(1 - z*z))
+        //  asin(z)  =  -i * log(i*z + sqrt(1 - z*z))
 
-            double _re1, _im1;
+        double _re1, _im1;
 
-            // _1:      one.sub(z.mul(z)) ...
-            _re1 =  1.0 - ( (re*re) - (im*im) );
-            _im1 =  0.0 - ( (re*im) + (im*re) );
+        // _1:      one.sub(z.mul(z)) ...
+        _re1 =  1.0 - ( (re*re) - (im*im) );
+        _im1 =  0.0 - ( (re*im) + (im*re) );
 
-            // result:  _1.sqrt() ...
-            result =  cart(_re1, _im1);
-            sqrt(result);
+        // result:  _1.sqrt() ...
+        result =  cart(_re1, _im1);
+        sqrt(result);
 
-            // _1:      z.mul(i) ...
-            _re1 =  - im;
-            _im1 =  + re;
+        // _1:      z.mul(i) ...
+        _re1 =  - im;
+        _im1 =  + re;
 
-            // result:  _1.add(result) ...
-            result.re =  _re1 + result.re;
-            result.im =  _im1 + result.im;
+        // result:  _1.add(result) ...
+        result.re =  _re1 + result.re;
+        result.im =  _im1 + result.im;
 
-            // _1:      result.log() ...
-            _re1 =  Math.log(result.abs());
-            _im1 =  result.arg();
+        // _1:      result.log() ...
+        _re1 =  Math.log(result.abs());
+        _im1 =  result.arg();
 
-            // result:  i.neg().mul(_1) ...
-            result.re =    _im1;
-            result.im =  - _re1;
+        // result:  i.neg().mul(_1) ...
+        result.re =    _im1;
+        result.im =  - _re1;
         return  result;
     }//end asin()
 
 
 
     /**
-    * Returns the <i>principal</i> arc cosine of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     acos(z)  =  -<i><b>i</b></i> * log( z + <i><b>i</b></i> * sqrt(1 - z*z) )
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>A</b> is the principal solution of <i>acos(z)</i>, the others are
-    * of the form:
-    * <p>
-    * <pre>
-    *     2*k*<b>PI</b> +/- <b>A</b>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * @return                  Principal <tt>Complex</tt> arc cosine
-    * <p>
-    * @see                     Complex#cos()
-    * @see                     Complex#cosh()
-    **/
+     * Returns the <i>principal</i> arc cosine of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     acos(z)  =  -<i><b>i</b></i> * log( z + <i><b>i</b></i> * sqrt(1 - z*z) )
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>A</b> is the principal solution of <i>acos(z)</i>, the others are
+     * of the form:
+     * <p>
+     * <pre>
+     *     2*k*<b>PI</b> +/- <b>A</b>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * @return                  Principal <tt>Complex</tt> arc cosine
+     * <p>
+     * @see                     Complex#cos()
+     * @see                     Complex#cosh()
+     **/
 
     public Complex
-    acos () {
+        acos () {
         Complex result;
-            //  acos(z)  =  -i * log( z + i * sqrt(1 - z*z) )
+        //  acos(z)  =  -i * log( z + i * sqrt(1 - z*z) )
 
-            double _re1, _im1;
+        double _re1, _im1;
 
-            // _1:      one.sub(z.mul(z)) ...
-            _re1 =  1.0 - ( (re*re) - (im*im) );
-            _im1 =  0.0 - ( (re*im) + (im*re) );
+        // _1:      one.sub(z.mul(z)) ...
+        _re1 =  1.0 - ( (re*re) - (im*im) );
+        _im1 =  0.0 - ( (re*im) + (im*re) );
 
-            // result:  _1.sqrt() ...
-            result =  cart(_re1, _im1);
-            sqrt(result);
+        // result:  _1.sqrt() ...
+        result =  cart(_re1, _im1);
+        sqrt(result);
 
-            // _1:      i.mul(result) ...
-            _re1 =  - result.im;
-            _im1 =  + result.re;
+        // _1:      i.mul(result) ...
+        _re1 =  - result.im;
+        _im1 =  + result.re;
 
-            // result:  z.add(_1) ...
-            result.re =  re + _re1;
-            result.im =  im + _im1;
+        // result:  z.add(_1) ...
+        result.re =  re + _re1;
+        result.im =  im + _im1;
 
-            // _1:      result.log()
-            _re1 =  Math.log(result.abs());
-            _im1 =  result.arg();
+        // _1:      result.log()
+        _re1 =  Math.log(result.abs());
+        _im1 =  result.arg();
 
-            // result:  i.neg().mul(_1) ...
-            result.re =    _im1;
-            result.im =  - _re1;
+        // result:  i.neg().mul(_1) ...
+        result.re =    _im1;
+        result.im =  - _re1;
         return  result;
     }//end acos()
 
 
 
     /**
-    * Returns the <i>principal</i> arc tangent of a <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     atan(z)  =  -<i><b>i</b></i>/2 * log( (<i><b>i</b></i>-z)/(<i><b>i</b></i>+z) )
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>A</b> is the principal solution of <i>atan(z)</i>, the others are
-    * of the form:
-    * <p>
-    * <pre>
-    *     <b>A</b> + k*<b>PI</b>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> atan(z) is undefined for z = + <b>i</b> or z = - <b>i</b>
-    * </ul></i>
-    * <p>
-    * @return                  Principal <tt>Complex</tt> arc tangent
-    * <p>
-    * @see                     Complex#tan()
-    * @see                     Complex#tanh()
-    **/
+     * Returns the <i>principal</i> arc tangent of a <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     atan(z)  =  -<i><b>i</b></i>/2 * log( (<i><b>i</b></i>-z)/(<i><b>i</b></i>+z) )
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>A</b> is the principal solution of <i>atan(z)</i>, the others are
+     * of the form:
+     * <p>
+     * <pre>
+     *     <b>A</b> + k*<b>PI</b>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> atan(z) is undefined for z = + <b>i</b> or z = - <b>i</b>
+     * </ul></i>
+     * <p>
+     * @return                  Principal <tt>Complex</tt> arc tangent
+     * <p>
+     * @see                     Complex#tan()
+     * @see                     Complex#tanh()
+     **/
 
     public Complex
-    atan () {
+        atan () {
         Complex result;
-            //  atan(z)  =  -i/2 * log( (i-z)/(i+z) )
+        //  atan(z)  =  -i/2 * log( (i-z)/(i+z) )
 
-            double _re1, _im1;
+        double _re1, _im1;
 
-            // result:  i.sub(z) ...
-            result =  cart(- re, 1.0 - im);
+        // result:  i.sub(z) ...
+        result =  cart(- re, 1.0 - im);
 
-            // _1:      i.add(z) ...
-            _re1 =  + re;
-            _im1 =  1.0 + im;
+        // _1:      i.add(z) ...
+        _re1 =  + re;
+        _im1 =  1.0 + im;
 
-            // result:  result.div(_1) ...
-            div(result, _re1, _im1);
+        // result:  result.div(_1) ...
+        div(result, _re1, _im1);
 
-            // _1:      result.log() ...
-            _re1 =  Math.log(result.abs());
-            _im1 =  result.arg();
+        // _1:      result.log() ...
+        _re1 =  Math.log(result.abs());
+        _im1 =  result.arg();
 
-            // result:  half_i.neg().mul(_2) ...
-            result.re =   0.5*_im1;
-            result.im =  -0.5*_re1;
+        // result:  half_i.neg().mul(_2) ...
+        result.re =   0.5*_im1;
+        result.im =  -0.5*_re1;
         return  result;
     }//end atan()
 
 
 
     /**
-    * Returns the <i>principal</i> inverse hyperbolic sine of a
-    * <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     asinh(z)  =  log(z + sqrt(z*z + 1))
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>A</b> is the principal solution of <i>asinh(z)</i>, the others are
-    * of the form:
-    * <p>
-    * <pre>
-    *     k*<b>PI</b>*<b><i>i</i></b> + (-1)<sup><font size=-1>k</font></sup>  * <b>A</b>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * @return                  Principal <tt>Complex</tt> inverse hyperbolic sine
-    * <p>
-    * @see                     Complex#sinh()
-    **/
+     * Returns the <i>principal</i> inverse hyperbolic sine of a
+     * <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     asinh(z)  =  log(z + sqrt(z*z + 1))
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>A</b> is the principal solution of <i>asinh(z)</i>, the others are
+     * of the form:
+     * <p>
+     * <pre>
+     *     k*<b>PI</b>*<b><i>i</i></b> + (-1)<sup><font size=-1>k</font></sup>  * <b>A</b>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * @return                  Principal <tt>Complex</tt> inverse hyperbolic sine
+     * <p>
+     * @see                     Complex#sinh()
+     **/
 
     /*
-    * Many thanks to the mathematicians of aus.mathematics and sci.math, and
-    * to Zdislav V. Kovarik of the Department of Mathematics and Statistics,
-    * McMaster University and John McGowan <jmcgowan@inch.com> in particular,
-    * for their advice on the current naming conventions for "area/argumentus 
-    * sinus hyperbolicus".
-    */
+     * Many thanks to the mathematicians of aus.mathematics and sci.math, and
+     * to Zdislav V. Kovarik of the Department of Mathematics and Statistics,
+     * McMaster University and John McGowan <jmcgowan@inch.com> in particular,
+     * for their advice on the current naming conventions for "area/argumentus 
+     * sinus hyperbolicus".
+     */
 
     public Complex
-    asinh () {
+        asinh () {
         Complex result;
-            //  asinh(z)  =  log(z + sqrt(z*z + 1))
+        //  asinh(z)  =  log(z + sqrt(z*z + 1))
 
-            double _re1, _im1;
+        double _re1, _im1;
 
-            // _1:      z.mul(z).add(one) ...
-            _re1 =  ( (re*re) - (im*im) ) + 1.0;
-            _im1 =  ( (re*im) + (im*re) ) + 0.0;
+        // _1:      z.mul(z).add(one) ...
+        _re1 =  ( (re*re) - (im*im) ) + 1.0;
+        _im1 =  ( (re*im) + (im*re) ) + 0.0;
 
-            // result:  _1.sqrt() ...
-            result =  cart(_re1, _im1);
-            sqrt(result);
+        // result:  _1.sqrt() ...
+        result =  cart(_re1, _im1);
+        sqrt(result);
 
-            // result:  z.add(result) ...
-            result.re =  re + result.re;                                       // !
-            result.im =  im + result.im;                                       // !
+        // result:  z.add(result) ...
+        result.re =  re + result.re;                                       // !
+        result.im =  im + result.im;                                       // !
 
-            // _1:      result.log() ...
-            _re1 =  Math.log(result.abs());
-            _im1 =  result.arg();
+        // _1:      result.log() ...
+        _re1 =  Math.log(result.abs());
+        _im1 =  result.arg();
 
-            // result:  _1 ...
-            result.re =  _re1;
-            result.im =  _im1;
+        // result:  _1 ...
+        result.re =  _re1;
+        result.im =  _im1;
         return  result;
     }//end asinh()
 
 
 
     /**
-    * Returns the <i>principal</i> inverse hyperbolic cosine of a
-    * <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     acosh(z)  =  log(z + sqrt(z*z - 1))
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>A</b> is the principal solution of <i>acosh(z)</i>, the others are
-    * of the form:
-    * <p>
-    * <pre>
-    *     2*k*<b>PI</b>*<b><i>i</i></b> +/- <b>A</b>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * @return                  Principal <tt>Complex</tt> inverse hyperbolic cosine
-    * <p>
-    * @see                     Complex#cosh()
-    **/
+     * Returns the <i>principal</i> inverse hyperbolic cosine of a
+     * <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     acosh(z)  =  log(z + sqrt(z*z - 1))
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>A</b> is the principal solution of <i>acosh(z)</i>, the others are
+     * of the form:
+     * <p>
+     * <pre>
+     *     2*k*<b>PI</b>*<b><i>i</i></b> +/- <b>A</b>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * @return                  Principal <tt>Complex</tt> inverse hyperbolic cosine
+     * <p>
+     * @see                     Complex#cosh()
+     **/
 
     public Complex
-    acosh () {
+        acosh () {
         Complex result;
-            //  acosh(z)  =  log(z + sqrt(z*z - 1))
+        //  acosh(z)  =  log(z + sqrt(z*z - 1))
 
-            double _re1, _im1;
+        double _re1, _im1;
 
-            // _1:  z.mul(z).sub(one) ...
-            _re1 =  ( (re*re) - (im*im) ) - 1.0;
-            _im1 =  ( (re*im) + (im*re) ) - 0.0;
+        // _1:  z.mul(z).sub(one) ...
+        _re1 =  ( (re*re) - (im*im) ) - 1.0;
+        _im1 =  ( (re*im) + (im*re) ) - 0.0;
 
-            // result:  _1.sqrt() ...
-            result =  cart(_re1, _im1);
-            sqrt(result);
+        // result:  _1.sqrt() ...
+        result =  cart(_re1, _im1);
+        sqrt(result);
 
-            // result:  z.add(result) ...
-            result.re =  re + result.re;                                       // !
-            result.im =  im + result.im;                                       // !
+        // result:  z.add(result) ...
+        result.re =  re + result.re;                                       // !
+        result.im =  im + result.im;                                       // !
 
-            // _1:  result.log() ...
-            _re1 =  Math.log(result.abs());
-            _im1 =  result.arg();
+        // _1:  result.log() ...
+        _re1 =  Math.log(result.abs());
+        _im1 =  result.arg();
 
-            // result:  _1 ...
-            result.re =  _re1;
-            result.im =  _im1;
+        // result:  _1 ...
+        result.re =  _re1;
+        result.im =  _im1;
         return  result;
     }//end acosh()
 
 
 
     /**
-    * Returns the <i>principal</i> inverse hyperbolic tangent of a
-    * <tt>Complex</tt> number.
-    *
-    * <p>
-    * <pre>
-    *     atanh(z)  =  1/2 * log( (1+z)/(1-z) )
-    * </pre>
-    * <p>
-    * There are infinitely many solutions, besides the principal solution.
-    * If <b>A</b> is the principal solution of <i>atanh(z)</i>, the others are
-    * of the form:
-    * <p>
-    * <pre>
-    *     <b>A</b> + k*<b>PI</b>*<b><i>i</i></b>
-    * </pre>
-    * <p>
-    * where k is any integer.
-    * <p>
-    * <i><b>Domain Restrictions:</b><ul> atanh(z) is undefined for z = + 1 or z = - 1
-    * </ul></i>
-    * <p>
-    * @return                  Principal <tt>Complex</tt> inverse hyperbolic tangent
-    * <p>
-    * @see                     Complex#tanh()
-    **/
+     * Returns the <i>principal</i> inverse hyperbolic tangent of a
+     * <tt>Complex</tt> number.
+     *
+     * <p>
+     * <pre>
+     *     atanh(z)  =  1/2 * log( (1+z)/(1-z) )
+     * </pre>
+     * <p>
+     * There are infinitely many solutions, besides the principal solution.
+     * If <b>A</b> is the principal solution of <i>atanh(z)</i>, the others are
+     * of the form:
+     * <p>
+     * <pre>
+     *     <b>A</b> + k*<b>PI</b>*<b><i>i</i></b>
+     * </pre>
+     * <p>
+     * where k is any integer.
+     * <p>
+     * <i><b>Domain Restrictions:</b><ul> atanh(z) is undefined for z = + 1 or z = - 1
+     * </ul></i>
+     * <p>
+     * @return                  Principal <tt>Complex</tt> inverse hyperbolic tangent
+     * <p>
+     * @see                     Complex#tanh()
+     **/
 
     public Complex
-    atanh () {
+        atanh () {
         Complex result;
-            //  atanh(z)  =  1/2 * log( (1+z)/(1-z) )
+        //  atanh(z)  =  1/2 * log( (1+z)/(1-z) )
 
-            double _re1, _im1;
+        double _re1, _im1;
 
-            // result:  one.add(z) ...
-            result =  cart(1.0 + re, + im);
+        // result:  one.add(z) ...
+        result =  cart(1.0 + re, + im);
 
-            // _1:      one.sub(z) ...
-            _re1 =  1.0 - re;
-            _im1 =  - im;
+        // _1:      one.sub(z) ...
+        _re1 =  1.0 - re;
+        _im1 =  - im;
 
-            // result:  result.div(_1) ...
-            div(result, _re1, _im1);
+        // result:  result.div(_1) ...
+        div(result, _re1, _im1);
 
-            // _1:      result.log() ...
-            _re1 =  Math.log(result.abs());
-            _im1 =  result.arg();
+        // _1:      result.log() ...
+        _re1 =  Math.log(result.abs());
+        _im1 =  result.arg();
 
-            // result:  _1.scale(0.5) ...
-            result.re =  0.5 * _re1;
-            result.im =  0.5 * _im1;
+        // result:  _1.scale(0.5) ...
+        result.re =  0.5 * _re1;
+        result.im =  0.5 * _im1;
         return  result;
     }//end atanh()
 
 
 
     /**
-    * Converts a <tt>Complex</tt> into a <tt>String</tt> of the form
-    * <tt>(</tt><i>a</i><tt> + </tt><i>b</i><tt>i)</tt>.
-    *
-    * <p>
-    * This enables the <tt>Complex</tt> to be easily printed.  For example, if
-    * <tt>z</tt> was <i>2 - 5<b>i</b></i>, then
-    * <pre>
-    *     System.out.println("z = " + z);
-    * </pre>
-    * would print
-    * <pre>
-    *     z = (2 - 5i)
-    * </pre>
-    * <!--
-    * <i><b>Note:</b><ul>Concatenating <tt>String</tt>s, using a system
-    * overloaded meaning of the "<tt>+</tt>" operator, in fact causes the
-    * <tt>toString()</tt> method to be invoked on the object <tt>z</tt> at
-    * runtime.</ul></i>
-    * -->
-    * <p>
-    * @return                  <tt>String</tt> containing the cartesian coordinate representation
-    * <p>
-    * @see                     Complex#cart(double, double)
-    **/
+     * Converts a <tt>Complex</tt> into a <tt>String</tt> of the form
+     * <tt>(</tt><i>a</i><tt> + </tt><i>b</i><tt>i)</tt>.
+     *
+     * <p>
+     * This enables the <tt>Complex</tt> to be easily printed.  For example, if
+     * <tt>z</tt> was <i>2 - 5<b>i</b></i>, then
+     * <pre>
+     *     System.out.println("z = " + z);
+     * </pre>
+     * would print
+     * <pre>
+     *     z = (2 - 5i)
+     * </pre>
+     * <!--
+     * <i><b>Note:</b><ul>Concatenating <tt>String</tt>s, using a system
+     * overloaded meaning of the "<tt>+</tt>" operator, in fact causes the
+     * <tt>toString()</tt> method to be invoked on the object <tt>z</tt> at
+     * runtime.</ul></i>
+     * -->
+     * <p>
+     * @return                  <tt>String</tt> containing the cartesian coordinate representation
+     * <p>
+     * @see                     Complex#cart(double, double)
+     **/
 
     public String
-    toString () {
+        toString () {
         if (im < 0.0) {                                                        // ...remembering NaN & Infinity
             return  ("(" + re + " - " + (-im) + "i)");
         } else if (1.0/im == Double.NEGATIVE_INFINITY) {
@@ -2058,10 +2058,10 @@ Complex implements Cloneable, Serializable {
 
 
     /*
-            I know a young man called Daniel,
-            When you meet him, you'll like him, and you'll
-            Find him so true, so human and new,
-            You'll want to live life with no manual.
+      I know a young man called Daniel,
+      When you meet him, you'll like him, and you'll
+      Find him so true, so human and new,
+      You'll want to live life with no manual.
     */
 
 }//end Complex
@@ -2072,22 +2072,22 @@ Complex implements Cloneable, Serializable {
 /*         Jim Shapiro <jnshapi@argo.ecte.uswc.uswest.com>
 
 
-                         Priyantha Jayanetti
-                     ---------------------------
-                     email: pidge@eece.maine.edu
+           Priyantha Jayanetti
+           ---------------------------
+           email: pidge@eece.maine.edu
 
-             Deptolemy.  of Electrical & Computer Engineering
-                     University of Maine,  Orono
-
-
-                          Mr.  Daniel Hirsch
-                        <R.D.Hirsch@qmw.ac.uk>
+           Deptolemy.  of Electrical & Computer Engineering
+           University of Maine,  Orono
 
 
-/*  Correct my address in any reply, or it'll be treated as spam:
---                                                          
-//     Alexander Anderson    <DELETE_THIS.sandy@almide.demon.co.uk>
-//     Home Fone                               +44 (0) 171-794-4543
-//     London, UK                    http://www.almide.demon.co.uk/ 
-//     PGP print   C6 8C 55 F2 77 7B 99 9B  14 77 66 F5 B8 74 CF 12
+           Mr.  Daniel Hirsch
+           <R.D.Hirsch@qmw.ac.uk>
+
+
+           /*  Correct my address in any reply, or it'll be treated as spam:
+               --                                                          
+               //     Alexander Anderson    <DELETE_THIS.sandy@almide.demon.co.uk>
+               //     Home Fone                               +44 (0) 171-794-4543
+               //     London, UK                    http://www.almide.demon.co.uk/ 
+               //     PGP print   C6 8C 55 F2 77 7B 99 9B  14 77 66 F5 B8 74 CF 12
 */
