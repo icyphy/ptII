@@ -51,29 +51,32 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** 
 This actor models a network component that detects whether there is 
 collision for messages received. Each message has a duration time 
-and a power density level. If the power density of the message is
-above a threshold defined by the <i>powerDendityThreshold<i> parameter,
-the receive can recognize the message, otherwise, it ignores. 
-When receives a message, this actor caches it in a hashtable with the 
-key to be the time that the message completes, and ask the director to fire
-it again at that time to output the message. A message may be corrupted
-if during the duration of the transmission some other message is received 
-and the signal to interference ratio is below the ratio threshold specified by
-the <i>signalToInterferenceRatio<i> parameter. In this case, it claims 
-that a collision is detected and the message is marked as corrupted.
-If a message is corrupted, it is send to the <i>corrupted<i> output port 
-If it is not corrupted, it is send to the <i>received<i> output port.
+and a power density level. If the power density of a message is
+above a threshold defined by the <i>powerDensityThreshold<i> parameter,
+this actor caches it in a hash table with the index key to be the 
+time that the message completes, and ask the director to fire
+it again at that time to output the message. If If the power density 
+of a message is below the threshold, it simply ignore the message.
 
-Every time a new message is received or a message has been completed
-(removed from the hash table), the total interference power density
-is recalculated. The actor then loop through the hash table to check
-whether a message is corrupted or not according the the new interference
-power density.
+A message may be corrupted if during the duration of its transmission
+some other message is received and the signal to interference ratio 
+is below the ratio threshold specified by the 
+<i>signalToInterferenceRatio<i> parameter. In this case, it claims 
+that a collision is detected and the message is marked as corrupted.
+If a message is corrupted, it is send to the <i>corrupted<i> output port
+when the duration time elapsed. If it is not corrupted, it is send 
+to the <i>received<i> output port.
+
+Every time a new message is received or a message transmission has been
+completed (removed from the hash table), the total interference power 
+density is recalculated. The actor then loop through the hash table to
+check whether a message is corrupted or not according the the new
+interference power density.
  
 FIXME: add more documentation.
 
 
-@author Yang Zhao, Xiaojun Liu
+@author Yang Zhao, Xiaojun Liu, Edward Lee
 @version $Id$
 */
 public class CollisionDetector extends TypedAtomicActor {
