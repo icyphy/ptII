@@ -32,6 +32,7 @@ package ptolemy.copernicus.kernel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.attributes.VersionAttribute;
@@ -232,10 +233,10 @@ public class Copernicus {
     public static void compileAndRun(GeneratorAttribute generatorAttribute)
             throws Exception {
         int exitValue = 1;
-        if (((BooleanToken)
-                ((Parameter)generatorAttribute
-                        .getAttribute("compile"))
-                .getToken()).booleanValue()) {
+        String compile = ((Parameter)generatorAttribute
+                .getAttribute("compile")).getExpression();
+
+        if (compile.equals("\"true\"")) {
             String command = commandToCompile(generatorAttribute);
             exitValue = executeCommand(command);
             if (exitValue != 0) {
@@ -245,10 +246,10 @@ public class Copernicus {
             }
         }
 
-        if (((BooleanToken)
-                ((Parameter)generatorAttribute
-                        .getAttribute("run"))
-                .getToken()).booleanValue()) {
+        String run = ((Parameter)generatorAttribute
+                .getAttribute("run")).getExpression();
+
+        if (run.equals("\"true\"")) {
             String command = commandToRun(generatorAttribute);
             exitValue = executeCommand(command);
             if (exitValue != 0) {
