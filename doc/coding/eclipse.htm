@@ -209,23 +209,30 @@ the project
 Now, import the Ptolemy II specific preferences:
 
 <h2><a name="PtolemyPreferences">Importing the Ptolemy II specific preferences</a></h2>
+The Ptolemy project has a number of requirments in the way that Eclipse is configured.
+For example, using spaces instead of tabs for indentation purposes.
+Eclipse can be configured to meet many of these requirements.
+The file $PTII/.eclipse.epf has these configuration settings and should be used to achieve uniformity
+amongst Ptolemy developers using Eclipse.
+The following table shows these settings.
+<h2></h2>
+<TABLE BORDER="2">
+ <caption align="bottom">Preferences set by $PTII/.eclipse.epf</caption>
+ <TR> <TH>Prefernce</TH><TH>Value</TH><TH>Description</TH></TR>
+ <TR> <TD> CVS Ignore Files</TD> <TD ALIGN="right">  *.class, *.jar</TD> <TD> CVS will ignore these files. Can be overidden on a case by case basis</TD>   </TR>
+ <TR> <TD> Java Editor Spaces for Tabs</TD> <TD ALIGN="right">  true</TD> <TD> Java Editor will use spaces for indentation, not tabs</TD>   </TR>
+<TR> <TD> Tcl file Editor</TD> <TD ALIGN="right">  Text Editor</TD> <TD> Default Editor for .tcl files is Text Editor</TD>   </TR>
+<TR> <TD> Auto Rebuild on Resource Modification</TD> <TD ALIGN="right">false</TD> <TD> Don't rebuild everytime a resource is modified</TD>   </TR>
+<TR> <TD> Label Decorations</TD> <TD ALIGN="right">CVS, Linked Resources</TD> <TD> Resources under CVS control are labelled with CVS info</TD>   </TR>
+</TABLE>
+
+<h2></h2>
+To import the $PTII/.eclipse.epf settings
 <ol>
-<li> Start Eclipse by clicking on the <code>eclipse.exe</code> icon.
-
-<li> Import the Ptolemy II specific preferences:
-Window -&gt; Preferences -&gt; Import, and then browse
+<li> Window -&gt; Preferences -&gt; 
+<li> Select Import, and then guide the dialog
 to <code>$PTII/.eclipse.epf</code>.
-<li> Unfortunately, not all the preferences are set, you will need
-to do:
-Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically on resource modification."
 </ol>
-If you edit .tcl files, you will also need to follow the
-instructions in
-<a href="#tcl">Associating the Text editor with .tcl files</a>
-
-
-The next step is the <a href="#simpleDebug">Simple Debugging Session</a>. 
-
 
 
 <h2><a name="ByHand">Setting up for Ptolemy II By Hand<a></h2>
