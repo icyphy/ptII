@@ -162,7 +162,7 @@ public class Configuration extends CompositeEntity {
                 // because removing the effigy may result in
                 // the application exiting.
                 MessageHandler.error("Failed to open tableau for "
-                + effigy.identifier.getExpression(), ex);
+                        + effigy.identifier.getExpression(), ex);
                 try {
                     effigy.setContainer(null);
                 } catch (KernelException e) {

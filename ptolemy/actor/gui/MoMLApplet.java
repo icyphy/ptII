@@ -194,7 +194,7 @@ public class MoMLApplet extends PtolemyApplet {
             }
             if (inside == null) {
                 throw new IllegalActionException(toplevel,
-                "No such contained entity: " + fragment);
+                        "No such contained entity: " + fragment);
             }
             toplevel = inside;
         } else if (toplevel instanceof CompositeActor) {

@@ -77,7 +77,7 @@ by the user.
 @version $Id$
 */
 public class EditParametersDialog extends ComponentDialog
-        implements ChangeListener {
+    implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.

@@ -253,8 +253,8 @@ public class MoMLApplication {
 		URL entryURL = refClass.getClassLoader().getResource(entry);
 		return entryURL;
 	    } catch (Exception ex) {
-                    throw new IOException("File not found: " + spec + ": "
-					  + ex);
+                throw new IOException("File not found: " + spec + ": "
+                        + ex);
 	    }
 	}
     }
