@@ -105,7 +105,8 @@ public class GRColorChanges implements MoMLFilter {
             }
         }
         // Fix the background color of the ViewScreen actor.
-        if (container.getName().equals("backgroundColor")) {
+        if (container != null
+              && container.getName().equals("backgroundColor")) {
             NamedObj actor = container.getContainer();
             if (actor != null
                     && actor.getClass().getName().equals(
