@@ -62,7 +62,7 @@ public class Port extends NamedObj {
 
 
     /** Connect this Port to another port. Currently doesn't check if the 
-     *  ports are already connected. Should it?
+     *  ports are already connected. Should be implemented in inherited classes
      * @param port The Port to which this Port will be connected.
      * @exception pt.kernel.NullReferenceException Signals an attempt
      *  to pass null object references as arguments.
@@ -73,12 +73,12 @@ public class Port extends NamedObj {
      *         such control (children of Relation can not be used).
      *	       At higher levels we can provide this kind of functionality
      * 	       but we don't want to constrain ourselves at this level.
-    public void connect(Port port) 
+    public void connectToPort(Port port) 
             throws NullReferenceException {
 
         if (port == null) 
             throw new NullReferenceException(
-                    "Null port passed as parameter to Port.connect()" );
+                    "Null port passed as parameter to Port.connectToPort()" );
 
         else {
 	    Relation _newRelation;
@@ -95,7 +95,7 @@ public class Port extends NamedObj {
 	    //     _newRelation._portList = new CrossRefList(_newRelation);
 	    _relationsList.associate(_newRelation._portList );
 
-	    port.connect(_newRelation);
+	    port.connectToRelation(_newRelation);
 
         } 
 
@@ -109,15 +109,13 @@ public class Port extends NamedObj {
      *  to pass null object references as arguments.
      * @exception pt.kernel.GraphException Attempt to connect this 
      *  port to a relation to which it's already connected.
-     *
-     * JFIXME: Perhaps connectToRelation() would be a better name.
      */	
-    public void connect(Relation relation) 
+    public void connectToRelation(Relation relation) 
         throws NullReferenceException {
 
 	if( relation == null )
 	    throw new NullReferenceException( 
-	            "Null Relation passed to Port.connect()" );
+	            "Null Relation passed to Port.connectToRelation()" );
 
 	//FIXME: Out here assuming that we can never have a case that
 	// can force the crossRefList to be such that one List has a 
