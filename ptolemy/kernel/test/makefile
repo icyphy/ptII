@@ -48,6 +48,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	ExampleSystem.java \
+	PortNameProblem.java \
 	TestComponentPort.java \
 	TestCompositeEntity.java \
 	TestSerializable.java

@@ -30,23 +30,16 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
-
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkStackTrace] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
-
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
-
 
 ######################################################################
 ####
@@ -293,13 +286,33 @@ test Entity-9.1 {Test cloning} {
     }}
 }}
 
+
 ######################################################################
 ####
 #
-test Entity-9.2 {Test connectedPorts} {
+test Entity-9.3 {Test clone with badly named ports} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set portNameProblem [java::new ptolemy.kernel.test.PortNameProblem \
+			     $w E1]
+    catch {$portNameProblem clone} errMsg
+    set exception [lindex $errorCode 1]
+    set cause [$exception getCause]
+    list [$cause toString]
+} {{ptolemy.kernel.util.IllegalActionException: Could not find a port named 'badlyNamedInput'. This can occur when the name of the variable does not match the name passed to the constructor of the actor.
+Right:
+    input = new TypedIOPort(this, "input", true, false);
+Wrong:
+    myInput = new TypedIOPort(this, "input", true, false);
+  in .E1}}
+
+######################################################################
+####
+#
+test Entity-9.5 {Test connectedPorts} {
     # NOTE: Uses the setup constructed in 9.0
     enumToNames [$e1 connectedPorts]
 } {P2 P1}
+
 
 ######################################################################
 ####
