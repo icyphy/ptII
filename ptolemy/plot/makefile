@@ -69,7 +69,7 @@ JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 
 EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat testpxgraph index.html
 
-MISC_FILES = demo doc adm bean #test 
+MISC_FILES = demo doc adm #bean #test 
 
 JCLASS1_0 = $(JSRCS1_0:%.java=%.class)
 JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
