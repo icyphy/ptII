@@ -231,7 +231,7 @@ public class ArrayType extends StructuredType {
     }
 
     /** Return the string representation of this type. The format is
-     *  {<type>}, where <type> is the elemenet type.
+     *  {<type>}, where <type> is the element type.
      *  @return A String.
      */
     public String toString() {
