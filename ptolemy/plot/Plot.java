@@ -470,7 +470,6 @@ public class Plot extends PlotBox {
             } else {
                 if (arg.startsWith("=")) {
                     // Process =WxH+X+Y
-                    // Process =WxH+X+Y
                     int endofheight;
                     _width = (int)Integer.valueOf(arg.substring(1,
                             arg.indexOf('x'))).intValue();
@@ -487,7 +486,10 @@ public class Plot extends PlotBox {
                                         arg.length())).intValue();
                         }
                     }
-                    // FIXME: need to handle X and Y in =WxH+X+Y
+                    // FIXME: it is unclear what X and Y in =WxH+X+Y mean
+                    // in a non-toplevel window, so we don't process
+                    // those here.  See Pxgraph.java for how to process
+                    // X and Y for a toplevel window.
                     continue;
                 }
             }
