@@ -29,7 +29,13 @@
 
 package ptolemy.plot;
 import java.awt.event.*;
-import java.io.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.StringTokenizer;
 import java.net.URL;
 import java.net.MalformedURLException;

@@ -46,12 +46,15 @@ package ptolemy.plot;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import java.awt.Rectangle;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
@@ -188,7 +191,7 @@ This plotter has some <A NAME="ptplot limitations">limitations</a>:
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 0.2
- */
+*/
 public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
@@ -1623,7 +1626,7 @@ public class Plot extends PlotBox {
                 if (x - old.originalx <= _xPersistence) break;
                 numToDelete++;
             }
-            for (int i=0; i < numToDelete; i++) {
+            for (int i = 0; i < numToDelete; i++) {
                 erasePoint(dataset, 0);
             }
         }
