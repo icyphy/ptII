@@ -106,17 +106,15 @@ public class Expression extends TypedAtomicActor {
         try {
             _firingCount = 1;
             Expression newobj = (Expression)super.clone(ws);
-            newobj.output = new TypedIOPort(this, "output", false, true);
-            expression = new Parameter(this, "expression", new StringToken(""));
-            newobj._time =
-                new PassiveVariable(this, "time", new DoubleToken(0.0));
-            newobj._firing =
-                new PassiveVariable(this, "firing", new IntToken(0));
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            expression = (Parameter)newobj.getAttribute("expression");
+         // newobj._time =
+         //     new PassiveVariable(this, "time", new DoubleToken(0.0));
+         // newobj._firing =
+         //     new PassiveVariable(this, "firing", new IntToken(0));
+	    newobj._time = (PassiveVariable)newobj.getAttribute("time");
+	    newobj._firing = (PassiveVariable)newobj.getAttribute("firing");
             return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(

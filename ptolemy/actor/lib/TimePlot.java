@@ -83,16 +83,12 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
     public Object clone(Workspace ws) {
         try {
             TimePlot newobj = (TimePlot)super.clone(ws);
-            newobj.input = new TypedIOPort(this, "input", true, false);
+            newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
             newobj.input.setDeclaredType(DoubleToken.class);
             newobj.timed
-                = new Parameter(this, "timed", new BooleanToken(true));
+                = (Parameter)newobj.getAttribute("timed");
             return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(

@@ -106,16 +106,12 @@ public class Gaussian extends TypedAtomicActor {
     public Object clone(Workspace ws) {
         try {
             Gaussian newobj = (Gaussian)super.clone(ws);
-            newobj.output = new TypedIOPort(this, "output", false, true);
+            newobj.output = (TypedIOPort)newobj.getPort("output");
             newobj.output.setDeclaredType(DoubleToken.class);
-            newobj.mean = new Parameter(this, "mean", new DoubleToken(0.0));
-            newobj.stddev = new Parameter(this, "stddev", new DoubleToken(1.0));
-            newobj.seed = new Parameter(this, "seed", new LongToken(0));
+	    newobj.mean = (Parameter)newobj.getAttribute("mean");
+	    newobj.stddev = (Parameter)newobj.getAttribute("stddev");
+	    newobj.seed = (Parameter)newobj.getAttribute("seed");
             return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(

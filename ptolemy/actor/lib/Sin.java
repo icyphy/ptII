@@ -86,15 +86,11 @@ public class Sin extends TypedAtomicActor {
     public Object clone(Workspace ws) {
         try {
             Sin newobj = (Sin)super.clone(ws);
-            newobj.input = new TypedIOPort(this, "input", true, false);
+            newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setDeclaredType(DoubleToken.class);
-            newobj.output = new TypedIOPort(this, "output", false, true);
+            newobj.output = (TypedIOPort)newobj.getPort("output");
             newobj.output.setDeclaredType(DoubleToken.class);
             return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(
