@@ -1154,6 +1154,7 @@ public class IOPort extends ComponentPort {
                 _workspace.getReadAccess();
                 // Check to see whether any port linked on the inside
                 // is an input.
+                _isInput = false;  // By default we are not an output port.
                 Iterator ports = deepInsidePortList().iterator();
                 while(ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
@@ -1199,6 +1200,7 @@ public class IOPort extends ComponentPort {
                 _workspace.getReadAccess();
                 // Check to see whether any port linked on the
                 // inside is an output.
+                _isOutput = false;  // By default we are not an output port.
                 Iterator ports = deepInsidePortList().iterator();
                 while(ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
