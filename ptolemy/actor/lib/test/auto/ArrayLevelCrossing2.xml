@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 245, 815, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 245, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -37,6 +37,8 @@
         </property>
         <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </port>
         <port name="array" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -66,42 +68,6 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-    </entity>
-    <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={497, 1, 508, 355}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 55.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>ArrayPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="16.0"/>
-<yRange min="-1.0" max="1.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-1, 5, 6, 11}}">
@@ -137,6 +103,8 @@
         </property>
         <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </port>
         <port name="array" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -164,6 +132,8 @@
         </property>
         <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </port>
         <port name="array" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -191,6 +161,8 @@
         </property>
         <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </port>
         <port name="array" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -216,7 +188,6 @@
     <link port="ArrayLevelCrossing.array" relation="relation"/>
     <link port="ArrayLevelCrossing.output" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
-    <link port="ArrayPlotter.input" relation="relation"/>
     <link port="Test.input" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test.input" relation="relation4"/>
