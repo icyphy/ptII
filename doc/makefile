@@ -224,16 +224,15 @@ $(VERGIL_DOCS): javahtml.awk
 
 # Version of main.htm without links
 # Convert <a href="foobar" target="body">bif</a> -> bif
-# BTw -Don't use $<, use $^ instead for compatibility with non-gnu make
 mainVergil.htm: main.htm
-	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' $^ > $@
+	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' main.htm > $@
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 ptII$(PTVERSION).releaseVergil.htm: ptII$(PTVERSION).release.htm
-	awk -f javahtml.awk $^ > $@  
+	awk -f javahtml.awk ptII$(PTVERSION).release.htm > $@  
 troubleshootingVergil.htm: troubleshooting.htm
-	awk -f javahtml.awk $^ > $@  
+	awk -f javahtml.awk troubleshooting.htm > $@  
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
