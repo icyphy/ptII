@@ -46,7 +46,7 @@ import ptolemy.math.SignalProcessing;
 doubles. The order of the FFT determines the number of tokens that
 will be consumped and produced. The order gives the size of the
 transform as the base-2 logarithm of order. The default order is 8,
-which means that 2^8=256 tokes are read and 2^8=256 tokes are
+which means that 2^8 = 256 tokens are read and 2^8 = 256 tokens are
 produced. The result of the FFT is a new array of Complex's.
 
 @author Bart Kienhuis.
@@ -115,7 +115,7 @@ public class FFT extends TypedAtomicActor {
     }
 
     /** Consume the inputs and produce the outputs of the FFT filter.
-     *  @exception IllegalActionException Not Thrown.
+     *  @exception IllegalActionException Not Thrown in this base class.
      */
     public void fire() throws IllegalActionException {
         int i;
