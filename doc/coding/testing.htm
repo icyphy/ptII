@@ -57,6 +57,13 @@ then the test fails.
  <p>If a test is in the optional <CODE>test/auto/failed</CODE> 
 directory, then it will be marked as a known failure if it fails.
 
+
+ <p>Do not use annotations, since these will require vergil to
+be present at test time
+ <p>Do not use composite actors such as actor/lib/Sinewave.xml that
+have annotations.  Instead use
+ptolemy.domains.sdf.kernel.test.SinewaveTest
+
  <p>Using Vergil to write tests is quite a bit easier than writing Tcl
  code, but it is much more difficult to handle corner cases and test
 for erroneous conditions by writing models.  Tcl tests are unit tests,
