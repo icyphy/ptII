@@ -525,12 +525,12 @@ alljtests.tcl: makefile
 	echo "#Do an update so that we are sure tycho is done displaying" >> $@
 	echo "update" >> $@
 	echo "set savedir \"[pwd]\"" >> $@
-	echo "if {\"$(JSIMPLE_TESTS)\" != \"\"} {foreach i [list $(JSIMPLE_TESTS)] {puts \$$i; cd \"\$$savedir\"; if [ file exists \$$i ] { if [ catch {source \$$i} msg] {puts \"Error: \$$msg\"}}}}" >> $@
+	echo "if {\"$(JSIMPLE_TESTS)\" != \"\"} {foreach i [list $(JSIMPLE_TESTS)] {puts \$$i; cd \"\$$savedir\"; if [ file exists \$$i ] { if [ catch {source \$$i} msg] {puts \"Error: \$$msg\"; incr FAILED}}}}" >> $@
 	if [ "x$(JGRAPHICAL_TESTS)" != "x" ]; then \
 		for x in $(JGRAPHICAL_TESTS); do \
 			echo "puts stderr $$x" >> $@; \
 			echo "cd \"\$$savedir\"" >> $@; \
-			echo "if [ file exists $$x ] { if [catch {source $$x} msg] {puts \"Error: \$$msg\"}}" >> $@; \
+			echo "if [ file exists $$x ] { if [catch {source $$x} msg] {puts \"Error: \$$msg\"; incr FAILED}}" >> $@; \
 		done; \
 	fi
 	echo "catch {doneTests}" >> $@
