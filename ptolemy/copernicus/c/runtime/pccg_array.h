@@ -62,16 +62,23 @@ Run-time C code generation functionality for translation of arrays.
 typedef struct
 {
     
-    /* Placeholder for pointer to superclass structure */
-    void *superclass;
+    /* The name of this class. */
+    char* name;
+
+    /* The memory needed by instances of this class. */
+    long instance_size;
+
+    /* Pointer to superclass structure */
+    void* superclass;
 
     /* Pointer to array class */
-    Ci1063877011_Object array_class;
+    void* array_class;
+
     /* Interface lookup function. */
     void* (*lookup)(long int);
 
     /* Function for handling the "instanceof" operator. */
-    short (*instanceOf)(PCCG_CLASS_PTR, long int);
+    short (*instanceOf)(void*, long int);
 
     struct 
     {
@@ -93,12 +100,16 @@ typedef struct
 
     } methods;
 
+    /* other class-specific information follows */
+
+
 } PCCG_ARRAY_CLASS;
 
 typedef struct
 {
     PCCG_ARRAY_CLASS *class;
     int array_length;
+    int element_size;
 #if defined(sun) && defined(__GNUC__)
     void *array_data __attribute__((aligned(8)));
 } PCCG_ARRAY_INSTANCE __attribute__((aligned(8)));

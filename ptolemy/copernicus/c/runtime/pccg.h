@@ -49,6 +49,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 typedef struct _pccg_class {
 
+    /* The name of this class. */
+    char* name;
+
+    /* The memory needed by instances of this class. */
+    long instance_size;
+
     /* Pointer to superclass structure */
     void* superclass;
 

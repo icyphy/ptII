@@ -61,7 +61,7 @@ _STRING_INSTANCE_STRUCT charArrayToString(char *charArray)
       needed.
      */
     charArrayStruct->array_length = strlen(charArray);
-   
+    charArrayStruct->element_size = sizeof(char);
    
     /* Set the fields of the string structure. */
     s->class = &_STRING_CLASS_STRUCT;

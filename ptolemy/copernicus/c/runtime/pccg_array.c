@@ -33,9 +33,9 @@ Run-time C code generation functionality for translation of arrays.
 #include <stdarg.h>
 #include <stdlib.h>
 #include "pccg_array.h"
-#include "GC.h"
+#include "include/gc.h"
 
-#define malloc(x) GC_malloc(x)
+#define malloc(x) GC_MALLOC(x)
 
 PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
 
@@ -71,6 +71,8 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
     int first_dimension_size, first_element_size;
     int i;
     void* new_array;
+    /* Synonym with correct type. */
+    PCCG_ARRAY_INSTANCE_PTR* new_array_clone;
     PCCG_ARRAY_INSTANCE *result;
    
     first_dimension_size = va_arg(next_argument, int);
@@ -83,7 +85,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
         first_element_size = element_size;
     }
     else {
-        first_element_size = sizeof(void *);
+        first_element_size = sizeof(result);
     }
 
     /* Allocate memory for the outermost array. */
@@ -98,8 +100,9 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
        pointers must also be set correctly.
     */
     if (dimensions_to_fill > 1) {
-        for (i = 0; i <= first_dimension_size; i++) {
-            *((void**)new_array + i) =
+        for (i = 0; i < first_dimension_size; i++) {
+            new_array_clone = new_array;
+            new_array_clone[i]=
                 pccg_array_allocate_list(element_class, element_size,
                         dimensions - 1, dimensions_to_fill - 1, next_argument);
         }
@@ -109,10 +112,12 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
 #ifdef sun
     result = (PCCG_ARRAY_INSTANCE *) memalign(8, sizeof(result));
 #else
-    result = (PCCG_ARRAY_INSTANCE *) malloc(sizeof(result));
+    result = (PCCG_ARRAY_INSTANCE *) malloc(sizeof(PCCG_ARRAY_INSTANCE));
 #endif
     result->class = &GENERIC_ARRAY_CLASS;
     result->array_data = new_array;
     result->array_length = first_dimension_size;
+    result->element_size = first_element_size;
+
     return result;
 }

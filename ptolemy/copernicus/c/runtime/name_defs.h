@@ -42,3 +42,4 @@ Definitions of Names of Objects, and limits of variables
 /* LIMITS */
 #define _MAX_FLOAT 1E+37
 #define _MAX_DOUBLE 1E+37
+
