@@ -85,13 +85,17 @@ public class OnePort extends TypedAtomicActor {
 
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director dir = getDirector();
-
+        
         if (dir != null) {
-            _inrate = ((IntToken) inrate.getToken()).intValue();
-            _outrate = ((IntToken) outrate.getToken()).intValue();
-            input.setTokenConsumptionRate(_inrate);
-            output.setTokenProductionRate(_outrate);
-            dir.invalidateSchedule();
+            if (attribute == inrate) {
+                _inrate = ((IntToken) inrate.getToken()).intValue();
+                input.setTokenConsumptionRate(_inrate);
+                dir.invalidateSchedule();
+            } else if (attribute == outrate) {
+                _outrate = ((IntToken) outrate.getToken()).intValue();
+                output.setTokenProductionRate(_outrate);
+                dir.invalidateSchedule();
+            } 
         }
     }
 
