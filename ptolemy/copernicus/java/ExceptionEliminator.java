@@ -196,15 +196,18 @@ public class ExceptionEliminator extends SceneTransformer implements HasPhaseOpt
                     }
                 } else if (value instanceof VirtualInvokeExpr) {
                     VirtualInvokeExpr expr = (VirtualInvokeExpr)value;
-                    SootClass exceptionClass =
-                        ((RefType)expr.getBase().getType()).getSootClass();
-                    if (_isPtolemyException(exceptionClass)) {
-                        SootMethod method = expr.getMethod();
-                        if (method.getName().equals("getMessage")) {
-                            if (unit instanceof InvokeStmt) {
-                                body.getUnits().remove(unit);
-                            } else {
-                                box.setValue(StringConstant.v("PtolemyException"));
+                    Type exceptionType = expr.getBase().getType();
+                    if(exceptionType instanceof RefType) {
+                        SootClass exceptionClass =
+                            ((RefType)exceptionType).getSootClass();
+                        if (_isPtolemyException(exceptionClass)) {
+                            SootMethod method = expr.getMethod();
+                            if (method.getName().equals("getMessage")) {
+                                if (unit instanceof InvokeStmt) {
+                                    body.getUnits().remove(unit);
+                                } else {
+                                    box.setValue(StringConstant.v("PtolemyException"));
+                                }
                             }
                         }
                     }
