@@ -109,4 +109,6 @@ test AddSubtract-3.2 {test with run-time type error} {
     $minus link $r2
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Subtraction not supported on ptolemy.data.StringToken minus ptolemy.data.BooleanToken.}}
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.BooleanToken 'true'
+Caused by:
+ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.StringToken '"true"'}}
