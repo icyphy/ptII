@@ -31,6 +31,7 @@ package ptolemy.kernel.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassFactoryAttribute
@@ -128,8 +129,14 @@ public class ClassFactoryAttribute extends StringAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
     public Object instantiate(Object[] constructorArgs) 
             throws IllegalActionException {
+
+        // We can't return NamedObj here because
+        // vergil.basic.NodeControllerFactory.create calls this method 
+        // and returns a NamedObjController, which is not a NamedObj.
+
         //... put all reflection code in here, and translate all the
         // various exceptions to IllegalActionException...
         // ... use getExpression to get the class name to instantiate...
@@ -138,7 +145,6 @@ public class ClassFactoryAttribute extends StringAttribute
 			   + className + "'");
         try {
             Class newClass = Class.forName(className);
-	    Object instance =  _createInstance(newClass, constructorArgs);
 
 	    // The way to make this change backward compatible in the
 	    // code would be to modify ClassFactoryAttribute so that
@@ -146,7 +152,29 @@ public class ClassFactoryAttribute extends StringAttribute
 	    // populates it with any attributes it contains (same
 	    // name, same value, that is).
 
+            Object instance =  _createInstance(newClass, constructorArgs);
+
+            if (instance instanceof NamedObj) {
+                NamedObj namedObjInstance = (NamedObj)instance; 
+                // For each attribute that this object has copy the attribute
+                // into instance.
+                for (Iterator i = attributeList().iterator(); i.hasNext();) {
+                    Attribute attribute = (Attribute)i.next();
+                    // FIXME: call exportMoML here so that we
+                    // can save the changes???
+                    Attribute clone =
+                        (Attribute)attribute.clone(namedObjInstance
+                                .workspace());
+                    System.out.println("instantiate:\n\t\tattribute: "
+                            + attribute
+                            + "\n\t\tclone: " + clone
+                            + "\n\t\tinstance: " + namedObjInstance );
+                    //clone.setContainer(instance);
+                }
+            }
+                  
 	    return instance;
+
         } catch (NoClassDefFoundError noClassDefFound) {
             throw new IllegalActionException(this, noClassDefFound,
                     "Could not find class '" + className +"'");
@@ -255,7 +283,7 @@ public class ClassFactoryAttribute extends StringAttribute
     // @param arguments The constructor arguments.
     // @exception Exception If no matching constructor is found, or if
     //  invoking the constructor triggers an exception.
-    private NamedObj _createInstance(Class newClass, Object[] arguments)
+    private Object _createInstance(Class newClass, Object[] arguments)
             throws Exception {
         Constructor[] constructors = newClass.getConstructors();
         for (int i = 0; i < constructors.length; i++) {
@@ -270,7 +298,7 @@ public class ClassFactoryAttribute extends StringAttribute
                 }
             }
             if (match) {
-                return (NamedObj)constructor.newInstance(arguments);
+                return /*(NamedObj)*/ constructor.newInstance(arguments);
             }
         }
         // If we get here, then there is no matching constructor.
