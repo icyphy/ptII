@@ -231,7 +231,7 @@ public class PNDirector extends BasePNDirector {
 		}
                 // FIXME: Should type resolution be done here?
             } catch (TopologyChangeFailedException e) {
-                throw new IllegalActionException("Name duplication error: " +
+                throw new IllegalActionException("Topology change error: " +
                         e.getMessage());
             }
 	    return;
