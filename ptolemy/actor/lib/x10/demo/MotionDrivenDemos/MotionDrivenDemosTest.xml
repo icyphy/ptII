@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="MotionDrivenDemosRandom" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MotionDrivenDemosTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 590}, maximized=false}">
@@ -12,13 +12,11 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model controls the display case
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a test version
+of the model controls the display case
 outside 337 Cory Hall in Berkeley.
-It responds to commands to turn on
-or off the activity in the case.
-When the activity is on, it responds
-to motion sensed by the motion
-detector and executes Ptolemy demos.</text></svg></configure>
+This has no X10 functions, but just runs
+through the demos.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -96,7 +94,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 50.0">
         </property>
     </property>
-    <property name="lingerTimeInMS" class="ptolemy.data.expr.Parameter" value="60000L">
+    <property name="lingerTimeInMS" class="ptolemy.data.expr.Parameter" value="5000L">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -161,7 +159,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 357, 796, 466}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 219, 796, 466}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 350]">
             </property>
@@ -187,6 +185,10 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 230.0">
                 </property>
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{290.5, 175.0}">
             </property>
             <port name="motion" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -244,8 +246,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toDemo">
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
@@ -257,8 +257,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toStandby">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -272,8 +270,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toDemo">
-                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
@@ -285,8 +281,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toStandby">
                 </property>
             </relation>
             <link port="standby.incomingPort" relation="relation2"/>
@@ -348,229 +342,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
             </entity>
         </entity>
-        <entity name="turnOff" class="ptolemy.domains.fsm.modal.TransitionRefinement">
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={119, 223, 815, 509}}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <port name="motion" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 270.0">
-                </property>
-            </port>
-            <port name="idle" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 350.0">
-                </property>
-            </port>
-            <port name="random" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-            </port>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 150.0">
-                </property>
-            </entity>
-            <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
-                </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
-                </property>
-                <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 130.0">
-                </property>
-            </entity>
-            <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
-                </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
-                </property>
-                <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="3">
-                </property>
-                <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 265.0">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="200.0, 150.0">
-                </vertex>
-            </relation>
-            <link port="Const.output" relation="relation"/>
-            <link port="Middle Spotlight.off" relation="relation"/>
-            <link port="Side Lights.off" relation="relation"/>
-        </entity>
-        <entity name="toStandby" class="ptolemy.domains.fsm.modal.TransitionRefinement">
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 198, 815, 516}}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <port name="motion" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 270.0">
-                </property>
-            </port>
-            <port name="idle" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 350.0">
-                </property>
-            </port>
-            <port name="random" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-            </port>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 135.0">
-                </property>
-            </entity>
-            <entity name="Const2" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 255.0">
-                </property>
-            </entity>
-            <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
-                </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
-                </property>
-                <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 125.0">
-                </property>
-            </entity>
-            <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
-                </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
-                </property>
-                <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="3">
-                </property>
-                <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 265.0">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="Const.output" relation="relation"/>
-            <link port="Const2.output" relation="relation2"/>
-            <link port="Middle Spotlight.on" relation="relation"/>
-            <link port="Side Lights.off" relation="relation2"/>
-        </entity>
-        <entity name="toDemo" class="ptolemy.domains.fsm.modal.TransitionRefinement">
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 226, 815, 516}}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <port name="motion" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 255.0">
-                </property>
-            </port>
-            <port name="idle" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 335.0">
-                </property>
-            </port>
-            <port name="random" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location">
-                </property>
-            </port>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 275.0">
-                </property>
-            </entity>
-            <entity name="Const2" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 115.0">
-                </property>
-            </entity>
-            <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
-                </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
-                </property>
-                <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 125.0">
-                </property>
-            </entity>
-            <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
-                </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
-                </property>
-                <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="3">
-                </property>
-                <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 265.0">
-                </property>
-            </entity>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="Const.output" relation="relation2"/>
-            <link port="Const2.output" relation="relation"/>
-            <link port="Middle Spotlight.off" relation="relation"/>
-            <link port="Side Lights.on" relation="relation2"/>
-        </entity>
         <entity name="running2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="Director" class="ptolemy.actor.Director">
                 <doc>Simple director that executes actors in the order in which they were created.</doc>
@@ -620,32 +391,12 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         <link port="running.motion" relation="motionRelation"/>
         <link port="running.idle" relation="idleRelation"/>
         <link port="running.random" relation="randomRelation"/>
-        <link port="turnOff.motion" relation="motionRelation"/>
-        <link port="turnOff.idle" relation="idleRelation"/>
-        <link port="turnOff.random" relation="randomRelation"/>
-        <link port="toStandby.motion" relation="motionRelation"/>
-        <link port="toStandby.idle" relation="idleRelation"/>
-        <link port="toStandby.random" relation="randomRelation"/>
-        <link port="toDemo.motion" relation="motionRelation"/>
-        <link port="toDemo.idle" relation="idleRelation"/>
-        <link port="toDemo.random" relation="randomRelation"/>
         <link port="running2.motion" relation="motionRelation"/>
         <link port="running2.idle" relation="idleRelation"/>
         <link port="running2.random" relation="randomRelation"/>
     </entity>
-    <entity name="Listener2" class="ptolemy.actor.lib.x10.Listener">
-        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
-        </property>
-        <property name="blocking" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="discardOldData" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <doc>Serial-port command listener for x10 devices</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 120.0">
-        </property>
-    </entity>
     <entity name="X10 Network Listener" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={688, 22, 290, 227}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={688, 22, 292, 229}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 55.0">
         </property>
@@ -694,6 +445,19 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 260.0">
         </property>
     </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;&lt;D16-ON-0&gt;&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 120.0">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="150.0, 120.0">
         </vertex>
@@ -707,7 +471,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
     <link port="Controller.motion" relation="relation3"/>
     <link port="Controller.idle" relation="relation2"/>
     <link port="Controller.random" relation="relation4"/>
-    <link port="Listener2.receivedCommand" relation="relation"/>
     <link port="X10 Network Listener.input" relation="relation"/>
     <link port="Filter for Motion.firstString" relation="relation"/>
     <link port="Filter for Motion.output" relation="relation3"/>
@@ -715,4 +478,5 @@ a refinement that executes a sequence of demos.</text></svg></configure>
     <link port="Filter for No Motion.output" relation="relation2"/>
     <link port="DiscreteRandomSource.output" relation="relation4"/>
     <link port="DiscreteRandomSource.trigger" relation="relation"/>
+    <link port="Const.output" relation="relation"/>
 </entity>
