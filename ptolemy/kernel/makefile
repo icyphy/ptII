@@ -44,6 +44,7 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
+	NamedObj.java \
 	Block.java \
 	Galaxy.java \
 	PortHole.java \
