@@ -214,11 +214,27 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
     $parser addMoMLFilters \
         [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
+
+    if { ${codeGenType} == "Applet" } {
+          set args [java::new {String[]} 5 \
+  	    [list \
+  	    $modelPath \
+		 "-codeGenerator" {"applet"} \
+		 "-run" "false"] ]
+	java::new ptolemy.copernicus.kernel.Copernicus $args
+	return "Times Interp/Deep ms $modelPath 1 \
+	    builtin: 0/0 \
+	    0 % \
+	    exec: 0/0 \
+	    0 %"
+    } 
+
     # Filter out graphical classes while inside MoMLParser
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
     removeGraphicalClasses $parser
 
     set toplevel [$parser parseFile $modelPath]
+
     # Strip off the leading .
     set modelName [string range [$toplevel getFullName] 1 end]
 
@@ -356,29 +372,19 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	# make -C is a GNU make extension that changes to a directory
 	#set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
 
+
+
       if { ${codeGenType} == "Deep" } {
 	  set codeGenerator {"java"}
       } else {
-	  if { ${codeGenType} == "Applet" } {
-	      set codeGenerator {"applet"}
-	  } else {
-	      set codeGenerator {"shallow"}
-	  }
+	 set codeGenerator {"shallow"}
       }
       set args [java::new {String[]} 5 \
-  	    [list \
-  	    $modelPath \
-	    "-iterationsParameter" "\"$iterationsParameter\"" \
-	    "-codeGenerator" $codeGenerator] ]
+  	      [list \
+  	      $modelPath \
+	      "-iterationsParameter" "\"$iterationsParameter\"" \
+	      "-codeGenerator" $codeGenerator] ]
 
-      if { ${codeGenType} == "Applet" } {
-          set args [java::new {String[]} 7 \
-  	    [list \
-  	    $modelPath \
-		 "-iterationsParameter" "\"$iterationsParameter\"" \
-		 "-codeGenerator" $codeGenerator \
-		 "-run" "false"] ]
-      }
 	java::new ptolemy.copernicus.kernel.Copernicus $args
 
 	#set results [exec $relativePathToPTII/bin/copernicus $modelPath -iterations $iterationsValue]
@@ -391,14 +397,6 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	#    puts $results
     }
 
-    if { $codeGenType == "Applet"} {
-	# For Applet just return
-	return "Times Interp/Deep ms $modelName 1 \
-	    builtin: 0/0 \
-	    0 % \
-	    exec: 0/0 \
-	    0 %"
-    }
     # If the model has a different name than the file name, we
     # handle it here.
     set command runDemo
