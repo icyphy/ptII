@@ -99,7 +99,7 @@ compat:
 		echo "$(OLDTREE) does not exist"; \
 		echo "skipping compatibility tests"; \
 	fi
-	@echo "Generating auto/ from $(OLDTREE)"
+	@echo "Generating compat/ from $(OLDTREE)"
 	cd $(OLDTREE); \
 		find . -name "*.xml" -print | \
 		grep auto | \
