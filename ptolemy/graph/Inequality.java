@@ -30,6 +30,7 @@
  */
 
 package ptolemy.graph;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Inequality
@@ -94,7 +95,7 @@ public class Inequality {
      *  @return True if this inequality is satisfied;
      *  false otherwise.
      */
-    public boolean isSatisfied(CPO cpo) {
+    public boolean isSatisfied(CPO cpo) throws IllegalActionException {
         int result = cpo.compare(_lesserTerm.getValue(),
                 _greaterTerm.getValue());
         return (result == CPO.LOWER || result == CPO.SAME);

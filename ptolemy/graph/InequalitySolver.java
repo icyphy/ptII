@@ -24,8 +24,9 @@
     PT_COPYRIGHT_VERSION_2
     COPYRIGHTENDKEY
 
-    @ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method
-    only makes it red
+    @ProposedRating Green (cxh@eecs.berkeley.edu) 
+    added description() method
+    made many methods throw IllegalActionException
     @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
  */
@@ -114,8 +115,10 @@ public class InequalitySolver {
      *  @return An Iterator of InequalityTerms
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a bottom element.
+     *  @exception IllegalActionException If testing any one of the
+     *  variables throws an exception.
      */
-    public Iterator bottomVariables() {
+    public Iterator bottomVariables() throws IllegalActionException {
         Object bottom = _cpo.bottom();
         if (bottom == null) {
             throw new InvalidStateException(
@@ -173,8 +176,10 @@ public class InequalitySolver {
      *  See the paper referred in the class document for details.
      *  @return True if a solution for the inequalities is found,
      *  false otherwise.
+     *  @exception IllegalActionException If testing any one of the
+     *  inequalities throws an exception.
      */
-    public boolean solveGreatest() {
+    public boolean solveGreatest() throws IllegalActionException {
         return _solve(false);
     }
 
@@ -202,8 +207,10 @@ public class InequalitySolver {
      *  See the paper referred to in the class document for details.
      *  @return True if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
+     *  @exception IllegalActionException If testing any one of the
+     *  inequalities throws an exception.
      */
-    public boolean solveLeast() {
+    public boolean solveLeast() throws IllegalActionException {
         return _solve(true);
     }
 
@@ -214,8 +221,10 @@ public class InequalitySolver {
      *  @return An Iterator of InequalityTerms
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a top element.
+     *  @exception IllegalActionException If testing any one of the
+     *  variables throws an exception.
      */
-    public Iterator topVariables() {
+    public Iterator topVariables() throws IllegalActionException {
         Object top = _cpo.top();
         if (top == null) {
             throw new InvalidStateException(
@@ -230,8 +239,10 @@ public class InequalitySolver {
      *  If all the inequalities are satisfied, an empty
      *  <code>Iterator</code> is returned.
      *  @return An Iterator of Inequalities
+     *  @exception IllegalActionException If testing any one of the
+     *  inequalities throws an exception.
      */
-    public Iterator unsatisfiedInequalities() {
+    public Iterator unsatisfiedInequalities() throws IllegalActionException {
         LinkedList result = new LinkedList();
 
         for (int i = 0; i < _Ilist.size(); i++) {
@@ -246,8 +257,10 @@ public class InequalitySolver {
     /** Return an <code>Iterator</code> of all the variables in the
      *  inequality constraints.
      *  @return An Iterator of InequalityTerms
+     *  @exception IllegalActionException If testing any one of the
+     *  variables throws an exception.
      */
-    public Iterator variables() {
+    public Iterator variables() throws IllegalActionException {
         return _filterVariables(null);
     }
 
@@ -300,11 +313,12 @@ public class InequalitySolver {
 
     // filter out the variables with a certain value. If the given value
     // is null, return all variables. This method is used by,
-    // bottomVariables(), topVariables(), and variables(). For variables(),
+    // bottomVariables(), and topVariables(), and variables(). For variables(),
     // this method effectively converts an Enumeration to an Iterator.
     // This is necessary for interface consistency since other methods
     // in this package return Iterators.
-    private Iterator _filterVariables(Object value) {
+    private Iterator _filterVariables(Object value)
+            throws IllegalActionException {
 
         LinkedList result = new LinkedList();
         for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
@@ -319,7 +333,7 @@ public class InequalitySolver {
     // The solver used by solveLeast() and solveGreatest().
     // If the argument is true, solve for the least solution;
     // otherwise, solve for the greatest solution.
-    private boolean _solve(boolean least) {
+    private boolean _solve(boolean least) throws IllegalActionException {
 
         // initialize all variables
         Object init = least ? _cpo.bottom() : _cpo.top();

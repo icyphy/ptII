@@ -66,8 +66,10 @@ public interface InequalityTerm {
      *  return the evaluation of that function based on the current
      *  value of variables in the function.
      *  @return An Object representing an element in the underlying CPO.
+     *  @throws IllegalActionException if the value of this
+     *  inequality term is not valid.
      */
-    public Object getValue();
+    public Object getValue() throws IllegalActionException;
 
     /** Return an array of variables contained in this term.
      *  If this term is a constant, return an array of size zero;
