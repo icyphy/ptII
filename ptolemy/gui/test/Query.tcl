@@ -90,3 +90,11 @@ test Query-1.3 {Lots of checkboxes} {
 } {OK}
 
 
+test Query-1.4 {Test out Password} {
+    set query [java::new ptolemy.gui.Query]
+    set options [java::new {String[]} 4 [list "water" "soda" "juice" "none"]]
+    $query addPassword "password" "password" foo
+    set dialog [java::new ptolemy.gui.ComponentDialog \
+	    [java::null] "Query-1.4: Press OK" $query]
+    set results [$dialog buttonPressed]
+} {OK}
