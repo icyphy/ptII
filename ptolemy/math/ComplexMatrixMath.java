@@ -58,9 +58,12 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
+     *  <p>
      *  @param matrix A matrix of complex numbers.
-     *  @param z The Complex number to add.
-     *  @return A new matrix of complex numbers.
+     *  @param z The complex number to add.
+     *  @return A new matrix of complex numbers formed by adding <i>z</i>
+     *  to every element of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] add(Complex[][] matrix, Complex z) {
         Complex[][] returnValue = new Complex[_rows(matrix)][_columns(matrix)];
@@ -73,12 +76,15 @@ public class ComplexMatrixMath {
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one.  If the two
-     *  matrices are not the same size, throw an
-     *  IllegalArgumentException.
+     *  adding the second matrix to the first one.
+     *  <p>
      *  @param matrix1 The first matrix of complex numbers.
      *  @param matrix2 The second matrix of complex numbers.
-     *  @return A new matrix of complex numbers.
+     *  @return A new matrix of complex numbers formed by adding <i>matrix2</i>
+     *  to <i>matrix1</i>.
+     *  @throws IllegalArgumentException If the matrices do not have the same
+     *   dimensions.
+     *  </p>
      */
     public static final Complex[][] add(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -95,17 +101,26 @@ public class ComplexMatrixMath {
     }
 
     /** Return a new matrix that is a copy of the matrix argument.
+     *  <p>
      *  @param matrix A matrix of complex numbers.
-     *  @return A new matrix of complex numbers.
+     *  @return A new matrix of complex numbers that is a copy of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] allocCopy(final Complex[][] matrix) {
         return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
-    /** Return a new array that is formed by applying an instance of a
+    /** Return a new matrix that is formed by applying an instance of a
      *  ComplexBinaryOperation to each element in the input matrix,
      *  using z as the left operand in all cases and the matrix elements
      *  as the right operands (op.operate(z, matrix[i][j])).
+     *  <p>
+     *  @param op A complex binary operation.
+     *  @param z A complex number.
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix formed by applying (op.operate(z, matrix[i][j]))
+     *  to each element of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex z,
@@ -122,10 +137,17 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return a new array that is formed by applying an instance of a
+    /** Return a new matrix that is formed by applying an instance of a
      *  ComplexBinaryOperation to each element in the input matrix,
-     *  using the matrix elements as the left operands and z as the right
-     *  operand in all cases (op.operate(matrix[i][j], z)).
+     *  using z as the left operand in all cases and the matrix elements
+     *  as the right operands (op.operate(matrix[i][j], z)).
+     *  <p>
+     *  @param op A complex binary operation.
+     *  @param z A complex number.
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix formed by applying (op.operate(matrix[i][j], z))
+     *  to each element of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex[][] matrix,
@@ -142,13 +164,19 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return a new array that is formed by applying an instance of a
+    /** Return a new matrix that is formed by applying an instance of a
      *  ComplexBinaryOperation to the two matrices, element by element,
      *  using the elements of the first matrix as the left operands and the
      *  elements of the second matrix as the right operands.
      *  (op.operate(matrix1[i][j], matrix2[i][j])).
-     *  If the matrices are not the same size, throw an
-     *  IllegalArgumentException.
+     *  <p>
+     *  @param matrix1 The first matrix of complex numbers.
+     *  @param matrix2 The second matrix of complex numbers.
+     *  @return A new matrix of complex numbers with each element
+     *  equal to (op.operate(matrix1[i][j], matrix2[i][j])).
+     *  @throws IllegalArgumentException If the matrices do not have the same
+     *   dimensions.
+     *  </p>
      */
     public static final Complex[][] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex[][] matrix1,
@@ -167,9 +195,14 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return a new array that is formed by applying an instance of a
+    /** Return a new matrix that is formed by applying an instance of a
      *  ComplexUnaryOperation to each element in the input matrix
      *  (op.operate(matrix[i][j])).
+     *  <p>
+     *  @param matrix The matrix of complex numbers.
+     *  @return A new matrix of complex numbers with each element
+     *  equal to (op.operate(matrix1[i][j])).
+     *  </p>
      */
     public static final Complex[][] applyUnaryOperation(
             final ComplexUnaryOperation op, final Complex[][] matrix) {
@@ -185,7 +218,13 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return the given complex number with the absolute value of the real part.
+    /** Return the given matrix of complex numbers with the
+     *  absolute values of the real parts.
+     *  <p>
+     *  @param matrix The matrix of complex numbers.
+     *  @return A new matrix of complex numbers formed from <i>matrix</i>
+     *  with the absolute values of the real parts.
+     *  </p>
      */
     public static final Complex[][] absValues (Complex[][] matrix) {
         int rows = _rows(matrix);
@@ -202,7 +241,12 @@ public class ComplexMatrixMath {
 
  
     /** Return a new matrix that is constructed by conjugating the elements
-     *  in the input matrix.
+     *  of the input matrix.
+     *  <p>
+     *  @param matrix The matrix of complex numbers.
+     *  @return A new matrix of complex numbers formed
+     *  by conjugating the elements of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] conjugate(final Complex[][] matrix) {
         int rows = _rows(matrix);
@@ -219,8 +263,13 @@ public class ComplexMatrixMath {
 
 
     /** Return a new matrix that is constructed by transposing the input
-     *  matrix, and conjugating the elements. If the input matrix is m x n,
+     *  matrix and conjugating the elements. If the input matrix is m x n,
      *  the output matrix will be n x m.
+     *  <p>
+     *  @param matrix The matrix of complex numbers.
+     *  @return A new matrix of complex numbers formed by transposing
+     *  the input matrix and conjugating the elements.
+     *  </p>
      */
     public static final Complex[][] conjugateTranspose(
             final Complex[][] matrix) {
@@ -239,11 +288,14 @@ public class ComplexMatrixMath {
     /** Return a new matrix that is a sub-matrix of the input
      *  matrix argument. The row and column from which to start
      *  and the number of rows and columns to span are specified.
+     *  <p>
      *  @param matrix A matrix of complex numbers.
      *  @param rowStart An int specifying which row to start on.
      *  @param colStart An int specifying which column to start on.
      *  @param rowSpan An int specifying how many rows to copy.
      *  @param colSpan An int specifying how many columns to copy.
+     *  @return A new matrix that is a sub-matrix of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] crop(final Complex[][] matrix,
             final int rowStart, final int colStart,
@@ -259,8 +311,10 @@ public class ComplexMatrixMath {
     /** Return the determinate of a square matrix.
      *  If the matrix is not square, throw an IllegalArgumentException.
      *  This algorithm uses LU decomposition, and is taken from [1].
+     *  <p>
      *  @param matrix The matrix for which to calculate the determinate.
      *  @return The determinate of the matrix.
+     *  </p>
      */
     public static final Complex determinate(final Complex[][] matrix) {
         _checkSquare("determinate", matrix);
@@ -298,8 +352,7 @@ public class ComplexMatrixMath {
 
             // If almost singular matrix, give up now.
 
-            // FIXME use epsilon instead of this ugly constant
-            if (det.magnitudeSquared() <= 1.0E-9) {
+            if (det.magnitudeSquared() <= 1.0e-9) {
                 return Complex.ZERO;
             }
 
@@ -328,6 +381,10 @@ public class ComplexMatrixMath {
      *  matrix, starting from the top left corner down to the bottom
      *  right corner. All other elements are zero. The size of of the
      *  matrix is n x n, where n is the length of the input array.
+     *  <p>
+     *  @param array The input array of complex numbers.
+     *  @return A new matrix containing <i>array</i> as its diagonal.
+     *  </p>
      */
     public static final Complex[][] diag(final Complex[] array) {
         int n = array.length;
@@ -343,12 +400,18 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return a new matrix that is constructed by element by element
+    /** Return a new matrix that is constructed by element-by-element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
      *  second matrix.
-     *  If the two matrices are not the same size, throw an
-     *  IllegalArgumentException.
+     *  <p>
+     *  @param matrix1 The first matrix of complex numbers.
+     *  @param matrix2 The second matrix of complex numbers.
+     *  @return A new matrix of complex numbers constructed by element-by-element
+     *  division of the two matrix arguments.
+     *  @throws IllegalArgumentException If the matrices do not have the same
+     *   dimensions.
+     *  </p>
      */
     public static final Complex[][] divide(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -371,8 +434,11 @@ public class ComplexMatrixMath {
      *  (row, column), the entries of the array are in the following order
      *  for a (m, n) matrix :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
+     *  <p>
      *  @param A matrix of complex numbers.
-     *  @return A new array of complex numbers.
+     *  @return A new array of complex numbers filled with
+     *  the contents of the matrix.
+     *  </p>
      */
     public static final Complex[] fromMatrixToArray(final Complex[][] matrix) {
         return fromMatrixToArray(matrix, _rows(matrix), _columns(matrix));
@@ -388,8 +454,11 @@ public class ComplexMatrixMath {
      *  (row, column), the entries of the array are in the following order
      *  for a matrix, limited to m rows and n columns :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
+     *  <p>
      *  @param matrix A matrix of complex numbers.
-     *  @return A new array of complex numbers.
+     *  @return A new array of complex numbers filled with
+     *  the contents of the matrix.
+     *  </p>
      */
     public static final Complex[] fromMatrixToArray(final Complex[][] matrix,
             int maxRow, int maxCol) {
@@ -402,6 +471,12 @@ public class ComplexMatrixMath {
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
+     *  <p>
+     *  @param dim An integer representing the dimension of the
+     *  identity matrix to be returned.
+     *  @return A new identity matrix of complex numbers with the
+     *  specified dimension.
+     *  </p>
      */
     public static final Complex[][] identity(final int dim) {
         Complex[][] returnValue = new Complex[dim][dim];
@@ -416,8 +491,11 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is formed by taking the imaginary parts of the
      *  complex numbers in the argument matrix.
-     *  @param array An matrix of Complex.
-     *  @return A new matrix of doubles.
+     *  <p>
+     *  @param array A matrix of complex numbers.
+     *  @return A new matrix of doubles from the imaginary parts
+     *  of <i>matrix</i>.
+     *  </p>
      */
     public static final double[][] imagParts(final Complex[][] matrix) {
         int rows = _rows(matrix);
@@ -437,6 +515,10 @@ public class ComplexMatrixMath {
     /** Return a new matrix that is constructed by inverting the input
      *  matrix. If the input matrix is singular, null is returned.
      *  This method is from [1]
+     *  <p>
+     *  @param A A matrix of complex numbers.
+     *  @return the inverse of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] inverse(final Complex[][] A) {
         _checkSquare("inverse", A);
@@ -527,8 +609,12 @@ public class ComplexMatrixMath {
     /** Replace the first matrix argument elements with the values of
      *  the second matrix argument. The first matrix argument must be
      *  large enough to hold all the values of second matrix argument.
+     *  <p>
      *  @param destMatrix A matrix of complex numbers, used as the destination.
      *  @param srcMatrix A matrix of complex numbers, used as the source.
+     *  @return A new matrix of complex numbers equal to the first matrix
+     *  but with the values of <i>destMatrix</i>.
+     *  </p>
      */
     public static final void matrixCopy(final Complex[][] srcMatrix,
             final Complex[][] destMatrix) {
@@ -539,6 +625,7 @@ public class ComplexMatrixMath {
     /** Replace the first matrix argument's values, in the specified row
      *  and column range, with the second matrix argument's values, starting
      *  from specified row and column of the second matrix.
+     *  <p>
      *  @param srcMatrix A matrix of complex numbers, used as the destination.
      *  @param srcRowStart An int specifying the starting row of the source.
      *  @param srcColStart An int specifying the starting column of the
@@ -549,13 +636,17 @@ public class ComplexMatrixMath {
      *         dest.
      *  @param rowSpan An int specifying how many rows to copy.
      *  @param colSpan An int specifying how many columns to copy.
+     *  @return A new matrix of complex numbers equal to the first matrix
+     *  but with the values of the second matrix starting from the specified
+     *  row and column.
+     *  </p>
      */
     public static final void matrixCopy(final Complex[][] srcMatrix,
             final int srcRowStart, final int srcColStart,
             final Complex[][] destMatrix,
             final int destRowStart, final int destColStart,
             final int rowSpan, final int colSpan) {
-        // We should verify the parameters here.
+
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
                     destMatrix[destRowStart + i], destColStart,
@@ -565,6 +656,13 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a real scaleFactor.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @param scaleFactor A double used to multiply each element
+     *  of the matrix by.
+     *  @return A new matrix that is formed by multiplying the matrix by
+     *  <i>scaleFactor</i>.
+     *  </p>
      */
     public static final Complex[][] multiply(final Complex[][] matrix,
             final double scaleFactor) {
@@ -582,6 +680,13 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a complex scaleFactor.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @param z A complex number used to multiply each element
+     *  of the matrix by.
+     *  @return A new matrix that is formed by multiplying the matrix by
+     *  <i>z</i>.
+     *  </p>
      */
     public static final Complex[][] multiply(final Complex[][] matrix,
             final Complex z) {
@@ -604,6 +709,12 @@ public class ComplexMatrixMath {
      *  The number of rows of the matrix must equal the number of elements
      *  in the array. The returned array will have a length equal to the number
      *  of columns of the matrix.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @param array An array of complex numbers.
+     *  @return A new matrix that is formed by multiplying <i>array</i> by
+     *  <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[] multiply(final Complex[][] matrix,
             final Complex[] array) {
@@ -634,6 +745,12 @@ public class ComplexMatrixMath {
      *  The number of columns of the matrix must equal the number of elements
      *  in the array. The returned array will have a length equal to the number
      *  of rows of the matrix.
+     *  <p>
+     *  @param array An array of complex numbers.
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix that is formed by multiplying <i>matrix</i> by
+     *  <i>array</i>.
+     *  </p>
      */
     public static final Complex[] multiply(final Complex[] array,
             final Complex[][] matrix) {
@@ -673,7 +790,9 @@ public class ComplexMatrixMath {
      *  @see #multiplyElements(Complex[][], Complex[][])
      *  @param matrix1 The first matrix of complex numbers.
      *  @param matrix2 The second matrix of complex numbers.
-     *  @return A new matrix of complex numbers.
+     *  @return A new matrix of complex numbers equal to <i>matrix1</i>
+     *  times <i>matrix2</i>.
+     *  </p>
      */
     public static final Complex[][] multiply(Complex[][] matrix1,
             Complex[][] matrix2) {
@@ -699,6 +818,12 @@ public class ComplexMatrixMath {
      *  <p>Note that this method does pointwise matrix multiplication.
      *  See {@link #multiply(Complex[][], Complex[][])} for standard
      *  matrix multiplication.
+     *  <p>
+     *  @param matrix1 The first matrix of complex numbers.
+     *  @param matrix2 The second matrix of complex numbers.
+     *  @return A new matrix constructed by element by element
+     *  multiplication of the two matrix arguments.
+     *  </p>
      */
     public static final Complex[][] multiplyElements(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -718,6 +843,11 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is the additive inverse of the
      *  argument matrix.
+     * <p>
+     * @matrix A matrix of complex numbers.
+     * @return A new matrix of complex numbers, which is the additive
+     * inverse of the given matrix.
+     * </p>
      */
     public static final Complex[][] negative(final Complex[][] matrix) {
         int rows = _rows(matrix);
@@ -758,6 +888,10 @@ public class ComplexMatrixMath {
      *     Integer, and put it in returnValue[3].
      * </ol>
      *  Orthogonalization is done with the Gram-Schmidt process.
+     * <p>
+     * @param rowArrays A set of row vectors.
+     * @return An orthogonal set of vectors.
+     * </p>
      */
     protected static final Object[] _orthogonalizeRows(
             final Complex[][] rowArrays) {
@@ -843,6 +977,11 @@ public class ComplexMatrixMath {
      *  orthogonal). If not all columns are linearly independent, the
      *  output matrix will contain a column of zeros for all redundant
      *  input columns.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix formed by orthogonalizing the
+     *  columns of the input matrix.
+     *  </p>
      */
     public static final Complex[][] orthogonalizeColumns(
             final Complex[][] matrix) {
@@ -855,6 +994,11 @@ public class ComplexMatrixMath {
      *  and have norm 1). If not all columns are linearly independent,
      *  the output matrix will contain a column of zeros for all
      *  redundant input columns.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix formed by orthonormalizing the
+     *  columns of the input matrix.
+     *  </p>
      */
     public static final Complex[][] orthonormalizeColumns(
             final Complex[][] matrix) {
@@ -865,6 +1009,11 @@ public class ComplexMatrixMath {
      *  input matrix (the row vectors are orthogonal). If not all rows are
      *  linearly independent, the output matrix will contain a row of zeros
      *  for all redundant input rows.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix formed by orthogonalizing the
+     *  rows of the input matrix.
+     *  </p>
      */
     public static final Complex[][] orthogonalizeRows(final Complex[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(matrix);
@@ -876,6 +1025,11 @@ public class ComplexMatrixMath {
      *  have norm 1). If not all rows are linearly independent, the
      *  output matrix will contain a row of zeros for all redundant
      *  input rows.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix formed by orthonormalizing the
+     *  rows of the input matrix.
+     *  </p>
      */
     public static final Complex[][] orthonormalizeRows(
             final Complex[][] matrix) {
@@ -898,16 +1052,16 @@ public class ComplexMatrixMath {
     /////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-
-
-
     /** Return a new matrix that is constructed from the argument by
      *  subtracting the second matrix from the first one.
-     *  If the two matrices are not the same size, throw an
-     *  IllegalArgumentException.
+     *  <p>
+     *  @param matrix1 The first matrix of complex numbers.
+     *  @param matrix2 The second matrix of complex numbers.
+     *  @return A new matrix of complex numbers constructed by
+     *  subtracting the second matrix from the first one.
+     *  @throws IllegalArgumentException If the matrices do not have the same
+     *   dimensions.
+     *  </p>
      */
     public static final Complex[][] subtract(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -927,8 +1081,11 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is formed by taking the real parts of the
      *  complex numbers in the argument matrix.
-     *  @param array An matrix of Complex.
-     *  @return A new matrix of doubles.
+     *  <p>
+     *  @param array An matrix of complex numbers.
+     *  @return A new matrix of the double coefficients of the complex
+     *  numbers of <i>matrix</i>.
+     *  </p>
      */
     public static final double[][] realParts(final Complex[][] matrix) {
         int rows = _rows(matrix);
@@ -949,12 +1106,14 @@ public class ComplexMatrixMath {
      *  1), ..., (0, n-1), (1, 0), (1, 1), ..., (m-1, n-1) where the
      *  output matrix is to be m x n and entries are denoted by (row,
      *  column).
+     *  <p>
      *  @param array An array of complex numbers.
      *  @param rows An integer representing the number of rows of the
      *  new matrix.
      *  @param cols An integer representing the number of columns of the
      *  new matrix.
-     *  @return A new matrix of complex numbers.
+     *  @return A new matrix of complex numbers initialized from a 1-D array.
+     *  </p>
      */
     public static final Complex[][] toMatrixFromArray(Complex[] array,
             int rows,
@@ -968,6 +1127,10 @@ public class ComplexMatrixMath {
 
     /** Return a new String representing the matrix, formatted as
      *  in Java array initializers.
+     *  <p>
+     *  @param matrix A matrix of Complex numbers.
+     *  @return A new String representing the matrix in Java array initializers.
+     *  </p>     
      */
     public static final String toString(final Complex[][] matrix) {
         return toString(matrix, ArrayStringFormat.javaASFormat);
@@ -978,6 +1141,11 @@ public class ComplexMatrixMath {
      *  To get a String in the Ptolemy expression language format,
      *  call this method with ArrayStringFormat.exprASFormat as the
      *  format argument.
+     *  <p>
+     *  @param matrix A matrix of Complex numbers.
+     *  @param asf The type of ArrayStringFormat.
+     *  @return A new String representing the matrix in the specified format.
+     *  </p>
      */
     public static final String toString(final Complex[][] matrix,
             final ArrayStringFormat asf) {
@@ -1012,6 +1180,10 @@ public class ComplexMatrixMath {
      *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>
      *  Throw an IllegalArgumentException if the matrix is not square.
      *  Note that the trace of a matrix is equal to the sum of its eigenvalues.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A complex number which is the trace of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex trace(final Complex[][] matrix) {
         int dim = _checkSquare("trace", matrix);
@@ -1027,6 +1199,11 @@ public class ComplexMatrixMath {
      *  matrix. If the input matrix is m x n, the output matrix will be
      *  n x m. Note that for complex matrices, the conjugate transpose
      *  is more commonly used.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix of complex numbers which is the
+     *  transpose of <i>matrix</i>.
+     *  </p>
      */
     public static final Complex[][] transpose(final Complex[][] matrix) {
         int rows = _rows(matrix);
@@ -1047,12 +1224,13 @@ public class ComplexMatrixMath {
      *  the magnitude of <i>maxError</i>. If both matrices are empty,
      *  return true.
      *  <p>
-     *  @param array1 The first matrix.
-     *  @param array2 The second matrix.
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
      *  @param maxError A complex number whose magnitude is taken to
      *   be the distance threshold.
      *  @throws IllegalArgumentException If the matrices do not have the same
      *   dimensions.
+     *  @return True or false.
      *  </p>
      */
     public static final boolean within(Complex[][] matrix1,
@@ -1064,11 +1242,12 @@ public class ComplexMatrixMath {
      *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
      *  the magnitude of <i>maxError</i>. If both matrices are empty, return true.
      *  <p>
-     *  @param array1 The first matrix.
-     *  @param array2 The second matrix.
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
      *  @param maxError The threshold for the magnitude of the difference.
      *  @throws IllegalArgumentException If the matrices do not have the same
      *   dimensions, or if <i>maxError</i> is negative.
+     *  @return True or false.
      *  </p>
      */
     public static final boolean within(Complex[][] matrix1,
@@ -1103,11 +1282,12 @@ public class ComplexMatrixMath {
      *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to corresponding
      *  elements in <i>maxError</i>. If both matrices are empty, return true.
      *  <p>
-     *  @param array1 The first matrix.
-     *  @param array2 The second matrix.
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
      *  @param maxError The matrix of thresholds for the magnitudes of difference.
      *  @throws IllegalArgumentException If the matrices do not have the same
      *   dimensions, or if an elment in <i>maxError</i> is negative.
+     *  @return True or false.
      *  </p>
      */
     public static final boolean within(Complex[][] matrix1,
@@ -1145,12 +1325,13 @@ public class ComplexMatrixMath {
      *  the magnitude of the corresponding element in <i>maxError</i>. 
      *  If both matrices are empty, return true.
      *  <p>
-     *  @param array1 The first matrix.
-     *  @param array2 The second matrix.
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
      *  @param maxError A matrix of complex numbers whose magnitudes 
      *  for each element are taken to be the distance thresholds.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
+     *  @return True or false.
      *  </p>
      */
     public static final boolean within(Complex[][] matrix1,
@@ -1173,21 +1354,33 @@ public class ComplexMatrixMath {
 
     /** Return a new complex matrix whose entries are all zero.
      *  The size of the matrix is specified by the input arguments.
+     *  <p>
+     *  @param rows The number of rows of the zero matrix.
+     *  @param columns The number of columns of the zero matrix.
+     *  @return A new complex matrix whose entries are all zero.
+     *  </p>
      */
     public static final Complex[][] zero(int rows, int columns) {
         return _zeroMatrix(new Complex[rows][columns], rows, columns);
     }
 
-    /** Return the number of columns of a matrix. */
+    /** Return the number of columns of a matrix.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return The number of columns of the given matrix.
+     *  </p>
+     */
     protected static final int _columns(final Complex[][] matrix) {
         return matrix[0].length;
     }
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.
+     *  <p>
      *  @param caller A string representing the caller method name.
      *  @param matrix1 A matrix of complex numbers.
      *  @param matrix2 A matrix of complex numbers.
+     *  </p>
      */
     protected static final void _checkSameDimension(final String caller,
             final Complex[][] matrix1, final Complex[][] matrix2) {
@@ -1206,9 +1399,11 @@ public class ComplexMatrixMath {
 
     /** Check that the argument matrix is a square matrix. If the matrix is not
      *  square, an IllegalArgumentException is thrown.
+     *  <p>
      *  @param caller A string representing the caller method name.
      *  @param matrix A matrix of complex numbers.
-     *  @return The dimension of the square matrix.
+     *  @return The dimension of the square matrix (an int).
+     *  </p>
      */
     protected static final int _checkSquare(final String caller,
             final Complex[][] matrix) {
@@ -1221,15 +1416,34 @@ public class ComplexMatrixMath {
         return _rows(matrix);
     }
 
+    /** Print out the dimensions of the given matrix.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A string specifying the dimensions of the given matrix.
+     *  </p>
+     */
     protected static final String _dimensionString(final Complex[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
 
-    /** Return the number of rows of a matrix. */
+    /** Return the number of rows of a matrix. 
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return The number of rows of the given matrix.
+     *  </p>
+     */
     protected static final int _rows(final Complex[][] matrix) {
         return matrix.length;
     }
 
+    /** Place zeroes in specific places of the given matrix.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @param rows The number of rows for the matrix.
+     *  @param columns The number of columns for the matrix.
+     *  @return The modified matrix with zeroes in the desired positions.
+     *  </p>
+     */
     protected static final Complex[][] _zeroMatrix(Complex[][] matrix,
             int rows, int columns) {
         for (int i = 0; i < rows; i++) {
