@@ -15,13 +15,10 @@
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
 
-            <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
-            <input source="ptolemy/domains/de/lib/deentities.xml"/>
 	    <input source="ptolemy/domains/fsm/lib/fsmentities.xml"/>
 	    <!-- GR depends on the 3D graphics package of Java being present-->            <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	    <input source="ptolemy/domains/rtp/lib/rtpentities.xml"/>
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
-            <input source="ptolemy/domains/sdf/lib/sdfentities.xml"/>
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
       </group>
     ?>
