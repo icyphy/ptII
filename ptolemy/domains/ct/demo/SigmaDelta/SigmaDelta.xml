@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SigmaDelta" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -41,20 +41,21 @@ is related to Sigma-Delta A/D converters, is due to Mark Lemkin (Ph.D. thesis,
 differential system. The acceleration is sampled, filtered, and fed back
 to produce a countering electrostatic force.</text></svg></configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, 0, 819, 563}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 819, 572}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu 
+Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -67,7 +68,7 @@ to produce a countering electrostatic force.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 415.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 370.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -96,8 +97,6 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
             </property>
-            <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-            </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -105,6 +104,8 @@ to produce a countering electrostatic force.</text></svg></configure>
             <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+            </property>
+            <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
@@ -249,7 +250,7 @@ to produce a countering electrostatic force.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="15.019999999999769"/>
+<xRange min="0.0" max="15.0053755731"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
             </configure>
@@ -329,9 +330,15 @@ to produce a countering electrostatic force.</text></svg></configure>
     <entity name="delay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
+        <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 225.0]">
         </property>
     </entity>
     <entity name="FIR Filter" class="ptolemy.domains.sdf.lib.FIR">
@@ -343,29 +350,17 @@ to produce a countering electrostatic force.</text></svg></configure>
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.7, 0.3}">
         </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 225.0]">
         </property>
     </entity>
     <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 225.0]">
-        </property>
-    </entity>
-    <entity name="Accumulator" class="ptolemy.actor.lib.Average">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 325.0">
-        </property>
-    </entity>
-    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 370.0">
-        </property>
-    </entity>
-    <entity name="DigitalClock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 380.0">
         </property>
     </entity>
     <entity name="DEPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -399,7 +394,31 @@ to produce a countering electrostatic force.</text></svg></configure>
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}">
         </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 315.0">
+        </property>
+    </entity>
+    <entity name="Average 50 samples" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="decimation" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="repeat(50, 0.02)">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 315.0]">
         </property>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
@@ -412,15 +431,9 @@ to produce a countering electrostatic force.</text></svg></configure>
         <vertex name="vertex" value="115.0, 260.0">
         </vertex>
     </relation>
-    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="180.0, 380.0">
-        </vertex>
-    </relation>
-    <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="CTSubsystem.Pin" relation="_R3"/>
     <link port="CTSubsystem.Pout" relation="_R0"/>
@@ -430,15 +443,10 @@ to produce a countering electrostatic force.</text></svg></configure>
     <link port="FIR Filter.output" relation="_R2"/>
     <link port="Quantizer.input" relation="_R2"/>
     <link port="Quantizer.output" relation="_R3"/>
-    <link port="Accumulator.input" relation="_R4"/>
-    <link port="Accumulator.output" relation="_R6"/>
-    <link port="Accumulator.reset" relation="_R5"/>
-    <link port="Sampler.input" relation="_R6"/>
-    <link port="Sampler.output" relation="_R7"/>
-    <link port="Sampler.trigger" relation="_R5"/>
-    <link port="DigitalClock.output" relation="_R5"/>
-    <link port="DEPlot.input" relation="_R7"/>
     <link port="DEPlot.input" relation="_R3"/>
+    <link port="DEPlot.input" relation="relation2"/>
     <link port="Moving Average.input" relation="_R3"/>
-    <link port="Moving Average.output" relation="_R4"/>
+    <link port="Moving Average.output" relation="relation"/>
+    <link port="Average 50 samples.input" relation="relation"/>
+    <link port="Average 50 samples.output" relation="relation2"/>
 </entity>
