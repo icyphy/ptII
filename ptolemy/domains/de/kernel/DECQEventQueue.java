@@ -88,13 +88,14 @@ public class DECQEventQueue implements DEEventQueue {
      *  event queue.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public final DEEventTag getNextTag() throws IllegalActionException {
+    public synchronized final DEEventTag getNextTag()
+            throws IllegalActionException {
         return (DEEventTag)_cQueue.getNextKey();
     }
 
     /** Return true if this event queue is empty.
      */
-    public final boolean isEmpty() {
+    public synchronized final boolean isEmpty() {
         return _cQueue.isEmpty();
     }
 
@@ -102,6 +103,7 @@ public class DECQEventQueue implements DEEventQueue {
      */
     public final synchronized void put(DEEvent event) {
         _cQueue.put(event.getEventTag(), event);
+        notifyAll();
     }
 
     /** Unregister a debug listener.  If the specified listener has not
