@@ -20,7 +20,7 @@
     </doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[37, -9]">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -220,6 +220,12 @@
             </port>
             <entity name="controlLaw" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="exprF">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -475,36 +481,26 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="ctdisp" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="518.1818181818181, 306.6666666666667">
+        <property name="_location" class="ptolemy.moml.Location" value="480.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure source="plotConfigure.xml"><![CDATA[
-<?xml version="1.0" standalone="no"?>
-      	<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-           "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-      	<plot>
-        <size width="450" height="300"/>
-        <title>Force, Position and Speed</title>
-      	</plot>
-        ]]>
-        </configure>
     </entity>
     <relation name="r44" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r55" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r66" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="343.63636363636357, 80.0">
+        <vertex name="vertex" value="345.0, 85.0">
         </vertex>
     </relation>
     <relation name="r77" class="ptolemy.actor.TypedIORelation">
@@ -514,13 +510,13 @@
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="169.09090909090907, 120.0">
+        <vertex name="vertex" value="169.09090909090907, 120.0">
         </vertex>
     </relation>
     <relation name="r4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="430.9090909090908, 200.0">
+        <vertex name="vertex" value="430.9090909090908, 200.0">
         </vertex>
     </relation>
     <relation name="r9" class="ptolemy.actor.TypedIORelation">
@@ -547,7 +543,6 @@
     <link port="ssamp.input" relation="r8"/>
     <link port="ssamp.output" relation="r9"/>
     <link port="toMonitor.input" relation="r9"/>
-    <link port="ctdisp.input" relation="r3"/>
-    <link port="ctdisp.input" relation="r66"/>
-    <link port="ctdisp.input" relation="r8"/>
+    <link port="TimedPlotter.input" relation="r3"/>
+    <link port="TimedPlotter.input" relation="r8"/>
 </entity>
