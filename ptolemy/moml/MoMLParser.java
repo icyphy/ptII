@@ -838,7 +838,7 @@ public class MoMLParser extends HandlerBase {
                 MoMLParser newParser =
 		    new MoMLParser(_workspace, null, _classLoader);
                 newParser.setContext(_current);
-                newParser._propogating = _propogating;
+                newParser._propagating = _propagating;
                 _parse(newParser, base, source);
 
             } else if (elementName.equals("link")) {
@@ -1332,9 +1332,9 @@ public class MoMLParser extends HandlerBase {
     ////                         package freindly variables        ////
 
     // Indicator that the MoML currently being evaluated is the result
-    // of propogating a change from a master to something that was cloned
+    // of propagating a change from a master to something that was cloned
     // from the master.  This is set by MoMLChangeRequest only.
-    boolean _propogating = false;
+    boolean _propagating = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1693,11 +1693,11 @@ public class MoMLParser extends HandlerBase {
     }
 
     // If an object is deleted from a container, and this is not the
-    // result of a propogating change from a master, then we need
+    // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
     private void _recordDeletion(
             String type, NamedObj container, String deleted) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));
@@ -1711,14 +1711,14 @@ public class MoMLParser extends HandlerBase {
     }
 
     // If a new link is added to a container, and this is not the
-    // result of a propogating change from a master, then we need
+    // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
     private void _recordLink(
             NamedObj container,
             String port,
             String relation,
             String insertAtSpec) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));
@@ -1745,10 +1745,10 @@ public class MoMLParser extends HandlerBase {
     }
 
     // If a new object is added to a container, and this is not the
-    // result of a propogating change from a master, then we need
+    // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
     private void _recordNewObject(NamedObj container, NamedObj newObj) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));
@@ -1761,7 +1761,7 @@ public class MoMLParser extends HandlerBase {
     }
 
     // If a link is deleted from a container, and this is not the
-    // result of a propogating change from a master, then we need
+    // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
     private void _recordUnlink(
             NamedObj container,
@@ -1769,7 +1769,7 @@ public class MoMLParser extends HandlerBase {
             String relation,
             String indexSpec,
             String insideIndexSpec) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));

@@ -158,10 +158,10 @@ public class MoMLChangeRequest extends ChangeRequest {
         List othersList = context.deferredMoMLDefinitionFrom();
         if (othersList != null) {
             try {
-                // Let the parser know that we are propogating
+                // Let the parser know that we are propagating
                 // changes, so that it does not need to record them
                 // using MoMLAttribute.
-                _parser._propogating = true;
+                _parser._propagating = true;
                 Iterator others = othersList.iterator();
                 while (others.hasNext()) {
                     NamedObj other = (NamedObj)others.next();
@@ -172,7 +172,7 @@ public class MoMLChangeRequest extends ChangeRequest {
                     }
                 }
             } finally {
-                _parser._propogating = false;
+                _parser._propagating = false;
             }
         }
     }
