@@ -16,9 +16,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 815, 416}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 815, 466}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 307]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -28,7 +28,7 @@
 component.  That component contains another Ptolemy II model.
 Each time it fires, it performs a complete execution of
 that other Ptolemy II model, rather than just one firing
-as would be typical of a composite actor.s</text></svg></configure>
+as would be typical of a composite actor.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -129,10 +129,6 @@ repeatedly executed.</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -189,17 +185,13 @@ on each run.</text></svg></configure>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 192, 612, 577}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={448, 337, 457, 418}}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 529]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[449, 363]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="run - 1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 180.0">
-            </property>
-            <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
             </property>
             <port name="inputX" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -318,10 +310,6 @@ on each run.</text></svg></configure>
             <doc>This composite actor generates a sine wave.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 140.0">
             </property>
-            <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </entity>
         <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
             <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
@@ -420,22 +408,10 @@ on each run.</text></svg></configure>
             <doc>This composite actor generates a sine wave.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 205.0">
             </property>
-            <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <link port="XYPlotter.inputX" relation="relation"/>
         <link port="XYPlotter.inputY" relation="relation2"/>
@@ -452,10 +428,6 @@ on each run.</text></svg></configure>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 170.0">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -468,10 +440,6 @@ on each run.</text></svg></configure>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="run composite actor.run" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>
