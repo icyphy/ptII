@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/wireless
 
-DIRS =		kernel lib demo
+DIRS =		kernel lib demo doc
 
 # Root of Ptolemy II directory
 ROOT =		../../..
