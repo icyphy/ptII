@@ -65,6 +65,7 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
+			ptolemy.domains.de.demo \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.odf.kernel \
@@ -73,6 +74,7 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.pn.lib \
 			ptolemy.domains.sc.kernel \
 			ptolemy.domains.sc.lib \
+			ptolemy.domains.sdf.demo \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq \
@@ -100,6 +102,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
 			../ptolemy/domains/ct/kernel/util/*.java \
+			../ptolemy/domains/de/demo/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
 			../ptolemy/domains/odf/kernel/*.java \
@@ -108,6 +111,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/pn/lib/*.java \
 			../ptolemy/domains/sc/kernel/*.java \
 			../ptolemy/domains/sc/lib/*.java \
+			../ptolemy/domains/sdf/demo/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
