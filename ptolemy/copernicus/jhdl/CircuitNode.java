@@ -29,7 +29,9 @@
 
 package ptolemy.copernicus.jhdl;
 
-import ptolemy.actor.Port;
+// I'm not sure about this import, but ptolemy.actor.Port does not
+// exist, and having this import present causes errors in the javadoc output.
+//import ptolemy.actor.Port;
 
 public class CircuitNode {
     public CircuitNode(Object obj){
