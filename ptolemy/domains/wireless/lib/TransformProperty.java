@@ -34,8 +34,6 @@ import java.net.URL;
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
@@ -46,9 +44,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
 import ptolemy.domains.wireless.kernel.PropertyTransformer;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
@@ -56,7 +51,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -68,15 +62,15 @@ import ptolemy.moml.MoMLParser;
 
 /**
 This actor implements the PropertyTransformer interface. It register itself
-with the wireless channel that its connected WirelessIOPort uses. On each 
-firing, simply send the token from the <i>data</i>
-input ports, and outputs the data on the 
+and its connected WirelessIOPort with the wireless channel which the 
+WirelessIOPort uses. On each firing, it simply sends the token from the <i>data</i>
+input<i> ports, and outputs the data on the 
 <i>output</i> port. The channel may call it getProperty() method to get
-the interested property. 
+the property as a RecordToken. 
 
 This actor has a <i>modelFileOrURL<i> parameter that specify a model used 
 to calculate the properties. When getProperty() is called, it calles the
-ModelUtilities.executeModel(...) method to execute the specified model and
+ModelUtilities.executeModel() method to execute the specified model and
 return the result to the channel.
 
 @author Yang Zhao
@@ -103,6 +97,7 @@ public class TransformProperty extends TypedAtomicActor
         // Create and configure the parameters.
         modelFileOrURL = new FileParameter(this, "modelFileOrURL");
         //Crate the icon.
+        //FIXME: create a better icon here...
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
@@ -121,7 +116,8 @@ public class TransformProperty extends TypedAtomicActor
      */
     public TypedIOPort output;
 
-    /** The file name or URL of the model that this actor represents.
+    /** The file name or URL of the model that this actor invokes to 
+     *  transforme property.
      */
     public FileParameter modelFileOrURL;
 
@@ -143,11 +139,8 @@ public class TransformProperty extends TypedAtomicActor
                 // are asking it to create a new workspace for the referenced
                 // model.  This is necessary because the execution of that
                 // model will proceed through its own sequences, and it
-                // will need to get write permission on the workspace.
-                // Particularly if it is executing in a new thread, then
-                // during the fire() method of this actor it would be
-                // inappropriate to grant write access on the workspace
-                // of this actor.
+                // will need to get write permission on the workspace. (this
+                // documentation is copied from ModelReference.java)
                 MoMLParser parser = new MoMLParser();
                 try {
                      _model = parser.parse(null, url);
@@ -195,10 +188,11 @@ public class TransformProperty extends TypedAtomicActor
         super.fire();
         // Note that an sensor node may call the channel to register a 
         // PropertyTransformer. And the channel
-        // create initialize the HashMap from a port to its registed 
-        // PropertyTransformer. But we have no control about whose 
+        // create the HashMap from a port to its registed 
+        // PropertyTransformer in its initialize(). But we have no control about whose 
         // Initialize() method will be executed first. So we do it in
         // the fire method if it has register with the channel.
+        // FIXME: this might be too late...
         if (!_registeredWithChannel && _model instanceof CompositeActor ) {
             
             _executable = (CompositeActor)_model;
@@ -264,8 +258,8 @@ public class TransformProperty extends TypedAtomicActor
      */
     public void stopFire() {
         if(_executable != null){
-                    _executable.stopFire();
-                }
+            _executable.stopFire();
+        }
         super.stopFire();
     }
 
@@ -291,6 +285,10 @@ public class TransformProperty extends TypedAtomicActor
         if (_executable!= null) {
             double[] p1 = _locationOf(sender);
             double[] p2 = _locationOf(destination);
+            //FIXME: can we provide a more generic way to specify 
+            //the labels?
+            // create the RecordToken used to set the parameter of the
+            // specified model.
             String[] labels = {"SenderLocation", 
                                "ReceiverLocation",
                                "Properties"
@@ -322,21 +320,13 @@ public class TransformProperty extends TypedAtomicActor
         return null;
     }
     
-    /** Return the location of the given port. If the container of the
-     *  specified port is the container of this channel, then use the
-     *  "_location" attribute of the port.  Otherwise, use the
-     *  "_location" attribute of its container. In either case,
-     *  register a listener to the location attribute so that valueChanged()
-     *  will be called if and when that location changes.
-     *  The calling method is expected to have read access on the workspace.
-     *  Subclasses may override this method to provide some other way of
-     *  obtaining location information.
+    /** Return the location of the given WirelessIOPort. 
      *  @param port A port with a location.
      *  @return The location of the port.
      *  @exception IllegalActionException If a valid location attribute cannot
      *   be found.
      */
-    private double[] _locationOf(IOPort port) throws IllegalActionException {
+    private double[] _locationOf(WirelessIOPort port) throws IllegalActionException {
         Entity container = (Entity)port.getContainer();
         Locatable location = null;
         location = (Locatable)container.getAttribute(
