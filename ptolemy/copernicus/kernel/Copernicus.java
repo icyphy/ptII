@@ -400,6 +400,35 @@ public class Copernicus {
         return substituteMap;
     }
 
+    /** Given a string that names a file or URL, try to
+     *  open as a file, and then as a URL.
+     *  @param inputFileName The name of the file or URL to open
+     *  @returns A BufferedReader that refers to the inputFileName
+     *  @exception FileNotFoundException If the file cannot be found.
+     *  @exception IOException If there were problems creating
+     *  the BufferedReader.
+     */
+    public static BufferedReader openAsFileOrURL(String inputFileName)
+            throws FileNotFoundException, IOException {
+        BufferedReader inputFile;
+	try {
+	    inputFile =
+		new BufferedReader(new FileReader(inputFileName));
+	} catch (IOException ex) {
+	    // Try it as a resource
+	    URL inputFileURL =
+		Thread.currentThread().getContextClassLoader()
+		.getResource(inputFileName);
+	    if (inputFileURL == null) {
+		throw ex;
+	    }
+	    inputFile =
+		new BufferedReader(new InputStreamReader(inputFileURL
+							 .openStream()));
+	}
+        return inputFile;
+    }
+
     /** Given a string and a Map containing String key/value pairs,
      *  substitute any keys found in the input with the corresponding
      *  values.
@@ -473,35 +502,20 @@ public class Copernicus {
 	return output.toString();
     }
 
-    /** Read in the contents of inputFileName, and replace each matching
+    /** Read in the contents of inputFile, and replace each matching
      *	String key found in substituteMap with the corresponding String value
      *  and write the results to outputFileName.
-     *  @param inputFileName  The name of the file to read from.
+     *  @param inputFile A BufferedReader that refers to the file to be
+     *  read in.
      *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
+     *  @see substitute(String, Map, String)
      */
-    public static void substitute(String inputFileName,
+    public static void substitute(BufferedReader inputFile,
             Map substituteMap,
             String outputFileName)
             throws FileNotFoundException, IOException {
-	BufferedReader inputFile;
-	try {
-	    inputFile =
-		new BufferedReader(new FileReader(inputFileName));
-	} catch (IOException ex) {
-	    // Try it as a resource
-	    URL inputFileURL =
-		Thread.currentThread().getContextClassLoader()
-		.getResource(inputFileName);
-	    if (inputFileURL == null) {
-		throw ex;
-	    }
-	    inputFile =
-		new BufferedReader(new InputStreamReader(inputFileURL
-							 .openStream()));
-	}
-
 	PrintWriter outputFile =
 	    new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
 	String inputLine;
@@ -510,6 +524,23 @@ public class Copernicus {
  	}
 	inputFile.close();
 	outputFile.close();
+    }
+
+    /** Read in the contents of inputFileName, and replace each matching
+     *	String key found in substituteMap with the corresponding String value
+     *  and write the results to outputFileName.
+     *  @param inputFileName  The name of the file to read from.
+     *  @param substituteMap The Map of String keys like "@codeBase@"
+     *  and String values like "../../..".
+     *  @param outputFileName The name of the file to write to.
+     *  @see substitute(BufferedReader, Map, String)
+     */
+    public static void substitute(String inputFileName,
+            Map substituteMap,
+            String outputFileName)
+            throws FileNotFoundException, IOException {
+	BufferedReader inputFile = openAsFileOrURL(inputFileName);
+        substitute(inputFile, substituteMap, outputFileName);
     }
 
     ///////////////////////////////////////////////////////////////////
