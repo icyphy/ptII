@@ -337,7 +337,7 @@ profileObfuscate:
 GCJ_DIR =	/usr/local
 
 # The GNU C/Java compiler 
-GCJ =		$(GCJ_DIR)/bin/gcj
+GCJ =		gcj
 GCJ_LIBDIR =	$(GCJ_DIR)/lib
 
 GCJ_JAR = /usr/share/java/libgcj-3.2.jar
@@ -346,219 +346,29 @@ GCJ_JAR = /usr/share/java/libgcj-3.2.jar
 # If there is no -g or -O option, then the default is -g1
 #GCJ_FLAGS =	-static
 #GCJ_FLAGS =	-pg -g0 -O3 -fno-bounds-check --classpath=$(GCJ_JAR)
-GCJ_FLAGS =	-pg -g0 -O3 -fno-bounds-check
+GCJ_FLAGS =	-g -O3 -fno-bounds-check
 
-# GCJ flags used at link time
-#GCJ_LINK_FLAGS = -v -Wl,-R,$(GCJ_LIBDIR)
-GCJ_LINK_FLAGS = -v
-# -L$(GCJ_LIBDIR) should be first so we get the right libgcj.spec
-#GCJ_LINK_LIBS =  -L$(GCJ_LIBDIR)
+gcj: $(MODEL)_gcj
 
-#  GCJ only needs one rule now!
-gcj:    
+$(MODEL)_gcj:
 	@echo "Running GCJ on treeshake_codegen.jar"
 	$(GCJ) $(GCJ_FLAGS) --main=$(TARGETPACKAGE).Main -o $(MODEL)_gcj $(TREESHAKE_PREFIX)_codegen.jar
 
 
-gcjOld:
-	echo "To compile a demo with gcj:" 
-	echo " 1) Run 'make gcjSetup gcjFix'"
-	echo " 2) Fix CGoutputBitDisplay.java so that 'make gcjFixCompile' works"
-	echo " 3) Run 'make gcj2'"
-	echo " 4) Run 'make gcjRun'"
-
-gcjSetup:	demo treeShake runTreeShake
-
-
-gcjFix: $(TARGETPATH)CGoutputBitDisplay.java
-$(TARGETPATH)CGoutputBitDisplay.java:
-	@echo "gcj fails with stack underflow on CGoutputBitDisplay,"
-	@echo " so we regenerate"
-	cd $(TARGETPATH); \
-		"$(PTII)/bin/jode" \
-		ptolemy.copernicus.java.cg.OrthogonalCom.CGoutputBitDisplay | \
-		awk '{if ($$0 ~ /^package /) {printit=1}; if (printit == 1) { print $$0}} ' | \
-		sed 's@final@/* final */@g' > CGoutputBitDisplay.java
-	@echo "Now edit $(TARGETPATH)CGoutputBitDisplay.java"
-	@echo "and run make gcjFixCompile"
-
-gcjFixCompile:
-	cd $(TARGETPATH); \
-		$(JAVAC) -classpath "$(PTII)" CGoutputBitDisplay.java
-
-gcj1:
-	@echo "---- This will fail during linking because of missing"
-	@echo "     classes like actor.lib.Sequence and util.StringUtilities"
-	cd $(TARGETPATH); \
-		CLASSPATH=$(PTII) \
-		$(GCJ) $(GCJ_FLAGS) \
-			--main=ptolemy.copernicus.java.cg.$(MODEL).Main \
-			-o ortho *.class;
-
-gcj2: $(TARGETPATH)gcj gcj2_0 gcj2_1 gcj2_2
-
-# Unjar the treeshake_codegen jar file for use with gcj
-# Use $(TREESHAKE_PREFIX)_codegen.jar insetead of
-# $(TREESHAKE_PREFIX)_codegen.jar because of relative path name problems
-unjar_treeshake_codegen: $(TARGETPATH)gcj
-$(TARGETPATH)gcj: $(TREESHAKE_PREFIX)_codegen.jar
-	rm -rf $@
-	mkdir $@
-	cd $@; jar -xf "$(TREESHAKE_PREFIX)_codegen.jar"
-
-# A list of directories that are required to compile the treeshaken directories
-# This is necessary because we treeshake by class, so the .class files
-# that the treeshaker includes may have methods that are not called
-# that contain references to classes that were not included in the
-# treeshaker output.  However, gcj does a C style link, where all
-# the symbols in a .o file must be resolved.  So we include these
-# other classes.
-GCJ_AUX_DIRS = ptolemy/data/expr ptolemy/data/unit ptolemy/data ptolemy/kernel/util ptolemy/graph ptolemy/data/type ptolemy/actor ptolemy/kernel ptolemy/util ptolemy/graph/analysis ptolemy/actor/util ptolemy/kernel/attributes
-
-GCJ_TO_BE_REMOVED = ptolemy/util/XSLTUtilities.class \
-	ptolemy/data/expr/NotEditableParameter.class \
-	ptolemy/actor/MobileFunction.class \
-	ptolemy/actor/MobileModel.class
-
-gcj2_0: $(TARGETPATH)gcj
-	@echo "For each directory in the treeshaken output,"
-	@echo "Copy all the class files from corresponding directory"
-	@echo "in $PTII"
-	@echo " Ignore any '*.class not found' messages" 
-	cd $(TARGETPATH)gcj; \
-		dirs=`find . -type d -print`; \
-		for dir in $$dirs; \
-		do \
-			files=`ls -1 $$dir/*.class | awk 'END {print NR}'`; \
-			if [ $$files -gt 1 ]; then \
-				echo "---Copying .class files from \$$PTII to $$dir"; \
-				cp $(PTII)/$$dir/*.class $$dir; \
-			fi; \
-		done; \
-		for dir in $(GCJ_AUX_DIRS); \
-		do \
-			if [ ! -d $$dir ]; then \
-				mkdir -p $$dir; \
-			fi; \
-			echo "---Copying aux .class from \$$PTII to $$dir"; \
-			cp $(PTII)/$$dir/*.class $$dir; \
-		done;
-	(cd $(TARGETPATH)gcj; rm -f $(GCJ_TO_BE_REMOVED))
-
-
-gcj2_1:
-	@echo "--- Run gcj on all the .class files in the jar file dir"
-	cd $(TARGETPATH)gcj; \
-		dirs=`find . -type d -print`; \
-		for dir in $$dirs; \
-		do \
-			files=`ls -1 $$dir/*.class 2>&1 | awk '$$1 ~ /.class$$/ {c++}  END {print c}'`; \
-			if [ $$files -gt 1 ]; then \
-				echo "$$retval---Running gcj in $$dir"; \
-				(cd $$dir; CLASSPATH="."; \
-					$(GCJ) -g -c \
-					$(GCJ_FLAGS) \
-					--CLASSPATH=$(TARGETPATH)gcj \
-					*.class); \
-			fi; \
-		done;
-
-gcj2_2:
-	@echo "--- Run gcj on all the .o files in the jar file dir"
-	@echo "    Note that here, we end up needing .class files other"
-	@echo "    than the ones in the tree shaken jar file"
-	cd $(TARGETPATH)gcj; \
-		objs=`find . -name "*.o" -print | awk -F / '{for (i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
-		$(GCJ) -g --main=ptolemy.copernicus.java.cg.$(MODEL).Main \
-			$(GCJ_FLAGS) \
-			$(GCJ_LINK_FLAGS) \
-			-o $(MODEL)_gcj $$objs \
-			$(GCJ_LINK_LIBS);
-	ls -l $(TARGETPATH)gcj/$(MODEL)_gcj
-
 gcjRun:
-	cd $(TARGETPATH)gcj; \
-		./$(MODEL)_gcj
+	./$(MODEL)_gcj
 
-gcjRunStats:
+profileGcj: $(MODEL)_gcj
 	@echo "Run the gcj output and collect stats"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		(cd $(TARGETPATH)gcj; \
-			./$(MODEL)_gcj) | tail -1 | \
+		(./$(MODEL)_gcj) | tail -1 | \
 			tee -a $(STATSFILE); \
 	done
 	"$(ROOT)/util/testsuite/memorystats" "$(MODEL) gcj" < $(STATSFILE);
 	@rm -f $(STATSFILE)
 
-gcj_decompile:
-	@echo "--- Decompile .class files in gcj"
-	decompilerTargetPath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
-	CLASSPATH=foo $(MAKE) \
-		AUXCLASSPATH=$(CLASSPATHSEPARATOR)$(TARGETPATH)gcj \
-		DECOMPILERTARGETPATH=$(TARGETPATH)gcj/$$decompilerTargetPath \
-		jodeDecompileDemo
-
-GDB=/usr/local/bin/gdb 
-gcjGdb:
-	echo "handle SIGPWR nostop noprint" > .gdbinit
-	echo "handle SIGXCPU nostop noprint" >> .gdbinit
-	echo "directory $(PTII)" >> .gdbinit 
-	$(GDB) $(TARGETPATH)gcj/$(MODEL)_gcj
-
-
-
-AR =		ar
-LIBNONSHAREDSUFFIX =	a
-RANLIB =	ranlib
-LIBDIR =	$(TARGETPATH)gcj/lib
-gcj3_1:
-	@echo "--- Determine what directories are in the jar file"
-	@echo "    then create libraries in "
-	@echo "    $(TARGETPATH)gcj/lib/"
-	if [ ! -d $(TARGETPATH)gcj/lib ]; then \
-		echo "making $(TARGETPATH)gcj/lib"; \
-		mkdir $(TARGETPATH)gcj/lib; \
-	fi
-	cd $(TARGETPATH)gcj; \
-		dirs=`find . -type d -print`; \
-		echo "dirs=$$dirs"; \
-		for dir in $$dirs; \
-		do \
-			files=`ls -1 $$dir/*.o | awk 'END {print NR}'`; \
-			if [ $$files -gt 1 ]; then \
-				echo "---Running ar in $$dir"; \
-				ptlib=lib`basename $$dir`.$(LIBNONSHAREDSUFFIX); \
-				(cd $$dir; \
-					pwd; \
-					rm -f $$ptlib; \
-					$(AR) cq $$ptlib \
-						*.o; \
-					$(RANLIB) $$ptlib; \
-					rm -f $(LIBDIR)/$$ptlib; \
-					ln $$ptlib \
-						$(LIBDIR); \
-					); \
-			fi; \
-		done;
-		ls -l $(LIBDIR)
-
-
-gcj3_2:
-	@echo "--- Link using the libraries in "
-	@echo "    $(TARGETPATH)gcj/lib/"
-	cd $(TARGETPATH)gcj; \
-		$(GCJ) -g --main=ptolemy.copernicus.java.cg.$(MODEL).Main \
-			$(GCJ_FLAGS) \
-			$(GCJ_LINK_FLAGS) \
-			-o $(MODEL)_lib_gcj  \
-			$(TARGETPATH)*.o \
-			ptolemy/data/Numerical.o \
-			$(GCJ_LINK_LIBS) \
-			-L$(LIBDIR) \
-			-ldata -lexpr -ltype -lunit -lexpr -ldata -lmath -lgraph -lutil;
-	ls -l $(TARGETPATH)gcj/$(MODEL)_lib_gcj
 
 ############################################################################
 # Rules to run the jode as a decompiler
