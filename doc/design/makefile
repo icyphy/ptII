@@ -66,6 +66,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	html \
+	hyvisual.pdf \
 	ptIIdesign1-intro.pdf \
 	ptIIdesign2-software.pdf \
 	ptIIdesign3-domains.pdf \
