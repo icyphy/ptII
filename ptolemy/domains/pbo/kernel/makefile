@@ -61,7 +61,14 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'PBODirector$$1.class' \
+	'PBODirector$$PBOCQComparator.class' \
+	'PBODirector$$PBOEvent.class' \
+	'PBOThreadDirector$$1.class' \
+	'PBOThreadDirector$$PBOCQComparator.class' \
+	'PBOThreadDirector$$PBOEvent.class' \
+	'PBOThreadDirector$$PBOThread.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
