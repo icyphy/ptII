@@ -116,7 +116,9 @@ if [ "$fileListingClasses" = "" ]; then
         sed 's@\.@/@g' | awk '{print $1 ".class"}'`
     #set +x
 else
+    # XMLToken includes org.w3c.dom.Document
     ptolemyFiles=`cat "$fileListingClasses" |
+        egrep -v '^java|^org.w3c|^sun|^com.sun' | \
         sed 's@\.@/@g' | awk '{print $1 ".class"}'`
 fi
 
