@@ -87,14 +87,14 @@ if test  ! -w "$PTII"; then
 fi
 
 AC_MSG_CHECKING([if \$PTII ('$PTII') contains "cygdrive"])
-echo "$PTII" | grep cygdrive > /dev/null
+echo "$PTII" | egrep 'cygdrive|cygwin' > /dev/null
 status=$?
 if test "$status" -eq 1 ; then
     AC_MSG_RESULT([ok
-	'$PTII' does not contain cygdrive, which is right.])
+	'$PTII' does not contain cygdrive or cygwin, which is right.])
 else
     AC_MSG_WARN(['\$PTII == $PTII,
-which contains 'cygdrive'.
+which contains 'cygdrive' or 'cygwin'.
 It could be that you have incorrectly set PTII.
 If you have installed Cygwin in c:/cygwin, and your Ptolemy II installation
 is in a directory outside of the c:/cygwin tree, then Cygwin may
@@ -102,10 +102,13 @@ change your PTII variable to include "/cygdrive/c".  This
 will cause problems with non-Cygwin tools like javac that do
 not understand /cygdrive/c
 
+PTII can end up with cygdrive or cygwin in it if
+you mistakenly do something like PTII=`pwd`.
+
 Under Cygwin, try permanently setting PTII in the control panel 
 (Start->Control Panels->Advanced->Environment Variables)
-or temporary set it within bash by using backslashes:
-  PTII=c:\\\\users\\\\yourname\\\\ptII
+or temporary set it within bash:
+  PTII=c:/users/yourname/ptII
   export PTII
 and then rerun
   ./configure
@@ -146,10 +149,8 @@ esac
 case "`uname -s`" in
     CYGWIN_NT-*)
 	AC_PATH_PROG(CMD_PATH, cmd)
-	if test -x "$CMD_PATH"; then
-		AC_MSG_RESULT([$CMD_PATH])
-	else
-		AC_MSG_WARN([Failed to find the 'cmd' command, which
+	if test ! -x "$CMD_PATH"; then
+			AC_MSG_WARN([Failed to find the 'cmd' command, which
     is used by the $PTII/bin/ptolemy script.
     Under Windows 2000, cmd is usually found at c:\\winnt\\system32\\cmd.exe.
     Under Windows XP, cmd is usually found at c:\\windows\\system32\\cmd.exe.
@@ -356,11 +357,13 @@ if "$JAVAC" confTest.java ; then
     else	
 	AC_MSG_ERROR(['CLASSPATH="$PTII/config" "$JAVA" confTest failed.
 If java fails, then you will not be able to run Ptolemy II.
-This could be because your PTII variable is set incorrectly.
+This could be because your PTII variable is set incorrectly, perhaps
+it has 'cygwin' or 'cygdrive' in it?
+
 Under Cygwin, try setting PTII in the control panel 
 (Start->Control Panels->Advanced->Environment Variables)
-or it with backslashes:
-  PTII=c:\\\\users\\\\yourname\\\\ptII
+or temporary set it within bash:
+  PTII=c:/users/yourname/ptII
   export PTII
 and then rerun
   ./configure
@@ -372,8 +375,8 @@ If javac fails, then you will not be able to compile Ptolemy II.
 This could be because your PTII variable is set incorrectly.
 Under Cygwin, try setting PTII in the control panel 
 (Start->Control Panels->Advanced->Environment Variables)
-or it with backslashes:
-  PTII=c:\\\\users\\\\yourname\\\\ptII
+or temporary set it within bash:
+  PTII=c:/users/yourname/ptII
   export PTII
 and then rerun
   ./configure
@@ -926,8 +929,8 @@ else
     $RESULTS])
 	fi
 
-        AC_MSG_CHECKING([gmp by compiling a C++ small program])
 	AC_PROG_CXX
+        AC_MSG_CHECKING([gmp by compiling a C++ small program])
 	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAGS $PTGMP_LIB -lgmpxx -lgmp ; then
 	    ./gmpTest2
 	    AC_MSG_RESULT([ok])
@@ -1589,7 +1592,6 @@ if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a "$PTII/mescal/kirika"
 else
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" != "none"; then
-        AC_MSG_RESULT([$PTCC])
         PTJNI_DIR=jni
     else    
         AC_MSG_WARN([Failed to find gcc])
@@ -1701,7 +1703,6 @@ else
 	if test -f "$JODE_DIR/jode.jar"; then
 	    AC_MSG_RESULT([$JODE_DIR/jode.jar])
 	    JODE_CLASSES=$JODE_DIR/jode.jar
-	    AC_MSG_RESULT([$JODE_CLASSES])
         else
 	    JODE_CLASSES=no
         fi
@@ -1860,7 +1861,7 @@ else
 
 	    cd "$srcdir/config"
 	    if "$JAVAC" MajorOSName.java ; then
-	        AC_MSG_CHECKING([the which major type of OS we are running under])
+	        AC_MSG_CHECKING([which major type of OS we are running under])
 		# Older versions of cygwin might not have env, but 1.1 does
 		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
 		    # Run it again and get the results
@@ -1874,7 +1875,6 @@ else
 		fi
 	    fi
 	    cd "$startdir"
-		AC_MSG_RESULT([$MATLAB_DIR])
 		case "`uname -s`" in
 		Linux)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
@@ -2324,7 +2324,6 @@ else
       	AC_MSG_RESULT([$X10_DIR])
       	AC_MSG_CHECKING([for \$X10_DIR/tjx10p-11/lib/x10.jar])
 	if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
-	   AC_MSG_RESULT([$X10_DIR/tjx10p-11/lib/x10.jar])
 	   X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
 	else
 	   X10_CLASSES=no
