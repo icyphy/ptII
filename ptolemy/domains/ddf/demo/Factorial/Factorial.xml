@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {349, 378, 878, 554}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 1, 878, 535}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 419]">
     </property>
@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 209.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes factorial using a very inefficient recursive algorithm &#10;(to demonstrate the use of ActorRecursion). Each iteration outputs one number.&#10;Configure the parameter iterations in DDF Director to specify desired iteration&#10;number. Because factorial rises very fast, it is recommended to keep it small.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes factorial using a very inefficient recursive algorithm &#10;(to demonstrate the use of ActorRecursion). Each iteration outputs one number.&#10;Configure the parameter iterations in DDF Director to specify desired iteration&#10;number. Because factorial rises very fast, it is recommended to keep it small&#10;to prevent from overflowing.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 10.0]">
         </property>
@@ -34,7 +34,7 @@
     <entity name="Factorial_Generator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 245.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {203, 372, 815, 535}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {149, 150, 815, 516}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -57,10 +57,6 @@
             </property>
         </entity>
         <entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion">
-            <property name="DDFDirector" class="ptolemy.domains.ddf.kernel.DDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-                </property>
-            </property>
             <property name="resursionActor" class="ptolemy.data.expr.StringParameter" value="Factorial_Generator">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 200.0]">
@@ -169,7 +165,7 @@
         <link port="Expression.in" relation="relation3"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {169, 371, 410, 294}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {722, 504, 292, 229}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 245.0]">
         </property>
