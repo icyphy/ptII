@@ -209,7 +209,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 keyPassword.setTypeEquals(BaseType.STRING);
                 keyPassword.setStringMode(true);
                 keyPassword.setExpression(
-                        "this.is.the.keyPassword,change.it".);
+                        "this.is.the.keyPassword,change.it");
 
                 // Add the possible keystore types.
                 keyStoreType = new StringParameter(this, "keyStoreType");
@@ -233,7 +233,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 storePassword.setTypeEquals(BaseType.STRING);
                 storePassword.setStringMode(true);
                 storePassword.setExpression(
-                        "this.is.the.storePassword,change.it".);
+                        "this.is.the.storePassword,change.it");
                 _storePassword = storePassword.getExpression();
             }
 
