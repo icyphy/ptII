@@ -125,8 +125,6 @@
         <entity name="x1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="-3.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="61.46154022216797, 38.0">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -136,8 +134,6 @@
         </entity>
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="x2">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="60.5384521484375, 139.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -161,8 +157,6 @@
         <entity name="x2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="171.23077392578125, 40.421051025390625">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -172,8 +166,6 @@
         </entity>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="167.3076934814453, 138.75">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -197,8 +189,6 @@
         <entity name="x3" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="281.76922607421875, 41.80000305175781">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -208,8 +198,6 @@
         </entity>
         <entity name="x3_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="x4">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="279.8461608886719, 138.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -233,8 +221,6 @@
         <entity name="x4" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="406.0, 37.5">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -244,8 +230,6 @@
         </entity>
         <entity name="x4_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="406.0769271850586, 139.90909004211426">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -269,8 +253,6 @@
         <entity name="output_Theta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="x1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="433.61537170410156, 216.0">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -292,8 +274,6 @@
         </entity>
         <entity name="output_dTheta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="x2">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="439.61537170410156, 282.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -317,8 +297,6 @@
         <entity name="output_Phi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="x3">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="437.61537170410156, 343.0">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -341,8 +319,6 @@
         <entity name="output_dPhi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.data.expr.Parameter" value="x4">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="434.61537170410156, 405.0">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -363,32 +339,22 @@
             </port>
         </entity>
         <relation name="relation_x1" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="115.38461538461537, 225.0">
-            </vertex>
         </relation>
         <relation name="_R" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation_x2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="226.15384615384613, 75.0">
-            </vertex>
         </relation>
         <relation name="_R2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation_x3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="353.69230769230757, 199.63636363636363">
-            </vertex>
         </relation>
         <relation name="_R3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation_x4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="336.92307692307685, 85.90909090909089">
-            </vertex>
         </relation>
         <relation name="_R4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation_u" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="88.38461538461537, 187.0">
-            </vertex>
         </relation>
         <relation name="_R5" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -473,16 +439,18 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>u</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="2.0149999999999793"/>
+<xRange min="0.0" max="5.0"/>
 <yRange min="-0.5" max="0.5"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -1195,6 +1163,8 @@
             </entity>
             <entity name="controllerFSM" class="ptolemy.domains.fsm.kernel.FSMActor">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+                </property>
+                <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
@@ -2130,16 +2100,18 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>E+mode</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="2.0149999999999793"/>
+<xRange min="0.0" max="5.0"/>
 <yRange min="-2.0" max="2.0"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
@@ -2176,7 +2148,7 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
-            <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
+            <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -2196,7 +2168,7 @@
             </property>
         </port>
         <entity name="Pendulum" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.4, 0.0, 0.0]">
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.6, 0.0, 0.0]">
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -2211,7 +2183,7 @@
             </port>
         </entity>
         <entity name="Arm" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.4, 0.0]">
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.6, 0.0]">
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -2566,7 +2538,7 @@
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="423.0, 228.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="420.0, 227.0">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
