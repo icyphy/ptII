@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1988 The Regents of the University of California.
+# @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -39,7 +39,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up Tcl procs to print out enums
 if {[info procs _testEnums] == "" } then { 
-    source testEnums.tcl
+    source [file join $TYCHO java pt kernel test testEnums.tcl]
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -57,13 +57,13 @@ if {[info procs _testEnums] == "" } then {
 # 
 # test FIFOQueue-1.1 {Get class information} {
 #     # If anything changes, we want to know about it so we can write tests.
-#     set n [java::new pt.kernel.FIFOQueue]
+#     set n [java::new pt.actors.FIFOQueue]
 #     list [getJavaInfo $n]
 # } {{
-#   class:         pt.kernel.FIFOQueue
+#   class:         pt.actors.FIFOQueue
 #   fields:        
 #   methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait capacity elements full {get int} getContainer history historyCapacity historySize {previous int} {put java.lang.Object} {setCapacity int} {setHistoryCapacity int} size take
-#   constructors:  pt.kernel.FIFOQueue {pt.kernel.FIFOQueue pt.kernel.Nameable} {pt.kernel.FIFOQueue pt.kernel.FIFOQueue}
+#   constructors:  pt.actors.FIFOQueue {pt.actors.FIFOQueue pt.actors.Nameable} {pt.actors.FIFOQueue pt.actors.FIFOQueue}
 #   properties:    class historyCapacity capacity container {{}}
 #   superclass:    java.lang.Object
 # }}
@@ -72,7 +72,7 @@ if {[info procs _testEnums] == "" } then {
 ####
 # 
 test FIFOQueue-2.1 {Construct an empty queue and check defaults} {
-    set queue [java::new pt.kernel.FIFOQueue]
+    set queue [java::new pt.actors.FIFOQueue]
     list [$queue capacity] \
             [_testEnums elements $queue] \
             [$queue full] \
@@ -86,7 +86,7 @@ test FIFOQueue-2.1 {Construct an empty queue and check defaults} {
 ####
 # 
 test FIFOQueue-2.2 {Construct an empty queue and attempt a get, previous, take} {
-    set queue [java::new pt.kernel.FIFOQueue]
+    set queue [java::new pt.actors.FIFOQueue]
     catch { [$queue get 0] } msg1
     catch { [$queue previous 0] } msg2
     list $msg1 $msg2 [expr { [$queue take] == [java::null] }]
@@ -97,7 +97,7 @@ test FIFOQueue-2.2 {Construct an empty queue and attempt a get, previous, take} 
 # 
 test FIFOQueue-2.3 {Construct an empty queue with a container} {
     set container [java::new pt.kernel.NamedObj "parent"]
-    set queue [java::new {pt.kernel.FIFOQueue pt.kernel.Nameable} $container]
+    set queue [java::new {pt.actors.FIFOQueue pt.kernel.Nameable} $container]
     [$queue getContainer] getName
 } {parent}
 
@@ -115,7 +115,7 @@ test FIFOQueue-2.3 {Construct an empty queue with a container} {
 ####
 # 
 test FIFOQueue-3.1 {Put data on a queue} {
-    set queue [java::new pt.kernel.FIFOQueue]
+    set queue [java::new pt.actors.FIFOQueue]
     $queue put $n1
     $queue put $n2
     $queue put $n3
@@ -142,7 +142,7 @@ test FIFOQueue-3.3 {Take items} {
 ####
 # 
 test FIFOQueue-4.1 {Put data on a queue with bounded capacity} {
-    set queue [java::new pt.kernel.FIFOQueue]
+    set queue [java::new pt.actors.FIFOQueue]
     $queue setCapacity 3
     list \
             [$queue put $n1] \
@@ -166,7 +166,7 @@ test FIFOQueue-4.2 {Take data off a queue with bounded capacity} {
 ####
 # 
 test FIFOQueue-5.1 {Test history} {
-    set queue [java::new pt.kernel.FIFOQueue]
+    set queue [java::new pt.actors.FIFOQueue]
     $queue setHistoryCapacity -1
     $queue put $n1
     $queue put $n2
@@ -201,7 +201,7 @@ test FIFOQueue-5.3 {Test previous with error} {
 ####
 # 
 test FIFOQueue-6.1 {Test history with bounded capacity} {
-    set queue [java::new pt.kernel.FIFOQueue]
+    set queue [java::new pt.actors.FIFOQueue]
     $queue setHistoryCapacity 2
     $queue put $n1
     $queue put $n2
