@@ -537,6 +537,25 @@ cd $PTII
 grep mystring `find . -name "*.html" -print`
 </PRE>
 
+<H3>Checking the configuration</H3>
+
+The HTMLViewer class treats urls that start with 
+<code>about:expandConfiguration</code> specially.
+For example
+
+<a href="about:expandConfiguration#full"><code>about:expandConfiguration#full</code>
+will expand <code>ptolemy/configs/<b>full</b>/configuration.xml</code>
+and display the resulting XML.  If any classes are not present in
+the classpath, then an error message will be displayed.  This
+is a very useful way to check out the <code>-ptiny</code> and
+other configurations in releases.
+<ul>
+<li><a href="about:expandConfiguration#dsp"><code>about:expandConfiguration#dsp</code>
+<li><a href="about:expandConfiguration#full"><code>about:expandConfiguration#full</code>
+<li><a href="about:expandConfiguration#hyvisual"><code>about:expandConfiguration#hyvisual</code>
+<li><a href="about:expandConfiguration#ptiny"><code>about:expandConfiguration#ptiny</code>
+</ul>
+
 <H3>Spell checking</H3>
 <a href="../../util/testsuite/ptspell"><CODE>$PTII/util/testsuite/ptspell</CODE></a>
  is a Ptolemy II specific spelling checker.
