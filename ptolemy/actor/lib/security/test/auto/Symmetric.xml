@@ -1,0 +1,166 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Symmetric" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="SymmetricDecryption" class="ptolemy.actor.lib.security.SymmetricDecryption">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SunJCE">
+        </property>
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
+        </property>
+        <property name="mode" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <property name="padding" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <doc>Receives a key from a SymmetricEncryption actor and
+          uses it to decrypt a data input based on a given symmetric
+          algorithm.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 65.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="keyIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="parameters" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="SymmetricEncryption" class="ptolemy.actor.lib.security.SymmetricEncryption">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SunJCE">
+        </property>
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
+        </property>
+        <property name="mode" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <property name="padding" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <doc>Creates and sends a key to a SymmetricDecryption and
+	  encrypts incoming data based on a given symmetric
+	  algorithm.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 160.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="keyOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="parameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1ub">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1ub">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 125.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 135.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1ub, 2ub, 3ub, 4ub}, {5ub, 6ub, 7ub, 8ub}, {9ub, 10ub, 11ub, 12ub}, {13ub, 14ub, 15ub, 16ub}, {17ub, 18ub, 19ub, 20ub}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 65.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="300.0, 150.0">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="310.0, 160.0">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="320.0, 170.0">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SymmetricDecryption.input" relation="relation3"/>
+    <link port="SymmetricDecryption.output" relation="relation6"/>
+    <link port="SymmetricDecryption.keyIn" relation="relation4"/>
+    <link port="SymmetricDecryption.parameters" relation="relation5"/>
+    <link port="SymmetricEncryption.input" relation="relation2"/>
+    <link port="SymmetricEncryption.output" relation="relation3"/>
+    <link port="SymmetricEncryption.keyOut" relation="relation4"/>
+    <link port="SymmetricEncryption.parameters" relation="relation5"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="SequenceToArray.input" relation="relation"/>
+    <link port="SequenceToArray.output" relation="relation2"/>
+    <link port="Test.input" relation="relation6"/>
+</entity>
