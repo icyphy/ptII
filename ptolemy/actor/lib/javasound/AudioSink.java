@@ -51,38 +51,39 @@ import ptolemy.media.javasound.*;
 //////////////////////////////////////////////////////////////////////////
 //// AudioSink
 /**
-This actor reads in audio data from the input port and records the
-data to a sound file or plays the audio data. The input port is of type
+Read audio samples from the input port and send the data to an
+appropriate sink (speaker or sound file). This actor can operate in 
+two distinct modes: live playback, and record to a sound file. The 
+input port is of type
 DoubleToken. Each DoubleToken read from the input represents one sample
 of the audio data and should be in the range [-1, 1]. Single channel
-(mono) and two channel (stero) audio are supported. For single channel
+(mono) and two channel (stereo) audio are supported. For single channel
 audio, tokens are read from channel 0 of the input port. For stereo
 , tokens are read from channel 0 (left) and channel 1
-(right) of the input port. Semantically, one
-token is read on each channel of the input port, on each firing,
-corresponding
-to the number of audio channels. In the actual implementation,
-several tokens may be consumed on each channel, on each
-firing, in order to
-improve performance. The number of tokens consumed on each
-channel on each firing is set by parameter <i>FIXME</i>.
+(right) of the input port.
 <p>
 <h2>Notes on audio sinks and required parameters</h2>
-<p>(1) Real-time (live) playback of audio. Note that this
-actor cannot automatically set the appropriate sample
-rate or number of audio channels. These parameters must
-be set manually.
+<p>(1) Using live playback mode. 
 <p>
+When this actor is in "live playback mode", this actor should
+be fired often enough (by invoking postfire() or iterate()) to
+prevent underflow of the internal audio playback buffer.
+Underflow should be avoided, since it will result in audio 
+discontinuities (heard as clicks) in the output.
+<p>
+The following parameters are relevant to live playback mode, and 
+should be set accordingly. In all cases, an exception is thrown if
+an illegal parameter value is used:
 <ul>
-<li><i>sink</i> should be set to "live".
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
 DoubleTokens read in by this actor will be interpreted as having
-this sample rate.
+this sample rate. The default value is 44100.
 <li><i>sampleSizeInBits</i> should be set to desired bit
-resolution.
+resolution. The default value is 16.
 <li><i>channels</i> should be set to desired number of audio
-channels.
-<li><i>bufferSize</i> may be set to optimize latency.
+channels. Allowable values are 1 and 2. The default value is 1.
+<li><i>bufferSize</i> may be set to optimize latency. A particular
+Java implementation may choose to ignore this parameter, however.
 This controls the delay from the time audio sample are read by this
 actor until the audio is actually heard at the speaker. A lower
 bound on the latency is given by
@@ -93,16 +94,16 @@ should be used.
 <p>(2) Write to a sound file on the native file system.
 <p>
 The following parameters are relevant to writing to a sound
-file.
+file. In all cases, an 
+exception is thrown if an illegal parameter value is used:
 <ul>
-<li><i>sink</i> should be set to "file".
 <li><i>channels</i> should be set to desired number of audio
-channels.
+channels. Allowable values are 1 and 2. The default value is 1.
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
 DoubleTokens read in by this actor will be interpreted as having
-this sample rate.
+this sample rate. The default value is 44100.
 <li><i>sampleSizeInBits</i> should be set to desired bit
-resolution.
+resolution. The default value is 16.
 </ul>
 <p>
 Note: Requires Java 2 v1.3.0 or later.
@@ -129,9 +130,7 @@ public class AudioSink extends Sink {
         input.setTypeEquals(BaseType.DOUBLE);
 
 	pathName = new Parameter(this, "pathName",
-                new StringToken("soundFile.wav"));
-	sink = new Parameter(this, "sink",
-                new StringToken("live"));	
+                new StringToken(""));
         sampleRate = new Parameter(this, "sampleRate", new IntToken(44100));
         sampleRate.setTypeEquals(BaseType.INT);
 
@@ -156,90 +155,78 @@ public class AudioSink extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The destination of the audio samples that are read in
-     *  by this actor. Possible choices are:
-     *  <p>(1) The speaker. Audio samples are sent to the speaker.
-     *  To use this mode, <i>sink</i> must be set to "live". The
-     *  latency between when the samples are received by this actor
-     *  and when they actually make it to the speaker roughly
-     *  corresponds to the size of the internal audio buffer.
-     *  If this mode is used, than it is important to call the
-     *  fire() method of this actor often enough to prevent
-     *  underflow of the internal audio buffer.
-     *  <p>(2)  A sound file. Audio samples are sent to
-     *  the sound file specified by parameter <i>pathName</i>.
-     *  To use this mode, <i>sink</i> must be set to "file".
-     *  <p> The default value of <i>sink</i> is "live".
+    /** The name of the file to write to. This parameter determines
+     *  which mode this actor will operate in. A value of "" will
+     *  cause live playback mode to be used. Otherwise, record to
+     *  a file mode will be used, where the filename will be the
+     *  value of this parameter. If no value is specified,
+     *  the default value of "" will be used.
      *  <p>
-     *  It is safe to change this parameter during excecution. If
-     *  this parameter is changed while in file writing mode,
-     *  all data captured so far will be saved to the file before
-     *  switching to live mode.
-     */
-    // FIXME: This parameter should go away. Write audio to
-    // speaker if pathName is "".
-    public Parameter sink;
-
-    /** The name of the file to write to. If no value is specified,
-     *  the default value of "soundFile.wav" will be used. Note
-     *  that audio will only be written to a sound file if
-     *  parameter <i>sink</i> is set to "file".
-     *  <p>
-     *  The encoding to use is determined by the file exention.
+     *  The encoding to use is determined by the file extension.
      *  E.g., "somefile.au" will create a Sun AU format file.
      *  The allowable file formats are AU, WAV, and , AIFF.
      *  <p>
-     *  It is safe to change this parameter during excecution. If
+     *  It is safe to change this parameter during execution. If
      *  this parameter is changed while in file writing mode,
-     *  all data captured so far will be saved.
+     *  all data captured so far will be saved, and the sound file
+     *  will be closed.
+     *  <p>
+     *  An exception will be occur if the path references a
+     *  non-exsistant or unsupported sound file.
      */
     public Parameter pathName;
 
     /** The desired sample rate to use, in Hz. Valid values
      *  are determined by the hardware, but typically at
      *  least include : 8000, 11025, 22050, 44100, and 48000.
-     *  The default value of the sample rate is 44100 Hz. An
-     *  exception will be thrown if an illegal value is used.
+     *  The default value of the sample rate is 44100 Hz. 
      *  <p>
-     *  It is safe to change this parameter during excecution.
+     *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
      *  saved up until the change to be lost.
+     *  <p>
+     *  An exception will be thrown if an illegal value is used.
      */
     public Parameter sampleRate;
 
-    /** The number desired number of bits per sample.
-     *  The default value is 16. Allowed values are
-     *  8 and 16 bits. 24 bit is not currently supported,
-     *  An execption will be thrown if an illegal value is
-     *  used.
+    /** The desired number of bits per sample.
+     *  The default value is 16. Allowed values are determined
+     *  by the hardware and Java implementation, but typically at
+     *  least include 8 and 16 bits. 
      *  <p>
-     *  It is safe to change this parameter during excecution.
+     *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
      *  saved up until the change to be lost.
+     *  <p>
+     *  An exception will be thrown if an illegal value is
+     *  used.
      */
     public Parameter sampleSizeInBits;
 
     /** The number of audio channels to use. This value must
-     *  an integer of value 1 (single channel) or 2 (stereo). 
-     *  More than two channels is not supported by current Java 
-     *  implementations. The default value is 1.
-     *  An exception will be thrown if an illegal value is used.
+     *  a positive integer. Allowed values are dependent on hardware
+     *  and the Java implementation, but typically at least include
+     *  1 (single channel) and 2 (stereo). The default value is 1.
      *  <p>
-     *  It is safe to change this parameter during excecution.
+     *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
      *  saved up until the sample rate change to be lost.
+     *  <p>
+     *  An exception will be thrown if an illegal value is used.
      */
     public Parameter channels;
 
-    /** Requested size of the internal audio playback buffer, in samples. 
+    /** Requested size of the internal audio playback buffer, in samples.
      *  This parameter controls the output latency. Ideally, the
      *  smallest value that gives acceptable performance (no overflow)
-     *  should be used. The default value is 4096.
+     *  should be used. The default value is 4096.  
+     *  This parameter is taken as a hint and a Java implementation may
+     *  choose to ignore it. 
      *  <p>
      *  This parameter has no effect when the audio data is only
      *  saved to a file.
      *  <p>
-     *  It is safe to change this parameter during excecution.
+     *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
      *  saved up until the change to be lost.
      */
@@ -274,8 +261,6 @@ public class AudioSink extends Sink {
 		_audioPutArray = new double[_channels][];
 	    }
 	} else if (attribute == pathName) {
-	    // Nothing for now...
-	} else if (attribute == sink) {
 	    // Nothing for now...
 	} else if (attribute == sampleRate) {
 	    // Nothing for now...
@@ -313,7 +298,6 @@ public class AudioSink extends Sink {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         AudioSink newobj = (AudioSink)super.clone(ws);
-        newobj.sink = (Parameter)newobj.getAttribute("sink");
         newobj.pathName = (Parameter)newobj.getAttribute("pathName");
         newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
         newobj.sampleSizeInBits =
@@ -344,9 +328,12 @@ public class AudioSink extends Sink {
      *  One token is read from each channel in an iteration. 
      *  The audio output is either
      *  a sound file and/or the speaker, depending on the current 
-     *  mode, which is controlled by the value of the <i>sink</i> 
+     *  mode, which is controlled by the value of the <i>pathName</i> 
      *  parameter.
-     *  @exception IllegalActionException If audio cannot be played.
+     *  @return COMPLETED if the actor was successfully iterated the
+     *   specified number of times. Otherwise, throw an exception.
+     *  @exception IllegalActionException If the <i>count</i> samples
+     *   cannot be written to the audio output device.
      */
     public int iterate(int count) throws IllegalActionException {
 	if(_debugging) _debug("iterate(count) with count = " + count);
@@ -367,20 +354,15 @@ public class AudioSink extends Sink {
 	    for (int m = 0; m < _channels; m++) {
 		// Keep writing samples until the array argument to
 		// putSamples() is full, then call putSamples().
-
-		//System.out.println("AudioSink: iterate(): _curElement < _putSampleSize: with: _curElement =  " + _curElement + " and _putSampleSize = " + _putSampleSize);
 		// Array argument to putSamples() is not full yet,
 		// so write another sample for each channel.
 		double deleteMePlease = 
 		    ((DoubleToken)_inArray[m][k]).doubleValue();
 		_audioPutArray[m][_curElement] = 
 		    ((DoubleToken)_inArray[m][k]).doubleValue();
-		
 	    }
 	    // Increment pointer.
-	    
 	    _curElement++;
-
 	    if (_curElement == _putSampleSize) {
 		try {
 		    //System.out.println("iterate: ");
@@ -388,10 +370,8 @@ public class AudioSink extends Sink {
 		    //	System.out.println(_audioPutArray[0][n]);
 		    //}
 		    //System.out.println("iterate: ***************");
-		    //System.out.println("AudioSink: iterate(): Invoking putSamples() and puting this many samples: " + _audioPutArray[0].length);
 		    // write out samples to speaker and/or file.
 		    _soundPlayback.putSamples(_audioPutArray);
-		    //System.out.println("AudioSink: iterate(): Returned from putSamples()");
 		} catch (Exception ex) {
 		    throw new IllegalActionException(
 						     "Cannot playback audio:\n" +
@@ -401,14 +381,13 @@ public class AudioSink extends Sink {
 		_curElement = 0;
 	    }
 	}
-    
 	return COMPLETED;
     }
 
     /** At most one token is read from each channel and written to the
      *  audio output. The audio output is either a sound file and/or 
      *  the speaker, depending on the current mode, which is 
-     *  controlled by the value of the <i>sink</i> parameter.
+     *  controlled by the value of the <i>pathName</i> parameter.
      *  @exception IllegalActionException If audio cannot be played.
      */
     public boolean postfire() throws IllegalActionException {
@@ -444,21 +423,17 @@ public class AudioSink extends Sink {
     public void wrapup() throws IllegalActionException {
 	super.wrapup();
 	if(_debugging) _debug("AudioSink: wrapup(): invoked");
-	System.out.println("AudioSink: wrapup(): invoked");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (_soundPlayback != null) {
 	     try {
-		 System.out.println("AudioSink: wrapup(): trying to shut down audio.");
 		 _soundPlayback.stopPlayback();
-		 System.out.println("AudioSink: wrapup(): finished shuting down audio.");
 	     } catch (IOException ex) {
 		 throw new IllegalActionException(
 		    "Cannot free audio resources:\n" +
 		    ex.getMessage());
 	     }
 	}
-	System.out.println("AudioSink: wrapup(): returning now....");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -488,28 +463,10 @@ public class AudioSink extends Sink {
 	     }
 	}
 	// Initialize audio playback.
-		String sinkStr = ((StringToken)sink.getToken()).stringValue();
-	if (sinkStr.equals("file")) {
-	    // Write audio data to a file.
-	    if(_debugging) _debug("AudioSink: initialize(): playback to file");
-	    String pathNameString =
-		((StringToken)pathName.getToken()).stringValue();
-	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
-	    int sampleSizeInBitsInt =
-                ((IntToken)sampleSizeInBits.getToken()).intValue();
-	    int channelsInt = ((IntToken)channels.getToken()).intValue();
-	    int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
-	    int putSamplesSize = _putSampleSize;
-	    
-	    _soundPlayback = new SoundPlayback(pathNameString,
-                    sampleRateInt,
-                    sampleSizeInBitsInt,
-                    channelsInt,
-                    bufferSizeInt,
-                    putSamplesSize);
-	} else if (sinkStr.equals("live")) {
-
-	    // Send audio data to the speaker.
+	String pathNameString =
+	    ((StringToken)pathName.getToken()).stringValue();
+	if (pathNameString.equals("")) {
+	    // Use live playback mode.
 	    if(_debugging) _debug("AudioSink: initialize(): playback to speaker");
             int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
             int sampleSizeInBitsInt =
@@ -524,13 +481,22 @@ public class AudioSink extends Sink {
                     bufferSizeInt,
                     putSamplesSize);
 	} else {
-	    throw new IllegalActionException("Parameter " +
-                    sink.getFullName() +
-                    " is not set to a valid string." +
-                    " Valid choices are \"live\" or " +
-                    "\"file\". The invalid parameter was:" +
-		    sinkStr + ".");
-	}
+	    // Write audio data to a file.
+	    if(_debugging) _debug("AudioSink: initialize(): playback to file");
+	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
+	    int sampleSizeInBitsInt =
+                ((IntToken)sampleSizeInBits.getToken()).intValue();
+	    int channelsInt = ((IntToken)channels.getToken()).intValue();
+	    int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
+	    int putSamplesSize = _putSampleSize;
+	    
+	    _soundPlayback = new SoundPlayback(pathNameString,
+                    sampleRateInt,
+                    sampleSizeInBitsInt,
+                    channelsInt,
+                    bufferSizeInt,
+                    putSamplesSize);
+	} 
 	try {
 	    // Start audio playback.
 	    _soundPlayback.startPlayback();

@@ -52,56 +52,74 @@ import ptolemy.media.javasound.*;
 /**
 Sequentially output the samples from an audio source. The
 DoubleTokens produced by this actor will be in the range [-1,1].
-Possible
-audio sources include microphone, line-in, a sound file, or
-a URL to a sound file. For the case where the audio source is
-a microphone or line-in, this actor should be fired often enough
-to prevent overflow of the internal audio buffer.
+This actor can operate in two distinct modes: live capture, and
+capture from a sound file. When live capture mode is used, this
+actor captures audio samples from the audio input port of the
+computer which typically includes the microphone, line-in, or cd
+audio. When capture from a sound file is used, the audio source is
+a sound file specified as a URL. Note that it is still possible to
+specify local files as a URL.  The mode that is used is controlled 
+by the <i>pathName</i> parameter. If <i>pathName</i> is set to the 
+string "", then live capture mode is used, otherwise samples are 
+captured from a sound file.
 <p>
-<h2>Notes on audio sources and required parameters</h2>
-<p>(1) Real-time capture from a microphone or line-in
-<p> Java cannot
+<h2>Notes on modes and required parameters</h2>
+<p>(1) Using live capture mode.
+<p>
+Java cannot
 select between microphone and line-in sources. Use the OS
-to select whether audio capture is from the mic or line-in.
+to select whether audio capture is from the mic, line-in, or
+CD output.
 When this actor is in "live capture mode", this actor should
-be fired often enough (be invoking postfire() or iterate()) or
-else overflow of the internal audio capture buffer will occur.
+be fired often enough (by invoking postfire() or iterate()) to
+prevent overflow of the internal audio capture buffer.
 Overflow should be avoided, since it will result in loss of
-data and audible clicks.
-The following parameters are relevant to audio capture from
-a mic or line-in, and should be set accordingly:
+data.
+<p>
+The following parameters are relevant to live capture mode, and 
+should be set accordingly. In all cases, an exception is thrown if
+an illegal parameter value is used:
 <ul>
-<li><i>source</i> should be set to "live".
-<li><i>sampleRate</i> should be set to desired sample rate.
+<li><i>pathName</i> should be set to "". The absence of a URL
+name tells this actor to use live capture mode. The default
+value of this parameter is "".
+<li><i>sampleRate</i> should be set to desired sample rate, in Hz. 
+The default value is 44100.
 <li><i>sampleSizeInBits</i> should be set to desired bit
-resolution.
+resolution. The default value is 16.
 <li><i>channels</i> should be set to desired number of audio
-channels.
+channels. Allowable values are 1 and 2. The default value is 1.
 <li><i>bufferSize</i> may be set to optimize latency.
-This controls the delay from the time audio sample are read by this
-actor until the audio is actually heard at the speaker. A lower
-bound on the latency is given by
+This controls the delay in samples from the time audio sample are read by this
+actor until the audio is actually heard at the speaker.  A particular
+Java implementation may choose to ignore this parameter, however.
+A lower bound on the latency is given by
 (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
 Ideally, the smallest value that gives acceptable performance (no underflow)
-should be used.
+should be used. The default value is 4096.
 </ul>
 <p>(2) Capture from a sound file (via URL).
 <p>
 The following parameters are relevant to audio capture from
-a sound file, and should be set accordingly:
+a sound file, and should be set accordingly. In all cases, an 
+exception is thrown if an illegal parameter value is used:
 <ul>
-<li><i>source</i> should be set to "URL".
-<li><i>pathName</i> should be set to the name of the file.
+<li><i>pathName</i> should be set to the name of the file, specified
+as a fully qualified string representation of a URL. The default
+value is the string "", which causes live capture mode to be used.
 </ul>
-<p>The sound file is not periodically repeated by this actor.
-postfire()
-will therefore return false when the end of the sound file is reached.
-<p>There are security issues involved with accessing files.
-Applications have no restrictions. Applets, however, are
+<p>The sound file is not periodically repeated by this actor, so 
+postfire() will therefore return false when the end of the sound 
+file is reached.
+<p>
+There are security issues involved with accessing files and audio
+resources in applets. Applets are
 only allowed access to files specified by a URL and located
-on the machine from which the applet is loaded. The
+on the machine from which the applet is loaded. Applets are not
+allowed to capture audio from the microphone by default, so live
+capture mode will not work in an applet by default. The
 .java.policy file may be modified to grant applets more
-privileges, if desired.
+privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
 @author Brian K. Vogel
@@ -127,19 +145,13 @@ public class AudioSource extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
 	output.setMultiport(true);
-
 	pathName = new Parameter(this, "pathName",
-                new StringToken("soundFile.wav"));
-	source = new Parameter(this, "source", new StringToken("live"));
-	source.setTypeEquals(BaseType.STRING);
-
+                new StringToken(""));
 	sampleRate = new Parameter(this, "sampleRate", new IntToken(44100));
 	sampleRate.setTypeEquals(BaseType.INT);
-
 	sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
                 new IntToken(16));
 	sampleSizeInBits.setTypeEquals(BaseType.INT);
-
 	channels = new Parameter(this, "channels",
                 new IntToken(1));
 	channels.setTypeEquals(BaseType.INT);
@@ -157,74 +169,88 @@ public class AudioSource extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
-    /** The sound source. Possible sound sources are:
-     *  <p>(1) The microphone or line in port. To capture from
-     *  this source, set <i>source</i> to "live". This is the
-     *  default behavior.
-     *  <p>(2) A sound file loaded from a URL. To capture from
-     *  this source, set <i>source</i> to "URL"
-     *  <p>
-     *  For case (2) above, parameter <i>pathName</i>
-     *  must be set to the sound file location.
-     */
-    // FIXME: This parameter should go away.
-    public Parameter source;
-
-    /** The name of the file to read from. The path must be a valid
+    /** The name of the file to read from. Live capture mode will be
+     *  used if this parameter is set to "". The path must be a valid
      *  URL. Note that it is possible to load a file from the native
      *  file system by using the prefix "file:///" instead of "http://".
      *  The sound file format is determined from the file extension.
      *  For example, "file:///C:/someDir/someFile.wav" will be
-     *  interpretted as a WAVE file.
+     *  interpreted as a WAVE file. Allowable file formats include
+     *  WAV, AU, and AIFF.
      *  <p>
-     *  To read data from a sound file,  <i>source</i> must be set
-     *  to "URL" and <i>pathName</i> must be set a a fully qualified URL.
-     *  This parameter will be ignored if audio is captured from
-     *  a microphone or line-in (i.e., if <i>source</i> is set to "live").
+     *  If this parameter is changed during execution, any currently
+     *  open sound file will be saved.
      *  <p>
-     *  Note: For a list of allowable audio file formats, refer to the
-     *  ptolemy.media.javasound package documentation.
+     *  An exception will be occur if the path references a
+     *  non-exsistant or unsupported sound file.
      */
     public Parameter pathName;
 
     /** The desired sample rate to use, in Hz.
-     *  The default value of the sample rate is 44100 Hz.
+     *  Valid values
+     *  are dependent on the audio hardware (sound card), but typically
+     *  include at least 8000, 11025, 22050, 44100, and 48000. The 
+     *  default value of the sample rate is 44100 Hz.
      *  <p>
      *  Note that it is only necessary to set this parameter for the
      *  case where audio is captured in real-time from the microphone
      *  or line-in. The sample rate is automatically determined when
      *  capturing samples from a sound file.
+     *  <p>
+     *  If this parameter is changed during execution when file writing
+     *  mode is used, all data collected so far will be discarded, and
+     *  a new file with the updated sample rate will be created.
+     *  <p>
+     *  An exception will be occur if this parameter is set to an
+     *  unsupported sample rate.
      */
     public Parameter sampleRate;
 
     /** The number desired number of bits per sample.
-     *  The default value is 16.
+     *  Allowed values are dependent
+     *  on the audio hardware, but typically at least include
+     *  8 and 16. The default value is 16. 
      *  <p>
      *  Note that it is only necessary to set this parameter for the
      *  case where audio is captured in real-time from the microphone
      *  or line-in. The sample size is automatically determined when
      *  capturing samples from a sound file.
+     *  <p>
+     *  An exception will occur if this parameter is set to an
+     *  unsupported sample size.
      */
     public Parameter sampleSizeInBits;
 
-    /** The number of audio channels to use. 1 for mono,
-     *  2 for stereo, etc.
-     *  The default value is 1 (mono).
+    /** The number of audio channels to use. . Valid values
+     *  are dependent on the audio hardware (sound card), but typically
+     *  at least include 1 (for mono) and 2 (for stereo). The
+     *  default value is 1.
      *  <p>
      *  This parameter is automatically set when capturing from
      *  a sound file.
+     *  <p>
+     *  An exception will occur if this parameter is set to an
+     *  an unsupported channel number.
      */
     public Parameter channels;
 
     /** Requested size of the internal audio input
-     *  buffer in samples. This controls the latency. Ideally, the
-     *  smallest value that gives acceptable performance (no overflow)
-     *  should be used. 
-     *  The default value is 4096.
+     *  buffer in samples. A particular Java implementation may choose
+     *  to ignore this parameter. This controls the delay in samples 
+     *  from the time audio sample are read by this
+     *  actor until the audio is actually heard at the speaker. A lower
+     *  bound on the latency is given by
+     *  (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
+     *  Ideally, the smallest value that gives acceptable performance 
+     *  (no underflow) should be used. Allowable values are dependent
+     *  on the platform, jdk, and audio hardware. The default value is 4096.
      *  <p>
-     *  Note that it is only necessary to set this parameter for the
-     *  case where audio is captured in real-time from the microphone
-     *  or line-in.
+     *  Note that this parameter has no effect unless live capture
+     *  mode is used.
+     *  <p>
+     *  An exception should not occur if this parameter is set to
+     *  an unsupported buffer size, since this parameter is only
+     *  taken as a hint.
      */
     public Parameter bufferSize;
 
@@ -250,8 +276,6 @@ public class AudioSource extends Source {
                     "positive integer.");
 	    }
 	} else if (attribute == pathName) {
-	    // Nothing for now...
-	} else if (attribute == source) {
 	    // Nothing for now...
 	} else if (attribute == sampleRate) {
 	    // Nothing for now...
@@ -285,7 +309,6 @@ public class AudioSource extends Source {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         AudioSource newobj = (AudioSource)super.clone(ws);
-        newobj.source = (Parameter)newobj.getAttribute("source");
         newobj.pathName = (Parameter)newobj.getAttribute("pathName");
         newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
         newobj.sampleSizeInBits =
@@ -296,8 +319,8 @@ public class AudioSource extends Source {
     }
 
     /** Check parameters and begin the sound capture process. If the
-     *  capture source is a sound file, the file is reopened and
-     *  capture is reset to the beginning of the file.
+     *  capture source is a sound file, the file is opened for writing.
+     *  Any existing file of the same name will be silently overwritten.
      *  @exception IllegalActionException If the parameters
      *             are out of range.
      */
@@ -313,9 +336,13 @@ public class AudioSource extends Source {
      *  which can be a sound file or live capture from the audio
      *  input device (e.g., the microphone or line-in).
      *  One token is written to the output port in an iteration. 
-     *  This method should be invoked often enough to prevent overflow 
-     *  of the internal audio capture buffer. Overflow should be avoided, 
-     *  since it will result in loss of data.
+     *  When live capture mode is used, this method should be invoked 
+     *  often enough to prevent overflow of the internal audio capture 
+     *  buffer. Overflow should be avoided, since it will result in loss 
+     *  of data.
+     *  @return COMPLETED if the actor was successfully iterated the
+     *   specified number of times. Return STOP_ITERATING if the
+     *   end of the soundfile is reached.
      *  @exception IllegalActionException If audio cannot be captured.
      */
     public int iterate(int count) throws IllegalActionException {
@@ -385,15 +412,15 @@ public class AudioSource extends Source {
 	}
     }
 
-    /** This method causes audio samples to be captured from the 
-     *  audio source, which can be a sound file or live capture from 
-     *  the audio
+    /** Capture and output a single audio sample on each channel. 
+     *  This method causes audio samples to be captured from the audio source,
+     *  which can be a sound file or live capture from the audio
      *  input device (e.g., the microphone or line-in).
-     *  One token, representing a single audio sample, is written to the 
-     *  output port in an iteration on each channel..
-     *  This method should be invoked often enough to prevent overflow 
-     *  of the internal audio capture buffer. Overflow should be avoided, 
-     *  since it will result in loss of data.
+     *  One token is written to the output port in an invocation. 
+     *  When live capture mode is used, this method should be invoked 
+     *  often enough to prevent overflow of the internal audio capture 
+     *  buffer. Overflow should be avoided, since it will result in loss 
+     *  of data.
      *  @return True if there are samples available from the
      *  audio source. False if there are no more samples (end
      *  of sound file reached).
@@ -449,34 +476,13 @@ public class AudioSource extends Source {
      */
     private synchronized void _initializeCapture() throws IllegalActionException {
 		//String sourceStr = ((StringToken)source.getToken()).toString();
-	String sourceStr = ((StringToken)source.getToken()).stringValue();
-	if(_debugging) _debug("AudioSource: source = " + sourceStr);
+	String modeStr = ((StringToken)pathName.getToken()).stringValue();
+	if(_debugging) _debug("AudioSource: source = " + modeStr);
 	//System.out.println("AudioSource: source = " + sourceStr2);
-        if (sourceStr.equals("URL")) {
-            // Load audio from a URL.
-            String theURL =
-                ((StringToken)pathName.getToken()).stringValue();
-            _soundCapture = new SoundCapture(theURL,
-                    _getSampleSize);
-	    try {
-		// Start capturing audio.
-		_soundCapture.startCapture();
-	    } catch (IOException ex) {
-		throw new IllegalActionException(
-		    "Cannot capture audio:\n" +
-		    ex.getMessage());
-	    }
-
-            // Read the number of audio channels and set
-            // parameter accordingly.
-            _channels = _soundCapture.getChannels();
-            channels.setToken(new IntToken(_channels));
-
-        } else if (sourceStr.equals("live")) {
-
+        if (modeStr.equals("")) {
+	    // Use live capture mode.
             int sampleRateInt =
                 ((IntToken)sampleRate.getToken()).intValue();
-
             int sampleSizeInBitsInt =
                 ((IntToken)sampleSizeInBits.getToken()).intValue();
             int channelsInt =
@@ -497,14 +503,25 @@ public class AudioSource extends Source {
 		    ex.getMessage());
 	    }
         } else {
-            throw new IllegalActionException(this.getFullName() +
-		    ": Parameter " +
-                    source.getFullName() +
-                    " is not set to a valid string." +
-                    " Valid choices are \"live\" or " +
-                    "\"URL\". The invalid parameter was:" +
-		    sourceStr + ".");
-        }
+	    // Load audio from a URL.
+            String theURL =
+                ((StringToken)pathName.getToken()).stringValue();
+            _soundCapture = new SoundCapture(theURL,
+                    _getSampleSize);
+	    try {
+		// Start capturing audio.
+		_soundCapture.startCapture();
+	    } catch (IOException ex) {
+		throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	    }
+
+            // Read the number of audio channels and set
+            // parameter accordingly.
+            _channels = _soundCapture.getChannels();
+            channels.setToken(new IntToken(_channels));
+        } 
     }
 
     ///////////////////////////////////////////////////////////////////
