@@ -43,7 +43,7 @@ import java.util.Random;
     FIXME: add description!!
 
 @author Neil Smyth
-@version $Id$
+@version @(#)CSPSink.java	1.4 08/28/98
 
  */
 public class CSPSink extends CSPActor {
@@ -51,37 +51,42 @@ public class CSPSink extends CSPActor {
         super();
     }
     
-    public CSPSink(CSPCompositeActor cont, String name, CSPReceiver rec) 
+    public CSPSink(CSPCompositeActor cont, String name) 
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
-	receiver = rec;
         input = new IOPort(this, "input", true, false);
     }
 
     public void _run() {
-        int times = 0;
-        Random rand = new Random();
-        try {
-            int count = 0;
-            while (count < 1000 ) {
-	         Token t = input.get(0);
-                 //Token t = receiver.get();
-                if (t instanceof NullToken ) {
-                    System.out.println("\n" + getName() + ": fired " + times + " times.");
-                    return;
-                }
-                System.out.println(getName() + "  received Token: " + t.toString());
-                times++;
-                count++;
-                Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-            }
-        } catch (Exception ex) {
-            System.out.println("Error in " + getName() + ": " + ex.getMessage());
-        }
-        
-        return;
+      Random rand = new Random();
+      int times = 0;
+      int count = 0;
+      try {
+	while (count < 10 ) {
+	  //System.out.println("about to get");
+	  Token t = input.get(0);
+	  //System.out.println("got");
+	  //Token t = receiver.get();
+	  if (t instanceof NullToken ) {
+	    System.out.println("\n" + getName() + ": fired " + times + " times.");
+	    ((CSPDirector)getDirector()).terminateSimulation();
+	    return;
+	  }
+	  System.out.println(getName() + " received Token: " + t.toString());
+	  count++;
+	  times++;
+	  Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
+	}
+	((CSPDirector)getDirector()).terminateSimulation();
+	return;
+      } catch (InterruptedException ex) {
+	System.out.println("CSPSink interrupted, exiting...");
+      } catch (IllegalActionException ex) {
+	System.out.println("CSPSink invalid get, exiting...");
+      } catch (NoSuchItemException ex) {
+	System.out.println("CSPSink invalid get, exiting...");
+      } 
     }
     
     public IOPort input;
-    public CSPReceiver receiver;
 }
