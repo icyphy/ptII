@@ -342,7 +342,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 // Get a reference to the actor.
                 units.insertBefore(
                         Jimple.v().newAssignStmt(actorLocal,
-                                ModelTransformer.getFieldRefForEntity(entity)),
+                                FieldsForEntitiesTransformer.getLocalReferenceForEntity(entity,
+                                        taskClass, body.getThisLocal(), body, insertPoint, options)),
                         insertPoint);
 
                 // Copy the inputs...

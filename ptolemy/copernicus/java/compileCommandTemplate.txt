@@ -15,13 +15,13 @@
  -p wjtp.clt targetPackage:@targetPackage@@iterationsParameter@
  -p wjtp.fot targetPackage:@targetPackage@
  -p wjtp.ffat targetPackage:@targetPackage@
- -p wjtp.ffet debug,targetPackage:@targetPackage@
+ -p wjtp.ffet targetPackage:@targetPackage@
  -p wjtp.ffpt targetPackage:@targetPackage@
  -p wjtp.idt "outDir:@ptIIUserDirectory@/@targetPath@,targetPackage:@targetPackage@"
  -p wjtp.iat targetPackage:@targetPackage@
  -p wjtp.ipt targetPackage:@targetPackage@
  -p wjtp.itt targetPackage:@targetPackage@
- -p wjtp.ttn targetPackage:@targetPackage@
+ -p wjtp.ttn debug,targetPackage:@targetPackage@
  -p wjtp.ts targetPackage:@targetPackage@
  -p wjtp.noe targetPackage:@targetPackage@
  -p wjtp.nee targetPackage:@targetPackage@

@@ -123,7 +123,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.ta",
                         new TransformerAdapter(TypeAssigner.v())));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
@@ -204,7 +204,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(toplevel)));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
@@ -251,13 +251,13 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffat",
                         FieldsForAttributesTransformer.v(toplevel)));
-
+        
         // Deal with any more statically analyzeable token
         // references that were created.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(toplevel)));
-
+        
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
@@ -297,7 +297,7 @@ public class Main extends KernelMain {
                                 CastAndInstanceofEliminator.v())));
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
+        
         // Remove Unreachable methods.  This happens BEFORE
         // NamedObjElimination so that we don't have to pick between
         // multiple constructors, if there are more than one.  I'm

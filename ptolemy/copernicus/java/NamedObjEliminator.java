@@ -58,6 +58,8 @@ import soot.jimple.ParameterRef;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.jimple.toolkits.typing.TypeAssigner;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -245,8 +247,8 @@ public class NamedObjEliminator extends SceneTransformer {
                             PtolemyUtilities.attributeClass)) {
                 System.out.println("changing superclass for " + theClass);
                 theClass.setSuperclass(PtolemyUtilities.objectClass);
-                // Fix the constructor for the actor to take no
-                // arguments.
+                // Fix the constructor for the actor to take just a container argument, if it
+                // was a 2 arg constructor, or no arguments otherwise.
 
                 // FIXME: Here we assume that there is just one
                 // constructor.. This will throw an exception if there
@@ -260,7 +262,19 @@ public class NamedObjEliminator extends SceneTransformer {
                             + "from class " + theClass );
                     throw ex;
                 }
-                method.setParameterTypes(Collections.EMPTY_LIST);
+                if(method.getParameterCount() == 2) {
+                    // Change the constructor so that it only takes the container.
+                    SootField containerField = theClass.getFieldByName(
+                            ModelTransformer.getContainerFieldName());
+                    RefType containerType = (RefType)containerField.getType();
+                    List typeList = new LinkedList();
+                    typeList.add(containerType);
+                    method.setParameterTypes(typeList);
+                } else {
+                    method.setParameterTypes(Collections.EMPTY_LIST);
+                }
+                // Keep track of the modification, so we know to
+                // modify invocations of that constructor.
                 modifiedConstructorClassList.add(theClass);
 
                 // Dance so that indexes in the Scene are properly updated.
@@ -290,26 +304,41 @@ public class NamedObjEliminator extends SceneTransformer {
                                         (Local)expr.getBase(),
                                         PtolemyUtilities.objectConstructor,
                                         Collections.EMPTY_LIST));
-                                //          body.getUnits().remove(unit);
                             }
                         }
                     } else if (unit instanceof IdentityStmt) {
                         IdentityStmt identityStmt = (IdentityStmt)unit;
                         Value value = identityStmt.getRightOp();
                         if (value instanceof ParameterRef) {
-                            System.out.println("value = " + value);
-                            // Parameter values are null.  Note that
-                            // we need to make sure that the
-                            // assignment to null happens after all
-                            // the identity statements, otherwise the
-                            // super constructor will be implicitly
-                            // called.
-                            body.getUnits().remove(identityStmt);
-                            body.getUnits().insertBefore(
-                                    Jimple.v().newAssignStmt(
-                                            identityStmt.getLeftOp(),
-                                            NullConstant.v()),
-                                    body.getFirstNonIdentityStmt());
+                            ParameterRef parameterRef = (ParameterRef)value;
+                            if(parameterRef.getIndex() == 0 && 
+                                    method.getParameterCount() == 1) {
+                                System.out.println("found = " + identityStmt);
+                                ValueBox box = identityStmt.getRightOpBox();
+                                box.setValue(Jimple.v().newParameterRef(
+                                                     method.getParameterType(0), 0));
+                                System.out.println("changed to: " + identityStmt);
+//                                 body.getUnits().insertBefore(
+//                                         Jimple.v().newIdentityStmt(identityStmt.getLeftOp(),
+//                                                 Jimple.v().newParameterRef(
+//                                                         parameterRef.getType(), 0)),
+//                                         body.getFirstNonIdentityStmt());
+//                                 body.getUnits().remove(identityStmt);
+                            } else {
+                                System.out.println("index = " + parameterRef.getIndex());
+                                // Parameter values are null.  Note that
+                                // we need to make sure that the
+                                // assignment to null happens after all
+                                // the identity statements, otherwise the
+                                // super constructor will be implicitly
+                                // called.
+                                body.getUnits().remove(identityStmt);
+                                // body.getUnits().insertBefore(
+//                                         Jimple.v().newAssignStmt(
+//                                                 identityStmt.getLeftOp(),
+//                                                 NullConstant.v()),
+//                                         body.getFirstNonIdentityStmt());
+                            }
                         }//  else if (value instanceof ThisRef) {
                         //                             // Fix the type of thisRefs.
                         //                             ValueBox box = identityStmt.getRightOpBox();
@@ -357,7 +386,7 @@ public class NamedObjEliminator extends SceneTransformer {
 
                         if (value instanceof SpecialInvokeExpr) {
                             // If we're constructing one of our actor classes,
-                            // then switch to the object constructor.
+                            // then switch to the modified constructor.
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             SootClass declaringClass =
                                 expr.getMethod().getDeclaringClass();
@@ -367,12 +396,25 @@ public class NamedObjEliminator extends SceneTransformer {
                                 System.out.println(
                                         "replacing constructor invocation = "
                                         + unit + " in method " + method);
-
-                                // Replace with zero arg object constructor.
-                                box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                        (Local)expr.getBase(),
-                                        declaringClass.getMethod("void <init>()"),
-                                        Collections.EMPTY_LIST));
+                                SootMethod newConstructor = 
+                                    declaringClass.getMethodByName("<init>");
+                                if(newConstructor.getParameterCount() == 1) {
+                                    // Replace with just container arg constructor.
+                                    List args = new LinkedList();
+                                    args.add(expr.getArg(0));
+                                    box.setValue(
+                                            Jimple.v().newSpecialInvokeExpr(
+                                                    (Local)expr.getBase(),
+                                                    newConstructor,
+                                                    args));
+                                } else {
+                                    // Replace with zero arg constructor.
+                                    box.setValue(
+                                            Jimple.v().newSpecialInvokeExpr(
+                                                    (Local)expr.getBase(),
+                                                    newConstructor,
+                                                    Collections.EMPTY_LIST));
+                                }
                             }
                         }
                     }
@@ -384,6 +426,7 @@ public class NamedObjEliminator extends SceneTransformer {
              i.hasNext();) {
 
             SootClass theClass = (SootClass) i.next();
+                        
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
@@ -391,6 +434,12 @@ public class NamedObjEliminator extends SceneTransformer {
 
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+              
+                // Infer types.
+                LocalSplitter.v().transform(
+                        body, "nee.ls", "");
+                TypeAssigner.v().transform(
+                        body, "nee.ta", "");
 
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
@@ -405,7 +454,7 @@ public class NamedObjEliminator extends SceneTransformer {
                         Type type = value.getType();
 
                         if (_isRemovableType(type)) {
-                            //System.out.println("Unit with removable type: " + unit);
+                            System.out.println("Unit with removable type " + type + ": " + unit);
                             body.getUnits().remove(unit);
                             break;
                         }

@@ -79,6 +79,7 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
+import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
@@ -694,28 +695,25 @@ public class ModelTransformer extends SceneTransformer {
         return StringUtilities.sanitizeName(relation.getName(context));
     }
 
-    /** Given an entity that we are generating code for, return a
-     *  reference to the instance field created for that entity.
-     *  @exception RuntimeException If no field was created for the
-     *  given entity.
-     */
-    public static StaticFieldRef getFieldRefForEntity(Entity entity) {
-        SootField entityField = (SootField)
-            _entityToFieldMap.get(entity);
-        if (entityField != null) {
-            return Jimple.v().newStaticFieldRef(entityField);
-        } else {
-            throw new RuntimeException(
-                    "Failed to find field for entity " + entity);
-        }
-    }
-
     /** Return the entity for the given class if the given class is a
      *  class being generated, or null if not.
      */
     public static Entity getActorForClass(SootClass theClass) {
         Entity entity = (Entity) _classToObjectMap.get(theClass);
         return entity;
+    }
+
+    /** Return the entity for the given class if the given class is a
+     *  class being generated, or null if not.
+     */
+    public static SootClass getClassForActor(Entity entity) {
+        return (SootClass) _objectToClassMap.get(entity);
+    }
+
+    /** Return true if the given class was generated for an actor in the model
+     */
+    public static boolean isActorClass(SootClass theClass) {
+        return _actorClasses.contains(theClass);
     }
 
     /**
@@ -726,6 +724,41 @@ public class ModelTransformer extends SceneTransformer {
     public static void addAttributeForClass(
             SootClass theClass, Attribute attribute) {
         _classToObjectMap.put(theClass, attribute);
+        _objectToClassMap.put(attribute, theClass);
+        _attributeClasses.add(theClass);
+    }
+
+    /**
+     *  Associate the given class, which has been created, with the
+     *  given attribute.  This allows references to the given class to
+     *  be resolved as references to the given attribute.
+     */
+    public static void addActorForClass(
+            SootClass theClass, Entity entity) {
+        _classToObjectMap.put(theClass, entity);
+        _objectToClassMap.put(entity, theClass);
+        _actorClasses.add(theClass);
+    }
+    
+    /**
+     *  Return the list of classes that correspond to actors.
+     */
+    public static List actorClassList() {
+        return Collections.unmodifiableList(_actorClasses);
+    }
+
+    /**
+     *  Return the list of classes that correspond to attributes.
+     */
+    public static List attributeClassList() {
+        return Collections.unmodifiableList(_attributeClasses);
+    }
+
+    /** Return the object that the given class was generated for.
+     */
+    public static NamedObj getObjectForClass(
+            SootClass theClass) {
+        return (NamedObj)_classToObjectMap.get(theClass);
     }
 
     /**
@@ -742,6 +775,10 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
+    /** Return the name of the class that is generated for the given
+     *  named object.  This name is guaraunteed to be unique among the
+     *  classes being generated.
+     */
     public static String getInstanceClassName(NamedObj object, Map options) {
         // Note that we use sanitizeName because entity names can have
         // spaces, and append leading characters because entity names
@@ -767,6 +804,13 @@ public class ModelTransformer extends SceneTransformer {
         // can start with numbers.
         return Options.getString(options, "targetPackage")
             + ".CGModel" + StringUtilities.sanitizeName(model.getName());
+    }
+
+    /** Return the name of the field that references the container of
+     * a generated class.
+     */
+    public static String getContainerFieldName() {
+        return "_CGContainer";
     }
 
     /** Transform the given class so that it properly implements the
@@ -965,16 +1009,22 @@ public class ModelTransformer extends SceneTransformer {
         // given the objects class, and vice versa.
         _entityToFieldMap = new HashMap();
         _fieldToEntityMap = new HashMap();
+     
         _classToObjectMap = new HashMap();
+        _objectToClassMap = new HashMap();
+
+        _actorClasses = new LinkedList();
+        _attributeClasses = new LinkedList();
 
         // Create a class for the model
         String modelClassName = getModelClassName(_model, options);
 
         _modelClass = _createCompositeActor(
                 _model, modelClassName, options);
+        addActorForClass(_modelClass, _model);
 
         // Create static instance fields for each actor.
-        _createEntityInstanceFields(_modelClass, _model, options);
+        //        _createEntityInstanceFields(_modelClass, _model, options);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1483,7 +1533,7 @@ public class ModelTransformer extends SceneTransformer {
             String className = entity.getClass().getName();
 
             String newClassName = getInstanceClassName(entity, options);
-
+                
             if (Scene.v().containsClass(newClassName)) {
                 continue;
             }
@@ -1520,6 +1570,8 @@ public class ModelTransformer extends SceneTransformer {
                 creator.createAtomicActor((AtomicActor)entity,
                         newClassName, constAnalysis, options);
             }
+            SootClass entityClass = Scene.v().loadClassAndSupport(newClassName);
+            addActorForClass(entityClass, entity);
         }
     }
 
@@ -1630,12 +1682,16 @@ public class ModelTransformer extends SceneTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private CompositeActor _model;
-
+    private static CompositeActor _model;
 
     private static Map _entityToFieldMap;
     private static Map _fieldToEntityMap;
+
     private static Map _classToObjectMap;
+    private static Map _objectToClassMap;
+    
+    private static List _actorClasses;
+    private static List _attributeClasses;
 
     // Map from Ports to Locals.
     private static Map _portLocalMap;

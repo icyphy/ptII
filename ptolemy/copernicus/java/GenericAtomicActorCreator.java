@@ -223,29 +223,37 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
     private static void _copyAttributesOtherThanVariable(
             Entity entity, SootClass entityClass, Map options) {
         // Loop over all the attributes of the actor
-        for(Iterator attributes = entity.attributeList(StringAttribute.class).iterator();
+        for(Iterator attributes = 
+                entity.attributeList(StringAttribute.class).iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
             
-            if((attribute instanceof StringAttribute) && !(attribute instanceof Variable)) {
+            if((attribute instanceof StringAttribute) && 
+                    !(attribute instanceof Variable)) {
                 String className = attribute.getClass().getName();
                 
-                SootClass attributeClass = Scene.v().loadClassAndSupport(className);
+                SootClass attributeClass = 
+                    Scene.v().loadClassAndSupport(className);
                 attributeClass.setLibraryClass();
-                String newClassName = ModelTransformer.getInstanceClassName(attribute, options);
+                String newClassName = 
+                    ModelTransformer.getInstanceClassName(attribute, options);
                 
                 // Create a new class for the attribute.
-                SootClass newClass = SootUtilities.copyClass(attributeClass, newClassName);
+                SootClass newClass = SootUtilities.copyClass(
+                        attributeClass, newClassName);
                 // Make sure that we generate code for the new class.
                 newClass.setApplicationClass();
 
                 // Associate the new class with the attribute.
                 ModelTransformer.addAttributeForClass(newClass, attribute);
 
-                // Loop over all the methods and replace construction of the old attribute
-                // with construction of the copied class.
-                SootUtilities.changeTypesOfFields(entityClass, attributeClass, newClass);
-                SootUtilities.changeTypesInMethods(entityClass, attributeClass, newClass);
+                // Loop over all the methods and replace construction
+                // of the old attribute with construction of the
+                // copied class.
+                SootUtilities.changeTypesOfFields(entityClass, 
+                        attributeClass, newClass);
+                SootUtilities.changeTypesInMethods(entityClass, 
+                        attributeClass, newClass);
               
                 // Fold the copied class up to StringAttribute.
                 SootClass superClass = newClass.getSuperclass();

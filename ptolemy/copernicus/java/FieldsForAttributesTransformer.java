@@ -188,7 +188,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
                                 Local baseLocal = (Local)r.getBase();
                                 _replaceGetAttributeMethod(
-                                        body, box, baseLocal,
+                                        actorClass, body, box, baseLocal,
                                         name, unit, localDefs);
                             } else {
                                 String string = "Attribute cannot be " +
@@ -222,7 +222,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     // invocation in the box with a reference to the appropriate field
     // for the attribute.
     private void _replaceGetAttributeMethod(
-            JimpleBody body, ValueBox box, Local baseLocal,
+            SootClass theClass, JimpleBody body, ValueBox box, Local baseLocal,
             String name, Unit unit, LocalDefs localDefs) {
         if (_debug) {
             System.out.println("replacing getAttribute in " + unit);
@@ -248,13 +248,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             if (entityContainer.equals(baseObject)) {
                 local = baseLocal;
             } else {
-                local = Jimple.v().newLocal("container",
-                        RefType.v(PtolemyUtilities.entityClass));
-                body.getLocals().add(local);
-                body.getUnits().insertBefore(
-                        Jimple.v().newAssignStmt(local,
-                                ModelTransformer.getFieldRefForEntity(entityContainer)),
-                        unit);
+                local = FieldsForEntitiesTransformer.getLocalReferenceForEntity(
+                        entityContainer, theClass, body.getThisLocal(), body, unit, _options);
             }
             if (attributeField != null) {
                 System.out.println(unit.getClass().toString());
@@ -277,7 +272,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 definition.getRightOp();
             SootField baseField = fieldRef.getField();
             _replaceGetAttributeMethod(
-                    body, box, (Local)fieldRef.getBase(),
+                    theClass, body, box, (Local)fieldRef.getBase(),
                     baseField.getName() + "." + name, definition,
                     localDefs);
             //baseField.getDeclaringClass().getFieldByName(

@@ -89,7 +89,6 @@ A Transformer that is responsible for inlining the communication between ports.
 The connections between the ports are taken from the model specified in the
 constructor of this transformer.
 
-FIXME: This is SDF specific and should get pulled out on its own.
 FIXME: currently we try to speed things up if the buffersize is only
 one by removing the index update overhead.  Note that there are other
 optimizations that can be made here (for instance, if we can
