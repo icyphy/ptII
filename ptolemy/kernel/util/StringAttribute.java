@@ -28,6 +28,7 @@
 */
 
 package ptolemy.kernel.util;
+import ptolemy.util.StringUtilities;
 
 import java.io.IOException;
 import java.io.Writer;
