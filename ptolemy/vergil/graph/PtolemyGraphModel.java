@@ -229,12 +229,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
         return composite.equals(getParent(node));
     }
 
-    /** Disconnect an edge from its two enpoints and notify graph
-     *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     *  event.
-     *  @param eventSource The source of the event.
-     *  @param link The link to delete, which must be an instance of Link
-     *   or an InternalErrorException will be thrown.
+    /**
+     * Disconnect an edge from its two enpoints and notify graph
+     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     * event.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
 	if(edge instanceof Link) {
@@ -345,7 +343,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
      *  @return The node that contains the specified node.
      */
     public Object getParent(Object node) {	
-	if(node instanceof Icon) {
+	if(node == getRoot()) {
+	    return null;
+	} else if(node instanceof Icon) {
 	    return getParent((Icon)node);
 	} else if(node instanceof Vertex) {
 	    return getParent((Vertex)node);
