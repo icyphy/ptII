@@ -376,3 +376,4 @@ jnlp_dist:
 	rm -f $(JNLPS)
 	$(MAKE) PTII_LOCALURL=$(DIST_URL) $(JNLPS)
 	tar -cf - $(ALL_JNLP_JARS) $(JNLPS) | (cd $(DIST_DIR); tar -xpf -)
+	cp doc/webStartHelp.htm $(DIST_DIR)
