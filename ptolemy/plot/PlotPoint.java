@@ -46,17 +46,24 @@ public class PlotPoint implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public double x, y;
+    /** True if this point is connected to the previous point by a line. */
+    public boolean connected = false;
+
+    /** True if the yLowEB and yHighEB fields are valid. */
+    public boolean errorBar = false;
+
+    /** Original value of x before wrapping. */
+    public double originalx;
+
+    /** X value after wrapping (if any). */
+    public double x;
+
+    /** Y value. */
+    public double y;
 
     /** Error bar Y low value. */
     public double yLowEB;
 
     /** Error bar Y low value. */
     public double yHighEB;
-
-    /** True if this point is connected to the previous point by a line. */
-    public boolean connected = false;
-
-    /** True if the yLowEB and yHighEB fields are valid. */
-    public boolean errorBar = false;
 }
