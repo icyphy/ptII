@@ -1829,7 +1829,7 @@ public class PlotBox extends Panel {
             // size of the grid array and slows everything down.
         }        
 
-        if (_debug == 0) 
+        if (_debug == 5) 
             System.out.println("PlotBox: gridInit2: low="+low+" step="+step+
                     " labeled="+labeled+" ratio="+ratio+" ngrid="+ngrid);
 
