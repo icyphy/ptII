@@ -572,6 +572,75 @@ Kvm can be downloaded from http://java.sun.com/products/cldc'])
 fi
 
 #--------------------------------------------------------------------
+#       TINI is the JDK for Dallas Tini board, see
+#	www.ibutton.com
+#	See if there was a command-line option for where
+#       tinisk is;  if not,
+#       check to see if $PTII/vendors/dalsemi/tini/bin/tiniclasses.jar exists
+#--------------------------------------------------------------------
+
+# PTTINI_DIR is set to tini and used in 
+# $PTII/ptolemy/apps/makefile if tini was found
+PTTINI_DIR=
+#
+# We only need to look for tini if $PTII/ptolemy/apps/tini exists
+if test ! -d "$PTII/ptolemy/apps/tini"; then
+    AC_MSG_RESULT([$PTII/ptolemy/apps/tini is not present, so we need not
+find the Dallas Semiconductor tini])
+    TINI_DIR='$(PTII)/vendors/dalsemi/tini'
+    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+else
+    AC_MSG_CHECKING([for tini directory])
+    AC_ARG_WITH(tini, [  --with-tini=DIR       use TINI from DIR,
+                          defaults to \$PTII/vendors/dalsemi/tini],
+	TINI_DIR=$withval,
+	TINI_DIR=$PTII/vendors/dalesemi/tini)
+
+    if test -d "$TINI_DIR"; then
+	AC_MSG_RESULT([$TINI_DIR])
+        AC_MSG_CHECKING([for \$TINI_DIR/bin/tiniclasses.jar])
+	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
+	    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+	    AC_MSG_RESULT([$TINI_CLASSES])
+        else
+	    TINI_CLASSES=no
+        fi
+    else    
+	AC_MSG_RESULT([Not found in $TINI_DIR])
+	AC_MSG_CHECKING([for tini directory in /tini])
+	# Likely place for tini under windows
+	TINI_DIR=/tini
+        if test -d "$TINI_DIR"; then
+	    AC_MSG_RESULT([$TINI_DIR])
+            AC_MSG_CHECKING([for \$TINI_DIR/bin/tiniclasses.jar])
+	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
+	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+	        AC_MSG_RESULT([$TINI_CLASSES])
+            else
+	        TINI_CLASSES=no
+            fi
+        else 
+		TINI_CLASSES=no
+        fi
+
+    fi
+    if test "$TINI_CLASSES" = "no"; then
+        AC_MSG_WARN(['Failed to find tini/bin/tiniclasses.jar
+perhaps Tini is not installed?
+You need not download Tini unless you plan on building applications
+for the Dallas Semiconductor Tini board
+Tini can be downloaded from http://www.ibutton.com'])
+	# Note that we don't substitute in the $(PTII) or $(TINI_DIR) here
+	TINI_DIR='$(PTII)/vendors/dalsemi/tini'
+   	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+    else 
+	# Set to tini and used in 
+	# $PTII/ptolemy/apps/makefile if tini was found
+	PTTINI_DIR=tini
+    fi    
+fi
+
+#--------------------------------------------------------------------
 #       WABA is the JDK for PalmOS
 #	See if there was a command-line option for where
 #       wabask is;  if not,
@@ -708,12 +777,22 @@ AC_SUBST(PTKVM_DIR)
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 AC_SUBST(PTLEGO_DIR)
 
+# Set to tini and used in 
+# $PTII/ptolemy/apps/makefile if TINI was found
+AC_SUBST(PTTINI_DIR)
+
 # Set to waba and used in 
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
 
 # Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)
+
+# tini/bin/tinclasses.jar file used by the Dallas Semi Tini
+AC_SUBST(TINI_CLASSES)
+
+# Directory that contains the Tini installation
+AC_SUBST(TINI_DIR)
 
 # waba/tools/classes.jar file used by the PalmOS WABA
 AC_SUBST(WABA_CLASSES)
