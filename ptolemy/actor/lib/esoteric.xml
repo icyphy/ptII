@@ -2,12 +2,15 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="esoteric actors" class="ptolemy.moml.EntityLibrary">
-  <configure>
-    <?moml
-      <group>
-<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge"/>
-<entity name="CalInterpreter" class="caltrop.ptolemy.actors.CalInterpreter"/>
+	<configure>
+		<?moml <group>
+			<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge"/>
+			<entity name="CalInterpreter" class="caltrop.ptolemy.actors.CalInterpreter">
+    			<property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+      			<property name="attributeName" value="calCode"/>
+    			</property>
+			</entity>
       </group>
     ?>
-  </configure>
+	</configure>
 </entity>
