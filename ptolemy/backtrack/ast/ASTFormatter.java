@@ -288,6 +288,7 @@ public class ASTFormatter extends ASTVisitor {
             _increaseIndent();
             node.getInitializer().accept(this);
             _decreaseIndent();
+            _newLineAfterBlock = true;
         }
         return false;
     }
@@ -774,6 +775,7 @@ public class ASTFormatter extends ASTVisitor {
             _output(" ");
             _newLineAfterBlock = elseStatement == null;
             node.getThenStatement().accept(this);
+            _newLineAfterBlock = true;
         } else {
             _output("\n");
             _increaseIndent();
@@ -1521,6 +1523,7 @@ public class ASTFormatter extends ASTVisitor {
             _output(" finally ");
             node.getFinally().accept(this);
         }
+        _newLineAfterBlock = true;
         return false;
     }
 
