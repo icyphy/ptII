@@ -98,13 +98,13 @@ public class TimedPlotter extends Plotter implements Placeable, TimedActor {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        double curtime = ((Director)getDirector()).getCurrentTime();
+        double currentTime = ((Director)getDirector()).getCurrentTime();
         int width = input.getWidth();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
-                DoubleToken curToken = (DoubleToken)input.get(i);
-                double curValue = curToken.doubleValue();
-                plot.addPoint(i, curtime, curValue, true);
+                DoubleToken currentToken = (DoubleToken)input.get(i);
+                double currentValue = currentToken.doubleValue();
+                plot.addPoint(i, currentTime, currentValue, true);
             }
         }
         return super.postfire();
