@@ -1,4 +1,4 @@
-/* Converts a complex token into two real tokens.
+/* Convert from polar form to a complex token.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -38,17 +38,23 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
-///////////////////////////////////////////////////////////////
-/// ComplexToReal
-/**
-This actor reads a complex token and outputs the real and the imaginary
-part to two different output ports.
 
-@author Michael Leung, Edward A. Lee
+///////////////////////////////////////////////////////////////
+/// PolarToComplex
+/**
+
+This actor reads two double tokens (magnitude and angle)
+and outputs two new double tokens (x and y).
+The output is a complex token representation of the vector
+given at the inputs in polar form. The angle input is
+assumed to be in radians. If either input is NaN or infinity,
+then the output is NaN or infinity.
+
+@author Michael Leung and Edward A. Lee
 @version $Id$
 */
 
-public class ComplexToReal extends TypedAtomicActor {
+public class PolarToComplex extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -58,32 +64,31 @@ public class ComplexToReal extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ComplexToReal(TypedCompositeActor container, String name)
+    public PolarToComplex(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.COMPLEX);
+        magnitude = new TypedIOPort(this, "magnitude", true, false);
+        magnitude.setTypeEquals(BaseType.DOUBLE);
 
-        real = new TypedIOPort(this, "real", false, true);
-        real.setTypeEquals(BaseType.DOUBLE);
+        angle = new TypedIOPort(this, "angle", true, false);
+        angle.setTypeEquals(BaseType.DOUBLE);
 
-        imag = new TypedIOPort(this, "imag", false, true);
-        imag.setTypeEquals(BaseType.DOUBLE);
-
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.COMPLEX);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. This has type ComplexToken. */
-    public TypedIOPort input;
+    /** The magnitude part. This has type DoubleToken. */
+    public TypedIOPort magnitude;
 
-    /** The real part of the output. This has type DoubleToken. */
-    public TypedIOPort real;
+    /** The angle part. This has type DoubleToken. Angle in radian */
+    public TypedIOPort angle;
 
-    /** The imaginary part of the output. This has type DoubleToken. */
-    public TypedIOPort imag;
+    /** The complex output. This has type ComplexToken. */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -95,25 +100,32 @@ public class ComplexToReal extends TypedAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ComplexToReal newobj = (ComplexToReal)(super.clone(ws));
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.real = (TypedIOPort)newobj.getPort("real");
-        newobj.imag = (TypedIOPort)newobj.getPort("imag");
+        PolarToComplex newobj = (PolarToComplex)(super.clone(ws));
+        newobj.magnitude = (TypedIOPort)newobj.getPort("magnitude");
+        newobj.angle = (TypedIOPort)newobj.getPort("angle");
+        newobj.output = (TypedIOPort)newobj.getPort("output");
         return newobj;
-     }
+    }
 
-    /** Consume a complex token from input port and
-     *  output two new double tokens (the real and imaginary parts
-     *  of the input complex token).
+    /** Consume two double token (magnitude and angle) from each
+     *  input port and output a new complex token.
+     *  The output is a complex representation of the vector given
+     *  at the inputs in polar form. The input angle is assumed to be
+     *  in radians. If either input has no token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
+    public void fire() throws IllegalActionException {
+        if (magnitude.hasToken(0) && angle.hasToken(0)) {
+            double magnitudeValue
+                    = ((DoubleToken)(magnitude.get(0))).doubleValue();
+            double angleValue
+                    = ((DoubleToken) (angle.get(0))).doubleValue();
 
-    public final void fire() throws IllegalActionException  {
+            double xValue = magnitudeValue * Math.cos(angleValue);
+            double yValue = magnitudeValue * Math.sin(angleValue);
 
-        Complex complexNumber = ((ComplexToken) (input.get(0))).complexValue();
-
-        real.send(0, new DoubleToken (complexNumber.real));
-        imag.send(0, new DoubleToken (complexNumber.imag));
+            output.broadcast(new ComplexToken (new Complex(xValue, yValue)));
+        }
     }
 }

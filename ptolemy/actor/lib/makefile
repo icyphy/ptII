@@ -101,6 +101,7 @@ JSRCS = \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
+	TrigFunction.java \
 	VariableClock.java \
 	Writer.java
 

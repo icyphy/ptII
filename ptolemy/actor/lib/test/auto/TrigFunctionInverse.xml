@@ -1,0 +1,157 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </director>
+    <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
+            <location value="81.0, 76.0"/>
+            <configure>
+            <![CDATA[
+                <xmlgraphic>
+                <rectangle coords="0 0 60 40" fill="white"/>
+                <polygon coords="10 30 50 10 50 30" fill="blue"/>
+                </xmlgraphic>
+            ]]>
+            </configure>
+        </rendition>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;acos&quot;">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="228.0, 76.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[3.1415927, 2.4980915, 2.2142974, 1.9823132, 1.7721542, 1.5707963, 1.3694384, 1.1592795, 0.9272952, 0.6435011, 0.0]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="370.0, 75.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction3" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;asin&quot;">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="223.0, 148.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction4" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;atan&quot;">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="222.0, 211.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test13" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[-1.5707963, -0.9272952, -0.6435011, -0.4115168, -0.2013579, 0.0, 0.2013579, 0.4115168, 0.6435011, 0.9272952, 1.5707963]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="371.0, 139.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test16" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[-0.7853982, -0.6747409, -0.5404195, -0.3805064, -0.1973956, 0.0, 0.1973956, 0.3805064, 0.5404195, 0.6747409, 0.7853982]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="373.0, 210.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="145.0, 82.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp0.output" relation="relation3"/>
+    <link port="TrigFunction2.input" relation="relation3"/>
+    <link port="TrigFunction2.output" relation="relation11"/>
+    <link port="Test9.input" relation="relation11"/>
+    <link port="TrigFunction3.input" relation="relation3"/>
+    <link port="TrigFunction3.output" relation="relation15"/>
+    <link port="TrigFunction4.input" relation="relation3"/>
+    <link port="TrigFunction4.output" relation="relation18"/>
+    <link port="Test13.input" relation="relation15"/>
+    <link port="Test16.input" relation="relation18"/>
+</model>

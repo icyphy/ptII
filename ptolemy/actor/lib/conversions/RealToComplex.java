@@ -1,4 +1,4 @@
-/* An actor that converts two real tokens into a complex token.
+/* Convert two real tokens into a single complex token.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (mikele@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -42,13 +42,12 @@ import ptolemy.math.Complex;
 ///////////////////////////////////////////////////////////////
 /// RealToComplex
 /** 
-An actor that converts a pair of real tokens to a complex token.
+This actor converts a pair of real tokens to a single complex token.
 At each firing of the actor, it will consume at exactly one token
-from each input port, if there is any, and convert them in to 
-a complex token. If any of the port is empty, a zero will be used
-in the corresponding part. 
+from each input port and convert them in to 
+a complex token. If either port is empty, nothing is produced.
 
-@author Michael Leung, Jie Liu
+@author Michael Leung, Jie Liu, Edward A. Lee
 @version $Id$
 */
 
@@ -66,29 +65,28 @@ public class RealToComplex extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        realInput = new TypedIOPort(this, "realInput", true, false);
-        realInput.setTypeEquals(BaseType.DOUBLE);
+        real = new TypedIOPort(this, "real", true, false);
+        real.setTypeEquals(BaseType.DOUBLE);
 
-        imagInput = new TypedIOPort(this, "imagInput", true, false);
-        imagInput.setTypeEquals(BaseType.DOUBLE);
+        imag = new TypedIOPort(this, "imag", true, false);
+        imag.setTypeEquals(BaseType.DOUBLE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The real part. This has type DoubleToken. 
+    /** The real part input. This has type DoubleToken. 
      */
-    public TypedIOPort realInput;
+    public TypedIOPort real;
 
-    /** The imaginary part. This has type DoubleToken. 
+    /** The imaginary part input. This has type DoubleToken. 
      */
-    public TypedIOPort imagInput;
+    public TypedIOPort imag;
 
-    /** The output ports. This has type ComplexToken. 
+    /** The output port. This has type ComplexToken. 
      */
     public TypedIOPort output;
 
@@ -103,32 +101,24 @@ public class RealToComplex extends TypedAtomicActor {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         RealToComplex newobj = (RealToComplex)(super.clone(ws));
-        newobj.realInput = (TypedIOPort)newobj.getPort("realInput");
-        newobj.imagInput = (TypedIOPort)newobj.getPort("imagInput");
+        newobj.real = (TypedIOPort)newobj.getPort("real");
+        newobj.imag = (TypedIOPort)newobj.getPort("imag");
         newobj.output = (TypedIOPort)newobj.getPort("output");
         return newobj;
     }
 
-    /** Consume at exactly one token from each input port, 
-     *  if there is any, and convert them in to 
-     *  a complex token. If any of the port is empty, a zero will be used
-     *  in the corresponding part. 
+    /** Consume exactly one token from each input port and convert them to 
+     *  a complex token. If either input port is empty, do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        double real = 0.0;
-        double imag = 0.0;
-        if (realInput.hasToken(0)) {
-            real = ((DoubleToken)realInput.get(0)).doubleValue();
+        if (real.hasToken(0) && imag.hasToken(0)) {
+            double realValue = ((DoubleToken)real.get(0)).doubleValue();
+            double imagValue = ((DoubleToken)imag.get(0)).doubleValue();
+            ComplexToken token
+                    = new ComplexToken (new Complex(realValue, imagValue));
+            output.broadcast(token);
         }
-        if (imagInput.hasToken(0)) {
-            imag = ((DoubleToken)imagInput.get(0)).doubleValue();
-        }
-        
-        Complex complexNumber = new Complex(real, imag);
-        ComplexToken token = new ComplexToken (complexNumber);
-
-        output.broadcast(token);
     }
 }

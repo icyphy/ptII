@@ -1,4 +1,4 @@
-/* Convert from rectangular form to polar form.
+/* Convert from complex to polar form.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -36,16 +36,17 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
+import ptolemy.math.Complex;
 
 
 ///////////////////////////////////////////////////////////////
-/// RectangularToPolar
+/// ComplexToPolar
 
 /**
-This actor reads two double tokens (x and y)
+This actor reads one complex token
 and outputs two new double tokens (magnitude and angle).
-The output is a polar form representation of the vector given at the
-inputs in rectangular form. The angle is in radians.
+The output is a polar form representation of the complex input.
+The output angle is in radians.
 <p>
 The implementation uses java.lang.Math.atan2(), which gives
 the following documentation:
@@ -94,7 +95,7 @@ the following documentation:
 @version $Id$
 */
 
-public class RectangularToPolar extends TypedAtomicActor {
+public class ComplexToPolar extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -104,15 +105,12 @@ public class RectangularToPolar extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public RectangularToPolar(TypedCompositeActor container, String name)
+    public ComplexToPolar(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        x = new TypedIOPort(this, "x", true, false);
-        x.setTypeEquals(BaseType.DOUBLE);
-
-        y = new TypedIOPort(this, "y", true, false);
-        y.setTypeEquals(BaseType.DOUBLE);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setTypeEquals(BaseType.COMPLEX);
 
         magnitude = new TypedIOPort(this, "magnitude", false, true);
         magnitude.setTypeEquals(BaseType.DOUBLE);
@@ -125,11 +123,8 @@ public class RectangularToPolar extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The x part. This has type DoubleToken. */
-    public TypedIOPort x;
-
-    /** The y part. This has type DoubleToken. */
-    public TypedIOPort y;
+    /** The input. This has type ComplexToken. */
+    public TypedIOPort input;
 
     /** The magnitude part. This has type DoubleToken. */
     public TypedIOPort magnitude;
@@ -147,32 +142,31 @@ public class RectangularToPolar extends TypedAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        RectangularToPolar newobj = (RectangularToPolar)(super.clone(ws));
-        newobj.x = (TypedIOPort)newobj.getPort("x");
-        newobj.y = (TypedIOPort)newobj.getPort("y");
+        ComplexToPolar newobj = (ComplexToPolar)(super.clone(ws));
+        newobj.input = (TypedIOPort)newobj.getPort("input");
         newobj.magnitude = (TypedIOPort)newobj.getPort("magnitude");
         newobj.angle = (TypedIOPort)newobj.getPort("angle");
         return newobj;
     }
 
-    /** Consume two double tokens (x and y) from each input port,
-     *  and output two new double tokens (magnitude and angle). The output is a
-     *  polar form representation of the vector given at the inputs in
-     *  rectangular form. The angle is in radians.
-     *  If either input has no token, then do nothing.
+    /** Consume one complex token and output two new double tokens
+     *  (magnitude and angle). The output is a polar form representation
+     *  of the complex input. The output angle is in radians.
+     *  If there is no input token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
 
     public void fire() throws IllegalActionException {
-        if (x.hasToken(0) && y.hasToken(0)) {
-            double xValue = ((DoubleToken) (x.get(0))).doubleValue();
-            double yValue = ((DoubleToken) (y.get(0))).doubleValue();
+        if (input.hasToken(0)) {
+            Complex inputValue = ((ComplexToken)(input.get(0))).complexValue();
 
-            double magnitudeValue
-                   = Math.sqrt (xValue * xValue + yValue * yValue);
-            double angleValue
-                   = Math.atan2(yValue, xValue);
+            double magnitudeValue = Math.sqrt(
+                inputValue.real * inputValue.real
+                + inputValue.imag * inputValue.imag);
+
+            double angleValue = Math.atan2(
+                inputValue.imag, inputValue.real);
 
             magnitude.broadcast(new DoubleToken (magnitudeValue));
             angle.broadcast(new DoubleToken (angleValue));

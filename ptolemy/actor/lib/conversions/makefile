@@ -51,9 +51,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ComplexToPolar.java \
 	ComplexToReal.java \
 	DoubleToFix.java \
 	FixToDouble.java \
+	PolarToComplex.java \
 	PolarToRectangular.java \
 	RectangularToPolar.java \
 	RealToComplex.java

@@ -1,4 +1,4 @@
-/* An actor that converts numbers from polar form to rectangular form.
+/* Convert from polar form to rectangular form.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (mikele@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -40,12 +40,16 @@ import ptolemy.kernel.util.*;
 
 ///////////////////////////////////////////////////////////////
 /// PolarToRectangular
-/** This actor takes in two double tokens (magnitude and angle)
-    one from each input port and output two new double tokens (xValue
-    and yValue). The output is a rectangular form representation of the vector
-    given at the inputs in polar form. The angle is in radians.
+/**
 
-@author Michael Leung
+This actor reads two double tokens (magnitude and angle)
+and outputs two new double tokens (x and y).
+The output is a rectangular form representation of the vector
+given at the inputs in polar form. The angle input is
+assumed to be in radians. If either input is NaN or infinity,
+then the output is NaN or infinity.
+
+@author Michael Leung and Edward A. Lee
 @version $Id$
 */
 
@@ -63,17 +67,17 @@ public class PolarToRectangular extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        magnitudeInput = new TypedIOPort(this, "magnitudeInput", true, false);
-        magnitudeInput.setTypeEquals(BaseType.DOUBLE);
+        magnitude = new TypedIOPort(this, "magnitude", true, false);
+        magnitude.setTypeEquals(BaseType.DOUBLE);
 
-        angleInput = new TypedIOPort(this, "angleInput", true, false);
-        angleInput.setTypeEquals(BaseType.DOUBLE);
+        angle = new TypedIOPort(this, "angle", true, false);
+        angle.setTypeEquals(BaseType.DOUBLE);
 
-        xOutput = new TypedIOPort(this, "xOutput", false, true);
-        xOutput.setTypeEquals(BaseType.DOUBLE);
+        x = new TypedIOPort(this, "x", false, true);
+        x.setTypeEquals(BaseType.DOUBLE);
 
-        yOutput = new TypedIOPort(this, "yOutput", false, true);
-        yOutput.setTypeEquals(BaseType.DOUBLE);
+        y = new TypedIOPort(this, "y", false, true);
+        y.setTypeEquals(BaseType.DOUBLE);
 
     }
 
@@ -81,14 +85,16 @@ public class PolarToRectangular extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /** The magnitude part. This has type DoubleToken. */
-    public TypedIOPort magnitudeInput;
+    public TypedIOPort magnitude;
+
     /** The angle part. This has type DoubleToken. Angle in radian */
-    public TypedIOPort angleInput;
+    public TypedIOPort angle;
 
     /** The xValue part . This has type DoubleToken. */
-    public TypedIOPort xOutput;
+    public TypedIOPort x;
+
     /** The yValue part. This has type DoubleToken. */
-    public TypedIOPort yOutput;
+    public TypedIOPort y;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -101,11 +107,10 @@ public class PolarToRectangular extends TypedAtomicActor {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         PolarToRectangular newobj = (PolarToRectangular)(super.clone(ws));
-        newobj.magnitudeInput =
-            (TypedIOPort)newobj.getPort("magnitudeInput");
-        newobj.angleInput = (TypedIOPort)newobj.getPort("angleInput");
-        newobj.xOutput = (TypedIOPort)newobj.getPort("xOutput");
-        newobj.yOutput = (TypedIOPort)newobj.getPort("yOutput");
+        newobj.magnitude = (TypedIOPort)newobj.getPort("magnitude");
+        newobj.angle = (TypedIOPort)newobj.getPort("angle");
+        newobj.x = (TypedIOPort)newobj.getPort("x");
+        newobj.y = (TypedIOPort)newobj.getPort("y");
         return newobj;
     }
 
@@ -113,23 +118,22 @@ public class PolarToRectangular extends TypedAtomicActor {
      *  input port and output two new double token (xValue and yValue).
      *  The output is a rectangular form representation of the vector given
      *  at the inputs in polar form. The angle is in radians.
+     *  If either input has no token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        if (magnitude.hasToken(0) && angle.hasToken(0)) {
+            double magnitudeValue
+                    = ((DoubleToken)(magnitude.get(0))).doubleValue();
+            double angleValue
+                    = ((DoubleToken) (angle.get(0))).doubleValue();
 
-        DoubleToken magnitudeValue = (DoubleToken) (magnitudeInput.get(0));
-        double  magnitude = magnitudeValue.doubleValue();
-        DoubleToken angleValue = (DoubleToken) (angleInput.get(0));
-        double angle = angleValue.doubleValue();
+            double xValue = magnitudeValue * Math.cos(angleValue);
+            double yValue = magnitudeValue * Math.sin(angleValue);
 
-        double xValue = magnitude * Math.cos(angle);
-        double yValue = magnitude * Math.sin(angle);
-
-        DoubleToken x = new DoubleToken (xValue);
-        DoubleToken y = new DoubleToken (yValue);
-
-        xOutput.broadcast(x);
-        yOutput.broadcast(y);
+            x.broadcast(new DoubleToken (xValue));
+            y.broadcast(new DoubleToken (yValue));
+        }
     }
 }

@@ -19,6 +19,13 @@
 </rendition>
 </entity>
 
+  <entity name="ComplexToPolar"
+          class="ptolemy.actor.lib.conversions.ComplexToPolar">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
   <entity name="ComplexToReal"
           class="ptolemy.actor.lib.conversions.ComplexToReal">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
@@ -45,6 +52,13 @@
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
+
+  <entity name="PolarToComplex"
+          class="ptolemy.actor.lib.conversions.PolarToComplex">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
 
   <entity name="PolarToRectangular"
           class="ptolemy.actor.lib.conversions.PolarToRectangular">
