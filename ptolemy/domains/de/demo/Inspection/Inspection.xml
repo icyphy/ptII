@@ -75,6 +75,8 @@ order.</text>
     </property>
     <property name="passengerArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 880, 614}}">
+    </property>
     <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -127,6 +129,10 @@ order.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="passenger, wait time, bus (Regular), bus (Poisson)">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={479, 234, 508, 254}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 204]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 170.0">
@@ -143,7 +149,7 @@ order.</text>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="4.8524822199016455"/>
+<yRange min="0.0" max="6.0368947094154475"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -152,11 +158,15 @@ order.</text>
     <entity name="Histogram" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, Regular">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={477, 493, 508, 255}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 205]">
+        </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, Regular">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 275.0">
         </property>
@@ -171,7 +181,7 @@ order.</text>
 <title>Waiting Time Histogram</title>
 <xLabel>waiting times</xLabel>
 <yLabel>passengers</yLabel>
-<xRange min="0.1" max="5.0"/>
+<xRange min="0.1" max="6.199999999999999"/>
 <yRange min="0.0" max="25.0"/>
 <noGrid/>
 <barGraph width="0.5" offset="0.15"/>
@@ -331,7 +341,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="171.0, 310.0">
+            <vertex name="vertex1" value="171.0, 310.0">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -360,6 +370,8 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="25">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={481, 124, 447, 105}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 348.5">
         </property>
@@ -498,7 +510,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="171.0, 310.0">
+            <vertex name="vertex1" value="171.0, 310.0">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -522,29 +534,29 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <link port="Const.trigger" relation="relation9"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="165.0, 190.0">
+        <vertex name="vertex1" value="165.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="275.0, 420.0">
+        <vertex name="vertex1" value="275.0, 420.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="330.0, 300.0">
+        <vertex name="vertex1" value="330.0, 300.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 265.0">
+        <vertex name="vertex1" value="150.0, 265.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 330.0">
+        <vertex name="vertex1" value="135.0, 330.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 255.0">
+        <vertex name="vertex1" value="310.0, 255.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -554,10 +566,10 @@ actor, for example, adds strings by appending them.</text></svg></configure>
     <link port="Poisson Waiting Time.output" relation="relation7"/>
     <link port="Poisson Waiting Time.waiter" relation="relation6"/>
     <link port="Poisson Waiting Time.waitee" relation="relation5"/>
-    <link port="Timed Plotter.input" relation="relation2"/>
-    <link port="Timed Plotter.input" relation="relation5"/>
     <link port="Timed Plotter.input" relation="relation6"/>
     <link port="Timed Plotter.input" relation="relation7"/>
+    <link port="Timed Plotter.input" relation="relation2"/>
+    <link port="Timed Plotter.input" relation="relation5"/>
     <link port="Histogram.input" relation="relation7"/>
     <link port="Histogram.input" relation="relation4"/>
     <link port="Regular Bus Arrivals.output" relation="relation2"/>
