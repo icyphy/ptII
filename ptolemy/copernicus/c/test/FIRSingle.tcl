@@ -117,7 +117,8 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     exec gcc -c    $runtimeDir/pccg_runtime_single.c
 
     # Link the .o files into the executable.
-    eval exec gcc -o firSingle [glob *.o]
+    set exeFile firSingle.exe
+    eval exec gcc -o $exeFile [glob *.o]
 
     # Run the executible.
     # The nightly build does not have . in the path, so we use ./ here.
