@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	RampArraySystem.java
 	RampSystem.java
 
 # Non-graphical Java tests written in Tcl
