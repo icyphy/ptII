@@ -106,7 +106,7 @@ at least with version 2.1.1.
 
 FIXME: more info.
 
-@author  Christopher Hylands, Edward Lee, James Yeh
+@author  Christopher Hylands, Edward Lee, James Yeh, Paul Yang, David Lee
 @version $Id$
 */
 public class VideoCamera extends Source implements ControllerListener {

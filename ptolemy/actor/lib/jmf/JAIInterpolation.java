@@ -45,11 +45,11 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIInterpolation
 /**
-Scale a RenderedOp using the javax.media.jai.JAI class.
-
-@author James Yeh
-@version $Id$
-*/
+   Scale a RenderedOp using the javax.media.jai.JAI class.
+   
+   @author James Yeh
+   @version $Id$
+ */
 
 public class JAIInterpolation extends Transformer {
     
