@@ -66,6 +66,8 @@ public abstract class Relation extends GraphElement {
      * @exception pt.exceptions.NameDuplicationException Attempt to store 
      * two instances of the same class with identical names in the same 
      * container.
+     * @exception pt.exceptions.NullReferenceException Signals an attempt 
+     * to pass null object references as arguments.
      */	
     public void connectPort(Port port) throws NameDuplicationException,
 	NullReferenceException {
