@@ -131,12 +131,14 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
     public void changeFailed(ChangeRequest change, final Exception exception) {
     }
 
+
     /** If this GeneratorAttribute has not yet been initialized, the
      *  initialized it by reading the moml file naemd by the
      *  initialParametersURL and creating Parameters and Variables
      *  accordingly.
      */
-    public void initialize() throws IllegalActionException, NameDuplicationException {
+    public void initialize()
+	throws IllegalActionException, NameDuplicationException {
 	if (_initialized) {
 	    return;
 	}

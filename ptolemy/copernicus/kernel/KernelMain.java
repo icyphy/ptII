@@ -398,8 +398,8 @@ public class KernelMain {
                                 + "' as a URL '"
                                 + momlURL + "':\n  "
                                 + exceptionThree + "\n");
-			throw new IllegalActionException(errorMessage
-                                .toString());
+			throw new IllegalActionException(null, exceptionThree,
+                                errorMessage.toString());
 
 		    }
 		} catch (MalformedURLException malformed) {
