@@ -1,6 +1,6 @@
 #!/bin/sh
 # Fix the copyright date
-#-[Thu Feb 21 00:08:17 2002 by cxh]-
+#-[Fri Feb 22 09:22:56 2002 by cxh]-
 #
 # The way to run this is to use $PTII/adm/bin/ptIIfiles to generate
 # a list of files and then run this script on that over and over
@@ -92,6 +92,16 @@ doit() {
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH='Copyright \(c\) 199[0-9]-200[01] '
+LOGMESSAGE="Changed copyright to 2002"
+
+search $@
+
+doit() {
+    sed 's/Copyright (c) 2000-2001 /Copyright (c) 2000-2002 /' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+EGREPMATCH='Copyright \(c\) 2000-2001 '
 LOGMESSAGE="Changed copyright to 2002"
 
 search $@
