@@ -286,7 +286,7 @@ public class PlotBox extends Applet {
         _lry = drawRect.height-labelheight-_bottomPadding-3; 
         int height = _lry-_uly;
         _yscale = height/(_yMax - _yMin);
-        _ytickscale = height/(_yMax - _yMin);
+        _ytickscale = height/(_ytickMax - _ytickMin);
 
         ///////////////////// vertical axis
 
@@ -294,13 +294,13 @@ public class PlotBox extends Applet {
         // NOTE: subjective spacing factor.
         int ny = 2 + height/(labelheight+10);
         // Compute y increment.
-        double yStep=_roundUp((_yMax-_yMin)/(double)ny);
+        double yStep=_roundUp((_ytickMax-_ytickMin)/(double)ny);
         
         // Compute y starting point so it is a multiple of yStep.
-        double yStart=yStep*Math.ceil(_yMin/yStep);
+        double yStart=yStep*Math.ceil(_ytickMin/yStep);
         
         // NOTE: Following disables first tick.  Not a good idea?
-        // if (yStart == _yMin) yStart+=yStep;
+        // if (yStart == _ytickMin) yStart+=yStep;
         
         // Define the strings that will label the y axis.
         // Meanwhile, find the width of the widest label.
@@ -365,7 +365,7 @@ public class PlotBox extends Applet {
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
-        _xtickscale = width/(_xMax - _xMin);
+        _xtickscale = width/(_xtickMax - _xtickMin);
         
         // White background for the plotting rectangle
         graphics.setColor(Color.white);
@@ -382,10 +382,10 @@ public class PlotBox extends Applet {
         if (_yticks == null) {
             // auto-ticks
             ind = 0;
-            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= _ytickMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                int yCoord1 = _lry - (int)((ypos-_yMin)*_ytickscale);
+                int yCoord1 = _lry - (int)((ypos-_ytickMin)*_ytickscale);
                 // The lowest label is shifted up slightly to avoid
                 // colliding with x labels.
                 int offset = 0;
@@ -448,20 +448,20 @@ public class PlotBox extends Applet {
             // NOTE: 5 additional pixels between labels.
             int nx = 2 + width/(maxlabelwidth+5);
             // Compute x increment.
-            double xStep=_roundUp((_xMax-_xMin)/(double)nx);
+            double xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
         
             // Compute x starting point so it is a m_ultiple of xStep.
-            double xStart=xStep*Math.ceil(_xMin/xStep);
+            double xStart=xStep*Math.ceil(_xtickMin/xStep);
         
             // NOTE: Following disables first tick.  Not a good idea?
             // if (xStart == _xMin) xStart+=xStep;
         
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
-            for (double xpos=xStart; xpos <= _xMax; xpos += xStep) {
+            for (double xpos=xStart; xpos <= _xtickMax; xpos += xStep) {
                 String _xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)
 						 * 0.001);
-                xCoord1 = _ulx + (int)((xpos-_xMin)*_xtickscale);
+                xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
@@ -481,7 +481,7 @@ public class PlotBox extends Applet {
                 String label = (String) nl.nextElement();
                 double xpos = ((Double)(nt.nextElement())).doubleValue();
                 if (xpos > _xMax || xpos < _xMin) continue;
-                xCoord1 = _ulx + (int)((xpos-_xMin)*_xtickscale);
+                xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
@@ -1035,7 +1035,7 @@ public class PlotBox extends Applet {
     
     Graphics graphics;
 
-	// The range of the plot.
+    // The range of the plot.
     protected double _yMax, _yMin, _xMax, _xMin;
 
     // Whether the ranges have been given.
@@ -1200,11 +1200,11 @@ public class PlotBox extends Applet {
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_xExp > 1 || _xExp < -1) {
             double xs = 1.0/Math.pow(10.0,(double)_xExp);
-            _xMin = min*xs;
-            _xMax = max*xs;
+            _xtickMin = min*xs;
+            _xtickMax = max*xs;
         } else {
-            _xMin = min;
-            _xMax = max;
+            _xtickMin = min;
+            _xtickMax = max;
             _xExp = 0;
         }
         _xMin = min;
@@ -1230,11 +1230,11 @@ public class PlotBox extends Applet {
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_yExp > 1 || _yExp < -1) {
             double ys = 1.0/Math.pow(10.0,(double)_yExp);
-            _yMin = min*ys;
-            _yMax = max*ys;
+            _ytickMin = min*ys;
+            _ytickMax = max*ys;
         } else {
-            _yMin = min;
-            _yMax = max;
+            _ytickMin = min;
+            _ytickMax = max;
             _yExp = 0;
         }
         _yMin = min;
@@ -1252,7 +1252,7 @@ public class PlotBox extends Applet {
     private boolean _binary = false;
 
     // The range of the plot as labeled (multiply by 10^exp for actual range.
-    private double _yMax, _yMin, _xMax, _xMin;
+    private double _ytickMax, _ytickMin, _xtickMax, _xtickMin;
     // The power of ten by which the range numbers should be multiplied.
     private int _yExp, _xExp;
 
