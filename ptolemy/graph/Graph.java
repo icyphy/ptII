@@ -691,7 +691,7 @@ public class Graph implements Cloneable {
      *  to mean that all unweighted edges are to be included in the result.
      *  Duplicate weights or null elements in the specified collection result
      *  in duplicate edges in the returned collection.
-     *  Non-null elements in the argument collection that are not edge weights 
+     *  Non-null elements in the argument collection that are not edge weights
      *  are ignored.
      *  @param collection The specified collection of weights.
      *  @return The edges in this graph whose weights are contained
@@ -711,15 +711,15 @@ public class Graph implements Cloneable {
 
     /** Test if a graph is equal to this one. It is equal
      *  if it is of the same class, and has the same sets of nodes
-     *  and edges. 
-     *  
+     *  and edges.
+     *
      *  <p> Derived graph classes may override this method if
      *  there is additional information in the graphs (beyond nodes
-     *  and edges) that is relevant to equality. 
+     *  and edges) that is relevant to equality.
      *
      *  @param graph The graph with which to compare this graph.
      *  @return True if the graph is equal to this one.
-     *  @see #hashCode() 
+     *  @see #hashCode()
      */
     public boolean equals(Object graph) {
         if (graph == null) {
@@ -753,7 +753,7 @@ public class Graph implements Cloneable {
      *
      *  <p> Derived graph classes may override this method if
      *  there is additional information in the graphs (beyond nodes
-     *  and edges) that is relevant to equality between graphs. 
+     *  and edges) that is relevant to equality between graphs.
      *
      *  @return The hash code for this graph.
      *  @see #equals(Object)
@@ -1010,7 +1010,7 @@ public class Graph implements Cloneable {
      *  to mean that all unweighted nodes are to be included in the result.
      *  Duplicate weights or null elements in the specified collection result
      *  in duplicate nodes in the returned collection.
-     *  Non-null elements in the argument collection that are not node weights 
+     *  Non-null elements in the argument collection that are not node weights
      *  are ignored.
      *  @param collection The specified collection of weights.
      *  @return The nodes in this graph whose weights are contained
@@ -1348,7 +1348,7 @@ public class Graph implements Cloneable {
                     "Invalid weight associated with an edge in the graph."
                     + GraphException.edgeDump(edge, this));
         }
-        return _validateWeight(edge, oldWeight, newWeight, _edges, 
+        return _validateWeight(edge, oldWeight, newWeight, _edges,
                 _edgeWeightMap, _unweightedEdgeSet);
      }
 
@@ -1422,7 +1422,7 @@ public class Graph implements Cloneable {
      *
      *  <p>In this example, #validateWeight(Node) could be used
      *  (e.g., if the previous weight <em>oldWeight</em> was not available)
-     *  in place of #validateWeight(Node, Object), but the efficiency would be 
+     *  in place of #validateWeight(Node, Object), but the efficiency would be
      *  lower.
      *
      *  @param node The node whose weight is to be validated.
@@ -1443,7 +1443,7 @@ public class Graph implements Cloneable {
                     "Invalid weight associated with a node in the graph."
                     + GraphException.nodeDump(node, this));
         }
-        return _validateWeight(node, oldWeight, newWeight, _nodes, 
+        return _validateWeight(node, oldWeight, newWeight, _nodes,
                 _nodeWeightMap, _unweightedNodeSet);
      }
 
@@ -1916,11 +1916,11 @@ public class Graph implements Cloneable {
     }
 
      // Validate the weight of a given graph element, given the previous
-     // weight of that element and the element set, weight map, and unweighted 
+     // weight of that element and the element set, weight map, and unweighted
      // element set for all elements of the same type (nodes or edges).
      // Assume that the element and weight are valid.
      private boolean _validateWeight(Element element, Object oldWeight,
-             Object newWeight, List elementSet, Map weightMap, 
+             Object newWeight, List elementSet, Map weightMap,
              Set unweightedSet) {
         boolean changed = false;
         if (oldWeight == null) {
