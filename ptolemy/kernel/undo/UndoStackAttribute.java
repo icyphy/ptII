@@ -103,16 +103,19 @@ public class UndoStackAttribute extends SingletonAttribute {
      *   (must not be null or a NullPointerException will the thrown).
      *  @return The current undo stack attribute if there is one, or a new one.
      */
-    public static UndoStackAttribute getUndoInfo(NamedObj object) {
+    public static UndoStackAttribute getUndoInfo(final NamedObj object) {
+	// Note, the parameter is final so we do not assign to it,
+	// so we are sure that we call getReadAccess on the same object.
         try {
             object.workspace().getReadAccess();
             NamedObj topLevel = object.toplevel();
-            while (object != null) {
+	    NamedObj container = object;
+            while (container != null) {
                 List attrList = object.attributeList(UndoStackAttribute.class);
                 if (attrList.size() > 0) {
                     return (UndoStackAttribute)attrList.get(0);
                 }
-                object = (NamedObj)object.getContainer();
+                container = (NamedObj)container.getContainer();
             }
             // If we get here, there is no such attribute.
             // Create and attach a new instance.
@@ -122,7 +125,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 throw new InternalErrorException(e);
             }           
         } finally {
-        	object.workspace().doneReading();
+	    object.workspace().doneReading();
         }
     }
 
