@@ -57,6 +57,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
+import ptolemy.math.Complex;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
@@ -92,7 +93,7 @@ import java.util.List;
    <p>
    The <i>errorTolerance</i> parameter specifies the accuracy of
    inputs referenced by the assertion. By default, the errorTolerance
-   is 1e-4.
+   is epsilon defined in ptolemy.math.Complex.
    <p>
    NOTE: There are a number of limitations in the current implementation.
    First, the errorTolerance adds constraints on the accuracy of the
@@ -122,7 +123,7 @@ public class Assertion extends TypedAtomicActor {
 
         assertion = new Parameter(this, "assertion");
 
-        _errorTolerance = (double)1e-4;
+        _errorTolerance = (double)Complex.episilon;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
 
@@ -174,7 +175,7 @@ public class Assertion extends TypedAtomicActor {
             throws CloneNotSupportedException {
         Assertion newObject = (Assertion)super.clone(workspace);
         newObject._tokenMap = null;
-        newObject._errorTolerance = (double)1e-4;
+        newObject._errorTolerance = (double)Complex.episilon;
         newObject._parseTree = null;
         newObject._parseTreeEvaluator = null;
         newObject._scope = null;

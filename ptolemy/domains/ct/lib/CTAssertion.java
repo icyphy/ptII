@@ -82,7 +82,7 @@ import java.util.List;
    <p>
    The <i>errorTolerance</i> parameter specifies the accuracy of
    inputs referenced by the assertion. By default, the errorTolerance
-   is 1e-4.
+   is episilon defined in ptolem.math.Complex.
    <p>
    NOTE: There are a number of important things to be pointed out.
    First, the errorTolerance adds constraints on the accuracy of the
@@ -111,6 +111,16 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Update the attribute if it has been changed. If the attribute
+     *  is <i>errorTolerance<i> then update the local cache.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the attribute change failed.
+     */
+    public void attributeTypeChanged(Attribute attribute)
+	throws IllegalActionException {
+	super.attributeTypeChanged(attribute);
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
