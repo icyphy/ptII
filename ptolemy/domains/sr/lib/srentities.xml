@@ -14,12 +14,31 @@
 </entity>
 
 <entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
+    <property name="function">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="and" value="and"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="or" value="or"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="xor" value="xor"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="nand" value="nand"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="nor" value="nor"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="xnor" value="xnor"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
 </entity>
 
 <entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
 </entity>
 
 <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
+</entity>
+
+<entity name="TimedDisplay" class="ptolemy.domains.sr.lib.TimedDisplay">
 </entity>
 
 <entity name="TriggeredTime" class="ptolemy.domains.sr.lib.TriggeredTime">

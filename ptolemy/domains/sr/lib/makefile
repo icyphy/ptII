@@ -55,6 +55,7 @@ JSRCS = \
 	NonStrictLogicFunction.java \
 	SequenceTest.java \
 	SingleTokenDistributor.java \
+	TimedDisplay.java \
 	TriggeredTime.java
 
 OTHER_FILES_TO_BE_JARED = \
