@@ -265,7 +265,7 @@ codeDoc/tree.html:	$(CODEGENJSRCS) \
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLPACKAGES) )
 
 
 codeDocPtiny/tree.html:
