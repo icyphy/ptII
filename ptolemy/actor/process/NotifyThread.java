@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (mudit@eecs.berkeley.edu)
+@AcceptedRating Yellow
 
 
 */
