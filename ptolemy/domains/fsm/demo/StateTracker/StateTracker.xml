@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 75.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 175, 895, 517}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 152, 891, 516}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[676, 400]">
     </property>
@@ -67,6 +67,14 @@ David Hermann, Research in Motion</text></svg></configure>
         </port>
     </entity>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+            </property>
+        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
