@@ -50,7 +50,7 @@ import java.util.Random;
 A philosopher sits at a table with 4 other philosophers. Between
 each two philosophers there is a fork. A Philosopher eats when he has
 both forks next to him. A Philosopher thinks for a while, then tries
-to eat. When he suceeds in obtaining both forks he eats for a while,
+to eat. When he succeeds in obtaining both forks he eats for a while,
 then puts both forks back on the table and continues thinking.
 <p>
 Due to the rendezvous nature of communication in the CSP domain, a
