@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating none
+@AcceptedRating Red (nsmyth@eecs.berkeley.edu)
 
 */
 
@@ -33,7 +33,6 @@ package ptolemy.domains.csp.kernel;
 
 import ptolemy.data.Token;
 import ptolemy.actor.*;
-import ptolemy.actor.TerminateProcessException;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
@@ -169,16 +168,6 @@ public class CSPActor extends AtomicActor {
             throw new TerminateProcessException("CSPActor interrupted " +
                     "while delayed." );
         }
-    }
-
-
-    /** Call to terminate the actor process normally.
-     */
-    public void finish() {
-        TopologyChangeRequest r = _makeFinishRequest();
-        getDirector().queueTopologyChangeRequest(r);
-        System.out.println(getName() +":Queued TopologyChange");
-        delay();
     }
 
     /** Default implementation for CSPActors is to return false. If an
@@ -386,9 +375,7 @@ public class CSPActor extends AtomicActor {
                         _branchesActive++;
                     }
                     _branchesStarted = _branchesActive;
-                    //System.out.println(_branchesStarted +
-                    //" branches created..\n");
-                    // wait for a branch to succeed
+		    // wait for a branch to succeed
                     while ((_successfulBranch == -1) &&
                             (_branchesActive > 0)) {
                         _getInternalLock().wait();
@@ -405,8 +392,8 @@ public class CSPActor extends AtomicActor {
                 // If the guard for a branch is false, it means a
                 // thread was not created for that branch.
                 if ( (i!= _successfulBranch) && (branches[i].getGuard()) ) {
-                    // to terminate a branch, need to set flag
-                    // on receiver & wake it up
+                    // to terminate a branch, need to set a flag
+                    // on the receiver it is rendezvousing with & wake it up
                     Receiver rec = branches[i].getReceiver();
                     tmp.insertFirst(rec);
                     branches[i].setAlive(false);
@@ -429,14 +416,13 @@ public class CSPActor extends AtomicActor {
                 }
             }
         } catch (InterruptedException ex) {
-            // FIXME: what should happen here?
             throw new TerminateProcessException(this, "CSPActor.chooseBranch" +
             " interrupted.");
         }
         if (_successfulBranch == -1) {
             // Conditional construct was ended prematurely
             throw new TerminateProcessException(this, "CSPActor: exiting " +
-            "conditional branching due to TerminateProcessException.");
+                    "conditional branching due to TerminateProcessException.");
         }
         _threadList = null;
         return _successfulBranch;
@@ -450,31 +436,13 @@ public class CSPActor extends AtomicActor {
             throw new InvalidStateException("CSPActor._continue() " +
                     "called on an actor that was not delayed: " + getName());
         }
-        // FIXME: perhaps this notifyAll should be done in a new
+        // perhaps this notifyAll should be done in a new
         // thread as it is called from CSPDirector?
         synchronized(_getInternalLock()) {
             _delayed = false;
             _getInternalLock().notifyAll();
         }
     }
-
-    /*  Create and return a new TopologyChangeRequest object that
-     *  removes this actor from the simulation.
-     */
-    private TopologyChangeRequest _makeFinishRequest() {
-        final CSPActor tmp = this;
-        TopologyChangeRequest request = new TopologyChangeRequest(this) {
-
-            public void constructEventQueue() {
-                System.out.println("Removing process: " + tmp.getName() +
-                        " from the simulation");
-                CompositeActor container =  (CompositeActor)getContainer();
-                queueEntityRemovedEvent(container, tmp);
-            }
-        };
-        return request;
-    }
-
 
     /** Release the calling branches status as the first branch to
      *  try to rendezvous. The branch was obviously not able to complete
@@ -511,7 +479,6 @@ public class CSPActor extends AtomicActor {
      * so that it starts with a consistent state each time.
      */
     private void _resetConditionalState() {
-        //System.out.println("reseting conditional state in: " +getName());
         synchronized(_getInternalLock()) {
             _branchesActive = 0;
             _branchesBlocked = 0;
