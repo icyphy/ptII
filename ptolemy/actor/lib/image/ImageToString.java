@@ -34,7 +34,7 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
-import ptolemy.data.ObjectToken;
+import ptolemy.data.ImageToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
@@ -80,8 +80,8 @@ public class ImageToString extends Transformer {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                ObjectToken objectToken = (ObjectToken) input.get(i);
-                Image image = (Image) objectToken.getValue();
+                ImageToken imageToken = (ImageToken) input.get(i);
+                Image image = (Image) imageToken.asAWTImage();
                 String description = new String("Image: "
                         + image.getWidth(null)
                         + " x "
