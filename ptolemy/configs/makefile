@@ -55,7 +55,10 @@ JSRCS =
 #  so we include it in this jar
 OTHER_FILES_TO_BE_JARED = \
 	annotation.xml \
+	commonEffigies.xml \
+	experimentalDirectors.xml \
 	fsmLibrary.xml \
+	fsmTableaux.xml \
 	intro.htm \
 	introDSP.htm \
 	introPtiny.htm \
@@ -63,6 +66,10 @@ OTHER_FILES_TO_BE_JARED = \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
 	ptIIplanet.gif \
+	ptinyActors.xml \
+	ptinyDirectors.xml \
+	ptinyEffigies.xml \
+	utilitiesLibrary.xml \
 	vergilConfiguration.xml \
 	vergilConfigurationDSP.xml \
 	vergilConfigurationPtiny.xml \

@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="experimental director library" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>experimental director library</doc>
+      <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
+      <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
+      <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      <property name="PetriNet" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
+      <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
+      <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+         <property name="scheduler">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;"/>
+               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;"/>
+	    </property>
+         </property>
+      </property>
+      <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <!-- The directory of open models, each represented by an effigy. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
+  </entity>
+
+  <!-- Factories for effigies. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
+    </entity>
+    <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <input source="ptolemy/configs/fsmLibrary.xml"/>
+      </entity>
+    </entity>
+    <entity name="Interface Automaton Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+        <input source="ptolemy/configs/fsmLibrary.xml"/>
+      </entity>
+    </entity>
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
+    <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
+  </entity>
+</group>

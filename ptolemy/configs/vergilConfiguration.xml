@@ -5,44 +5,11 @@
 
   <doc>Configuration to edit and run Ptolemy II models</doc>
 
-  <!-- The directory of open models, each represented by an effigy. -->
-  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
-  </entity>
-
-  <!-- Factories for effigies. -->
-  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
-    </entity>
-    <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <input source="ptolemy/configs/fsmLibrary.xml"/>
-      </entity>
-    </entity>
-    <entity name="Interface Automaton Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-        <input source="ptolemy/configs/fsmLibrary.xml"/>
-      </entity>
-    </entity>
-    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
-    <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
-  </entity>
+  <input source="ptolemy/configs/ptinyEffigies.xml"/>
 
   <!-- Factories for tableaux. -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <!-- Factories for tableaux that offer views of Ptolemy II fsms. -->
-    <property name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
-
-      <!-- These will appear in the View menu of an interface automata tableau. -->
-      <property name="Interface Automaton Editor" class="ptolemy.vergil.ptolemy.fsm.InterfaceAutomatonGraphTableau$Factory"/>
-      <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
-      <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-
-      <!-- These will appear in the View menu of an fsm tableau. -->
-      <property name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory"/>
-      <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
-      <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-    </property>
+    <input source="ptolemy/configs/fsmTableaux.xml"/>
     <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
     <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
       <!-- These will appear in the View menu of an entity tableau. -->
@@ -68,96 +35,17 @@
     <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Default utilities library. -->
-    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-            <input source="ptolemy/configs/annotation.xml"/>
-    <!-- Blank composite actor. -->
-    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
-    <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
-       <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
-         <property name="annotation" class="ptolemy.kernel.util.Attribute">
-           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure></property>
-           <property name="_location" class="ptolemy.moml.Location" value="250.0, 40.0"/>
-         </property>
-       </entity>
-    </entity>
-    <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
-    <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
-      <input source="ptolemy/configs/fsmLibrary.xml"/>
-    </entity>
-    <entity name="interface automaton" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-      <input source="ptolemy/configs/fsmLibrary.xml"/>
-    </entity>
-          </group>
-        ?>
-      </configure>
-    </class>
+    <input source="ptolemy/configs/utilitiesLibrary.xml"/>
 
     <!-- Default director library. -->
+    <!-- We split these into submenus so as to have a smaller footprint -->
     <class name="director library" extends="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
-
-      <doc>default director library</doc>
-      <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
-      <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
-      <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
-      <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
-      <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
-      <property name="RTOS" class="ptolemy.domains.rtos.kernel.RTOSDirector"/>
-      <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
-      <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
-      <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-         <property name="ODESolver">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
-               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
-	  </property>
-         </property>
-         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
-	     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
-	  </property>
-         </property>
-      </property>
-      <property name="CTEmbedded" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-         <property name="ODESolver">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
-               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
-	  </property>
-         </property>
-         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
-	     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
-	  </property>
-         </property>
-      </property>
-      <property name="HybridFSM" class="ptolemy.domains.fsm.kernel.HSDirector"/>
-      <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
-      <property name="PetriNet" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
-      <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
-      <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
-         <property name="scheduler">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;"/>
-               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;"/>
-	    </property>
-         </property>
-      </property>
-
+	    <doc>default director library</doc>
+	    <input source="ptolemy/configs/ptinyDirectors.xml"/>
+	    <input source="ptolemy/configs/experimentalDirectors.xml"/>
           </group>
         ?>
       </configure>
@@ -173,16 +61,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 	     paths that start with ptolemy/ so that we can find these
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
-            <input source="ptolemy/actor/lib/sources.xml"/>
-            <input source="ptolemy/actor/lib/sinks.xml"/>
-            <input source="ptolemy/actor/lib/math.xml"/>
-            <input source="ptolemy/actor/lib/flowcontrol.xml"/>
-            <input source="ptolemy/actor/lib/logic/logic.xml"/>
-            <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
-            <input source="ptolemy/actor/lib/array.xml"/>
-            <input source="ptolemy/actor/lib/signalprocessing.xml"/>
-            <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
-            <input source="ptolemy/domains/de/lib/deentities.xml"/>
+            <input source="ptolemy/configs/ptinyActors.xml"/>
             <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/rtos/lib/rtosentities.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
