@@ -260,8 +260,13 @@ public class InequalitySolver {
      *  @exception IllegalActionException If testing any one of the
      *  variables throws an exception.
      */
-    public Iterator variables() throws IllegalActionException {
-        return _filterVariables(null);
+    public Iterator variables() {
+        LinkedList result = new LinkedList();
+        for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+            InequalityTerm variable = (InequalityTerm)e.nextElement();
+            result.addLast(variable);
+        }
+        return result.iterator();
     }
 
     ///////////////////////////////////////////////////////////////////

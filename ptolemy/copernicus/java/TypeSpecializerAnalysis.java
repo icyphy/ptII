@@ -815,14 +815,10 @@ public class TypeSpecializerAnalysis {
 
     private void _printSolverVariables() {
         System.out.println("Type Assignment:");
-        try {
-            Iterator variables = _solver.variables();
-            while (variables.hasNext()) {
-                System.out.println("InequalityTerm: "
-                        + variables.next().toString());
-            }
-        } catch (IllegalActionException ex) {
-            ex.printStackTrace();
+        Iterator variables = _solver.variables();
+        while (variables.hasNext()) {
+            System.out.println("InequalityTerm: "
+                    + variables.next().toString());
         }
     }
 
