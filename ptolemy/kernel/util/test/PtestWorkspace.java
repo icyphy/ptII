@@ -31,8 +31,6 @@
 package ptolemy.kernel.util.test;
 
 import java.io.Serializable;
-import collections.LinkedList;
-import collections.CollectionEnumeration;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.PtolemyThread;
 
