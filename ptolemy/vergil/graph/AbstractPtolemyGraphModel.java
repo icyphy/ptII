@@ -95,15 +95,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      */
     public void addNode(final Object eventSource, 
 			final Object node, final Object parent) {
-	ChangeRequest request = new ChangeRequest(
-            AbstractPtolemyGraphModel.this,
-	    "Add Node " + node + " to composite " + parent) {
-		protected void _execute() throws Exception {
-		    AbstractPtolemyGraphModel.super.
-		    addNode(eventSource, node, parent);
-		}
-	    };	
-	_toplevel.requestChange(request);
+	throw new UnsupportedOperationException("hack");
     }
     
     /**
@@ -114,16 +106,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      */
     public void connectEdge(final Object eventSource, final Object edge, 
 			    final Object tailNode, final Object headNode) {
-	ChangeRequest request = new ChangeRequest(
-	    AbstractPtolemyGraphModel.this,
-	    "Connect Edge " + edge + " from " + tailNode +
-	    " to " + headNode) {
-		protected void _execute() throws Exception {
-		    AbstractPtolemyGraphModel.super.
-		    connectEdge(eventSource, edge, tailNode, headNode);
-		}
-	    };
-	_toplevel.requestChange(request);
+	throw new UnsupportedOperationException("hack");
     }
 
     /**
@@ -133,15 +116,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * in a ptolemy change request.
       */
     public void disconnectEdge(final Object eventSource, final Object edge) {
-	ChangeRequest request = new ChangeRequest(
-	    AbstractPtolemyGraphModel.this,
-	    "Disconnect Edge " + edge) {
-		protected void _execute() throws Exception {
-		    AbstractPtolemyGraphModel.super.
-		    disconnectEdge(eventSource, edge);
-		}
-	    };
-	_toplevel.requestChange(request);
+	throw new UnsupportedOperationException("hack");
     }
 
     /**
@@ -153,29 +128,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * in a ptolemy change request.
      */
     public void removeNode(final Object eventSource, final Object node) {
-	ChangeRequest request = new ChangeRequest(
-	    AbstractPtolemyGraphModel.this,
-	    "Remove Node " + node) {
-		protected void _execute() throws Exception {
-		    // Remove the edges.
-		    Iterator i = GraphUtilities.partiallyContainedEdges(node, 
-		        AbstractPtolemyGraphModel.this);
-		    while(i.hasNext()) {
-			Object edge = i.next();
-			AbstractPtolemyGraphModel.super.
-			disconnectEdge(eventSource, edge);
-		    }
-
-		    // remove the node.
-		    Object prevParent = getNodeModel(node).getParent(node);
-		    getNodeModel(node).setParent(node, null);
-		    GraphEvent e = new GraphEvent(eventSource, 
-						  GraphEvent.NODE_REMOVED,
-						  node, prevParent);
-		    dispatchGraphEvent(e);
-		}
-	    };
-	_toplevel.requestChange(request);
+	throw new UnsupportedOperationException("hack");
     }
 
     /**
@@ -214,44 +167,6 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     }
 
     /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_HEAD_CHANGED event.
-     * This method overrides the base class to perform the operation
-     * in a ptolemy change request.
-      */
-    public void setEdgeHead(final Object eventSource, 
-			    final Object edge, final Object head) {
-	ChangeRequest request = new ChangeRequest(
-	    AbstractPtolemyGraphModel.this,
-	    "Set Edge Head " + edge + " to " + head) {
-		protected void _execute() throws Exception {
-		    AbstractPtolemyGraphModel.super.
-		    setEdgeHead(eventSource, edge, head);
-		}
-	    };
-	_toplevel.requestChange(request);
-    }
-
-    /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_TAIL_CHANGED event.
-     * This method overrides the base class to perform the operation
-     * in a ptolemy change request.
-      */
-    public void setEdgeTail(final Object eventSource, 
-			    final Object edge, final Object tail) {
-	ChangeRequest request = new ChangeRequest(
-	    AbstractPtolemyGraphModel.this,
-	    "Set Edge Tail " + edge + " to " + tail) {
-		protected void _execute() throws Exception {
-		    AbstractPtolemyGraphModel.super.
-		    setEdgeTail(eventSource, edge, tail);
-		}
-	    };
-	_toplevel.requestChange(request);
-    }
-	
-    /**
      * Set the property of the given graph object associated with
      * the given property name to the given value.  In this implementation
      * properties are stored in variables of the graph object (which is
@@ -269,26 +184,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     public void setProperty(final Object object, 
 			    final String propertyName,
 			    final Object value) {
-	ChangeRequest request = new ChangeRequest(
-	    AbstractPtolemyGraphModel.this,
-	    "Set Property " + propertyName + " to " + value) {
-		protected void _execute() throws Exception {
-		    NamedObj namedObject = (NamedObj)object;
-		    Attribute a = namedObject.getAttribute(propertyName);
-		    if(a == null) {
-			a = new Variable(namedObject, propertyName);
-		    } 
-		    Variable v = (Variable)a;
-		    if(value instanceof String) {
-			v.setExpression((String)value);
-			v.getToken();
-		    } else {
-			v.setToken(new ObjectToken(value));
-		    }
-		}
-	    };
-	_toplevel.requestChange(request);
-
+	throw new UnsupportedOperationException("hack");
     }
     
     /**
