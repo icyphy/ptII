@@ -532,12 +532,14 @@ public class SoundCapture {
 	DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class,
                 format, AudioSystem.NOT_SPECIFIED);
 
-        if (!AudioSystem.isLineSupported(targetInfo)) {
-	    // FIXME: throw exception here.
-            System.out.println("Line matching " + targetInfo +
-                    " not supported.");
-            return;
-        }
+	// The following works under Windows Java 1.3.0 RC2 but
+	// not under Tritonus under Linux, so comment out.
+        //if (!AudioSystem.isLineSupported(targetInfo)) {
+	//    // FIXME: throw exception here.
+        //    System.out.println("Line matching " + targetInfo +
+        //            " not supported.");
+        //    return;
+        //}
 
         try {
             _targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
@@ -563,12 +565,14 @@ public class SoundCapture {
                 format,
                 AudioSystem.NOT_SPECIFIED);
 
-	if (!AudioSystem.isLineSupported(sourceInfo)) {
-	    //FIXME: handle this correctly.
-	    System.err.println("Line matching " + sourceInfo +
-                    " not supported.");
-	    return;
-	}
+	// The following works under Windows Java 1.3.0 RC2 but
+	// not under Tritonus under Linux, so comment out.
+	//if (!AudioSystem.isLineSupported(sourceInfo)) {
+	//    //FIXME: handle this correctly.
+	//    System.err.println("Line matching " + sourceInfo +
+        //            " not supported.");
+	//    return;
+	//}
 
 	// Array of audio samples in byte format.
 	_data = new byte[_productionRate*_frameSizeInBytes];
