@@ -54,6 +54,7 @@ JARFILE = 	$(TYPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
+	Delay.java \
 	SDFRamp.java \
 	SDFPrint.java \
 	SDFDelay.java \
