@@ -86,7 +86,7 @@ test DoubleToken-2.0 {Create a non-empty instance and query its value as an doub
 # 
 test DoubleToken-2.1 {Create a non-empty instance and query its value as an int} {
     set p [java::new {ptolemy.data.DoubleToken double} 12]
-    catch {$p doubleValue} errmsg
+    catch {$p intValue} errmsg
 
     list $errmsg
 } {{ptolemy.kernel.util.IllegalActionException: ScalarToken.intValue: This base class does not contain a value.}}
@@ -96,7 +96,7 @@ test DoubleToken-2.1 {Create a non-empty instance and query its value as an int}
 # 
 test DoubleToken-2.2 {Create a non-empty instance and query its value as a long} {
     set p [java::new {ptolemy.data.DoubleToken double} 12]
-   catch {$p doubleValue} errmsg
+   catch {$p longValue} errmsg
 
     list $errmsg
 } {{ptolemy.kernel.util.IllegalActionException: ScalarToken.longValue: This base class does not contain a value.}}
@@ -127,7 +127,7 @@ test DoubleToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(0)}
 ######################################################################
 ####
 # 
@@ -136,7 +136,7 @@ test DoubleToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(1)}
 
 ######################################################################
 ####
@@ -148,20 +148,20 @@ test DoubleToken-3.0 {Test adding doubles.} {
     set res2 [$p addR $p]
 
     list [$res1 toString] [$res2 toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(24.4) ptolemy.data.DoubleToken(24.4)}
 ######################################################################
 ####
 # 
 test DoubleToken-3.1 {Test adding doubles and ints.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
-    set tok2 [[java::new {ptolemy.data.IntToken int} 2]
+    set tok2 [java::new {ptolemy.data.IntToken int} 2]
     set res1 [$tok1 add $tok2]
     set res2 [$tok1 addR $tok2]
 
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(14.2) ptolemy.data.DoubleToken(14.2) ptolemy.data.DoubleToken(14.2)}
 
 ######################################################################
 ####
@@ -173,20 +173,20 @@ test DoubleToken-4.0 {Test dividing doubles.} {
     set res2 [$p divideR $p]
 
     list [$res1 toString] [$res2 toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(1) ptolemy.data.DoubleToken(1)}
 ######################################################################
 ####
 # 
 test DoubleToken-4.1 {Test dividing doubles and ints.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
-    set tok2 [[java::new {ptolemy.data.IntToken int} 2]
+    set tok2 [java::new {ptolemy.data.IntToken int} 2]
     set res1 [$tok1 divide $tok2]
     set res2 [$tok1 divideR $tok2]
 
     set res3 [$tok2 divide $tok1]
  
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(6.1) ptolemy.data.DoubleToken(0.164) ptolemy.data.DoubleToken(0.164)}
 
 ######################################################################
 ####
@@ -194,29 +194,29 @@ test DoubleToken-4.1 {Test dividing doubles and ints.} {
 # below it in the lossless type hierarchy.
 test DoubleToken-5.0 {Test equality between doubles.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.DoubleToken double} 12.2]
+    set tok2 [java::new {ptolemy.data.DoubleToken double} 2.2]
 
-    set res1 [$tok1 equlas $tok1]
-    set res2 [$tok1 equals $tok2]
+    set res1 [$tok1 {equals ptolemy.data.Token} $tok1]
+    set res2 [$tok1 {equals ptolemy.data.Token} $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {12.2}
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
 ######################################################################
 ####
 # 
 test DoubleToken-5.1 {Test equality between doubles and ints.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12]
-    set tok2 [[java::new {ptolemy.data.IntToken int} 12]
+    set tok2 [java::new {ptolemy.data.IntToken int} 12]
     set tok3 [java::new {ptolemy.data.DoubleToken double} 2]
-    set tok4 [[java::new {ptolemy.data.IntToken int} 2]
+    set tok4 [java::new {ptolemy.data.IntToken int} 2]
 
-    set res1 [$tok1 equals $tok2]
-    set res2 [$tok1 equals $tok4]
+    set res1 [$tok1 {equals ptolemy.data.Token} $tok2]
+    set res2 [$tok1 {equals ptolemy.data.Token} $tok4]
 
-    set res3 [$tok2 equals $tok1]
+    set res3 [$tok2 {equals ptolemy.data.Token} $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {12.2}
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
 
 ######################################################################
 ####
@@ -229,13 +229,13 @@ test DoubleToken-6.0 {Test modulo between doubles.} {
     set res2 [$tok1 moduloR $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(0) ptolemy.data.DoubleToken(2.2)}
 ######################################################################
 ####
 # 
 test DoubleToken-6.1 {Test modulo operator between doubles and ints.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
-    set tok2 [[java::new {ptolemy.data.IntToken int} 3]
+    set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
     set res1 [$tok1 modulo $tok2]
     set res2 [$tok1 moduloR $tok2]
@@ -243,7 +243,7 @@ test DoubleToken-6.1 {Test modulo operator between doubles and ints.} {
     set res3 [$tok2 modulo $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {12.2}
+} {ptolemy.data.DoubleToken(0.2) ptolemy.data.DoubleToken(3) ptolemy.data.DoubleToken(3)}
 
 ######################################################################
 ####
@@ -256,13 +256,13 @@ test DoubleToken-7.0 {Test multiply operator between doubles.} {
     set res2 [$tok1 multiplyR $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(148.84) ptolemy.data.DoubleToken(26.84)}
 ######################################################################
 ####
 # 
 test DoubleToken-7.1 {Test multiply operator between doubles and ints.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
-    set tok2 [[java::new {ptolemy.data.IntToken int} 3]
+    set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
     set res1 [$tok1 multiply $tok2]
     set res2 [$tok1 multiplyR $tok2]
@@ -270,7 +270,7 @@ test DoubleToken-7.1 {Test multiply operator between doubles and ints.} {
     set res3 [$tok2 multiply $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {12.2}
+} {ptolemy.data.DoubleToken(36.6) ptolemy.data.DoubleToken(36.6) ptolemy.data.DoubleToken(36.6)}
 
 
 ######################################################################
@@ -284,13 +284,13 @@ test DoubleToken-8.0 {Test subtract operator between doubles.} {
     set res2 [$tok1 subtractR $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {12.2}
+} {ptolemy.data.DoubleToken(0) ptolemy.data.DoubleToken(-10)}
 ######################################################################
 ####
 # 
 test DoubleToken-8.1 {Test subtract operator between doubles and ints.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
-    set tok2 [[java::new {ptolemy.data.IntToken int} 3]
+    set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
     set res1 [$tok1 subtract $tok2]
     set res2 [$tok1 subtractR $tok2]
@@ -298,4 +298,4 @@ test DoubleToken-8.1 {Test subtract operator between doubles and ints.} {
     set res3 [$tok2 subtract $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {12.2}
+} {ptolemy.data.DoubleToken(9.2) ptolemy.data.DoubleToken(-9.2) ptolemy.data.DoubleToken(-9.2)}

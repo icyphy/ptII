@@ -116,3 +116,117 @@ test IntToken-2.3 {Create a non-empty instance and query its value as a string} 
 ######################################################################
 ####
 # 
+test IntToken-2.5 {Test additive identity} {
+    set p [java::new {ptolemy.data.IntToken int} 7]
+    set token [$p zero]
+
+    list [$token toString]
+} {ptolemy.data.IntToken(0)}
+######################################################################
+####
+# 
+test IntToken-2.6 {Test multiplicative identity} {
+    set p [java::new {ptolemy.data.IntToken int} 7]
+    set token [$p one]
+
+    list [$token toString]
+} {ptolemy.data.IntToken(1)}
+
+######################################################################
+####
+# Test addition of ints to Token types below it in the lossless 
+# type hierarchy, and with other ints.
+test IntToken-3.0 {Test adding ints.} {
+    set p [java::new {ptolemy.data.IntToken int} 7]
+    set res1 [$p add $p]
+    set res2 [$p addR $p]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.IntToken(14) ptolemy.data.IntToken(14)}
+
+######################################################################
+####
+# Test division of ints with Token types below it in the lossless 
+# type hierarchy, and with other ints. Note that dividing ints could 
+# give a double.
+test IntToken-4.0 {Test dividing ints.} {
+    set tok1 [java::new {ptolemy.data.IntToken int} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 14]
+    
+    set res1 [$tok1 divide $tok1]
+    set res2 [$tok1 divideR $tok1]
+
+    set res3 [$tok1 divide $tok2]
+    set res4 [$tok1 divideR $tok2]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {ptolemy.data.IntToken(1) ptolemy.data.IntToken(1) ptolemy.data.DoubleToken(0.5) ptolemy.data.IntToken(2)}
+
+######################################################################
+####
+# Test equals operator applied to other ints and Tokens types 
+# below it in the lossless type hierarchy.
+test IntToken-5.0 {Test equality between ints.} {
+    set tok1 [java::new {ptolemy.data.IntToken int} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 4]
+
+    set res1 [$tok1 {equals ptolemy.data.Token} $tok1]
+    set res2 [$tok1 {equals ptolemy.data.Token} $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+
+######################################################################
+####
+# Test modulo operator between ints and ints.
+test IntToken-6.0 {Test modulo between ints.} {
+    set tok1 [java::new {ptolemy.data.IntToken int} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 2]
+
+    set res1 [$tok1 modulo $tok2]
+    set res2 [$tok1 moduloR $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.IntToken(1) ptolemy.data.IntToken(2)}
+
+######################################################################
+####
+# Test multiply operator between ints and ints.
+test intToken-7.0 {Test multiply operator between ints.} {
+    set tok1 [java::new {ptolemy.data.IntToken int} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 2]
+
+    set res1 [$tok1 multiply $tok2]
+    set res2 [$tok1 multiplyR $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.IntToken(14) ptolemy.data.IntToken(14)}
+
+######################################################################
+####
+# Test subtract operator between ints and ints.
+test IntToken-8.0 {Test subtract operator between ints.} {
+    set tok1 [java::new {ptolemy.data.IntToken int} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 2]
+
+    set res1 [$tok1 subtract $tok2]
+    set res2 [$tok1 subtractR $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.IntToken(5) ptolemy.data.IntToken(-5)}
+
+######################################################################
+####
+# Do not really need this test, but leave in for now.
+test IntToken-9.0 {Create an non-empty instance and add it to Strings} {
+    set token1 [java::new ptolemy.data.StringToken "value is " ]
+    set token2 [java::new {ptolemy.data.IntToken int} 23]
+    set token3 [java::new ptolemy.data.StringToken "....." ]
+
+    set token4 [$token1 add $token2]
+    set token5 [$token2 add $token3]
+    
+    set token6 [$token4 add $token5]
+
+    list [$token6 toString]
+} {{ptolemy.data.StringToken(value is 2323.....)}}

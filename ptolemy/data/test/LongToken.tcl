@@ -121,7 +121,188 @@ test LongToken-2.3 {Create a non-empty instance and query its value as a string}
 ######################################################################
 ####
 # 
-test LongToken-3.0 {Create an non-empty instance and add it to Strings} {
+test LongToken-2.5 {Test additive identity} {
+    set p [java::new {ptolemy.data.LongToken long} 7]
+    set token [$p zero]
+
+    list [$token toString]
+} {ptolemy.data.LongToken(0)}
+######################################################################
+####
+# 
+test LongToken-2.6 {Test multiplicative identity} {
+    set p [java::new {ptolemy.data.LongToken long} 7]
+    set token [$p one]
+
+    list [$token toString]
+} {ptolemy.data.LongToken(1)}
+
+######################################################################
+####
+# Test addition of longs to Token types below it in the lossless 
+# type hierarchy, and with other longs.
+test LongToken-3.0 {Test adding longs.} {
+    set p [java::new {ptolemy.data.LongToken long} 7]
+    set res1 [$p add $p]
+    set res2 [$p addR $p]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.LongToken(14) ptolemy.data.LongToken(14)}
+######################################################################
+####
+# 
+test LongToken-3.1 {Test adding longs and ints.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 2]
+    set res1 [$tok1 add $tok2]
+    set res2 [$tok1 addR $tok2]
+
+    set res3 [$tok2 add $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {ptolemy.data.LongToken(9) ptolemy.data.LongToken(9) ptolemy.data.LongToken(9)}
+
+######################################################################
+####
+# Test division of longs with Token types below it in the lossless 
+# type hierarchy, and with other longs.
+#test LongToken-4.0 {Test dividing longs.} {
+#    set p [java::new {ptolemy.data.LongToken long} 7]
+#    set res1 [$p divide $p]
+#    set res2 [$p divideR $p]
+#
+#    list [$res1 toString] [$res2 toString]
+#} {}
+######################################################################
+####
+# 
+#test LongToken-4.1 {Test dividing longs and ints.} {
+#    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+#    set tok2 [java::new {ptolemy.data.IntToken int} 2]
+#    set res1 [$tok1 divide $tok2]
+#    set res2 [$tok1 divideR $tok2]
+#
+#    set res3 [$tok2 divide $tok1]
+# 
+#    list [$res1 toString] [$res2 toString] [$res3 toString]
+#} {}
+
+######################################################################
+####
+# Test equals operator applied to other longs and Tokens types 
+# below it in the lossless type hierarchy.
+test LongToken-5.0 {Test equality between longs.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.LongToken long} 2]
+
+    set res1 [$tok1 {equals ptolemy.data.Token} $tok1]
+    set res2 [$tok1 {equals ptolemy.data.Token} $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+######################################################################
+####
+# 
+test LongToken-5.1 {Test equality between longs and ints.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 12]
+    set tok2 [java::new {ptolemy.data.IntToken int} 12]
+    set tok3 [java::new {ptolemy.data.LongToken long} 2]
+    set tok4 [java::new {ptolemy.data.IntToken int} 2]
+
+    set res1 [$tok1 {equals ptolemy.data.Token} $tok2]
+    set res2 [$tok1 {equals ptolemy.data.Token} $tok4]
+
+    set res3 [$tok2 {equals ptolemy.data.Token} $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
+
+######################################################################
+####
+# Test modulo operator between longs and ints.
+test LongToken-6.0 {Test modulo between longs.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.LongToken long} 2]
+
+    set res1 [$tok1 modulo $tok2]
+    set res2 [$tok1 moduloR $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.LongToken(1) ptolemy.data.LongToken(2)}
+######################################################################
+####
+# 
+test LongToken-6.1 {Test modulo operator between longs and ints.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 3]
+    
+    set res1 [$tok1 modulo $tok2]
+    set res2 [$tok1 moduloR $tok2]
+
+    set res3 [$tok2 modulo $tok1]
+   
+    list [$res1 toString] [$res2 toString] [$res3 toString] 
+} {ptolemy.data.LongToken(1) ptolemy.data.LongToken(3) ptolemy.data.LongToken(3)}
+
+######################################################################
+####
+# Test multiply operator between longs and ints.
+test longToken-7.0 {Test multiply operator between longs.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.LongToken long} 2]
+
+    set res1 [$tok1 multiply $tok2]
+    set res2 [$tok1 multiplyR $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.LongToken(14) ptolemy.data.LongToken(14)}
+######################################################################
+####
+# 
+test LongToken-7.1 {Test multiply operator between longs and ints.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 3]
+    
+    set res1 [$tok1 multiply $tok2]
+    set res2 [$tok1 multiplyR $tok2]
+
+    set res3 [$tok2 multiply $tok1]
+   
+    list [$res1 toString] [$res2 toString] [$res3 toString] 
+} {ptolemy.data.LongToken(21) ptolemy.data.LongToken(21) ptolemy.data.LongToken(21)}
+
+
+######################################################################
+####
+# Test subtract operator between longs and ints.
+test LongToken-8.0 {Test subtract operator between longs.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.LongToken long} 2]
+
+    set res1 [$tok1 subtract $tok2]
+    set res2 [$tok1 subtractR $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.LongToken(5) ptolemy.data.LongToken(-5)}
+######################################################################
+####
+# 
+test LongToken-8.1 {Test subtract operator between longs and ints.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 3]
+    
+    set res1 [$tok1 subtract $tok2]
+    set res2 [$tok1 subtractR $tok2]
+
+    set res3 [$tok2 subtract $tok1]
+   
+    list [$res1 toString] [$res2 toString] [$res3 toString] 
+} {ptolemy.data.LongToken(4) ptolemy.data.LongToken(-4) ptolemy.data.LongToken(-4)}
+
+######################################################################
+####
+# Do not really need this test, but leave in for now.
+test LongToken-9.0 {Create an non-empty instance and add it to Strings} {
     set token1 [java::new ptolemy.data.StringToken "value is " ]
     set token2 [java::new {ptolemy.data.LongToken long} 23]
     set token3 [java::new ptolemy.data.StringToken "....." ]
