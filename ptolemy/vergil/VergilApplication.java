@@ -130,17 +130,19 @@ public class VergilApplication extends MoMLApplication {
 		    public void run() {
 			try {
 			    new VergilApplication(args);
-
-			} catch (Exception ex) {
-			    _errorAndExit("Command failed", args, ex);
+			} catch (Throwable throwable) {
+			    // Using JNI to link in a native librayr
+			    // can result in a java.lang.UnsatistifiedLineError
+			    // which extends Error, not Exception.
+			    _errorAndExit("Command failed", args, throwabl);
 			}
 		    }
  		});
-        } catch (Error ex2) {
+        } catch (Throwable throwable2) {
 	    // We are not likely to get here, but just to be safe
 	    // we try to print the error message and display it in a 
 	    // graphical widget. 
-	    _errorAndExit("Command failed", args, ex2);
+	    _errorAndExit("Command failed", args, throwable2);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
