@@ -61,7 +61,8 @@ JSRCS = \
 	MenuCreator.java \
 	MenuFactory.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	package.html
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,13 +73,33 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'JCanvasPanner$$1.class' \
+	'JCanvasPanner$$PanMouseListener.class' \
+	'JPalette$$1.class' \
+	'JPalette$$2.class' \
+	'JPanner$$1.class' \
+	'JPanner$$PanMouseListener.class' \
+	'JPanner$$ScaleMouseListener.class' \
+	'JPanner$$ScrollListener.class' \
+	'JPseudoFrame$$1.class' \
+	'JPseudoFrame$$2.class' \
+	'JPseudoFrame$$3.class' \
+	'JShadePane$$1.class' \
+	'JShadePane$$2.class' \
+	'JShadePane$$3.class' \
+	'JShadePane$$4.class' \
+	'JShadePane$$5.class' \
+	'JShadePane$$6.class' \
+	'JShadePane$$7.class' \
+	'JShadePane$$Shade.class' \
+	'JTreePane$$1.class' \
+	'JTreePane$$Entry.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

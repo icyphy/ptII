@@ -85,8 +85,8 @@ JSRCS = \
 	ViewEvent.java \
 	ViewListener.java
 
-
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	package.html
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -97,13 +97,30 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'AppletContext$$1.class' \
+	'ApplicationContext$$1.class' \
+	'BasicFrame$$1.class' \
+	'BasicFrame$$2.class' \
+	'DefaultActions$$10.class' \
+	'DefaultActions$$1.class' \
+	'DefaultActions$$2.class' \
+	'DefaultActions$$3.class' \
+	'DefaultActions$$4.class' \
+	'DefaultActions$$5.class' \
+	'DefaultActions$$6.class' \
+	'DefaultActions$$7.class' \
+	'DefaultActions$$8.class' \
+	'DefaultActions$$9.class' \
+	'DesktopContext$$1.class' \
+	'DesktopContext$$DesktopInternalFrame.class' \
+	'DesktopContext$$DesktopPseudoFrame.class' \
+	'DesktopContext$$FrameManager.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
