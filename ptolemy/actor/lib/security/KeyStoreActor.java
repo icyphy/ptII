@@ -340,20 +340,30 @@ public class KeyStoreActor extends TypedAtomicActor {
         System.out.println("Creating keystore " + keystoreFilename);
         String javaHomeProperty = "ptolemy.ptII.java.home";
         String javaHome = StringUtilities.getProperty(javaHomeProperty);
-        if (javaHome == null) {
-            // FIXME: we could try to read java.home and convert
-            // the backslashes like we do in $PTII/configs/JavaHome.java
-            throw new InternalErrorException(this, null,
-                    "Could not find the " + javaHomeProperty + " perhaps "
-                    + "$PTII/lib/ptII.properties is not being read properly?");
+        if (javaHome == null || javaHome.length() == 0) {
+            // Use java.home property if the ptolemy.ptII.java.home property
+            // can not be read.  For example, MoMLSimpleApplication does not
+            // read $PTII/lib/ptII.properties.
+            javaHome = StringUtilities.getProperty("java.home");
+            if (javaHome != null && javaHome.length() > 0) {
+                javaHome = javaHome.replace('\\', '/');
+            } else {
+                throw new InternalErrorException(this, null,
+                        "Could not find the " + javaHomeProperty + " and the "
+                        + "java.home property. Perhaps "
+                        + "$PTII/lib/ptII.properties "
+                        + "is not being read properly?");
+            }
         }
         File javaHomeFile = new File(javaHome);
         if ( !javaHomeFile.isDirectory()) {
             throw new InternalErrorException(this, null,
                     "Could not find the Java "
-                    + "directory that contains bin/keytool.  Perhaps the "
-                    + javaHomeProperty + " property was not set properly "
-                    + " because "
+                    + "directory that contains bin/keytool.  "
+                    + "Tried looking for the '" + javaHome + "' directory. "
+                    + "Perhaps the "
+                    + javaHomeProperty + " or java.home property was not set "
+                    + "properly because "
                     + "$PTII/lib/ptII.properties is not being read properly?");
         }
         String keytoolPath = javaHome + "/bin/keytool";
