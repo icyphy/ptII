@@ -41,11 +41,15 @@ if {[info procs enumToObjects] == "" } then {
      source enums.tcl
 }
 
+if {[info procs jdkClassPathSeparator] == "" } then { 
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
 proc cg_generate {systemClass} {
-    global PTII
+    global PTII env
     if {[expr { ![file exists "$systemClass.class"] || \
 	    [file mtime "$systemClass.class"] < \
 	    [file mtime "$systemClass.java"] } ] } {
@@ -67,11 +71,12 @@ proc cg_generate {systemClass} {
     $sdfCodeGenerator processArgs $args
     $sdfCodeGenerator generateCode
 
+    set classPath "../..[jdkClassPathSeparator]$env(CLASSPATH)"
     set results {}
     set currentDirectory [pwd]
     cd $PTII/cg/$systemClass
-    exec javac -classpath ../.. CG_Main.java
-    set result [exec java -classpath ../.. cg.$systemClass.CG_Main]
+    exec javac -classpath $classPath CG_Main.java
+    set result [exec java -classpath $classPath cg.$systemClass.CG_Main]
     cd $currentDirectory
     return $result
 }
