@@ -50,6 +50,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	PNProcessEvent.tcl \
 	PNProcessListener.tcl
 
 # Graphical Java tests that use Tcl.
