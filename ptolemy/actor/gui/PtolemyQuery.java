@@ -395,7 +395,7 @@ public class PtolemyQuery extends Query
                 return;
             }
             change.setErrorReported(true);
-
+            
             _query = new PtolemyQuery(_handler);
             _query.setTextWidth(getTextWidth());
             _query._isOpenErrorWindow = true;
@@ -415,10 +415,11 @@ public class PtolemyQuery extends Query
             // NOTE: This is very fragile... depends on the particular
             // form of the MoML change request.
             String tmpEntryName = description;
-            if (description.startsWith("<property name=\"")) {
-                int nextQuote = description.indexOf("\"", 16);
-                if (nextQuote > 15) {
-                    tmpEntryName = description.substring(16, nextQuote);
+            int patternStart = description.lastIndexOf("<property name=\"");
+            if (patternStart >= 0) {
+                int nextQuote = description.indexOf("\"", patternStart + 16);
+                if (nextQuote > patternStart + 15) {
+                    tmpEntryName = description.substring(patternStart + 16, nextQuote);
                 }
             }
             final String entryName = tmpEntryName;
