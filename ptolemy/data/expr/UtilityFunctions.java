@@ -48,14 +48,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.URL;
-<<<<<<< UtilityFunctions.java
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
-=======
-import java.util.*;
->>>>>>> 1.77
-
 
 //////////////////////////////////////////////////////////////////////////
 //// UtilityFunctions
@@ -274,26 +273,37 @@ public class UtilityFunctions {
         return new RecordToken(names, values);
     }
 
-
-    public ArrayToken iterate(FunctionToken function, int length, Token initValue) {
-            int num = function.getNumberOfArguments();
-            ArrayToken result = null;
-            if (num != 1) {
-                throw new IllegalActionException(
-                            "can not iterate function takes multy arguments.");
-            } else {
-                result.add(initValue);
-                Token iterate = initValue;
-                for (int i = 0; i < length; i++ ) {
-                    LinkedList arglist = new LinkedList();
-                    arglist.add(iterate);
-                    iterate = function.apply(arglist);
-                    result.add(iterate);
-                }
+	/** Iterate the specified function to produce an array of the specified
+	 *  length.  The first element of the output array is the <i>initial</i>
+	 *  argument, the second is the result of applying the function to
+	 *  <i>initial</i>, the third is the result of applying the function to
+	 *  that result, etc.
+	 *  @param function A single-argument function to iterate.
+	 *  @param length The length of the resulting array.
+	 *  @param initial The first element of the result.
+	 *  @return A new array that is the result of applying the function
+	 *   repeatedly.
+	 *  @exception IllegalActionException If the specified function does not
+	 * 	 take exactly one argument, or if an error occurs applying the function.
+	 */
+    public ArrayToken iterate(FunctionToken function, int length, Token initial)
+            throws IllegalActionException {
+        int arity = function.getNumberOfArguments();
+        if (arity != 1) {
+            throw new IllegalActionException(
+            "iterate() can only be used on functions that take one argument.");
+        } else {
+		    ArrayToken result = null;
+            Token iterate = initial;
+	        result.add(iterate);
+	        for (int i = 1; i < length; i++ ) {
+                LinkedList arglist = new LinkedList();
+                arglist.add(iterate);
+                iterate = function.apply(arglist);
             }
-            return result;
+			return result;
         }
-
+    }
 
     /** Load a library by first using the default platform dependent
      *  System.loadLibrary() method.  If the library cannot be loaded
@@ -389,12 +399,29 @@ public class UtilityFunctions {
             System.load(libraryPath);
         }
     }
-    //arrayToken can only take the same type...
-    public static ArrayToken map(FunctionToken function, ArrayToken array) {
-        int num = function.getNumberOfArguments();
+	/** Apply the specified function to the specified array and return
+	 *  an array with the results. The function must take at least one
+	 *  argument. If the function takes more than one argument, then
+	 *  the specified array should be an array of arrays, where each
+	 *  subarray is a set of arguments.  Since arrays in the expression
+	 *  language can only contain elements of the same type, this method
+	 *  will only work for functions whose arguments are all of the same
+	 *  type.
+	 *  @param function A function with at least one argument.
+	 *  @param array The array to which to apply the function.
+	 *  @return A new array that is the result of applying the function
+	 *   to the specified array.
+	 *  @exception IllegalActionException If the specified function does not
+	 * 	 take at least one argument, or if an error occurs applying the
+	 *   function, or if the number of arguments does not match the subarray
+	 *   lengths.
+	 */
+    public static ArrayToken map(FunctionToken function, ArrayToken array)
+	        throws IllegalActionException { 
+        int arity = function.getNumberOfArguments();
         ArrayToken result = null;
         if (BaseType.SCALAR.isCompatible(array.getElementType())){
-                if (num != 1) {
+                if (arity != 1) {
                     throw new IllegalActionException(
                         "function can not be applied to the array token due to invalid signature.");
                 } else{
@@ -409,11 +436,11 @@ public class UtilityFunctions {
             for (int i = 0; i < array.length(); i++) {
                 ArrayToken args = (ArrayToken)array.getElement(i);
                 LinkedList arglist = new LinkedList();
-                if (args.length() != num) {
+                if (args.length() != arity) {
                     throw new IllegalActionException(
                         "function can not be applied to the array token due to invalid signature.");
                 } else{
-                    for (int j = 1; j< num; j++) {
+                    for (int j = 1; j< arity; j++) {
                         arglist.add(args.getElement(j));
                     }
                     result.add(function.apply(arglist));
