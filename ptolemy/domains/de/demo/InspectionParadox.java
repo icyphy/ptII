@@ -78,23 +78,23 @@ public class InspectionParadox extends DEApplet {
             _poisson.meantime.setToken(new DoubleToken(0.1));
 
             // Create and configure plotter
-            _eventplot = new TimePlot(_toplevel, "plot");
-            _eventplot.setPanel(this);
-            _eventplot.plot.setGrid(false);
-            _eventplot.plot.setTitle("Transmit Pulse Shapes");
-            _eventplot.plot.addLegend(0, "Bus");
-            _eventplot.plot.addLegend(1, "Passenger");
-            _eventplot.plot.addLegend(2, "Wait Time");
-            _eventplot.plot.setXLabel("Time");
-            _eventplot.plot.setYLabel("Wait time");
-            _eventplot.plot.setXRange(0.0, _getStopTime());
-            _eventplot.plot.setYRange(0.0, 2.0);
-            _eventplot.plot.setSize(450,150);
-            _eventplot.plot.setConnected(false);
-            _eventplot.plot.setImpulses(true);
-            _eventplot.plot.setMarksStyle("dots");
+            _eventPlot = new TimePlot(_toplevel, "plot");
+            _eventPlot.setPanel(this);
+            _eventPlot.plot.setGrid(false);
+            _eventPlot.plot.setTitle("Transmit Pulse Shapes");
+            _eventPlot.plot.addLegend(0, "Bus");
+            _eventPlot.plot.addLegend(1, "Passenger");
+            _eventPlot.plot.addLegend(2, "Wait Time");
+            _eventPlot.plot.setXLabel("Time");
+            _eventPlot.plot.setYLabel("Wait time");
+            _eventPlot.plot.setXRange(0.0, _getStopTime());
+            _eventPlot.plot.setYRange(0.0, 2.0);
+            _eventPlot.plot.setSize(450,150);
+            _eventPlot.plot.setConnected(false);
+            _eventPlot.plot.setImpulses(true);
+            _eventPlot.plot.setMarksStyle("dots");
 
-            _toplevel.connect(_poisson.output, _eventplot.input);
+            _toplevel.connect(_poisson.output, _eventPlot.input);
 
             // Get one iteration right away.
             _go();
@@ -112,7 +112,7 @@ public class InspectionParadox extends DEApplet {
     protected void _go() {
         _poisson.meantime.setToken
                 (new DoubleToken(_query.doubleValue("mean")));
-        _eventplot.plot.setXRange(0.0, _getStopTime());
+        _eventPlot.plot.setXRange(0.0, _getStopTime());
         super._go();
     }
 
@@ -121,7 +121,7 @@ public class InspectionParadox extends DEApplet {
 
     private Query _query;
     private DEPoisson _poisson;
-    private TimePlot _eventplot;
+    private TimePlot _eventPlot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
