@@ -58,6 +58,80 @@ Cygwin, see
 <p>For information about using JNI with Cygwin, see
  <a href="http://www.inonit.com/cygwin/jni/helloWorld/c.html" target="_top"><code>http://www.inonit.com/cygwin/jni/helloWorld/c.html</code></a>
 
+<h2>How to call an actor that calls C code that returns a double</h2>
+In this example, we call a C method called <code>meaningOfLife()</code>
+that returns a double.
+<ol>
+
+<li> Create the C file called <code>meaningOfLife.c</code> that contains
+<pre>
+// Return the answer to "the meaning of life, the universe, and everything"
+double meaningOfLife() {
+  return 42.0;
+}
+</pre>
+
+<li> Create <code>meaningOfLife.h</code> that contains
+<pre>
+extern "C" double meaningOfLife();
+</pre>
+
+<li> Compile and create the shared library.  Under Windows, we 
+create a <code>.dll</code>
+<pre>
+gcc -shared -o meaningOfLife.dll meaningOfLife.c
+</pre>
+
+<li> Start up Vergil with the JNI interface enabled.
+<pre>
+$PTII/bin/vergil -jni
+</pre>
+Note that the <code>-jni</code> option may go away in the future
+if we merge the jni facility into the main tree
+
+<li> Create a new model with File -> New -> Graph Editor
+<li> Drag in the JNIActor from the jni folder
+<li> Right click on the actor and select Configure Arguments.
+<li> Fill in the form as follows
+<dl>
+<dt><code><b>Name:</b></code>
+<dd><code>output</code>
+<dt><code><b>C or C++ type:</b></code>
+<dd><code>double</code>
+<dt><code><b>Kind:</b></code>
+<dd><code>return</code>
+</dl>
+
+<li> Select Ok and then Commit to close
+the argument configurer
+<li> Right Click on the actor to edit
+the parameters
+<dl>
+<dt><code><b>Native Function Name:</b></code>
+<dd><code>"meaningOfLife"</code>
+<dt><code>Native Library Name<b></b></code>
+<dd><code>"meaningOfLife"</code>
+<dt><code><b>DLLs Directory</b></code>
+<dd><code>""</code>
+</dl>
+<li> Select Commit to close the 
+Edit parameters window
+<li> Select JNI from the menu and
+then select Generate C Interface
+<li> Save the model.
+<br>Because of an apparent bug, it is necessary
+to save the model for the port we just created to appear
+<li> Add a Display actor from the Source folder in the 
+Actor Library and connect the input of the Display actor
+to the output of the meaningOfLife Actor
+<li> Because of a bug in the Ptolemy interface to the JNI
+actor, you must specify the type of the output of the meaningOfLife
+actor by right clicking on the actor and selecting
+Configure Ports and then entering double for
+output type
+<li> Drag in a SDF director and set the number of iterations to 1.
+<li> Select Run
+</ol>
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
@@ -148,6 +222,12 @@ public class JNIUtilities {
             + ".java";
 
         Runtime r = Runtime.getRuntime();
+
+	for(int i = 0; i < cmd.length; i++) {
+	    System.out.print(cmd[i] + " ");
+	}
+	System.out.println("");
+
         Process compil = r.exec(cmd);
 
         //Generation du fichier entete
@@ -164,6 +244,10 @@ public class JNIUtilities {
 
         //waiting for the compilation to be done
         compil.waitFor();
+	for(int i = 0; i < cmd.length; i++) {
+	    System.out.print(cmd[i] + " ");
+	}
+	System.out.println("");
         Process header = r2.exec(cmd);
 
         //Cr‰ation du fichier C
@@ -182,13 +266,18 @@ public class JNIUtilities {
 	cmd[1] = "-C";
         cmd[2] = "jni/jni" + libName;
         cmd[3] = "-f";
-        cmd[4] = "Jni" + actor.getName() + ".mk";
+        cmd[4] = "Jnijni" + libName + ".mk";
 
         Runtime r3 = Runtime.getRuntime();
 
-        //waiting for the compilation to be done
+	for(int i = 0; i < cmd.length; i++) {
+	    System.out.print(cmd[i] + " ");
+	}
+	System.out.println("");
+
         Process make = r3.exec(cmd);
 	make.waitFor();
+	System.out.println("Done");
     }
 
     /** Create the interface Java File.
