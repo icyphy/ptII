@@ -73,6 +73,14 @@ public class XmlException extends Exception
     /** Construct a new XML parsing exception.
      * @param message The error message from the parser.
      * @param systemId The URI of the entity containing the error.
+     */
+    public XmlException(String message, String systemId) {
+        this(message, systemId, -1, -1, null);
+    }
+
+    /** Construct a new XML parsing exception.
+     * @param message The error message from the parser.
+     * @param systemId The URI of the entity containing the error.
      * @param line The line number where the error appeared.
      * @param column The column number where the error appeared.
      */
@@ -115,8 +123,9 @@ public class XmlException extends Exception
         // the location was.
         return _message
             + " in " + _systemId
-            + " at line " + _line
-            + " and column " + _column
+            + ((_line == -1) ? "unknown line " : (" at line " + _line))
+            + ((_column == -1) ? " and unknown column "
+                    : (" and column " + _column))
             + (( _cause == null) ?
                     "" : ("\nCaused by:\n " + _cause));
     }
@@ -208,6 +217,6 @@ public class XmlException extends Exception
     // The cause of this exception.
     private Throwable _cause;
     private String _systemId;
-    private int _line;
-    private int _column;
+    private int _line = -1;
+    private int _column = -1;
 }
