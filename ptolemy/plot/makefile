@@ -76,9 +76,9 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass suball #$(JZIP)
+all: sources jclass suball $(JZIP)
 	chmod a+x pxgraph testpxgraph
-install: sources jclass javadocs subinstall $(JARFILE) #$(JZIP) 
+install: sources jclass javadocs subinstall $(JARFILE) $(JZIP) 
 	chmod a+x pxgraph testpxgraph
 docs: javadocs
 
