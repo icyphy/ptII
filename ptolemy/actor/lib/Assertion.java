@@ -63,7 +63,7 @@ import java.util.List;
 @since Ptolemy II 2.0
 */
 
-public class Assertion extends TypedAtomicActor implements CTStepSizeControlActor {
+public class Assertion extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -78,7 +78,6 @@ public class Assertion extends TypedAtomicActor implements CTStepSizeControlActo
         super(container, name);
 
         assertion = new Parameter(this, "assertion");
-	threshold = new Parameter(this, "threshold");
 
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _iteration = new Variable(this, "iteration", new IntToken(1));
@@ -92,12 +91,11 @@ public class Assertion extends TypedAtomicActor implements CTStepSizeControlActo
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The parameter that is evaluated to produce the output.
+    /** The parameter that is evaluated.
      *  Typically, this parameter evaluates an assertion involving
-     *  the inputs.
+     *  the inputs and other parameters.
      */
     public Parameter assertion;
-    public Parameter threshold;
 
     /** The parameter of error tolerance of type double. By default,
      *  it contains a DoubleToken of 1e-4.
@@ -141,127 +139,54 @@ public class Assertion extends TypedAtomicActor implements CTStepSizeControlActo
         return newObject;
     }
 
-    /** Evaluate the assertion. If the evaluation returns false, throw a run-time
-     *  IllegalActionException.
-     *  @exception IllegalActionException If the evaluation of the assertion
-     *   triggers it, or the evaluation yields a null result, or the evaluation
-     *   yields an incompatible type, or if there is no director.
+    /** Do nothing.
      */
     public void fire() throws IllegalActionException {
-	// consume the input.
-	// The assertion actor always has only one input port.
-	TypedIOPort input = (TypedIOPort) inputPortList().get(0);
-	_thisInput = ((DoubleToken) input.get(0)).doubleValue();
-        _threshold = ((DoubleToken) threshold.getToken()).doubleValue();
-		
-	if (_debugging)
-	    _debug(getFullName() + " consuming input Token" + _thisInput);
     }
 
-    /** Return true if this step does not cross the threshold.
-     *  The current trigger
-     *  token will be compared to the previous trigger token. If they
-     *  cross the level threshold, this step is not accurate.
-     *  A special case is taken care so that if the previous trigger
-     *  and the current trigger both equal to the level value,
-     *  then no new event is
-     *  detected. If this step crosses the level threshold,
-     *  then the refined integration
-     *  step size is computed by linear interpolation.
-     *  If this is the first iteration after initialize() is called,
-     *  then always return false, since there is no history to compare with.
-     *  @return True if the trigger input in this integration step
-     *          does not cross the level threshold.
-     */
-    public boolean isThisStepAccurate() {
-	if (_first) {
-            _first = false;
-            return true;
-        }
-        if (_debugging) {
-            _debug(this.getFullName() + " This input " + _thisInput);
-            _debug(this.getFullName() + " The last input " + _lastInput);
-        }
-        if (Math.abs(_thisInput - _threshold) < _errorTolerance) {
-            if (_enabled) {
-                _enabled = false;
-            }
-            _eventMissed = false;
-            return true;
-        } else {
-            if (!_enabled) {  // if last step is a level, always accurate.
-                _enabled = true;
-            } else {
-                if ((_lastInput - _threshold) * (_thisInput - _threshold)
-		    < 0.0) {
-
-                    CTDirector dir = (CTDirector)getDirector();
-                    _eventMissed = true;
-                    // The refined step size is a linear interpolation.
-                    _refineStep = (Math.abs(_lastInput - _threshold)
-				   *dir.getCurrentStepSize())
-                        /Math.abs(_thisInput-_lastInput);
-                    if (_debugging) _debug(getFullName() +
-					   " Refined step at" +  _refineStep);
-                    return false;
-                }
-            }
-            _eventMissed = false;
-            return true;
-        }
-    }
 
     /** Initialize the iteration count to 1.
-     *  @exception IllegalActionException If the parent class throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _eventMissed = false;
         _iterationCount = 1;
         _iteration.setToken(new IntToken(_iterationCount));
     }
 
-    /** Increment the iteration count.
-     *  @exception IllegalActionException If the superclass throws it.
+    /** Evaluation the assertion. Increment the iteration count.
+     *  @exception IllegalActionException If the assertion fails,
+     *  or if there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-
-	_lastInput = _thisInput;
 
         Director director = getDirector();
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
+
         _time.setToken(new DoubleToken(director.getCurrentTime()));
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort)(inputPorts.next());
-            // FIXME: Handle multiports
             if (port.getWidth() > 0) {
                 if (port.hasToken(0)) {
                     Token inputToken = port.get(0);
-
-		    // round the value of a token to the specified precision
+		    // if the token has type as double, round the value of a token
+		    // to the precision of error tolerance.
 		    if (inputToken.getType() == BaseType.DOUBLE) {
 
 			double value = ((DoubleToken) inputToken).doubleValue();
-
-			// FIXME: The print comments are not removed because the
-			// attributeTypeChanged method is not called correctly.
-			// After that bug fixed, they will be removed.
-
-			//System.out.println("before  " + value);
 
 			// calculate the precison specified by the error tolerance
 			// log10(errorTolerance) = logE(errorTolerance)/logE(10)
 			double precision = Math.log(_errorTolerance)/Math.log(10);
 			int decimalPlace = (int) Math.abs(Math.round(precision));
 
-			//System.out.println("precision  " + decimalPlace);
 			BigDecimal valueBD = new BigDecimal(value);
 			valueBD = valueBD.setScale(decimalPlace,BigDecimal.ROUND_HALF_UP);
 			value = valueBD.doubleValue();
-			//System.out.println("after  " + value);
 			inputToken = new DoubleToken(value);
 		    }
 
@@ -301,25 +226,6 @@ public class Assertion extends TypedAtomicActor implements CTStepSizeControlActo
         }
         catch(Exception ex) {
         }
-    }
-
-    /** Return the maximum Double, since this actor does not predict
-     *  step size.
-     *  @return java.Double.MAX_VALUE.
-     */
-    public double predictedStepSize() {
-        return java.lang.Double.MAX_VALUE;
-    }
-
-    /** Return the refined step size if there is a missed event,
-     *  otherwise return the current step size.
-     *  @return The refined step size.
-     */
-    public double refinedStepSize() {
-        if (_eventMissed) {
-            return _refineStep;
-        }
-        return ((CTDirector)getDirector()).getCurrentStepSize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -386,26 +292,14 @@ public class Assertion extends TypedAtomicActor implements CTStepSizeControlActo
     ////                         private variables                 ////
 
     // Parameter, the error tolerance, local copy
-    private double _errorTolerance;
+    protected double _errorTolerance;
 
-    private double _thisInput;
-    private double _lastInput;
-
-    private double _threshold;
-
-    // flag indicating if the event detection is enable for this step
-    private boolean _enabled;
-
-    // flag indicating if this is the first iteration in the execution,
-    private boolean _first = true;
-
-    // flag for indicating a missed event
-    private boolean _eventMissed = false;
-
-    // refined step size.
-    private double _refineStep;
-
+    // Variable, the time, local copy
     private Variable _time;
+
+    // Variable, the iteration, local copy
     private Variable _iteration;
+
+    // Variable, the iterationCount, local copy
     private int _iterationCount = 1;
 }
