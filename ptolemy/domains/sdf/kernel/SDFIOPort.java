@@ -386,6 +386,9 @@ public final class SDFIOPort extends TypedIOPort {
 	tokenProductionRate.setToken(new IntToken(rate));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** 
      * Initialize local data members.
      */
@@ -402,17 +405,5 @@ public final class SDFIOPort extends TypedIOPort {
 	    // This should never happen.
 	    throw new InternalErrorException(e.getMessage());
 	}
-    } 
-	
+    } 	
 }
-
-
-
-
-
-
-
-
-
-
-
