@@ -160,7 +160,7 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
         // By default, the out is equal to the in.
         copy(inValue, outValue);
 
-        System.out.println("maybe flow through " + d);
+        if(_debug) System.out.println("maybe flow through " + d);
 
         // If we have a method invocation, then alias information
         // for fields that the method side effects is killed.
@@ -186,7 +186,7 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
             } else {   
                 InvokeExpr expr = (InvokeExpr)unit.getInvokeExpr();
                 SootMethod method = expr.getMethod();
-                //           System.out.println("invoking: " + method);
+                if(_debug) System.out.println("invoking: " + method);
                 Set allSideEffects = new HashSet();
                 // Union the side effect sets over
                 // all the possible targets
@@ -211,7 +211,7 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                 } else {
                     allSideEffects = out.keySet();
                 }
-                // System.out.println("all Side effects = " + allSideEffects);
+                if(_debug) System.out.println("all Side effects = " + allSideEffects);
                 for(Iterator i = allSideEffects.iterator();
                     i.hasNext();) {
                     Object object = i.next();
@@ -247,8 +247,10 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                         _createAlias(out, lobject, robject);
                     }
                 }
-                //System.out.println("maybe aliases for " + lobject + 
-                //       " = " + out.get(lobject));
+                if(_debug) {
+                    System.out.println("maybe aliases for " + lobject + 
+                            " = " + out.get(lobject));
+                }
             }
         }
         // otherwise, the alias info is unchanged.
@@ -382,4 +384,7 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
     // It maps to the set of objects that we encounter
     // which can be mapped to anything.
     private static Object allAliasKey = new Object();
+    
+    // True for debugging output
+    private static boolean _debug = false;
 }
