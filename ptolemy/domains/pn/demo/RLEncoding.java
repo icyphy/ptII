@@ -33,6 +33,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleavingExample
@@ -58,18 +59,30 @@ class RLEncoding {
         //myUniverse.setCycles(Integer.parseInt(args[0]));
 
         PNImageSource a1 = new PNImageSource(c1, "A1");
-        Parameter p1 = (Parameter)a1.getAttribute("Image_file");
-        p1.setToken(new StringToken("/users/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
+        //Parameter p1 = (Parameter)a1.getAttribute("Image_file");
+        //p1.setToken(new StringToken("/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
+	String filename = 
+	    "/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm";
+	try {
+	    FileInputStream fis = new FileInputStream(filename);
+	    a1.readFrom(fis);
+	} catch (FileNotFoundException e) {
+	    System.err.println("FileNotFoundException: "+ e.toString());
+	}
+        //p1.setToken(new StringToken("/users/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
         MatrixUnpacker a2 = new MatrixUnpacker(c1, "A2");
         RLEncoder a3 = new RLEncoder(c1, "A3");
         RLDecoder a4 = new RLDecoder(c1, "A4");
         MatrixPacker a5 = new MatrixPacker(c1, "A5");
         PNImageSink a6 = new PNImageSink(c1, "A6");
-        p1 = (Parameter)a6.getAttribute("Output_file");
+        Parameter p1 = (Parameter)a6.getAttribute("Output_file");
         p1.setToken(new StringToken("/tmp/image.pbm"));
         ImageDisplay a7 = new ImageDisplay(c1, "dispin");
+	p1 = (Parameter)a7.getAttribute("FrameName");
+	p1.setToken(new StringToken("InputImage"));
         ImageDisplay a8 = new ImageDisplay(c1, "dispout");
-
+	p1 = (Parameter)a8.getAttribute("FrameName");
+	p1.setToken(new StringToken("OutputImage"));
 
         IOPort portin = (IOPort)a1.getPort("output");
         IOPort portout = (IOPort)a2.getPort("input");
