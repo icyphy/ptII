@@ -1,4 +1,5 @@
-/* An actor that provides the common functions to all wireless network models.
+/* An actor that provides the common functions to all wireless 
+network models.
 
 Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
@@ -44,15 +45,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
    This is a base class designed for the Network actors.
-
-   Currently, it mainly contains several methods for dealing with timers
-   that are widely used in the OMNET c++ classes.
-
+   Currently, it mainly contains several methods for dealing with timers.
 
    @author Yang Zhao, Charlie Zhong
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
+   @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (pjb2e)
 */
 
@@ -84,19 +82,23 @@ public class NetworkActorBase extends TypedAtomicActor {
     }
 
     // messages from higher layers
-    protected static final String[] PCRequestMsgFields = {"kind", "fromMACAddr",
-                                                          "toMACAddr", "range", "angle", "num_nb", "xpos","ypos", "Length"};
+    protected static final String[] PCRequestMsgFields 
+            = {"kind", "fromMACAddr", "toMACAddr", "range", "angle", 
+               "num_nb", "xpos","ypos", "Length"};
 
-    protected static final String[] PCResponseMsgFields = {"kind", "fromMACAddr",
-                                                           "toMACAddr","xpos","ypos","range","Length"};
+    protected static final String[] PCResponseMsgFields 
+            = {"kind", "fromMACAddr", "toMACAddr", "xpos","ypos",
+               "range","Length"};
 
     protected static final String[] StartRspMsgFields = {"kind","range"};
 
-    protected static final String[] cNetwInterestMessageFields = {"kind","cost",
-                                                                  "hop_distance","fromMACAddr","toMACAddr","hopcount","arrivalTime", "Length"};
+    protected static final String[] cNetwInterestMessageFields 
+            = {"kind","cost", "hop_distance","fromMACAddr","toMACAddr",
+               "hopcount","arrivalTime", "Length"};
 
-    protected static final String[] cNetwDataMessageFields = {"kind","fromMACAddr",
-                                                              "toMACAddr","hopcount","arrivalTime","payload","Length"};
+    protected static final String[] cNetwDataMessageFields 
+            = {"kind", "fromMACAddr", "toMACAddr", "hopcount", 
+               "arrivalTime","payload","Length"};
 
 
 
