@@ -60,8 +60,8 @@ public class ASTReflect {
 	String fullClassName = myClass.getName();
 	NameNode className =
 	    new NameNode(AbsentTreeNode.instance,
-			 fullClassName.substring(1 +
-						 fullClassName.lastIndexOf('.')));
+                    fullClassName.substring(1 +
+                            fullClassName.lastIndexOf('.')));
 
 	// Unfortunately, we can't use Arrays.asList() here since
 	// what getParameterTypes returns of type Class[], and
@@ -78,10 +78,10 @@ public class ASTReflect {
 	    String fullInterfaceName = interfaceClasses[i].getName();
 	    // FIXME: We should probably use the fully qualified name here?
 	    TypeNode interfaceDeclNode =
-		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-				 fullInterfaceName.substring(1 +
-							 fullInterfaceName.lastIndexOf('.')
-							 )));
+                new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                        fullInterfaceName.substring(1 +
+                                fullInterfaceName.lastIndexOf('.')
+                                                    )));
 	    /* FIXME: The output of Skelton does not seem to use
 	     * InterfaceDeclNode?
 	     */
@@ -114,10 +114,10 @@ public class ASTReflect {
 
 	ClassDeclNode classDeclNode =
 	    new ClassDeclNode(modifiers,
-			      className,
-			      interfaceList,
-			      memberList,
-			      superClass);
+                    className,
+                    interfaceList,
+                    memberList,
+                    superClass);
 
 	return classDeclNode;
     }
@@ -136,10 +136,10 @@ public class ASTReflect {
                 System.out.println("// package null;");
             } else {
                 System.out.println("package " +
-			       myClass.getPackage().getName() + ";");
+                        myClass.getPackage().getName() + ";");
             }
 	    System.out.println(Modifier.toString(myClass.getModifiers()) +
-			       " " + myClass.toString());
+                    " " + myClass.toString());
 	    String superClass = myClass.getSuperclass().getName();
 	    if (superClass.length() > 0 ) {
 		System.out.println("extends " + superClass);
@@ -190,16 +190,16 @@ public class ASTReflect {
 	    constructor = constructors[i];
 	    if (_debug) {
 		System.out.println(_indent +
-				   constructor.getName() + "{}");
+                        constructor.getName() + "{}");
 	    }
 	    int modifiers =
-		    Modifier.convertModifiers(constructor.getModifiers());
+                Modifier.convertModifiers(constructor.getModifiers());
 
 	    String fullConstructorName = constructor.getName();
 	    NameNode constructorName =
 		new NameNode(AbsentTreeNode.instance,
-			     fullConstructorName.substring(1 +
-						     fullConstructorName.lastIndexOf('.')));
+                        fullConstructorName.substring(1 +
+                                fullConstructorName.lastIndexOf('.')));
 
 	    List paramList = _paramList(constructor.getParameterTypes());
 
@@ -208,13 +208,13 @@ public class ASTReflect {
 
 	    ConstructorDeclNode constructorDeclNode =
 		new ConstructorDeclNode(modifiers,
-					constructorName,
-					paramList,
-					throwsList,
-					/* body */
-					new BlockNode(new LinkedList()),
-					/* constructor call*/
-					new SuperConstructorCallNode(new LinkedList())
+                        constructorName,
+                        paramList,
+                        throwsList,
+                        /* body */
+                        new BlockNode(new LinkedList()),
+                        /* constructor call*/
+                        new SuperConstructorCallNode(new LinkedList())
 					);
 	    constructorList.add(constructorDeclNode);
 	}
@@ -235,19 +235,19 @@ public class ASTReflect {
 		System.out.println(_indent + fields[i].toString() + ";");
 	    }
 	    int modifiers =
-		    Modifier.convertModifiers(fields[i].getModifiers());
+                Modifier.convertModifiers(fields[i].getModifiers());
 	    TypeNode defType = _definedType(fields[i].getType());
 	    String fullFieldName = fields[i].toString();
 	    NameNode fieldName =
 		new NameNode(AbsentTreeNode.instance,
-			     fullFieldName.substring(1 +
-						     fullFieldName.lastIndexOf('.')));
+                        fullFieldName.substring(1 +
+                                fullFieldName.lastIndexOf('.')));
 
 	    FieldDeclNode  fieldDeclNode =
 		new FieldDeclNode(modifiers,
-				  defType,
-				  fieldName,
-				  AbsentTreeNode.instance/* initExpr */);
+                        defType,
+                        fieldName,
+                        AbsentTreeNode.instance/* initExpr */);
 
     	    fieldList.add(fieldDeclNode);
 	}
@@ -306,11 +306,11 @@ public class ASTReflect {
 
 	    MethodDeclNode methodDeclNode =
 		new MethodDeclNode(modifiers,
-				   methodName,
-				   paramList,
-				   throwsList,
-				   AbsentTreeNode.instance /*body*/,
-				   returnType);
+                        methodName,
+                        paramList,
+                        throwsList,
+                        AbsentTreeNode.instance /*body*/,
+                        returnType);
 
 	    methodList.add(methodDeclNode);
 	}
@@ -322,7 +322,7 @@ public class ASTReflect {
     public static void main(String[] args) {
 	try {
 	    System.out.println("ast: " +
-			       ASTCompileUnitNode(Class.forName("ptolemy.lang.java.test.ReflectTest")));
+                    ASTCompileUnitNode(Class.forName("ptolemy.lang.java.test.ReflectTest")));
 	    //System.out.println(ASTCompileUnitNode(Class.forName("ptolemy.lang.java.Skeleton")));
 	} catch (Exception e) {
 	    System.err.println("Error: " + e);
@@ -354,8 +354,8 @@ public class ASTReflect {
 		    fullClassName = componentClass.getName();
 		    NameNode className =
 			new NameNode(AbsentTreeNode.instance,
-				     fullClassName.substring(1 +
-							     fullClassName.lastIndexOf('.')));
+                                fullClassName.substring(1 +
+                                        fullClassName.lastIndexOf('.')));
 		    baseType = new TypeNameNode(className);
 		}
 	    }
@@ -368,9 +368,9 @@ public class ASTReflect {
 		fullClassName = myClass.getName();
 		defType =
 		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-				 fullClassName.substring(1 +
-							 fullClassName.lastIndexOf('.')
-							 )));
+                            fullClassName.substring(1 +
+                                    fullClassName.lastIndexOf('.')
+                                                    )));
 	    }
 
 	}
@@ -437,7 +437,7 @@ public class ASTReflect {
 	// performance
 	if (!myClass.isPrimitive()) {
 	    throw new RuntimeException("Error: " + myClass +
-				   " is not a primitive type like int");
+                    " is not a primitive type like int");
 	}
 	if (myClass.equals(Boolean.TYPE)) {
 	    defType = BoolTypeNode.instance;
