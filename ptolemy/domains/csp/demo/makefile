@@ -44,7 +44,7 @@ include $(CONFIG)
 
 JSRCS =
 
-EXTRA_SRCS =	index.html $(TCL_SRCS) $(JSRCS)
+EXTRA_SRCS =	index.htm $(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
