@@ -296,7 +296,7 @@ public class GiottoScheduler extends Scheduler {
         if (count < 1) {
             throw new RuntimeException(
                     "Length array passed to _lcm() is less than 1?");
-        } 
+        }
         int X = array[0];
         int i = 0;
 

@@ -100,16 +100,16 @@ public class GiottoCodeGeneratorUtilities {
     /** Generate Giotto code for the given Giotto model.
      *  @param model The given Giotto model.
      *  @return The Giotto code.
-     *  @throws IllegalActionException If code can not be generated. 
+     *  @throws IllegalActionException If code can not be generated.
      */
     public static String generateGiottoCode(TypedCompositeActor model)
             throws IllegalActionException {
-        String generatedCode = ""; 
+        String generatedCode = "";
 
         try {
             if (_initialize(model)) {
                 String containerName = model.getName();
-                
+
                 generatedCode = _headerCode(model)
                     + _sensorCode(model)
                     + _actuatorCode(model)
@@ -175,7 +175,7 @@ public class GiottoCodeGeneratorUtilities {
     /** Throw an exception if the given string is a valid giotto
      *  reserved word, which prevents it from being used as an identifier.
      *  @param string A string to be used in Giotto program.
-     *  @throws IllegalActionException If the string can not be used. 
+     *  @throws IllegalActionException If the string can not be used.
      */
     protected static void _checkGiottoID(String string)
             throws IllegalActionException {
@@ -196,7 +196,7 @@ public class GiottoCodeGeneratorUtilities {
     }
 
     /** Initialize the code geenration process by checking whether the
-     *  given model is a Giotto model. Return false if it is not. 
+     *  given model is a Giotto model. Return false if it is not.
      *  @param model A model to generate Giotto code from.
      *  @return True if in the given model is a giotto model.
      */
@@ -361,7 +361,7 @@ public class GiottoCodeGeneratorUtilities {
                 String portID = StringUtilities.sanitizeName(
                             port.getName(model));
                 String portTypeID = _getTypeString(port);
-        
+
                 code.append(portTypeID + " " + portID);
                 inputPorts += portID;
             }
@@ -436,7 +436,7 @@ public class GiottoCodeGeneratorUtilities {
         }
 
         String driverParas = "";
-        String actorName = 
+        String actorName =
             StringUtilities.sanitizeName(((NamedObj) actor).getName());
 
         StringBuffer code =
@@ -492,7 +492,7 @@ public class GiottoCodeGeneratorUtilities {
                 + "{\n"
                 + "          if constant_true() then " + actorName
                 + "_inputdriver( ");
-   
+
         first = true;
         for (Iterator sourceNames = driverIOMap.keySet().iterator();
              sourceNames.hasNext();) {

@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
    @see GiottoScheduler
    @see GiottoReceiver
 */
-public class GiottoDirector extends StaticSchedulingDirector 
+public class GiottoDirector extends StaticSchedulingDirector
     implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -132,7 +132,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  the current file (if there is one) and open the new one.
      *  If the specified attribute is <i>period</i> or
      *  <i>synchronizeToRealTime</i>, then cache the new values.
-     *  If the specified attribute is <i>timeResolution</i>, 
+     *  If the specified attribute is <i>timeResolution</i>,
      *  then cache the new value.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
@@ -175,7 +175,7 @@ public class GiottoDirector extends StaticSchedulingDirector
         }
 
         if (!_readyToFire) return;
-        
+
         // Grab the next schedule to execute.
         Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex);
 
@@ -185,10 +185,10 @@ public class GiottoDirector extends StaticSchedulingDirector
             long elapsedTime = System.currentTimeMillis() - _realStartTime;
             double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
-            if (_expectedNextIterationTime.getDoubleValue() 
+            if (_expectedNextIterationTime.getDoubleValue()
                 > elapsedTimeInSeconds) {
                 long timeToWait = (long)
-                    ((_expectedNextIterationTime.getDoubleValue() 
+                    ((_expectedNextIterationTime.getDoubleValue()
                         - elapsedTimeInSeconds) * 1000.0);
                 if (timeToWait > 0) {
                     if (_debugging) {
@@ -276,7 +276,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
         // The lower level keeps requesting refiring unless its firing
         // counts are met. So, the upper level needs to check whetehr the
-        // firing can be granted. If the requested time is before the 
+        // firing can be granted. If the requested time is before the
         // scheduled next iteraton time, grant it. Otherwise, discard
         // the request.
         // This is particular useful in hierarchical Giotto models.
@@ -327,7 +327,7 @@ public class GiottoDirector extends StaticSchedulingDirector
         _iterationCount = 0;
         _unitIndex = 0;
         _expectedNextIterationTime = getModelTime();;
-        
+
         // The receivers should be reset before their initialization.
         Iterator receivers = _receivers.iterator();
         while (receivers.hasNext()) {
@@ -399,9 +399,9 @@ public class GiottoDirector extends StaticSchedulingDirector
         if (_debugging) {
             _debug("Giotto director postfiring!");
         }
-        
+
         if (!_readyToFire) return true;
-        
+
         _unitIndex++;
         if (_unitIndex >= _schedule.size()) {
             _unitIndex = 0;
@@ -417,7 +417,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             ((IntToken) (iterations.getToken())).intValue();
 
 
-        _expectedNextIterationTime = 
+        _expectedNextIterationTime =
             _expectedNextIterationTime.add(_unitTimeIncrement);
 
         if (_debugging) {
@@ -437,7 +437,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             setModelTime (_expectedNextIterationTime);
             // continue iterations
             if (_isEmbedded()) {
-                // unless the iteration counts are met, 
+                // unless the iteration counts are met,
                 // keep firing itself.
                 _requestFiring();
             }
@@ -445,18 +445,18 @@ public class GiottoDirector extends StaticSchedulingDirector
         return true;
     }
 
-    /** This method always return true. 
-     *  If this director is at the top level, returning true means always 
-     *  ready to fire. 
-     *  If embedded, return true usually means that the current time of 
-     *  the outside domain is greater than or equal to the current time. 
+    /** This method always return true.
+     *  If this director is at the top level, returning true means always
+     *  ready to fire.
+     *  If embedded, return true usually means that the current time of
+     *  the outside domain is greater than or equal to the current time.
      *  However, when a giotto model is used inside a CT model, its inputs
      *  may either be DISCRETE or CONTINUOUS. When the inputs are of type
      *  CONTINUOUS, this method should always return true. To accomadate
-     *  this requirement, the prefire method still returns true but 
-     *  an internal flag will be set to false and the fire and postfire 
-     *  methods are forced to do nothing. 
-     *  
+     *  this requirement, the prefire method still returns true but
+     *  an internal flag will be set to false and the fire and postfire
+     *  methods are forced to do nothing.
+     *
      *  @return True if the director is ready to run for one iteration.
      *  @throws IllegalActionException If time is set backwards.
      */
@@ -468,7 +468,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             Time outsideCurrentTime = ((Actor)container).
                 getExecutiveDirector().getModelTime();
             if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
-                // not the scheduled time to fire. 
+                // not the scheduled time to fire.
                 _readyToFire = false;
             } else if (outsideCurrentTime
                 .compareTo(_expectedNextIterationTime) > 0) {
@@ -477,11 +477,11 @@ public class GiottoDirector extends StaticSchedulingDirector
                 if (_debugging) {
                     _debug("Set current time as: " + getModelTime());
                 }
-                _readyToFire = true;       
+                _readyToFire = true;
             }
             // guaranteed to be synchronized to outside.
         } else {
-           _readyToFire = true;       
+           _readyToFire = true;
        }
         return true;
     }
@@ -503,7 +503,7 @@ public class GiottoDirector extends StaticSchedulingDirector
                 Attribute frequency = compositeActor.getAttribute("frequency");
                 int frequencyValue;
                 if (frequency != null) {
-                    frequencyValue = 
+                    frequencyValue =
                         ((IntToken)(((Parameter)frequency).getToken())).intValue();
                 } else {
                     frequencyValue = 1;
@@ -511,7 +511,7 @@ public class GiottoDirector extends StaticSchedulingDirector
                 _periodValue = periodValue / frequencyValue;
                period.setExpression(new Double(_periodValue).toString());
             }
-        } 
+        }
         // Next, construct the schedule.
         // FIXME: Note that mutations will not be supported since the
         // schedule is constructed only once.
@@ -639,7 +639,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     protected boolean _writeAccessRequired() {
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -678,7 +678,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     // If the queue is empty, then throw an InvalidStateException
     private void _requestFiring() throws IllegalActionException {
 
-        if (_debugging) _debug("Request refiring of opaque composite actor at " 
+        if (_debugging) _debug("Request refiring of opaque composite actor at "
             + _expectedNextIterationTime);
         // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
@@ -696,7 +696,7 @@ public class GiottoDirector extends StaticSchedulingDirector
 
     // Period of the director.
     private double _periodValue = 0.0;
-    
+
     // Flag to indicate whether the current director is ready to fire.
     private boolean _readyToFire = true;
 
@@ -705,7 +705,7 @@ public class GiottoDirector extends StaticSchedulingDirector
 
     // List of all receivers this director has created.
     private LinkedList _receivers;
-    
+
     // Actors that request refire.
     private Schedule _refireActors;
 

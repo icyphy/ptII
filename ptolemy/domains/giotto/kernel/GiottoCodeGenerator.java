@@ -118,7 +118,7 @@ public class GiottoCodeGenerator extends Attribute {
     /** Generate Giotto code for the given Giotto model.
      *  @param model The given Giotto model.
      *  @return The Giotto code.
-     *  @throws IllegalActionException If code can not be generated. 
+     *  @throws IllegalActionException If code can not be generated.
      */
     public String generateGiottoCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -133,10 +133,10 @@ public class GiottoCodeGenerator extends Attribute {
     /** Method to instantiate the Editor Factory class called from the
      *  constructor. The reason for having this is that it can be
      *  overridden by subclasses
-     *  @throws IllegalActionException If the editor factory can not be 
-     *  created. 
-     *  @throws NameDuplicationException If there is already anothter editor 
-     *  factory with the same name. 
+     *  @throws IllegalActionException If the editor factory can not be
+     *  created.
+     *  @throws NameDuplicationException If there is already anothter editor
+     *  factory with the same name.
      */
     protected void _instantiateEditorFactoryClass()
             throws IllegalActionException, NameDuplicationException {
@@ -173,9 +173,9 @@ public class GiottoCodeGenerator extends Attribute {
          *
          *  @param container The container, which is a Giotto model.
          *  @param name The name for this attribute.
-         *  @throws IllegalActionException If the factory is not of an 
+         *  @throws IllegalActionException If the factory is not of an
          *  acceptable attribute for the container.
-         *  @throws NameDuplicationException If the name coincides with 
+         *  @throws NameDuplicationException If the name coincides with
          *  an attribute already in the container.
          */
         public GiottoEditorFactory(NamedObj container, String name)
@@ -214,7 +214,7 @@ public class GiottoCodeGenerator extends Attribute {
                         generateGiottoCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
-                
+
                 // end the model execution.
                 manager.stop();
                 manager.wrapup();

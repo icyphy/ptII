@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (liuj)
    @see GiottoDirector
 */
-public class GiottoReceiver extends AbstractReceiver 
+public class GiottoReceiver extends AbstractReceiver
     implements StateReceiver {
 
     /** Construct an empty GiottoReceiver with no container.
@@ -119,10 +119,10 @@ public class GiottoReceiver extends AbstractReceiver
         return (_token != null);
     }
 
-    /** Return true if the receiver has at least one token available. 
-     *  Any number of calls to get() is allowed and will return the same 
+    /** Return true if the receiver has at least one token available.
+     *  Any number of calls to get() is allowed and will return the same
      *  available token.
-     *  @param numberOfTokens The number of tokens available in this receiver. 
+     *  @param numberOfTokens The number of tokens available in this receiver.
      *  @return True if there is a token available.
      */
     public final boolean hasToken(int numberOfTokens) {
