@@ -151,6 +151,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
             unitNode.getImports().add(new ImportOnDemandNode((NameNode)
                     StaticResolution.makeNameNode("ptolemy.data")));
+	    // Pick up DoubleArrayToken and IntArrayToken
+            unitNode.getImports().add(new ImportOnDemandNode((NameNode)
+                    StaticResolution.makeNameNode("ptolemy.codegen.data")));
+
         }
 
         LinkedList renamedClassNameList =
@@ -248,8 +252,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
 
-        System.out.println("ActorCodeGenerator.pass3(): sourceName = " +
-                ", filename = " + filename + ".java");
+        System.out.println("ActorCodeGenerator.pass3(" + sourceName 
+			   + "): filename = " + filename + ".java");
 
         // save the old type personality
         TypeVisitor oldTypeVisitor = StaticResolution.getDefaultTypeVisitor();
@@ -303,9 +307,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
 	    String className = (String)classNameItr.next();
 
-	    System.out.println("ActorCodeGenerator.pass3(): " +
-                    "openSource(" +className +")");
-
+	    System.out.println("ActorCodeGenerator.pass3(): "
+			       + "Removing extra imports from "
+			       + className);
             File file;
             try {
                 file = SearchPath.NAMED_PATH.openSource(className);
@@ -652,4 +656,3 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      */
     protected String _outputPackageName = null;
 }
-
