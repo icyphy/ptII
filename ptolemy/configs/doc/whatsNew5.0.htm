@@ -55,6 +55,9 @@ New Discrete Event demos
 <li><a href="../../domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">RijndaelEncryption</a>
 </ul>
 
+<li> Heterochronous Dataflow
+<I>Need description</I>
+
 <li> java 1.5.0
 <li>New Parameters
 <pre>
@@ -123,6 +126,75 @@ New sr demo
 <ul>
 <li> <a href="../../domains/wireless/demo/SmartParking/SmartParking.xml">SmartParking</a>
 </ul>
+
+
+<li> Merge these in
+<pre>
+Not in 4.0.1:
+
+New actors in SR domain:
+   - Pre
+   - Current
+   - Default
+   - EnabledComposite
+   - When
+
+New demos in SR:
+   - GuardedCount
+
+Fixed bug in SR where SROptimizedScheduler could not be
+used inside a composite actor.
+
+New capabilities:
+   - FilePortParameter
+   - DoubleRangeParameter
+
+New actors:
+   - Sequence
+
+Fixed a number of potential deadlock situations:
+   - deadlock while dragging actors during a run.
+   - deadlocks in PN when exceptions occur in the model.
+
+PN now has a NondeterministicMerge actor.
+
+Added external source (URL) option to the Instantiate Entity
+command in the Graph menu.
+
+Fixed "Restore Defaults" when actors and directors
+use the three argument constructor for parameters.
+
+DDF domain.
+
+Extensive revisions of GR:
+  - transparency
+  - shininess
+  - colors use ColorAttribute
+  - more colors can be set
+  - settable resolution
+  - wireframe option for shapes
+  - flat facets option for shapes
+  - run-time changes of parameter values
+  - parameters in Text3D
+  - option to set parameters at run time.
+
+Previously, if a class definition were to show the name
+of ports, there was no way to turn this off (the attribute
+_showName) could not be removed. Now, marker attributes
+such as _showName are boolean valued parameters, so they
+can be turned off by overriding their value.
+
+Support changing the order of attributes, ports, etc., and
+support moving objects towards the foreground or background
+in the user interface.
+
+Fixed long standing bug in copy where objects are represented
+in the wrong order in the exported MoML.
+
+Fixed some subtle bugs in ModalModel, where changes to
+input/output status and ordering of ports were not properly
+reflected in the mirror ports.
+</pre>
 
 <li> Other New java files
 <pre>
