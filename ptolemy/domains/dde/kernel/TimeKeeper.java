@@ -140,10 +140,10 @@ public class TimeKeeper {
      *  and lowest nonnegative rcvrTime. If no receivers exist,
      *  return null.
      */
-    public synchronized TimedQueueReceiver getHighestPriorityReceiver() {
+    public synchronized TimedQueueReceiver getHighestPriorityNull() {
         double time = -10.0;
 	double firstTime = -10.0;
-        int maxPriority = 0;
+        int maxPriority = -1;
 	int cnt = 0;
 	boolean rcvrNotFound = true;
         RcvrTimeTriple highPriorityTriple = null;
@@ -157,8 +157,12 @@ public class TimeKeeper {
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
-		maxPriority = triple.getPriority();
-		highPriorityTriple = triple;
+		TimedQueueReceiver tmpRcvr =
+		        (TimedQueueReceiver)triple.getReceiver();
+		if( tmpRcvr.hasNullToken() ) {
+		    maxPriority = triple.getPriority();
+		    highPriorityTriple = triple;
+		}
 	    } else {
 	        time = triple.getTime();
 	    }
@@ -166,16 +170,28 @@ public class TimeKeeper {
 	    if( time > firstTime ||
 		    time == TimedQueueReceiver.INACTIVE ||
 			    time == TimedQueueReceiver.IGNORE ) {
-		return highPriorityTriple.getReceiver();
+		if( highPriorityTriple != null ) {
+		    return highPriorityTriple.getReceiver();
+		} else {
+		    return null;
+		}
 	    } else if( maxPriority < triple.getPriority() ) {
-		maxPriority = triple.getPriority();
-		highPriorityTriple = triple;
+		TimedQueueReceiver tmpRcvr =
+		        (TimedQueueReceiver)triple.getReceiver();
+		if( tmpRcvr.hasNullToken() ) {
+		    maxPriority = triple.getPriority();
+		    highPriorityTriple = triple;
+		}
 	    }
 	    cnt++;
 	}
-	return highPriorityTriple.getReceiver();
+	if( highPriorityTriple != null ) {
+	    return highPriorityTriple.getReceiver();
+	} else {
+	    return null;
+	}
     }
-
+    
     /** Return the TimedQueueReceiver of this time keeper's list such that
      *  the returned receiver has the highest priority given that it has
      *  the lowest nonnegative receiver time of all receivers managed by
@@ -250,10 +266,10 @@ public class TimeKeeper {
      *  and lowest nonnegative rcvrTime. If no receivers exist,
      *  return null.
      */
-    public synchronized TimedQueueReceiver getHighestPriorityNull() {
+    public synchronized TimedQueueReceiver getHighestPriorityReceiver() {
         double time = -10.0;
 	double firstTime = -10.0;
-        int maxPriority = -1;
+        int maxPriority = 0;
 	int cnt = 0;
 	boolean rcvrNotFound = true;
         RcvrTimeTriple highPriorityTriple = null;
@@ -267,12 +283,8 @@ public class TimeKeeper {
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
-		TimedQueueReceiver tmpRcvr =
-		        (TimedQueueReceiver)triple.getReceiver();
-		if( tmpRcvr.hasNullToken() ) {
-		    maxPriority = triple.getPriority();
-		    highPriorityTriple = triple;
-		}
+		maxPriority = triple.getPriority();
+		highPriorityTriple = triple;
 	    } else {
 	        time = triple.getTime();
 	    }
@@ -280,28 +292,16 @@ public class TimeKeeper {
 	    if( time > firstTime ||
 		    time == TimedQueueReceiver.INACTIVE ||
 			    time == TimedQueueReceiver.IGNORE ) {
-		if( highPriorityTriple != null ) {
-		    return highPriorityTriple.getReceiver();
-		} else {
-		    return null;
-		}
+		return highPriorityTriple.getReceiver();
 	    } else if( maxPriority < triple.getPriority() ) {
-		TimedQueueReceiver tmpRcvr =
-		        (TimedQueueReceiver)triple.getReceiver();
-		if( tmpRcvr.hasNullToken() ) {
-		    maxPriority = triple.getPriority();
-		    highPriorityTriple = triple;
-		}
+		maxPriority = triple.getPriority();
+		highPriorityTriple = triple;
 	    }
 	    cnt++;
 	}
-	if( highPriorityTriple != null ) {
-	    return highPriorityTriple.getReceiver();
-	} else {
-	    return null;
-	}
+	return highPriorityTriple.getReceiver();
     }
-    
+
     /** Return the earliest possible time stamp of the next token to be
      *  consumed by the actor managed by this time keeper. Consider
      *  this returned time value as a greatest lower bound. The next
