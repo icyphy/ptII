@@ -65,7 +65,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
         in singlclass mode and compile into an exe} {
     
-    set outputDir testOutput/FirSingle.out
+    set outputDir testOutput/FIRSingle.out
     set runtimeDir ../../../runtime
     
     # Check if the FIRSingle.out directory exists.
@@ -120,7 +120,9 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     eval exec gcc -o firSingle [glob *.o]
 
     # Run the executible.
-    set output [exec ./firSingle]
+    # The nightly build does not have . in the path, so we use ./ here.
+    set exeFile ".[java::call System getProperty file.separator]$exeFile"
+    set output [exec $exeFile]
     
     # Check if the output is correct.
     set template "11.000000 4.000000 9.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000"
