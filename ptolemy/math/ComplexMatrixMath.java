@@ -82,7 +82,8 @@ public class ComplexMatrixMath {
             final Complex[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
-        Complex[][] returnValue = new Complex[_rows(matrix1)][_columns(matrix1)];
+        Complex[][] returnValue =
+            new Complex[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
                 returnValue[i][j] = matrix1[i][j].add(matrix2[i][j]);
@@ -695,7 +696,8 @@ public class ComplexMatrixMath {
      */
     public static final Complex[][] multiply(Complex[][] matrix1,
             Complex[][] matrix2) {
-        Complex[][] returnValue = new Complex[_rows(matrix1)][matrix2[0].length];
+        Complex[][] returnValue =
+            new Complex[_rows(matrix1)][matrix2[0].length];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 Complex sum = Complex.ZERO;

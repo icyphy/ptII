@@ -258,7 +258,8 @@ public class ComplexArrayMath {
         Complex returnValue = Complex.ZERO;
 
         for (int i = 0; i < length; i++) {
-            returnValue = returnValue.add(array1[i].multiply(array2[i].conjugate()));
+            returnValue = returnValue.add(array1[i]
+                    .multiply(array2[i].conjugate()));
         }
         return returnValue;
     }
