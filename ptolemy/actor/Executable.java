@@ -48,7 +48,7 @@ output data (FIXME: which no longer result in a CloneNotSupported exception).
 Since the Token class is immutable, the output data is not cloned
 when there are multiple receivers.
 
-@author Mudit Goel, Edward A. Lee, Lukito Muliadi
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
 */
 public interface Executable {
@@ -98,12 +98,14 @@ public interface Executable {
      *
      *  @return True if the iteration can proceed.
      *  @exception IllegalActionException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it, or a
-     *   pending mutation throws it, or if all receivers could not be created.
-     *  @exception NameDuplicationException If a pending mutation throws it.
+     *   container or one of the deeply contained actors throws it.
      */
-    public boolean prefire() throws IllegalActionException,
-            NameDuplicationException;
+    public boolean prefire() throws IllegalActionException;
+            
+    /** This method is invoked to immediately terminate any execution
+     *  within an actor.  
+     */
+    public void terminate();       
 
     /** This method should be invoked exactly once per execution
      *  of an application.  None of the other action methods should be
