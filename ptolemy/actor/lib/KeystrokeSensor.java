@@ -28,7 +28,7 @@
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.net;
+package ptolemy.actor.lib;
 
 // Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
 import diva.gui.toolbox.FocusMouseListener;
@@ -74,9 +74,10 @@ import java.awt.event.KeyEvent;
 When this actor is preinitialized, it pops up a new JFrame window on 
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  This actor senses only two 
-keystrokes, control-C (copy) and control-V (paste).  This actor is 
-designed to work with SystemClipboard.java<p>
+it is capable of sensing keystrokes.  <p>
+
+This actor senses only two keystrokes, control-C (copy) and control-V
+(paste).  This actor is designed to work with SystemClipboard.java<p>
 
 This actor contains a private inner class which generated the JFrame.
 The frame sets up callbacks which react to the keystrokes.  When called, 
@@ -86,8 +87,7 @@ tokens from one or both outputs depending on which keystroke(s) have
 occured since the actor was last fired.  <p>
 
 @author Winthrop Williams
-@version $Id$
-*/
+@version $Id$ */
 public class KeystrokeSensor extends TypedAtomicActor {
 
     public KeystrokeSensor(CompositeEntity container, String name)

@@ -7,6 +7,10 @@
       <group>
       <doc>Actors that read and write to the file system or network.</doc>
 
+      <entity name="ArrowKeySensor" class="ptolemy.actor.lib.ArrowKeySensor">
+        <doc>Create a JFrame for sensing up, left, right, and down arrow key presses and releases</doc>
+      </entity>
+
       <entity name="DatagramReceiver"
               class="ptolemy.actor.lib.net.DatagramReceiver">
           <property name="encoding">
