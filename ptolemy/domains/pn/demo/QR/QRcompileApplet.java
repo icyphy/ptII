@@ -88,7 +88,7 @@ public void init() {
         _eventplot.plot.setYLabel("R Values");
         _eventplot.plot.setXRange(0.0, 21.0);
         _eventplot.plot.setYRange(-1.0, 1000.0);
-        _eventplot.plot.setSize(450,200);
+        _eventplot.plot.setSize(450, 200);
         _eventplot.plot.setConnected(false);
         _eventplot.plot.setImpulses(true);
         _eventplot.plot.setMarksStyle("dots");
@@ -105,7 +105,7 @@ public void init() {
         _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
         _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
         _matrixViewer.place(getContentPane());
-        _matrixViewer.setSize(1,1);
+        _matrixViewer.setSize(1, 1);
 
         // Connect the network
         _toplevel.connect(_ND_6.out0, _ND_36.in1);
