@@ -12,15 +12,11 @@
 <entity name="raisedcosine" icon="generic.transformer" terminalstyle="generic.transformer" implementation="ptolemy.domains.sdf.lib.RaisedCosine">
 <description>A RaisedCosine filter</description>
 <terminalmap ports="input output"/>
-<port name="input" input="true" type="double"/>
-<port name="output" output="true" type="double"/>
 </entity>
 
 <entity name="linecoder" icon="generic.transformer" terminalstyle="generic.transformer" implementation="ptolemy.domains.sdf.lib.LineCoder">
 <description>Convert binary data to transmission signals.</description>
 <terminalmap ports="input output"/>
-<port name="input" input="true" type="double"/>
-<port name="output" output="true" type="double"/>
 </entity>
 
 </entitylibrary>
