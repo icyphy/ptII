@@ -9,9 +9,8 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="34.0, 29.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="526.0, 35.0">
+        </property>
     </property>
     <entity name="OnePort1" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
@@ -20,10 +19,8 @@
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="86.0, 147.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 122.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -50,10 +47,8 @@
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="211.0, 147.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="217.0, 122.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
@@ -80,10 +75,8 @@
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="373.0, 147.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="332.0, 121.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -110,10 +103,8 @@
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="500.0, 146.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="460.0, 121.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
@@ -136,10 +127,8 @@
     <entity name="CurrentTime14" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="204.0, 205.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="163.0, 185.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -151,10 +140,8 @@
     <entity name="CurrentTime16" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="349.0, 264.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="340.0, 249.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -166,10 +153,8 @@
     <entity name="CurrentTime19" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="495.0, 203.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 360.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -183,10 +168,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="279.0, 205.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="239.99998474121094, 185.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -197,10 +180,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="441.0, 264.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="428.99998474121094, 249.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -211,28 +192,23 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="583.0, 203.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="525.9999847412109, 360.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="150.0, 152.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="105.0, 127.0">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="436.0, 152.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="392.0, 126.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="298.0, 153.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="276.0, 127.0">
         </vertex>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
