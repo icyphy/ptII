@@ -34,7 +34,7 @@ ME =		ptolemy/domains/ct/demo
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
 DIRS = 		BouncingBall CarTracking \
 		Helicopter Lorenz SigmaDelta SquareWave \
-		StickyMasses Switch Thermostat Corba $(PTJSPACES_DIR)
+		StickyMasses Switch Thermostat Corba #$(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../../..
