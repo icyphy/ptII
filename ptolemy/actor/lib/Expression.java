@@ -108,8 +108,9 @@ public class Expression extends TypedAtomicActor {
     /** The output port. */
     public TypedIOPort output;
 
-    /** The value produced by the ramp on its first iteration.
-     *  This parameter contains a DoubleToken, initially with value 0.
+    /** The parameter that is evaluated to produce the output.
+     *  Typically, this parameter evaluates an expression involving
+     *  the inputs.
      */
     public Parameter expression;
 

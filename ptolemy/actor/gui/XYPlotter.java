@@ -40,16 +40,18 @@ import ptolemy.plot.*;
 import java.awt.Panel;
 
 /** A XY plotter.  This plotter contains an instance of the Plot class
- *  from the Ptolemy plot package as a public member.  Data at the inputX and
- *  inputY, are plotted on this instance. Both inputX and inputY are
- *  multiport with type DoubleToken. When plotted, the first channel of
- *  inputX and the first channel of inputY is considered the first signal,
- *  then the second channel of inputX and the second channel of inputY
- *  is considered the second signal, and so on. The current implementation
- *  requires that the inputX and inputY has the same width. For a meaning
- *  plot, each time the actor is fired, it requires at least one
- *  token from each channel
- *  The horizontal axis is inputX and vertical axis is inputY.
+ *  from the Ptolemy plot package as a public member.
+ *  Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
+ *  Both <i>inputX</i> and <i>inputY</i> are multiports with type DoubleToken.
+ *  When plotted, the first channel of <i>inputX</i> and the first channel
+ *  of <i>inputY</i> are together considered the first signal,
+ *  then the second channel of <i>inputX</i> and the second channel
+ *  of <i>inputY</i> are considered the second signal, and so on.
+ *  The current implementation requires that the <i>inputX</i> and
+ *  <i>inputY</i> have the same width. The actor
+ *  assumes that there is at least one token available on each channel
+ *  when it fires. The horizontal axis is given by the value of the
+ *  input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
  *
  *  @author Jie Liu
  *  @version $Id$
@@ -81,10 +83,10 @@ public class XYPlotter extends Plotter implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port for data stream X, which has type DoubleToken. */
+    /** Input port for the horizontal axis, with type DoubleToken. */
     public TypedIOPort inputX;
 
-    /** Input port for data stream Y, which has type DoubleToken. */
+    /** Input port for the vertical axis, with type DoubleToken. */
     public TypedIOPort inputY;
 
     ///////////////////////////////////////////////////////////////////
@@ -111,12 +113,12 @@ public class XYPlotter extends Plotter implements Placeable {
      *  This is done in postfire to ensure that data has settled.
      *  The width of the inputs should be the same, otherwise a
      *  exception will be thrown. For each matched input channel
-     *  pairm, each data channel should has
-     *  at least one tokens. Otherwise,
-     *  one token will be gotten from the input channel that has
+     *  pair, each data channel is assumed to have
+     *  at least one token. Otherwise,
+     *  a token will be consumed from the input channel that has
      *  a token, but nothing will be plotted.
      *  @exception IllegalActionException If there is no director,
-     *  the width of the ports are not the same, or
+     *   the width of the ports are not the same, or
      *   if the base class throws it.
      *  @return True if it is OK to continue.
      */

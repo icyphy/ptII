@@ -51,10 +51,7 @@ time is not easily determined or controlled.  This actor has a parameter,
 <i>firingCountLimit</i>, that optionally limits the number of iterations
 for which the actor is fired.  If this number is <i>n</i> > 0, then
 the <i>n</i>-th invocation of postfire() returns false, which indicates
-to the scheduler that it should stop execution as soon as practical,
-typically at the conclusion of the current iteration.
-Note that there may still be additional firings of the actor before
-the iteration concludes.
+to the scheduler that it should stop invocations of this actor.
 The default value of <i>firingCountLimit</i>
 is zero, which results in postfire always returning
 true.  Derived classes must call super.postfire() for this mechanism to

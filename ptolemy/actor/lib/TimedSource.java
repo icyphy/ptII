@@ -50,8 +50,7 @@ This actor has a parameter, <i>stopTime</i>, that optionally controls
 the duration for which the actor is fired.  If this number is
 <i>t</i> > 0.0, then when current time reaches <i>t</i>,
 postfire() returns false. This indicates
-to the scheduler that it should stop execution as soon as practical,
-which is typically at the end of the current iteration.
+to the director that this actor should not be invoked again.
 The default value of <i>stopTime</i> is 0.0, which results in postfire
 always returning true.  In other words, this makes the lifetime
 infinite. Derived classes must call super.postfire() for this mechanism to

@@ -66,9 +66,9 @@ public class Sink extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port, which has declared type StringToken.
+    /** The input port, which is a multiport.
      */
-    public TypedIOPort input = null;
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

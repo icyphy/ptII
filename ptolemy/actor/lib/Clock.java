@@ -138,7 +138,7 @@ public class Clock extends TimedSource {
     public Parameter offsets;
 
     /** The period of the output waveform.
-     *  This parameter must contain a DoubleMatrixToken.
+     *  This parameter must contain a DoubleToken.
      */
     public Parameter period;
 
