@@ -50,7 +50,7 @@
 
 PTDEFAULT=/users/ptdesign
 TYDEFAULT=/users/ptdesign/tycho
-JAVADEFAULT=/opt/jdk1.1.6
+JAVADEFAULT=/usr/java
 
 ################
 # You probably don't want to edit below here
