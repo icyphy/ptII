@@ -216,7 +216,7 @@ PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 # Do not include PTJACL for size reasons
 PTJACL_JARS =
 
-WIRELESS_JARS =
+WIRELESS_JARS = \
 	ptolemy/domains/wireless/wireless.jar \
 	ptolemy/domains/wireless/demo/demo.jar
 
@@ -745,5 +745,5 @@ sign_jar_dist:
 		-keystore $(KEYSTORE2) \
 		$(JARFILE) $(KEYALIAS2)
 
-sign_jar_dist_update_remote:
+sign_jar_dist_update_remote: sign_jar_dist
 	scp $(JARFILE) messier:$(DIST_DIR)/$(JARFILE)
