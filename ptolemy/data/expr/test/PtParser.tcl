@@ -133,6 +133,19 @@ test PtParser-2.5 {Construct a Parser, try complex double expressions} {
 ######################################################################
 ####
 # 
+test PtParser-2.6 {Construct a Parser, try creating complex numbers} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "2i"]
+    set res1  [ $root evaluateParseTree ]
+
+    set root [ $p {generateParseTree String} "3 + 2i"]
+    set res2  [ $root evaluateParseTree ]
+
+    list [$res1 toString] [$res2 toString]
+} {{ptolemy.data.ComplexToken(0.0 + 2.0i)} {ptolemy.data.ComplexToken(3.0 + 2.0i)}}
+######################################################################
+####
+# 
 test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using arithmetic} {
     set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-(2*9.5 + (3.5/7) + 4/.5) +  \" hello \" + (3*5 -4)\n"]
