@@ -14,6 +14,18 @@ grant {
   // Needed by File.getCanonicalPath(), which is called by
   // MoMLApplication.specToURL()
   permission java.util.PropertyPermission "user.dir", "read";
+
+  // Uncomment the permissions below to get access to the serial port
+  // Note that you will need to substitute in the location of your jvm.
+	
+  //permission java.util.PropertyPermission "javax.comm.properties", "read";
+  //permission java.util.PropertyPermission "java.home", "read";
+  //permission java.io.FilePermission "c:/j2sdk1.4.2_03/jre/lib/javax.comm.properties", "read";
+  //permission java.io.FilePermission "c:/j2sdk1.4.2_03/jre/lib/javax.comm.properties", "delete";
+  //permission java.lang.RuntimePermission "loadLibrary.win32com";
+  //permission java.io.FilePermission "c:/j2sdk1.4.2_03/jre/lib/ext/x86/win32com.dll", "read";
+  //permission java.io.FilePermission "c:/j2sdk1.4.2_03/jre/lib/ext/win32com.dll", "read";
 };
+
 
 
