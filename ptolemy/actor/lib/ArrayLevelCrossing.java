@@ -47,20 +47,22 @@ import ptolemy.kernel.util.SingletonAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayLevelCrossing
 /**
-   Search an array from the specified starting index and report the index of
-   the first item in the array that is below or above the specified threshold.
-   If there is no such item, then -1 is returned.
-   The threshold can be absolute or relative to the value at the starting
-   index.  If it is relative, it can be given on a linear scale or in decibels.
-   If the threshold is relative and we are looking for values above the threshold,
-   then values that are above the value at the starting index by more than the
-   threshold are reported.
-   If the threshold is relative and we are looking for values below the threshold,
-   then values that are below the value at the starting index by more than the
-   threshold are reported.
-   <p>
-   This actor is a generalization of Matlab code developed by John Signorotti of
-   Southwest Research Institute. The original function was called UFDipSearch.
+
+   Search an array from the specified starting index and report the
+   index of the first item in the array that is below or above the
+   specified threshold.  If there is no such item, then -1 is
+   returned.  The threshold can be absolute or relative to the value
+   at the starting index.  If it is relative, it can be given on a
+   linear scale or in decibels.  If the threshold is relative and we
+   are looking for values above the threshold, then values that are
+   above the value at the starting index by more than the threshold
+   are reported.  If the threshold is relative and we are looking for
+   values below the threshold, then values that are below the value at
+   the starting index by more than the threshold are reported.
+
+   <p> This actor is a generalization of Matlab code developed by John
+   Signorotti of Southwest Research Institute. The original function
+   was called UFDipSearch.
 
    @author Edward A. Lee, Steve Neuendorffer
    @version $Id$
@@ -141,11 +143,12 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-    /** An indicator of whether <i>threshold</i> should be interpreted as
-     *  absolute or relative, and if relative, then on a linear scale, in
-     *  amplitude decibels, or power decibels. If decibels are used, then
-     *  the corresponding linear threshold is 10^(<i>threshold</i>/<i>N</i>),
-     *  where <i>N</i> is 20 (for amplitude decibels) or 10 (for power decibels).
+    /** An indicator of whether <i>threshold</i> should be interpreted
+     *  as absolute or relative, and if relative, then on a linear
+     *  scale, in amplitude decibels, or power decibels. If decibels
+     *  are used, then the corresponding linear threshold is
+     *  10^(<i>threshold</i>/<i>N</i>), where <i>N</i> is 20 (for
+     *  amplitude decibels) or 10 (for power decibels).
      *  This parameter is a string with possible values "absolute",
      *  "relative linear", "relative amplitude decibels" or "relative
      *  power decibels". The default value is "absolute".
@@ -157,9 +160,10 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      */
     public PortParameter start;
 
-    /** The threshold to look for. This is a double that can be interpreted on
-     *  an absolute or relative scale, and if relative, on a linear or decibel
-     *  scale, depending on the <i>scale</i> parameter. It defaults to 0.0.
+    /** The threshold to look for. This is a double that can be
+     *  interpreted on an absolute or relative scale, and if relative,
+     *  on a linear or decibel scale, depending on the <i>scale</i>
+     *  parameter. It defaults to 0.0.
      */
     public Parameter threshold;
 
@@ -201,15 +205,19 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
 
             if (scaleValue.equals("relative amplitude decibels")) {
                 if (aboveValue) {
-                    thresholdValue = reference * Math.pow(10.0, (thresholdValue/20));
+                    thresholdValue =
+                        reference * Math.pow(10.0, (thresholdValue/20));
                 } else {
-                    thresholdValue = reference * Math.pow(10.0, (-thresholdValue/20));
+                    thresholdValue =
+                        reference * Math.pow(10.0, (-thresholdValue/20));
                 }
             } else if (scaleValue.equals("relative power decibels")) {
                 if (aboveValue) {
-                    thresholdValue = reference * Math.pow(10.0, (thresholdValue/10));
+                    thresholdValue =
+                        reference * Math.pow(10.0, (thresholdValue/10));
                 } else {
-                    thresholdValue = reference * Math.pow(10.0, (-thresholdValue/10));
+                    thresholdValue =
+                        reference * Math.pow(10.0, (-thresholdValue/10));
                 }
             } else if (scaleValue.equals("relative linear")) {
                 if (aboveValue) {
