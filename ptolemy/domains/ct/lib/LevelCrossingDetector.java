@@ -121,9 +121,9 @@ public class LevelCrossingDetector extends TypedAtomicActor
         // type should be constrained to match the trigger input type.
         output.setTypeAtLeast(defaultEventValue);
 
-        usingDefaultEventValue = new Parameter(this, "usingDefaultEventValue");
-        usingDefaultEventValue.setTypeEquals(BaseType.BOOLEAN);
-        usingDefaultEventValue.setToken(BooleanToken.FALSE);
+        useDefaultEventValue = new Parameter(this, "useDefaultEventValue");
+        useDefaultEventValue.setTypeEquals(BaseType.BOOLEAN);
+        useDefaultEventValue.setToken(BooleanToken.FALSE);
 
         _errorTolerance = (double) 1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
@@ -169,7 +169,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
     /** The parameter that indicates whether to use the default event
      *  value.
      */
-    public Parameter usingDefaultEventValue;
+    public Parameter useDefaultEventValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -272,7 +272,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 if ((_detectFallingCrossing && !inputIsIncreasing) ||
                         (_detectRisingCrossing && inputIsIncreasing)) {
                     // Emit an event.
-                    if (((BooleanToken) usingDefaultEventValue.getToken())
+                    if (((BooleanToken) useDefaultEventValue.getToken())
                             .booleanValue()) {
                         output.send(0, defaultEventValue.getToken());
                         
