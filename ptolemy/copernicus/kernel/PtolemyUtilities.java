@@ -220,6 +220,7 @@ public class PtolemyUtilities {
     /** Insert a local into the given body and code before the given insertion
      *  point to initialize that local to an instance that is equal to the
      *  given type.
+     *  @return The created local.
      */
     // FIXME Records!
     public static Local buildConstantTypeLocal(Body body, Object insertPoint,
@@ -875,6 +876,10 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.kernel.CompositeEntity class.
     public static SootClass compositeEntityClass;
 
+    // Soot class representing the ptolemy.kernel.CompositeEntity class.
+    public static SootClass componentEntityClass;
+    public static RefType componentEntityType;
+
     // Soot Method representing Entity.connectionsChanged().
     public static SootMethod connectionsChangedMethod;
 
@@ -883,6 +888,7 @@ public class PtolemyUtilities {
 
     // Soot class representing the ptolemy.kernel.Entity class.
     public static SootClass entityClass;
+    public static RefType entityType;
 
     // Soot class representing the ptolemy.actor.Executable interface.
     public static SootClass executableInterface;
@@ -1089,11 +1095,16 @@ public class PtolemyUtilities {
 
         entityClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.Entity");
+        entityType = RefType.v(PtolemyUtilities.entityClass);
+
         connectionsChangedMethod = entityClass.getMethod(
                 "void connectionsChanged(ptolemy.kernel.Port)");
         getPortMethod =
             entityClass.getMethod("ptolemy.kernel.Port getPort(java.lang.String)");
 
+        componentEntityClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentEntity");
+        componentEntityType = RefType.v(PtolemyUtilities.componentEntityClass);
         compositeEntityClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.CompositeEntity");
         getEntityMethod =
