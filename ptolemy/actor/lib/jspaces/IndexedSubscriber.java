@@ -445,10 +445,10 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
     public class LastRead {
 
         /** Construct LastRead with a given serial number.
-         *  @param initserailnumber The initial serial number.
+         *  @param initialSerialNumber The initial serial number.
          */
-        public LastRead(long initserialnumber) {
-            _lastSerialNumber = initserialnumber;
+        public LastRead(long initialSerialNumber) {
+            _lastSerialNumber = initialSerialNumber;
         }
 
         //////////////////////////////////////////////////////////////
