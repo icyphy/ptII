@@ -83,9 +83,9 @@ public class PtolemyApplet extends Applet {
         // Process the background parameter.
         _background = Color.white;
         try {
-            String colorspec = getParameter("background");
-            if (colorspec != null) {
-                _background = Color.decode(colorspec);
+            String colorSpecification = getParameter("background");
+            if (colorSpecification != null) {
+                _background = Color.decode(colorSpecification);
             }
         } catch (Exception ex) {
             report("Warning: background parameter failed: ", ex);
