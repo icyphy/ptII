@@ -44,9 +44,9 @@ import ptolemy.data.type.*;
   A token that contains a byte number in the range 0 through 255.
   This is in contrast to Java's default that a byte is in the range
   -128 through 127.  To get our desired behavior...
- 
+
   @author Winthrop Williams
-  @version $ByteToken.java$ 
+  @version $ByteToken.java$
 */
 public class ByteToken extends ScalarToken {
 
@@ -64,7 +64,7 @@ public class ByteToken extends ScalarToken {
 
     /** Construct a ByteToken from the specified integer.
      *  This takes the low 8 bits and discards the rest.
-     *  This avoids us having to cast to byte when calling 
+     *  This avoids us having to cast to byte when calling
      *  a constructor such as in the one() or zero() methods.
      */
     public ByteToken(int value) {
@@ -210,7 +210,7 @@ public class ByteToken extends ScalarToken {
             } else {
                byteToken = (ByteToken)divisor;
             }
-            byte quotient = (byte) (unsignedConvert(_value) 
+            byte quotient = (byte) (unsignedConvert(_value)
 	            / unsignedConvert(byteToken.byteValue()));
             ByteToken result = new ByteToken(quotient);
             // compute units
@@ -239,7 +239,7 @@ public class ByteToken extends ScalarToken {
      */
     public Token divideReverse(Token dividend) throws IllegalActionException {
         ByteToken byteToken = (ByteToken)ByteToken.convert(dividend);
-        byte quotient = (byte)(unsignedConvert(byteToken.byteValue()) 
+        byte quotient = (byte)(unsignedConvert(byteToken.byteValue())
                 / unsignedConvert(_value));
         ByteToken result = new ByteToken(quotient);
 
@@ -381,7 +381,7 @@ public class ByteToken extends ScalarToken {
             } else {
                byteToken = (ByteToken)rightArgument;
             }
-            byte remainder = (byte) (unsignedConvert(_value) 
+            byte remainder = (byte) (unsignedConvert(_value)
                     % unsignedConvert(byteToken.byteValue()));
             ByteToken result = new ByteToken(remainder);
             if ( !_isUnitEqual(byteToken)) {
@@ -452,7 +452,7 @@ public class ByteToken extends ScalarToken {
             } else {
                byteToken = (ByteToken)rightFactor;
             }
-            byte product = (byte)(unsignedConvert(_value) 
+            byte product = (byte)(unsignedConvert(_value)
                     * unsignedConvert(byteToken.byteValue()));
             ByteToken result = new ByteToken(product);
             // compute units
@@ -511,7 +511,7 @@ public class ByteToken extends ScalarToken {
             } else {
                byteToken = (ByteToken)rightArgument;
             }
-            byte difference = (byte) (unsignedConvert(_value) 
+            byte difference = (byte) (unsignedConvert(_value)
                     - unsignedConvert(byteToken.byteValue()));
             ByteToken result = new ByteToken(difference);
             if ( !_isUnitEqual(byteToken)) {
@@ -547,7 +547,7 @@ public class ByteToken extends ScalarToken {
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         ByteToken byteToken = (ByteToken)ByteToken.convert(leftArgument);
-        byte difference = (byte) (unsignedConvert(byteToken.byteValue()) 
+        byte difference = (byte) (unsignedConvert(byteToken.byteValue())
         - unsignedConvert(_value));
         ByteToken result = new ByteToken(difference);
         if ( !_isUnitEqual(byteToken)) {
