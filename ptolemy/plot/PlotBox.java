@@ -920,7 +920,7 @@ public class PlotBox extends Panel {
                 if (lw > widesty) {widesty = lw;}
             }
         } else {
-            // explictly specified ticks
+            // explicitly specified ticks
             Enumeration nl = _yticklabels.elements();
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
