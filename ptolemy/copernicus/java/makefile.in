@@ -147,7 +147,8 @@ treeShakeAll: treeShakeWithoutCodegen  \
 # Profile all versions of the generated code.
 profileAll: profileTreeShakeWithoutCodegen \
 	profileTreeShake \
-        profileObfuscate
+        profileObfuscate \
+	profileGcj
 
 #	profileTreeShakeSnapshots
 
