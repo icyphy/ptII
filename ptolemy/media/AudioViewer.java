@@ -55,7 +55,7 @@ Display sound files.
 public class AudioViewer extends PlotApplication {
 
     /** Construct an audio plot with no command-line arguments.
-     *  @exception Exception Not thrown.
+     *  @exception Exception Not thrown in this base class.
      */
     public AudioViewer() throws Exception {
         this(null);
