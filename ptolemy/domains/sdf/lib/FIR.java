@@ -230,6 +230,7 @@ public class FIR extends SDFTransformer {
         ArrayType paramType = (ArrayType)newObject.taps.getType();
         InequalityTerm elemTerm = paramType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elemTerm);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

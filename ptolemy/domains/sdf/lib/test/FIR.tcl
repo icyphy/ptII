@@ -96,11 +96,10 @@ test FIR-2.1 {Test FIR type exeception} {
     $tapParam setToken $fixArrayToken
 
     catch { [$e0 getManager] execute } msg
-	list $msg
-
+    list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
-  .top.rec.input: scalar
   .top.FIRclone.output: scalar
+  .top.rec.input: scalar
 }}
 
 

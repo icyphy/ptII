@@ -123,6 +123,7 @@ public class Autocorrelation extends SDFTransformer {
                 "symmetricOutput", new BooleanToken(false));
 
         input.setTypeAtLeast(new FunctionTerm(input));
+	output.setTypeAtLeast(input);
 
         attributeChanged(numberOfInputs);
 

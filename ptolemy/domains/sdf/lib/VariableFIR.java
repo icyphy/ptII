@@ -116,9 +116,7 @@ public class VariableFIR extends FIR {
 
         newTaps = new TypedIOPort(this, "newTaps");
         newTaps.setInput(true);
-        // FIXME: Doesn't work.
-        // newTaps.setTypeSameAs(taps);
-        newTaps.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        newTaps.setTypeSameAs(taps);
         output.setTypeSameAs(input);
     }
 
