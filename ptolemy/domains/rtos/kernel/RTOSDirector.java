@@ -59,12 +59,12 @@ The priority-driven multitasking model has an event-driven style of
 execution. Each actor in this domain is treated as a task.
 A task can have a priority and an execution time, specified
 by adding a <i>priority</i> and <i>executionTime</i> parameters
-to the actor (or it input prots, if the actor wants to distinguish
-its execution triggered by events from differnt ports).
+to the actor (or it input ports, if the actor wants to distinguish
+its execution triggered by events from different ports).
 <P>
 There is assumed to have one resource, say CPU, that 
 the execution of all actors shares. At one particular time, only
-one of the actors can get the resource and execute. If the exeuction
+one of the actors can get the resource and execute. If the execution
 is preemptable (by setting the <i>preemptive</i> parameter of
 this director to true), then the execution of one task 
 may be preempted by another task with a higher priority.
@@ -73,15 +73,15 @@ This director distinguishes RTOS events, which are events
 that triggers the execution of tasks, and interrupt events, 
 which are outside inputs (e.g. interrupts) that happens at a 
 particular real time. The director uses an event dispatcher to
-dispatch scheduling events and executes their desination actors
+dispatch scheduling events and executes their destination actors
 subject to the priorities of the event. The priority of the event
-is inhereted from its destination port, which further may inherit
+is inherited from its destination port, which further may inherit
 its priority from the actor that contains the port. Whenever an 
 event is produced by an actor, it is queued with the event dispatcher.
 At any time, the event with the highest priority is dispatched, 
 and delivered into its destination receiver. The director then starts
 the execution of the destination actor (by calling its prefire()
-method). At the mean while, the execution can always be interruped
+method). At the mean while, the execution can always be interrupted
 by outside inputs, which may produce scheduling events with 
 higher priority than the current event being processed. In that case,
 if the execution is preemptable, then the execution of the current 
@@ -213,7 +213,7 @@ public class RTOSDirector extends Director {
     }
 
     /** Compare the current time to the time stamp of the first
-     *  event in the interrupt event queue. If they are euqal, then
+     *  event in the interrupt event queue. If they are equal, then
      *  dequeue the events at the current time from the interrupt event
      *  queue, and fire the destination actors.
      *  If the current time is less than the time stamp of the
@@ -315,13 +315,13 @@ public class RTOSDirector extends Director {
                         if(_debugging) _debug("Set processing time ",
                                 event.toString());
                         // Start a new task.
-                        // Now the bahavior depend on whether the 
+                        // Now the behavior depend on whether the 
                         // execution is preemptive.
                         if (!_preemptive) {
                             event = (RTOSEvent)_eventQueue.take();
                             event.startProcessing();
                                 // Set it priority to o so it won't 
-                                // be preemtped.
+                                // be preempted.
                             event.setPriority(0);
                             _eventQueue.put(event);
                         } else {
@@ -431,7 +431,7 @@ public class RTOSDirector extends Director {
      *  the corresponding actors. 
      *  
      *  If <i>synchronizeToRealTime</i> is true, then wait until the
-     *  real time has catched up to the new current time. 
+     *  real time has caught up to the new current time. 
      *  @return True
      *  @exception IllegalActionException If the execution method 
      *  of one of the actors throws it.
@@ -523,7 +523,7 @@ public class RTOSDirector extends Director {
 
     /** If the current time is greater than the stop time, or
      *  both interrupt event queue and RTOS event queues are empty
-     *  then return false. Otherwise, return treu.
+     *  then return false. Otherwise, return true.
      *  @return Whether the execution should continue.
      */
     public boolean postfire() throws IllegalActionException {
@@ -650,7 +650,7 @@ public class RTOSDirector extends Director {
     // local cache of the parameter
     private boolean _preemptive = false;
 
-    // local cache of sunchronize to real time
+    // local cache of synchronize to real time
     private boolean _synchronizeToRealTime = false;
 
     // disabled actors list.

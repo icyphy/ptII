@@ -68,7 +68,7 @@ public class RTOSEventComparator implements CQComparator {
      *  If the argument is not an instance of RTOSEvent, then a
      *  ClassCastException will be thrown.  Only the priority
      *  of the arguments is used.  The quantity returned is the
-     *  quantized piority, i.e. the
+     *  quantized priority, i.e. the
      *  difference between the priority of the event and that of
      *  the zero reference, divided by the priority of the bin width.
      *  @param event The event.

@@ -122,7 +122,7 @@ public final class RTOSEvent implements Comparable {
      *  The priority is checked first. Return 1 if the priority of this
      *  event is strictly smaller than that of the argument. 
      *  Return -1 if the priority of this event is strictly greater than
-     *  the arguement. If the two priorities are
+     *  the argument. If the two priorities are
      *  identical, then the hasStarted field is checked.  
      *  return 1 if hasStarted of this event is true.
      *  Return -1 if this event has not been preempted, but the argument
@@ -148,7 +148,7 @@ public final class RTOSEvent implements Comparable {
 
     /** Return true if the processing of this event has started 
      *  (but then preempted).
-     *  @return Ture if the processing of this event has started.
+     *  @return True if the processing of this event has started.
      */
     public final boolean hasStarted() {
         return _hasStarted;
@@ -195,7 +195,7 @@ public final class RTOSEvent implements Comparable {
     }
 
     /** Set the processing time of the event. Notice that we don't
-     *  compare the argument with the previouly set processing time.
+     *  compare the argument with the previously set processing time.
      */
     public final void setProcessingTime(double time) {
         _processingTime = time;
@@ -209,7 +209,7 @@ public final class RTOSEvent implements Comparable {
     }
 
     /** Reduce the remaining processing time of this event by a certain
-     *  amount. This is a syntac sugger for setProcessingTime().
+     *  amount. This is a syntactic suger for setProcessingTime().
      *  @param time The amount of time progressed.
      */
     public final void timeProgress(double time) {

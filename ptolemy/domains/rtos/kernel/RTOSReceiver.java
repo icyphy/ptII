@@ -63,7 +63,7 @@ parameter, but the actor, which contains the container of this receiver,
 has a <i>priority</i> parameter, then the priority equals to the value
 of the <i>priority<i> of the actor.
 <li> If neither the container nor the container of the container of this
-reciever has the <i>priority</i> parameter, then the priority of the
+receiver has the <i>priority</i> parameter, then the priority of the
 token is the default priority, which is 5.
 
 @author Edward A. Lee, Jie Liu
