@@ -91,6 +91,8 @@ Shahrooz Shahparnia
 */
 public class Graph implements Cloneable {
 
+    // FIXME: Use the term "analysis" consistently in place of "listener"
+
     /** Construct an empty graph.
      */
     public Graph() {
