@@ -335,7 +335,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             double runlength = nextIterTime - _outsideTime;
             if(_debugging) _debug(getName(), "Outside Time = " + _outsideTime,
                     "NextIterationTime = " + nextIterTime,
-                    "Infered run length = " + runlength);
+                    "Inferred run length = " + runlength);
             if(runlength < 0 ) {
                 throw new InvalidStateException(this, "Outside domain"
                         + " time collapse."
