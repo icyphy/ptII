@@ -211,11 +211,11 @@ public class FixType extends StructuredType
      */
     protected int _compare(StructuredType type) {
         return CPO.SAME;
-//         if(equals(type)) {
-//             return CPO.SAME;
-//         } else {
-//             return CPO.LOWER;
-//         }
+        //         if(equals(type)) {
+        //             return CPO.SAME;
+        //         } else {
+        //             return CPO.LOWER;
+        //         }
     }
 
     /** Return a static instance of this structured type. The return
@@ -248,11 +248,11 @@ public class FixType extends StructuredType
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
-//         if(equals(type)) {
-//             return this;
-//         } else {
-//             return type;
-//         }
+        //         if(equals(type)) {
+        //             return this;
+        //         } else {
+        //             return type;
+        //         }
     }
 
     ///////////////////////////////////////////////////////////////////

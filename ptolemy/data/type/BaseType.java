@@ -222,7 +222,7 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
     public static final UnsignedByteType UNSIGNED_BYTE =
-      new UnsignedByteType();
+    new UnsignedByteType();
 
     /** The complex data type */
     public static class ComplexType extends BaseType {
@@ -253,14 +253,14 @@ public abstract class BaseType implements Type, Serializable {
     new UnsizedMatrixType.DoubleMatrixType();
 
     /** The fix data type */
-  //   public static class FixType extends BaseType {
-//         private FixType() {
-//             super(FixToken.class, "fixedpoint");
-//         }
-//         public Token convert(Token t) throws IllegalActionException {
-//             return FixToken.convert(t);
-//         }
-//     }
+    //   public static class FixType extends BaseType {
+    //         private FixType() {
+    //             super(FixToken.class, "fixedpoint");
+    //         }
+    //         public Token convert(Token t) throws IllegalActionException {
+    //             return FixToken.convert(t);
+    //         }
+    //     }
     public static final FixType FIX = FixType.BOTTOM; //new FixType();
 
     public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX =
@@ -304,7 +304,7 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             throw new IllegalActionException("Cannot convert token " + t +
-              " to type numerical, because numerical is not a concrete type.");
+                    " to type numerical, because numerical is not a concrete type.");
         }
     }
     public static final NumericalType NUMERICAL = new NumericalType();
@@ -327,7 +327,7 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             throw new IllegalActionException("Cannot convert token " + t +
-                 " to type scalar, because scalar is not a concrete type.");
+                    " to type scalar, because scalar is not a concrete type.");
         }
     }
     public static final ScalarType SCALAR = new ScalarType();

@@ -196,8 +196,8 @@ public abstract class SizedMatrixType extends StructuredType
             throws IllegalActionException {
         if(newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
-                "SizedMatrixType.updateType: Cannot " +
-                "updateType the element type to " + newType + ".");
+                    "SizedMatrixType.updateType: Cannot " +
+                    "updateType the element type to " + newType + ".");
         }
     }
 
@@ -226,8 +226,8 @@ public abstract class SizedMatrixType extends StructuredType
             super(ComplexMatrixToken.class, "[complex]", rows, columns);
         }
         public Token convert(Token token) throws IllegalActionException {
-           if (token instanceof MatrixToken) {
-               return ComplexMatrixToken.convert((MatrixToken)token);
+            if (token instanceof MatrixToken) {
+                return ComplexMatrixToken.convert((MatrixToken)token);
             } else {
                 throw new IllegalActionException(
                         Token.notSupportedConversionMessage(
@@ -287,7 +287,7 @@ public abstract class SizedMatrixType extends StructuredType
             super(FixMatrixToken.class, "[fixedpoint]", rows, columns);
         }
         public Token convert(Token token) throws IllegalActionException {
-           if (token instanceof MatrixToken) {
+            if (token instanceof MatrixToken) {
                 return FixMatrixToken.convert((MatrixToken)token);
             } else {
                 throw new IllegalActionException(
@@ -306,7 +306,7 @@ public abstract class SizedMatrixType extends StructuredType
             super(LongMatrixToken.class, "[long]", rows, columns);
         }
         public Token convert(Token token) throws IllegalActionException {
-           if (token instanceof MatrixToken) {
+            if (token instanceof MatrixToken) {
                 return LongMatrixToken.convert((MatrixToken)token);
             } else {
                 throw new IllegalActionException(
@@ -337,17 +337,17 @@ public abstract class SizedMatrixType extends StructuredType
      */
     protected int _compare(StructuredType type) {
         return CPO.SAME;
-//         if(equals(type)) {
-//             return CPO.SAME;
-//         } else if(equals(_getRepresentative()) ||
-//                 type.equals(BaseType.MATRIX)) {
-//             return CPO.LOWER;
-//         } else if(equals(BaseType.MATRIX) ||
-//                 type.equals(_getRepresentative())) {
-//             return CPO.HIGHER;
-//         } else {
-//             return CPO.INCOMPARABLE;
-//         }
+        //         if(equals(type)) {
+        //             return CPO.SAME;
+        //         } else if(equals(_getRepresentative()) ||
+        //                 type.equals(BaseType.MATRIX)) {
+        //             return CPO.LOWER;
+        //         } else if(equals(BaseType.MATRIX) ||
+        //                 type.equals(_getRepresentative())) {
+        //             return CPO.HIGHER;
+        //         } else {
+        //             return CPO.INCOMPARABLE;
+        //         }
     }
 
     /** Return a static instance of this structured type. The return
@@ -366,17 +366,17 @@ public abstract class SizedMatrixType extends StructuredType
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
         return this;
-//         if(equals(type)) {
-//              return this;
-//         } else if(equals(_getRepresentative()) ||
-//                 type.equals(BaseType.MATRIX)) {
-//             return this;
-//         } else if(equals(BaseType.MATRIX) ||
-//                 type.equals(_getRepresentative())) {
-//             return type;
-//         } else {
-//             return _getRepresentative();
-//         }
+        //         if(equals(type)) {
+        //              return this;
+        //         } else if(equals(_getRepresentative()) ||
+        //                 type.equals(BaseType.MATRIX)) {
+        //             return this;
+        //         } else if(equals(BaseType.MATRIX) ||
+        //                 type.equals(_getRepresentative())) {
+        //             return type;
+        //         } else {
+        //             return _getRepresentative();
+        //         }
     }
 
     /** Return the least upper bound of this type with the specified
@@ -389,18 +389,18 @@ public abstract class SizedMatrixType extends StructuredType
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
-//         if(equals(type)) {
-//             return this;
-//         } else if(equals(_getRepresentative()) ||
-//                 type.equals(BaseType.MATRIX)) {
-//             return type;
-//         } else if(equals(BaseType.MATRIX) ||
-//                 type.equals(_getRepresentative())) {
-//             return this;
-//         } else {
-//             throw new IllegalArgumentException("fubar");
-//             //     return BaseType.MATRIX;
-//         }
+        //         if(equals(type)) {
+        //             return this;
+        //         } else if(equals(_getRepresentative()) ||
+        //                 type.equals(BaseType.MATRIX)) {
+        //             return type;
+        //         } else if(equals(BaseType.MATRIX) ||
+        //                 type.equals(_getRepresentative())) {
+        //             return this;
+        //         } else {
+        //             throw new IllegalArgumentException("fubar");
+        //             //     return BaseType.MATRIX;
+        //         }
     }
 
     ///////////////////////////////////////////////////////////////////

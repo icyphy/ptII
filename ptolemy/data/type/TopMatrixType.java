@@ -231,7 +231,7 @@ public class TopMatrixType extends StructuredType
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if(equals(type)) {
-             return this;
+            return this;
         } else {
             return type;
         }

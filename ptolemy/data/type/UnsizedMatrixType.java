@@ -246,8 +246,8 @@ public abstract class UnsizedMatrixType extends StructuredType
             super(ComplexMatrixToken.class, BaseType.COMPLEX, "[complex]");
         }
         public Token convert(Token token) throws IllegalActionException {
-           if (token instanceof MatrixToken) {
-               return ComplexMatrixToken.convert((MatrixToken)token);
+            if (token instanceof MatrixToken) {
+                return ComplexMatrixToken.convert((MatrixToken)token);
             } else {
                 throw new IllegalActionException(
                         Token.notSupportedConversionMessage(
@@ -294,7 +294,7 @@ public abstract class UnsizedMatrixType extends StructuredType
             super(FixMatrixToken.class, BaseType.FIX, "[fixedpoint]");
         }
         public Token convert(Token token) throws IllegalActionException {
-           if (token instanceof MatrixToken) {
+            if (token instanceof MatrixToken) {
                 return FixMatrixToken.convert((MatrixToken)token);
             } else {
                 throw new IllegalActionException(
@@ -310,7 +310,7 @@ public abstract class UnsizedMatrixType extends StructuredType
             super(LongMatrixToken.class, BaseType.LONG, "[long]");
         }
         public Token convert(Token token) throws IllegalActionException {
-           if (token instanceof MatrixToken) {
+            if (token instanceof MatrixToken) {
                 return LongMatrixToken.convert((MatrixToken)token);
             } else {
                 throw new IllegalActionException(
@@ -339,11 +339,11 @@ public abstract class UnsizedMatrixType extends StructuredType
      */
     protected int _compare(StructuredType type) {
         return CPO.SAME;
-//         if(equals(type)) {
-//             return CPO.SAME;
-//         } else {
-//             return CPO.LOWER;
-//         }
+        //         if(equals(type)) {
+        //             return CPO.SAME;
+        //         } else {
+        //             return CPO.LOWER;
+        //         }
     }
 
     /** Return a static instance of this structured type. The return
@@ -376,11 +376,11 @@ public abstract class UnsizedMatrixType extends StructuredType
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
-//         if(equals(type)) {
-//             return this;
-//         } else {
-//             return type;
-//         }
+        //         if(equals(type)) {
+        //             return this;
+        //         } else {
+        //             return type;
+        //         }
     }
 
     ///////////////////////////////////////////////////////////////////
