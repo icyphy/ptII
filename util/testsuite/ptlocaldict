@@ -42,12 +42,16 @@ Bilung
 Blackdown
 CELLPADDING
 CELLSPACING
+CLFLAG
 CLASSNAME
 CLASSPATH
+COMMAPI
+CONFIG
 COPYRIGHTENDKEY
 CORBA
 CSF
 CSP
+CYGWIN
 Cardelli
 Chandy
 Chatoyant
@@ -55,10 +59,12 @@ Claudius
 Clearcase
 Cloneable
 Codesign
+Commapi
 Conexant
 Cory
 Cygwin
 DATABITS
+DISTCLEAN
 DOCTYPE
 Dataflow
 Davey
@@ -86,6 +92,7 @@ Framemaker
 Fujimoto
 Fukushima
 GIOTTO
+GLIMPSEINDEX
 GUI
 Galicia
 Garlan
@@ -123,8 +130,13 @@ Instantiable
 Irix
 Itcl
 Itk
+JAVA
+JAVABIN
 JAVAHOME
+JDOC
+JDOCFLAG
 JDK
+JFLAG
 Jacl
 Jarvis
 Java
@@ -134,6 +146,8 @@ Javasoft
 Javaworld
 Jens
 Jie
+Jini
+KRUFT
 Kachina
 Khoros
 Kienhuis
@@ -142,6 +156,7 @@ Kluwer
 Kobe
 Koo
 Korn
+Kubota
 Kupferman
 Lego
 Lemkin
@@ -153,9 +168,9 @@ Lotos
 Lukito
 Lustre
 MAKEARCH
+MAKEFLAG
 MINDSTORM
 Majordomo
-Makefiles
 Makefile
 Makefiles
 Manda
@@ -269,6 +284,7 @@ Xiong
 Y
 Yelick
 Yuhong
+Yylex
 Zeno
 acos
 alink
@@ -285,6 +301,7 @@ asin
 atan2
 autoconf
 awt
+basename
 behaviour
 berkeley
 bgcolor
