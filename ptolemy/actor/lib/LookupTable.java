@@ -75,8 +75,8 @@ public class LookupTable extends Transformer {
         input.setTypeEquals(BaseType.INT);
 	data.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 	ArrayType dataType = (ArrayType)data.getType();
-	InequalityTerm elemTerm = dataType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = dataType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,8 +102,8 @@ public class LookupTable extends Transformer {
 
         // set the type constraints
         ArrayType dataType = (ArrayType)data.getType();
-        InequalityTerm elemTerm = dataType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
+        InequalityTerm elementTerm = dataType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
 
         return newObject;
     }
