@@ -14,15 +14,19 @@ for actor in $actors
 do
     cat $actor |
        sed -e 's@//# line [0-9]*.*$@@' \
-           -e 's@//[ 	]*StringList \([a-z_0-9A-Z]*\) = \(".*"\);$@StringBuffer \1 = new StringBuffer(\2);@' \
-	   -e 's@//[ 	]*{[	 ]*StringList \([a-z_0-9A-Z]*\); \([a-z_0-9A-Z]*\) <<[	 ]*$@{ StringBuffer \1 = new StringBuffer(); \2.append( "dummy1"@' \
-           -e 's@//\([ 	]*addCode[^;]*;\) }[ 	]*$@+ "dummy2"); \1 } @' \
-           -e 's@//\([ 	]*addCode[^;]*;\)@\1 //@' \
-           -e 's@\(//[ 	]*[a-zA-Z0-9_]*\) << \(.*\);$@\1.append(\2);@' \
+           -e 's@[ 	]*StringList \([a-z_0-9A-Z]*\) = \(".*"\);$@StringBuffer \1 = new StringBuffer(\2);@' \
+	   -e 's@[ 	]*{[	 ]*StringList \([a-z_0-9A-Z]*\); \([a-z_0-9A-Z]*\) <<[	 ]*$@{ StringBuffer \1 = new StringBuffer(); \2.append(@' \
+           -e 's@\([ 	]*addCode[^;]*;\) }[ 	]*$@); \1 } @' \
+           -e 's@\([ 	]*addCode[^;]*;\)@\1 @' \
+           -e 's@\([ 	]*[a-zA-Z0-9_]*\) << \(.*\);$@\1.append(\2);@' \
            -e 's@StringList \([a-z_0-9A-Z]*\);@StringBuffer \1 = new StringBuffer();@' \
-           -e 's@Error::abortRun(\*this,@throw new IllegalActionException(this,@' \
-           -e 's@<<@+@' \
+           -e 's@Error::abortRun[ ]*(\*this,@throw new IllegalActionException(this,@' \
+           -e 's@" <<@" +@g' \
+           -e 's@<< "@ + "@g' \
            -e 's@const char *\*@String@' \
+           -e 's@int(\([a-z_0-9A-Z]*\))@(int)(\1)@g' \
+           -e 's@double(\([a-z_0-9A-Z]*\))@(double)(\1)@g' \
+           -e 's@\([a-9_0-9A-Z]*\)[ ]*::[ ]*\([a-9_0-9A-Z]*\)@\1.\2@g' \
 	   -e 's@\(i>1."complex temp;":"/.Unit gain - no multiplication required./"\)@(\1)@' \
                > $actor.tmp
 
@@ -30,7 +34,7 @@ do
     dirname=`dirname $actor`
     dirdirname=`dirname $dirname`
     basedirname=`basename $dirdirname`
-    if [ "$basedirname" != "cgc" ]; then
+    if [ "x$basedirname" != "x." -a "$basedirname" != "cgc" ]; then
 	cat $actor.tmp |
 	    sed -e "s/package ptolemy.domains.sdf.cgc.lib;/package ptolemy.domains.sdf.cgc.${basedirname}.lib;/" > $actor.tmp2
 	mv $actor.tmp2 $actor.tmp
