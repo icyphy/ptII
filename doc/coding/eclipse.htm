@@ -1,66 +1,94 @@
-<!-- $Id$ -->
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<link href="../default.css" rel="stylesheet" type="text/css">
 <head>
-<title>Eclipse</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>Setting up Ptolemy II and Eclipse</title>
 </head>
 <body>
-<h1>Eclipse</h1>
-<h2>Contents</h2>
+<h1>Setting up Ptolemy II and Eclipse</h1>
+<p>
+They assume you are using Eclipse 3.0 under Windows.
+Other ways of setting up and building Ptolemy II are described on the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
+Ptolemy II install page</a>. Contents of this page:
 <menu>
-<li><a href="#Installing">Downloading, and installing Eclipse</a>
-<li><a href="#SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a>
- <menu>
-  <li><a href="#NoCVS">If you <em>don't</em> want to use CVS with Eclipse</a>
-  <li><a href="#YesCVS">If you <em>do</em> want to use CVS with Eclipse</a>
-  <li><a href="#dotFileSetup">Creating the .classpath and .project files</a>
-  <li><a href="#PtolemyPreferences">Importing the Ptolemy II specific preferences</a>
-  <li><a href="#ByHand">Setting up for Ptolemy II By Hand<a>
-  <li><a href="#tabs">Don't use tabs in the editor</a>
-  <li><a href="#assert">Proper Handling of Assert Statements</a>
-  </menu>
-
+<li><a href="#Installing">Install Eclipse</a>
+<li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
 <li><a href="#UsingEclipse">Using Eclipse</a>
-  <menu>
-  <li><a href="#RunningEclipse">Running Eclipse</a>
-  <li><a href="#simpleDebug">Simple Debugging Session</a>
-  <li><a href="#UsingCVS">Using CVS</a>
-  <li><a href="#debugTclTests">Debugging Tcl Tests</a>
-  <li><a href="#troubleshooting">Troubleshooting</a>
-  </menu>
+<li><a href="#Optional">Optional Extensions</a>
+<li><a href="#Troubleshooting">Troubleshooting</a>
 </menu>
 
-<hr>
-<h1><a name="Installing">Downloading, and installing Eclipse</a></h1>
+<h2><a name="Installing">Install Eclipse</a></h2>
 <ol>
-
-<li>Download the latest <b>Release</b> version of Eclipse from
-<a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>.
-
-<br>In March 2003, the Release version of Eclipse was 2.1.2, so for Windows
-download the the file eclipse-SDK-2.1.2-win32.zip and for Linux download
-be either eclipse-SDK-2.1.2-linux-motif.zip, or
-eclipse-SDK-2.1.2-linux-gtk.zip.
-
-<li>The download file is a zip file that contains the eclipse
-directory. Unzip the download file into an appropriate place (such as
-<code>c:\Program Files</code>, or <code>c:\InstalledStuff</code>).
-
-<li><b>IMPORTANT</b>If you plan on using Eclipse with a cvs server
-later than cvs-1.11.7, you will need to install <code>cvs.jar</code>.
-See <a href="#cvs-1.11.7">Eclipse 2.1.2 does not work with cvs 1.11.7</a>.
-
-<li>Finish the installation by running
-<code>eclipse/eclipse.exe</code>. The first time this is run it will
-complete the installation process. After the first run, normal
-start-up will occur whenever it is started.
-
-<li>As an option, you may want to make a shortcut to <code>eclipse.exe</code>.
+<li>
+Download the latest version of Eclipse from
+<a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
+<li>
+Unzip the download file into an appropriate place (such as <CODE>C:\Program Files</CODE>).
+<li>
+Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
+<br>The first time this is run it will complete the installation process.
+<br>After the first run, normal start-up will occur whenever it is started.
 </ol>
 
-<hr>
-<h1><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h1>
+<h2><a name="Preferences">Eclipse Preferences for Ptolemy II</a></h1>
+<p>
+The default configuration of Eclipse has some difficulties with Ptolemy II,
+so a few changes are necessary.
+<ol>
+<li>
+We will need to change the default memory size for Eclipse
+because Ptolemy II is a big project.
+In Windows, create a shortcut to eclipse.exe on your desktop.
+Then right mouse click on the shortcut and select Properties and change
+the target to increase the memory allocated by default. E.g.,
+if you installed Eclipse in <CODE>C:\Program Files\eclipse3.0</CODE>,
+then the Target should read:
+<pre>
+   "C:\Program Files\eclipse3.0\eclipse.exe" -vmargs -Xmx256M
+</pre>
+The maximum memory size will now be 256 megabytes when you restart
+Eclipse.
+<p>
+<li>
+Ptolemy II uses some features of Java 1.4.
+Set Eclipse to use Java 1.4 source code compliance.
+<ol>
+<li> Window-&gt;Preferences-&gt;Java-&gt;Compiler-&gt;Compliance and Classfiles
+<li> Uncheck "Use default compliance settings".
+<li> Set both "Generated .class files compatibility" and
+     "Source compatibility" to 1.4.
+<li> Click OK.
+</ol>
+<p>
+<li>
+By default, Eclipse rebuilds a project when any change is made
+to a file.  This will result in thousands of errors when Ptolemy II
+is first checked out, and during normal usage, can be annoying because
+of the pauses it creates. We suggest disabling this feature as
+follows:
+<ol>
+<li> Select Window -&gt; Preferences.
+<li> Highlight Workbench (probably already highlighted).
+<li> Deselect "Build automatically."
+</ol>
+<p>
+<li>
+Ptolemy II source files are worked on by many people with different editors.
+Unfortunately, different text editors interpret tab characters differently,
+so it is best to use spaces rather than tabs.  You can specify for Eclipse
+to always do this as follows:
+ <ol>
+  <li> Select Window-&gt;Preferences in the menu.
+  <li> Expand the Java tree, select "Editor" and then click on the "Typing"
+       tab at the right. 
+  <li> Check "Insert spaces for tabs (see Code Formatter preference page)".
+  <li> Click OK.
+ </ol>
+</ol>
+
+<h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
 
 Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  There are two ways to set up the ptII project,
@@ -74,14 +102,14 @@ things are good, but there is a learning curve.
 Once the ptII project has been set up there seems to be no way to
 switch between using CVS and not using CVS.  I.E., the only way to
 switch is to re-create the ptII project.  (Actually, this isn't too
-hard after you,ve done it a couple of times :-)).  Therefore, you'll
+hard after you've done it a couple of times :-)).  Therefore, you'll
 need to decide if you want Eclipse to be aware of, and manage the CVS
 aspects of the ptII project.
 
 <h3><a name="NoCVS">If you <em>don't</em> want to use CVS with Eclipse</a></h3>
 You must already have a ptII development tree. All you want to do is
 <ol>
-<li>Configure the .classpath and .project files. See <a href="#dotFileSetup">Creating the .classpath and .project files</a>.
+<li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
 <li>Create the ptII project
 <ul>
  <li> File-&gt;New-&gt;Project. Select 'Java project'. Name it ptII.
@@ -89,108 +117,165 @@ Deselect 'Use default' and browse to the PTII directory. Finish.
 <li>When asked if you want to shift to the Java perspective, click on Yes.
 </ul>
 </ol>
-<h3><a name ="YesCVS">If you <em>do</em> want to use CVS with Eclipse</a></h3>
-You must start fresh and allow Eclipse to perform the CVS checkout.
 
-<p>Eclipse assumes that an Eclipse project (including the .classpath, and
-.project) are under CVS control.  Therefore, creating the ptII project
-in Eclipse under CVS control requires an unusual procedure.
-In brief, the CVS ptII module must be checked out of CVS into an
-Eclipse project that doesn't work "correctly" until the .classpath is
-created by manually running configure.
-
+<h3>Check Out Ptolemy II from the CVS Repository</h3>
+<p>
+Eclipse will manage your ptII code tree as a <em>project</em> called
+the ptII project.  Assuming Eclipse is running:
 <ol>
-
-<li> Determine where the ptII tree will be put. If you currently have a
-ptII tree at that location, it must be removed.
-
-<li> Start Eclipse
 <li> Set up the CVS connection:
 
 <ol>
-<li> Expose the CVS Repositories View by Window-&gt;Show View-&gt;Other. The select CVS->CVS Repositories
-<li> In the CVS Repositories Panel right mouse click and select New-&gt;Repository Location:
+<li> Expose the CVS repositories view by selecting
+     Window-&gt;Show View-&gt;Other in the menus.
+     Then select CVS->CVS Repositories.
+<li> In the CVS Repositories Panel, right mouse click
+     and select New-&gt;Repository Location:
 
- <br>Host: <CODE>gigas<B>source</B>.eecs.berkeley.edu</CODE>
- <br>Repository path: <CODE>/home/cvs</CODE>
- <br>User: Your username, see 
-<a href="http://www.gigascale.org/ptexternal" target="_top"><CODE>http://www.gigascale.org/ptexternal</CODE></a> for information about how to get 
-a login for cvs access
- <br>ConnectionType
-	<ul>
-	<li> If you have CVS read only access, select <CODE>pserver</CODE>
-	<li> If you have CVS read/write access and have an external ssh
-	binary installed, select <CODE>ext</CODE>.  The
-	Cygwin installation can optionally include an appropriate ssh
-	binary.  If you have Cygwin installed, startup bash and type
-	<CODE>ssh -v</CODE> to see if ssh is installed.
-	<li> <CODE>extssh</CODE> is not recommended because it
-	uses version 1 of the SSH protocol which is implemented
-	by a version of ssh that is built in to Eclipse.
-	 <b>SSH V1 is not as likely to be supported as SSH V2.</b>
-	 <br>Note further that if you select <CODE>extssh</CODE>,
-	then to run cvs from within
-	Cygwin bash on the same directory tree as the Eclipse tree
-	you will need to use the <CODE>-d</CODE> option
-	 <br><CODE>cvs -d :ext:gigasource.eecs.berkeley.edu/home/cvs_chess</CODE>
-	 <br>The <CODE>-d</CODE> option is necessary because the Cygwin bash
-	<CODE>cvs</CODE> binary does not understand the <CODE>extssh</CODE>
-	protocol
-	</ul>
+ <br>&nbsp;&nbsp;&nbsp;Host: <CODE>gigasource.eecs.berkeley.edu</CODE>
+ <br>&nbsp;&nbsp;&nbsp;Repository path: <CODE>/home/cvs/cvsanon</CODE>
+ <br>&nbsp;&nbsp;&nbsp;The user name and password
+are given in
+ <br><a href="http://embedded.eecs.berkeley.edu/concurrency/private/4.html">here</a>. To get access to that page, you must be a member of
+the "concurrency" group.
+ <br> and in
+ <br><a href="http://chess.eecs.berkeley.edu/ptexternal/private/2.html"><CODE>http://chess.eecs.berkeley.edu/ptexternal/private/2.html</CODE></a>
+ <br>To have permission to access that page, you much be a member
+of the <CODE>ptexternal</CODE> workgroup.
+ <br> or, if you have an individual read/write
+CVS account on gigasource, you can use your gigasource user name 
+and password. 
 
+<li> Select <CODE>pserver</CODE>.
+ <p><B>Note:</B> Most users will select <CODE>pserver</CODE> because
+they will be accessing the tree with <B>read-only</B> CVS access.
+ <p>If you have <B>read/write</B> CVS access, then select
+<CODE>extssh</CODE>.  See the
+<a href="http://chess.eecs.berkeley.edu/ptexternal">Ptexternal page</a>
+for details.
 
 <li> Click Finish.
 </ol>
 
+<p>
 <li> If you are connecting via a DSL connection, you may
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
 to 3. Under Eclipse 2.1, compression level 9 might not work, see
 <a href="#cvsCompression">Problems with CVS compression</a> for details.
+<p>
+<li> In the CVS Repositories View window, click + sign to the left of the repository and then on the + sign to the left of HEAD until you see the <CODE>ptII</CODE> Head.
 
-<li> In the CVS Repositories View window, click on the repository and then on
-HEAD until you see the <CODE>ptII</CODE> Head.
-<li> Right click on the <CODE>ptII</CODE> Head,
-then Select the "Check Out As...." option
+<p>
+<li> Right mouse click on the <CODE>ptII</CODE> Head,
+then Select the "Check Out As..." option.  Follow the wizard,
+creating selections as follows:
+<ul>
+<li> Check out as a project configured using the New Project Wizard
+<li> Java project
+<li> Name of the project: <CODE>ptII</CODE>
+<li> We recommend that you select "Create project at external location:"
+     and specify a directory you will find easily, such as
+     <CODE>C:\ptII</CODE>, rather than the default, which is within the
+     Eclipse workspace directory. 
+<li> Click Finish.
+</ul>
 
-<li> Go through the various menus to create a Java Project named
-ptII. 
- <br>Don't use the "Default Location". Instead specify the location
-where you want ptII to go (e.g. <CODE>c:\ptII</CODE>).
+<p>
+<li> Wait for the checkout to finish. Go get coffee. 
+ <br><B>Note:</B>If you did not disable build automatically, as
+suggested above, then Eclipse will build the project and produce
+<B>thousands of errors</B>. This is not really a problem.  You will
+fix the errors below with the <CODE>.classpath.default</CODE> file.
 
-<li> Click OK, wait for the checkout to finish.
+<p>
+<li> You will want to view the project in the Java perspective.
+If you aren't already in the Java perspective, select
+Window-&gt;Open Perspective-&gt;Java in the menu.
+By default, Eclipse offers a "package explorer" as the main navigation
+mechanism for the source files. I much prefer to use the "navigator."
+To get the navigator, select
+Window-&gt;Show View-&gt;Navigator in the menu.
+You can now browse the source files.
 
-<li> The result should be the ptII project. There will probably be
-several errors reported that are due to the .classpath that was just
-created as part of the checkout/project creation process.
+<p>
+<li> <a name=".classpath.default">Find</a>
+the file in the ptII home directory called
+<CODE>.classpath.default</CODE> and copy it into a new file called
+<CODE>.classpath</CODE>.
 
+<li> In Eclipse, perform a Refresh on the ptII project
+by Window-&gt;Open Perspective-&gt;Java,
+<br> &nbsp;&nbsp;&nbsp;Go to the Package Explorer or the Navigator.
+<br> &nbsp;&nbsp;&nbsp;Right mouse click on the ptII icon and select Refresh.
+
+ <br><B>Note:</B>If you do not do copy <CODE>.classpath.default</CODE>
+and select "Refresh", then Eclipse will produce
+<B>thousands of errors</B>. This is not really a problem. It reflects
+that you probably don't have installed many optional packages that
+are needed to build subsets of Ptolemy II. You can ignore the errors
+(not advised, since they will mask errors you make), or you can copy
+the <CODE>.classpath.default</CODE> file and rebuild.
+Alternatively, you can <a href="#Optional">install
+the optional packages and run configure</a>.
+
+<p>
+<li> Build Ptolemy II by selecting Project -&gt; Build All.
+You will get many warnings that you can ignore, but hopefully no errors.
 </ol>
-Now, go on to the next step: Creating the .classpath and .project files.
 
+<h2><a name="UsingEclipse">Using Eclipse</a></h2>
 
-<h2><a name="dotFileSetup">Creating the .classpath and .project files</a></h2>
-
-There are parts of the ptII tree that are not meant to be
-compiled, or are meant to be compiled only in certain situations.
-However, without specific instructions to exclude parts of the ptII tree, 
-Eclipse will attempt to compile every .java in the project
-which typically leads to many, many error messages.
-These exclusion instructions are generated by running
-<code>$PTII/configure</code>.
-When <code>$PTII/configure</code> is run, it 
-reads in <code>$PTII/.classpath.in</code> substitutes in variables
-that are surrounded with <code>@</code> and generates
-<code>$PTII/.classpath</code>, which will contain the
-proper classpath and directories to exclude.
+<h3><a name="runningPtolemy">Running Ptolemy II</a></h3>
 
 <ol>
-<li> Start up Cygwin bash.
+ <li> In the Run menu, select "Run...".
+
+<p> <li> In the resulting dialog, select "Java Application" and click "New".
+
+<p> <li> In the dialog, fill in the boxes as follows:
+<ul>
+<li> Name: <CODE>Vergil</CODE>
+<li> Project: <CODE>ptII</CODE>
+<li> Main class: <CODE>ptolemy.vergil.VergilApplication</CODE>
+</ul>
+
+ <p> <li> Press the Run button.
+</ol>
+
+The Ptolemy II welcome window should appear.
+You may now wish to read the <a href="usingVergil.pdf">Using Vergil</a>
+tutorial.
+
+<h2><a name="Optional">Optional Extensions</a></h2>
+<p>
+Ptolemy II includes a number of packages that rely on software that you may
+or may not have installed, such as MATLAB, the Java comm package (for serial
+port connections), joystick support, Java Advanced Imaging (JAI), the Java
+Media Framework (JMF), and Java 3D.  If you wish to use or extend these
+features, you will need to perform a few extra steps.  These steps
+require execution of a script called "configure" in the Ptolemy II
+home directory, which in turn requires (on Windows) installation of
+Cygwin, a package that offers Unix-like facilities within Windows.
+You can find instructions for installing Cygwin at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm">
+http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm</a>.
+<p>
+The procedure below will modify the .classpath file that is
+provided in the CVS repository to customize it for
+the software that you have installed.
+The procedure is as follows:
+<ol>
+<li> Start up Cygwin bash shell.
+
 <li> Set the PTII variable and export it
 <pre>
 PTII=c:/ptII
 export PTII
 </pre>
-<li> cd to the PTII directory
+
+<li>
+cd to the PTII directory
 <pre>
 cd $PTII
 </pre>
@@ -202,294 +287,22 @@ This will create <code>$PTII/.classpath</code>
 
 <li>
 If you plan on running the Ptolemy II startup scripts in 
-<CODE>$PTII/bin</CODE> from within Cygwin bash, you will probably
+<CODE>$PTII/bin</CODE> on the command line, you will probably
 want to run the following commands within Cygwin bash:
 <pre>
 cd $PTII/bin
 make
 </pre>
 
-See the <a href="../install.htm">Ptolemy II Installation</a> page
-for details.
-
 <li> In Eclipse, perform a Refresh on the ptII project
-by Window -&gt; Open Perspective -&gt; Java,
-<br> goto the Package Explorer, 
-<br> right click on the ptII icon and select Refresh
+by Window-&gt;Open Perspective-&gt;Java,
+<br> &nbsp;&nbsp;&nbsp;Go to the Package Explorer or the Navigator.
+<br> &nbsp;&nbsp;&nbsp;Right mouse click on the ptII icon and select Refresh.
 <br> This will
-cause Eclipse to see the new <code>ptII/.classpath</code> and build
-the project
-
+cause Eclipse to see the new <code>ptII/.classpath</code> and to build
+the project (or you may have to manually rebuild if you turned
+off automatic rebuild).
 </ol>  
-Now, import the Ptolemy II specific preferences:
-
-<h2><a name="PtolemyPreferences">Importing the Ptolemy II specific preferences</a></h2>
-The Ptolemy project has a number of requirments in the way that Eclipse is configured.
-For example, using spaces instead of tabs for indentation purposes.
-Eclipse can be configured to meet many of these requirements.
-The file $PTII/.eclipse.epf has these configuration settings and should be used to achieve uniformity
-amongst Ptolemy developers using Eclipse.
-The following table shows these settings.
-<h2></h2>
-<TABLE BORDER="2">
- <caption align="bottom">Preferences set by $PTII/.eclipse.epf</caption>
- <TR>
-  <TH>Preference</TH>
-  <TH>Value</TH>
-  <TH>Description</TH>
-</TR>
-
- <TR>
-  <TD><a href="#autorebuild">Auto Rebuild on Resource Modification</a></TD>
-  <TD ALIGN="right">false</TD>
-  <TD>Don't rebuild everytime a resource is modified</TD>
- </TR>
-
- <TR>
-  <TD><a href="#tabs">Java Editor Spaces for Tabs</a></TD>
-  <TD ALIGN="right">true</TD>
-  <TD>Java Editor will use spaces for indentation, not tabs</TD>
- </TR>
-
- <TR>
-  <TD><a href="#ignoreClassAndJar">CVS Ignore Files</a></TD>
-  <TD ALIGN="right">  *.class, *.jar, *.lnk, alljsimpletests.tcl,
-       alljtests.tcl</TD>
-  <TD> CVS will ignore these files. Can be overidden on a case by case basis
-  </TD> 
- </TR>
-
- <TR>
-  <TD><a href="#tcl">Tcl file Editor</a></TD>
-  <TD ALIGN="right">Text Editor</TD>
-  <TD> Default Editor for .tcl files is Text Editor</TD>
- </TR>
-
- <TR>
-  <TD>Label Decorations</TD>
-  <TD ALIGN="right">CVS, Linked Resources</TD>
-  <TD>Resources under CVS control are labelled with CVS info</TD>
- </TR>
- <TR>
-  <TD><a href="#fixmes">Task Tags Highlight FIXMES</a></TD>
-  <TD ALIGN="right">FIXME</TD>
-  <TD>FIXMEs are highlighted</TD>
- </TR>
-</TABLE>
-
-<h2></h2>
-To import the $PTII/.eclipse.epf settings
-<ol>
-<li> Window -&gt; Preferences
-<li> Select Import, and then guide the dialog
-to <code>$PTII/.eclipse.epf</code>.
-</ol>
-
-
-<h2><a name="ByHand">Setting up for Ptolemy II By Hand<a></h2>
-Below are instructions on how to set up a project by hand.
-Note that the Ptolemy II tree includes <code>.classpath</code>
-and <code>.project</code> files, so rather than
-setting up by hand, you might want to try 
-<a href="#dotFileSetup">Using dot files in $PTII to set up</a>.
-
-<p>It is probably faster if you do:
-<pre>
-cd $PTII
-make clean
-</pre>
-before setting up Eclipse.
-
-<ol>
- <li> Download and install Eclipse from
-<a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
-
- <li> Start Eclipse.
- <li> <a name="autorebuild">Disable auto rebuild with:</a>
-Window-&gt;Preferences. 
-Deselect Workbench-&gt;"Perform build automatically on resource modification."
-Deselect Debug-&gt;"Build (if required) before launching"
- <li> File-&gt;New-&gt;Project. Select 'Java project'. Name it PtolemyII.
-Deselect 'Use default' and browse to the PTII directory. Finish.
-<li>When asked if you want to shift to the Java perspective, click on Yes.
- <li> Right click on the <code>PtolemyII</code> icon in the Package Explorer
- and select Properties</i>.
- select Java Build Path -&gt; Libraries tab -&gt
-Add JARs. Browse to <code>PtolemyII/lib/</code>
-and select all the jar files by holding down the Control key
-and clicking on each jar file.  Hit OK, then Finish.
-<li> Exclude some of the larger directories that will not compile.
-<br>In the 'Properties for PtolemyII' window, select
-Source, then expand the PtolemyII folder by clicking on the +,
-then click on the Exclusion Filter and hit Edit.  
-<br>Note that the filter paths should have trailing slashes.
-<br><code>**</code> is specially interpreted.
-<br>Click on Add and type in <code>**/CVS/</code>. Ok
-<br>Click on Add and type in <code>**/codeDoc/</code>. Ok
-<br>Click on Add and type in <code>ptolemy/apps/</code>. Ok
-<br>Click on Add and type in <code>vendors/</code>. Ok
-<br>Click on OK to close the Exclusion Filter
-<br>Click on OK to close the 'Properties for Ptolemy II' window.
- <li> In the top level Eclipse window: Project-&gt; Rebuild All.
-</ol>
-
-
-<h2><a name="tabs">Don't use tabs in the editor</a></h2>
-This setting is in the <code>$PTII/.eclipse.epf</code> file.
-See <a href="#importPreferences">Import the Ptolemy II specific preferences</a>
-for details.
-
-<p><b>Before editing any files, adjust the Editor Preference to not
-use tabs</b>. 
-<p>Either import the Ptolemy II specific preferences or follow
-the steps below
-
-
-<ol>
-<li> Window -&gt;Preferences
-<li> Expand the Java tree, select 'Code Formatter' and then the Style tab.
-<li> Uncheck 'Insert tabs for indentation, not spaces'.
-
-<li> Go back to to the Java tree on the left, select
-'Editor' and then the Typing tab.
-Check 'InsertSpace for tabs (see Code Formatter preference page)
-
-<li> Click Ok
-</ol>
-
-<h2><a name="#assert">Proper Handling of Assert Statements</a></h2>
-<code>ptolemy/caltrop/util/IntegerList.java</code> may fail to compile
-with a message like:
-<pre>
-"Syntax error on token "<=", ";" expected
-</pre>
-The solution is to set Eclipse to use Java 1.4 source code compliance.
-<ol>
-<li> Window -&gt;Preferences-&gt;Java-&gt;Compiler-&gt;Compliance and Classfiles
-<li> Select 1.4
-<li> Check Use default compliance settings
-<li> Click Ok
-</ol>
-
-<h2><a name="ignoreClassAndJar">Ignore .class and .jar files</a></h2>
-This setting is in the <code>$PTII/.eclipse.epf</code> file.
-See <a href="#importPreferences">Import the Ptolemy II specific preferences</a>
-for details.
-
-<ol>
-<li> Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Ignored
-Resources
-
-<li> Add <CODE>*.class</CODE> and <CODE>*.jar</CODE>
-
-</ol>
-The semantics seem to be ignore .jar files that are not already part of CVS.
-This can be overridden on a case by case base if new .jar files get created
-that need to be part of CVS.
-
-
-<h2><a name="tcl">Associating the Text editor with .tcl files</a></h2>
-This setting is <b>not</b> in the <code>$PTII/.eclipse.epf</code> file.
-
-
-<p>In the initial default settings, when you double click on a .tcl file
-it tries to execute it.
-
- <p>The fix is:
-<ol>
-<li> Window -&gt;Preferences: expand the Workbench tree, select
-'File Associations'
-
-<li> In the 'File types:' section, hit Add and enter 
-<CODE>*.tcl</CODE>, then hit OK
-
-<li> In the 'Associated editors' section, hit Add
-and select the Text editor, then hit OK.
-</ol>
-
- <p>Also, if you check in a <CODE>.tcl</CODE> file with the wrong association, then it will be checked in in binary mode (<CODE>-kb</CODE>), and
-under Solaris, you will get strange test failures.
- <p>To fix this, first set up your File Association Preferences
-as per the above.
- <p>To fix the file under Solaris:
-<pre>
-cvs admin -kv Foo.tcl
-dos2unix Foo.tcl tmp.tcl
-mv tmp.tcl Foo.tcl
-cvs commit -m "Got rid of binary chars" Foo.tcl
-</pre>
-
-<h2><a name="fixmes">Task Tags Highlight FIXMES</a></h2>
-Eclipse can be set up to hightlight FIXMEs:
-<ol>
-<li> Window -&gt; Preferences -&gt; 
-<li> Expand the Java tree, select 'Task Tags'
-<li> Select New and then add FIXME as a Normal priority task.
-</ol>
-
-<hr>
-<h1><a name="UsingEclipse">Using Eclipse</a></h1>
-<h2><a name="RunningEclipse">Running Eclipse</a></h2>
-
-After installing (unzipping) the Eclipse install into a directory
-(e.g., c:\eclipse), the workbench is started by running the Eclipse
-executable found in the top-level install directory.  The file is
-eclipse.exe on Windows systems and simply eclipse on Linux
-systems. Note, the following discussion details the setup on Windows
-systems.  The Linux setup is analogous.
-
-<p>If you don't specify differently, the platform creates a default
-workspace directory as a sibling of the executable (e.g.,
-c:\eclipse\workspace).  This workspace directory is used as the
-default content area for your projects as well as for holding any
-required metadata.  For shared or multi-workspace installs you should
-explicitly state the location of your workspace rather than using the
-default.  There are two ways to control the location of your
-workspace; using the current working directory or using the -data
-command line argument.
-
- <p>Perhaps the easiest way of using the current working directory is
-to create a shortcut using the following steps:
-
-
-<ol>
-
-<li> Navigate to eclipse.exe in the Windows Explorer and using a right
-button drag, create a shortcut to eclipse.exe.
-
-<li> Edit the properties of the shortcut such that the "Start in:" box
-identifies the location of your workspace (e.g., c:\myworkspace).
-
-<li>  Close the properties dialog and double-click on the shortcut.
-</ol>
-
- <p>Of course you can get the same effect using a command prompt by
- changing directory to your workspace directory and then running
- eclipse.exe.
-
- <p>To use the -data command line argument, simply add -data &lt;your
- workspace location&gt; (e.g., -data c:\myworkspace) to the "Target:"
- line in the shortcut or include it explicitly on your command prompt
- command line.
-
-<h2><a name="simpleDebug">Simple Debugging Session</a></h2>
-Before editing any files, follow the steps in
-<a href="#tabs">Don't use tabs in the editor</a> below
-
-<ol>
- <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
-double click. Place a breakpoint on the first line of main()
-by using Run- &gt; Add/Remove Breakpoint
-
- <li> Tell Eclipse which class to run with Run -&gt; Run. On the Main
-tab, select the Ptolemy II package and enter
-ptolemy.vergil.VergilApplication as Main class.
-
- <li> Press the Run button
- <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
-of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
-as above. Open the Lorenz CT demo from the Quick Tour and run it.
-</ol>
 
 <h2><a name="UsingCVS">Using CVS</a></h2>
 Resources:
