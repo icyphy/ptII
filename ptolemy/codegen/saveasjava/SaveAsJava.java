@@ -40,7 +40,7 @@ import java.util.*;
 /**
 This class constructs standalone Java specifications of Ptolemy II
 models.
-@author Shuvra S. Bhattacharyya
+@author Shuvra S. Bhattacharyya and Edward A. Lee
 @version $Id$ 
 */
 
@@ -149,6 +149,12 @@ class SaveAsJava {
     protected String _generateAttributes(NamedObj component) {
         StringBuffer result = new StringBuffer();
         Iterator attributes = component.attributeList().iterator();
+        // The name of the component when it is referenced as a container
+        // of an attribute in the generated code.
+        String nameAsContainer;
+        if (component.getContainer() == null) nameAsContainer = "this";
+        else nameAsContainer = _name(component); 
+
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
 
@@ -158,19 +164,7 @@ class SaveAsJava {
             // the attribute is transient.
             String moml = attribute.exportMoML();
             if (moml.length() > 0) {
-                // Create an instance of the attribute.
-                // Don't do this if there is a matching public member.
-                try {
-                    // If the following succeeds, then there is a public
-                    // field whose name matches that of the attribute.
-                    component.getClass().getField(attribute.getName());
-                    // Henceforth, refer to this attribute as
-                    // containerName.attributeName.
-                    _nameTable.put(attribute,
-                            _name(component)
-                            + "."
-                            + attribute.getName());
-                } catch (NoSuchFieldException ex) {
+                if (!_isPublicMember(attribute, component)) {
                     String attributeClass = _getClassName(attribute);
                     String attributeName = _name(attribute);
                     result.append(_indent(3));
@@ -179,8 +173,10 @@ class SaveAsJava {
                     result.append(attributeName);
                     result.append(" = new ");
                     result.append(attributeClass);
-                    result.append("(this, \"");
-                    result.append(attribute.getName());
+                    result.append("(");
+                    result.append(nameAsContainer);
+                    result.append(", \"");
+                    result.append(attributeName);
                     result.append("\");");
                     result.append("\n");
                 }
@@ -214,19 +210,33 @@ class SaveAsJava {
         String code = new String(); 
         String className = _getClassName(model);
         String sanitizedName = _name(model);
-        if (model.getContainer() != null) {
+        CompositeEntity container;
+        String containerName;
+
+        // The name of <model> when it is referenced as a container
+        // of another entitiy.
+        String nameAsContainer;
+
+        if ((container=((CompositeEntity)(model.getContainer()))) != null) {
+             if (container.getContainer()==null) containerName = "this";
+             else containerName = _name(container);
+             nameAsContainer = sanitizedName;
              code += _indent(3)
                      + className
                      + " "
                      + sanitizedName
                      + " = new "
                      + className
-                     + "(this, \""
+                     + "("
+                     + containerName
+                     + ", \""
                      + sanitizedName
                      + "\");\n";
              code += _generatePorts(model);
              code += _generateAttributes(model);
         }
+        else nameAsContainer = "this";
+
         if (!model.isAtomic()) {
 
              // Instantiate the actors inside the composite actor
@@ -248,11 +258,10 @@ class SaveAsJava {
                  // method for relations that are incident to exactly
                  // two links.
                  if (relation.numLinks() == 2) {
-                     // FIXME: The port may not be accessible as a public
-                     // member.
                      Port port1 = (Port) ports.next();
                      Port port2 = (Port) ports.next();
                      code += _indent(3);
+                     if (container!=null) code += sanitizedName + ".";
                      code += "connect ("
                              + _name(port1)
                              + ", "
@@ -262,19 +271,18 @@ class SaveAsJava {
                  // Explicitly instantiate the relation, and generate 
                  // a link() call for each port associated with the relation.
                  else {
+                     // FIXME: hardcoded relation type specifier
                      code += _indent(3)
                              + "TypedIORelation "
                              + _name(relation);
                      code += " = new TypedIORelation("
-                             + "this";
+                             + nameAsContainer;
                      code += ", \""
                              + _name(relation)
                              + "\");\n";
                      while (ports.hasNext()) {
                          Port p = (Port)ports.next();
                          code += _indent(3)
-                                 + _name(p.getContainer())
-                                 + "."
                                  + _name(p)
                                  + ".link("
                                  + _name(relation)
@@ -299,22 +307,18 @@ class SaveAsJava {
     protected String _generatePorts(Entity component) {
         StringBuffer result = new StringBuffer();
         Iterator ports = component.portList().iterator();
+        // The name of the component when it is referenced as a container
+        // of an attribute in the generated code.
+        String nameAsContainer;
+
+        if (component.getContainer() == null) nameAsContainer = "this";
+        else nameAsContainer = _name(component); 
+
         while (ports.hasNext()) {
             Port port = (Port)ports.next();
-
             // Create an instance of the port if there
             // is no matching public member.
-            try {
-                // If the following succeeds, then there is a public
-                // field whose name matches that of the port.
-                component.getClass().getField(port.getName());
-                // Henceforth, refer to this attribute as
-                // containerName.portName.
-                _nameTable.put(port,
-                        _name(component)
-                        + "."
-                        + port.getName());
-            } catch (NoSuchFieldException ex) {
+            if (!_isPublicMember(port, component)) { 
                 // Port does not appear as a public member.
                 String portClass = _getClassName(port);
                 String portName = _name(port);
@@ -324,8 +328,10 @@ class SaveAsJava {
                 result.append(portName);
                 result.append(" = new ");
                 result.append(portClass);
-                result.append("(this, \"");
-                result.append(port.getName());
+                result.append("(");
+                result.append(nameAsContainer);
+                result.append(", \"");
+                result.append(portName);
                 result.append("\");");
                 result.append("\n");
             }
@@ -378,6 +384,28 @@ class SaveAsJava {
             return className;
     }
 
+    // Return TRUE if and only if <obj> is a accessible as
+    // a public member of its container, <container>.
+    // If it is a public member, then enter it into the
+    // name table as X.Y, where X is the fully-qualified name
+    // of the container of the object, and Y is the name of the object.
+    private boolean _isPublicMember(NamedObj obj, NamedObj container) {
+        try {
+            // If the following succeeds, then there is a public
+            // field whose name matches that of the object.
+            container.getClass().getField(obj.getName());
+            // Henceforth, refer to this object as
+            // containerName.objectName.
+            _nameTable.put(obj,
+                    _name(container)
+                    + "."
+                    + obj.getName());
+        } catch (NoSuchFieldException ex) {
+            return false;
+        }
+        return true; 
+    }
+
     // Sanitize the name of the specified object so that it is a
     // proper Java identifier. In particular, dots are replaced with
     // underscore, spaces are replaced with underscore, and any non
@@ -394,8 +422,9 @@ class SaveAsJava {
             } else {
                 nameToSanitize = ((NamedObj)object).getName(toplevel);
             }
-            // FIXME: Only replacing dots for now.
+            // FIXME: Only replacing dots and spaces for now.
             name = nameToSanitize.replace('.', '_');
+            name = name.replace(' ', '_');
             _nameTable.put(object, name);
         }
         return name;
