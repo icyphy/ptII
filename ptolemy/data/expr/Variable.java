@@ -21,7 +21,7 @@ in expressions.
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -47,9 +47,9 @@ import java.util.Enumeration;
 A Variable is an Attribute that contains a token, and can be set by an
 expression that can refer to other variables.
 <p>
-A variable can be given a token or an expression as its value. To create 
-a variable with a token, either call the appropriate constructor, or create 
-the variable with the appropriate container and name, and then call 
+A variable can be given a token or an expression as its value. To create
+a variable with a token, either call the appropriate constructor, or create
+the variable with the appropriate container and name, and then call
 setToken(). To set the value from an expression, call setExpression().
 The expression is not actually evaluated until you call getToken().
 If the expression string is null or empty, then getToken() will return
@@ -109,7 +109,7 @@ The variable type must be no less than the type of the token the
 expression is evaluated to.
 <li>
 If the variable does not yet have a value, then the type of a variable may
-be determined by type resolution. In this case, a set of type constraints is 
+be determined by type resolution. In this case, a set of type constraints is
 derived from the expression of the variable (which presumably has not yet
 been evaluated, or the type would be already determined). Additional type
 constraints can be added by calls to the setTypeAtLeast() and
@@ -148,7 +148,7 @@ type resolution is done.
 public class Variable extends Attribute implements Typeable {
 
     /** Construct a variable in the default workspace with an empty string
-     *  as its name. The variable is added to the list of objects in the 
+     *  as its name. The variable is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
      */
     public Variable() {
@@ -166,11 +166,11 @@ public class Variable extends Attribute implements Typeable {
         super(workspace);
     }
 
-    /** Construct a variable with the given name as an Attribute of the 
+    /** Construct a variable with the given name as an Attribute of the
      *  given container. The container argument must not be null, otherwise
      *  a NullPointerException will be thrown. This variable will use the
      *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty 
+     *  If the name argument is null, then the name is set to the empty
      *  string. Increment the version number of the workspace.
      *  @param container The container.
      *  @param name The name of the variable.
@@ -188,7 +188,7 @@ public class Variable extends Attribute implements Typeable {
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown. This variable will use the
      *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty 
+     *  If the name argument is null, then the name is set to the empty
      *  string. Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name.
@@ -209,9 +209,9 @@ public class Variable extends Attribute implements Typeable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the variables enumerated by the argument to the scope of this 
-     *  variable. If any of the variables bears the same name as one 
-     *  already in the scope, then it will shadow the one in the scope.  
+    /** Add the variables enumerated by the argument to the scope of this
+     *  variable. If any of the variables bears the same name as one
+     *  already in the scope, then it will shadow the one in the scope.
      *  Items in the list that are not instances of the class Variable (or a
      *  derived class) are ignored.
      *  @param variables An enumeration of variables to be added to scope.
@@ -225,9 +225,9 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
-    /** Add the variables listed in the argument to the scope of this 
-     *  variable. If any of the variables bears the same name as one 
-     *  already in the scope, then it will shadow the one in the scope.  
+    /** Add the variables listed in the argument to the scope of this
+     *  variable. If any of the variables bears the same name as one
+     *  already in the scope, then it will shadow the one in the scope.
      *  Items in the list that are not instances of the class Variable (or a
      *  derived class) are ignored.
      *  @deprecated
@@ -242,9 +242,9 @@ public class Variable extends Attribute implements Typeable {
 	varList._addDependent(this);
     }
 
-    /** Add the variable specified by the argument to the scope of this 
-     *  variable. If the variable bears the same name as one already in 
-     *  the scope, then it will shadow the one in the scope.  
+    /** Add the variable specified by the argument to the scope of this
+     *  variable. If the variable bears the same name as one already in
+     *  the scope, then it will shadow the one in the scope.
      *  @param var The variable to be added to scope.
      */
     public void addToScope(Variable var) {
@@ -269,7 +269,7 @@ public class Variable extends Attribute implements Typeable {
             throw new InternalErrorException(ex.getMessage());
         } catch (NameDuplicationException ex) {
             // This will not happen since we make sure there will not
-            // be name duplication.           
+            // be name duplication.
             throw new InternalErrorException(ex.getMessage());
         }
         _scopeVersion = -1;
@@ -335,7 +335,7 @@ public class Variable extends Attribute implements Typeable {
 
     /** Get the expression currently used by this variable. If the
      *  variable was last set directly via setToken(),
-     *  then the variable does not have an expression and null 
+     *  then the variable does not have an expression and null
      *  is returned.
      *  @return The expression used by this variable.
      */
@@ -346,7 +346,7 @@ public class Variable extends Attribute implements Typeable {
     /** Obtain a NamedList of the variables that the value of this
      *  variable can depend on. These include the variables added to
      *  the scope of this variable by the addToScope()
-     *  methods, and the variables in the same 
+     *  methods, and the variables in the same
      *  NamedObj and those one level up in the hierarchy.
      *  If there are variables with the same name in these various
      *  places, then they are shadowed as follows.  The most recently
@@ -408,9 +408,9 @@ public class Variable extends Attribute implements Typeable {
                                 }
                             }
                         } catch (NameDuplicationException ex) {
-                            // Name clash between the two levels of scope, 
-                            // or a variable at the upper level has the same 
-                            // name as a variable added to the scope of this 
+                            // Name clash between the two levels of scope,
+                            // or a variable at the upper level has the same
+                            // name as a variable added to the scope of this
                             // variable. The upper level variable is shadowed.
                         } catch (IllegalActionException ex) {
                             // This should not happen since we are dealing with
@@ -459,7 +459,7 @@ public class Variable extends Attribute implements Typeable {
                 arg[0] = Token.class;
                 _convertMethod = _varType.getMethod("convert", arg);
             } catch (NoSuchMethodException ex) {
-                // Cannot happen if _varType is a subclass of 
+                // Cannot happen if _varType is a subclass of
                 // ptolemy.data.Token
                 throw new InternalErrorException("Variable type "
                         + "is not a subclass of ptolemy.data.Token: "
@@ -477,10 +477,10 @@ public class Variable extends Attribute implements Typeable {
             throw new InternalErrorException("Unable to access the "
                     + "convert() method of " + _varType.getName());
         } catch (java.lang.reflect.InvocationTargetException e) {
-            throw new InternalErrorException("Convert method failed: " 
+            throw new InternalErrorException("Convert method failed: "
                     + e.getTargetException().getMessage() + " "
                     + e.getTargetException().getClass().getName());
-        } 
+        }
 
         return _castToken;
     }
@@ -581,29 +581,29 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
-    /** Specify the container, and add this variable to the list 
+    /** Specify the container, and add this variable to the list
      *  of attributes in the container. If this variable already has a
-     *  container, remove this variable from the attribute list of the 
-     *  current container first. Otherwise, remove it from the directory 
-     *  of the workspace, if it is there. If the specified container is 
+     *  container, remove this variable from the attribute list of the
+     *  current container first. Otherwise, remove it from the directory
+     *  of the workspace, if it is there. If the specified container is
      *  null, remove this variable from the list of attributes of the
-     *  current container. If the specified container already contains 
-     *  an attribute with the same name, then throw an exception and do 
-     *  not make any changes. Similarly, if the container is not in the 
-     *  same workspace as this variable, throw an exception. If this 
-     *  variable is already contained by the specified container, do 
+     *  current container. If the specified container already contains
+     *  an attribute with the same name, then throw an exception and do
+     *  not make any changes. Similarly, if the container is not in the
+     *  same workspace as this variable, throw an exception. If this
+     *  variable is already contained by the specified container, do
      *  nothing.
      *  <p>
      *  If this method results in a change of container (which it usually
      *  does), then remove this variable from the scope of any
      *  scope dependent of this variable.
      *  <p>
-     *  This method is write-synchronized on the workspace and increments 
+     *  This method is write-synchronized on the workspace and increments
      *  its version number.
      *  @param container The proposed container of this variable.
      *  @exception IllegalActionException If the container will not accept
-     *   a variable as its attribute, or this variable and the container 
-     *   are not in the same workspace, or the proposed container would 
+     *   a variable as its attribute, or this variable and the container
+     *   are not in the same workspace, or the proposed container would
      *   result in recursive containment.
      *  @exception NameDuplicationException If the container already has
      *   an attriubte with the name of this variable.
@@ -641,7 +641,7 @@ public class Variable extends Attribute implements Typeable {
     /** Set the expression of this variable. Evaluation is deferred until
      *  the value of the variable is accessed by getToken().  The
      *  container is not notified of the change until then.  If you need
-     *  to notify the container right away, then call getToken().  If the 
+     *  to notify the container right away, then call getToken().  If the
      *  argument is null, then getToken() will return null.
      *  @param expr The expression for this variable.
      */
@@ -661,7 +661,7 @@ public class Variable extends Attribute implements Typeable {
      *  previously given using setExpression(), then that expression
      *  is forgotten.
      *  @param token The new token to be stored in this variable.
-     *  @exception IllegalActionException If the token type is not 
+     *  @exception IllegalActionException If the token type is not
      *   compatible with specified constraints, or if you are attempting
      *   to set to null a variable that has value dependents, or if the
      *   container rejects the change.
@@ -677,7 +677,7 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
-    /** Constrain the type of this variable to be equal to or 
+    /** Constrain the type of this variable to be equal to or
      *  greater than the type of the specified object.
      */
     public void setTypeAtLeast(Typeable lesser) {
@@ -815,7 +815,7 @@ public class Variable extends Attribute implements Typeable {
     ////                         protected methods                 ////
 
     /** Add the argument as a scope dependent of this variable. This
-     *  is called when this variable is added to the scope of the 
+     *  is called when this variable is added to the scope of the
      *  argument.
      *  @param var The variable having this variable in its scope.
      */
@@ -875,7 +875,7 @@ public class Variable extends Attribute implements Typeable {
      *  recently given by an expression.  The expression is also evaluated
      *  if any of the variables it refers to have changed since the last
      *  evaluation.  If the value of this variable
-     *  changes due to this evaluation, then notify all 
+     *  changes due to this evaluation, then notify all
      *  value dependents and notify the container (if there is one) by
      *  calling its attributeChanged() and attributeTypeChanged() methods,
      *  as appropriate. An exception is thrown
@@ -887,7 +887,7 @@ public class Variable extends Attribute implements Typeable {
      *  to the current type of the variable, then the type of this variable
      *  is changed.  In this case, the attributeTypeChanged() method of
      *  the container is called.  It is up to the container to check
-     *  that any type constraints are valid. 
+     *  that any type constraints are valid.
      *  <p>
      *  Part of this method is read-synchronized on the workspace.
      *
@@ -912,7 +912,7 @@ public class Variable extends Attribute implements Typeable {
 	if (_dependencyLoop) {
             _dependencyLoop = false;
             throw new IllegalExpressionException("Found dependency loop "
-                    + "when evaluating " + getFullName() 
+                    + "when evaluating " + getFullName()
                     + ": " + _currentExpression);
         }
         _dependencyLoop = true;
@@ -958,7 +958,7 @@ public class Variable extends Attribute implements Typeable {
                 }
             }
         }
-    }        
+    }
 
     /** Remove the argument from the list of scope dependents of this
      *  variable.
@@ -987,7 +987,7 @@ public class Variable extends Attribute implements Typeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*  Build a parse tree for the current expression using PtParser. 
+    /*  Build a parse tree for the current expression using PtParser.
      *  Do nothing if a parse tree already exists.
      */
     private void _buildParseTree() throws IllegalActionException {
@@ -1003,11 +1003,11 @@ public class Variable extends Attribute implements Typeable {
 
     /*  Clear the value dependencies this variable has registered
      *  with other variables. If this is not done a phantom web of
-     *  dependencies may exist which could lead to false dependency 
-     *  loops being detected. Normally this method is called on the 
-     *  root node of the parse tree and recursively calls itself to 
+     *  dependencies may exist which could lead to false dependency
+     *  loops being detected. Normally this method is called on the
+     *  root node of the parse tree and recursively calls itself to
      *  visit the whole tree.
-     *  @param node The node in the parse tree below which all 
+     *  @param node The node in the parse tree below which all
      *   dependencies are cleared.
      */
     private void _clearDependencies(Node node) {
@@ -1049,7 +1049,7 @@ public class Variable extends Attribute implements Typeable {
      *  then no type checks are done, and the contents of the variable is set
      *  to null.
      *  @param newToken The new value of the variable.
-     *  @exception IllegalActionException If the token type is not 
+     *  @exception IllegalActionException If the token type is not
      *   compatible with specified constraints, or if you are attempting
      *   to set to null a variable that has value dependents.
      */
@@ -1083,7 +1083,7 @@ public class Variable extends Attribute implements Typeable {
             // Incompatible type!
             throw new IllegalActionException(this, "Cannot store a token of "
             + "type "
-            + tokenType.getName() + ", which is incompatible with type " 
+            + tokenType.getName() + ", which is incompatible with type "
             + _varType.getName());
         }
 
@@ -1109,7 +1109,7 @@ public class Variable extends Attribute implements Typeable {
      *  container that the value (and type, if appropriate) has changed.
      *  Also notify value dependents that they need to be re-evaluated.
      *  @param newToken The new value of the variable.
-     *  @exception IllegalActionException If the token type is not 
+     *  @exception IllegalActionException If the token type is not
      *   compatible with specified constraints, or if you are attempting
      *   to set to null a variable that has value dependents.
      */
@@ -1150,7 +1150,7 @@ public class Variable extends Attribute implements Typeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Caches the cast value of the currently contained token to the 
+    // Caches the cast value of the currently contained token to the
     // variable type.
     private Token _castToken = null;
 
