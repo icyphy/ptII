@@ -79,7 +79,7 @@ public abstract class MatrixToken extends Token {
     }
 
     // Return the content in the token as a 2-D Fix array.
-    // FIXME: uncomment this method after the Complex class is implemented.
+    // FIXME: uncomment this method after the Fix class is implemented.
     // public Fix[][] fixMatrix();
 
     /** Return a copy of the content of this token as a 2-D integer array.
