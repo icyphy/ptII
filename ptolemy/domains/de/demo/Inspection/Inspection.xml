@@ -116,7 +116,7 @@ same.</text>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <entity name="histplot" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -144,7 +144,7 @@ same.</text>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <entity name="Clock1" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -166,7 +166,7 @@ same.</text>
         </port>
     </entity>
     <entity name="WaitingTime3" class="ptolemy.domains.de.lib.WaitingTime">
-        <property name="_location" class="ptolemy.moml.Location" value="235.0, 403.0">
+        <property name="_location" class="ptolemy.moml.Location" value="232.0, 404.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -416,7 +416,7 @@ same.</text>
         </vertex>
     </relation>
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="309.0, 189.99999237060547">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="295.0, 237.99999237060547">
         </vertex>
     </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
@@ -432,7 +432,7 @@ same.</text>
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="287.0, 365.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="276.0, 364.0">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">

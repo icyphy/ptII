@@ -47,7 +47,6 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.gui.DocumentationViewerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;

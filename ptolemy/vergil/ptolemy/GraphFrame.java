@@ -49,7 +49,6 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.DocumentationViewerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -777,22 +776,26 @@ public abstract class GraphFrame extends PtolemyFrame
 	    super("Get Documentation");
 	}
 	public void actionPerformed(ActionEvent e) {
-	    // Create a dialog for configuring the object.
-	    // FIXME this should probably be one frame for each class.
 	    super.actionPerformed(e);
 	    NamedObj target = getTarget();
 	    String className = target.getClass().getName();
+	    String docName = "doc.codeDoc." + className;
 	    try {
-                Effigy effigy = (Effigy)getTableau().getContainer();
-		DocumentationViewerTableau viewer =
-		    new DocumentationViewerTableau(effigy,
-                            effigy.uniqueName("tableau"));
-		viewer.dottedClass.setExpression(className);
-		viewer.show();
-	    } catch (Exception ex) {
-		MessageHandler.error("Could not view Documentation for " +
-                        className, ex);
-	    }
+                URL toRead = getClass().getClassLoader().getResource(
+                        docName.replace('.', '/') + ".html");
+                if (toRead != null) {
+                    getConfiguration().openModel(null,
+                         toRead, toRead.toExternalForm());
+                } else {
+                    MessageHandler.error("Cannot find documentation for "
+                           + className
+                           + "\nTry Running \"make\" in ptII/doc.");
+                }
+            } catch (Exception ex) {
+                MessageHandler.error("Cannot find documentation for "
+                       + className
+                       + "\nTry Running \"make\" in ptII/doc.", ex);
+            }
 	}
     };
 

@@ -58,8 +58,6 @@ JSRCS = \
 	ConfigurationEffigy.java \
 	Configurer.java \
 	DebugListenerTableau.java \
-	DocumentationViewer.java \
-	DocumentationViewerTableau.java \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \
 	Effigy.java \
