@@ -46,7 +46,7 @@ and composite entities are internal nodes.  To use this class to visualize
 the hierarchy of an entity in a JTree do something like:
 <pre>
 JTree tree = new JTree(new PtolemyTreeModel(entity));
-tree.setTreeCellRenderer(new PtolemyTreeCellRenderer());
+tree.setCellRenderer(new PtolemyTreeCellRenderer());
 </pre>
 
 @see #PtolemyTreeCellRenderer

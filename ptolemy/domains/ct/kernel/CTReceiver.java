@@ -39,13 +39,15 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
 /**
-The receiver for the continuous time domain. This is basically a mailbox
-receiver which has just one capacity. If a token is put into the receiver
-when the receiver is full, then the old token will be overwritten.
+The receiver for the continuous time domain. This is a mailbox, which
+has a capacity of one token. Any token put in the receiver overwrites
+any token previously present in the reciever.
+
 @author  Jie Liu
 @version $Id$
 */
 public class CTReceiver extends Mailbox {
+
     /** Construct an empty CTReceiver with no container.
      */
     public CTReceiver() {
@@ -63,17 +65,17 @@ public class CTReceiver extends Mailbox {
     ////                         public methods                    ////
 
     /** Return true always, since the new token will override the old one.
+     *  @return True.
      */
     public boolean hasRoom() {
         return true;
     }
 
-    /** Put a token into the CTReceiver. If the argument is null,
-     *  then the CTReceiver will not contain a token after this
+    /** Put a token into this receiver. If the argument is null,
+     *  then this receiver will not contain a token after this
      *  returns. If the receiver already has a token, then the old
-     *  token will be lost, and the receiver only contains the new
-     *  token.
-     *  @param token The token to be put into the CTReceiver.
+     *  token will be lost
+     *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this class.
      */
     public void put(Token token) throws NoRoomException{
