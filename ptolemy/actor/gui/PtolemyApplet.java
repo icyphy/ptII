@@ -61,7 +61,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Report that an execution error occured.  This is
+    /** Report that an execution error occurred.  This is
      *  called by the manager.
      */
     public void executionError(Manager manager, Exception ex) {
