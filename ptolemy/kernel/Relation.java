@@ -45,7 +45,7 @@ disconnected Relation (zero connections)?
 @author John S. Davis, II
 @version $Id$
 */
-public class Relation extends NamedObj {
+public class Relation extends Node {
     /** 
      * @param name The name of the Relation.
      */	
