@@ -31,7 +31,7 @@
 
 ME =		ptolemy/plot
 
-DIRS = 		demo doc test plotml
+DIRS = 		demo doc test plotml compat
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -45,13 +45,12 @@ include $(CONFIG)
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
-#    Pxgraph.java, PlotApplication.java, doc/index.htm, doc/changes.htm
+#    PlotApplication.java, doc/index.htm, doc/changes.htm
 PTVERSION =	3.0
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but PlotApplication and Pxgraph.
+# Jar file consisting of classes used by an applet.
 PTAUXJAR = plotapplet.jar
 
 # Java Sources, keep these alphabetical,
@@ -75,8 +74,7 @@ JSRCS = \
 	PlotLive.java \
 	PlotLiveApplet.java \
 	PlotPoint.java \
-	PtolemyGraphics.java \
-	Pxgraph.java
+	PtolemyGraphics.java
 
 # Used to build distributions with InstallShield's isjava tool
 ISJAVA_SRC = ptplot.isj
@@ -116,12 +114,6 @@ OPTIONAL_FILES = \
 	'PlotBox$$ZoomListener.class' \
 	'PlotLive$$StartButtonListener.class' \
 	'PlotLive$$StopButtonListener.class' \
-	'Pxgraph$$1.class' \
-	'Pxgraph$$2.class' \
-	'Pxgraph$$AboutButtonListener.class' \
-	'Pxgraph$$ExitButtonListener.class' \
-	'Pxgraph$$HTMLButtonListener.class' \
-	'Pxgraph$$PrintButtonListener.class' \
 	'LogicAnalyzerFrame$$FileMenuListener.class' \
 	'LogicAnalyzerFrame$$PlotFilenameFilter.class' \
 	'LogicAnalyzerFrame$$SpecialMenuListener.class' \

@@ -46,13 +46,8 @@ import java.net.MalformedURLException;
 
 /** An Applet that can plot data from a URL.
  *  The URL should be specified using the dataurl applet parameter.
- *  Normally, the formatting commands are included in the file with the
- *  the data, but it is also possible to include them in the
- *  pxgraphargs applet parameter.  That parameter contains
- *  command-line style arguments compatible with the older pxgraph program.
- *  See the documentation for the Pxgraph class for the format of
- *  these arguments.  See the documentation for the PlotBox and Plot
- *  classes for the file format for the URL.
+ *  The formatting commands are included in the file with the
+ *  the data.
  *
  *  @author Edward A. Lee, Christopher Hylands
  *  @version $Id$
@@ -65,7 +60,7 @@ public class PlotApplet extends Applet {
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotApplet 2.0: A data plotter.\n" +
+        return "PlotApplet 3.0: A data plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
             "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
             "($Id$)";
@@ -78,8 +73,6 @@ public class PlotApplet extends Applet {
             {"background", "hexcolor value", "background color"},
             {"foreground", "hexcolor value", "foreground color"},
             {"dataurl",   "url",     "the URL of the data to plot"},
-            {"pxgraphargs",   "args",
-             "pxgraph style command line arguments"}
         };
         return pinfo;
     }
@@ -122,28 +115,6 @@ public class PlotApplet extends Applet {
         setForeground(foreground);
         plot().setForeground(foreground);
         plot().setVisible(true);
-
-        // Process the pxgraphargs parameter.
-        String pxgraphargs = null;
-        pxgraphargs = getParameter("pxgraphargs");
-        if (pxgraphargs != null) {
-            try {
-                // Since there may be filenames specified here, we use the
-                // set the document base.  Note that we prefer that files and
-                // URLs be specified using the dataurl parameter.
-                showStatus("Reading arguments");
-                plot()._documentBase = getDocumentBase();
-                plot().parsePxgraphargs(pxgraphargs);
-                showStatus("Done");
-            } catch (CmdLineArgException e) {
-                System.err.println("PlotApplet: failed to parse `"+pxgraphargs+
-                        "': " +e);
-            } catch (FileNotFoundException e) {
-                System.err.println("PlotApplet: file not found: " +e);
-            } catch (IOException e) {
-                System.err.println("PlotApplet: error reading input file: " +e);
-            }
-        }
 
         // Process the dataurl parameter.
         String dataurlspec = getParameter("dataurl");

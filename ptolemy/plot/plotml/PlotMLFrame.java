@@ -35,6 +35,7 @@ package ptolemy.plot.plotml;
 
 import ptolemy.plot.Message;
 import ptolemy.plot.Plot;
+import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFrame;
 
 import com.microstar.xml.XmlException;

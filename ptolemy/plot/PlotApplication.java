@@ -32,6 +32,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.StringTokenizer;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 // TO DO:
 //   - Improve the help mechanism and separate from the usage message.
@@ -109,23 +111,26 @@ public class PlotApplication extends PlotFrame {
 
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
+     *  @exception Exception If command line arguments have problems.
      */
-    public PlotApplication() {
+    public PlotApplication() throws Exception {
         this(null);
     }
 
     /** Construct a plot with the specified command-line arguments.
      *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
      */
-    public PlotApplication(String args[]) {
+    public PlotApplication(String args[]) throws Exception {
         this(new Plot(), args);
     }
 
     /** Construct a plot with the specified command-line arguments
      *  and instance of plot.
      *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
      */
-    public PlotApplication(Plot plot, String args[]) {
+    public PlotApplication(Plot plot, String args[]) throws Exception {
 
         // invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
@@ -143,27 +148,11 @@ public class PlotApplication extends PlotFrame {
         });
 
         if (args != null && args.length != 0) {
-            try {
-                _parseArgs(args);
-            } catch (FileNotFoundException ex) {
-                System.err.println("File not found: " + ex + "\n" + _usage());
-                throw new RuntimeException("cancelled");
-            } catch (IOException ex) {
-                System.err.println("Error reading input: " + ex
-                        + "\n" + _usage());
-                throw new RuntimeException("cancelled");
-            } catch (CmdLineArgException ex) {
-                System.err.println("Command line format error: " + ex
-                        + "\n" + _usage());
-                throw new RuntimeException("cancelled");
-            }
-            String _cmdfile = ((Plot)plot).getCmdLineFilename();
-            if (_cmdfile != null) {
-                _filename = _cmdfile;
-            }
+            _parseArgs(args);
         } else {
             samplePlot();
         }
+        setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -172,7 +161,13 @@ public class PlotApplication extends PlotFrame {
     /** Create a new plot window and map it to the screen.
      */
     public static void main(String args[]) {
-        PlotApplication plot = new PlotApplication(new Plot(), args);
+        try {
+            PlotApplication plot = new PlotApplication(new Plot(), args);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
+
 
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
@@ -214,12 +209,10 @@ public class PlotApplication extends PlotFrame {
     protected void _help() {
         // Use newlines here since we are displaying with scrollbars.
         Message message = new Message(
-                "PlotApplication is a standalone Java 2D plot application\n" +
+                "PlotApplication is a standalone Java 2D plot application.\n" +
                 "It can read files compatible with the Ptolemy plot\n" +
                 "file format (currently only ASCII).\n" +
-                "Command-line options include:\n" + _usage() +
-                "ASCII Files should have the following format\n" +
-                plot._usage(),
+                _usage(),
                 null, null, 20, 40,
                 TextArea.SCROLLBARS_BOTH);
         message.setTitle("Usage of Ptolemy Plot");
@@ -239,72 +232,70 @@ public class PlotApplication extends PlotFrame {
         String arg;
         String title = "Ptolemy plot";
 
-        int width = 400;      // Default width of the graph
+        int width = 500;      // Default width of the graph
         int height = 300;     // Default height of the graph
 
-        // Although most of the arguments are handled by the Plot class,
-        // a few are dealt with here.
         while (i < args.length) {
             arg = args[i++];
 
-            if (arg.equals("-help")) {
-                // -help is not in the original X11 pxgraph.
-                System.out.println(_usage() + plot._usage());
+            if (arg.equals("-height")) {
+                if (i > args.length - 1) {
+                    throw new CmdLineArgException(_usage());
+                }
+                height = (int)Integer.valueOf(args[i++]).intValue();
+                continue;
+            } else if (arg.equals("-help")) {
+                System.out.println(_usage());
                 System.exit(0);
                 continue;
             } else if (arg.equals("-test")) {
-                // -test is not in the original X11 pxgraph.
                 _test = true;
                 continue;
-            } else if (arg.equals("-t")) {
-                // -t <title> TitleText "An X Graph"
-                title =  args[i++];
-                continue;
-            } else if (arg.equals("-v") || arg.equals("-version")) {
-                // -version is not in the original X11 pxgraph.
+            } else if (arg.equals("-version")) {
                 System.out.println("Version 2.2, Build $Id$");
                 System.exit(0);
                 continue;
-            } else if (arg.startsWith("=")) {
-                // Process =WxH+X+Y
-                int xscreen = 1, yscreen = 1;
-                boolean screenlocationgiven = false;
-                StringTokenizer stoken =
-                    new StringTokenizer(arg.substring(1, arg.length()),
-                            "=x-+");
-                if (stoken.hasMoreTokens()) {
-                    width = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
+            } else if (arg.equals("-width")) {
+                if (i > args.length - 1) {
+                    throw new CmdLineArgException(
+                        "-width requires an integer argument");
                 }
-                if (stoken.hasMoreTokens()) {
-                    height = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
-                }
-                if (stoken.hasMoreTokens()) {
-                    xscreen = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
-                    screenlocationgiven = true;
-                }
-                if (stoken.hasMoreTokens()) {
-                    yscreen = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
-                    screenlocationgiven = true;
-                }
-                if (screenlocationgiven) {
-                    // Note: we add one so that =800x200+0+0 will show up
-                    // in the proper location.
-                    setLocation(new Point(xscreen+1, yscreen+1));
-                }
+
+                width = (int)Integer.valueOf(args[i++]).intValue();
                 continue;
+            } else if (arg.equals("")) {
+                // Ignore blank argument.
+            } else if (!arg.startsWith("-")) {
+                // Have a filename.  First attempt to open it as a URL.
+                InputStream instream;
+                URL base;
+                try {
+                    // First argument is null because we are only
+                    // processing absolute URLs this way.  Relative
+                    // URLs are opened as ordinary files.
+                    URL inurl = new URL(null, arg);
+                    base = inurl;
+                    instream = inurl.openStream();
+                } catch (MalformedURLException ex) {
+                    File file = new File(arg);
+                    instream = new FileInputStream(file);
+                    File absFile = new File(file.getAbsolutePath());
+                    String dir = absFile.getParent() + File.separator;
+                    base = new URL("file", null, dir);
+                    _filename = arg;
+                }
+                _read(base, instream);
+            } else {
+                // Unrecognized option.
+                throw new CmdLineArgException("Unrecognized option: " + arg);
             }
         }
 
         setSize(width, height);
         setTitle(title);
 
-        argumentsRead = i++;
+        argumentsRead = i;
 
-        ((Plot)plot).parseArgs(args);
         return argumentsRead;
     }
 
@@ -322,68 +313,27 @@ public class PlotApplication extends PlotFrame {
         // "(Unsupported)" - The string that is printed to indicate if
         //                   a option is unsupported.
         String commandOptions[][] = {
-            {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
-            {"-bg",  "<color>", "BackGround",  "White", ""},
-            {"-brb", "<base>", "BarBase",  "0", "(Unsupported)"},
-            {"-brw", "<width>", "BarWidth",  "1", ""},
-            {"-bw",  "<size>", "BorderSize",  "1", "(Unsupported)"},
-            {"-fg",  "<color>", "Foreground",  "Black", ""},
-            {"-gw",  "<pixels>", "GridStyle",  "1", "(Unsupported)"},
-            {"-lf",  "<fontname>", "LabelFont",  "helvetica-12", ""},
-            {"-lw",  "<width>", "LineWidth",  "0", "(Unsupported)"},
-            {"-lx",  "<xl,xh>", "XLowLimit, XHighLimit",  "0", ""},
-            {"-ly",  "<yl,yh>", "YLowLimit, YHighLimit",  "0", ""},
-            // -o is not in the original X11 pxgraph.
-            {"-o",   "<output filename>", "",  "/tmp/t.ps", ""},
-            {"-t",   "<title>", "TitleText",  "An X Graph", ""},
-            {"-tf",  "<fontname>", "TitleFont",  "helvetica-b-14", ""},
-            {"-x",   "<unitName>", "XUnitText",  "X", ""},
-            {"-y",   "<unitName>", "YUnitText",  "Y", ""},
-            {"-zg",  "<color>", "ZeroColor",  "Black", "(Unsupported)"},
-            {"-zw",  "<width>", "ZeroWidth",  "0", "(Unsupported)"},
+            {"-height",  "<pixels>"},
+            {"-width",  "<pixels>"},
         };
 
-        String commandFlags[][] = {
-            {"-bar", "BarGraph",  ""},
-            {"-bb", "BoundBox",  "(Ignored)"},
-            {"-bigendian", "",  ""},
-            {"-littleendian", "",  ""},
-            {"-binary", "Binary",  ""},
-            // -impulses is not in the original X11 pxgraph.
-            {"-impulses", "Impulses",  ""},
-            {"-help", "",  ""},
-            {"-lnx", "XLog",  ""},
-            {"-lny", "YLog",  ""},
-            {"-m", "Markers",  ""},
-            {"-M", "StyleMarkers",  ""},
-            {"-nl", "NoLines",  ""},
-            {"-p", "PixelMarkers",  ""},
-            {"-P", "LargePixel",  ""},
-            {"-rv", "ReverseVideo",  ""},
-            // -test is not in the original X11 pxgraph.  We use it for testing
-            {"-test", "Test",  ""},
-            {"-tk", "Ticks",  ""},
-            // -v is not in the original X11 pxgraph.
-            {"-v", "Version",  ""},
-            {"-version", "Version",  ""},
+        String commandFlags[] = {
+            "-help",
+            "-test",
+            "-version",
         };
-        String result = "Usage: ptplot [ options ] [=WxH+X+Y] [file ...]\n\n"
-            + " options that take values as second args:\n";
+        String result = "Usage: ptplot [ options ] [file ...]\n\n"
+            + "Options that take values:\n";
 
         int i;
         for(i = 0; i < commandOptions.length; i++) {
             result += " " + commandOptions[i][0] +
-                " " + commandOptions[i][1] +
-                " " + commandOptions[i][4] + "\n";
+                " " + commandOptions[i][1] + "\n";
         }
         result += "\nBoolean flags:\n";
         for(i = 0; i < commandFlags.length; i++) {
-            result += " " + commandFlags[i][0] +
-                " " + commandFlags[i][2] + "\n";
+            result += " " + commandFlags[i];
         }
-        result += "\nThe following pxgraph features are not supported:\n"
-            + " * Directives in pxgraph input files\n"
-            + " * Xresources\n";
         return result;
     }
 

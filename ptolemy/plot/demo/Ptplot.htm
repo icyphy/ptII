@@ -69,11 +69,6 @@ section below.
  </SELECT>
 <TR>
 <TD>
-<A HREF="PtplotHelp.htm#Ptplot Pxgraph Args Argument">Pxgraph Args</A>
-<TD COLSPAN=3>
-<INPUT TYPE="text" NAME="pxgraphargs" SIZE="80">
-<TR>
-<TD>
 <A HREF="PtplotHelp.htm#Ptplot Title Text Argument">Title Text</A>
 <TD COLSPAN=3>
 <INPUT TYPE="text" NAME="title" VALUE="Plot">
@@ -183,12 +178,6 @@ the JavaScript <CODE>ptplot()</CODE> function is passed the form.
 <LI> The <CODE>ptplot()</CODE> function generates HTML that reflects the
 settings in the form.  The generated HTML includes the <CODE>&lt;APPLET</CODE>
 tag.
-
-<LI> Since the PlotApplet class does not inherit from
-the Plot class, we have to update the <CODE>pxgraphargs</CODE>
-applet parameter with the data from the form.  If we had more direct access
-to the public methods of the Plot class, then we could have a
-Plot on this page and modify the format on the fly.
 
  <br>Note that the <CODE>About</CODE> button in the generated HTML
 implemented by having JavaScript call the <CODE>getAppletInfo()</CODE>

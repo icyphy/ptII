@@ -31,6 +31,7 @@ package ptolemy.plot;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URL;
 import java.util.StringTokenizer;
 
 // TO DO:
@@ -74,27 +75,34 @@ field is set once in the constructor and immutable afterwards.
 
 @see Plot
 @see PlotBox
-@author Christopher Hylands and Edward A. Lee
+author Christopher Hylands and Edward A. Lee
 @version $Id$
 */
 public class PlotFrame extends Frame {
 
     /** Construct a plot frame with a default title and by default contains
-     *  an instance of Plot.
+     *  an instance of Plot. After constructing this, it is necessary
+     *  to call setVisible(true) to make the plot appear.
      */
     public PlotFrame() {
         this("Ptolemy Plot Frame");
     }
 
     /** Construct a plot frame with the specified title and by default
-     *  contains an instance of Plot.
+     *  contains an instance of Plot. After constructing this, it is necessary
+     *  to call setVisible(true) to make the plot appear.
+     *  @param title The title to put on the window.
      */
     public PlotFrame(String title) {
         this(title, null);
     }
 
     /** Construct a plot frame with the specified title and the specified
-     *  instance of PlotBox.
+     *  instance of PlotBox.  After constructing this, it is necessary
+     *  to call setVisible(true) to make the plot appear.
+     *  @param title The title to put on the window.
+     *  @param plotArg the plot object to put in the frame, or null to create
+     *   an instance of Plot.
      */
     public PlotFrame(String title, PlotBox plotArg) {
         super(title);
@@ -145,10 +153,9 @@ public class PlotFrame extends Frame {
 
         setMenuBar(_menubar);
 
-        add("Center",plot);
+        add("Center", plot);
         // FIXME: This should not be hardwired in here.
         setSize(500, 300);
-        setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -199,7 +206,7 @@ public class PlotFrame extends Frame {
                 "Ptolemy plot frame\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 2.2, Build: $Id$"+
+                "Version 3.0, Build: $Id$"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
@@ -261,10 +268,16 @@ public class PlotFrame extends Frame {
         if (filename == null) return;
         _directory = filedialog.getDirectory();
         File file = new File(_directory, filename);
+        String dir = file.getParent();
+        if (dir != null) {
+            // NOTE: It's not clear why the file separator is needed
+            // here on the end, but it is...
+            _directory = dir + File.separator;
+        }
         _filename = null;
         try {
             plot.clear(true);
-            _read(new FileInputStream(file));
+            _read(new URL("file", null, _directory), new FileInputStream(file));
             plot.repaint();
         } catch (FileNotFoundException ex) {
             Message msg = new Message("File not found: " + ex);
@@ -315,10 +328,12 @@ public class PlotFrame extends Frame {
 
     /** Read the specified stream.  Derived classes may override this
      *  to support other file formats.
+     *  @param base The base for relative file references, or null if
+     *   there are not relative file references.
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
-    protected void _read(InputStream in) throws IOException {
+    protected void _read(URL base, InputStream in) throws IOException {
         plot.read(in);
     }
 

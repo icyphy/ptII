@@ -46,8 +46,8 @@ test PlotBox-1.1 {} {
     set plot [java::new ptolemy.plot.PlotBox]
     $frame pack
     $frame {add java.lang.String java.awt.Component} "Center" $plot
-    $frame show
     $frame setSize 500 300
+    $frame show
     $frame repaint
     $plot setTitle "foo"
     $plot addXTick "X tick" -10
@@ -81,16 +81,17 @@ test PlotBox-2.2 {setDataurl, getDataurl, getDocumentBase} {
     list $url [java::isnull $docbase]
 } {http://notasite/bar/foo.plt 1}
 
-test PlotBox-3.1 {getMinimumSize getPreferredSize} {
-    $frame setSize 425 600
-    $frame repaint
-    set minimumDimension [$plot getMinimumSize] 
-    set preferredDimension [$plot getPreferredSize]
-    list [java::field $minimumDimension width] \
-	    [java::field $minimumDimension height] \
-	    [java::field $preferredDimension width] \
-	    [java::field $preferredDimension height]
-} {}
+# FIXME: This seems to be testing features of the AWT, not of PlotBox.
+# test PlotBox-3.1 {getMinimumSize getPreferredSize} {
+#     $frame setSize 425 600
+#     $frame repaint
+#     set minimumDimension [$plot getMinimumSize] 
+#     set preferredDimension [$plot getPreferredSize]
+#     list [java::field $minimumDimension width] \
+# 	    [java::field $minimumDimension height] \
+# 	    [java::field $preferredDimension width] \
+# 	    [java::field $preferredDimension height]
+# } {}
 
 test PlotBox-4.1 {parseFile} {
     $plot parseFile ../demo/data.plt
@@ -170,17 +171,39 @@ test PlotBox-14.1 {write} {
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
 	    {java.io.PrintStream java.io.OutputStream} $stream]
-    $plot write $printStream
+    $plot write $printStream xxx
     $printStream flush
     $stream toString
-} {# Ptolemy plot, version 2.0
-TitleText: My Plot
-XLabel: X Axis
-YLabel: Y Axis
-XRange: 1.0, 3.0
-YRange: 2.0, 4.0
-XTicks: "zero" 0.0, "one" 1.0, "two" 2.0, "three" 3.0, "four" 4.0, "five" 5.0
-XLog: on
-YLog: on
-Color: off
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot SYSTEM "xxx">
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<title>Software Downloads</title>
+<xLabel>Year</xLabel>
+<yLabel>Downloads</yLabel>
+<xRange min="0.0010" max="10.0"/>
+<yRange min="1.0" max="1000.0"/>
+<xTicks>
+  <tick label="zero" position="0.0"/>
+  <tick label="one" position="1.0"/>
+  <tick label="two" position="2.0"/>
+  <tick label="three" position="3.0"/>
+  <tick label="four" position="4.0"/>
+  <tick label="five" position="5.0"/>
+  <tick label="1993" position="0.0"/>
+  <tick label="1994" position="1.0"/>
+  <tick label="1995" position="2.0"/>
+  <tick label="1996" position="3.0"/>
+  <tick label="1997" position="4.0"/>
+  <tick label="1998" position="5.0"/>
+  <tick label="1999" position="6.0"/>
+  <tick label="2000" position="7.0"/>
+  <tick label="2001" position="8.0"/>
+  <tick label="2002" position="9.0"/>
+  <tick label="2003" position="10.0"/>
+</xTicks>
+<xLog/>
+<yLog/>
+<noColor/>
+</plot>
 }

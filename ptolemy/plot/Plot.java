@@ -57,24 +57,18 @@ import java.net.*;
 /**
  * A flexible signal plotter.  The plot can be configured and data can
  * be provided either through a file with commands or through direct
- * invocation of the public methods of the class.  To read a file or a
- * URL, use the read() method.
+ * invocation of the public methods of the class.
  * <p>
  * When calling the public methods, in most cases the changes will not
- * be visible until paint() has been called.  To request that this
+ * be visible until paint() is called.  To request that this
  * be done, call repaint().  One exception is addPoint(), which
  * makes the new point visible immediately if the plot is visible on
  * the screen.
  * <p>
- * For backwards compatibility with an older program, pxgraph, the
- * readPxgraph() method reads pxgraph-compatible
- * binary files.  Since those binary
- * files have no format information, and format information in pxgraph is
- * provided by command line arguments, a method parsePxgraphargs() is
- * provided to interpret the pxgraph-style command-line arguments.
- * <p>
- * The ASCII format for the file
- * file contains any number commands,
+ * This base class supports a simple file syntax that has largely been
+ * replaced by the XML-based PlotML syntax.  To read a file or a
+ * URL in this older syntax, use the read() method.
+ * This older syntax contains any number commands,
  * one per line.  Unrecognized commands and commands with syntax
  * errors are ignored.  Comments are denoted by a line starting with a
  * pound sign "#".  The recognized commands include those supported by
@@ -184,10 +178,6 @@ import java.net.*;
  *      Note that 2<sup>32</sup> is over 4 billion.
  * <li> The limitations of the log axis facility are listed in
  *      the <code>_gridInit()</code> method in the PlotBox class.
- * <li> The compatibility issues of the <code>pxgraph</code> script are
- *      list in the
- *<a href="pt.plot.Pxgraph.html#pxgraph script compatibility issues">Pxgraph</a>
- *      class.
  * </ul>
  *
  * @author Edward A. Lee, Christopher Hylands
@@ -314,8 +304,6 @@ public class Plot extends PlotBox {
         _maxdataset = -1;
         _firstinset = true;
         _sawfirstdataset = false;
-        _pxgraphBlankLineMode = true;
-        _endian = _NATIVE_ENDIAN;
         _xyInvalid = false;
         _filename = null;
         _showing = false;
@@ -413,14 +401,6 @@ public class Plot extends PlotBox {
         super.fillPlot();
     }
 
-    /** Return the last file name seen on the command-line arguments parsed
-     *  by parseArgs().  If there was none, return null.
-     *  @return A file name, or null if there is none.
-     */
-    public String getCmdLineFilename() {
-        return _filename;
-    }
-
     /** Return the maximum number of data sets.
      *  This method is deprecated, since there is no longer an upper bound.
      *  @deprecated
@@ -429,299 +409,10 @@ public class Plot extends PlotBox {
         return Integer.MAX_VALUE;
     }
 
-    /** Parse pxgraph style command line arguments.
-     *  This method exists only for backward compatibility with the X11 pxgraph
-     *  program.
-     *
-     *  @param args A set of command-line arguments.
-     *  @return The number of arguments read.
-     *  @exception CmdLineArgException If there is a problem parsing
-     *   the command line arguments.
-     *  @exception FileNotFoundException If a file is specified that is not
-     *   found.
-     *  @exception IOException If an error occurs reading an input file.
-     */
-    public int parseArgs(String args[]) throws CmdLineArgException,
-            FileNotFoundException, IOException {
-        int i = 0, j, argumentsRead = 0;
-
-        // If we see both -nl and -bar, assume we do an impulse plot.
-        boolean sawbararg = false; // Saw -bar arg.
-        boolean sawnlarg = false;  // Saw -nl arg.
-        int savedmarks = 0;        // Save _marks in case we have -P -bar -nl.
-        boolean binary = false;    // Read a binary xgraph file.
-
-        String arg;
-        String unsupportedOptions[] = {
-            "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
-        };
-
-        while (i < args.length && (args[i].startsWith("-") ||
-                args[i].startsWith("=")) ) {
-            arg = args[i++];
-
-            if (arg.startsWith("-")) {
-                // Search for unsupported options that take arguments
-                boolean badarg = false;
-                for(j = 0; j < unsupportedOptions.length; j++) {
-                    if (arg.equals(unsupportedOptions[j])) {
-                        System.err.println("pxgraph: " + arg +
-                                " is not yet supported");
-                        i++;
-                        badarg = true;
-                    }
-                }
-                if (badarg) continue;
-
-                if (arg.equals("-bb")) {
-                    // We ignore -bb because the Java version of pxgraph plot
-                    // region is a different color from the surrounding region.
-                    continue;
-                } else if (arg.equals("-bg")) {
-                    setBackground(getColorByName(args[i++]));
-                    continue;
-                } else if (arg.equals("-brw")) {
-                    // -brw <width> BarWidth Bars:
-                    // We default the baroffset to 0 here if the value does
-                    // not include a comma.
-                    if (arg.indexOf(",") == -1) {
-                        if (!_parseLine("Bars: " + args[i++]+",0")) {
-                            throw new
-                                CmdLineArgException("Failed to parse `"+
-                                        arg+"'");
-                        }
-                    } else {
-                        if (!_parseLine("Bars: " + args[i++])) {
-                            throw new
-                                CmdLineArgException("Failed to parse `"+
-                                        arg+"'");
-                        }
-                    }
-                    continue;
-                } else if (arg.equals("-lf")) {
-                    // -lf <labelfont>
-                    setLabelFont(args[i++]);
-                    continue;
-                } else if (arg.equals("-lx")) {
-                    // -lx <xl,xh> XLowLimit, XHighLimit  XRange:
-                    if (!_parseLine("XRange: " + args[i++])) {
-                        throw new
-                            CmdLineArgException("Failed to parse `"+arg+"'");
-                    }
-                    continue;
-                } else if (arg.equals("-ly")) {
-                    // -ly <yl,yh> YLowLimit, YHighLimit  YRange:
-                    if (!_parseLine("YRange: " + args[i++])) {
-                        throw new
-                            CmdLineArgException("Failed to parse `"+arg+"'");
-                    }
-                    continue;
-                } else if (arg.equals("-t")) {
-                    // -t <title> TitleText "An X Graph"
-                    String title =  args[i++];
-                    setTitle(title);
-                    continue;
-                } else if (arg.equals("-tf")) {
-                    // -tf <titlefont>
-                    setTitleFont(args[i++]);
-                    continue;
-                } else if (arg.equals("-x")) {
-                    // -x <unitName> XUnitText XLabel:
-                    setXLabel(args[i++]);
-                    continue;
-                } else if (arg.equals("-y")) {
-                    // -y <unitName> YUnitText YLabel:
-                    setYLabel(args[i++]);
-                    continue;
-                } else if (arg.equals("-bar")) {
-                    //-bar BarGraph Bars: on Marks: none Lines: off
-                    // If we saw the -nl arg, then assume impulses
-                    sawbararg = true;
-                    if (sawnlarg) {
-                        setImpulses(true);
-                    } else {
-                        setBars(true);
-                        // Save _marks in case we did -P -bar -nl.
-                        savedmarks = _marks;
-                        setMarksStyle("none");
-                    }
-                    setConnected(false);
-                    continue;
-                } else if (arg.equals("-binary")) {
-                    binary = true;
-                    _endian = _NATIVE_ENDIAN;
-                    continue;
-                } else if (arg.equals("-bigendian")) {
-                    binary = true;
-                    _endian = _BIG_ENDIAN;
-                    continue;
-                } else if (arg.equals("-littleendian")) {
-                    binary = true;
-                    _endian = _LITTLE_ENDIAN;
-                    continue;
-                } else if (arg.equals("-db")) {
-                    // Ignore.  Debug flag.
-                    continue;
-                } else if (arg.equals("-debug")) {
-                    // -debug is not in the original X11 pxgraph.
-                    // _debug = (int)Integer.valueOf(args[i++]).intValue();
-                    continue;
-                } else if (arg.equals("-fg")) {
-                    setForeground(getColorByName(args[i++]));
-                    continue;
-                } else if (arg.equals("-help")) {
-                    // -help is not in the original X11 pxgraph.
-                    //_help();
-                    continue;
-                } else if (arg.equals("-impulses")) {
-                    // -impulses is not in the original X11 pxgraph.
-                    setImpulses(true);
-                    setConnected(false);
-                    continue;
-                } else if (arg.equals("-lnx")) {
-                    setXLog(true);
-                    continue;
-                } else if (arg.equals("-lny")) {
-                    setYLog(true);
-                    continue;
-                } else if (arg.equals("-m")) {
-                    // -m Markers Marks: various
-                    setMarksStyle("various");
-                    continue;
-                } else if (arg.equals("-M")) {
-                    // -M StyleMarkers Marks: various
-                    setMarksStyle("various");
-                    continue;
-                } else if (arg.equals("-nl")) {
-                    // -nl NoLines Lines: off
-                    // If we saw the -bar arg, then assume impulses
-                    sawnlarg = true;
-                    if (sawbararg) {
-                        // Restore the _marks in case we did -P -bar -nl
-                        _marks = savedmarks;
-                        setBars(false);
-                        setImpulses(true);
-                    }
-                    setConnected(false);
-                    continue;
-                } else if (arg.equals("-o")) {
-                    // -o <output filename>
-                    // _outputFile =  args[i++];
-                    i++;
-                    continue;
-                } else if (arg.equals("-p")) {
-                    // -p PixelMarkers Marks: points
-                    setMarksStyle("points");
-                    continue;
-                } else if (arg.equals("-P")) {
-                    // -P LargePixel Marks: dots\n
-                    setMarksStyle("dots");
-                    continue;
-                } else if (arg.equals("-print")) {
-                    // -print is not in the original X11 pxgraph.
-                    continue;
-                } else if (arg.equals("-rv")) {
-                    setBackground(getColorByName("black"));
-                    setForeground(getColorByName("white"));
-                    continue;
-                } else if (arg.equals("-test")) {
-                    // -test is not in the original X11 pxgraph.
-                    //_test = true;
-                    continue;
-                } else if (arg.equals("-tk")) {
-                    setGrid(false);
-                    continue;
-                } else if (arg.equals("-v") || arg.equals("-version")) {
-                    // -version is not in the original X11 pxgraph.
-                    //_version();
-                    continue;
-                } else if (arg.length() > 1  && arg.charAt(0) == '-') {
-                    // Process '-<digit> <datasetname>'
-                    try {
-                        Integer datasetnumberint = new
-                            Integer(arg.substring(1));
-                        int datasetnumber = datasetnumberint.intValue();
-                        if (datasetnumber >= 0) {
-                            addLegend(datasetnumber, args[i++]);
-                            continue;
-                        }
-                    } catch (NumberFormatException e) {}
-                }
-            } else {
-                if (arg.startsWith("=")) {
-                    // Process =WxH+X+Y
-                    _width = (int)Integer.valueOf(arg.substring(1,
-                            arg.indexOf('x'))).intValue();
-                    int plusIndex = arg.indexOf('+');
-                    int minusIndex = arg.indexOf('-');
-                    if (plusIndex != -1 || minusIndex != -1) {
-                        // =WxH+X+Y, =WxH-X+Y, =WxH-X-Y, =WxH+X-Y
-                        if ( plusIndex != -1 && minusIndex != -1) {
-                            // =WxH-X+Y or =WxH+X-Y
-                            int index = minusIndex;
-                            if (plusIndex < minusIndex) {
-                                index = plusIndex;
-                            }
-                            _height = Integer.valueOf(arg.substring(
-                                    arg.indexOf('x')+1,
-                                    index)).intValue();
-                        } else {
-                            if (plusIndex != -1) {
-                                // =WxH+X+Y
-                                _height = Integer.valueOf(arg.substring(
-                                        arg.indexOf('x')+1,
-                                        plusIndex)).intValue();
-                            } else {
-                                // =WxH-X-Y
-                                _height = Integer.valueOf(arg.substring(
-                                        arg.indexOf('x')+1,
-                                        minusIndex)).intValue();
-                            }
-                        }
-                    } else {
-                        if (arg.length() > arg.indexOf('x')) {
-                            // =WxH
-                            _height = Integer.valueOf(arg.substring(
-                                    arg.indexOf('x')+1,
-                                    arg.length())).intValue();
-                        }
-                    }
-                    // FIXME: it is unclear what X and Y in =WxH+X+Y mean
-                    // in a non-toplevel window, so we don't process
-                    // those here.  See Pxgraph.java for how to process
-                    // X and Y for a toplevel window.
-                    continue;
-                }
-            }
-            // If we got to here, then we failed to parse the arg
-            throw new
-                CmdLineArgException("Failed to parse `" + arg + "'");
-        }
-        argumentsRead = i++;
-
-        setSize(_width, _height);
-
-        for(i = argumentsRead; i < args.length; i++) {
-            // Have a filename.  First attempt to open it as a URL.
-            InputStream instream;
-            try {
-                URL inurl = new URL(_documentBase, args[i]);
-                instream = inurl.openStream();
-            } catch (MalformedURLException ex) {
-                instream = new FileInputStream(args[i]);
-                _filename = args[i];
-            }
-            if (binary) {
-                readPxgraph(instream);
-            } else {
-                read(instream);
-            }
-        }
-        return argumentsRead;
-    }
-
     /** Override the base class to indicate that a new data set is being read.
-     *  This method is deprecated.  Use read() or readPxgraph() instead.
+     *  This method is deprecated.  Use read() instead (to read the old
+     *  file format) or one of the classes in the plotml package to read
+     *  the new (XML) file format.
      *  @deprecated
      */
     public void parseFile(String filespec, URL documentBase) {
@@ -730,268 +421,16 @@ public class Plot extends PlotBox {
         super.parseFile(filespec, documentBase);
     }
 
-    /** Split a string containing pxgraph-compatible command-line arguments
-     *  into an array and call parseArgs() on the array.  This is used
-     *  in the rare circumstance that you want to control the format
-     *  of a plot from an applet HTML file rather than in the plot data
-     *  file.
-     *  @return The number of arguments read.
-     *  @exception CmdLineArgException If there is a problem parsing
-     *   the command line arguments.
-     *  @exception FileNotFoundException If a file is specified that is not
-     *   found.
-     *  @exception IOException If an error occurs reading an input file.
-     */
-    public int parsePxgraphargs(String pxgraphargs) throws CmdLineArgException,
-            FileNotFoundException, IOException {
-        // We convert the String to a Stream and then use a StreamTokenizer
-        // to parse the arguments into a Vector and then copy
-        // the vector into an array of Strings.  We use a Vector
-        // so that we can handle an arbitrary number of arguments
-
-        Vector argvector = new Vector();
-        boolean prependdash = false; // true if we need to add a -
-
-        StringReader pin = new StringReader(pxgraphargs);
-
-        try {
-            StreamTokenizer stoken = new StreamTokenizer(pin);
-
-            // We don't want to parse numbers specially, so we reset
-            // the syntax and then add back what we want.
-            stoken.resetSyntax();
-            stoken.whitespaceChars(0, ' ');
-            stoken.wordChars('(', '~');
-            stoken.quoteChar('"');
-            stoken.quoteChar('\'');
-            int c;
-            String partialarg = null;
-        out:
-            while (true) {
-                c = stoken.nextToken();
-                //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" ");
-                switch (stoken.ttype) {        // same as value of 'c'
-                case StreamTokenizer.TT_EOF:
-                    break out;
-                case StreamTokenizer.TT_WORD:
-                    //System.out.println("Word: " + stoken.sval);
-                    if (prependdash) {
-                        prependdash = false;
-                        if (partialarg == null)
-                            argvector.addElement(new String("-"+stoken.sval));
-                        else
-                            argvector.addElement(new String("-" + partialarg +
-                                    stoken.sval));
-                    } else {
-                        if (partialarg == null)
-                            argvector.addElement(new String(stoken.sval));
-                        else
-                            argvector.addElement(new String(partialarg +
-                                    stoken.sval));
-                    }
-                    partialarg = null;
-                    break;
-                case '-':
-                    prependdash = true;
-                    break;
-                case '#':
-                case '$':
-                case '%':
-                case '&':
-                    // The above chars can be part of a URL.  For example
-                    // perl scripts use &.  However, we cannot include
-                    // them in the wordChars() range of chars, since
-                    // the single quote is between them and the rest of the
-                    // chars. So we have to process them by hand.
-                    partialarg = ((String)argvector.lastElement()) + (char)c;
-                    argvector.removeElementAt(argvector.size()-1);
-                    break;
-                case '"':
-                case '\'':
-                    //System.out.println("String: " + stoken.sval);
-                    argvector.addElement(new String(stoken.sval));
-                    break;
-                default:
-                    throw new IOException("Failed to parse: '"+ (char)c +
-                            "' in `" + pxgraphargs + "'");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Create a array
-        String args[] = new String[argvector.size()];
-        for(int i = 0; i < argvector.size(); i++) {
-            args[i] = (String)argvector.elementAt(i);
-        }
-        return parseArgs(args);
-    }
-
-    /** Override the base class to register that we are reading a new
+    /** Read a file with the old syntax (non-XML).
+     *  Override the base class to register that we are reading a new
      *  data set.
      *  @param inputstream The input stream.
+     *  @exception IOException If the stream cannot be read.
      */
-    public void read(InputStream in)
-            throws IOException {
+    public void read(InputStream in) throws IOException {
         super.read(in);
         _firstinset = true;
         _sawfirstdataset = false;
-    }
-
-    /** Read a pxgraph-compatible binary encoded file.
-     *  @param in The input stream.
-     *  @exception java.io.IOException If an I/O error occurs.
-     */
-    public void readPxgraph(InputStream inputstream)
-            throws IOException {
-        // This method is similar to _parseLine(), except it parses
-        // an entire file at a time.
-
-        Cursor oldCursor = getCursor();
-        setCursor(new Cursor(Cursor.WAIT_CURSOR));
-
-        try {
-            // Flag that we are starting a new data set.
-            _firstinset = true;
-            // Flag that we have not seen a DataSet line in this file.
-            _sawfirstdataset = false;
-
-            DataInputStream in = new DataInputStream(
-                    new BufferedInputStream(inputstream));
-            int c;
-            float x = 0, y = 0, pointCount = 0;
-            boolean byteSwapped = false;
-            boolean connected = false;
-            byte input[] = new byte[4];
-
-            if (_connected) connected = true;
-
-            switch (_endian) {
-            case _NATIVE_ENDIAN:
-                try {
-                    if ( System.getProperty("os.arch").equals("x86")) {
-                        byteSwapped = true;
-                    }
-                } catch (SecurityException e) {}
-                break;
-            case _BIG_ENDIAN:
-                break;
-            case _LITTLE_ENDIAN:
-                byteSwapped = true;
-                break;
-            default:
-                throw new IOException("Internal Error: Don't know about '"+
-                        _endian + "' style of endian");
-            }
-
-            try {
-                c = in.readByte();
-                if ( c != 'd') {
-                    // Assume that the data is one data set, consisting
-                    // of 4 byte floats.  None of the Ptolemy pxgraph
-                    // binary format extensions apply.
-                    // Note that the binary format is bigendian, or network
-                    // order.  Little-endian machines, like x86 will not
-                    // be able to write binary data directly
-                    // (However, they could use Java's mechanisms for
-                    // writing binary files).
-
-                    // Read 3 more bytes, create the x float.
-                    int bits = c;
-                    bits = bits << 8;
-                    bits += in.readByte();
-                    bits = bits << 8;
-                    bits += in.readByte();
-                    bits = bits << 8;
-                    bits += in.readByte();
-
-                    x = Float.intBitsToFloat(bits);
-                    y = in.readFloat();
-                    connected = _addLegendIfNecessary(connected);
-                    addPoint(_currentdataset, x, y, connected);
-                    if (_connected) connected = true;
-
-                    while (true) {
-                        x = in.readFloat();
-                        y = in.readFloat();
-                        connected = _addLegendIfNecessary(connected);
-                        addPoint(_currentdataset, x, y, connected);
-                        if (_connected) connected = true;
-                    }
-                } else {
-                    // Assume that the data is in the pxgraph binary format.
-                    while (true) {
-                        // For speed reasons, the Ptolemy group extended
-                        // pxgraph to read binary format data.
-                        // The format consists of a command character,
-                        // followed by optional arguments
-                        // d <4byte float> <4byte float> - Draw a X, Y point
-                        // e                             - End of a data set
-                        // n <chars> \n           - New set name, ends in \n
-                        // m                             - Move to a point
-
-                        switch (c) {
-                        case 'd':
-                            // Data point.
-                            if (byteSwapped) {
-                                in.readFully(input);
-                                x = Float.intBitsToFloat(
-                                        (( input[3] & 0xFF ) << 24) |
-                                        (( input[2] & 0xFF ) << 16) |
-                                        (( input[1] & 0xFF ) << 8) |
-                                        ( input[0] & 0xFF ));
-                                in.readFully(input);
-                                y = Float.intBitsToFloat(
-                                        (( input[3] & 0xFF ) << 24) |
-                                        (( input[2] & 0xFF ) << 16) |
-                                        (( input[1] & 0xFF ) << 8) |
-                                        ( input[0] & 0xFF ));
-                            } else {
-                                x = in.readFloat();
-                                y = in.readFloat();
-                            }
-                            pointCount++;
-                            connected = _addLegendIfNecessary(connected);
-                            addPoint(_currentdataset, x, y, connected);
-                            if (_connected) connected = true;
-                            break;
-                        case 'e':
-                            // End of set name.
-                            connected = false;
-                            break;
-                        case 'n':
-                            StringBuffer datasetname = new StringBuffer();
-                            _firstinset = true;
-                            _sawfirstdataset = true;
-                            _currentdataset++;
-                            if (_currentdataset >= _MAX_MARKS)
-                                _currentdataset = 0;
-                            // New set name, ends in \n.
-                            while (c != '\n')
-                                datasetname.append(in.readChar());
-                            addLegend(_currentdataset, datasetname.toString());
-                            setConnected(true);
-                            break;
-                        case 'm':
-                            // a disconnected point
-                            connected = false;
-                            break;
-                        default:
-                            throw new IOException("Don't understand `" +
-                                    (char)c + "' character " +
-                                    "(decimal value = " + c +
-                                    ") in binary file.  Last point was (" + x +
-                                    "," + y + ").\nProcessed " + pointCount +
-                                    " points successfully");
-                        }
-                        c = in.readByte();
-                    }
-                }
-            } catch (EOFException e) {}
-        } finally {
-            setCursor(oldCursor);
-        }
     }
 
     /** Create a sample plot.
@@ -1615,9 +1054,6 @@ public class Plot extends PlotBox {
         }
         // parse only if the super class does not recognize the line.
         if (super._parseLine(line)) {
-            // We saw a non-pxgraph file directive, so blank lines
-            // no longer mean new datasets.
-            _pxgraphBlankLineMode = false;
             return true;
         } else {
             // We convert the line to lower case so that the command
@@ -1632,11 +1068,9 @@ public class Plot extends PlotBox {
                 } else {
                     setMarksStyle(style);
                 }
-                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("numsets:")) {
                 // Ignore.  No longer relevant.
-                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("reusedatasets:")) {
                 if (lcLine.indexOf("off", 16) >= 0) {
@@ -1645,8 +1079,7 @@ public class Plot extends PlotBox {
                     setReuseDatasets(true);
                 }
                 return true;
-            } else if (lcLine.startsWith("dataset:")
-                    || (_pxgraphBlankLineMode && lcLine.length() == 0)) {
+            } else if (lcLine.startsWith("dataset:")) {
                 if (_reusedatasets && lcLine.length() > 0) {
                     String tlegend = (line.substring(8)).trim();
                     _currentdataset = -1;
@@ -1664,8 +1097,6 @@ public class Plot extends PlotBox {
                 }
 
                 // new data set
-                // If we have not yet seen a non-pxgraph file directive,
-                // and the line is blank, then this is a new data set.
                 _firstinset = true;
                 _sawfirstdataset = true;
                 _currentdataset++;
@@ -1674,7 +1105,6 @@ public class Plot extends PlotBox {
                     if (legend != null && legend.length() > 0) {
                         addLegend(_currentdataset, legend);
                     }
-                    _pxgraphBlankLineMode = false;
                 }
                 _maxdataset = _currentdataset;
                 return true;
@@ -1684,7 +1114,6 @@ public class Plot extends PlotBox {
                 } else {
                     setConnected(true);
                 }
-                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("impulses:")) {
                 // If we have not yet seen a dataset, then this is interpreted
@@ -1703,7 +1132,6 @@ public class Plot extends PlotBox {
                         setImpulses(true);
                     }
                 }
-                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("bars:")) {
                 if (lcLine.indexOf("off", 5) >= 0) {
@@ -1731,7 +1159,6 @@ public class Plot extends PlotBox {
                         // ignore if format is bogus.
                     }
                 }
-                _pxgraphBlankLineMode = false;
                 return true;
             } else if (line.startsWith("move:")) {
                 // a disconnected point
@@ -1834,20 +1261,6 @@ public class Plot extends PlotBox {
             }
         }
         return false;
-    }
-
-    /** Return a string summarizing the command-line arguments.
-     *  @return A usage string.
-     */
-    protected String _usage() {
-        return super._usage() +
-                "   Marks: none|points|dots|various\n" +
-                "   Lines: on|off\n" +
-                "   Impulses: on|off\n" +
-                "   Bars: on|off|width|width,offset\n" +
-                "   Dataset: string\n" +
-                "   ReuseDataSets: on|off\n" +
-                "   x y|x,y\n";
     }
 
     /** Write plot information to the specified output stream in
@@ -2323,23 +1736,6 @@ public class Plot extends PlotBox {
 
     /** @serial Give the diameter of a point for efficiency. */
     private int _diameter = 6;
-
-    /** @serial If _pxgraphBlankLineMode is true, then we have not yet seen
-     * a non-pxgraph file directive, so blank lines mean new datasets.
-     */
-    private boolean _pxgraphBlankLineMode = true;
-
-    // Check the osarch and use the appropriate endian.
-    private static final int _NATIVE_ENDIAN = 0;
-
-    // Data is in big-endian
-    private static final int _BIG_ENDIAN = 1;
-
-    /// Data is in little-endian
-    private static final int _LITTLE_ENDIAN = 2;
-
-    /** @serial Format to read data in. */
-    private int _endian = _NATIVE_ENDIAN;
 
     /** @serial Information about the previously plotted point. */
     private Vector _prevx = new Vector(), _prevy = new Vector();

@@ -41,8 +41,6 @@ import java.text.*;
 import java.util.*;
 
 // TO DO:
-//   - create a write() method that writes ASCII or binary
-//   - define a binary file format with formatting info.
 //   - Augment getColorByName to support a full complement of colors
 //     (get the color list from Tycho).
 
@@ -56,13 +54,44 @@ import java.util.*;
  * <p>
  * The box can be configured either through a file with commands or
  * through direct invocation of the public methods of the class.
- * Use the read() method to read a URL or a file.
  * <p>
  * When calling the methods, in most cases the changes will not
  * be visible until paint() has been called.  To request that this
  * be done, call repaint().
  * <p>
- * The ASCII format for the file allows any number
+ * A small set of key bindings are provided for convenience.
+ * They are:
+ * <ul>
+ * <li> Cntr-c: Export the plot to the clipboard (in PlotML).
+ * <li> D: Dump the plot to standard output (in PlotML).
+ * <li> E: Export the plot to standard output in EPS format.
+ * <li> F: Fill the plot.
+ * <li> H or ?: Display a simple help message.
+ * <li> Cntr-D or Q: quit
+ * </ul>
+ * These commands are provided in a menu by the PlotFrame class.
+ * <p>
+ * At this time, the two export commands produce encapsulated postscript
+ * tuned for black-and-white printers.  In the future, more formats may
+ * supported.  Also at this time (jdk 1.2), Java's interface the
+ * clipboard does not work, so Cntr-c might not accomplish anything.
+ * Exporting to the clipboard and to standard output, in theory,
+ * is allowed for applets, unlike writing to a file. Thus, these
+ * key bindings provide a simple mechanism to obtain a high-resolution
+ * image of the plot from an applet, suitable for incorporation in
+ * a document. However, in some browsers, exporting to standard out
+ * triggers a security violation.  You can use Sun's appletviewer instead.
+ * <p>
+ * To read commands from a file or URL, the preferred technique is
+ * to use one of the classes in the plotml package.  That package
+ * supports both PlotML, an XML extension for plots, and a historical
+ * file format specific to ptplot.  The historical file format is
+ * understood by the read() method in this class.
+ * The syntax of the historical format, documented below, is rudimentary,
+ * and will probably not be extended as ptplot evolves.  Nonetheless,
+ * we document it here since it is directly supported by this class.
+ * <p>
+ * The historical format for the file allows any number
  * commands, one per line.  Unrecognized commands and commands with
  * syntax errors are ignored.  Comments are denoted by a line starting
  * with a pound sign "#".  The recognized commands include:
@@ -152,27 +181,6 @@ import java.util.*;
  * All of the above commands can also be invoked directly by calling the
  * the corresponding public methods from some Java procedure.
  * <p>
- * A small set of key bindings are provided for convenience.
- * They are:
- * <ul>
- * <li> Cntr-c: Export the plot to the clipboard.
- * <li> D: Dump the plot to standard output.
- * <li> E: Export the plot to standard output in EPS format.
- * <li> F: Fill the plot.
- * <li> H or ?: Display a simple help message.
- * <li> Cntr-D or Q: quit
- * </ul>
- * At this time, the two export commands produce encapsulated postscript
- * tuned for black-and-white printers.  In the future, more formats may
- * supported.  Also at this time (jdk 1.1.4), Java's interface the
- * clipboard does not work, so Cntr-c might not accomplish anything.
- * Exporting to the clipboard and to standard output, in theory,
- * is allowed for applets, unlike writing to a file. Thus, these
- * key bindings provide a simple mechanism to obtain a high-resolution
- * image of the plot from an applet, suitable for incorporation in
- * a document. However, in some browsers, exporting to standard out
- * triggers a security violation.  You can use Sun's appletviewer instead.
- * <p>
  * This class uses features of JDK 1.1, and hence if used in an applet,
  * it can only be viewed by a browser that supports JDK 1.1.
  *
@@ -184,6 +192,7 @@ public class PlotBox extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
+    /** Construct a plot box with a default configuration. */
     public PlotBox() {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         addMouseListener(new ZoomListener());
@@ -425,9 +434,9 @@ public class PlotBox extends Panel {
     }
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
-     *  This method is deprecated.  Use read().  Note that this method
-     *  no longer supports pxgraph binary files.  Use readPxgraph() in the
-     *  derived class Plot instead.
+     *  This method is deprecated.  Use read() to read the old file
+     *  format, or use one of the classes in the plotml package to
+     *  read the XML-based file format.
      *  @deprecated
      */
     public void parseFile(String filespec) {
@@ -510,7 +519,8 @@ public class PlotBox extends Panel {
         }
     }
 
-    /** Read commands and/or plot data from an input stream.
+    /** Read commands and/or plot data from an input stream in the old
+     *  (non-XML) file syntax.
      *  To update the display, call repaint(), or make the plot visible with
      *  setVisible(true).
      *  <p>
@@ -536,47 +546,27 @@ public class PlotBox extends Panel {
      *  <pre>
      *     read(new FileInputStream(filename));
      *  </pre>
-     *  The input stream currently must be in ASCII format, although a binary
-     *  format will be supported eventually.
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
     public void read(InputStream in) throws IOException {
         try {
-            // Create a decorated stream reader depending on what kind
-            // of file we are reading.
-            // Peek at the file...
-            if (false) {
-                // FIXME: peek at the stream to determine
-                // whether it's a binary file.
-                // Reading a binary file.
-                DataInputStream din = new DataInputStream(
-                        new BufferedInputStream(in));
-                try {
-                    // FIXME: read the binary data.
-                } finally {
-                    din.close();
+            // NOTE: I tried to use exclusively the jdk 1.1 Reader classes,
+            // but they provide no support like DataInputStream, nor
+            // support for URL accesses.  So I use the older classes
+            // here in a strange mixture.
+
+            BufferedReader din = new BufferedReader(
+                    new InputStreamReader(in));
+
+            try {
+                String line = din.readLine();
+                while (line != null) {
+                    _parseLine(line);
+                    line = din.readLine();
                 }
-            } else {
-                // Reading an ASCII file in the old file format.
-
-                // NOTE: I tried to use exclusively the jdk 1.1 Reader classes,
-                // but they provide no support like DataInputStream, nor
-                // support for URL accesses.  So I use the older classes
-                // here in a strange mixture.
-
-                BufferedReader din = new BufferedReader(
-                        new InputStreamReader(in));
-
-                try {
-                    String line = din.readLine();
-                    while (line != null) {
-                        _parseLine(line);
-                        line = din.readLine();
-                    }
-                } finally {
-                    din.close();
-                }
+            } finally {
+                din.close();
             }
         } catch (IOException e) {
             _errorMsg = new String [2];
@@ -607,16 +597,6 @@ public class PlotBox extends Panel {
     public void setBackground(Color background) {
         _background = background;
         super.setBackground(_background);
-    }
-
-    /** Set the binary flag to true if we are reading pxgraph format binary
-     *  data. This method is deprecated.  Use read() instead, which recognizes
-     *  binary files.  To read pxgraph binary files, use readPxgraph()
-     *  in the derived class Plot.
-     *  @deprecated
-     */
-    public void setBinary(boolean binary) {
-        _binary = binary;
     }
 
     /** Move and resize this component. The new location of the top-left
@@ -1454,7 +1434,6 @@ public class PlotBox extends Panel {
                 "   F: fill plot\n" +
                 "   H or ?: print help message (this message)\n" +
                 "   Cntr-D or Q: quit\n" +
-                _usage() +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
                 null, null, 24, 60, TextArea.SCROLLBARS_NONE);
@@ -1661,24 +1640,6 @@ public class PlotBox extends Panel {
         if (!_grid) output.println("Grid: off");
         if (_wrap) output.println("Wrap: on");
         if (!_usecolor) output.println("Color: off");
-    }
-
-    /** Return a string summarizing the command-line arguments.
-     *  @return A usage string.
-     */
-    protected String _usage() {
-        return "File Directives:" +
-                "   XLabel: string\n" +
-                "   YLabel: string\n" +
-                "   XRange: min, max\n" +
-                "   YRange: min, max\n" +
-                "   XTicks: label position, label position\n" +
-                "   YTicks: label position, label position\n" +
-                "   XLog: on|off\n" +
-                "   YLog: on|off\n" +
-                "   Grid: on|off\n" +
-                "   Color: on|off\n" +
-                "   Wrap: on|off\n";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2431,11 +2392,6 @@ public class PlotBox extends Panel {
 
     /** @serial The file to be opened. */
     private String _filespec = null;
-
-    /** @serial Set to true if we are reading in pxgraph format binary data.
-     * @deprecated
-     */
-    private boolean _binary = false;
 
     // Call setXORMode with a hardwired color because
     // _background does not work in an application,

@@ -41,7 +41,6 @@ function ptplot(theform) {
     var urlbase = theform.urlbase.value;
     fileObj = theform.fileSelection;
     var files = fileObj.options[fileObj.selectedIndex].text;
-    var pxgraphargs = theform.pxgraphargs.value;
     var displayargs = theform.displayargs.checked;
     var otherargs = "";
 
@@ -89,11 +88,7 @@ function ptplot(theform) {
         for (var i=0; i < filearray.length; i++) {
             tmpfiles+= urlbase + filearray[i] + " ";
         }
-	pxgraphargs = tmpfiles + pxgraphargs;
     }
-
-    pxgraphargs = otherargs + pxgraphargs;
-
 
     document.write("<html>");
     document.write("<head>");
@@ -111,9 +106,6 @@ function ptplot(theform) {
     if ( foreground.value != "" )
         document.write("<param name=\"foreground\" value=\"" +
                 foreground +"\">\n");
-    if ( pxgraphargs != "" )
-        document.write("<param name=\"pxgraphargs\" value=\"" +
-                pxgraphargs +"\">\n");
     document.write("</applet>");
     document.write("<form name=\"aboutplot\">")
         document.write("<input type=\"button\" Value=\"About\"");
@@ -125,7 +117,6 @@ function ptplot(theform) {
 	document.write("<tr><td>height<td>" + height);
 	document.write("<tr><td>background<td>" + background);
 	document.write("<tr><td>foreground<td>" + foreground);
-	document.write("<tr><td>pxgraphargs<td>" + pxgraphargs);
 	document.write("</table>");
     }
     document.write("</body>");

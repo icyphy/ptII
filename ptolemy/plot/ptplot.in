@@ -52,11 +52,11 @@ fi
 
 # We can start up either Pxgraph or PlotApplication here
 if [ "`basename $0`" = "pxgraph" ]; then
-    javastartupclass=ptolemy.plot.Pxgraph
+    javastartupclass=ptolemy.plot.compat.PxgraphApplication
 
 else
-    javastartupclass=ptolemy.plot.PlotApplication
-    #javastartupclass=ptolemy.plot.plotml.PlotMLApplication
+    # javastartupclass=ptolemy.plot.PlotApplication
+    javastartupclass=ptolemy.plot.plotml.PlotMLApplication
 fi
 
 windows=no

@@ -48,7 +48,8 @@ import java.net.URL;
 //// PlotMLApplication
 
 /**
-An application that can plot data in PlotML format from a URL.
+An application that can plot data in PlotML format from a URL or
+from files specified on the command line.
 To compile and run this application, do the following (in Unix):
 <pre>
     setenv CLASSPATH ../..
@@ -72,23 +73,26 @@ public class PlotMLApplication extends PlotApplication {
 
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
+     *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication() {
+    public PlotMLApplication() throws Exception {
         this(null);
     }
 
     /** Construct a plot with the specified command-line arguments.
      *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication(String args[]) {
+    public PlotMLApplication(String args[]) throws Exception {
         this(new Plot(), args);
     }
 
     /** Construct a plot with the specified command-line arguments
      *  and instance of plot.
      *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication(Plot plot, String args[]) {
+    public PlotMLApplication(Plot plot, String args[]) throws Exception {
         super(plot, args);
     }
 
@@ -98,7 +102,12 @@ public class PlotMLApplication extends PlotApplication {
     /** Create a new plot window and map it to the screen.
      */
     public static void main(String args[]) {
-        PlotApplication plot = new PlotMLApplication(new Plot(), args);
+        try {
+            PlotApplication plot = new PlotMLApplication(new Plot(), args);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
 
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
@@ -132,10 +141,12 @@ public class PlotMLApplication extends PlotApplication {
     /** Read the specified stream.  This method checks to see whether
      *  the data is PlotML data, and if so, creates a parser to read it.
      *  If not, it defers to the parent class to read it.
+     *  @param base The base for relative file references, or null if
+     *   there are not relative file references.
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
-    protected void _read(InputStream in) throws IOException {
+    protected void _read(URL base, InputStream in) throws IOException {
         // Create a buffered input stream so that mark and reset
         // are supported.
         BufferedInputStream bin = new BufferedInputStream(in);
@@ -154,14 +165,7 @@ public class PlotMLApplication extends PlotApplication {
                 parser = new PlotBoxMLParser(plot);
             }
             try {
-                String pwd;
-                if (_directory != null) {
-                    pwd = _directory;
-                } else {
-                    pwd = System.getProperty("user.dir");
-                }
-                URL docBase = new URL("file", null, pwd);
-                parser.parse(docBase, bin);
+                parser.parse(base, bin);
             } catch (Exception ex) {
                 String msg;
                 if (ex instanceof XmlException) {
@@ -179,7 +183,7 @@ public class PlotMLApplication extends PlotApplication {
                 ex.printStackTrace();
             }
         } else {
-            super._read(bin);
+            super._read(base, bin);
         }
     }
 }
