@@ -136,27 +136,6 @@ test Scheduler-4.2 {Test setValid and isValid} {
 ######################################################################
 ####
 #
-test Scheduler-5.1 {Scheduling tests} {
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set toplevel [java::new ptolemy.actor.CompositeActor $w]
-    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
-	    $toplevel Director]
-    $toplevel setName Toplevel
-    $toplevel setManager $manager
-    set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
-    $director setScheduler $scheduler
-
-    set a1 [java::new ptolemy.actor.test.TestActor $toplevel A1]
-    set a2 [java::new ptolemy.actor.test.TestActor $toplevel A2]
-    $scheduler setValid false
-
-    _testEnums schedule $scheduler
-    
-} {{A1 A2}}
-
-######################################################################
-####
-#
 test Scheduler-6.1 {Test actorIterator method of Schedule} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set toplevel [java::new ptolemy.actor.CompositeActor $w]

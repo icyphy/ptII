@@ -42,14 +42,19 @@ import java.util.ConcurrentModificationException;
 //////////////////////////////////////////////////////////////////////////
 //// Firing
 /**
-This class is a schedule element that contains a reference to an actor.
-This class is used together with Schedule to construct a static schedule.
-This class contains a reference to an actor, and is used to represent an
-actor term of a schedule loop. The setActor() method is used to create
-the reference to an actor. The getActor() method will return a reference
-to this actor.
+This class is a schedule element that contains a reference to an
+actor.  This class is used together with the Schedule class to
+construct a static schedule.  This class contains a reference to an
+actor, and is used to represent an actor term of a schedule loop. The
+setActor() method is used to create the reference to an actor. The
+getActor() method will return a reference to this actor. <p>
 
-@author Brian K. Vogel
+It is more efficient to use this class than to simply maintain a list of 
+actors since actors will often firing multiple times consecutively.  Using
+this class (and the Schedule data structure in general) greatly reduces the 
+memory requirements of most large schedules.
+
+@author Brian K. Vogel, Steve Neuendorffer
 @version $Id$
 @see ptolemy.actor.sched.Schedule
 @see ptolemy.actor.sched.ScheduleElement
@@ -61,7 +66,6 @@ public class Firing extends ScheduleElement {
      */
     public Firing() {
 	super();
-	//_actorInvocations = new LinkedList();
     }
 
     /** Construct a firing with a actor, an iteration count equal to one
@@ -141,7 +145,6 @@ public class Firing extends ScheduleElement {
             _firing.clear();
             _firing.add(this);
         }
-	//_actorInvocationsValid = false;
     }
 
     /**
@@ -223,8 +226,4 @@ public class Firing extends ScheduleElement {
     private Actor _actor;
     // The list containing this firing as the only element.
     private List _firing = null;
-    // The list containing the actor invocation sequence corresponding
-    // to this firing.
-    //private List _actorInvocations;
-    //private boolean _actorInvocationsValid = false;
 }

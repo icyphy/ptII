@@ -24,10 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
-Made an Attribute.  Deprecated enumeration methods.
-Caching should move into StaticSchedulingDirector.
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+FIXME: Caching should move into StaticSchedulingDirector.
 */
 
 package ptolemy.actor.sched;
@@ -47,34 +46,33 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
 /**
-The base class for schedulers. A scheduler schedules the execution order
-of the containees of a CompositeActor.
-<p>
-A scheduler has a reference to a StaticSchedulingDirector, and
-provides the schedule for it.
-The director will use this schedule to govern the execution of a
-CompositeActor.
-<p>
-A schedule is simply a collection of objects. It could be the firing
-order of actors in a particular composite actor, and it also could
-consist of sub-schedules, each of which is another collection. We
-leave for the director to interpret what a schedule means. In this
-base class, the default schedule is an Enumeration of deep contained
-actors in their construction order.
-<p>
-The schedule, once constructed, is cached and reused in the next time
-if the schedule is still valid. The validation of a schedule is set by
-the setValid() method. If the current schedule is set to be not valid,
-the schedule() method will call the protected _schedule() method to
-reconstruct it. The _schedule() method is the place the scheduling
-algorithm goes, and the derived class should override it.
-<p>
-Scheduler does perform any mutations, and it is not a topology change
-listener. The director who uses this scheduler should set the validation
-flag accordingly when mutations occur.
+The base class for schedulers. A scheduler schedules the execution
+order of the containees of a CompositeActor.  <p>
+
+A scheduler is contained by a StaticSchedulingDirector, and provides
+the schedule for it.  The director will use this schedule to govern
+the execution of a CompositeActor. <p>
+
+A schedule is represented by the Schedule class, and determines the
+order of the firing of the actors in a particular composite actor.  In
+this base class, the default schedule fires the deeply
+contained actors in the order of their construction.  A domain specific
+scheduler will override this to provide a different order. <p>
+
+The schedule, once constructed, is cached and reused as long as the
+schedule is still valid.  The validity of the schedule is set by the
+setValid() method.  If the current schedule is not valid, then the
+schedule will be recomputed the next time the getSchedule() method is
+called.  However, derived classes will usually override only the
+protected _getSchedule() method. <p>
+
+The scheduler does not perform any mutations, and it does not listen
+for changes in the model.  Directors that use this scheduler should
+normally invalidate the schedule when mutations occur.
 
 @author Jie Liu, Steve Neuendorffer
 @version $Id$
+@see ptolemy.actor.sched.Schedule
 */
 
 public class Scheduler extends Attribute {
@@ -144,15 +142,15 @@ public class Scheduler extends Attribute {
         Scheduler newObject = (Scheduler) super.clone(workspace);
         newObject._container = null;
         newObject._valid = false;
-        newObject._cachedSchedule = null;
+        newObject._cachedGetSchedule = null;
         return newObject;
     }
 
-    /** Return the scheduling sequence as an instance of Schedule.
+    /** Return the scheduling sequence as an instance of the Schedule class.
      *  For efficiency, this method returns a cached version of the
      *  schedule, if it is valid.  Otherwise, it calls the protected
      *  method _getSchedule() to update the schedule.  Derived classes
-     *  would normally override the protected method, not this one.
+     *  normally override the protected method, not this one.
      *  The validity of the current schedule is set by the setValid()
      *  method.  This method is read-synchronized on the workspace.
      *  @return The Schedule returned by the _getSchedule() method.
@@ -183,51 +181,6 @@ public class Scheduler extends Attribute {
                 _cachedGetSchedule = _getSchedule();
             }
             return _cachedGetSchedule;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return the scheduling sequence as an enumeration.  For
-     *  efficiency, this method returns a cached version of the
-     *  schedule, if it is valid.  Otherwise, it calls the protected
-     *  method _schedule() to update the schedule.  Derived classes
-     *  would normally override the protected method, not this one.
-     *  The validity of the current schedule is set by the setValid()
-     *  method.  This method is read-synchronized on the workspace.
-     *
-     *  @return The Enumeration returned by the _schedule() method.
-     *  @exception IllegalActionException If the scheduler has no container
-     *  (a director), or the director has no container (a CompositeActor).
-     *  @exception NotSchedulableException If the _schedule() method
-     *  throws it. Not thrown in this base class, but may be needed
-     *  by the derived schedulers.
-     *  @deprecated Use the getSchedule method instead.
-     */
-    public Enumeration schedule() throws
-            IllegalActionException, NotSchedulableException {
-        try {
-            workspace().getReadAccess();
-            StaticSchedulingDirector director =
-                (StaticSchedulingDirector)getContainer();
-            if (director == null) {
-                throw new IllegalActionException(this,
-                        "Scheduler has no director.");
-            }
-            CompositeActor compositeActor =
-                (CompositeActor)(director.getContainer());
-            if (compositeActor == null) {
-                throw new IllegalActionException(this,
-                        "Director has no container.");
-            }
-            if(!isValid() || _cachedSchedule == null) {
-                _cachedSchedule = new ArrayList();
-                Enumeration newScheduleEnumeration = _schedule();
-                while (newScheduleEnumeration.hasMoreElements()) {
-                    _cachedSchedule.add(newScheduleEnumeration.nextElement());
-                }
-            }
-            return Collections.enumeration(_cachedSchedule);
         } finally {
             workspace().doneReading();
         }
@@ -315,7 +268,6 @@ public class Scheduler extends Attribute {
     public void setValid(boolean valid) {
         _valid = valid;
         if(valid == false) {
-            _cachedSchedule = null;
             _cachedGetSchedule = null;
         }
     }
@@ -330,27 +282,30 @@ public class Scheduler extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The static name
-    protected static String _DEFAULT_SCHEDULER_NAME = "Scheduler";
+    /** The default name.
+     */
+    protected static final String _DEFAULT_SCHEDULER_NAME = "Scheduler";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the scheduling sequence. In this base class, it returns
-     *  the containees of the CompositeActor in the order of
-     *  construction.  (Same as calling
-     *  CompositeActor.deepGetEntities()).  The derived classes should
-     *  override this method and add their scheduling algorithms here.
-     *  This method should not be called directly, but rather the
-     *  getSchedule() method will call it when the schedule is
-     *  invalid. So it is not synchronized on the workspace.
+    /** Reschedule the model.  In this base class, this method returns
+     *  the actors contained by the CompositeActor in the order of
+     *  their construction, i.e. the same order as returned by the
+     *  CompositeActor.deepGetEntities() method.  Derived classes
+     *  should override this method to provide a domain-specific
+     *  scheduling algorithm.  This method is not intended to be
+     *  called directly, but is called in turn by the getSchedule()
+     *  method.  This method is not synchronized on the workspace, because
+     *  the getSchedule() method is.
+     *  
      *  @return A Schedule of the deeply contained opaque entities
      *  in the firing order.
-     *  @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. Not thrown in this base class, but may be thrown
-     *  by derived classes.
      *  @exception IllegalActionException If the scheduling algorithm
      *  throws it. Not thrown in this base class, but may be thrown
+     *  by derived classes.
+     *  @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. Not thrown in this base class, but may be thrown
      *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      */
@@ -372,35 +327,6 @@ public class Scheduler extends Attribute {
 	return schedule;
     }
 
-    /** Return the scheduling sequence. In this base class, it returns
-     *  the containees of the CompositeActor in the order of
-     *  construction.  (Same as calling
-     *  CompositeActor.deepGetEntities()).  The derived classes should
-     *  override this method and add their scheduling algorithms here.
-     *  This method should not be called directly, rather the
-     *  schedule() method will call it when the schedule is
-     *  invalid. So it is not synchronized on the workspace.
-     *
-     *  @return An Enumeration of the deeply contained opaque entities
-     *  in the firing order.
-     *  @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. Not thrown in this base class, but may be needed
-     *  by the derived scheduler.
-     *  @exception IllegalActionException If the scheduling algorithm
-     *  throws it. Not thrown in this base class, but may be thrown
-     *  by derived classes.
-     *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
-     *  @deprecated Use the getSchedule method instead.
-     */
-    protected Enumeration _schedule()
-            throws NotSchedulableException, IllegalActionException {
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector)getContainer();
-        CompositeActor compositeActor =
-            (CompositeActor)(director.getContainer());
-        return Collections.enumeration(compositeActor.deepEntityList());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -408,8 +334,6 @@ public class Scheduler extends Attribute {
     private StaticSchedulingDirector _container = null;
     // The flag that indicate whether the current schedule is valid.
     private boolean _valid = false;
-    // The cached schedule.
-    private List _cachedSchedule = null;
     // The cached schedule for getSchedule().
     private Schedule _cachedGetSchedule = null;
 }

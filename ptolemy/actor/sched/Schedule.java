@@ -43,55 +43,34 @@ import java.util.ConcurrentModificationException;
 //////////////////////////////////////////////////////////////////////////
 //// Schedule
 /**
-This class is a schedule, which is a count and a list of schedule elements.
-A schedule consists of an iteration count and a list of schedule elements.
-A schedule element can correspond to a single actor, or a schedule
-element can itself be a schedule. This nesting can be arbitrarily deep.
-However, all of the lowest-level schedule elements must correspond to
-an actor. If this were not the case, then the actor invocation sequence
-corresponding to the schedule would contain null elements. It is up to
-the scheduler to enforce this requirement.
-<p>
-<i>Terminology</i>
-A schedule (or schedule loop) has the form
-(n, S<sub>1</sub>, S<sub>2</sub>..., S<sub>m</sub>) where n is a positive
-integer called the iteration count, and S<sub>i</sub> is either another
-schedule loop or an actor. The schedule can be expressed as a sequence
-S<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where S<sub>i</sub> is either
-an actor or a schedule loop.
-<p>
-<h1>Usage</h1>
-In this implementation, if S<sub>i</sub> corresponds to an actor, then
-S<sub>i</sub> will be an instance of class Firing. Otherwise, if
-S<sub>i</sub> corresponds to a schedule, then S<sub>i</sub> will be an
-instance of Schedule.
-<p>
-The Schedule class is a schedule element that contains an iteration
-count and a list of schedule elements. The Firing class is a schedule
-element that contains only a reference to an actor and an iteration count
-for that actor. Therefore, the top-level schedule element must be an
-instance of Schedule, and all of the lowest-level schedule elements must
-be an instance of Firing. The iteration count is set by the
-setIterationCount() method. If this method is not invoked, a default value
-of one will be used. The add() and remove() methods are used to add or
+This class represents a static schedule of actor executions.  An
+instance of this class is returned by the scheduler of a model to
+represent order of actor firings in the model.  A schedule consists of
+a list of schedule elements and the number of times the schedule
+should repeat (called the <i>iteration count</i>). <p>
+
+Each element of
+the schedule is represented by an instance of the ScheduleElement
+class.  Each element may correspond to a number of firings of a single
+actor (represented by the Firing class) or an entire sub-schedule
+(represented by a hierarchically contained instance of this class).
+This nesting allows this concise representation of looped schedules.
+The nesting can be arbitrarily deep, but must be a tree where the
+leaf nodes represent actor firings.  It is up to the scheduler to
+enforce this requirement. <p>
+
+The add() and remove() methods are used to add or
 remove schedule elements. Only elements of type ScheduleElement (Schedule
 or Firing) may be added to the schedule list. Otherwise an exception will
-occur.
-<p>
+occur. <p>
+
+The iteration count is set by the
+setIterationCount() method. If this method is not invoked, a default value
+of one will be used. <p>
+
 As an example, suppose that we have an SDF graph containing actors
-A, B, C, and D, with the schedule (1, A, (3, B, C), (2, D)).
-The schedule can be written as (1, S<sub>1</sub>S<sub>2</sub>S<sub>3</sub>),
-where S<sub>1</sub> = A, S<sub>2</sub> = (3, B, C), and S<sub>3</sub> = (2, D).
-To construct this schedule, create an instance of Schedule called S.
-Then add the schedule elements S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>, and
-set an iteration count of 1, which is the default. S<sub>1</sub> will be an
-instance of Firing with a reference to actor A and an iteration count of 1.
-S<sub>2</sub> will be an instance of Schedule with elements
-S<sub>2, 1</sub>, S<sub>2, 2</sub>, and an iteration count of 3.
-S<sub>2, 1</sub>, S<sub>2, 2</sub> will each be an instance of Firing
-with an iteration count of 1 and a reference to actors B and C,
-respectively. S<sub>3</sub> will be an instance of Firing with
-a reference to actor D and an iteration count of 2. The code to create
+A, B, C, and D, with the firing order ABCBCBCDD.
+This firing order can be represented by a simple looped schedule.   The code to create
 this schedule appears below.
 <p>
 <pre>
@@ -114,6 +93,7 @@ S3.setIterationCount(2);
 S3.setActor(D);
 </pre>
 <p>
+
 Note that this implementation is not synchronized. It is therefore not safe
 for a thread to make modifications to the schedule structure while
 multiple threads are concurrently accessing the schedule.
@@ -121,7 +101,7 @@ multiple threads are concurrently accessing the schedule.
 S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
 Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 
-@author Brian K. Vogel
+@author Brian K. Vogel, Steve Neuendorffer
 @version $Id$
 @see ptolemy.actor.sched.Firing
 @see ptolemy.actor.sched.ScheduleElement

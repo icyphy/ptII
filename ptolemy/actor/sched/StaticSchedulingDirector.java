@@ -24,9 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
-Scheduler is an Attribute,
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.actor.sched;
 
@@ -45,19 +44,18 @@ import java.util.Iterator;
 //// StaticSchedulingDirector
 /**
 A director that uses static scheduling to govern the execution of the
-CompositeActor it belongs to.
-<p>
-A StaticSchedulingDirector contains a scheduler. By calling the getSchedule()
-method on the scheduler, the director can get an instance of the
-schedule class.  This class represents the number of times each actor
-should be fired and their firing order.
-<p>
-"Static" means that the schedule, once constructed, can be
-used during the execution repeatedly.
-So the schedule is locally cached in the scheduler, and can be reused
-when needed. A schedule is called "valid" if is can be used to correctly
-direct the execution of the CompositeActor.
-However, the schedule may become invalid when the CompositeActor mutates.
+CompositeActor it belongs to. <p>
+
+This class does not directly implement a scheduling algorithm, but
+defers to its contained scheduler.  The contained scheduler creates an
+instance of the Schedule class which determines the number of times
+each actor should be fired and their firing order.  This allows new 
+scheduling algorithms to be easily created for existing domains.<p>
+
+This class is generally useful for statically scheduled domains where 
+a schedule can be constructed once and used to repeatedly execute the 
+model.  The Scheduler class caches the schedule until the model changes
+so that the schedule does not have to be recomputed.
 
 @author Jie Liu, Steve Neuendorffer
 @version $Id$
@@ -90,13 +88,13 @@ public class StaticSchedulingDirector extends Director {
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *
-     *  @param workspace Object for synchronization and version tracking
+     *  @param container The container of this director.
      *  @param name Name of this director.
-     *  @exception IllegalActionException Not thrown in this base class;
-     *   thrown in the derived classes if the director is not compatible with
-     *   the specified container.
-     *  @exception NameDuplicationException If the container is not a
-     *   CompositeActor and the name collides with an entity in the container.
+     *  @exception IllegalActionException Not thrown in this base
+     *  class.  May be thrown in the derived classes if the director
+     *  is not compatible with the specified container.
+     *  @exception NameDuplicationException If the name collides with
+     *  an attribute that already exists in the given container.
      */
     public StaticSchedulingDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -106,23 +104,22 @@ public class StaticSchedulingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Calculate the current schedule, if necessary,
-     *  and iterate the contained actors
-     *  in the order given by the schedule.  No internal state of the
-     *  director is updated during fire, so it may be used with domains that
-     *  require this property, such as CT.
-     *  <p>
+    /** Calculate the current schedule, if necessary, and iterate the
+     *  contained actors in the order given by the schedule.  No
+     *  internal state of the director is updated during fire, so it
+     *  may be used with domains that require this property, such as
+     *  CT. <p>
+     *
      *  Iterating an actor involves calling the actor's iterate() method,
-     *  which is equivalent to calling the actor's  prefire(), fire() and
+     *  which is equivalent to calling the actor's prefire(), fire() and
      *  postfire() methods in succession.  If iterate() returns NOT_READY,
      *  indicating that the actor is not ready to execute, then an
      *  IllegalActionException will be thrown. The values returned from
      *  iterate() are recorded and are used to determine the value that
-     *  postfire() will return at the end of the director's iteration.
-     *  <p>
-     *  This base class is intended to be sample code for statically
-     *  scheduled domains.  In many cases, these domains will need to
-     *  override this method to perform domain specific operations.
+     *  postfire() will return at the end of the director's iteration. <p>
+     *
+     *  This method may be overridden by some domains to perform additional
+     *  domain-specific operations.
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
      *  @exception InvalidStateException If this director does not have a
@@ -131,48 +128,46 @@ public class StaticSchedulingDirector extends Director {
     public void fire() throws IllegalActionException {
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
 
-        if (container == null) {
-            throw new InvalidStateException("Director " + getName() +
-                    " fired, but it has no container!");
-        } else {
-            Scheduler s = getScheduler();
-            if (s == null)
-                throw new IllegalActionException("Attempted to fire " +
-                        "system with no scheduler");
-	    Schedule schedule = s.getSchedule();
-	    Iterator firings = schedule.firingIterator();
-            while (firings.hasNext()) {
-		Firing firing = (Firing)firings.next();
-		Actor actor = (Actor)firing.getActor();
-		int iterationCount = firing.getIterationCount();
-
-		if(_debugging) {
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_ITERATE));
-		}
-
-		int returnValue =
-                    actor.iterate(iterationCount);
-		if (returnValue == COMPLETED) {
-		    _postfireReturns = _postfireReturns && true;
-		} else if (returnValue == NOT_READY) {
-		    throw new IllegalActionException(this,
-                            (ComponentEntity) actor, "Actor " +
-                            "is not ready to fire.");
-		} else if (returnValue == STOP_ITERATING) {
-		    _postfireReturns = false;
-		}
-		if(_debugging) {
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.AFTER_ITERATE));
-		}
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException("Attempted to fire " +
+                    "system with no scheduler");
+        }
+        // This will throw IllegalActionException if this director 
+        // does not have a container.
+        Schedule schedule = scheduler.getSchedule();
+        Iterator firings = schedule.firingIterator();
+        while(firings.hasNext()) {
+            Firing firing = (Firing)firings.next();
+            Actor actor = (Actor)firing.getActor();
+            int iterationCount = firing.getIterationCount();
+            
+            if(_debugging) {
+                _debug(new FiringEvent(this, actor,
+                        FiringEvent.BEFORE_ITERATE));
+            }
+            
+            int returnValue =
+                actor.iterate(iterationCount);
+            if (returnValue == COMPLETED) {
+                _postfireReturns = _postfireReturns && true;
+            } else if (returnValue == NOT_READY) {
+                throw new IllegalActionException(this,
+                        (ComponentEntity) actor, "Actor " +
+                        "is not ready to fire.");
+            } else if (returnValue == STOP_ITERATING) {
+                _postfireReturns = false;
+            }
+            if(_debugging) {
+                _debug(new FiringEvent(this, actor,
+                        FiringEvent.AFTER_ITERATE));
             }
         }
     }
 
     /** Return the scheduler that is responsible for scheduling the
-     *  directed actors.
-     *  This method is read-synchronized on the workspace.
+     *  directed actors.  This method is read-synchronized on the
+     *  workspace.
      *
      *  @return The contained scheduler.
      */
@@ -187,9 +182,9 @@ public class StaticSchedulingDirector extends Director {
 
     /** Indicate that a schedule for the model may no longer be valid.
      *  This method should be called when topology changes are made,
-     *  or for that matter when any change that may invalidate
-     *  the schedule is made.  In this base class, the method simply sets
-     *  a flag that forces scheduling to be redone at the next opportunity.
+     *  or for that matter when any change that may invalidate the
+     *  schedule is made.  In this base class, this method sets a flag
+     *  that forces scheduling to be redone at the next opportunity.
      *  If there is no scheduler, do nothing.
      */
     public void invalidateSchedule() {
@@ -201,14 +196,15 @@ public class StaticSchedulingDirector extends Director {
         }
     }
 
-    /** Return false if the system has finished executing, either by
-     *  reaching the iteration limit, or having an actor in the system return
-     *  false in postfire.
-     *  Increment the number of iterations.
-     *  If the "iterations" parameter is greater than zero, then
-     *  see if the limit has been reached.  If so, return false.
-     *  Otherwise return true if all of the fired actors since the last
-     *  call to prefire returned true.
+    /** Return true if the director wishes to be scheduled for another
+     *  iteration.  This method is called by the container of this
+     *  director to see whether the director wishes to execute
+     *  anymore.  <p>
+     *
+     *  This base class returns true if all of the actors iterated since
+     *  the last call to prefire returned true.  Subclasses of this 
+     *  director may override this method to perform additional 
+     *  domain-specific behavior.
      *  @return True if the Director wants to be fired again in the
      *  future.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -217,13 +213,23 @@ public class StaticSchedulingDirector extends Director {
         return _postfireReturns;
     }
 
-    /** Check the input ports of the container composite actor (if there
-     *  are any) to see whether they have enough tokens, and return true
-     *  if they do.  If there are no input ports, then also return true.
-     *  Otherwise, return false.  Note that this does not call prefire()
-     *  on the contained actors.
-     *  @exception IllegalActionException If port methods throw it.
+    /** Return true if the director is ready to fire. This method is
+     *  called by the container of this director to determine whether
+     *  the director is ready to execute. It does <i>not</i> call
+     *  prefire() on the contained actors.  If this director is not at
+     *  the top level of the hierarchy, and the current time of the
+     *  enclosing model is greater than the current time of this
+     *  director, then this base class updates current time to match
+     *  that of the enclosing model.  <p>
+     * 
+     *  In this base class, assume that the director is always ready
+     *  to be fired, and so return true.  Domain directors should
+     *  probably override this method to provide domain-specific
+     *  operation.  However, they should call super.prefire() if they
+     *  wish to propagate time as done here.
+     *
      *  @return True.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         _postfireReturns = true;
@@ -236,8 +242,10 @@ public class StaticSchedulingDirector extends Director {
      *  is set to null. This method is write-synchronized on the workspace.
      *  If the scheduler is not compatible with the director, an
      *  IllegalActionException is thrown.
-     *  @param director The Director responsible for execution.
+     *  @param scheduler The scheduler that this director will use.
      *  @exception IllegalActionException Not thrown in this base class,
+     *   but derived classes may throw it if the scheduler is not compatible.
+     *  @exception NameDuplicationException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.
      */
     public void setScheduler(Scheduler scheduler)
@@ -296,10 +304,10 @@ public class StaticSchedulingDirector extends Director {
      *  so that this composite does not need to search its attributes each
      *  time the scheduler is accessed.
      *  @param scheduler The Scheduler responsible for execution.
-     *  @exception IllegalActionException If removing the old scheduler
-     *   causes this to be thrown. Should not be thrown.
-     *  @exception NameDuplicationException If removing the old scheduler
-     *   causes this to be thrown. Should not be thrown.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *   but derived classes may throw it if the scheduler is not compatible.
+     *  @exception NameDuplicationException Not thrown in this base class,
+     *   but derived classes may throw it if the scheduler is not compatible.
      */
     protected void _setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
