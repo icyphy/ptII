@@ -52,7 +52,7 @@ import java.net.URL;
 //// EffigyFactory
 /**
 An object that can create a new Effigy from an HSIF file.
-
+An HSIF filename can end with either .xml or .hsif
 @author Haiyang Zheng, Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
@@ -85,11 +85,15 @@ public class HSIFEffigyFactory extends EffigyFactory {
         return false;
     }
 
-    /** Create a new effigy in the given container by reading the specified
-     *  URL. If the specified URL refers to an HSIF file, invoke
-     *  the HSIF to MoML translator to create a MoML temporary file, and
-     *  then delegate to the container of this effigy factory to open that
-     *  file. If the specified file is not HSIF, return null.
+    /** Create a new effigy in the given container by reading the
+     *  specified URL, which must end with either .xml or .hsif.  If
+     *  the first 20 lines of the file contain the string "HSIF.dtd",
+     *  then the specified URL refers to an HSIF file.  If the URL is
+     *  an HSIF file, then invok the HSIF to MoML translator to create
+     *  a MoML temporary file, and then delegate to the container of
+     *  this effigy factory to open that file. If the specified file
+     *  is not HSIF, return null.
+     
      *  @param container The container for the effigy.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
@@ -104,10 +108,11 @@ public class HSIFEffigyFactory extends EffigyFactory {
             return null;
         }
 
-        // Check whether the URL refers to an HSIF file.
+        // Check whether the URL ends with .xml or .hsif
         if (input != null) {
             String extension = EffigyFactory.getExtension(input);
-            if (!extension.equals("xml")) {
+            if (!extension.equals("xml")
+                && !extension.equals("hsif") ) {
                 return null;
             }
         }
