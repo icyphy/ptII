@@ -41,6 +41,10 @@ if {[info procs enumToObjects] == "" } then {
      source enums.tcl
 }
 
+if {[info procs description2TclBlend] == "" } then { 
+     source description.tcl
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -636,13 +640,13 @@ pt.kernel.ComponentPort {.E0.E10.E9.P14} link pt.kernel.ComponentRelation {.E0.E
 ####
 # NOTE:  Uses the setup constructed in 11.1.
 test CompositeEntity-11.7 {Generate a description, then regenerate it} {
-    set desc0 [_description2TclBlend [$e0 description \
+    set desc0 [description2TclBlend [$e0 description \
 	    [java::field pt.kernel.Nameable PRETTYPRINT]]]
     eval $desc0
 
-    # Note that _description2TclBlend uses the names of entities
+    # Note that description2TclBlend uses the names of entities
     # as variables, so what was $e0 in 11.1 is $E0
-    set desc1 [_description2TclBlend [$E0 description \
+    set desc1 [description2TclBlend [$E0 description \
 	    [java::field pt.kernel.Nameable PRETTYPRINT]]]
     list [expr {"$desc0" != ""}] [expr {"$desc0" == "$desc1"}]
 } {1 1}

@@ -91,11 +91,11 @@ proc _description2DagInternal {fd contents {parent {}} {oldparent {}}
 # method, return a Tcl Blend script that will regenerate the description
 #
 # An example use would be:
-# set desc [_description2TclBlend [$e0 description \
+# set desc [description2TclBlend [$e0 description \
 #	[java::field pt.kernel.Nameable PRETTYPRINT]]]
 # eval $desc
 #
-proc _description2TclBlend {descriptionString} {
+proc description2TclBlend {descriptionString} {
     set descList [split $descriptionString "\n"]
     set results {}
     set relationsSeen {}
