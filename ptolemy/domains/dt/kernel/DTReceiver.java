@@ -271,11 +271,12 @@ public class DTReceiver extends SDFReceiver {
     /**  Return the local time associated with this receiver.
      *
      *   @return The local time associated with this receiver.
+     *   @deprecated As of Ptolemy II 4.1, replaced by 
+     *   {@link #getModelTime()}
      */
-    public Time getCurrentTime() {
-        return _localTime;
+    public double getCurrentTime() {
+        return getModelTime().getTimeValue();
     }
-
 
     /** Return the time interval between tokens for this receiver.
      *  Delta time is defined as "period / (token flow rate)"; where
@@ -287,6 +288,14 @@ public class DTReceiver extends SDFReceiver {
      */
     public double getDeltaTime() {
         return _deltaTime;
+    }
+
+    /**  Return the local time associated with this receiver.
+     *
+     *   @return The local time associated with this receiver.
+     */
+    public Time getModelTime() {
+        return _localTime;
     }
 
     /** Return the port that feeds this Receiver

@@ -120,9 +120,7 @@ public class RTPDirector extends ProcessDirector
      *  @return The current computer time.
      */
     public double getCurrentTime() {
-        double currentTime = 
-            (double)(System.currentTimeMillis()-_realStartTime);
-        return currentTime;
+        return getModelTime().getTimeValue();
     }
 
     /** Return the time count of the computer in the number of milliseconds,

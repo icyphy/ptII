@@ -148,8 +148,20 @@ public abstract class AbstractReceiver implements Receiver {
      *   getCurrentTime() method.  In DT, there is a local time
      *   associated with every receiver.
      *   @return The current time associated with this receiver.
+     *   @deprecated As of Ptolemy II 4.1, replaced by 
+     *   {@link #getModelTime()}
      */
-    public Time getCurrentTime() {
+    public double getCurrentTime() {
+        return getModelTime().getTimeValue();
+    }
+
+    /**  Return the current time associated with this receiver. For
+     *   non-DT receivers, this method reverts to the director's
+     *   getCurrentTime() method.  In DT, there is a local time
+     *   associated with every receiver.
+     *   @return The current time associated with this receiver.
+     */
+    public Time getModelTime() {
         IOPort containerPort = getContainer();
         Actor containerActor = (Actor) containerPort.getContainer();
         Director containerDirector = containerActor.getDirector();

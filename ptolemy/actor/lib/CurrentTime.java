@@ -89,7 +89,7 @@ public class CurrentTime extends TimedSource {
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
                     currentTimeValue = Math.min(currentTimeValue,
-                        trigger.getCurrentTime(i).getTimeValue());
+                        trigger.getCurrentTime(i));
                     // Do not consume the token... It will be consumed
                     // in the superclass fire().
                     // trigger.get(i);

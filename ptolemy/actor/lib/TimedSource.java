@@ -141,8 +141,17 @@ public class TimedSource extends Source implements TimedActor {
 
     /** Get the stop time.
      *  @return The stop time.
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getModelStopTime}
      */
-    public Time getStopTime() {
+    public double getStopTime() {
+        return getModelStopTime().getTimeValue();
+    }
+    
+    /** Get the stop time.
+     *  @return The stop time.
+     */
+    public Time getModelStopTime() {
         return _stopTime;
     }
     

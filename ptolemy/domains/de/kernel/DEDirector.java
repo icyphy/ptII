@@ -667,7 +667,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return the start time.
      */
     public final double getStartTime() {
-        return _startTime.getTimeValue();
+        return getModelStartTime().getTimeValue();
     }
 
     /** Return the start time parameter value. This method is final
@@ -683,7 +683,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return the stop time.
      */
     public final double getStopTime() {
-        return _stopTime.getTimeValue();
+        return getModelStopTime().getTimeValue();
     }
 
     /** Return the stop time. This method is final

@@ -372,7 +372,7 @@ public class Director extends Attribute implements Executable {
      *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
-        return _currentTime.getTimeValue();
+        return getModelTime().getTimeValue();
     }
 
     /** Return the current time object of the model being executed by this 
@@ -485,7 +485,7 @@ public class Director extends Attribute implements Executable {
      *  {@link #getModelStopTime}
      */
     public double getStopTime() {
-        return new Time(this, Double.MAX_VALUE).getTimeValue();
+        return getModelStopTime().getTimeValue();
     }
 
     /** Get the stop time of the model. This base class returns

@@ -115,10 +115,12 @@ public class TimeKeeper {
     /** Return the current time of this TimeKeeper. The current time is
      *  equal to the time stamp associated with the token most recently
      *  consumed by one of the receivers managed by this TimeKeeper.
-     * @return The current time of this TimeKeeper.
+     *  @return The current time of this TimeKeeper.
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getModelTime()}
      */
-    public Time getCurrentTime() {
-        return _currentTime;
+    public double getCurrentTime() {
+        return getModelTime().getTimeValue();
     }
 
     /** Return the active PrioritizedTimedQueue with the oldest receiver time
@@ -134,6 +136,15 @@ public class TimeKeeper {
             return null;
         }
         return (PrioritizedTimedQueue)_receiverList.getFirst();
+    }
+
+    /** Return the current time of this TimeKeeper. The current time is
+     *  equal to the time stamp associated with the token most recently
+     *  consumed by one of the receivers managed by this TimeKeeper.
+     * @return The current time of this TimeKeeper.
+     */
+    public Time getModelTime() {
+        return _currentTime;
     }
 
     /** Return the earliest possible time stamp of the next token to be
@@ -201,7 +212,7 @@ public class TimeKeeper {
      */
     public void sendOutNullTokens(DDEReceiver receiver) {
         Iterator ports = _actor.outputPortList().iterator();
-        Time time = getCurrentTime();
+        Time time = getModelTime();
         while ( ports.hasNext() ) {
             IOPort port = (IOPort)ports.next();
             Receiver receivers[][] =

@@ -158,7 +158,7 @@ public class ContinuousClock extends Clock //implements CTEventGenerator
             // requires that the current time passes the stop time.
             // That is, not only discrete phase execution, but also the continuous
             // phase execution is performed.
-            if (getDirector().getModelTime().compareTo(getStopTime()) > 0) {
+            if (getDirector().getModelTime().compareTo(getModelStopTime()) > 0) {
                 if (_debugging) 
                     _debug(" --- Postfire returns false.");
                 return false;
@@ -285,7 +285,7 @@ public class ContinuousClock extends Clock //implements CTEventGenerator
         // requires that the current time passes the stop time.
         // That is, not only discrete phase execution, but also the continuous
         // phase execution is performed.
-        if (currentTime.compareTo(getStopTime()) > 0) {
+        if (currentTime.compareTo(getModelStopTime()) > 0) {
             if (_debugging) 
                 _debug(" --- Postfire returns false.");
             return false;

@@ -739,6 +739,16 @@ public class IOPort extends ComponentPort {
         return retArray;
     }
 
+    /** Call the {@link #getModelTime} method. 
+     *  @param channelIndex The channel index.
+     *  @return The current time associated with a certain channel.
+     *  @deprecated As Ptolemy II 4.1, replaced by {@link #getModelTime).
+     */
+    public double getCurrentTime(int channelIndex)
+            throws IllegalActionException {
+        return getModelTime(channelIndex).getTimeValue();
+    }
+
     /** Return the current time associated with a certain channel.
      *  In most domains, this is just the current time of the director.
      *  However, in some domains, the current time is a per-channel
@@ -763,7 +773,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the channel index
      *  is out of range or if the port is not an input port.
      */
-    public Time getCurrentTime(int channelIndex)
+    public Time getModelTime(int channelIndex)
             throws IllegalActionException {
         Receiver[][] localReceivers;
         try {
@@ -782,7 +792,7 @@ public class IOPort extends ComponentPort {
             }
             AbstractReceiver receiver = (AbstractReceiver)
                 localReceivers[channelIndex][0];
-            return receiver.getCurrentTime();
+            return receiver.getModelTime();
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,

@@ -203,7 +203,7 @@ public class DDEDirector extends CompositeProcessDirector
         Thread thread = Thread.currentThread();
         if (thread instanceof DDEThread) {
             TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-            return timeKeeper.getCurrentTime();
+            return timeKeeper.getModelTime();
         } else {
             return super.getModelTime();
         }

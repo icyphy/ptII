@@ -186,7 +186,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
                 TimeKeeper timeKeeper =
                     ((DDEThread)thread).getTimeKeeper();
                 timeKeeper.setCurrentTime( event.getTime() );
-                timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
+                timeKeeper._setOutputTime( timeKeeper.getModelTime() );
             }
         } catch( IllegalActionException e ) {
             System.err.println("An exception thrown while setting"
@@ -388,7 +388,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                     ((DDEThread)thread).getTimeKeeper();
-                timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
+                timeKeeper._setOutputTime( timeKeeper.getModelTime() );
             }
         } catch( IllegalActionException e ) {
             System.err.println("An exception thrown while setting"
@@ -401,7 +401,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                     ((DDEThread)thread).getTimeKeeper();
-                _setReceiverTime( timeKeeper.getCurrentTime() );
+                _setReceiverTime( timeKeeper.getModelTime() );
             }
         }
     }

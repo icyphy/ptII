@@ -177,7 +177,7 @@ test TimeKeeper-4.1 {Call Methods On Uninitialized TimeKeeper} {
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     set val 1
-    if { [[$keeper getCurrentTime] getTimeValue] != 0.0 } {
+    if { [$keeper getCurrentTime] != 0.0 } {
 	set val 0
     }
     if { [[$keeper getNextTime] getTimeValue] != 0.0 } {
