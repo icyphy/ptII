@@ -158,7 +158,8 @@ public class Engine {
     static int engUserCount = 0;
 
     /** Used for Synchronization */
-    static Integer semaphore = new Integer(0);
+    // semaphore is public so that javadoc works.
+    public static Integer semaphore = new Integer(0);
 
     /** Construct an instance of the matlab engine interface.
      * The matlab engine is not activated at this time.
