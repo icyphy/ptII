@@ -205,7 +205,8 @@ public class DDEDirector extends ProcessDirector {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
+            while( !_areActorsDeadlocked() ) {
+            // while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
             if( _areActorsDeadlocked() ) {
@@ -233,7 +234,8 @@ public class DDEDirector extends ProcessDirector {
                 }
             } else {
                 // Processes Are Stopped; Continued Execution
-                // Is Allowed
+                // Is Allowed 
+                // FIXME: We shouldn't get here.
 		_notDone = true;
 	    }
         }
@@ -614,7 +616,6 @@ public class DDEDirector extends ProcessDirector {
      *  because they are blocked on a read or write.
      * @return True if all active threads containing actors controlled
      *  by this thread have stopped; otherwise return false.
-     */
     protected synchronized boolean _areActorsStopped() {
 	long threadsStopped = _getStoppedProcessesCount();
 	long actorsActive = _getActiveActorsCount();
@@ -635,6 +636,7 @@ public class DDEDirector extends ProcessDirector {
 
 	return false;
     }
+     */
 
     /** Return a new ProcessThread of a type compatible with this
      *  director.
