@@ -1,6 +1,6 @@
-# FIXME: Makefile for Ptolemy II SDF kernel tests
+# Makefile for vergil toolbox classes
 #
-# @Authors: Christopher Hylands
+# @Authors: Steve Neuendorffer
 #
 # @Version: $Id$
 #
