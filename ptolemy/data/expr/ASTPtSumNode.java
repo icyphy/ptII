@@ -52,7 +52,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
         if (num == 1) {
             return childTokens[0];
         }
-        if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
+        if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
             String str = "Invalid state in sum node, number of children is";
             str = str + "not equal to number of oprators plus one";
             throw new IllegalArgumentException(str);
@@ -64,8 +64,9 @@ public class ASTPtSumNode extends ASTPtRootNode {
             for (i = 1; i<num; i++) {
                 // When start using 1.2 will change this
                 // take from the front, put back at the end
-                Token x = (Token)_tokenList.take();
-                _tokenList.insertLast(x); // here so that tree can be reparsed
+                Token x = (Token)_lexicalTokens.take();
+                // here so that tree can be reparsed
+                _lexicalTokens.insertLast(x); 
                 op = x.image;
                 if (op.compareTo("+") == 0) {
                     result = result.add(childTokens[i]);

@@ -52,7 +52,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
         if (num ==1) {
             return childTokens[0];
         }
-        if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
+        if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
             String str = "Invalid state in product node, number of children is";
             str = str + " not equal to number of operators +1";
             throw new IllegalArgumentException(str);
@@ -64,8 +64,8 @@ public class ASTPtProductNode extends ASTPtRootNode {
             for (i=1; i<num; i++) {
                 // When start using 1.2 will change this
                 // remove from the front, add to the back
-                Token x = (Token)_tokenList.take();
-                _tokenList.insertLast(x); // so that tree can be reparsed
+                Token x = (Token)_lexicalTokens.take();
+                _lexicalTokens.insertLast(x); // so that tree can be reparsed
                 op = x.image;
                 if (op.compareTo("*") == 0) {
                     result = result.multiply(childTokens[i]);

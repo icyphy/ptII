@@ -56,14 +56,14 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
     protected ptolemy.data.Token  _resolveNode()
             throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
-        if ( (num != 2) ||  (_tokenList.size() != 1) ) {
+        if ( (num != 2) ||  (_lexicalTokens.size() != 1) ) {
             String str = "A relational node needs two children and ";
             throw new IllegalArgumentException(str + "one operator.");
         }
         ptolemy.data.Token result = childTokens[0];
-        Token x = (Token)_tokenList.take();
+        Token x = (Token)_lexicalTokens.take();
         // need to insert at end if want to reparse tree
-        _tokenList.insertLast(x);
+        _lexicalTokens.insertLast(x);
         try {
             if (x.image.compareTo("==") == 0) {
                 result = result.equals(childTokens[1]);
