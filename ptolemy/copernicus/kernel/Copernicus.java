@@ -152,15 +152,21 @@ public class Copernicus {
             _generatorAttribute =
                 new GeneratorAttribute(toplevel, GENERATOR_NAME);
             _generatorAttribute.initialize();
+         
+            // Parse the file named by the modelPath Parameter and update
+            // parameters.  FIXME: Is this necessary?
+            _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
         }
-  
-        // Savecommand-line parameters in the generator attribute.
+
+        // Remove the generatorAttribute from the model so we don't
+        // generate code for it.
+        _generatorAttribute.setContainer(null);
+
+        // Save command-line parameters in the generator attribute.
         _saveParsedArgs();
 
-        // Parse the file named by the modelPath Parameter and update
-        // parameters.  FIXME: Is this necessary?
-        _generatorAttribute.sanityCheckAndUpdateParameters(null);
-
+        System.out.println("_generatorAttribute = " + _generatorAttribute);
+        
         if (_verbose) {
             System.out.println(_generatorAttribute.toString());
         }
@@ -257,6 +263,7 @@ public class Copernicus {
             // Instantiate the right code generator.
             String codeGeneratorClassName = generatorAttribute
                 .getParameter("codeGeneratorClassName");
+            System.out.println("codeGeneratorClass = " + codeGeneratorClassName);
             Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
             KernelMain codeGenerator = (KernelMain)
                 codeGeneratorClass.newInstance();
@@ -527,8 +534,6 @@ public class Copernicus {
         // when generating an applet for moml/demo/spectrum.xml
         removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
 
-        removeGraphicalClasses
-            .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
         removeGraphicalClasses
             .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);

@@ -119,9 +119,6 @@ public class GeneratorAttribute extends SingletonAttribute
             new StringParameter(this, "initialParametersURL");
         initialParametersURL
             .setToken(new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
-
-            // new Parameter(this, "initialParametersURL",
-            //        new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -247,11 +244,11 @@ public class GeneratorAttribute extends SingletonAttribute
             .ClassUtilities.lookupClassAsResource(necessaryClass);
     }
 
-    /** If necessary, initialize this GeneratorAttribute and then
-     *        sanity check the parameters and update them as necessary.
-     *  The moml file named by the modelPathOrURL method parameter
-     *  is read in and the Parameters that are determined by the
-     *  model itself are checked.  Pathnames are also checked
+    /*  Sanity check the parameters of this generator attribute and
+     *  update them as necessary.  The moml file named by the
+     *  modelPathOrURL method parameter is read in and the Parameters
+     *  that are determined by the model itself are checked.
+     *  Pathnames are also checked
      *
      *  @param modelPathOrURL The file pathname or URL to the model.
      *  If modelPathOrURL is null, then the value of the modelPath
@@ -259,11 +256,7 @@ public class GeneratorAttribute extends SingletonAttribute
      */
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
             throws IllegalActionException, NameDuplicationException {
-        // If necessary, initialize.
-        if (!_initialized) {
-            initialize();
-        }
-
+       
         if (modelPathOrURL == null)
             // Get the modelPath and update modelPath and model.
             modelPathOrURL = getParameter("modelPath");

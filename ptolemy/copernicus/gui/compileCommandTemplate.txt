@@ -1,0 +1,9 @@
+# This file contains the command template that is preprocessed
+# by ptolemy.copernicus.gui.GeneratorTableau to create the command
+# that will generate code
+#
+# @author Christopher Hylands
+# @version $Id$
+#
+
+"@java@" @jvmSize@ -classpath "@classPath@" ptolemy.copernicus.kernel.Copernicus "@modelPath@"
