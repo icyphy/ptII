@@ -117,7 +117,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 cleanFileWriter:
 	echo 'file delete -force [file join [java::call System getProperty java.io.tmpdir] FileWriter1Output.txt];exit ' | $(JTCLSH)
 
-cleanRunCompositeActor
+cleanRunCompositeActor:
 	echo 'file delete -force [file join [java::call System getProperty java.io.tmpdir] RunCompositeActor.txt];exit ' | $(JTCLSH)
 
 
