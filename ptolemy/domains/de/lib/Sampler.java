@@ -66,9 +66,15 @@ Hence, this actor can be used to break feedback loops.
 Note: If the width of the input changes during execution, then
 the most recent inputs are forgotten, as if the execution of the model
 were starting over.
+<p>
+This actor is similar to the Inhibit actor in that it modifies a
+stream of events based on the presence or absence of events from another
+input.  This actor reacts to the presence of the other event, whereas
+Inhibit reacts to the absence of it.
 
 @author Jie Liu, Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@see ptolemy.domains.de.lib.Inhibit
 */
 
 public class Sampler extends DETransformer {
@@ -114,6 +120,7 @@ public class Sampler extends DETransformer {
             throws CloneNotSupportedException {
         Sampler newObject = (Sampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
+        _lastInputs = null;
         return newObject;
     }
 

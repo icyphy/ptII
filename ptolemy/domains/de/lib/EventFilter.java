@@ -1,5 +1,4 @@
-/* An actor that produces a copy of the most recent input each time
-   the inhibit input does not receive an event.
+/* An actor that filters false boolean tokens.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -25,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -48,7 +47,7 @@ import ptolemy.actor.*;
 An actor that filters a stream of Boolean Tokens.  Every true input token
 that it receives is reproduced on the output port.  
 False tokens are discarded.
-This usually used to properly trigger other discrete event actors 
+This is usually used to properly trigger other discrete event actors 
 (such as inhibit and select) based on boolean values.
 <p>
 
@@ -78,10 +77,10 @@ public class EventFilter extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a token in the <i>inhibit</i> port,
-     *  emit the most recent token from the <i>input</i> port. If there
-     *  has been no input token, or there is no token on the <i>inhibit</i>
-     *  port, emit nothing.
+    /** Consume at most one token from each channel of the
+     *  <i>input</i> port.  If any token is true, then output it on the
+     *  corresponding channel of the output port.  No false tokens
+     *  are ever output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

@@ -45,7 +45,7 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// Inhibit
 /**
-Output the most recent input token, unless the <i>inhibit</i> port receives a
+Output a received input token, unless the <i>inhibit</i> port receives a
 token.  If no token has been received on the <i>input</i> port when a
 token is received on the <i>inhibit</i> port, then no output is
 produced.  The inputs can be of any token type, and the output
@@ -60,9 +60,14 @@ the input port. If the width of the <i>output</i> is greater
 than that of the <i>input</i>, then the last few
 channels of the <i>output</i> will never emit tokens.
 <p>
+This actor is similar to the Sampler actor in that it modifies a
+stream of events based on the presence or absence of events from another
+input.  This actor reacts to the absence of the other event, whereas
+Sampler reacts to the presence of it.
 
 @author Steve Neuendorffer
 @version $Id$
+@see ptolemy.domains.de.lib.Sampler
 */
 
 public class Inhibit extends DETransformer {
@@ -111,10 +116,12 @@ public class Inhibit extends DETransformer {
         return newObject;
     }
 
-    /** If there is a token in the <i>inhibit</i> port,
-     *  emit the most recent token from the <i>input</i> port. If there
-     *  has been no input token, or there is no token on the <i>inhibit</i>
-     *  port, emit nothing.
+    /** Consume at most one token from each channel of the
+     *  <i>input</i> port.  If there is a token on the <i>inhibit</i>
+     *  port, then consume it and discard the input tokens.  If no
+     *  token is present on the <i>inhibit</i> port, then emit the
+     *  input tokens on the <i>output</i> port.  If there are no
+     *  input tokens then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

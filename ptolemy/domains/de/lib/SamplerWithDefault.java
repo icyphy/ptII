@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -45,40 +45,50 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// SamplerWithDefault
 /**
-Output the most recent input token when the <i>trigger</i> port receives a
-token.  If no token has been received on the <i>input</i> port when a
-token is received on the <i>trigger</i> port,
-then the value of the initialValue output is
-produced.  The inputs can be of any token type, and the output
-is constrained to be of a type at least that of the input.
-<p>
-Both the <i>input</i> port and the <i>output</i> port are multiports.
-Generally, their widths should match. Otherwise, if the width of the
-<i>input</i> is greater than
-the width of the <i>output</i>, the extra input tokens will
-not appear on any output, although they will be consumed from
-the input port. If the width of the <i>output</i> is greater
-than that of the <i>input</i>, then the last few
-channels of the <i>output</i> will never emit tokens.
-<p>
-Note that an event on the input port does not diretly cause an output event.
-Hence, this actor can be used to break feedback loops.
-<p>
-Note: If the width of the input changes during execution, then
-the most recent inputs are forgotten, as if the execution of the model
-were starting over.
-<p>
-This actor differs from the Sampler actor in how it handles the initial 
-condition.  If the initial conditions are not too critical (if, for instance,
-the first event to this actor is an <i>input</i> rather than a <i>trigger</i>)
-then it is easier to use the Sampler actor, since no properly typed initial
-value need be specified.  
+Output the most recent input token when the <i>trigger</i> port
+receives a token.  If no token has been received on the <i>input</i>
+port when a token is received on the <i>trigger</i> port, then the
+value of the <i>initialValue</i> parameter is produced.  The inputs
+can be of any token type, and the output is constrained to be of a
+type at least that of the input and the parameter.
+
+<p> Both the <i>input</i> port and the
+<i>output</i> port are multiports.  Generally, their widths should
+match. Otherwise, if the width of the <i>input</i> is greater than the
+width of the <i>output</i>, the extra input tokens will not appear on
+any output, although they will be consumed from the input port. If the
+width of the <i>output</i> is greater than that of the <i>input</i>,
+then the last few channels of the <i>output</i> will never emit
+tokens. 
+
+<p> Note: If the width of the input changes during
+execution, then the most recent inputs are forgotten, as if the
+execution of the model were starting over.  
+
+<p> This actor differs
+from the Sampler actor in how it handles the initial condition.  If
+the initial conditions are not too critical (if, for instance, the
+first event to this actor is an <i>input</i> rather than a
+<i>trigger</i>) then it is easier to use the Sampler actor, since no
+properly typed initial value need be specified.
 
 @author Steve Neuendorffer, Jie Liu, Edward A. Lee
 @version $Id$
 */
 
 public class SamplerWithDefault extends DETransformer {
+    /* FIXME: Ideally, the Sampler should have a parameter that can be
+    specified as 'absent' to indicate no initial output.  We should
+    figure out how to make this work with the type system and
+    expression language.
+    */
+    /* FIXME2: It would be nice to have a version of this actor
+       which is a Register.  The difference is that a register
+       ignores the value of its input at the current time until
+       after its output has been generated.  A register could be
+       used to break feedback loops, whereas this cannot.
+    */
+       
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -92,7 +102,6 @@ public class SamplerWithDefault extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);
-        input.delayTo(output);
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -124,7 +133,7 @@ public class SamplerWithDefault extends DETransformer {
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
+     *  has an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
@@ -132,18 +141,16 @@ public class SamplerWithDefault extends DETransformer {
             (SamplerWithDefault)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         newObject.initialValue.setTypeSameAs(newObject.input);
-        try {
-            newObject.input.delayTo(newObject.output);
-        } catch (IllegalActionException ex) {
-            // Ignore.
-        }    
+        // This is not strictly needed (since it is always recreated
+        // in preinitialize) but it is safer.
+        newObject._lastInputs = null;
         return newObject;
     }
 
     /** If there is a token in the <i>trigger</i> port,
      *  emit the most recent token from the <i>input</i> port. If there
      *  has been no input token, or there is no token on the <i>trigger</i>
-     *  port, emit the initialValue parameter.
+     *  port, emit the value of the <i>initialValue</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
