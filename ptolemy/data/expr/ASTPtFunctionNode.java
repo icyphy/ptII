@@ -554,9 +554,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 return new ArrayType(convertJavaTypeToTokenType(
                                              tokenClass.getComponentType()));
                 
+            } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
+                return BaseType.OBJECT;
             } else {
-                throw new IllegalActionException("unrecognized type "
-                        + tokenClass);
+                throw new IllegalActionException(
+                        "type not found: " + tokenClass);
             }
         } catch(ClassNotFoundException ex) {
             throw new IllegalActionException(null, ex, ex.getMessage());
@@ -643,6 +645,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 temp[j] = new FixToken((FixPoint)((FixPoint[])object)[j]);
             }
             retval = new ArrayToken(temp);
+        } else if(object instanceof Object) {
+            // Package into an ObjectToken.
+            retval = new ObjectToken(object);
         }
         return retval;
     }
