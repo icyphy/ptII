@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -42,7 +42,8 @@ import ptolemy.data.expr.ASTPtRootNode;
 //////////////////////////////////////////////////////////////////////////
 //// ComplexToken
 /**
-A token that contains a Complex.
+A token that contains a Complex number represented by a 64-bit
+double-precision floating point real and imaginary parts.
 
 @see ptolemy.data.Token
 @see ptolemy.math.Complex
@@ -92,7 +93,9 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of ComplexToken.
-     *  This method does lossless conversion.
+     *  This method does lossless conversion.  The units of the
+     *  returned token will be the same as the units of the given
+     *  token.  
      *  If the argument is already an instance of ComplexToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below ComplexToken in the type hierarchy, it is converted to
@@ -120,19 +123,22 @@ public class ComplexToken extends ScalarToken {
         compare = TypeLattice.compare(BaseType.DOUBLE, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             DoubleToken doubleToken = DoubleToken.convert(token);
-            return new ComplexToken(doubleToken.complexValue());
+            ComplexToken result = new ComplexToken(doubleToken.complexValue());
+            result._unitCategoryExponents =
+                doubleToken._copyOfCategoryExponents();
+            return result;        
         }
-
+        
         // The argument is below ComplexToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "complex"));
     }
 
-    /** Return true if the argument is an instance of ComplexToken with the
-     *  same value.
+    /** Return true if the argument's class is IntToken and it has the
+     *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of ComplexToken with the
+     *  @return True if the argument is a ComplexToken with the
      *  same value.
      */
     public boolean equals(Object object) {

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -41,10 +41,12 @@ import ptolemy.data.type.TypeLattice;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
 /**
-A token that contains a double precision number.
-<p>
-Note that a double cannot be losslessly converted to a long, and vice
-versa, as both have 64 bit representations in Java.
+A token that contains a 64-bit signed mantissa, signed exponent double
+precision floating-point number (IEEE 754).  This class handles overflow and
+underflow as does normal java arithmetic on doubles. 
+
+ <p> Note that a double cannot be losslessly converted to a long, and
+vice versa, as both have 64-bit representations in Java.
 
 @see ptolemy.data.Token
 @author Neil Smyth, Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
@@ -90,7 +92,8 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of DoubleToken.
-     *  This method does lossless conversion.
+     *  This method does lossless conversion.  The units of the returned
+     *  token will be the same as the units of the given token.
      *  If the argument is already an instance of DoubleToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below DoubleToken in the type hierarchy, it is converted to
@@ -119,7 +122,8 @@ public class DoubleToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken intToken = IntToken.convert(token);
             DoubleToken result = new DoubleToken(intToken.doubleValue());
-            result._unitCategoryExponents = intToken._copyOfCategoryExponents();
+            result._unitCategoryExponents = 
+                intToken._copyOfCategoryExponents();
             return result;
         } else {
             throw new IllegalActionException(
@@ -134,10 +138,10 @@ public class DoubleToken extends ScalarToken {
         return _value;
     }
 
-    /** Return true if the argument is an instance of DoubleToken with the
-     *  same value.
+    /** Return true if the argument's class is DoubleToken and it has the
+     *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of DoubleToken with the
+     *  @return True if the argument is a DoubleToken with the
      *  same value.
      */
     public boolean equals(Object object) {

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
+@AcceptedRating Green (wbwu@eecs.berkeley.edu)
 
 */
 
@@ -38,7 +38,11 @@ import ptolemy.data.type.*;
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
 /**
-A token that contains an long integer.
+A token that contains a signed 64-bit long integer.  Generally, this
+class handles overflow the same way that overflow for Java native
+types are handled.  In other words, overflow just past
+java.lang.Long.MAX_VALUE results in negative values close to
+java.lang.Long.MIN_VALUE.
 
 @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
 @version $Id$
@@ -74,13 +78,14 @@ public class LongToken extends ScalarToken {
     ////                         public methods                    ////
 
     /** Convert the specified token into an instance of LongToken.
-     *  This method does lossless conversion.
-     *  If the argument is already an instance of LongToken,
+     *  This method does lossless conversion.  The units of the
+     *  returned token will be the same as the units of the given
+     *  token.  If the argument is already an instance of LongToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below LongToken in the type hierarchy, it is converted to
-     *  an instance of LongToken or one of the subclasses of
-     *  LongToken and returned. If none of the above condition is
-     *  met, an exception is thrown.
+     *  an instance of LongToken or one of the subclasses of LongToken
+     *  and returned. If none of the above condition is met, an
+     *  exception is thrown.
      *  @param token The token to be converted to a LongToken.
      *  @return A LongToken.
      *  @exception IllegalActionException If the conversion
@@ -102,17 +107,20 @@ public class LongToken extends ScalarToken {
         compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken intToken = IntToken.convert(token);
-            return new LongToken(intToken.longValue());
+            LongToken result = new LongToken(intToken.longValue());
+            result._unitCategoryExponents =
+                intToken._copyOfCategoryExponents();
+            return result;       
         }
 
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "long"));
     }
 
-    /** Return true if the argument is an instance of LongToken with the
-     *  same value.
+    /**  Return true if the argument's class is LongToken and it has the
+     *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of LongToken with the
+     *  @return True if the argument is a LongToken with the
      *  same value.
      */
     public boolean equals(Object object) {
@@ -202,7 +210,8 @@ public class LongToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise AND of this token and
-     *  the given token.
+     *  the given token.  It is assumed that the type of the argument
+     *  is an LongToken.
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
@@ -210,7 +219,8 @@ public class LongToken extends ScalarToken {
         return new LongToken(sum);
     }
 
-   /** Returns a token representing the bitwise NOT of this token.
+    /** Returns a token representing the bitwise NOT of this token.  It
+     *  is assumed that the type of the argument is an LongToken.
      *  @return The bitwise NOT of this token.
      */
     protected ScalarToken _bitwiseNot() {
@@ -219,7 +229,8 @@ public class LongToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise OR of this token and
-     *  the given token.
+     *  the given token.  It is assumed that the type of the argument
+     *  is an LongToken.
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
@@ -228,7 +239,8 @@ public class LongToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise XOR of this token and
-     *  the given token.
+     *  the given token.  It is assumed that the type of the argument
+     *  is an LongToken.
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {

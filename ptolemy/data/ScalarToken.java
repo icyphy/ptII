@@ -25,9 +25,9 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
-setUnitCategory seems to violate immutability.
-_unitString should use StringBuffer.
+@AcceptedRating Green (yuhong@eecs.berkeley.edu)
+FIXME: setUnitCategory seems to violate immutability.
+FIXME: _unitString should use StringBuffer.
 */
 
 package ptolemy.data;
@@ -1030,8 +1030,7 @@ public abstract class ScalarToken extends Token
      *  argument Token.  It is guaraunteed by the caller that the type
      *  and units of the argument is the same as the type of this
      *  class.  This method should be overridden in derived classes to
-     *  provide type-specific operation and return a token of the
-     *  appropriate subclass.
+     *  provide type-specific operation.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
@@ -1045,8 +1044,7 @@ public abstract class ScalarToken extends Token
      *  Token.  It is guaraunteed by the caller that the type and
      *  units of the argument is the same as the type of this class.
      *  This method should be overridden in derived classes to provide
-     *  type-specific operation and return a token of the appropriate
-     *  subclass.
+     *  type-specific operation.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
+@AcceptedRating Green (wbwu@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -118,10 +118,10 @@ public class BooleanToken extends AbstractConvertibleToken
                 notSupportedConversionMessage(token, "boolean"));
     }
 
-    /** Return true if the argument is an instance of BooleanToken with the
-     *  same value.
+    /** Return true if the argument's class is BooleanToken and it has the
+     *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of BooleanToken with the
+     *  @return True if the argument is a BooleanToken with the
      *  same value.
      */
     public boolean equals(Object object) {

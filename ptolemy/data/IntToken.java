@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
+@AcceptedRating Green (wbwu@eecs.berkeley.edu)
 
 */
 
@@ -41,7 +41,10 @@ import ptolemy.data.type.*;
 //////////////////////////////////////////////////////////////////////////
 //// IntToken
 /**
-A token that contains an integer number.
+A token that contains a signed 32-bit integer number.  Generally, this
+class handles overflow the same way that overflow Java native types
+are handled. In other words, overflow just past java.lang.Integer.MAX_VALUE
+results in negative values close to java.lang.Integer.MIN_VALUE.
 
 @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
 @version $Id$
@@ -86,12 +89,14 @@ public class IntToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of IntToken.
-     *  This method does lossless conversion.  If the argument is
-     *  already an instance of IntToken, it is returned without any
-     *  change. Otherwise, if the argument is below IntToken in the
-     *  type hierarchy, it is converted to an instance of IntToken or
-     *  one of the subclasses of IntToken and returned. If none of the
-     *  above condition is met, an exception is thrown.
+     *  This method does lossless conversion.  The units of the
+     *  returned token will be the same as the units of the given
+     *  token.  If the argument is already an instance of IntToken, it
+     *  is returned without any change. Otherwise, if the argument is
+     *  below IntToken in the type hierarchy, it is converted to an
+     *  instance of IntToken or one of the subclasses of IntToken and
+     *  returned. If none of the above condition is met, an exception
+     *  is thrown.
      *  @param token The token to be converted to a IntToken.
      *  @return A IntToken.
      *  @exception IllegalActionException If the conversion
@@ -114,7 +119,10 @@ public class IntToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             UnsignedByteToken unsignedByteToken =
 	      UnsignedByteToken.convert(token);
-            return new IntToken(unsignedByteToken.intValue());
+            IntToken result = new IntToken(unsignedByteToken.intValue());
+            result._unitCategoryExponents =
+                unsignedByteToken._copyOfCategoryExponents();
+            return result;        
         }
 
         // The argument is below UnsignedByteToken in the type hierarchy,
@@ -130,10 +138,10 @@ public class IntToken extends ScalarToken {
         return (double)_value;
     }
 
-    /** Return true if the argument is an instance of IntToken with the
-     *  same value.
+    /** Return true if the argument's class is IntToken and it has the
+     *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of IntToken with the
+     *  @return True if the argument is an IntToken with the
      *  same value.
      */
     public boolean equals(Object object) {
@@ -212,8 +220,8 @@ public class IntToken extends ScalarToken {
 
     /** Return a ScalarToken containing the absolute value of the
      *  value of this token. If this token contains a non-negative
-     *  number, it is returned directly; otherwise, a new token is is
-     *  return.  Note that it is explicitly allowable to return this
+     *  number, it is returned directly; otherwise, a new token is
+     *  returned.  Note that it is explicitly allowable to return this
      *  token, since the units are the same.
      *  @return An IntToken.
      */
@@ -239,7 +247,8 @@ public class IntToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise AND of this token and
-     *  the given token.
+     *  the given token.  It is assumed that
+     *  the type of the argument is an IntToken.
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
@@ -256,7 +265,8 @@ public class IntToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise OR of this token and
-     *  the given token.
+     *  the given token.  It is assumed that
+     *  the type of the argument is an IntToken.
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
@@ -265,7 +275,8 @@ public class IntToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise XOR of this token and
-     *  the given token.
+     *  the given token.  It is assumed that
+     *  the type of the argument is an IntToken.
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
@@ -275,7 +286,7 @@ public class IntToken extends ScalarToken {
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is an IntToken
+     *  the type of the argument is an IntToken.
      *  @param rightArgument The token to divide this token by.
      *  @return A new IntToken containing the result.
      */

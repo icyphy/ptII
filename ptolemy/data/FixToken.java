@@ -136,13 +136,14 @@ public class FixToken extends ScalarToken {
     ////                         public methods                    ////
 
     /** Convert the specified token into an instance of FixToken.
-     *  This method does lossless conversion.
-     *  If the argument is already an instance of FixToken,
-     *  it is returned without any change. Otherwise, if the argument
-     *  is below FixToken in the type hierarchy, it is converted to
-     *  an instance of FixToken or one of the subclasses of
-     *  FixToken and returned. If none of the above conditions are
-     *  met, an exception is thrown.
+     *  This method does lossless conversion.  The units of the
+     *  returned token will be the same as the units of the given
+     *  token.  If the argument is already an instance of FixToken, it
+     *  is returned without any change. Otherwise, if the argument is
+     *  below FixToken in the type hierarchy, it is converted to an
+     *  instance of FixToken or one of the subclasses of FixToken and
+     *  returned. If none of the above conditions are met, an
+     *  exception is thrown.
      *  @param token The token to be converted to a FixToken.
      *  @return A FixToken.
      *  @exception IllegalActionException If the conversion
@@ -175,10 +176,10 @@ public class FixToken extends ScalarToken {
         return _value.doubleValue();
     }
 
-    /** Return true if the argument is an instance of FixToken with the
-     *  same value.
+    /** Return true if the argument's class is IntToken and it has the
+     *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of FixToken with the
+     *  @return True if the argument is a FixToken with the
      *  same value.
      */
     public boolean equals(Object object) {

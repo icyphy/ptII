@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@robotics.eecs.berkeley.edu)
+@ProposedRating Green (neuendor@robotics.eecs.berkeley.edu)
 @AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
 
 */
@@ -122,17 +122,19 @@ public class UnsignedByteToken extends ScalarToken {
         return new Complex((double)unsignedConvert(_value));
     }
 
-    /** Convert the specified token into an instance of UnsignedByteToken.
-     *  If the argument is already an instance of UnsignedByteToken, it is
-     *  returned without any change. Otherwise, if the argument is
-     *  above UnsignedByteToken in the type hierarchy or is incomparable with
-     *  UnsignedByteToken, an exception is thrown with a message stating that
-     *  either the conversion is not supported, or the types are
-     *  incomparable.  If none of the above conditions is met, then the
-     *  argument must be below UnsignedByteToken in the type hierarchy.
-     *  However, not such types exist at this time, so an exception is
-     *  thrown with a message stating simply that the conversion is
-     *  not supported.
+    /** Convert the specified token into an instance of
+     *  UnsignedByteToken.  The units of the returned token will be
+     *  the same as the units of the given token.  If the argument is
+     *  already an instance of UnsignedByteToken, it is returned
+     *  without any change. Otherwise, if the argument is above
+     *  UnsignedByteToken in the type hierarchy or is incomparable
+     *  with UnsignedByteToken, an exception is thrown with a message
+     *  stating that either the conversion is not supported, or the
+     *  types are incomparable.  If none of the above conditions is
+     *  met, then the argument must be below UnsignedByteToken in the
+     *  type hierarchy.  However, not such types exist at this time,
+     *  so an exception is thrown with a message stating simply that
+     *  the conversion is not supported.
      *  @param token The token to be converted to a UnsignedByteToken.
      *  @return A UnsignedByteToken.
      *  @exception IllegalActionException If the conversion
@@ -155,18 +157,15 @@ public class UnsignedByteToken extends ScalarToken {
                 notSupportedConversionMessage(token, "byte"));
     }
 
-    /** Return the value in the token as a double.  First, the
-     *  unsignedConvert() method of this class is used to
-     *  convert the byte to an integer in the range 0 through 255.
-     *  Then this integer is cast to a double.
+    /** Return the value in the token as a double. 
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
         return (double)unsignedConvert(_value);
     }
 
-    /** Return true if the argument is an instance of
-     *  UnsignedByteToken with the same value.
+    /** Return true if the class of the argument is UnsignedByteToken,
+     *  and it has the same value as this token.
      *  @param object An instance of Object.
      *  @return True if the argument is an instance of
      *  UnsignedByteToken with the same value.
@@ -210,21 +209,14 @@ public class UnsignedByteToken extends ScalarToken {
         return _value;
     }
 
-    /** Return the value in the token as an integer.  The UnsignedByteToken
-     *  being converted to an integer represents a value in the range
-     *  0 through 255.  The unsignedConvert() method of this class is
-     *  used to convert the byte to an integer in the range 0 through
-     *  255.
+    /** Return the value in the token as an integer.  
      *  @return The byte value contained in this token as a int.
      */
     public int intValue() {
         return unsignedConvert(_value);
     }
 
-    /** Return the value in the token as a long.  The UnsignedByteToken being
-     *  converted to a long represents a value in the range 0 through
-     *  255.  The unsignedConvert() method of this class is used to
-     *  convert the byte to an integer in the range 0 through 255.
+    /** Return the value in the token as a long. 
      *  @return The byte value contained in this token as a long.
      */
     public long longValue() {
@@ -258,7 +250,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  value in the range 0 through 255.  Note that Java defines the
      *  byte as having a value ranging from -128 through 127, so 256
      *  is added if this value is negative.
-     *  @param value The byte to convert as an unsigned byte.
+     *  @param value The byte to convert to an unsigned byte.
      *  @return An integer in the range 0 through 255.
      */
     public static int unsignedConvert(byte value) {
@@ -309,7 +301,8 @@ public class UnsignedByteToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise AND of this token and
-     *  the given token.
+     *  the given token.  It is assumed that the type of the argument is
+     *  UnsignedByteToken.
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
@@ -318,7 +311,7 @@ public class UnsignedByteToken extends ScalarToken {
         return new UnsignedByteToken(sum);
     }
 
-   /** Returns a token representing the bitwise NOT of this token.
+    /** Returns a token representing the bitwise NOT of this token. 
      *  @return The bitwise NOT of this token.
      */
     protected ScalarToken _bitwiseNot() {
@@ -327,7 +320,8 @@ public class UnsignedByteToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise OR of this token and
-     *  the given token.
+     *  the given token.  It is assumed that the type of the argument is
+     *  UnsignedByteToken.
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
@@ -337,7 +331,8 @@ public class UnsignedByteToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise XOR of this token and
-     *  the given token.
+     *  the given token.  It is assumed that the type of the argument is
+     *  UnsignedByteToken.
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
@@ -353,7 +348,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  10 returns 25.  This method does not test for or attempt to
      *  prevent division by 0.
      *  @param rightArgument The token to divide this token by.
-     *  @return A new UnsignedByteToken containing the result.  */
+     *  @return A new UnsignedByteToken containing the result.
+     */
     protected ScalarToken _divide(ScalarToken rightArgument) {
         byte quotient = (byte) (unsignedConvert(_value)
                 / unsignedConvert(((UnsignedByteToken)rightArgument)
@@ -392,14 +388,12 @@ public class UnsignedByteToken extends ScalarToken {
 
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
-     *  UnsignedByteToken.  This method applies the unsignedConvert() method
-     *  this token's value and to the argument prior to comparison.
-     *  This ensures that the UnsignedByteTokens' values are interpreted as
-     *  being in the range 0 through 255 by the less-than operator.
+     *  UnsignedByteToken.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A new Token containing the result.  */
+     *  @return A new Token containing the result.  
+     */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         UnsignedByteToken convertedArgument = (UnsignedByteToken)rightArgument;
