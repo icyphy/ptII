@@ -86,9 +86,10 @@
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/comm/comm.xml"/>
             <input source="ptolemy/copernicus/copernicus.xml"/>
-            <input source="ptolemy/actor/lib/esoteric.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
+            <input source="ptolemy/actor/lib/esoteric.xml"/>
             <input source="ptolemy/actor/lib/image/image.xml"/>
+            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
             <input source="ptolemy/actor/hoc/hoc.xml"/>
             <input source="ptolemy/actor/lib/jmf/jmf.xml"/>
 	    <!-- matlab depends on Matlab being present -->
