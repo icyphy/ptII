@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -37,6 +37,8 @@ This is an interface for objects that debug listeners can be attached to.
 
 @author Jie Liu
 @version $Id$
+@see DebugListener
+@see DebugEvent
 */
 
 public interface Debuggable {
@@ -45,7 +47,7 @@ public interface Debuggable {
     ////                         public methods                    ////
 
     /** Add a debug listener.
-     *  If the listener is already in the set, do not add it again.
+     *  If the listener is already in the list, do not add it again.
      *  @param listener The listener to which to send debug messages.
      */
     public void addDebugListener(DebugListener listener);
