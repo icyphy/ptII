@@ -71,6 +71,25 @@ the icon that has a partial circle, a square and a triangle.
 9. In Framemaker, do Edit - Paste Special, and select Metafile
 
 
+Index entries
+-------------
+The top (T) is a text symbol for what is usually an index entry
+the bottom (upside down T) is for a cross reference.
+
+If you double click on a word that has a T so that it is highlighted
+and then go to Special -> Marker, the Marker index will come up.
+most of the Markers are of type index.
+
+Keywords such as actor names should have index entries.  To create 
+an index entry, double click on the word to highlight it, then go
+to Special -> Marker, select a Marker Type of Index, type in the 
+Marker Text, usually something like 'Ramp actor', then hit
+Edit Marker
+
+Usually, the cross references for are created automatically for the
+figures, so one does not spend much effort working on figures. 
+
+
 Converting to html
 ------------------
 http://ptolemy/~cxh/sa/quadralay.html covers the details, but basically
