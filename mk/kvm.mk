@@ -101,7 +101,7 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java:
 		echo "Copy the zip file from /users/ptII/vendors/sun/src/"; \
 		echo "See $PTII/ptolemy/java/lang/makefile for details"; \
 	fi
-	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)$(CLASSPATHSEPARATOR))" \
+	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
 	$(JAVA) $(JAVA_VERBOSE) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS) \
@@ -116,7 +116,7 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
 	@echo "# Compiling codegen kvm *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
-	$(JAVAC) -g:none $(JAVAC_VERBOSE) \
+	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
 		-bootclasspath $(KVM_CLASSES)  \
 		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
@@ -128,7 +128,7 @@ compile_kvm:
 	@echo "# Compiling non-codegen kvm *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
-	$(JAVAC) -g:none $(JAVAC_VERBOSE) \
+	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
 		-bootclasspath $(KVM_CLASSES)  \
 		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
