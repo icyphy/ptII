@@ -235,6 +235,18 @@ public class Philosopher extends CSPActor {
         return false;
     }
 
+    /** Set this actor to its intial state, i.e. not having nor waiting
+     *  for any chopsticks.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        gotLeft = false;
+        gotRight = false;
+        waitingLeft = false;
+        waitingRight = false;
+        _notifyListeners();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
