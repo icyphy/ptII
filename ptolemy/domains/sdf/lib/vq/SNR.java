@@ -84,7 +84,7 @@ public final class SNR extends SDFAtomicActor {
      *  
      *  Assume that the x and y framesize for both of the image has to be
      *  greater than zero. Assume that xframesize and yframesize of both image 
-     *  has to be the same, otherwise the SNR value becomes insiginficant.
+     *  has to be the same, otherwise the SNR value becomes insignificant.
      *  
      *  @exception IllegalActionException if :
      *   
