@@ -414,7 +414,6 @@ public class BasePNDirector extends ProcessDirector {
 	    _informOfWriteUnblock(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
             synchronized(smallestCapacityQueue) {
-                System.out.println("Notifying ........ All");
                 smallestCapacityQueue.notifyAll();
             }
         } catch (IllegalActionException e) {

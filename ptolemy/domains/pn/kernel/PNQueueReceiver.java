@@ -38,7 +38,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 
 import collections.LinkedList;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNQueueReceiver
@@ -178,24 +178,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
-    /** Reset the state variables in the receiver, so that the execution
-     *  can be started again.
-     *  @deprecated use reset() instead.
-     */
-    public void initialize() {
-	super.initialize();
-	_readpending = false;
-	_writepending = false;
-	_pause = false;
-	_terminate = false;
-    	_insideBoundaryCacheIsOn = false;
-    	_isInsideBoundaryValue = false;
-    	_outsideBoundaryCacheIsOn = false;
-    	_isOutsideBoundaryValue = false;
-    	_connectedBoundaryCacheIsOn = false;
-    	_isConnectedBoundaryValue = false;
-    }
-
     /** Return true if this receiver is connected to the inside of a 
      *  boundary port. A boundary port is an opaque port that is contained 
      *  by a composite actor. If this receiver is connected to the inside 
@@ -218,10 +200,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                      (ComponentEntity)innerPort.getContainer(); 
              Port outerPort = null; 
              ComponentEntity outerEntity = null; 
-             Enumeration enum = innerPort.connectedPorts(); 
-             
-             while( enum.hasMoreElements() ) {
-                 outerPort = (Port)enum.nextElement();
+
+             Iterator ports = innerPort.connectedPortList().iterator();              
+             while( ports.hasNext()) {
+                 outerPort = (Port)ports.next();
                  outerEntity = (ComponentEntity)outerPort.getContainer();
                  if( outerEntity == innerEntity.getContainer() ) {
 		     // The port container of this receiver is 
