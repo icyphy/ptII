@@ -50,6 +50,7 @@
 # 18) Warn if the clone method copies port or parameters
 # 19) Warn if there is no trailing newline
 # 20) Warn if the class comment has * on each line.
+# 21) Warn if printStackTrace() is used
 
 # Determine if we are on windows
 windows=no
@@ -332,6 +333,13 @@ do
 	results=`egrep '^[ ]\*' $file | egrep -v ':[ ]\*/'`
 	if [ "x$results" != "x" ]; then
 		echo "$file: may have leading * on each line in the class comment"
+		echo "$results"
+	fi
+
+        #21) Warn if printStackTrace() is used
+	results=`egrep 'printStackTrace\(\)' $file`
+	if [ "x$results" != "x" ]; then
+		echo "$file: calls printStackTrace(), use KernelException.stackTraceToString(ex) instead."
 		echo "$results"
 	fi
 done
