@@ -166,7 +166,7 @@ public class PtParser {
          ASTPtSimpleNode n = start();
          // Now evaluate the parse tree to obtain the resolved Token
          _ptToken = n.resolveTree();
-         //n.dump(" ");
+         n.dump(" ");
          System.out.println("Thank you, result is \f" + _ptToken.toString());  
      } catch (ParseException x) {
           str = "parse of " + stringIn + " failed: " + x.getMessage();
@@ -297,10 +297,15 @@ TOKEN : /* Numeric literals */
   < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 }
 
+TOKEN : /*Boolean literals */
+{
+    <BOOLEAN : ( "TRUE" | "true" | "True" | "FALSE" | "false" | "False") >
+}
+
 TOKEN : /* Function names */
 {
-	< ID: ( <LETTER> )+ ( ["0"-"9"] | <LETTER> )* >
-  | 	< #LETTER: ["a"-"z", "A"-"Z"] > 		
+	< ID: ( <LETTER> )+ ( ["0"-"9", "$", "@", "#"] | <LETTER> )* >
+  | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
 TOKEN : /* literal strings */
@@ -316,84 +321,95 @@ ASTPtSimpleNode start() #PtSimpleNode :
 	{ return jjtThis; }
 }
 
-void logicalOr() #PtLogicalNode :
+void logicalOr() #void :
 {Token x;}
 {
-    logicalAnd() ( 
-            x = <OR> logicalAnd()
-            {  jjtThis._tokenList.insertLast(x); }
-    )*
+   (
+           logicalAnd() ( 
+                   x = <OR> logicalAnd()
+                   {  jjtThis._tokenList.insertLast(x); }
+           )*
+   ) #PtLogicalNode(>1)
 }
 
-void logicalAnd() #PtLogicalNode :
+void logicalAnd() #void :
 {Token x;}
 {
-    logicalEquals() ( 
-            x = <AND> logicalEquals()
-            {  jjtThis._tokenList.insertLast(x); }
-    )*
+   (
+           logicalEquals() ( 
+                   x = <AND> logicalEquals()
+                   {  jjtThis._tokenList.insertLast(x); }
+           )*
+   ) #PtLogicalNode(>1)
 }
 
-void logicalEquals() #PtRelationalNode :
+void logicalEquals() #void :
 {Token x;}
 {
-    relational() ( 
-            ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
-            {
-                jjtThis._tokenList.insertLast(x);
-            }
-       )?
+   (
+           relational() ( 
+                   ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
+                   {
+                       jjtThis._tokenList.insertLast(x);
+                   }
+           )?
+   ) #PtRelationalNode(>1)
+
 }
 
-void relational() #PtRelationalNode :
+void relational() #void :
 {Token x;}
 {
-    sum() ( 
-            ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
-            {
-                jjtThis._tokenList.insertLast(x);
-            }
-       )?
+   (
+           sum() ( 
+                   ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
+                   {
+                       jjtThis._tokenList.insertLast(x);
+                   }
+           )?
+   ) #PtRelationalNode(>1)
 }
 
-void sum() #PtSumNode :
+void sum() #void :
 {Token x;}
 {
-    term() ( 
-	( x = <PLUS> | x = <MINUS> ) term()
-	{
-	  jjtThis._tokenList.insertLast(x);
-	}
-    )*
+   (
+           term() ( 
+                   ( x = <PLUS> | x = <MINUS> ) term()
+                   {
+                       jjtThis._tokenList.insertLast(x);
+                   }
+           )*
+   ) #PtSumNode(>1)
 }
 
-void term() #PtProductNode :
+void term() #void :
 {Token x;}
 {
-    unary() ( 
-	( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> ) unary()
-	{
-            jjtThis._tokenList.insertLast(x);
-	}
-    )*
+   (
+           unary() ( 
+                   ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> ) unary()
+                   {
+                       jjtThis._tokenList.insertLast(x);
+                   }
+           )*
+   ) #PtProductNode(>1)
 }
 
-/*in java no exponential operator, call Math.pow(a,b)
-void exp() #PtExpNode :
+
+void unary() #void :
 {}
 {
-    unary() ( LOOKAHEAD( <EXP> ) <EXP>  exp() )*
-}
-*/
+   (
+           <MINUS> element()
+           { jjtThis.isMinus = true;}
+   ) #PtUnaryNode
 
-void unary() #PtUnaryNode :
-{}
-{
-    <MINUS> element()
-      { jjtThis.isMinus = true;}
-
- |  <NOT> element()
-     { jjtThis.isNot = true;} 
+ |  
+   (
+           <NOT> element()
+           { jjtThis.isNot = true;} 
+   ) #PtUnaryNode
 
  |  element()
 }
@@ -412,13 +428,13 @@ String tidied, x;
                 if ( x.endsWith("f") ) {                   
                     Float value = new Float(x.substring(0, len-1 ));
                     // FIXME: need to add a FLOATTOKEN
-                    jjtThis._ptToken = new pt.data.DoubleToken(value.floatValue());
+                    jjtThis._ptToken = new DoubleToken(value.floatValue());
                 } else if ( x.endsWith("d") ) {                   
                     Double value = new Double(x.substring(0, len-1 ));
-                    jjtThis._ptToken = new pt.data.DoubleToken(value.doubleValue());
+                    jjtThis._ptToken = new DoubleToken(value.doubleValue());
                 } else {
                    Double value = new Double(x);
-                   jjtThis._ptToken = new pt.data.DoubleToken(value.doubleValue()); 
+                   jjtThis._ptToken = new DoubleToken(value.doubleValue()); 
                 }
             } catch (NumberFormatException ee) {
                 String str = "Unable to convert token " + token.image;
@@ -432,11 +448,11 @@ String tidied, x;
                 x = token.image.toLowerCase();
                 len = x.length();
                 if ( x.endsWith("l") ) {                   
-                    //Long value = new Long(x.substring(0, len-1 ));
-                    //jjtThis._ptToken = new LongToken(value.longValue());
+                    Long value = new Long(x.substring(0, len-1 ));
+                    jjtThis._ptToken = new LongToken(value.longValue());
                 } else {
                    Integer value = new Integer(x);
-                   jjtThis._ptToken = new pt.data.IntToken(value.intValue()); 
+                   jjtThis._ptToken = new IntToken(value.intValue()); 
                 }
             } catch (NumberFormatException ee) {
                 String str = "Unable to convert token " + token.image;
@@ -449,9 +465,19 @@ String tidied, x;
          // Now cut the " from each end of the string
         len = token.image.length();
         tidied = token.image.substring(1, (len -1));
-        jjtThis._ptToken = new pt.data.StringToken(tidied);
+        jjtThis._ptToken = new StringToken(tidied);
         //System.out.println("encountered a string \"" + tidied + "\"");    
     }
+
+  |  <BOOLEAN>
+      { 
+          if (token.image.equalsIgnoreCase("TRUE")) {
+              jjtThis._ptToken = new BooleanToken(true);
+          } else if (token.image.equalsIgnoreCase("FALSE")) {
+              jjtThis._ptToken = new BooleanToken(false);   
+          }
+      }   
+
 
   | "(" logicalOr() ")"
  
@@ -476,10 +502,6 @@ String tidied, x;
             jjtThis._ptToken = new pt.data.DoubleToken(Math.PI);
         } else if (token.image.equalsIgnoreCase("E")) {
             jjtThis._ptToken = new pt.data.DoubleToken(Math.E);
-        } else if (token.image.equalsIgnoreCase("TRUE")) {
-            jjtThis._ptToken = new pt.data.BooleanToken(true);
-        } else if (token.image.equalsIgnoreCase("FALSE")) {
-            jjtThis._ptToken = new pt.data.BooleanToken(false);
         } else {
             String str = " Param " + token.image + " not visible in ";
             throw new ParseException(str + "current scope");
