@@ -154,7 +154,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void fire() throws IllegalActionException {
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-
+        
         if (container == null) {
             throw new InvalidStateException("SDFDirector " + getName() +
                     " fired, but it has no container!");
@@ -171,7 +171,10 @@ public class SDFDirector extends StaticSchedulingDirector {
                             (ComponentEntity) actor, "Actor " +
                             "is not ready to fire.");
                 }
-                if (_debugging) _debug("Firing " + ((Nameable)actor).getName());
+
+                if(_debugging)
+                    _debug("Firing " + ((Nameable)actor).getFullName());
+
                 actor.fire();
                 _postfirereturns = _postfirereturns && actor.postfire();
             }
