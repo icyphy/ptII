@@ -45,7 +45,8 @@ EXTRA_SRCS = \
 	install.html \
 	ptII0.1release.html
 
-MISC_FILES =	$(DIRS)
+# The files in design and img are not under sccs because they are binaries. 
+MISC_FILES =	$(DIRS) design img
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
