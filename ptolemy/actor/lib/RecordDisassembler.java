@@ -52,16 +52,18 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// RecordDisassembler
 /**
-On each firing, read one RecordToken from the input port and sends out
+On each firing, read one RecordToken from the input port and send out
 the fields of the RecordToken to multiple output ports.
 The labels for the RecordToken must match the names of the output ports.
-To use this class, instantiate it, then add ports (instances
+To use this class, instantiate it, and then add output ports (instances
 of TypedIOPort).  This actor is polymorphic. The type constraint is that
 the type of each output port is no less than the type of the corresponding
-record field.
+record field. This constraint also ensures that each output port has a
+corresponding field in the input record token.
 
 @author Yuhong Xiong
 @version $Id$
+@see RecordAssembler
 */
 
 public class RecordDisassembler extends TypedAtomicActor {
@@ -86,7 +88,7 @@ public class RecordDisassembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. */
+    /** The input port. Its type is constrained to be a RecordType. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
@@ -115,7 +117,7 @@ public class RecordDisassembler extends TypedAtomicActor {
 	}
     }
 
-    /** Return the type constrains of this actor. The type constraint is
+    /** Return the type constraints of this actor. The type constraint is
      *  that the type of the output ports is no less than the type of the
      *  fields of the output RecordToken.
      *  @return a list of Inequality.

@@ -54,13 +54,14 @@ import java.util.List;
 /**
 On each firing, read one token from each input port and assemble them
 into a RecordToken. The labels for the RecordToken are the names of the
-input ports.  To use this class, instantiate it, then add ports (instances
-of TypedIOPort).  This actor is polymorphic. The type constraint is that
-the type of each record field is no less than the type of the corresponding
-input port.
+input ports.  To use this class, instantiate it, and then add input ports
+(instances of TypedIOPort).  This actor is polymorphic. The type constraint
+is that the type of each record field is no less than the type of the
+corresponding input port.
 
 @author Yuhong Xiong
 @version $Id$
+@see RecordDisassember
 */
 
 public class RecordAssembler extends TypedAtomicActor {
@@ -85,7 +86,7 @@ public class RecordAssembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The output port. */
+    /** The output port. Its type is constrained to be a RecordType. */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -96,11 +97,6 @@ public class RecordAssembler extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        Director director = getDirector();
-        if (director == null) {
-            throw new IllegalActionException(this, "No director!");
-        }
-
         Object[] portArray = inputPortList().toArray();
 	int size = portArray.length;
 
@@ -138,7 +134,7 @@ public class RecordAssembler extends TypedAtomicActor {
 	return true;
     }
 
-    /** Return the type constrains of this actor. The type constraint is
+    /** Return the type constraints of this actor. The type constraint is
      *  that the type of the fields of the output RecordToken is no less
      *  than the type of the corresponding input ports.
      *  @return a list of Inequality.
