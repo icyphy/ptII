@@ -999,7 +999,7 @@ if [ "$error" = "none" ]; then
 	echo "goto start" >> $commandname.bat
 	echo ":stop" >> $commandname.bat
 	echo "" >> $commandname.bat
-	echo "$makebatstr %params%" > $commandname.bat
+	echo "$makebatstr %params%" >> $commandname.bat
 	echo "pause" >> $commandname.bat
     else
 	eval exec $str
