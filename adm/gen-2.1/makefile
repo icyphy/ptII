@@ -96,6 +96,7 @@ PTII_TOPDIR=	.cshrc \
 		configure.in \
 		copyright.txt \
 		doc \
+		jni \
 		lib \
 		makefile \
 		mk \
