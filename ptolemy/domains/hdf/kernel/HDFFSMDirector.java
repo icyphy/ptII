@@ -204,16 +204,16 @@ public class HDFFSMDirector extends FSMDirector {
     /** Get the number of firings per iteration of this director.
      *  @return The number of firings per iteration of this director.
      */
-    public int getFiringsPerIteration() {
-        return _firingsPerIteration;
-    }
+    //public int getFiringsPerIteration() {
+    //    return _firingsPerIteration;
+    //}
 
     /** Get the number of firings so far of this director.
      *  @return The number of firings so far.
      */
-    public int getFiringsSoFar() {
-        return _firingsSoFar;
-    }
+    //public int getFiringsSoFar() {
+    //    return _firingsSoFar;
+    //}
 
     /** If this method is called immediately after preinitialze(),
      *  initialize the mode controller and all the refinements.
