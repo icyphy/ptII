@@ -98,6 +98,7 @@ JSRCS = \
 	InsideEntityEditorPaneFactory.java \
 	JNLPUtilities.java \
 	JVMTableau.java \
+	LevelSkippingTableauFactory.java \
 	LocationAttribute.java \
 	MatrixPane.java \
 	MatrixTokenTableau.java \
