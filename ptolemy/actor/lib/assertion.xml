@@ -32,16 +32,6 @@ Otherwise, nothing happens.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 15.0">
         </property>
     </property>
-    <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException">
-        <property name="message" class="ptolemy.kernel.util.StringAttribute" value="Model triggered an exception.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 140.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="!(assertion)">
         </property>
@@ -57,8 +47,18 @@ Otherwise, nothing happens.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <entity name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError">
+        <property name="message" class="ptolemy.kernel.util.StringAttribute" value="A model error.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 140.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ThrowException.input" relation="relation"/>
-    <link port="Expression.output" relation="relation"/>
+    <link port="Expression.output" relation="relation2"/>
+    <link port="ThrowModelError.input" relation="relation2"/>
 </class>
