@@ -89,6 +89,7 @@ JSRCS = \
 	Sine.java \
 	Sink.java \
 	Source.java \
+	SquareRoot.java \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
@@ -126,3 +127,4 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
