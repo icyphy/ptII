@@ -317,7 +317,7 @@ nonjsall:
 	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
 		set $(NONJSALLDIRS); \
 		for x do \
-		    if [ -w $$x ] ; then \
+		    if [ -w $(PTIIHOME)/$$x ] ; then \
 			( cd $(PTIIHOME)/$$x ; \
 			echo making tests  in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
