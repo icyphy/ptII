@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/giotto
 
-DIRS =		kernel demo doc test
+DIRS =		kernel demo doc test cgc
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -47,7 +47,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar
+		kernel/kernel.jar \
+                cgc/cgc.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -59,7 +60,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel doc test
+MISC_FILES =	kernel doc test cgc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
