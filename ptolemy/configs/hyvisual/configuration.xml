@@ -3,6 +3,16 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
 
+
+
+
+  <!-- NOTE:  If you add .xml files to this directory, be sure to
+       add them to the makefile
+    -->
+
+
+
+
   <doc>Configuration for Hybrid Systems</doc>
   <!-- Specify the about file to open. -->
   <property name="_about"
