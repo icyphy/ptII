@@ -894,6 +894,9 @@ public class Pxgraph extends Frame {
                 show();
                 printgraphics.dispose();
                 printjob.end();
+                if (_printDialog) {
+                    System.exit(0);
+                }
             } else {
                 printjob.end();
             }
