@@ -181,7 +181,7 @@ public class LogicFunction extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
 
     /** Calculate the function on the given arguments.
@@ -190,7 +190,7 @@ public class LogicFunction extends Transformer {
      *  @return The result of applying the function.
      *  @exception IllegalActionException Possibly thrown by BooleanToken.
      */
-    private BooleanToken _updateFunction(BooleanToken in, BooleanToken old)
+    protected BooleanToken _updateFunction(BooleanToken in, BooleanToken old)
             throws IllegalActionException {
         Token result;
         if (old == null) {
@@ -221,18 +221,18 @@ public class LogicFunction extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     // An indicator for the function to compute.
     // Valid values are _AND, _OR, and _XOR.
-    private int _function;
+    protected int _function;
 
     // An indicator for negating the final result.
-    private boolean _negate;
+    protected boolean _negate;
 
     // Constants used for more efficient execution.
-    private static final int _AND = 0;
-    private static final int _OR  = 1;
-    private static final int _XOR = 2;
+    protected static final int _AND = 0;
+    protected static final int _OR  = 1;
+    protected static final int _XOR = 2;
 }
 
