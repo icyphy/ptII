@@ -574,3 +574,148 @@ test MoMLChangeRequest-5.1 {getDeferredToParent} {
 	    == [java::null]}] 
     list $r1 $r2
 } {1 1}
+
+
+######################################################################
+####
+#
+set baseModel6 {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" value="2"/>
+    </property>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLChangeRequest-6.1 {setReportErrorsToHandler} {
+    # Usually, reportToHandler is set to false
+
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    $parser setErrorHandler $recorderErrorHandler
+
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel6]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+    $toplevel setManager $manager
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".top">
+	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
+        </entity>
+    }]
+
+
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    $change addChangeListener $listener
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $change
+    $toplevel exportMoML
+    $recorderErrorHandler getMessages	
+} {}
+
+######################################################################
+####
+# Procedure used to test setReportErrorsToHandler
+proc testSetReportErrorsToHandler {reportErrorsToHandler} {
+
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    $parser setErrorHandler $recorderErrorHandler
+
+    set baseModel6 {<?xml version="1.0" standalone="no"?>
+    <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+    <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" value="2"/>
+    </property>
+    </entity>
+    }
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel6]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+    $toplevel setManager $manager
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".top">
+	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
+        </entity>
+    }]
+
+
+    $change setReportErrorsToHandler $reportErrorsToHandler
+
+    # We need a ChangeListener at the top
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    $toplevel addChangeListener $listener
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $change
+    $toplevel exportMoML
+    $printStream flush	
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list [string range $output 0 451] \
+	    [string range [$recorderErrorHandler getMessages] 0 451]
+}
+
+######################################################################
+####
+#
+test MoMLChangeRequest-6.1 {setReportErrorsToHandler true (the default) } {
+    # Usually, reportToHandler is set to false.  This test tests
+    # the default condition where the error gets popped up to
+    # the listener
+
+    testSetReportErrorsToHandler false
+} {{StreamChangeRequest.changeFailed(): 
+        <entity name=".top">
+	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
+        </entity>
+     failed: com.microstar.xml.XmlException: XML element "entity" triggers exception. in [external stream] at line 3 and column 47
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
+Because:
+Could not find 'ptolemy/actor/lib/XXX.xml' or 'ptolemy/actor/lib/XXX.moml} {}}
+
+
+
+######################################################################
+####
+#
+test MoMLChangeRequest-6.2 {setReportErrorsToHandler true} {
+    testSetReportErrorsToHandler true
+} {{StreamChangeRequest.changeExecuted(): 
+        <entity name=".top">
+	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
+        </entity>
+     succeeded
+} {RecorderErrorHandler: Error encountered in:
+<entity name="const" class="ptolemy.actor.lib.XXX">
+ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
+Because:
+Could not find 'ptolemy/actor/lib/XXX.xml' or 'ptolemy/actor/lib/XXX.moml' using base 'null':  in [external stream] at line 3 and column 47
+Caused by:
+ com.microstar.xml.XmlException: -- no protocol: ptolemy/actor/lib/XXX.xml
+-- XML file not found relative to cl}}
