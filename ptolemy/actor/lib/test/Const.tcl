@@ -186,4 +186,45 @@ test Const-2.8 {check types of the above model} {
 } {{{{name=string, value=int}}} {{{name=string, value=int}}}}
 
 
+test Const-3.0 {check out ReadFile} {
+    # Create a file Const.txt that contains the string "foo"
+    set fd [open Const.txt w]
+    puts $fd {"foo"}
+    flush $fd
+    close $fd
+    
+    set e0 [sdfModel]
+    set const [java::new ptolemy.actor.lib.Const $e0 const]
+    set p [getParameter $const value]
+    $p setExpression {eval(readFile("Const.txt"))}
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {"foo"}
+
+test Const-3.1 {check out ReadFile with a multiline file} {
+    # Create a file Const.txt that contains the three lines
+    set fd [open Const.txt w]
+    puts $fd {"}
+    puts $fd {bar}
+    puts $fd {"}
+
+    flush $fd
+    close $fd
+    
+    set e0 [sdfModel]
+    set const [java::new ptolemy.actor.lib.Const $e0 const]
+    set p [getParameter $const value]
+    $p setExpression {eval(readFile("Const.txt"))}
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {}
+
 # FIXME: Need a mechanism to test a change in parameter during a run.
