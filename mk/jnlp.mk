@@ -195,12 +195,7 @@ ALL_JNLP_JARS = \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR)
 
-# Script to update a *.jnlp file with the proper jar files
-MKJNLP =		$(PTII)/bin/mkjnlp
 
-
-# JNLP files that do the actual installation
-JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -215,6 +210,12 @@ KEYALIAS = claudius
 STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
 KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
 KEYTOOL = $(PTJAVA_DIR)/bin/keytool
+
+# Script to update a *.jnlp file with the proper jar files
+MKJNLP =		$(PTII)/bin/mkjnlp
+
+# JNLP files that do the actual installation
+JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
