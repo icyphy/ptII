@@ -154,25 +154,29 @@ public class CodeStream {
     private static String _filePath = "C:\\Program Files\\eclipse\\workspace\\ptII\\ptolemy\\codegen\\c\\actor\\lib\\";
             // "xxxxxxCLASSPATHxxxxxx/" + /ptII/ptolemy/codegen/c/actor/lib/"; //"xxxxxxCLASSPATHxxxxxx/";
 
+    
+    
+    
+    
+    
+    /**
+     * ********* Testing Main ***********************************
+     */
     private static String _appendCodeBlock_testing(String className, String blockName) throws IllegalActionException, IOException {
-        //try {
-            BufferedReader br = FileUtilities.openForReading(_filePath + className+".c", null, null);
-            StringBuffer codeBlock = _fetchCodeBlock(br, blockName);     // fetch the code within the file            
-            return codeBlock.toString();
-        //} catch (IOException e) {
-        //    throw new IllegalActionException ("Cannot open file: " + className + ".c");
-        //} 
+    	BufferedReader br = FileUtilities.openForReading(_filePath + className+".c", null, null);
+    	StringBuffer codeBlock = _fetchCodeBlock(br, blockName);     // fetch the code within the file            
+    	return codeBlock.toString();
     }
 
     public static void main(String[] arg) throws IOException, IllegalActionException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     	String className, blockName;
-        System.out.println("testing-----------------");
-        System.out.println("please input class name: ");
-        //className = in.readLine();
-        System.out.println("please input code block name: ");
-        //blockName = in.readLine();
-        
-        System.out.println(CodeStream._appendCodeBlock_testing("Accumulator", "codeBlock"));
+        System.out.println("----------Testing-----------------");
+        System.out.print("please input class name: ");
+        className = in.readLine();
+        System.out.print("please input code block #: ");
+        blockName = in.readLine();
+        System.out.println("\n----------Result----------------------------------");
+        System.out.println(CodeStream._appendCodeBlock_testing(className, "codeBlock" + blockName));
     }
 }
