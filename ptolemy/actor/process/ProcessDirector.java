@@ -239,8 +239,8 @@ public class ProcessDirector extends Director {
 		    IOPort port = (IOPort)actorPorts.nextElement();
 		    // Setting paused flag in the receivers..
 		    Receiver[][] receivers = port.getReceivers();
-		    for (int i=0; i<receivers.length; i++) {
-			for (int j=0; j<receivers[i].length; j++) {
+		    for (int i = 0; i < receivers.length; i++) {
+			for (int j = 0; j < receivers[i].length; j++) {
 			    nextRec = (ProcessReceiver)receivers[i][j];
 			    nextRec.setPause(true);
 			    _pausedReceivers.insertFirst(receivers[i][j]);
