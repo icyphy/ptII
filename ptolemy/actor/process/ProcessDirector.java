@@ -102,8 +102,8 @@ public class ProcessDirector extends Director {
     ////                         public methods                    ////
 
     /** Clone the director into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
+     *  <i>not</i> added to the directory of that workspace (It must be added
+     *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
      *  and no mutation listeners. The count of active proceses is zero 
      *  and it is not paused.
@@ -111,7 +111,7 @@ public class ProcessDirector extends Director {
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
-     *  @return The new CSPDirector.
+     *  @return The new ProcessDirector.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
@@ -127,7 +127,7 @@ public class ProcessDirector extends Director {
     /** Decrease the number of active processes under the control of 
      *  this director by 1. Also checks if the model is now paused
      *  if a pause was requested.
-     *  This method should be called only when an active thread that was
+     *  This method shall be called only when an active thread that was
      *  registered using increaseActiveCount() is terminated.
      */
     public synchronized void decreaseActiveCount() {
@@ -142,7 +142,7 @@ public class ProcessDirector extends Director {
 
     /** This normally waits till the detection of a deadlock.
      *  In the base class this waits for all process threads to terminate.
-     * @exception IllegalActionException If a derived class throws it.
+     *  @exception IllegalActionException If a derived class throws it.
      */
     public void fire()
 	    throws IllegalActionException {
@@ -195,7 +195,7 @@ public class ProcessDirector extends Director {
     }
 
     /** This method increases the number of paused threads and checks if the
-     *  entire model has sucessfuly paused.
+     *  entire model has sucessfully paused.
      */
     public synchronized void increasePausedCount() {
         _actorsPaused++;
@@ -215,7 +215,7 @@ public class ProcessDirector extends Director {
 
 
     /** Return true indicating that the director is ready to be fired. This
-     *  starts a thread corresponding to all the actors that were created
+     *  starts the threads, corresponding to all the actors, that were created
      *  in the initialize() method.
      *  @return true Always returns true.
      *  @exception IllegalActionException If a derived class throws it.
@@ -295,12 +295,12 @@ public class ProcessDirector extends Director {
         (new NotifyThread(_pausedReceivers)).start();
         
         return;
-        //} finally {
-        //workspace().doneReading();
-        //}
     }
     
     /** Resumes execution of the model. If the model is not paused do nothing.
+     *  Only the actors currently in the topology are resumed. The actors 
+     *  that were removed from the model while the execution was paused are
+     *  not resumed.
      */
     public synchronized void setResumeRequested() {
         if (!_pauseRequested) {
@@ -350,7 +350,7 @@ public class ProcessDirector extends Director {
      *  <p>
      *  Note that the wrapup methods are not invoked on the actors
      *  under control of this director as each actor is executed by a
-     *  seperate thread.
+     *  seperate thread. They are called from the thread itself.
      *  <p>
      **  @exception IllegalActionException if a method accessing the topology
      *   throws it.
@@ -407,7 +407,8 @@ public class ProcessDirector extends Director {
     ////                         protected methods                 ////
 
     /** Checks for deadlock. In the base class implementation it 
-     *  returns true only if there are no active processes.
+     *  notifies the director of a deadlock only if there are no active 
+     *  processes.
      */
     protected synchronized void _checkForDeadlock() {
         if (_actorsActive == 0) {
@@ -419,11 +420,14 @@ public class ProcessDirector extends Director {
     }
 
     /** Checks if all active processes are either blocked or paused.
-     *  Should be overridden in derived classes.
+     *  Should be overridden in derived classes. In the base class it 
+     *  verifies if all the active actors are paused.
      */
     protected synchronized void _checkForPause() {
-	System.out.println("_checkForPause: No default implementation, " +
-                "should be overridden in derived classes.");
+        if (_actorsPaused >= _actorsActive) {
+	    _paused = true;
+            notifyAll();
+	}
        	return;
     }
 
