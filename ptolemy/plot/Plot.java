@@ -621,6 +621,7 @@ public class Plot extends PlotBox {
     /** Set the marks style to "none", "points", "dots", or "various".
      *  In the last case, unique marks are used for the first ten data
      *  sets, then recycled.
+     *  This method should be called only from the event dispatch thread.
      *  @param style A string specifying the style for points.
      */
     public synchronized void setMarksStyle(String style) {
