@@ -2,6 +2,9 @@
 
 /* Authors: Paul N. Hilfinger, Jeff Tsay */
 /* Copyright (C) 1995, 1997 by Paul N. Hilfinger.  All rights reserved.	*/
+/* Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.*/
 
 package ptolemy.lang.java;
 
