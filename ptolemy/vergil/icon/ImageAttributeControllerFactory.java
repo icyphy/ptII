@@ -114,4 +114,6 @@ public class ImageAttributeControllerFactory extends NodeControllerFactory {
     // change in size.  This will mean the change is undoable and
     // persistent.  See vergil.basic.LocatableNodeDragInteractor
     // for an example of such a mouseReleased() method.
+    
+    
 }
