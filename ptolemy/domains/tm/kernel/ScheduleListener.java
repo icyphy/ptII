@@ -49,4 +49,9 @@ public interface ScheduleListener {
     /** React to the given scheduling event.
      */
     public void event(String actorName, double time, int scheduleEvent);
+
+    static final int RESET_DISPLAY = -1;
+    static final int TASK_SLEEPING = 1;
+    static final int TASK_BLOCKED  = 2;
+    static final int TASK_RUNNING  = 3;
 }
