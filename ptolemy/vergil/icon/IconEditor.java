@@ -103,7 +103,7 @@ public class IconEditor {
             throws NameDuplicationException, IllegalActionException {
         AppContext context = new BasicFrame("Icon Editor", false);
         // Make a new instance of the IconEditor class.
-        IconEditor iconEditor = new IconEditor(context);
+        new IconEditor(context);
     }
 
     /**
@@ -221,8 +221,8 @@ public class IconEditor {
         URL Cubic = getClass().getResource("gifs/cubic.gif");
         URL Circle = getClass().getResource("gifs/circle.gif");
         URL Ellipse = getClass().getResource("gifs/ellipse.gif");
-        URL Fill = getClass().getResource("gifs/fill.gif");
-        URL Stroke = getClass().getResource("gifs/stroke.gif");
+        //URL Fill = getClass().getResource("gifs/fill.gif");
+        //URL Stroke = getClass().getResource("gifs/stroke.gif");
         URL More = getClass().getResource("gifs/more.gif");
         URL thickness1 = getClass().getResource("gifs/thickness1.gif");
         URL thickness2 = getClass().getResource("gifs/thickness2.gif");
@@ -375,7 +375,7 @@ public class IconEditor {
 
     // Here is the figure kept in memory for the "cut" or
     // "pasted" figure.
-    private VersatileFigure _cutOrCopiedFigure = null;
+    //private VersatileFigure _cutOrCopiedFigure = null;
 
     private JDialog _dialog;
 
@@ -384,7 +384,7 @@ public class IconEditor {
 
     // Constants for the program.  Decreasing MOUSE_SENSITIVITY will require
     // the user to be more precise when trying to click on figures.
-    private static final double MOUSE_SENSITIVITY = 4.0;
+    //private static final double MOUSE_SENSITIVITY = 4.0;
 
     // Defines the horizontal and vertical size of the main window.
     private static final int WINDOW_SIZE_HORIZONTAL = 600;

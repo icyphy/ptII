@@ -138,16 +138,16 @@ public class IconEditorPane extends JCanvas {
 
     // Create the combo box for the toolbars(pull-down menus)
 
-    private JComboBox _thicknessComboBox;
+    //private JComboBox _thicknessComboBox;
 
-    private JComboBox _fillComboBox;
+    //private JComboBox _fillComboBox;
 
-    private JComboBox _outlineComboBox;
+    //private JComboBox _outlineComboBox;
 
     // Used to distinguish which color we are changing, the fill of
     // the shape or the outline of the shape.
 
-    private boolean _changingFill;
+    //private boolean _changingFill;
 
     // The color chooser.
 
@@ -175,14 +175,14 @@ public class IconEditorPane extends JCanvas {
 
     // Blue and Gold(Go Bears!)
 
-    private Paint _strokeColor = new Color(255, 213, 20);
+    //private Paint _strokeColor = new Color(255, 213, 20);
 
-    private Paint _fillColor = new Color(0, 0, 170);
+    //private Paint _fillColor = new Color(0, 0, 170);
 
     // Here is the figure kept in memory for the "cut" or
     // "pasted" figure.
 
-    private VersatileFigure _cutOrCopiedFigure = null;
+    //private VersatileFigure _cutOrCopiedFigure = null;
 
     // Window objects
 
@@ -192,11 +192,11 @@ public class IconEditorPane extends JCanvas {
 
     //    private JCanvas this;
 
-    private JDialog _dialog;
+    //private JDialog _dialog;
 
     // The help "About" frame.
 
-    private JFrame _helpFrame;
+    //private JFrame _helpFrame;
 
     // Constants for the program.  Decreasing MOUSE_SENSITIVITY will require
     // the user to be more precise when trying to click on figures.
@@ -205,14 +205,14 @@ public class IconEditorPane extends JCanvas {
 
     // Defines the horizontal and vertical size of the main window.
 
-    private static final int WINDOW_SIZE_HORIZONTAL = 600;
+    //private static final int WINDOW_SIZE_HORIZONTAL = 600;
 
-    private static final int WINDOW_SIZE_VERTICAL = 300;
+    //private static final int WINDOW_SIZE_VERTICAL = 300;
 
     // This is the extension we allow for opening and saving files within the
     // program.
 
-    private static final String FILE_FORMAT_EXTENSION = "xml";
+    //private static final String FILE_FORMAT_EXTENSION = "xml";
 
     // The type of data that is operable via the cut, copy, and paste commands.
 

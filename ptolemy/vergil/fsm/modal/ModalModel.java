@@ -259,7 +259,7 @@ public class ModalModel extends TypedCompositeActor
                     if (entity.getPort(name) == null) {
                         try {
                             ((ModalController)entity)._mirrorDisable = true;
-                            Port newPort = entity.newPort(name);
+                            /*Port newPort = */ entity.newPort(name);
                             /* No longer needed since Yuhong modified
                              * the type system to allow UNKNOWN. EAL
                              if (newPort instanceof TypedIOPort) {
@@ -274,7 +274,7 @@ public class ModalModel extends TypedCompositeActor
                     if (entity.getPort(name) == null) {
                         try {
                             ((Refinement)entity)._mirrorDisable = true;
-                            Port newPort = entity.newPort(name);
+                            /*Port newPort = */ entity.newPort(name);
                             /* No longer needed since Yuhong modified
                              * the type system to allow UNKNOWN. EAL
                              if (newPort instanceof TypedIOPort) {

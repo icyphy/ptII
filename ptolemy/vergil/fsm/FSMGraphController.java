@@ -176,7 +176,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         // NOTE: This method name does not have a leading underscore
         // because it is a diva method.
         super.initializeInteraction();
-        GraphPane pane = getGraphPane();
+        /* GraphPane pane = */ getGraphPane();
 
         // Add a menu command to configure the ports.
         _portDialogFactory = new PortDialogFactory();
@@ -409,7 +409,6 @@ public class FSMGraphController extends FSMViewerGraphController {
             // Try to get the class name for the state from the library,
             // so that the library and the toolbar are assured of creating
             // the same object.
-            String className = "ptolemy.domains.fsm.kernel.State";
             try {
                 LibraryAttribute attribute = (LibraryAttribute)toplevel
                     .getAttribute("_library", LibraryAttribute.class);
