@@ -237,9 +237,10 @@ public class IterateOverArray extends TypedCompositeActor
     public Port newPort(String name) throws NameDuplicationException {
         try {
             IteratePort result = new IteratePort(this, name);
-            // FIXME: Is the following needed?  Why?
-            // result.setDerived(true);
-            // result.setPersistent(true);
+            // Prevent deletion via MoML (or name changes, for that matter).
+            result.setDerived(true);
+            // Force the port to be persistent despite being derived.
+            result.setPersistent(true);
             return result;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
