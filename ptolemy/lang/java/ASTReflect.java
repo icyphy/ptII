@@ -62,7 +62,9 @@ import ptolemy.lang.java.nodetypes.UserTypeDeclNode;
 import ptolemy.lang.java.nodetypes.VoidTypeNode;
 
 import java.io.File;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,7 +72,12 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTReflect.
-/** Create an AST for a class by using reflection.
+/** Create an Abstract Syntax Tree (AST) for a class by using reflection.
+
+These methods operate on Java code that has been compiled
+and is available at runtime for inspection by using the Java reflection
+capability.
+
 @version $Id$
 @author Christopher Hylands
  */
@@ -79,7 +86,10 @@ public class ASTReflect {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an AST that contains a class declaration. */
+    /** Use reflection to generate the ClassDeclNode of a class.
+     *  @param myClass The class to be analyzed.
+     *  @return The ClassDeclNode of that class. 
+     */
     public static ClassDeclNode ASTClassDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
@@ -104,31 +114,7 @@ public class ASTReflect {
 	    NameNode interfaceName =
 	    	(NameNode) _makeNameNode(interfaceClasses[i].getName());
 
-	    TypeNode interfaceDeclNode =
-                new TypeNameNode(interfaceName);
-
-	    //String fullInterfaceName = interfaceClasses[i].getName();
-	    // FIXME: We should probably use the fully qualified name here?
-	    //TypeNode interfaceDeclNode =
-            //    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-            //            fullInterfaceName.substring(1 +
-            //                    fullInterfaceName.lastIndexOf('.')
-            //                                        )));
-
-	    //TypeNode interfaceDeclNode =
-            //    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-            //           fullInterfaceName));
-
-
-	    // FIXME: The output of Skelton does not seem to use
-	    // InterfaceDeclNode?
-	    //
-	    //InterfaceDeclNode interfaceDeclNode =
-	    //	new InterfaceDeclNode(modifiers,
-	    //			      interfaceName,
-	    //			      /* interfaces */ new LinkedList(),
-	    //			      /* members */ new LinkedList());
-
+	    TypeNode interfaceDeclNode = new TypeNameNode(interfaceName);
 	    interfaceList.add(interfaceDeclNode);
 	}
 
@@ -153,7 +139,8 @@ public class ASTReflect {
             superClass = new TypeNameNode((NameNode)_makeNameNode("Object"));
         } else {
             superClass =
-		new TypeNameNode((NameNode)_makeNameNode(myClass.getSuperclass().getName()));
+		new TypeNameNode((NameNode)_makeNameNode(
+                        myClass.getSuperclass().getName()));
         }
 
 	ClassDeclNode classDeclNode =
@@ -170,6 +157,8 @@ public class ASTReflect {
     /** Return a CompileUnitNode AST that contains the class, methods, fields
      *	constructors and inner classes.  This node includes information
      *  about the package.
+     *  @param myClass The class to be analyzed.
+     *  @return The CompileUnitNode of that class. 
      */
     public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
 
@@ -185,8 +174,8 @@ public class ASTReflect {
                 (NameNode) _makeNameNode(myClass.getPackage().getName());
         }
 
-	// FIXME: we are not trying to generate a list of imports here
-	// we could look at the return values and args and import
+	// FIXME: we are not trying to generate a list of imports here.
+	// We could look at the return values and args and import
 	// anything outside of the package.
 
 	CompileUnitNode compileUnitNode = null;
@@ -208,7 +197,11 @@ public class ASTReflect {
 	return compileUnitNode;
     }
 
-    /** Return a list that contains an AST for the constructors. */
+    /** Return a list of constructors where each element contains
+     *  an AST for that constructor.   
+     *  @param myClass The class to be analyzed.
+     *  @return The List of constructors for the class.
+     */
     public static List constructorsASTList(Class myClass) {
 	List constructorList = new LinkedList();
 	Constructor constructors[] = myClass.getDeclaredConstructors();
@@ -226,7 +219,7 @@ public class ASTReflect {
 
 	    List paramList = _paramList(constructor.getParameterTypes());
 
-	    // FIXME: call method.getExceptionTypes and convert it to a list.
+	    // Constructors don't throw exceptions, so this list is empty.
 	    List throwsList = new LinkedList();
 
 	    ConstructorDeclNode constructorDeclNode =
@@ -244,8 +237,10 @@ public class ASTReflect {
 	return constructorList;
     }
 
-    /** Return a List containing an AST that describes the fields
-     *	for myclass.
+    /** Return a list of fields where each element contains
+     *  a FieldDeclNode for that field.
+     *  @param myClass The class to be analyzed.
+     *  @return The List of fields for the class.
      */
     public static List fieldsASTList(Class myClass) {
 	List fieldList = new LinkedList();
@@ -255,8 +250,8 @@ public class ASTReflect {
                 Modifier.convertModifiers(fields[i].getModifiers());
 	    TypeNode defType = _definedType(fields[i].getType());
 	    String fullFieldName = fields[i].toString();
-	    // FIXME: should we use the full name with package here?
 
+	    // FIXME: should we use the full name with package here?
 	    NameNode fieldName =
 		new NameNode(AbsentTreeNode.instance,
                         fullFieldName.substring(1 +
@@ -273,8 +268,10 @@ public class ASTReflect {
 	return fieldList;
     }
 
-    /** Return a List containing an AST that describes the inner classes
-     *	for myclass.
+    /** Return a list of inner classes where each element contains
+     *  a ClassDeclNodes for that inner class.
+     *  @param myClass The class to be analyzed.
+     *  @return The List of ClassDeclNodes for the inner classes of the class.
      */
     public static List innerClassesASTList(Class myClass) {
 	List innerClassList = new LinkedList();
@@ -286,13 +283,17 @@ public class ASTReflect {
     	return innerClassList;
     }
 
-    /** Return an AST that contains an interface declaration. */
+    /** Return an AST that contains an interface declaration. 
+     *  @param myClass The class to be analyzed.
+     *  @return The InterfaceDeclNode of the class
+     */
     public static InterfaceDeclNode ASTInterfaceDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 
 	// Get the classname, and strip off the package.
 	String fullClassName = myClass.getName();
+
 	// FIXME: should we use the full classname with package here?
 	NameNode className =
 	    new NameNode(AbsentTreeNode.instance,
@@ -339,7 +340,10 @@ public class ASTReflect {
 	return interfaceDeclNode;
     }
 
-    /** Given a CompileUnitNode, return the complete package name. */
+    /** Given a CompileUnitNode, return the complete package name.
+     *  @param loadedAST The CompileUnitNode of the class
+     *  @return The full package name of the class
+     */
     public static String getPackageName(CompileUnitNode loadedAST) {
 	// FIXME: This get(0) worries me.
         StringBuffer packageBuffer =
@@ -360,13 +364,16 @@ public class ASTReflect {
      *  by starting with the filename and adding directories from the
      *  pathname until we find a class or run through all the directories.
      *  If a class is not found, return null.
+     *  @param className The name of the class, which may or may
+     *  not be fully qualified.
+     *  @return The Class object.
      */
-    public static Class lookupClass(String name) {
+    public static Class lookupClass(String className) {
         try {
             // The classname was something like java.lang.Object
-            return Class.forName(name);
+            return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            // The classname was something like Object, so
+            // The classclassName was something like Object, so
             // we search the loaded packages.
             // FIXME: we could try optimizing this so we
             // look in java.lang first, which is where
@@ -374,24 +381,24 @@ public class ASTReflect {
             Package packages[] = Package.getPackages();
             for(int i = 0; i < packages.length; i++) {
                 String qualifiedName =
-                    new String(packages[i].getName() + "." + name);
+                    new String(packages[i].getName() + "." + className);
                 try {
                     return Class.forName(qualifiedName);
                 } catch (ClassNotFoundException ee) {
                     // Keep searching the packages.
                 }
 	    }
-            // Ok, try the SearchPath
 
+            // Ok, try the SearchPath
             for (int i = 0; i < SearchPath.NAMED_PATH.size(); i++) {
                 String candidate = (String) SearchPath.NAMED_PATH.get(i);
                 System.out.println("ASTReflect.lookupClass: SearchPath: " +
                         candidate);
-                File file = new File(candidate + name + ".class");
+                File file = new File(candidate + className + ".class");
                 if (file.isFile()) {
                     String qualifiedName =
                         new String(candidate.replace(File.separatorChar, '.')+
-                                "." + name);
+                                "." + className);
                     System.out.println("ASTReflect.lookupClass: qualified: " +
                         qualifiedName);
                     try {
@@ -406,7 +413,7 @@ public class ASTReflect {
                 packageBuffer.append(packages[i].getName() + " ");
             }
 	    throw new RuntimeException("ASTReflect.lookupClass(): " +
-				       "Could not find class '" + name +
+				       "Could not find class '" + className +
 				       "'. The package of this class has " +
 				       "not yet been loaded, so we need to " +
 				       "look in the searchPath. Looked in" +
@@ -415,13 +422,17 @@ public class ASTReflect {
     }
 
     /** Lookup a class by name, return the ClassDeclNode
+     *  @param className The name of the class.
+     *  @return The ClassDeclNode that represents the class
      */
-    public static ClassDeclNode lookupClassDeclNode(String name) {
-            return ASTClassDeclNode(lookupClass(name));
+    public static ClassDeclNode lookupClassDeclNode(String className) {
+            return ASTClassDeclNode(lookupClass(className));
     }
 
-    /** Return a List containing an AST that describes the methods
-     *	for myclass.
+    /** Return a list of methods where each element contains
+     *  a MethodDeclNode for that field.
+     *  @param myClass The class to be analyzed.
+     *  @return The List of Methods for the class.
      */
     public static List methodsASTList(Class myClass) {
 	List methodList = new LinkedList();
@@ -466,7 +477,13 @@ public class ASTReflect {
     /** Given a pathname, try to find a class that corresponds with it
      *  by starting with the filename and adding directories from the
      *  pathname until we find a class or run through all the directories.
+     *  If the class is to be found, it must be compiled an loaded into
+     *  the runtime system at the time this method runs.
      *  If a class is not found, return null.
+     *  @param pathname  The pathname of the classname to lookup.  The
+     *  pathname consists of directories separated by File.separatorChar's
+     *  with an optional suffix.
+     *  @return The Class object that represents the class.
      */
     public static Class pathnameToClass(String pathname) {
         try {
@@ -624,6 +641,7 @@ public class ASTReflect {
 	return paramList;
     }
 
+    // Given a Class, return the primitive type.
     private static TypeNode _primitiveTypeNode(Class myClass) {
 	TypeNode defType = null;
 	// FIXME: I'll bet we could reorder these for better
