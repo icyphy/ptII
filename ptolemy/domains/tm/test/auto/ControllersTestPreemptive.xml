@@ -11,7 +11,7 @@
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -86,7 +86,7 @@ preemptive ones can.
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 0, 962, 597}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 101, 962, 590}}">
     </property>
     <entity name="Sampler1" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -680,12 +680,50 @@ preemptive ones can.
             </property>
         </port>
     </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ptolemy/domains/tm/test/auto/ControllersTestPreemptiveData2.txt&quot;)))">
+    <entity name="Sampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 75.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sampler3" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 295.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0186959820802, 0.0674351496585, 0.1282686115691, 0.1793817485609, 0.2022729456765, 0.187844837254, 0.1410174054391, 0.0783682882748, 0.0228295878204, -0.0044686261527, 0.0063372373585, 0.0517047251503, 0.1148791091129, 0.1730392324, 0.2052617128987, 0.1994076332809, 0.1569853734918, 0.0931450357871, 0.0306868061956, -0.0066328554535, -0.0050194073044, 0.0352348997623, 0.099682988525, 0.164405852042, 0.2061662791569}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 295.0">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -694,12 +732,14 @@ preemptive ones can.
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Test1" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ptolemy/domains/tm/test/auto/ControllersTestPreemptiveData1.txt&quot;)))">
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0184390578882, 0.0626354421935, 0.1074889513095, 0.1284277556962, 0.1148437391804, 0.0753871071176, 0.0325372509631, 0.009860388821, 0.0190674804132, 0.0540030484959, 0.0946402868516, 0.1185428842988, 0.113233586204, 0.0826345365572, 0.0443658072819, 0.0196409443487, 0.0215200873666, 0.0480376336309, 0.0838109768597, 0.1089516138854, 0.1100820168079, 0.0874146288248, 0.0541842508819, 0.0289503403087, 0.0252419394169}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 70.0">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 295.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -740,6 +780,10 @@ preemptive ones can.
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Sampler1.input" relation="relation9"/>
     <link port="Sampler1.output" relation="relation"/>
     <link port="Plant1.input" relation="relation2"/>
@@ -764,6 +808,10 @@ preemptive ones can.
     <link port="TM controllers.output2" relation="relation4"/>
     <link port="Sampler2.input" relation="Copy1:relation9"/>
     <link port="Sampler2.output" relation="relation11"/>
-    <link port="Test2.input" relation="Copy1:relation9"/>
-    <link port="Test1.input" relation="relation9"/>
+    <link port="Sampler.input" relation="relation9"/>
+    <link port="Sampler.output" relation="relation6"/>
+    <link port="Sampler3.input" relation="Copy1:relation9"/>
+    <link port="Sampler3.output" relation="relation7"/>
+    <link port="NonStrictTest.input" relation="relation6"/>
+    <link port="NonStrictTest2.input" relation="relation7"/>
 </entity>
