@@ -46,11 +46,24 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 
+MODELS= \
+	meaningOfLife.xml \
+	testDeux.xml \
+	testQuatre.xml \
+	testTrois.xml
+
+C_FILES = \
+	main.c \
+	meaningOfLife.c \
+	testDeux.c \
+	testTrois.c
+
+H_FILES = $(JSRCS:%.c=%.h)
+
 OTHER_FILES_TO_BE_JARED = \
-	ATestForJNIdeux.xml \
-	ATestForJNIquatre.xml \
-	ATestForJNItrois.xml \
-	fourtyTwo.c \
+	$(MODELS) \
+	$(C_FILES) \
+	$(H_FILES) \
 	main.c
 
 EXTRA_SRCS = \
@@ -70,6 +83,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
+	$(MAKE) SHAREDBASE=meaningOfLife shared
+	$(MAKE) SHAREDBASE=testDeux shared
+	$(MAKE) SHAREDBASE=testTrois shared
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
@@ -79,8 +95,11 @@ demo: demo_vergil
 
 
 demo_vergil:
-	"$(PTII)/bin/vergil" \
-		ATestForJNIdeux.xml ATestForJNItrois.xml ATestForJNIquatre.xml
+	CLASSPATH=.; \
+	PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	"$(PTII)/bin/vergil" -jni \
+		$(MODELS)
 
 fourtyTwo.o: fourtyTwo.c
 	$(CC) -c $^
@@ -92,6 +111,16 @@ fourtyTwo.dll: fourtyTwo.o
 main: fourtyTwo.dll main.c
 	$(CC) -o main main.c  -L./ -lfourtyTwo
 
+
+# PTCC is set in $PTII/mk/ptII.mk
+# See also ptolemy/matlab/makefile
+SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
+shared: $(SHARED_LIBRARY)
+$(SHARED_LIBRARY): $(SHAREDBASE).c $(SHAREDBASE).h makefile
+	$(PTCC) -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
+		-o $@ \
+		$(SHAREDBASE).c
 
 doit: jni/jnifourtyTwo/JnijnifourtyTwo.dll
 jni/jnifourtyTwo/JnijnifourtyTwo.dll:
