@@ -110,7 +110,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
             if (periodValue < 100) {
                 throw new IllegalActionException(this,
                         "does not support period lower than 100, value was:"
-                                                 + periodValue);
+                        + periodValue);
             }
             _period = periodValue;
         }
@@ -153,7 +153,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
                     _container.iterate(1);
                 } catch (IllegalActionException ex) {
                     throw new InvalidStateException((NamedObj)_container,
-                    "IllegalActionException at execution" + ex.getMessage());
+                            "IllegalActionException at execution" + ex.getMessage());
                 }
             }
         }

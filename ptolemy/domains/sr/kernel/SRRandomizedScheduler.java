@@ -94,7 +94,7 @@ public class SRRandomizedScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public SRRandomizedScheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

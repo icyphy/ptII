@@ -746,9 +746,9 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private boolean _isValidSchedulerClassName(String name) {
         if (name.equals("ptolemy.domains.sr.kernel.SRRandomizedScheduler"))
-                   return true;
+            return true;
         if (name.equals("ptolemy.domains.sr.kernel.SROptimizedScheduler"))
-                   return true;
+            return true;
         return false;
     }
 
@@ -756,7 +756,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private int _NumberOfActorsAllowedToFire() {
         if (_actorsAllowedToFire == null) {
-           return 0;
+            return 0;
         }
 
         return _actorsAllowedToFire.size();

@@ -105,7 +105,7 @@ public class SROptimizedScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public SROptimizedScheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -303,9 +303,9 @@ public class SROptimizedScheduler extends Scheduler {
                     }
                 }
                 DirectedGraph headGraph = (DirectedGraph)
-                        (scc.subgraph(Arrays.asList(head)));
+                    (scc.subgraph(Arrays.asList(head)));
                 DirectedGraph tailGraph = (DirectedGraph)
-                        (scc.subgraph(Arrays.asList(tail)));
+                    (scc.subgraph(Arrays.asList(tail)));
                 List headScheduleList = _scheduleDependencyGraph(headGraph);
                 List tailScheduleList = _scheduleDependencyGraph(tailGraph);
                 for (int j = 0; j < sizeOfHead; j++) {
