@@ -125,6 +125,15 @@ public class CalendarQueue {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Empty this calendar queue.
+     */
+    public synchronized void clear() {
+        _zeroRef = null;
+        _qSize = 0;
+        _takenKey = null;
+    }
+
 
     /** Return the key associated with the object that's at the head of the
      *  queue (i.e. the one that would be obtained on the next take).
@@ -634,7 +643,7 @@ public class CalendarQueue {
     // do local initialization on bucket[] array starting from index qbase,
     // as many as nbuckets. This method is called inside resize() method and
     // during the first invocation of put.
-    ///////////////////////////////////////////////////////////////////
+    //
     // nbuckets: number of total buckets
     // bwidth: bucket width
     // startprio: starting date of the new calendar
