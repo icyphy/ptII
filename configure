@@ -30,7 +30,7 @@ ac_help="$ac_help
                           defaults to \$PTII/vendors/sun/$JINI_VERSION"
 ac_help="$ac_help
   --with-kvm=DIR       use PalmOS KVM from DIR,
-                          defaults to \$PTII/vendors/sun/kvm"
+                          defaults to \$PTII/vendors/sun/j2me_cldc"
 
 # Initialize some variables set by options.
 # The variables have the same names as the options, with
@@ -887,7 +887,7 @@ esac
 #       If not, check to see if $PTII/vendors/sun/commapi
 #--------------------------------------------------------------------
 
-# We only need to look for kvm if $PTII/ptolemy/apps/lego
+# We only need to look for commapi if $PTII/ptolemy/apps/lego
 COMMAPI_USER_DIR="$PTII/ptolemy/apps/lego"
 COMMAPI_PRESENT=no
 # PTLEGO_DIR is set to lego
@@ -1091,7 +1091,7 @@ fi
 #       If not, look in $PTII/vendors/sun/jini/jini1_0_1
 #--------------------------------------------------------------------
 
-# We only need to look for kvm if $PTII/ptolemy/kvm exists
+# We only need to look for jini if the CarTracking demo is present
 JINI_USER_DIR="$PTII/ptolemy/domains/ct/demo/jspaces/CarTracking"
 JINI_VERSION=jini1_0_1
 JINI_PRESENT=no
@@ -1139,43 +1139,62 @@ fi
 #--------------------------------------------------------------------
 #       KVM is the JDK for PalmOS
 #	See if there was a command-line option for where
-#       kvm/tools/classes.zip is;  if not,
-#       check to see if $PTII/vendors/sun/kvm exists
+#       j2me_cldc/bin/api/classes is;  if not,
+#       check to see if $PTII/vendors/sun/j2me_cldc exists
 #--------------------------------------------------------------------
 
 # We only need to look for kvm if $PTII/ptolemy/kvm exists
 if test ! -d "$PTII/ptolemy/kvm"; then
     echo "$ac_t""$PTII/ptolemy/kvm is not present, so we need not
 find the PalmOS kvm" 1>&6
-    KVM_DIR='$(PTII)/vendors/sun/kvm'
-    KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
+    KVM_DIR='$(PTII)/vendors/sun/j2me_cldc'
+    # Unfortunately, j2me_cldc does not ship with a jar of zip file
+    # It needs to be built	
+    KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1155: checking for kvm directory" >&5
+echo "configure:1157: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
   KVM_DIR=$withval
 else
-  KVM_DIR=$PTII/vendors/sun/kvm
+  KVM_DIR=$PTII/vendors/sun/j2me_cldc
 fi
 
 
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
-        echo $ac_n "checking for \$KVM_DIR/tools/classes.zip""... $ac_c" 1>&6
-echo "configure:1168: checking for \$KVM_DIR/tools/classes.zip" >&5
-	if test -f "$KVM_DIR/tools/classes.zip"; then
-	    KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
+        echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
+echo "configure:1170: checking for \$KVM_DIR/bin/api/classes" >&5
+	if test -d "$KVM_DIR/bin/api/classes"; then
+	    KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
         else
 	    KVM_CLASSES=no
         fi
     else    
+	echo "$ac_t""'Not found in $KVM_DIR'" 1>&6
+	echo $ac_n "checking for kvm directory in /j2me_cldc""... $ac_c" 1>&6
+echo "configure:1180: checking for kvm directory in /j2me_cldc" >&5
+	# Likely place for kvm under windows
+	KVM_DIR=/j2me_cldc
+        if test -d "$KVM_DIR"; then
+	    echo "$ac_t""$KVM_DIR" 1>&6
+            echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
+echo "configure:1186: checking for \$KVM_DIR/bin/api/classes" >&5
+	    if test -d "$KVM_DIR/bin/api/classes"; then
+	        KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
+	        echo "$ac_t""$KVM_CLASSES" 1>&6
+            else
+	        KVM_CLASSES=no
+            fi
+        fi
+
 	KVM_CLASSES=no
     fi
     if test "$KVM_CLASSES" = "no"; then
-        echo "configure: warning: 'Failed to find kvm/tools/classes.zip,
+        echo "configure: warning: 'Failed to find j2me_cldc/bin/api/classes,
 perhaps Kvm is not installed?
 You need not download Kvm unless you plan on building applications
 for the PalmPilot or Handspring Visor.
