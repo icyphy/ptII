@@ -39,23 +39,19 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.math.FixPoint;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
-import ptolemy.math.Quantizer;
+import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToFix
 /**
 This actor converts a DoubleToken to a FixToken with a specified
 precision. Note that this conversion is lossy, in that the output
-is an approximation of the input.  The approximation can be
-constructed using rounding or truncation, depending on the value
-of the <i>quantization</i> parameter. If <i>quantization</i> is
-"round" (the default), then the output will be the
-FixToken of the specified precision
-that is nearest to the input value.  If <i>quantization</i> is
-"truncate", then the output will be the FixToken of the specified precision
-that is nearest to the input value, but no greater than the input
-value in magnitude.
+is an approximation of the input. The approximation can be
+constructed using a variety of rounding and overflow strategies.
 <p>
 The precision of the output is given by the <i>precision</i> parameter,
 which is an integer matrix of the form [<i>m</i>, <i>n</i>], where
@@ -63,13 +59,25 @@ the total number of bits in the output is <i>m</i>, of which
 <i>n</i> are integer bits. The default precision is [16, 2], which means
 that an output has 16 bits, of which 2 bits represent the
 integer part.
+<p>
+The rounding strategy is defined by the <i>rounding</i> parameter and
+defaults to <i>nearest</i> (or <i>half_floor</i>), selecting the nearest
+representable value. The floor value nearer to minus infinity is used
+for values half way between representable values. Other strategies
+such as <i>truncate</i> are described under ptolemy.math.Rounding.
+<p>
+The overflow strategy is defined by the <i>overflow</i> parameter and
+defaults to <i>saturate</i> (or <i>clip</i>). Out of range values are
+saturated to the nearest representable value. Other strategies
+such as <i>modulo</i> are described under ptolemy.math.Overflow.
 
-@author Bart Kienhuis, Contributor: Edward A. Lee
+@author Bart Kienhuis, Contributor: Edward A. Lee, Ed.Willink, 
 @version $Id$
 @since Ptolemy II 0.4
-@see ptolemy.math.Quantizer
 @see ptolemy.data.FixToken
+@see ptolemy.math.Overflow
 @see ptolemy.math.Precision
+@see ptolemy.math.Rounding
 */
 
 public class DoubleToFix extends Converter {
@@ -92,12 +100,12 @@ public class DoubleToFix extends Converter {
         precision.setTypeEquals(BaseType.INT_MATRIX);
         precision.setExpression("[16, 2]");
 
-	quantization = new StringAttribute(this, "quantization");
-        quantization.setExpression("round");
-    }
+	rounding = new StringAttribute(this, "rounding");
+        rounding.setExpression("nearest");
 
-    // FIXME: This actor needs an overflow parameter. However,
-    // the Quantizer class, for some bizarre reason, doesn't support this.
+	overflow = new StringAttribute(this, "overflow");
+        overflow.setExpression("saturate");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -106,8 +114,11 @@ public class DoubleToFix extends Converter {
         by a 2-element integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used, either "round" or "truncate". */
-    public StringAttribute quantization;
+    /** The overflow strategy used, such as "saturate" or "modulo". */
+    public StringAttribute overflow;
+
+    /** The rounding strategy used, such as "nearest" or "truncate". */
+    public StringAttribute rounding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -124,40 +135,30 @@ public class DoubleToFix extends Converter {
                 throw new IllegalActionException(this,
                         "Invalid precision (not a 1 by 2 matrix).");
             }
-            _precision = new Precision(token.getElementAt(0, 0),
+            Precision precision = new Precision(token.getElementAt(0, 0),
                     token.getElementAt(0, 1));
-        } else if (attribute == quantization) {
-            String strategy = quantization.getExpression();
-            if (strategy.equals("truncate")) {
-                _quantization = TRUNCATE;
-            } else if (strategy.equals("round")) {
-                _quantization = ROUND;
-            } else {
-                throw new IllegalActionException(this,
-                        "Unrecognized quantization: " + strategy);
-            }
+            _quantization = _quantization.setPrecision(precision);
+        } else if (attribute == rounding) {
+            Rounding r = Rounding.getName(rounding.getExpression());
+            _quantization = _quantization.setRounding(r);
+        } else if (attribute == overflow) {
+            Overflow o = Overflow.forName(overflow.getExpression());
+            _quantization = _quantization.setOverflow(o);
         } else {
             super.attributeChanged(attribute);
         }
     }
 
     /** Read at most one token from the input and output the converted
-     *  fixed-point value with the precision and quantization given by the
-     *  corresponding parameters on the output port.
+     *  fixed-point value with the precision given by the <i>precision</i> parameter,
+     *  overflow strategy given by the <i>overflow</i> parameter,
+     *  and rounding strategy given by the <i>rounding</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         DoubleToken in = (DoubleToken)input.get(0);
-        FixToken result = null;
-        switch( _quantization ) {
-        case 1:
-            result = new FixToken(
-                    Quantizer.truncate(in.doubleValue(), _precision));
-            break;
-        default:
-            result = new FixToken(
-                    Quantizer.round(in.doubleValue(), _precision));
-        }
+        FixPoint fixValue = new FixPoint(in.doubleValue(), _quantization);
+        FixToken result = new FixToken(fixValue);
         output.send(0, result);
     }
 
@@ -175,13 +176,8 @@ public class DoubleToFix extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The precision of the output.
-    private Precision _precision = null;
-
-    // The quantization strategy, encoded as an int.
-    private int _quantization = ROUND;
-
-    private static final int ROUND = 0;
-    private static final int TRUNCATE = 1;
+    // The quantization of the output.
+    private FixPointQuantization _quantization =
+       new FixPointQuantization(null, Overflow.SATURATE, Rounding.NEAREST);
 }
 

@@ -39,22 +39,19 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.math.FixPoint;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
-import ptolemy.math.Quantizer;
+import ptolemy.math.Rounding;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToFix
 /**
 This actor converts a FixToken into another FixToken with a specified
 precision. Note that this conversion may be lossy, in that the output
-may be an approximation of the input.  The approximation can be
-constructed using rounding or truncation, depending on the value
-of the <i>quantization</i> parameter. If <i>quantization</i> is
-"round" (the default), then the output will be the
-FixToken of the specified precision that is nearest to the input value.
-If <i>quantization</i> is "truncate", then the output will be the
-FixToken of the specified precision that is nearest to the
-input value, but no greater than the input value in magnitude.
+may be an approximation of the input. The approximation can be
+constructed using a variety of rounding and overflow strategies,
 <p>
 The precision of the output is given by the <i>precision</i> parameter,
 which is an integer matrix of the form [<i>m</i>, <i>n</i>], where
@@ -63,20 +60,24 @@ the total number of bits in the output is <i>m</i>, of which
 that an output has 16 bits, of which 2 bits represent the
 integer part.
 <p>
-The input may be out of range for the output precision.  If so, then by
-default, the output will be saturated, meaning that its value will be
-either the maximum or the minimum that is representable in the specified
-precision, depending on the sign of the input.  However, if the
-<i>overflow</i> parameter is changed from "saturate" to
-"overflow_to_zero", then the output is set to zero whenever overflow
-occurs.
+The rounding strategy is defined by the <i>rounding</i> parameter and
+defaults to <i>nearest</i> (or <i>half_floor</i>), selecting the nearest
+representable value. The floor value nearer to minus infinity is used
+for values half way between representable values. Other strategies
+such as <i>truncate</i> are described under ptolemy.math.Rounding.
+<p>
+The overflow strategy is defined by the <i>overflow</i> parameter and
+defaults to <i>saturate</i> (or <i>clip</i>). Out of range values are
+saturated to the nearest representable value. Other strategies
+such as <i>modulo</i> are described under ptolemy.math.Overflow.
 
-@author Bart Kienhuis and Edward A. Lee
+@author Bart Kienhuis, Edward A. Lee, Ed Willink
 @version $Id$
 @since Ptolemy II 1.0
-@see ptolemy.math.Quantizer
 @see ptolemy.data.FixToken
+@see ptolemy.math.Overflow
 @see ptolemy.math.Precision
+@see ptolemy.math.Rounding
 */
 
 public class FixToFix extends Converter {
@@ -99,8 +100,8 @@ public class FixToFix extends Converter {
         precision.setTypeEquals(BaseType.INT_MATRIX);
         precision.setExpression("[16, 2]");
 
-	quantization = new StringAttribute(this, "quantization");
-        quantization.setExpression("round");
+	rounding = new StringAttribute(this, "rounding");
+        rounding.setExpression("nearest");
 
 	overflow = new StringAttribute(this, "overflow");
         overflow.setExpression("saturate");
@@ -113,11 +114,11 @@ public class FixToFix extends Converter {
         integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used, either "round" or "truncate". */
-    public StringAttribute quantization;
+    /** The rounbing strategy used, such as "nearest" or "truncate". */
+    public StringAttribute rounding;
 
     /** The overflow strategy used to convert a double into a fix point,
-        either "saturate" or "overflow_to_zero". */
+        such as "saturate" or "to_zero". */
     public StringAttribute overflow;
 
     ///////////////////////////////////////////////////////////////////
@@ -135,51 +136,30 @@ public class FixToFix extends Converter {
                 throw new IllegalActionException(this,
                         "Invalid precision (not a 1 by 2 matrix).");
             }
-            _precision = new Precision(token.getElementAt(0, 0),
+            Precision precision = new Precision(token.getElementAt(0, 0),
                     token.getElementAt(0, 1));
-        } else if (attribute == quantization) {
-            String spec = quantization.getExpression();
-            if (spec.equals("truncate")) {
-                _quantization = TRUNCATE;
-            } else if (spec.equals("round")) {
-                _quantization = ROUND;
-            } else {
-                throw new IllegalActionException(this,
-                        "Unrecognized quantization: " + spec);
-            }
+            _quantization = _quantization.setPrecision(precision);
+        } else if (attribute == rounding) {
+            Rounding r = Rounding.getName(rounding.getExpression());
+            _quantization = _quantization.setRounding(r);
         } else if (attribute == overflow) {
-            String spec = overflow.getExpression();
-            if (spec.equals("saturate")) {
-                _overflow = SATURATE;
-            } else if (spec.equals("overflow_to_zero")) {
-                _overflow = OVERFLOW_TO_ZERO;
-            } else {
-                throw new IllegalActionException(this,
-                        "Unrecognized overflow strategy: " + spec);
-            }
+            Overflow o = Overflow.forName(overflow.getExpression());
+            _quantization = _quantization.setOverflow(o);
         } else {
             super.attributeChanged(attribute);
         }
     }
 
     /** Read at most one token from the input and convert it to a fixed-point
-     *  value with the precision given by the <i>precision</i> parameter
-     *  and overflow strategy given by the <i>overflow</i> parameter.
+     *  value with the precision given by the <i>precision</i> parameter,
+     *  overflow strategy given by the <i>overflow</i> parameter,
+     *  and rounding strategy given by the <i>rounding</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        FixToken result = null;
         FixToken in = (FixToken)input.get(0);
-        switch(_quantization) {
-        case 1:
-            result = new FixToken(
-                    Quantizer.truncate(in.fixValue(),
-                            _precision, _overflow));
-            break;
-        default:
-            result = new FixToken(
-                    Quantizer.round(in.fixValue(), _precision, _overflow));
-        }
+        FixPoint fixValue = in.fixValue().quantize(_quantization);
+        FixToken result = new FixToken(fixValue);
         output.send(0, result);
     }
 
@@ -197,19 +177,7 @@ public class FixToFix extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The precision of the output.
-    private Precision _precision = null;
-
-    // The quantization strategy, encoded as an int.
-    private int _quantization = ROUND;
-
-    // The overflow strategy, encoded as an int.
-    private int _overflow = SATURATE;
-
-    private static final int ROUND = 0;
-    private static final int TRUNCATE = 1;
-
-    private static final int SATURATE = 0;
-    private static final int OVERFLOW_TO_ZERO = 1;
-
+    // The quantization of the output.
+    private FixPointQuantization _quantization =
+       new FixPointQuantization(null, Overflow.SATURATE, Rounding.NEAREST);
 }

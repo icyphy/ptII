@@ -1,6 +1,6 @@
 # Test DoubleToFix.
 #
-# @Author: Bart KIenhuis
+# @Author: Bart Kienhuis, Contributor: Ed Willink
 #
 # @Version: $Id$
 #
@@ -82,8 +82,8 @@ test DoubleToFix-2.1 {Test the Round Mode} {
     set precision [java::field $clone precision]
     $precision setExpression {[3, 2]}
 
-    set quantize [java::field $clone quantization]
-    $quantize setExpression {round}
+    set rounding [java::field $clone rounding]
+    $rounding setExpression {nearest}
 
     [$e0 getManager] execute
     set result [list [enumToTokenValues [$rec getRecord 0]]]
@@ -98,11 +98,42 @@ test DoubleToFix-3.1 {Test the Truncate Mode} {
     set precision [java::field $clone precision]
     $precision setExpression {[3, 2]}
 
-    # quantizer mode 1 is truncate
-    set quantize [java::field $clone quantization]
-    $quantize setExpression {truncate}
+    set rounding [java::field $clone rounding]
+    $rounding setExpression {truncate}
 
     [$e0 getManager] execute 
     set result [list [enumToTokenValues [$rec getRecord 0]]]
 
 } {fix(0.5,3,2)}
+
+test DoubleToFix-3.2 {Test the Modulo Mode} {
+
+    set value [getParameter $const value]
+    $value setToken [java::new {ptolemy.data.DoubleToken double} 3.9]
+
+    set precision [java::field $clone precision]
+    $precision setExpression {[3, 2]}
+
+    set overflow [java::field $clone overflow]
+    $overflow setExpression {modulo}
+
+    [$e0 getManager] execute 
+    set result [list [enumToTokenValues [$rec getRecord 0]]]
+
+} {fix(-0.5,3,2)}
+
+test DoubleToFix-3.3 {Test the Saturate Mode} {
+
+    set value [getParameter $const value]
+    $value setToken [java::new {ptolemy.data.DoubleToken double} 3.9]
+
+    set precision [java::field $clone precision]
+    $precision setExpression {[3, 2]}
+
+    set overflow [java::field $clone overflow]
+    $overflow setExpression {saturate}
+
+    [$e0 getManager] execute 
+    set result [list [enumToTokenValues [$rec getRecord 0]]]
+
+} {fix(1.5,3,2)}
