@@ -85,7 +85,8 @@ public class MakeFileGenerator {
 
         code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
         code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
-        code.append( "IHEADERS = $(SOURCES:.c=_i.h)\n");
+        code.append( "IHEADERS = $(SOURCES:.c="
+                + InterfaceFileGenerator.interfaceFileNameSuffix() + ")\n");
 
         code.append(className + ".exe : $(OBJECTS)\n");
         code.append("\tgcc $(OBJECTS)\n");

@@ -245,14 +245,14 @@ public class RequiredFileGenerator {
             }
             else {
                 code = cGenerator.generate(sootClass);
-                FileHandler.write(fileName+".c",code);
+                FileHandler.write(fileName+".c", code);
                 if(verbose) System.out.println( "\tcreated: "
                     +fileName+".c");
             }
         }
     }
 
-    /** Generate the .h and _i.h Files required for a given class.
+    /** Generate the .h and "interface header" Files required for a given class.
      *  @param classPath The class path.
      *  @param className The class for which the files should be generated.
      *  @param compileMode The compilation mode.
@@ -289,14 +289,18 @@ public class RequiredFileGenerator {
             dummyFile.mkdirs();
         }
 
-        // Generate the _i.h file.
-        if (FileHandler.exists(fileName+"_i.h")) {
-            if(verbose) System.out.println( "\texists: "+fileName+"_i.h");
+        // Generate the interface header file.
+        if (FileHandler.exists(fileName
+                    + InterfaceFileGenerator.interfaceFileNameSuffix())) {
+            if(verbose) System.out.println( "\texists: " + fileName
+                + InterfaceFileGenerator.interfaceFileNameSuffix());
         }
         else {
             code = iGenerator.generate(sootClass);
-            FileHandler.write(fileName+"_i.h",code);
-            if(verbose) System.out.println( "\tcreated: "+fileName+"_i.h");
+            FileHandler.write(fileName
+                    + InterfaceFileGenerator.interfaceFileNameSuffix(),code);
+            if(verbose) System.out.println( "\tcreated: " + fileName
+                    + InterfaceFileGenerator.interfaceFileNameSuffix());
         }
 
 

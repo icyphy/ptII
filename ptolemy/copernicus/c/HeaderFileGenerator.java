@@ -261,7 +261,8 @@ public class HeaderFileGenerator extends CodeGenerator {
             _updateRequiredTypes(source.getSuperclass().getType());
         }
 
-        headerCode.append("#include \""+className.replace('.', '/')+"_i.h\"\n");
+        headerCode.append("#include \"" + className.replace('.', '/')
+                + InterfaceFileGenerator.interfaceFileNameSuffix() + "\"\n");
         headerCode.append(_generateIncludeDirectives());
         headerCode.append("\n" + _generateArrayInstanceDeclarations());
         headerCode.append("\n");
@@ -273,7 +274,7 @@ public class HeaderFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // override method in CodeFileGenerator and include "_i.h" files instead
+    // override method in CodeFileGenerator and include "interface header" files instead
     // of .h files.
 
     protected String _generateIncludeDirectives() {
@@ -290,7 +291,10 @@ public class HeaderFileGenerator extends CodeGenerator {
 
             headerCode.append("#include ");
             String fileName = new String((String)includeFiles.next());
-            fileName = fileName.substring(0, fileName.length()-3)+"_i.h\"";
+
+            fileName = fileName.substring(0, fileName.length()-3)
+                    + InterfaceFileGenerator.interfaceFileNameSuffix() + "\"";
+
             headerCode.append(fileName);
 
             if (_context.getSingleClassMode()) {
@@ -311,7 +315,10 @@ public class HeaderFileGenerator extends CodeGenerator {
 
             headerCode.append("#include \"");
             String fileName = new String((String)requiredTypes.next());
-            fileName = fileName.substring(0, fileName.length()-2)+"_i.h\"";
+
+            fileName = fileName.substring(0, fileName.length()-2)
+                    + InterfaceFileGenerator.interfaceFileNameSuffix() + "\"";
+
             headerCode.append(fileName);
 
             if (_context.getSingleClassMode()) {

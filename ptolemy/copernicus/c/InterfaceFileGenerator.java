@@ -1,5 +1,5 @@
 /*
-A C code generator for generating "interface files" (_i.h files)
+A C code generator for generating "interface header files"
 that implement Java classes.
 
 Copyright (c) 2002 The University of Maryland.
@@ -47,7 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-/** A C code generator for generating "interface files" (_i.h files)
+/** A C code generator for generating "interface header files"
     that implement Java classes.
 
     @author Ankush Varma
@@ -114,6 +114,13 @@ public class InterfaceFileGenerator extends CodeGenerator {
 
         // Return an appropriate concatenation of the code strings.
         return (headerCode.append(bodyCode.append(footerCode))).toString();
+    }
+
+    /** Return the appropriate suffix for the interface header files.
+     *  @return The suffix.
+     */
+    public static String interfaceFileNameSuffix() {
+        return ("_i.h");
     }
 
 }

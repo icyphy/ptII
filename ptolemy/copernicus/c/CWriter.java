@@ -73,10 +73,11 @@ public class CWriter extends SceneTransformer {
     }
 
 
-    /** Write out the C (.i, .h, _i.h) files.
+    /** Write out the C (.i, .h, interface Header) files.
      *  Sample option arguments:
      *	<code>-p wjtp.writeJimple1 outDir:jimple1</code>
      *
+     *  @see ClassWriter
      *  @param phaseName The name of the phase, for example
      *  <code>wjtp.writeJimple2</code>.
      *  @param options The options Map.  This method uses the
@@ -124,7 +125,9 @@ public class CWriter extends SceneTransformer {
             System.out.println("Generating C code files for " + fileName);
             String code = null;
             code = iGenerator.generate(sootClass);
-            FileHandler.write(fileName + "_i.h", code);
+            FileHandler.write(fileName
+                    + InterfaceFileGenerator.interfaceFileNameSuffix(),
+                      code);
             code = hGenerator.generate(sootClass);
             FileHandler.write(fileName + ".h", code);
             code = cGenerator.generate(sootClass);

@@ -1,6 +1,6 @@
 /*
 An application that converts a Java class into  C
-source files (a _i.h file, a .h file and a .c file) that implement
+source files (an "interface header" file, a .h file and a .c file) that implement
 the class.
 
 Copyright (c) 2001-2002 The University of Maryland.
@@ -77,7 +77,7 @@ public class JavaToC {
         if (verbose) {
             System.out.println("JavaToC.convert(): classpath is: "
                     + classPath);
-            System.out.println("Single class flag is: " + generateSingleClass); 
+            System.out.println("Single class flag is: " + generateSingleClass);
         }
 
         // Initialize code generation.
@@ -102,9 +102,10 @@ public class JavaToC {
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
-        // Generate the _i.h file.
+        // Generate the "interface header" file.
         String code = iGenerator.generate(sootClass);
-        FileHandler.write(className+"_i.h", code);
+        FileHandler.write(className
+                + InterfaceFileGenerator.interfaceFileNameSuffix(), code);
 
         // Generate the .h file.
         code = hGenerator.generate(sootClass);
