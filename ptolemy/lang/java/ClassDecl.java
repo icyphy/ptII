@@ -203,8 +203,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
      *  file.
      */
     protected void _buildScope() throws IOException {
-	//System.out.println("ClassDecl._buildScope(): Building scope " +
-        //				 "for class " + fullName());
+        if (StaticResolution.traceLoading)
+	        System.out.println("ClassDecl._buildScope(): Building scope " +
+                    "(and calling loadSource) for class " + fullName());
+
         loadSource();
 
         // builds scopes for all recently loaded classes, including

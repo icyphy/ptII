@@ -217,6 +217,11 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     // Return true if there is at least one abstract method in the class
     // scope.
     private static boolean _hasAbstractMethod(UserTypeDeclNode node) {
+
+        // If the user type declaration has been loaded shallowly,
+        // we should not care if it has abstract methods.
+        if (!ASTReflect.isDeep(node)) return false;
+  
         Scope classScope = JavaDecl.getDecl((NamedNode) node).getScope();
 
         Iterator memberItr = classScope.allLocalDecls();

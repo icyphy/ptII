@@ -94,6 +94,9 @@ public final class ASTReflect {
      *  @return The ClassDeclNode of that class.
      */
     public static ClassDeclNode ASTClassDeclNode(Class myClass) {
+
+    System.out.println("Starting deep loading of " + myClass.getName()); 
+
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 	NameNode className = (NameNode) _makeNameNode(myClass.getName());
@@ -169,14 +172,58 @@ public final class ASTReflect {
                         /*imports*/ new LinkedList(),
                         TNLManip.addFirst(interfaceDeclNode));
 	} else {
-	    ClassDeclNode classDeclNode =
-		ASTClassDeclNode(myClass);
-	    compileUnitNode =
-		new CompileUnitNode(packageName,
-                        /*imports*/ new LinkedList(),
-                        TNLManip.addFirst(classDeclNode));
+        // FIXME: A terrible hack just to try out demand-driven deep-loading of ASTs
+        ClassDeclNode classDeclNode = null;
+        if (StaticResolution.shallowLoading && StaticResolution.enableShallowLoading)
+	        classDeclNode = ASTShallowClassDeclNode(myClass);
+	    else classDeclNode = ASTClassDeclNode(myClass);
+
+	    compileUnitNode = new CompileUnitNode(packageName,
+                /*imports*/ new LinkedList(), TNLManip.addFirst(classDeclNode));
 	}
+    StaticResolution.shallowLoading = true;  // reset shallow loading of ASTs
 	return compileUnitNode;
+    }
+
+
+    /** Generate the a shallow version of the ClassDeclNode of a class. 
+     *  In particular, fill in only the super class subtree. 
+     *  This is to facilitate demand-driven loading of AST subtrees.
+     *  FIXME: experimental (Shuvra).
+     *  @param myClass The class to be analyzed.
+     *  @return The "shallow" ClassDeclNode of that class.
+     */
+    public static ClassDeclNode ASTShallowClassDeclNode(Class myClass) {
+    if (StaticResolution.traceLoading) {
+         System.out.println("Starting shallow loading of " + myClass.getName()); 
+    }
+	int modifiers =
+	    Modifier.convertModifiers(myClass.getModifiers());
+	NameNode className = (NameNode) _makeNameNode(myClass.getName());
+	List interfaceList = _typeNodeList(myClass.getInterfaces());
+
+	LinkedList memberList = new LinkedList();
+
+	TreeNode superClass = null;
+        if (myClass.getSuperclass() == null ) {
+            // "If this Class represents either the Object class, an
+            // interface, a primitive type, or void, then null is
+            // returned"
+            superClass = AbsentTreeNode.instance;
+        } else {
+            superClass =
+		new TypeNameNode((NameNode)_makeNameNode(
+                        myClass.getSuperclass().getName()));
+        }
+
+	ClassDeclNode classDeclNode =
+	    new ClassDeclNode(modifiers,
+                    className,
+                    interfaceList,
+                    null,
+                    superClass);
+
+	return classDeclNode;
     }
 
     /** Return a list of constructors where each element contains
@@ -323,6 +370,19 @@ public final class ASTReflect {
     }
 
 
+    /** Return 'true' if and only if the given user type declaration has been
+     *  loaded in its full ("deep") form. If this method returns false, it means
+     *  that the declaration is null or it has only been loaded in "shallow mode" 
+     *  (most subrees are missing).
+     *  FIXME: experimental (Shuvra).
+     *  @param userTypeDeclNode The user type declaration.
+     *  @return 'true' if and only the declaration has been loaded in full form.
+     */
+    public static boolean isDeep(UserTypeDeclNode userTypeDeclNode) {
+        if (userTypeDeclNode == null) return false;
+        else return (userTypeDeclNode.getMembers() != null);
+    }
+    
     /** Given a class name, try to find a class that corresponds with it
      *  by first looking in the set of currently loaded packages and then
      *  by searching the directories in SearchPath.NAMED_PATH.

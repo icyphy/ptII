@@ -72,6 +72,13 @@ public class PackageResolutionVisitor extends JavaVisitor
         if (pkgDeclNode == AbsentTreeNode.instance) {
             thePkgDecl = StaticResolution.UNNAMED_PACKAGE;
         } else {
+
+            if (StaticResolution.traceLoading) {
+                System.out.println("Calling resolveAName from " + 
+                        "PackageResolutionVisitor.visitCompileUnitNode(" + 
+                        ((NameNode) pkgDeclNode).getIdent() + ")");
+            }
+
             NameNode name = (NameNode) StaticResolution.resolveAName(
                     (NameNode) pkgDeclNode,
                     StaticResolution.SYSTEM_PACKAGE.getScope(), null, null, CG_PACKAGE);

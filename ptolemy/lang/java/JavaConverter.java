@@ -39,6 +39,7 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.CompileUnitNode;
 import java.util.List;
 import java.util.Iterator;
+import java.util.Collection;
 import java.util.LinkedList;
 import ptolemy.lang.java.StaticResolution;
 
@@ -79,15 +80,23 @@ public class JavaConverter implements JavaStaticSemanticConstants {
      * @param passList The list of passes to use during code generation. 
      */
     public JavaConverter(LinkedList passList) {
-        Iterator passes = passList.iterator();
-        while(passes.hasNext()) {
-            if (!(passes.next() instanceof JavaVisitor)) {
-                // FIXME: insert exception
-            }
-        }
         _passList = passList;
     }
    
+    /**
+     * Use the specified list of visitors as a sequence of code
+     * generation passes. Additionally,
+     * use the specified list of "pre-pass" visitors to pre-process the
+     * abstract syntax trees before code generation, and just after
+     * static resolution. The pre-pass visitors are used only if
+     * static resolution is enabled.
+     * @param passList The list of passes to use during code generation. 
+     * @param prePassList The "pre-pass" list to use before code generation.
+     */
+    public JavaConverter(LinkedList passList, LinkedList prePassList) {
+        _prePassList = prePassList;
+        _passList = passList;
+    }
      
     /**
      * Use the Java code generator to generate the output.
@@ -129,7 +138,7 @@ public class JavaConverter implements JavaStaticSemanticConstants {
             }
 
             // Parse the Java input, and construct the abstract syntax tree.
-            javaParser.yydebug = _verbose;
+            javaParser.yydebug = _debugParser;
             javaParser.yyparse();
             CompileUnitNode ast = javaParser.getAST();
 
@@ -144,13 +153,55 @@ public class JavaConverter implements JavaStaticSemanticConstants {
                 // Perform all three passes of static resolution
                 if (_verbose) {
                     System.out.println("Beginning static resolution");
+                    System.out.println("The allParsedMap size is" +
+                            JavaParserManip.allParsedMap.size());
                 }
                 StaticResolution.loadCompileUnit(ast, 2);
                 if (_verbose) {
                     System.out.println("Static resolution complete. The new AST:");
                     System.out.println(ast.toString());
+                    System.out.println("The allPass0ResolvedMap size is " +
+                            StaticResolution.allPass0ResolvedMap.size());
+                    System.out.println("The allParsedMap size is" +
+                            JavaParserManip.allParsedMap.size());
                 }
-            }
+
+                // Pre-process all instantiated abstract syntax trees prior 
+                // to code generation.
+                if (_prePassList != null) {
+                    Collection compilationUnits =
+                            StaticResolution.allPass0ResolvedMap.values();
+                    if (compilationUnits == null) {
+                        if (_verbose) System.out.println(
+                                "No compilation unit nodes were generated " +
+                                "through static resolution\n");
+                    } else {
+                        Iterator compilationUnitIterator = 
+                                compilationUnits.iterator();
+                        int unitNumber = 0;
+                        while (compilationUnitIterator.hasNext()) {
+                            unitNumber++;
+                            CompileUnitNode unit = (CompileUnitNode) 
+                                    compilationUnitIterator.next();
+                            if (_verbose) {
+                                System.out.println("Performing pre pass processing on " +
+                                        ASTReflect.getFullyQualifiedName(unit));
+                                // FIXME: Remove AST printing when done debugging:
+                                System.out.println("Here is the AST:");
+                                System.out.println(unit.toString());
+                            }
+                            Iterator passes = _prePassList.iterator();
+                            while(passes.hasNext()) 
+                                unit.accept((JavaVisitor)(passes.next())); 
+                        }
+                        if (_verbose) {
+                            System.out.println("Total number of preprocessed " 
+                                    + "ASTs:  " + unitNumber);
+                                  
+                        }
+                  }
+            } /* if (_performStaticResolution) */
+        }
 
             // Invoke the specified passes on the abstract syntax tree.
             Iterator passes = _passList.iterator();
@@ -198,19 +249,33 @@ public class JavaConverter implements JavaStaticSemanticConstants {
      * @param performStaticResolution Indicates whether or not
      * static resolution should be performed prior to invoking the
      * given list of code generation passes.
+     * @param debugParser Indicates whether or not debugging output should 
+     * be turned on in the Java parser.
      */ 
-    public void configure(boolean verbose, boolean performStaticResolution) {
+    public void configure(boolean verbose, boolean performStaticResolution,
+            boolean debugParser) {
         _verbose = verbose;
         _performStaticResolution = performStaticResolution;
+        _debugParser = debugParser; 
     }
 
     // The "back-end" code generator used to convert the input Java. 
-    private LinkedList _passList;
+    private LinkedList _passList = null;
+
+    // A list of "pre-pass" visitors to pre-process the
+    // abstract syntax trees before code generation, and just after
+    // static resolution. The pre-pass visitors are used only if
+    // static resolution is enabled.
+    private LinkedList _prePassList = null;
 
     // Indicates whether or not verbose output format should be
-    // used. This includes diagnostic output, and abstract syntax tree displays 
-    // after each code generation pass.
+    // used during code generation. This includes diagnostic output, 
+    // and abstract syntax tree displays after each code generation pass.
     private boolean _verbose = false;
+
+    // Indicates whether or not debugging output should be turned on
+    // in the Java parser.
+    private boolean _debugParser = false;
 
     // Indicates whether or not static resolution should be peformed
     // prior to invoking the given list of code generation passes.

@@ -56,10 +56,17 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     /** Resolve the name of the type. */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
         Scope scope = (Scope) args.get(0);
+        boolean debug = false;
 
         NameNode name = node.getName();
 
 	try {
+        if (StaticResolution.traceLoading) {
+            System.out.println("Calling resolveAName from " + 
+                    "ResolveTypesVisitor.visitTypeNameNode#1(" + 
+                    name.getIdent() + ")");
+        }
+
 	    NameNode newName =
 		(NameNode) StaticResolution.resolveAName(name, scope, null,
 							 _currentPackage,
@@ -87,26 +94,34 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 //  				   parentName.getIdent());
 	    if (parentName != null) {
 		try {
+            if (StaticResolution.traceLoading) {
+                System.out.println("Calling resolveAName from " + 
+                        "ResolveTypesVisitor.visitTypeNameNode#2(" + 
+                        parentName.getIdent() + ")");
+            }
 		    NameNode newName =
 			(NameNode) StaticResolution.resolveAName(parentName,
 								 scope, null,
 								 _currentPackage,
 								 CG_USERTYPE);
-//  		    System.err.println("ResolveTypesVisitor." +
-//  				       "visitTypeNameNode():" +
-//  				       "newName = " + newName +
-//  				       "\n newName.hashCode()"+
-//  				       newName.hashCode());
 		newName.setIdent(parentName.getIdent() + '$' +
 				     name.getIdent());
 		newName.removeProperty(DECL_KEY);
-//  		System.err.println("ResolveTypesVisitor.visitTypeNameNode():" +
-//  				   "newName after setIdent = " + newName +
-//  				   "\n newName.hashCode()" +
-//  				   newName.hashCode() +
-//  				   "newName.getQualifier()" +
-//  				   newName.getQualifier());
+
+        if (debug) {
+    		System.err.println("ResolveTypesVisitor.visitTypeNameNode():" +
+    				   "newName after setIdent = " + newName +
+    				   "\n newName.hashCode()" +
+    				   newName.hashCode() +
+    				   "newName.getQualifier()" +
+    				   newName.getQualifier());
+        }
 		    try {
+            if (StaticResolution.traceLoading) {
+                System.out.println("Calling resolveAName from " + 
+                        "ResolveTypesVisitor.visitTypeNameNode#3(" + 
+                        newName.getIdent() + ")");
+            }
 			NameNode newerName =
 			    (NameNode) StaticResolution.
 			    resolveAName(newName,

@@ -353,6 +353,12 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
         NameNode name = node.getName();
 
+        
+        if (StaticResolution.traceLoading) {
+            System.out.println("Calling resolveAName from " + 
+                    "ResolveNameVisitor.visitObjectNode(" + 
+                    name.getIdent() + ")");
+        }
         return StaticResolution.resolveAName(name, ctx.scope,
                 ctx.currentClass, _currentPackage,
                 ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);

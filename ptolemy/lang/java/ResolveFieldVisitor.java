@@ -151,9 +151,17 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
+
         FieldContext ctx = (FieldContext) args.get(0);
 
         ClassDecl superDecl = ctx.currentClassDecl.getSuperClass();
+
+        if (StaticResolution.debugLoading) {
+            System.out.println("ResolveFieldVisitor.visitSuperConstructorCallNode: "
+                    + ctx.currentClassDecl.getName() + "/" + superDecl.getName()); 
+            System.out.println("Super's AST:"); 
+            System.out.println(superDecl.getSource().toString()); 
+        }
 
         if (superDecl == null) {
             // the class is 'Object'
@@ -462,6 +470,13 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
             typeDecl = StaticResolution.ARRAY_CLASS_DECL;
         } else {
             typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) oType);
+        }
+
+        // FIXME: Implement streamlining of AST loading here.
+        // Load the source for oType if it has not already been loaded.
+        // Ideally, this would be the only place where class sources are
+        // implicitly loaded.
+        if (!ASTReflect.isDeep((ClassDeclNode)(typeDecl.getSource()))) {
         }
 
         JavaDecl d = null;

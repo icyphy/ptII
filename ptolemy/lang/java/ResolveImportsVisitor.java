@@ -73,6 +73,12 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         NameNode name = node.getName();
 
+        if (StaticResolution.traceLoading) {
+            System.out.println("Calling resolveAName from " + 
+                    "ResolveImportsVisitor.visitImportNode(" + 
+                    name.getIdent() + ")");
+        }
+        
         StaticResolution.resolveAName(name,
                 (Scope) StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
                 CG_USERTYPE);
@@ -95,6 +101,12 @@ public class ResolveImportsVisitor extends JavaVisitor
     public Object visitImportOnDemandNode(ImportOnDemandNode node, LinkedList args) {
 
         NameNode name = node.getName();
+
+        if (StaticResolution.traceLoading) {
+            System.out.println("Calling resolveAName from " + 
+                    "ResolveImportsVisitor.visitImportOnDemandNode(" + 
+                    name.getIdent() + ")");
+        }
 
         StaticResolution.resolveAName(name,
                 StaticResolution.SYSTEM_PACKAGE.getScope(), null,  null, CG_PACKAGE);
@@ -146,6 +158,12 @@ public class ResolveImportsVisitor extends JavaVisitor
     // we can get rid of this by added java.lang to the import list
     protected final void _importOnDemand(String qualName) {
         NameNode name = (NameNode) StaticResolution.makeNameNode(qualName);
+
+        if (StaticResolution.traceLoading) {
+            System.out.println("Calling resolveAName from " + 
+                    "ResolveImportsVisitor._importOnDemand(" + 
+                    name.getIdent() + ")");
+        }
 
         StaticResolution.resolveAName(name,
                 StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
