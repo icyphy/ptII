@@ -153,7 +153,7 @@ public class Round extends Transformer {
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Otherwise, return NOT_READY, and do
      *   not consume any input tokens.
-     *  @exception IllegalActionException Should not be thrown
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
