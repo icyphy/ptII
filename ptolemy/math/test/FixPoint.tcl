@@ -229,7 +229,7 @@ test FixPoint-8.1 {integer part scaling with saturate} {
 } {{
 101.10010010110011 No overflow Occurred(4.14)
 101.10010010110011 No overflow Occurred(4.14)
-101.10010010110011 No overflow Occurred(3.14)
+11.11111111111111 Overflow Occurred(3.14)
 1.11111111111111 Overflow Occurred(2.14)
 0.11111111111111 Overflow Occurred(1.14)}}
 
@@ -248,29 +248,9 @@ test FixPoint-8.2 {integer part scaling with zero saturate} {
 } {{
 101.10010010110011 No overflow Occurred(4.14)
 101.10010010110011 No overflow Occurred(4.14)
-101.10010010110011 No overflow Occurred(3.14)
+0.00000000000000 Overflow Occurred(3.14)
 0.00000000000000 Overflow Occurred(2.14)
 0.00000000000000 Overflow Occurred(1.14)}}
-
-test FixPoint-8.3 {integer part scaling with truncate} {
-
-    set r0 [ $c0 scaleToPrecision $s0 2 ]
-    set r1 [ $c0 scaleToPrecision $s1 2 ] 
-    set r2 [ $c0 scaleToPrecision $s2 2 ]
-    set r3 [ $c0 scaleToPrecision $s3 2 ]
-    list "
-[$c0 toBitString][ $c0 getErrorDescription][ [$c0 getPrecision] toString ]
-[$r0 toBitString][ $r0 getErrorDescription][ [$r0 getPrecision] toString ]
-[$r1 toBitString][ $r1 getErrorDescription][ [$r1 getPrecision] toString ]
-[$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
-[$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
-} {{
-101.10010010110011 No overflow Occurred(4.14)
-101.10010010110011 No overflow Occurred(4.14)
-101.10010010110011 No overflow Occurred(3.14)
-1.10010010110011 Overflow Occurred(2.14)
-1.10010010110011 Overflow Occurred(1.14)}}
-
 
 test FixPoint-8.4 {negative integer part scaling with saturate} {
     set s0 [java::new ptolemy.math.Precision "(4.14)" ]	
@@ -294,7 +274,7 @@ test FixPoint-8.4 {negative integer part scaling with saturate} {
 } {{
 -110.01101101001101 No overflow Occurred(4.14)
 -110.01101101001101 No overflow Occurred(4.14)
--110.01101101001101 No overflow Occurred(3.14)
+-100.00000000000000 Overflow Occurred(3.14)
 -10.00000000000000 Overflow Occurred(2.14)
 -1.00000000000000 Overflow Occurred(1.14)}}
 
@@ -313,28 +293,9 @@ test FixPoint-8.5 {negative integer part scaling with zero saturate} {
 } {{
 -110.01101101001101 No overflow Occurred(4.14)
 -110.01101101001101 No overflow Occurred(4.14)
--110.01101101001101 No overflow Occurred(3.14)
+0.00000000000000 Overflow Occurred(3.14)
 0.00000000000000 Overflow Occurred(2.14)
 0.00000000000000 Overflow Occurred(1.14)}}
-
-test FixPoint-8.6 {negative integer part scaling with truncate} {
-
-    set r0 [ $c0 scaleToPrecision $s0 2 ]
-    set r1 [ $c0 scaleToPrecision $s1 2 ] 
-    set r2 [ $c0 scaleToPrecision $s2 2 ]
-    set r3 [ $c0 scaleToPrecision $s3 2 ]
-    list "
-[$c0 toBitString][ $c0 getErrorDescription][ [$c0 getPrecision] toString ]
-[$r0 toBitString][ $r0 getErrorDescription][ [$r0 getPrecision] toString ]
-[$r1 toBitString][ $r1 getErrorDescription][ [$r1 getPrecision] toString ]
-[$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
-[$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
-} {{
--110.01101101001101 No overflow Occurred(4.14)
--110.01101101001101 No overflow Occurred(4.14)
--110.01101101001101 No overflow Occurred(3.14)
-10.01101101001101 Overflow Occurred(2.14)
-0.01101101001101 Overflow Occurred(1.14)}}
 
 ####################################################################
 
