@@ -91,7 +91,7 @@ public class Port extends NamedObj {
 
     /** Disconnect this Port from all the Relations it was connected to.
      */	
-    public void disconnect() {
+    public void disconnectAllRelations() {
 
 	if( _relationsList == null ) return;
 
@@ -106,7 +106,7 @@ public class Port extends NamedObj {
      *  is not associated with this port, the method doesn't do anything.
      * @param The Relation from which this port is being disconnected
      */
-    public void disconnect(Relation relation) {
+    public void disconnectRelation(Relation relation) {
 
         if ( _relationsList != null ) _relationsList.dissociate(relation);
         return;
