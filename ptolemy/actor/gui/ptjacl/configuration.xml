@@ -29,6 +29,9 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Include HTML Viewer and Web Browser so we can view the docs -->
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
+    <entity name="Web Browser" class="ptolemy.actor.gui.BrowserEffigy$Factory"/>
     <entity name="Tcl Evaluator"
             class="ptolemy.actor.gui.ptjacl.TclShellEffigy$ShellFactory"/>
   </entity>
@@ -39,6 +42,13 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <property name="HTML Viewer"
+              class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
+      <property name="Source"
+              class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+    </property>
+    <property name="Web Browser"
+              class="ptolemy.actor.gui.BrowserTableau$Factory"/>
     <property name="Tcl Evaluator"
               class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/>
 
