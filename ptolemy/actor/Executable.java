@@ -26,6 +26,7 @@
 */
 
 package pt.actors;
+import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Executable
@@ -43,7 +44,7 @@ public interface Executable {
     /** This fires an actor and maybe invoked several times between 
      *  invocations of prefire() and postfire()
      */
-    public void fire();
+    public void fire() throws IllegalActionException;
 
     /** This method should be invoked exactly once during the lifetime of
      *  an application. It maybe invoked again to restart an execution
