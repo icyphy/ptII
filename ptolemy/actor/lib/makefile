@@ -66,6 +66,8 @@ JSRCS = \
 	AddSubtract.java \
 	AbsoluteValue.java \
 	ArrayAppend.java \
+	ArrayElement.java \
+	ArrayExtract.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanExpression.java \
@@ -83,6 +85,7 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
+	LevinsonDurbin.java \
 	MathFunction.java \
 	MaxIndex.java \
 	Maximum.java \

@@ -26,8 +26,10 @@
 <entity name="IIR" class="ptolemy.actor.lib.IIR">
    <doc>IIR filter</doc>
 </entity>
+<entity name="LevinsonDurbin" class="ptolemy.actor.lib.LevinsonDurbin"/>
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
+<entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 <entity name="SmoothedSpectrum" class="ptolemy.domains.sdf.lib.SmoothedSpectrum"/>

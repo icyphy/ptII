@@ -7,11 +7,6 @@
       <group>
 <doc>Conversion actors</doc>
 
-<entity name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend">
-</entity>
-<entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-</entity>
-
 <entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
 </entity>
 
@@ -93,10 +88,6 @@
         </property>
      </property>
   </entity>
-
-
-<entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-</entity>
 
       </group>
     ?>
