@@ -51,9 +51,13 @@ public class IconLibrary extends XMLElement{
      */
     public IconLibrary() {
         super("iconlibrary");
-        sublibraries = (HashedSet) new HashedSet();
+        sublibraries = (HashedMap) new HashedMap();
         icons = (HashedMap) new HashedMap();
         description = new XMLElement("description");
+        addChildElement(description);
+        setName("");
+        setVersion("");
+
     }
 
     /** Create an IconLibrary object with the attributes given in the 
@@ -64,24 +68,64 @@ public class IconLibrary extends XMLElement{
      */
     public IconLibrary(HashedMap attributes) {
         super("iconlibrary", attributes);        
-        sublibraries = (HashedSet) new HashedSet();
+        sublibraries = (HashedMap) new HashedMap();
         icons = (HashedMap) new HashedMap();
-    }
+        description = new XMLElement("description");
+        addChildElement(description);
+        if(!hasAttribute("name")) setName("");
+        if(!hasAttribute("version")) setVersion("");
+   }
         
-    /** Get the Icon that is stored in this IconLibrary with the specified 
-     *  type signature
+    /**
+     * Add an Icon to this library
+     */
+    public void addIcon(Icon i) {
+        addChildElement(i);
+        icons.putAt(i.getName(),i);
+    }
+
+    /** 
+     * Add a sublibrary to this library.   
+     */
+
+    public void addSubLibrary(String name) {
+        XMLElement e = new XMLElement("sublibrary");
+        e.setPCData(name);
+        addChildElement(e);
+        sublibraries.putAt(name, e);
+    }
+    
+    /**
+     * Test if the library contains an Icon with the given name
+     */
+    public boolean containsIcon(String name) {
+        return icons.includesKey(name);
+    }
+
+    /**
+     * Test if the library contains the sublibrary
+     */
+    public boolean containsSubLibrary(String name) {
+        return sublibraries.includesKey(name);
+    }
+    
+    /** 
+     * Get the Icon that is stored in this IconLibrary with the specified 
+     * type signature
      */
     public Icon getIcon(EntityType e) {
         return (Icon) icons.at(e);
     }
 
-    /** Return a long description string of the the Icons in thie Library.
+    /** 
+     * Return a long description string of the the Icons in thie Library.
      */
     public String getDescription() {
         return description.getPCData();
     }
 
-    /** Return the name of this library.
+    /**
+     * Return the name of this library.
      */
     public String getName() {
         return getAttribute("name");
@@ -103,6 +147,24 @@ public class IconLibrary extends XMLElement{
         return icons.elements();
     }
     
+   /**
+     * Remove an icon from this IconLibrary
+     */
+    public void removeIcon(String name) {
+        XMLElement e = (XMLElement) icons.at(name);
+        removeChildElement(e);
+        sublibraries.removeAt(name);
+    }
+
+    /**
+     * Remove a sublibrary from this IconLibrary
+     */
+    public void removeSubLibrary(String name) {
+        XMLElement e = (XMLElement) sublibraries.at(name);
+        removeChildElement(e);
+        sublibraries.removeAt(name);
+    }
+
     /** 
      * Set the string that contains the long description of this library.
      */
@@ -130,12 +192,12 @@ public class IconLibrary extends XMLElement{
      * @return an Enumeration of Strings
      */
     public Enumeration subLibraries() {
-        return sublibraries.elements();
+        return sublibraries.keys();
     }
 
     // These are package-private because the parser will set them
     XMLElement description;
-    HashedSet sublibraries;
+    HashedMap sublibraries;
     HashedMap icons;
 }
 

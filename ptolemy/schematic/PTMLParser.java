@@ -92,7 +92,7 @@ public class PTMLParser extends HandlerBase{
                         current);
             } else if(current.getElementType().equals("sublibrary")) {
                 String file = current.getAttribute("file");
-                ((IconLibrary) parent).sublibraries.include(file);
+                ((IconLibrary) parent).sublibraries.putAt(file,current);
             }
         }
         current = parent;

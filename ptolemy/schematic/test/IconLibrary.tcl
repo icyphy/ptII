@@ -1,8 +1,8 @@
-# Tests for the AtomicActor class
+# Tests for the IconLibrary class
 #
-# @Author: Edward A. Lee
+# @Author: Stephen Neuendorffer
 #
-# @Version: @(#)AtomicActor.tcl	1.6   10/20/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
@@ -50,34 +50,40 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test XMLElement-2.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element]
+test IconLibrary-2.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element $attributes]
+    set e1 [java::new ptolemy.schematic.IconLibrary $attributes]
     list [$e0 toString] [$e1 toString]
-} {{<element>
-</element>
-} {<element name1="value1" name2="value2">
-</element>
+} {{<iconlibrary version="" name="">
+<description>
+</description>
+</iconlibrary>
+} {<iconlibrary name1="value1" name2="value2" version="" name="">
+<description>
+</description>
+</iconlibrary>
 }}
 
 ######################################################################
 ####
 #
-test XMLElement-3.1 {addChildElement tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test IconLibrary-3.1 {addChildElement tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
     set e1 [java::new ptolemy.schematic.XMLElement element1 $attributes]
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
-} {{<element0>
+} {{<iconlibrary version="" name="">
+<description>
+</description>
 <element1 name1="value1" name2="value2">
 </element1>
-</element0>
+</iconlibrary>
 } {<element1 name1="value1" name2="value2">
 </element1>
 }}
@@ -86,12 +92,14 @@ test XMLElement-3.1 {addChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-3.2 {removeChildElement tests} {
+test IconLibrary-3.2 {removeChildElement tests} {
     # NOTE: Uses the setup above
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
-} {{<element0>
-</element0>
+} {{<iconlibrary version="" name="">
+<description>
+</description>
+</iconlibrary>
 } {<element1 name1="value1" name2="value2">
 </element1>
 }}
@@ -99,35 +107,31 @@ test XMLElement-3.2 {removeChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-4.1 {childElements tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test IconLibrary-4.1 {childElements tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element1 $attributes]
-    set e2 [java::new ptolemy.schematic.XMLElement element2]
-    set e3 [java::new ptolemy.schematic.XMLElement element3]    
+    set e1 [java::new ptolemy.schematic.IconLibrary $attributes]
+    set e2 [java::new ptolemy.schematic.IconLibrary]
+    set e3 [java::new ptolemy.schematic.IconLibrary]    
     $e0 addChildElement $e1
     $e0 addChildElement $e2
     $e2 addChildElement $e3
     set e0children [$e0 childElements]
     set e0child1 [$e0children nextElement] 
+    set c1left [$e0children hasMoreElements]
     set e0child2 [$e0children nextElement] 
-    list [$e0child1 toString] [$e0child2 toString] \
-[$e0children hasMoreElements]
-} {{<element1 name1="value1" name2="value2">
-</element1>
-} {<element2>
-<element3>
-</element3>
-</element2>
-} 0}
-
+    set c2left [$e0children hasMoreElements]
+    set e0child3 [$e0children nextElement] 
+    set c3left [$e0children hasMoreElements]
+    list $c1left $c2left $c3left
+} {1 1 0}
 
 ######################################################################
 ####
 #
-test XMLElement-4.2 {hasChildElement tests} {
+test IconLibrary-4.2 {hasChildElement tests} {
     # NOTE: Uses the setup above
     list [$e0 hasChildElement $e0] [$e0 hasChildElement $e1] \
 [$e0 hasChildElement $e2] [$e0 hasChildElement $e3]
@@ -136,55 +140,61 @@ test XMLElement-4.2 {hasChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-4.3 {getParent tests} {
+test IconLibrary-4.3 {getParent tests} {
     # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
+    list [[$e1 getParent] equals $e0] \
 [[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
-} {1 1 1 1}
+} {1 1 1}
 
 ######################################################################
 ####
 #
-test XMLElement-5.1 {setAttribute tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test IconLibrary-5.1 {setAttribute tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
-} {<element0 name1="value1" name2="value2">
-</element0>
+} {<iconlibrary name1="value1" name2="value2" version="" name="">
+<description>
+</description>
+</iconlibrary>
 }
 
 
 ######################################################################
 ####
 #
-test XMLElement-6.2 {removeAttribute tests} {
+test IconLibrary-6.2 {removeAttribute tests} {
     # NOTE: Uses the setup above
     $e0 removeAttribute name1
     $e0 toString
-} {<element0 name2="value2">
-</element0>
+} {<iconlibrary name2="value2" version="" name="">
+<description>
+</description>
+</iconlibrary>
 }
 
 ######################################################################
 ####
 #
-test XMLElement-7.1 {attributes tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test IconLibrary-7.1 {attributes tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
     set e0attributes [$e0 attributeNames]
     set e0attrib1 [$e0attributes nextElement] 
     set e0attrib2 [$e0attributes nextElement] 
-    list $e0attrib1 $e0attrib2 \
+    set e0attrib3 [$e0attributes nextElement] 
+    set e0attrib4 [$e0attributes nextElement] 
+    list $e0attrib1 $e0attrib2 $e0attrib3 $e0attrib4\
 [$e0attributes hasMoreElements]
-} {name1 name2 0}
+} {name1 name2 version name 0}
 
 ######################################################################
 ####
 #
-test XMLElement-7.2 {hasChildElement tests} {
+test IconLibrary-7.2 {hasAttribute tests} {
     # NOTE: Uses the setup above
     list [$e0 hasAttribute name1] [$e0 hasAttribute name2] \
 [$e0 hasAttribute name3]
@@ -193,49 +203,175 @@ test XMLElement-7.2 {hasChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-7.3 {getParent tests} {
-    # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
-[[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
-} {1 1 0}
-
-######################################################################
-####
-#
-test XMLElement-8.1 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test IconLibrary-8.1 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     $e0 setPCData "hello this is a test\n"
     $e0 toString
-} {<element0>
+} {<iconlibrary version="" name="">
+<description>
+</description>
 hello this is a test
-</element0>
+</iconlibrary>
 }
 
 ######################################################################
 ####
 #
-test XMLElement-8.2 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test IconLibrary-8.2 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 toString
-} {<element0>
+} {<iconlibrary version="" name="">
+<description>
+</description>
 hello this is a test of appending
-</element0>
+</iconlibrary>
 }
 
 ######################################################################
 ####
 #
-test XMLElement-8.3 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test IconLibrary-8.3 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 setPCData "and resetting PCData\n"    
     $e0 toString
-} {<element0>
+} {<iconlibrary version="" name="">
+<description>
+</description>
 and resetting PCData
-</element0>
+</iconlibrary>
 }
-
  
+######################################################################
+####
+#
+test IconLibrary-9.1 {set/getDescription tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
+    $e0 setDescription "Test Description\n"
+    list [$e0 toString] [$e0 getDescription]
+} {{<iconlibrary version="" name="">
+<description>
+Test Description
+</description>
+</iconlibrary>
+} {Test Description
+}}
+
+######################################################################
+####
+#
+test IconLibrary-9.2 {set/getName tests} {
+    # uses configuration above
+    $e0 setName "IconLibrary Name"
+    list [$e0 toString] [$e0 getName]
+} {{<iconlibrary version="" name="IconLibrary Name">
+<description>
+Test Description
+</description>
+</iconlibrary>
+} {IconLibrary Name}}
+
+######################################################################
+####
+#
+test IconLibrary-9.3 {set/getVersion tests} {
+    # uses configuration above
+    $e0 setVersion "IconLibrary Version"
+    list [$e0 toString] [$e0 getVersion]
+} {{<iconlibrary version="IconLibrary Version" name="IconLibrary Name">
+<description>
+Test Description
+</description>
+</iconlibrary>
+} {IconLibrary Version}}
+
+######################################################################
+####
+#
+test IconLibrary-10.1 {sublibrary tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
+    $e0 addSubLibrary testlibrary
+    list [$e0 toString] [$e0 containsSubLibrary testlibrary]
+} {{<iconlibrary version="" name="">
+<description>
+</description>
+<sublibrary>
+testlibrary</sublibrary>
+</iconlibrary>
+} 1}
+
+######################################################################
+####
+#
+test IconLibrary-10.2 {remove sublibrary tests} {
+    # uses configuration above
+    set enumlib [$e0 subLibraries]
+    set onelib [$enumlib hasMoreElements]
+    $enumlib nextElement
+    set zerolib [$enumlib hasMoreElements]
+    list $onelib $zerolib
+} {1 0}
+
+######################################################################
+####
+#
+test IconLibrary-10.3 {remove sublibrary tests} {
+    # uses configuration above
+    $e0 removeSubLibrary testlibrary
+    set enumlib [$e0 subLibraries]
+    list [$e0 toString] [$e0 containsSubLibrary testLibrary]\
+[$enumlib hasMoreElements]
+} {{<iconlibrary version="" name="">
+<description>
+</description>
+</iconlibrary>
+} 0 0}
+
+######################################################################
+####
+#
+test IconLibrary-11.1 {icon tests} {
+    set e0 [java::new ptolemy.schematic.IconLibrary]
+    set i0 [java::new ptolemy.schematic.Icon]
+    $i0 setName testicon
+    $e0 addIcon $i0
+    list [$e0 toString] [$e0 containsIcon testicon]
+} {{<iconlibrary version="" name="">
+<description>
+</description>
+<icon name="testicon">
+<entitytype>
+</entitytype>
+</icon>
+</iconlibrary>
+} 1}
+
+######################################################################
+####
+#
+test IconLibrary-11.2 {remove icon tests} {
+    # uses configuration above
+    set enumlib [$e0 icons]
+    set onelib [$enumlib hasMoreElements]
+    $enumlib nextElement
+    set zerolib [$enumlib hasMoreElements]
+    list $onelib $zerolib
+} {1 0}
+
+######################################################################
+####
+#
+test IconLibrary-11.3 {remove icon tests} {
+    # uses configuration above
+    $e0 removeIcon testicon
+    set enumlib [$e0 icons]
+    list [$e0 toString] [$e0 containsIcon testicon]\
+[$enumlib hasMoreElements]
+} {{<iconlibrary version="" name="">
+<description>
+</description>
+</iconlibrary>
+} 1 1}

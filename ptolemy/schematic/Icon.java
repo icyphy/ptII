@@ -59,6 +59,7 @@ public class Icon extends XMLElement {
         graphics = (HashedMap) new HashedMap();
         entitytype = new EntityType();
         addChildElement(entitytype);
+        setName("");
     }
 
     /**
@@ -74,6 +75,7 @@ public class Icon extends XMLElement {
         graphics = (HashedMap) new HashedMap();
         entitytype = new EntityType();
         addChildElement(entitytype);
+        if(!hasAttribute("name")) setName("");
     }
    
 
@@ -90,6 +92,7 @@ public class Icon extends XMLElement {
         graphics = (HashedMap) new HashedMap();
         entitytype = et;
         addChildElement(entitytype);
+        if(!hasAttribute("name")) setName("");
     }
 
     /** 
@@ -149,6 +152,13 @@ public class Icon extends XMLElement {
         return entitytype;
     }
 
+    /** 
+     * Return the name of this Icon.  
+     */
+    public String getName() {
+        return getAttribute("name");
+    }
+
     /**
      * Return an enumeration over the names of the graphics formats
      * supported by this icon. 
@@ -173,6 +183,10 @@ public class Icon extends XMLElement {
             throw new IllegalActionException("Icon does not contain a " +
                     "graphic of format " + format);
         }
+    }
+
+    public void setName(String name) {
+        setAttribute("name", name);
     }
 
     EntityType entitytype;

@@ -32,7 +32,7 @@ package ptolemy.schematic;
 
 import java.util.Enumeration;
 import collections.HashedMap;
-import collections.HashedSet;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLElement
@@ -54,8 +54,9 @@ public class XMLElement extends Object {
      */
     public XMLElement(String type) {
         attributes = (HashedMap) new HashedMap();
-        childelements = (HashedSet) new HashedSet();
+        childelements = (LinkedList) new LinkedList();
         elementtype = type;
+        pcdata = "";
     }
 
     /** 
@@ -68,13 +69,15 @@ public class XMLElement extends Object {
     public XMLElement(String type, HashedMap attribs) {
         attributes = attribs;
         elementtype = type;
-        childelements = (HashedSet) new HashedSet();
+        childelements = (LinkedList) new LinkedList();
+        pcdata = "";
     }
 
     /** Add a child element to this element
      */
     public void addChildElement(XMLElement e) {
-        childelements.include(e);
+        childelements.insertLast(e);
+        e.setParent(this);
     }
     
     /**
@@ -138,16 +141,25 @@ public class XMLElement extends Object {
         return attributes.includesKey(name);
     }
 
-    /** Test if the element is a child element of this element 
+    /** 
+     * Test if the element is a child element of this element 
      */
     public boolean hasChildElement(XMLElement e) {
         return childelements.includes(e);
     }
 
-    /** Remove an child element from this element
+    /** 
+     * Remove an attribute from this element
+     */
+    public void removeAttribute(String name) {
+        attributes.removeAt(name);
+    }
+
+    /** 
+     * Remove an child element from this element
      */
     public void removeChildElement(XMLElement e) {
-        childelements.exclude(e);
+        childelements.removeOneOf(e);
     }
 
     /**
@@ -180,23 +192,23 @@ public class XMLElement extends Object {
         String s = "";
         s = s + "<";
         s = s + getElementType();
-        s = s + "\n";
         Enumeration attribs = attributeNames();
         while(attribs.hasMoreElements()) {
             String name = (String) attribs.nextElement();
             String value = getAttribute(name);
-            s = s + "\t";
+            s = s + " ";
             s = s + name;
             s = s + "=\"";
             s = s + value;
-            s = s + "\"\n";
+            s = s + "\"";
         }
-        s = s + ">";
+        s = s + ">\n";
         Enumeration children = childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
             s = s + child.toString();
         }
+        s = s + pcdata;
         s = s + "</";
         s = s + getElementType();
         s = s + ">\n";
@@ -214,7 +226,7 @@ public class XMLElement extends Object {
     }
 
     // The child elements of this element
-    private HashedSet childelements;
+    private LinkedList childelements;
     // The attributes of this element
     private HashedMap attributes;
     // The element type of this element

@@ -53,7 +53,7 @@ public class SchematicParameter extends XMLElement{
      * Create a SchematicParamter object with the given name.
      * The value and type are empty strings.
      */
-    SchematicParameter(String name) {
+    public SchematicParameter(String name) {
         super("parameter");
         setAttribute("name", name);
         setAttribute("value", "");
@@ -64,7 +64,7 @@ public class SchematicParameter extends XMLElement{
      * Create a SchematicParameter object with the given name and type.
      * The value is set to an empty string
      */
-    SchematicParameter(String name, String type) {
+    public SchematicParameter(String name, String type) {
         super("parameter");
         setAttribute("name", name);
         setAttribute("type", type);
@@ -74,7 +74,7 @@ public class SchematicParameter extends XMLElement{
     /**
      * Create a SchematicParameter object with the given name, type and value.
      */
-    SchematicParameter(String name,  
+    public SchematicParameter(String name,  
             String type, String value) {
         super("parameter");
         setAttribute("name", name);

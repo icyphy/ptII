@@ -43,7 +43,7 @@ appear in a Ptolemy II schematic.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public abstract class SchematicElement extends XMLElement {
+public class SchematicElement extends XMLElement {
 
     /**
      * Create a SchematicElement object with the specified element type.
@@ -51,7 +51,7 @@ public abstract class SchematicElement extends XMLElement {
      *
      * @param type the element type of the SchematicElement
      */
-    SchematicElement(String type) {
+    public SchematicElement(String type) {
         super(type);
         parameters = (HashedMap) new HashedMap();
     }
@@ -64,7 +64,7 @@ public abstract class SchematicElement extends XMLElement {
      * @param attributes a HashedMap from a String specifying the name of
      * an attribute to a String specifying the attribute's value.
      */
-    SchematicElement(String type, HashedMap attributes) {
+    public SchematicElement(String type, HashedMap attributes) {
         super(type, attributes);
         parameters = (HashedMap) new HashedMap();
     }
@@ -74,7 +74,6 @@ public abstract class SchematicElement extends XMLElement {
      * of the parameter must be unique in this element.
      */
     public void addParameter (SchematicParameter parameter) {
-        parameter.setParent(this);
         addChildElement(parameter);
         parameters.putAt(parameter.getName(), parameter);
     }
@@ -87,7 +86,6 @@ public abstract class SchematicElement extends XMLElement {
     String value) {
         SchematicParameter parameter = 
             new SchematicParameter(name, type, value);
-        parameter.setParent(this);
         addChildElement(parameter);
         parameters.putAt(name, parameter);
     }

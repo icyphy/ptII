@@ -1,4 +1,4 @@
-# Tests for the AtomicActor class
+# Tests for the SchematicElement class
 #
 # @Author: Edward A. Lee
 #
@@ -50,12 +50,12 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test XMLElement-2.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element]
+test SchematicElement-2.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element $attributes]
+    set e1 [java::new ptolemy.schematic.SchematicElement element $attributes]
     list [$e0 toString] [$e1 toString]
 } {{<element>
 </element>
@@ -66,12 +66,12 @@ test XMLElement-2.1 {Constructor tests} {
 ######################################################################
 ####
 #
-test XMLElement-3.1 {addChildElement tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicElement-3.1 {addChildElement tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element0]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element1 $attributes]
+    set e1 [java::new ptolemy.schematic.SchematicElement element1 $attributes]
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<element0>
@@ -86,7 +86,7 @@ test XMLElement-3.1 {addChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-3.2 {removeChildElement tests} {
+test SchematicElement-3.2 {removeChildElement tests} {
     # NOTE: Uses the setup above
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
@@ -99,14 +99,14 @@ test XMLElement-3.2 {removeChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-4.1 {childElements tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicElement-4.1 {childElements tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element0]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element1 $attributes]
-    set e2 [java::new ptolemy.schematic.XMLElement element2]
-    set e3 [java::new ptolemy.schematic.XMLElement element3]    
+    set e1 [java::new ptolemy.schematic.SchematicElement element1 $attributes]
+    set e2 [java::new ptolemy.schematic.SchematicElement element2]
+    set e3 [java::new ptolemy.schematic.SchematicElement element3]    
     $e0 addChildElement $e1
     $e0 addChildElement $e2
     $e2 addChildElement $e3
@@ -127,7 +127,7 @@ test XMLElement-4.1 {childElements tests} {
 ######################################################################
 ####
 #
-test XMLElement-4.2 {hasChildElement tests} {
+test SchematicElement-4.2 {hasChildElement tests} {
     # NOTE: Uses the setup above
     list [$e0 hasChildElement $e0] [$e0 hasChildElement $e1] \
 [$e0 hasChildElement $e2] [$e0 hasChildElement $e3]
@@ -136,17 +136,17 @@ test XMLElement-4.2 {hasChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-4.3 {getParent tests} {
+test SchematicElement-4.3 {getParent tests} {
     # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
+    list [[$e1 getParent] equals $e0] \
 [[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
-} {1 1 1 1}
+} {1 1 1}
 
 ######################################################################
 ####
 #
-test XMLElement-5.1 {setAttribute tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicElement-5.1 {setAttribute tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element0]
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
@@ -158,7 +158,7 @@ test XMLElement-5.1 {setAttribute tests} {
 ######################################################################
 ####
 #
-test XMLElement-6.2 {removeAttribute tests} {
+test SchematicElement-6.2 {removeAttribute tests} {
     # NOTE: Uses the setup above
     $e0 removeAttribute name1
     $e0 toString
@@ -169,8 +169,8 @@ test XMLElement-6.2 {removeAttribute tests} {
 ######################################################################
 ####
 #
-test XMLElement-7.1 {attributes tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicElement-7.1 {attributes tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element0]
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
@@ -184,7 +184,7 @@ test XMLElement-7.1 {attributes tests} {
 ######################################################################
 ####
 #
-test XMLElement-7.2 {hasChildElement tests} {
+test SchematicElement-7.2 {hasChildElement tests} {
     # NOTE: Uses the setup above
     list [$e0 hasAttribute name1] [$e0 hasAttribute name2] \
 [$e0 hasAttribute name3]
@@ -193,17 +193,8 @@ test XMLElement-7.2 {hasChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-7.3 {getParent tests} {
-    # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
-[[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
-} {1 1 0}
-
-######################################################################
-####
-#
-test XMLElement-8.1 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicElement-8.1 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element0]
     $e0 setPCData "hello this is a test\n"
     $e0 toString
 } {<element0>
@@ -214,8 +205,8 @@ hello this is a test
 ######################################################################
 ####
 #
-test XMLElement-8.2 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicElement-8.2 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element0]
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 toString
@@ -227,8 +218,8 @@ hello this is a test of appending
 ######################################################################
 ####
 #
-test XMLElement-8.3 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicElement-8.3 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.SchematicElement element0]
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 setPCData "and resetting PCData\n"    

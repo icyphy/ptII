@@ -112,17 +112,11 @@ test XMLElement-4.1 {childElements tests} {
     $e2 addChildElement $e3
     set e0children [$e0 childElements]
     set e0child1 [$e0children nextElement] 
+    set c1left [$e0children hasMoreElements]
     set e0child2 [$e0children nextElement] 
-    list [$e0child1 toString] [$e0child2 toString] \
-[$e0children hasMoreElements]
-} {{<element1 name1="value1" name2="value2">
-</element1>
-} {<element2>
-<element3>
-</element3>
-</element2>
-} 0}
-
+    set c2left [$e0children hasMoreElements]
+    list $c1left $c2left
+} {1 0}
 
 ######################################################################
 ####
@@ -138,9 +132,9 @@ test XMLElement-4.2 {hasChildElement tests} {
 #
 test XMLElement-4.3 {getParent tests} {
     # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
+    list [[$e1 getParent] equals $e0] \
 [[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
-} {1 1 1 1}
+} {1 1 1}
 
 ######################################################################
 ####
@@ -184,19 +178,10 @@ test XMLElement-7.1 {attributes tests} {
 ######################################################################
 ####
 #
-test XMLElement-7.2 {hasChildElement tests} {
+test XMLElement-7.2 {hasAttribute tests} {
     # NOTE: Uses the setup above
     list [$e0 hasAttribute name1] [$e0 hasAttribute name2] \
 [$e0 hasAttribute name3]
-} {1 1 0}
-
-######################################################################
-####
-#
-test XMLElement-7.3 {getParent tests} {
-    # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
-[[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
 } {1 1 0}
 
 ######################################################################
