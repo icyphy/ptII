@@ -231,7 +231,7 @@ public class GraphEditor extends MDIApplication {
             Entity entity = 
                 (Entity) enum.nextElement();
             if(!(entity instanceof CompositeEntity)) {
-                palette.addEntity(entity, 
+                palette.addNode(entity, 
                         60, 50 + (i++) * 50);     
             }
 
@@ -342,16 +342,22 @@ public class GraphEditor extends MDIApplication {
 
                     // FIXME set the Director.  This is a hack, but it's the 
                     // Simplest hack.
-		    ptolemy.domains.sdf.kernel.SDFDirector director = 
-		    new ptolemy.domains.sdf.kernel.SDFDirector();
+                    if(toplevel.getDirector() == null) {
+                        ptolemy.domains.sdf.kernel.SDFDirector director = 
+                            new ptolemy.domains.sdf.kernel.SDFDirector(toplevel.workspace());
 		    //		    _entityLibrary.getEntity(
 		    //	(String)_directorComboBox.getSelectedItem());
-		    toplevel.setDirector(director);
-                    director.iterations.setExpression("25");
+                        toplevel.setDirector(director);
+                        director.iterations.setExpression("25");
+                    }
 
-                    Manager manager = new Manager();
-		    toplevel.setManager(manager);
-		    // manager.addDebugListener(new StreamListener());
+                    Manager manager = toplevel.getManager();
+                    if(manager == null) {
+                        manager = 
+                            new Manager(toplevel.workspace(), "Manager");
+                        toplevel.setManager(manager);
+                        // manager.addDebugListener(new StreamListener());
+                    }
                     manager.startRun();
                     
                 } catch (Exception ex) {

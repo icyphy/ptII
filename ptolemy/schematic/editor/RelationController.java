@@ -116,8 +116,6 @@ public class RelationController extends NodeController {
 	    polygon.closePath();
 	    //	    Figure figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
 	    Figure figure = new BasicFigure(polygon, Color.black);
-            figure.setUserObject(n);
-	    n.setVisualObject(figure);
 	    return figure;
 	}
     }

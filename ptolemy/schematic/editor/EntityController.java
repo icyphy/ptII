@@ -101,31 +101,34 @@ public class EntityController extends NodeController {
             //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
             //icon.createFigure();
 	    Figure background = icon.createFigure(); 
-	    figure = new CompositeFigure(background);
-	    figure.setUserObject(n);
-	    n.setVisualObject(figure); 
+	    figure = new CompositeFigure(background);	   
 	    return figure;
 	}
     }
 
-    public void addNode(Node n, double x, double y) {
-	
-        Figure nf = getNodeRenderer().render(n);
-        nf.setInteractor(getNodeInteractor());
-        getController().getGraphPane().getForegroundLayer().add(nf);
-        // Add to the graph
-        getController().getGraphImpl().addNode(n, getController().getGraph());
+    /** Draw the node and add it to the graph.
+     */
+    public Node addNode(Object semanticObject, double x, double y) {
+        GraphController controller = getController();
+        Node n = controller.getGraphImpl().createCompositeNode(
+                semanticObject);
 
-	//super.addNode(n, 0, 0);	
-	//System.out.println("adding node");
+        // Add to the graph
+        controller.getGraphImpl().addNode(n, controller.getGraph());
+        Figure nf = drawNode(n);
+	CanvasUtilities.translateTo(nf, x, y);        
+        return n;             
+    }
 	
+    public Figure drawNode(Node n) {
+        Figure nf = super.drawNode(n);
 	LinkedList inputs = new LinkedList();
 	LinkedList outputs = new LinkedList();
 	LinkedList inouts = new LinkedList();
 	int inCount = 0;
 	int outCount = 0;
 	int inOutCount = 0;
-                                                              
+                                                  
 	Iterator nodes = ((CompositeNode) n).nodes();
 	while(nodes.hasNext()) {
 	    Node portNode = (Node) nodes.next();
@@ -155,8 +158,7 @@ public class EntityController extends NodeController {
 	_createPortFigures((CompositeNode)n, inputs, inCount, SwingConstants.WEST);
 	_createPortFigures((CompositeNode)n, outputs, outCount, SwingConstants.EAST);
 	_createPortFigures((CompositeNode)n, inouts, inOutCount, SwingConstants.SOUTH);
-	// Hmm..  this translate has to come LAST.  How odd.
-	CanvasUtilities.translateTo(nf, x, y);
+        return nf;
     }
 	
     public void _createPortFigures(CompositeNode node,
@@ -167,7 +169,7 @@ public class EntityController extends NodeController {
 	while(nodes.hasNext()) {	    
 	    nodeNumber ++;
 	    Node portNode = (Node) nodes.next();
-	    _portController.addNode(portNode, node, direction, 
+	    _portController.drawNode(portNode, node, direction, 
 	    		    100.0*nodeNumber/(count+1));
 	}
     }  

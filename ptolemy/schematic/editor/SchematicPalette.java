@@ -74,8 +74,8 @@ public class SchematicPalette extends JGraph {
 	makeDraggable(this);
     }
 
-    public void addNode(Node n, double x, double y) {
-	_controller._entityController.addNode(n, x, y);
+    public void addNode(Object object, double x, double y) {
+	_controller._entityController.addNode(object, x, y);
     }
 
     public void addEntity(Entity e, double x, double y) {
@@ -140,6 +140,14 @@ public class SchematicPalette extends JGraph {
 	    di.setConsuming(false);
 	}
 
+        public Figure drawEdge(Edge edge) {
+            throw new GraphException("PaletteController does not allow edges");
+            //return _edgeController.drawEdge(edge);
+        }
+        
+        public Figure drawNode(Node node) {
+            return _entityController.drawNode(node);
+        }
 	/**
 	 * Initialize all interaction on the graph pane. This method
 	 * is called by the setGraphPane() method of the superclass.

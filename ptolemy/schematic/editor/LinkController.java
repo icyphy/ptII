@@ -99,7 +99,7 @@ public class LinkController extends EdgeController {
     
     // FIXME this should be PerimeterTarget, but it doesn't support non-
     // rectangular shapes yet.
-    public class LinkTarget extends CenterTarget {
+    public class LinkTarget extends PerimeterTarget {
         public boolean accept (Figure f) {
             Object object = f.getUserObject();
             if(object instanceof Node) {
@@ -151,8 +151,6 @@ public class LinkController extends EdgeController {
             //        headSite.getX(), headSite.getY(), headSite.getNormal());
             //c.setHeadEnd(arrow);
             // Add to the view and model
-            c.setUserObject(edge);
-            edge.setVisualObject(c);
             return c;
         }
     }

@@ -108,21 +108,21 @@ public class EntityPortController extends NodeController {
 	   
 	    Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
 	    
-            figure.setUserObject(n);
-	    n.setVisualObject(figure);
 	    return figure;
 	}
     }    
 
     /** Given a node, add it to the given parent.  
      */
-    public void addNode(Node node, CompositeNode parentNode, int direction, 
+    public void drawNode(Node node, CompositeNode parentNode, int direction, 
 			double fraction) {
         // Create a figure for it
 	//System.out.println("adding port");
 	Figure nf = getNodeRenderer().render(node);
         nf.setInteractor(getNodeInteractor());
-	CompositeFigure parentFigure = 
+        nf.setUserObject(node);
+        node.setVisualObject(nf);
+        CompositeFigure parentFigure = 
 	    (CompositeFigure)parentNode.getVisualObject();
 	BoundsSite site = 
 	    new BoundsSite(parentFigure, 0, direction, fraction);

@@ -84,8 +84,6 @@ public class PortController extends NodeController {
     public class PortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
-	    figure.setUserObject(n);
-	    n.setVisualObject(figure);
 	    return figure;
 	}
     }    

@@ -109,7 +109,6 @@ public class EditorDropTarget extends DropTarget {
                 GraphController gc = 
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
                 NamedObj semanticObject = (NamedObj) data.getSemanticObject();
-                GraphImpl impl = gc.getGraphImpl();
                 CompositeNode newNode;
                 Graph graph;
 
@@ -119,12 +118,21 @@ public class EditorDropTarget extends DropTarget {
                     graph = gc.getGraph();
                     NamedObj container = (NamedObj) graph.getSemanticObject();
                     // Create the new node
+                    NamedObj newObject = (NamedObj) semanticObject.clone(
+                            container.workspace());
+                    newObject.setName(semanticObject.getName() + 
+                            ((EditorGraphController)gc).createUniqueID());    
+                     ((EditorGraphController) gc).getEntityController()
+                         .addNode(newObject, p.x, p.y);
+
+                    /*
                     newNode = impl.createCompositeNode(semanticObject.clone(
                             container.workspace()));
                     NamedObj newObject = (NamedObj)newNode.getSemanticObject();
 		    newObject.setName(semanticObject.getName() + 
 				      ((EditorGraphController)gc).createUniqueID());
 		    ((EditorGraphController) gc).getEntityController().addNode(newNode, p.x, p.y);
+                    */
                 }
                 catch (Exception ex) {
                     ex.printStackTrace();

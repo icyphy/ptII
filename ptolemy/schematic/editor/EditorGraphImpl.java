@@ -106,20 +106,28 @@ public class EditorGraphImpl extends BasicGraphImpl {
 		// FIXME connect everything to the root for now.
 		Enumeration links = relation.linkedPorts();	
 		while(links.hasMoreElements()) {
-		    Port port = (Port)links.nextElement();
-		    // Figure out which node to put the edge to.  
+                    Port port = (Port)links.nextElement();
+                    // Figure out which node to put the edge to.  
 		    // this is a little ugly.
 		    Node foundNode = null;
 		    Iterator nodes = g.nodes();		    
-		    while(nodes.hasNext() && foundNode != null) {
+		    while(nodes.hasNext() && foundNode == null) {
 			Node node = (Node)nodes.next();
-			if(node.getSemanticObject().equals(port)) {
+                        if(node.getSemanticObject().equals(port)) {
 			    foundNode = node;
 			}
+                        if(node instanceof CompositeNode) {
+                            Iterator portNodes = ((CompositeNode)node).nodes();
+                            while(portNodes.hasNext() && foundNode == null) {
+                                Node portNode = (Node)portNodes.next();
+                                if(portNode.getSemanticObject().equals(port)) 
+                                    foundNode = portNode;
+                            }
+                        }
 		    }
 		    Edge newEdge = createEdge(null);
 		    setEdgeHead(newEdge, foundNode);
-		    setEdgeTail(newEdge, rootVertex);
+                    setEdgeTail(newEdge, rootVertex);
 		}
 	    }
 	}
@@ -184,7 +192,9 @@ public class EditorGraphImpl extends BasicGraphImpl {
 	    port = (Port)head.getSemanticObject();
 	    relation = (Relation)vertex.getContainer();
 	} else {
-	    throw new GraphException("must link Port to Relation");
+	    throw new GraphException("must link Port to Relation, but head is " + 
+                                     head.getSemanticObject() + " and tail is " + 
+                                     tail.getSemanticObject());
 	}
 	port.unlink(relation);
 	
@@ -205,7 +215,9 @@ public class EditorGraphImpl extends BasicGraphImpl {
 	    port = (Port)head.getSemanticObject();
 	    relation = (Relation)vertex.getContainer();
 	} else {
-	    throw new GraphException("must link Port to Relation");
+	    throw new GraphException("must link Port to Relation, but head is " + 
+                                     head.getSemanticObject() + " and tail is " + 
+                                     tail.getSemanticObject());
 	}
 	try {
 	    port.link(relation);
