@@ -30,17 +30,6 @@
 
 package ptolemy.vergil.kernel;
 
-import diva.gui.toolbox.JContextMenu;
-
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.DialogTableau;
-import ptolemy.actor.gui.PortConfigurerDialog;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -48,6 +37,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
+
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.DialogTableau;
+import ptolemy.actor.gui.PortConfigurerDialog;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortDialogFactory
@@ -77,8 +75,9 @@ public class PortDialogFactory implements MenuItemFactory {
         final NamedObj target = object;
 
         // ensure that we actually have a target, and that it's an Entity.
-        if (!(target instanceof Entity))
+        if (!(target instanceof Entity)) {
             return null;
+        }
         // Create a dialog for configuring the object.
         // First, identify the top parent frame.
         // Normally, this is a Frame, but just in case, we check.
