@@ -81,7 +81,7 @@ public class ButterflyApplication extends JFrame {
 
         try {
 	    Butterfly butterfly = new Butterfly(toplevel, "butterfly",
-						getContentPane());
+                    getContentPane());
 	    director.iterations.setToken(new IntToken(1200));
 	    // Map to the screen.
 	    show();
