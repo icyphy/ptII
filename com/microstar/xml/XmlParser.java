@@ -1523,10 +1523,12 @@ public class XmlParser {
 	  if (tryRead("![")) {
 	    nest++;
 	  }
+          break;
 	case ']':
 	  if (tryRead("]>")) {
 	    nest--;
 	  }
+          break;
 	}
       }
     } else {
