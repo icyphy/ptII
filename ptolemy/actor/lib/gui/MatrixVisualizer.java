@@ -31,27 +31,28 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import java.awt.Container;
-//import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
 import ptolemy.plot.PlotFrame;
 import ptolemy.plot.Render;
+
+import java.awt.Container;
+import java.util.List;
+
+//import java.net.URL;
+
+
 
 /**
 An actor that visualizes a matrix using a 2-D visualization.

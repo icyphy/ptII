@@ -30,18 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.actor.*;
+import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.Sink;
-import ptolemy.kernel.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.data.expr.*;
-import ptolemy.plot.*;
+import ptolemy.plot.Histogram;
+import ptolemy.plot.PlotFrame;
 import ptolemy.plot.plotml.HistogramMLParser;
 
-// Java imports.
+import javax.swing.SwingUtilities;
 import java.awt.Container;
 import java.io.InputStream;
 import java.io.IOException;
@@ -53,7 +58,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
-import javax.swing.SwingUtilities;
+
+// Java imports.
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramPlotter

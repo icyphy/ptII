@@ -30,30 +30,28 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.Sink;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
-import java.awt.Container;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JScrollBar;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
+import java.awt.Color;
+import java.awt.Container;
 
 //////////////////////////////////////////////////////////////////////////
 //// Display

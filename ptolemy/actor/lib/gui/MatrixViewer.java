@@ -31,24 +31,26 @@
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.IntToken;
+import ptolemy.data.MatrixToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.data.expr.Parameter;
 
-import java.awt.Container;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.math.Complex;
-import ptolemy.actor.lib.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixViewer

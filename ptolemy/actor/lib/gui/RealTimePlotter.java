@@ -30,12 +30,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.IntToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.TypedIOPort;
+import ptolemy.plot.Plot;
 
 /**
 This plotter plots input data as a function of elapsed real time in seconds.

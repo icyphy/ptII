@@ -30,19 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Source;
-import ptolemy.plot.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.plot.EditablePlot;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotFrame;
 
-import java.awt.Container;
 import javax.swing.SwingUtilities;
+import java.awt.Container;
 
 //////////////////////////////////////////////////////////////////////////
 //// SketchedSource

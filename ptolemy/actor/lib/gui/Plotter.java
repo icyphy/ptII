@@ -30,19 +30,25 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.plot.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.*;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotFrame;
 import ptolemy.plot.plotml.PlotMLParser;
 
+import javax.swing.SwingUtilities;
 import java.awt.Container;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,7 +59,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plotter
