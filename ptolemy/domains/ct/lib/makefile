@@ -72,8 +72,8 @@ OTHER_FILES_TO_BE_JARED = \
 	integral.gif \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
-	wavegenerators.xml
-	ZeroCrossingDetectorIcon.xml \
+	wavegenerators.xml \
+	ZeroCrossingDetectorIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
