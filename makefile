@@ -89,6 +89,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 EXTRA_SRCS = \
 	.classpath.in \
+	.eclipse.epf \
 	README.txt \
 	copyright.txt \
 	configure.in \
