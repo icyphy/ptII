@@ -62,7 +62,7 @@ public class ODFHelloWorld {
         
         // Set up Manager, Director and top level CompositeActor
         Workspace workSpc = new Workspace();
-        CompositeActor topLevelActor = new CompositeActor(workSpc);
+        TypedCompositeActor topLevelActor = new TypedCompositeActor(workSpc);
         topLevelActor.setName("universe");
         Manager manager = new Manager(workSpc, "manager");
         ODFDirector director = new ODFDirector(workSpc, "director");
@@ -82,19 +82,19 @@ public class ODFHelloWorld {
         // System.out.println("Actors have been instantiated.");
         
         // Set up ports, relation 
-        IOPort input = (IOPort)printer.getPort("input");
-        IOPort output1 = (IOPort)consonants.getPort("output");
-        IOPort output2 = (IOPort)vowels.getPort("output");
-        IOPort output3 = (IOPort)punctuation.getPort("output");
-        IORelation relation; 
+        TypedIOPort input = (TypedIOPort)printer.getPort("input");
+        TypedIOPort output1 = (TypedIOPort)consonants.getPort("output");
+        TypedIOPort output2 = (TypedIOPort)vowels.getPort("output");
+        TypedIOPort output3 = (TypedIOPort)punctuation.getPort("output");
+        TypedIORelation relation; 
         // System.out.println("Ports and relations are finished.");
         
         // Set up connections
-        relation = (IORelation)
+        relation = (TypedIORelation)
 	    topLevelActor.connect( output1, input, "rel1" );
-        relation = (IORelation)
+        relation = (TypedIORelation)
 	    topLevelActor.connect( output2, input, "rel2" );
-        relation = (IORelation)
+        relation = (TypedIORelation)
 	    topLevelActor.connect( output3, input, "rel3" );
         // System.out.println("Connections are complete.");
         
