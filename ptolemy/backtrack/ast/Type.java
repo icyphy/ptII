@@ -264,6 +264,7 @@ public class Type {
      *
      *  @return The number of dimensions (>1) if the type is an array;
      *   otherwise, return 1 (scalar).
+     *  @see #dimensions(String)
      */
     public int dimensions() {
         int bracketPos = _fullName.indexOf("[");
@@ -271,6 +272,22 @@ public class Type {
         while (bracketPos >= 0) {
             dim++;
             bracketPos = _fullName.indexOf("[", bracketPos + 1);
+        }
+        return dim;
+    }
+
+    /** Count the number of dimensions of an array type.
+     *
+     *  @return The number of dimensions (>1) if the type is an array;
+     *   otherwise, return 1 (scalar).
+     *  @see #dimensions()
+     */
+    public static int dimensions(String type) {
+        int bracketPos = type.indexOf("[");
+        int dim = 1;
+        while (bracketPos >= 0) {
+            dim++;
+            bracketPos = type.indexOf("[", bracketPos + 1);
         }
         return dim;
     }
@@ -284,6 +301,25 @@ public class Type {
     public boolean equals(Type type) {
         return _primitiveNum == type._primitiveNum &&
                 _fullName.equals(type._fullName);
+    }
+
+    /** Convert the name of the Java run-time representation back to
+     *  an array type.
+     *  <p>
+     *  This function does nothing if the input type is already Java
+     *  run-time form.
+     *
+     *  @param type The type name to be converted.
+     *  @return The transformed type name.
+     *  @see #toArrayType(String)
+     */
+    public static String fromArrayType(String type) {
+        StringBuffer buffer = new StringBuffer(getElementType(type));
+        int dimensions = dimensions(type);
+        for (int i = 1; i < dimensions; i++)
+            buffer.append("[]");
+        
+        return buffer.toString();
     }
 
     /** Get the common type of two types when they appear in an
@@ -330,6 +366,43 @@ public class Type {
         return null;
     }
 
+    public static String getElementType(String type) {
+        StringBuffer buffer = new StringBuffer(type);
+        int length = buffer.length();
+        int dimensions = 1;
+        boolean isPrimitive = true;
+        
+        // Count dimensions.
+        while (length > 0 && buffer.charAt(0) == '[') {
+            buffer.deleteCharAt(0);
+            length--;
+            dimensions++;
+        }
+        
+        // Special treatment for object arrays.
+        if (dimensions > 1 && buffer.charAt(length - 1) == ';') {
+            buffer.deleteCharAt(length - 1);
+            buffer.deleteCharAt(0);
+            length -= 2;
+            isPrimitive = false;
+        }
+        
+        // Resolve primitive types.
+        String elementType = buffer.toString();
+        if (isPrimitive) {
+            Enumeration primitiveEnum = PRIMITIVE_ARRAY_TYPES.keys();
+            while (primitiveEnum.hasMoreElements()) {
+                String realName = (String)primitiveEnum.nextElement();
+                if (PRIMITIVE_ARRAY_TYPES.get(realName).equals(elementType)) {
+                    elementType = realName;
+                    break;
+                }
+            }
+        }
+        
+        return elementType;
+    }
+    
     /** Get the name of this type.
      *
      *  @return The name.
@@ -483,6 +556,7 @@ public class Type {
      *
      *  @param type The type name to be converted.
      *  @return The transformed type name.
+     *  @see #fromArrayType(String)
      */
     public static String toArrayType(String type) {
         StringBuffer buffer = new StringBuffer(type);
