@@ -1,7 +1,7 @@
 /* An actor that computes a specified String comparison function on
  the two String inputs.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -65,6 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 @author Vinay Krishnan, Daniel Lázaro Cuadrado (contributor: Edward A. Lee)
 @version $Id$
+@since Ptolemy II 3.0.3
 */
 
 public class StringCompare extends TypedAtomicActor {
@@ -126,8 +127,10 @@ public class StringCompare extends TypedAtomicActor {
 
     /** The comparison function to be performed. The choices are:
      * <ul>
-     * <li> <b>equals</b>: Compares firstString to another secondString (Default).
-     * <li> <b>startsWith</b>: Tests whether firstString starts with secondString.
+     * <li> <b>equals</b>: Compares firstString to another secondString
+     * (Default). 
+     * <li> <b>startsWith</b>: Tests whether firstString starts with
+     *  secondString.
      * <li> <b>endsWith</b>: Tests whether firstString ends with secondString.
      * <li> <b>contains</b>: Tests whether firstString contains secondString.
      * </ul>
@@ -163,7 +166,8 @@ public class StringCompare extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == function) {
             // Use getToken() not getExpression() so that substitutions happen.
-            String functionName = ((StringToken)function.getToken()).stringValue();
+            String functionName
+                = ((StringToken)function.getToken()).stringValue();
             if (functionName.equals("equals")) {
                 _function = _EQUALS;
             } else if (functionName.equals("startsWith")) {

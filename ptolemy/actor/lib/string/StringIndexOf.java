@@ -1,6 +1,6 @@
 /* Finds index of a string contained in a given text
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,15 +48,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// StringIndexOf
 /**
-Output the index of a <i>searchFor</i> string contained in a given <i>inText</i>.
-The search begins at the index given by <i>startIndex</i> and ends at either
-the end or the beginning of the string, depending on whether <i>searchForwards</i>
-is true or false, respectively. If the string is not found, then the output is -1.
-If the string is found, then the output is the index of the start of the string,
-where index 0 refers to the first character in the string.
+Output the index of a <i>searchFor</i> string contained in a given
+<i>inText</i>.  The search begins at the index given by
+<i>startIndex</i> and ends at either the end or the beginning of the
+string, depending on whether <i>searchForwards</i> is true or false,
+respectively. If the string is not found, then the output is -1.  If
+the string is found, then the output is the index of the start of the
+string, where index 0 refers to the first character in the string.
 
 @author Rakesh Reddy, Philip Baldwin, Edward A. Lee
 @version $Id$
+@since Ptolemy II 3.0.3
 */
 
 public class StringIndexOf extends TypedAtomicActor {
@@ -151,10 +153,12 @@ public class StringIndexOf extends TypedAtomicActor {
         inText.update();
         startIndex.update();
 
-        String searchForString = ((StringToken)searchFor.getToken()).stringValue();
+        String searchForString
+            = ((StringToken)searchFor.getToken()).stringValue();
         String inTextString = ((StringToken)inText.getToken()).stringValue();
         int startIndexValue = ((IntToken)startIndex.getToken()).intValue();
-        boolean forwards = ((BooleanToken)searchForwards.getToken()).booleanValue();
+        boolean forwards
+            = ((BooleanToken)searchForwards.getToken()).booleanValue();
 
         if (((BooleanToken) ignoreCase.getToken()).booleanValue()) {
             searchForString = searchForString.toLowerCase();
@@ -163,9 +167,11 @@ public class StringIndexOf extends TypedAtomicActor {
 
         int returnValue;
         if (forwards) {
-            returnValue = inTextString.indexOf(searchForString, startIndexValue);
+            returnValue
+                = inTextString.indexOf(searchForString, startIndexValue);
         } else {
-            returnValue = inTextString.lastIndexOf(searchForString, startIndexValue);
+            returnValue
+                = inTextString.lastIndexOf(searchForString, startIndexValue);
         }
         output.send(0, new IntToken(returnValue));
     }

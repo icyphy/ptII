@@ -1,7 +1,7 @@
 /* Replace an instance of a string with another input string according
 to a regular expression.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -63,6 +63,7 @@ http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
 
 @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
 @version $Id$
+@since Ptolemy II 3.0.3
 */
 
 public class StringReplace extends TypedAtomicActor {
@@ -147,10 +148,12 @@ public class StringReplace extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == pattern) {
             try {
-                String patternValue = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue
+                    = ((StringToken)pattern.getToken()).stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
-                String patternValue = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue
+                    = ((StringToken)pattern.getToken()).stringValue();
                 throw new IllegalActionException(this, ex,
                         "Failed to compile regular expression \""
                         + patternValue + "\"");
@@ -160,9 +163,9 @@ public class StringReplace extends TypedAtomicActor {
         } 
     }
 
-    /** Perform pattern matching and substring replacement, and output the
-     *  modified string. If no match is found, output the unmodified stringToEdit
-     *  string.
+    /** Perform pattern matching and substring replacement, and output
+     *  the modified string. If no match is found, output the
+     *  unmodified stringToEdit string.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -171,9 +174,12 @@ public class StringReplace extends TypedAtomicActor {
         stringToEdit.update();
         pattern.update();
         
-        String replacementValue = ((StringToken)replacement.getToken()).stringValue();
-        String stringToEditValue = ((StringToken)stringToEdit.getToken()).stringValue();
-        boolean replaceAllTokens = ((BooleanToken)replaceAll.getToken()).booleanValue();
+        String replacementValue
+            = ((StringToken)replacement.getToken()).stringValue();
+        String stringToEditValue
+            = ((StringToken)stringToEdit.getToken()).stringValue();
+        boolean replaceAllTokens
+            = ((BooleanToken)replaceAll.getToken()).booleanValue();
 
         Matcher match = _pattern.matcher(stringToEditValue);
         String outputString;

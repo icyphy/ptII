@@ -1,6 +1,6 @@
 /* Pattern match a string to a regular expression.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,6 +56,7 @@ http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
 
 @author Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee)
 @version $Id$
+@since Ptolemy II 3.0.3
 */
 
 public class StringMatches extends TypedAtomicActor {
@@ -75,7 +76,8 @@ public class StringMatches extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // Create one matchString portParameter, one matchString port, and one output port.
+        // Create one matchString portParameter, one matchString port,
+        // and one output port.
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
@@ -102,7 +104,8 @@ public class StringMatches extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-    /** The regular expression to be pattern matched with the matchString string.
+    /** The regular expression to be pattern matched with the
+     *  matchString string.  
      *  Its default parameter is an empty string that matches no strings.
      */
     public PortParameter pattern;
@@ -119,10 +122,12 @@ public class StringMatches extends TypedAtomicActor {
         
         if (attribute == pattern) {
             try {
-                String patternValue = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue
+                    = ((StringToken)pattern.getToken()).stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
-                String patternValue = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue
+                    = ((StringToken)pattern.getToken()).stringValue();
                 throw new IllegalActionException(this, ex,
                         "Failed to compile regular expression \""
                         + patternValue + "\"");
@@ -132,8 +137,9 @@ public class StringMatches extends TypedAtomicActor {
         }
     }
 
-    /** Pattern match a regular expression against a supplied matchString and output
-     *  a true if they match and a false otherwise.
+    /** Pattern match a regular expression against a supplied
+     *  matchString and output a true if they match and a false
+     *  otherwise.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -141,7 +147,8 @@ public class StringMatches extends TypedAtomicActor {
         pattern.update();
         matchString.update();
 
-        String matchStringValue = ((StringToken)matchString.getToken()).stringValue();
+        String matchStringValue
+            = ((StringToken)matchString.getToken()).stringValue();
         Matcher match = _pattern.matcher(matchStringValue);
         output.send(0, new BooleanToken(match.find()));
     }
