@@ -22,11 +22,11 @@ grant {
   // serial port.
   permission java.util.PropertyPermission "javax.comm.properties", "read";
   permission java.util.PropertyPermission "java.home", "read";
-  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/javax.comm.properties", "read";
-  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/javax.comm.properties", "delete";
+  permission java.io.FilePermission "@PTJAVA_HOME@/lib/javax.comm.properties", "read";
+  permission java.io.FilePermission "@PTJAVA_HOME@/lib/javax.comm.properties", "delete";
   permission java.lang.RuntimePermission "loadLibrary.win32com";
-  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/ext/x86/win32com.dll", "read";
-  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/ext/win32com.dll", "read";
+  permission java.io.FilePermission "@PTJAVA_HOME@/lib/ext/x86/win32com.dll", "read";
+  permission java.io.FilePermission "@PTJAVA_HOME@/lib/ext/win32com.dll", "read";
 };
 
 
