@@ -263,12 +263,11 @@ public class RecordUpdater extends TypedAtomicActor {
 		outputMap.put(label, type);
 	    }
 
-	    List inputPorts = inputPortList();
+	    List inputPorts = _updater.inputPortList();
 	    iter = inputPorts.iterator();
-	    TypedIOPort recordPort = (TypedIOPort)_updater.getPort("input");
 	    while (iter.hasNext()) {
 	        TypedIOPort port = (TypedIOPort)iter.next();
-		if (port != recordPort) {
+		if (port != recordInput) {
 		    outputMap.put(port.getName(), port.getType());
 		}
 	    }
