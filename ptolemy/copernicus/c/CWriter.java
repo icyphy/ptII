@@ -89,7 +89,9 @@ public class CWriter extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         String outDir = Options.getString(options, "outDir");
-        _completedTransform = true;
+        
+        // FIXME: Remove the next line if things don't break without it
+        // _completedTransform = true;
 
         // We need to cache the classes up front to avoid a concurrent
         // modification exception.
