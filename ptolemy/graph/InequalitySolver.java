@@ -173,10 +173,6 @@ public class InequalitySolver {
      *  See the paper referred in the class document for details.
      *  @return <code>true</code> if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
-     *  @exception IllegalArgumentException the value of some of the terms
-     *   in the inequalities is not a CPO element.
-     *  @exception InvalidStateException If the GLB of some elements does
-     *   not exist in the underlying CPO.
      */
     public boolean solveGreatest() {
 	return _solve(false);
@@ -206,10 +202,6 @@ public class InequalitySolver {
      *  See the paper referred in the class document for details.
      *  @return <code>true</code> if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
-     *  @IllegalArgumentException the value of some of the terms in the
-     *   inequalities is not a CPO element.
-     *  @exception InvalidStateException If the LUB of some elements does
-     *   not exist in the underlying CPO.
      */
     public boolean solveLeast() {
 	return _solve(true);
