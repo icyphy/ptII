@@ -188,6 +188,7 @@ test FSMDirector-4.1 {test action methods} {
 test FSMDirector-5.1 {test fireAt} {
     set e0 [deModel 3.0]
     set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
+    [java::field $e1 directorClass] setExpression "ptolemy.domains.fsm.kernel.FSMDirector"
     set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
     set fsm [$e1 getController]
     set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
