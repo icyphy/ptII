@@ -30,9 +30,7 @@ package ptolemy.kernel.attributes;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
@@ -44,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 
@@ -171,24 +170,20 @@ public class FileAttribute extends StringAttribute {
      *  </pre>
      *  @return A File, or null if no file name has been specified.
      *  @see #getBaseDirectory()
-     *  @exception IllegalActionException If the file cannot be read, or
-     *   if the file cannot be represented as a URL (e.g. System.in).
+     *  @exception IllegalActionException If a parse error occurs
+     *   reading the file name.
      */
-    public File asFile() {
+    public File asFile() throws IllegalActionException {
         String name = _substituteSpecialStrings(getExpression());
-        if (name == null || name.trim().equals("")) {
-            return null;
+        try {
+            return FileUtilities.nameToFile(name, getBaseDirectory());
+        } catch (IllegalArgumentException ex) {
+            // Java 1.4.2 some times reports:
+            //  java.lang.IllegalArgumentException: URI is not absolute
+            throw new IllegalActionException(this, ex,
+                    "Failed to create a file with name '" + name
+                    + "'.");
         }
-        File file = new File(name);
-        if (!file.isAbsolute()) {
-            // Try to resolve the base directory.
-            URI modelURI = getBaseDirectory();
-            if (modelURI != null) {
-                URI newURI = modelURI.resolve(name);
-                file = new File(newURI);
-            }
-        }
-        return file;
     }
 
     /** Return the file as a URL.  If the file name is relative, then
@@ -330,22 +325,11 @@ public class FileAttribute extends StringAttribute {
      *   opened.
      */
     public BufferedReader openForReading() throws IllegalActionException {
-        if (getExpression().trim().equals("System.in")) {
-            if (_stdIn == null) {
-                _stdIn = new BufferedReader(new InputStreamReader(System.in));
-            }
-            _reader = _stdIn;
-            return _reader;
-        }
-        // Not standard input. Try URL mechanism.
-        URL url = asURL();
-        if (url == null) {
-            throw new IllegalActionException(this,
-                    "No file name has been specified.");
-        }
         try {
-            _reader = new BufferedReader(
-                    new InputStreamReader(url.openStream()));
+            _reader = FileUtilities.openForReading(
+                    getExpression(), 
+                    getBaseDirectory(), 
+                    getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -387,24 +371,15 @@ public class FileAttribute extends StringAttribute {
      *   or created.
      */
     public Writer openForWriting(boolean append) throws IllegalActionException {
-        String name = getExpression();
-        if (name.trim().equals("System.out")) {
-            if (_stdOut == null) {
-                _stdOut = new PrintWriter(System.out);
-            }
-            _writer = _stdOut;
-            return _writer;
-        }
-        if (name == null || name.trim().equals("")) {
-            return null;
-        }
-        File file = asFile();
         try {
-            _writer = new FileWriter(file, append);
+            _writer = FileUtilities.openForWriting(
+                    getExpression(), 
+                    getBaseDirectory(), 
+                    append);
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing: " + name);
+                    "Cannot open file for writing");
         }
     }
 

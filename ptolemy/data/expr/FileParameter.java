@@ -30,9 +30,7 @@ package ptolemy.data.expr;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URI;
@@ -43,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.StringUtilities;
+import ptolemy.util.FileUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -180,27 +178,15 @@ public class FileParameter extends StringParameter {
      */
     public File asFile() throws IllegalActionException {
         String name = stringValue();
-        if (name == null || name.trim().equals("")) {
-            return null;
+        try {
+            return FileUtilities.nameToFile(name, getBaseDirectory());
+        } catch (IllegalArgumentException ex) {
+            // Java 1.4.2 some times reports:
+            //  java.lang.IllegalArgumentException: URI is not absolute
+            throw new IllegalActionException(this, ex,
+                    "Failed to create a file with name '" + name
+                    + "'.");
         }
-        File file = new File(name);
-        if (!file.isAbsolute()) {
-            // Try to resolve the base directory.
-            URI modelURI = getBaseDirectory();
-            if (modelURI != null) {
-                URI newURI = modelURI.resolve(name);
-                try {
-                    file = new File(newURI);
-                } catch (IllegalArgumentException ex) {
-                    // Java 1.4.2 some times reports:
-                    //  java.lang.IllegalArgumentException: URI is not absolute
-                    throw new IllegalActionException(this, ex,
-                            "Failed to create a file with URI '" + newURI
-                            + "'.");
-                }
-            }
-        }
-        return file;
     }
 
     /** Return the file as a URL.  If the file name is relative, then
@@ -217,7 +203,7 @@ public class FileParameter extends StringParameter {
         String name = stringValue();
 
         try {
-            return StringUtilities.stringToURL(
+            return FileUtilities.nameToURL(
                     name, getBaseDirectory(), getClass().getClassLoader());
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -298,23 +284,11 @@ public class FileParameter extends StringParameter {
      *   opened.
      */
     public BufferedReader openForReading() throws IllegalActionException {
-        String name = stringValue();
-        if (name.trim().equals("System.in")) {
-            if (_stdIn == null) {
-                _stdIn = new BufferedReader(new InputStreamReader(System.in));
-            }
-            _reader = _stdIn;
-            return _reader;
-        }
-        // Not standard input. Try URL mechanism.
-        URL url = asURL();
-        if (url == null) {
-            throw new IllegalActionException(this,
-                    "No file name has been specified.");
-        }
         try {
-            _reader = new BufferedReader(
-                    new InputStreamReader(url.openStream()));
+            _reader = FileUtilities.openForReading(
+                    stringValue(), 
+                    getBaseDirectory(), 
+                    getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -356,24 +330,15 @@ public class FileParameter extends StringParameter {
      *   or created.
      */
     public Writer openForWriting(boolean append) throws IllegalActionException {
-        String name = stringValue();
-        if (name.trim().equals("System.out")) {
-            if (_stdOut == null) {
-                _stdOut = new PrintWriter(System.out);
-            }
-            _writer = _stdOut;
-            return _writer;
-        }
-        if (name == null || name.trim().equals("")) {
-            return null;
-        }
-        File file = asFile();
         try {
-            _writer = new FileWriter(file, append);
+            _writer = FileUtilities.openForWriting(
+                    stringValue(), 
+                    getBaseDirectory(), 
+                    append);
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing: " + name);
+                    "Cannot open file for writing");
         }
     }
 
