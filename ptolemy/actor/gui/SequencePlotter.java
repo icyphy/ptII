@@ -72,7 +72,7 @@ public class SequencePlotter extends Plotter
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port, which has type DoubleToken. */
+    /** @serial Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
@@ -122,5 +122,6 @@ public class SequencePlotter extends Plotter
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    /** @serial X axis counter */ 
     private double _xValue;
 }

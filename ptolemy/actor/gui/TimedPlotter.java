@@ -71,7 +71,7 @@ public class TimedPlotter extends Plotter implements Placeable, TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port, which has type DoubleToken. */
+    /** @serial Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
