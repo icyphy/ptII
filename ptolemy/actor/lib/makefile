@@ -101,6 +101,7 @@ JSRCS = \
 	SequenceActor.java \
 	Sequencer.java \
 	SequenceSource.java \
+	SequentialClock.java \
 	Scale.java \
 	Select.java \
 	Sink.java \
