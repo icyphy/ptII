@@ -51,12 +51,12 @@ import java.util.*;
 //// DatagramSender
 /**
 This actor sends its input as a Datagram over the Ethernet using the UDP
-protocol.  Before sending it, the data is encoded as a text string 
-representing the value being sent.  The address and port number to which the 
-datagram is sent is given by optional inputs.  Each optional input comes 
-with a parameter which gives its default value.  (This is cumbersome.  
+protocol.  Before sending it, the data is encoded as a text string
+representing the value being sent.  The address and port number to which the
+datagram is sent is given by optional inputs.  Each optional input comes
+with a parameter which gives its default value.  (This is cumbersome.
 Is there a way to merge the concepts of Parameter and TypedIoPort?)
-The data and the optional inputs may arrive at any time.  Optional 
+The data and the optional inputs may arrive at any time.  Optional
 inputa arriving along with or before data control the data's destination.
 
 Initially, the local port number is set to -1 to indicate no port at
@@ -71,14 +71,14 @@ editor's work area.
 
 
 /** Construct a DatagramSender actor with given name in the given container.
- *  Set up ports and parameters and default values.  Two of the parameters 
- *  are used to give default values for the remoteAddress and remotePort 
+ *  Set up ports and parameters and default values.  Two of the parameters
+ *  are used to give default values for the remoteAddress and remotePort
  *  ports.
  *  @param container The container.
  *  @param name The name for this actor.
- *  @exception NameDuplicationException If the container already has an 
- *   actor with this name.  
- *  @exception IllegalActionException If the actor cannot be contained by 
+ *  @exception NameDuplicationException If the container already has an
+ *   actor with this name.
+ *  @exception IllegalActionException If the actor cannot be contained by
  *   this container
  */
 public class DatagramSender extends TypedAtomicActor {
@@ -127,8 +127,8 @@ public class DatagramSender extends TypedAtomicActor {
     public Parameter localPort;
 
     /** Data to be sent.  Data will be encoded as a text string, much as
-     *  if it were printed.  This text string is what is sent.  Thus any 
-     *  datatype, including arrays etc. is handled.  Ptolemy parser must 
+     *  if it were printed.  This text string is what is sent.  Thus any
+     *  datatype, including arrays etc. is handled.  Ptolemy parser must
      *  be used to deconstruct on the other side.
      */
     public TypedIOPort data;
@@ -144,7 +144,7 @@ public class DatagramSender extends TypedAtomicActor {
      */
     public TypedIOPort remoteAddress;
 
-    /** The default remote (UDP (are there other kinds?) ) port to 
+    /** The default remote (UDP (are there other kinds?) ) port to
      *  which to send datagrams.  This is an integer in 0..65535.
      */
     public Parameter defaultRemotePort;
@@ -194,9 +194,9 @@ public class DatagramSender extends TypedAtomicActor {
         }
     }
 
-    /** Does up to three things, in this order: Set new remote address value, 
-     *  Set new remote port value, transmit data as a UDP packet over the 
-     *  ethernet.  The first two can, of course, affect where the datagram 
+    /** Does up to three things, in this order: Set new remote address value,
+     *  Set new remote port value, transmit data as a UDP packet over the
+     *  ethernet.  The first two can, of course, affect where the datagram
      *  goes.
      */
     public void fire() throws IllegalActionException {
@@ -231,7 +231,7 @@ public class DatagramSender extends TypedAtomicActor {
             catch (IOException ex) {
                 // ignore, UDP does not guarantee success
                 //throw new InternalErrorException("socket.send failed");
-                //FIXME  I don't believe that!  I think send guarantees that 
+                //FIXME  I don't believe that!  I think send guarantees that
                 // it will send!!  Just not that anyone is listening.
                 //    (yet when I ran it with 'throw...' uncommented
                 //     then it threw it right away!? )
@@ -241,16 +241,16 @@ public class DatagramSender extends TypedAtomicActor {
 
     }
 
-    /** Preinitialize allocates the socket and makes use of default 
-     *  parameters for the remote address and socket to which datagrams 
-     *  will be sent.  InetAddress.getByName does the address lookup, 
-     *  and can fail (see below).  The remote port number need only 
-     *  be in the 0 .. 65535 range.  However, the local port number 
-     *  must be in range and must allow new DatagramSocket(portNum) to 
+    /** Preinitialize allocates the socket and makes use of default
+     *  parameters for the remote address and socket to which datagrams
+     *  will be sent.  InetAddress.getByName does the address lookup,
+     *  and can fail (see below).  The remote port number need only
+     *  be in the 0 .. 65535 range.  However, the local port number
+     *  must be in range and must allow new DatagramSocket(portNum) to
      *  successfully create a socket with that port number.
      *  @exception IllegalActionException If port number is beyond 16 bits,
-     *   the socket cannot be created with the given port number, 
-     *   translation of remote address fails to make IP address from 
+     *   the socket cannot be created with the given port number,
+     *   translation of remote address fails to make IP address from
      *   address string, or the romote port number is beyond 16 bits.
      */
     public void preinitialize() throws IllegalActionException {
@@ -291,7 +291,7 @@ public class DatagramSender extends TypedAtomicActor {
         }
     }
 
-    /** Wrap up.  Free the socket, allowing the port number to be reused.  
+    /** Wrap up.  Free the socket, allowing the port number to be reused.
      *  @exception IllegalActionException If the socket was already null.
      */
     public void wrapup() throws IllegalActionException {
