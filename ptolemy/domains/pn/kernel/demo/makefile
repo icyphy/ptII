@@ -58,7 +58,8 @@ EXTRA_SRCS =	$(JSRCS) \
 	PNExample.html \
 	PNPrimeExample.tcl \
 	PNPrimeTycho.html \
-	PNPrimeTycho.tcl
+	PNPrimeTycho.tcl \
+	index.html
 
 # Files or directories that are present, but that 'make checkjunk' 
 # should not complain about
