@@ -1,9 +1,10 @@
-# Makefile for Java classes that Tycho uses
+# Makefile for Java Ptolemy concurrent functional classes
 #
-# @Version: @(#)makefile	1.15 06/17/98
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Copyright (c) 1996-1998 The Regents of the University of California.
+# @Version: $Id$
+#
+# @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -27,34 +28,78 @@
 # 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Don't go down into collections, it does not have a makefile
-DIRS = pt doc gui #collections
+# This directory contains classes used for dataflow and pn channels that
+# should _not_ go into the kernel so that we can keep the kernel free
+# of the notion of dataflow.  These classes are concurrent functional
+# classes:
+#  FIFOQueue
+#  Star
+#  Galaxy
+#  Universe
+# Note that none of these classes would be relevant to FSMs, for example.
 
-# Root of Ptolemy II directory
-ROOT =		.
+# Root of the Ptolemy II directory
+ROOT =		../..
 
-ME =
-# True source directory
-VPATH =		$(ROOT)
+ME =		pt/actor
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
+#JAVAHOME =   $(LATEST_JAVAHOME)
+DIRS = 		test #doc
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/tydir.mk
+CLASSPATH = ../..
 
-# Glimpse is a tool that prepares an index of a directory tree.
-# glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
-GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
-glimpse: .glimpse_exclude
-	@echo "Saving .glimpse_exclude, removing the .glimpse* files"
-	rm -f glimpse_exclude
-	cp .glimpse_exclude glimpse_exclude
-	rm -f .glimpse*
-	cp  glimpse_exclude .glimpse_exclude
-	$(GLIMPSEINDEX) -H `pwd` `pwd`
-	chmod a+r .glimpse_*
-	rm -f glimpse_exclude
+# Used to build zip files
+TYPACKAGE = 	pt.actor
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/actor
+TYVERSION =	1.0
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
+
+
+# Keep this list alphabetized.
+JSRCS = \
+	Actor.java \
+	CompositeActor.java \
+	DataComputingInit.java \
+	Director.java \
+	Executable.java \
+	IOPort.java \
+	IORelation.java \
+	Mailbox.java \
+	QueueReceiver.java \
+	Receiver.java \
+	TokenHolderFullException.java
+
+EXTRA_SRCS =	$(JSRCS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	doc test
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =	#codeDoc
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Needed for compiling under Cygwin on NT
+LIB = dummylib
+
+all: jclass
+install: jclass javadocs $(JARFILE)
+docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
+
+# Get the rest of the rules
+include $(ROOT)/mk/tycommon.mk
+
+
+
