@@ -63,10 +63,10 @@ import ptolemy.kernel.util.StringAttribute;
    and internal transitions, the guard is set to true. Each of the output
    and internal transitions contain an Action. The expression of the Action
    is also set automatically. For output transition, the action is set to
-   <outputPort>=true, where <outputPort> is the output port corresponding to
-   this transition; for internal transition, the action is set to
-   <parameter>=true, where <parameter> is the parameter corresponding to this
-   transition.
+   &lt;outputPort&gt;=true, where &lt;outputPort&gt; is the output port 
+   corresponding to this transition; for internal transition, the action is set 
+   to &lt;parameter&gt;=true, where &lt;parameter&gt; is the parameter 
+   corresponding to this transition.
 
    @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
    @version $Id$
