@@ -58,7 +58,9 @@ JSRCS = \
 MISC_FILES =	$(DIRS) \
 	Counter1.xml \
 	Counter2.xml \
-	MatlabExpression.xml
+	MatlabExpression.xml \
+	mFileTest.m \
+	mFileTest.xml
 
 JCLASS = $(JSRCS:%.java=%.class)
 
