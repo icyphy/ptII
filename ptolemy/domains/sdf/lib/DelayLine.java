@@ -51,14 +51,16 @@ import java.util.List;
 //// DelayLine
 /**
 This actor reads tokens from its input port, and for each token read
-outputs and ArrayToken that contains the current token, plus some number of 
-previously read tokens.
-The length of the delay line (and subsequently the size of the ArrayToken
-created) is the same as the <i>initialValues</i> parameter.
-This actor is polymorphic. It can accept intput of any type and will
-send ArrayTokens of corresponding type.
+outputs an array that contains the current token as the first token,
+followed by some number of previously read tokens.  The length of the
+output array is the same as that of the array in the <i>initialValues</i>
+parameter.  That parameter also provides the initial values when there
+are no previously read tokens.
 <p>
+Note that this actor is not a simple sample delay.
+Use the SampleDelay actor to achieve a simple sample delay.
 
+@see SampleDelay
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -119,7 +121,7 @@ public class DelayLine extends SDFTransformer {
     }
 
     /** Consume a token from the input, push it onto the delay line
-     *  and produce the output ArrayToken containing the current state of 
+     *  and produce the output ArrayToken containing the current state of
      *  the delay line.
      *  @exception IllegalActionException If not enough tokens are available.
      */
@@ -143,7 +145,7 @@ public class DelayLine extends SDFTransformer {
     }
 
     /** Return true if the input port has enough tokens for this actor to
-     *  fire. 
+     *  fire.
      *  @return boolean True if there is a token at the input port
      *   for this actor to fire.
      *  @exception IllegalActionException If the hasToken() query to the
@@ -167,10 +169,10 @@ public class DelayLine extends SDFTransformer {
 	InequalityTerm valuesTerm = valuesArrType.getElementTypeTerm();
 
 	Inequality ineq1 = new Inequality(input.getTypeTerm(), outputTerm);
-	//Inequality ineq2 = new Inequality(outputTerm, valuesTerm);
-        
+	Inequality ineq2 = new Inequality(outputTerm, valuesTerm);
+
 	result.add(ineq1);
-	//result.add(ineq2);
+	result.add(ineq2);
 	return result;
     }
 
