@@ -203,6 +203,21 @@ public class DirectedGraph extends Graph {
                                    nodes(Arrays.asList(weights))));
     }
 
+    /** Given a collection of nodes, get the connected subgraph.
+     *  @return A 
+     * 
+     * @param nodes
+     * @param graph
+     */
+    public void connectedSubGraph (Collection nodes, DirectedGraph graph) {
+        Collection dummyCollection = new LinkedList();
+        Iterator nodesIterator = nodes.iterator();
+        while (nodesIterator.hasNext()) {
+            Node node = (Node) nodesIterator.next();
+            _connectedSubGraph(node, graph, dummyCollection);
+        }
+    }
+
     /** Return the nodes that are in cycles. If there are multiple cycles,
      *  the nodes in all the cycles will be returned.
      *  @return The collection of nodes that are in cycles; each element
@@ -598,10 +613,10 @@ public class DirectedGraph extends Graph {
      */
     public LinkedList subgraphs() {
         LinkedList subgraphList = new LinkedList();
-        LinkedList remainingNodes = (LinkedList)nodes();
+        LinkedList remainingNodes = new LinkedList(nodes());
         while (!remainingNodes.isEmpty()) {
             DirectedGraph subgraph = new DirectedGraph();
-            Node node = (Node)remainingNodes.getFirst();
+            Node node = (Node)remainingNodes.remove(0);
             _connectedSubGraph(node, subgraph, remainingNodes);
             subgraphList.add(subgraph);
         }
@@ -753,7 +768,7 @@ public class DirectedGraph extends Graph {
             _inputEdgeList(node).add(edge);
         }
     }
-
+    
     /** Given a node, get all the edges and nodes that are connected
      *  to it directly and/or indirectly. Add them in the given graph.
      *  Remove the nodes from the remainning nodes.
@@ -789,7 +804,7 @@ public class DirectedGraph extends Graph {
         while (outputEdges.hasNext()) {
             Edge outputEdge = (Edge) outputEdges.next();
             if (!graph.containsEdge(outputEdge)) {
-                Node sinkNode = outputEdge.source();
+                Node sinkNode = outputEdge.sink();
                 if (!graph.containsNode(sinkNode)) {
                     graph.addNode(sinkNode);
                     _connectedSubGraph (sinkNode, graph, remainingNodes);
