@@ -31,8 +31,7 @@
 
 ME =		ptolemy/plot
 
-DIRS = 		$(SRCDIRS) doc test plotml
-SRCDIRS = 	demo
+DIRS = 		demo doc test plotml
 
 # Root of the Ptolemy II directory
 ROOT =		../..
