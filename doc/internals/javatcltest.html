@@ -1,0 +1,61 @@
+<!-- $Id$-->
+<html>
+<head>
+<Title>Testing Java with Tcl</Title>
+</head>
+<body bgcolor="#faf0e6">
+<h1><a name="java - testing with Tcl ">Testing Java with Tcl</a></h1>
+TclBlend is Sun's Tcl/Java interface.  We use TclBlend to test Java
+by writing Tcl code that exercises the classes.
+ <p>This page discusses some of the details of writing Java tests
+with Tcl.  For information about writing tests in general, see the
+<A HREF="../../../doc/coding/testing.html">Testing Tycho</A> page.
+<H2>Simple Example</H2>
+<p>TclBlend allows us to instantiate objects in a class and call public
+methods.  We use TclBlend and the standard Tcl test bed to create tests.
+In the example below, we call <CODE>java::new</CODE> to create an
+instance of the Java <CODE>NamedObj</CODE> class.  We can then
+call public methods of <CODE>NamedObj</CODE> by referring to the 
+Java object handle <CODE>$n</CODE>:
+<PRE>
+test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
+    set n [java::new pt.kernel.NamedObj]
+    set result1 [$n getName]
+    $n setName "A Named Obj"
+    set result2 [$n getName]
+    list $result1 $result2
+} {{} {A Named Obj}}
+</PRE>
+<H2>Java Tcl Test Files</H2>
+It is best if each Java class has a separate Tcl file that contains tests.
+The base of the name of the Tcl test file should be the same of the Java
+class being tested.  The Tcl test file should be located in the
+<CODE>test</CODE> subdirectory of the directory where the Java class
+is defined.
+ <P>For example, if we are testing <CODE>NamedObj.java</CODE>, then
+the Tcl test file should be at <CODE>test/NamedObj.tcl</CODE>.
+
+<H3><A NAME="getJavaInfo testing proc">getJavaInfo Testing Proc</A></H3>
+ <P>TclBlend provides a Tcl procedure called <CODE>java::info</CODE>
+which returns information about an instance of a Java class.  
+<A HREF="../../../kernel/test/testDefs.tcl"><CODE>$TYCHO/kernel/test/testDefs.tcl</CODE></A>
+defines the <CODE>getJavaInfo</CODE> Tcl proc, which takes a Java object
+handle and returns a string that describes the object's fields, methods
+constructors, and superclass.
+ <P>Each Java class should have a Tcl test that calls <CODE>getJavaInfo</CODE>
+so that if the Java class definition changes, then the test will fail.
+This will hopefully prompt the developer to write a test for the
+changed feature.
+
+<p>
+<A HREF="index.html">Tycho Java Infrastructure</A><br>
+<a href="../../../doc/index.html">Tycho Home Page</a><br>
+<p>
+<HR>
+Copyright &#169 1997- The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>cxh@eecs.berkeley.edu</author>
+</body>
+</html>
