@@ -46,6 +46,7 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
@@ -244,7 +245,7 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (!_resetHDFFSM) {
+        if (!_resetCurrentHDFFSM) {
             _firingsSoFar = 0;
             FSMActor controller = getController();
             State initialState = controller.getInitialState();
@@ -267,7 +268,6 @@ public class HDFFSMDirector extends FSMDirector {
                     System.out.println(getName() + " : initialize(): " +
                         "initial director is " + refinementDir.getFullName());
                 }
-
                 if (refinementDir instanceof HDFFSMDirector) {
                     refinementDir.initialize();
                 } else if (refinementDir instanceof HDFDirector) {
@@ -275,6 +275,7 @@ public class HDFFSMDirector extends FSMDirector {
                     refinementDir).getScheduler();
                     refinmentSched.setValid(false);
                     //refinmentSched.getSchedule();
+                    //System.out.println("getSchudule in HDFFSM initialize");
                     ((HDFDirector)refinementDir).getSchedule();
                     if (_debug_info) System.out.println(getName() +
                         " : initialize(): refinement's director : " +
@@ -358,9 +359,6 @@ public class HDFFSMDirector extends FSMDirector {
             throw new IllegalActionException(this,
              "Can't postfire because current refinement is null.");
         }
-        //if (_debug_info) {
-            //_debugPostfire(curState);
-        //}
         
         // Postfire the current refinement.
         // FIXME
@@ -421,19 +419,26 @@ public class HDFFSMDirector extends FSMDirector {
                 // state of the (enabled) transition.
                 // FIXME:
                 State newState = lastChosenTr.destinationState();
+                
                 _setCurrentState(newState);
                 if (_debug_info) System.out.println(getName() +
                    " : postfire(): making state transition to: " +
                                            newState.getFullName());
+                Iterator actions = lastChosenTr.commitActionList().iterator();
+                while (actions.hasNext() && !_stopRequested) {
+                    //System.out.println("commit action in HDFFSM");
+                    Action action = (Action)actions.next();
+                    action.execute();
+                }
                 BooleanToken resetToken =
                             (BooleanToken)lastChosenTr.reset.getToken();
                 if (resetToken.booleanValue()) {
-                    setHighestHDFFSM(true);
+                    setCurrentHDFFSMReset(true);
                     initialize();
                     //FSMActor controller = getController();
                     //State initialState = controller.getInitialState();
                 }
-                setHighestHDFFSM(false);
+                setCurrentHDFFSMReset(false);
                 curState = newState;
                 // Since a state change has occurred, recompute the
                 // Mapping from input ports of the modal model to
@@ -457,7 +462,8 @@ public class HDFFSMDirector extends FSMDirector {
                     Scheduler refinmentSched = ((StaticSchedulingDirector)
                         refinementDir).getScheduler();
                     refinmentSched.setValid(false);
-                    refinmentSched.getSchedule();
+                    //refinmentSched.getSchedule();
+                    //System.out.println("getSchedule in HDFFSM postfire");
                     ((HDFDirector)refinementDir).getSchedule();
                 } else if (refinementDir instanceof SDFDirector) {
                     Scheduler refinmentSched = ((StaticSchedulingDirector)
@@ -516,7 +522,7 @@ public class HDFFSMDirector extends FSMDirector {
     public void preinitialize() throws IllegalActionException {
         _firingsPerScheduleIteration = 1;
         _firingsSoFar = 0;
-        _resetHDFFSM = true;
+        _resetCurrentHDFFSM = true;
         super.preinitialize();
 
         FSMActor ctrl = getController();
@@ -595,8 +601,8 @@ public class HDFFSMDirector extends FSMDirector {
         _firingsPerScheduleIteration = firings;
     }
 
-    public void setHighestHDFFSM(boolean resetHDFFSM) {
-        _resetHDFFSM = resetHDFFSM;    
+    public void setCurrentHDFFSMReset(boolean resetCurrentHDFFSM) {
+        _resetCurrentHDFFSM = resetCurrentHDFFSM;    
     }
 
     /** Return true if data are transferred from the input port of
@@ -1081,7 +1087,7 @@ public class HDFFSMDirector extends FSMDirector {
 
     // A flag indicating whether the current director
     // has made a tranisiton with "reset" set to be true.
-    private boolean _resetHDFFSM = false;
+    private boolean _resetCurrentHDFFSM = false;
     
     // The firing count for the HDF actor (the container
     // of this director) in the current schedule.

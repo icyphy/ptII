@@ -222,7 +222,8 @@ public class HDFDirector extends SDFDirector {
                 rates = rates + String.valueOf(rate);
             }
             if (_debug_info) {
-                System.out.println("Port rates = " + rates);
+                System.out.println(this.getFullName()
+                    + " Port rates = " + rates);
             }
             String rateKey = rates;
             int cacheSize =
@@ -309,11 +310,13 @@ public class HDFDirector extends SDFDirector {
        
         if (_preinitializeFlag) {
             _preinitializeFlag = false;
+            
+        } else {
             SDFScheduler scheduler = (SDFScheduler)getScheduler();
-            getSchedule();
+            getSchedule(); 
         }
-    }
-    */
+    }*/
+    
 
     /** Get the HDF schedule since schedule may change in the postfire.
      *  If this director is at the top level, then update the number of
