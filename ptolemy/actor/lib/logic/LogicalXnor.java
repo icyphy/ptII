@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli@cory.eecs.berkeley.edu)
-@AcceptedRating
+@ProposedRating Red (johnli@cory.eecs.berkeley.edu) 
+@AcceptedRating Red (johnli@cory.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (johnli@cory.eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (johnli@cory.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
