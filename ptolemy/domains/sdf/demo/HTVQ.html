@@ -3,26 +3,37 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
-<TITLE>Expression Demo</TITLE>
+<TITLE>Vector Quantization Demo</TITLE>
 </HEAD>
 <BODY>
 
-<H1>SDF HTVQ Simulation Demo</H1>
+<H1>Vector Quantization Demo</H1>
 
 <CENTER>
 <P><APPLET name="HTVQApplet"
    bgcolor=#FAF0E6
    code=ptolemy.domains.sdf.demo.HTVQApplet.class
+   archive="ptolemy/ptsupport.jar"
    codebase=../../../..
    width=420 height=180>
 <param name="background" value="#faf0e6">
 <BR><I>If you were able to run applets, you would have a waveform demo
 here.</I>
 <BR></APPLET></CENTER>
-
-
+This applet simulates a simple video compression scheme based on Vector Quantization (VQ).   The model looks like the following:
+<center>
+INSERT MODEL HERE
+</center>
+Each frame is first subdivided into blocks of 4 pixels by 2 pixels.   Each block is then passed through a Vector Quantizer, which selects the best reconstruction block from a precomputed codebook.   The output of the Vector Quantizer is the codebook index of the reconstruction vector.   Each block is decompressed by indexing into the codebook, and then reassembled into the output image.   <p>
+The Vector Quantizer in this implementation does not actually find the optimal reconstruction vector for each block.   Instead, the quantization is done using a series of 3 table lookups.  The resulting quantizer is very close to optimal and results in a significantly faster implementation.   This technique is known as Hierarchical Table-Lookup Vector Quantization (HTVQ).
 <p><font size="2" color="#cc0000">
 Last Updated: $Date$
 </font>
 </body>
 </html>
+
+
+
+
+
+
