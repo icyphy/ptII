@@ -46,7 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 
 cd ..
-set configs [glob *Configuration*.xml]
+set configs [glob */*configuration*.xml]
 cd test
 
 foreach i $configs {
