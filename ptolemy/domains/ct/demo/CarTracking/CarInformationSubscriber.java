@@ -284,7 +284,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    // The current serial number
+    // The entry name.
     private String _entryName;
     
     // The space to read from.

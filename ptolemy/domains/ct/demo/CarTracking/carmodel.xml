@@ -64,11 +64,6 @@
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
-    <entity name="vssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" value="samplingPeriod"></property>
-	<port name="input"></port>
-        <port name="output"></port>
-    </entity>
     <entity name="ssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" value="samplingPeriod"></property>
 	<port name="input"></port>

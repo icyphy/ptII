@@ -52,7 +52,7 @@ TCL_SRCS =
 JSRCS = \
 	CarInformationPublisher.java \
 	CarInformationSubscriber.java \
-	CarPositionPublisher.java
+	RealTimePublisher.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 

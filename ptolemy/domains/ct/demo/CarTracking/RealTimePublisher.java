@@ -1,4 +1,4 @@
-/* An actor that sends car information to a Java Space.
+/* An actor that sends input tokens to a Java Space with real time stamps.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
+@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.demo.CarTracking;
@@ -44,6 +44,7 @@ import ptolemy.data.StringToken;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Sink;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.jspaces.TokenEntry;
 import ptolemy.actor.lib.jspaces.util.SpaceFinder;
@@ -56,16 +57,16 @@ import net.jini.core.transaction.TransactionException;
 import net.jini.core.lease.Lease;
 
 //////////////////////////////////////////////////////////////////////////
-//// Publisher
+//// RealTimePublisher
 /**
 An actor that sends entries to a Java Space. New information will override
 the old ones.
 
-@author Jie Liu, Yuhong Xiong
+@author Jie Liu
 @version $Id$
 */
 
-public class CarPositionPublisher extends TypedAtomicActor 
+public class RealTimePublisher extends Sink
     implements TimedActor {
 
     /** Construct an actor with the given container and name.
@@ -76,7 +77,7 @@ public class CarPositionPublisher extends TypedAtomicActor
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public CarPositionPublisher(TypedCompositeActor container, String name)
+    public RealTimePublisher(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
@@ -87,17 +88,12 @@ public class CarPositionPublisher extends TypedAtomicActor
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
-
-        position = new TypedIOPort(this, "position", true, false);
-        position.setMultiport(false);
+        
+        input.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** Input port for position, of type DoubleToken.
-     */
-    public TypedIOPort position;
 
     /** The Java Space name. The default name is "JavaSpaces" of 
      *  type StringToken.
@@ -120,11 +116,10 @@ public class CarPositionPublisher extends TypedAtomicActor
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
 	try {
-	    CarInformationPublisher newobj = 
-                (CarInformationPublisher)super.clone(ws);
+	    RealTimePublisher newobj = 
+                (RealTimePublisher)super.clone(ws);
 	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
             newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.position = (TypedIOPort)newobj.getPort("position");
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -166,34 +161,34 @@ public class CarPositionPublisher extends TypedAtomicActor
         //System.out.println("Finish intialization.");
     }
 
-    /** Read exactly one input token from each input channel,
-     *  put them into an ArrayToken and write to the space.
+    /** Read exactly one input token and write to the space.
      *  Replace the old token in the space.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-	try {
-	    String name = ((StringToken)entryName.getToken()).toString();
+        if(input.hasToken(0)) {
+            String name = ((StringToken)entryName.getToken()).toString();
             Long serialNumber = new Long(System.currentTimeMillis());
-            Token token = position.get(0);
- 
+            Token token = input.get(0);
             TokenEntry template = new TokenEntry(name, null, null);
-            _space.takeIfExists(template, null, 100);
-            TokenEntry entry = new TokenEntry(name,
-                    serialNumber, token);
-            _space.write(entry, null, Lease.FOREVER);
-	} catch (RemoteException re) {
-	    throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + re.getMessage());
-	} catch (TransactionException te) {
-	    throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + te.getMessage());
-	} catch (InterruptedException ie) {
-            throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + ie.getMessage());
-        } catch (net.jini.core.entry.UnusableEntryException ue) {
-            throw new IllegalActionException(this, "Unusable Entry " +
-                    ue.getMessage());
+            try {
+                _space.takeIfExists(template, null, 100);
+                TokenEntry entry = new TokenEntry(name,
+                        serialNumber, token);
+                _space.write(entry, null, Lease.FOREVER);
+            } catch (RemoteException re) {
+                throw new IllegalActionException(this, "Cannot write into " +
+                        "JavaSpace. " + re.getMessage());
+            } catch (TransactionException te) {
+                throw new IllegalActionException(this, "Cannot write into " +
+                        "JavaSpace. " + te.getMessage());
+            } catch (InterruptedException ie) {
+                throw new IllegalActionException(this, "Cannot write into " +
+                        "JavaSpace. " + ie.getMessage());
+            } catch (net.jini.core.entry.UnusableEntryException ue) {
+                throw new IllegalActionException(this, "Unusable Entry " +
+                        ue.getMessage());
+            }
         }
         return true;
     }
