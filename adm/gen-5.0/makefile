@@ -340,6 +340,34 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf jni \
+		bin/comm.policy \
+		bin/copernicus.bat \
+		bin/copernicusjhdl.bat \
+		bin/decompile.bat
+		bin/emachine.bat \
+		bin/giottoc.bat \
+		bin/histogram.bat \
+		bin/jode.bat \
+		bin/mescal.bat \
+		bin/moml.bat \
+		bin/obfuscate.bat \
+		bin/ptexecute.bat \
+		bin/ptjacl.bat \
+		bin/ptjaclapp.bat \
+		bin/ptolemy.bat \
+		bin/ptplot.bat \
+		bin/ptstartjini.bat \
+		bin/pxgraph.bat \
+		bin/soot.bat \
+		bin/startjini.gui.bat \
+		bin/tinic.bat \
+		bin/tinicomm.bat \
+		bin/tiniconverter.bat \
+		bin/vergil.bat \
+		diva/canvas/test/alljsimpletests.tcl
+		diva/canvas/tutorial/doc-files
+		diva/graph/test/alljsimpletests.tcl
+		diva/util/test/alljsimpletests.tcl
 		doc/usingVergil \
 		doc/design/usingVergil \
 		lib/hsif \
@@ -357,6 +385,8 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		lib/synthesis.jar \
 		mk/ptII.mk \
 		ptolemy/actor/gui/python \
+		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
+		ptolemy/actor/gui/test/alljsimpletests.tcl \
 		ptolemy/actor/lib/colt \
 		ptolemy/actor/lib/comm \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
@@ -368,6 +398,8 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/actor/lib/joystick \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/security/demo/Signature/ptKeystore \
+		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/OrderedMerge.tcl \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
@@ -415,9 +447,11 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/wireless \
 		ptolemy/demo \
 		ptolemy/media/test/tmp2_7.au \
+		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
 		ptolemy/plot/build.xml \
 		ptolemy/plot/plotml/build.xml \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
+		ptolemy/vergil/toolbox/test/alljsimpletests.tcl \
 		thales; \
 	   touch configure; \
 	   chmod a+rx configure; \
