@@ -1,6 +1,6 @@
 /* A viewer for audio files.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media;
@@ -73,7 +76,9 @@ public class AudioViewer extends PlotApplication {
         Message message = new Message(
                 "Ptolemy AudioViewer (ptaudio program)\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-                "Version 2.0, Build: $Id$\n\n"+
+                "Version 2.0, Build: " +
+                "$Id$" +
+                "\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot");
         message.setTitle("About Ptolemy AudioViewer");

@@ -1,6 +1,6 @@
 /* A library of audio operations.
 
-Copyright (c) 1998 The Regents of the University of California.
+Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -22,6 +22,11 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media;
@@ -45,8 +50,8 @@ import java.io.IOException;
  * <p>
  *  The format of an audio file is:
  *  <CENTER>
- *  <TABLE BORDER=1>
- *  <TR BGCOLOR=#DFDFA0><TD>byte</TD><TD>type</TD>
+ *  <TABLE BORDER = 1>
+ *  <TR BGCOLOR = #DFDFA0><TD>byte</TD><TD>type</TD>
  *  <TD>field name   </TD><TD> field value                      </TD></TR>
  *  <TR><TD>0x00</TD><TD>byte </TD><TD>magic[4]        </TD>
  *  <TD> 0x2E736E64 '.snd' in ASCII     </TD></TR>
@@ -74,8 +79,8 @@ import java.io.IOException;
  *  more public about its information.  For example, the Sun version
  *  does not give any access to the audio data itself.
  *
- * @Author: Edward A. Lee
- * @Version: $Id$
+ * @author Edward A. Lee
+ * @version $Id$
  */
 
 public class Audio {
@@ -89,11 +94,11 @@ public class Audio {
     public Audio(byte[] audio) {
         String ptinfo = "Ptolemy audio";
         info = ptinfo.getBytes();
-        offset=24 + info.length;
-        size=audio.length;
-        format=1;
-        sampleRate=8000;
-        numChannels=1;
+        offset = 24 + info.length;
+        size = audio.length;
+        format = 1;
+        sampleRate = 8000;
+        numChannels = 1;
         this.audio = new byte[1][];
         this.audio[0] = audio;
     }
@@ -109,14 +114,14 @@ public class Audio {
     public Audio(double[] audio) {
         String ptinfo = "Ptolemy audio";
         info = ptinfo.getBytes();
-        offset=24 + info.length;
-        size=audio.length;
-        format=1;
-        sampleRate=8000;
-        numChannels=1;
+        offset = 24 + info.length;
+        size = audio.length;
+        format = 1;
+        sampleRate = 8000;
+        numChannels = 1;
         this.audio = new byte[1][size];
-        for (int i=size-1; i>=0; i--) {
-            this.audio[0][i]=lin2mu((int)(audio[i]*31616.0));
+        for (int i = size-1; i >= 0; i--) {
+            this.audio[0][i] = lin2mu((int)(audio[i]*31616.0));
         }
     }
 
@@ -128,17 +133,17 @@ public class Audio {
      */
     public Audio(DataInputStream input) throws IOException {
         input.read(magic, 0, 4);
-        offset=input.readInt();
-        size=input.readInt();
-        format=input.readInt();
-        sampleRate=input.readInt();
-        numChannels=input.readInt();
+        offset = input.readInt();
+        size = input.readInt();
+        format = input.readInt();
+        sampleRate = input.readInt();
+        numChannels = input.readInt();
 
         // Read the info field.
         info = new byte[offset-24];
         input.read(info, 0, offset-24);
 
-        // Check the magic number, which should be 0x2E736E64,'.snd'
+        // Check the magic number, which should be 0x2E736E64, '.snd'
         // in ASCII.
         if (magic[0] != 0x2E || magic[1] != 0x73 || magic[2] != 0x6E ||
                 magic[3] != 0x64) {
@@ -245,8 +250,8 @@ public class Audio {
         int exponent =  exp_lut[(sample>>7) & 0xFF];
         int mantissa = (sample >> (exponent+3)) & 0x0F;
         int ulawbyte = (sign | (exponent << 4) | mantissa);
-        // System.out.println(" sign=" + sign + " exponent=" +
-        // exponent + " mantissa=" + mantissa );
+        // System.out.println(" sign = " + sign + " exponent = " +
+        // exponent + " mantissa = " + mantissa );
         ulawbyte =  ~ulawbyte;
         ulawbyte &= 0xFF;
         if(_zerotrap && ulawbyte == 0 ) {
@@ -275,7 +280,7 @@ public class Audio {
      *  <p>
      *  If you have called setZeroTrap() with a <i>true</i> argument, then
      *  this will not be an exact inverse of lin2mu because the zero code
-     *  is interpreted as being the largest negative number, -31,616.
+     *  is interpreted as being the largest negative number, -31616.
      *
      *  @param b A mu-255 representation of the sample.
      *  @return A linear representation of the sample.
@@ -286,12 +291,12 @@ public class Audio {
         int sign = (mu & 0x80) >> 7 ;
         int exponent = (mu & 0x70) >> 4 ;
         int mantissa = (mu & 0x0F);
-        // System.out.println(" sign=" + sign + " exponent=" +
-        // exponent + " mantissa=" + mantissa );
+        // System.out.println(" sign = " + sign + " exponent = " +
+        // exponent + " mantissa = " + mantissa );
         int linear = (mantissa<<(exponent+1)) - 0x20 + (0x20 << exponent);
         // Make into a 16 bit sample.
         linear <<= 2;
-        return (sign==1)?-linear:linear;
+        return (sign == 1) ? -linear : linear;
     }
 
     /** Read Sun audio file (.au) format and return the audio data as an array.
@@ -339,7 +344,7 @@ public class Audio {
         int[] intdata = toLinear(channel);
         if (intdata != null) {
             double[] result = new double[intdata.length];
-            for (int i=intdata.length-1; i>=0; i--) {
+            for (int i = intdata.length-1; i >= 0; i--) {
                 result[i] = ((double)(intdata[i]))/31616.0;
             }
             return result;
@@ -357,7 +362,7 @@ public class Audio {
         if (audio != null) {
             if (audio.length > channel && audio[channel] != null) {
                 int[] result = new int[audio[channel].length];
-                for (int i=audio[channel].length-1; i>=0; i--) {
+                for (int i = audio[channel].length-1; i >= 0; i--) {
                     result[i] = mu2lin(audio[channel][i]);
                 }
                 return result;
@@ -445,25 +450,23 @@ public class Audio {
     // The following are used for mu-law conversion.
     // Turn on the trap as per the MIL-STD (this prevents a result of 0).
     private static boolean _zerotrap = false;
+
     // define the add-in bias for 16 bit samples.
     private static final int BIAS = 0x84;
+
     // clipping value for inputs.
     private static final int CLIP =  32635;
+
     // lookup table for the exponent.
-    private static final byte exp_lut[] = {0,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3,
-                                           4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
-                                           5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-                                           5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                           6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                           7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
-}
+    private static final byte exp_lut[] = {0, 0, 1, 1, 2, 2, 2, 2, 3,
+3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}; }

@@ -1,6 +1,6 @@
 /* Image display component.
 
-@Copyright (c) 1998 The Regents of the University of California.
+@Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -24,6 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media;
@@ -41,8 +43,8 @@ import java.lang.*;
  *  To use it, simply create it, populate it with pixels using one or more
  *  of the set methods, and call displayImage().
  *
- *  @Author: Edward A. Lee
- *  @Version: $Id$
+ *  @author Edward A. Lee
+ *  @version $Id$
  */
 public class Picture extends Component {
 
@@ -75,7 +77,7 @@ public class Picture extends Component {
             _image = createImage(_imagesource);
         }
         _imagesource.newPixels();
-        prepareImage(_image,null);
+        prepareImage(_image, null);
         repaint();
     }
 
