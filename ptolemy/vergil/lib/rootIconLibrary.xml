@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../../moml/moml.dtd">
+<class name="" extends="ptolemy.actor.TypedCompositeActor">
+  <doc>
+	root entity library
+  </doc>
+  <import source="../../actor/lib/genericicons.xml"/>
+  <entity name="generic" class=".generic"/>
+</class>

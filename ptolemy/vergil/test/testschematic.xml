@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="hello world" class="ptolemy.actor.TypedCompositeActor">
+    <doc>ramp-recorder...  a good first start</doc>
+    <director class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
+        </property>
+    </director>
+    <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location x="50" y="50"/>
+            <configure>generic.source</configure>
+        </rendition>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+    <entity name="Plotter1" class="ptolemy.actor.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location x="150" y="50"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+    <relation name="R1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="root" class="ptolemy.moml.Vertex">
+            <location x="100" y="50"/>
+        </vertex>
+    </relation>
+    <link port="Ramp1.output" relation="R1"/>
+    <link port="Plotter1.input" relation="R1"/>
+</model>
