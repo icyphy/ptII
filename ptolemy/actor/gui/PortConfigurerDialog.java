@@ -1,4 +1,4 @@
-/* A top-level dialog window for editing parameters of a NamedObj.
+/* A top-level dialog window for configuring the ports of an entity.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -32,14 +32,14 @@ package ptolemy.actor.gui;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
-import ptolemy.actor.gui.style.StyleConfigurer;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringUtilities;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.awt.Frame;
@@ -47,16 +47,10 @@ import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// EditParametersDialog
+//// PortConfigurerDialog
 /**
-This class is a modal dialog box for editing the parameters of a target
-object, which is an instance of NamedObj. All attributes that implement
-the Settable interface and have visibility FULL are included in the
-dialog. An instance of this class contains an instance of
-Configurer, which examines the target for attributes of type
-EditorPaneFactory.  Those attributes, if they are present, define
-the panels that are used to edit the parameters of the target.
-If they are not present, then a default panel is created.
+This class is a modal dialog box for configuring the ports of an entity.
+An instance of this class contains an instance of PortConfigurer.
 <p>
 If the panels returned by EditorPaneFactory implement the
 CloseListener interface, then they are notified when this dialog
@@ -73,87 +67,78 @@ by the user.
 @author Edward A. Lee
 @version $Id$
 */
-public class EditParametersDialog extends ComponentDialog
-    implements ChangeListener {
+public class PortConfigurerDialog extends ComponentDialog
+        implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
-     *  An "OK" and a "Cancel" button are added to the dialog.
+     *  Several buttons are added to the dialog.
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
      *   generating the dialog.
-     *  @param target The object whose parameters are being edited.
+     *  @param target The object whose ports are being configured.
      */
-    public EditParametersDialog(Frame owner, NamedObj target) {
+    public PortConfigurerDialog(Frame owner, Entity target) {
         super(owner,
-                "Edit parameters for " + target.getName(),
-                new Configurer(target),
+                "Configure ports for " + target.getName(),
+                new PortConfigurer(target),
                 _moreButtons);
         // Once we get to here, the dialog has already been dismissed.
         _owner = owner;
         _target = target;
         if (buttonPressed().equals("Add")) {
-            _openAddDialog(null, "", "", "ptolemy.data.expr.Parameter");
+            _openAddDialog(null, "", "", "ptolemy.actor.TypedIOPort");
             _target.removeChangeListener(this);
         } else if (buttonPressed().equals("Remove")) {
-            // Create a new dialog to remove a parameter, then open a new
-            // EditParametersDialog.
+            // Create a new dialog to remove a port then open a new
+            // PortConfigurerDialog.
             // First, create a string array with the names of all the
-            // parameters.
-            List attList = _target.attributeList(Settable.class);
-
-            // Count visible attributes
-            Iterator parameters = attList.iterator();
-            int count = 0;
-            while (parameters.hasNext()) {
-                Settable param = (Settable)parameters.next();
-                if (param.getVisibility() == Settable.FULL) count++;
-            }
-
-            String[] attNames = new String[count];
-            Iterator params = attList.iterator();
+            // ports.
+            List portList = _target.portList();
+            String[] portNames = new String[portList.size()];
+            Iterator ports = portList.iterator();
             int index = 0;
-            while (params.hasNext()) {
-                Settable param = (Settable)params.next();
-                if (param.getVisibility() == Settable.FULL) {
-                    attNames[index++] = ((Attribute)param).getName();
-                }
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                portNames[index++] = port.getName();
             }
             Query query = new Query();
-            query.addChoice("delete", "Parameter to delete",
-                    attNames, null, false);
+            query.addChoice("delete", "Port to delete",
+                    portNames, null, false);
 
             ComponentDialog dialog = new ComponentDialog(
                     _owner,
-                    "Delete a parameter for " + _target.getFullName(),
+                    "Delete a port for " + _target.getFullName(),
                     query,
                     null);
             // If the OK button was pressed, then queue a mutation
-            // to delete the parameter.
-            String delName = query.stringValue("delete");
+            // to delete the port.
+            if (dialog.buttonPressed().equals("OK")) {
 
-            if (dialog.buttonPressed().equals("OK") && !delName.equals("")) {
-                String moml = "<deleteProperty name=\""
-                    + delName
-                    + "\"/>";
-                    _target.addChangeListener(this);
-                    _target.requestChange(
-                            new MoMLChangeRequest(this, _target, moml));
-            }
-        } else if (buttonPressed().equals("Style")) {
-            // Create a dialog for setting parameter styles.
-            try {
-                StyleConfigurer panel = new StyleConfigurer(target);
-                ComponentDialog dialog = new ComponentDialog(
-                        _owner,
-                        "Edit parameter styles for " + target.getName(),
-                        panel);
-                if (!(dialog.buttonPressed().equals("OK"))) {
-                    // Restore original parameter values.
-                    panel.restore();
+                String portName = query.stringValue("delete");
+                if (portName != null) {
+                    Port port = _target.getPort(portName);
+
+                    if (port != null) {
+                        // The context for the MoML should be the first
+                        // container above this port in the hierarchy
+                        // that defers its MoML definition, or the
+                        // immediate parent if there is none.
+                        NamedObj container
+                               = MoMLChangeRequest.getDeferredToParent(port);
+                        if (container == null) {
+                            container = (NamedObj)port.getContainer();
+                        }
+
+                        String moml = "<deletePort name=\""
+                               + port.getName(container) + "\"/>\n";
+
+                        ChangeRequest request =
+                               new MoMLChangeRequest(this, container, moml);
+                        container.addChangeListener(this);
+                        container.requestChange(request);
+                    }
                 }
-            } catch (IllegalActionException ex) {
-                MessageHandler.error("Edit Parameter Style failed", ex);
-            }         
+            }
         }
     }
 
@@ -168,7 +153,7 @@ public class EditParametersDialog extends ComponentDialog
         if (change.getSource() != this) return;
 
         // Open a new dialog.
-        EditParametersDialog dialog = new EditParametersDialog(_owner, _target);
+        PortConfigurerDialog dialog = new PortConfigurerDialog(_owner, _target);
 
         _target.removeChangeListener(this);
     }
@@ -183,42 +168,27 @@ public class EditParametersDialog extends ComponentDialog
 
         _target.removeChangeListener(this);
 
-        String newName = _query.stringValue("name");
-        ComponentDialog dialog = _openAddDialog(exception.getMessage()
-                + "\n\nPlease enter a new default value:",
-                newName,
-                _query.stringValue("default"),
-                _query.stringValue("class"));
-        _target.removeChangeListener(this);
-        if (!dialog.buttonPressed().equals("OK")) {
-            // Remove the parameter, since it seems to be erroneous
-            // and the user hit cancel or close.
-            String moml = "<deleteProperty name=\"" + newName + "\"/>";
-            _target.requestChange(
-                    new MoMLChangeRequest(this, _target, moml));
+        if (!change.isErrorReported()) {
+            MessageHandler.error("Change failed: ", exception);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** If the contents of this dialog implements the CloseListener
-     *  interface, then notify it that the window has closed.
+    /** If the window is closed with an OK, then apply the changes.
      */
     protected void _handleClosing() {
         super._handleClosing();
-        if (!buttonPressed().equals("OK")
-                && !buttonPressed().equals("Add")
-                && !buttonPressed().equals("Remove")) {
-            // Restore original parameter values.
-            ((Configurer)contents).restore();
+        if (buttonPressed().equals("OK")) {
+            ((PortConfigurer)contents).apply();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Open a dialog to add a new parameter.
+    /** Open a dialog to add a new port.
      *  @param message A message to place at the top, or null if none.
      *  @param name The default name.
      *  @param defValue The default value.
@@ -227,16 +197,15 @@ public class EditParametersDialog extends ComponentDialog
      */
     private ComponentDialog _openAddDialog(
             String message, String name, String defValue, String className) {
-        // Create a new dialog to add a parameter, then open a new
-        // EditParametersDialog.
+        // Create a new dialog to add a port, then open a new
+        // PortConfigurerDialog.
         _query = new Query();
         if (message != null) _query.setMessage(message);
         _query.addLine("name", "Name", name);
-        _query.addLine("default", "Default value", defValue);
         _query.addLine("class", "Class", className);
         ComponentDialog dialog = new ComponentDialog(
                 _owner,
-                "Add a new parameter to " + _target.getFullName(),
+                "Add a new port to " + _target.getFullName(),
                 _query,
                 null);
         // If the OK button was pressed, then queue a mutation
@@ -244,21 +213,14 @@ public class EditParametersDialog extends ComponentDialog
         // A blank property name is interpreted as a cancel.
         String newName = _query.stringValue("name");
 
-        // Need to escape quotes in default value.
-        String newDefValue = StringUtilities.escapeForXML(
-                _query.stringValue("default"));
-
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
-            String moml = "<property name=\""
+            String moml = "<port name=\""
                 + newName
-                + "\" value=\""
-                    + newDefValue.toString()
-                        + "\" class=\""
-                        + _query.stringValue("class")
-                            + "\"/>";
-                        _target.addChangeListener(this);
-                        _target.requestChange(
-                                new MoMLChangeRequest(this, _target, moml));
+                + "\" class=\""
+                + _query.stringValue("class")
+                + "\"/>";
+            _target.addChangeListener(this);
+            _target.requestChange(new MoMLChangeRequest(this, _target, moml));
         }
         return dialog;
     }
@@ -268,7 +230,7 @@ public class EditParametersDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-            = {"OK", "Add", "Remove", "Style", "Cancel"};
+            = {"OK", "Add", "Remove", "Cancel"};
 
     // The owner window.
     private Frame _owner;
@@ -276,6 +238,6 @@ public class EditParametersDialog extends ComponentDialog
     // The query window for adding parameters.
     private Query _query;
 
-    // The target object whose parameters are being edited.
-    private NamedObj _target;
+    // The target object whose ports are being configured.
+    private Entity _target;
 }

@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	EditorIcon.java \
 	EditParametersFactory.java \
-	EditParameterStylesFactory.java \
 	FigureAction.java \
 	GraphicElement.java \
 	MenuActionFactory.java \

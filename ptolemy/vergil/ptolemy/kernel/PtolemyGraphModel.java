@@ -320,28 +320,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}
 
 	/** Remove the given node from the model.  The node is assumed
-	 *  to be an icon.
+	 *  to be an attribute.
 	 */
 	public void removeNode(Object node) {
-	    Nameable deleteObj = ((Location)node).getContainer();
-            String elementName = null;
-	    if (deleteObj instanceof Attribute) {
-                // Object is an attribute.
-                elementName = "deleteProperty";
-            } else {
-		throw new InternalErrorException(
-     		    "Attempt to remove a node that is not an Attribute. " +
-		    "node = " + node);
+	    NamedObj attribute = (NamedObj)((Location)node).getContainer();
+
+            // The context for the MoML should be the first container
+            // above this port in the hierarchy that defers its
+            // MoML definition, or the immediate parent if there is none.
+            NamedObj container
+                    = MoMLChangeRequest.getDeferredToParent(attribute);
+            if (container == null) {
+                container = (NamedObj)attribute.getContainer();
             }
 
-            String moml = "<" + elementName + " name=\""
-		+ deleteObj.getName() + "\"/>\n";
+            String moml = "<deleteProperty name=\""
+		+ attribute.getName(container) + "\"/>\n";
 
-            // Make the request in the context of the container.
-            NamedObj container = (NamedObj)deleteObj.getContainer();
             ChangeRequest request =
-		new MoMLChangeRequest(
-				      PtolemyGraphModel.this, container, moml);
+		new MoMLChangeRequest(PtolemyGraphModel.this, container, moml);
             container.requestChange(request);
 	}
     }
@@ -447,7 +444,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public void removeNode(Object node) {
 	    Location location = (Location)node;
 	    ComponentPort port = (ComponentPort)location.getContainer();
-	    NamedObj container = (NamedObj)port.getContainer();
+
+            // The context for the MoML should be the first container
+            // above this port in the hierarchy that defers its
+            // MoML definition, or the immediate parent if there is none.
+            NamedObj container = MoMLChangeRequest.getDeferredToParent(port);
+            if (container == null) {
+                container = (NamedObj)port.getContainer();
+            }
+
 	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<deletePort name=\"" +
@@ -543,6 +548,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     + deleteObj.getName() + "\"/>\n";
 
             // Make the request in the context of the container.
+            // FIXME: This should use the container that handles deferrals,
+            // like the other MoML change requests in this file.
             NamedObj container = (NamedObj)deleteObj.getContainer();
             ChangeRequest request =
                     new MoMLChangeRequest(
@@ -788,6 +795,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	    final String relationNameToAdd = relationName;
 
+            // FIXME: This should use the container that handles deferrals,
+            // like the other MoML change requests in this file.
+
 	    ChangeRequest request =
 		new MoMLChangeRequest(PtolemyGraphModel.this,
 				      getToplevel(),
@@ -818,6 +828,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    // and queue a new change request to clean up the model
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
+
+            // FIXME: This should use the container that handles deferrals,
+            // like the other MoML change requests in this file.
+
 		    ChangeRequest changeRequest =
 			new MoMLChangeRequest(PtolemyGraphModel.this,
 					      getToplevel(),
@@ -883,6 +897,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	    final String relationNameToAdd = relationName;
 
+            // FIXME: This should use the container that handles deferrals,
+            // like the other MoML change requests in this file.
+
 	    ChangeRequest request =
 		new MoMLChangeRequest(PtolemyGraphModel.this,
 				      getToplevel(),
@@ -903,11 +920,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		public void changeFailed(ChangeRequest change,
 					 Exception exception) {
 		    // If we fail here, then we remove the link entirely.
-		    // FIXME uno the moml?
+		    // FIXME undo the moml?
 		    _linkSet.remove(link);
 		    link.setHead(null);
 		    link.setTail(null);
 		    link.setRelation(null);
+
+            // FIXME: This should use the container that handles deferrals,
+            // like the other MoML change requests in this file.
+
 		    // and queue a new change request to clean up the model
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
@@ -1039,6 +1060,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 */
 	public void removeNode(Object node) {
 	    ComponentPort port = (ComponentPort)node;
+
+            // FIXME: This should use the container that handles deferrals,
+            // like the other MoML change requests in this file.
+
 	    NamedObj container = (NamedObj)port.getContainer();
 	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
@@ -1243,6 +1268,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public void removeNode(Object node) {
 	    ComponentRelation relation =
 		(ComponentRelation)((Vertex)node).getContainer();
+
+            // FIXME: This should use the container that handles deferrals,
+            // like the other MoML change requests in this file.
+
 	    NamedObj container = (NamedObj)relation.getContainer();
 	    // Delete the relation.
 	    StringBuffer moml = new StringBuffer();

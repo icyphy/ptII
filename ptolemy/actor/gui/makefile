@@ -74,6 +74,8 @@ JSRCS = \
 	MoMLApplet.java \
 	MoMLApplication.java \
 	Placeable.java \
+	PortConfigurer.java \
+	PortConfigurerDialog.java \
 	PtExecuteApplication.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \

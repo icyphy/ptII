@@ -78,6 +78,8 @@ public class RecordAssembler extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
+
+        _addIcon();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,7 +167,13 @@ public class RecordAssembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
 
+    private void _addIcon() {
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" width=\"10\" " +
+                "height=\"60\" style=\"fill:red\"/>\n" +
+                "</svg>\n");
+    }
 }
 

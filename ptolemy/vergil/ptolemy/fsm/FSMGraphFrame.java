@@ -59,7 +59,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.icon.IconEditor;
 import ptolemy.vergil.toolbox.EditParametersFactory;
-import ptolemy.vergil.toolbox.EditParameterStylesFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -201,7 +200,6 @@ public class FSMGraphFrame extends GraphFrame {
 	public StateContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
             /** FIXME: removed temporarily until edit icon works.
@@ -239,7 +237,6 @@ public class FSMGraphFrame extends GraphFrame {
 	public TransitionContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }

@@ -57,6 +57,7 @@ JSRCS = \
 	Link.java \
 	LinkController.java \
 	PortController.java \
+	PortDialogFactory.java \
 	PtolemyGraphModel.java \
 	RelationController.java \
 	ViewerGraphController.java

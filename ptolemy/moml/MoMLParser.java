@@ -999,6 +999,8 @@ public class MoMLParser extends HandlerBase {
                 _current = port;
                 _namespace = DEFAULT_NAMESPACE;
 
+                // NOTE: The direction attribute is deprecated, but
+                // supported nonetheless.
                 if (port instanceof IOPort) {
                     String direction = (String)_attributes.get("direction");
                     if (direction != null) {
@@ -1024,22 +1026,38 @@ public class MoMLParser extends HandlerBase {
                 boolean isIOPort = (_current instanceof IOPort);
                 if (propertyName.equals("multiport") && isIOPort) {
                     // The mere presense of a named property "multiport"
-                    // makes the enclosing port a multiport.
-                    ((IOPort)_current).setMultiport(true);
+                    // makes the enclosing port a multiport, unless it
+                    // has value false.
+                    if (value == null
+                            || value.trim().toLowerCase().equals("true")) {
+                        ((IOPort)_current).setMultiport(true);
+                    } else if (value.trim().toLowerCase().equals("false")) {
+                        ((IOPort)_current).setMultiport(false);
+                    }
                     _containers.push(_current);
                     _namespaces.push(_namespace);
                     _current =  (Attribute)
-                        _current.getAttribute(propertyName);
+                            _current.getAttribute(propertyName);
                     _namespace = DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("output") && isIOPort) {
-                    ((IOPort)_current).setOutput(true);
+                    if (value == null
+                            || value.trim().toLowerCase().equals("true")) {
+                        ((IOPort)_current).setOutput(true);
+                    } else if (value.trim().toLowerCase().equals("false")) {
+                        ((IOPort)_current).setOutput(false);
+                    }
                     _containers.push(_current);
                     _namespaces.push(_namespace);
                     _current =  (Attribute)
-                        _current.getAttribute(propertyName);
+                            _current.getAttribute(propertyName);
                     _namespace = DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("input") && isIOPort) {
-                    ((IOPort)_current).setInput(true);
+                    if (value == null
+                            || value.trim().toLowerCase().equals("true")) {
+                        ((IOPort)_current).setInput(true);
+                    } else if (value.trim().toLowerCase().equals("false")) {
+                        ((IOPort)_current).setInput(false);
+                    }
                     _containers.push(_current);
                     _namespaces.push(_namespace);
                     _current =  (Attribute)

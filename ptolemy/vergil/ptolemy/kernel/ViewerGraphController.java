@@ -253,50 +253,20 @@ public class ViewerGraphController extends GraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////
+
     public static class SchematicContextMenuFactory
 	extends PtolemyMenuFactory {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new EditDirectorParametersFactory());
-	    addMenuItemFactory(new EditDirectorParameterStylesFactory());
+            // FIXME: The port dialog doesn't work properly in this
+            // context for some reason.  I don't know how to get the
+            // visuals updated after the port has been actually removed.
+	    // addMenuItemFactory(new PortDialogFactory());
 	}
 
 	public NamedObj _getObjectFromFigure(Figure source) {
 	    return (NamedObj)getController().getGraphModel().getRoot();
-	}
-    }
-
-    public static class EditDirectorParametersFactory
-	extends EditParametersFactory {
-	protected String _getName() {
-	    return "Edit Director Parameters";
-	}
-
-	protected NamedObj _getItemTargetFromMenuTarget(NamedObj object) {
-	    if(object instanceof Actor) {
-		return ((Actor)object).getDirector();
-	    } else {
-		throw new InternalErrorException("Object " +
-                        object.getFullName() + "is not a director.");
-	    }
-	}
-    }
-
-    public static class EditDirectorParameterStylesFactory
-	extends EditParameterStylesFactory {
-	protected String _getName() {
-	    return "Edit Director Parameter Styles";
-	}
-
-	protected NamedObj _getItemTargetFromMenuTarget(NamedObj object) {
-	    if(object instanceof Actor) {
-		return ((Actor)object).getDirector();
-	    } else {
-		throw new InternalErrorException("Object " +
-                        object.getFullName() + "is not a director.");
-	    }
 	}
     }
 }

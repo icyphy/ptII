@@ -148,7 +148,6 @@ public class FSMViewerController extends GraphController {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	}
 
 	public NamedObj _getObjectFromFigure(Figure source) {

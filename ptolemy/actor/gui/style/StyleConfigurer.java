@@ -63,7 +63,7 @@ The restore() method restores the values of the parameters of the
 object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
 the styles to those before the dialog was opened.
-<p>
+
 @see Configurer
 @see ParameterEditorStyle
 @author Steve Neuendorffer and Edward A. Lee
@@ -97,9 +97,6 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    parameterStyles[0].setName("Line");
 	    parameterStyles[1] = new CheckBoxStyle();
 	    parameterStyles[1].setName("Check Box");
-	    // FIXME these never show up because we don't have anyway
-	    // to specify the options!  The style needs their OWN
-	    // configuration.
 	    parameterStyles[2] = new ChoiceStyle();
 	    parameterStyles[2].setName("Choice");
 	    parameterStyles[3] = new EditableChoiceStyle();
@@ -112,8 +109,10 @@ public class StyleConfigurer extends Query implements QueryListener {
             = object.attributeList(Settable.class).iterator();
         while (params.hasNext()) {
             Settable param = (Settable)params.next();
+            // Skip if the parameter is not visible.
+            if (param.getVisibility() == Settable.NONE) continue;
 
-	    // Get the current style.
+ 	    // Get the current style.
 	    boolean foundOne = false;
 	    Iterator styles = ((NamedObj)param)
                 .attributeList(ParameterEditorStyle.class).iterator();

@@ -65,7 +65,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.icon.IconEditor;
 import ptolemy.vergil.toolbox.EditParametersFactory;
-import ptolemy.vergil.toolbox.EditParameterStylesFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;

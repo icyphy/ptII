@@ -1,4 +1,4 @@
-/* A menu item factory that creates actions for editing parameters.
+/* A menu item factory that opens a dialog for adding ports.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -28,11 +28,16 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.toolbox;
+package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.PortConfigurer;
+import ptolemy.actor.gui.PortConfigurerDialog;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.MessageHandler;
+import ptolemy.vergil.toolbox.MenuItemFactory;
 
 import diva.gui.toolbox.JContextMenu;
 
@@ -42,42 +47,41 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
-//// EditParametersFactory
+//// PortDialogFactory
 /**
-A factory that adds an action to the given context menu that will configure
-parameters on the given object.
+A factory that creates a dialog to configure, add, or remove ports
+from objects.
 
-@author Steve Neuendorffer
+@author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 */
-public class EditParametersFactory extends MenuItemFactory {
+public class PortDialogFactory extends MenuItemFactory {
 
-    /** Add an item to the given context menu that will configure the
-     *  parameters on the given target.
+    /** Add an item to the given context menu that will open a dialog
+     *  to add or remove ports from an object.
      *  @param menu The context menu.
-     *  @param object The object whose parameters are being configured.
+     *  @param object The object whose ports are being manipulated.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
-	String name = _getName();
-	final NamedObj target = _getItemTargetFromMenuTarget(object);
-	// ensure that we actually have a target.
-	if(target == null) return null;
-	Action action = new AbstractAction(name) {
-	    public void actionPerformed(ActionEvent e) {
-		// Create a dialog for configuring the object.
+        String name = _getName();
+        final NamedObj target = _getItemTargetFromMenuTarget(object);
+        // ensure that we actually have a target, and that it's an Entity.
+        if(!(target instanceof Entity)) return null;
+        Action action = new AbstractAction(name) {
+            public void actionPerformed(ActionEvent e) {
+                // Create a dialog for configuring the object.
                 // FIXME: First argument below should be a parent window
                 // (a JFrame).
-                new EditParametersDialog(null, target);
-	    }
-	};
+                new PortConfigurerDialog(null, (Entity)target);
+            }
+        };
 	return menu.add(action, name);
     }
 
-    /**
-     * Get the name of the items that will be created.  This is provided so
-     * that factory can be overriden slightly with the name changed.
+    /** Get the name of the menu item that will be created, as it appears
+     *  in the menu.
      */
     protected String _getName() {
-	return "Edit Parameters";
+	return "Configure Ports";
     }
 }

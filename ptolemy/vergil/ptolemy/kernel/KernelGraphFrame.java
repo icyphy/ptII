@@ -46,7 +46,6 @@ import ptolemy.moml.Vertex;
 import ptolemy.vergil.ptolemy.EditorDropTarget;
 import ptolemy.vergil.icon.IconEditor;
 import ptolemy.vergil.toolbox.EditParametersFactory;
-import ptolemy.vergil.toolbox.EditParameterStylesFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -203,7 +202,6 @@ public class KernelGraphFrame extends GraphFrame {
 	public AttributeContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
@@ -216,7 +214,7 @@ public class KernelGraphFrame extends GraphFrame {
 	public EntityContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
+	    addMenuItemFactory(new PortDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
@@ -231,7 +229,6 @@ public class KernelGraphFrame extends GraphFrame {
 	    super(controller);
 	    addMenuItemFactory(new PortDescriptionFactory());
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
 
@@ -398,7 +395,6 @@ public class KernelGraphFrame extends GraphFrame {
 	public RelationContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }

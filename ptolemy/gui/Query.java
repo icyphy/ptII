@@ -245,6 +245,44 @@ public class Query extends JPanel {
         _addPair(name, lbl, buttonPanel, buttons);
     }
 
+    /** Create a bank of buttons that provides a list of
+     *  choices, any subset of which may be chosen at a time.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param values The list of possible choices.
+     *  @param initiallySelected The initally selected choices, or null
+     *   to indicate that none are selected.
+     */
+    public void addSelectButtons(String name, String label,
+            String[] values, Set initiallySelected) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+        FlowLayout flow = new FlowLayout();
+        flow.setAlignment(FlowLayout.LEFT);
+        Panel buttonPanel = new Panel(flow);
+        QueryActionListener listener = new QueryActionListener(name);
+        if (initiallySelected == null) {
+            initiallySelected = new HashSet();
+        }
+        JRadioButton[] buttons = new JRadioButton[values.length];
+        for (int i = 0; i < values.length; i++) {
+            JRadioButton checkbox = new JRadioButton(values[i]);
+            buttons[i] = checkbox;
+            checkbox.setBackground(_background);
+            // The following (essentially) undocumented method does nothing...
+            // checkbox.setContentAreaFilled(true);
+            checkbox.setOpaque(false);
+            if (initiallySelected.contains(values[i])) {
+                checkbox.setSelected(true);
+            }
+            buttonPanel.add(checkbox);
+            // Add the listener last so that there is no notification
+            // of the first value.
+            checkbox.addActionListener(listener);
+        }
+        _addPair(name, lbl, buttonPanel, buttons);
+    }
+
     /** Create a slider with the specified name, label, default
      *  value, maximum, and minimum.
      *  @param name The name used to identify the slider.
@@ -355,7 +393,7 @@ public class Query extends JPanel {
      *  and return as an integer.  If the entry is not a line,
      *  choice, or slider, then throw an exception.
      *  If it is a choice or radio button, then return the
-     *  index of the selected item.
+     *  index of the first selected item.
      *  @return The value currently in the entry as an integer.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -458,11 +496,15 @@ public class Query extends JPanel {
         } else if (result instanceof JComboBox) {
             ((JComboBox)result).setSelectedItem(value);
         } else if (result instanceof JRadioButton[]) {
-            // Regrettably, ButtonGroup gives no way to determine
-            // which button is selected, so we have to search...
+            // First, parse the value, which may be a comma-separated list.
+            Set selectedValues = new HashSet();
+            StringTokenizer tokenizer = new StringTokenizer(value, ",");
+            while (tokenizer.hasMoreTokens()) {
+                selectedValues.add(tokenizer.nextToken().trim());
+            }
             JRadioButton[] buttons = (JRadioButton[])result;
             for (int i = 0; i < buttons.length; i++) {
-                if (value.equals(buttons[i].getText())) {
+                if (selectedValues.contains(buttons[i].getText())) {
                     buttons[i].setSelected(true);
                 } else {
                     buttons[i].setSelected(false);
@@ -737,14 +779,15 @@ public class Query extends JPanel {
             // Regrettably, ButtonGroup gives no way to determine
             // which button is selected, so we have to search...
             JRadioButton[] buttons = (JRadioButton[])result;
+            String toReturn = null;
             for (int i = 0; i < buttons.length; i++) {
                 if (buttons[i].isSelected()) {
-                    return buttons[i].getText();
+                    if (toReturn == null) toReturn = buttons[i].getText();
+                    else toReturn = toReturn + ", " + buttons[i].getText();
                 }
             }
-            // In theory, we shouldn't get here, but the compiler
-            // is unhappy without a return.
-            return "";
+            if (toReturn == null) toReturn = "";
+            return toReturn;
         } else {
             throw new IllegalArgumentException("Query class cannot generate"
                     + " a string representation for entries of type "

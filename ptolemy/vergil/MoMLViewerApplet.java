@@ -57,7 +57,6 @@ import ptolemy.moml.*;
 import ptolemy.vergil.ptolemy.*;
 import ptolemy.vergil.ptolemy.kernel.*;
 import ptolemy.vergil.toolbox.EditParametersFactory;
-import ptolemy.vergil.toolbox.EditParameterStylesFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -144,7 +143,6 @@ public class MoMLViewerApplet extends MoMLApplet {
 	public ObjectContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
         }
     }
@@ -157,7 +155,6 @@ public class MoMLViewerApplet extends MoMLApplet {
 	    super(controller);
 	    addMenuItemFactory(new PortDescriptionFactory());
 	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
 
