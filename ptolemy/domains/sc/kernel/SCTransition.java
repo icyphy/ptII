@@ -45,7 +45,7 @@ A SCTransition connects two SCStates. It has a trigger event, a trigger
 condition, and a set of trigger actions.
 
 @author Xiaojun Liu
-@version @(#)SCTransition.java	1.2 11/27/98
+@version $Id$
 */
 public class SCTransition extends ComponentRelation {
 
