@@ -504,14 +504,22 @@ public class DDEDirector extends ProcessDirector {
      *  @param rcvr The DDEReceiver that is no longer
      *   write blocked.
      */
-    synchronized void _actorWriteUnBlocked(DDEReceiver rcvr) {
-        if( _writeBlocks > 0 ) {
-            _writeBlocks--;
-        }
+    protected synchronized void _actorWriteUnBlocked(DDEReceiver rcvr) {
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
 	_writeBlockedQs.remove(rcvr);
+        _actorWriteUnBlocked();
+    }
+
+    /** Decrement the count of actors blocked on a write.
+     *  @param rcvr The DDEReceiver that is no longer
+     *   write blocked.
+     */
+    protected synchronized void _actorWriteUnBlocked() {
+        if( _writeBlocks > 0 ) {
+            _writeBlocks--;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

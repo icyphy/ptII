@@ -662,12 +662,12 @@ public class ProcessDirector extends Director {
 
     /** Implementations of this method must be synchronized.
      */
-    protected synchronized void _actorWriteBlocked(ProcessReceiver rcvr) {
+    protected synchronized void _actorWriteBlocked() {
     }
 
     /** Implementations of this method must be synchronized.
      */
-    protected synchronized void _actorWriteUnBlocked(ProcessReceiver rcvr) {
+    protected synchronized void _actorWriteUnBlocked() {
     }
 
     ///////////////////////////////////////////////////////////////////
