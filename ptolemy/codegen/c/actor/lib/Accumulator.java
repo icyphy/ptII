@@ -55,8 +55,8 @@ public class Accumulator extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-        CodeStream tmpStream = new CodeStream(this);    	
-    	tmpStream.appendCodeBlock("codeBlock1");
+        CodeStream tmpStream = new CodeStream(this);            
+            tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
         
         /**** Previous Code Style *******

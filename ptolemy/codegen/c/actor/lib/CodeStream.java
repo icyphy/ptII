@@ -54,13 +54,13 @@ public class CodeStream {
      * Therefore, each actor should have its own codestream during code generation.
      * @param helper the actor helper associated with this code stream
      */
-	public CodeStream (CCodeGeneratorHelper helper) {
+        public CodeStream (CCodeGeneratorHelper helper) {
         _actorHelper = helper;
     }
 
-	/** To append the given string to this code stream
-	 * @param codeBlock the code block to be appended to this code stream
-	 */
+        /** To append the given string to this code stream
+         * @param codeBlock the code block to be appended to this code stream
+         */
     public void append(String codeBlock) {
         _stream.append(codeBlock);
     }
@@ -88,7 +88,7 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName) throws IllegalActionException {
         if (_codeBlockTable == null) {
-        	_constructCodeBlockTable();
+                _constructCodeBlockTable();
         }
         StringBuffer codeBlock = (StringBuffer) _codeBlockTable.get(blockName);
         if (codeBlock == null) {
@@ -115,9 +115,9 @@ public class CodeStream {
     private void _constructCodeBlockTable() throws IllegalActionException {
         String className; 
         if (_actorHelper == null) {
-        	className = _testingClassName;
+                className = _testingClassName;
         } else {
-        	className = _actorHelper.getComponent().getClassName();
+                className = _actorHelper.getComponent().getClassName();
             className = className.substring(className.lastIndexOf(".") + 1);
         }
         
@@ -151,30 +151,30 @@ public class CodeStream {
      * It calls sub-parsing functions parseHeader() and parseBody().
      * It returns the name of the code block (key). If null is returned, it means
      * there is no more code block to be parsed in the .c file.
-	 * 
+         * 
      * @param codeInFile all the text within the .c file
-	 * @return the name of the code block as key to _CodeBlockTable
+         * @return the name of the code block as key to _CodeBlockTable
      * @throws IllegalActionException Thrown if an error occurs during parsing. 
-	 */
-	private String _parseCodeBlock(StringBuffer codeInFile) throws IllegalActionException {
+         */
+        private String _parseCodeBlock(StringBuffer codeInFile) throws IllegalActionException {
         String name = _parseHeader(codeInFile);
         if (name != null) {
             StringBuffer body = _parseBody(codeInFile);
             _codeBlockTable.put(name, body);
         }
-		return name;
-	}
+                return name;
+        }
 
-	/** 
+        /** 
      * A sub-parsing method which return a well-formed string 
      * representing the code block name.
      * 
-	 * @param codeInFile all the text within the .c file
-	 * @return the name of the code block as key to _CodeBlockTable
-	 * @throws IllegalActionException Thrown if an error occurs when parsing
+         * @param codeInFile all the text within the .c file
+         * @return the name of the code block as key to _CodeBlockTable
+         * @throws IllegalActionException Thrown if an error occurs when parsing
      * the header. 
-	 */
-	private String _parseHeader(StringBuffer codeInFile) throws IllegalActionException {
+         */
+        private String _parseHeader(StringBuffer codeInFile) throws IllegalActionException {
         
         _parseIndex = codeInFile.indexOf(_BLOCKSTART, _parseIndex);
 
@@ -192,8 +192,8 @@ public class CodeStream {
         
         String name = _checkCodeHeader(codeInFile.substring(_parseIndex, endIndex));
         _parseIndex = _HEADEREND.length() + endIndex; 
-		return name;
-	}
+                return name;
+        }
 
     /**
      * Type-checks the format of a given code block name.
@@ -202,18 +202,18 @@ public class CodeStream {
      * This method returns a well-formed code block name,
      * otherwise, it throws an exception.
      * 
-	 * @param name the header string
+         * @param name the header string
      * @return the well-formed header string after lexical checking
-	 */
-	private static String _checkCodeHeader(String name) {
+         */
+        private static String _checkCodeHeader(String name) {
         // FIXME: extra lexical checking 
         // e.g. Do we allow nested code block within code block name??
         // e.g. ...spaces??
         // e.g. ...special symbols??
-		return name.trim();
-	}
+                return name.trim();
+        }
 
-	/**
+        /**
      * A Sub-parsing method which returns the code block body.
      * It recursively parses within the code body for nested code blocks.
      * 
@@ -229,9 +229,9 @@ public class CodeStream {
         int startIndex, endIndex = -1;        
         while (openBlock > 0) {
             endIndex = codeInFile.indexOf(_BLOCKEND, scanIndex);
-        	startIndex = codeInFile.indexOf(_BLOCKSTART, scanIndex);
+                startIndex = codeInFile.indexOf(_BLOCKSTART, scanIndex);
             if (startIndex < endIndex && startIndex != -1) {
-            	openBlock++;
+                    openBlock++;
                 scanIndex = startIndex+1;
             }
             else {
@@ -268,7 +268,7 @@ public class CodeStream {
      */
     private int _parseIndex = 0;
     
-	/**
+        /**
      * The content of this CodeStream.
      */
     private StringBuffer _stream = new StringBuffer();
@@ -324,13 +324,13 @@ public class CodeStream {
      */
     private static StringBuffer _testing() throws IllegalActionException {
         StringBuffer buffer = new StringBuffer();
-    	CodeStream stream = new CodeStream(null);
+            CodeStream stream = new CodeStream(null);
         if (stream._codeBlockTable == null) {
             stream._constructCodeBlockTable();
         }
         
         for (Iterator keys = stream._codeBlockTable.keySet().iterator(); keys.hasNext();) {
-        	String key = (String) keys.next();
+                String key = (String) keys.next();
             buffer.append(key + ": \n");
             buffer.append((StringBuffer) stream._codeBlockTable.get(key));
             buffer.append("\n-------------------------------\n\n");

@@ -56,12 +56,12 @@ public class Test extends CCodeGeneratorHelper {
 
     public String generateInitializeCode()
         throws IllegalActionException {
-    	    super.generateInitializeCode();
-    	    CodeStream tmpStream = new CodeStream(this);        
-    	    tmpStream.appendCodeBlock("initBlock");
+                super.generateInitializeCode();
+                CodeStream tmpStream = new CodeStream(this);        
+                tmpStream.appendCodeBlock("initBlock");
 
-    	    //stream.append(processCode(tmpStream.toString()));
-    	    return processCode(tmpStream.toString());
+                //stream.append(processCode(tmpStream.toString()));
+                return processCode(tmpStream.toString());
     } 
     
     public void generateFireCode(StringBuffer stream)
