@@ -352,7 +352,7 @@ public class PNDirector extends Director {
     // Is set when a deadlock occurs
     private boolean _deadlock = false;
     // Level of debugging output
-    private int _debug = 0;
+    private int _debug = 10;
     // The threadgroup in which all the stars are created.
     private ThreadGroup _processGroup;
     // Number of stars blocking on read.
