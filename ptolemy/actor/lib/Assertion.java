@@ -39,6 +39,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
@@ -46,6 +47,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 
@@ -121,6 +123,11 @@ public class Assertion extends TypedAtomicActor {
 
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _iteration = new Variable(this, "iteration", new IntToken(1));
+
+        _errorTolerance = (double)1e-4;
+        errorTolerance = new Parameter(this, "errorTolerance",
+                new DoubleToken(_errorTolerance));
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -132,20 +139,30 @@ public class Assertion extends TypedAtomicActor {
      */
     public Parameter assertion;
 
+    /** The parameter of error tolerance of type double. By default,
+     *  it contains a DoubleToken of 1e-4.
+     */
+    public Parameter errorTolerance;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in the type of an attribute.  This method is
-     *  called by a contained attribute when its type changes.
-     *  This class overrides the base class to allow all type changes.
-     *  The types of the attributes do not affect the types of the ports.
-     *  If an actor does not allow attribute types to change, then it should
-     *  override this method.
-     *  @param attribute The attribute whose type changed.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Update the attribute if it has been changed. If the attribute
+     *  is <i>errorTolerance<i> then update the local cache.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the attribute change failed.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
+        if (attribute == errorTolerance) {
+	    double p = ((DoubleToken)errorTolerance.getToken()
+			).doubleValue();
+	    if (p <= 0) {
+		throw new IllegalActionException(this,
+			"Error tolerance must be greater than 0.");
+	    }
+	    _errorTolerance = p;
+	}
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -187,7 +204,7 @@ public class Assertion extends TypedAtomicActor {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-	
+
         Director director = getDirector();
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
@@ -200,6 +217,31 @@ public class Assertion extends TypedAtomicActor {
             if (port.getWidth() > 0) {
                 if (port.hasToken(0)) {
                     Token inputToken = port.get(0);
+
+		    // round the value of a token to the specified precision
+		    if (inputToken.getType() == BaseType.DOUBLE) {
+
+			double value = ((DoubleToken) inputToken).doubleValue();
+
+			// FIXME: The print comments are not removed because the
+			// attributeTypeChanged method is not called correctly.
+			// After that bug fixed, they will be removed.
+
+			//System.out.println("before  " + value);
+
+			// calculate the precison specified by the error tolerance
+			// log10(errorTolerance) = logE(errorTolerance)/logE(10)
+			double precision = Math.log(_errorTolerance)/Math.log(10);
+			int decimalPlace = (int) Math.abs(Math.round(precision));
+
+			//System.out.println("precision  " + decimalPlace);
+			BigDecimal valueBD = new BigDecimal(value);
+			valueBD = valueBD.setScale(decimalPlace,BigDecimal.ROUND_HALF_UP);
+			value = valueBD.doubleValue();
+			//System.out.println("after  " + value);
+			inputToken = new DoubleToken(value);
+		    }
+
                     Variable var =
                         (Variable)(getAttribute(port.getName()));
                     var.setToken(inputToken);
@@ -300,6 +342,9 @@ public class Assertion extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // Parameter, the error tolerance, local copy
+    private double _errorTolerance;
 
     private Variable _time;
     private Variable _iteration;
