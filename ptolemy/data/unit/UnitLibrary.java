@@ -27,17 +27,20 @@
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 package ptolemy.data.unit;
-//////////////////////////////////////////////////////////////////////////
-//// UnitLibrary
-import java.io.FileNotFoundException;
-import java.util.Iterator;
-import java.util.Vector;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
+import ptolemy.actor.gui.MoMLApplication;
 
+import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Vector;
+
+//////////////////////////////////////////////////////////////////////////
+//// UnitLibrary
 /** A Library containing definitions of commonly used units.
 Currently, the Unit library is static in the sense that it is loaded when the
 system starts and is hard-wired to a particular Unit System (the System
@@ -199,12 +202,15 @@ public class UnitLibrary {
         try {
             NamedObj container = new NamedObj();
             momlParser.setContext(container);
-            try {
-                momlParser.parseFile("ptolemy/data/unit/SI.xml");
-            } catch (FileNotFoundException fne) {
-                // Do this to pass the unit test
-                momlParser.parseFile("../SI.xml");
-            }
+            URL inURL = MoMLApplication.specToURL(
+                    "ptolemy/data/unit/SI.xml");
+            // Strangely, the XmlParser does not want as base the       
+            // directory containing the file, but rather the            
+            // file itself.                                             
+            URL base = inURL;
+
+            momlParser.parse(base, inURL.openStream());
+
             us = (UnitSystem) (container.getAttribute("SI"));
         } catch (Throwable throwable) {
             throw new InternalErrorException(null, throwable,
