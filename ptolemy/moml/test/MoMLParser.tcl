@@ -2980,7 +2980,11 @@ test MoMLParser-18.1 {parse testdir.moml and get the filename of the inner part 
     # This will crap out if testdir/testdir2 does not have a _uri attribute
     set uri [[java::cast ptolemy.kernel.attributes.URIAttribute $uriAttribute] getURI]
     set uriString [$uri -noconvert toString] 
-    $uriString endsWith "ptolemy/moml/test/testdir/testdir2.moml"
+
+    # Convert %5C characters to /
+    set uriString2 [$uriString -noconvert replaceAll "%5C" "/" ]
+
+    $uriString2 endsWith "ptolemy/moml/test/testdir/testdir2.moml"
 } {1}
 
 ######################################################################
