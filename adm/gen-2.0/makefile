@@ -238,7 +238,7 @@ untar:
 	rm -rf $(PTII_FTP)/ptII$(VERSION)
 	cd $(PTII_FTP); $(TAR) -zxf $(PTII_FULL)
 	@echo "Don't forget to do "
-	@echo "  cd $PTIIHOME; make jnlp_dist STOREPASSWORD=\"-storepass xxx\""
+	@echo "cd $(PTIIHOME); make jnlp_dist STOREPASSWORD=\"-storepass xxx\""
 
 # Make the distribution, run htmlchek
 htmlchek:
