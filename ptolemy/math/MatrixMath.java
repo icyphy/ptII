@@ -1,9 +1,9 @@
 /* A library for mathematical operations on matrices.
 
-Some algorithms are from :
+Some algorithms are from
 
-[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-    Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -34,11 +34,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
-        package ptolemy.math;
+package ptolemy.math;
 
 //////////////////////////////////////////////////////////////////////////
-        //// MatrixMath
-        /**
+//// MatrixMath
+
+/**
  * This class provides a library for mathematical operations on
  * matrices of doubles.
  * <p>
@@ -51,18 +52,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
  * @version $Id$
  */
 
-        public class MatrixMath {
+public class MatrixMath {
 
-            // Private constructor prevents construction of this class.
-            private MatrixMath() {}
+    // Private constructor prevents construction of this class.
+    private MatrixMath() {}
 
-            /** Return a new matrix that is constructed from the argument by
-             *  adding the second argument to every element.
-             *  @param matrix An array of doubles.
-             *  @param z The double number to add.
-             *  @return A new matrix of doubles.
-             */
-            public static final double[][] add(double[][] matrix, double z) {
+    /** Return a new matrix that is constructed from the argument by
+     *  adding the second argument to every element.
+     *  @param matrix An array of doubles.
+     *  @param z The double number to add.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] add(double[][] matrix, double z) {
                 double[][] result = new double[_rows(matrix)][_columns(matrix)];
                 for (int i = 0; i < _rows(matrix); i++) {
                     for (int j = 0; j < _columns(matrix); j++) {
