@@ -90,6 +90,7 @@ public class DEPlot extends DEActor {
         _plot.setMarksStyle("dots");
         _plot.setImpulses(true);
         _plot.setConnected(false);
+        _plot.setTitle(name);
 
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
@@ -111,15 +112,23 @@ public class DEPlot extends DEActor {
         // Initialization of the frame X-range is deferred until the fire()
         // phase, because the director doesn't know the start time until
         // some stars enqueue an event.
-        _plot.setXRange(getStartTime(), getStopTime());
-        _plot.setYRange(getYMin(), getYMax());
-        _plot.init();
+        _rangeInitialized = false;
+        _yMin = -1;
+        _yMax = 1;
     }
 
     /** Add new input data to the plot.
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException{
+
+        if (!_rangeInitialized) {
+            _plot.setXRange(getStartTime(), getStopTime());
+            _plot.setYRange(getYMin(), getYMax());
+            _plot.init();
+            _plot.repaint();
+            _rangeInitialized = true;
+        }
 
         int numEmptyChannel = 0;
         
@@ -133,6 +142,23 @@ public class DEPlot extends DEActor {
                     DoubleToken curToken = null;
                     curToken = (DoubleToken)input.get(i);
                     double curValue = curToken.doubleValue();
+
+                    // update the y range
+                    boolean yRangeChanged = false;
+                    if (curValue < _yMin) {
+                        yRangeChanged = true;
+                        _yMin = curValue;
+                    }
+                    if (curValue > _yMax) {
+                        yRangeChanged = true;
+                        _yMax = curValue;
+                    }
+                    if (yRangeChanged) {
+                        _plot.setYRange(_yMin, _yMax);
+                        _plot.repaint();
+                    }
+
+                    // add the point
                     _plot.addPoint(i, curTime, curValue, false);
                 }
             } else {
@@ -187,5 +213,7 @@ public class DEPlot extends DEActor {
     private double _yMax;
 
     private boolean[] _firstPoint;
+
+    private boolean _rangeInitialized = false;
 
 }

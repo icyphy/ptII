@@ -55,16 +55,24 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	DEANDGate.java \
 	DEClock.java \
 	DEDelay.java \
+	DEFullAdder.java \
 	DEHistogram.java \
+	DELogicAnalyzer.java \
+	DEORGate.java \
 	DEPassGate.java \
 	DEPlot.java \
 	DEPoisson.java \
+	DERamp.java \
+	DERegister.java \
 	DESampler.java \
 	DEServer.java \
 	DEStatistics.java \
 	DEWaitingTime.java \
+	DEWaveForm.java \
+	DEXORGate.java \
 	FIFOQueue.java \
 	Not.java \
 	TestLevel.java \

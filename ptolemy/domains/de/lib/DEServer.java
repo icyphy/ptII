@@ -56,9 +56,9 @@ public class DEServer extends DEActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */	
-    public DEServer(double serviceTime, 
-            CompositeActor container, 
-            String name) 
+    public DEServer(CompositeActor container, 
+            String name,
+            double serviceTime) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port

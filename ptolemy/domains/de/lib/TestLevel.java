@@ -56,9 +56,9 @@ public class TestLevel extends AtomicActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public TestLevel(boolean crossingsOnly, double threshold,
-            CompositeActor container,
-            String name)
+    public TestLevel(CompositeActor container,
+            String name,
+            boolean crossingsOnly, double threshold)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port

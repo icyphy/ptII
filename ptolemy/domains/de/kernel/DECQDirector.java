@@ -114,6 +114,8 @@ import java.util.Enumeration;
 // currently supported.
 public class DECQDirector extends DEDirector {
     
+    public static final boolean DEBUG = false;
+
     /** Construct a director with empty string as name in the
      *  default workspace.
      */
@@ -174,6 +176,13 @@ public class DECQDirector extends DEDirector {
         }
 
         // FIXME: Provide a mechanism for listening for events.
+        if (DEBUG) {
+            System.out.println("Enqueue event for actor: " +
+                               ((Entity)actor).description(FULLNAME)+
+                               " at time " + (_currentTime + delay) +
+                               " .");
+        }
+        
 
         DESortKey key = new DESortKey(_currentTime + delay, depth);
         DEEvent event = new DEEvent(actor, key);
@@ -200,9 +209,16 @@ public class DECQDirector extends DEDirector {
         "Attempt to queue a token with a past time stamp.");
 
         // FIXME: Provide a mechanism for listening for events.
-
+        
         DESortKey key = new DESortKey(_currentTime + delay, depth);
         DEEvent event = new DEEvent(receiver, token, key);
+        if (DEBUG) {
+            System.out.println("Enqueue event for port: " +
+                               receiver.getContainer().description(FULLNAME)+
+                               " at time " + (_currentTime + delay) +
+                               " .");
+        }
+
         _cQueue.put(key, event);
     }
 
@@ -219,21 +235,18 @@ public class DECQDirector extends DEDirector {
      */
     public void fire() throws IllegalActionException {
 		
-        System.out.println("DE director fire() is called");
-
 	// Repeatedly fire the actor until it doesn't have any more filled 
 	// receivers. In the case of 'pure event' the actor is fired once.
 	// 
 	boolean refire = false;
         
-        
-        //System.out.println("Firing actor: " +
-        //        ((Entity)_actorToFire).description(FULLNAME|CLASSNAME) +
-        //        " at time: " +
-        //        _currentTime);
-    
-
 	do {
+            if (DEBUG) {
+                System.out.println("Firing actor: " +
+                        ((Entity)_actorToFire).description(FULLNAME)+
+                        " at time: " +
+                        _currentTime);
+            }
 	    _actorToFire.fire();
 	    // check _filledReceivers to see if there's any receivers left
 	    // that's not emptied.
@@ -243,6 +256,7 @@ public class DECQDirector extends DEDirector {
 		DEReceiver r = (DEReceiver)enum.nextElement();
 		if (r.hasToken()) {
 		    refire = true;
+                    break;
 		}
 	    }
 	} while (refire);
@@ -317,8 +331,6 @@ public class DECQDirector extends DEDirector {
 	// During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
                
-        System.out.println("DE director prefire() is called");
-
         _actorToFire = null;
 	// Initialize the _filledReceivers field.
 	_filledReceivers.clear();
@@ -553,11 +565,15 @@ public class DECQDirector extends DEDirector {
     // to set the depth field of the DEReceiver objects.
     private void _computeDepth() {
         Object[] sort = (Object[]) _dag.topologicalSort();
-        System.out.println("*** Result of topological sort: ***");
+        if (DEBUG) {
+            System.out.println("*** Result of topological sort: ***");
+        }
 	for(int i=sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
             // FIXME: Debugging topological sort
-            System.out.println(p.description(FULLNAME) + ":" + i);
+            if (DEBUG) {
+                System.out.println(p.description(FULLNAME) + ":" + i);
+            }
             // FIXME: End debugging
             // set the fine levels of all DEReceiver instances in IOPort p
             // to be i

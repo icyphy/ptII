@@ -79,7 +79,7 @@ public class HistogramApplet extends Applet implements Runnable {
         // _plot is the drawing panel for DEPlot actor.
         Plot plot = new Plot();
         plot.setSize(new Dimension(450, 150));
-        plot.setTitle("Buses, Passengers and Wait Time");
+        //plot.setTitle("Buses, Passengers and Wait Time");
         plot.setButtons(true);
         plot.addLegend(0, "Bus");
         plot.addLegend(1, "Passenger");
@@ -91,7 +91,7 @@ public class HistogramApplet extends Applet implements Runnable {
         // _hist is the drawing panel for the DEHist actor.
         Plot hist = new Plot();
         hist.setSize(new Dimension(450, 150));
-        hist.setTitle("Distribution of Wait Time");
+        //hist.setTitle("Distribution of Wait Time");
         hist.setButtons(true);
         hist.addLegend(0, "Wait Time");
         hist.setYLabel("# People");
@@ -237,12 +237,38 @@ public class HistogramApplet extends Applet implements Runnable {
                 int value = _meanIntervalScrollbar.getValue();
                 _meanInterval.setToken(new DoubleToken((double)value));
 
+                // initialize mean wait time text
+                _averageWaitTimeLabel.setText("Calculating...");
+              
+
+
                 // Start the simulation.
                 // This won't start a thread.
-                _executiveDirector.run();
+                // FIXME: A BIG & UGLY HACK
+                int beforeCount = Thread.activeCount(); // HACK
+                Thread[] before = new Thread[beforeCount]; // HACK
+                Thread.enumerate(before);  // HACK
+                _executiveDirector.go(); //NON-HACK
+                int afterCount = Thread.activeCount();  // HACK
+                Thread[] after = new Thread[afterCount]; // HACK
+                Thread.enumerate(after); // HACK
+                for (int i = 0; i < afterCount; i++) { // HACK
+                    Thread suspect = after[i]; //HACK
+                    // find suspect in the before list.
+                    boolean found = false; //HACK
+                    for (int j = 0; j < beforeCount; j++) { //HACK
+                        if (suspect == before[i]) { //HACK
+                            found = true; //HACK
+                            break; //HACK
+                        } //HACK
+                    } //HACK
+                    if (!found) { //HACK
+                        suspect.join(); //HACK
+                        break; //HACK
+                    } //HACK
+                } //HACK
                 
                 double average = _stat.getAverage();
-                double variance = _stat.getVariance();
                 _averageWaitTimeLabel.setText("Mean wait time = "+average);
         } catch (Exception ex) {
             System.err.println("Run failed: " + ex.getMessage());
@@ -255,42 +281,45 @@ public class HistogramApplet extends Applet implements Runnable {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
     
+    // FIXME: I changed all of this to 'friendly' from 'private' (lmuliadi)
+
     // The thread that runs the simulation.
-    private Thread simulationThread;
+    Thread simulationThread;
     //private boolean isSimulationRunning = false;
 
 
     // The actors involved in the topology.
-    private DEStatistics _stat;
-    private CheckboxGroup _cbg;
-    private Checkbox _clockCheckbox;
-    private Checkbox _poissonCheckbox;
-    private DEClock _clock;
-    private DEPoisson _poisson;
-    private DEActor _bus;
-    private Relation r1;
+    DEStatistics _stat;
+    CheckboxGroup _cbg;
+    Checkbox _clockCheckbox;
+    Checkbox _poissonCheckbox;
+    DEClock _clock;
+    DEPoisson _poisson;
+    DEActor _bus;
+    Relation r1;
 
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    private DECQDirector _localDirector;
-    private Manager _executiveDirector;
+    DECQDirector _localDirector;
+    Manager _executiveDirector;
 
-    private TextField _stopTimeBox;
-    private double _stopTime = 100.0;
-    private Button _goButton;
+    TextField _stopTimeBox;
+    double _stopTime = 100.0;
+    Button _goButton;
     
-    private TextField _intervalTextField;
-    private double _interval = 10.0;
+    TextField _intervalTextField;
+    double _interval = 10.0;
     
-    private Label _averageWaitTimeLabel;
-    private Label _currentTimeLabel;
+    Label _averageWaitTimeLabel;
+    Label _currentTimeLabel;
 
     // Some parameters that we want to change during simulation.
-    private Parameter _meanInterval;
-    private Scrollbar _meanIntervalScrollbar;
-    private IntervalSbListener _sbListener;
-    private Label _meanIntervalLabel;
+    Parameter _meanInterval;
+    Scrollbar _meanIntervalScrollbar;
+    IntervalSbListener _sbListener;
+    Label _meanIntervalLabel;
 
+    // END FIXME
 
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////

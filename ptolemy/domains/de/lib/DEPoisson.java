@@ -83,7 +83,7 @@ public class DEPoisson extends DEActor {
         // ensure that this cast is valid.
         super.initialize();
         double curTime = getCurrentTime();
-	refireAtTime(0.0-curTime);
+	refireAfterDelay(0.0-curTime);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -99,7 +99,7 @@ public class DEPoisson extends DEActor {
 
         // compute an exponential random variable.
         double exp = -Math.log((1-Math.random()))*lambda;
-	refireAtTime(exp);
+	refireAfterDelay(exp);
     }
 
     ///////////////////////////////////////////////////////////////////
