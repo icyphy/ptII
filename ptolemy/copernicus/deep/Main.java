@@ -33,6 +33,8 @@ package ptolemy.copernicus.deep;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.util.IllegalActionException;
+
 
 import soot.*;
 import soot.jimple.*;
@@ -71,12 +73,12 @@ public class Main extends KernelMain {
     /** Read in a MoML mode and generate Java classes for that model. 
      *  @param args An array of Strings that control the transformation
      */
-    public Main(String [] args) throws Exception {
-	super(args);
+    public Main(String [] args) throws IllegalActionException {
+	// FIXME: targetPackage is hardwired in
+	super(args[0], "",
+	      "deep targetPackage:ptolemy.copernicus.deep.cg");
 
-        // Process the global options.
-        // FIXME!!
-        String options = "deep targetPackage:ptolemy.apps.soot.demo.SimpleAdd.cg";
+	parseInitializeCreateActorInstances();
  
         // Add a transformer to convert each actor class to Deep Class
         // "wjtp" means "whole java tranformation package"
@@ -84,7 +86,7 @@ public class Main extends KernelMain {
         // and it is applied before body transformers.
         // "wjtp.deep" is the name of the phase.
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.deep", 
-        //        DeepTransformer.v(_toplevel), options));
+        //        DeepTransformer.v(_toplevel), _sootOptions));
         
         // Add transformers to do other passes.
         // "jtp" mean "java tranformation package.
@@ -112,7 +114,7 @@ public class Main extends KernelMain {
     /** Read in a MoML model, generate .class files with very few
      *  dependencies on Ptolemy II.
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IllegalActionException {
 	// We do most of the work in the constructor so that we
 	// can more easily test this class
 	Main main = new Main(args);

@@ -31,6 +31,8 @@ package ptolemy.copernicus.shallow;
 
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.kernel.util.IllegalActionException;
+
 
 import soot.*;
 import soot.jimple.*;
@@ -62,20 +64,22 @@ public class Main extends KernelMain {
 
     /** Read in a MoML mode and generate Java classes for that model. 
      *  @param args An array of Strings that control the transformation
+     *  @exception IllegalActionException if the model cannot be parsed.
      */
-    public Main(String [] args) throws Exception {
-	super(args);
+    public Main(String [] args) throws IllegalActionException {
+	// FIXME: targetPackage is hardwired in
+	super(args[0], "",
+	      "deep targetPackage:ptolemy.copernicus.shallow.cg");
+	//soot.Main.setReservedNames();
+	//soot.Main.setCmdLineArgs(args);
 
-        // Process the options.
-        // FIXME!!
-        String options = "deep targetPackage:ptolemy.copernicus.shallow.cg";
+	parseInitializeCreateActorInstances();
+	//System.out.println("shallow.Main: " + Scene.v().getPhaseOptions("wjtp.at"));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
-                ActorTransformer.v(_toplevel), options));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt", 
-                ModelTransformer.v(_toplevel), options));
+                ModelTransformer.v(_toplevel), _sootOptions));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt", 
-                CommandLineTransformer.v(_toplevel), options));
+                CommandLineTransformer.v(_toplevel), _sootOptions));
        
         //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
@@ -101,8 +105,10 @@ public class Main extends KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read in a MoML model, generate java files */
-    public static void main(String[] args) throws Exception {
+    /** Read in a MoML model, generate java files
+     *  @exception IllegalActionException if the model cannot be parsed.
+     */
+    public static void main(String[] args) throws IllegalActionException {
 	// We do most of the work in the constructor so that we
 	// can more easily test this class
 	Main main = new Main(args);

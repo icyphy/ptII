@@ -83,11 +83,13 @@ TARGETCLASS = $(TARGETPACKAGE).ToplevelModel
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 JVM_SIZE = -Xmx132m
 
+# make SOURCECLASS=../test/RampFileWriter.xml compileDemo
 compileDemo: $(JCLASS)
-	@echo "generate code for ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom in cg/"
+	@echo "generate code for $(SOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.shallow.Main $(SOURCECLASS) -d "$(ROOT)"
+	ptolemy.copernicus.shallow.Main $(SOURCECLASS) -d "$(ROOT)"  \
+		-p wjtp.at deep
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 

@@ -62,13 +62,12 @@ public class Main extends KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    public Main(String [] args) throws Exception {
-	super(args);
+    public Main(String [] args) throws IllegalActionException {
+        // FIXME: the deep arg is wrong.
+	super(args[0], "",
+	      "deep targetPackage:ptolemy.copernicus.jhdl.demo.SimpleAdd.cg");
 
-        // Process the global options.
-        // FIXME!!
-        String options = "deep targetPackage:ptolemy.copernicus.jhdl.demo.SimpleAdd.cg";
-
+	parseInitializeCreateActorInstances();
 
         // Add a transformer to convert each actor class to JHDL.
         // "wjtp" means "whole java tranformation package"
@@ -77,7 +76,7 @@ public class Main extends KernelMain {
         // "jhdl" is Michael Wirthlin's hardware design language.
         // "wjtp.jhdl" is the name of the phase.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.jhdl", 
-                JHDLTransformer.v(_toplevel), options));
+                JHDLTransformer.v(_toplevel), _sootOptions));
         
         // Add transformers to do other passes.
         // "jtp" mean "java tranformation package.
@@ -100,7 +99,7 @@ public class Main extends KernelMain {
     }
     
     /** Read in a MoML model, generate .class files for use with JHDL */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IllegalActionException {
 	// We do most of the work in the constructor so that we
 	// can more easily test this class
 	Main main = new Main(args);
@@ -121,7 +120,4 @@ public class Main extends KernelMain {
         throw new RuntimeException("Method " + name + " not found in class "
                 + theClass);
     }
-    
-
-    //    private static CompositeActor _toplevel;
 }

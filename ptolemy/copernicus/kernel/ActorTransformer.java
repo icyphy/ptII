@@ -94,6 +94,9 @@ public class ActorTransformer extends SceneTransformer {
      *  @param options The options to apply. 
      */
     protected void internalTransform(String phaseName, Map options) {
+	System.out.println("ActorTransformer.internalTransform("
+			   + phaseName + ", " + options + ")");
+
         if(!Options.getBoolean(options, "deep")) {
             return;
         }
