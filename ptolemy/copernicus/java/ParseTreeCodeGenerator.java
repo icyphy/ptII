@@ -1265,7 +1265,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             // lousy way to figure this out.
             // Look up for constants.
             if (ptolemy.data.expr.Constants.get(node.getName()) != null) {
-                System.err.println("tested!");
+                //System.err.println("tested!");
                 // A named constant that is recognized by the parser.
                 Stmt insertPoint = Jimple.v().newNopStmt();
                 _units.insertBefore(insertPoint, _insertPoint);
