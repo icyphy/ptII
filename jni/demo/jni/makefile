@@ -92,7 +92,15 @@ fourtyTwo.dll: fourtyTwo.o
 main: fourtyTwo.dll main.c
 	$(CC) -o main main.c  -L./ -lfourtyTwo
 
+
+doit: jni/jnifourtyTwo/JnijnifourtyTwo.dll
+jni/jnifourtyTwo/JnijnifourtyTwo.dll:
+	gcc -I$(PTJAVA_DIR)/include -I$(PTJAVA_DIR)/include/win32 \
+		-Wl,--add-stdcall-alias -shared \
+		-L. -lfourtyTwo -o jni/jnifourtyTwo/JnijnifourtyTwo.dll \
+		jni/jnifourtyTwo/jnifourtyTwoImeaningOfLife.cpp
+
 #gcc -I/cygdrive/c/j2sdk1.4.1_01/include -I/cygdrive/c/j2sdk1.4.1_01/include/win32 -I ../demo/jni  -Wl,--add-stdcall-alias -shared -L../demo/jni/ -lfourtyTwo -o HelloWorld.dll jnifourtyTwoImeaningOfLife.cpp 
 
-# Get the rest of the rules
+
 include $(ROOT)/mk/ptcommon.mk

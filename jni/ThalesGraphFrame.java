@@ -216,26 +216,7 @@ public class ThalesGraphFrame extends BasicGraphFrame {
             String actionCommand = target.getActionCommand();
             try {
                 if (actionCommand.equals("Generate C Interface")) {
-                    CompositeEntity model = getModel();
-                    boolean success = false;
-                    if (model instanceof Actor) {
-                        List actorsList =
-                            ((CompositeEntity) getModel())
-                            .allAtomicEntityList();
-
-                        Iterator actors = actorsList.iterator();
-                        while (actors.hasNext()) {
-                            Object actor = actors.next();
-
-                            if (actor instanceof GenericJNIActor) {
-                                JNIUtilities.generateJNI(model,
-                                        (GenericJNIActor) actor);
-                            }
-                        }
-                        success = true;
-                    }
-
-                    if (!success) {
+		    if (JNIUtilities.generateJNI(getModel())) {
                         MessageHandler.error("No JNIActor to interface to!");
                     }
                 }

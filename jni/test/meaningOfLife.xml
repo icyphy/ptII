@@ -36,24 +36,25 @@
             </property>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42.0}">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 210.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="meaningOfLifeImeaningOfLife.output" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
 </entity>

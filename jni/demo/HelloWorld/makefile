@@ -95,6 +95,7 @@ JNI_PLATFORM_INCLUDES= \
 	-I$(PTJAVA_DIR)/include/$(PTJAVA_PLATFORM)
 
 # PTCC is set in $PTII/mk/ptII.mk
+# See also ptolemy/matlab/makefile
 HelloWorld.dll: HelloWorld.h HelloWorld.c
 	$(PTCC) -mno-cygwin \
 		$(JNI_PLATFORM_INCLUDES) \

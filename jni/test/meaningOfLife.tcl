@@ -50,18 +50,31 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test meaningOfLife-1.1 {} {
-    exec make shared
+test meaningOfLife-1.1 {Run a simple JNI model} {
+    # Remove the jni directory that might contain code from a previous
+    # run.
+    file delete -force jni
+
+    # Create the shared library that has the code we want
+    puts "Running 'make shared'"
+    puts "[exec make shared]"
+
+    # Read in the model
     set parser [java::new ptolemy.moml.MoMLParser]
 
     set namedObj [$parser parseFile "./meaningOfLife.xml"]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
-    java::call [ptolemy.jni.JNIUtilities.generateJNI $toplevel]
+    # Create the JNI files and compile them
+    java::call jni.JNIUtilities generateJNI $toplevel
     
+    set namedObj [$parser parseFile "./meaningOfLife.xml"]
+    set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
+
+    # Run the model
     set workspace [$toplevel workspace]
     set manager [java::new ptolemy.actor.Manager \
-	    $workspace "compatibilityChecking"]
+	    $workspace "meaningOfLife"]
     
     $toplevel setManager $manager
     $manager execute

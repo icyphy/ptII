@@ -30,6 +30,7 @@ COPYRIGHTENDKEY
 
 package jni;
 
+import ptolemy.actor.Actor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
 import ptolemy.gui.MessageHandler;
@@ -191,6 +192,31 @@ public class JNIUtilities {
     private JNIUtilities() {
     }
 
+    /** Given a model, generate JNI files for all GenericJNIActors.
+     *  @return true if a GenericJNIActor was found.
+     *  @exception If there was a problem creating the JNI files.
+     */
+    public static boolean generateJNI(CompositeEntity model)
+	throws Exception {
+	boolean success = false;
+	if (model instanceof Actor) {
+	    List actorsList = model.allAtomicEntityList();
+
+	    Iterator actors = actorsList.iterator();
+	    while (actors.hasNext()) {
+		Object actor = actors.next();
+		
+		if (actor instanceof GenericJNIActor) {
+		    JNIUtilities.generateJNI(model,
+					     (GenericJNIActor) actor);
+		}
+	    }
+	    success = true;
+	}
+	return success;
+    }
+
+    /** Generate JNI files for one actor in a model */ 
     public static void generateJNI(CompositeEntity model,
             GenericJNIActor actor)
             throws Exception {
