@@ -75,6 +75,7 @@ JSRCS = \
 	IORelation.java \
 	Mailbox.java \
 	Manager.java \
+	ManagerExecutionThread.java \
 	NoRoomException.java \
 	NotSchedulableException.java \
 	NoTokenException.java \
