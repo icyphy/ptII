@@ -2,14 +2,14 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <!-- Library of actors that are automata. -->
-<entity name="automata" class="ptolemy.moml.EntityLibrary">
+<entity name="Automata" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-        <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
           <input source="ptolemy/configs/fsmLibrary.xml"/>
         </entity>
-        <entity name="interface automaton"
+        <entity name="InterfaceAutomaton"
                 class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
         </entity>
       </group>

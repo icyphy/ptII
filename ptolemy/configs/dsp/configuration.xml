@@ -65,7 +65,7 @@
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Default utilities library. -->
-    <entity name="utilities" class="ptolemy.moml.EntityLibrary">
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -79,13 +79,13 @@
     </entity>
 
     <!-- Default entity library to appear in the library browser. -->
-    <entity name="actor library" class="ptolemy.moml.EntityLibrary">
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
             <doc>default entity library</doc>
 <!-- BEGIN sources -->
-<entity name="sources" class="ptolemy.moml.EntityLibrary">
+<entity name="Sources" class="ptolemy.moml.EntityLibrary">
   <configure>
       <group>
 <entity name="Const" class="ptolemy.actor.lib.Const"/>
@@ -99,7 +99,7 @@
 </entity>
 <!-- END sources -->
 <!-- BEGIN sinks -->
-<entity name="sinks" class="ptolemy.moml.EntityLibrary">
+<entity name="Sinks" class="ptolemy.moml.EntityLibrary">
   <configure>
       <group>
 <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>

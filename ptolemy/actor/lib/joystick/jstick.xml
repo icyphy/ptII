@@ -8,7 +8,7 @@
      and there is a joystick.xml file present
 -->
 
-<entity name="joystick" class="ptolemy.moml.EntityLibrary">
+<entity name="Joystick" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>

@@ -60,7 +60,7 @@
   <!-- Modifications to the library. -->
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
     <!-- First, additional directors. -->
-    <entity name="director library" class="ptolemy.moml.EntityLibrary">
+    <entity name="Directors" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -75,7 +75,7 @@
 
     <!-- Optional packages that may or may not be present  -->
     <!-- Alphabetize these  -->
-    <entity name="more libraries" class="ptolemy.moml.EntityLibrary">
+    <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -94,8 +94,6 @@
             <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
             <input source="ptolemy/actor/lib/image/image.xml"/>
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
-	    <input source="ptolemy/actor/lib/jai/jai.xml"/>
-            <input source="ptolemy/actor/lib/jmf/jmf.xml"/>
 	    <!-- Joystick actors depend on the Joystick interface being present  -->
             <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Generic" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Generic image processing actors</doc>  
+
+  <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+  </entity>
+  <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
+  </entity>
+  <entity name="ImageRotate" class="ptolemy.actor.lib.image.ImageRotate">
+  </entity>
+  <entity name="ImageToString" class="ptolemy.actor.lib.image.ImageToString">
+  </entity>
+  <entity name="URLToImage" class="ptolemy.actor.lib.image.URLToImage">
+  </entity>
+      </group>
+    ?>
+  </configure>
+</entity>

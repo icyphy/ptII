@@ -3,9 +3,9 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="_library" class="ptolemy.moml.LibraryAttribute">
   <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity">
       <input source="ptolemy/configs/basicUtilities.xml"/>
-      <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+      <entity name="State" class="ptolemy.domains.fsm.kernel.State">
         <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
       </entity>
     </entity>

@@ -50,7 +50,7 @@
 
   <!-- Modifications to the library. -->
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">   
-   <entity name="jni" class="ptolemy.moml.EntityLibrary">
+   <entity name="JNI" class="ptolemy.moml.EntityLibrary">
     <configure>
       <group>
         <entity name="JNIActor" class="jni.GenericJNIActor">

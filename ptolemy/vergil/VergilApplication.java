@@ -212,6 +212,11 @@ public class VergilApplication extends MoMLApplication {
 
             final ComponentEntity userLibrary =
                 (ComponentEntity)parser.getToplevel();
+                
+            // Correct old library name.
+            if (userLibrary.getName().equals("user library")) {
+                userLibrary.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);
+            }
 
             finalLibraryEffigy.setName(
                     directory.uniqueName(userLibrary.getName()));
@@ -306,6 +311,17 @@ public class VergilApplication extends MoMLApplication {
                 System.out.print("Opening user library "
                         + libraryName + "...");
                 File file = new File(libraryName);
+                if (!file.isFile() || !file.exists()) {
+                    // File might exist under an old name.
+                    // Try to read it.
+                    String oldLibraryName =
+                            StringUtilities.preferencesDirectory()
+                            + "user library.xml";
+                    File oldFile = new File(oldLibraryName);
+                    if (oldFile.isFile() && oldFile.exists()) {
+                        oldFile.renameTo(file);
+                    }
+                }
                 if (!file.isFile() || !file.exists()) {
                     try {
                         file.createNewFile();

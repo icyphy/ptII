@@ -59,7 +59,7 @@
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Custom utilities library. -->
-    <entity name="utilities" class="ptolemy.moml.EntityLibrary">
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -72,7 +72,7 @@
     </entity>
 
     <!-- Custom actor library. -->
-    <entity name="module library" class="ptolemy.moml.EntityLibrary">
+    <entity name="Modules" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>

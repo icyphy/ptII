@@ -136,7 +136,7 @@ to another. Then delete this annotation.</text></svg></configure></property>
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Custom utilities library. -->
-    <entity name="utilities" class="ptolemy.moml.EntityLibrary">
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -152,7 +152,7 @@ to another. Then delete this annotation.</text></svg></configure></property>
     </entity>
 
     <!-- Custom actor library. -->
-    <entity name="actor library" class="ptolemy.moml.EntityLibrary">
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>

@@ -5,5 +5,5 @@
 <!-- parameters, and other items that might appear in any model. -->
 <!-- Note that this library is included in modal models as part  -->
 <!-- of its custom library.  -->
-<property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+<property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
 </property>

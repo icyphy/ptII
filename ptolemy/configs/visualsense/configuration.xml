@@ -157,11 +157,7 @@ to another. Then delete this annotation.</text></svg></configure></property>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
             <!-- input source="ptolemy/domains/gr/gr.xml"/ -->
 
-            <input source="ptolemy/actor/lib/image/image.xml"/>
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
-
-	    <!-- JAI requires an additional download -->
-            <!-- input source="ptolemy/actor/lib/jai/jai.xml"/ -->
 
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>

@@ -11,11 +11,11 @@
     </property>
 </property>
 <input source="ptolemy/configs/annotation.xml"/>
-<property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
-<property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
-<property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute"/>
-<property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute"/>
-<property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute"/>
+<property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
+<property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
+<property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute"/>
+<property name="Polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute"/>
+<property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute"/>
 <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute"/>
       </group>
     ?>

@@ -57,6 +57,7 @@ JSRCS = \
 	URLToImage.java
 
 OTHER_FILES_TO_BE_JARED = \
+	generic.xml \
 	image.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
