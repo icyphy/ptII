@@ -127,7 +127,7 @@ public class XmlElement {
     /**
      * Test if this element contains the given element. This
      * is included mainly to allow test suites to be written. In
-     * general, chech the parent of the child.
+     * general, check the parent of the child.
      */
     public boolean containsElement (XmlElement elt) {
         return _children.contains(elt);
