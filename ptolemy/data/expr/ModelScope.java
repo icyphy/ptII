@@ -90,18 +90,23 @@ public abstract class ModelScope implements ParserScope {
     }
 
     /** Get the variable with the given name in the scope of the given
-     *  container.  The scope of the object includes any container of the
+     *  container.  If the name contains the "::" scoping specifier,
+     *  then an attribute more deeply in the hierarchy is searched
+     *  for.  The scope of the object includes any container of the
      *  given object, and any variable contained in a scope extending
-     *  attribute inside any of those containers.  If no variable exists
-     *  with the given name, then return null.
+     *  attribute inside any of those containers.  If no variable
+     *  exists with the given name, then return null.
      *  @param exclude A variable to exclude from the search.
      *  @param container The container to search upwards from.
      *  @param name The variable name to search for.
      */
     public static Variable getScopedVariable(
             Variable exclude, NamedObj container, String name) {
+   
+        String insideName = name.replaceAll("::", ".");
+        
         while (container != null) {
-            Variable result = _searchIn(exclude, container, name);
+            Variable result = _searchIn(exclude, container, insideName);
             if (result != null) {
                 return result;
             } else {
