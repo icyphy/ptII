@@ -46,7 +46,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// SROptimizedScheduler
@@ -134,7 +138,7 @@ public class SROptimizedScheduler extends Scheduler {
         }
 
         CompositeActor compositeActor =
-	    (CompositeActor) (director.getContainer());
+            (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "SROptimizedScheduler "
@@ -224,7 +228,7 @@ public class SROptimizedScheduler extends Scheduler {
         Iterator scheduleIterator = scheduleList.iterator();
 
         while (scheduleIterator.hasNext()) {
-            Object element = scheduleIterator.next();
+            Object element = ((Node) scheduleIterator.next()).weight();
             Actor actor;
             if (element instanceof Actor) {
                 actor = (Actor) element;
@@ -251,7 +255,7 @@ public class SROptimizedScheduler extends Scheduler {
 
         Object[] nodes = dependencyGraph.nodes().toArray();
         Node bestNode = (Node)(nodes[0]);
-        int smallestSuccessorSet = 0;
+        int smallestSuccessorSet = nodes.length - 1;
 
         for (int i = 0; i < nodes.length; i++) {
             Node node = (Node)(nodes[i]);
@@ -262,7 +266,7 @@ public class SROptimizedScheduler extends Scheduler {
             }
         }
 
-        return Graph.weightArray(dependencyGraph.successors(bestNode));
+        return dependencyGraph.successors(bestNode).toArray();
     }
 
     /** Return a list corresponding to the schedule of the dependency graph.
@@ -280,11 +284,11 @@ public class SROptimizedScheduler extends Scheduler {
             DirectedGraph scc = sccs[i];
 
             if (scc.nodeCount() == 1) {
-                Object[] nodes = Graph.weightArray(scc.nodes());
+                Object[] nodes = scc.nodes().toArray();
                 scheduleList.add(nodes[0]);
             } else {
                 Object[] head = _headOf(scc);
-                Object[] allNodes = Graph.weightArray(scc.nodes());
+                Object[] allNodes = scc.nodes().toArray();
                 int sizeOfGraph = scc.nodeCount();
                 int sizeOfHead = head.length;
                 int sizeOfTail = sizeOfGraph - sizeOfHead;
