@@ -155,7 +155,10 @@ public class TypedIOPort extends IOPort {
      *  @return An InequalityTerm whose value is the resolved type.
      */
     public InequalityTerm getTypeTerm() {
-	return new TypeTerm(this);
+	if (_typeTerm == null) {
+	    _typeTerm = new TypeTerm(this);
+	}
+	return _typeTerm;
     }
 
     /** Override the method in the super class to do type checking.
@@ -267,20 +270,20 @@ public class TypedIOPort extends IOPort {
     }
 
     /** Sets the declared type of this object.  The type is represented
-     *  by an instance of Class associated with a token type, or null.
-     *  If the type is null, the type of this port is undeclared.
+     *  by an instance of Class associated with a non-abstract token type,
+     *  or null. If the type is null, the type of this port is undeclared.
      *  This method is write-synchronized on the workspace.
      *  @param type an instance of a Class representing a token type.
      *  @exception IllegalArgumentException If the specified type is not
-     *   an acceptable type in the type hierarchy, or null.
+     *   a non-abstract token type, or null.
      */
     // FIXME: this method may want to inform its director about this
     // change.
     public void setDeclaredType(Class c) {
-	if (c != null && !(TypeCPO.isAType(c))) {
+	if (c != null && !(TypeCPO.isInstantiableType(c))) {
 	    throw new IllegalArgumentException(
 		    "TypedIOPort.setDeclaredType: argument is not " +
-		    "an acceptable type, or null.");
+		    "a non-abstract token type, or null.");
 	}
 
 	try {
@@ -300,22 +303,14 @@ public class TypedIOPort extends IOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Sets the resolved type of this object.  The type is represented
-     *  by an instance of Class associated with a token type.
+    /** Set the resolved type of this port.  The type is represented
+     *  by an instance of Class that is an element in the type CPO.
      *  This method is write-synchronized on the workspace.
      *  Note that this method should not be used directly. It should
      *  only be used by the type resolution algorithm.
-     *  @param type an instance of a Class representing a token type.
-     *  @exception IllegalArgumentException If the specified type is not
-     *   an acceptable type in the type hierarchy.
+     *  @param type an instance of Class that is an element in the type CPO.
      */
     protected void setResolvedType(Class c) {
-	if ( !TypeCPO.isAType(c)) {
-	    throw new IllegalArgumentException(
-		    "TypedIOPort.setResolvedType: argument is not " +
-		    "an acceptable type.");
-	}
-
 	try {
 	    workspace().getWriteAccess();
 	    _resolvedType = c;
@@ -452,16 +447,13 @@ public class TypedIOPort extends IOPort {
 	try {
 	    if (_convertMethod == null) {
 	    	Class[] formal = new Class[1];
-	    	formal[0] = Class.forName("ptolemy.data.Token");
+	    	formal[0] = Token.class;
 	    	_convertMethod = _resolvedType.getMethod("convert", formal);
 	    }
 	    return _convertMethod;
 
-	} catch (ClassNotFoundException cnfe) {
-	    throw new InternalErrorException("TypedIOPort._getconvertMethod: "
-		+ "ClassNotFoundException: " + cnfe.getMessage());
 	} catch (NoSuchMethodException nsme) {
-            throw new InternalErrorException("TypedIOPort._getconvertMethod: "
+            throw new InternalErrorException("TypedIOPort._getConvertMethod: "
                 + "NoSuchMethodException: " + nsme.getMessage());
         }
     }
@@ -472,6 +464,7 @@ public class TypedIOPort extends IOPort {
     private Class _declaredType = null;
     private Class _resolvedType = null;
 
+    private TypeTerm _typeTerm = null;
     private Method _convertMethod = null;
 }
 
