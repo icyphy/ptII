@@ -2,8 +2,8 @@
 A operation taking two operands of type long, and producing a value of
 type long.
 
-This file was automatically generated with a preprocessor, so that 
-similar operations are supported on ints, longs, floats, and doubles. 
+This file was automatically generated with a preprocessor, so that
+similar operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -38,7 +38,7 @@ package ptolemy.math;
 
 /** A operation taking two operands of type long, and producing a value of
  *  type long. This interface attempts to mimic a first-class function of two
- *  variables. 
+ *  variables.
  *  @author Jeff Tsay
  */
 public interface LongBinaryOperation {

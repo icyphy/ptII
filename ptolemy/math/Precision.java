@@ -38,7 +38,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
-/** 
+/**
 
 This class describes the precision of a FixPoint. A FixPoint reprents
 a fixed point number which consists of two finite bit strings: an
@@ -79,7 +79,7 @@ the same precision. An instance of the class is immutable, meaning
 that its value is set in the constructor and cannot then be modified.
 
 @author Bart Kienhuis
-@version $Id$ 
+@version $Id$
 @see FixPoint
 
 */
@@ -91,9 +91,9 @@ public class Precision {
      *  namely: (m/n) or (m.n) as explained in the description of this
      *  class.
      *
-     *  @param precision The string representing the precision.            
+     *  @param precision The string representing the precision.
      *  @exception IllegalArgumentException If the precision string
-     *  supplied does not match one of the known formats.  
+     *  supplied does not match one of the known formats.
      */
     public Precision(String precision) throws IllegalArgumentException
     {
@@ -114,7 +114,7 @@ public class Precision {
 	// throw an exception
 	if (( done == false ) || ( st.countTokens() <1) ||
 	    (st.countTokens() > 2 )) {
-	    throw new IllegalArgumentException("The precision string " + 
+	    throw new IllegalArgumentException("The precision string " +
                     precision + " uses an incorrect " +
                     "precision format" );
 	}
@@ -122,7 +122,7 @@ public class Precision {
         int second = 0;
 
         // The string might contain only a single number...
-        try { 
+        try {
             first = (new Integer(st.nextToken())).intValue();
             second = (new Integer(st.nextToken())).intValue();
         } catch ( Exception e ) {
@@ -209,8 +209,8 @@ public class Precision {
      *  method is used to align instances of FixPoint onto a single
      *  precision representation.
      *
-     *  @param precisionA a Precision 
-     *  @param precisionB a Precision 
+     *  @param precisionA a Precision
+     *  @param precisionB a Precision
      *  @return Maximum Precision
      */
     public static Precision matchThePoint(Precision precisionA,
@@ -241,16 +241,16 @@ public class Precision {
      *  <i>m</i> represents the total number of bits and <i>n</i> the
      *  number of integer bits, this is equal to<p> <pre> 2^(n-1) -
      *  1/(2^(m-n)) </pre>
-     *     
+     *
      *  @return The maximum value obtainable for the given precision.
      */
     public BigDecimal findMaximum() {
         int ln = getNumberOfBits();
         int ib = getIntegerBitLength();
-        BigDecimal tmp = new BigDecimal(getTwoRaisedTo(ln - ib));        
+        BigDecimal tmp = new BigDecimal(getTwoRaisedTo(ln - ib));
         BigDecimal one = new BigDecimal( _one );
         BigDecimal tmp2 = one.divide( tmp, 40, BigDecimal.ROUND_HALF_EVEN);
-        BigDecimal tmp1 = new BigDecimal(getTwoRaisedTo(ib-1)).subtract( tmp2 );        
+        BigDecimal tmp1 = new BigDecimal(getTwoRaisedTo(ib-1)).subtract( tmp2 );
         //System.out.println("Find Max: " + tmp1.doubleValue());
         return tmp1;
     }
@@ -292,10 +292,10 @@ public class Precision {
 
     /** total numer of bits. */
     private int _length   = 0;
-    
+
     /** number of bits in the integer part. */
     private int _integerBits  = 0;
-    
+
     /** number of bits in the fractional part. */
     private int _fraction = 0;
 
@@ -304,7 +304,7 @@ public class Precision {
 
     /** Static reference to the BigInteger representation of two. */
     private static BigInteger _two = new BigInteger("2");
-    
+
     /** Static reference to the BigInteger representation of one. */
     private static BigInteger _one  = new BigInteger("1");
 

@@ -73,13 +73,13 @@ public class ComplexMatrixMath {
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one. 
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  adding the second matrix to the first one.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      *  @param matrix1 The first matrix of complex numbers.
      *  @param matrix2 The second matrix of complex numbers.
      *  @return A new matrix of complex numbers.
      */
-    public static final Complex[][] add(final Complex[][] matrix1, 
+    public static final Complex[][] add(final Complex[][] matrix1,
             final Complex[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
@@ -100,8 +100,8 @@ public class ComplexMatrixMath {
         return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  ComplexBinaryOperation to each element in the input matrix,     
+    /** Return a new array that is formed by applying an instance of a
+     *  ComplexBinaryOperation to each element in the input matrix,
      *  using z as the left operand in all cases and the matrix elements
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
@@ -109,7 +109,7 @@ public class ComplexMatrixMath {
             ComplexBinaryOperation op, final Complex z, final Complex[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-            
+
         Complex[][] retval = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
@@ -119,16 +119,16 @@ public class ComplexMatrixMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  ComplexBinaryOperation to each element in the input matrix,     
-     *  using the matrix elements as the left operands and z as the right 
+    /** Return a new array that is formed by applying an instance of a
+     *  ComplexBinaryOperation to each element in the input matrix,
+     *  using the matrix elements as the left operands and z as the right
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
     public static final Complex[][] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex[][] matrix, final Complex z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-            
+
         Complex[][] retval = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
@@ -137,54 +137,54 @@ public class ComplexMatrixMath {
         }
         return retval;
     }
-            
-    /** Return a new array that is formed by applying an instance of a 
+
+    /** Return a new array that is formed by applying an instance of a
      *  ComplexBinaryOperation to the two matrices, element by element,
-     *  using the elements of the first matrix as the left operands and the 
+     *  using the elements of the first matrix as the left operands and the
      *  elements of the second matrix as the right operands.
      *  (op.operate(matrix1[i][j], matrix2[i][j])).
      *  If the matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final Complex[][] applyBinaryOperation(
-            ComplexBinaryOperation op, final Complex[][] matrix1, final Complex[][] matrix2) {     
+            ComplexBinaryOperation op, final Complex[][] matrix1, final Complex[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
-        
-        _checkSameDimension("applyBinaryOperation", matrix1, matrix2);      
-            
+
+        _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
+
         Complex[][] retval = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
-        }     
+        }
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  ComplexUnaryOperation to each element in the input matrix 
+    /** Return a new array that is formed by applying an instance of a
+     *  ComplexUnaryOperation to each element in the input matrix
      *  (op.operate(matrix[i][j])).
      */
     public static final Complex[][] applyUnaryOperation(
             final ComplexUnaryOperation op, final Complex[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-            
+
         Complex[][] retval = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = op.operate(matrix[i][j]);
             }
-        }        
+        }
         return retval;
     }
 
-    /** Returns true iff the differences of all the real and imaginary parts of 
-     *  corresponding elements of 2 matrices, that are of the same size, are all 
-     *  within a constant range, [-R, R], where R is the allowed error. 
+    /** Returns true iff the differences of all the real and imaginary parts of
+     *  corresponding elements of 2 matrices, that are of the same size, are all
+     *  within a constant range, [-R, R], where R is the allowed error.
      *  The specified absolute
      *  difference must be non-negative.
-     *  More concisely, abs(Re{M1[i, j]} - Re{M2[i, j]}) 
+     *  More concisely, abs(Re{M1[i, j]} - Re{M2[i, j]})
      *  and abs(Re{M1[i, j]} - Re{M2[i, j]}) must both be within [-R, R]
      *  for 0 <= i < m and 0 <= j <n where M1 and M2 are both m x n matrices.
      *  @param matrix1 A matrix of complex numbers.
@@ -193,7 +193,7 @@ public class ComplexMatrixMath {
      *  allowed error.
      *  @return A boolean condition.
      */
-    public static final boolean arePartsWithin(final Complex[][] matrix1, 
+    public static final boolean arePartsWithin(final Complex[][] matrix1,
             final Complex[][] matrix2, double absoluteError) {
         if (absoluteError < 0.0) {
             throw new IllegalArgumentException(
@@ -207,7 +207,7 @@ public class ComplexMatrixMath {
         _checkSameDimension("arePartsWithin", matrix1, matrix2);
 
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {                
+            for (int j = 0; j < columns; j++) {
                 if ((Math.abs(matrix1[i][j].real - matrix2[i][j].real) > absoluteError) ||
                     (Math.abs(matrix1[i][j].imag - matrix2[i][j].imag) > absoluteError)) {
                    return false;
@@ -219,8 +219,8 @@ public class ComplexMatrixMath {
 
 
 
-    /** Return a new matrix that is constructed by conjugating the elements in the 
-     *  input matrix. 
+    /** Return a new matrix that is constructed by conjugating the elements in the
+     *  input matrix.
      */
     public static final Complex[][] conjugate(final Complex[][] matrix) {
         int rows = _rows(matrix);
@@ -237,7 +237,7 @@ public class ComplexMatrixMath {
 
 
     /** Return a new matrix that is constructed by transposing the input
-     *  matrix, and conjugating the elements. If the input matrix is m x n, 
+     *  matrix, and conjugating the elements. If the input matrix is m x n,
      *  the output matrix will be n x m.
      */
     public static final Complex[][] conjugateTranspose(final Complex[][] matrix) {
@@ -276,7 +276,7 @@ public class ComplexMatrixMath {
     /** Return the determinate of a square matrix.
      *  If the matrix is not square, throw an IllegalArgumentException.
      *  This algorithm uses LU decomposition, and is taken from [1]
-     *  THIS IS NOT TESTED!     
+     *  THIS IS NOT TESTED!
      */
     public static final Complex determinate(final Complex[][] matrix) {
         _checkSquare("determinate", matrix);
@@ -337,31 +337,31 @@ public class ComplexMatrixMath {
 
         return det;
     }
-    
-    /** Return a new matrix that is constructed by placing the elements of the input 
-     *  array on the diagonal of the square matrix, starting from the top left corner 
-     *  down to the bottom right corner. All other elements are zero. The size of of the 
-     *  matrix is n x n, where n is the length of the input array. 
+
+    /** Return a new matrix that is constructed by placing the elements of the input
+     *  array on the diagonal of the square matrix, starting from the top left corner
+     *  down to the bottom right corner. All other elements are zero. The size of of the
+     *  matrix is n x n, where n is the length of the input array.
      */
     public static final Complex[][] diag(final Complex[] array) {
         int n = array.length;
-        
+
         Complex[][] retval = new Complex[n][n];
 
         _zeroMatrix(retval, n, n);
-        
+
         for (int i = 0; i < n; i++) {
             retval[i][i] = array[i];
         }
-        
-        return retval;            
-    } 
-             
+
+        return retval;
+    }
+
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
-     *  second matrix. 
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  second matrix.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final Complex[][] divideElements(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -412,15 +412,15 @@ public class ComplexMatrixMath {
         }
         return retval;
     }
-    
+
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
     public static final Complex[][] identity(final int dim) {
         Complex[][] retval = new Complex[dim][dim];
-        
-        _zeroMatrix(retval, dim, dim);        
-        
+
+        _zeroMatrix(retval, dim, dim);
+
         for (int i = 0; i < dim; i++) {
             retval[i][i] = Complex.ONE;
         }
@@ -435,16 +435,16 @@ public class ComplexMatrixMath {
     public static final double[][] imagParts(final Complex[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
- 
+
         double[][] retval = new double[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 retval[i][j] = matrix[i][j].imag;
             }
         }
         return retval;
-    }    
+    }
 
 
     /** Return a new matrix that is constructed by inverting the input
@@ -535,7 +535,7 @@ public class ComplexMatrixMath {
 
         return Ai;
     }
-    
+
     /** Replace the first matrix argument elements with the values of
      *  the second matrix argument. The second matrix argument must be
      *  large enough to hold all the values of second matrix argument.
@@ -574,7 +574,7 @@ public class ComplexMatrixMath {
                     colSpan);
         }
     }
-    
+
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a real scalefactor.
      */
@@ -698,8 +698,8 @@ public class ComplexMatrixMath {
     }
 
     /** Return a new matrix that is constructed by element by element
-     *  multiplication of the two matrix arguments. 
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  multiplication of the two matrix arguments.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final Complex[][] multiplyElements(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -723,7 +723,7 @@ public class ComplexMatrixMath {
     public static final Complex[][] negative(final Complex[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-    
+
         Complex[][] retval = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -732,10 +732,10 @@ public class ComplexMatrixMath {
         }
         return retval;
     }
-                 
+
     /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.  
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.          
+     *  subtracting the second matrix from the first one.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final Complex[][] subtract(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -761,17 +761,17 @@ public class ComplexMatrixMath {
     public static final double[][] realParts(final Complex[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
- 
+
         double[][] retval = new double[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 retval[i][j] = matrix[i][j].real;
             }
         }
         return retval;
-    }    
-           
+    }
+
     /** Return a new matrix of complex numbers that is initialized from a 1-D array.
      *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
      *  (1, 1), ..., (m-1, n-1) where the output matrix is to be m x n and
@@ -848,7 +848,7 @@ public class ComplexMatrixMath {
     }
 
     /** Return a new matrix that is constructed by transposing the input
-     *  matrix. If the input matrix is m x n, the output matrix will be 
+     *  matrix. If the input matrix is m x n, the output matrix will be
      *  n x m. Note that for complex matrices, the conjugate transpose
      *  is more commonly used.
      */
@@ -903,7 +903,7 @@ public class ComplexMatrixMath {
      *  @param matrix A matrix of complex numbers.
      *  @return The dimension of the square matrix.
      */
-    protected static final int _checkSquare(final String caller, 
+    protected static final int _checkSquare(final String caller,
              final Complex[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
@@ -917,18 +917,18 @@ public class ComplexMatrixMath {
     protected static final String _dimensionString(final Complex[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
-    
+
     /** Return the number of rows of a matrix. */
     protected static final int _rows(final Complex[][] matrix) {
-        return matrix.length;        
-    }    
-    
+        return matrix.length;
+    }
+
     protected static final Complex[][] _zeroMatrix(Complex[][] matrix, int rows, int columns) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 matrix[i][j] = Complex.ZERO;
             }
-        }        
+        }
         return matrix;
-    }    
+    }
 }

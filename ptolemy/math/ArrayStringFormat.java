@@ -97,7 +97,7 @@ public interface ArrayStringFormat {
         }
 
         public String booleanString(boolean b) {
-            return String.valueOf(b); 
+            return String.valueOf(b);
         }
 
         public String complexString(Complex c) {

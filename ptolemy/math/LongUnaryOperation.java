@@ -2,8 +2,8 @@
 A operation taking one operand of type long, and producing a value of
 type long.
 
-This file was automatically generated with a preprocessor, so that 
-similar operations are supported on ints, longs, floats, and doubles. 
+This file was automatically generated with a preprocessor, so that
+similar operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.

@@ -78,7 +78,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the arithmetic mean of the elements in the array.
-     *  If the length of the array is 0, return a NaN.    
+     *  If the length of the array is 0, return a NaN.
      */
     public static final double mean(double[] array) {
         _nonZeroLength(array, "DoubleArrayStat.mean");
@@ -100,7 +100,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         if (array.length < 1) {
            return 1.0;
         }
-    
+
         return Math.pow(productOfElements(array), 1.0 / array.length);
     }
 
@@ -109,7 +109,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double max(double[] array) {
         Object[] maxReturn = maxAndIndex(array);
-        
+
         return ((Double) maxReturn[0]).doubleValue();
     }
 
@@ -135,17 +135,17 @@ public class DoubleArrayStat extends DoubleArrayMath {
             if (array[i] > maxElement) {
                maxElement = array[i];
                maxIndex = i;
-            } 
+            }
         }
         return new Object[] { new Double(maxElement), new Integer(maxIndex) };
     }
-    
+
     /** Return the minimum value in the array.
      *  Throw an exception if the length of the array is 0.
      */
     public static final double min(double[] array) {
         Object[] minReturn = minAndIndex(array);
-        
+
         return ((Double) minReturn[0]).doubleValue();
     }
 
@@ -153,7 +153,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  minimum occurs in the array. The minimum value is wrapped with
      *  the Double class, the index is wrapped with the Integer class,
      *  and an Object array is returned containing these values.
-     *  If the array is of length zero, throw an IllegalArgumentException.     
+     *  If the array is of length zero, throw an IllegalArgumentException.
      *  @param array An array of doubles.
      *  @return An array of two Objects, retval[0] is the Double
      *  representation of the minimum value, retval[1] is the Integer
@@ -170,12 +170,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
             if (array[i] < minElement) {
                minElement = array[i];
                minIndex = i;
-            } 
+            }
         }
         return new Object[] { new Double(minElement), new Integer(minIndex) };
-    }    
+    }
 
-    /** Return the variance of the elements in the array, assuming 
+    /** Return the variance of the elements in the array, assuming
      *  sufficient statistics.
      *  Simply return variance(array, false).
      */
@@ -183,7 +183,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return variance(array, false);
     }
 
-    /** Return the variance of the elements in the array, assuming 
+    /** Return the variance of the elements in the array, assuming
      *  sufficient statistics.
      *  The variance is computed as follows :
      *  <p>
@@ -578,6 +578,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
         return retval;
     }
-    
-    
+
+
 }

@@ -203,7 +203,7 @@ public class Complex implements Cloneable, Serializable {
     public final Complex conjugate() {
         // Avoid negative zero.
         if (imag != 0.0) return new Complex(real, -imag);
-        
+
         return new Complex(real, imag);
     }
 
@@ -440,24 +440,24 @@ public class Complex implements Cloneable, Serializable {
            throw new IllegalArgumentException("Complex.roots() : n must be greater " +
             "than or equal to one.");
         }
-        
+
         Complex[] retval = new Complex[n];
-        
+
         double oneOverN = 1.0 / (double) n;
         double twoPIOverN = 2.0 * Math.PI * oneOverN;
         double thetaOverN = angle() * oneOverN;
         double twoPIkOverN = 0.0;
-        
+
         // r^(1/n) = (r^2)^(0.5 / n)
         double retMag = Math.pow(magnitudeSquared(), 0.5 * oneOverN);
-        
+
         for (int k = 0; k < n; k++) {
             retval[k] = polarToComplex(retMag, thetaOverN + twoPIkOverN);
             twoPIkOverN += twoPIOverN;
         }
-        
+
         return retval;
-    }                        
+    }
 
     /** Return a new complex number with value equal to the product
      *  of this complex number and the real argument.

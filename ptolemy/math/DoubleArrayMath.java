@@ -1,8 +1,8 @@
 /*
 A library for mathematical operations on arrays of doubles.
 
-This file was automatically generated with a preprocessor, so that 
-similar array operations are supported on ints, longs, floats, and doubles. 
+This file was automatically generated with a preprocessor, so that
+similar array operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -45,10 +45,10 @@ import java.lang.Double;              /* Needed by javadoc */
  * non-null. If a null array is passed to a method, a NullPointerException
  * will be thrown in the method or called methods.
  * <p>
- * This file was automatically generated with a preprocessor, so that 
- * similar matrix operations are supported on ints, longs, floats, and doubles. 
- * <p> 
- * 
+ * This file was automatically generated with a preprocessor, so that
+ * similar matrix operations are supported on ints, longs, floats, and doubles.
+ * <p>
+ *
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  */
 
@@ -128,11 +128,11 @@ public class DoubleArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  DoubleBinaryOperation to each element in the input array 
+    /** Return a new array that is formed by applying an instance of a
+     *  DoubleBinaryOperation to each element in the input array
      *  and z, using the array elements as the left operands and z
      *  as the right operand in all cases. (op.operate(array[i], z)).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final double[] applyBinaryOperation(
      DoubleBinaryOperation op, final double[] array, final double z) {
@@ -143,12 +143,12 @@ public class DoubleArrayMath {
         }
         return retval;
     }
-      
-    /** Return a new array that is formed by applying an instance of a 
-     *  DoubleBinaryOperation to each element in the input array,     
+
+    /** Return a new array that is formed by applying an instance of a
+     *  DoubleBinaryOperation to each element in the input array,
      *  using z as the left operand in all cases and the array elements
      *  as the right operands (op.operate(z, array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final double[] applyBinaryOperation(
      DoubleBinaryOperation op, final double z, final double[] array) {
@@ -159,10 +159,10 @@ public class DoubleArrayMath {
         }
         return retval;
     }
-            
-    /** Return a new array that is formed by applying an instance of a 
+
+    /** Return a new array that is formed by applying an instance of a
      *  DoubleBinaryOperation to the two arrays, element by element,
-     *  using the elements of the first array as the left operands and the 
+     *  using the elements of the first array as the left operands and the
      *  elements of the second array as the right operands.
      *  (op.operate(array[i], array2[i])).
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -171,8 +171,8 @@ public class DoubleArrayMath {
      */
     public static final double[] applyBinaryOperation(
      DoubleBinaryOperation op, final double[] array1, final double[] array2) {
-        int length = _commonLength(array1, array2, 
-         "DoubleArrayMath.applyBinaryOperation");     
+        int length = _commonLength(array1, array2,
+         "DoubleArrayMath.applyBinaryOperation");
         double[] retval = new double[length];
         for (int i = 0; i < length; i++) {
             retval[i] = op.operate(array1[i], array2[i]);
@@ -180,10 +180,10 @@ public class DoubleArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  DoubleUnaryOperation to each element in the input array 
+    /** Return a new array that is formed by applying an instance of a
+     *  DoubleUnaryOperation to each element in the input array
      *  (op.operate(array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final double[] applyUnaryOperation(
      final DoubleUnaryOperation op, final double[] array) {
@@ -218,7 +218,7 @@ public class DoubleArrayMath {
         }
         return retval;
     }
-              
+
     /** Return the dot product of the two arrays.
      *  If the lengths of the array are both 0, return 0.0.
      *  If the two arrays do not have the same length, throw an
@@ -237,12 +237,12 @@ public class DoubleArrayMath {
         return sum;
     }
 
-    /** Return the L2-norm of the array, that is, the square root of the sum of the 
+    /** Return the L2-norm of the array, that is, the square root of the sum of the
      *  squares of the elements.
      */
     public static final double l2norm(final double[] array) {
         return (double) Math.sqrt(sumOfSquares(array));
-    } 
+    }
 
 
     /** Return a new array that is a copy of the argument except that the
@@ -263,9 +263,9 @@ public class DoubleArrayMath {
      final double bottom, final double top) {
         double[] retval = new double[array.length];
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) ||  
+            if ((array[i] > top) ||
                 (array[i] == Double.NaN) ||
-                (array[i] == Double.POSITIVE_INFINITY)) {                 
+                (array[i] == Double.POSITIVE_INFINITY)) {
 
 
                 retval[i] = top;
@@ -275,7 +275,7 @@ public class DoubleArrayMath {
 
 
                 retval[i] = bottom;
-                
+
             } else {
                 retval[i] = array[i];
             }
@@ -313,15 +313,15 @@ public class DoubleArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by scaling the array so that 
+    /** Return a new array that is formed by scaling the array so that
      *  it has a L2-norm of 1.
      */
     public static final double[] normalize(final double[] array) {
-        return scale(array, 1.0 / l2norm(array));      
-    }  
+        return scale(array, 1.0 / l2norm(array));
+    }
 
-   
-   
+
+
     /** Return a new array of doubles that is formed by padding the
      *  middle of the array with 0's. If either the length of the
      *  input array is odd, the sample with index ceil(L/2) will be
@@ -449,7 +449,7 @@ public class DoubleArrayMath {
     }
 
     /** Return the sum of the squares of all of the elements in the array.
-     *  This is equivalent to the square of the L2-norm of the array.    
+     *  This is equivalent to the square of the L2-norm of the array.
      *  Return 0.0 if the length of the array is 0.
      */
     public static final double sumOfSquares(double[] array) {
@@ -459,7 +459,7 @@ public class DoubleArrayMath {
         }
         return sum;
     }
-    
+
     /** Return a new array that is formed by converting the doubles in
      *  the argument array to complex numbers. Each complex number has real
      *  part equal to the value in the argument matrix and a zero imaginary part.
@@ -474,10 +474,10 @@ public class DoubleArrayMath {
             retval[i] = new Complex(array[i], 0.0);
         }
         return retval;
-        
-    }            
 
-        
+    }
+
+
 
     /** Return a new array that is formed by converting the doubles in
      *  the argument array to doubles.
@@ -494,7 +494,7 @@ public class DoubleArrayMath {
             retval[i] = (float) array[i];
         }
         return retval;
-    }    
+    }
 
 
     /** Return a new array that is formed by converting the doubles in
@@ -513,7 +513,7 @@ public class DoubleArrayMath {
         }
         return retval;
     }
-    
+
 
     /** Return a new array that is formed by converting the doubles in
      *  the argument array to longs.
@@ -529,9 +529,9 @@ public class DoubleArrayMath {
             retval[i] = (long) array[i];
         }
         return retval;
-    }    
+    }
 
-    
+
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
      */

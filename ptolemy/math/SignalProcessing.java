@@ -3,7 +3,7 @@
 The algorithms for the FFT and DCT are based on the FFCT algorithm
 described in:
 
-Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with 
+Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with
 Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
@@ -46,7 +46,7 @@ This class provides signal processing functions.
 The algorithms for the FFT and DCT are based on the FFCT algorithm
 described in:
 
-Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with 
+Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with
 Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay, Elaine Cheong
@@ -266,7 +266,7 @@ public class SignalProcessing {
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.downsample(): " +
                     "downsampling factor must be greater than 0.");
-        } 
+        }
 
         if (startIndex < 0 || startIndex > x.length - 1) {
             throw new IllegalArgumentException(
@@ -924,7 +924,7 @@ public class SignalProcessing {
                     "period should be greater than 0.");
         }
 
-        double point = (2/period) * 
+        double point = (2/period) *
             Math.IEEEremainder(time + (phase * period), period);
 
         // get rid of negative zero
@@ -971,11 +971,11 @@ public class SignalProcessing {
                     "period should be greater than 0.");
         }
 
-        double point = (2/period) * 
+        double point = (2/period) *
             Math.IEEEremainder(time + (phase * period), period);
- 
+
         // hole at +1.0
-        return (point >= 0 && point < 1) ? 1.0 : -1.0;  
+        return (point >= 0 && point < 1) ? 1.0 : -1.0;
     }
 
     /** Return a sample of a triangle wave with the specified period and
@@ -1000,7 +1000,7 @@ public class SignalProcessing {
         }
 
         double point = Math.IEEEremainder(time + (phase * period), period);
- 
+
         if (-period/2.0 <= point && point < -period/4.0) {
             point = -(4.0/period * point) - 2;
         } else if (-period/4.0 <= point && point < period/4.0) {
@@ -1027,7 +1027,7 @@ public class SignalProcessing {
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.upsample(): " +
                     "upsampling factor must be greater than or equal to 0.");
-        } 
+        }
 
         int length = x.length * n;
         double[] retval = new double[length];
@@ -1225,14 +1225,14 @@ public class SignalProcessing {
         private static final double ONE_OVER_SQRT_TWO_PI =
         1.0 / Math.sqrt(2 * Math.PI);
     }
-  
+
     /** This class generates samples of a polynomial.
      *  The function computed is :
      *  <p>
      *  <pre>
      *  h(t) = a<sub>0</sub> + a<sub>1</sub>t + a<sub>2</sub>t<sup>2</sup> + ... + a<sub>n-1</sub>t<sup>n-1</sup>
-     *  or 
-     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t<sup>-1</sup> + a<sub>2</sub>t<sup>-2</sup> + ... + a<sub>n-1</sub>t<sup>-(n-1)</sup>     
+     *  or
+     *  h(t) = a<sub>0</sub> + a<sub>1</sub>t<sup>-1</sup> + a<sub>2</sub>t<sup>-2</sup> + ... + a<sub>n-1</sub>t<sup>-(n-1)</sup>
      *  depending on the direction specified.
      *  </pre>
      *  </p>
@@ -1242,16 +1242,16 @@ public class SignalProcessing {
 
 
         /** Construct a PolynomialSampleGenerator. The input argument is
-         *  an array of doubles 
+         *  an array of doubles
          *  a[0] = a<sub>0</sub> .. a[n-1] = a<sub>n-1</sub> used to compute
          *  the formula :
          *  h(t) = a<sub>0</sub> + a<sub>1</sub>t + ... + a<sub>n-1</sub>t<sup>n-1</sup>
-         *  The array of doubles must be of length 1 or greater.         
+         *  The array of doubles must be of length 1 or greater.
          *  The array of doubles is copied, so the user is free to modify
          *  it after construction.
          *  The exponents on t in the above equation will all be negated if
          *  the direction parameter is -1; otherwise the direction parameter
-         *  should be 1. 
+         *  should be 1.
          *  @param coefficients An array of double coefficients.
          *  @param direction 1 for positive exponents, -1 for negative
          *  exponents.
@@ -1265,12 +1265,12 @@ public class SignalProcessing {
             }
 
             _coeffLength = coefficients.length;
-                        
-            // copy coefficient array            
+
+            // copy coefficient array
             _coefficients = DoubleArrayMath.resize(coefficients, _coeffLength);
             _direction = direction;
         }
-                                                                   
+
         /** Return a sample of the line, sampled at the specified time.
          *  Note that at time = 0, with a negative direction, the sample
          *  will be positive or negative infinity.
@@ -1278,13 +1278,13 @@ public class SignalProcessing {
         public final double operate(double time) {
             double sum = _coefficients[0];
             double tn = time;
-            
+
             for (int i = 1; i < _coeffLength; i++) {
-                if (_direction == 1) {            
+                if (_direction == 1) {
                    sum += _coefficients[i] * tn;
                 } else {
                    sum += _coefficients[i] / tn;
-                } 
+                }
                 tn *= time;
             }
             return sum;
@@ -1389,7 +1389,7 @@ public class SignalProcessing {
          *  @param firstZeroCrossing The time of the first zero crossing,
          *  after time zero. This would be the symbol interval in a
          *  communications application of this pulse.
-         *  @param excess The excess bandwidth (in the range 0.0 to 1.0), also 
+         *  @param excess The excess bandwidth (in the range 0.0 to 1.0), also
          *  called the rolloff factor.
          */
         public RaisedCosineSampleGenerator(double firstZeroCrossing,
@@ -1483,13 +1483,13 @@ public class SignalProcessing {
             _fourExcess = 4.0 * _excess;
             _eightExcessPI = 8.0 * _excess * Math.PI;
             _sixteenExcessSquared = _fourExcess * _fourExcess;
-            
+
             double fourExcessOverPI = _fourExcess / Math.PI;
             double oneOverSqrtFZC = 1.0 / _sqrtFZC;
 
             _sampleAtZero = (fourExcessOverPI + 1.0 - _excess) * oneOverSqrtFZC;
             _fourExcessOverPISqrtFZC = fourExcessOverPI * oneOverSqrtFZC;
-            
+
             _fzcSqrtFZCOverEightExcessPI =
                 firstZeroCrossing * _sqrtFZC / _eightExcessPI;
             _fzcOverFourExcess = firstZeroCrossing / _fourExcess;

@@ -41,7 +41,7 @@ import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixPoint
-/** 
+/**
 
 This class provides a fixed point data type and a set of functions
 that operate on and return fixed point data. An instance of the class
@@ -123,7 +123,7 @@ class Quantizer, different quantizers are provided that convert, for
 example, a double value or integer value into an instance of
 FixPoint. Currently the following quantizers exist:
 
-<ul> 
+<ul>
 
 <li> <b>Quantizer.Round</b>: Return a FixPoint that is nearest to the
 value that can be represented with the given precision, possibly
@@ -146,7 +146,7 @@ FixPoint does not put any restrictions on the maximal number of bits
 used to represent a value.
 
 @author Bart Kienhuis
-@version $Id$ 
+@version $Id$
 @see Precision
 @see Quantizer
 */
@@ -164,7 +164,7 @@ public class FixPoint implements Cloneable, Serializable {
      *
      *  @param precision The precision of this FixPoint.
      *  @param value The value that will be represented by
-     *  the fixpoint given the finite precision.  
+     *  the fixpoint given the finite precision.
      *  @see Quantizer
      */
     FixPoint(Precision precision, BigInteger value) {
@@ -193,7 +193,7 @@ public class FixPoint implements Cloneable, Serializable {
     ////                         public methods                    ////
 
     /** Return a new FixPoint with a value equal to the absolute
-     *  value of this fixed point.  
+     *  value of this fixed point.
      *
      *  @return A non-negative fixed point.
      */
@@ -218,7 +218,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  for the integer part might be increased by one. The fractional
      *  part remains unchanged
      *
-     *  @param arg A FixPoint.  
+     *  @param arg A FixPoint.
      *  @return A new FixPoint.
      */
     public FixPoint add(FixPoint arg) {
@@ -231,11 +231,11 @@ public class FixPoint implements Cloneable, Serializable {
 	// Determine the new Fixvalue
 	Fixvalue argZ =  argX.add(argY);
 
-        // Determine the new precision 
+        // Determine the new precision
         Precision newPrecision = cp;
 
         // The bitlength doesn't include the sign, hence the +1.
-        if ( argZ.fixvalue.bitLength() + 1 > cp.getNumberOfBits() ) { 
+        if ( argZ.fixvalue.bitLength() + 1 > cp.getNumberOfBits() ) {
             // Precision change, to integer part + 1
             // fractional part remains the same
             newPrecision = new Precision(cp.getNumberOfBits()+1,
@@ -257,8 +257,8 @@ public class FixPoint implements Cloneable, Serializable {
      *  <i>(max(6,12), max(3,4))</i>, which is <i>(12.4)</i>. In case
      *  of a division, the result always fits the new precision,
      *
-     *  @param arg A FixPoint.  
-     *  @return A new FixPoint.  
+     *  @param arg A FixPoint.
+     *  @return A new FixPoint.
      */
     public FixPoint divide(FixPoint arg) {
 	// Align the precision of the two FixPoints
@@ -277,7 +277,7 @@ public class FixPoint implements Cloneable, Serializable {
         // decimal behind the point. This is equvalent with a
         // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
         // Alternatively, we calculated the precision on a
-        // time-to-time basis, but this is much more involved.  
+        // time-to-time basis, but this is much more involved.
         // double decimalPrecision =
         // Math.log(Math.pow(2,cp.getFractionBitLength()))/Math.log(10);
 	BigDecimal dz = dx.divide(dy, 40, BigDecimal.ROUND_HALF_EVEN);
@@ -288,9 +288,9 @@ public class FixPoint implements Cloneable, Serializable {
         // return the new FixPoint
 	return result;
     }
-    
+
     /** Return the value of this FixPoint as a double, which is not
-     *  lossless.  
+     *  lossless.
      *
      *  @return The double value of this FixPoint.
      */
@@ -318,7 +318,7 @@ public class FixPoint implements Cloneable, Serializable {
         // This division divides two number in a precision of 40
         // decimal behind the point. This is equvalent with a
         // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
-	BigDecimal y = h.divide(_getTwoRaisedTo(ln - ib), 40, 
+	BigDecimal y = h.divide(_getTwoRaisedTo(ln - ib), 40,
                 BigDecimal.ROUND_HALF_EVEN);
 
 	return y;
@@ -359,7 +359,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  multiplication of this FixPoint number and the argument (i.e.,
      *  this * value). The operation is lossless because the precision
      *  of the result is changed to accommodate the result.
-     * 
+     *
      *  The precision of the result is equal to the maximum of the
      *  integer parts and 2 times the maximum of the fractional parts
      *  of the fixed point values multiplied. If the new computed
@@ -392,7 +392,7 @@ public class FixPoint implements Cloneable, Serializable {
 
         // add +1 to account for the sign bit
         int integerBitLength = totalBitLength-2*fractionalBitLength + 1;
-        
+
 
 	Precision np = null;
         if ( cp.getIntegerBitLength() < integerBitLength ) {
@@ -411,7 +411,7 @@ public class FixPoint implements Cloneable, Serializable {
 
     /** Return a bit string representation, which is a string of "0"
      *  and "1" and a single period, of this fixed point in the form
-     *  "<i>integerbits . fractionbits</i>". 
+     *  "<i>integerbits . fractionbits</i>".
      *
      *  @return A bit string of the form "<i>integerbits . fractionbits</i>".
     */
@@ -448,8 +448,8 @@ public class FixPoint implements Cloneable, Serializable {
 
     /** Set the error of the FixPoint. This method is made 'package
      *  friendly' because only the Quantizer class should access this
-     *  method to set an error condition on a FixPoint.  
-     * 
+     *  method to set an error condition on a FixPoint.
+     *
      *  @param error The error condition of the FixPoint.
      */
     void setError(Error error) {
@@ -460,7 +460,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  FixPoint number subtracted by the argument (i.e., this -
      *  value). The operation is lossless because the precision of the
      *  result is changed if needed to accommodate the result. <p>
-     *     
+     *
      *  The precision of the result is equal to the maximum of the
      *  integer part and fractional part of the fixed point values
      *  subtracted. So when a number with precision <i>(6,3)</i> and
@@ -484,10 +484,10 @@ public class FixPoint implements Cloneable, Serializable {
 	// Determine the new Fixvalue
 	Fixvalue argZ =  argX.add(argY.negate());
 
-        // Determine the new precision 
+        // Determine the new precision
         Precision newPrecision = cp;
         // The bitlength doesn't include the sign, hence the +1.
-        if ( argZ.fixvalue.bitLength() + 1 > cp.getNumberOfBits() ) { 
+        if ( argZ.fixvalue.bitLength() + 1 > cp.getNumberOfBits() ) {
             // Precision change, to integer part + 1
             // fractional part remains the same
             newPrecision = new Precision(cp.getNumberOfBits()+1,
@@ -499,7 +499,7 @@ public class FixPoint implements Cloneable, Serializable {
     }
 
     /** Prints useful debug information about the FixPoint to standard
-     *  out. This is used mainly for debug purposes.  
+     *  out. This is used mainly for debug purposes.
      */
     public void printFix() {
 	System.out.println (" unscale Value  (2) " +
@@ -508,7 +508,7 @@ public class FixPoint implements Cloneable, Serializable {
                 _value.fixvalue.toString(10));
 	System.out.println (" scale Value (10) " + doubleValue()
                 + " Precision: " + _precision.toString());
-	System.out.println (" Errors:     " + 
+	System.out.println (" Errors:     " +
                 _value.getError().getDescription());
 	System.out.println (" BitCount:   " + _value.fixvalue.bitCount());
 	System.out.println (" BitLength   " + _value.fixvalue.bitLength());
@@ -516,9 +516,9 @@ public class FixPoint implements Cloneable, Serializable {
 	System.out.println (" ABS value   " + j.toString(2));
 	System.out.println (" ABS bit count:  " + j.bitCount());
 	System.out.println (" ABD bitLength:  " + j.bitLength());
-        System.out.println (" Max value:  " + 
+        System.out.println (" Max value:  " +
                 _precision.findMaximum().doubleValue());
-	System.out.println (" Min value:  " + 
+	System.out.println (" Min value:  " +
                 _precision.findMinimum().doubleValue());
     }
 
@@ -542,7 +542,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  provided precision. This never involves rounding, but only
      *  padding the fractional part with zeros
      *  @param The precision with which to align
-     *  @return A Fixvalue with aligned precision 
+     *  @return A Fixvalue with aligned precision
      */
     private Fixvalue _alignToPrecision(Precision p) {
 
@@ -590,7 +590,7 @@ public class FixPoint implements Cloneable, Serializable {
         // Remember the sign.
         int sign = value._value.fixvalue.signum();
         Fixvalue absValue = value._value.abs();
-        
+
         Precision oldprecision = value.getPrecision();
 	Fixvalue integerPart  = absValue.getIntegerBits(oldprecision);
 	Fixvalue fractionPart = absValue.getFractionBits(oldprecision);
@@ -682,8 +682,8 @@ public class FixPoint implements Cloneable, Serializable {
 	/** Return a new Fixvalue with a value equal to the sum of this
 	 *  Fixvalue number and the argument. The addition uses the
 	 *  add method of class BigInteger. It copies the error field
-	 *  of this Fixvalue to the new Fixvalue.  
-         *  @param arg A Fixvalue number.  
+	 *  of this Fixvalue to the new Fixvalue.
+         *  @param arg A Fixvalue number.
          *  @return A new Fixvalue number.
 	 */
         public Fixvalue add(Fixvalue aValue) {
@@ -706,7 +706,7 @@ public class FixPoint implements Cloneable, Serializable {
 
 	/** Return the negated value of this Fixvalue. Uses the negate
 	 *  method of class BigInteger. The resulting Fixvalue copies
-	 *  the error field of this Fixvalue.  
+	 *  the error field of this Fixvalue.
          *  @return A new Fixvalue.
 	 */
  	public Fixvalue negate() {
@@ -716,7 +716,7 @@ public class FixPoint implements Cloneable, Serializable {
 
 	/** Return the absolute value of this Fixvalue. Uses the
 	 *  absolute method of class BigInteger. The resulting
-	 *  Fixvalue copies the error field of this Fixvalue.  
+	 *  Fixvalue copies the error field of this Fixvalue.
          *  @return  A new Fixvalue.
 	 */
  	public Fixvalue abs() {
@@ -733,8 +733,8 @@ public class FixPoint implements Cloneable, Serializable {
 	 *  BigInteger number does not have the notion of a point, the
 	 *  precision of the fixvalue has to be supplied, to extract
 	 *  the correct number of bits for the fractional part.
-	 *  @param precision Precision of the fixvalue.  
-         *  @return fractional part of the Fixvalue.  
+	 *  @param precision Precision of the fixvalue.
+         *  @return fractional part of the Fixvalue.
          */
 	public Fixvalue getFractionBits(Precision precision) {
 	    BigInteger tmp = (_getTwoRaisedTo(
@@ -747,12 +747,12 @@ public class FixPoint implements Cloneable, Serializable {
 	/** Return only the integer part of the Fixvalue. Because a
 	 *  BigInteger number does not have the notion of a point, the
 	 *  precision of the fixvalue has to be supply, to extract the
-	 *  correct number of bits for the integer part.  
-         *  @param precision Precision of the fixvalue.  
+	 *  correct number of bits for the integer part.
+         *  @param precision Precision of the fixvalue.
          *  @return integer part of the Fixvalue.
 	 */
     	public Fixvalue getIntegerBits(Precision precision) {
-	    BigInteger result = 
+	    BigInteger result =
                 fixvalue.shiftRight(precision.getFractionBitLength());
 	    return new Fixvalue(result, _error);
 	}
@@ -772,9 +772,9 @@ public class FixPoint implements Cloneable, Serializable {
          *  and thus no overflow error occurs. If delta>0, then the
          *  fixvalue is truncated by doing an AND on the result
          *  stripping bits to fit the precision. This always leads to
-         *  rounding.  
+         *  rounding.
          *  @param delta Number of positions the fixvalue
-         *  is scaled from right.  
+         *  is scaled from right.
          *  @return A scaled Fixvalue.
          */
         public Fixvalue scaleRight(int delta) {

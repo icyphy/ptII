@@ -79,11 +79,11 @@ public class ComplexArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  ComplexBinaryOperation to each element in the input array,     
+    /** Return a new array that is formed by applying an instance of a
+     *  ComplexBinaryOperation to each element in the input array,
      *  using z as the left operand in all cases and the array elements
      *  as the right operands (op.operate(z, array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final Complex[] applyBinaryOperation(
      ComplexBinaryOperation op, final Complex z, final Complex[] array) {
@@ -94,10 +94,10 @@ public class ComplexArrayMath {
         }
         return retval;
     }
-            
-    /** Return a new array that is formed by applying an instance of a 
+
+    /** Return a new array that is formed by applying an instance of a
      *  ComplexBinaryOperation to the two arrays, element by element,
-     *  using the elements of the first array as the left operands and the 
+     *  using the elements of the first array as the left operands and the
      *  elements of the second array as the right operands.
      *  (op.operate(array[i], array2[i])).
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -106,8 +106,8 @@ public class ComplexArrayMath {
      */
     public static final Complex[] applyBinaryOperation(
      ComplexBinaryOperation op, final Complex[] array1, final Complex[] array2) {
-        int length = _commonLength(array1, array2, 
-         "ComplexArrayMath.applyBinaryOperation");     
+        int length = _commonLength(array1, array2,
+         "ComplexArrayMath.applyBinaryOperation");
         Complex[] retval = new Complex[length];
         for (int i = 0; i < length; i++) {
             retval[i] = op.operate(array1[i], array2[i]);
@@ -115,10 +115,10 @@ public class ComplexArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  ComplexUnaryOperation to each element in the input array 
+    /** Return a new array that is formed by applying an instance of a
+     *  ComplexUnaryOperation to each element in the input array
      *  (op.operate(array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final Complex[] applyUnaryOperation(
      final ComplexUnaryOperation op, final Complex[] array) {
@@ -241,26 +241,26 @@ public class ComplexArrayMath {
         }
         return retval;
     }
-    
+
     /** Return a Complex number that is the dot product of the two argument
-     *  arrays. The dot product is computed by the sum of the 
-     *  element-by-element products of the first argument and the complex 
+     *  arrays. The dot product is computed by the sum of the
+     *  element-by-element products of the first argument and the complex
      *  conjugate of the second argument.
      *  If the sizes of both arrays is 0, return Complex.ZERO.
      *  If the two arrays do not have the same length, throw an
-     *  IllegalArgumentException.     
+     *  IllegalArgumentException.
      */
-    public static final Complex dotProduct(final Complex[] array1, 
+    public static final Complex dotProduct(final Complex[] array1,
         final Complex[] array2) {
         int length = _commonLength(array1, array2, "ComplexArrayMath.dotProduct");
         Complex retval = Complex.ZERO;
-    
+
         for (int i = 0; i < length; i++) {
             retval = retval.add(array1[i].multiply(array2[i].conjugate()));
         }
         return retval;
     }
-        
+
 
     /** Return a new array of doubles with the imaginary parts of the array of
      *  complex numbers.
@@ -293,9 +293,9 @@ public class ComplexArrayMath {
      */
     public static final Complex[] formComplexArray(final double[] realPart,
             final double[] imagPart) {
-        Complex[] retval;    
+        Complex[] retval;
         int size;
-                  
+
         if ((realPart != null) && (imagPart != null)) {
            size = DoubleArrayMath._commonLength(realPart, imagPart,
                        "ComplexArrayMath.formComplexArray");
@@ -303,24 +303,24 @@ public class ComplexArrayMath {
 
            for (int i = 0; i < size; i++) {
                retval[i] = new Complex(realPart[i], imagPart[i]);
-           }                   
+           }
         } else if (realPart == null) {
            // NullPointerException will be thrown here if both arrays are null.
-           size = imagPart.length; 
-           
+           size = imagPart.length;
+
            retval = new Complex[size];
-           
+
            for (int i = 0; i < size; i++) {
                retval[i] = new Complex(0.0, imagPart[i]);
-           }                   
+           }
         } else { // imagPart == null
            size = realPart.length;
-           
+
            retval = new Complex[size];
 
            for (int i = 0; i < size; i++) {
                retval[i] = new Complex(realPart[i], 0.0);
-           }                   
+           }
         }
 
         return retval;
@@ -386,9 +386,9 @@ public class ComplexArrayMath {
      */
     public static final double l2normSquared(Complex[] array) {
         int length = array.length;
-        
+
         if (length <= 0) return 0.0;
-        
+
         double retval = 0.0;
 
         for (int i = 0; i < length; i++) {
@@ -396,7 +396,7 @@ public class ComplexArrayMath {
         }
 
         return retval;
-    }           
+    }
 
     /** Return a new array of Complex numbers that is formed by padding the
      *  middle of the array with 0's. If either the length of the
@@ -498,7 +498,7 @@ public class ComplexArrayMath {
      *  element to the specified exponent, a double.
      *  If the size of the array is 0, return a new array of size 0.
      */
-    public static final Complex[] pow(final Complex[] array, 
+    public static final Complex[] pow(final Complex[] array,
         final double exponent) {
         int length = array.length;
         Complex[] retval = new Complex[length];
@@ -549,7 +549,7 @@ public class ComplexArrayMath {
      *  @param array An array of complex numbers.
      *  @param newLength The desired size of the output array.
      */
-    public static final Complex[] resize(final Complex[] array, 
+    public static final Complex[] resize(final Complex[] array,
         final int newLength) {
         return resize(array,  newLength, 0);
     }
@@ -572,7 +572,7 @@ public class ComplexArrayMath {
      *  @param newLength The desired size of the output array.
      *  @param startIdx The starting index for the input array.
      */
-    public static final Complex[] resize(final Complex[] array, 
+    public static final Complex[] resize(final Complex[] array,
             final int newLength, final int startIdx) {
 
         Complex[] retval = new Complex[newLength];
@@ -702,7 +702,7 @@ public class ComplexArrayMath {
     // or if either array is null. An exception is NOT thrown if both
     // arrays are of size 0. If no exception is thrown, return the common
     // length of the arrays.
-    protected static final int _commonLength(final Complex[] array1, 
+    protected static final int _commonLength(final Complex[] array1,
             final Complex[] array2, final String methodName) {
         if (array1 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName +

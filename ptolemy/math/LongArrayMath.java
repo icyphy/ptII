@@ -1,8 +1,8 @@
 /*
 A library for mathematical operations on arrays of longs.
 
-This file was automatically generated with a preprocessor, so that 
-similar array operations are supported on ints, longs, floats, and doubles. 
+This file was automatically generated with a preprocessor, so that
+similar array operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -45,10 +45,10 @@ import java.lang.Long;              /* Needed by javadoc */
  * non-null. If a null array is passed to a method, a NullPointerException
  * will be thrown in the method or called methods.
  * <p>
- * This file was automatically generated with a preprocessor, so that 
- * similar matrix operations are supported on ints, longs, floats, and doubles. 
- * <p> 
- * 
+ * This file was automatically generated with a preprocessor, so that
+ * similar matrix operations are supported on ints, longs, floats, and doubles.
+ * <p>
+ *
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  */
 
@@ -128,11 +128,11 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  LongBinaryOperation to each element in the input array 
+    /** Return a new array that is formed by applying an instance of a
+     *  LongBinaryOperation to each element in the input array
      *  and z, using the array elements as the left operands and z
      *  as the right operand in all cases. (op.operate(array[i], z)).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] applyBinaryOperation(
      LongBinaryOperation op, final long[] array, final long z) {
@@ -143,12 +143,12 @@ public class LongArrayMath {
         }
         return retval;
     }
-      
-    /** Return a new array that is formed by applying an instance of a 
-     *  LongBinaryOperation to each element in the input array,     
+
+    /** Return a new array that is formed by applying an instance of a
+     *  LongBinaryOperation to each element in the input array,
      *  using z as the left operand in all cases and the array elements
      *  as the right operands (op.operate(z, array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] applyBinaryOperation(
      LongBinaryOperation op, final long z, final long[] array) {
@@ -159,10 +159,10 @@ public class LongArrayMath {
         }
         return retval;
     }
-            
-    /** Return a new array that is formed by applying an instance of a 
+
+    /** Return a new array that is formed by applying an instance of a
      *  LongBinaryOperation to the two arrays, element by element,
-     *  using the elements of the first array as the left operands and the 
+     *  using the elements of the first array as the left operands and the
      *  elements of the second array as the right operands.
      *  (op.operate(array[i], array2[i])).
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -171,8 +171,8 @@ public class LongArrayMath {
      */
     public static final long[] applyBinaryOperation(
      LongBinaryOperation op, final long[] array1, final long[] array2) {
-        int length = _commonLength(array1, array2, 
-         "LongArrayMath.applyBinaryOperation");     
+        int length = _commonLength(array1, array2,
+         "LongArrayMath.applyBinaryOperation");
         long[] retval = new long[length];
         for (int i = 0; i < length; i++) {
             retval[i] = op.operate(array1[i], array2[i]);
@@ -180,10 +180,10 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  LongUnaryOperation to each element in the input array 
+    /** Return a new array that is formed by applying an instance of a
+     *  LongUnaryOperation to each element in the input array
      *  (op.operate(array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] applyUnaryOperation(
      final LongUnaryOperation op, final long[] array) {
@@ -197,7 +197,7 @@ public class LongArrayMath {
 
     /** Return a new array that is the formed by bitwise ANDing z with each element
      *  of the input array (array[i] & z).
-     *  If the length of the array is 0, return a new array of length 0.     
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] bitwiseAnd(final long[] array, final long z) {
         int length = array.length;
@@ -207,7 +207,7 @@ public class LongArrayMath {
         }
         return retval;
     }
-      
+
     /** Return a new array that is the element-by-element bitwise AND of the two
      *  input arrays (array1[i] & array2[i]).
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -224,7 +224,7 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element bitwise complement of the 
+    /** Return a new array that is the element-by-element bitwise complement of the
      *  input array (~array[i]).
      *  If the length of the array is 0, return a new array of length 0.
      */
@@ -239,7 +239,7 @@ public class LongArrayMath {
 
     /** Return a new array that is the formed by bitwise ORing z with each element
      *  of the input array (array[i] | z).
-     *  If the length of the array is 0, return a new array of length 0.     
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] bitwiseOr(final long[] array, final long z) {
         int length = array.length;
@@ -268,7 +268,7 @@ public class LongArrayMath {
 
     /** Return a new array that is the formed by bitwise XORing z with each element
      *  of the input array (array[i] ^ z).
-     *  If the length of the array is 0, return a new array of length 0.     
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] bitwiseXor(final long[] array, final long z) {
         int length = array.length;
@@ -294,10 +294,10 @@ public class LongArrayMath {
         }
         return retval;
     }
-    
+
     /** Return a new array that is the formed by dividing each element of the input
      *  array by z (array[i] / z).
-     *  If the length of the array is 0, return a new array of length 0.     
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] divide(final long[] array, final long z) {
         int length = array.length;
@@ -329,7 +329,7 @@ public class LongArrayMath {
         }
         return retval;
     }
-              
+
     /** Return the dot product of the two arrays.
      *  If the lengths of the array are both 0, return 0L.
      *  If the two arrays do not have the same length, throw an
@@ -368,7 +368,7 @@ public class LongArrayMath {
      final long bottom, final long top) {
         long[] retval = new long[array.length];
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) ||  
+            if ((array[i] > top) ||
 
                 (array[i] == Long.MAX_VALUE)) {
 
@@ -378,7 +378,7 @@ public class LongArrayMath {
                 (array[i] == Long.MIN_VALUE)) {
 
                 retval[i] = bottom;
-                
+
             } else {
                 retval[i] = array[i];
             }
@@ -444,8 +444,8 @@ public class LongArrayMath {
     }
 
 
-   
-   
+
+
     /** Return a new array of longs that is formed by padding the
      *  middle of the array with 0's. If either the length of the
      *  input array is odd, the sample with index ceil(L/2) will be
@@ -548,18 +548,18 @@ public class LongArrayMath {
      *  arithmetically shifting the elements in the array by the second argument.
      *  If the second argument is positive, the elements are shifted left by
      *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (arithmetically, with the >>> operator) by the absolute 
-     *  value of the second argument. If the second argument is 0, no operation is 
+     *  are shifted right (arithmetically, with the >>> operator) by the absolute
+     *  value of the second argument. If the second argument is 0, no operation is
      *  performed (the array is just copied).
      *  @param matrix A first array of longs.
-     *  @param shiftAmount The amount to shift by, positive for left shift, 
+     *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new array of longs.
      */
     public static final long[] shiftArithmetic(long[] array, int shiftAmount) {
         long[] retval = new long[array.length];
-        
-        if (shiftAmount >= 0) {        
+
+        if (shiftAmount >= 0) {
            for (int i = 0; i < array.length; i++) {
                retval[i] = array[i] << shiftAmount;
            }
@@ -568,7 +568,7 @@ public class LongArrayMath {
                retval[i] = array[i] >>> -shiftAmount;
            }
         }
-        
+
         return retval;
     }
 
@@ -576,18 +576,18 @@ public class LongArrayMath {
      *  logically shifting the elements in the array by the second argument.
      *  If the second argument is positive, the elements are shifted left by
      *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (logically, with the >>> operator) by the absolute 
-     *  value of the second argument. If the second argument is 0, no operation is 
+     *  are shifted right (logically, with the >>> operator) by the absolute
+     *  value of the second argument. If the second argument is 0, no operation is
      *  performed (the array is just copied).
      *  @param matrix A first array of longs.
-     *  @param shiftAmount The amount to shift by, positive for left shift, 
+     *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new array of longs.
      */
     public static final long[] shiftLogical(long[] array, int shiftAmount) {
         long[] retval = new long[array.length];
-        
-        if (shiftAmount >= 0) {        
+
+        if (shiftAmount >= 0) {
            for (int i = 0; i < array.length; i++) {
                retval[i] = array[i] << shiftAmount;
            }
@@ -596,10 +596,10 @@ public class LongArrayMath {
                retval[i] = array[i] >> -shiftAmount;
            }
         }
-        
+
         return retval;
     }
-    
+
 
     /** Return a new array that is the element-by-element difference of the
      *  two input arrays, i.e. the first array minus the second array
@@ -618,7 +618,7 @@ public class LongArrayMath {
     }
 
     /** Return the sum of the squares of all of the elements in the array.
-     *  This is equivalent to the square of the L2-norm of the array.    
+     *  This is equivalent to the square of the L2-norm of the array.
      *  Return 0L if the length of the array is 0.
      */
     public static final long sumOfSquares(long[] array) {
@@ -628,9 +628,9 @@ public class LongArrayMath {
         }
         return sum;
     }
-    
 
-        
+
+
     /** Return a new array that is formed by converting the longs in
      *  the argument array to doubles.
      *  If the length of the argument array is 0, return a new array of length 0.
@@ -646,7 +646,7 @@ public class LongArrayMath {
         }
         return retval;
     }
-    
+
 
     /** Return a new array that is formed by converting the longs in
      *  the argument array to doubles.
@@ -663,7 +663,7 @@ public class LongArrayMath {
             retval[i] = (float) array[i];
         }
         return retval;
-    }    
+    }
 
 
     /** Return a new array that is formed by converting the longs in
@@ -682,10 +682,10 @@ public class LongArrayMath {
         }
         return retval;
     }
-    
 
 
-    
+
+
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
      */

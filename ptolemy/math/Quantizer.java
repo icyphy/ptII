@@ -38,7 +38,7 @@ import java.math.BigDecimal;
 //// Quantizer
 
 /**
-   
+
 To create an instance of a FixPoint, one has to use static function of
 this Quantizer class. These functions implement different quantizers
 to convert a double value or integer value into a FixPoint value.
@@ -47,7 +47,7 @@ to convert a double value or integer value into a FixPoint value.
 
 Currently the following quantizers exist:
 
-<ol> 
+<ol>
 
 <li> <b>Quantizer.round</b>: Return a FixPoint that is nearest to the
 value that can be represented with the given precision, possibly
@@ -64,7 +64,7 @@ can be achieved with the given precision, the value is set to the
 maximum or depending on the sign of the value to the minimum value
 possible with the precision. Also, the overflow flag is set to
 indicate that an overflow occured for the FixPoint value.
-   
+
 @author Bart Kienhuis
 @version $Id$
 @see FixPoint
@@ -141,7 +141,7 @@ public class Quantizer {
         // This division divides two number in a precision of 40
         // decimal behind the point. This is equvalent with a
         // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
-        BigDecimal resolution = _one.divide( _getTwoRaisedTo(number+1), 
+        BigDecimal resolution = _one.divide( _getTwoRaisedTo(number+1),
                 40, BigDecimal.ROUND_HALF_EVEN);
 
         BigDecimal multiplier;
@@ -172,7 +172,7 @@ public class Quantizer {
      *  errors. In case of an overflow, the value of the FixPoint is
      *  determined depending on the overflow mode selected.
      *
-     *   <ul> 
+     *   <ul>
      *
      *   <li> mode = 0, <b>Saturate</b>: The fixed point value is set,
      *   depending on its sign, equal to the Maxium or Minimum value
@@ -188,17 +188,17 @@ public class Quantizer {
      *  @return A new FixPoint with the given precision.
      */
     public static FixPoint round(
-            FixPoint value, 
+            FixPoint value,
             Precision newprecision,
             int mode) {
 
         FixPoint newvalue = null;
 	BigDecimal x = value.bigDecimalValue();
 	BigDecimal maxValue = newprecision.findMaximum();
-	BigDecimal minValue = newprecision.findMinimum();        
+	BigDecimal minValue = newprecision.findMinimum();
 	// check if 'x' falls within the range of this FixPoint
 	// possible with the given precision
-        if ( x.compareTo(maxValue) < 0 && 
+        if ( x.compareTo(maxValue) < 0 &&
                 x.compareTo(minValue) > 0 ) {
             // In range, thus leads at most to a quantization error
             newvalue = FixPoint._scaleBits(value, newprecision, mode);
@@ -206,7 +206,7 @@ public class Quantizer {
             FixPoint result;
             //Not in range. Can lead to an overflow problem.
             switch(mode) {
-            case 0: //SATURATE                
+            case 0: //SATURATE
                 if ( x.signum() >= 0) {
                     result = Quantizer.round( maxValue, newprecision );
                 } else {
@@ -240,12 +240,12 @@ public class Quantizer {
      *  took place.
      *
      *  @param value The double value for which to create a FixPoint
-     *  @param precision The precision of the FixPoint 
+     *  @param precision The precision of the FixPoint
      *  @return A FixPoint for the value with a given precision
      */
     public static FixPoint truncate(double value, Precision precision) {
         BigDecimal newValue = new BigDecimal( value );
-        return truncate( newValue, precision);       
+        return truncate( newValue, precision);
     }
 
     /** Return a FixPoint that is the nearest value towards zero that
@@ -259,7 +259,7 @@ public class Quantizer {
      *  took place.
      *
      *  @param value The value for which to create a FixPoint
-     *  @param precision The precision of the FixPoint 
+     *  @param precision The precision of the FixPoint
      *  @return A FixPoint for the value with a given precision
      */
     public static FixPoint truncate(BigDecimal value, Precision precision) {
@@ -297,7 +297,7 @@ public class Quantizer {
         // This division divides two number in a precision of 40
         // decimal behind the point. This is equvalent with a
         // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
-            epsilon = _one.divide(_getTwoRaisedTo(number+5), 
+            epsilon = _one.divide(_getTwoRaisedTo(number+5),
                     40, BigDecimal.ROUND_HALF_EVEN);
             multiplier = x.add( epsilon );
         } else {
@@ -306,7 +306,7 @@ public class Quantizer {
         // decimal behind the point. This is equvalent with a
         // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
             tmp = _one.divide(_two, 40, BigDecimal.ROUND_HALF_EVEN);
-            epsilon = tmp.subtract( _one.divide(_getTwoRaisedTo(number+11), 
+            epsilon = tmp.subtract( _one.divide(_getTwoRaisedTo(number+11),
                     40, BigDecimal.ROUND_HALF_EVEN));
             multiplier = x.subtract(epsilon);
         }
@@ -332,7 +332,7 @@ public class Quantizer {
      *  errors. In case of an overflow, the value of the FixPoint is
      *  determined depending on the overflow mode selected.
      *
-     *   <ul> 
+     *   <ul>
      *
      *   <li> mode = 0, <b>Saturate</b>: The fixed point value is set,
      *   depending on its sign, equal to the Maxium or Minimum value
@@ -348,17 +348,17 @@ public class Quantizer {
      *  @return A new FixPoint with the given precision.
      */
     public static FixPoint truncate(
-            FixPoint value, 
+            FixPoint value,
             Precision newprecision,
             int mode) {
 
         FixPoint newvalue = null;
 	BigDecimal x = value.bigDecimalValue();
 	BigDecimal maxValue = newprecision.findMaximum();
-	BigDecimal minValue = newprecision.findMinimum();        
+	BigDecimal minValue = newprecision.findMinimum();
 	// check if 'x' falls within the range of this FixPoint
 	// possible with the given precision
-        if ( x.compareTo(maxValue) < 0 && 
+        if ( x.compareTo(maxValue) < 0 &&
                 x.compareTo(minValue) > 0 ) {
             // In range, thus leads at most to a quantization error
             newvalue = FixPoint._scaleBits(value, newprecision, mode);
@@ -366,7 +366,7 @@ public class Quantizer {
             FixPoint result;
             //Not in range. Can lead to an overflow problem.
             switch(mode) {
-            case 0: //SATURATE                
+            case 0: //SATURATE
                 if ( x.signum() >= 0) {
                     result = Quantizer.truncate( maxValue, newprecision );
                 } else {
@@ -388,7 +388,7 @@ public class Quantizer {
         }
         return newvalue;
     }
-    
+
     /** Get the BigDecimal which is the 2^exponent. If the value is
      *  already calculated, return this cached value, else calculate
      *  the value.
@@ -407,7 +407,7 @@ public class Quantizer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Calculate the table containing 2^x, with 0 < x < 64. Purpose
         is to speed up calculations involving calculating 2^x. The table is
         calculated using BigDecimal, since this make the transformation from
@@ -424,7 +424,7 @@ public class Quantizer {
     //////////////////////
     // static class
     //////////////////////
-      
+
     // Static Class Constructor
     static {
         BigDecimal p2  = _one;
@@ -432,6 +432,6 @@ public class Quantizer {
             _twoRaisedTo[i] = p2;
             p2 = p2.multiply( _two );
         }
-    }       
-    
+    }
+
 }

@@ -5,8 +5,8 @@ Some algorithms are from
 [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
     Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
-This file was automatically generated with a preprocessor, so that 
-similar matrix operations are supported on ints, longs, floats, and doubles. 
+This file was automatically generated with a preprocessor, so that
+similar matrix operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -76,13 +76,13 @@ public class LongMatrixMath {
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one. 
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  adding the second matrix to the first one.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      *  @param matrix1 The first matrix of longs.
      *  @param matrix2 The second matrix of longs.
      *  @return A new matrix of longs.
      */
-    public static final long[][] add(final long[][] matrix1, 
+    public static final long[][] add(final long[][] matrix1,
             final long[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
@@ -103,8 +103,8 @@ public class LongMatrixMath {
         return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  LongBinaryOperation to each element in the input matrix,     
+    /** Return a new array that is formed by applying an instance of a
+     *  LongBinaryOperation to each element in the input matrix,
      *  using z as the left operand in all cases and the matrix elements
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
@@ -112,7 +112,7 @@ public class LongMatrixMath {
             LongBinaryOperation op, final long z, final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-            
+
         long[][] retval = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
@@ -122,16 +122,16 @@ public class LongMatrixMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  LongBinaryOperation to each element in the input matrix,     
-     *  using the matrix elements as the left operands and z as the right 
+    /** Return a new array that is formed by applying an instance of a
+     *  LongBinaryOperation to each element in the input matrix,
+     *  using the matrix elements as the left operands and z as the right
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
     public static final long[][] applyBinaryOperation(
             LongBinaryOperation op, final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-            
+
         long[][] retval = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
@@ -140,45 +140,45 @@ public class LongMatrixMath {
         }
         return retval;
     }
-            
-    /** Return a new array that is formed by applying an instance of a 
+
+    /** Return a new array that is formed by applying an instance of a
      *  LongBinaryOperation to the two matrices, element by element,
-     *  using the elements of the first matrix as the left operands and the 
+     *  using the elements of the first matrix as the left operands and the
      *  elements of the second matrix as the right operands.
      *  (op.operate(matrix1[i][j], matrix2[i][j])).
      *  If the matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final long[][] applyBinaryOperation(
-            LongBinaryOperation op, final long[][] matrix1, final long[][] matrix2) {     
+            LongBinaryOperation op, final long[][] matrix1, final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
-        
-        _checkSameDimension("applyBinaryOperation", matrix1, matrix2);      
-            
+
+        _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
+
         long[][] retval = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
-        }     
+        }
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  LongUnaryOperation to each element in the input matrix 
+    /** Return a new array that is formed by applying an instance of a
+     *  LongUnaryOperation to each element in the input matrix
      *  (op.operate(matrix[i][j])).
      */
     public static final long[][] applyUnaryOperation(
             final LongUnaryOperation op, final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-            
+
         long[][] retval = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = op.operate(matrix[i][j]);
             }
-        }        
+        }
         return retval;
     }
 
@@ -188,31 +188,31 @@ public class LongMatrixMath {
     public static final long[][] bitwiseAnd(final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-    
+
         long[][] retval = new long[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = matrix[i][j] & z;
             }
         }
-        
+
         return retval;
     }
-      
+
     /** Return a new array that is the element-by-element bitwise AND of the two
      *  input matrices (matrix1[i][j] & matrix2[i][j]).
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final long[][] bitwiseAnd(final long[][] matrix1,
      final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
-        
+
         _checkSameDimension("bitwiseAnd", matrix1, matrix2);
-        
+
         long[][] retval = new long[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = matrix1[i][j] & matrix2[i][j];
@@ -227,9 +227,9 @@ public class LongMatrixMath {
     public static final long[][] bitwiseComplement(final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-               
+
         long[][] retval = new long[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = ~matrix[i][j];
@@ -244,31 +244,31 @@ public class LongMatrixMath {
     public static final long[][] bitwiseOr(final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-    
+
         long[][] retval = new long[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = matrix[i][j] | z;
             }
         }
-        
+
         return retval;
     }
-      
+
     /** Return a new array that is the element-by-element bitwise OR of the two
      *  input matrices (matrix1[i][j] | matrix2[i][j]).
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final long[][] bitwiseOr(final long[][] matrix1,
      final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
-        
+
         _checkSameDimension("bitwiseOr", matrix1, matrix2);
-        
+
         long[][] retval = new long[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = matrix1[i][j] | matrix2[i][j];
@@ -283,31 +283,31 @@ public class LongMatrixMath {
     public static final long[][] bitwiseXor(final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-    
+
         long[][] retval = new long[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = matrix[i][j] ^ z;
             }
         }
-        
+
         return retval;
     }
-      
+
     /** Return a new array that is the element-by-element bitwise XOR of the two
      *  input matrices (matrix1[i][j] & matrix2[i][j]).
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final long[][] bitwiseXor(final long[][] matrix1,
             final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
-        
+
         _checkSameDimension("bitwiseXor", matrix1, matrix2);
-        
+
         long[][] retval = new long[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
                 retval[i][j] = matrix1[i][j] ^ matrix2[i][j];
@@ -341,8 +341,8 @@ public class LongMatrixMath {
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
-     *  second matrix. 
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  second matrix.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final long[][] divideElements(final long[][] matrix1,
             final long[][] matrix2) {
@@ -450,7 +450,7 @@ public class LongMatrixMath {
     /** Return a new matrix that is constructed by computing the remainders between
      *  each element in the matrix and z.
      */
-    public static final long[][] moduloElements(final long[][] matrix, 
+    public static final long[][] moduloElements(final long[][] matrix,
             final long z) {
         long[][] retval = new long[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
@@ -462,14 +462,14 @@ public class LongMatrixMath {
     }
 
     /** Return a new matrix that is constructed by computing the remainders between
-     *  each element in the first matrix argument and the corresponding element in the 
-     *  second matrix argument. 
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  each element in the first matrix argument and the corresponding element in the
+     *  second matrix argument.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
-    public static final long[][] modulo(final long[][] matrix1, 
+    public static final long[][] modulo(final long[][] matrix1,
             final long[][] matrix2) {
         _checkSameDimension("moduloElements", matrix1, matrix2);
-       
+
         long[][] retval = new long[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
@@ -477,9 +477,9 @@ public class LongMatrixMath {
             }
         }
         return retval;
-    }    
+    }
 
-    
+
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scalefactor.
      */
@@ -584,8 +584,8 @@ public class LongMatrixMath {
     }
 
     /** Return a new matrix that is constructed by element by element
-     *  multiplication of the two matrix arguments. 
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
+     *  multiplication of the two matrix arguments.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final long[][] multiplyElements(final long[][] matrix1,
             final long[][] matrix2) {
@@ -609,7 +609,7 @@ public class LongMatrixMath {
     public static final long[][] negative(final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-    
+
         long[][] retval = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -627,22 +627,22 @@ public class LongMatrixMath {
      *  arithmetically shifting the elements in the matrix by the second argument.
      *  If the second argument is positive, the elements are shifted left by
      *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (arithmetically, with the >>> operator) by the absolute 
-     *  value of the second argument. If the second argument is 0, no operation is 
+     *  are shifted right (arithmetically, with the >>> operator) by the absolute
+     *  value of the second argument. If the second argument is 0, no operation is
      *  performed (the matrix is just copied).
      *  @param matrix A first matrix of longs.
-     *  @param shiftAmount The amount to shift by, positive for left shift, 
+     *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new matrix of longs.
      */
-    public static final long[][] shiftArithmetic(final long[][] matrix, 
+    public static final long[][] shiftArithmetic(final long[][] matrix,
             final int shiftAmount) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
-            
+
         long[][] retval = new long[rows][columns];
-        
-        if (shiftAmount >= 0) {        
+
+        if (shiftAmount >= 0) {
            for (int i = 0; i < rows; i++) {
                for (int j = 0; j < columns; j++) {
                    retval[i][j] = matrix[i][j] << shiftAmount;
@@ -655,30 +655,30 @@ public class LongMatrixMath {
                }
            }
         }
-        
+
         return retval;
     }
-       
+
     /** Return a new matrix that is constructed from the argument by
      *  logically shifting the elements in the matrix by the second argument.
      *  If the second argument is positive, the elements are shifted left by
      *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (logically, with the >> operator) by the absolute value 
+     *  are shifted right (logically, with the >> operator) by the absolute value
      *  of the second  argument. If the second argument is 0, no operation is performed
      *  (the matrix is just copied).
      *  @param matrix A first matrix of longs.
-     *  @param shiftAmount The amount to shift by, positive for left shift, 
+     *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new matrix of longs.
      */
-    public static final long[][] shiftLogical(final long[][] matrix, 
+    public static final long[][] shiftLogical(final long[][] matrix,
      final int shiftAmount) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
- 
+
         long[][] retval = new long[rows][columns];
-        
-        if (shiftAmount >= 0) {        
+
+        if (shiftAmount >= 0) {
            for (int i = 0; i < rows; i++) {
                for (int j = 0; j < columns; j++) {
                    retval[i][j] = matrix[i][j] << shiftAmount;
@@ -691,14 +691,14 @@ public class LongMatrixMath {
                }
            }
         }
-        
-        return retval;
-    }   
 
-    
+        return retval;
+    }
+
+
     /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.  
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.          
+     *  subtracting the second matrix from the first one.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
      */
     public static final long[][] subtract(final long[][] matrix1,
             final long[][] matrix2) {
@@ -727,18 +727,18 @@ public class LongMatrixMath {
     public static final double[][] toDoubleMatrix(final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
- 
+
         double[][] retval = new double[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 retval[i][j] = (double) matrix[i][j];
             }
         }
         return retval;
-    }    
+    }
 
-    
+
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to floats.
      *  @param array An matrix of long.
@@ -747,18 +747,18 @@ public class LongMatrixMath {
     public static final float[][] toFloatMatrix(final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
- 
+
         float[][] retval = new float[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 retval[i][j] = (float) matrix[i][j];
             }
         }
         return retval;
-    }            
+    }
 
-    
+
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to integers.
      *  @param array An matrix of long.
@@ -767,20 +767,20 @@ public class LongMatrixMath {
     public static final int[][] toIntegerMatrix(final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
- 
+
         int[][] retval = new int[rows][columns];
-        
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 retval[i][j] = (int) matrix[i][j];
             }
         }
         return retval;
-    }            
+    }
 
-    
 
-    
+
+
     /** Return a new matrix of longs that is initialized from a 1-D array.
      *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
      *  (1, 1), ..., (m-1, n-1) where the output matrix is to be m x n and
@@ -857,7 +857,7 @@ public class LongMatrixMath {
     }
 
     /** Return a new matrix that is constructed by transposing the input
-     *  matrix. If the input matrix is m x n, the output matrix will be 
+     *  matrix. If the input matrix is m x n, the output matrix will be
      *  n x m.
      */
     public static final long[][] transpose(final long[][] matrix) {
@@ -885,7 +885,7 @@ public class LongMatrixMath {
      *  allowed error.
      *  @return A boolean condition.
      */
-    public static final boolean within(final long[][] matrix1, 
+    public static final boolean within(final long[][] matrix1,
             final long[][] matrix2, long absoluteError) {
         if (absoluteError < 0L) {
             throw new IllegalArgumentException(
@@ -921,7 +921,7 @@ public class LongMatrixMath {
      *  @param errorMatrix A matrix of longs.
      *  @return A boolean condition.
      */
-    public static final boolean within(final long[][] matrix1, 
+    public static final boolean within(final long[][] matrix1,
             final long[][] matrix2, final long[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
@@ -971,7 +971,7 @@ public class LongMatrixMath {
      *  @param matrix A matrix of longs.
      *  @return The dimension of the square matrix.
      */
-    protected static final int _checkSquare(final String caller, 
+    protected static final int _checkSquare(final String caller,
              final long[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
@@ -987,7 +987,7 @@ public class LongMatrixMath {
     }
 
 
-    
+
     /** Return the number of rows of a matrix. */
     protected static final int _rows(final long[][] matrix) {
         return matrix.length;

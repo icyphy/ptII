@@ -1,8 +1,8 @@
 /*
 A library for mathematical operations on arrays of floats.
 
-This file was automatically generated with a preprocessor, so that 
-similar array operations are supported on ints, longs, floats, and doubles. 
+This file was automatically generated with a preprocessor, so that
+similar array operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -45,10 +45,10 @@ import java.lang.Float;              /* Needed by javadoc */
  * non-null. If a null array is passed to a method, a NullPointerException
  * will be thrown in the method or called methods.
  * <p>
- * This file was automatically generated with a preprocessor, so that 
- * similar matrix operations are supported on ints, longs, floats, and doubles. 
- * <p> 
- * 
+ * This file was automatically generated with a preprocessor, so that
+ * similar matrix operations are supported on ints, longs, floats, and doubles.
+ * <p>
+ *
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  */
 
@@ -128,11 +128,11 @@ public class FloatArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  FloatBinaryOperation to each element in the input array 
+    /** Return a new array that is formed by applying an instance of a
+     *  FloatBinaryOperation to each element in the input array
      *  and z, using the array elements as the left operands and z
      *  as the right operand in all cases. (op.operate(array[i], z)).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final float[] applyBinaryOperation(
      FloatBinaryOperation op, final float[] array, final float z) {
@@ -143,12 +143,12 @@ public class FloatArrayMath {
         }
         return retval;
     }
-      
-    /** Return a new array that is formed by applying an instance of a 
-     *  FloatBinaryOperation to each element in the input array,     
+
+    /** Return a new array that is formed by applying an instance of a
+     *  FloatBinaryOperation to each element in the input array,
      *  using z as the left operand in all cases and the array elements
      *  as the right operands (op.operate(z, array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final float[] applyBinaryOperation(
      FloatBinaryOperation op, final float z, final float[] array) {
@@ -159,10 +159,10 @@ public class FloatArrayMath {
         }
         return retval;
     }
-            
-    /** Return a new array that is formed by applying an instance of a 
+
+    /** Return a new array that is formed by applying an instance of a
      *  FloatBinaryOperation to the two arrays, element by element,
-     *  using the elements of the first array as the left operands and the 
+     *  using the elements of the first array as the left operands and the
      *  elements of the second array as the right operands.
      *  (op.operate(array[i], array2[i])).
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -171,8 +171,8 @@ public class FloatArrayMath {
      */
     public static final float[] applyBinaryOperation(
      FloatBinaryOperation op, final float[] array1, final float[] array2) {
-        int length = _commonLength(array1, array2, 
-         "FloatArrayMath.applyBinaryOperation");     
+        int length = _commonLength(array1, array2,
+         "FloatArrayMath.applyBinaryOperation");
         float[] retval = new float[length];
         for (int i = 0; i < length; i++) {
             retval[i] = op.operate(array1[i], array2[i]);
@@ -180,10 +180,10 @@ public class FloatArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by applying an instance of a 
-     *  FloatUnaryOperation to each element in the input array 
+    /** Return a new array that is formed by applying an instance of a
+     *  FloatUnaryOperation to each element in the input array
      *  (op.operate(array[i])).
-     *  If the length of the array is 0, return a new array of length 0.          
+     *  If the length of the array is 0, return a new array of length 0.
      */
     public static final float[] applyUnaryOperation(
      final FloatUnaryOperation op, final float[] array) {
@@ -218,7 +218,7 @@ public class FloatArrayMath {
         }
         return retval;
     }
-              
+
     /** Return the dot product of the two arrays.
      *  If the lengths of the array are both 0, return 0.0f.
      *  If the two arrays do not have the same length, throw an
@@ -237,12 +237,12 @@ public class FloatArrayMath {
         return sum;
     }
 
-    /** Return the L2-norm of the array, that is, the square root of the sum of the 
+    /** Return the L2-norm of the array, that is, the square root of the sum of the
      *  squares of the elements.
      */
     public static final float l2norm(final float[] array) {
         return (float) Math.sqrt(sumOfSquares(array));
-    } 
+    }
 
 
     /** Return a new array that is a copy of the argument except that the
@@ -263,9 +263,9 @@ public class FloatArrayMath {
      final float bottom, final float top) {
         float[] retval = new float[array.length];
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) ||  
+            if ((array[i] > top) ||
                 (array[i] == Float.NaN) ||
-                (array[i] == Float.POSITIVE_INFINITY)) {                 
+                (array[i] == Float.POSITIVE_INFINITY)) {
 
 
                 retval[i] = top;
@@ -275,7 +275,7 @@ public class FloatArrayMath {
 
 
                 retval[i] = bottom;
-                
+
             } else {
                 retval[i] = array[i];
             }
@@ -313,15 +313,15 @@ public class FloatArrayMath {
         return retval;
     }
 
-    /** Return a new array that is formed by scaling the array so that 
+    /** Return a new array that is formed by scaling the array so that
      *  it has a L2-norm of 1.
      */
     public static final float[] normalize(final float[] array) {
-        return scale(array, 1.0f / l2norm(array));      
-    }  
+        return scale(array, 1.0f / l2norm(array));
+    }
 
-   
-   
+
+
     /** Return a new array of floats that is formed by padding the
      *  middle of the array with 0's. If either the length of the
      *  input array is odd, the sample with index ceil(L/2) will be
@@ -438,7 +438,7 @@ public class FloatArrayMath {
     }
 
     /** Return the sum of the squares of all of the elements in the array.
-     *  This is equivalent to the square of the L2-norm of the array.    
+     *  This is equivalent to the square of the L2-norm of the array.
      *  Return 0.0f if the length of the array is 0.
      */
     public static final float sumOfSquares(float[] array) {
@@ -448,9 +448,9 @@ public class FloatArrayMath {
         }
         return sum;
     }
-    
 
-        
+
+
     /** Return a new array that is formed by converting the floats in
      *  the argument array to doubles.
      *  If the length of the argument array is 0, return a new array of length 0.
@@ -466,7 +466,7 @@ public class FloatArrayMath {
         }
         return retval;
     }
-    
+
 
 
 
@@ -486,7 +486,7 @@ public class FloatArrayMath {
         }
         return retval;
     }
-    
+
 
     /** Return a new array that is formed by converting the floats in
      *  the argument array to longs.
@@ -502,9 +502,9 @@ public class FloatArrayMath {
             retval[i] = (long) array[i];
         }
         return retval;
-    }    
+    }
 
-    
+
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
      */
