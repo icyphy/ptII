@@ -65,6 +65,9 @@ public class PlotApplet extends Applet implements Runnable {
         return pinfo;
     }
 
+    /**
+     * Initialize the applet.  Read the applet parameters.
+     */
     public void init() {
         if (_debug > 8) System.out.println("PlotApplet: init");
         int width,height;
@@ -72,10 +75,11 @@ public class PlotApplet extends Applet implements Runnable {
 
         _myPlot = new Plot();
         add("Center",_myPlot);
-        show();
+        //show();
 
-
-        // Process the documentBase. 
+        // Process the documentBase applet parameter.
+        // Need the catch here because applets used as components have
+        // no parameters. 
         try {
             System.out.println("PlotApplet: init: getDocumentBase()"+
                     getDocumentBase());
@@ -85,6 +89,7 @@ public class PlotApplet extends Applet implements Runnable {
                     "handling getDocumentBase" + e);
         }
 
+        // Process the width and height applet parameters
         try {
             width = Integer.valueOf(getParameter("width")).intValue();
         } catch (NullPointerException e) {
@@ -96,8 +101,8 @@ public class PlotApplet extends Applet implements Runnable {
             height = 400;
         }
         if (_debug > 8)
-            System.out.println("PlotApplet: init: about to resize"+(width-10));
-        _myPlot.resize(width-10,height-10);
+            System.out.println("PlotApplet: init: about to resize"+width);
+        _myPlot.resize(width,height);
 
         // Process the dataurl parameter.
         String dataurl = null;
@@ -108,9 +113,7 @@ public class PlotApplet extends Applet implements Runnable {
         } catch (NullPointerException e) {}
 
 
-        // Check to see if pxgraphargs has been given. 
-        // Need the catch here because applets used as components have
-        // no parameters. 
+        // Process the pxgraphargs parameter.
         String pxgraphargs = null;
         try {
             pxgraphargs = getParameter("pxgraphargs");
@@ -126,16 +129,24 @@ public class PlotApplet extends Applet implements Runnable {
 
     }
 
+    /**
+     * Paint the screen with our plot.
+     */
     public void paint(Graphics graphics) {
         if (_debug > 8) System.out.println("PlotApplet: paint");
         _myPlot.paint(graphics);
     }
 
+    /**
+     * Resize this component.
+     */
     public void resize(int width, int height) {
+        // FIXME: Used for debugging, this method should go away.
         if (_debug > 8)
             System.out.println("PlotApplet: resize"+width+" "+height);
         super.resize(width,height);
     }
+
     public void run () {
         if (_debug > 8) System.out.println("PlotApplet: run");
 // 	while (true) {
@@ -147,6 +158,9 @@ public class PlotApplet extends Applet implements Runnable {
 	repaint();
     }
 
+    /**
+     * Start the plot.
+     */
     public void start () {
         if (_debug > 8) System.out.println("PlotApplet: start");
 	_plotThread = new Thread(this);
@@ -154,25 +168,36 @@ public class PlotApplet extends Applet implements Runnable {
         super.start();
     }
 
+    /**
+     * Stop the plot
+     */
     public void stop () {
         if (_debug > 8) System.out.println("PlotApplet: stop");
         _plotThread.stop();
     }
 
-//     public void update (Graphics graphics) {
-//         if (_debug > 8) System.out.println("PlotApplet: update");
-//         paint(graphics);
-//         super.update(graphics);
-//     }
+    /**
+     *
+     */
+    public void update (Graphics graphics) {
+        // FIXME: Used for debugging, this method should go away.
+        if (_debug > 8) System.out.println("PlotApplet: update");
+        paint(graphics);
+        //        super.update(graphics);
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
+    // If non-zero, print out debugging messages.
     protected int _debug = 9;
 
+    // The Plot component we are running.
     protected Plot _myPlot;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
+
+    // Thread for this applet.
     private Thread _plotThread;
 }

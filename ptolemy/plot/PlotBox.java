@@ -52,7 +52,7 @@ import java.lang.*;
  * The box can be configured either through a file with commands or
  * through direct invocation of the public methods of the class.
  * If a file is used, the file can be given as a URL through the
- * applet parameter called "dataurl". The file contains any number
+ * <code>setDataurl</code> method. The file contains any number
  * commands, one per line.  Unrecognized commands and commands with
  * syntax errors are ignored.  Comments are denoted by a line starting
  * with a pound sign "#".  The recognized commands include:
@@ -598,16 +598,6 @@ public class PlotBox extends Panel {
     }
 
     /**
-     * Return a string describing this applet.
-     */
-    public String getAppletInfo() {
-        return "PlotBox 1.0: Base class for plots.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
-            "Christopher Hylands, cxh@eecs.berkeley.edu\n " +
-            "($Id$)";
-    }
-
-    /**
      * Get the Font by name.  
      * @deprecated: As of JDK1.1, use Font.decode() instead.
      * We need to compile under JDK1.0.2, so we use this method.
@@ -705,8 +695,8 @@ public class PlotBox extends Panel {
     }
       
     /**
-     * Initialize the applet.  If a dataurl parameter has been specified,
-     * read the file given by the URL and parse the commands in it.
+     * Initialize the component, creating the fill button and setting
+     * the colors.  If the dataurl has been set, then parse that file.
      */
     public void init() {
         //super.init();
@@ -1047,27 +1037,25 @@ public class PlotBox extends Panel {
         _binary = binary;
     }
 
-    /** Set the dataurl.  This method is used by Applications, applets
-     * should just set the dataurl parameter with:
-     * &lt;param name="dataurl" value="data.plt"&gt;
+    /** Set the dataurl.
      */
     public void setDataurl (String dataurl) {
         _dataurl = dataurl;
     }
 
+    /** Set the document base so that we can find the dataurl.
+     */
     public void setDocumentBase (URL documentBase) {
         _documentBase = documentBase;
     }
 
-    /**
-     * Control whether the grid is drawn.
+    /** Control whether the grid is drawn.
      */
     public void setGrid (boolean grid) {
         _grid = grid;
     }
     
-    /**
-     * Set the label font, which is used for axis labels and legend labels.
+    /** Set the label font, which is used for axis labels and legend labels.
      */
     public void setLabelFont (String fullfontname) {
         // Can't use Font.decode() here, it is not present in jdk1.0.2
@@ -1083,8 +1071,7 @@ public class PlotBox extends Panel {
         _title = title;
     }
     
-    /**
-     * Set the title font.
+    /** Set the title font.
      */
     public void setTitleFont (String fullfontname) {
         // Can't use Font.decode() here, it is not present in jdk1.0.2
@@ -1440,6 +1427,7 @@ public class PlotBox extends Panel {
      * Measure the various fonts.  
      */
     private void _measureFonts() {
+        // We only measure the fonts once, and we do it from addNotify().
         if (_labelfont == null)  
             _labelfont = new Font("Helvetica", Font.PLAIN, 12);
         if (_superscriptfont == null)  
@@ -1604,10 +1592,10 @@ public class PlotBox extends Panel {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    // The URL to be opened.  This variable is not used if we are running
-    // as an applet, but applications should call setDataurl().
+    // The URL to be opened.
     private String _dataurl = null;
 
+    // The document base we use to find the _dataurl.
     private URL _documentBase = null;
 
     // Set to true if we are reading in pxgraph format binary data.
@@ -1621,6 +1609,7 @@ public class PlotBox extends Panel {
     // Scaling used in making tick marks
     private double _ytickscale, _xtickscale;
 
+    // Font information.
     private Font _labelfont = null, _superscriptfont = null,
         _titlefont = null;
     FontMetrics _labelFontMetrics = null, _superscriptFontMetrics = null,
