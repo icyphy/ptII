@@ -287,26 +287,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 }
 
                 // The model should have a parser associated with it
-                // so that undo works.
-
-                // Checking to see if there already is a _parser attribute
-                // might be overkill, but it is safer.
-                ParserAttribute parserAttribute = (ParserAttribute)
-                    newModel.getAttribute("_parser",
-                            ParserAttribute.class);
-                if (parserAttribute == null) {
-                    parserAttribute =
-                        new ParserAttribute(newModel, "_parser");
-                    MoMLParser parser = new MoMLParser();
-                    // Make sure that the MoMLParser._modified flag is reset
-                    // If we don't call reset here, then the second time
-                    // the code generator is run, we will be prompted to
-                    // save the model because the first time we ran
-                    // the code generator the model was marked as modified.
-                    parser.reset();
-
-                    parserAttribute.setParser(parser);
-                }
+                // so that undo works. The following method will create
+                // a parser, if there isn't one already.
+                // We don't need the parser, so we ignore the return value.
+                ParserAttribute.getParser(newModel);
 
                 // The name might be "blank" which is confusing.
                 // Set it to an empty string.  On Save As, this will
