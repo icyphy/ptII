@@ -238,3 +238,11 @@ test PTMLParser-3.5 {semantic tests:library.icon.port} {
     list [$p getName] [$p isInput] [$p isOutput] [$p isMultiport] [$p getType]
 } {image 1 0 0 doubleArray}
 
+######################################################################
+####
+#
+test PTMLParser-4.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.PTMLParser]
+    set library [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/lib/ptII.ptml"]
+    list [$library toString]
+} {}

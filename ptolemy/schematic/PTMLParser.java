@@ -196,7 +196,7 @@ public class PTMLParser extends HandlerBase{
         // Construct the path to the DTD file
         StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
 
-        if(dtdPath.equals("UNKNOWN")) return sysID;
+        if(dtdPath.toString().equals("UNKNOWN")) return sysID;
         
         String fileSep = java.lang.System.getProperty("file.separator");
 

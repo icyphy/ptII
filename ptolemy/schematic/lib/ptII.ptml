@@ -2,7 +2,7 @@
 <!-- Do not edit. Do not add SCCS keywords. -->
 
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE domainlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
+<!DOCTYPE domainlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/~ptdesign/ptml.dtd">
 
 <domainlibrary name="Dataflow" version="1.0">
     <actorpackage name="domain polymorphic" package="ptolemy.lib"/>
