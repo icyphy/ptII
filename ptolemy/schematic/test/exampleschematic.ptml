@@ -1,29 +1,31 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE ptolemyschematic SYSTEM "ptolemyschematic.dtd">
+<!DOCTYPE ptolemyschematic SYSTEM "ptolemyicon.dtd">
 
 <schematic name="SDF" path="domains/sdf/lib/icons" version="1.0">
 <description>Icons for use within SDF</description>
-<!-- these parameters will get set in the Director --!>
-<parameter name="domain" value="SDF"\>
-<parameter name="starttime" value="1.0"\>
-<parameter name="endtime" value="7.0"\>
 
-<entity name="Load BMP File">
-<type name="loadimage" library="ptolemy/domains/sdf/icons/default.pti" ports="2"\>
+<entity name="Load BMP File" iconlibrary="examplelibrary.ptml">
 <description>Load the Image that will be transmitted and stored.</description>
-<port name="filename" direction="input" type=&string;/>
-<port name="image" direction="output" type=&doubleArray;/>
+<entitytype name="loadimage" ports="2"/>
+<parameter name="filename" type="string"/>
+<port name="image" direction="output" type="doubleArray"/>
 </entity>
 
-<entity name="saveimage" library="ptolemy/domains/sdf/icons/default.pti" ports="2">
-<port name="filename" direction="input" type=&string;/>
-<port name="image" direction="input" type=&doubleArray;/>
+<entity name="Save BMP file" iconlibrary="examplelibrary.ptml">
+<entitytype name="saveimage" ports="2"/>
+<parameter name="filename" type="string"/>
+<port name="image" input="true" type="doubleArray"/>
 </entity>
 
 <relation name="R1">
-<link entity="Load BMP File:image"\>
-<link entity="Save File:image"\>
+<link entity="Load BMP File" port="image"/>
+<link entity="Save BMP File" port="image"/>
 </relation>
 
-</library>
+<!-- these parameters will get set in the Director -->
+<parameter name="domain" value="SDF" type="string"/>
+<parameter name="starttime" value="1.0" type="double"/>
+<parameter name="endtime" value="7.0" type="double"/>
+
+</schematic>
 
