@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
+import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.moml.MoMLParser;
 

@@ -29,7 +29,7 @@ package ptolemy.domains.fsm.kernel.test;
 import java.net.URL;
 
 import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
+import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
 
