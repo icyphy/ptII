@@ -334,9 +334,9 @@ public class TypeSpecializerAnalysis {
             // this will help us figure out where locals are defined.
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
             SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-            System.out.println("computing aliases for " + method);
+            //  System.out.println("computing aliases for " + method);
             MustAliasAnalysis aliasAnalysis = null; //new MustAliasAnalysis(unitGraph);
-            System.out.println("done computing aliases for " + method);
+            //   System.out.println("done computing aliases for " + method);
   
             for (Iterator locals = body.getLocals().iterator();
                  locals.hasNext();) {
