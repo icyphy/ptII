@@ -30,11 +30,8 @@
 
 package ptolemy.domains.de.lib;
 
-import ptolemy.domains.de.kernel.*;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.lib.TimedActor;
-import ptolemy.actor.lib.SequenceActor;
+import ptolemy.domains.de.kernel.DEActor;
+import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 

@@ -30,14 +30,9 @@
 
 package ptolemy.domains.de.lib;
 
-import ptolemy.kernel.*;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Merge

@@ -30,17 +30,13 @@
 
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.TimedActor;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.Director;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.lib.TimedActor;
-import ptolemy.actor.lib.SequenceActor;
-import java.util.Vector;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
