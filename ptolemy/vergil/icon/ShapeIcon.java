@@ -73,6 +73,22 @@ public class ShapeIcon extends EditorIcon {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+    
+    /** Create a new icon with the given name in the given container
+     *  with the given default shape.
+     *  @param container The container.
+     *  @param name The name of the attribute.
+     *  @param defaultShape The default shape.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public ShapeIcon(NamedObj container, String name, Shape defaultShape)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        setShape(defaultShape);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
