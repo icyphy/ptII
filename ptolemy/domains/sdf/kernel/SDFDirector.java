@@ -234,6 +234,38 @@ public class SDFDirector extends StaticSchedulingDirector {
                         iterationCount + " time(s).");
             }
         }
+        
+        CompositeActor container = (CompositeActor)getContainer();
+        for(Iterator ports = container.outputPortList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort)ports.next();
+
+            // Create external initial production.
+            int rate = SDFScheduler.getTokenInitProduction(port);
+            boolean wasTransferred = false;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                try {
+                    for (int k = 0; k < rate; k++) {
+                        if (port.hasTokenInside(i)) {
+                            Token t = port.getInside(i);
+                            if (_debugging) _debug(getName(),
+                                    "transferring output from "
+                                    + getName());
+                            port.send(i, t);
+                            wasTransferred = true;
+                        } else {
+                            throw new IllegalActionException(this, port,
+                                    "Port should produce " + rate
+                                    + " tokens, but there were only "
+                                    + k + " tokens available.");
+                        }
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
+                }
+            }
+        }
     }
 
     /** Return a new receiver consistent with the SDF domain.
