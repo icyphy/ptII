@@ -47,29 +47,28 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
 
-/** An implementation of the ptolemy.actor.Receiver interface for
- *  the DE domain.  Tokens that are put into this receiver logically
- *  have time stamps. If the time stamp is not explicitly given using
- *  the setDelay() method,  then it is assumed to be the current time
- *  (which is maintained by the director).  The put() method sends
- *  the specified token to the director, which returns it to this receiver
- *  (via the protected method _triggerEvent()) when current time matches
- *  the time stamp of the token. The get() method returns only tokens
- *  that the director has so returned. Thus, when
- *  a token is put into the receiver using put(), it does not become
- *  immediately available to the get() method.
- *  <p>
- *  By default, the time stamp of a token is the current time of the
- *  director when put() is called. To specify a time stamp in the
- *  future, call setDelay() prior to calling put(). This should be
- *  done in a synchronized manner, since there could be multiple
- *  thread running in this domain.
- *  <p>
- *  Before firing an actor, the director is expected to put at least one
- *  token into at least one of the receivers contained by the actor.
- *
- *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
- *  @version $Id$
+/** An implementation of the ptolemy.actor.Receiver interface for the
+DE domain.  Tokens that are put into this receiver logically have time
+stamps. If the time stamp is not explicitly given using the setDelay()
+method, then it is assumed to be the current time (which is maintained
+by the director).  The put() method sends the specified token to the
+director, which returns it to this receiver (via the protected method
+_triggerEvent()) when current time matches the time stamp of the
+token. The get() method returns only tokens that the director has so
+returned. Thus, when a token is put into the receiver using put(), it
+does not become immediately available to the get() method.
+
+<p>By default, the time stamp of a token is the current time of the
+director when put() is called. To specify a time stamp in the future,
+call setDelay() prior to calling put(). This should be done in a
+synchronized manner, since there could be multiple thread running in
+this domain.
+
+<p>Before firing an actor, the director is expected to put at least one
+token into at least one of the receivers contained by the actor.
+
+@author Lukito Muliadi, Edward A. Lee, Jie Liu
+@version $Id$
  */
 public class DEReceiver extends AbstractReceiver {
 
