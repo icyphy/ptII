@@ -58,7 +58,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 */
 public class TestDirector extends AtomicActor {
 
-    public TestDirector (CompositeActor container, String name)
+    public TestDirector(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new IOPort(this, "input", true, false);
