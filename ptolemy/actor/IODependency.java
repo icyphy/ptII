@@ -34,7 +34,9 @@ package ptolemy.actor;
 import ptolemy.graph.DirectedGraph;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// IODependency
@@ -152,7 +154,24 @@ public abstract class IODependency {
         return _directedGraph;
     }
     
-    /** Make the IODependency object invalid. Note that the IODependency
+    /** Get the independent outputs of the given input port.
+     *  //FIXME: Will be removed when the DEDirector redesign finishes.
+     */
+    public Set getIndependentOutputPorts(IOPort inputPort) {
+        Set independentOutputPorts = new HashSet();
+        Collection reachableOutputs = 
+            _directedGraph.reachableNodes(_directedGraph.node(inputPort));
+        Iterator outputs = _container.outputPortList().listIterator();
+        while (outputs.hasNext()) {
+            IOPort outputPort = (IOPort) outputs.next();
+            if (!reachableOutputs.contains(_directedGraph.node(outputPort))) {
+                independentOutputPorts.add(outputPort);
+            }
+        }
+        return independentOutputPorts;
+    }
+ 
+     /** Make the IODependency object invalid. Note that the IODependency
      *  object is used to help a director to construct a valid schedule. 
      *  When a model changes, e.g. the topology change, the director has
      *  to reconstruct the IODependency object and schedule, and this method 
@@ -201,5 +220,4 @@ public abstract class IODependency {
     private DirectedGraph _abstractPortsGraph;
     // The validity flag of this attribute.
     private boolean _directedGraphValid = false;
-    
 }

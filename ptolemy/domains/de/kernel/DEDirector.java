@@ -1418,11 +1418,19 @@ public class DEDirector extends Director {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort)inputPorts.next();
 
+                Set notDirectlyDependentPorts = 
+                    ioDependency.getIndependentOutputPorts(inputPort);
+
                 // get all the output ports of the current actor.
                 Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
+                    if (notDirectlyDependentPorts != null && 
+                        notDirectlyDependentPorts.contains(outputPort)) {
+                        // Skip the port without direct dependence.
+                        continue;
+                    }
                     // find the inside input ports connected to outputPort
                     Iterator inPortIterator =
                         outputPort.deepConnectedInPortList().iterator();
