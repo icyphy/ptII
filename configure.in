@@ -229,7 +229,7 @@ cd $startdir
 AC_MSG_CHECKING([ the JDK version to see if we need to increase heap size for javadoc])
 JDOCSIZE=
 case "$JVERSION" in
-	1.2.*)  JDOCSIZE="-JXmx132m"
+	1.2.*)  JDOCSIZE="-J-Xmx132m"
 		AC_MSG_RESULT([yes, use $JDOCSIZE])
 	;;
 	*) AC_MSG_RESULT([no, not necessary])
