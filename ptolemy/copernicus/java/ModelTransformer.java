@@ -543,7 +543,9 @@ public class ModelTransformer extends SceneTransformer {
                     PtolemyUtilities.portType);
             body.getLocals().add(portLocal);
 
-            if(classObject.getPort(port.getName()) != null) {
+            // We do not need to create ports here, because the actor
+            // transformer will do that.
+            //          if(classObject.getPort(port.getName()) != null) {
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
 
@@ -556,7 +558,7 @@ public class ModelTransformer extends SceneTransformer {
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
                         Jimple.v().newCastExpr(tempPortLocal,
                                 PtolemyUtilities.portType)));
-            } else {
+                                /* } else {
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
                 Local local = PtolemyUtilities.createNamedObjAndLocal(
@@ -588,7 +590,7 @@ public class ModelTransformer extends SceneTransformer {
                         Jimple.v().newCastExpr(local,
                                 PtolemyUtilities.portType)));
 
-            }
+                                }*/
 
             
            //   // Set the type of the port if we need to.
