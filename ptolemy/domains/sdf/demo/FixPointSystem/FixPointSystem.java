@@ -111,12 +111,6 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
 	    _ramp = new Ramp(_toplevel, "ramp");
 	    _ramp.step.setToken(new DoubleToken(0.1));
 	    _ramp.init.setToken(new IntToken(-1));
-
-            // Create and configure data source
-            _ramp1 = new Ramp(_toplevel, "ramp1");
-	    _ramp1.step.setToken(new DoubleToken(0.1));
-	    _ramp1.init.setToken(new IntToken(-1));
-
             
             // Create and configure coder
             _doubleToFix = new DoubleToFix(_toplevel, "tofix");
@@ -125,6 +119,7 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             
             // Create and configure coder
             _fixToDouble = new FixToDouble(_toplevel, "todouble");
+            _fixToDouble.precision.setToken(new StringToken("(2.1)"));
             
             // Create and configure plotter
             _myplot = new SequencePlotter(_toplevel, "plot");
@@ -137,10 +132,10 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             _myplot.plot.setMarksStyle("dots");
             _myplot.plot.setSize(500, 300);
 
-            _toplevel.connect( _ramp.output, _doubleToFix.input);
+            Relation r = _toplevel.connect( _ramp.output, _doubleToFix.input);
             _toplevel.connect( _doubleToFix.output, _fixToDouble.input);
             _toplevel.connect( _fixToDouble.output, _myplot.input);          
-            _toplevel.connect( _ramp1.output, _myplot.input);
+            _myplot.input.link( r );
 
             // We initialize the model correctly.
             _initCompleted = true;
