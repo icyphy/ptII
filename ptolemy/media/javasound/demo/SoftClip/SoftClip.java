@@ -1,5 +1,5 @@
-/* A simple application that demonstrates the use of SoundCapture
-and SoundPlayback by performing soft clipping in real-time.
+/* A simple application that demonstrates the use of LiveSound by performing
+   soft clipping in real-time.
 
  Copyright (c) 2000-2003 The Regents of the University of California.
  All rights reserved.
@@ -35,13 +35,12 @@ import ptolemy.media.javasound.LiveSound;
 
 ////////////////////////////////////////////////////
 /**
-A simple application that demonstrates the use of SoundCapture
-and SoundPlayback. This application performs real-time
-capture, processing, and playback of audio data.
-Sound samples are captured from the computer's audio
-input port. The processing consists of a simple
-soft-clipping function (the arc tangent is used). The
-soft-clipped audio data is then played out the speaker.
+A simple application that demonstrates the use of LiveSound by performing
+soft clipping in real-time.  This application performs real-time capture,
+processing, and playback of audio data.  Sound samples are captured from the
+computer's audio input port. The processing consists of a simple soft-clipping
+function (the arc tangent is used). The soft-clipped audio data is then played
+out the speaker.
 @author Brian K. Vogel (vogel@eecs.berkeley.edu)
 @version $Id$
 @since Ptolemy II 1.0
@@ -122,7 +121,7 @@ public class SoftClip {
                 // captured audio.
                 for (int j=0; j< channels; j++) {
                     for (int i=0; i< getSamplesSize; i++) {
-                        //  ********** INSERT PROCESSING CODE HERE ****
+                        //  ********** PROCESSING CODE HERE **********
 
                         // Perform soft clipping using the arc tangent.
                         capturedSamplesArray[j][i] =
