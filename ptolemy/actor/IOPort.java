@@ -32,6 +32,7 @@ package pt.kernel;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
@@ -65,11 +66,12 @@ public abstract class IOPort extends ComponentPort {
      *  neither an input nor an output.
      *  @param container
      *  @param name
+     *  @exception IllegalActionException name argument is null.
      *  @exception NameDuplicationException Name coincides with
      *   an element already on the port list of the parent.
      */	
     public IOPort(ComponentEntity container, String name) 
-             throws NameDuplicationException {
+             throws IllegalActionException, NameDuplicationException {
 	super(container,name);
     }
 
@@ -80,12 +82,13 @@ public abstract class IOPort extends ComponentPort {
      *  @param name
      *  @param isinput
      *  @param isoutput
+     *  @exception IllegalActionException name argument is null.
      *  @exception NameDuplicationException Name coincides with
      *   an element already on the port list of the parent.
      */	
     public IOPort(ComponentEntity container, String name,
              boolean isinput, boolean isoutput) 
-             throws NameDuplicationException {
+             throws IllegalActionException, NameDuplicationException {
 	this(container,name);
         makeInput(isinput);
         makeOutput(isoutput);
@@ -94,14 +97,76 @@ public abstract class IOPort extends ComponentPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Get a token from the port.  The token must have been previously
-     *  received via the receive() method. Different implementations
+    /** Deeply enumerate the input ports connected to this port. Use the 
+     *  cached result if it is still valid.
+     *  @see ComponentPort#deepConnectedPorts.
+     */	
+    public Enumeration deepConnectedInputPorts() {
+        synchronized(workspace()) {
+            if (_deepConnectedInputPortsVersion == workspace().getVersion()) {
+                // Cache is valid.  Use it.
+                return _deepConnectedInputPorts.elements();
+            }
+            LinkedList result = new LinkedList();
+            Enumeration ports = deepConnectedPorts();
+            while(ports.hasMoreElements()) {
+                IOPort port = (IOPort)ports.nextElement();
+                if(port.isInput()){
+                    result.insertLast(port);
+                }
+            }
+            _deepConnectedInputPorts = result;
+            _deepConnectedInputPortsVersion = workspace().getVersion();
+            return _deepConnectedInputPorts.elements();
+        }
+    }
+                    
+    /** Deeply enumerate the output ports connected to this port. Use the 
+     *  cached result if it is still valid.
+     *  @see ComponentPort#deepConnectedPorts.
+     */	
+    public Enumeration deepConnectedOutputPorts() {
+        synchronized(workspace()) {
+            if (_deepConnectedOutputPortsVersion == workspace().getVersion()) {
+                // Cache is valid.  Use it.
+                return _deepConnectedOutputPorts.elements();
+            }
+            LinkedList result = new LinkedList();
+            Enumeration ports = deepConnectedPorts();
+            while(ports.hasMoreElements()) {
+                IOPort port = (IOPort)ports.nextElement();
+                if(port.isOutput()){
+                    result.insertLast(port);
+                }
+            }
+            _deepConnectedOutputPorts = result;
+            _deepConnectedOutputPortsVersion = workspace().getVersion();
+            return _deepConnectedOutputPorts.elements();
+        }
+    }    
+
+    /** Get all tokens from the port. The tokens must have been
+     *  previously received via the receive() method. Different 
+     *  implementations of this method will react differently if no token
+     *  is available.  Implementations should throw an exception
+     *  if the port is not an input port.
+     *  @exception IllegalActionException Port is not an input.
+     *  @exception NoSuchElementException No token to get.
+     */	
+    public abstract Token[] get() throws NoSuchElementException, 
+	    IllegalActionException;
+
+    /** Get a token received from a particular output port. The token
+     *  must have been previously received via the receive() method. 
+     *  The output port must be connected to this port, otherwise an 
+     *  Exception is thrown. Different implementations 
      *  of this method will react differently if no token
      *  is available.  Implementations should throw an exception
      *  if the port is not an input port.
      *  @exception IllegalActionException Port is not an input.
+     *  @exception NoSuchElementException No token to get.
      */	
-    public abstract Token get() throws NoSuchElementException, 
+    public abstract Token get(IOPort fromport) throws NoSuchElementException, 
 	    IllegalActionException;
 
     /** Return true if the port is an input.  An input port is one
@@ -157,22 +222,43 @@ public abstract class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                    "Attempt to send data from a port that is not an output.");
         }
-        Enumeration ports = deepGetConnectedPorts();
+        Enumeration ports = deepConnectedPorts();
         boolean first = true;
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
             if (port.isInput()) {
                 if (first) {
-                    port.receive(token);
+                    port.receive(token, this);
                     first = false;
                 } else {
-                    port.receive((Token)(token.clone()));
+                    port.receive((Token)(token.clone()), this);
                 }
             }
         }
     }
 
-    /** Send a token to all ports connected through the specified relation
+    /** Send a token to a connected input port.
+     *  The transfer is accomplished by calling the receive() method of
+     *  the destination port.
+     *  @param token The token to send
+     *  @exception IllegalActionException This port is not an output port, 
+     *             or the desination port is not an input port.
+     */	
+    public void put(Token token, IOPort toport) throws 
+	    IllegalActionException {
+        if (!isOutput()) {
+            throw new IllegalActionException(this,
+                   "Attempt to send data from a port that is not an output.");
+        }
+        if (!isDeeplyConnected(toport)) {
+            throw new IllegalActionException(this,
+                   "Attempt to send data to a port that is not an input.");
+        }
+        toport.receive(token, this);
+    }
+
+    /** FIXME: Do we need this?
+     *  Send a token to all ports connected through the specified relation
      *  that identify themselves as input ports.  
      *  The transfer is accomplished by calling the receive()
      *  method of the destination ports.  If there is more than one
@@ -192,16 +278,16 @@ public abstract class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                    "Attempt to send data from a port that is not an output.");
         }
-        Enumeration ports = relation.deepGetLinkedPorts();
+        Enumeration ports = relation.deepLinkedPorts();
         boolean first = true;
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
             if (port.isInput()) {
                 if (first) {
-                    port.receive(token);
+                    port.receive(token, this);
                     first = false;
                 } else {
-                    port.receive((Token)(token.clone()));
+                    port.receive((Token)(token.clone()), this);
                 }
             }
         }
@@ -214,7 +300,8 @@ public abstract class IOPort extends ComponentPort {
      *  if the port is not an input port.
      *  @exception IllegalActionException Port is not an input.
      */	
-    public abstract void receive(Token token) throws IllegalActionException;
+    public abstract void receive(Token token, IOPort fromport)
+                    throws IllegalActionException;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
@@ -237,4 +324,11 @@ public abstract class IOPort extends ComponentPort {
 
     // Indicate whether the port is an input, an output, or both.
     private boolean _isinput, _isoutput;
+    // A cache of the deeply connected Input/Output ports, and the version
+    // used to construct it.
+    // 'transient' means that the variable will not be serialized.
+    private transient LinkedList _deepConnectedInputPorts;
+    private long _deepConnectedInputPortsVersion = -1;
+    private transient LinkedList _deepConnectedOutputPorts;
+    private long _deepConnectedOutputPortsVersion = -1;
 }
