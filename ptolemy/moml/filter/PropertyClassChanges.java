@@ -334,15 +334,15 @@ public class PropertyClassChanges implements MoMLFilter {
             .put("ptolemy.domains.sr.kernel.Director",
                     srDirectorClassChanges);
 
-//        // ModalModel
-//        HashMap modalModelClassChanges = new HashMap();
-//        // Key = property name, Value = new class name
-//        modalModelClassChanges.put("directorClass",
-//                "ptolemy.data.expr.StringParameter");
-//
-//        _actorsWithPropertyClassChanges
-//            .put("ptolemy.domains.fsm.kernel.ModalModel",
-//                    modalModelClassChanges);
+        // ModalModel
+        HashMap modalModelClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        modalModelClassChanges.put("directorClass",
+                "ptolemy.data.expr.StringParameter");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.domains.fsm.modal.ModalModel",
+                    modalModelClassChanges);
 
         // ImageUnpartition
         _actorsWithPropertyClassChanges
