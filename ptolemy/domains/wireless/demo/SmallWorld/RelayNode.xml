@@ -63,7 +63,7 @@ transmited more than 1 hops.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 60.0">
         </property>
     </property>
     <property name="range" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -82,7 +82,7 @@ transmited more than 1 hops.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 80.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -155,7 +155,7 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -163,12 +163,12 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {35, 32, 960, 560}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {27, 155, 991, 560}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 444]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 444]">
     </property>
     <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -186,7 +186,7 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 20.0">
         </property>
     </property>
     <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 0.5}">
@@ -205,11 +205,11 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 40.0">
         </property>
     </property>
     <property name="model ID" class="ptolemy.kernel.attributes.IDAttribute">
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 5, 2004 12:01:12 PM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 7, 2004 9:42:44 AM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
@@ -217,12 +217,12 @@ Discard the rest.</text></svg></configure>
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 50.0">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{372.5, 222.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{388.0, 222.0}">
     </property>
     <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
         <property name="input"/>

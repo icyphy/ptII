@@ -18,7 +18,7 @@
     <property name="x" value="40.0"/>
     <property name="y" value="0.0"/>
   </property>
-  <property name="polygon" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+  <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
     <property name="width" value="35"/>
     <property name="height" value="20"/>
     <property name="vertices" value="{0.0, 0.0, 20.0, 0.0, 5.0, 20.0, -15.0, 20.0}"/>

@@ -84,7 +84,7 @@ follow certian id's.  Model takes 3 minutes to process (we'll be fixed later)</t
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="circle2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+            <property name="circle2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// PolygonAttribute
+//// ResizablePolygonAttribute
 /**
 This is an attribute that is rendered as a polygon.  The <i>vertices</i>
 parameter is an array of doubles that specify the vertices of the polygon
@@ -57,7 +57,7 @@ scaled to fit the specified width and height.
 @author Edward A. Lee
 @version $Id$
 */
-public class PolygonAttribute extends FilledShapeAttribute {
+public class ResizablePolygonAttribute extends FilledShapeAttribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -72,7 +72,7 @@ public class PolygonAttribute extends FilledShapeAttribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public PolygonAttribute(NamedObj container, String name)
+    public ResizablePolygonAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

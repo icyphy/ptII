@@ -65,7 +65,7 @@ in range it takes 26seconds for it to process.</text></svg></configure>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="circle2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+            <property name="circle2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">

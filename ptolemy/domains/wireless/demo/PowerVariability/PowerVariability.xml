@@ -538,7 +538,7 @@ power is shown on the plot.</text></svg></configure>
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
             </property>
-            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">

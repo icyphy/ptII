@@ -332,7 +332,7 @@ require physical connectivity.</text></svg></configure>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.08}">
                 </property>
             </property>
-            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="30">

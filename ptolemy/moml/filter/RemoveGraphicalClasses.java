@@ -212,7 +212,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 null);
 
         _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.PolygonAttribute",
+                "ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute",
                 null);
 
         _graphicalClasses.put(

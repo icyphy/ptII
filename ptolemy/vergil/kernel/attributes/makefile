@@ -51,8 +51,8 @@ JSRCS = \
 	FilledShapeAttribute.java \
 	ImageAttribute.java \
 	LineAttribute.java \
-	PolygonAttribute.java \
 	RectangleAttribute.java \
+	ResizablePolygonAttribute.java \
 	TextAttribute.java \
 	ShapeAttribute.java
 

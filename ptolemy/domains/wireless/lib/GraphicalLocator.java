@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
-import ptolemy.vergil.kernel.attributes.PolygonAttribute;
+import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicalLocator
@@ -96,7 +96,7 @@ public class GraphicalLocator extends Locator {
         _circle.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
 
         // Create the green antenna shape.
-        PolygonAttribute  antenna = new PolygonAttribute(node_icon, "antenna2");
+        ResizablePolygonAttribute  antenna = new ResizablePolygonAttribute(node_icon, "antenna2");
         antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");
         antenna.width.setToken("10");
         antenna.height.setToken("30");

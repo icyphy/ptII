@@ -2522,7 +2522,7 @@ the message. Modify the "exponent" parameter to see different behavior. </text><
     </entity>
     <entity name="Base" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="circle2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
+            <property name="circle2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
