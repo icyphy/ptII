@@ -31,6 +31,7 @@
 package ptolemy.moml;
 
 import java.net.URL;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Enumeration;
 
@@ -139,7 +140,8 @@ public class MoMLApplet extends PtolemyApplet {
             if (runControlsSpec != null) {
                 try {
                     int numRunControls = Integer.parseInt(runControlsSpec);
-                    add(_createRunControls(numRunControls));
+                    getContentPane().add(_createRunControls(numRunControls),
+                            BorderLayout.SOUTH);
                 } catch (NumberFormatException ex) {
                     report("Warning: runControls parameter failed: ", ex);
                 }
@@ -156,7 +158,7 @@ public class MoMLApplet extends PtolemyApplet {
                         "MoML applet does not not specify a model parameter!");
             }
             // Specify that all Placeable entities be placed in the applet.
-            MoMLParser parser = new MoMLParser(null, this);
+            MoMLParser parser = new MoMLParser(null, getContentPane());
             URL docBase = getDocumentBase();
             URL xmlFile = new URL(docBase, modelURL);
             _toplevel = null;

@@ -185,24 +185,16 @@ public class MoMLParser extends HandlerBase {
             ((Configurable)_current).configure(_base, stream);
 
         } else if (elementName.equals("doc")) {
-            // Use the special attribute name "_doc" to contain the text.
-            // If the attribute already exists, append to its value rather
-            // creating a new attribute.
+            // Use a special attribute to contain the text.
+            // Note that an object may contain several documentation attributes.
             _checkClass(_current, NamedObj.class,
                     "Element \"doc\" found inside an element that "
                     + "is not a NamedObj. It is: "
-                    + _current.toString());
+                    + _current);
             NamedObj current = (NamedObj)_current;
-            Documentation previous
-                   = (Documentation)current.getAttribute("_doc");
-            if (previous == null) {
-                Documentation doc
-                        = new Documentation((NamedObj)_current, "_doc");
-                doc.setValue(_currentCharData.toString());
-            } else {
-                previous.setValue(previous.getValue()
-                        + "\n" + _currentCharData.toString());
-            }
+            String name = current.uniqueName("_doc_");
+            Documentation doc = new Documentation(current, name);
+            doc.setValue(_currentCharData.toString());
         } else if (
                 elementName.equals("attribute")
                 || elementName.equals("class")
@@ -305,6 +297,7 @@ public class MoMLParser extends HandlerBase {
     /** Parse the given string, which contains MoML
      *  (it does not need to include the "&lt;?xml ... &gt;"
      *  element nor the DOCTYPE specification).
+     *  The top-level element must be "model" or "class".
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent valid MoML data.
      *  @param input The string from which to read MoML.
@@ -367,7 +360,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, NamedObj.class,
                         "Element \"attribute\" found inside an element that "
                         + "is not a NamedObj. It is: "
-                        + _current.toString());
+                        + _current);
                 Object attribute = (Attribute)
                         ((NamedObj)_current).getAttribute(attributeName);
 
@@ -411,26 +404,27 @@ public class MoMLParser extends HandlerBase {
                         "Missing extends attribute for element \"class\"");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"class\"");
+                NamedObj newEntity;
                 if (_current != null) {
                     _checkClass(_current, CompositeEntity.class,
                            "Element \"class\" found inside an element that "
                            + "is not a CompositeEntity. It is: "
                            + _current);
                     _containers.push(_current);
-                    Object newEntity = _createEntity(className, entityName);
-                    _current = newEntity;
+                    newEntity = _createEntity(className, entityName);
                 } else {
-                    Object newEntity = _createEntity(className, entityName);
-                    _current = newEntity;
-                    _toplevel = (NamedObj)_current;
+                    newEntity = _createEntity(className, entityName);
+                    _toplevel = newEntity;
                 }
+                newEntity.setMoMLElementName("class");
+                _current = newEntity;
 
             } else if (elementName.equals("configure")) {
                 String source = (String)_attributes.get("source");
                 _checkClass(_current, Configurable.class,
                         "Element \"configure\" found inside an element that "
                         + "does not implement Configurable. It is: "
-                        + _current.toString());
+                        + _current);
                 if (source != null) {
                     URL xmlFile = new URL(_base, source);
                     InputStream stream = xmlFile.openStream();
@@ -446,7 +440,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, CompositeActor.class,
                         "Element \"director\" found inside an element that "
                         + "is not a CompositeActor. It is: "
-                        + _current.toString());
+                        + _current);
                 Object[] arguments = new Object[2];
                 arguments[0] = _current;
                 arguments[1] = dirName;
@@ -464,7 +458,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"entity\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
-                        + _current.toString());
+                        + _current);
                 Object newEntity = _createEntity(className, entityName);
                 if (_panel != null && newEntity instanceof Placeable) {
                     ((Placeable)newEntity).place(_panel);
@@ -499,7 +493,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"link\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
-                        + _current.toString());
+                        + _current);
                 CompositeEntity context = (CompositeEntity)_current;
 
                 // Parse port
@@ -521,7 +515,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, Locatable.class,
                        "Element \"location\" found inside an element that "
                        + "is not Locatable. It is: "
-                       + _current.toString());
+                       + _current);
 
                 int x = Integer.parseInt(xSpec);
                 if (ySpec != null) {
@@ -552,6 +546,7 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _workspace;
                 _toplevel = (NamedObj)_createInstance(className, arguments);
                 _toplevel.setName(modelName);
+                _toplevel.setMoMLElementName("model");
                 _current = _toplevel;
 
             } else if (elementName.equals("port")) {
@@ -563,7 +558,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, ComponentEntity.class,
                         "Element \"port\" found inside an element that "
                         + "is not a ComponentEntity. It is: "
-                        + _current.toString());
+                        + _current);
 
                 Object[] arguments = new Object[2];
                 arguments[0] = (ComponentEntity)_current;
@@ -592,7 +587,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"relation\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
-                        + _current.toString());
+                        + _current);
             
                 Object[] arguments = new Object[2];
                 arguments[0] = (CompositeEntity)_current;
@@ -607,7 +602,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, NamedObj.class,
                         "Element \"rendition\" found inside an element that "
                         + "is not a NamedObj. It is: "
-                        + _current.toString());
+                        + _current);
 
                 Object[] arguments = new Object[2];
                 arguments[0] = (NamedObj)_current;
@@ -623,7 +618,7 @@ public class MoMLParser extends HandlerBase {
                 _checkClass(_current, Relation.class,
                         "Element \"vertex\" found inside an element that "
                         + "is not a Relation. It is: "
-                        + _current.toString());
+                        + _current);
 
                 // Create an instance of Vertex and attach it to the Relation.
                 Vertex vertex = new Vertex((Relation)_current, vertexName);
@@ -648,6 +643,12 @@ public class MoMLParser extends HandlerBase {
             } else {
                 String msg = "XML element \"" + elementName
                         + "\" triggers exception:\n  " + ex.toString();
+
+                // FIXME: While debugging, we print a stack trace here.
+                // This is because XmlException loses 
+                System.err.println("******** original error:");
+                ex.printStackTrace();
+
                 throw new XmlException(msg,
                         _currentExternalEntity(),
                         _parser.getLineNumber(),
@@ -710,8 +711,9 @@ public class MoMLParser extends HandlerBase {
     // the class name is interpreted as a Java class name and we
     // attempt to construct the entity.  This method assumes that
     // _current is an instance of CompositeEntity, or a class cast
-    // exception is thrown.
-    private Object _createEntity(String className, String entityName)
+    // exception is thrown.  It also assumes that the class is
+    // a subclass of NamedObj, or a ClassCastException will be thrown.
+    private NamedObj _createEntity(String className, String entityName)
                  throws Exception {
         // First check to see if the class extends a named entity.
         ComponentEntity reference = _searchForEntity(className);
@@ -721,14 +723,13 @@ public class MoMLParser extends HandlerBase {
                 Object[] arguments = new Object[2];
                 arguments[0] = _current;
                 arguments[1] = entityName;
-                return _createInstance(className, arguments);
+                return (NamedObj)_createInstance(className, arguments);
             } else {
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
-                Object result = _createInstance(className, arguments);
-                if (result instanceof NamedObj) {
-                    ((NamedObj)result).setName(entityName);
-                }
+                NamedObj result =
+                        (NamedObj)_createInstance(className, arguments);
+                result.setName(entityName);
                 return result;
             }
         } else {

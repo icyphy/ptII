@@ -23,7 +23,7 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
 */
@@ -31,6 +31,9 @@
 package ptolemy.moml;
 
 import ptolemy.kernel.util.*;
+
+import java.io.Writer;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Documentation
@@ -59,6 +62,24 @@ public class Documentation extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Write a MoML description of this object with the specified
+     *  indentation depth.  This class is directly supported by the MoML
+     *  "doc" element, so we generate MoML of the form
+     *  "&lt;doc&gt;<i>documentation</i>&lt;/doc&gt;", where
+     *  <i>documentation</i> is replaced by the string value of this
+     *  attribute.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     *  @see _exportMoMLContents
+     */
+    public void exportMoML(Writer output, int depth) throws IOException {
+        output.write(_getIndentPrefix(depth)
+               + "<doc>"
+               + _value
+               + "</doc>\n");
+    }
 
     /** Get the documentation as a string.
      *  @return The documentation.
