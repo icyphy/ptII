@@ -49,7 +49,7 @@ JSRCS = \
 	SoundTracker.java
 
 OTHER_FILES_TO_BE_JARED = \
-	wirelessSoundDetection.xml \
+	WirelessSoundDetection.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
