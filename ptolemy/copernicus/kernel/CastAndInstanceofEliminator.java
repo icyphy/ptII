@@ -144,23 +144,49 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     System.out.println("checkClass = " + checkClass);
                     System.out.println("opClass = " + opClass);
                     if(checkClass.isInterface()) {
-                        if(opClass.getInterfaces().contains(checkClass)) {
-                            // Then we know the instanceof will be true.
-                            System.out.println("Replacing " + value + " with true.");
-                            box.setValue(IntConstant.v(1));
+                        if(opClass.isInterface()) {
+                            if(hierarchy.isInterfaceSubinterfaceOf(
+                                    opClass, checkClass) ||
+                                    opClass.equals(checkClass)) {
+                                // Then we know the instanceof will be true.
+                                System.out.println("Replacing " + value +
+                                        " with true.");
+                                box.setValue(IntConstant.v(1));
+                            }
                         } else {
-                            // We need to ensure that no subclass of opclass implements the interface.
+                            // opClass is a class, not an interface.
+                            if(hierarchy.getImplementersOf(checkClass).contains(opClass)) {
+                                // Then we know the instanceof will be true.
+                                System.out.println("Replacing " + value +
+                                        " with true.");
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                // We need to ensure that no subclass
+                                // of opclass implements the
+                                // interface.  This will mean we
+                                // replace with false.
+                            }
                         }
-                       
-                    } else if(hierarchy.isClassSuperclassOfIncluding(checkClass, opClass)) {
-                        // Then we know the instanceof will be true.
-                        System.out.println("Replacing " + value + " with true.");
-                        box.setValue(IntConstant.v(1));
-                    } else if(!hierarchy.isClassSuperclassOfIncluding(opClass, checkClass)) {
-                        // Then we know the instanceof will be false, because no subclass of opClass
-                        // can suddenly become a subclass of checkClass.
-                        System.out.println("Replacing " + value + " with false.");
-                        box.setValue(IntConstant.v(0));
+                    } else {
+                        if(opClass.isInterface()) {
+                            //???
+                        } else {
+                            if(hierarchy.isClassSuperclassOfIncluding(
+                                    checkClass, opClass)) {
+                                // Then we know the instanceof will be true.
+                                System.out.println("Replacing " + value + 
+                                        " with true.");
+                                box.setValue(IntConstant.v(1));
+                            } else if(!hierarchy.isClassSuperclassOfIncluding(
+                            opClass, checkClass)) {
+                                // Then we know the instanceof will be false,
+                                // because no subclass of opClass can suddenly
+                                // become a subclass of checkClass.
+                                System.out.println("Replacing " + value + 
+                                        " with false.");
+                                box.setValue(IntConstant.v(0));
+                            }
+                        }
                     }
                 }
             }
