@@ -73,12 +73,10 @@ codeDoc/tree.html: 	../pt/plot/*.java \
 			../pt/actor/util/*.java \
 			../pt/data/*.java \
 			../pt/data/expr/*.java
-
 #			../pt/domains/pn/kernel/*.java \
 #			../pt/domains/ct/kernel/*.java \
 #			../pt/domains/pn/lib/*.java \
 #			../pt/domains/ct/lib/*.java
-
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
