@@ -49,7 +49,10 @@ Display sound files.
 */
 public class AudioViewer extends PlotApplication {
 
-    public AudioViewer() {
+    /** Construct an audio plot with no command-line arguments.
+     *  @exception Exception Not thrown.
+     */
+    public AudioViewer() throws Exception {
         super();
         MenuItem play = new MenuItem("Play", new MenuShortcut(KeyEvent.VK_H));
         play.setActionCommand("Play");
@@ -58,7 +61,10 @@ public class AudioViewer extends PlotApplication {
         _specialMenu.add(play);
     }
 
-    public AudioViewer(String args[]) {
+    /** Construct an audio plot with no command-line arguments.
+     *  @exception Exception If the command-line arguments have problems.
+     */
+    public AudioViewer(String args[]) throws Exception {
         super(args);
         MenuItem play = new MenuItem("Play", new MenuShortcut(KeyEvent.VK_H));
         play.setActionCommand("Play");
