@@ -314,12 +314,16 @@ public class Manager extends NamedObj implements Runnable {
                 while (!_finishRequested) {
                     if (!iterate()) break;
                     if (_pauseRequested) {
-                        _setState(PAUSED);
-                        while (_pauseRequested && !_finishRequested) {
-                            try {
-                                wait();
-                            } catch (InterruptedException e) {
-                                // ignore.
+                        // Have to synchronize on this to be able to wait
+                        // during the pause.
+                        synchronized(this) {
+                            _setState(PAUSED);
+                            while (_pauseRequested && !_finishRequested) {
+                                try {
+                                    wait();
+                                } catch (InterruptedException e) {
+                                    // ignore.
+                                }
                             }
                         }
                     }
