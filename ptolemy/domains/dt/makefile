@@ -60,7 +60,7 @@ MISC_FILES =	kernel
 OPTIONAL_FILES = 
 
 all: jclass
-install: jclass jars
+install: jclass 
 
 
 # Get the rest of the rules
