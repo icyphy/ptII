@@ -41,8 +41,8 @@ proc createAndExecute {file} {
     java::new ptolemy.actor.gui.MoMLSimpleApplication $file
 }
 
-if [ file isdirectory auto/failed ] {
-    foreach file [glob auto/failed/*.xml] {
+if [ file isdirectory auto/knownFailedTests ] {
+    foreach file [glob auto/knownFailedTests/*.xml] {
 	puts "------------------ testing $file (Known Failure) "
 	test "Auto" "Automatic test in file $file" {
 	    createAndExecute $file
