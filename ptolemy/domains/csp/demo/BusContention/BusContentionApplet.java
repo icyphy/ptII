@@ -132,50 +132,47 @@ public class BusContentionApplet extends PtolemyApplet {
         _processActor2 = new Processor( toplevel, "proc2", 2 );
         _processActor3 = new Processor( toplevel, "proc3", 3 );
 
-        TypedIORelation inReqs, outReqs,
-            reads, writes, outContends, inContends;
-
         // Set up connections
-        inReqs = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor1.requestOutput );
-        inReqs = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor2.requestOutput );
-        inReqs = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor3.requestOutput );
-        outContends = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.contendOutput,
                 _alarmActor.input );
-        inContends = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.contendInput,
                 _alarmActor.output );
-        outReqs = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.requestOutput,
                 _processActor1.requestInput );
-        outReqs = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.requestOutput,
                 _processActor2.requestInput );
-        outReqs = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _contentionActor.requestOutput,
                 _processActor3.requestInput );
-        reads = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _memoryActor.output,
                 _processActor1.memoryInput );
-        reads = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _memoryActor.output,
                 _processActor2.memoryInput );
-        reads = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _memoryActor.output,
                 _processActor3.memoryInput );
-        writes = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _memoryActor.input,
                 _processActor1.memoryOutput );
-        writes = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _memoryActor.input,
                 _processActor2.memoryOutput );
-        writes = (TypedIORelation)toplevel.connect(
+        toplevel.connect(
                 _memoryActor.input,
                 _processActor3.memoryOutput );
         return toplevel;
@@ -196,7 +193,6 @@ public class BusContentionApplet extends PtolemyApplet {
 
         _graph = _constructGraph();
 
-        final BasicGraphModel finalGraphModel = _graph;
         // display the graph.
         final GraphController gc = new BusContentionGraphController();
 
@@ -346,13 +342,13 @@ public class BusContentionApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     //// LayoutListener
 
-    private class LayoutListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
-            final GraphModel g = _graph;
-            _doLayout(g, gp);
-        }
-    }
+    // private class LayoutListener implements ActionListener {
+    //    public void actionPerformed(ActionEvent evt) {
+    //        final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
+    //        final GraphModel g = _graph;
+    //        _doLayout(g, gp);
+    //    }
+    //}
 
     ///////////////////////////////////////////////////////////////////
     //// BusContentionGraphController
