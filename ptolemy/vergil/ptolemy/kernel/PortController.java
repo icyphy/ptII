@@ -119,11 +119,9 @@ public class PortController extends LocatableNodeController {
 	    // Entity Controller.
 	    int direction;
 	    Location location = (Location)n;
-	    System.out.println("rendering location = " + n);
 	    if(location != null) {
 		Port port = (Port)location.getContainer();
 		Color fill;
-		System.out.println("rendering port = " + port.getFullName());
 		if(port instanceof IOPort && ((IOPort)port).isMultiport()) {
 		    fill = Color.white;
 		} else {
@@ -135,10 +133,7 @@ public class PortController extends LocatableNodeController {
 		    direction = SwingUtilities.NORTH;
 		} else {
 		    IOPort ioport = (IOPort)port;
-		    
-		    System.out.println("input = " + ioport.isInput());
-		    System.out.println("output = " + ioport.isOutput());
-		
+				
 		    if(ioport.isInput() && 
 		       ioport.isOutput()) {
 		    direction = SwingUtilities.NORTH;
