@@ -1881,6 +1881,13 @@ public class ModelTransformer extends SceneTransformer
                         "ptolemy.actor.lib.MathFunction not supported, since "
                         + "it dynamically creates ports.");
             } else if (entity.getClass().getName().equals(
+                               "ptolemy.actor.lib.ArraySort") ||
+                    entity.getClass().getName().equals(
+                            "ptolemy.actor.lib.ArrayPeakSearch")) {
+                throw new RuntimeException("Code Generation for " +
+                        "some actors not supported, since "
+                        + "they create ArrayTokens from lists.");
+            } else if (entity.getClass().getName().equals(
                                "ptolemy.actor.lib.TypeTest")) {
                 throw new RuntimeException("Code Generation for " +
                         "ptolemy.actor.lib.TypeTest not supported, since "
