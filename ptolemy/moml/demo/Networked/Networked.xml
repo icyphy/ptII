@@ -15,6 +15,8 @@ by a higher frequency one (the carrier).</doc>
     <property name="Synchronous Dataflow (SDF) Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
             <doc>Number of iterations in an execution.</doc>
         </property>
@@ -91,6 +93,8 @@ is defined remotely.</text>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -248,7 +252,7 @@ http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</text>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="99.0"/>
-<yRange min="-1.041991494688599" max="1.0956146946426002"/>
+<yRange min="-0.9142955792462609" max="1.0290141944088942"/>
 <noGrid/>
 </plot>?>
         </configure>
