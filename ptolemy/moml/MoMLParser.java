@@ -1319,9 +1319,11 @@ public class MoMLParser extends HandlerBase {
             if (_skipRendition) {
                 return;
             }
+            
+            boolean undoEnabled = _undoEnabled && _isUndoableElement(elementName);
 
             // Handle the undo aspect of the parsing if enabled
-            if (_undoEnabled && _isUndoableElement(elementName)) {
+            if (undoEnabled) {
                 // First push the current undo context if there is one.
                 boolean childNodesUndoable = true;
                 if (_undoContext != null) {
@@ -1436,7 +1438,7 @@ public class MoMLParser extends HandlerBase {
                 _current = newEntity;
                 _namespace = _DEFAULT_NAMESPACE;
 
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     // Handle the undo aspect.
                     if (existedAlready) {
                         if (previous.isClassDefinition()) {
@@ -1501,7 +1503,7 @@ public class MoMLParser extends HandlerBase {
                 }
                 _current = deletedEntity;
                 _namespace = _DEFAULT_NAMESPACE;
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     // Note that nothing below a deleteEntity is undoable
                     _undoContext.setChildrenUndoable(false);
                 }
@@ -1531,7 +1533,7 @@ public class MoMLParser extends HandlerBase {
                 }
                 _current = deletedPort;
                 _namespace = _DEFAULT_NAMESPACE;
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     // Note that nothing below a deletePort is undoable
                     _undoContext.setChildrenUndoable(false);
                 }
@@ -1554,7 +1556,7 @@ public class MoMLParser extends HandlerBase {
                 }
                 _current = deletedProp;
                 _namespace = _DEFAULT_NAMESPACE;
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     // NOTE: do not need to move context as property deletions
                     // are with immedaitely contained properties
                     // NOTE: deleting a property does not have side effects,
@@ -1589,7 +1591,7 @@ public class MoMLParser extends HandlerBase {
                 _current = deletedRelation;
                 _namespace = _DEFAULT_NAMESPACE;
 
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     // Note that nothing below a deleteEntity is undoable
                     _undoContext.setChildrenUndoable(false);
                 }
@@ -1684,7 +1686,7 @@ public class MoMLParser extends HandlerBase {
                 _current = newEntity;
                 _namespace = _DEFAULT_NAMESPACE;
 
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     // Handle the undo aspect.
                     if (existedAlready) {
                         _undoContext.appendUndoMoML("<entity name=\"" + entityName +
@@ -1724,7 +1726,7 @@ public class MoMLParser extends HandlerBase {
                 }
 
                 // Handle the undo aspect.
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     // NOTE: for groups with namespaces, rely on the names
                     // already being part of undo MoML names instead of
                     // tracking the namespace prefix
@@ -1848,7 +1850,7 @@ public class MoMLParser extends HandlerBase {
                 _namespace = _DEFAULT_NAMESPACE;
 
                 // Handle the undo aspect if needed
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     if (alreadyExisted) {
                         // Simply create in the undo MoML the same port
                         _undoContext.appendUndoMoML("<port name=\"" +
@@ -1964,7 +1966,7 @@ public class MoMLParser extends HandlerBase {
                 }
 
                 // Handle the undo aspect if needed
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     if (alreadyExisted) {
                         // Simply create in the undo MoML the same relation
                         _undoContext.appendUndoMoML("<relation name=\"" +
@@ -2014,7 +2016,7 @@ public class MoMLParser extends HandlerBase {
                     _current.setName(newName);
 
                     // Handle the undo aspect if needed
-                    if (_undoEnabled && _undoContext.isUndoable()) {
+                    if (undoEnabled && _undoContext.isUndoable()) {
                         // First try and rename in the parent context.
                         // NOTE: this is a bit of a hack but is the only way
                         // I could see of doing the rename without having to
@@ -2152,7 +2154,7 @@ public class MoMLParser extends HandlerBase {
                 _current = vertex;
                 _namespace = _DEFAULT_NAMESPACE;
 
-                if (_undoEnabled && _undoContext.isUndoable()) {
+                if (undoEnabled && _undoContext.isUndoable()) {
                     _undoContext.appendUndoMoML("<vertex name=\"" +
                             vertexName + "\" ");
                     if (previousValue != null) {
@@ -3480,20 +3482,19 @@ public class MoMLParser extends HandlerBase {
         return (portIsInClass && (relation == null || relation.isClassElement()));
     }
 
-    /**
-     *  Return whether or not the given element name is undoable. NOTE: we need
+    /** Return whether or not the given element name is undoable. NOTE: we need
      *  this method as the list of actions on namespaces and _current does not
      *  apply to elements such as "link"
-     *
-     * @param  elementName  Description of Parameter
-     * @return              Description of the Returned Value
-     * @since Ptolemy 2.1
+     *  @param  elementName  Description of Parameter
+     *  @return              Description of the Returned Value
+     *  @since Ptolemy 2.1
      */
     private boolean _isUndoableElement(String elementName) {
         // The following serves as documentation of sorts for which
         // elements usage is undoable
         // NOTE: property appears first for reasons of efficency.
         if (elementName.equals("property")
+                || elementName.equals("class")
                 || elementName.equals("doc")
                 || elementName.equals("deleteEntity")
                 || elementName.equals("deletePort")
