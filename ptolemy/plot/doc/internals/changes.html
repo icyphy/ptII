@@ -7,7 +7,33 @@
 <h1><a name="ptplot changes">Ptplot Changes</a></h1>
 <H2>The changes between ptplot1.2p1 and ptplot1.3</H2>
 <menu>
-<li> The Pxgraph class and the <code>pxgraph</code>scrip now take
+<li> The Pxgraph class and the <code>pxgraph</code>script now take
+two new command line arguments:
+<dl>
+<dt> <CODE>-bigendian</CODE>
+<dd> Data files are in big-endian, or network binary format.
+If you are on a little-endian machine, such as a machine
+with an Intel x86 chip, and you would like to read a binary
+format file, created on a big-endian machine, such as a Sun SPARC,
+use the <code>-bigendian</code> flag.
+
+<dt><a name="-littleendian"><code>-littleendian</code></a>
+<dt>Data files are in little-endian, or x86 binary format.
+If you are on a big-endian machine, such as a Sun Sparc,
+and you would like to read a binary
+format file created on a little-endian machine, such as Intel x86
+machine, then use the <code>-littleendian</code> flag.
+<dd> 
+
+</dl>
+<CODE>-binary</CODE> now reads pxgraph style binary data in the format
+native to the machine where the Java Ptplot process is running.
+The other binary format read by the <CODE>-binary</CODE> option,
+known as the raw binary format is always reads data as big-endian.
+The <a href="../../demo/Endian.html">Endian Examples</a> page
+illustrates use of the three options.
+
+<li> The Pxgraph class and the <code>pxgraph</code>script now take
 two new command line arguments:
 <DL>
 <dt><code>-o</code> <code><i>output filename</i></code> 
