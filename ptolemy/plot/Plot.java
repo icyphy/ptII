@@ -534,7 +534,7 @@ public class Plot extends PlotBox {
             System.out.println("Plot: resize"+width+" "+height);
         _width = width;
         _height = height;
-        super.resize(_width,_height);
+        super.resize(_width,_height); // FIXME: resize() is deprecated.
     }
 
     /**
