@@ -1,4 +1,4 @@
-/* 
+/* BusContentionDemo 
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -79,9 +79,9 @@ public class BusContentionDemo {
         CSPContentionAlarm alarm = 
                 new CSPContentionAlarm( topLevelActor, "alarm" );
         CSPMemory memory = new CSPMemory( topLevelActor, "memory" );
-        CSPProcessor proc1 = new CSPProcessor( topLevelActor, "proc1" );
-        CSPProcessor proc2 = new CSPProcessor( topLevelActor, "proc2" );
-        CSPProcessor proc3 = new CSPProcessor( topLevelActor, "proc3" );
+        CSPProcessor proc1 = new CSPProcessor( topLevelActor, "proc1", 1 );
+        CSPProcessor proc2 = new CSPProcessor( topLevelActor, "proc2", 2 );
+        CSPProcessor proc3 = new CSPProcessor( topLevelActor, "proc3", 3 );
         // System.out.println("Actors have been instantiated.");
         
         
@@ -122,8 +122,6 @@ public class BusContentionDemo {
         
         outContends = (IORelation)topLevelActor.connect( contendOut, alarmIn );
         inContends = (IORelation)topLevelActor.connect( contendIn, alarmOut );
-        
-        System.out.println("Made It");
         
         outReqs = (IORelation)topLevelActor.connect( reqOut, p1_ReqIn );
         outReqs = (IORelation)topLevelActor.connect( reqOut, p2_ReqIn );
