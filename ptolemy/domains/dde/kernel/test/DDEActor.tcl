@@ -1,4 +1,4 @@
-# Tests for the DDEDirector class
+# Tests for the DDEActor class
 #
 # @Author: Christopher Hylands
 #
@@ -40,33 +40,18 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# 10/17/02 - deleted a bunch of tests that did not work 
-
-
 ######################################################################
 ####
 #
-test DDEDirector-2.1 {Constructor tests} {
+test DDEActor-1.1 {Constructor tests} {
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set d1 [java::new ptolemy.domains.dde.kernel.DDEDirector]
-    $d1 setName D1
-    set d2 [java::new ptolemy.domains.dde.kernel.DDEDirector $w]
-    $d2 setName D2
+    set a1 [java::new ptolemy.domains.dde.kernel.DDEActor]
+    $a1 setName A1
+    set a2 [java::new ptolemy.domains.dde.kernel.DDEActor $w]
+    $a2 setName A2
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
-    set d3 [java::new ptolemy.domains.dde.kernel.DDEDirector $e0 D3]
-    list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 .D2 .E0.D3}
-
-######################################################################
-####
-#
-test DDEDirector-3.1 {Test clone} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set d4 [java::cast ptolemy.domains.dde.kernel.DDEDirector [$d2 clone $w]]
-    $d4 setName D4
-    enumToFullNames [$w directory]
-} {.Manager}
+    set a3 [java::new ptolemy.domains.tm.kernel.TMDirector $e0 D3]
+    list [$a1 getFullName] [$a2 getFullName] [$a3 getFullName]
+} {.A1 .A2 .E0.D3}
 

@@ -61,6 +61,28 @@ set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 ######################################################################
 ####
 #
+test FeedBackDelay-1.1 {Constructors} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+
+    set f1 [java::new ptolemy.domains.dde.kernel.FeedBackDelay]
+    $f1 setName F1
+    set f2 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $w]
+    $f2 setName F2
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName E0
+    set f3 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $e0 F3]
+
+    # Set setDelay and getDelay
+    set r1 [$f3 getDelay]
+    $f3 setDelay 6.0
+    set r2 [$f3 getDelay]
+
+    list [$f1 getFullName] [$f2 getFullName] [$f3 getFullName] $r1 $r2
+} {.F1 .F2 .E0.F3 4.0 6.0}
+
+######################################################################
+####
+#
 test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]

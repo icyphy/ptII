@@ -58,6 +58,41 @@ set globalIgnoreTime -1.0
 # set globalIgnoreTime [java::field $globalIgnoreTimeReceiver IGNORE]
 set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 
+# Call the various boundary* methods on the receiver
+proc describeBoundary {receiver} {
+    return "[$receiver isConnectedToBoundary] [$receiver isConnectedToBoundaryInside] [$receiver isConnectedToBoundaryOutside] [$receiver isProducerReceiver] [$receiver isReadBlocked] [$receiver isWriteBlocked] [$receiver hasRoom 1]"
+
+
+}
+######################################################################
+####
+#
+test DDEReceiver-1.1 {Constructors} {
+    set r1 [java::new ptolemy.domains.dde.kernel.DDEReceiver]
+    set ioPort [java::new ptolemy.actor.IOPort]
+    $ioPort setName IOPort1
+    set r2 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort]
+    set r3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 1]
+    list [describeBoundary $r1] \
+	[[$r2 getContainer] toString] [describeBoundary $r2] \
+	[[$r3 getContainer] toString] [describeBoundary $r3] \
+} {{0 0 0 0 0 0 1} {ptolemy.actor.IOPort {.IOPort1}} {0 0 0 0 0 0 1} {ptolemy.actor.IOPort {.IOPort1}} {0 0 0 0 0 0 1}}
+
+test DDEReceiver-1.2 {Constructors: make sure that the priorities are used} {
+    set ioPort [java::new ptolemy.actor.IOPort]
+    $ioPort setName IOPort1
+    set r3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 1]
+    set r4 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 2]
+    set ddeActor [java::new ptolemy.domains.dde.kernel.DDEActor]
+    set timeKeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $ddeActor]
+    set receiverComparator \
+	[java::new ptolemy.domains.dde.kernel.ReceiverComparator $timeKeeper]
+    list \
+	[$receiverComparator compare $r4 $r3] \
+	[$receiverComparator compare $r3 $r3] \
+	[$receiverComparator compare $r3 $r4] 
+} {-1 0 1}
+
 ######################################################################
 ####
 #
