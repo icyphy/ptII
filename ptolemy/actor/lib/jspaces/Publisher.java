@@ -72,7 +72,7 @@ public class Publisher extends Sink {
         super(container, name);
 
     	jspaceName = new Parameter(this, "jspaceName", 
-                new StringToken("JaveSpaces"));
+                new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
         entryName = new Parameter(this, "entryName", 
@@ -140,9 +140,9 @@ public class Publisher extends Sink {
     /** Find the JavaSpaces according to the jspaceName parameter.
      */
     public void preinitialize() throws IllegalActionException {
+	super.preinitialize();
 	String name = ((StringToken)jspaceName.getToken()).toString();
 	_space = SpaceFinder.getSpace(name);
-
 	_currentSerialNumber =
 		((LongToken)startingSerialNumber.getToken()).longValue();
     }
