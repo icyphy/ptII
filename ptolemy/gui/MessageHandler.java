@@ -165,7 +165,7 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  @param info The message.
-     *  @exception Exception If the user clicks on the "Cancel" button.
+     *  @exception CancelException If the user clicks on the "Cancel" button.
      */
     public static void warning(String info) throws CancelException {
         Object[] message = new Object[1];
