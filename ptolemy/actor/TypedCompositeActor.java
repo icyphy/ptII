@@ -455,9 +455,78 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         super._addRelation(relation);
     }
 
+    /** Check types from a source port to a group of destination ports,
+     *  assuming the source port is connected to all the ports in the
+     *  group of destination ports.  Return a list of instances of
+     *  Inequality that have type conflicts.
+     *  @param sourcePort The source port.
+     *  @param destinationPortList A list of destination ports.
+     *  @return A list of instances of Inequality indicating the
+     *   type constraints that are not satistfied.
+     */
+    protected List _checkTypesFromTo(TypedIOPort sourcePort,
+            List destinationPortList) {
+        List result = new LinkedList();
 
+        boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
+        if (!isUndeclared) {
+            // sourcePort has a declared type.
+            Type srcDeclared = sourcePort.getType();
+            Iterator destinationPorts = destinationPortList.iterator();
+            while (destinationPorts.hasNext()) {
+                TypedIOPort destinationPort =
+                    (TypedIOPort)destinationPorts.next();
+                isUndeclared = destinationPort.getTypeTerm().isSettable();
+
+                if (!isUndeclared) {
+                    // both source/destination ports are declared,
+                    // check type
+                    Type destDeclared = destinationPort.getType();
+                    int compare = TypeLattice.compare(srcDeclared,
+                            destDeclared);
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                        Inequality inequality = new Inequality(
+                                sourcePort.getTypeTerm(),
+                                destinationPort.getTypeTerm());
+                        result.add(inequality);
+                    }
+                }
+            }
+        }
+        return result;
+    }
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
+    
+    /** Return the type constraints on all connections starting from the
+     *  specified source port to all the ports in a group of destination
+     *  ports.
+     *  @param sourcePort The source port.
+     *  @param destinationPortList The destination port list.
+     *  @return A list of instances of Inequality.
+     */
+    protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
+            List destinationPortList) {
+        List result = new LinkedList();
+
+        boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
+        Iterator destinationPorts = destinationPortList.iterator();
+        while (destinationPorts.hasNext()) {
+            TypedIOPort destinationPort = (TypedIOPort)destinationPorts.next();
+            boolean destUndeclared =
+                destinationPort.getTypeTerm().isSettable();
+
+            if (srcUndeclared || destUndeclared) {
+                // At least one of the source/destination ports does
+                // not have declared type, form type constraint.
+                Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
+                        destinationPort.getTypeTerm());
+                result.add(ineq);
+            }
+        }
+
+        return result;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -521,42 +590,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         return result;
     }
 
-    // Check types from a source port to a group of destination ports,
-    // assuming the source port is connected to all the ports in the
-    // group of destination ports.  Return a list of instances of
-    // Inequality that have type conflicts.
-    protected List _checkTypesFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
-        List result = new LinkedList();
-
-        boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
-        if (!isUndeclared) {
-            // sourcePort has a declared type.
-            Type srcDeclared = sourcePort.getType();
-            Iterator destinationPorts = destinationPortList.iterator();
-            while (destinationPorts.hasNext()) {
-                TypedIOPort destinationPort =
-                    (TypedIOPort)destinationPorts.next();
-                isUndeclared = destinationPort.getTypeTerm().isSettable();
-
-                if (!isUndeclared) {
-                    // both source/destination ports are declared,
-                    // check type
-                    Type destDeclared = destinationPort.getType();
-                    int compare = TypeLattice.compare(srcDeclared,
-                            destDeclared);
-                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                        Inequality inequality = new Inequality(
-                                sourcePort.getTypeTerm(),
-                                destinationPort.getTypeTerm());
-                        result.add(inequality);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
     // Return all the ports containing the specified receivers.
     private List _receiverToPort(Receiver[][] receivers) {
         List result = new LinkedList();
@@ -569,32 +602,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 }
             }
         }
-        return result;
-    }
-
-    // Return the type constraints on all connections starting from the
-    // specified source port to all the ports in a group of destination
-    // ports.
-    protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
-        List result = new LinkedList();
-
-        boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
-        Iterator destinationPorts = destinationPortList.iterator();
-        while (destinationPorts.hasNext()) {
-            TypedIOPort destinationPort = (TypedIOPort)destinationPorts.next();
-            boolean destUndeclared =
-                destinationPort.getTypeTerm().isSettable();
-
-            if (srcUndeclared || destUndeclared) {
-                // At least one of the source/destination ports does
-                // not have declared type, form type constraint.
-                Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
-                        destinationPort.getTypeTerm());
-                result.add(ineq);
-            }
-        }
-
         return result;
     }
 }
