@@ -78,11 +78,6 @@ JSRESTORE =	jsrestore
 # The pathname to the JavaScope.zip file
 JSCLASSPATH = 	/users/ptdesign/vendors/sun/JavaScope/JavaScope.zip
 
-# JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
-# to add the javasound directory to the list of directories
-# to run submakes in if we found sound.jar
-JAVASOUND_NEEDED_DIRS = @JAVASOUND_NEEDED_DIRS@
-
 # KVM is the JDK for PalmOS, see
 # http://java.sun.com/products/kvm
 KVM_CLASSES = @KVM_CLASSES@

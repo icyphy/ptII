@@ -299,24 +299,6 @@ JavaCC can be downloaded from http://www.sun.com/suntest'])
 fi
 
 #--------------------------------------------------------------------
-#	Only build in ptolemy/media/javasound if we are under JDK1.3beta
-#	
-#
-#--------------------------------------------------------------------
-
-if test "$JVERSION" != "1.3beta"; then
-	AC_MSG_WARN([JVERSION = $JVERSION, but ptolemy/media/javasound
-is only supported under JDK 1.3beta])
-	# Directories that require javasound.
-	# JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
-	# to add the javasound directory to the list of directories
-	# to run submakes in if we found sound.jar
-	JAVASOUND_NEEDED_DIRS=""
-else 
-	JAVASOUND_NEEDED_DIRS="javasound"
-fi
-
-#--------------------------------------------------------------------
 #	See if there was a command-line option for where Jacl is
 #--------------------------------------------------------------------
 
@@ -414,11 +396,6 @@ AC_SUBST(JAVACC)
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
-
-# JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
-# to add the javasound directory to the list of directories
-# to run submakes in if we found sound.jar
-AC_SUBST(JAVASOUND_NEEDED_DIRS)
 
 # Arguments to pass to javac.  Usually something like '-g -depend'
 AC_SUBST(JDEPENDFLAG)
