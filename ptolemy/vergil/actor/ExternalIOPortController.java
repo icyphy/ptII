@@ -50,6 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.AttributeController;
 
 import java.awt.Color;
@@ -150,6 +151,28 @@ public class ExternalIOPortController extends AttributeController {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to return true if the specified node contains an
+     *  attribute named "_hideInside".  This ensures that ports can be hidden
+     *  on the outside while still being visible on the outside.
+     */
+    protected boolean _hide(java.lang.Object node) {
+        if (node instanceof Locatable) {
+            if (((NamedObj)((Locatable)node)
+                    .getContainer()).getAttribute("_hideInside") != null) {
+                return true;
+            }
+        }
+        if (node instanceof NamedObj) {
+            if (((NamedObj)node).getAttribute("_hideInside") != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
