@@ -65,7 +65,7 @@ test Object-1.1 {Generate .c and .h files for Object} {
     set main [java::call ptolemy.copernicus.c.JavaToC main $args]
     list \
 	    [file readable java.lang.Object.c] \
-	    [file readable java.lang.Object.h]]
+	    [file readable java.lang.Object.h]
 
 } {1 1}
 
