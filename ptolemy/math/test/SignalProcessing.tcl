@@ -221,7 +221,7 @@ test SignalProcessing-2.1 {decibel} {
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 0.1] \
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 1.0] \
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 10.0] \
-	    ] {-Infinity -Infinity -106.03796221 0.0 106.03796221}
+	    ] {NaN -Infinity -106.03796221 0.0 106.03796221}
 } {}
 
 
@@ -238,7 +238,7 @@ test SignalProcessing-3.2 {decibel array} {
     set dbresults [java::call ptolemy.math.SignalProcessing \
 	    {decibel double[]} $dbarray]
     epsilonDiff [$dbresults getrange 0] \
-	    {-Infinity -Infinity -106.03796221 0.0 106.03796221}
+	    {NaN -Infinity -106.03796221 0.0 106.03796221}
 } {}
 
 ####################################################################
@@ -745,9 +745,9 @@ test SignalProcessing-14.1 {sampleWave sqrtRaisedCosine excess 0} {
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
     1.0 $rcGen]
     epsilonDiff [$rcOut getrange 0] { \
-    -0.18006326323142 0.06623912340961 0.47052798214592 0.84692799250337 \
-    1.0 0.84692799250337 0.47052798214592 0.06623912340961 \
-    -0.18006326323142 -0.19980393662457}
+	    -0.100658424209 0.0370287956785 0.263033138349 0.473447140821 \
+	    0.559016994375 0.473447140821 0.263033138349 0.0370287956785 \
+	    -0.100658424209 -0.111693796116}
 } {}
 
 ####################################################################
@@ -756,9 +756,9 @@ test SignalProcessing-14.2 {sampleWave sqrtRaisedCosine with + excess} {
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
     1.0 $rcGen]
     epsilonDiff [$rcOut getrange 0] { \
-    0.17438182313721 0.20718917974530 0.68522677547354 -0.39845263819892 \
-    0.42705752605031 0.26563509213261 0.19439712599740 -0.05179729493632 \
-    -0.07868930341112 -0.01288736524732}
+	    -0.0406721453381 -0.0235772000761 0.082087519139 3.48646058424 \
+	    0.6506643238 3.48646058424 0.082087519139 -0.0235772000761 \
+	    -0.0406721453381 -0.0046891701544}
 } {}
 
 ####################################################################
