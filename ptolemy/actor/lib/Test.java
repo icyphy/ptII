@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) Factored out _checkTokenAgainstReference for use with NonStrictTest (10/30/01)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -127,13 +127,27 @@ public class Test extends Sink {
     public Parameter correctValues;
 
     /** A double specifying how close the input has to be to the value
-     *  given by <i>correctValues</i>.  This is a double, with default
+     *  given by <i>correctValues</i>.  This is a DoubleToken, with default
      *  value 10<sup>-9</sup>.
      */
     public Parameter tolerance;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the attribute being changed is <i>tolerance</i>, then check
+     *  that it is increasing and nonnegative.
+     *  @exception IllegalActionException If the indexes vector is not
+     *   increasing and nonnegative, or the indexes is not a row vector.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == tolerance) {
+	    _tolerance = ((DoubleToken)(tolerance.getToken())).doubleValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Override the base class to set the iteration counter to zero.
      *  @exception IllegalActionException If the base class throws it.
@@ -146,143 +160,84 @@ public class Test extends Sink {
     /** Read one token from each input channel and compare against
      *  the value specified in <i>correctValues</i>.  If the iteration count
      *  is larger than the length of <i>correctValues</i>, then return
-     *  immediately, declaring success on the test.
+     *  immediately, indicating that the inputs correctly matched
+     *  the values in <i>correctValues</i> and that the test suceeded.
+     * 
      *  @exception IllegalActionException If an input is missing,
      *   or if its value does not match the required value.
      */
     public boolean postfire() throws IllegalActionException {
-        int width = input.getWidth();
-        if (_numberOfInputTokensSeen >= ((ArrayToken)(correctValues.getToken())).length()) {
-            // Consume and discard input values.  We are beyond the end
-            // of the correctValues array.
-            for (int i = 0; i < width; i++) {
-                if (input.hasToken(i)) {
-                    input.get(i);
-                }
-            }
-            return true;
-        }
-        Token referenceToken
-            = ((ArrayToken)(correctValues.getToken())).getElement(_numberOfInputTokensSeen);
-        Token[] reference;
-        if (width == 1 && !(referenceToken instanceof ArrayToken)) {
-            reference = new Token[1];
-            reference[0] = referenceToken;
-        } else {
-            try {
-                reference = ((ArrayToken)referenceToken).arrayValue();
-            } catch (ClassCastException ex) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen + ".\n"
+	int width = input.getWidth();
+	if (_numberOfInputTokensSeen
+	    >= ((ArrayToken)(correctValues.getToken())).length()) {
+	    // Consume and discard input values.  We are beyond the end
+	    // of the correctValues array.
+	    for (int i = 0; i < width; i++) {
+		if (input.hasToken(i)) {
+		    input.get(i);
+		}
+	    }
+	    return true;
+	}
+	Token referenceToken
+	    = ((ArrayToken)(correctValues.getToken()))
+	    .getElement(_numberOfInputTokensSeen);
+	Token[] reference;
+	if (width == 1 && !(referenceToken instanceof ArrayToken)) {
+	    reference = new Token[1];
+	    reference[0] = referenceToken;
+	} else {
+	    try {
+		reference = ((ArrayToken)referenceToken).arrayValue();
+	    } catch (ClassCastException ex) {
+		throw new IllegalActionException(this,
+                        "Test fails in iteration " + _numberOfInputTokensSeen
+			+ ".\n"
                         + "Width of input is " + width
                         + ", but correctValues parameter is not an array "
                         + "of arrays.");
-            }
-            if (width != reference.length) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen + ".\n"
+	    }
+	    if (width != reference.length) {
+		throw new IllegalActionException(this,
+                        "Test fails in iteration " + _numberOfInputTokensSeen
+			+ ".\n"
                         + "Width of input is " + width
-                        + ", which does not match the width of the " + _numberOfInputTokensSeen
+                        + ", which does not match the width of the "
+			+ _numberOfInputTokensSeen
                         + "-th element of correctValues, "
                         + reference.length);
-            }
-        }
-        for (int i = 0; i < width; i++) {
-            if (!input.hasToken(i)) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen + ".\n"
-                        + "Empty input on channel " + i);
-            }
-            Token token = input.get(i);
-            _checkTokenAgainstReference(token, reference[i],
-                    tolerance, _numberOfInputTokensSeen);
-        }
-        _numberOfInputTokensSeen++;
-        return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Compare a token against the correctValue and throw an
-     *  IllegalActionException if the values of the tokens are not
-     *  the same or within a specified tolerance.
-     *  @param token The token to check.
-     *  @param correctValue The known good result to check against
-     *  @param tolerance A Parameter that contains a tolerance that
-     *  is used if the token is a DoubleToken or ComplexToken.
-     *  @param numberOfInputTokensSeen  The iteration that we are checking.
-     *  @exception IllegalActionException If the token and the correctValue
-     *  are not equal or within the tolerance.
-     */
-    protected void _checkTokenAgainstReference(
-            Token token, Token correctValue, Parameter tolerance,
-            int numberOfInputTokensSeen)
-            throws IllegalActionException {
-
-        // This method is protected so that we can use it in
-        // derived classes like NonStrictTest.
-
-        if (token instanceof DoubleToken) {
-            // Check using tolerance.
-            try {
-                double correct = ((DoubleToken)correctValue).doubleValue();
-                double seen = ((DoubleToken)token).doubleValue();
-                double ok
-                    = ((DoubleToken)(tolerance.getToken())).doubleValue();
-                if (Math.abs(correct - seen) > ok) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration "
-                            + numberOfInputTokensSeen  + ".\n"
-                            + "Value was: " + seen
-                            + ". Should have been: " + correct);
-                }
-            } catch (ClassCastException ex) {
-                throw new IllegalActionException(this,
+	    }
+	}
+	for (int i = 0; i < width; i++) {
+	    if (!input.hasToken(i)) {
+		throw new IllegalActionException(this,
                         "Test fails in iteration "
-                        + numberOfInputTokensSeen  + ".\n"
-                        + "Input is a double but correct value is not: "
-                        + correctValue.toString());
-            }
-        } else if (token instanceof ComplexToken) {
-            // Check using tolerance.
-            try {
-                Complex correct
-                    = ((ComplexToken)correctValue).complexValue();
-                Complex seen
-                    = ((ComplexToken)token).complexValue();
-                double ok
-                    = ((DoubleToken)(tolerance.getToken())).doubleValue();
-                if (Math.abs(correct.real - seen.real) > ok ||
-                        Math.abs(correct.imag - seen.imag) > ok) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration "
-                            + numberOfInputTokensSeen  + ".\n"
-                            + "Value was: " + seen
-                            + ". Should have been: " + correct);
-                }
-            } catch (ClassCastException ex) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + numberOfInputTokensSeen
-                        + ".\n"
-                        + "Input is complex but correct value is not: "
-                        + correctValue.toString());
-            }
-        } else {
-            BooleanToken result = token.isEqualTo(correctValue);
-            if (!result.booleanValue()) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + numberOfInputTokensSeen
+			+ _numberOfInputTokensSeen + ".\n"
+                        + "Empty input on channel " + i);
+	    }
+	    Token token = input.get(i);
+	    if (token.isCloseTo(reference[i], _tolerance).booleanValue()
+		== false)
+		throw new IllegalActionException(this,
+                        "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"
                         + "Value was: " + token
-                        + ". Should have been: " + correctValue);
-            }
-        }
+                        + ". Should have been: " + reference[i]);
+	}
+	_numberOfInputTokensSeen++;
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // Number of input tokens seen by this actor in the fire method.
+    /** Number of input tokens seen by this actor in the fire method.*/
     protected int _numberOfInputTokensSeen = 0;
+
+    /** A double that is read from the <i>tolerance</i> parameter
+     *	specifying how close the input has to be to the value
+     *  given by <i>correctValues</i>.  This is a double, with default
+     *  value 10<sup>-9</sup>.
+     */
+    protected double _tolerance;
 }

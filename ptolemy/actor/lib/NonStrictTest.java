@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -76,7 +76,6 @@ passes if the value is close to what it should be, within the
 specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>.  The
 input data type is undeclared, so it can resolve to anything.
 
-<p>The Test actor could be extended so that Strictness wa
 
 @See Test
 @author Paul Whitaker, Christopher Hylands
@@ -84,6 +83,13 @@ input data type is undeclared, so it can resolve to anything.
 */
 
 public class NonStrictTest extends Test {
+
+    // The Test actor could be extended so that Strictness was a parameter,
+    // but that would require some slightly tricky code to handle
+    // multiports in a non-strict fashion.  The problem is that if
+    // we have more than one input channel, and we want to handle 
+    // non-strict inputs, then we need to keep track of number of
+    // tokens we have seen on each channel.
 
     /** Construct an actor with an input multiport.
      *  @param container The container.
@@ -113,42 +119,49 @@ public class NonStrictTest extends Test {
      *  the value specified in <i>correctValues</i>.  If the token count
      *  is larger than the length of <i>correctValues</i>, then return
      *  immediately, indicating that the inputs correctly matched
-     *  the values in <i>correctValues</i> and that the test suceeded
+     *  the values in <i>correctValues</i> and that the test suceeded.
+     *
      *  @exception IllegalActionException If an input does not match
-     *   the required value or if the width is not 1.
+     *   the required value or if the width of the input is not 1.
      */
     public boolean postfire() throws IllegalActionException {
-        if (input.getWidth() != 1) {
-            throw new IllegalActionException(this,
-                    "Width of input is " + input.getWidth()
-                    + "but NonStrictTest only supports a width of 1.");
-        }
-        if (_numberOfInputTokensSeen
-                >= ((ArrayToken)(correctValues.getToken())).length()) {
-            // Consume and discard input values.  We are beyond the end
-            // of the correctValues array.
-            if (input.hasToken(0)) {
-                input.get(0);
-            }
-            return true;
-        }
+	if (input.getWidth() != 1) {
+	    throw new IllegalActionException(this,
+			 "Width of input is " + input.getWidth()
+			 + "but NonStrictTest only supports a width of 1.");
+	}
+	if (_numberOfInputTokensSeen
+	    >= ((ArrayToken)(correctValues.getToken())).length()) {
+	    // Consume and discard input values.  We are beyond the end
+	    // of the correctValues array.
+	    if (input.hasToken(0)) {
+		input.get(0);
+	    }
+	    return true;
+	}
 
-        Token referenceToken
-            = ((ArrayToken)(correctValues.getToken()))
-            .getElement(_numberOfInputTokensSeen);
-        if (referenceToken instanceof ArrayToken) {
-            throw new IllegalActionException(this,
-                    "Reference is an ArrayToken, "
-                    + "but NonStrictTest only supports a width of 1.");
-        }
+	Token referenceToken
+	    = ((ArrayToken)(correctValues.getToken()))
+	    .getElement(_numberOfInputTokensSeen);
+	if (referenceToken instanceof ArrayToken) {
+	    throw new IllegalActionException(this,
+			 "Reference is an ArrayToken, "
+			 + "but NonStrictTest only supports a width of 1.");
+	}
 
-        if (input.hasToken(0)) {
-            Token token = input.get(0);
-            _numberOfInputTokensSeen++;
-            _checkTokenAgainstReference(token, referenceToken,
-                    tolerance, _iteration);
-        }
-        _iteration++;
+	if (input.hasToken(0)) {
+	    Token token = input.get(0);
+	    _numberOfInputTokensSeen++;
+	    if (token.isCloseTo(referenceToken, _tolerance).booleanValue()
+		== false)
+		throw new IllegalActionException(this,
+                        "Test fails in iteration " + _iteration
+                        + ".\n"
+                        + "Value was: " + token
+		        + ". Should have been: " + referenceToken);
+
+	}
+	_iteration++;
         return true;
     }
 
