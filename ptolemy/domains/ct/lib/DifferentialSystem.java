@@ -237,8 +237,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 states[i] = ((StringToken)stateNames.getElement(i)).
                     stringValue().trim();
                 integrators[i] = new Integrator(this, states[i]);
-                integrators[i].initialState.setToken(
-                        initial.getElementAsToken(0, i));
+                integrators[i].initialState
+                        .setExpression("initialStates(0," + i + ")");
                 stateRelations[i] = new TypedIORelation(this,
                         "relation_" + states[i]);
 
