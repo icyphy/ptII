@@ -130,7 +130,7 @@ import ptolemy.util.StringUtilities;
 */
 public class NamedObj implements
                           Changeable, Cloneable, Debuggable,
-                          DebugListener, Derivable,
+                          DebugListener, Derivable, MoMLExportable,
                           ModelErrorHandler, Moveable, Serializable {
 
     // Note that Nameable extends ModelErrorHandler, so this class
@@ -622,7 +622,7 @@ public class NamedObj implements
 
                 // Defer change requests so that if changes are
                 // requested during execution, they get queued.
-                setDeferringChangeRequests(true);
+                previousDeferStatus = setDeferringChangeRequests(true);
                 while (requests.hasNext()) {
                     ChangeRequest change = (ChangeRequest)requests.next();
                     // The following is a bad idea because there may be
@@ -1615,26 +1615,33 @@ public class NamedObj implements
      *  and set a flag requesting that future requests be executed
      *  immediately.
      *  @param isDeferring If true, defer change requests.
+     *  @return True if this object was previously deferring change
+     *   requests.
      *  @see #addChangeListener(ChangeListener)
      *  @see #executeChangeRequests()
      *  @see #isDeferringChangeRequests()
      *  @see #requestChange(ChangeRequest)
      *  @see Changeable
      */
-    public void setDeferringChangeRequests(boolean isDeferring) {
+    public boolean setDeferringChangeRequests(boolean isDeferring) {
         NamedObj container = (NamedObj) getContainer();
         if (container != null) {
-            container.setDeferringChangeRequests(isDeferring);
-            return;
+            return container.setDeferringChangeRequests(isDeferring);
         }
 
         // Make sure to avoid modification of this flag in the middle
         // of a change request or change execution.
         synchronized(_changeLock) {
+            boolean result = _deferChangeRequests;
             _deferChangeRequests = isDeferring;
             if (isDeferring == false) {
                 executeChangeRequests();
             }
+            // NOTE: The reason for returning the previous value is
+            // avoid a race condition where the value can be changed
+            // between a call to isDeferringChangeRequest() and this
+            // method.
+            return result;
         }
     }
 
@@ -2272,8 +2279,18 @@ public class NamedObj implements
         // Export MoML if the value of the object is
         // propagated in but from outside the scope
         // of the export.
-        if (_override != null && _override.size() > depth + 1) {
-            return false;
+        if (_override != null) {
+            // Export MoML if the value of the object is
+            // propagated in but from outside the scope
+            // of the export.
+            if (_override.size() > depth + 1) {
+                return false;
+            }
+            // Export MoML if the value has been set directly.
+            if (_override.size() == 1
+                    && ((Integer)_override.get(0)).intValue() == 0) {
+                return false;
+            }
         }
         
         // If any contained object wishes to have
