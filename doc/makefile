@@ -65,6 +65,14 @@ codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java
 		mv $$x.bak $$x; \
 	done
 
+# Files or directories that are present, but that 'make checkjunk' 
+# should not complain about
+MISC_FILES =	codeDoc javahtml
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
+
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/no-compile.mk
 
