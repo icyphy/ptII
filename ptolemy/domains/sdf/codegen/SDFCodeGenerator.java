@@ -101,9 +101,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         .lastIndexOf('.') + 1);
         }
 
-        _packageDirectoryName = _outputDirectoryName + File.separatorChar +
-            _outputPackageName.replace('.', File.separatorChar) +
-            File.separatorChar;
+        _packageDirectoryName = _outputDirectoryName + File.separatorChar
+            + _outputPackageName.replace('.', File.separatorChar)
+            + File.separatorChar;
 
         try {
             _generateMakefile();
@@ -825,11 +825,22 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 + "SDFCodeGenerator\n"
                 + "ME =	" + _outputPackageName + "\n"
                 + "ROOT =                $(PTII)\n"
-                + "CG_ROOT =             $(ROOT)\n"
+                + "CG_ROOT =             \"$(ROOT)\"\n"
                 + "SOURCE_SYSTEM_CLASS = " + _sourceSystemClassName + "\n"
                 + "ITERATIONS =          " + iterations + "\n"
-                + "OUTPKG =              " + _outputPackageName + "\n"
-                + "OUTPKG_DIR =          " + _packageDirectoryName + "\n"
+                + "OUTPKG =              " + _outputPackageName + "\n" 
+		/* _packageDirectoryName has a trailing File.separatorChar
+		   which causes problems under Windows because the character
+		   is a backslash, which will backquote the second " in
+		   when we cd to the "$(OUTPKG_DIR)" directory.
+		   (We have to use double quotes here to handle spaces in
+		   file names.)
+		 */  
+                + "OUTPKG_DIR =          \""
+		+ _packageDirectoryName.substring(0,
+						  _packageDirectoryName
+						  .length()-1)
+		+ "\"\n"
                 /* FIXME: need to figure out OUTPKG_ROOT */
                 + "OUTPKG_ROOT =         " + "$(ROOT)" + "\n"
                 + "OUTPKG_MAIN_CLASS =   " + _systemName + "\n"
