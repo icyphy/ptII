@@ -67,7 +67,7 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 TARGETPACKAGE = ptolemy.copernicus.jhdl.demo.FIR.cg
-TARGETPATH = ptolemy/copernicus/jhdl/demo/Accumulate/cg
+TARGETPATH = ptolemy/copernicus/jhdl/demo/FIR/cg
 SOURCEPACKAGE = ptolemy.copernicus.jhdl.demo.FIR
 MODEL = FIR
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
@@ -104,9 +104,6 @@ demo: jclass
 		-p wjtp.iee enabled \
 		-p wjtp.circuit outDir:$(ROOT)/$(TARGETPATH),targetPackage:$(TARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
-	@echo "decompile the simpleAdd actor"
-	"$(PTII)/bin/jode" $(TARGETPACKAGE).simpleAdd
-#	java -classpath $(ROOT) $(TARGETCLASS)
 
 interpret: jclass
 	@echo "Run as a Ptolemy system"

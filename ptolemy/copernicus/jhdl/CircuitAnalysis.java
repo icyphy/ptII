@@ -105,7 +105,18 @@ public class CircuitAnalysis {
             graph.addEdge(input, delay);
             graph.addEdge(delay, output);
             return;
-        }
+        } else if (entity.getClass().getName().equals(
+                "ptolemy.domains.sdf.lib.FIR")) {
+            Port input = entity.getPort("input");
+            Port output = entity.getPort("output");
+            String delay = "FIR" + count++;
+            graph.addNode(input);
+            graph.addNode(output);
+            graph.addNode(delay);
+            graph.addEdge(input, delay);
+            graph.addEdge(delay, output);
+            return;
+	}
 
         // Analyze the bodies of the appropriate methods for things that
         // are not sample delays.

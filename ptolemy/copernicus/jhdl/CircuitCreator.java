@@ -62,7 +62,11 @@ public class CircuitCreator {
             if (node.toString().startsWith("delay")) {
                 Object pred = operatorGraph.getPredsOf(node).iterator().next();
                 write_reg(writer, pred, node);
-            } else if(node.toString().startsWith("add")) {
+            } else if (node.toString().startsWith("FIR")) {
+                Object pred = operatorGraph.getPredsOf(node).iterator().next();
+                write_fir(writer, pred, node);
+	    }
+	    else if(node.toString().startsWith("add")) {
                 Iterator preds = operatorGraph.getPredsOf(node).iterator();
                 Object in1 = preds.next();
                 Object in2 = preds.next();
@@ -89,6 +93,13 @@ public class CircuitCreator {
             throws IOException {
         writer.write("    regc_o(" + _getWireName(in) + ", " +
                 _getWireName(out) + ");\r\n");
+    }
+
+    static void write_fir(FileWriter writer, Object in, Object out) 
+            throws IOException {
+        writer.write("    new byucc.ptolemy.domains.jhdl.lib.JHDLSimpleFir(this," 
+		     + _getWireName(in) + ", " +
+		     _getWireName(out) + ");\r\n");
     }
 
     static void write_add(FileWriter writer, Object in1,
