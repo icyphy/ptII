@@ -316,5 +316,7 @@ public class QueueReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** This is the queue in which data is stored.
+     */
     protected FIFOQueue _queue = new FIFOQueue();
 }
