@@ -323,6 +323,11 @@ For more help, choose Help from the upper menu bar.</text>
 <!-- Modal Director -->
 <xsl:template name="ModalDirector">
 <!-- The director for modal model is automatically configured by the ModalModel java class. -->
+    <!-- _tableau -->
+    <xsl:element name="property">
+        <xsl:attribute name="name">_tableauFactory</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalTableauFactory</xsl:attribute>
+    </xsl:element>
 </xsl:template>
 
 <!-- ==========================================================
