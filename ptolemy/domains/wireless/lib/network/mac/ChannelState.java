@@ -29,16 +29,21 @@
 
 package ptolemy.domains.wireless.lib.network.mac;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
    and NAV (Network Allocation Vector). To speed up simulation, slot events
    in 802.11 are not generated here.
    @author Yang Zhao
-   @version $Id$
+   @version ChannelState.java,v 1.21 2004/04/22 19:46:18 ellen_zh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (pjb2e)
@@ -308,6 +313,14 @@ public class ChannelState extends MACActorBase {
         _IfsTimer = null;
         _NavTimer = null;
         
+        NamedObj macComposite = getContainer().getContainer();
+        if (macComposite.getAttribute("tNavEnd") != null) {
+            _tNavEnd = macComposite.getAttribute("tNavEnd");
+        } else {
+            _tNavEnd = null;
+            throw new IllegalActionException ("the MAC compositor " +
+                    "dosen't contain a parameter named tNavEnd");
+        }
 
         // First assume channel is busy until PHY sends an idle event
         _changeStatus(Busy);
@@ -326,7 +339,7 @@ public class ChannelState extends MACActorBase {
                 +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
             if (tNew > _NavTimer.expirationTime) {
                 _NavTimer.expirationTime = tNew;
-                tNavEnd=tNew;
+                _setAttribute(_tNavEnd, new DoubleToken(tNew));
                 //curSrc=((SetNavMsg *)msg)->src;
                 _curSrc=((IntToken)_inputMessage.get("src")).intValue();
             }
@@ -339,7 +352,7 @@ public class ChannelState extends MACActorBase {
         case ClearNav:
             // force the state transition to the corresponding noNav states
             _NavTimer.expirationTime = _currentTime;
-            tNavEnd=_currentTime;
+            _setAttribute(_tNavEnd, new DoubleToken(_currentTime));
             _curSrc=nosrc;
             break;
 
@@ -349,7 +362,7 @@ public class ChannelState extends MACActorBase {
     private boolean _setNav() throws IllegalActionException {
         double expirationTime =  ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
             +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
-        tNavEnd=expirationTime;
+        _setAttribute(_tNavEnd, new DoubleToken(expirationTime));
         if (expirationTime > _currentTime) {
             if (_NavTimer != null ) cancelTimer(_NavTimer);
             _NavTimer=setTimer(NavTimeOut,expirationTime);

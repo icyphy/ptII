@@ -34,10 +34,12 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ////////////////////////////////////////////////////////////////////////=
 //
@@ -51,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    also notifies TxCoordination process of the receipt of either CTS or Ack.
 
    @author Charlie Zhong
-   @version $Id$
+   @version RxCoordination.java,v 1.11 2004/04/22 19:46:17 ellen_zh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)
@@ -200,7 +202,12 @@ public class RxCoordination extends MACActorBase {
 
                                         case Rts:
                                             double currentTime =getDirector().getCurrentTime();
-                                            if (tNavEnd <= currentTime)
+                                            double navEnd = currentTime + 1.0;
+                                            if (_tNavEnd != null && _tNavEnd instanceof Variable) {
+                                                Token token = ((Variable) _tNavEnd).getToken();
+                                                navEnd = ((DoubleToken) token).doubleValue();
+                                            } //FIXME: assume it is instanceof variable.                } 
+                                            if (navEnd <= currentTime)
                                                 {
                                                     // generate Cts
                                                     _rspdu=_createPacket(Cts,durId-_dRsp,Addr2);
@@ -263,6 +270,16 @@ public class RxCoordination extends MACActorBase {
         _dSifsDly=_aSifsTime-_aRxTxTurnaroundTime;
         _dRsp=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate;
         _currentState = RxC_Idle;
+        
+        NamedObj macComposite = getContainer().getContainer();
+        if (macComposite.getAttribute("tNavEnd") != null) {
+            _tNavEnd = macComposite.getAttribute("tNavEnd");
+        } else {
+            _tNavEnd = null;
+            throw new IllegalActionException ("the MAC compositor " +
+                    "dosen't contain a parameter named tNavEnd");
+        }
+
     }
 
     private RecordToken _createPacket(int subtype,int duration,int RA)

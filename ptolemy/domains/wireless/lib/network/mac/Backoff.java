@@ -32,6 +32,7 @@ import java.util.Random;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
@@ -41,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
    choose a slot from the back off window and wait for that amount of 
    time before trying to access the medium.
    @author Yang Zhao
-   @version $Id$
+   @version Backoff.java,v 1.14 2004/04/22 19:46:18 ellen_zh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (pjb2e)
@@ -165,7 +167,7 @@ public class Backoff extends MACActorBase {
         case No_Backoff:
             switch (_messageType) {
             case Backoff:
-                mBkIP = true;
+                _setAttribute(_mBkIP, new BooleanToken(true));
                 _cnt = ((IntToken)_inputMessage.get("cnt")).intValue();
                 if (_cnt<0) {
                     int ccw = ((IntToken)_inputMessage.get("ccw")).intValue();
@@ -249,6 +251,16 @@ public class Backoff extends MACActorBase {
         _messageType = UNKNOWN;
         _status = Busy;
         _state = No_Backoff;
+        
+        NamedObj macComposite = getContainer().getContainer();
+        if (macComposite.getAttribute("mBkIP") != null) {
+            _mBkIP = macComposite.getAttribute("mBkIP");
+        } else {
+            _mBkIP = null;
+            throw new IllegalActionException ("the MAC compositor " +
+                    "dosen't contain a parameter named mBkIP");
+        }
+
     }
     
     /** Explicitly declare which inputs and outputs are not dependent.
@@ -269,7 +281,7 @@ public class Backoff extends MACActorBase {
     private void _backoffDone(int cnt) throws IllegalActionException {
         Token[] value = {new IntToken(BkDone), new IntToken(cnt)};
         BKDone.send(0, new RecordToken(BackoffDoneMsgFields, value));
-        mBkIP=false;
+        _setAttribute(_mBkIP, new BooleanToken(false));
         _state = No_Backoff;
     }
 

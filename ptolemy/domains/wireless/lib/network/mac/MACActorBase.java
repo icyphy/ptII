@@ -29,13 +29,16 @@ COPYRIGHTENDKEY
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.lib.network.NetworkActorBase;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// MACActorBase
@@ -53,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    Based on this, it is relatively easy to translate a OMNET class
    to a actor here.
    @author Yang Zhao
-   @version $Id$
+   @version MACActorBase.java,v 1.22 2004/04/22 19:46:17 ellen_zh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)
@@ -209,14 +212,7 @@ public class MACActorBase extends NetworkActorBase {
      */
     public Parameter dotllRTSThreshold;
 
-    // remote variables
-    /** The time that NAV ends or reservation ends.
-     */
-    public static double tNavEnd = 0.0;
-    /** The flag indicating whether backoff is in progress.
-     */
     public static boolean mBkIP;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -409,6 +405,15 @@ public class MACActorBase extends NetworkActorBase {
     protected int _dot11ShortRetryLimit;
     protected int _dot11LongRetryLimit;
     protected int _dotllRTSThreshold;
+    
+    // the pointers to the remote variables contained by 
+    // the MAC composite. 
+    /** The time that NAV ends or reservation ends.
+     */
+    protected Attribute _tNavEnd = null;
+    /** The flag indicating whether backoff is in progress.
+     */
+    protected Attribute _mBkIP = null;
 
 
     // message formats
@@ -522,4 +527,18 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int  appl_data_msg  = 101;
     protected static final int  netw_interest_msg = 200;
     protected static final int  netw_data_msg  = 201;
+    
+    // A convenient method for the MAC actors to set an
+    // attibute of the MAC composite.
+    protected void _setAttribute(Attribute attribute, Token token)
+            throws IllegalActionException {
+        if (attribute != null) {
+            if (attribute instanceof Variable) {
+                ((Variable) attribute).setToken(token);
+            } else if (attribute instanceof Settable) {
+                ((Settable) attribute).
+                    setExpression(token.toString());
+            }
+        }
+    }
 }

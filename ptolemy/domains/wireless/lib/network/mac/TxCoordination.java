@@ -30,14 +30,17 @@ package ptolemy.domains.wireless.lib.network.mac;
 import java.util.LinkedList;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ////////////////////////////////////////////////////////////////////////=
 //
@@ -64,7 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
    @author Charlie Zhong, Yang Zhao
-   @version $Id$
+   @version TxCoordination.java,v 1.13 2004/04/22 19:46:17 ellen_zh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)
@@ -177,7 +180,12 @@ public class TxCoordination extends MACActorBase {
         switch(_currentState)
             {
             case TxC_Idle:
-                if (isNetData && !mBkIP)
+                boolean backoff = true;
+                if (_mBkIP != null && _mBkIP instanceof Variable) {
+                    Token token = ((Variable) _mBkIP).getToken();
+                    backoff = ((BooleanToken) token).booleanValue();
+                } //FIXME: assume it is instanceof variable.     
+                if (isNetData && !backoff)
                     _handleData();
                 else if (BkDone.hasToken(0))
                 {
@@ -365,8 +373,18 @@ public class TxCoordination extends MACActorBase {
         _seqNum=0;
         _CTSTimeout=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_aSlotTime+
             _sAckCtsLng/_mBrate;
+            
+        NamedObj macComposite = getContainer().getContainer();
+        if (macComposite.getAttribute("mBkIP") != null) {
+            _mBkIP = macComposite.getAttribute("mBkIP");
+        } else {
+            _mBkIP = null;
+            throw new IllegalActionException ("the MAC compositor " +
+                    "dosen't contain a parameter named mBkIP");
+        }
         // randomize node's time to go to TxC_Idle
         _backoff(_ccw,-1);
+        
     }
 
     ///////////////////////////////////////////////////////////////////
