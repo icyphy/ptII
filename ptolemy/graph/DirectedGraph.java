@@ -78,7 +78,7 @@ public class DirectedGraph extends Graph {
         super.add(o);
 
         _inDegree.addElement(new Integer(0));
-	_tranClosureValid = false;
+	_tranClosure = null;
     }
  
     /** Adds a directed edge to connect two nodes. The first argument
@@ -99,7 +99,7 @@ public class DirectedGraph extends Graph {
         int id2 = _getNodeId(o2);
         int indeg = ((Integer)(_inDegree.elementAt(id2))).intValue();
         _inDegree.setElementAt(new Integer(indeg+1), id2);
-	_tranClosureValid = false;
+	_tranClosure = null;
     }
 
     /** Tests if this graph is directed.
@@ -117,6 +117,7 @@ public class DirectedGraph extends Graph {
      *  in constant time.
      *  @return <code>true</code> if the the graph is acyclic.
      *   <code>false</code> otherwise.
+     *  @exception InvalidStateException if the graph is empty.
      */
     public boolean isAcyclic() {
         _compTranClosure();
@@ -125,9 +126,15 @@ public class DirectedGraph extends Graph {
     }
 
     /** Finds all the nodes that can be reached from the specified node.
+     *  The implementation computes the transitive closure of the
+     *  graph, if it is not already computed after the last graph
+     *  mutation.  So the first call to this method after graph
+     *  mutation may be slow, but all the subsequent calls returns
+     *  in constant time.
      *  @param o an Object representing a node in this graph.
      *  @return an array of Objects representing nodes reachable from
      *   the specified one.
+     *  @exception InvalidStateException if the graph is empty.
      *  @exception IllegalArgumentException the specified Object is
      *   not a node in this graph.
      */
@@ -210,7 +217,7 @@ public class DirectedGraph extends Graph {
     // This method also checks if the graph is acyclic and set
     // _isAcyclic.
     protected void _compTranClosure() {
-        if (_tranClosureValid) {
+        if (_tranClosure != null) {
             return;
         }
 
@@ -251,8 +258,6 @@ public class DirectedGraph extends Graph {
                 _isAcyclic = false;
             }
         }
- 
-        _tranClosureValid = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -272,12 +277,11 @@ public class DirectedGraph extends Graph {
      *  each graph mutation, that method should be called before this
      *  array is used. Otherwise, this array is not valid.
      */
-    protected boolean[][] _tranClosure;
+    protected boolean[][] _tranClosure = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private boolean _isAcyclic;
-    private boolean _tranClosureValid = false;
 }
 
