@@ -112,6 +112,13 @@ public class ConfigurableAttribute
         _base = base;
         _source = source;
         _text = text;
+/* FIXME: triggers null pointer exception in GRActor
+        // Notify the container that the attribute has changed.
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            container.attributeChanged(this);
+        }
+*/
     }
 
     /** Return the base specified in the most recent call to the

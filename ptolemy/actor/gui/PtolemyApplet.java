@@ -156,6 +156,18 @@ public class PtolemyApplet extends BasicJApplet
 	    + "\n(Build: $Id$)";
     }
 
+    /** Describe the applet parameters.
+     *  @return An array describing the applet parameters.
+     */
+    public String[][] getParameterInfo() {
+        String newinfo[][] = {
+            {"modelClass", "", "Classname for an instance of CompositeActor"},
+            {"orientation", "", "Orientation: vertical or horixontal"},
+            {"controls", "", "List of on-screen controls"},
+        };
+        return _concatStringArrays(super.getParameterInfo(), newinfo);
+    }
+
     /** Initialize the applet. This method is called by the browser
      *  or applet viewer to inform this applet that it has been
      *  loaded into the system. It is always called before
@@ -170,7 +182,14 @@ public class PtolemyApplet extends BasicJApplet
         _setupOK = true;
         _workspace = new Workspace(getClass().getName());
         try {
-            _toplevel = _createModel();
+            _toplevel = _createModel(_workspace);
+            if (_toplevel.getManager() == null) {
+                _manager = new Manager(_workspace, "manager");
+                _manager.addExecutionListener(this);
+                _toplevel.setManager(_manager);
+            } else {
+                _manager = _toplevel.getManager();
+            }
         } catch (Exception ex) {
             _setupOK = false;
             report("Creation of model failed:\n", ex);
@@ -234,15 +253,20 @@ public class PtolemyApplet extends BasicJApplet
      *  of Workspace.
      *  In either case, if the resulting model does not have a manager,
      *  then we give it a manager.
-     *  @throws Exception If something goes wrong.
+     *  @param workspace The workspace in which to create the model.
+     *  @return A model.
+     *  @throws Exception If something goes wrong.  This is a broad
+     *   exception to allow derived classes wide lattitude as to which
+     *   exception to throw.
      */
-    protected CompositeActor _createModel() throws Exception {
+    protected CompositeActor _createModel(Workspace workspace)
+            throws Exception {
         CompositeActor result = null;
         // Look for modelClass applet parameter.
         String modelSpecification = getParameter("modelClass");
         if (modelSpecification != null) {
             Object[] arguments = new Object[1];
-            arguments[0] = _workspace;
+            arguments[0] = workspace;
             Class modelClass = Class.forName(modelSpecification);
             Constructor[] constructors = modelClass.getConstructors();
             boolean foundConstructor = false;
@@ -272,13 +296,6 @@ public class PtolemyApplet extends BasicJApplet
         // If result is still null, then there was no modelClass given.
         if (result == null) {
             throw new Exception("Applet does not specify a modelClass.");
-        }
-        if (result.getManager() == null) {
-            _manager = new Manager(_workspace, "manager");
-            _manager.addExecutionListener(this);
-            result.setManager(_manager);
-        } else {
-            _manager = result.getManager();
         }
         return result;
     }
@@ -355,6 +372,8 @@ public class PtolemyApplet extends BasicJApplet
     }
 
     /** Execute the model, if the manager is not currently executing.
+     *  Note that this method is not called if there are button controls
+     *  on the screen and the user pushes the "Go" button.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {

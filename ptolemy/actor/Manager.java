@@ -161,39 +161,39 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Indicator that the model may be corrupted.
      */
-    public final State CORRUPTED = new State("corrupted");
+    public final static State CORRUPTED = new State("corrupted");
 
     /** Indicator that there is no currently active execution.
      */
-    public final State IDLE = new State("idle");
+    public final static State IDLE = new State("idle");
 
     /** Indicator that the execution is in the initialize phase.
      */
-    public final State INITIALIZING = new State("initializing");
+    public final static State INITIALIZING = new State("initializing");
 
     /** Indicator that the execution is in an iteration.
      */
-    public final State ITERATING = new State("executing");
+    public final static State ITERATING = new State("executing");
 
     /** Indicator that the execution is in the mutations phase.
      */
-    public final State MUTATING = new State("processing mutations");
+    public final static State MUTATING = new State("processing mutations");
 
     /** Indicator that the execution is paused.
      */
-    public final State PAUSED = new State("pausing execution");
+    public final static State PAUSED = new State("pausing execution");
 
     /** Indicator that the execution is in the preinitialize phase.
      */
-    public final State PREINITIALIZING = new State("preinitializing");
+    public final static State PREINITIALIZING = new State("preinitializing");
 
     /** Indicator that type resolution is being done.
      */
-    public final State RESOLVING_TYPES = new State("resolving types");
+    public final static State RESOLVING_TYPES = new State("resolving types");
 
     /** Indicator that the execution is in the wrapup phase.
      */
-    public final State WRAPPING_UP = new State("wrapping up");
+    public final static State WRAPPING_UP = new State("wrapping up");
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -918,7 +918,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Instances of this class represent phases of execution, or the
      *  state of the manager.
      */
-    public class State {
+    public static class State {
 
         // Constructor is private because only Manager instantiates this class.
         private State(String description) {
@@ -932,18 +932,10 @@ public class Manager extends NamedObj implements Runnable {
             return _description;
         }
 
-        /** Get the manager.
-         *  @return The manager that is in this state.
-         */
-        public Manager getManager() {
-            return Manager.this;
-        }
-
 	/** Print out the current state.
 	 */
 	public String toString() {
-	    return new String("Manager " + getManager() +
-                    " is in state " + getDescription());
+	    return "The model is " + getDescription();
 	}
 
         private String _description;

@@ -50,6 +50,7 @@ import ptolemy.gui.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLParser;
 
@@ -88,7 +89,7 @@ top-level parameters of the model are placed on the screen, below
 the buttons.  If the word "directorParameters" is included,
 then controls for the director parameters are also included.
 <li>
-<i>model</i>: The name of a URI (or URL) containing the
+<i>modelURL</i>: The name of a URI (or URL) containing the
 MoML file that defines the model.
 <li>
 <i>orientation</i>: This can have value "horizontal"
@@ -146,19 +147,25 @@ public class MoMLApplet extends PtolemyApplet {
      */
     public String[][] getParameterInfo() {
         String newinfo[][] = {
-            {"model", "", "URL for the MoML file"},
+            {"modelURL", "", "URL for the MoML file"},
         };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
     /** Read the model from the <i>model</i> applet parameter.
+     *  @param workspace The workspace in which to create the model.
      *  @return A model.
      *  @throws Exception If something goes wrong.
      */
-    protected CompositeActor _createModel() throws Exception {
-        String modelURL = getParameter("model");
+    protected CompositeActor _createModel(Workspace workspace)
+            throws Exception {
+        String modelURL = getParameter("modelURL");
         if (modelURL == null) {
-            throw new Exception("Applet does not not specify a model.");
+            // For backward compatibility, try name "model".
+            modelURL = getParameter("model");
+            if (modelURL == null) {
+                throw new Exception("Applet does not not specify a modelURL.");
+            }
         }
         MoMLParser parser = new MoMLParser();
         URL docBase = getDocumentBase();

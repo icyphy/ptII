@@ -67,7 +67,7 @@ public class Query extends JPanel {
         _constraints.anchor = GridBagConstraints.NORTHWEST;
         _entryPanel.setLayout(_grid);
         // It's not clear whether the following has any real significance...
-        _entryPanel.setOpaque(true);
+        // _entryPanel.setOpaque(true);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -79,6 +79,10 @@ public class Query extends JPanel {
         // setMessage().
         add(_messagePanel);
         add(_entryPanel);
+        // Setting the background to null allegedly means it inherits the
+        // background color from the container.
+        _entryPanel.setBackground(null);
+        _messagePanel.setBackground(null);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.kernel.util.Workspace;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.PrintWriter;
@@ -97,6 +98,26 @@ public class Location extends SingletonAttribute
         }
         _valueListeners.add(listener);
     }
+
+    /** Clone the location into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If the base class throws it.
+     *  @return A new Location.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Location newObject = (Location)super.clone(workspace());
+        // Copy the location so that the reference in the new object
+        // does not refer to the same array.
+        int length = _location.length;
+        newObject._location = new double[length];
+        System.arraycopy(_location, 0, newObject._location, 0, length);
+        newObject._valueListeners = null;
+        return newObject;
+    }
+
 
     /** Write a MoML description of this object.
      *  MoML is an XML modeling markup language.

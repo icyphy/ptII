@@ -70,6 +70,42 @@ import diva.graph.*;
 //// MoMLViewerApplet
 /**
 This applet displays a graph view of a specified MoML file.
+<p>
+The applet parameters are:
+<ul>
+<li>
+<i>background</i>: The background color, typically given as a hex
+number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
+component, <i>gg</i> gives the green component, and <i>bb</i> gives
+the blue component.
+<li>
+<i>controls</i>:
+This gives a comma-separated list
+of any subset of the words "buttons", "topParameters", and
+"directorParameters" (case insensitive), or the word "none".
+If this parameter is not given, then it is equivalent to
+giving "buttons", and only the control buttons mentioned above
+will be displayed.  If the parameter is given, and its value is "none",
+then no controls are placed on the screen.  If the word "topParameters"
+is included in the comma-separated list, then controls for the
+top-level parameters of the model are placed on the screen, below
+the buttons.  If the word "directorParameters" is included,
+then controls for the director parameters are also included.
+This parameter is ignored unless <i>includeRunPanel</i> is given as "true".
+<li>
+<i>includeRunPanel</i>: An indicator to include a run panel below the
+schematic.  The value must be "true" or no run panel will be displayed.
+<li>
+<i>modelURL</i>: The name of a URI (or URL) containing the
+MoML file that defines the model.
+<li>
+<i>orientation</i>: This can have value "horizontal"
+or "vertical" (case insensitive).  If it is "vertical", then the
+controls are placed above the visual elements of the Placeable actors.
+This is the default.  If it is "horizontal", then the controls
+are placed to the left of the visual elements.
+This parameter is ignored unless <i>includeRunPanel</i> is given as "true".
+</ul>
 
 @author  Steve Neuendorffer
 @version $Id$
@@ -86,6 +122,16 @@ public class MoMLViewerApplet extends MoMLApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Describe the applet parameters.
+     *  @return An array describing the applet parameters.
+     */
+    public String[][] getParameterInfo() {
+        String newinfo[][] = {
+            {"includeRunPanel", "", "Indicator to include run panel"},
+        };
+        return _concatStringArrays(super.getParameterInfo(), newinfo);
+    }
 
     /** Override the base class to not start
      *  execution of the model. This method is called by the
@@ -127,8 +173,14 @@ public class MoMLViewerApplet extends MoMLApplet {
         getContentPane().add(new JScrollPane(modelViewer), 
                 BorderLayout.NORTH);
 
-        // NOTE: Call the superclass here to get a control panel
+        // Call the superclass here to get a control panel
         // below the schematic.
+        String panelFlag = getParameter("includeRunPanel");
+        if (panelFlag != null
+                && panelFlag.trim().toLowerCase().equals("true")) {
+            // FIXME: Create a separator?
+            super._createView();    
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

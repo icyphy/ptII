@@ -69,6 +69,9 @@ public class XMLIcon extends EditorIcon {
         _description = null;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Create a background figure based on this icon.  The background figure
      * will be painted with each graphic element that this icon contains.

@@ -95,6 +95,8 @@ public class Configurer extends JPanel implements CloseListener {
             EditorPaneFactory editor = (EditorPaneFactory)editors.next();
             Component pane = editor.createEditorPane();
             add(pane);
+            // Inherit the background color from the container.
+            pane.setBackground(null);
             if (pane instanceof CloseListener) {
                 _closeListeners.add(pane);
             }
@@ -110,6 +112,8 @@ public class Configurer extends JPanel implements CloseListener {
             // the static method of EditorPaneFactory.
             Component pane = EditorPaneFactory.createEditorPane(object);
             add(pane);
+            // Inherit the background color from the container.
+            pane.setBackground(null);
             if (pane instanceof CloseListener) {
                 _closeListeners.add(pane);
             }

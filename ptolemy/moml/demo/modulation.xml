@@ -47,7 +47,7 @@ signal and the other for the carrier.</text>
         </property>
     </property>
     <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="307.0, 342.0">
+        <property name="_location" class="ptolemy.moml.Location" value="312.0, 369.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -70,7 +70,7 @@ Try changing the parameters in the run window.</text>
            </configure>
         </property>
     </property>
-    <entity name="Gaussian6" class="ptolemy.actor.lib.Gaussian">
+    <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -78,7 +78,7 @@ Try changing the parameters in the run window.</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noiseStandardDeviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 359.0">
+        <property name="_location" class="ptolemy.moml.Location" value="63.0, 383.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -88,7 +88,7 @@ Try changing the parameters in the run window.</text>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Sinewave1" class="ptolemy.actor.lib.Sinewave">
+    <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -99,10 +99,10 @@ Try changing the parameters in the run window.</text>
             <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="43.0, 281.0">
+        <property name="_location" class="ptolemy.moml.Location" value="68.0, 312.0">
         </property>
     </entity>
-    <entity name="Sinewave6" class="ptolemy.actor.lib.Sinewave">
+    <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -113,13 +113,13 @@ Try changing the parameters in the run window.</text>
             <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="42.0, 214.0">
+        <property name="_location" class="ptolemy.moml.Location" value="66.0, 240.0">
         </property>
     </entity>
-    <entity name="Expression1" class="ptolemy.actor.lib.Expression">
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="157.0, 280.0">
+        <property name="_location" class="ptolemy.moml.Location" value="173.0, 304.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -134,10 +134,10 @@ Try changing the parameters in the run window.</text>
             <property name="input"/>
         </port>
     </entity>
-    <entity name="FFT1" class="ptolemy.domains.sdf.lib.FFT">
+    <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="238.0, 281.0">
+        <property name="_location" class="ptolemy.moml.Location" value="255.0, 305.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -158,8 +158,8 @@ Try changing the parameters in the run window.</text>
             </property>
         </port>
     </entity>
-    <entity name="AbsoluteValue2" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.moml.Location" value="328.0, 281.0">
+    <entity name="Absolute Value" class="ptolemy.actor.lib.AbsoluteValue">
+        <property name="_location" class="ptolemy.moml.Location" value="345.0, 305.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -168,12 +168,12 @@ Try changing the parameters in the run window.</text>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="DB1" class="ptolemy.actor.lib.DB">
+    <entity name="Decibels" class="ptolemy.actor.lib.DB">
         <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="426.0, 281.0">
+        <property name="_location" class="ptolemy.moml.Location" value="443.0, 305.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -182,8 +182,10 @@ Try changing the parameters in the run window.</text>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="SequencePlotter1" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="Plotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -191,7 +193,7 @@ Try changing the parameters in the run window.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="530.0, 280.0">
+        <property name="_location" class="ptolemy.moml.Location" value="543.0, 305.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,7 +209,7 @@ Try changing the parameters in the run window.</text>
 <yRange min="0.0" max="36.0"/>
 <noGrid/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -222,18 +224,18 @@ Try changing the parameters in the run window.</text>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Gaussian6.output" relation="relation2"/>
-    <link port="Sinewave1.output" relation="relation3"/>
-    <link port="Sinewave6.output" relation="relation4"/>
-    <link port="Expression1.output" relation="relation5"/>
-    <link port="Expression1.signal" relation="relation4"/>
-    <link port="Expression1.carrier" relation="relation3"/>
-    <link port="Expression1.noise" relation="relation2"/>
-    <link port="FFT1.input" relation="relation5"/>
-    <link port="FFT1.output" relation="relation6"/>
-    <link port="AbsoluteValue2.input" relation="relation6"/>
-    <link port="AbsoluteValue2.output" relation="relation8"/>
-    <link port="DB1.input" relation="relation8"/>
-    <link port="DB1.output" relation="relation7"/>
-    <link port="SequencePlotter1.input" relation="relation7"/>
+    <link port="Noise Source.output" relation="relation2"/>
+    <link port="Carrier Source.output" relation="relation3"/>
+    <link port="Signal Source.output" relation="relation4"/>
+    <link port="Expression.output" relation="relation5"/>
+    <link port="Expression.signal" relation="relation4"/>
+    <link port="Expression.carrier" relation="relation3"/>
+    <link port="Expression.noise" relation="relation2"/>
+    <link port="FFT.input" relation="relation5"/>
+    <link port="FFT.output" relation="relation6"/>
+    <link port="Absolute Value.input" relation="relation6"/>
+    <link port="Absolute Value.output" relation="relation8"/>
+    <link port="Decibels.input" relation="relation8"/>
+    <link port="Decibels.output" relation="relation7"/>
+    <link port="Plotter.input" relation="relation7"/>
 </entity>

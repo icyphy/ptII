@@ -102,7 +102,6 @@ For more information about polyphase filters, see F. J. Harris,
 */
 public class FIR extends SDFTransformer {
 
-    // FIXME: use past sample support.
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -245,6 +244,8 @@ public class FIR extends SDFTransformer {
         return newObject;
     }
 
+    // FIXME: State update should occur in postfire.
+
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
@@ -293,6 +294,17 @@ public class FIR extends SDFTransformer {
         }
     }
 
+    /** Return false if the input does not have enough tokens to fire.
+     *  Otherwise, return what the superclass returns.
+     *  @return False if the number of input tokens available is not at least
+     *   equal to the decimation parameter.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (input.hasToken(0, _dec)) return super.prefire();
+        else return false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -303,6 +315,17 @@ public class FIR extends SDFTransformer {
 
     /** Control variables for the FIR main loop. */
     protected int _dec, _interp, _decPhase;
+
+    /** Indicator that at least one attribute has been changed
+     *  since the last initialization.
+     */
+    protected boolean _reinitializeNeeded = true;
+
+    /** Local cache of the tap values. */
+    protected Token[] _taps;
+
+    /** Local cache of the zero token. */
+    protected Token _zero;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -335,8 +358,6 @@ public class FIR extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Local cache of these parameter values.
-    private Token[] _taps;
     private Token[] _data;
     private int _mostRecent;
 
@@ -344,11 +365,4 @@ public class FIR extends SDFTransformer {
     private Token _outToken;
     private Token _tapItem;
     private Token _dataItem;
-
-    // Cache of the zero token.
-    private Token _zero;
-
-    // Indicator that at least one attribute has been changed
-    // since the last initialization.
-    private boolean _reinitializeNeeded = true;
 }

@@ -59,20 +59,22 @@ In general, one or the other will form the basis of the visual representation,
 and the other will be created from the first, using either a SwingWrapper
 or a FigureIcon.  In other words, this class is a factory for visual
 representations.
-<p> In this base class, the visual representation as a Diva
+<p>
+In this base class, the visual representation as a Diva
 figure is created by adding a label representing the name of the entity that
 contains this icon to a background figure which is created by the
 createBackgroundFigure method.  The visual representation as a Swing icon
 is created from the background figure using a FigureIcon.
-Thus, most subclasses that which to modify the visual representation can
+Thus, most subclasses that wish to modify the visual representation can
 simply override the createBackgroundFigure method.
-<p> Subclasses that wish to create the figure or the icon in a different way
+<p>
+Subclasses that wish to create the figure or the icon in a different way
 entirely (for example, starting with a Swing icon and creating the figure using
 a SwingWrapper) should override both the createBackgroundFigure and
 createIcon methods.
 <p>
 This visual representation created by this base class is just a simple white
- box.  For a more interesting icon, see the XMLIcon class.
+box.  For a more interesting icon, see the XMLIcon class.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$

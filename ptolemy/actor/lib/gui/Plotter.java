@@ -264,19 +264,23 @@ public class Plotter extends TypedAtomicActor
     public void place(Container container) {
         _container = container;
         _placeCalled = true;
+        // NOTE: This actor always shows the plot buttons, even if
+        // the plot is in a separate frame.  They are very useful.
         if (_container == null) {
             // Create a new plot and frame.
             plot = new Plot();
+            plot.setButtons(true);
             _frame = new PlotFrame(getFullName(), plot);
 	    _frame.setVisible(true);
         } else {
             if (_container instanceof Plot) {
                 plot = (Plot)_container;
+                plot.setButtons(true);
             } else {
                 if (plot == null) {
                     plot = new Plot();
-                    plot.setButtons(true);
                 }
+                plot.setButtons(true);
                 _container.add(plot);
 		// java.awt.Component.setBackground(color) says that
 		// if the color "parameter is null then this component
