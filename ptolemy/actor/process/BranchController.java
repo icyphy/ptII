@@ -87,16 +87,22 @@ public class BranchController implements Runnable {
      *  and consumer receiver.
      */
     public void activateBranches() {
+        // Copy the list of branches within a synchronized block,
+        // then activate them. We do not want to hold the lock
+        // on this controller during the run, as this can cause
+        // deadlock.
+        LinkedList branchesCopy;
         synchronized(this) {
             if ( !hasBranches() ) {
                 return;
             }
             setActive(true);
-            Branch branch = null;
-            for ( int i = 0; i < _branches.size(); i++ ) {
-                branch = (Branch)_branches.get(i);
-                branch.run();
-            }
+            branchesCopy = new LinkedList(_branches);
+        }
+        Iterator branches = branchesCopy.iterator();
+        while(branches.hasNext()) {
+            Branch branch = (Branch)branches.next();
+            branch.run();
         }
     }
 
@@ -144,27 +150,30 @@ public class BranchController implements Runnable {
         _ports.add(port);
 
         Branch branch = null;
-        ProcessReceiver prodReceiver = null;
-        ProcessReceiver consReceiver = null;
-        Receiver[][] prodReceivers = null;
-        Receiver[][] consReceivers = null;
+        ProcessReceiver producerReceiver = null;
+        ProcessReceiver consumerReceiver = null;
+        Receiver[][] producerReceivers = null;
+        Receiver[][] consumerReceivers = null;
 
         for ( int i = 0; i < port.getWidth(); i++ ) {
             if ( port.isInput() ) {
-                prodReceivers = port.getReceivers();
-                consReceivers = port.deepGetReceivers();
+                producerReceivers = port.getReceivers();
+                consumerReceivers = port.deepGetReceivers();
             } else if ( port.isOutput() ) {
-                prodReceivers = port.getInsideReceivers();
-                consReceivers = port.getRemoteReceivers();
+                producerReceivers = port.getInsideReceivers();
+                consumerReceivers = port.getRemoteReceivers();
             } else {
                 throw new IllegalActionException("Bad news");
             }
 
-            prodReceiver = (ProcessReceiver)prodReceivers[i][0];
-            consReceiver = (ProcessReceiver)consReceivers[i][0];
-
-            branch = new Branch( prodReceiver, consReceiver, this );
-            _branches.add(branch);
+            // If the port lacks either producer or consumer
+            // receivers, then there is no point in creating a branch.
+            if (producerReceivers.length > i && consumerReceivers.length > i) {
+                producerReceiver = (ProcessReceiver)producerReceivers[i][0];
+                consumerReceiver = (ProcessReceiver)consumerReceivers[i][0];
+                branch = new Branch( producerReceiver, consumerReceiver, this );
+                _branches.add(branch);                
+            }
         }
     }
 
@@ -227,7 +236,7 @@ public class BranchController implements Runnable {
      *  otherwise.
      * @return True if this controller is active; false otherwise.
      */
-    public boolean isActive() {
+    public synchronized boolean isActive() {
         return _isActive;
     }
 
@@ -257,22 +266,27 @@ public class BranchController implements Runnable {
      *  branch controller is notified.
      */
     public void run() {
-        synchronized(this) {
-            try {
-                activateBranches();
-                while ( isActive() ) {
-                    while ( !isBlocked() && isActive() ) {
+        // NOTE: This used to be synchronized, but this could
+        // cause deadlock because the lock would be held during
+        // the run.
+        try {
+            activateBranches();
+            // After starting the runs, acquire a lock
+            // on this object.
+            synchronized(this) {
+                while (isActive() ) {
+                    while (!isBlocked() && isActive()) {
                         wait();
                     }
-                    while ( isBlocked() && isActive() ) {
+                    while (isBlocked() && isActive()) {
                         _getDirector()._controllerBlocked(this);
                         wait();
                     }
                     _getDirector()._controllerUnBlocked(this);
                 }
-            } catch( InterruptedException e ) {
-                // Do something
             }
+        } catch(InterruptedException e ) {
+            // FIXME: Do something
         }
     }
 
