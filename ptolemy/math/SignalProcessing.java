@@ -289,7 +289,7 @@ public class SignalProcessing {
                     "size of the input array.");
         }
 
-        int length = (x.length - startIndex) / n;
+        int length = (x.length + 1 - startIndex) / n;
         double[] returnValue = new double[length];
 
         int destIndex;
@@ -303,213 +303,28 @@ public class SignalProcessing {
         return returnValue;
     }
 
-    /** Return a new array of doubles that is the inverse, normalized
-     *  DCT of the input array of doubles.
-     *  This method automatically computes the order of the transform
-     *  based on the length of the input array. It is equivalent to
-     *  IDCT(x, order, DCT_TYPE_NORMALIZED), where 2^order is the
-     *  next power of two larger than or equal to the length of the
-     *  specified array.  The returned array has length 2^order.
-     *  @param x An array of doubles.
-     *  @return A new array of doubles with length 2^order.
+    /** Return a new array of complex numbers which is the FFT
+     *  of an input array of complex numbers.  The order of the transform
+     *  is the next power of two greater than the length of the argument.
+     *  The input is zero-padded if it does not match this length.
+     *  @param x An array of complex numbers.
+     *  @return The FFT of the argument.
      */
-    public static final double[] IDCT(double[] x) {
-        return IDCT(x, order(x.length), DCT_TYPE_NORMALIZED);
-    }
-
-    /** Return a new array of doubles that is the inverse, normalized
-     *  DCT of the input array of doubles, using the specified order.
-     *  The length of the DCT is 2^<i>order</i>.  This is equivalent to
-     *  IDCT(x, order, DCT_TYPE_NORMALIZED).
-     *  @param x An array of doubles.
-     *  @return A new array of doubles with length 2^order.
-     */
-    public static final double[] IDCT(double[] x, int order) {
-        return IDCT(x, order, DCT_TYPE_NORMALIZED);
+    public static final Complex[] FFT(Complex[] x) {
+        return FFTComplexOut(x, order(x.length));
     }
     
-    /** Return a new array of doubles that is the inverse DCT of the
-     *  input array of doubles.
-     *  See the DCT_TYPE_XXX constants for documentation of the
-     *  exact formula, which depends on the type.
-     *  @param x An array of doubles.
-     *  @param order The base-2 logarithm of the size of the transform.
-     *  @param type The type of IDCT, which is one of DCT_TYPE_NORMALIZED,
-     *   DCT_TYPE_UNNORMALIZED, or DCT_TYPE_ORTHONORMAL.
-     *  @see #DCT_TYPE_NORMALIZED
-     *  @see #DCT_TYPE_UNNORMALIZED
-     *  @see #DCT_TYPE_ORTHONORMAL
-     *  @return A new array of doubles with length 2^order.
+    /** Return a new array of complex numbers which is the FFT
+     *  of an input array of complex numbers.
+     *  The input is zero-padded if it does not match the length.
+     *  @param x An array of complex numbers.
+     *  @param order The log base 2 of the length of the FFT.
+     *  @return The FFT of the argument.
      */
-    public static final double[] IDCT(double[] x, int order, int type) {
-        // check if order > 31
-
-        if (type >= DCT_TYPES) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.IDCT() : Bad DCT type");
-        }
-
-        int size    = 1 << order;
-        int twoSize = 2 << order;
-
-        // Generate scaleFactors if necessary
-        if (_IDCTfactors[type][order] == null) {
-            _IDCTfactors[type][order] = new Complex[twoSize];
-
-            double oneOverTwoSize = 1.0 / (double) twoSize;
-
-            double factor = 1.0;
-            double oneOverE0 = 2.0;
-
-            switch (type) {
-            case DCT_TYPE_NORMALIZED:
-                factor = 2.0;
-                oneOverE0 = ExtendedMath.SQRT_2;
-                break;
-
-            case DCT_TYPE_ORTHONORMAL:
-                factor = Math.sqrt((double) twoSize); // == 2 * sqrt(N/2)
-                oneOverE0 = ExtendedMath.SQRT_2;
-                break;
-
-            case DCT_TYPE_UNNORMALIZED:
-                factor = 2.0;
-                oneOverE0 = 1.0;
-                break;
-            }
-
-            _IDCTfactors[type][order][0] =
-                new Complex(oneOverE0 * factor, 0.0);
-
-            for (int k = 1; k < twoSize; k++) {
-                Complex c = new Complex(0, k * Math.PI * oneOverTwoSize);
-                _IDCTfactors[type][order][k] = c.exp().scale(factor);
-            }
-        }
-
-        Complex[] evenX = new Complex[twoSize];
-        Complex[] myFactors = _IDCTfactors[type][order];
-
-        // Convert to Complex, while multiplying by scaleFactors
-
-        evenX[0] = myFactors[0].scale(x[0]);
-        for (int k = 1; k < size; k++) {
-            // Do zero-padding here
-            if (k >= x.length) {
-                evenX[k] = new Complex(0.0);
-                evenX[twoSize - k] = new Complex(0.0);
-            } else {
-                evenX[k] = myFactors[k].scale(x[k]);
-                evenX[twoSize - k] = myFactors[twoSize - k].scale(-x[k]);
-            }
-        }
-        evenX[size] = new Complex(0.0, 0.0);
-
-        double[] longOutput = IFFTRealOut(evenX, order + 1);
-
-        // Truncate result
-        return DoubleArrayMath.resize(longOutput, size);
+    public static final Complex[] FFT(Complex[] x, int order) {
+        return FFTComplexOut(x, order);
     }
-
-    /** Return a new array of Complex's which is the inverse FFT
-     *  of an input array of Complex's.
-     *  This method automatically computes the order of the transform
-     *  based on the length of the input array.
-     *  @param x An array of Complex's.
-     *  @return A new array of Complex's.
-     */
-    public static final Complex[] IFFTComplexOut(Complex[] x) {
-        return IFFTComplexOut(x, order(x.length));
-    }
-
-    /** Return a new array of Complex's which is the forward FFT
-     *  of an input array of Complex's.
-     *  @param x An array of Complex's.
-     *  @param order The base-2 logarithm of the size of the transform.
-     *  @return A new array of Complex's.
-     */
-    public static final Complex[] IFFTComplexOut(Complex[] x, int order) {
-
-        x = _checkTransformArgs(x, order, _INVERSE_TRANSFORM);
-
-        Complex[] conjX = ComplexArrayMath.conjugate(x);
-        Complex[] yConj = FFTComplexOut(conjX, order);
-        Complex[] y = ComplexArrayMath.conjugate(yConj);
-
-        // scale by 1/N
-        double oneOverN = 1.0 / (double) (1 << order);
-        return ComplexArrayMath.scale(y, oneOverN);
-    }
-
-    /** Return a new array of double's which is the real part of the inverse
-     *  FFT of an input array of Complex's.
-     *  This is less than half as expensive as computing both the real and
-     *  imaginary parts. It is especially useful when it is known that the
-     *  output is purely real.
-     *  This method automatically computes the order of the transform
-     *  based on the length of the input array, and calls :
-     *  IFFTRealOut(x, order)
-     *  @param x An array of Complex's.
-     *  @return A new array of doubles.
-     */
-    public static final double[] IFFTRealOut(Complex[] x) {
-        return IFFTRealOut(x, order(x.length));
-    }
-
-    /** Return a new array of double's which is the real part of the inverse
-     *  FFT of an input array of Complex's.
-     *  This method is less than half as expensive as computing both the
-     *  real and imaginary parts of an IFFT of an array of Complex's. It is
-     *  especially useful when it is known that the output is purely real.
-     *  @param x An array of Complex's.
-     *  @return A new array of double's.
-     */
-    public static final double[] IFFTRealOut(Complex[] x, int order) {
-
-        x = _checkTransformArgs(x, order, _INVERSE_TRANSFORM);
-
-        double[] realx = ComplexArrayMath.realParts(x);
-        double[] realrealX = FFTRealOut(realx, order);
-
-        double[] imagx = ComplexArrayMath.imagParts(x);
-        double[] imagimagX = FFTImagOut(imagx, order);
-
-        realrealX = DoubleArrayMath.add(realrealX, imagimagX);
-
-        // scale by 1/N
-        double oneOverN = 1.0 / (double) (1 << order);
-        return DoubleArrayMath.scale(realrealX, oneOverN);
-    }
-
-    /** Return a new array of double's which is the real part of the inverse
-     *  FFT of an input array of doubles.
-     *  This method automatically computes the order of the transform
-     *  based on the length of the input array, and calls :
-     *  IFFTRealOut(x, order)
-     *  @param x An array of doubles.
-     *  @return A new array of doubles.
-     */
-    public static double[] IFFTRealOut(double[] x) {
-        return IFFTRealOut(x, order(x.length));
-    }
-
-    /** Return a new array of double's which is the real part of the inverse
-     *  FFT of an input array of doubles. This method is less than half
-     *  as expensive as computing the real part of an IFFT of an array of
-     *  Complex's. It is especially useful when both the input and output
-     *  are known to be purely real.
-     *  @param x An array of doubles.
-     *  @param order The base-2 logarithm of the size of the transform.
-     *  @return A new array of doubles.
-     */
-    public static double[] IFFTRealOut(double[] x, int order) {
-        double[] y = FFTRealOut(x, order);
-
-        // scale by 1/N
-        double oneOverN = 1.0 / (double) (1 << order);
-        return DoubleArrayMath.scale(y, oneOverN);
-    }
-
+    
     /** Return a new array of Complex's which is the forward FFT
      *  of an input array of Complex's.
      *  This method automatically computes the order of the transform
@@ -740,6 +555,235 @@ public class SignalProcessing {
         }
 
         return returnValue;
+    }
+    
+    /** Return a new array of doubles that is the inverse, normalized
+     *  DCT of the input array of doubles.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array. It is equivalent to
+     *  IDCT(x, order, DCT_TYPE_NORMALIZED), where 2^order is the
+     *  next power of two larger than or equal to the length of the
+     *  specified array.  The returned array has length 2^order.
+     *  @param x An array of doubles.
+     *  @return A new array of doubles with length 2^order.
+     */
+    public static final double[] IDCT(double[] x) {
+        return IDCT(x, order(x.length), DCT_TYPE_NORMALIZED);
+    }
+
+    /** Return a new array of doubles that is the inverse, normalized
+     *  DCT of the input array of doubles, using the specified order.
+     *  The length of the DCT is 2^<i>order</i>.  This is equivalent to
+     *  IDCT(x, order, DCT_TYPE_NORMALIZED).
+     *  @param x An array of doubles.
+     *  @return A new array of doubles with length 2^order.
+     */
+    public static final double[] IDCT(double[] x, int order) {
+        return IDCT(x, order, DCT_TYPE_NORMALIZED);
+    }
+    
+    /** Return a new array of doubles that is the inverse DCT of the
+     *  input array of doubles.
+     *  See the DCT_TYPE_XXX constants for documentation of the
+     *  exact formula, which depends on the type.
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @param type The type of IDCT, which is one of DCT_TYPE_NORMALIZED,
+     *   DCT_TYPE_UNNORMALIZED, or DCT_TYPE_ORTHONORMAL.
+     *  @see #DCT_TYPE_NORMALIZED
+     *  @see #DCT_TYPE_UNNORMALIZED
+     *  @see #DCT_TYPE_ORTHONORMAL
+     *  @return A new array of doubles with length 2^order.
+     */
+    public static final double[] IDCT(double[] x, int order, int type) {
+        // check if order > 31
+
+        if (type >= DCT_TYPES) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.IDCT() : Bad DCT type");
+        }
+
+        int size    = 1 << order;
+        int twoSize = 2 << order;
+
+        // Generate scaleFactors if necessary
+        if (_IDCTfactors[type][order] == null) {
+            _IDCTfactors[type][order] = new Complex[twoSize];
+
+            double oneOverTwoSize = 1.0 / (double) twoSize;
+
+            double factor = 1.0;
+            double oneOverE0 = 2.0;
+
+            switch (type) {
+            case DCT_TYPE_NORMALIZED:
+                factor = 2.0;
+                oneOverE0 = ExtendedMath.SQRT_2;
+                break;
+
+            case DCT_TYPE_ORTHONORMAL:
+                factor = Math.sqrt((double) twoSize); // == 2 * sqrt(N/2)
+                oneOverE0 = ExtendedMath.SQRT_2;
+                break;
+
+            case DCT_TYPE_UNNORMALIZED:
+                factor = 2.0;
+                oneOverE0 = 1.0;
+                break;
+            }
+
+            _IDCTfactors[type][order][0] =
+                new Complex(oneOverE0 * factor, 0.0);
+
+            for (int k = 1; k < twoSize; k++) {
+                Complex c = new Complex(0, k * Math.PI * oneOverTwoSize);
+                _IDCTfactors[type][order][k] = c.exp().scale(factor);
+            }
+        }
+
+        Complex[] evenX = new Complex[twoSize];
+        Complex[] myFactors = _IDCTfactors[type][order];
+
+        // Convert to Complex, while multiplying by scaleFactors
+
+        evenX[0] = myFactors[0].scale(x[0]);
+        for (int k = 1; k < size; k++) {
+            // Do zero-padding here
+            if (k >= x.length) {
+                evenX[k] = new Complex(0.0);
+                evenX[twoSize - k] = new Complex(0.0);
+            } else {
+                evenX[k] = myFactors[k].scale(x[k]);
+                evenX[twoSize - k] = myFactors[twoSize - k].scale(-x[k]);
+            }
+        }
+        evenX[size] = new Complex(0.0, 0.0);
+
+        double[] longOutput = IFFTRealOut(evenX, order + 1);
+
+        // Truncate result
+        return DoubleArrayMath.resize(longOutput, size);
+    }
+
+    /** Return a new array of complex numbers which is the inverse FFT
+     *  of an input array of complex numbers.  The length of the result
+     *  is the next power of two greater than the length of the argument.
+     *  The input is zero-padded if it does not match this length.
+     *  @param x An array of complex numbers.
+     *  @return The inverse FFT of the argument.
+     */
+    public static final Complex[] IFFT(Complex[] x) {
+        return IFFTComplexOut(x, order(x.length));
+    }
+
+    /** Return a new array of complex numbers which is the inverse FFT
+     *  of an input array of complex numbers.
+     *  The input is zero-padded if it does not match this length.
+     *  @param x An array of complex numbers.
+     *  @param order The log base 2 of the length of the FFT.
+     *  @return The inverse FFT of the argument.
+     */
+    public static final Complex[] IFFT(Complex[] x, int order) {
+        return IFFTComplexOut(x, order);
+    }
+    
+    /** Return a new array of Complex's which is the inverse FFT
+     *  of an input array of Complex's.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array.
+     *  @param x An array of Complex's.
+     *  @return A new array of Complex's.
+     */
+    public static final Complex[] IFFTComplexOut(Complex[] x) {
+        return IFFTComplexOut(x, order(x.length));
+    }
+
+    /** Return a new array of Complex's which is the forward FFT
+     *  of an input array of Complex's.
+     *  @param x An array of Complex's.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @return A new array of Complex's.
+     */
+    public static final Complex[] IFFTComplexOut(Complex[] x, int order) {
+
+        x = _checkTransformArgs(x, order, _INVERSE_TRANSFORM);
+
+        Complex[] conjX = ComplexArrayMath.conjugate(x);
+        Complex[] yConj = FFTComplexOut(conjX, order);
+        Complex[] y = ComplexArrayMath.conjugate(yConj);
+
+        // scale by 1/N
+        double oneOverN = 1.0 / (double) (1 << order);
+        return ComplexArrayMath.scale(y, oneOverN);
+    }
+
+    /** Return a new array of double's which is the real part of the inverse
+     *  FFT of an input array of Complex's.
+     *  This is less than half as expensive as computing both the real and
+     *  imaginary parts. It is especially useful when it is known that the
+     *  output is purely real.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls :
+     *  IFFTRealOut(x, order)
+     *  @param x An array of Complex's.
+     *  @return A new array of doubles.
+     */
+    public static final double[] IFFTRealOut(Complex[] x) {
+        return IFFTRealOut(x, order(x.length));
+    }
+
+    /** Return a new array of double's which is the real part of the inverse
+     *  FFT of an input array of Complex's.
+     *  This method is less than half as expensive as computing both the
+     *  real and imaginary parts of an IFFT of an array of Complex's. It is
+     *  especially useful when it is known that the output is purely real.
+     *  @param x An array of Complex's.
+     *  @return A new array of double's.
+     */
+    public static final double[] IFFTRealOut(Complex[] x, int order) {
+
+        x = _checkTransformArgs(x, order, _INVERSE_TRANSFORM);
+
+        double[] realx = ComplexArrayMath.realParts(x);
+        double[] realrealX = FFTRealOut(realx, order);
+
+        double[] imagx = ComplexArrayMath.imagParts(x);
+        double[] imagimagX = FFTImagOut(imagx, order);
+
+        realrealX = DoubleArrayMath.add(realrealX, imagimagX);
+
+        // scale by 1/N
+        double oneOverN = 1.0 / (double) (1 << order);
+        return DoubleArrayMath.scale(realrealX, oneOverN);
+    }
+
+    /** Return a new array of double's which is the real part of the inverse
+     *  FFT of an input array of doubles.
+     *  This method automatically computes the order of the transform
+     *  based on the length of the input array, and calls :
+     *  IFFTRealOut(x, order)
+     *  @param x An array of doubles.
+     *  @return A new array of doubles.
+     */
+    public static double[] IFFTRealOut(double[] x) {
+        return IFFTRealOut(x, order(x.length));
+    }
+
+    /** Return a new array of double's which is the real part of the inverse
+     *  FFT of an input array of doubles. This method is less than half
+     *  as expensive as computing the real part of an IFFT of an array of
+     *  Complex's. It is especially useful when both the input and output
+     *  are known to be purely real.
+     *  @param x An array of doubles.
+     *  @param order The base-2 logarithm of the size of the transform.
+     *  @return A new array of doubles.
+     */
+    public static double[] IFFTRealOut(double[] x, int order) {
+        double[] y = FFTRealOut(x, order);
+
+        // scale by 1/N
+        double oneOverN = 1.0 / (double) (1 << order);
+        return DoubleArrayMath.scale(y, oneOverN);
     }
     
     /** Return a new array that is filled with samples of a Bartlett

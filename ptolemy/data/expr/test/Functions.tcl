@@ -1192,7 +1192,17 @@ test Function-DCT {Test DCT} {
 
 test Function-downsample {Test downsample} {
     list [evaluate {downsample({1.0, 2.0, 3.0, 4.0}, 2)}] \
-    } {{{1.0, 3.0}}}
+         [evaluate {downsample({1.0, 2.0, 3.0, 4.0}, 2, 1)}] \
+     } {{{1.0, 3.0}} {{2.0, 4.0}}}
+
+####################################################################
+# FFT
+
+test Function-FFT {Test FFT} {
+    list [evaluate {FFT({1.0, 1.0}).isCloseTo({2.0 + 0.0i, 0.0 + 0.0i})}] \
+         [evaluate {FFT({1.0, 1.0}, 1).isCloseTo({2.0 + 0.0i, 0.0 + 0.0i})}] \
+         [evaluate {FFT({1.0, 1.0}, 2).isCloseTo({2.0 + 0.0i, 1.0 - 1.0i, 0.0 + 0.0i, 1.0 + 1.0i})}]
+ } {true true true}
 
 ####################################################################
 # generateBartlettWindow
@@ -1252,6 +1262,16 @@ test Function-IDCT {Test IDCT} {
          [evaluate {IDCT(DCT({1.0, 1.0}), 2).isCloseTo({0.5, 0.5, 0.5, 0.5})}] \
          [evaluate {IDCT(DCT({1.0, 1.0}), 2, 0).isCloseTo({0.5, 0.5, 0.5, 0.5})}] \
         } {true true true true}
+
+####################################################################
+# IFFT
+
+test Function-IFFT {Test IFFT} {
+    list [evaluate {IFFT(FFT({1.0, 1.0})).isCloseTo({1.0 + 0.0i, 1.0 + 0.0i})}] \
+         [evaluate {IFFT(FFT({1.0, 1.0}, 1)).isCloseTo({1.0 + 0.0i, 1.0 + 0.0i})}] \
+         [evaluate {IFFT(FFT({1.0, 1.0}, 2)).isCloseTo({1.0 + 0.0i, 1.0 + 0.0i, 0.0 + 0.0i, 0.0 + 0.0i})}]
+ } {true true true}
+
 
 ####################################################################
 # nextPowerOfTwo
