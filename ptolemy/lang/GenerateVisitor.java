@@ -2,10 +2,10 @@ package ptolemy.lang;
 
 import java.io.*;
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
-class GenerateVisitor {
+public class GenerateVisitor {
 
   public static void main(String[] args) throws IOException {
     if (args.length < 1) {
@@ -93,13 +93,14 @@ class GenerateVisitor {
 
     _ifs.close();
 
-    ListIterator itr = _typeList.listIterator();
-    ListIterator parItr = _parentTypeList.listIterator();
-    ListIterator concreteItr = _isConcreteList.listIterator();
-    ListIterator singletonItr = _isSingletonList.listIterator();
-    ListIterator interfaceItr = _isInterfaceList.listIterator();
-    ListIterator methodListItr = _methodListList.listIterator();
-    ListIterator implListItr = _implListList.listIterator();
+    Iterator itr = _typeList.listIterator();
+    Iterator parItr = _parentTypeList.listIterator();
+    Iterator concreteItr = _isConcreteList.listIterator();
+    Iterator singletonItr = _isSingletonList.listIterator();
+    Iterator inTreeItr = _isInTreeList.listIterator();
+    Iterator interfaceItr = _isInterfaceList.listIterator();
+    Iterator methodListItr = _methodListList.listIterator();
+    Iterator implListItr = _implListList.listIterator();
 
     while (itr.hasNext()) {
       String typeName = (String) itr.next();
@@ -107,10 +108,12 @@ class GenerateVisitor {
       boolean isConcrete = ((Boolean) concreteItr.next()).booleanValue();
       boolean isSingleton = ((Boolean) singletonItr.next()).booleanValue();
       boolean isInterface = ((Boolean) interfaceItr.next()).booleanValue();
+      boolean isInTree = ((Boolean) inTreeItr.next()).booleanValue();
+      
       LinkedList methodList = (LinkedList) methodListItr.next();
       LinkedList implList = (LinkedList) implListItr.next();
 
-      if (isConcrete) {
+      if (isConcrete && isInTree) {
          _ofs.write(
           "\n" +
           "    public Object visit" + typeName + "(" + typeName +
@@ -211,7 +214,7 @@ class GenerateVisitor {
        sb.append(parentTypeName);
     }
 
-    ListIterator implItr = implList.listIterator();
+    Iterator implItr = implList.listIterator();
 
     if (implItr.hasNext()) {
        sb.append(" implements ");
@@ -230,7 +233,7 @@ class GenerateVisitor {
     sb.append(" {\n");
 
     // do methods first
-    ListIterator methodItr = methodList.listIterator();
+    Iterator methodItr = methodList.listIterator();
 
     while (methodItr.hasNext()) {
       Object o = methodItr.next();
@@ -288,21 +291,23 @@ class GenerateVisitor {
          } catch (NullPointerException e) {
             System.err.println("Not enough parameters in line : " + _lastLine);
             return;
-         }
+          }
 
          String nextToken = strTokenizer.nextToken();
 
          boolean isSingleton;
          boolean isInterface;
          try {
-            isSingleton = nextToken.equals("S");
+            isSingleton = nextToken.startsWith("S");
             _isSingletonList.addLast(new Boolean(isSingleton));
 
             _isConcreteList.addLast(new Boolean(
-             isSingleton || nextToken.equals("C")));
+             isSingleton || nextToken.startsWith("C")));
 
-            isInterface = nextToken.equals("I");
+            isInterface = nextToken.startsWith("I");
             _isInterfaceList.addLast(new Boolean(isInterface));
+            
+            _isInTreeList.addLast(new Boolean(!nextToken.endsWith("N")));
 
          } catch (NullPointerException e) {
             System.err.println("Not enough parameters in line : " + _lastLine);
@@ -391,7 +396,7 @@ class GenerateVisitor {
   public static class MethodSignature {
     public MethodSignature() {}
 
-    // a singleton constructor
+    /** a singleton constructor */
     public MethodSignature(String className) {
       _defConstruct = false;
       _construct = true;
@@ -401,7 +406,7 @@ class GenerateVisitor {
       _returnType = "";
     }
 
-    // a constructor or method
+    /** a constructor or method */
     public MethodSignature(char sigType, StringTokenizer strToken,
      String className, char defaultPlacement, boolean isInterface)
      throws IOException {
@@ -499,7 +504,7 @@ class GenerateVisitor {
 
         if (_superParams > 0) {
 
-           ListIterator argsItr = _superArgs.listIterator();
+           Iterator argsItr = _superArgs.listIterator();
 
            sb.append(ident);
            sb.append(ident);
@@ -518,9 +523,9 @@ class GenerateVisitor {
 
         if (_defConstruct) {
 
-           ListIterator typeItr = _paramTypes.listIterator();
-           ListIterator nameItr = _paramNames.listIterator();
-           ListIterator varPlaceItr = _varPlacements.listIterator();
+           Iterator typeItr = _paramTypes.listIterator();
+           Iterator nameItr = _paramNames.listIterator();
+           Iterator varPlaceItr = _varPlacements.listIterator();
 
            int varCount = 0;
 
@@ -631,8 +636,8 @@ class GenerateVisitor {
       sb.append(_name);
       sb.append('(');
 
-      ListIterator typeItr = _paramTypes.listIterator();
-      ListIterator nameItr = _paramNames.listIterator();
+      Iterator typeItr = _paramTypes.listIterator();
+      Iterator nameItr = _paramNames.listIterator();
 
       int paramCount = 0;
       while (typeItr.hasNext()) {
@@ -667,7 +672,7 @@ class GenerateVisitor {
       return sb.toString();
     }
 
-    // a getter or a setter method for a child in the list
+    /** a getter or a setter method for a child in the list */
     public MethodSignature(String returnType, String name, int childIndex, boolean setter) {
 
       Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
@@ -732,9 +737,9 @@ class GenerateVisitor {
       int varCount = 0;
       int childIndex = 0;
 
-      ListIterator typeItr = _paramTypes.listIterator();
-      ListIterator nameItr = _paramNames.listIterator();
-      ListIterator varPlaceItr = _varPlacements.listIterator();
+      Iterator typeItr = _paramTypes.listIterator();
+      Iterator nameItr = _paramNames.listIterator();
+      Iterator varPlaceItr = _varPlacements.listIterator();
 
       while (typeItr.hasNext()) {
 
@@ -903,6 +908,7 @@ class GenerateVisitor {
   protected LinkedList _isConcreteList = new LinkedList();
   protected LinkedList _isSingletonList = new LinkedList();
   protected LinkedList _isInterfaceList = new LinkedList();
+  protected LinkedList _isInTreeList = new LinkedList();
   protected LinkedList _methodListList = new LinkedList();
   protected LinkedList _implListList = new LinkedList();
 

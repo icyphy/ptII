@@ -34,7 +34,7 @@ package ptolemy.lang.java;
 
 import ptolemy.lang.*;
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 public class JavaCodeGenerator extends JavaVisitor {
     public Object visitNameNode(NameNode node, LinkedList args) {
@@ -173,7 +173,7 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         LinkedList impList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_IMPORTS);
 
-        ListIterator impItr = impList.listIterator();
+        Iterator impItr = impList.iterator();
 
         while (impItr.hasNext()) {
           sb.append((String) impItr.next());
@@ -184,7 +184,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         LinkedList typeList = (LinkedList) node.childReturnValueAt(
          node.CHILD_INDEX_DEFTYPES);
 
-        ListIterator typeItr = typeList.listIterator();
+        Iterator typeItr = typeList.iterator();
 
         while (typeItr.hasNext()) {
           sb.append((String) typeItr.next());
@@ -243,7 +243,7 @@ public class JavaCodeGenerator extends JavaVisitor {
          (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_MEMBERS);
 
         if (!memberList.isEmpty()) {
-           ListIterator memberItr = memberList.listIterator();
+           Iterator memberItr = memberList.iterator();
 
            while (memberItr.hasNext()) {
              String methodString = (String) memberItr.next();
@@ -431,7 +431,7 @@ public class JavaCodeGenerator extends JavaVisitor {
          (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_MEMBERS);
 
         if (!memberList.isEmpty()) {
-           ListIterator memberItr = memberList.listIterator();
+           Iterator memberItr = memberList.iterator();
 
            while (memberItr.hasNext()) {
              String methodString = (String) memberItr.next();
@@ -492,8 +492,8 @@ public class JavaCodeGenerator extends JavaVisitor {
         LinkedList stmtList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_STMTS);
         LinkedList stmtTreeList = (LinkedList) node.getStmts();
 
-        ListIterator stmtItr = stmtList.listIterator();
-        ListIterator stmtTreeItr = stmtTreeList.listIterator();
+        Iterator stmtItr = stmtList.iterator();
+        Iterator stmtTreeItr = stmtTreeList.iterator();
 
         while (stmtItr.hasNext()) {
           sb.append((String) stmtItr.next());
@@ -584,7 +584,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         LinkedList initList =
          (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_INIT);
 
-        ListIterator initItr = initList.listIterator();
+        Iterator initItr = initList.iterator();
 
         while (initItr.hasNext()) {
           sb.append((String) initItr.next());
@@ -695,7 +695,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         LinkedList catchesList =
          (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_CATCHES);
 
-        ListIterator catchesItr = catchesList.listIterator();
+        Iterator catchesItr = catchesList.iterator();
 
         while (catchesItr.hasNext()) {
           sb.append((String) catchesItr.next());
@@ -839,7 +839,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         LinkedList dimExprList =
          (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_DIMEXPRS);
 
-        ListIterator dimExprItr = dimExprList.listIterator();
+        Iterator dimExprItr = dimExprList.iterator();
 
         while (dimExprItr.hasNext()) {
             sb.append('[');
@@ -1131,7 +1131,7 @@ public class JavaCodeGenerator extends JavaVisitor {
     protected static String _commaList(LinkedList list) {
         StringBuffer sb = new StringBuffer();
 
-        ListIterator itr = list.listIterator();
+        Iterator itr = list.iterator();
 
         while (itr.hasNext()) {
           sb.append((String) itr.next());

@@ -55,7 +55,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         LinkedList declInterfaceList = new LinkedList();
 
-        Iterator interfaceItr = node.getInterfaces().listIterator();
+        Iterator interfaceItr = node.getInterfaces().iterator();
 
         while (interfaceItr.hasNext()) {
             ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
@@ -143,7 +143,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         LinkedList declInterfaceList = new LinkedList();
 
-        Iterator interfaceItr = node.getInterfaces().listIterator();
+        Iterator interfaceItr = node.getInterfaces().iterator();
 
         while (interfaceItr.hasNext()) {
             ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
@@ -406,7 +406,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
     protected static LinkedList _makeTypeList(LinkedList paramList) {
         LinkedList retval = new LinkedList();
 
-        Iterator paramItr = paramList.listIterator();
+        Iterator paramItr = paramList.iterator();
 
         while (paramItr.hasNext()) {
            ParameterNode param = (ParameterNode) paramItr.next();

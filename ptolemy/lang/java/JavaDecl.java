@@ -223,6 +223,18 @@ public abstract class JavaDecl extends Decl {
     return SearchPath.NAMED_PATH;
   }
 
+  /** Return the Decl associated with the node. Return null if the
+   *  Decl is not found. This method figures out the type of node, and
+   *  passes to the appropriate more specific getDecl() method.
+   */
+  public static final JavaDecl getDecl(TreeNode node) {
+    if (node instanceof NamedNode) {
+       return getDecl((NamedNode) node);
+    } 
+    
+    return getDecl((NameNode) node);
+  }
+
   /** Return the Decl associated with the named node. Return null if the
    *  Decl is not found.
    */

@@ -139,22 +139,6 @@ public abstract class ResolveVisitorBase extends JavaVisitor {
         return null;
     }
 
-    public Object visitDeclaratorNode(DeclaratorNode node, LinkedList args) {
-        ApplicationUtility.error("DeclaratorNode should not appear in the " +
-         "final parse tree");
-        return null;
-    }
-
-    public Object visitPackageNode(PackageNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitNullTypeNode(NullTypeNode node, LinkedList args) {
-        ApplicationUtility.error("DeclaratorNode should not appear in the " +
-         "final parse tree");
-        return null;
-    }
-
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _initLazyFlag(node);
         return _defaultVisit(node, args);

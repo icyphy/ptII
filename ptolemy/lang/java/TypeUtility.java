@@ -34,21 +34,27 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
+import java.util.LinkedList;
+import java.util.Iterator;
+import ptolemy.lang.*;
+
 public class TypeUtility {
 
-    /** Private constructor prevents instantiation of this class. */
-    private TypeUtility() {}
+    /** Public constructor allows inheritence of methods although this class has no
+     *  instance members.
+     */
+    public TypeUtility() {}
 
     /** Return true if TypeNodes t1 and t2 are identical. */
-    public static final boolean compareTypes(TypeNode t1, TypeNode t2) {
+    public static boolean compareTypes(TypeNode t1, TypeNode t2) {
         if (t1 == t2) {  // primitive types, or reference to same type node
                          // this relies on the fact that the primitive
                          // types are singletons
            return true;
         }
 
-        if (t1 instanceof ArrayTypeNode) {
-           if (!(t2 instanceof ArrayTypeNode)) {
+        if (isArrayType(t1)) {
+           if (!isArrayType(t2)) {
               return false;
            }
            
@@ -77,9 +83,9 @@ public class TypeUtility {
     }
 
     /** Return true if TypeNameNodes tn1 and tn2 are identical. */
-    public static final boolean compareTypeNames(TypeNameNode tn1,
+    public static boolean compareTypeNames(TypeNameNode tn1,
      TypeNameNode tn2) {
-        return (JavaDecl.getDecl(tn1) == JavaDecl.getDecl(tn2));
+        return (JavaDecl.getDecl((NamedNode) tn1) == JavaDecl.getDecl((NamedNode) tn2));
     }
 
     /** Return true iff MethodDecl m1 is more specific 
@@ -87,10 +93,10 @@ public class TypeUtility {
      *  should be "no less specific than", but the Reference Manual is the 
      *  Reference Manual. 
      */
-    public static final boolean isMoreSpecific(final MethodDecl m1, final MethodDecl m2) {
+    public static boolean isMoreSpecific(final MethodDecl m1, final MethodDecl m2) {
      
-        LinkedList params1 = m1.getParamList();
-        LinkedList params2 = m2.getParamList();
+        LinkedList params1 = m1.getParams();
+        LinkedList params2 = m2.getParams();
           
         int numParams = params1.size();    
         if (numParams != params2.size()) {         
@@ -108,90 +114,289 @@ public class TypeUtility {
         }
          
         // This is inefficient ... iterate the list backwards once everything's working
-        for (int i = length - 1; i >= 0; i--) {
+        // Actually, it doesn't seem to matter what direction we go...
+        for (int i = numParams - 1; i >= 0; i--) {
             TypeNode param2 = (TypeNode) params2.get(i);
             TypeNode param1 = (TypeNode) params1.get(i);
              
-            if (!isAssignableFromType(param2, param1) {
+            if (!isAssignableFromType(param2, param1)) {
                return false;
             }
         }
          
         return true;    
     }
+    
+    public static boolean isCallableWith(MethodDecl m, LinkedList argTypes) {
+        LinkedList formalTypes = m.getParams();
+        
+        if (argTypes.size() != formalTypes.size()) {
+           return false;
+        }
 
+        Iterator formalItr = formalTypes.iterator();
+        Iterator argItr = argTypes.iterator();
+        
+        while (formalItr.hasNext()) {
+           TypeNode formalType = (TypeNode) formalItr.next();
+           TypeNode argType = (TypeNode) argItr.next();
+           
+           if (!isAssignableFromType(formalType, argType)) {
+              return false;
+           }
+        }
+        return true;
+    } 
+    
     /** Return true iff type is a primitive type. */
-    public static final boolean isReference(TypeNode type)  {
+    public static boolean isPrimitiveType(TypeNode type)  {
         return (type instanceof PrimitiveTypeNode);
     }
 
     /** Return true iff type is a reference type. */     
-    public static final boolean isReference(TypeNode type)  {
+    public static boolean isReferenceType(TypeNode type)  {
         return ((type == NullTypeNode.instance) || (type instanceof TypeNameNode));
+    }
+    
+    public static boolean isArrayType(TypeNode type) {
+        return (type instanceof ArrayTypeNode);
     }
      
     /** Return true iff type is a arithmetic type. */         
-    public static final boolean isArithType(TypeNode type)  {     
+    public static boolean isArithType(TypeNode type)  {     
        return _isOneOf(type, _ARITH_TYPES);
     }
 
     /** Return true iff type is a floating point type. */             
-    public static final boolean isFloatType(TypeNode type)  {
+    public static boolean isFloatType(TypeNode type)  {
        return _isOneOf(type, _FLOAT_TYPES); 
     }
 
     /** Return true iff type is a discrete valued type. */         
-    public static final boolean isIntegralType(TypeNode type) {
+    public static boolean isIntegralType(TypeNode type) {
        return _isOneOf(type, _INTEGRAL_TYPES);        
     }
 
     /** Return true iff type is a String type. */         
     public static boolean isStringType(TypeNode type) { 
-       return compareType(type, StaticResolution.STRING_DECL.getDefType());
+       return compareTypes(type, StaticResolution.STRING_DECL.getDefType());
     }     
     
-    boolean isAssignableFromType(final TypeNode type1, final TypeNode type2)  {
-       if (isPrimitive(type1)) {
+    public static boolean isAssignableFromType(final TypeNode type1, 
+     final TypeNode type2)  {
+     
+       int kind1 = kind(type1);
+       int kind2 = kind(type2);
+          
+       if (isPrimitiveType(type1)) {
           // table driven for primitive types
-          return _isOneOf(type1, _typesAssignableTo(type2));
+          return _isOneOf(type1, _TYPES_ASSIGNABLE_TO[kind2]);
        }
        
-  switch (kind())
-    {
-    case Common::ClassKind:
-      switch (T1->kind())
-	{
-	case Common::NullKind: return isReference(); // not immutable
-	case Common::InterfaceKind:
-	  return decl() == ObjectDecl && isLocalWidening(this, T1);
-	case Common::ClassKind:
-	  return isLocalWidening(this, T1) &&
-	    (isSubClass(T1->decl(), decl()) ||
-	     isJavaArrayType() && T1->isJavaArrayType() &&
-	     elementType()->isAssignableFromType(T1->elementType()) &&
-	     areQualifiersEqual(elementType(), T1->elementType()));
-	case Common::ArrayInitializerKind: return isArrayType();
-	default: return false;
-	}
-    case Common::InterfaceKind:
-      switch (T1->kind())
-	{
-	case Common::NullKind: return true;
-	case Common::ClassKind:
-	  return implements(T1->decl(), decl()) && isLocalWidening(this, T1);
-	case Common::InterfaceKind:
-	  return isSuperInterface(decl(), T1->decl()) && isLocalWidening(this, T1);
-	default: return false;
-	}
-    case Common::NullKind:
-      return false;
-    default:
-      assert(0);
-      return false;
-    }       
+       switch (kind1) {
+         case TYPE_KIND_CLASS:
+         switch (kind2) {
+   	       case TYPE_KIND_NULL: 
+	       return true;
+	       
+	       case TYPE_KIND_INTERFACE: 
+	       {
+              JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);	       
+	       
+	          return (decl == StaticResolution.OBJECT_DECL);
+	       }
+	       
+	       case TYPE_KIND_CLASS:
+	       if (isSubClass((ClassDecl) JavaDecl.getDecl((NamedNode) type2), 
+	                      (ClassDecl) JavaDecl.getDecl((NamedNode) type1))) {
+	          return true;
+	       }
+	       
+	       if (isArrayType(type1) && isArrayType(type2)) {
+	          ArrayTypeNode arrType1 = (ArrayTypeNode) type1;
+	          ArrayTypeNode arrType2 = (ArrayTypeNode) type2;
+	          
+	          TypeNode elementType1 = arrType1.getBaseType();     
+	          TypeNode elementType2 = arrType2.getBaseType();     
+	          
+	          return isAssignableFromType(elementType1, elementType2);
+	       }  
+	       return false;
+      	     	    	     
+	       case TYPE_KIND_ARRAYINIT: 
+	       return isArrayType(type1);
+	       	       
+	       default: 
+	       return false;
+	     }
+	     
+         case TYPE_KIND_INTERFACE:
+         switch (kind2) {
+	       case TYPE_KIND_NULL: 
+	       return true;
+	       
+	       case TYPE_KIND_CLASS:
+	       {
+             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);	       
+             ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);	       
+             
+	         return doesImplement(decl2, decl1);
+	       }
+	       	       
+	       case TYPE_KIND_INTERFACE:
+	       {
+             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);	       
+             ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);
+  	         return isSuperInterface(decl1, decl2); 
+	       }
+	       
+	       default: 
+	       return false;
+	     }
+	     	     
+         case TYPE_KIND_NULL:
+         return false;         
+       }       
+              
+       return false;
     }   
+     
+    public static int kind(TypeNode type) {
+        
+       // primitive types
+       if (type == BoolTypeNode.instance)   return TYPE_KIND_BOOL; 
+       if (type == CharTypeNode.instance)   return TYPE_KIND_CHAR; 
+       if (type == ByteTypeNode.instance)   return TYPE_KIND_BYTE; 
+       if (type == ShortTypeNode.instance)  return TYPE_KIND_SHORT; 
+       if (type == IntTypeNode.instance)    return TYPE_KIND_INT; 
+       if (type == LongTypeNode.instance)   return TYPE_KIND_LONG; 
+       if (type == FloatTypeNode.instance)  return TYPE_KIND_FLOAT; 
+       if (type == DoubleTypeNode.instance) return TYPE_KIND_DOUBLE;                  
+                      
+       // otherwise, not a primitive type
+       if (type instanceof TypeNameNode) {
+          return kind((TypeNameNode) type);
+       }
+       
+       if (type instanceof ArrayTypeNode) {
+          return TYPE_KIND_CLASS; // arrays derive from Object     
+       }
+       
+       ApplicationUtility.error("unknown type encountered");
+       return TYPE_KIND_UNKNOWN;
+    }
+           
+    public static int kind(TypeNameNode type) {
+       Decl d = JavaDecl.getDecl((NamedNode) type);
+        
+       if (d != null) {
+          if (d.category == JavaDecl.CG_INTERFACE) {
+             return TYPE_KIND_INTERFACE;
+          } 
+       }    
+       return TYPE_KIND_CLASS;
+    }
+             
+    public static final TypeNode type(ExprNode expr) {
+       return (TypeNode) expr.accept(new TypeVisitor(), null);       
+    }         
+                  
+    public static boolean isSubClass(JavaDecl decl1, JavaDecl decl2) {
+       int d1cat = decl1.category;
+       int d2cat = decl2.category;
+       
+       if ((d1cat != JavaDecl.CG_CLASS) || (d2cat != JavaDecl.CG_CLASS)) {
+          return false;
+       }
+      
+       return isSubClass((ClassDecl) decl1, (ClassDecl) decl2);
+    }
     
-    public static final boolean _isOneOf(TypeNode type, TypeNode[] typeArray) {
+    public static boolean isSubClass(ClassDecl decl1, ClassDecl decl2) {
+          
+       while (true) {
+          if (decl1 == decl2) {
+             return true;
+          }
+          
+          if ((decl1 == StaticResolution.OBJECT_DECL) || (decl1 == null)) {
+             return false;
+          }
+                          
+          decl1 = decl1.getSuperClass();
+       }
+    }                  
+
+    public static boolean doesImplement(ClassDecl classDecl, ClassDecl iFaceDecl) {
+       Iterator iFaceItr = classDecl.getInterfaces().iterator();
+       
+       while (iFaceItr.hasNext()) {
+          ClassDecl implIFace = (ClassDecl) iFaceItr.next();
+          if (isSuperInterface(iFaceDecl, implIFace)) {
+             return true;
+          }
+       }
+    
+       if (classDecl == StaticResolution.OBJECT_DECL) {
+          return false;
+       } else {
+          return doesImplement(classDecl.getSuperClass(), iFaceDecl);
+       }      
+    }
+
+    public static boolean isSuperInterface(ClassDecl decl1, ClassDecl decl2) {   
+       if (decl1 == decl2) {
+          return true;
+       }
+
+       Iterator iFaceItr = decl2.getInterfaces().iterator();
+       
+       while (iFaceItr.hasNext()) {
+          ClassDecl implIFace = (ClassDecl) iFaceItr.next();
+          if (isSuperInterface(decl1, implIFace)) {
+             return true;
+          }
+       }
+       return false;
+    }
+       
+    public static TypeNode arithPromoteType(TypeNode type) {
+       switch (kind(type)) {
+         case TYPE_KIND_BYTE:      
+         case TYPE_KIND_CHAR:
+         case TYPE_KIND_SHORT:
+         case TYPE_KIND_INT:
+         return IntTypeNode.instance;
+       }
+       return type;   
+    }
+
+    public static TypeNode arithPromoteType(TypeNode type1, TypeNode type2) {
+       int kind1 = kind(type1);
+       int kind2 = kind(type2);
+   
+       if ((kind1 == TYPE_KIND_DOUBLE) ||
+           (kind2 == TYPE_KIND_DOUBLE)) {
+          return DoubleTypeNode.instance;
+       }
+       if ((kind1 == TYPE_KIND_FLOAT) ||
+           (kind2 == TYPE_KIND_FLOAT)) {
+          return FloatTypeNode.instance;
+       }
+     
+       if ((kind1 == TYPE_KIND_LONG) ||
+           (kind2 == TYPE_KIND_LONG)) {
+          return LongTypeNode.instance;
+       }
+     
+       if ((kind1 == TYPE_KIND_BOOL) ||
+           (kind2 == TYPE_KIND_BOOL)) {     
+          return BoolTypeNode.instance;
+       }
+       return IntTypeNode.instance;
+    }       
+                         
+    protected static final boolean _isOneOf(TypeNode type, TypeNode[] typeArray) {
        for (int i = 0; i < typeArray.length; i++) {
            if (typeArray[i] == type) {
               return true;
@@ -200,40 +405,20 @@ public class TypeUtility {
        return false;          
     }
     
-    protected static final TypeNode[] _typesAssignableTo(TypeNode type) {
-       switch (type) {
-       
-       case BoolTypeNode.instance:
-       return _TYPES_ASSIGNABLE_TO_BOOL;
-       
-       case CharTypeNode.instance:
-       return _TYPES_ASSIGNABLE_TO_CHAR;
-       
-       case ByteTypeNode.instance:
-       return _TYPES_ASSIGNABLE_TO_BYTE;
-              
-       case ShortTypeNode.instance:       
-       return _TYPES_ASSIGNABLE_TO_SHORT;
-       
-       case IntTypeNode.instance:
-       return _TYPES_ASSIGNABLE_TO_INT;
-       
-       case LongTypeNode.instance:
-       return _TYPES_ASSIGNABLE_TO_LONG;
-       
-       case FloatTypeNode.instance:
-       return _TYPES_ASSIGNABLE_TO_FLOAT;
-       
-       case DoubleTypeNode.instance: 
-       return _TYPES_ASSIGNABLE_TO_DOUBLE;
-       
-       }
-            
-       
-        // more 
-    
-    }
-    
+    public static final int TYPE_KIND_UNKNOWN = 0;        
+    public static final int TYPE_KIND_BOOL    = 1;        
+    public static final int TYPE_KIND_BYTE    = 2;        
+    public static final int TYPE_KIND_CHAR    = 3;        
+    public static final int TYPE_KIND_SHORT   = 4;        
+    public static final int TYPE_KIND_INT     = 5;        
+    public static final int TYPE_KIND_LONG    = 6;        
+    public static final int TYPE_KIND_FLOAT   = 7;        
+    public static final int TYPE_KIND_DOUBLE  = 8;        
+    public static final int TYPE_KIND_CLASS   = 9;        
+    public static final int TYPE_KIND_INTERFACE = 10;        
+    public static final int TYPE_KIND_ARRAYINIT = 11;
+    public static final int TYPE_KIND_NULL    = 12;            
+                      
     protected static final TypeNode[] _ARITH_TYPES = new TypeNode[] 
      { ByteTypeNode.instance, CharTypeNode.instance, ShortTypeNode.instance,
        IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
@@ -245,7 +430,7 @@ public class TypeUtility {
     protected static final TypeNode[] _INTEGRAL_TYPES = new TypeNode[]
      { ByteTypeNode.instance, CharTypeNode.instance, ShortTypeNode.instance,
        IntTypeNode.instance, LongTypeNode.instance };
-       
+                     
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BOOL = new TypeNode[] 
      { BoolTypeNode.instance };
 
@@ -274,6 +459,16 @@ public class TypeUtility {
      
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_DOUBLE = new TypeNode[] 
      { DoubleTypeNode.instance };
+     
+    /** An uneven matrix of primitive types that may be assigned to a 
+     *  primitive type, the kind of which is the array index.
+     */
+    protected static final TypeNode[][] _TYPES_ASSIGNABLE_TO = new TypeNode[][] 
+     { 
+       _TYPES_ASSIGNABLE_TO_BOOL, _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_CHAR,
+       _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_SHORT, _TYPES_ASSIGNABLE_TO_INT,
+       _TYPES_ASSIGNABLE_TO_LONG, _TYPES_ASSIGNABLE_TO_FLOAT, _TYPES_ASSIGNABLE_TO_DOUBLE
+     };     
 }
 
 

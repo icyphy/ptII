@@ -64,7 +64,7 @@ IterationNode A StatementNode c 0 c
 JumpStmtNode A StatementNode k 0 TreeNode label k
 
 ExprNode A TreeNode c 0 c
-FieldAccessNode A ExprNode c 0 c
+FieldAccessNode A ExprNode i NamedNode i c 0 c
 
 SingleExprNode A ExprNode k 0 ExprNode expr k
 SingleOpNode A SingleExprNode c 1 ExprNode expr c
@@ -112,12 +112,13 @@ VoidTypeNode S TypeNode
 // Types used by the parser that don't appear in the finished ASTs.
 
 // initExpr may be ABSENT
-DeclaratorNode C TreeNode i NamedNode i k 0 int dims NameNode name TreeNode initExpr k
+DeclaratorNode CN TreeNode i NamedNode i k 0 int dims NameNode name TreeNode initExpr k
 
 // Types that don't arise during parsing.
 
-PackageNode C TreeNode i NamedNode i k 0 NameNode name k
-NullTypeNode S TypeNode
+PackageNode CN TreeNode i NamedNode i k 0 NameNode name k
+NullTypeNode SN TypeNode
+ArrayInitTypeNode SN TypeNode
 
 // Declarations
 

@@ -128,77 +128,8 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
         return node;
     }
 
-
-    public Object visitBoolLitNode(BoolLitNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitCharLitNode(CharLitNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitStringLitNode(StringLitNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitBoolTypeNode(BoolTypeNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitCharTypeNode(CharTypeNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitByteTypeNode(ByteTypeNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitShortTypeNode(ShortTypeNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitIntTypeNode(IntTypeNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitFloatTypeNode(FloatTypeNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitLongTypeNode(LongTypeNode node, LinkedList args) {
-        return node;
-    }
-
-    public Object visitDoubleTypeNode(DoubleTypeNode node, LinkedList args) {
-        return node;
-    }
-
     public Object visitVoidTypeNode(VoidTypeNode node, LinkedList args) {
         return node;
-    }
-
-    public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitVarDeclNode(VarDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
     }
 
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {

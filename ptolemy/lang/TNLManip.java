@@ -90,6 +90,10 @@ public class TNLManip {
        list.addFirst(obj);
        return list;
     }
+  
+    public static final String toString(LinkedList list) {
+       return toString(list, "    ");
+    }
 
     public static final String toString(LinkedList list, String indent) {
        if (list.isEmpty()) {
