@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/gui
 
-DIRS = 		jnlp style test
+DIRS = 		doc jnlp style test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -51,6 +51,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	doc/doc.jar \
 	style/style.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
