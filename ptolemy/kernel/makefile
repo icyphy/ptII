@@ -44,11 +44,10 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
-	Block.java
-#	Galaxy.java 
-#	NamedObj.java 
-#	PortHole.java
-#	Star.java
+	Block.java \
+	Galaxy.java \
+	PortHole.java \
+	Star.java
 
 MISC_FILES =
 
