@@ -295,6 +295,55 @@ public class PNDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Increase the count of stopped actors by one.  This method is
+     *  called by instances of ProcessThread in response to a call to
+     *  their stopThread() method. This method may be overridden in
+     *  derived classes to added domain specific
+     *  functionality. Implementations of this method must be
+     *  synchronized.
+     */
+    protected synchronized void _actorHasStopped() {
+        // This method is here only to make it visible within the package.
+        super._actorHasStopped();
+    }
+
+    /** Decrease the count of stopped actors by one.  This method is
+     *  called by instances of ProcessThread after detecting that the
+     *  stopFire() flag has been cleared. This method may be
+     *  overridden in derived classes to added domain specific
+     *  functionality. Implementations of this method must be
+     *  synchronized.
+     */
+    protected synchronized void _actorHasRestarted() {
+        // This method is here only to make it visible within the package.
+        super._actorHasRestarted();
+    }
+
+    /** Decrease by one the count of active processes under the control of
+     *  this director.
+     *  This method should be called only when an active thread that was
+     *  registered using _increaseActiveCount() is terminated.
+     *  This count is used to detect deadlocks for termination and other
+     *  reasons.
+     */
+    protected synchronized void _decreaseActiveCount() {
+        // This method is here only to make it visible within the package.
+        super._decreaseActiveCount();
+    }
+
+    /** Increase the count of active actors in the composite actor
+     *  corresponding to this director by 1. This method should be
+     *  called when a new thread corresponding to an actor is started
+     *  in the model under the control of this director. This method
+     *  is required for detection of deadlocks.
+     *  The corresponding method _decreaseActiveCount should be called
+     *  when the thread is terminated.
+     */
+    protected synchronized void _increaseActiveCount() {
+        // This method is here only to make it visible within the package.
+        super._increaseActiveCount();
+    }
+
     /** Double the capacity of one of the queues with the smallest
      *  capacity belonging to a receiver on which a process is blocked
      *  while attempting to write. <p>Traverse through the list of receivers
