@@ -80,6 +80,10 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+# These tests consume quite a bit of memory, so we increase the maximum
+# stack size to 100Mb
+JAVAFLAGS = -Xmx100m
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
