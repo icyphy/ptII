@@ -119,8 +119,9 @@ public class CTSingleSolverDirector extends CTDirector {
     public void attributeChanged(Attribute param)
             throws IllegalActionException {
         if(param == ODESolver) {
-            _debug(getFullName() + "solver updating...");
-            _solverclass = ((StringToken)((Parameter)param).getToken()).stringValue();
+            _debug(getFullName() + " solver updating...");
+            _solverclass = 
+                ((StringToken)((Parameter)param).getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclass);
             setCurrentODESolver(_defaultSolver);
         } else {
@@ -245,7 +246,7 @@ public class CTSingleSolverDirector extends CTDirector {
         if(STAT) {
             NSTEP++;
         }
-        (Thread.currentThread()).yield();
+        //(Thread.currentThread()).yield();
         if(!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();

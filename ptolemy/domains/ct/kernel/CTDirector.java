@@ -107,10 +107,10 @@ director dependent.
 public abstract class CTDirector extends StaticSchedulingDirector {
 
     public static boolean STAT = true;
-    public static int NSTEP = 0;
-    public static int NFUNC = 0;
-    public static int NFAIL = 0;
-    public static int NROLL = 0;
+    public  int NSTEP = 0;
+    public  int NFUNC = 0;
+    public  int NFAIL = 0;
+    public  int NROLL = 0;
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -356,16 +356,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         if(_breakPoints == null) {
             _breakPoints = new TotallyOrderedSet(new DoubleComparator());
         }
-        /*
-        if ((actor != null) && (time == Double.MIN_VALUE)) {
-            // Try fuzzy time.
-            actor.fire();
-            return;
-        }
-        */
-        // _debug(this.getFullName() + "Registing breakpoint at "+ 
-        //        time);
-        // check if the time is before the current time;
         if(time < getCurrentTime()-getTimeResolution()) {
             throw new IllegalActionException((Nameable)actor, 
                     "Requested an Fire time " + time + " is earlier than" +
