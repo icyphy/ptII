@@ -50,7 +50,7 @@ David Hermann, Research in Motion</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 20.0">
         </property>
     </property>
-    <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -61,7 +61,7 @@ David Hermann, Research in Motion</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 170.0">
         </property>
@@ -69,13 +69,13 @@ David Hermann, Research in Motion</text></svg></configure>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <port name="out" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="out" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="in" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="in" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="A">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -111,13 +111,13 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 325.0">
                 </property>
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 105.0">
                 </property>
             </port>
-            <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 100.0">
                 </property>
@@ -261,7 +261,7 @@ expression to show how the Set and Output Actions still function as normally.</t
             <link port="C.outgoingPort" relation="relation3"/>
             <link port="C.outgoingPort" relation="relation4"/>
         </entity>
-        <entity name="A" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="A" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -280,12 +280,12 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 65.0">
                 </property>
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 165.0">
                 </property>
             </port>
-            <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 165.0">
                 </property>
@@ -319,7 +319,7 @@ expression to show how the Set and Output Actions still function as normally.</t
             <link port="Const.output" relation="relation2"/>
             <link port="Const.trigger" relation="relation"/>
         </entity>
-        <entity name="B" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="B" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -338,12 +338,12 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 65.0">
                 </property>
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 165.0">
                 </property>
             </port>
-            <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 165.0">
                 </property>
@@ -377,7 +377,7 @@ expression to show how the Set and Output Actions still function as normally.</t
             <link port="Const.output" relation="relation2"/>
             <link port="Const.trigger" relation="relation"/>
         </entity>
-        <entity name="relation" class="ptolemy.vergil.fsm.modal.TransitionRefinement">
+        <entity name="relation" class="ptolemy.domains.fsm.modal.TransitionRefinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -396,17 +396,17 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 65.0">
                 </property>
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 285.0">
                 </property>
             </port>
-            <port name="out_in" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="out_in" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 275.0">
                 </property>
             </port>
-            <port name="in" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="in" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 165.0">
                 </property>
@@ -463,7 +463,7 @@ expression to show how the Set and Output Actions still function as normally.</t
             <link port="AddSubtract.plus" relation="relation3"/>
             <link port="AddSubtract.output" relation="relation4"/>
         </entity>
-        <entity name="relation2" class="ptolemy.vergil.fsm.modal.TransitionRefinement">
+        <entity name="relation2" class="ptolemy.domains.fsm.modal.TransitionRefinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -482,17 +482,17 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 65.0">
                 </property>
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 285.0">
                 </property>
             </port>
-            <port name="out_in" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="out_in" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 275.0">
                 </property>
             </port>
-            <port name="in" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="in" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 165.0">
                 </property>
@@ -549,7 +549,7 @@ expression to show how the Set and Output Actions still function as normally.</t
             <link port="Const.output" relation="relation"/>
             <link port="Const.trigger" relation="relation2"/>
         </entity>
-        <entity name="C" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="C" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -568,12 +568,12 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 65.0">
                 </property>
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 165.0">
                 </property>
             </port>
-            <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 165.0">
                 </property>

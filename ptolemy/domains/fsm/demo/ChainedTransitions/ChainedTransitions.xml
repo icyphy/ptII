@@ -68,7 +68,7 @@ transitions are executed.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 220.0">
         </property>
     </property>
-    <entity name="alternating signal" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="alternating signal" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -77,7 +77,7 @@ transitions are executed.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -85,14 +85,14 @@ transitions are executed.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 110.0">
         </property>
-        <port name="out" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="out" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -129,7 +129,7 @@ when it is enabled.</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 100.0">
@@ -364,7 +364,7 @@ when it is enabled.</text></svg></configure>
             <link port="decreasing.incomingPort" relation="relation5"/>
             <link port="decreasing.outgoingPort" relation="relation6"/>
         </entity>
-        <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -455,7 +455,7 @@ of integrator.</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 145.0">
                 </property>

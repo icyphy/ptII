@@ -54,7 +54,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 160.0">
         </property>
     </property>
-    <entity name="ModalBinarySymmetricChannel" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="ModalBinarySymmetricChannel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -63,7 +63,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -81,26 +81,26 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
         </property>
         <property name="PChange" class="ptolemy.data.expr.Parameter" value="PBad /* probability of state change */">
         </property>
-        <port name="input" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="output" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="stateChange" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="stateChange" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -114,14 +114,14 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[613, 412]">
             </property>
-            <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 30.0">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
                 </property>
             </port>
-            <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 30.0">
@@ -129,7 +129,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
             </port>
-            <port name="stateChange" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="stateChange" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 95.0">
@@ -278,7 +278,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             <link port="bad.outgoingPort" relation="relation3"/>
             <link port="init.outgoingPort" relation="relation5"/>
         </entity>
-        <entity name="normal" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -327,17 +327,17 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 55.0">
                 </property>
             </property>
-            <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 135.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 135.0">
                 </property>
             </port>
-            <port name="stateChange" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="stateChange" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 205.0">
                 </property>
@@ -480,7 +480,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             <link port="LookupTable.input" relation="relation"/>
             <link port="LookupTable.output" relation="relation7"/>
         </entity>
-        <entity name="StateChange" class="ptolemy.vergil.fsm.modal.TransitionRefinement">
+        <entity name="StateChange" class="ptolemy.domains.fsm.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -534,27 +534,27 @@ from bad to normal as well</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 35.0">
                 </property>
             </property>
-            <port name="input" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="input" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 110.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="output" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 175.0">
                 </property>
             </port>
-            <port name="output_in" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="output_in" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 175.0">
                 </property>
             </port>
-            <port name="stateChange" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="stateChange" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 240.0">
                 </property>
             </port>
-            <port name="stateChange_in" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="stateChange_in" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 240.0">
                 </property>
