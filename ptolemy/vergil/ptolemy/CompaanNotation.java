@@ -46,6 +46,8 @@ import java.awt.Color;
 import java.awt.geom.*;
 
 import diva.canvas.*;
+import diva.canvas.connector.*;
+
 import diva.canvas.toolbox.*;
 import diva.gui.*;
 import diva.graph.*;
@@ -130,7 +132,9 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	controller.getEntityController().setNodeRenderer(
                 new CompaanEntityRenderer());        
 
-	//controller.getLinkController().setEdgeRenderer(new CompaanLinkRenderer());        
+
+	//controller.getLinkController().setEdgeRenderer(new CompaanEdgeRenderer());
+
         // Basically, make sure all Node references should become links.
 	CompositeActor toplevel = (CompositeActor)d.getModel();
 	PtolemyGraphModel model = 
@@ -168,7 +172,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	    Rectangle2D bounds = figure.getBounds();
 	    Entity entity = (Entity)icon.getContainer();
 
-            Variable f = (Variable)entity.getAttribute("fire");
+            Variable f = (Variable)entity.getAttribute("ehrhart");
             Color c = _getColor( f );
             figure.setBackgroundFigure(new BasicRectangle(0, 0, 
                     bounds.getWidth(), bounds.getHeight(), c ));
@@ -181,7 +185,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
                     _getColor( p );
                     Figure background = figure.getBackgroundFigure();
                     Rectangle2D backBounds = background.getBounds();
-                    LabelFigure label = new LabelFigure("ehrhart: " + s);
+                    LabelFigure label = new LabelFigure("fire: " + s);
                     label.setFont(new Font("SansSerif", Font.PLAIN, 12));
                     label.setPadding(1);
                     // Attach the label at the upper left corner.
@@ -197,13 +201,49 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	    return figure;
 	}
     }
+    
+    
+    public class CompaanEdgeRenderer extends LinkController.LinkRenderer {
+	public Connector render(Object n, Site tailSite, Site headSite) {
+            AbstractConnector connector = (AbstractConnector) 
+                super.render(n, tailSite, headSite);
+
+            // adorn the connector
+            connector.setLabel("100.0");
+
+            /*
+            Variable p = (Variable)entity.getAttribute("ehrhart");
+            if (p != null) {
+                try {
+                    String s = p.getToken().toString();
+                    _getColor( p );
+                    Figure background = figure.getBackgroundFigure();
+                    Rectangle2D backBounds = background.getBounds();
+                    LabelFigure label = new LabelFigure("fire: " + s);
+                    label.setFont(new Font("SansSerif", Font.PLAIN, 12));
+                    label.setPadding(1);
+                    // Attach the label at the upper left corner.
+                    label.setAnchor(SwingConstants.NORTH_WEST);
+                    // Put the label's upper left corner at the lower right
+                    // corner of rht efigure.
+                    label.translateTo(backBounds.getX(), 
+                            backBounds.getY() + backBounds.getHeight());
+                    figure.add(label);
+                } catch (IllegalActionException e) { }  
+            }
+            */
+            
+            return connector;
+	}
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         Inner Class                       ////
+    ////                         inne Class                       ////
 
     private class CompaanListener implements ExecutionListener {
 
@@ -216,13 +256,15 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 
         /** */
         public void executionFinished(Manager manager) {
-            _getGlobalPerformanceMetrics(manager);
-            SwingUtilities.invokeLater(
-                    new Runnable() {
-                public void run() {
-                    _controller.rerender();
-                }
-            });
+            if ( manager != null ) {
+                _getGlobalPerformanceMetrics(manager);
+                SwingUtilities.invokeLater(
+                        new Runnable() {
+                    public void run() {
+                        _controller.rerender();
+                    }
+                });
+            }
         }
 
         public void managerStateChanged(Manager manager) {
@@ -273,48 +315,51 @@ public class CompaanNotation extends Attribute implements VisualNotation {
     private void _getGlobalPerformanceMetrics(Manager manager) {
         //System.out.println(" &&&&& RERENDER &&&& ");
 
-        // A linked list containing all the actors
-        LinkedList AllActors = new LinkedList();
-        Iterator entities = ((CompositeActor)manager.getContainer())
-            .deepEntityList().iterator();
+        if ( manager != null ) {
+            // A linked list containing all the actors
+            LinkedList AllActors = new LinkedList();
+            Iterator entities = ((CompositeActor)manager.getContainer())
+                .deepEntityList().iterator();
+
+            // Initialize the value
+            _max = 0;
+            _min = Integer.MAX_VALUE;
             
-
-        // Initialize the value
-        _max = 0;
-        _min = Integer.MAX_VALUE;
-
-        // Walk through the model
-        while(entities.hasNext()) {
-            ComponentEntity a = (ComponentEntity)entities.next();
-            if(a instanceof Actor) {
-                Variable f = (Variable)a.getAttribute("fire");
-                try {
-                    Token t = f.getToken();
-                    double l = 0;
-                    if ( t instanceof IntToken ) {
-                        l = ((IntToken)t).intValue();
+            // Walk through the model
+            while(entities.hasNext()) {
+                ComponentEntity a = (ComponentEntity)entities.next();
+                if(a instanceof Actor) {
+                    Variable f = (Variable)a.getAttribute("fire");
+                    if ( f != null ) {
+                        try {
+                            Token t = f.getToken();
+                            double l = 0;
+                            if ( t instanceof IntToken ) {
+                                l = ((IntToken)t).intValue();
+                            }
+                            if ( t instanceof DoubleToken ) {
+                                l = ((DoubleToken)t).doubleValue();
+                            }                      
+                            //System.out.println(" fire: " + l );
+                            if ( l > _max ) {
+                                _max = (int)l;
+                            }
+                            if ( l < _min ) {
+                                _min = (int)l;
+                            }
+                        } catch (IllegalActionException e) { }  
                     }
-                    if ( t instanceof DoubleToken ) {
-                        l = ((DoubleToken)t).doubleValue();
-                    }                      
-                    //System.out.println(" fire: " + l );
-                    if ( l > _max ) {
-                        _max = (int)l;
-                    }
-                    if ( l < _min ) {
-                        _min = (int)l;
-                    }
-                } catch (IllegalActionException e) { }  
+                }
             }
+
+            if ( _max != 0 ) {
+                _bin = (_max - _min)/(colorList.size()-1);
+                System.out.print("\n\n Global Info: max firings: " + _max );
+                System.out.print(" min firings: " + _min );        
+                System.out.print(" bin size: " + _bin + "\n\n");
+            }
+
         }
-        _bin = (_max - _min)/(colorList.size()-1);
-
-        System.out.print("\n\n Global Info: max firings: " + _max );
-        System.out.print(" min firings: " + _min );        
-        System.out.print(" bin size: " + _bin + "\n\n");
-
-        //System.out.println(" &&&&& RERENDER DONE &&&& ");
-
     }
 
     ///////////////////////////////////////////////////////////////////
