@@ -1,17 +1,17 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="RampPlot" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Hierarchy" class="ptolemy.actor.TypedCompositeActor">
     <doc>Sample model from chapter 2 of the Ptolemy II Design doc</doc>
-    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+    <property name="foo" class="ptolemy.data.expr.Parameter" value="&quot;bar&quot;">
+    </property>
+    <property name="SDF0" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="420.0, 315.0">
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 303.0">
         </property>
-    </property>
-    <property name="foo" class="ptolemy.data.expr.Parameter" value="&quot;bar&quot;">
     </property>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -37,7 +37,7 @@
 <xRange min="0.0" max="9.0"/>
 <yRange min="0.0" max="9.899999999999999"/>
 </plot>?>
-                        </configure>    </entity>
+                                </configure>    </entity>
     <entity name="typed composite actor0" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="165.0, 95.0">
         </property>
