@@ -1,0 +1,19 @@
+#!/bin/sh
+# fix applets for 1.4.1
+
+tmpfile=/tmp/fixapplets141.tmp
+
+for file in $@
+do
+	echo $file
+	sed -e 's@if (_ie == true) document.writeln(@if (_ie == true) { document.writeln(@' \
+	    -e 's@codebase="http://java.sun.com/products/plugin/1.4.1/jinstall-14-win32#Version=1,4,1,0">@codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_1_02-windows-i586.cab#Version=1,4,1,02">@' \
+	    -e 's@VALUE = "application/x-java-applet;version=1.4.1" >@VALUE = "application/x-java-applet;version=1.4.1.02" >@' \
+	    -e "s@else if (_ns == true && _ns6 == false)@if (_ns6 != true) document.writeln('</OBJECT>'); } else if (_ns == true || _ns6 == true)@" \
+            -e 's@type = "application/x-java-applet;version=1.4.1"@type = "application/x-java-applet;version=1.4.1.02"@' \
+	    -e 's@pluginspage = "http://java.sun.com/products/plugin/1.4.1/plugin-install.html">@pluginspage = "http://java.sun.com/products/plugin/index.html#download">@' $file | grep -v '</OBJECT> \\' > $tmpfile
+
+	diff $file $tmpfile
+
+
+done
