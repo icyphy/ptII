@@ -94,7 +94,7 @@ public class ChannelOutput extends TypedAtomicActor {
                 ObjectToken t = (ObjectToken)reception.get(0);
                 Reception rec = (Reception)t.getValue();
                 LinkedList recvs = (LinkedList) rec.receivers;
-                for(int i = 0; i < recvs.size(); i++) {
+                for (int i = 0; i < recvs.size(); i++) {
                     WirelessReceiver r = (WirelessReceiver)recvs.removeFirst();
                     _transmitTo(rec.token, r, rec.properties);
                 }

@@ -143,12 +143,12 @@ public class WirelessDirector extends DEDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if(((BooleanToken)randomizeLocations.getToken()).booleanValue()) {
+        if (((BooleanToken)randomizeLocations.getToken()).booleanValue()) {
             long seedValue = ((LongToken)(seed.getToken())).longValue();
             if (seedValue == (long)0) {
                 seedValue = System.currentTimeMillis() + hashCode();
             }
-            if(_random == null) {
+            if (_random == null) {
                 _random = new Random(seedValue);
             } else {
                 _random.setSeed(seedValue);
@@ -223,7 +223,7 @@ public class WirelessDirector extends DEDirector {
         try {
             Locatable myLocation =
                     (Locatable)node.getAttribute("_location", Locatable.class);
-            if(myLocation != null) {
+            if (myLocation != null) {
                 myLocation.setLocation(location);
             } else {
                 myLocation = new Location(node, "_location");

@@ -1,6 +1,6 @@
 /* An aggregation of actors.
 
- Copyright (c) 1997-2002 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -129,7 +129,7 @@ public class CompositeWirelessChannel extends TypedCompositeActor
     private void _init()
             throws IllegalActionException, NameDuplicationException {
 
-        try{
+        try {
         channelInput = new ChannelInput(this, "ChannelInput");
         channelOutput = new ChannelOutput(this, "ChannelOutput");
         } catch (NameDuplicationException ex) {
