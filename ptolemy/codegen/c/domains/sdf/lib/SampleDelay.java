@@ -112,8 +112,11 @@ public class SampleDelay extends CodeGeneratorHelper {
             }
             code.append(initialOutputs[i].toString() + ";\n");
         }
-        setOffset(actor.input, 0, initialOutputs.length);
-        setOffset(actor.output, 0, initialOutputs.length);
+        // FIXME: No. 
+        // Rather than setting the offset, make a statement as:
+        // "port_offset = initialOutputs.length;\n"
+        setOffset(actor.input, 0, new Integer(initialOutputs.length));
+        setOffset(actor.output, 0, new Integer(initialOutputs.length));
         return code.toString();
     }
 }

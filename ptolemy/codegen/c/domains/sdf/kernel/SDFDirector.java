@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.c.domains.sdf.kernel;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -44,8 +45,6 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.lib.SampleDelay;
@@ -112,10 +111,6 @@ public class SDFDirector extends Director {
                 // If it does, we should use that as the helper.
                 CodeGeneratorHelper helperObject
                         = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-                Variable firings = (Variable) ((NamedObj) actor)
-                        .getAttribute("firingsPerIteration");
-                int firingsPerIteration
-                        = ((IntToken) firings.getToken()).intValue();
                 for (int i = 0; i < firing.getIterationCount(); i ++) {
                     helperObject.generateFireCode(code);
                     // FIXME: Each time fire an actor, increase the offset of
@@ -128,12 +123,22 @@ public class SDFDirector extends Director {
                         IOPort port = (IOPort) inputAndOutputPorts.next();
                         for (int j = 0; j < port.getWidth(); j ++) {
                             //Channel channel = helperObject.getChannel(port, j);
-                            int offset = helperObject.getOffset(port, j);
-                            // FIXME: temporarily we don't consider cyclic buffer.
-                            //offset = offset + DFUtilities.getRate(inputPort);
-                            offset = (offset + DFUtilities.getRate(port))
-                                % helperObject.getBufferSize(port);
-                            helperObject.setOffset(port, j, offset);
+                            if (helperObject.getOffset(port, j) instanceof Integer) {
+                                int offset = ((Integer) helperObject.getOffset(port, j)).intValue();
+                                offset = (offset + DFUtilities.getRate(port))
+                                    % helperObject.getBufferSize(port);
+                                helperObject.setOffset(port, j, new Integer(offset));
+                            } else {
+                                // FIXME: Set the offset to be a new string expression.
+                                // Declare the updated offset string expression and append
+                                // it to the fire code.
+                                // "port_offset = port_offset + portRate % portBufferSize;\n"
+                                // FIXME: didn't write "% portBufferSize" here.
+                                String temp = (String) helperObject.getOffset(port, j)
+                                        + " = " + (String) helperObject.getOffset(port, j)
+                                        +" + " + DFUtilities.getRate(port) + ";\n";
+                                code.append(temp);
+                            }
                         }
                     }
                 }
@@ -151,15 +156,51 @@ public class SDFDirector extends Director {
      *  @exception IllegalActionException If the base class throws it.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        
+        // FIXME: Declare offset variables here. Initial values to be 0.
         String initializeCode = super.generateInitializeCode();
+        
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper actorHelper
+                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            Variable firings = (Variable) ((NamedObj) actor)
+                    .getAttribute("firingsPerIteration");
+            int firingsPerIteration
+                    = ((IntToken) firings.getToken()).intValue();
+            Set ioPortsSet = new HashSet();
+            ioPortsSet.addAll(actor.inputPortList());
+            ioPortsSet.addAll(actor.outputPortList());
+            Iterator ioPorts = ioPortsSet.iterator();
+            while (ioPorts.hasNext()) {
+                IOPort port = (IOPort) ioPorts.next();
+                int portOffset = (DFUtilities.getRate(port) * firingsPerIteration)
+                        % getBufferSize(port);
+                if (portOffset != 0) {
+                    _dynamicBufferingPorts.put(port, new Integer(portOffset));
+                    // FIXME: change the API to return a stringBuffer.
+                    // FIXME: temporarily using channel = 0. Should go through
+                    // all channels.
+                    for (int channel = 0; channel < port.getWidth(); channel ++) {
+                        String portOffsetVariable
+                                = port.getFullName().replace('.', '_') + "_offset";
+                        // At this point, all offsets are 0 or the number of initial
+                        // tokens of SampleDelay.
+                        initializeCode = initializeCode.concat("int " + portOffsetVariable
+                                + " = " + actorHelper.getOffset(port, channel) + ";\n");
+                        // Now replace these concrete offsets with the variables.
+                        actorHelper.setOffset(port, channel, portOffsetVariable);
+                    }
+                }
+            }
+            
             // FIXME: Should not just be SampleDelay actor.
             // Should be all actors that have initial production rate > 0.
             if (actor instanceof SampleDelay) {
+                // Make statement about the sampleDelay port_offset.
+                // "port_offset = initialValues.length;\n"
+                /*
                 ArrayToken initialTokens = (ArrayToken) 
                         ((SampleDelay) actor).initialOutputs.getToken();
                 int NumberOfInitialTokens = initialTokens.length();
@@ -167,7 +208,8 @@ public class SDFDirector extends Director {
                         = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                 Iterator sinkChannels
                         = actorHelper.getSinkChannels(
-                        ((SampleDelay) actor).output, 0).iterator();
+                        ((SampleDelay) actor).output, 0).iterator();*/
+                /*
                 while (sinkChannels.hasNext()) {
                     Channel sinkChannel = (Channel) sinkChannels.next();
                     Actor sinkActor = (Actor) sinkChannel.port.getContainer();
@@ -184,7 +226,9 @@ public class SDFDirector extends Director {
                     
                     //sinkActorHelper.setOffset(sinkChannel.port,
                       //      sinkChannel.channelNumber, NumberOfInitialTokens);
-                }
+                    // Generate declarations for relation_offsetToWrite and 
+                    // relation_offsetToRead here.
+                }*/
             }
         }
         return initializeCode;
@@ -242,4 +286,11 @@ public class SDFDirector extends Director {
         }
         return connectedRelations;
     }
+    
+    ////////////////////////////////////////////////////////////////
+    ////               private variables                        ////
+    
+    // A May of ports that need dynamic (non-static) buffering.
+    // The key is the port, the value is the offset over one iteration.
+    private HashMap _dynamicBufferingPorts = new HashMap();
 }
