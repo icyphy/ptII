@@ -139,14 +139,17 @@ public class MoMLSimpleApplication implements ChangeListener {
         // will print any errors to stdout and continue.
         // This causes no end of trouble with the test suite
 
-        // We can't throw and Exception here because this method in
+        // We can't throw an Exception here because this method in
         // the base class does not throw Exception.
 
-        // In JDK1.4, we can construct exceptions from exceptions, but
-        // not in JDK1.3.1
-        //throw new RuntimeException(exception);
-
-        throw new RuntimeException(exception.toString());
+        String description = "";
+        if (change != null) {
+            description = change.getDescription();
+        }
+        
+        throw new RuntimeException("MoMLSimplApplication.changeFailed(): "
+                + description + " failed: ",
+                exception);
     }
 
     /** Create an instance of a single model and run it
