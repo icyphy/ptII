@@ -58,15 +58,14 @@ import ptolemy.media.javasound.SoundWriter;
    the data value will be ignored and no data will be written.
    The audio samples in the buffer will be written to the sound file
    specified by the <i>pathName</i> parameter on wrapup.
-   <o>
-   Any existing file
-   with the same name will be silently overwritten. The data port
-   is of type DoubleToken. Each DoubleToken read from the data
-   port represents one sample of the audio data and should be in
-   the range [-1.0, 1.0]. Any samples that are outside of this range
-   will be hard-clipped to fall within this range before they are
-   written to the sound file. Single channel (mono) audio is supported
-   but stereo is not supported.
+   <p>
+   Any existing file with the same name will be silently
+   overwritten. The data port is of type DoubleToken. Each DoubleToken
+   read from the data port represents one sample of the audio data and
+   should be in the range [-1.0, 1.0]. Any samples that are outside of
+   this range will be hard-clipped to fall within this range before
+   they are written to the sound file. Single channel (mono) audio is
+   supported but stereo is not supported.
    <p>
    The following parameters should be set to specify the format
    of the file to write. In all cases, an exception is thrown if

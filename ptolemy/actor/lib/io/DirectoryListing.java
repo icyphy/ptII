@@ -127,6 +127,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
      *  or if no pattern has been specified.
      *  @param directory The directory in which the file was found.
      *  @param name The name of the file or directory.
+     *  @return True if the specified name matches.
      */
     public boolean accept(File directory, String name) {
         if (_pattern != null) {

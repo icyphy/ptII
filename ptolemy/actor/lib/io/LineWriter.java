@@ -162,6 +162,7 @@ public class LineWriter extends Sink {
     }
 
     /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.

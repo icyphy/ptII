@@ -79,6 +79,7 @@ public class LocationParameter extends Parameter implements Locatable {
 
     /** Get the location in some Cartesian coordinate system.
      *  @return The location.
+     *  @see #setLocation(double [])
      */
     public double[] getLocation() {
         try {
@@ -96,6 +97,7 @@ public class LocationParameter extends Parameter implements Locatable {
      *  also propagates the value to derived objects.
      *  @param location The location.
      *  @exception IllegalActionException If the location is rejected.
+     *  @see #getLocation()
      */
     public void setLocation(double[] location) throws IllegalActionException{
         double[][] value = new double[1][2];

@@ -269,9 +269,13 @@ public class LiveSoundActor extends TypedAtomicActor
     /** Initialize the audio system.  Set parameters in the audio system
      *  according to the parameters of this actor.
      *  Derived classes should call this method during initialize().
+     *  @exception IllegalActionException If there is a problem 
+     *  reading or setting a parameter.
+     *  @exception IOException If there is a problem setting the
+     *  bits per sample, channels or buffer size.
      */
     protected synchronized void _initializeAudio()
-            throws IllegalActionException, IOException {
+            throws IllegalActionException/*, IOException*/ {
 
         // Initialize audio.
         _transferSize = ((IntToken)transferSize.getToken()).intValue();
@@ -300,7 +304,14 @@ public class LiveSoundActor extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 
+    /** The number of channels.  Initialized from the channels parameter. */
     protected int _channels;
+
+    /** The transfer size.  Initialized from the transferSize parameter. */
     protected int _transferSize;
+
+    /** True if this actor is excecuting.  Set to true by initialize(),
+     *  set to false by wrapup().
+     */
     protected boolean _isExecuting = false;
 }
