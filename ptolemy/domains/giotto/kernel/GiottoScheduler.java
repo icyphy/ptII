@@ -56,7 +56,7 @@ import java.util.Comparator;
 This class generates schedules for the actors in a CompositeActor
 according to the Giotto semantics.
 <p>
-A schedule is represented by a tree. Consider the following CompositeActor:
+A schedule is represented by a list. Consider the following CompositeActor:
 <pre>
               +-----------------------+
               |           A           |
@@ -69,7 +69,7 @@ A schedule is represented by a tree. Consider the following CompositeActor:
               +---------+   +---------+
 </pre>
 There are three actors A, B, and C, where C runs twice as often as A and B.
-The tree representing the schedule for this CompositeActor looks as follows:
+The list representing the schedule for this CompositeActor looks as follows:
 <pre>
 +-------+                         +-------+
 | | | --------------------------->| | |nil|
@@ -87,7 +87,7 @@ The tree representing the schedule for this CompositeActor looks as follows:
 
 </pre>
 
-@author Haiyang Zheng
+@author Christoph Kirsch, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -116,7 +116,7 @@ public class GiottoScheduler extends Scheduler {
     /** Return the frequency of the given actor. If the actor has a
      *  <I>frequency</I> parameter with a valid integer value, return
      *  that value. For actors without a <I>frequency</I> parameter,
-     *  their frequency is DEFAULT_GIOTTO_FREQUENCY.
+     *  their frequency is _DEFAULT_GIOTTO_FREQUENCY.
      *  @param actor An actor.
      *  @return The frequency of the actor.
      */
@@ -130,30 +130,36 @@ public class GiottoScheduler extends Scheduler {
 
                 return intToken.intValue();
             } else
-                return DEFAULT_GIOTTO_FREQUENCY;
+                return _DEFAULT_GIOTTO_FREQUENCY;
         } catch (ClassCastException ex) {
-            return DEFAULT_GIOTTO_FREQUENCY;
+            return _DEFAULT_GIOTTO_FREQUENCY;
         } catch (IllegalActionException ex) {
-            return DEFAULT_GIOTTO_FREQUENCY;
+            return _DEFAULT_GIOTTO_FREQUENCY;
         }
-    }
-
-    // FIXME: Perhaps this method should be protected?
-    public double getMinTimeStep(double period) {
-        return period/_lcm;
     }
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                         protected variables               ////
 
     /** The default Giotto frequency. Actors without a <I>frequency</I>
      *  parameter will execute with this frequency.
      */
-    public static int DEFAULT_GIOTTO_FREQUENCY = 1;
+    protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Return the unit of time increment for director.
+     *  This method will be called by the director. It should not be called
+     *  until the director call getSchedule() and the returned schedule is invalid. It is not
+     *  synchronized on the workspace.
+     *  @param period Giotto model period given in 'period' parameter of director
+     *  @return unit of time increment for director.
+     */
+    protected double _getMinTimeStep(double period) {
+        return period/_lcm;
+    }
 
     /** Return the scheduling sequence.
      *  This method should not be called directly; rather the getSchedule()
@@ -316,7 +322,7 @@ public class GiottoScheduler extends Scheduler {
     /* This class implements the Comparator interface for actors
        based on the <I>frequency</I> parameter of the actors.
        The frequency of an actor which does not have a <I>frequency</I>
-       parameter is DEFAULT_GIOTTO_FREQUENCY.
+       parameter is _DEFAULT_GIOTTO_FREQUENCY.
        Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
        frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
        (A1 == A2) if A1's frequency is equal to A2's frequency, or
@@ -331,7 +337,7 @@ public class GiottoScheduler extends Scheduler {
 
 	/** Compare two actors based on their <I>frequency</I> parameter.
 	 *  The frequency of an actor that does not have a <I>frequency</I>
-         *  parameter is DEFAULT_GIOTTO_FREQUENCY.
+         *  parameter is _DEFAULT_GIOTTO_FREQUENCY.
 	 *
 	 *  @param actor1 The first actor to be compared.
 	 *  @param actor2 The second actor to be compared.

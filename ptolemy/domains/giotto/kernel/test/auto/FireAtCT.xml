@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 891]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -85,9 +85,9 @@
         <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
             <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
             </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -313,7 +313,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.2,0.3,0.4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.1,0.2,0.3}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

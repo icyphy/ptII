@@ -206,9 +206,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	    // whatever, the currentTime should be updated by the director of upper container.
 	    setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
+
 	}
 
-	_expectedNextIterationTime = getCurrentTime();
 
         if (_debugging) {
             _debug("Giotto director prefiring!");
@@ -233,6 +233,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		if (_debugging) {
 		    _debug("*** Prefire returned false.");
 		}
+
+		// only works for DE domain
+		_expectedNextIterationTime = getCurrentTime();
+
 		return false;
 	    }
 	    if (_debugging) {
@@ -267,7 +271,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
 
         // Grab the next schedule to execute.
-        Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex++);
+        Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex);
 
 
         // Find the actors that will be invoked in this minor cycle (unit)
@@ -285,7 +289,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // of committing any data values that the actor may have produced
         // in its initialize() method.
         Iterator scheduleIterator = unitSchedule.iterator();
-	if (_iterationCount != 0 || _transferOutputsOnly) {
+	if (!(_unitIndex == 0 && _iterationCount == 0) || _transferOutputsOnly) {
 	    while (scheduleIterator.hasNext()) {
 		Actor actor = ((Firing) scheduleIterator.next()).getActor();
 		if (_debugging) {
@@ -349,12 +353,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    }
 	}
 
-	if (_unitIndex >= _schedule.size()) {
-            _unitIndex = 0;
-            // Iteration is complete when the unit index wraps around.
-            _iterationCount++;
-        }
-
     }
 
     /** Initialize the actors associated with this director.
@@ -374,6 +372,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    receiver.reset();
 	}
 
+	// FIXME: SampleDelay does not call update().
+	//        Need an explicit initialValue??
 	super.initialize();
 
         // Iterate through all output ports to see if any have initialValue
@@ -390,7 +390,20 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 Parameter initialValueParameter = (Parameter)
                     ((NamedObj) port).getAttribute("initialValue");
                 if (initialValueParameter != null) {
-                    port.broadcast(initialValueParameter.getToken());
+		// since we delay the transfer of outputs, we have to make the receivers
+		// of the port call 'update' instead of 'put' only.
+
+		port.broadcast(initialValueParameter.getToken());
+
+		Receiver[][] channelArray = port.getRemoteReceivers();
+		for (int i = 0; i < channelArray.length; i++) {
+		    Receiver[] receiverArray = channelArray[i];
+		    for (int j = 0; j < receiverArray.length; j++) {
+			GiottoReceiver receiver =
+			    (GiottoReceiver) receiverArray[j];
+			receiver.update();
+		    }
+		}
                 }
             }
         }
@@ -400,7 +413,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // schedule is constructed only once.
         GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
         _schedule = scheduler.getSchedule();
-        _unitTimeIncrement = scheduler.getMinTimeStep(_periodValue);
+        _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
 
         _realStartTime = System.currentTimeMillis();
     }
@@ -422,12 +435,21 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
+
+	_unitIndex++;
+	if (_unitIndex >= _schedule.size()) {
+            _unitIndex = 0;
+            // Iteration is complete when the unit index wraps around.
+	    if (_debugging) {
+		_debug("===== Director completing unit of iteration: "
+			+ _iterationCount);
+	    }
+	    _iterationCount++;
+        }
+
 	int numberOfIterations =
             ((IntToken) (iterations.getToken())).intValue();
-        if (_debugging) {
-            _debug("===== Director completing unit of iteration: "
-                    + _iterationCount);
-        }
+
 
 	_expectedNextIterationTime += _unitTimeIncrement;
 
@@ -436,7 +458,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	}
 
 	if ((numberOfIterations > 0)
-                && (_iterationCount > numberOfIterations)) {
+                && (_iterationCount >= numberOfIterations) && (_transferOutputsOnly == true)) {
 	    _iterationCount = 0;
 	    _transferOutputsOnly = false;
 	    if (_isEmbedded()) {
