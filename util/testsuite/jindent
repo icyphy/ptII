@@ -1,9 +1,8 @@
 #! /bin/sh
-# -[Sat May  4 13:58:13 2002 by cxh]-
+# -[Wed Oct 29 17:00:06 2003 by cxh]-
 # Indent Java code using emacs
 # Usage: jindent [-n] [-d]
 #    -n Print what would happen, but don't checkout or modify files
-#    -d turn on debugging
 #
 # The Emacs  CC-mode FAQ says:
 #     *Q.* *How do I re-indent the whole file?*
@@ -18,36 +17,33 @@
 
 printonly=no
 
-while getopts nd-- opt
-do
-	case $opt in
-		d) 	set -x;;
-		n) 	printonly=yes;;
-	   \?)	echo "$0: Usage: $0 [-n] [-x] [filenames . . .]"
-			echo " -n  Print only"
-			echo " -d  debug"
-			exit 3;;
-	esac
-done
-shift `expr $OPTIND - 1`
+if [ "$1" = "-n" ]; then
+    printonly=yes;
+    shift
+fi
 
 emacs=emacs
-if [ "$PTII" = "" ]; then
-    echo "$0: \$PTII is not set, exiting"
+if [ "$METRO" = "" ]; then
+    echo "$0: \$METRO is not set, exiting"
     exit 4
 fi
 
-jindent_el=$PTII/util/lisp/jindent.el
+jindent_el=$METRO/util/lisp/jindent.el
 
 if [ ! -f "$jindent_el" ]; then
     echo "$0: '$jindent_el' not found, exiting"
     exit 5
 fi
 
-tmpfile=/tmp/jindent$$.java
+
 
 for file in $@
 do
+    # Handle .cpp and .java files 
+    extension=`echo $file | sed 's/.*\.\([^.]*\)$/\1/'`
+    # Under cygwin /tmp is at c:/cygwin/tmp, but emacs thinks /tmp
+    # is at c:/tmp
+    tmpfile=jindenttmp$$.$extension
     cp $file $tmpfile
     chmod u+w $tmpfile
     echo "$file"
@@ -77,8 +73,9 @@ do
 		echo "ERROR: could not check out $file"
 	    fi
 	fi
+    rm -f $tmpfile
     else
 	echo "No differences, so no need to delget"
     fi
 done
-rm -f $tmpfile
+
