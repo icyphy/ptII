@@ -57,8 +57,8 @@ It provides a "Go" button to run the model.
 */
 public class SDFApplet extends PtolemyApplet {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 /** Initialize the applet. The number of iterations is given by an
  *  applet parameter "iterations".  The default value is one.
@@ -97,10 +97,11 @@ public void init() {
     }
 }
 
-    ////////////////////////////////////////////////////////////////////////
-////                         protected variables                    ////
 
-/** The director for the top-level composite actor, created in the
- *  init() method. */
-protected SDFDirector _director;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** The director for the top-level composite actor, created in the
+     *  init() method. */
+    protected SDFDirector _director;
 }
