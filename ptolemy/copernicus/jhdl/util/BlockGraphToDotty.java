@@ -4,6 +4,7 @@ import soot.jimple.*;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.Block;
 import java.util.*;
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// BlockGraphToDotty
@@ -125,4 +126,15 @@ public class BlockGraphToDotty {
 	return strBuf.toString();
     }
 
+    public static void writeDotFile(String basename, BlockGraph g) {
+	String filename = basename + ".dot";
+	System.out.println("Writing "+filename);
+	try {
+	    FileWriter dotFile=new FileWriter(filename);
+	    dotFile.write(convert(g,basename));
+	    dotFile.close();
+	} catch (IOException e){
+	    System.out.println(e);
+	}
+    }
 }

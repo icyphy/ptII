@@ -442,7 +442,7 @@ public class CircuitAnalysis {
 	    throw new RuntimeException("Must have ports that are TypedIOPorts");
 	}
 	if (t.equals(BaseType.FIX) || t.equals(BaseType.INT) ||
-	    t.equals(BaseType.LONG) || t.equals(BaseType.UNSIGNED_BYTE) ||
+	    t.equals(BaseType.LONG) /*|| t.equals(BaseType.UNSIGNED_BYTE)*/ ||
 	    t.equals(BaseType.BOOLEAN) ) {
 	    return t;
 	} else {
