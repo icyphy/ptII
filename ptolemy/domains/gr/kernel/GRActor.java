@@ -92,7 +92,7 @@ public class GRActor extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         /*if (!(getDirector() instanceof GRDirector)) {
-            throw new IllegalActionException(
+            throw new IllegalActionException(this,
                       "GR Actors can only be used under a GR Director");
         }*/
     }
@@ -116,8 +116,8 @@ public class GRActor extends TypedAtomicActor {
      *  @exception IllegalActionException always thrown for this base class
      */
     protected void _addChild(Node node) throws IllegalActionException {
-        throw new IllegalActionException("GR domain actor" + this +
-                " cannot have children");
+        throw new IllegalActionException(this, 
+                               "GR domain actor cannot have children");
     }
     
     
@@ -136,8 +136,8 @@ public class GRActor extends TypedAtomicActor {
      *  @exception IllegalActionException always thrown for thsi base class
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
-        throw new IllegalActionException("GR domain actor" + this +
-                " failed to make scene graph connection ");
+        throw new IllegalActionException(this,
+                "GR domain actor failed to make scene graph connection ");
     }
 
     /** Start the Java3D renderer. This method will be overridden by some
