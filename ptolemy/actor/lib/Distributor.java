@@ -82,7 +82,7 @@ public class Distributor extends Transformer implements SequenceActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         // These parameters are required for SDF
-        _tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate",
+        tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate",
                 new IntToken(0));
 
         output.setMultiport(true);
