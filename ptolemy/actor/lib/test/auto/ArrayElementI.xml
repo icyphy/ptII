@@ -57,19 +57,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="ArrayElementI" class="ptolemy.actor.lib.ArrayElementI">
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 130.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="index" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -101,9 +88,25 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="ArrayElementI" class="ptolemy.actor.lib.ArrayElementI">
+        <property name="index" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="325.0, 135.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="indexPort" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -114,12 +117,14 @@
         <vertex name="vertex1" value="230.0, 195.0">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation2"/>
-    <link port="ArrayElementI.input" relation="relation"/>
-    <link port="ArrayElementI.output" relation="relation5"/>
-    <link port="ArrayElementI.index" relation="relation7"/>
     <link port="Clock.output" relation="relation7"/>
     <link port="Test.input" relation="relation5"/>
+    <link port="ArrayElementI.input" relation="relation"/>
+    <link port="ArrayElementI.output" relation="relation5"/>
+    <link port="ArrayElementI.indexPort" relation="relation7"/>
 </entity>
