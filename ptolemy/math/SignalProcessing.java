@@ -206,7 +206,7 @@ public class SignalProcessing {
      *  by two to get 10*log<sub>10</sub>(<em>z</em>).
      */
     public static final double decibel(double value) {
-        return 20.0 * Math.log(value) / _LOG10SCALE;
+        return 20.0 * Math.log(value) * _LOG10SCALE;
     }
 
     /** Return a new array the value of the argument array
