@@ -133,42 +133,36 @@ Initializing actor: .E1.Consumer.
 
 iterationCount 0
 Called prefire().
-
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Called postfire().
 
 iterationCount 1
 Called prefire().
-
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Called postfire().
 
 iterationCount 2
 Called prefire().
-
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Called postfire().
 
 iterationCount 3
 Called prefire().
-
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 Called postfire().
 
 iterationCount 4
 Called prefire().
-
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
 Called postfire().
 
 iterationCount 5
 Called prefire().
-
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
 iteration limit reached
