@@ -1162,10 +1162,10 @@ public class CTMultiSolverDirector extends CTDirector {
                 // We multiple the step size by 5.0.
                 // This is an agressive guess.
                 predictedStep = getCurrentStepSize() * 5.0;
+            }
 
-                if (predictedStep <= getMaxStepSize()) {
-                    predictedStep = getMaxStepSize();
-                }
+            if (predictedStep > getMaxStepSize()) {
+                predictedStep = getMaxStepSize();
             }
         }
 
