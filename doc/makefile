@@ -51,17 +51,24 @@ MISC_FILES =	$(DIRS)
 # 'make realclean' should remove tclIndex
 REALCLEAN_STUFF =
 
-ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java \
-			tycho/Cool_Beans/util/*.java \
-			ptplot/*.java \
-			pt/kernel/*.java pt/kernel/test/*.java
+ALLJSRCS = 		ptplot/*.java \
+			pt/kernel/*.java \
+			pt/actors/*.java \
+			pt/domains/pn/kernel/*.java \
+			pt/domains/ct/kernel/*.java \
+			pt/domains/pn/stars/*.java \
+			pt/domains/ct/stars/*.java
 
 all: codeDoc/tree.html
 
-codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java \
-		../tycho/Cool_Beans/util/*.java \
-		../ptplot/*.java \
-		../pt/kernel/*.java ../pt/kernel/test/*.java
+codeDoc/tree.html: ../ptplot/*.java \
+			../pt/kernel/*.java \
+			../pt/actors/*.java \
+			../pt/domains/pn/kernel/*.java \
+			../pt/domains/ct/kernel/*.java \
+			../pt/domains/pn/stars/*.java \
+			../pt/domains/ct/stars/*.java \
+
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
