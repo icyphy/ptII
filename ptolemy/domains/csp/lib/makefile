@@ -47,13 +47,13 @@ PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
+# Place CSPMultiSink at the end to work around a javadoc problem
 JSRCS = \
 	CSPBuffer.java \
 	CSPChopstick.java \
 	CSPContentionAlarm.java \
 	CSPController.java \
 	CSPMemory.java \
-	CSPMultiSink.java \
 	CSPMultiSource.java \
 	CSPPhilosopher.java \
 	CSPProcessor.java \
@@ -61,7 +61,8 @@ JSRCS = \
 	CSPSink.java \
 	CSPSource.java \
 	DisplayBlock.java \
-	PortChannelCode.java
+	PortChannelCode.java \
+	CSPMultiSink.java
 
 
 EXTRA_SRCS =	$(JSRCS)
