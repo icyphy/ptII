@@ -367,7 +367,7 @@ public class WirelessIOPort
      *  The channel is contained by the container of this port.
      *  Transparent hierarchy is ignored in getting the inside channel.
      *  @return A wireless channel, or null if no channel is specified
-     *  or if the spedified channel does not exist.
+     *  or if the specified channel does not exist.
      *  @exception IllegalActionException If the <i>insideChannel</i>
      *  parameter value cannot be evaluated.
      */
@@ -414,7 +414,7 @@ public class WirelessIOPort
      *  port. Transparent hierarchy is ignored in getting the outside
      *  channel.
      *  @return A wireless channel, or null if no channel is specified
-     *  or if the spedified channel does not exist.
+     *  or if the specified channel does not exist.
      *  @exception IllegalActionException If the <i>outsideChannel</i>
      *  parameter value cannot be evaluated.
      */

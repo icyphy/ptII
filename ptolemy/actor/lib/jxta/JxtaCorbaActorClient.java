@@ -484,7 +484,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
     }
 
     /** Transfer the output data from the remote actor.
-     *  The remote output data is transfered in the form of
+     *  The remote output data is transferred in the form of
      *  String. This method converts the String back to
      *  Token and sends them.
      *  FIXME: This operation is not type-save. Consider better

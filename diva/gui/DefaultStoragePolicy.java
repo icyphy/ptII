@@ -56,7 +56,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
     private JFileChooser _saveFileChooser = new JFileChooser();
 
     /** Close the document.  Forward the request to the document.  Do
-     * nothing if the document is null.  If the file is sucessfully saved and
+     * nothing if the document is null.  If the file is successfully saved and
      * closed, then return true, otherwise return false.
      */
     public boolean close (Document d) {

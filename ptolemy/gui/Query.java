@@ -417,7 +417,7 @@ public class Query extends JPanel {
      *  error because it is less secure to pass around passwords as
      *  Strings than as arrays of characters.
      *  <p>The underlying class that is used to implement the password
-     *  facility is javax.sqing.JPasswordField.  For details about how to
+     *  facility is javax.swing.JPasswordField.  For details about how to
      *  use JPasswordField, see the
      *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/passwordfield.html" target="_top">Java Tutorial</a>
      *

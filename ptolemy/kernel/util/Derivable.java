@@ -180,7 +180,7 @@ public interface Derivable extends Nameable {
     public void setDerived(boolean isDerived);
 
     /** Specify whether this object overrides its inherited value,
-     *  and if so, at what depth above in the hiearchy the parent
+     *  and if so, at what depth above in the hierarchy the parent
      *  relationship that triggered this override occurred.  This has an
      *  effect only if setDerived() has been called with a true
      *  argument.  In that case, if this method is called with

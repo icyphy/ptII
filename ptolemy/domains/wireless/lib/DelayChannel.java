@@ -129,7 +129,7 @@ public class DelayChannel extends ErasureChannel {
     /** If the current time matches one of the times that we have previously
      *  recorded as the reception time for a transmission, then deliver
      *  the token to the receiver.
-     *  @exception IllegalActionException If the _transimitTo() method of the
+     *  @exception IllegalActionException If the _transmitTo() method of the
      *  base class throws it, i.e. the token attribute of the reception
      *  cannot be converted or the token attribute is null and the receiver
      *  attribute of the receptions does not support clear.

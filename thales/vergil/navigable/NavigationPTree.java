@@ -53,7 +53,7 @@ import thales.vergil.SingleWindowApplication;
 public class NavigationPTree extends PTree {
 
     /**
-     * Most of the time, we use the tree of the ptolemt.vergil.tree package,
+     * Most of the time, we use the tree of the ptolemy.vergil.tree package,
      * according to the chosen model, detail level can vary
      *
      * @param model the used model to create the tree
