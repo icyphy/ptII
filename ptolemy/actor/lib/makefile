@@ -81,7 +81,6 @@ JSRCS = \
 	ArrayLength.java \
 	Average.java \
 	Bernoulli.java \
-	BooleanExpression.java \
 	BooleanMultiplexor.java \
 	BooleanSelect.java \
 	BooleanSwitch.java \
