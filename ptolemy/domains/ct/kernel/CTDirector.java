@@ -610,13 +610,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         boolean result = true;
-        Iterator actors = schedule.get(
-                CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS)
+            .actorIterator();
 
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
             if (_debugging && _verbose) {
-                _debug("Prefire dynamic actor: " + ((Nameable)actor).getName());
+                _debug("Prefire dynamic actor: "
+                        + ((Nameable)actor).getName());
             }
             boolean ready = actor.prefire();
             if (actor instanceof CTCompositeActor) {
@@ -629,7 +630,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
                         "Actor is not ready to fire. In the CT domain, all "
                         + "dynamic actors should be ready to fire at "
                         + "all times.\n "
-                        + "Does the actor only operate on sequence of tokens?");
+                        + "Does the actor only operate on sequence of tokens?"
+                                                 );
             }
             if (_debugging && _verbose) {
                 _debug("Prefire of " + ((Nameable)actor).getName()
@@ -648,7 +650,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
         while (integrators.hasNext() && !_stopRequested) {
             CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
             if (_debugging && _verbose) {
-                _debug("Emit tentative state " + ((Nameable)dynamic).getName());
+                _debug("Emit tentative state "
+                        + ((Nameable)dynamic).getName());
             }
             dynamic.emitTentativeOutputs();
         }
@@ -658,12 +661,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return result && !_stopRequested;
     }
 
-    /** Preinitialize the model for an execution. This method is called only
-     *  once for each simulation. If this director does not have a container
-     *  and a scheduler, or the director does not fit in this level of
-     *  hierarchy, an IllegalActionException will be thrown. The schedule is
-     *  invalidated, statistical variables and the breakpoint table are cleared,
-     *  all actors are preinitialized.
+    /** Preinitialize the model for an execution. This method is
+     *  called only once for each simulation. If this director does
+     *  not have a container and a scheduler, or the director does not
+     *  fit in this level of hierarchy, an IllegalActionException will
+     *  be thrown. The schedule is invalidated, statistical variables
+     *  and the breakpoint table are cleared, all actors are
+     *  preinitialized.
      *  <p>
      *  Note, however, time does not have a meaning when actors are
      *  preinitialized. So actors must not use a notion of time at their
