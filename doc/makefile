@@ -261,7 +261,7 @@ whatsnew.htm: ptII$(PTVERSION).release.htm
 whatsnewVergil.htm: whatsnew.htm
 	sed 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
 		< whatsnew.htm > whatsnewVergil.htm
-	diff whatsnew.htm whatsnewVergil.htm
+	-diff whatsnew.htm whatsnewVergil.htm
 
 update: ptII$(PTVERSION).releaseVergil.htm troubleshootingVergil.htm \
 		whatsnew.htm whatsnewVergil.htm
