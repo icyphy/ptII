@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm
-PTVERSION =	5.2p1
+PTVERSION =	5.2
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
