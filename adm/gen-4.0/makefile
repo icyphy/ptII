@@ -57,7 +57,7 @@ SPLITTAR =	/users/ptolemy/adm/bin/splittar
 
 # FTP Directory
 # Use this for release
-PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
+PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # Name and directory of distribution.  For testing, use ptdesign
 # For release, use ptolemy
@@ -291,11 +291,11 @@ src_jar: $(PTII_SRC)
 update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
-	cp -p $(PTII_FULL) $(PTII_SRC) \
-		$(PTII_FTP)
+	scp -p $(PTII_FULL) $(PTII_SRC) \
+		messier:$(PTII_FTP)
 untar:
-	rm -rf $(PTII_FTP)/ptII$(VERSION)
-	cd $(PTII_FTP); /usr/tools/gnu/bin/tar -zxf $(PTII_FULL)
+	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
+	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -zxf $(PTII_FULL)"
 
 # Make the distribution, run htmlchek
 htmlchek:
