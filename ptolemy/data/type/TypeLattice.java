@@ -388,8 +388,8 @@ public class TypeLattice {
 	    _basicLattice.add(BaseType.COMPLEX_MATRIX);
 	    _basicLattice.add(BaseType.DOUBLE);
 	    _basicLattice.add(BaseType.DOUBLE_MATRIX);
-	    _basicLattice.add(BaseType.FIX);
-	    _basicLattice.add(BaseType.FIX_MATRIX);
+	    _basicLattice.add(BaseType.FIXEDPOINT);
+	    _basicLattice.add(BaseType.FIXEDPOINT_MATRIX);
 	    _basicLattice.add(BaseType.INT);
 	    _basicLattice.add(BaseType.INT_MATRIX);
 	    _basicLattice.add(BaseType.LONG);
@@ -414,14 +414,16 @@ public class TypeLattice {
 	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
 
 	    _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
-	    _basicLattice.addEdge(BaseType.FIX_MATRIX, BaseType.NUMERICAL);
+	    _basicLattice.addEdge(BaseType.FIXEDPOINT_MATRIX,
+	                          BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.SCALAR, BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);
 
-	    _basicLattice.addEdge(BaseType.FIX, BaseType.FIX_MATRIX);
-	    _basicLattice.addEdge(BaseType.FIX, BaseType.SCALAR);
-	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.FIX);
+	    _basicLattice.addEdge(BaseType.FIXEDPOINT,
+	                          BaseType.FIXEDPOINT_MATRIX);
+	    _basicLattice.addEdge(BaseType.FIXEDPOINT, BaseType.SCALAR);
+	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.FIXEDPOINT);
 	    _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
 	    _basicLattice.addEdge(BaseType.LONG, BaseType.LONG_MATRIX);
 	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
