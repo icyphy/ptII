@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="Units" extends="ptolemy.actor.TypedCompositeActor">
+<entity name="Units" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
@@ -430,4 +430,4 @@ as a unit-handling integrator.</text></svg></configure>
     <link port="Display3.input" relation="relation4"/>
     <link port="Integrator.input" relation="relation7"/>
     <link port="Integrator.output" relation="relation6"/>
-</class>
+</entity>
