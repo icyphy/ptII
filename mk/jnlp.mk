@@ -636,6 +636,7 @@ CODEGEN_DOMAIN_JARS = \
 	ptolemy/domains/wireless/wireless.jar
 
 UNJAR_JARS = \
+	ptolemy/actor/gui/jnlp/jnlp.jar \
 	$(CODEGEN_DOMAIN_JARS) \
 	$(ALL_NON_APPLICATION_JNLP_JARS)
 
@@ -662,11 +663,13 @@ $(UNJAR_DIST_DIR):
 			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
 			ptolemy/hsif/hsif.jar) \
 			   echo "  Copying jar to ptolemy/hsif"; \
-			   cp $$x $(UNJAR_DIST_DIR)/ptolemy \
+			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/hsif; \
+			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/hsif; \
 			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
 			ptolemy/hsif/demo/demo.jar) \
 			   echo "  Copying jar to ptolemy/hsif/demo"; \
-			   cp $$x $(UNJAR_DIST_DIR)/ptolemy \
+			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/hsif/demo; \
+			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/hsif/demo; \
 			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
 			ptolemy/ptsupport.jar) \
 			   echo "  Copying to ptolemy"; \
