@@ -37,7 +37,8 @@ import ptolemy.kernel.util.Workspace;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.Iterator;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentEntity
@@ -234,9 +235,9 @@ public class ComponentEntity extends Entity {
                 prevcontainer._removeEntity(this);
             }
             if (container == null) {
-                Enumeration ports = getPorts();
-                while (ports.hasMoreElements()) {
-                    Port port = (Port)ports.nextElement();
+                Iterator ports = portList().iterator();
+                while (ports.hasNext()) {
+                    Port port = (Port)ports.next();
                     port.unlinkAll();
                 }
             }
