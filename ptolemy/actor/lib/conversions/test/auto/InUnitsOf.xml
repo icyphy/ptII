@@ -1,0 +1,364 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="InUnitsOf" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 60.0">
+        </property>
+    </property>
+    <property name="CGSUnitBase" class="ptolemy.data.unit.UnitSystem">
+        <property name="cm" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Length" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="gram" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Mass" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="second" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Time" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="meter" class="ptolemy.data.expr.Parameter" value="100*cm">
+        </property>
+        <property name="kilogram" class="ptolemy.data.expr.Parameter" value="1000*gram">
+        </property>
+        <property name="ampere" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="electricCurrent" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="squareAmpere" class="ptolemy.data.expr.Parameter" value="0.01*(lightSpeed^2)*cm*gram/(second^2)">
+        </property>
+        <property name="kelvin" class="ptolemy.data.expr.Parameter" value="1.38065E-23*kilogram*(meter^2)/(second^2)">
+        </property>
+        <property name="mole" class="ptolemy.data.expr.Parameter" value="6.022142E+23">
+        </property>
+        <property name="candela" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/683">
+        </property>
+        <property name="volt" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/ampere">
+        </property>
+        <property name="ohm" class="ptolemy.data.expr.Parameter" value="volt/ampere">
+        </property>
+        <property name="mho" class="ptolemy.data.expr.Parameter" value="ampere/volt">
+        </property>
+        <property name="coulomb" class="ptolemy.data.expr.Parameter" value="ampere*second">
+        </property>
+        <property name="esu" class="ptolemy.data.expr.Parameter" value="coulomb/(299792458.0*10)">
+        </property>
+        <property name="statvolt" class="ptolemy.data.expr.Parameter" value="299.792458*volt">
+        </property>
+        <property name="gauss" class="ptolemy.data.expr.Parameter" value="statvolt/(meter/100)">
+        </property>
+        <property name="electronCharge" class="ptolemy.data.expr.Parameter" value="1.6021765E-19*coulomb">
+        </property>
+        <property name="farad" class="ptolemy.data.expr.Parameter" value="ampere*second/volt">
+        </property>
+        <property name="henry" class="ptolemy.data.expr.Parameter" value="volt*second/ampere">
+        </property>
+        <property name="planckConstant" class="ptolemy.data.expr.Parameter" value="hBar*2*pi">
+        </property>
+        <property name="planckConstantReduced" class="ptolemy.data.expr.Parameter" value="1.0545716E-34*joule*second">
+        </property>
+        <property name="hBar" class="ptolemy.data.expr.Parameter" value="planckConstantReduced">
+        </property>
+        <property name="lightSpeed" class="ptolemy.data.expr.Parameter" value="299792458.0*meter/second">
+        </property>
+        <property name="dyne" class="ptolemy.data.expr.Parameter" value="gram*cm/second^2">
+        </property>
+        <property name="newton" class="ptolemy.data.expr.Parameter" value="kilogram*meter/second^2">
+        </property>
+        <property name="joule" class="ptolemy.data.expr.Parameter" value="newton*meter">
+        </property>
+        <property name="erg" class="ptolemy.data.expr.Parameter" value="dyne*cm">
+        </property>
+        <property name="kg" class="ptolemy.data.expr.Parameter" value="kilogram">
+        </property>
+        <property name="amp" class="ptolemy.data.expr.Parameter" value="ampere">
+        </property>
+        <property name="minute" class="ptolemy.data.expr.Parameter" value="60*second">
+        </property>
+        <property name="hour" class="ptolemy.data.expr.Parameter" value="3600*second">
+        </property>
+        <property name="day" class="ptolemy.data.expr.Parameter" value="24*hour">
+        </property>
+        <property name="yearCalendar" class="ptolemy.data.expr.Parameter" value="365.2425*day">
+        </property>
+        <property name="yearSidereal" class="ptolemy.data.expr.Parameter" value="31558150*second">
+        </property>
+        <property name="yearTropical" class="ptolemy.data.expr.Parameter" value="31556930*second">
+        </property>
+        <property name="curie" class="ptolemy.data.expr.Parameter" value="3.7E+10/second">
+        </property>
+        <property name="angstrom" class="ptolemy.data.expr.Parameter" value="1E-10*meter">
+        </property>
+        <property name="gallonCanadian" class="ptolemy.data.expr.Parameter" value="4546.09*cm^3">
+        </property>
+        <property name="gallonUS" class="ptolemy.data.expr.Parameter" value="3785.412*cm^3">
+        </property>
+        <property name="barrel" class="ptolemy.data.expr.Parameter" value="42*gallonUS">
+        </property>
+        <property name="ozFluidUS" class="ptolemy.data.expr.Parameter" value="gallonUS/128">
+        </property>
+        <property name="tablespoon" class="ptolemy.data.expr.Parameter" value="ozFluidUS/2">
+        </property>
+        <property name="teaspoon" class="ptolemy.data.expr.Parameter" value="ozFluidUS/6">
+        </property>
+        <property name="cup" class="ptolemy.data.expr.Parameter" value="8*ozFluidUS">
+        </property>
+        <property name="pint" class="ptolemy.data.expr.Parameter" value="2*cup">
+        </property>
+        <property name="quart" class="ptolemy.data.expr.Parameter" value="2*pint">
+        </property>
+        <property name="astronomicalUnit" class="ptolemy.data.expr.Parameter" value="1.495979E+11*meter">
+        </property>
+        <property name="inch" class="ptolemy.data.expr.Parameter" value="0.0254*meter">
+        </property>
+        <property name="foot" class="ptolemy.data.expr.Parameter" value="0.3048*meter">
+        </property>
+        <property name="yard" class="ptolemy.data.expr.Parameter" value="3*foot">
+        </property>
+        <property name="cord" class="ptolemy.data.expr.Parameter" value="128*foot^3">
+        </property>
+        <property name="footUSSurvey" class="ptolemy.data.expr.Parameter" value="0.3048006*meter">
+        </property>
+        <property name="fathom" class="ptolemy.data.expr.Parameter" value="6*footUSSurvey">
+        </property>
+        <property name="acre" class="ptolemy.data.expr.Parameter" value="43560*footUSSurvey^2">
+        </property>
+        <property name="acreFoot" class="ptolemy.data.expr.Parameter" value="acre*footUSSurvey">
+        </property>
+        <property name="mileNautical" class="ptolemy.data.expr.Parameter" value="1852*meter">
+        </property>
+        <property name="mile" class="ptolemy.data.expr.Parameter" value="5280*foot">
+        </property>
+        <property name="barn" class="ptolemy.data.expr.Parameter" value="1E-28*meter^2">
+        </property>
+        <property name="hectare" class="ptolemy.data.expr.Parameter" value="1E+4*meter^2">
+        </property>
+        <property name="knot" class="ptolemy.data.expr.Parameter" value="mileNautical/hour">
+        </property>
+        <property name="mph" class="ptolemy.data.expr.Parameter" value="mile/hour">
+        </property>
+        <property name="tonMetric" class="ptolemy.data.expr.Parameter" value="1000*kg">
+        </property>
+        <property name="pound" class="ptolemy.data.expr.Parameter" value="453.5924*gram">
+        </property>
+        <property name="ton" class="ptolemy.data.expr.Parameter" value="2000*pound">
+        </property>
+        <property name="tonLong" class="ptolemy.data.expr.Parameter" value="2240*pound">
+        </property>
+        <property name="oz" class="ptolemy.data.expr.Parameter" value="pound/16">
+        </property>
+        <property name="poundTroy" class="ptolemy.data.expr.Parameter" value="373.2417">
+        </property>
+        <property name="ounceTroy" class="ptolemy.data.expr.Parameter" value="poundTroy/12">
+        </property>
+        <property name="earthGravity" class="ptolemy.data.expr.Parameter" value="9.80665*meter/second^2">
+        </property>
+        <property name="ounceForce" class="ptolemy.data.expr.Parameter" value="oz*earthGravity">
+        </property>
+        <property name="poundForce" class="ptolemy.data.expr.Parameter" value="pound*earthGravity">
+        </property>
+        <property name="psi" class="ptolemy.data.expr.Parameter" value="pound/inch^2">
+        </property>
+        <property name="pascal" class="ptolemy.data.expr.Parameter" value="10*dyne/cm^2">
+        </property>
+        <property name="atm" class="ptolemy.data.expr.Parameter" value="101325*pascal">
+        </property>
+        <property name="bar" class="ptolemy.data.expr.Parameter" value="100000*pascal">
+        </property>
+        <property name="millibar" class="ptolemy.data.expr.Parameter" value="100*pascal">
+        </property>
+        <property name="inchOfWater" class="ptolemy.data.expr.Parameter" value="249.0889*pascal">
+        </property>
+        <property name="mmOfWater" class="ptolemy.data.expr.Parameter" value="inchOfWater/25.4">
+        </property>
+        <property name="inchOfMercury" class="ptolemy.data.expr.Parameter" value="3386.389*pascal">
+        </property>
+        <property name="mmOfMercury" class="ptolemy.data.expr.Parameter" value="inchOfMercury/25.4">
+        </property>
+        <property name="torr" class="ptolemy.data.expr.Parameter" value="mmOfMercury">
+        </property>
+        <property name="rankine" class="ptolemy.data.expr.Parameter" value="5*kelvin/9">
+        </property>
+        <property name="thermUS" class="ptolemy.data.expr.Parameter" value="1.054804E+8*joule">
+        </property>
+        <property name="btuIT" class="ptolemy.data.expr.Parameter" value="1055.056*joule">
+        </property>
+        <property name="tonTNT" class="ptolemy.data.expr.Parameter" value="4.184E+9*joule">
+        </property>
+        <property name="tonOfRefrigeration" class="ptolemy.data.expr.Parameter" value="12000*btuIT/hour">
+        </property>
+        <property name="watt" class="ptolemy.data.expr.Parameter" value="joule/second">
+        </property>
+        <property name="hp" class="ptolemy.data.expr.Parameter" value="550*foot*poundForce/second">
+        </property>
+        <property name="centipoise" class="ptolemy.data.expr.Parameter" value="1E-3*pascal*second">
+        </property>
+        <property name="poise" class="ptolemy.data.expr.Parameter" value="1E-1*pascal*second">
+        </property>
+        <property name="centistoke" class="ptolemy.data.expr.Parameter" value="1E-6*meter^2/second">
+        </property>
+        <property name="stoke" class="ptolemy.data.expr.Parameter" value="1E-4*meter^2/second">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"></rect>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 160.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1*amp">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 230.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="InUnitsOf" class="ptolemy.actor.lib.conversions.InUnitsOf">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="amp">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="units">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 230.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 230.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 305.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="5*amp*kg">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 305.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="InUnitsOf2" class="ptolemy.actor.lib.conversions.InUnitsOf">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="amp*kg">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="units">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 305.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;unitless(double)&quot;}, Const2={value=&quot;unitless(double)&quot;}, InUnitsOf={units=&quot;unitless(double)&quot;}, InUnitsOf2={units=&quot;unitless(double)&quot;}, NonStrictTest={correctValues=&quot;{double}&quot;, tolerance=&quot;double&quot;, trainingMode=&quot;boolean&quot;}, NonStrictTest2={correctValues=&quot;{double}&quot;, tolerance=&quot;double&quot;, trainingMode=&quot;boolean&quot;}}">
+        </property>
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;unitless(double)&quot;, trigger=&quot;unknown&quot;}, Const2={output=&quot;unitless(double)&quot;, trigger=&quot;unknown&quot;}, InUnitsOf={input=&quot;unitless(double)&quot;, output=&quot;double&quot;}, InUnitsOf2={input=&quot;unitless(double)&quot;, output=&quot;double&quot;}, NonStrictTest={input=&quot;double&quot;}, NonStrictTest2={input=&quot;double&quot;}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 360.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="240.0, 310.0">
+        </vertex>
+    </relation>
+    <link port="Const.output" relation="relation"/>
+    <link port="InUnitsOf.input" relation="relation"/>
+    <link port="InUnitsOf.output" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation5"/>
+    <link port="Const2.output" relation="relation3"/>
+    <link port="InUnitsOf2.input" relation="relation3"/>
+    <link port="InUnitsOf2.output" relation="relation5"/>
+</entity>
