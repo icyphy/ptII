@@ -934,8 +934,7 @@ public class IOPort extends ComponentPort {
     /** If the port is an input, return the receivers that receive data
      *  from all linked relations. For an input
      *  port, the returned value is an array of arrays.  The first index
-     *  (the group) specifies the group of receivers that receive from
-     *  the same channel.  The second index (the column) specifies the
+     *  specifies the channel number.  The second index specifies the
      *  receiver number within the group of receivers that get copies from
      *  the same channel.
      *  <p>
@@ -944,7 +943,7 @@ public class IOPort extends ComponentPort {
      *  For an opaque port, the receivers returned are contained directly by
      *  this port.
      *  <p>
-     *  The number of channels (groups) is the width of the port.
+     *  The number of channels (number of groups) is the width of the port.
      *  <p>
      *  For each channel, there may be any number of receivers in the group.
      *  The individual receivers are selected using the second index of the
@@ -2347,14 +2346,18 @@ public class IOPort extends ComponentPort {
      *  outside that can send data to this port.  This includes all
      *  opaque output ports that are connected on the outside to this port,
      *  and opaque input ports that are connected on the inside to this port.
-     *  @return A list of IOPort objects.
+     *  @see #sourcePortList(Receiver)
+     *  @return A list of IOPort objects, or an empty list if there are none.
      */
     public List sourcePortList() {
         try {
             _workspace.getReadAccess();
             Nameable container = getContainer();
-            Director excDirector = ((Actor) container).getExecutiveDirector();
-            int depthOfDirector = excDirector.depthInHierarchy();
+            int depthOfDirector = -1;
+            if (container != null) {
+                Director director = ((Actor) container).getExecutiveDirector();
+                depthOfDirector = director.depthInHierarchy();
+            }
             LinkedList result = new LinkedList();
             Iterator ports = deepConnectedPortList().iterator();
             while (ports.hasNext()) {
@@ -2371,6 +2374,48 @@ public class IOPort extends ComponentPort {
             _workspace.doneReading();
         }
     }
+
+    /** Return a list of ports connected to this port on the
+     *  outside that can send data to this port such that the data
+     *  is received by the specified receiver.  This includes all
+     *  opaque output ports that are connected on the outside to this port,
+     *  and opaque input ports that are connected on the inside to this port.
+     *  If there are multiple paths from a source port to the specified
+     *  channel, then the source port will appear more than once in the
+     *  resulting list.
+     *  If the channel is out of bounds, then return an empty list.
+     *  @see #sourcePortList()
+     *  @param receiver The receiver.
+     *  @return A list of IOPort objects, or an empty list if there are none.
+     */
+     /* NOTE: This method is commented out because it is untested,
+      * extremely complicated, and appears to be not needed (yet).
+    public List sourcePortList(Receiver receiver) {
+        // This is a surprisingly difficult thing to do...
+        List result = new LinkedList();
+
+        // Next, we iterate over ports in the sourcePortList() to find
+        // those that have one of these receivers in their remote
+        // receiver list.
+        Iterator sourcePorts = sourcePortList().iterator();
+        while(sourcePorts.hasNext()) {
+            IOPort sourcePort = (IOPort)sourcePorts.next();
+            Receiver[][] sourcesRemoteReceivers
+                    = sourcePort.getRemoteReceivers();
+            if (sourcesRemoteReceivers == null) continue;
+            for (int i = 0; i < sourcesRemoteReceivers.length; i++) {
+                if (sourcesRemoteReceivers[i] == null) continue;
+                for (int j = 0; j < sourcesRemoteReceivers[i].length; j++) {
+                    if (sourcesRemoteReceivers[i][j] == null) continue;
+                    if (sourcesRemoteReceivers[i][j] == receiver) {
+                        result.add(sourcesRemoteReceivers[i][j].getContainer());
+                    }
+                }
+            }
+        }
+        return result;
+    }
+     */
 
     /** Transfer data from this port to the ports it is connected to
      *  on the inside.
@@ -2434,6 +2479,9 @@ public class IOPort extends ComponentPort {
      *  transferOutputs method.
      */
     public boolean transferOutputs() throws IllegalActionException {
+        if (_debugging) {
+            _debug("calling transferOutputs.");
+        }
         if (!this.isOutput() || !this.isOpaque()) {
             throw new IllegalActionException(this,
                     "transferOutputs: this port is not " +
