@@ -1007,23 +1007,31 @@ test ASTReflect-12.1 {check out interfaces} {
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
     lcompare [$ast toString] \
 { {CompileUnitNode { 
+  {Pkg {NameNode { 
+        {Qualifier {NameNode { 
+                    {Qualifier {NameNode { 
+                                {Qualifier {NameNode { 
+                                            {Qualifier {AbsentTreeNode {leaf}}} 
+                                            {Ident ptolemy} 
+                                          }}} 
+                                {Ident lang} 
+                              }}} 
+                    {Ident java} 
+                  }}} 
+        {Ident test} 
+      }}} 
+  {Imports  {}} 
   {DefTypes { 
    {InterfaceDeclNode { 
-    {Interfaces  {}} 
-    {Members  {}} 
-    {Modifiers 8} 
     {Name {NameNode { 
-           {Ident IFace} 
            {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident IFace} 
          }}} 
+    {Interfaces  {}} 
+    {Modifiers 8} 
+    {Members  {}} 
   }}}} 
-  {Imports  {}} 
-  {Pkg {NameNode { 
-        {Ident } 
-        {Qualifier {AbsentTreeNode {leaf}}} 
-      }}} 
-}}
-}} {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
+}   }   }   } {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
 
 
 ######################################################################
@@ -1034,16 +1042,35 @@ test ASTReflect-13.1 {check out inner classes} {
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
     lcompare [$ast toString] \
 { {CompileUnitNode { 
+  {Pkg {NameNode { 
+        {Qualifier {NameNode { 
+                    {Qualifier {NameNode { 
+                                {Qualifier {NameNode { 
+                                            {Qualifier {AbsentTreeNode {leaf}}} 
+                                            {Ident ptolemy} 
+                                          }}} 
+                                {Ident lang} 
+                              }}} 
+                    {Ident java} 
+                  }}} 
+        {Ident test} 
+      }}} 
+  {Imports  {}} 
   {DefTypes { 
    {ClassDeclNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident InnerClass} 
+         }}} 
     {Interfaces  {}} 
+    {Modifiers 0} 
     {Members { 
      {ConstructorDeclNode { 
-      {Modifiers 1} 
       {Name {NameNode { 
-             {Ident InnerClass} 
              {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident InnerClass} 
            }}} 
+      {Modifiers 1} 
       {Params  {}} 
       {ThrowsList  {}} 
       {Body {BlockNode { 
@@ -1053,47 +1080,52 @@ test ASTReflect-13.1 {check out inner classes} {
                         {Args  {}} 
                       }}} 
     }}     {FieldDeclNode { 
-      {DefType {IntTypeNode {leaf}}} 
-      {Modifiers 1} 
       {Name {NameNode { 
-             {Ident x} 
              {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident x} 
            }}} 
+      {Modifiers 1} 
+      {DefType {IntTypeNode {leaf}}} 
       {InitExpr {AbsentTreeNode {leaf}}} 
     }}     {ClassDeclNode { 
+      {Name {NameNode { 
+             {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident InnerClass$InnerInnerClass} 
+           }}} 
       {Interfaces  {}} 
+      {Modifiers 1} 
       {Members { 
        {ConstructorDeclNode { 
-        {Modifiers 1} 
         {Name {NameNode { 
-               {Ident InnerClass$InnerInnerClass} 
                {Qualifier {AbsentTreeNode {leaf}}} 
+               {Ident InnerClass$InnerInnerClass} 
              }}} 
+        {Modifiers 1} 
         {Params { 
          {ParameterNode { 
+          {Name {NameNode { 
+                 {Qualifier {AbsentTreeNode {leaf}}} 
+                 {Ident } 
+               }}} 
+          {Modifiers 0} 
           {DefType {TypeNameNode { 
                     {Name {NameNode { 
-                           {Ident InnerClass} 
                            {Qualifier {NameNode { 
-                                       {Ident test} 
                                        {Qualifier {NameNode { 
-                                                   {Ident java} 
                                                    {Qualifier {NameNode { 
-                                                               {Ident lang} 
                                                                {Qualifier {NameNode { 
-                                                                           {Ident ptolemy} 
                                                                            {Qualifier {AbsentTreeNode {leaf}}} 
+                                                                           {Ident ptolemy} 
                                                                          }}} 
+                                                               {Ident lang} 
                                                              }}} 
+                                                   {Ident java} 
                                                  }}} 
+                                       {Ident test} 
                                      }}} 
+                           {Ident InnerClass} 
                          }}} 
                   }}} 
-          {Modifiers 0} 
-          {Name {NameNode { 
-                 {Ident } 
-                 {Qualifier {AbsentTreeNode {leaf}}} 
-               }}} 
         }}}} 
         {ThrowsList  {}} 
         {Body {BlockNode { 
@@ -1103,90 +1135,75 @@ test ASTReflect-13.1 {check out inner classes} {
                           {Args  {}} 
                         }}} 
       }}       {MethodDeclNode { 
-        {Modifiers 1} 
         {Name {NameNode { 
-               {Ident meth} 
                {Qualifier {AbsentTreeNode {leaf}}} 
+               {Ident meth} 
              }}} 
+        {Modifiers 1} 
         {Params  {}} 
         {ThrowsList  {}} 
-        {Body {AbsentTreeNode {leaf}}} 
         {ReturnType {VoidTypeNode {leaf}}} 
+        {Body {AbsentTreeNode {leaf}}} 
       }}       {FieldDeclNode { 
+        {Name {NameNode { 
+               {Qualifier {AbsentTreeNode {leaf}}} 
+               {Ident _y} 
+             }}} 
+        {Modifiers 2} 
+        {DefType {IntTypeNode {leaf}}} 
+        {InitExpr {AbsentTreeNode {leaf}}} 
+      }}       {FieldDeclNode { 
+        {Name {NameNode { 
+               {Qualifier {AbsentTreeNode {leaf}}} 
+               {Ident this$0} 
+             }}} 
+        {Modifiers 20} 
         {DefType {TypeNameNode { 
                   {Name {NameNode { 
-                         {Ident InnerClass} 
                          {Qualifier {NameNode { 
-                                     {Ident test} 
                                      {Qualifier {NameNode { 
-                                                 {Ident java} 
                                                  {Qualifier {NameNode { 
-                                                             {Ident lang} 
                                                              {Qualifier {NameNode { 
-                                                                         {Ident ptolemy} 
                                                                          {Qualifier {AbsentTreeNode {leaf}}} 
+                                                                         {Ident ptolemy} 
                                                                        }}} 
+                                                             {Ident lang} 
                                                            }}} 
+                                                 {Ident java} 
                                                }}} 
+                                     {Ident test} 
                                    }}} 
+                         {Ident InnerClass} 
                        }}} 
                 }}} 
-        {Modifiers 20} 
-        {Name {NameNode { 
-               {Ident this$0} 
-               {Qualifier {AbsentTreeNode {leaf}}} 
-             }}} 
-        {InitExpr {AbsentTreeNode {leaf}}} 
-      }}       {FieldDeclNode { 
-        {DefType {IntTypeNode {leaf}}} 
-        {Modifiers 2} 
-        {Name {NameNode { 
-               {Ident _y} 
-               {Qualifier {AbsentTreeNode {leaf}}} 
-             }}} 
         {InitExpr {AbsentTreeNode {leaf}}} 
       }}}} 
-      {Modifiers 1} 
-      {Name {NameNode { 
-             {Ident InnerClass$InnerInnerClass} 
-             {Qualifier {AbsentTreeNode {leaf}}} 
-           }}} 
       {SuperClass {TypeNameNode { 
                    {Name {NameNode { 
-                          {Ident Object} 
                           {Qualifier {NameNode { 
-                                      {Ident lang} 
                                       {Qualifier {NameNode { 
-                                                  {Ident java} 
                                                   {Qualifier {AbsentTreeNode {leaf}}} 
+                                                  {Ident java} 
                                                 }}} 
+                                      {Ident lang} 
                                     }}} 
+                          {Ident Object} 
                         }}} 
                  }}} 
     }}}} 
-    {Modifiers 0} 
-    {Name {NameNode { 
-           {Ident InnerClass} 
-           {Qualifier {AbsentTreeNode {leaf}}} 
-         }}} 
     {SuperClass {TypeNameNode { 
                  {Name {NameNode { 
-                        {Ident Object} 
                         {Qualifier {NameNode { 
-                                    {Ident lang} 
                                     {Qualifier {NameNode { 
-                                                {Ident java} 
                                                 {Qualifier {AbsentTreeNode {leaf}}} 
+                                                {Ident java} 
                                               }}} 
+                                    {Ident lang} 
                                   }}} 
+                        {Ident Object} 
                       }}} 
                }}} 
   }}}} 
-  {Imports  {}} 
-  {Pkg {NameNode { 
-        {Ident } 
-        {Qualifier {AbsentTreeNode {leaf}}} 
-      }}} 
 }}}
 } {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
 
@@ -1201,16 +1218,35 @@ test ASTReflect-14.1 {check out } {
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
     lcompare [$ast toString] \
 { {CompileUnitNode { 
+  {Pkg {NameNode { 
+        {Qualifier {NameNode { 
+                    {Qualifier {NameNode { 
+                                {Qualifier {NameNode { 
+                                            {Qualifier {AbsentTreeNode {leaf}}} 
+                                            {Ident ptolemy} 
+                                          }}} 
+                                {Ident lang} 
+                              }}} 
+                    {Ident java} 
+                  }}} 
+        {Ident test} 
+      }}} 
+  {Imports  {}} 
   {DefTypes { 
    {ClassDeclNode { 
+    {Name {NameNode { 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+           {Ident InnerIFace} 
+         }}} 
     {Interfaces  {}} 
+    {Modifiers 0} 
     {Members { 
      {ConstructorDeclNode { 
-      {Modifiers 0} 
       {Name {NameNode { 
-             {Ident InnerIFace} 
              {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident InnerIFace} 
            }}} 
+      {Modifiers 0} 
       {Params  {}} 
       {ThrowsList  {}} 
       {Body {BlockNode { 
@@ -1220,72 +1256,62 @@ test ASTReflect-14.1 {check out } {
                         {Args  {}} 
                       }}} 
     }}     {ClassDeclNode { 
+      {Name {NameNode { 
+             {Qualifier {AbsentTreeNode {leaf}}} 
+             {Ident InnerIFace$IFace} 
+           }}} 
       {Interfaces  {}} 
+      {Modifiers 520} 
       {Members { 
        {MethodDeclNode { 
-        {Modifiers 9} 
         {Name {NameNode { 
-               {Ident ack} 
                {Qualifier {AbsentTreeNode {leaf}}} 
+               {Ident ack} 
              }}} 
+        {Modifiers 9} 
         {Params  {}} 
         {ThrowsList  {}} 
-        {Body {AbsentTreeNode {leaf}}} 
         {ReturnType {IntTypeNode {leaf}}} 
+        {Body {AbsentTreeNode {leaf}}} 
       }}       {MethodDeclNode { 
-        {Modifiers 9} 
         {Name {NameNode { 
-               {Ident ugh} 
                {Qualifier {AbsentTreeNode {leaf}}} 
+               {Ident ugh} 
              }}} 
+        {Modifiers 9} 
         {Params { 
          {ParameterNode { 
-          {DefType {CharTypeNode {leaf}}} 
-          {Modifiers 25} 
           {Name {NameNode { 
-                 {Ident } 
                  {Qualifier {AbsentTreeNode {leaf}}} 
+                 {Ident } 
                }}} 
+          {Modifiers 25} 
+          {DefType {CharTypeNode {leaf}}} 
         }}}} 
         {ThrowsList  {}} 
-        {Body {AbsentTreeNode {leaf}}} 
         {ReturnType {CharTypeNode {leaf}}} 
+        {Body {AbsentTreeNode {leaf}}} 
       }}}} 
-      {Modifiers 520} 
-      {Name {NameNode { 
-             {Ident InnerIFace$IFace} 
-             {Qualifier {AbsentTreeNode {leaf}}} 
-           }}} 
       {SuperClass {TypeNameNode { 
                    {Name {NameNode { 
-                          {Ident Object} 
                           {Qualifier {AbsentTreeNode {leaf}}} 
+                          {Ident Object} 
                         }}} 
                  }}} 
     }}}} 
-    {Modifiers 0} 
-    {Name {NameNode { 
-           {Ident InnerIFace} 
-           {Qualifier {AbsentTreeNode {leaf}}} 
-         }}} 
     {SuperClass {TypeNameNode { 
                  {Name {NameNode { 
-                        {Ident Object} 
                         {Qualifier {NameNode { 
-                                    {Ident lang} 
                                     {Qualifier {NameNode { 
-                                                {Ident java} 
                                                 {Qualifier {AbsentTreeNode {leaf}}} 
+                                                {Ident java} 
                                               }}} 
+                                    {Ident lang} 
                                   }}} 
+                        {Ident Object} 
                       }}} 
                }}} 
   }}}} 
-  {Imports  {}} 
-  {Pkg {NameNode { 
-        {Ident } 
-        {Qualifier {AbsentTreeNode {leaf}}} 
-      }}} 
 }}}
 } {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
 
@@ -1548,7 +1574,10 @@ test ASTReflect-22.1 {check out method Use} {
 ####
 #
 test ASTReflect-23.1 {pathnameToClass} {
-    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass "java/lang/Object.java"]
+    set fileSeparator [java::call System getProperty file.separator]
+    set fileList [list java lang Object.java]
+    set path [join $fileList $fileSeparator]
+    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass $path]
     list [$myclass getName]
 } {java.lang.Object}
 
@@ -1557,7 +1586,10 @@ test ASTReflect-23.1 {pathnameToClass} {
 ####
 #
 test ASTReflect-23.2 {pathnameToClass} {
-    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass "ptolemy/lang/java/ASTReflect"]
+    set fileSeparator [java::call System getProperty file.separator]
+    set fileList [list ptII ptolemy lang java ASTReflect]
+    set path [join $fileList $fileSeparator]
+    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass $path]
     list [$myclass getName]
 } {ptolemy.lang.java.ASTReflect}
 
