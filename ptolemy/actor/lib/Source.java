@@ -113,7 +113,7 @@ public abstract class Source extends TypedAtomicActor {
      *  input and discard it.  If the trigger input is not connected,
      *  then this method does nothing.  Derived classes should be
      *  sure to call super.fire(), or to consume the trigger input
-     *  tokens themselves, so that they aren't left unconsummed.
+     *  tokens themselves, so that they aren't left unconsumed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
