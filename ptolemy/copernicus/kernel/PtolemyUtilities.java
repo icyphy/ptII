@@ -327,10 +327,19 @@ public class PtolemyUtilities {
             Value constructorArg) {
         Stmt stmt = Jimple.v().newNopStmt();
         body.getUnits().add(stmt);
-        return _buildConstantTokenLocal(body, stmt, localName, tokenClass,
+        return _buildConstantTokenLocal(body, stmt, 
+                localName, tokenClass,
                 tokenConstructor, constructorArg);
     }
-    
+
+    public static Local addTokenLocalBefore(Body body, Unit insertPoint,
+            String localName,
+            SootClass tokenClass, SootMethod tokenConstructor,
+            Value constructorArg) {
+        return _buildConstantTokenLocal(body, insertPoint, 
+                localName, tokenClass,
+                tokenConstructor, constructorArg);
+    }    
     private static Local _buildConstantTokenLocal(Body body,
             Unit insertPoint, String localName, 
             SootClass tokenClass, SootMethod tokenConstructor, 
