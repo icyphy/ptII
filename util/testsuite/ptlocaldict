@@ -48,6 +48,7 @@ Bhattacharyya
 Bicheng
 Bilung
 Blackdown
+Box2D
 CDATA
 CELLPADDING
 CELLSPACING
@@ -72,6 +73,7 @@ Cataldo
 Chandy
 Chatoyant
 Cheong
+Circle2D
 Classpath
 Claudius
 Clearcase
@@ -106,6 +108,7 @@ EAL
 EECS
 EXP
 Edsger
+Ellipse2D
 Emacs
 Endian
 Esterel
@@ -312,6 +315,7 @@ Rao
 Rapide
 Reddy
 Reekie
+Regex
 Rehof
 Riel
 Rowson
@@ -332,6 +336,7 @@ Sartre
 Sastry
 Screenshot
 Scriptics
+Shape2D
 Shang
 Shankar
 Shilman
@@ -494,6 +499,7 @@ dequeued
 deselected
 deselecting
 deselection
+djstone
 capdesignix
 designtoc
 desktop
@@ -562,6 +568,7 @@ innerclass
 innerclasses
 instanceof
 instantiable
+ismael
 janneck
 java
 java,v
@@ -593,6 +600,7 @@ linux
 liuj
 liuxj
 lmuliadi
+lowercase
 majordomo
 makefile
 makefile,v
@@ -656,6 +664,7 @@ pulldown
 pwhitake
 pxgraph
 queueing
+regex
 rowspan
 scrollbar
 sdf
@@ -713,6 +722,7 @@ wabasdk
 wabasoft
 wbwu
 website
+whitespace
 winthrop
 workaround
 www
