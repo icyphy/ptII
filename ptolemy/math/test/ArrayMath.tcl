@@ -45,6 +45,75 @@ set PI [java::field java.lang.Math PI]
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+proc javaPrintArray {javaArrayObj} {
+    set result {}
+    for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
+	lappend result [[$javaArrayObj get $i] toString]
+    }
+    return $result
+}
 ####################################################################
+test ArrayMath-1.1 {add} {
+    set c1 [java::new ptolemy.math.Complex 1 2]
+    set ca0 [java::new {ptolemy.math.Complex[]} 0]
+    set ca2 [java::call ptolemy.math.ArrayMath add $ca0 $c1]
+    javaPrintArray $ca2
+} {}
 
-# FIXME: No tests.
+####################################################################
+test ArrayMath-1.2 {add} {
+    set c1 [java::new ptolemy.math.Complex 1 2]
+    set c2 [java::new ptolemy.math.Complex 3 -4]
+    set c3 [java::new ptolemy.math.Complex -4.9 -6]
+    set c4 [java::new ptolemy.math.Complex -7 8]
+    set c5 [java::new ptolemy.math.Complex -0.25 +0.4]
+    set ca1 [java::new {ptolemy.math.Complex[]} 4 [list $c1 $c2 $c3 $c4]]
+    set ca2 [java::call ptolemy.math.ArrayMath add $ca1 $c5]
+    javaPrintArray $ca2
+} {{0.75 + 2.4i} {2.75 - 3.6i} {-5.15 - 5.6i} {-7.25 + 8.4i}}
+
+####################################################################
+test ArrayMath-2.1 {addR} {
+    java::call ptolemy.math.ArrayMath addR $ca0 $c5
+    javaPrintArray $ca0
+} {}
+
+####################################################################
+test ArrayMath-2.2 {addR} {
+    java::call ptolemy.math.ArrayMath addR $ca2 $c5
+    epsilonDiff [javaPrintArray $ca2] \
+	    {{0.5 + 2.6i} {2.5 - 3.4i} {-5.4 - 5.4i} {-7.5 + 8.6i}}
+} {}
+
+####################################################################
+test ArrayMath-3.1 {convolve Complex} {
+    set ca2 [java::call ptolemy.math.ArrayMath \
+	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca0 $ca0]
+    javaPrintArray $ca2
+} {}
+
+####################################################################
+test ArrayMath-3.2 {convolve Complex} {
+    set ca2 [java::call ptolemy.math.ArrayMath \
+	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca1 $ca1]
+    epsilonDiff [javaPrintArray $ca2] \
+	    {{-3.0 + 4.0i} {22.0 + 4.0i} {7.2 - 55.6i} {-123.4 - 8.8} \
+	    {10.01 + 162.8i} {164.6 + 5.6i} {-15.0 - 112.0i}}
+} {}
+
+####################################################################
+test ArrayMath-4.1 {convolve double} {
+     set da0 [java::new {double[]} 0]
+    set $da2 [java::call ptolemy.math.ArrayMath \
+	    {convolve double[] double[]} $da0 $da0]
+    $da2 getrange 0
+} {}
+
+####################################################################
+test ArrayMath-4.2 {convolve double} {
+    set da1 [java::new {double[]} 4 {1 2 -3 4.1}]
+    set da2 [java::call ptolemy.math.ArrayMath \
+	    {convolve double[] double[]} $da1 $da1]
+    epsilonDiff [$da2 getrange 0] {1.0 4.0 -2.0 -3.8 25.4 -24.6 16.81}
+} {}
+
