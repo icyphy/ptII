@@ -38,7 +38,7 @@ import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTThresholdMonitor
+//// ThresholdMonitor
 /**
 Monitor integration steps so that the threshold is not crossed in one step.
 This actor has one input port, but no output port. If functionality is
@@ -50,7 +50,7 @@ value 1e-2 and 0, respectively.
 */
 //FIXME: need to use the new parameter mechanism.
 
-public class CTThresholdMonitor extends CTActor
+public class ThresholdMonitor extends CTActor
     implements CTStepSizeControlActor{
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -64,7 +64,7 @@ public class CTThresholdMonitor extends CTActor
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */
-    public CTThresholdMonitor(TypedCompositeActor container, String name)
+    public ThresholdMonitor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input");
