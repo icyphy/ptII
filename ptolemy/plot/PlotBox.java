@@ -607,6 +607,8 @@ public class PlotBox extends Applet {
         } catch (NullPointerException e) {
 	    dataurl = _dataurl;
 	}
+
+	if (dataurl == null) dataurl = _dataurl;
 	parseFile(dataurl);
 
         // Make a button that auto-scales the plot.
@@ -791,7 +793,8 @@ public class PlotBox extends Applet {
       */
     public void parseFile(String dataurl) {
 	DataInputStream in;
-        if (_debug > 2) System.out.println("PlotBox: parseFile "+ dataurl);
+        if (_debug > 2) System.out.println("PlotBox: parseFile("+ dataurl+
+					   ") _dataurl = "+_dataurl);
 	if (dataurl == null || dataurl.length() == 0) {
 	    // Open up stdin
 	    in = new DataInputStream(System.in);
