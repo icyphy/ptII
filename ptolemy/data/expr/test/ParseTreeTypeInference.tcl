@@ -673,3 +673,18 @@ test PtParser-16.2 {Test record indexing} {
     set type2 [inferTypes $root]
     list [$res1 equals $type1] [$res2 equals $type2]
 } {1 1}
+
+test PtParser-16.3 {Test property} {
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "getProperty(\"ptolemy.ptII.dir\")"]
+    set res1 [[ $evaluator evaluateParseTree $root] getType]
+    set type1 [inferTypes $root]
+
+    set root [ $p {generateParseTree String} "property(\"ptolemy.ptII.dir\") + \"foo\""]
+    set res2 [[ $evaluator evaluateParseTree $root] getType]
+    set type2 [inferTypes $root]
+    list [$res1 equals $type1]  [$res2 equals $type2]
+} {1 1}
+
