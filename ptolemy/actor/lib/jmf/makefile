@@ -57,7 +57,7 @@ JSRCS = \
 	JAIImageReader.java\
 	JAIInterpolation.java\
 	JAIToImage.java\
-	Sound.java \
+	PlaySound.java \
 	VideoCamera.java
 
 OTHER_FILES_TO_BE_JARED = \
