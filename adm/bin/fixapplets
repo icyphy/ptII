@@ -6,7 +6,12 @@
 # Usage: fixapplets [-n] file.htm [...]
 
 printOnly=no
-if [ $1 = "-n" ]; then
+if [ $# -lt 1 ]; then
+    echo "$0: Usage: $0 file . . ."
+    exit 4
+fi
+
+if [ "$1" = "-n" ]; then
     echo "$0: -n: Not updating files"
     printOnly=yes
     shift
