@@ -374,10 +374,19 @@ ptflag="\"-Dptolemy.ptII.dir=$PTII\""
 # Uncomment this line to pass java this flag to use Emacs as a text editor.
 #USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
 
+quiet=0
+
 commandname=`basename "$0"`
 # check to see if we are building bat files.
 case $commandname in
     makebat)
+	if [ "$1" = "-q" ]; then
+	    # Do not echo the command. Useful for batch mode (repeated
+	    # test runs) to reduce stdout clutter
+	    quiet=1
+	    shift
+	    continue
+	fi
 	help="Make a DOS batch file"
 	makebat="1"
 	commandname=$1
@@ -526,7 +535,7 @@ and run:
 	passHelpArgument=no
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
-	jarfile="$PTJACL_JAR${CLASSPATHSEPARATOR}$ALL_JAR${CLASSPATHSEPARATOR}$SOOT_JAR"
+	jarfile="$ALL_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptjaclapp)
@@ -536,7 +545,7 @@ and run:
 	passHelpArgument=no
 	javastartupclass=tcl.lang.PanelShellApp
 	javasourcedir=
-	jarfile="$PTJACL_JAR"
+	jarfile="$ALL_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptstartjini)
@@ -634,16 +643,6 @@ and run:
 	;;
 esac
 
-# Special check for Jacl with a better error message
-if [ "$jarfile" = "$PTJACL_JAR" ]; then
-    if [ ! -f "$PTJACL_JAR" ]; then
-	echo "$0: Warning '$PTJACL_JAR' not found."
-	echo "    ptjacl.jar can be found at"
-	echo "	  http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html"
-	echo "    You only need run Jacl if you want to run the Ptolemy II"
-	echo "    test suites."
-    fi
-fi
 
 # Determine if we are on windows and try to set JAVAHOME
 windows=no
@@ -703,7 +702,6 @@ if [ -z "$JAVAHOME" ]; then
 fi
 
 jdbflags=""
-quiet=0
 # ${1#-} will not work under Solaris 8
 #while [ "${1#-}" != "$1" ]; do
 # jode takes a -d argument, which causes problems unless we use "x..."
