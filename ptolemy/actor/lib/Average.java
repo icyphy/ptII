@@ -100,37 +100,35 @@ public class Average extends Transformer {
         return newobj;
     }
 
-    /** Consume exactly one token from the <i>input</i>
+    /** Consume at most one token from the <i>input</i>
      *  and compute the average of the input tokens so far. Send the
-     *  result to the output.  It is assumed that there is at least
-     *  one input token available, or a NoTokenException will be thrown.
-     *  This is a runtime exception, so it need not be declared explicitly.
-     *  If the fire method
+     *  result to the output.  If there is no input token available,
+     *  no output will be produced.  If there is a true-valued token
+     *  on the <i>reset</i> input, then the average is reset, and
+     *  the output will be equal to the <i>input</i> token (if there
+     *  is one). If the fire method
      *  is invoked multiple times in one iteration, then only the
      *  input read on the last invocation in the iteration will affect
      *  future averages.  Inputs that are read earlier in the iteration
      *  are forgotten.
-     *  <P>
-     *  If a true valued token is received at the <i>reset</i>
-     *  input, then the average is restarted with the current input. 
      *  @exception IllegalActionException If addition or division by an
      *   integer are not supported by the supplied tokens.
      */
     public void fire() throws IllegalActionException {
-        try {
-            _latestSum = _sum;
-            _latestCount = _count + 1;
-            // Check whether to reset.
-            for (int i = 0; i < reset.getWidth(); i++) {
-                if (reset.hasToken(i)) {
-                    BooleanToken r = (BooleanToken)reset.get(0);
-                    if(r.booleanValue()) {
-                        // Being reset at this firing.
-                        _latestSum = null;
-                        _latestCount = 1;
-                    }
+        _latestSum = _sum;
+        _latestCount = _count + 1;
+        // Check whether to reset.
+        for (int i = 0; i < reset.getWidth(); i++) {
+            if (reset.hasToken(i)) {
+                BooleanToken r = (BooleanToken)reset.get(0);
+                if(r.booleanValue()) {
+                    // Being reset at this firing.
+                    _latestSum = null;
+                    _latestCount = 1;
                 }
             }
+        }
+        if (input.hasToken(0)) {
             Token in = input.get(0);
             if (_latestSum == null) {
                 _latestSum = in;
@@ -139,9 +137,6 @@ public class Average extends Transformer {
             }
             Token out = _latestSum.divide(new IntToken(_latestCount));
             output.broadcast(out);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
-            throw new InternalErrorException(ex.getMessage());
         }
     }
 
