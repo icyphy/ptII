@@ -590,6 +590,8 @@ fi
 PTJACL_JAR=$PTII/lib/ptjacl.jar
 # JTCLSH uses JAVAFLAGS for use with the 
 # vergil/test/VergilConfiguration.tcl test
+# We set the ptolemy.ptII.dir property for use in the 
+# actor.lib.test.auto.FileWriter{1,2}.xml tests
 JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" tcl.lang.Shell]'
 # PTJACL_DIR is set to ptjacl and used in $PTII/ptolemy/actor/gui/makefile
 # if the ptjacl.jar file was found
