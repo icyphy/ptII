@@ -222,7 +222,7 @@ public class ODFDirector extends ProcessDirector {
     /**
      */
     protected ProcessThread _getProcessThread(Actor actor,
-	    ProcessDirector director) {
+	    ProcessDirector director) throws IllegalActionException {
 	return new ODFThread(actor, director);
     }
 

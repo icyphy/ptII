@@ -500,7 +500,7 @@ public class ProcessDirector extends Director {
      *  actor passed as a parameter for this method.
      */
     protected ProcessThread _getProcessThread(Actor actor, 
-	    ProcessDirector director) {
+	    ProcessDirector director) throws IllegalActionException {
 	return new ProcessThread(actor, director);
     }
 
