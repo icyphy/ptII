@@ -20,6 +20,22 @@
     </property>
     <property name="backgroundProcessPriority" class="ptolemy.data.expr.Parameter" value="10">
     </property>
+    <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="261.0, 292.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows the use of background process for long run tasks in 
+the RTOS domain. There are two composite actors in this model, both 
+implemented in SDF. One of them, the singla generator, has a short
+execution time, and is treated as an atomic execution. The other, 
+implementing the FFT algorithm, has a long execution time, and is 
+executed in a separate thread.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
     <entity name="RTOSCompositeFacade" class="ptolemy.actor.TypedCompositeActor">
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.25">
         </property>
@@ -103,8 +119,7 @@
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequenceScope</title>
@@ -113,8 +128,7 @@
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
-            </configure>
-        </entity>
+                        </configure>        </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.moml.Location" value="147.0, 196.0">
             </property>
@@ -205,8 +219,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
@@ -215,8 +228,7 @@
 <xRange min="1.0E-4" max="9.9922875"/>
 <yRange min="-1.797956359507482" max="1.822304758410949"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="atomic composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="243.0, 189.0">
         </property>
