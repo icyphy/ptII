@@ -198,8 +198,8 @@ public class UtilityFunctions {
                 } else {
                     if ( row != l.size() ) {
                         throw new  IllegalActionException(" The Row" +
-                        " size needs to be the same for all" +
-                        " rows");
+                                " size needs to be the same for all" +
+                                " rows");
                     }
                 }
                 Iterator j = l.iterator();
@@ -217,7 +217,7 @@ public class UtilityFunctions {
             returnMatrix =  new DoubleMatrixToken(mtr);
         } else {
             throw new IllegalActionException("ReadMatrix: File " +
-            filename + " not Found");
+                    filename + " not Found");
         }
 
         return returnMatrix;

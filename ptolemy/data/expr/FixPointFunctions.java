@@ -163,7 +163,7 @@ public class FixPointFunctions {
     public static Token fix(DoubleMatrixToken values,
             int numberOfBits, int integerBits) {
         FixPoint [][] fxa =
-                new FixPoint[values.getRowCount()][values.getColumnCount()];
+            new FixPoint[values.getRowCount()][values.getColumnCount()];
         Precision precision = new Precision(numberOfBits, integerBits);
         for(int i = 0; i < values.getColumnCount(); i++) {
             for(int j = 0; j < values.getRowCount(); j++) {
@@ -226,7 +226,7 @@ public class FixPointFunctions {
     public static Token quantize(DoubleMatrixToken values, int numberOfBits,
             int integerBits) {
         double [][] fxa = new
-                double[values.getRowCount()][values.getColumnCount()];
+            double[values.getRowCount()][values.getColumnCount()];
         Precision precision = new Precision(numberOfBits, integerBits);
         for(int i = 0; i < values.getColumnCount(); i++) {
             for(int j = 0; j < values.getRowCount(); j++) {

@@ -421,9 +421,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 return null;
             }
 
-//             System.out.println("SpecializeTokenVisitor."
-//                     + "visitMethodCallNode(): #1 methodName ="
-//                     + methodName);
+            //             System.out.println("SpecializeTokenVisitor."
+            //                     + "visitMethodCallNode(): #1 methodName ="
+            //                     + methodName);
 
             TypeNameNode portTypeNode =
                 _typeID.typeNodeForTokenType(port.getType());
@@ -470,9 +470,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     return null;
                 }
 
-//                 System.out.println("SpecializeTokenVisitor."
-//                         + "visitMethodCallNode(): #2 methodName ="
-//                         + methodName);
+                //                 System.out.println("SpecializeTokenVisitor."
+                //                         + "visitMethodCallNode(): #2 methodName ="
+                //                         + methodName);
                 TypeNameNode tokenTypeNode =
                     _typeID.typeNodeForTokenType(token.getType());
 
@@ -543,11 +543,11 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     private _ConstantTerm _makeConstantTerm(TypeNode type, TypedDecl decl) {
         int kind = _typeID.kind(type);
         if (!_typeID.isSupportedTokenKind(kind)) {
-//              System.err.println("SpecializedTokenVisitor._makeConstantTerm("
-//                      + "type= " + type
-//                      + ", decl = " + decl + ") _typeId: "
-//                      + _typeID + " is not a supported Token kind, kind = "
-//                      + kind);
+            //              System.err.println("SpecializedTokenVisitor._makeConstantTerm("
+            //                      + "type= " + type
+            //                      + ", decl = " + decl + ") _typeId: "
+            //                      + _typeID + " is not a supported Token kind, kind = "
+            //                      + kind);
             return null;
         }
 

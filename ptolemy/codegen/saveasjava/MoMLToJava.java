@@ -76,7 +76,7 @@ public class MoMLToJava {
             toplevel = parser.parseFile(filename);
         } catch (Exception ex) {
             throw new IllegalActionException(ex.getMessage()
-            + "Exception raised from the MoML parser\n");
+                    + "Exception raised from the MoML parser\n");
         }
 
         // Convert the Ptolemy II model to Java code
@@ -85,7 +85,7 @@ public class MoMLToJava {
             generatedCode = saver.generate(toplevel);
         } catch (Exception ex) {
             throw new IllegalActionException(ex.getMessage()
-            + "Exception raised when attempting to generate Java\n");
+                    + "Exception raised when attempting to generate Java\n");
         }
 
         // Write the Java text to a file.
@@ -96,7 +96,7 @@ public class MoMLToJava {
             outfile.close();
         } catch (IOException ex) {
             MessageHandler.error("Could not create output file:\n\n"
-            + ex.getMessage(), ex);
+                    + ex.getMessage(), ex);
         }
 
     }

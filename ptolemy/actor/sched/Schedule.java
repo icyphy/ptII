@@ -322,7 +322,7 @@ public class Schedule extends ScheduleElement {
 		    }
 		} else {
 		    if (_currentIteration <
-			_currentFiring.getIterationCount()) {
+                            _currentFiring.getIterationCount()) {
 			_currentIteration++;
 			_advance = false;
 			_lastHasNext = true;
@@ -445,17 +445,17 @@ public class Schedule extends ScheduleElement {
 		    // This condition should only happen for the first element
 		    // in the iteration.
 		    _currentNode = _findLeafNode((Schedule)_currentNode);
-		     if (_currentNode == null) {
-			 // Throw runtime exeption.
-			 throw new InternalErrorException(
-                             "Encountered a schedule leaf node that is " +
-                             "not an instance of Firing.");
+                    if (_currentNode == null) {
+                        // Throw runtime exeption.
+                        throw new InternalErrorException(
+                                "Encountered a schedule leaf node that is " +
+                                "not an instance of Firing.");
 		    }
 		} else {
 		    // Throw runtime exception.
 		    throw new InternalErrorException(
-                       "Encountered a ScheduleElement that is not an instance " +
-                       "of Schedule or Firing.");
+                            "Encountered a ScheduleElement that is not an instance " +
+                            "of Schedule or Firing.");
 		}
 		_advance = false;
 		_lastHasNext = true;
@@ -506,7 +506,7 @@ public class Schedule extends ScheduleElement {
 	 *  @param firingNode The starting node to backtrack from.
 	 */
 	private Schedule _backTrack(ScheduleElement firingNode) {
-	     if (_currentDepth == 0) {
+            if (_currentDepth == 0) {
 		// Don't backtrack past the root node.
 		return null;
 	    }
@@ -515,10 +515,10 @@ public class Schedule extends ScheduleElement {
 	    if (node == null) {
 		return null;
 	    } else if (node.size() >
-		       (++_horizontalNodePosition[_currentDepth+1])) {
+                    (++_horizontalNodePosition[_currentDepth+1])) {
 		return node;
 	    } else if ((++_iterationCounts[_currentDepth]) <
-		       node.getIterationCount()) {
+                    node.getIterationCount()) {
 		_horizontalNodePosition[_currentDepth+1] = 0;
 		return node;
 	    }
@@ -558,7 +558,7 @@ public class Schedule extends ScheduleElement {
 	    if (node == null) {
 		return null;
 	    } else if (node.size() >
-		       _horizontalNodePosition[_currentDepth + 1]) {
+                    _horizontalNodePosition[_currentDepth + 1]) {
 		_currentDepth++;
 		ScheduleElement nodeElement =
 		    node.get(_horizontalNodePosition[_currentDepth]);
@@ -568,7 +568,7 @@ public class Schedule extends ScheduleElement {
 		    return _findLeafNode((Schedule)nodeElement);
 		}
 	    } else if (_iterationCounts[_currentDepth] <
-		       node.getIterationCount()) {
+                    node.getIterationCount()) {
 		ScheduleElement nodeElement = node.get(0);
 		_currentDepth++;
 		if (nodeElement instanceof Firing) {

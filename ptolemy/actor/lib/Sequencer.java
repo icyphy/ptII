@@ -124,7 +124,7 @@ public class Sequencer extends Transformer implements SequenceActor {
     public void initialize() throws IllegalActionException {
         _fireProducedOutput = false;
         _nextSequenceNumber =
-                 ((IntToken)startingSequenceNumber.getToken()).intValue();
+            ((IntToken)startingSequenceNumber.getToken()).intValue();
     }
 
     /** Return false if either the <i>input</i> port or the

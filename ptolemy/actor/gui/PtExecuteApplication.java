@@ -166,7 +166,7 @@ public class PtExecuteApplication extends MoMLApplication
                 }
                 manager.addExecutionListener(this);
                 _activeCount++;
-               // Run the model in a new thread.
+                // Run the model in a new thread.
                 manager.startRun();
             }
         }

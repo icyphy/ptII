@@ -59,7 +59,7 @@ not return until the user dismisses the dialog.
 @version $Id$
 */
 public class PortConfigurerDialog extends ComponentDialog
-        implements ChangeListener {
+    implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  Several buttons are added to the dialog.
@@ -115,18 +115,18 @@ public class PortConfigurerDialog extends ComponentDialog
                         // that defers its MoML definition, or the
                         // immediate parent if there is none.
                         NamedObj container
-                               = MoMLChangeRequest.getDeferredToParent(port);
+                            = MoMLChangeRequest.getDeferredToParent(port);
                         if (container == null) {
                             container = (NamedObj)port.getContainer();
                         }
 
                         String moml = "<deletePort name=\""
-                               + port.getName(container) + "\"/>\n";
+                            + port.getName(container) + "\"/>\n";
 
-                        ChangeRequest request =
-                               new MoMLChangeRequest(this, container, moml);
-                        container.addChangeListener(this);
-                        container.requestChange(request);
+                            ChangeRequest request =
+                                new MoMLChangeRequest(this, container, moml);
+                            container.addChangeListener(this);
+                            container.requestChange(request);
                     }
                 }
             }
@@ -208,10 +208,10 @@ public class PortConfigurerDialog extends ComponentDialog
             String moml = "<port name=\""
                 + newName
                 + "\" class=\""
-                + _query.stringValue("class")
-                + "\"/>";
-            _target.addChangeListener(this);
-            _target.requestChange(new MoMLChangeRequest(this, _target, moml));
+                    + _query.stringValue("class")
+                        + "\"/>";
+                    _target.addChangeListener(this);
+                    _target.requestChange(new MoMLChangeRequest(this, _target, moml));
         }
         return dialog;
     }

@@ -369,9 +369,9 @@ public class RecordType extends StructuredType {
 	        return;
 	    } else {
 	        throw new IllegalActionException("RecordType.updateType: " +
-		    "This type is a constant and the argument is not the " +
-		    "same as this type. This type: " + this.toString() +
-		    " argument: " + newType.toString());
+                        "This type is a constant and the argument is not the " +
+                        "same as this type. This type: " + this.toString() +
+                        " argument: " + newType.toString());
             }
 	}
 
@@ -558,7 +558,7 @@ public class RecordType extends StructuredType {
 
     // the representative in the type lattice is the empty record.
     private static RecordType _representative =
-            new RecordType(new String[0], new Type[0]);
+    new RecordType(new String[0], new Type[0]);
 
     ///////////////////////////////////////////////////////////////////
     ////                           inner class                     ////

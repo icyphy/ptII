@@ -359,9 +359,9 @@ public class MoMLApplication {
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
                     if(i >= args.length - 1) {
-                       throw new IllegalActionException("Cannot set " +
-                               "parameter " + arg + " when no value is " +
-                               "given.");
+                        throw new IllegalActionException("Cannot set " +
+                                "parameter " + arg + " when no value is " +
+                                "given.");
                     }
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));

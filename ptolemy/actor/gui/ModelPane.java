@@ -552,10 +552,10 @@ public class ModelPane extends JPanel implements CloseListener {
         private boolean _control = false;
         private boolean _shift = false;
         private String _helpString = "Key bindings in button panel:\n"
-                + "  Control-G: Start a run.\n"
-                + "  Control-H: Display help.\n"
-                + "  Control-M: Export MoML to standard out.\n"
-                + "  Control-S: Stop a run.\n"
-                + "  ?: Display help.\n";
+        + "  Control-G: Start a run.\n"
+        + "  Control-H: Display help.\n"
+        + "  Control-M: Export MoML to standard out.\n"
+        + "  Control-S: Stop a run.\n"
+        + "  ?: Display help.\n";
     }
 }

@@ -100,7 +100,7 @@ public class GeneratorTableau extends Tableau {
             frame.setBackground(BACKGROUND_COLOR);
         } else {
             throw new IllegalActionException(model,
-            "Can only generate code for instances of CompositeEntity.");
+                    "Can only generate code for instances of CompositeEntity.");
         }
     }
 
@@ -200,9 +200,9 @@ public class GeneratorTableau extends Tableau {
             // If the model contains an attribute with tableau
             // configuration information, use that.  Otherwise, make one.
             GeneratorTableauAttribute attribute =
-                   (GeneratorTableauAttribute)
-                   model.getAttribute("_generator",
-                   GeneratorTableauAttribute.class);
+                (GeneratorTableauAttribute)
+                model.getAttribute("_generator",
+                        GeneratorTableauAttribute.class);
             if(attribute == null) {
                 attribute = new GeneratorTableauAttribute(
                         model, "_generator");
@@ -240,7 +240,7 @@ public class GeneratorTableau extends Tableau {
                     try {
 			// Handle the directory entry.
                         String directoryName = options.directory
-                                .getExpression();
+                            .getExpression();
 
 			// If the directory name is empty, then set
 			// directory to the current working directory.
@@ -251,18 +251,18 @@ public class GeneratorTableau extends Tableau {
                         }
 
 			if (!directory.canWrite()) {
-                                throw new IllegalActionException(model,
-                                "Can't write: " + directoryName);
+                            throw new IllegalActionException(model,
+                                    "Can't write: " + directoryName);
 			}
 			// Handle the generator entry.
                         boolean deep = ((BooleanToken)options.deep.getToken())
-                                .booleanValue();
+                            .booleanValue();
 
 			File destination = null;
 			if (!deep) {
                             // Write the generated code.
                             destination = new File(directoryName,
-                                     model.getName() + ".java");
+                                    model.getName() + ".java");
 
                             FileWriter outfile = new FileWriter(destination);
                             PrintWriter outprinter = new PrintWriter(outfile);
@@ -276,7 +276,7 @@ public class GeneratorTableau extends Tableau {
                             // This is out of order because we use the
                             // packageName in the generator.
                             String packageName = options.packageName
-                                    .getExpression();
+                                .getExpression();
                             if (packageName.length() > 0
                                     && ! packageName.endsWith(".") ) {
                                 packageName = packageName + '.';
@@ -294,10 +294,10 @@ public class GeneratorTableau extends Tableau {
 				.getManager();
 			    //			    if (manager == null) {
 
-				((CompositeActor)model)
-				    .setManager(new Manager(model.workspace(),
-							     "manager"));
-				manager = ((CompositeActor)model).getManager();
+                            ((CompositeActor)model)
+                                .setManager(new Manager(model.workspace(),
+                                        "manager"));
+                            manager = ((CompositeActor)model).getManager();
 				//}
 
 			    LinkedList models = new LinkedList();
@@ -308,35 +308,35 @@ public class GeneratorTableau extends Tableau {
 			    // FIXME: this should be run in the backgroun
 			    codeGenerator.generateCode();
 			    destination = new File(
-                                codeGenerator.getPackageDirectoryName(),
-                                model.getName() + ".java");
+                                    codeGenerator.getPackageDirectoryName(),
+                                    model.getName() + ".java");
 			}
                         report("Code generation complete.");
 
 			// Handle the show checkbox.
 			boolean show = ((BooleanToken)options.show.getToken())
-                               .booleanValue();
+                            .booleanValue();
                         if (show) {
                             URL codeFile = destination.toURL();
                             Configuration config = (Configuration)toplevel();
                             // FIXME: If we previously had this file open,
                             // we need to refresh the tableau.
                             config.openModel(null, codeFile,
-                                  codeFile.toExternalForm());
+                                    codeFile.toExternalForm());
                         }
 
 			// Handle the compile and run.
 			boolean compile = ((BooleanToken)options.compile
                                 .getToken()).booleanValue();
 			boolean run = ((BooleanToken)options.run.getToken())
-                               .booleanValue();
+                            .booleanValue();
 
                         List execCommands = new LinkedList();
 
                         int index = 0;
                         if (compile) {
                             String compileOptions = options
-                                     .compileOptions.getExpression();
+                                .compileOptions.getExpression();
 			    execCommands.add(
                                     "javac "
                                     + compileOptions
@@ -348,9 +348,9 @@ public class GeneratorTableau extends Tableau {
                         }
                         if (run) {
                             String runOptions = options
-                                     .runOptions.getExpression();
+                                .runOptions.getExpression();
                             String className = options
-                                     .packageName.getExpression();
+                                .packageName.getExpression();
                             if (className.length() > 0
                                     && ! className.endsWith(".") ) {
                                 className = className + '.' + model.getName();
@@ -358,12 +358,12 @@ public class GeneratorTableau extends Tableau {
                                 className = model.getName();
                             }
 			    execCommands.add(
-                                     "java "
-                                     + runOptions
-                                     + " "
-                                     + "ptolemy.actor.gui.CompositeActorApplication "
-                                     + "-class "
-                                     + className);
+                                    "java "
+                                    + runOptions
+                                    + " "
+                                    + "ptolemy.actor.gui.CompositeActorApplication "
+                                    + "-class "
+                                    + className);
                         }
                         if(execCommands.size() > 0) {
 			    text.setText("");
@@ -491,11 +491,11 @@ public class GeneratorTableau extends Tableau {
                         public void run() {
                             try {
                                 InputStream errorStream =
-				        _process.getErrorStream();
+                                    _process.getErrorStream();
                                 BufferedReader reader =
-                                         new
-                                         BufferedReader(new
-                                         InputStreamReader(errorStream));
+                                    new
+                                    BufferedReader(new
+                                            InputStreamReader(errorStream));
                                 String line;
                                 while((line = reader.readLine()) != null) {
                                     _text.append(line + '\n');
@@ -504,9 +504,9 @@ public class GeneratorTableau extends Tableau {
 
                                 errorStream = _process.getInputStream();
                                 reader =
-				        new
-                                        BufferedReader(new
-                                        InputStreamReader(errorStream));
+                                    new
+                                    BufferedReader(new
+                                            InputStreamReader(errorStream));
 			        while((line = reader.readLine()) != null) {
                                     _text.append(line);
                                 }

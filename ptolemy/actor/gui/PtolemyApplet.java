@@ -114,7 +114,7 @@ controlling the background color.
 @version $Id$
 */
 public class PtolemyApplet extends BasicJApplet
-        implements ExecutionListener {
+    implements ExecutionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -152,9 +152,9 @@ public class PtolemyApplet extends BasicJApplet
     public String getAppletInfo() {
         return "Ptolemy applet for Ptolemy II "
 	    + PtolemyApplication.RELEASE_VERSION
-            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
-            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
-	    + "\n(Build: $Id$)";
+                + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+                + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
+                + "\n(Build: $Id$)";
     }
 
     /** Describe the applet parameters.
@@ -164,7 +164,7 @@ public class PtolemyApplet extends BasicJApplet
         String newinfo[][] = {
             {"modelClass", "", "Classname for an instance of NamedObj"},
             {"orientation", "",
-                     "Orientation: vertical, horixontal, or controls_only"},
+             "Orientation: vertical, horixontal, or controls_only"},
             {"controls", "", "List of on-screen controls"},
         };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
@@ -381,7 +381,7 @@ public class PtolemyApplet extends BasicJApplet
         }
 
         ModelPane pane = new ModelPane(((CompositeActor)_toplevel),
-                 orientation, controls);
+                orientation, controls);
         pane.setBackground(null);
         getContentPane().add(pane);
     }

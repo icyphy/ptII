@@ -159,7 +159,7 @@ public class TextEditorTableau extends Tableau {
                 // See whether it contains an instance of TextEffigy
                 // named "textEffigy", and if it does return that instance.
                 Iterator effigies = effigy
-                        .entityList(TextEffigy.class).iterator();
+                    .entityList(TextEffigy.class).iterator();
                 while (effigies.hasNext()) {
                     TextEffigy textEffigy = (TextEffigy)effigies.next();
                     if (textEffigy.getName().equals("textEffigy")) {
@@ -178,9 +178,9 @@ public class TextEditorTableau extends Tableau {
                     // sense for the Effigy base class to have a method
                     // that gives a textual description of the data?
                     String moml = ((PtolemyEffigy)effigy)
-                            .getModel().exportMoML();
+                        .getModel().exportMoML();
                     textEffigy =
-                            TextEffigy.newTextEffigy(effigy, moml);
+                        TextEffigy.newTextEffigy(effigy, moml);
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.
                     // But this requires having an "apply" button.
@@ -188,11 +188,11 @@ public class TextEditorTableau extends Tableau {
                     textEffigy.setName("textEffigy");
                 } else {
                     textEffigy =
-                            TextEffigy.newTextEffigy(effigy, url, url);
+                        TextEffigy.newTextEffigy(effigy, url, url);
                     textEffigy.setName("textEffigy");
                 }
                 TextEditorTableau textTableau =
-                        (TextEditorTableau)createTableau(textEffigy);
+                    (TextEditorTableau)createTableau(textEffigy);
                 if (url != null) {
                     textEffigy.identifier.setExpression(
                             url.toExternalForm());

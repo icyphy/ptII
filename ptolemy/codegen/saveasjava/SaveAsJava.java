@@ -75,64 +75,64 @@ class SaveAsJava {
         // Check that the argument is a composite entity.
         if (!(toplevel instanceof CompositeEntity)) {
             throw new IllegalActionException(toplevel,
-            "SavaAsJava feature only operates on composite entities");
+                    "SavaAsJava feature only operates on composite entities");
         }
         compositeModel = (CompositeEntity)toplevel;
 
         // Generate class header output
         String sanitizedName = _name(compositeModel);
         code += "public class "
-                + sanitizedName
-                + " extends "
+            + sanitizedName
+            + " extends "
                 + _getClassName(compositeModel)
-                + " {\n\n" + _indent(1)
-                + "public " + sanitizedName
-                + "(Workspace w) throws"
-                + " IllegalActionException {\n" + _indent(2)
-                + "super(w);\n\n" + _indent(2) + "try {\n";
+                    + " {\n\n" + _indent(1)
+                    + "public " + sanitizedName
+                    + "(Workspace w) throws"
+                    + " IllegalActionException {\n" + _indent(2)
+                    + "super(w);\n\n" + _indent(2) + "try {\n";
 
-        // When exporting MoML, we want to identify the class
-        // as the parent class rather than this class so that this class
-        // need not be present to instantiate the model.
-        code += _indent(2)
-                + "getMoMLInfo().className = \""
-                + _getClassName(compositeModel)
-                + "\";\n";
+                // When exporting MoML, we want to identify the class
+                // as the parent class rather than this class so that this class
+                // need not be present to instantiate the model.
+                code += _indent(2)
+                    + "getMoMLInfo().className = \""
+                    + _getClassName(compositeModel)
+                        + "\";\n";
 
-        // Generate attributes.
-        code += _generateAttributes(compositeModel);
+                    // Generate attributes.
+                    code += _generateAttributes(compositeModel);
 
-        // Generate code to instantiate and connect the system components
-        code += _generateComponents(compositeModel);
+                    // Generate code to instantiate and connect the system components
+                    code += _generateComponents(compositeModel);
 
-        // Generate trailer code for the composite actor constructor
-        code +=
-        _indent(2) + "} catch (NameDuplicationException e) {\n" +
-        _indent(3) + "throw new RuntimeException(e.toString());\n" +
-        _indent(2) + "}\n" +
-        _indent(1) + "}\n" +
-        "}\n";
+                    // Generate trailer code for the composite actor constructor
+                    code +=
+                        _indent(2) + "} catch (NameDuplicationException e) {\n" +
+                        _indent(3) + "throw new RuntimeException(e.toString());\n" +
+                        _indent(2) + "}\n" +
+                        _indent(1) + "}\n" +
+                        "}\n";
 
-        // Generate statements for importing classes.
-        _insertIfUnique("ptolemy.kernel.util.Workspace", _importList);
-        _insertIfUnique("ptolemy.kernel.util.IllegalActionException",
-                        _importList);
-        _insertIfUnique("ptolemy.kernel.util.NameDuplicationException",
-                        _importList);
-        try {
-            Iterator iter = _importList.iterator();
-            while (iter.hasNext()) {
-                String p = (String)(iter.next());
-                importCode += "import " + p + ";\n";
-            }
-            code = importCode + "\n" + code;
-        } catch (Exception ex) {
-           throw new IllegalActionException(ex.getMessage()
-           + "Exception raised while creating the import list '"
-           + importCode + "'.\n");
-        }
+                    // Generate statements for importing classes.
+                    _insertIfUnique("ptolemy.kernel.util.Workspace", _importList);
+                    _insertIfUnique("ptolemy.kernel.util.IllegalActionException",
+                            _importList);
+                    _insertIfUnique("ptolemy.kernel.util.NameDuplicationException",
+                            _importList);
+                    try {
+                        Iterator iter = _importList.iterator();
+                        while (iter.hasNext()) {
+                            String p = (String)(iter.next());
+                            importCode += "import " + p + ";\n";
+                        }
+                        code = importCode + "\n" + code;
+                    } catch (Exception ex) {
+                        throw new IllegalActionException(ex.getMessage()
+                                + "Exception raised while creating the import list '"
+                                + importCode + "'.\n");
+                    }
 
-        return code;
+                    return code;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -229,88 +229,88 @@ class SaveAsJava {
         String nameAsContainer;
 
         if ((container=((CompositeEntity)(model.getContainer()))) != null) {
-             if (container.getContainer()==null) containerName = "this";
-             else containerName = _name(container);
-             nameAsContainer = sanitizedName;
-             code += _indent(3)
-                     + className
-                     + " "
-                     + sanitizedName
-                     + " = new "
-                     + className
-                     + "("
-                     + containerName
-                     + ", \""
-                     + sanitizedName
-                     + "\");\n";
-             code += _generatePorts(model);
-             code += _generateAttributes(model);
+            if (container.getContainer()==null) containerName = "this";
+            else containerName = _name(container);
+            nameAsContainer = sanitizedName;
+            code += _indent(3)
+                + className
+                + " "
+                    + sanitizedName
+                    + " = new "
+                        + className
+                        + "("
+                            + containerName
+                            + ", \""
+                                + sanitizedName
+                                + "\");\n";
+                                code += _generatePorts(model);
+                                code += _generateAttributes(model);
         }
         else nameAsContainer = "this";
 
         if (!model.isAtomic()) {
 
-             // Instantiate the actors inside the composite actor
-             Iterator components = ((CompositeEntity)model)
-                     .entityList().iterator();
-             while (components.hasNext()) {
-                 code += _generateComponents((ComponentEntity)
-                         (components.next()));
-             }
+            // Instantiate the actors inside the composite actor
+            Iterator components = ((CompositeEntity)model)
+                .entityList().iterator();
+            while (components.hasNext()) {
+                code += _generateComponents((ComponentEntity)
+                        (components.next()));
+            }
 
-             // Instantiate the connections between actors
-             Iterator relations = ((CompositeEntity)model)
-                    .relationList().iterator();
-             while (relations.hasNext()) {
-                 Relation relation = (Relation)(relations.next());
-                 Iterator ports = relation.linkedPortList().iterator();
+            // Instantiate the connections between actors
+            Iterator relations = ((CompositeEntity)model)
+                .relationList().iterator();
+            while (relations.hasNext()) {
+                Relation relation = (Relation)(relations.next());
+                Iterator ports = relation.linkedPortList().iterator();
 
-                 String relationAttributes = _generateAttributes(relation);
+                String relationAttributes = _generateAttributes(relation);
 
-                 // We adopt the convention of using the "connect"
-                 // method for relations that are incident to exactly
-                 // two links, and that have no attributes for which
-                 // code needs to be generated.
-                 if ((relation.numLinks() == 2) &&
-                         (relationAttributes.length() == 0)) {
-                     Port port1 = (Port) ports.next();
-                     Port port2 = (Port) ports.next();
-                     code += _indent(3);
-                     if (container!=null) code += sanitizedName + ".";
-                     code += "connect ("
-                             + _name(port1)
-                             + ", "
-                             + _name(port2)
-                             + ");\n";
-                 }
-                 // Explicitly instantiate the relation,
-                 // generate code to set relevant attributes of the
-                 // relation, and generate
-                 // a link() call for each port associated with the relation.
-                 else {
-                     String relationClassName = _getClassName(relation);
-                     code += _indent(3)
-                             + relationClassName
-                             + " "
-                             + _name(relation);
-                     code += " = new "
-                             + relationClassName
-                             + "("
-                             + nameAsContainer;
-                     code += ", \""
-                             + _name(relation)
-                             + "\");\n";
-                     code += relationAttributes;
-                     while (ports.hasNext()) {
-                         Port p = (Port)ports.next();
-                         code += _indent(3)
-                                 + _name(p)
-                                 + ".link("
-                                 + _name(relation)
-                                 + ");\n";
-                     }
-                 }
-             }
+                // We adopt the convention of using the "connect"
+                // method for relations that are incident to exactly
+                // two links, and that have no attributes for which
+                // code needs to be generated.
+                if ((relation.numLinks() == 2) &&
+                        (relationAttributes.length() == 0)) {
+                    Port port1 = (Port) ports.next();
+                    Port port2 = (Port) ports.next();
+                    code += _indent(3);
+                    if (container!=null) code += sanitizedName + ".";
+                    code += "connect ("
+                        + _name(port1)
+                            + ", "
+                            + _name(port2)
+                                + ");\n";
+                }
+                // Explicitly instantiate the relation,
+                // generate code to set relevant attributes of the
+                // relation, and generate
+                // a link() call for each port associated with the relation.
+                else {
+                    String relationClassName = _getClassName(relation);
+                    code += _indent(3)
+                        + relationClassName
+                        + " "
+                            + _name(relation);
+                            code += " = new "
+                                + relationClassName
+                                + "("
+                                    + nameAsContainer;
+                                code += ", \""
+                                    + _name(relation)
+                                        + "\");\n";
+                                    code += relationAttributes;
+                                    while (ports.hasNext()) {
+                                        Port p = (Port)ports.next();
+                                        code += _indent(3)
+                                            + _name(p)
+                                                + ".link("
+                                                + _name(relation)
+                                                    + ");\n";
+                                    }
+                }
+            }
 
         }
 
@@ -384,10 +384,10 @@ class SaveAsJava {
     //  Insert the specified name into the specified list
     //  if the name does not already exist in the list.
     private void _insertIfUnique(String name, LinkedList list)
-      throws IndexOutOfBoundsException {
-       if (!list.contains(name)) {
-         list.add(0, name);
-       }
+            throws IndexOutOfBoundsException {
+        if (!list.contains(name)) {
+            list.add(0, name);
+        }
     }
 
     // Return a string that generates an indentation string (a sequence
@@ -407,10 +407,10 @@ class SaveAsJava {
     // imported in the generated Java code, insert the class name
     // (fully qualified) into this list.
     private String _getClassName(NamedObj object) {
-            String clfullname = object.getClass().getName();
-            String className = _extractSuffix(clfullname);
-            _insertIfUnique(clfullname, _importList);
-            return className;
+        String clfullname = object.getClass().getName();
+        String className = _extractSuffix(clfullname);
+        _insertIfUnique(clfullname, _importList);
+        return className;
     }
 
     // Return TRUE if and only if <obj> is a accessible as

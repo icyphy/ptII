@@ -132,7 +132,7 @@ public class BusContentionApplet extends PtolemyApplet {
         _processActor3 = new Processor( toplevel, "proc3", 3 );
 
         TypedIORelation inReqs, outReqs,
-                reads, writes, outContends, inContends;
+            reads, writes, outContends, inContends;
 
 	// Set up connections
         inReqs = (TypedIORelation)toplevel.connect(

@@ -152,7 +152,7 @@ public class DiscreteRandomSource extends RandomSource {
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         DiscreteRandomSource newObject =
-	        (DiscreteRandomSource)super.clone(workspace);
+            (DiscreteRandomSource)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);

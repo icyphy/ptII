@@ -273,7 +273,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 // is already where want it).
                 try {
                     int lineOffset = textArea
-                            .getLineStartOffset(textArea.getLineCount() - 1);
+                        .getLineStartOffset(textArea.getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar

@@ -189,24 +189,24 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         GeneratorTableauAttribute newObject = (GeneratorTableauAttribute)
-                 super.clone(workspace);
+            super.clone(workspace);
 
         newObject.compile = (Parameter)
-                 newObject.getAttribute("compile");
+            newObject.getAttribute("compile");
         newObject.compileOptions = (StringAttribute)
-                 newObject.getAttribute("compileOptions");
+            newObject.getAttribute("compileOptions");
         newObject.deep = (Parameter)
-                 newObject.getAttribute("deep");
+            newObject.getAttribute("deep");
         newObject.directory = (StringAttribute)
-                 newObject.getAttribute("directory");
+            newObject.getAttribute("directory");
         newObject.packageName = (StringAttribute)
-                 newObject.getAttribute("packageName");
+            newObject.getAttribute("packageName");
         newObject.run = (Parameter)
-                 newObject.getAttribute("run");
+            newObject.getAttribute("run");
         newObject.runOptions = (StringAttribute)
-                 newObject.getAttribute("runOptions");
+            newObject.getAttribute("runOptions");
         newObject.show = (Parameter)
-                 newObject.getAttribute("show");
+            newObject.getAttribute("show");
         return newObject;
     }
 }

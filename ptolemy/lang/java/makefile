@@ -172,6 +172,12 @@ analysis:
 	CLASSPATH="$(CLASSPATH)" \
 	 "$(JAVA)" ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
+analysis2:
+	@echo "Perform static semantic analysis"
+	@echo " (You can ignore ambiguous reference warnings)"
+	CLASSPATH="$(CLASSPATH)" \
+	 "$(JAVA)" ptolemy.lang.java.Main $(ROOT)/ptolemy/actor/lib/DiscreteRandomSource.java
+
 codegen: generate_codegen compile_codegen run_codegen
 generate_codegen:
 	CLASSPATH="$(CLASSPATH)" \

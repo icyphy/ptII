@@ -179,7 +179,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		argTypes[i] = argValues[i].getClass();
 	    } else if (child instanceof BooleanToken) {
 		argValues[i] =
-		        new Boolean(((BooleanToken)child).booleanValue());
+                    new Boolean(((BooleanToken)child).booleanValue());
 		argTypes[i] = Boolean.TYPE;
 	    } else if (child instanceof ComplexToken) {
 		argValues[i] = ((ComplexToken)child).complexValue();

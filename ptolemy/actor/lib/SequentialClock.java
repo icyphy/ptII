@@ -140,7 +140,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      */
     public TypedIOPort output = null;
 
-   /** The offsets at which the specified values will be produced.
+    /** The offsets at which the specified values will be produced.
      *  This parameter must contain a DoubleMatrixToken.
      */
     public Parameter offsets;

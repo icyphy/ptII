@@ -79,9 +79,9 @@ public class Synchronizer extends Transformer {
     /** Consume exactly one token from each input channel and output
      *  the tokens on the corresponding output channels.
      *  @exception IllegalActionException If there is no director or
-         if the number of input channels does not equal the number of
-         output channels.
-     */
+     if the number of input channels does not equal the number of
+     output channels.
+    */
     public void fire() throws IllegalActionException {
         int outWidth = output.getWidth();
         int inWidth = input.getWidth();

@@ -138,14 +138,14 @@ public class IIR extends Transformer {
             _numerator = new double[numeratorValue.length()];
             for (int i = 0; i < numeratorValue.length(); i++) {
                 _numerator[i] = ((DoubleToken)numeratorValue.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
             }
 	} else if (attribute == denominator) {
             ArrayToken denominatorValue = (ArrayToken)denominator.getToken();
             _denominator = new double[denominatorValue.length()];
             for (int i = 0; i < denominatorValue.length(); i++) {
                 _denominator[i] = ((DoubleToken)denominatorValue.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
             }
 
 	    // Note: a<sub>0</sub> must always be 1.

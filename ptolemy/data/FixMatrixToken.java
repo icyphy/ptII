@@ -85,8 +85,8 @@ public class FixMatrixToken extends MatrixToken {
                 Precision precision = value[i][j].getPrecision();
                 if (_precision != null && !_precision.equals(precision)) {
                     throw new IllegalActionException(
-                        "Attempt to create a FixMatrixToken"
-                        + " with unequal precisions.");
+                            "Attempt to create a FixMatrixToken"
+                            + " with unequal precisions.");
                 }
                 _precision = precision;
 	    }

@@ -121,7 +121,7 @@ public class MoMLApplet extends PtolemyApplet {
     public String getAppletInfo() {
 	// Include the release and build number to aid in user support.
 	String version = new String("Ptolemy II "
-				    + PtolemyApplication.RELEASE_VERSION);
+                + PtolemyApplication.RELEASE_VERSION);
 	String build = new String("\n(Build: $Id$)");
         if (_toplevel != null) {
             String tip = Documentation.consolidate(_toplevel);

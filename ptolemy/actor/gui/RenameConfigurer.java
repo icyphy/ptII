@@ -51,7 +51,7 @@ This class is an editor widget to rename an object.
 */
 
 public class RenameConfigurer extends Query
-        implements ChangeListener, QueryListener {
+    implements ChangeListener, QueryListener {
 
     /** Construct a rename configurer for the specified entity.
      *  @param object The entity to configure.
