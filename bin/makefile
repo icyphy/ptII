@@ -50,6 +50,7 @@ SHELL_FILES = \
 	jode \
 	mescal \
 	moml \
+	obfuscate \
 	ptexecute \
 	ptinvoke \
 	ptjacl \
@@ -101,11 +102,11 @@ all: ptinvoke
 	ln -s ptinvoke decompile
 	rm -f jode
 	ln -s ptinvoke jode
-	rm -f obfuscate
-	ln -s ptinvoke obfuscate
 	rm -f mescal
 	ln -s ptinvoke mescal
 	rm -f moml
+	rm -f obfuscate
+	ln -s ptinvoke obfuscate
 	ln -s ptinvoke moml
 	rm -f ptexecute
 	ln -s ptinvoke ptexecute
