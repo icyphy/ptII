@@ -1,0 +1,208 @@
+<!-- $Id -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
+<title>Debugging Ptolemy II Actors</title>
+</head>
+<body>
+<H1>Debugging Ptolemy II Actors</H1>
+This page discusses debugging Ptolemy II actors using GNU Emacs and jdb.
+ <p>Zoltan Kemenczy of Research In Motion Ltd. contributed changes
+to <CODE>$PTII/bin/ptinvoke.in</CODE> that use
+<a href="../../util/lisp/gud.el"><CODE>$PTII/util/lisp/gud.el</CODE></a>
+to provide source level debugging of Ptolemy II.
+ <p>Christopher Hylands modified Zoltan's original notes. 
+
+<menu>
+<li> <a href="Emacs">Emacs</a>
+<li> <a href="SettingUpEmacs">Setting up Emacs</a>
+</menu>
+
+
+<h2><a name="Emacs">Emacs</a></h2>
+
+The <CODE>gud.el</CODE> file included in Ptolemy II
+will not work with Emacs-20.7.1 because <CODE>M-x jdb</CODE>
+results in:
+<pre>
+Symbol's function definition is void: easy-mmode-define-keymap
+</pre>
+We have tested the interface under Emacs-20.2.1
+
+<pre>
+
+</pre>
+Below are the steps necessary to install Emacs under Windows.
+<ol>
+<li> 
+Emacs for Windows can be found at
+<a href="ftp://ftp.gnu.org/gnu/windows/emacs/latest"><CODE>ftp://ftp.gnu.org/gnu/windows/emacs/latest</CODE></a>
+ <p>The file to download is<CODE>emacs-<I>xx.x</I>-bin-i386.tar.gz</CODE>
+
+<li> Untar or unzip the file in <CODE>c:\Program Files</CODE> so
+that <CODE>c:\Program Files\emacs-<I>xx.xx</I></CODE> is created
+
+<li> The <CODE>c:\Program Files\emacs-<I>xx.xx</I>\README.W32</CODE> file
+says:
+<BLOCKQUOTE>
+To install Emacs, simply unpack all the files into a directory of your
+  choice, but note that you might encounter minor problems if there is a
+  space anywhere in the directory name.  To complete the installation
+  process, you can optionally run the program addpm.exe in the bin
+  subdirectory.  This will add some entries to the registry that tell
+  Emacs where to find its support files, and put an icon for Emacs in
+  the Start Menu under "Start -&gt; Programs -&gt; Gnu Emacs -&gt; Emacs".
+</BLOCKQUOTE>
+
+</ol>
+
+ <p>The GNU Emacs FAQ For Windows 95/98/ME/NT/XP and 2000 can be found
+at<a href="http://www.gnu.org/software/emacs/windows/ntemacs.html"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a>
+
+<h2><a name="SettingUpEmacs">Setting up Emacs</a></h2>
+Emacs reads the file <CODE>$HOME/.emacs</CODE> at start up time.
+
+ <p>Under Windows 2000, you set the environment variables via
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>
+ <p>The <CODE>HOME</CODE> variable name your home directory using
+the DOS drive name with backslashes.  For example, if your
+home directory is in <CODE>c:\users\yourname</CODE>, then you would
+enter the value <CODE>c:\users\yourname</CODE>
+
+ <p>While you are editing environment variables, be sure that
+<CODE>$PTII</CODE> is set.  For details, see
+<a href="install.htm#settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
+
+ <p>The GNU Emacs FAQ For Windows 95/98/ME/NT/XP and 2000
+at <a href="http://www.gnu.org/software/emacs/windows/ntemacs.html"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a> discusses
+the <CODE>.emacs</CODE> file further.
+
+ <p>To debug Ptolemy II, Emacs needs to be told where to find the
+gud.el file.  Start up Emacs by using
+Start -&gt; Programs -&gt; Gnu Emacs -&gt; Emacs
+and add the following to your <CODE>$HOME/.emacs</CODE> file.
+
+<pre>
+(setq load-path (append
+                 (list
+                  (expand-file-name 
+		   (concat (getenv "PTII") "/util/lisp")))
+                 load-path
+                 ))
+</pre>
+A more complete example <CODE>.emacs</CODE> file can be found at
+<a href="../../util/lisp/ptemacs.el"><CODE>$PTII/util/lisp/emacs.el</CODE></a>
+If you wish, you can copy this file to your <CODE>$HOME/.emacs</CODE>
+file.  This file includes support for
+<dl>
+<dt> <CODE>M-x shell</CODE>
+<dd> Brings up a bash shell
+
+<dt> (TODO) Java indentation
+<dd> Java indentation that follows the
+<a href="style.htm">Ptolemy II Style guid</a>
+
+</dl>
+
+<h2><a name="InvokingTheDebugger">Invoking the debugger</a></h2>
+
+
+There are four new proposed options to any of the (symbolic link) aliases to
+ptinvoke:
+
+<dl>
+<dt> <CODE>-debug</CODE>
+<dd> This starts the java VM in a mode that allows debugger
+connections. The nice thing is that you can run e.g. vergil, load
+models, run without a debugger until you encounter a problem
+(exception :-). Then you attach jdb to your vergil process, set to
+catch the exception and re-run... The exception is now caught by jdb
+in Emacs with all the source files and call stack available for
+examination.
+
+ <p>Notes: 
+<ol>
+<li> vergil runs a bit slower with this option.
+
+<li> I have only tested the JVM attach on Windows with shared memory attaches
+(I would have preferred the socket approach but Sun didn't do it on
+Windows...)  Someone should try the socket connection method on
+Solaris/Linux and update ptinvoke to select based on the system type...
+</ol>
+
+<dt> <CODE>-jdb</CODE>
+<dd> This starts using jdb instead of java to allow debugger control right from
+the start. Typically you provide this option in response to Emacs' M-x jdb
+prompt Run jdb (like this):
+<pre>
+ptolemy -jdb .../my.xml
+</pre>
+
+
+<dt> <CODE>-q</CODE>
+<dd> for "quiet" - it is not really a debug option, but eliminates the echo of
+the command line constructed by ptinvoke to start java.
+
+<dt> <CODE>-profiler</CODE>
+<dd> has the java profiler startup options canned (these could be passed using
+JAVAFLAGS, but then you have to remember and set/type them every time). Very
+useful to find out where ptolemy is spending most of the CPU time...
+
+</dl>
+
+<h2>Emacs GUD updates</h2>
+
+ <p>These have already been submitted to Richard Stallman and incorporated into
+the www.gnu.org Emacs CVS, but there are not yet in 21.2
+
+ <p>The following is a useful addition to a user's .emacs file (for the Windows
+shared memory attach)
+(setq gud-jdb-command-name "jdb -attach javadebug")
+
+ <p>The documentation of changes is in the gud-jdb-use-classpath and
+gud-jdb-classpath (and other gud-jdb-xxx) variables. The new method of
+finding java source files through the classpath of the JVM is automatically
+enabled so no special setup is needed.  Just start your vergil from an Emacs
+shell like:
+
+<pre>
+vergil -debug &
+</pre>
+
+
+and then when you'd like to debug (e.g set breakpoints or catch exceptions),
+start jdb from Emacs by:
+
+<pre>
+M-x jdb
+</pre>
+
+followed by:
+
+<pre>
+jdb -attach javadebug
+</pre>
+
+
+if you're on windows (on Unix "javadebug" would be replaced by the JVM debug
+server socket port number). To start vergil or ptolemy (or other) with jdb
+instead of java, enter
+
+<pre>
+ptolemy -jdb ...
+</pre>
+
+instead.
+
+If you then switch to a java source (that is in the classpath and/or
+sourcepath) and do C-x SPC, a breakpoint will be set... Most of the standard
+gud-style commands are supported (check out the "GUD" menu in the *gud-..*
+buffer)
+
+
+</body>
+</html>
