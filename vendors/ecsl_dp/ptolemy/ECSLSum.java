@@ -30,7 +30,7 @@ package vendors.ecsl_dp.ptolemy;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
@@ -42,16 +42,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Sum
 /**
-   A polymorphic adder/subtractor for use with ECSL.
+   A polymorphic adder/subtractor for use with ECSL.  This adder has
+   one input multiport and one output port that is not a multiport.
+   The types on the input port and the output port default to double.
+   Data that arrives on the input port is added or subtracted to
+   depending on the value of the <i>Inputs</i> parameter.  For
+   example, if the <i>Inputs</i> parameter is "|+-", then the first
+   input port will be added and the second input port will be
+   subtracted.
 
-   @author Christopher Brooks.
+   @author Christopher Brooks, Based on AddSubtract by Yuhong Xiong and Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
 
-public class ECSLSum extends AddSubtract {
+public class ECSLSum extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -65,16 +72,15 @@ public class ECSLSum extends AddSubtract {
     public ECSLSum(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-
         input.setTypeEquals(BaseType.DOUBLE);
+
         output.setMultiport(true);
         output.setTypeEquals(BaseType.DOUBLE);
 
         // FIXME: hide minus and plus ports
-        plus.setTypeEquals(BaseType.DOUBLE);
-        minus.setTypeEquals(BaseType.DOUBLE);
+        //plus.setTypeEquals(BaseType.DOUBLE);
+        //minus.setTypeEquals(BaseType.DOUBLE);
 
         Inputs = new StringParameter(this, "Inputs");
 
@@ -90,9 +96,6 @@ public class ECSLSum extends AddSubtract {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The input port. */
-    public TypedIOPort input;
 
     /** The string that describes which ports are connected to
      *  plus and which are connected to minus.  "|+-" means the
@@ -110,35 +113,72 @@ public class ECSLSum extends AddSubtract {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in the value of an attribute.
-     *  @param attribute The attribute whose type changed.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == Inputs) {
-            if (!Inputs.getExpression().equals("|+-")) {
-                throw new IllegalActionException("Sorry, Inputs parameter must"
-                        + " be set to \"|+-\", instead it was set to \"" 
-                        + Inputs.getExpression() + "\".");
-            }
-        } else if (attribute == IconShape) {
-            // Ignored
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
-    /** FIXME
+    /** Read token(s) from the input port and add or subtract them
+     *  depending on the value the <i>Inputs</i> parameter.
+     *
      *  @exception IllegalActionException If there is no director,
      *   or if addition and subtraction are not supported by the
-     *   available tokens.
+     *   available tokens or if the output is a multiport.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (output.getWidth() > 1) {
             throw new IllegalActionException("Output widths greater than "
                     + "1 not yet supported");
         }
-        super.fire();
+
+        Token sum = null;
+        String inputsValue = Inputs.getExpression();
+
+        // We stop looping when we run out of characters in the
+        // InputValue parameter or when we run out of multiports
+        // FIXME: should we throw an exception if there are more or less
+        // + or - characters than there are multiports?
+
+        for (int valueIndex = 0, multiportIndex = 0;
+             (valueIndex < inputsValue.length()
+                     && multiportIndex < input.getWidth());
+             valueIndex++) {
+            char plusOrMinus = inputsValue.charAt(valueIndex);
+            switch (plusOrMinus) {
+            case '|':
+                // FIXME: The '|' is ignored
+                break;
+            case '+':
+                // This if clause is taken from AddSubtract
+                System.out.println(getName() + ": got + " + valueIndex + " " + multiportIndex);
+                if (input.hasToken(multiportIndex)) {
+                    if (sum == null) {
+                        sum = input.get(multiportIndex);
+                    } else {
+                        sum = sum.add(input.get(multiportIndex));
+                    }
+                }
+                multiportIndex++;
+                break;
+            case '-':
+                System.out.println(getName() + ": got - " + valueIndex + " " + multiportIndex);
+                // This if clause is taken from AddSubtract
+                if (input.hasToken(multiportIndex)) {
+                    Token in = input.get(multiportIndex);
+                    if (sum == null) {
+                        sum = in.zero();
+                    }
+                    sum = sum.subtract(in);
+                }
+                multiportIndex++;
+                break;
+            default:
+                throw new IllegalActionException(this, "The value of the "
+                        + " Input parameter is \"" + inputsValue
+                        + "\" which contains a character '"
+                        + plusOrMinus + "', which is not understood. "
+                        + "Only '|', '+' and '-' are permitted");
+            }
+        }
+
+        if (sum != null) {
+            output.send(0, sum);
+        }
     }
 }
