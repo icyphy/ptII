@@ -78,7 +78,10 @@ public class Compose {
         automaton2.addPorts();
 
 	InterfaceAutomaton composition = automaton1.compose(automaton2);
-	System.out.println(composition.exportMoML());
+
+System.out.println("after compose.");
+
+//	System.out.println(composition.exportMoML());
     }
 
     /** Pass the command line argument to the constructor.

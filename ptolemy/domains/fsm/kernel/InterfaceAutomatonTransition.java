@@ -91,7 +91,7 @@ public class InterfaceAutomatonTransition extends Transition {
      */
     public InterfaceAutomatonTransition(InterfaceAutomaton container,
                                         String name)
-	    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
         label = new StringAttribute(this, "label");
@@ -100,7 +100,7 @@ public class InterfaceAutomatonTransition extends Transition {
         preemptive.setVisibility(Settable.NONE);
         reset.setVisibility(Settable.NONE);
         guardExpression.setVisibility(Settable.NONE);
-	triggerExpression.setVisibility(Settable.NONE);
+        triggerExpression.setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,43 +122,47 @@ public class InterfaceAutomatonTransition extends Transition {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
      *   attributeChanged() method, or the changed attribute is 
-     *   <i>label</i> and it does not ends with "?" or "!" or ";",
-     *   or the parameter for the internal transition cannot be created
-     *   due to name duplication.
+     *   <i>label</i> and it does not ends with "?" or "!" or ";".
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == label) {
-	    String labelString = label.getExpression();
-	    String name = labelString.substring(0, labelString.length()-1);
+            String labelString = label.getExpression();
+            String name = labelString.substring(0, labelString.length()-1);
             if (labelString.endsWith("?")) {
-	        setGuardExpression(name + "_isPresent");
-		outputActions.setExpression("");
-	    } else if (labelString.endsWith("!")) {
-	        setGuardExpression("true");
-		outputActions.setExpression(name + "=true");
-	    } else if (labelString.endsWith(";")) {
-	        // create parameter. Note that if this transition is removed,
-		// or changed to an input or output transition, the parameter
-		// is still in the Interface Automaton.
-		try {
-		    Parameter param = new Parameter((NamedObj)getContainer(),
-		                                    name);
-		} catch (NameDuplicationException exception) {
-		    throw new IllegalActionException(
-		        "InterfaceAutomatonTransition.attributeChanged: "
-			+ "Cannot create Parameter for internal transition: "
-			+ exception.getMessage());
-		}
-		setGuardExpression("true");
+                setGuardExpression(name + "_isPresent");
+                outputActions.setExpression("");
+            } else if (labelString.endsWith("!")) {
+                setGuardExpression("true");
                 outputActions.setExpression(name + "=true");
-	    } else {
-	        throw new IllegalActionException(
-	            "InterfaceAutomatonTransition.attributeChanged: "
-		        + "The argument " + label + " does not end with ? "
-			+ "or ! or ;");
-	    }
+            } else if (labelString.endsWith(";")) {
+                // create a parameter if it is not created yet.
+                // Note that if this transition is removed, or changed to
+                // an input or output transition, the parameter is still
+                // in the Interface Automaton.
+                InterfaceAutomaton container =
+                        (InterfaceAutomaton)getContainer();
+                if (container.getAttribute(name) == null) {
+                    try {
+                        Parameter param = new Parameter(container, name);
+                    } catch (NameDuplicationException exception) {
+                        // should not happen
+                        throw new InternalErrorException(
+                            "InterfaceAutomatonTransition.attributeChanged:\n"
+                            + "Cannot create Parameter for internal "
+                            + "transition:\n"
+                            + exception.getMessage());
+                    }
+                }
+                setGuardExpression("true");
+                outputActions.setExpression(name + "=true");
+            } else {
+                throw new IllegalActionException(
+                    "InterfaceAutomatonTransition.attributeChanged: "
+                        + "The argument " + label + " does not end with ? "
+                        + "or ! or ;");
+            }
         }
     }
 
@@ -181,15 +185,15 @@ public class InterfaceAutomatonTransition extends Transition {
     public int getType() {
         String labelString = label.getExpression();
         if (labelString.endsWith("?")) {
-	    return INPUT_TRANSITION;
-	} else if (labelString.endsWith("!")) {
-	    return OUTPUT_TRANSITION;
-	} else if (labelString.endsWith(";")) {
-	    return INTERNAL_TRANSITION;
-	} else {
-	    throw new InternalErrorException(
-	            "InterfaceAutomatonTransition.getType: "
-		    + "The label does not end with ? or ! or ;");
+            return INPUT_TRANSITION;
+        } else if (labelString.endsWith("!")) {
+            return OUTPUT_TRANSITION;
+        } else if (labelString.endsWith(";")) {
+            return INTERNAL_TRANSITION;
+        } else {
+            throw new InternalErrorException(
+                    "InterfaceAutomatonTransition.getType: "
+                    + "The label does not end with ? or ! or ;");
         }
     }
 
@@ -212,7 +216,7 @@ public class InterfaceAutomatonTransition extends Transition {
                 (container != null)) {
             throw new IllegalActionException(container, this,
                     "Transition can only be contained by instances of "
-		    + "InterfaceAutomaton.");
+                    + "InterfaceAutomaton.");
         }
         super.setContainer(container);
     }
@@ -224,9 +228,9 @@ public class InterfaceAutomatonTransition extends Transition {
      */
     public void setTriggerExpression(String expression) {
         throw new UnsupportedOperationException(
-	        "InterfaceAutomatonTransition.setTriggerExpression: "
-	        + "The trigger expression is not used in InterfaceAutomaton, "
-		+ "so this method should not be called.");
+                "InterfaceAutomatonTransition.setTriggerExpression: "
+                + "The trigger expression is not used in InterfaceAutomaton, "
+                + "so this method should not be called.");
     }
 
     ///////////////////////////////////////////////////////////////////
