@@ -44,7 +44,7 @@ set exec [java::new ptolemy.actor.Director]
 $sys setExecutiveDirector $exec
 
 # Set the stop time
-$dir setStopTime 20.0
+$dir setStopTime 10.0
 
 # Build the system
 set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
