@@ -125,6 +125,7 @@ JSRCS = \
 	PtolemyQuery.java \
 	PtolemyTableauFactory.java \
 	PtolemyFrame.java \
+	QueryUtilities.java \
 	RenameConfigurer.java \
 	RenameDialog.java \
 	RunTableau.java \
