@@ -273,7 +273,7 @@ public class Scheduler extends NamedObj {
 	Schedule schedule = new Schedule();
 	Iterator actorIterator = actors.iterator();
 	while (actorIterator.hasNext()) {
-	    Executable actor = (Executable)actorIterator.next();
+	    Actor actor = (Actor)actorIterator.next();
 	    Firing firing = new Firing();
 	    firing.setActor(actor);
 	    schedule.add(firing);
