@@ -1,6 +1,6 @@
-/* Construct a test hierachical graph using the pt.kernel classes.
+/* ExampleSystem.java constructs a test hierachical graph using the pt.kernel classes.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,6 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
+
 package pt.kernel.demo;
 import pt.kernel.*;
 import java.util.Enumeration;
@@ -31,28 +32,23 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
 /** 
-ExampleSystem constructs a hierachical graph as shown in 
+ExapmleSystem constructs a hierachical graph as shown in 
 Ptolemy 2 design document, Figure 8 
 The graph has 10 entities, 14 ports, and 12 relations.
 The main function also returns the results of some key functions of
 ComponentRelation and ComponentPort.
 See Ptolemy 2 design document, Figure 11 
-
-To run this, do:
-<pre>
-setenv CLASSPATH ../../..
-java pt.kernel.demo.ExampleSystem
-<pre>
-
 @author Jie Liu
-@version $Id$
+@version @(#)ExampleSystem.java	1.2    01/27/98
 */
-public class ExampleSystem {
+public class ExampleSystem extends ExampleApplet 
+{
+    /** ExampleSystem
+     * construct the graph
+     */	
+    public ExampleSystem() throws IllegalActionException, NameDuplicationException {
+        super();
 
-    /** Construct the graph */	
-    public ExampleSystem() 
-    throws IllegalActionException, NameDuplicationException {
-            
         // Create composite entities
         e0 = new CompositeEntity();
         e0.setName("E0");
@@ -60,7 +56,7 @@ public class ExampleSystem {
         e4 = new CompositeEntity(e3, "E4");
         e7 = new CompositeEntity(e0, "E7");
         e10 = new CompositeEntity(e0, "E10");
-            
+        
         // Create component entities
         e1 = new ComponentEntity(e4, "E1");
         e2 = new ComponentEntity(e4, "E2");
@@ -68,7 +64,7 @@ public class ExampleSystem {
         e6 = new ComponentEntity(e3, "E6");
         e8 = new ComponentEntity(e7, "E8");
         e9 = new ComponentEntity(e10, "E9");
-            
+        
         // Create ports
         p0 = (ComponentPort) e4.newPort("P0");
         p1 = (ComponentPort) e1.newPort("P1");
@@ -85,7 +81,7 @@ public class ExampleSystem {
         p12 = (ComponentPort) e10.newPort("P12");
         p13 = (ComponentPort) e10.newPort("P13");
         p14 = (ComponentPort) e9.newPort("P14");
-            
+        
         // Create links
         r1 = e4.connect(p1, p0, "R1");
         r2 = e4.connect(p1, p4, "R2");
@@ -102,16 +98,109 @@ public class ExampleSystem {
         r11 = e10.connect(p12, p13, "R11");
         r12 = e10.connect(p14, p13, "R12");
         p11.link(r7);
+       
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Action when click on the button
+    *  Print all results in the text area. Override ExampleApplet.buttonAction
+    *  @see pt.kernel.demo.Figure8.ExampleApplet#buttonAction()
+    *  @see java.awt.buttton
+    *  @param java.awt.event
+    */	
+    public boolean buttonAction(java.awt.Event event) {
+        clearTextArea();
+        printInTextArea("----Methods of ComponentRelation----\n");
+        printInTextArea("getLinkedPorts:\n");
+        printLinkedPorts(r1);
+        printLinkedPorts(r2);
+        printLinkedPorts(r3);
+        printLinkedPorts(r4);
+        printLinkedPorts(r5);
+        printLinkedPorts(r6);
+        printLinkedPorts(r7);
+        printLinkedPorts(r8);
+        printLinkedPorts(r9);
+        printLinkedPorts(r10);
+        printLinkedPorts(r11);
+        printLinkedPorts(r12);
+        
+        printInTextArea("\ndeepGetLinkedPorts:\n");
+        printDeepLinkedPorts(r1);
+        printDeepLinkedPorts(r2);
+        printDeepLinkedPorts(r3);
+        printDeepLinkedPorts(r4);
+        printDeepLinkedPorts(r5);
+        printDeepLinkedPorts(r6);
+        printDeepLinkedPorts(r7);
+        printDeepLinkedPorts(r8);
+        printDeepLinkedPorts(r9);
+        printDeepLinkedPorts(r10);
+        printDeepLinkedPorts(r11);
+        printDeepLinkedPorts(r12);
+        
+        printInTextArea("\n----Methods of ComponentPort----\n");
+        printInTextArea("getConnectedPorts:\n");
+        printConnectedPorts(p0);
+        printConnectedPorts(p1);
+        printConnectedPorts(p2);
+        printConnectedPorts(p3);
+        printConnectedPorts(p4);
+        printConnectedPorts(p5);
+        printConnectedPorts(p6);
+        printConnectedPorts(p7);
+        printConnectedPorts(p8);
+        printConnectedPorts(p9);
+        printConnectedPorts(p10);
+        printConnectedPorts(p11);
+        printConnectedPorts(p12);
+        printConnectedPorts(p13);
+        printConnectedPorts(p14);
+        
+        printInTextArea("\ndeepGetConnectedPorts:\n");    
+        printDeepConnectedPorts(p0);
+        printDeepConnectedPorts(p1);
+        printDeepConnectedPorts(p2);
+        printDeepConnectedPorts(p3);
+        printDeepConnectedPorts(p4);
+        printDeepConnectedPorts(p5);
+        printDeepConnectedPorts(p6);
+        printDeepConnectedPorts(p7);
+        printDeepConnectedPorts(p8);
+        printDeepConnectedPorts(p9);
+        printDeepConnectedPorts(p10);
+        printDeepConnectedPorts(p11);
+        printDeepConnectedPorts(p12);
+        printDeepConnectedPorts(p13);                
+        printDeepConnectedPorts(p14);
+        return true;
+    }
+
+    /**init
+    *  Initialize the applet
+    */
+    public void init() {
+        super.init();
+        addNotify();
+        createAppletForm();
+    }
+    
+    /**createAppletForm
+    *  
+    */
+    public void createAppletForm() {
+        try {
+            create();
+        } catch ( java.lang.Exception ex ) {}
+    }
+
     /** Print the linked ports for a given ComponetRelation. The ports are
-     *  restricted in the same level of hierachy
-     *  @see pt.kernel.Relation#getLinkedPorts()
-     *  @param ComponentRelation
-     */	
+    *  restricted in the same level of hierachy
+    *  @see pt.kernel.Relation#getLinkedPorts()
+    *  @param ComponentRelation
+    */	
     public void printLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
         ComponentPort po;
@@ -120,16 +209,15 @@ public class ExampleSystem {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
         }
-        System.out.println(st);
+        printInTextArea(st+"\n");
     }
-        
-    /**
-     * Print the deeply linked ports for a given ComponetRelation.
-     * Look through all transparent ports and return only non transparent
-     * ports (those with no inside links).
-     * @see pt.kernel.ComponentRelation#deepGetLinkedPorts()
-     * @param ComponentRelation
-     */	
+    
+    /** Print the deeply linked ports for a given ComponetRelation. Look through
+    *  all transparent ports and return only non transparent ports (those
+    *  with no inside links).
+    *  @see pt.kernel.ComponentRelation#deepGetLinkedPorts()
+    *  @param ComponentRelation
+    */	
     public void printDeepLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
         ComponentPort po;
@@ -138,15 +226,14 @@ public class ExampleSystem {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
         }
-        System.out.println(st);
+        printInTextArea(st+"\n");
     }
-
-    /**
-     * Print the connected ports for a given ComponetPort.  Restricted
-     * to the same level of hierachy.
-     * @see pt.kernel.Port#getConnectedPorts()
-     * @param ComponentPort
-     */	
+    
+    /** Print the connected ports for a given ComponetPort.  Restricted
+    *  to the same level of hierachy.
+    *  @see pt.kernel.Port#getConnectedPorts()
+    *  @param ComponentPort
+    */	
     public void printConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
@@ -155,16 +242,15 @@ public class ExampleSystem {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
         }
-        System.out.println(st);
+        printInTextArea(st+"\n");
     }
-
-    /**
-     * Print the deeply connected ports for a given ComponetPort. Look through
-     * all transparent ports and return only non transparent ports (those
-     * with no inside links).
-     * @see pt.kernel.ComponentPort#deepGetConnectedPorts()
-     * @param ComponentPort
-     */	
+    
+    /** Print the deeply connected ports for a given ComponetPort. Look through
+    *  all transparent ports and return only non transparent ports (those
+    *  with no inside links).
+    *  @see pt.kernel.ComponentPort#deepGetConnectedPorts()
+    *  @param ComponentPort
+    */	
     public void printDeepConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
@@ -173,101 +259,42 @@ public class ExampleSystem {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
         }
-        System.out.println(st);
+        printInTextArea(st+"\n");
     }
         
-    /** Main function. Construct the system and print the results. */
-    public static void main( String[] args) {
-        try {
-            ExampleSystem sys = new ExampleSystem();
-               
-            System.out.println("\n----Methods of ComponentRelation----");
-            System.out.println("getLinkedPorts:");
-            sys.printLinkedPorts(sys.r1);
-            sys.printLinkedPorts(sys.r2);
-            sys.printLinkedPorts(sys.r3);
-            sys.printLinkedPorts(sys.r4);
-            sys.printLinkedPorts(sys.r5);
-            sys.printLinkedPorts(sys.r6);
-            sys.printLinkedPorts(sys.r7);
-            sys.printLinkedPorts(sys.r8);
-            sys.printLinkedPorts(sys.r9);
-            sys.printLinkedPorts(sys.r10);
-            sys.printLinkedPorts(sys.r11);
-            sys.printLinkedPorts(sys.r12);
-                
-            System.out.println("\ndeepGetLinkedPorts:");
-            sys.printDeepLinkedPorts(sys.r1);
-            sys.printDeepLinkedPorts(sys.r2);
-            sys.printDeepLinkedPorts(sys.r3);
-            sys.printDeepLinkedPorts(sys.r4);
-            sys.printDeepLinkedPorts(sys.r5);
-            sys.printDeepLinkedPorts(sys.r6);
-            sys.printDeepLinkedPorts(sys.r7);
-            sys.printDeepLinkedPorts(sys.r8);
-            sys.printDeepLinkedPorts(sys.r9);
-            sys.printDeepLinkedPorts(sys.r10);
-            sys.printDeepLinkedPorts(sys.r11);
-            sys.printDeepLinkedPorts(sys.r12);
-                
-            System.out.println("\n----Methods of ComponentPort----");
-            System.out.println("getConnectedPorts:");
-            sys.printConnectedPorts(sys.p0);
-            sys.printConnectedPorts(sys.p1);
-            sys.printConnectedPorts(sys.p2);
-            sys.printConnectedPorts(sys.p3);
-            sys.printConnectedPorts(sys.p4);
-            sys.printConnectedPorts(sys.p5);
-            sys.printConnectedPorts(sys.p6);
-            sys.printConnectedPorts(sys.p7);
-            sys.printConnectedPorts(sys.p8);
-            sys.printConnectedPorts(sys.p9);
-            sys.printConnectedPorts(sys.p10);
-            sys.printConnectedPorts(sys.p11);
-            sys.printConnectedPorts(sys.p12);
-            sys.printConnectedPorts(sys.p13);
-            sys.printConnectedPorts(sys.p14);
-
-            System.out.println("\ndeepGetConnectedPorts:");    
-            sys.printDeepConnectedPorts(sys.p0);
-            sys.printDeepConnectedPorts(sys.p1);
-            sys.printDeepConnectedPorts(sys.p2);
-            sys.printDeepConnectedPorts(sys.p3);
-            sys.printDeepConnectedPorts(sys.p4);
-            sys.printDeepConnectedPorts(sys.p5);
-            sys.printDeepConnectedPorts(sys.p6);
-            sys.printDeepConnectedPorts(sys.p7);
-            sys.printDeepConnectedPorts(sys.p8);
-            sys.printDeepConnectedPorts(sys.p9);
-            sys.printDeepConnectedPorts(sys.p10);
-            sys.printDeepConnectedPorts(sys.p11);
-            sys.printDeepConnectedPorts(sys.p12);
-            sys.printDeepConnectedPorts(sys.p13);                
-            sys.printDeepConnectedPorts(sys.p14);
-        } catch (IllegalActionException ex1) {
-            System.out.println("construction failed");
-        } catch (NameDuplicationException ex2) {
-            System.out.println("construction failed");
-        }
+    public static void main(String args[]) throws pt.kernel.NameDuplicationException, pt.kernel.IllegalActionException {
+        ExampleSystem exsys = new ExampleSystem();
+        ExampleFrame f = new ExampleFrame();
+        f.setResizable(true);
+        f.add(exsys);
+        f.addNotify();
+        java.awt.Insets insets = f.insets(); 
+        exsys.init();
+        exsys.move(insets.left,insets.top);
+        f.resize(exsys.preferredSize());
+        exsys.resize(exsys.preferredSize());
+        f.show();
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
-        
-    /* Components of the system  */
+    
+    /** Components of the system
+    */
+    
     private CompositeEntity e0;
     private CompositeEntity e3;
     private CompositeEntity e4;
     private CompositeEntity e7;
     private CompositeEntity e10;
-
+    
     private ComponentEntity e1;
     private ComponentEntity e2;
     private ComponentEntity e5;
     private ComponentEntity e6;
     private ComponentEntity e8;
     private ComponentEntity e9;
-        
+    
     private ComponentPort p0;
     private ComponentPort p1;
     private ComponentPort p2;
@@ -283,7 +310,7 @@ public class ExampleSystem {
     private ComponentPort p12;
     private ComponentPort p13;
     private ComponentPort p14;
-
+    
     private ComponentRelation r1;
     private ComponentRelation r2;
     private ComponentRelation r3;
@@ -295,6 +322,6 @@ public class ExampleSystem {
     private ComponentRelation r9;
     private ComponentRelation r10;
     private ComponentRelation r11;
-    private ComponentRelation r12;
-        
+    private ComponentRelation r12;    
 }
+
