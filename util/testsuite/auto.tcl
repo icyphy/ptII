@@ -42,7 +42,7 @@ proc createAndExecute {file} {
 }
 
 if [ file isdirectory auto/knownFailedTests ] {
-    foreach file [glob auto/knownFailedTests/*.xml] {
+    foreach file [glob -nocomplain auto/knownFailedTests/*.xml] {
 	puts "------------------ testing $file (Known Failure) "
 	test "Auto" "Automatic test in file $file" {
 	    createAndExecute $file
