@@ -21,11 +21,11 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Red (vincent.arnould@thalesgroup.com)
-@AcceptedRating Red (vincent.arnould@thalesgroup.com)
+ @ProposedRating Red (vincent.arnould@thalesgroup.com)
+ @AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -50,85 +50,85 @@ import ptolemy.vergil.debugger.BreakpointConfigurerDialog;
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentDialogFactory
 /**
-A factory that creates a dialog to configure, add, or remove Arguments
-from objects.
+   A factory that creates a dialog to configure, add, or remove Arguments
+   from objects.
 
-@author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
-@version $Id$
-@since Ptolemy II 2.0
-@see PortDialogFactory
+   @author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see PortDialogFactory
 */
 public class ArgumentDialogFactory implements MenuItemFactory {
 
     /** Default constructor*/
-        public ArgumentDialogFactory() {
-                super();
+    public ArgumentDialogFactory() {
+        super();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Add an item to the given context menu that will open a dialog
+     *  to add or remove arguments from an object.
+     *  @param menu The context menu.
+     *  @param object The object whose ports are being manipulated.
+     */
+    public JMenuItem create(final JContextMenu menu, NamedObj object) {
+        String name = "Configure Arguments";
+
+        // Removed this method since it was never used. EAL
+        // final NamedObj target = _getItemTargetFromMenuTarget(object);
+        final NamedObj target = object;
+
+        // ensure that we actually have a target, and that it's an Entity.
+        if (!(target instanceof GenericJNIActor)) {
+            return null;
         }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
+        Action action = new AbstractAction(name) {
+                public void actionPerformed(ActionEvent e) {
+                    // Create a dialog for configuring the object.
+                    // First, identify the top parent frame.
+                    // Normally, this is a Frame, but just in case, we check.
+                    // If it isn't a Frame, then the edit parameters dialog
+                    // will not have the appropriate parent, and will disappear
+                    // when put in the background.
+                    Component parent = menu.getInvoker();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
+                    }
+                    if (parent instanceof Frame) {
+                        //TRT begin changes
+                        new ArgumentConfigurerDialog(
+                                (Frame) parent,
+                                (Entity) target,
+                                _configuration);
 
-        /** Add an item to the given context menu that will open a dialog
-         *  to add or remove arguments from an object.
-         *  @param menu The context menu.
-         *  @param object The object whose ports are being manipulated.
-         */
-        public JMenuItem create(final JContextMenu menu, NamedObj object) {
-                String name = "Configure Arguments";
+                    } else {
 
-                // Removed this method since it was never used. EAL
-                // final NamedObj target = _getItemTargetFromMenuTarget(object);
-                final NamedObj target = object;
+                        System.out.println("No Frame");
 
-                // ensure that we actually have a target, and that it's an Entity.
-                if (!(target instanceof GenericJNIActor)) {
-                        return null;
+                        new ArgumentConfigurerDialog(
+                                null,
+                                (Entity) target,
+                                _configuration);
+                        //TRT end
+                    }
                 }
+            };
+        return menu.add(action, name);
+    }
 
-                Action action = new AbstractAction(name) {
-                        public void actionPerformed(ActionEvent e) {
-                // Create a dialog for configuring the object.
-                // First, identify the top parent frame.
-                // Normally, this is a Frame, but just in case, we check.
-                // If it isn't a Frame, then the edit parameters dialog
-                // will not have the appropriate parent, and will disappear
-                // when put in the background.
-                                Component parent = menu.getInvoker();
-                                while (parent.getParent() != null) {
-                                        parent = parent.getParent();
-                                }
-                                if (parent instanceof Frame) {
-                                        //TRT begin changes
-                                        new ArgumentConfigurerDialog(
-                                                (Frame) parent,
-                                                (Entity) target,
-                                                _configuration);
+    /** Set the configuration for use by the help screen.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        _configuration = configuration;
+    }
 
-                                } else {
-
-                                        System.out.println("No Frame");
-
-                                        new ArgumentConfigurerDialog(
-                                                null,
-                                                (Entity) target,
-                                                _configuration);
-                                        //TRT end
-                                }
-                        }
-                };
-                return menu.add(action, name);
-        }
-
-        /** Set the configuration for use by the help screen.
-         *  @param configuration The configuration.
-         */
-        public void setConfiguration(Configuration configuration) {
-                _configuration = configuration;
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         private variables                 ////
-        /** The configuration.
-         */
-        private Configuration _configuration;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /** The configuration.
+     */
+    private Configuration _configuration;
 }
