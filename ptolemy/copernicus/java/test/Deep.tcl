@@ -76,17 +76,18 @@ proc autoDeepCG {autoDirectory} {
 #
 
 # First, do an SDF test just to be sure things are working
-test Deep-1.1 {Compile and run the SDF test} {
-    set result [sootCodeGeneration \
-  	    [file join $relativePathToPTII ptolemy actor lib test auto \
-		 MathFunction3.xml] "Deep"]
-    list {}
-} {{}}
-
-test Deep-1.2 {Compile and run the SDF IIR test} {
+test Deep-1.1 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 		 IIR.xml] "Deep"]
+    list {}
+} {{}}
+
+
+test Deep-1.2 {Compile and run the SDF OrthogonalCom test} {
+    set result [sootCodeGeneration \
+  	    [file join $relativePathToPTII ptolemy sdf demo OrthogonalCom \
+		 OrthogonalCom.xml] "Deep"]
     list {}
 } {{}}
 
