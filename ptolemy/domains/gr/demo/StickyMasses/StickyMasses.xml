@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -36,7 +36,7 @@ a three-dimensional animation.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 280.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 277, 968, 466}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 277, 968, 468}, maximized=false}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -174,9 +174,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </port>
             <entity name="Torus3D1" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -185,6 +183,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -192,9 +192,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D2" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -203,6 +201,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -258,9 +258,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D3" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -269,6 +267,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -300,9 +300,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D16" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -311,6 +309,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -354,9 +354,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D27" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -365,6 +363,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -396,9 +396,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D38" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -408,15 +406,15 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
+                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="166.0, 349.0">
                 </property>
             </entity>
             <entity name="Torus3D39" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI/2">
                 </property>
@@ -425,6 +423,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -502,11 +502,17 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Sphere3D1" class="ptolemy.domains.gr.lib.Sphere3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.7]">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
                 <property name="radius" class="ptolemy.data.expr.Parameter" value="sphereradius+0.02">
+                </property>
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+                </property>
+                <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.7]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -725,15 +731,21 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
         </entity>
         <entity name="left wall" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.2, 0.0]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+            </property>
+            <property name="Box3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.2, 0.0]">
             </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -765,15 +777,21 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
         </entity>
         <entity name="floor" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.2, 0.0]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="4.0">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+            </property>
+            <property name="Box3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.2, 0.0]">
             </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -792,7 +810,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <property name="_location" class="ptolemy.kernel.util.Location" value="677.0, 232.0">
             </property>
         </entity>
-        <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
+        <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="300">
             </property>
             <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="300">
@@ -811,15 +829,21 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
         </entity>
         <entity name="right wall" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.2, 0.0]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+            </property>
+            <property name="Box3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.2, 0.0]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 265.0">
             </property>
@@ -900,9 +924,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </port>
             <entity name="Torus3D1" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -911,6 +933,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -918,9 +942,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D2" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -929,6 +951,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -984,9 +1008,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D3" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -995,6 +1017,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1026,9 +1050,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D16" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -1037,6 +1059,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1080,9 +1104,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D27" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -1091,6 +1113,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1122,9 +1146,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Torus3D38" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
@@ -1134,15 +1156,15 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
                 </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
+                </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="166.0, 349.0">
                 </property>
             </entity>
             <entity name="Torus3D39" class="ptolemy.domains.gr.lib.Torus3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
                 </property>
                 <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="PI/2">
                 </property>
@@ -1151,6 +1173,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="crossSectionRadius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="color">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1228,11 +1252,17 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </entity>
             <entity name="Sphere3D1" class="ptolemy.domains.gr.lib.Sphere3D">
-                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7,0.0,0.0]">
-                </property>
-                <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
                 <property name="radius" class="ptolemy.data.expr.Parameter" value="sphereradius+.02">
+                </property>
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+                </property>
+                <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7,0.0,0.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1592,8 +1622,6 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
             <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
             </property>
-            <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-            </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -1618,10 +1646,12 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
+            <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {282, 362, 727, 400}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 362, 727, 468}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 284]">
         </property>
@@ -1762,7 +1792,7 @@ model (double click on that transition to see its actions).</text></svg></config
                     <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 10.0">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 101, 815, 566}, maximized = false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 100, 815, 568}, maximized=false}">
                 </property>
                 <port name="V1" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -1807,8 +1837,6 @@ model (double click on that transition to see its actions).</text></svg></config
                     </property>
                 </port>
                 <entity name="init" class="ptolemy.domains.fsm.kernel.State">
-                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 200.0">
@@ -1817,8 +1845,6 @@ model (double click on that transition to see its actions).</text></svg></config
                 <entity name="Separate" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Separate">
                     </property>
-                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 235.0">
@@ -1826,8 +1852,6 @@ model (double click on that transition to see its actions).</text></svg></config
                 </entity>
                 <entity name="Together" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Together">
-                    </property>
-                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
@@ -1901,8 +1925,6 @@ model (double click on that transition to see its actions).</text></svg></config
                     </property>
                     <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                     </property>
-                    <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                    </property>
                     <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -1924,6 +1946,8 @@ model (double click on that transition to see its actions).</text></svg></config
                             <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                             </property>
                         </property>
+                    </property>
+                    <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                     </property>
@@ -1981,7 +2005,11 @@ of the two masses.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 320.0">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 559}}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 568}, maximized=false}">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
                 </property>
                 <port name="V1" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="output"/>
@@ -2011,9 +2039,13 @@ of the two masses.</text></svg></configure>
                 <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                     <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                    </property>
+                    <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 365.0">
                     </property>
@@ -2082,10 +2114,6 @@ of the two masses.</text></svg></configure>
                 </relation>
                 <relation name="1:_R5" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="1:_R8" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex0" value="135.0, 365.0">
-                    </vertex>
-                </relation>
                 <relation name="1:_R6" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex0" value="310.0, 245.0">
                     </vertex>
@@ -2102,19 +2130,20 @@ of the two masses.</text></svg></configure>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="V1" relation="1:_R2"/>
                 <link port="V2" relation="1:_R6"/>
                 <link port="P1" relation="1:_R3"/>
                 <link port="P2" relation="1:_R7"/>
                 <link port="touched" relation="relation"/>
-                <link port="ZeroCrossingDetector.input" relation="1:_R8"/>
                 <link port="ZeroCrossingDetector.output" relation="relation"/>
-                <link port="ZeroCrossingDetector.trigger" relation="1:_R8"/>
+                <link port="ZeroCrossingDetector.trigger" relation="relation2"/>
                 <link port="Expression.output" relation="1:_R1"/>
                 <link port="Expression.P1" relation="1:_R3"/>
                 <link port="AddSubtract.plus" relation="1:_R3"/>
                 <link port="AddSubtract.minus" relation="1:_R7"/>
-                <link port="AddSubtract.output" relation="1:_R8"/>
+                <link port="AddSubtract.output" relation="relation2"/>
                 <link port="V2 integrator.input" relation="1:_R5"/>
                 <link port="V2 integrator.output" relation="1:_R6"/>
                 <link port="P1 integrator.input" relation="1:_R2"/>
@@ -2154,8 +2183,6 @@ of the two masses.</text></svg></configure>
                     </property>
                     <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                     </property>
-                    <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                    </property>
                     <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -2177,6 +2204,8 @@ of the two masses.</text></svg></configure>
                             <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                             </property>
                         </property>
+                    </property>
+                    <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 39.5">
                     </property>
