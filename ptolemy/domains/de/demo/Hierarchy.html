@@ -1,29 +1,14 @@
-<!-- $Id$-->
-<HTML>
-<HEAD>
-<TITLE>Discrete Event Simulation Demo</TITLE>
-</HEAD>
-<BODY BGCOLOR="#FAF0E6">
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Discrete Event Hierarchy Simulation
+</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Discrete Event Hierarchy Simulation</H1>
 
-<CENTER>
-<H1>
-Demo of DE simulation applet</H1></CENTER>
-
-<H3>
-DE Simulation:</H3>
-The following applet demonstrates the hierachical composition of DE inside DE.
-Unlike the <a href="Adder.html">Adder applet</a>, the composition is an
-opaque one. This means that the outer director does not govern the execution
-of the actors inside the opaque composite actor. In fact, it is often
-desirable to have the inner domain completely different from the outer domain.
-This scheme provides us with a way to 'mix-and-match' model of computation.
-<P>
-You can interact with the applet by choosing the stop time of the simulation.
-<P>
-<BR>&nbsp;
-<BR>&nbsp;
-
-<p>
 <center>
 <applet name="HierarchyApplet"
    archive="ptolemy/domains/de/demo/demo.jar,
@@ -31,14 +16,22 @@ You can interact with the applet by choosing the stop time of the simulation.
 	ptolemy/ptsupport.jar"
    code=ptolemy.domains.de.demo.HierarchyApplet.class
    codebase=../../../..
-   width=700 height=500>
+   width=700 height=450>
 <param name="background" value="#faf0e6">
 <center><i>
-If you were able to run applets, you would have a Reconstruction demo here.
+If you were able to run applets, you would have a Hierarchy demo here.
 </i></center>
 </applet>
 </center>
 
+This applet demonstrates the hierachical composition of DE inside DE.
+Unlike the <a href="Adder.html">Adder applet</a>, the composition is an
+opaque one. This means that the outer director does not govern the execution
+of the actors inside the opaque composite actor. In fact, it is often
+desirable to have the inner domain completely different from the outer domain.
+This scheme provides us with a way to 'mix-and-match' model of computation.
+
+<p>
 <P>This applet is implemented by
 <TT><A HREF="HierarchyApplet.java">HierarchyApplet.java</A></TT>.
 <P>
