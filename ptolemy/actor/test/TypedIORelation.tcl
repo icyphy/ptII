@@ -74,7 +74,7 @@ test TypedIORelation-1.1 {Construct Relations} {
 Link crosses levels of the hierarchy} {ptolemy.kernel.util.IllegalActionException: ..E1.P1 and .:
 Link crosses levels of the hierarchy}}
 
-test TypedIOPort-1.2 {Attempt to set erroneous container} {
+test TypedIORelation-1.2 {Attempt to set erroneous container} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
@@ -84,5 +84,15 @@ test TypedIOPort-1.2 {Attempt to set erroneous container} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: . and .:
 TypedIORelation can only be contained by TypedCompositeActor.}}
+
+
+test TypedIORelation-3.0 {Test _checkPort} {
+    set p3 [java::new ptolemy.actor.IOPort]
+    set r0 [java::new ptolemy.actor.test.TestTypedIORelation]
+    catch {$r0 checkPort $p3 } msg
+
+    list [$r0 getFullName] $msg
+} {. {ptolemy.kernel.util.IllegalActionException: . and .:
+TypedIORelation can only link to a TypedIOPort.}}
 
 
