@@ -397,7 +397,8 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	# -q means do not echo the command being run
 	set args [list -q $modelPath \
 		      "-codeGenerator" $codeGenerator \
-		      "-compile" "true"]
+		      "-compile" "true" \
+		      "-output" "codeGenerator.tmp"]
 	# If toplevel iterations set, then pass those arguments to copernicus.
 	if { ${iterationsParameter} != ""} {
 	    lappend args "-iterations" ${iterationsParameter}
