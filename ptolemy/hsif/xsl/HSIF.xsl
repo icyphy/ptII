@@ -249,7 +249,7 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
         <xsl:attribute name="name">CT Director</xsl:attribute>
         <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedSignalDirector</xsl:attribute>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0"></property>
-        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0"></property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5"></property>
     </xsl:element>
 
     <!-- Help on how to use the model -->
