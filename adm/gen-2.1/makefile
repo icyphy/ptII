@@ -318,7 +318,9 @@ ChangeLog:
 	@echo "# Now generating ChangeLog file in $(PTIIHOME)"
 	@echo "#"
 	@echo "$@ `date`"
-	cd $(PTIIHOME); $(MAKE) ChangeLog
+	(cd $(PTIIHOME); rm -f ChangeLog; \
+		 $(MAKE) -k ChangeLog; \
+		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
 
 # Build jnlp installers
 jnlp:
