@@ -524,7 +524,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 return true;
             }
         }
-        System.out.println("Not stopped by events.");
         return false;
     }
 
