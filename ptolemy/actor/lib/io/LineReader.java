@@ -319,7 +319,8 @@ public class LineReader extends Source {
             for (int i = 0; i <= numberOfLines; i++) {
                 _currentLine = _reader.readLine();
                 if (_currentLine == null) {
-                    throw new IllegalActionException(this, "The file does not "
+                    throw new IllegalActionException(this, "The file '"
+                            + fileOrURL.stringValue() + "' does not "
                             + "have enough lines.");
                 }
             }
