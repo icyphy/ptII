@@ -330,7 +330,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public synchronized void prepareToBlock(Branch branch) {
         if( branch != null ) {
-            branch.registerRcvrBlocked(this);
+            branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
             /*
@@ -458,7 +458,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public synchronized void wakeUpBlockedPartner() {
         if( _otherBranch != null ) {
-            _otherBranch.registerRcvrUnBlocked(this);
+            _otherBranch.registerReceiverUnBlocked(this);
         } else {
             /*
               CSPDirector director = ((CSPDirector)((Actor)
