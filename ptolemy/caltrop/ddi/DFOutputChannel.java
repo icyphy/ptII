@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// DFOutputChannel
 /**
-@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
 @version $Id$
 @since Ptolemy II 3.1
 */

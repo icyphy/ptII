@@ -77,7 +77,7 @@ At any point in time, the client may call {@link #actionClear()
 actionClear()}, which deselects the action and deletes the references
 to the resources used by the action environment created during setup.
 
-@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
 @version $Id$
 @since Ptolemy II 3.1
 @see caltrop.interpreter.ast.Actor
