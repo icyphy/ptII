@@ -136,7 +136,7 @@ $(PTIIDIST):
 	@echo "Removing codeDoc directories and other documentation"
 	find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	@echo "Regenerate the documentation"
-	(cd $(PTIIDIST)/doc; make)
+	(cd $(PTIIDIST)/doc; make JDOCFLAGS="-author -version -J-Xmx132m")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
