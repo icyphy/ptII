@@ -36,8 +36,12 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+# Note that this package has the the name 'ptplot', not
+# tycho.java.ptplot.  The Itcl and java package have different root
+# directories.
+
 TYPACKAGE = 	ptplot
-TYPACKAGE_DIR = tycho/java/ptplot
+TYPACKAGE_DIR = $(TYPACKAGE)
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
 TYVERSION =	1.3
@@ -102,14 +106,14 @@ install: sources jclass javadocs subinstall $(JARFILE) $(JZIP) ptplotapplet.jar
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
 ptplotapplet.jar:
-	(cd $(CLASSPATH); $(JAR) cfm $(JPACKAGE_DIR)/ptplotapplet.jar \
-		$(JPACKAGE_DIR)/CmdLineArgException.class \
-		$(JPACKAGE_DIR)/Plot.class \
-		$(JPACKAGE_DIR)/PlotApplet.class \
-		$(JPACKAGE_DIR)/PlotBox.class \
-		$(JPACKAGE_DIR)/PlotDataException.class \
-		$(JPACKAGE_DIR)/PlotLive.class \
-		$(JPACKAGE_DIR)/PlotPoint.class)
+	(cd $(CLASSPATH); $(JAR) cfm $(TYPACKAGE_DIR)/ptplotapplet.jar \
+		$(TYPACKAGE_DIR)/CmdLineArgException.class \
+		$(TYPACKAGE_DIR)/Plot.class \
+		$(TYPACKAGE_DIR)/PlotApplet.class \
+		$(TYPACKAGE_DIR)/PlotBox.class \
+		$(TYPACKAGE_DIR)/PlotDataException.class \
+		$(TYPACKAGE_DIR)/PlotLive.class \
+		$(TYPACKAGE_DIR)/PlotPoint.class)
 
 docs: javadocs
 
