@@ -31,7 +31,7 @@
 
 # Order matters here, tycho depends on pn and tcl.
 # Don't go down into collections, it does not have a makefile
-DIRS = pt doc ptplot #collections
+DIRS = pt doc ptplot gui #collections
 
 # Root of Tycho directory
 ROOT =		..
