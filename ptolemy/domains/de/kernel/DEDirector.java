@@ -519,7 +519,7 @@ public class DEDirector extends Director {
             // "As soon as possible" is encoded in this class by the time 
             // Double.NEGATIVE_INFINITY.
             _enqueueEvent(actor, Double.NEGATIVE_INFINITY);
-            super.fireAtCurrentTime();
+            super.fireAtCurrentTime(actor);
             _eventQueue.notifyAll();
         }
     }
