@@ -34,7 +34,7 @@ ME =		ptolemy/copernicus
 # kernel first, then alphabetical, then gui
 # PTJHDL_DIR is set by configure in $PTII/mk/ptII.mk if the jhdl jar file
 # was found
-DIRS =		kernel applet c shallow deep java $(PTJHDL_DIR) gui
+DIRS =		kernel applet c shallow java $(PTJHDL_DIR) gui
 
 # Root of the Java directory
 ROOT =		../..
@@ -52,7 +52,6 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	c/c.jar \
-	deep/deep.jar \
 	kernel/kernel.jar \
 	java/java.jar \
 	shallow/shallow.jar \
