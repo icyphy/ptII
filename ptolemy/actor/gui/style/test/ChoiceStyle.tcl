@@ -101,3 +101,4 @@ test ChoiceStyle-2.0 {addEntry} {
     $pane add $ptolemyQuery
     $frame pack
     $frame setVisible true
+} {}
