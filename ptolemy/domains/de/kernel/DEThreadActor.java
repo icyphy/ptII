@@ -109,7 +109,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
         while (!_isWaiting) {
             synchronized(_monitor) {
                 try {
-                     _monitor.wait();
+                    _monitor.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

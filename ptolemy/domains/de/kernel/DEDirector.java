@@ -724,11 +724,11 @@ public class DEDirector extends Director {
         Nameable container = getContainer();
         if (container instanceof Actor) {
             double outsideCurrentTime = ((Actor)container)
-                    .getExecutiveDirector().getCurrentTime();
+                .getExecutiveDirector().getCurrentTime();
             if (outsideCurrentTime < getCurrentTime()) {
                 throw new IllegalActionException(this,
-                "Received an event in the past at "
-                + "an opaque composite actor boundary.");
+                        "Received an event in the past at "
+                        + "an opaque composite actor boundary.");
             }
             setCurrentTime(outsideCurrentTime);
             return super.transferInputs(port);
@@ -950,7 +950,7 @@ public class DEDirector extends Director {
                 // the event time.
                 if (_synchronizeToRealTime) {
                     long elapsedTime = System.currentTimeMillis()
-                             - _realStartTime;
+                        - _realStartTime;
                     // NOTE: We assume that the elapsed time can be
                     // safely cast to a double.  This means that
                     // the DE domain has an upper limit on running
@@ -960,7 +960,7 @@ public class DEDirector extends Director {
                     double elapsedTimeInSeconds = ((double)elapsedTime)/1000.0;
                     if (currentTime > elapsedTimeInSeconds) {
                         long timeToWait = (long)((currentTime -
-                                 elapsedTimeInSeconds)*1000.0);
+                                elapsedTimeInSeconds)*1000.0);
                         if (timeToWait > 0) {
                             if (_debugging) {
                                 _debug("Waiting for real time to pass: "

@@ -138,7 +138,7 @@ public final class DEEvent implements Comparable {
      * @param event The event to compare against.
      * @return -1, 0, or 1, depends on the order of the events.
      */
-     public final int compareTo(DEEvent event) {
+    public final int compareTo(DEEvent event) {
 
         if ( _timeStamp > event._timeStamp)  {
             return 1;

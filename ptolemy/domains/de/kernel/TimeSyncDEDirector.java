@@ -139,7 +139,7 @@ public class TimeSyncDEDirector extends DEDirector {
      *  In this design, the parameter is not suggested to be changeable
      *  at run time. The default is 500 milli-seconds0.5 seconds.
      *
-    public Parameter delayTolerance;
+     public Parameter delayTolerance;
     */
 
     ///////////////////////////////////////////////////////////////////
@@ -209,8 +209,8 @@ public class TimeSyncDEDirector extends DEDirector {
             tokenizer.nextToken();
             _timeOrigin = Math.floor(
                     Double.valueOf(tokenizer.nextToken()).doubleValue());
-                    //    + ((DoubleToken)delayTolerance.getToken()).doubleValue());
-System.out.println(getName() + ": time origin" + _timeOrigin);
+            //    + ((DoubleToken)delayTolerance.getToken()).doubleValue());
+            System.out.println(getName() + ": time origin" + _timeOrigin);
         } catch (IOException ex) {
             throw new IllegalActionException(this, "output setup failure.");
         }
