@@ -84,7 +84,7 @@ public synchronized void setPause(boolean pause) {
 }
 </code>
 
-@author Neil Smyth, Mudit Goel
+@author Neil Smyth, Mudit Goel, John S. Davis II
 @version $Id$
 
 */
