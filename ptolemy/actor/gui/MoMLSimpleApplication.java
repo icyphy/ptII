@@ -32,6 +32,7 @@ package ptolemy.actor.gui;
 import java.io.File;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -55,14 +56,14 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
     java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
     </pre>
 
-
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.0
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (eal)
 */
-public class MoMLSimpleApplication implements ChangeListener {
+public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
+{
 
     /** A Nullary constructor is necessary so that we can extends this
      *  base class with a subclass
@@ -78,7 +79,7 @@ public class MoMLSimpleApplication implements ChangeListener {
      *  @exception Exception If there was a problem parsing
      *  or running the model.
      */
-    public MoMLSimpleApplication(String xmlFileName) throws Exception {
+    public MoMLSimpleApplication(String xmlFileName) throws Throwable {
         MoMLParser parser = new MoMLParser();
 
         // The test suite calls MoMLSimpleApplication multiple times,
@@ -108,12 +109,28 @@ public class MoMLSimpleApplication implements ChangeListener {
                 "MoMLSimpleApplication");
         toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
+        _manager.addExecutionListener(this);
         _manager.execute();
+
+        // PtExecuteApplication uses _activeCount to determine when
+        // the models are done.  We can't do that here because
+        // executeError() might be called from a different thread.
+        // PtExecuteApplication handles this by deferring the change
+        // to the Swing event thread.  We don't have a Swing event thread,
+        // so we are stuck with a busy loop.
+
+        while (!_executionFinishedOrError) {
+            Thread.yield();
+        }
+
+        if (_sawThrowable != null) {
+            throw _sawThrowable;
+        }
     }
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         Public methods                    ////
 
     /** React to a change request has been successfully executed by
      *  doing nothing. This method is called after a change request
@@ -152,13 +169,54 @@ public class MoMLSimpleApplication implements ChangeListener {
                 exception);
     }
 
+    /** Report an execution failure.   This method will be called
+     *  when an exception or error is caught by a manager.
+     *  Exceptions are reported this way when the run() or startRun()
+     *  methods of the manager are used to perform the execution.
+     *  If instead the execute() method is used, then exceptions are
+     *  not caught, and are instead just passed up to the caller of
+     *  the execute() method.  Those exceptions are not reported
+     *  here (unless, of course, the caller of the execute() method does
+     *  so).
+     *  In this class, we set a flag indicating that execution has finished.
+     *
+     *  @param manager The manager controlling the execution.
+     *  @param throwable The throwable to report.
+     */
+    public void executionError(Manager manager, Throwable throwable) {
+        _executionFinishedOrError = true;
+        _sawThrowable = throwable;
+        throw new RuntimeException("Execution error " 
+                + Thread.currentThread().getName(), throwable);
+    }
+
+    /** Report that the current execution has finished and
+     *  the wrapup sequence has completed normally. The number of successfully
+     *  completed iterations can be obtained by calling getIterationCount()
+     *  on the manager.
+     *  In this class, we set a flag indicating that execution has finished. 
+     *  @param manager The manager controlling the execution.
+     */
+    public void executionFinished(Manager manager) {
+        _executionFinishedOrError = true;
+    }
+
+    /** Report that the manager has changed state.
+     *  To access the new state, use the getState() method of Manager.
+     *  In this class, do nothing.
+     *  @param manager The manager controlling the execution.
+     *  @see Manager#getState()
+     */
+    public void managerStateChanged(Manager manager) {
+    }
+
     /** Create an instance of a single model and run it
      *  @param args The command-line arguments naming the .xml file to run
      */
     public static void main(String args[]) {
         try {
             new MoMLSimpleApplication(args[0]);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();
         }
@@ -174,4 +232,12 @@ public class MoMLSimpleApplication implements ChangeListener {
     ////                         private variables                 ////
 
     private Manager _manager = null;
+
+    // executionError() sets _sawThrowable to the exception.
+    private Throwable _sawThrowable = null;
+
+    // Wait until executionFinished() or executionError() is called.
+    // If true and _sawThrowable is null then executionFinished() was called.
+    // If true and _sawThrowable is non-null then executionError() was called.
+    private boolean _executionFinishedOrError = false;
 }
