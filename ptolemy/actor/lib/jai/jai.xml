@@ -144,6 +144,8 @@
 	</entity>
 	<entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
 	</entity>
+	<entity name="JAILog" class="ptolemy.actor.lib.jai.JAILog">
+	</entity>		
 	<entity name="JAIMagnitude" class="ptolemy.actor.lib.jai.JAIMagnitude">
 	</entity>	
 	<entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
