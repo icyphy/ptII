@@ -4,7 +4,7 @@
 <entity name="dualmode" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 230]">
     </property>
     <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
@@ -89,7 +89,7 @@
         <property name="output"/>
         <property name="_location" class="ptolemy.moml.Location" value="503.0, 165.0">
         </property>
-        <property name="_type" class="ptolemy.data.expr.Parameter" value="double">
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
         </property>
     </port>
     <entity name="B" class="ptolemy.actor.lib.Expression">
@@ -202,12 +202,18 @@
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
                 </port>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
                 </port>
                 <port name="input2" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -282,12 +288,18 @@
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
                 </port>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
                 </port>
                 <port name="input2" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
