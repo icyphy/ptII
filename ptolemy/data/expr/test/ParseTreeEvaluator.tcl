@@ -265,13 +265,25 @@ test ParseTreeEvaluator-7.4 {Test many levels of parenthesis nesting} {
 ####
 # 
 test ParseTreeEvaluator-8.1.1 {Test bitwise operators} {
-    list "[theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"]\n \
+    list "[theTest "false&false"] [theTest "false|false"] \
+	[theTest "false\#false"] [theTest "~false"]\n \
+	[theTest "false&true"] [theTest "false|true"] \
+	[theTest "false\#true"] \n\
+	[theTest "true&false"] [theTest "true|false"] \
+	[theTest "true\#false"] \n\
+	[theTest "true&true"] [theTest "true|true"] \
+	[theTest "true\#true"] [theTest "~true"]\n\
+	[theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"]\n\
 	[theTest "5ub&2ub"] [theTest "5ub|2ub"] [theTest "5ub\#4ub"] \
 	[theTest "~5ub"]\n\
 	[theTest "5L&2L"] [theTest "5L|2L"] [theTest "5L\#4L"] \
 	[theTest "~5L"]"
-} {{0 7 1 -6
-  0ub 7ub 1ub  250ub
+} {{false false  false true
+  false true  true 
+ false true  true 
+ true true  true false
+ 0 7 1 -6
+ 0ub 7ub 1ub  250ub
  0L 7L 1L  -6L}}
 
 test ParseTreeEvaluator-8.1.2 {Test bitwise operators on doubles} {
