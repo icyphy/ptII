@@ -41,6 +41,7 @@ A token that contains a FixPoint.
 @author Bart Kienhuis
 @see ptolemy.data.Token
 @see ptolemy.math.FixPoint
+@see ptolemy.math.Precision
 @version $Id$
 
 */
@@ -66,7 +67,7 @@ public class FixToken extends ScalarToken {
 	precision given as a String. Since FixToken has a finite
 	number uses a finite number of bits to represent a value the
 	supplied value is rounded to the nearest value possible given the
-	precision.
+	precision, thereby introducing quantization errors.
 	@param precision String representing the precision of the FixToken 
 	@param init String representing	the value of the FixToken 
 	@exception IllegalArgumentException If the format of the precision 
@@ -85,7 +86,7 @@ public class FixToken extends ScalarToken {
 	precision given as a String. Since FixToken has a finite
 	number uses a finite number of bits to represent a value, the
 	supplied value is rounded to the nearest value possible given
-	the precision.  
+	the precision, thereby introducing quantization errors.  
 	@param precision String giving the precision of the FixToken 
 	@param value Double value of the FixToken
 	@exception IllegalArgumentException If the format of the
@@ -164,18 +165,6 @@ public class FixToken extends ScalarToken {
      */
     public String stringValue() {
 	return _value.toString();
-    }
-
-    /** Return a new FixToken scaled to the give precision. To fit the
-     *  new precision, a rounding error may occur. Depending on the
-     *  overflow mode selected, the value of the Fixpoint is
-     *  determined, 
-     *  @param precision The new precision of the FixToken as String.  
-     *  @return A new FixToken with the given precision.
-     */
-    public FixToken scaleToPrecision(String precision) {
-	FixPoint tmp = _value.scaleToPrecision(precision);
-	return new FixToken(tmp);
     }
 
     /** Return a description of the token as a string.
