@@ -64,18 +64,23 @@ public class RateSelector extends SDFAtomicActor {
         super(container, name);
 
         data = (SDFIOPort) newPort("data");
+	data.setTypeEquals(BaseType.INT_MATRIX);
         data.setInput(true);
         data.setMultiport(true);
       
-        //        rate = (SDFIOPort) newPort("rate");
-        //rate.setInput(true);
-        //rate.setMultiport(true);
+	rate = (SDFIOPort) newPort("rate");
+        rate.setTypeEquals(BaseType.INT);
+        rate.setInput(true);
+        rate.setMultiport(true);
 
         output = (SDFIOPort) newPort("output");
+	output.setTypeEquals(BaseType.INT_MATRIX);
         output.setOutput(true);
 
-        maxDistortion = 
-            new Parameter(this, "maxDistortion", new DoubleToken("50.0"));
+        maxRate = 
+            new Parameter(this, "maxRate", new IntToken("8000"));
+	blocks =
+	    new Parameter(this, "blocks", new DoubleToken("1584"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -90,7 +95,8 @@ public class RateSelector extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
-    public Parameter maxDistortion;
+    public Parameter maxRate;
+    public Parameter blocks;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -107,6 +113,9 @@ public class RateSelector extends SDFAtomicActor {
             newobj.data = (SDFIOPort)newobj.getPort("data");
             newobj.rate = (SDFIOPort)newobj.getPort("rate");
             newobj.output = (SDFIOPort)newobj.getPort("output");
+	    newobj.maxRate = 
+		(Parameter)newobj.getAttribute("maxRate");
+	    newobj.blocks = (Parameter)newobj.getAttribute("blocks");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -134,41 +143,78 @@ public class RateSelector extends SDFAtomicActor {
         int i, j;
 	int x, y;
         int partitionNumber;
-        IntMatrixToken _data, _rate;
-        IntMatrixToken optimalData = null;
-        double bestDistortion;
-        IntMatrixToken bestData;
-            
+	double _maxRate = 
+	    ((DoubleToken)maxRate.getToken()).doubleValue();
+	int _blocks =
+	    ((IntToken)blocks.getToken()).intValue();
+	
+	IntMatrixToken optimalData[] = new IntMatrixToken[_blocks];
+        IntToken optimalRate[] = new IntToken[_blocks];
+        double bestDistortion[] = new double[_blocks];
+        IntMatrixToken bestData[] = new IntMatrixToken[_blocks];
         
         int width = data.getWidth();
-        //        if(data.getWidth() != rate.getWidth()) {
-        //    throw new IllegalActionException("Widths of input ports must " +
-        //            "be the same.");
-        // }
-        optimalData = (IntMatrixToken)data.get(0);
-        bestDistortion = -1;
-        bestData = null;
-        for(i = 1; i < width; i++) {
-            _data = (IntMatrixToken)data.get(i);
-            //    rateToken = rate.get(i);
-            IntMatrixToken difference = 
-                (IntMatrixToken) optimalData.subtract(_data);
-            double distortion = 0;
-            int diff[] = difference.intArray();
-            for(i = 0; i < diff.length; i++) {
-                distortion = diff[i] * diff[i];
-            }
-            if((bestDistortion == -1) || 
-                    (distortion < ((ScalarToken)maxDistortion.getToken()).doubleValue() &&
-                            distortion > bestDistortion)) {
-                bestDistortion = distortion;
-                bestData = _data;
-            }
+	if(data.getWidth() != rate.getWidth()) {
+            throw new IllegalActionException("Widths of input ports must " +
+					     "be the same.");
         }
-        if(bestData == null) {
-            throw new IllegalActionException("no data found to send!");
-        }
+        IntMatrixToken _data[][] = new IntMatrixToken[width][_blocks];
+	IntToken _rate[][] = new IntToken[width][_blocks];
+	double lambda[][] = new double[width][_blocks];
+	double distortion[][] = new double[width][_blocks];
+	int channel[] = new int[_blocks];
 
-        output.send(0, bestData);
+	for(i = 0; i < width; i++) {
+	    data.getArray(i, _data[i]);
+	    rate.getArray(i, _rate[i]);
+	}	    
+
+	for(j = 0; j < _blocks; j++) {
+	    for(i = 0; i < width; i++) {
+		IntMatrixToken difference = 
+		    (IntMatrixToken) _data[0][j].subtract(_data[i][j]);
+		double dist = 0;
+		int diff[] = difference.intArray();
+		for(int k = 0; k < diff.length; k++) {
+		    dist = diff[k] * diff[k];
+		}
+		distortion[i][j] = dist;
+	    }
+	}
+
+	int totalrate = 0;
+	for(j = 0; j < _blocks; j++) {
+	    for(i = 1; i < width; i++) {
+		lambda[i][j] = (distortion[i][j] - distortion[i-1][j])/
+		    (_rate[i][j].intValue() - _rate[i-1][j].intValue());
+		if(lambda[i][j] < 0) 
+		    lambda[i][j] = -lambda[i][j];
+	    }
+	    channel[j] = width - 1;
+	    totalrate += _rate[width - 1][j].intValue();
+	}
+
+	while(totalrate > ((ScalarToken)maxRate.getToken()).intValue()) {
+	    double bestLambda = 0;
+	    int bestBlock = -1;
+	    for(j = 0; j < _blocks; j++) {
+		double l = lambda[channel[j]][j];
+		if(l > bestLambda) {
+		    bestLambda = l;
+		    bestBlock = j;
+		}
+	    }
+	    channel[bestBlock]--;
+	    totalrate += _rate[channel[bestBlock]][bestBlock].intValue() - 
+		_rate[channel[bestBlock]++][bestBlock].intValue();
+	    System.out.println("totalrate = " + totalrate);
+	}
+	
+	IntMatrixToken outputs[] = new IntMatrixToken[_blocks];
+	for(j = 0; j < _blocks; j++) {
+	    outputs[j] = _data[channel[j]][j];
+	}
+
+        output.sendArray(0, outputs);
     }
 }
