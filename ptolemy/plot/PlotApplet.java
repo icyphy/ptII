@@ -115,6 +115,20 @@ public class PlotApplet extends Applet implements Runnable {
             System.out.println("PlotApplet: init: about to resize"+width);
         _myPlot.resize(width,height);
 
+        // Process the background parameter.
+        try {
+            Color background = Color.white;
+            background = PlotBox.getColorByName(getParameter("background"));
+            setBackground(background);
+        } catch (NullPointerException e) {}
+
+        // Process the foreground parameter.
+        try {
+            Color foreground = Color.white;
+            foreground = PlotBox.getColorByName(getParameter("foreground"));
+            setForeground(foreground);
+        } catch (NullPointerException e) {}
+
         // Process the dataurl parameter.
         String dataurl = null;
         try {
