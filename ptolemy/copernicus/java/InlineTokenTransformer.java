@@ -116,12 +116,15 @@ public class InlineTokenTransformer extends SceneTransformer {
         _options = options;
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-
-        _inlineTokenCalls(ModelTransformer.getModelClass(), _model);
+        
+        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+            classes.hasNext();) {
+            SootClass theClass = (SootClass)classes.next();
+            _inlineTokenCalls(theClass);
+        }
     }
 
-    private void _inlineTokenCalls(SootClass actorClass, ComponentEntity actor) {
+    private void _inlineTokenCalls(SootClass actorClass) {
         if (_debug) System.out.println("InlineTokenTransformer in class = " + actorClass);
 
         // Inline calls to token methods that can be statically
@@ -178,27 +181,14 @@ public class InlineTokenTransformer extends SceneTransformer {
                         if (r.getMethod().getName().equals("<init>")) {
                             continue;
                         }
-                        doneSomething |= _replaceTokenInvocation(actor, body, stmt, box, r);
+                        doneSomething |= _replaceTokenInvocation(body, stmt, box, r);
 
                     }
                 }
             }
         }
-        if (actor instanceof CompositeActor) {
-            CompositeActor model = (CompositeActor)actor;
-            for (Iterator entities = model.deepEntityList().iterator();
-                 entities.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
-                String className =
-                    ModelTransformer.getInstanceClassName(entity, _options);
-                SootClass theClass =
-                    Scene.v().loadClassAndSupport(className);
-                _inlineTokenCalls(theClass, entity);
-
-            }
-        }
     }
-    private boolean _replaceTokenInvocation(ComponentEntity actor,
+    private boolean _replaceTokenInvocation(
             JimpleBody body, Unit unit, ValueBox box, InstanceInvokeExpr r) {
         boolean doneSomething = false;
         if (r.getBase().getType() instanceof RefType) {
@@ -225,9 +215,10 @@ public class InlineTokenTransformer extends SceneTransformer {
 
                 // if we are invoking a method on a token class, then
                 // attempt to get the constant value of the token.
-                Token token = getTokenValue(actor, (Local)r.getBase(), unit, _localDefs,
-                        _tokenAnalysis);
-                if (_debug) System.out.println("reference to Token with value = " + token);
+                Token token = getTokenValue((Local)r.getBase(), 
+                        unit, _localDefs, _tokenAnalysis);
+                if (_debug) System.out.println(
+                        "reference to Token with value = " + token);
 
                 // If we have a token and all the args are constant valued,
                 // and the method returns a Constant, or a token, then
@@ -235,7 +226,8 @@ public class InlineTokenTransformer extends SceneTransformer {
                     if (_debug) {
                         System.out.println("statically invoking " + r);
                         for (int j = 0; j < r.getArgCount(); j++) {
-                            System.out.println("argument " + j + " = " + argValues[j]);
+                            System.out.println(
+                                    "argument " + j + " = " + argValues[j]);
                         }
                     }
                     // reflect and invoke the same method on our token
@@ -286,7 +278,7 @@ public class InlineTokenTransformer extends SceneTransformer {
      *  and try to symbolically evaluate the token.  If the value can
      *  be determined, then return it, otherwise return null.
      */
-    public static Token getTokenValue(Entity entity, Local local,
+    public static Token getTokenValue(Local local,
             Unit location, LocalDefs localDefs,
             TokenConstructorAnalysis tokenAnalysis) {
 
@@ -295,14 +287,13 @@ public class InlineTokenTransformer extends SceneTransformer {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if (value instanceof Local) {
-                return getTokenValue(entity, (Local)value,
+                return getTokenValue((Local)value,
                         stmt, localDefs, tokenAnalysis);
             } else if (value instanceof CastExpr) {
                 // If the local was defined by a cast, then recurse on
                 // the value we are casting from.  Note that we assume
                 // the type is acceptable.
-                return getTokenValue(entity,
-                        (Local)((CastExpr)value).getOp(), stmt,
+                return getTokenValue((Local)((CastExpr)value).getOp(), stmt,
                         localDefs, tokenAnalysis);
             } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
