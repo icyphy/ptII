@@ -51,7 +51,6 @@ JSRCS = \
 	BasicJApplet.java \
 	ComponentDialog.java \
 	Configurer.java \
-	Message.java \
 	Query.java \
 	QueryListener.java \
 	StatusBar.java
