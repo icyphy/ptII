@@ -530,7 +530,7 @@ public class PlotBox extends JPanel implements Printable {
             {"black", "00000"}, {"white", "ffffff"},
             {"red", "ff0000"}, {"green", "00ff00"}, {"blue", "0000ff"}
         };
-        for (int i = 0;i< names.length; i++) {
+        for (int i = 0; i< names.length; i++) {
             if (name.equals(names[i][0])) {
                 try {
                     Color col = new Color(Integer.parseInt(names[i][1], 16));
@@ -1561,7 +1561,7 @@ public class PlotBox extends JPanel implements Printable {
             int fheight = _labelFontMetrics.getHeight() + 2;
             int msgy = fheight;
             graphics.setColor(Color.black);
-            for (int i = 0; i < _errorMsg.length;i++) {
+            for (int i = 0; i < _errorMsg.length; i++) {
                 graphics.drawString(_errorMsg[i], 10, msgy);
                 msgy += fheight;
                 System.err.println(_errorMsg[i]);
