@@ -33,11 +33,11 @@
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
 MAJOR_VERSION = 	4.0
-MINOR_VERSION =		beta
+MINOR_VERSION =
 
-VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
+VERSION=	$(MAJOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	4_0_$(MINOR_VERSION)
+WINDOWS_VERSION =	4_0
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -71,7 +71,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar clean
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII-4.0 PTIIADM=/tmp/cxh/ptII-4.0/adm TAR=/bin/tar clean
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 
 USER =		ptII
