@@ -32,6 +32,7 @@ package ptolemy.plot;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -378,12 +379,12 @@ public class EditablePlot extends Plot {
         public void mouseExited(MouseEvent event) {
         }
         public void mousePressed(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON3_MASK)!= 0) {
+            if ((event.getModifiers() & InputEvent.BUTTON3_MASK)!= 0) {
                 EditablePlot.this._editStart(event.getX(), event.getY());
             }
         }
         public void mouseReleased(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON3_MASK)!= 0) {
+            if ((event.getModifiers() & InputEvent.BUTTON3_MASK)!= 0) {
                 EditablePlot.this._edit(event.getX(), event.getY());
             }
         }
@@ -391,7 +392,7 @@ public class EditablePlot extends Plot {
 
     public class ModifyListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON3_MASK)!= 0) {
+            if ((event.getModifiers() & InputEvent.BUTTON3_MASK)!= 0) {
                 EditablePlot.this._editPoint(event.getX(), event.getY());
             }
         }

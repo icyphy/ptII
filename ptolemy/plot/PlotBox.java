@@ -41,6 +41,7 @@ import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -3663,13 +3664,13 @@ public class PlotBox extends JPanel implements Printable {
             //   buttons.
             // This problem affects Netscape 4.61 under Digital Unix and
             // 4.51 under Solaris
-            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 ||
+            if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0 ||
                     event.getModifiers() == 0) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
         }
         public void mouseReleased(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 ||
+            if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0 ||
                     event.getModifiers() == 0) {
                 PlotBox.this._zoom(event.getX(), event.getY());
             }

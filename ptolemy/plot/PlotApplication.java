@@ -216,7 +216,7 @@ public class PlotApplication extends PlotFrame {
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
             try {
-                Thread.currentThread().sleep(2000);
+                Thread.sleep(2000);
             }
             catch (InterruptedException e) {
             }

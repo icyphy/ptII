@@ -35,6 +35,7 @@ package ptolemy.plot.compat;
 
 import ptolemy.plot.Plot;
 import ptolemy.plot.CmdLineArgException;
+import ptolemy.plot.PlotBox;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -557,7 +558,7 @@ public class PxgraphParser {
                             _debug = (int)Integer.valueOf(args[i++]).intValue();
                             continue;
                         } else if (arg.equals("-fg")) {
-                            _plot.setForeground(_plot.getColorByName(args[i++]));
+                            _plot.setForeground(PlotBox.getColorByName(args[i++]));
                             continue;
                         } else if (arg.equals("-help")) {
                             // -help is not in the original X11 pxgraph.
@@ -615,8 +616,8 @@ public class PxgraphParser {
                             // -print is not in the original X11 pxgraph.
                             continue;
                         } else if (arg.equals("-rv")) {
-                            _plot.setBackground(_plot.getColorByName("black"));
-                            _plot.setForeground(_plot.getColorByName("white"));
+                            _plot.setBackground(PlotBox.getColorByName("black"));
+                            _plot.setForeground(PlotBox.getColorByName("white"));
                             continue;
                         } else if (arg.equals("-test")) {
                             // -test is not in the original X11 pxgraph.
