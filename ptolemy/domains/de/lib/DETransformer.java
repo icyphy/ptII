@@ -28,8 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.domains.de.kernel.DEActor;
-import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -62,8 +62,8 @@ public abstract class DETransformer extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new DEIOPort(this, "input", true, false);
-        output = new DEIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -73,10 +73,10 @@ public abstract class DETransformer extends DEActor {
      *  that the type of the input cannot be greater than the type of the
      *  output.
      */
-    public DEIOPort input;
+    public TypedIOPort input;
 
     /** The output port. By default, the type of this port is constrained
      *  to be at least that of the input.
      */
-    public DEIOPort output;
+    public TypedIOPort output;
 }
