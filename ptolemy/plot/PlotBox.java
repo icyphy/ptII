@@ -35,6 +35,7 @@ package ptolemy.plot;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -212,7 +213,8 @@ public class PlotBox extends JPanel implements Printable {
         // setOpaque(false);
         setOpaque(true);
 
-        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        // Create a right-justified layout with spacing of 2 pixels.
+        setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
         addMouseListener(new ZoomListener());
         addKeyListener(new CommandListener());
         addMouseMotionListener(new DragListener());
@@ -335,8 +337,12 @@ public class PlotBox extends JPanel implements Printable {
      *  to be updated.
      */
     public synchronized void fillPlot() {
-        _setXRange(_xBottom, _xTop);
-        _setYRange(_yBottom, _yTop);
+        // NOTE: These used to be _setXRange() and _setYRange() to avoid
+        // confusing this with user-specified ranges.  But we want to treat
+        // a fill command as a user specified range.
+        // EAL, 6/12/00.
+        setXRange(_xBottom, _xTop);
+        setYRange(_yBottom, _yTop);
         repaint();
         // Reacquire the focus so that key bindings work.
         requestFocus();
@@ -753,6 +759,18 @@ public class PlotBox extends JPanel implements Printable {
         _parseLine(command);
     }
 
+    /** Reset the X and Y axes to the ranges that were first specified
+     *  using setXRange() and setYRange(). If these methods have not been
+     *  called, then reset to the default ranges.
+     *  This method calls repaint(), which eventually causes the display
+     *  to be updated.
+     */
+    public synchronized void resetAxes() {
+        setXRange(_originalXlow, _originalXhigh);
+        setYRange(_originalYlow, _originalYhigh);
+        repaint();
+    }
+
     /** Do nothing in this base class. Derived classes might want to override
      *  this class to give an example of their use.
      */
@@ -794,9 +812,47 @@ public class PlotBox extends JPanel implements Printable {
      *  thread, since it interacts with swing.
      */
     public synchronized void setButtons(boolean visible) {
+        if (_resetButton == null) {
+            // We need to load the image from a file relative to the class
+            // location.  Use the resource locator of the class.
+            URL img = getClass().getResource("images/reset.gif");
+            ImageIcon resetIcon = new ImageIcon(img);
+            _resetButton = new JButton(resetIcon);
+            _resetButton.setBorderPainted(false);
+            _resetButton.setPreferredSize(new Dimension(20,20));
+            _resetButton.setToolTipText(
+                    "Reset X and Y ranges to their original values");
+            _resetButton.addActionListener(new ButtonListener());
+            add(_resetButton);
+        }
+        _resetButton.setVisible(visible);
+
+        if (_formatButton == null) {
+            // We need to load the image from a file relative to the class
+            // location.  Use the resource locator of the class.
+            URL img = getClass().getResource("images/format.gif");
+            ImageIcon formatIcon = new ImageIcon(img);
+            _formatButton = new JButton(formatIcon);
+            _formatButton.setBorderPainted(false);
+            _formatButton.setPreferredSize(new Dimension(20,20));
+            _formatButton.setToolTipText(
+                    "Change the appearance of the plot");
+            _formatButton.addActionListener(new ButtonListener());
+            add(_formatButton);
+        }
+        _formatButton.setVisible(visible);
+
         if (_fillButton == null) {
-            _fillButton = new JButton("fill");
-            _fillButton.addActionListener(new FillButtonListener());
+            // We need to load the image from a file relative to the class
+            // location.  Use the resource locator of the class.
+            URL img = getClass().getResource("images/fill.gif");
+            ImageIcon fillIcon = new ImageIcon(img);
+            _fillButton = new JButton(fillIcon);
+            _fillButton.setBorderPainted(false);
+            _fillButton.setPreferredSize(new Dimension(20,20));
+            _fillButton.setToolTipText(
+                    "Rescale the plot to fit the data");
+            _fillButton.addActionListener(new ButtonListener());
             add(_fillButton);
         }
         _fillButton.setVisible(visible);
@@ -890,13 +946,26 @@ public class PlotBox extends JPanel implements Printable {
         _titleFontMetrics = getFontMetrics(_titleFont);
     }
 
-    /** Control whether the X axis is wrapped.
+    /** Specify whether the X axis is wrapped.
      *  If it is, then X values that are out of range are remapped
-     *  to be in range using modulo arithmetic.
+     *  to be in range using modulo arithmetic. The X range is determined
+     *  by the most recent call to setXRange() (or the most recent zoom).
+     *  If the X range has not been set, then use the default X range,
+     *  or if data has been plotted, then the current fill range.
      *  @param wrap If true, wrapping of the X axis is enabled.
      */
     public void setWrap(boolean wrap) {
         _wrap = wrap;
+        if (!_xRangeGiven) {
+            if (_xBottom > _xTop) {
+                // have nothing to go on.
+                setXRange(0, 0);
+            } else {
+                setXRange(_xBottom, _xTop);
+            }
+        }
+        _wrapLow = _xlowgiven;
+        _wrapHigh = _xhighgiven;
     }
 
     /** Set the label for the X (horizontal) axis.
@@ -924,6 +993,11 @@ public class PlotBox extends JPanel implements Printable {
         _xRangeGiven = true;
         _xlowgiven = min;
         _xhighgiven = max;
+        if (!_originalXRangeGiven) {
+            _originalXlow = min;
+            _originalXhigh = max;
+            _originalXRangeGiven = true;
+        }
         _setXRange(min, max);
     }
 
@@ -952,6 +1026,11 @@ public class PlotBox extends JPanel implements Printable {
         _yRangeGiven = true;
         _ylowgiven = min;
         _yhighgiven = max;
+        if (!_originalYRangeGiven) {
+            _originalYlow = min;
+            _originalYhigh = max;
+            _originalYRangeGiven = true;
+        }
         _setYRange(min, max);
     }
 
@@ -1051,6 +1130,56 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** If this method is called in the event thread, then simply
+     * execute the specified action.  Otherwise,
+     * if there are already deferred actions, then add the specified
+     * one to the list.  Otherwise, create a list of deferred actions,
+     * if necessary, and request that the list be processed in the
+     * event dispatch thread.
+     *
+     * Note that it does not work nearly as well to simply schedule
+     * the action yourself on the event thread because if there are a
+     * large number of actions, then the event thread will not be able
+     * to keep up.  By grouping these actions, we avoid this problem.
+     *
+     * This method is not synchronized, so the caller should be.
+     * @param action The Runnable object to execute.
+     */
+    protected void _deferIfNecessary(Runnable action) {
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, queue a request or add to a pending request.
+        if(EventQueue.isDispatchThread()) {
+            action.run();
+        } else {
+
+            if (_deferredActions == null) {
+                _deferredActions = new LinkedList();
+            }
+            // Add the specified action to the list of actions to perform.
+            _deferredActions.add(action);
+
+            // If it hasn't already been requested, request that actions
+            // be performed in the event dispatch thread.
+            if (!_actionsDeferred) {
+                Runnable doActions = new Runnable() {
+                    public void run() {
+                        _executeDeferredActions();
+                    }
+                };
+                try {
+                    // NOTE: Using invokeAndWait() here risks causing
+                    // deadlock.  Don't do it!
+                    SwingUtilities.invokeLater(doActions);
+                } catch (Exception ex) {
+                    // Ignore InterruptedException.
+                    // Other exceptions should not occur.
+                }
+                _actionsDeferred = true;
+            }
+        }
+    }
+
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
      *  This method is called by paintComponent().  To cause it to be called
@@ -1133,6 +1262,7 @@ public class PlotBox extends JPanel implements Printable {
 
         // Number of vertical tick marks depends on the height of the font
         // for labeling ticks and the height of the window.
+        Font previousFont = graphics.getFont();
         graphics.setFont(_labelFont);
         int labelheight = _labelFontMetrics.getHeight();
         int halflabelheight = labelheight/2;
@@ -1603,6 +1733,7 @@ public class PlotBox extends JPanel implements Printable {
                 starty += charheight;
             }
         }
+        graphics.setFont(previousFont);
     }
 
     /** Put a mark corresponding to the specified dataset at the
@@ -1768,6 +1899,8 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected void _setButtonsVisibility(boolean vis) {
         _fillButton.setVisible(vis);
+        _formatButton.setVisible(vis);
+        _resetButton.setVisible(vis);
     }
 
     /** Write plot information to the specified output stream in PlotML.
@@ -1910,6 +2043,12 @@ public class PlotBox extends JPanel implements Printable {
     /** @serial Whether to wrap the X axis. */
     protected boolean _wrap = false;
 
+    /** @serial The high range of the X axis for wrapping. */
+    protected double _wrapHigh;
+
+    /** @serial The low range of the X axis for wrapping. */
+    protected double _wrapLow;
+
     /** @serial Color of the background, settable from HTML. */
     protected Color _background = Color.white;
 
@@ -1953,8 +2092,15 @@ public class PlotBox extends JPanel implements Printable {
       * the plot rectangle in pixels. */
     protected int _lry = 100;
 
-    /** @serial Scaling used in plotting points. */
-    protected double _yscale = 1.0, _xscale = 1.0;
+    /** Scaling used for the vertical axis in plotting points.
+     *  The units are pixels/unit, where unit is the units of the Y axis.
+     */
+    protected double _yscale = 1.0;
+
+    /** Scaling used for the horizontal axis in plotting points.
+     *  The units are pixels/unit, where unit is the units of the X axis.
+     */
+    protected double _xscale = 1.0;
 
     /** @serial Indicator whether to use _colors. */
     protected boolean _usecolor = true;
@@ -2006,6 +2152,7 @@ public class PlotBox extends JPanel implements Printable {
         if (graphics == null) return 0;
 
         // FIXME: consolidate all these for efficiency
+        Font previousFont = graphics.getFont();
         graphics.setFont(_labelFont);
         int spacing = _labelFontMetrics.getHeight();
 
@@ -2032,7 +2179,28 @@ public class PlotBox extends JPanel implements Printable {
                 ypos += spacing;
             }
         }
+        graphics.setFont(previousFont);
         return 22 + maxwidth;  // NOTE: subjective spacing parameter.
+    }
+
+    // Execute all actions pending on the deferred action list.
+    // The list is cleared and the _actionsDeferred variable is set
+    // to false, even if one of the deferred actions fails.
+    // This method should only be invoked in the event dispatch thread.
+    // It is synchronized, so the integrity of the deferred actions list
+    // is ensured, since modifications to that list occur only in other
+    // synchronized methods.
+    private synchronized void _executeDeferredActions() {
+        try {
+            Iterator actions = _deferredActions.iterator();
+            while (actions.hasNext()) {
+                Runnable action = (Runnable)actions.next();
+                action.run();
+            }
+        } finally {
+            _actionsDeferred = false;
+            _deferredActions.clear();
+        }
     }
 
     /*
@@ -2528,11 +2696,14 @@ public class PlotBox extends JPanel implements Printable {
                 if ((Math.abs(_zoomx-x) > 5) && (Math.abs(_zoomy-y) > 5)) {
                     double a = _xMin + (_zoomx - _ulx)/_xscale;
                     double b = _xMin + (x - _ulx)/_xscale;
-                    // NOTE: Changed to call _setXRange() instead of
-                    // setXRange so that wrapping and zooming can work
-                    // together.  EAL 5/31/00.
-                    if (a < b) _setXRange(a, b);
-                    else _setXRange(b, a);
+                    // NOTE: It used to be that it was problematic to set
+                    // the X range here because it conflicted with the wrap
+                    // mechanism.  But now the wrap mechanism saves the state
+                    // of the X range when the setWrap() method is called,
+                    // so this is safe.
+                    // EAL 6/12/00.
+                    if (a < b) setXRange(a, b);
+                    else setXRange(b, a);
                     a = _yMax - (_zoomy - _uly)/_yscale;
                     b = _yMax - (y - _uly)/_yscale;
                     if (a < b) setYRange(a, b);
@@ -2693,13 +2864,20 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial Indicator of whether actions are deferred. */
+    private boolean _actionsDeferred = false;
+
+    /** @serial List of deferred actions. */
+    private List _deferredActions;
+
     /** @serial The file to be opened. */
     private String _filespec = null;
 
     // Call setXORMode with a hardwired color because
     // _background does not work in an application,
-    // and _foreground does not work in an applet
-    private static final Color _boxColor = Color.darkGray;
+    // and _foreground does not work in an applet.
+    // NOTE: For some reason, this comes out blue, which is fine...
+    private static final Color _boxColor = Color.orange;
 
     /** @serial The range of the plot as labeled
      * (multiply by 10^exp for actual range.
@@ -2748,6 +2926,19 @@ public class PlotBox extends JPanel implements Printable {
 
     // A button for filling the plot
     private transient JButton _fillButton = null;
+
+    // A button for formatting the plot
+    private transient JButton _formatButton = null;
+
+    // Indicator of whether X and Y range has been first specified.
+    boolean _originalXRangeGiven = false, _originalYRangeGiven = false;
+
+    // First values specified to setXRange() and setYRange().
+    double _originalXlow = 0.0, _originalXhigh = 0.0,
+           _originalYlow = 0.0, _originalYhigh = 0.0;
+
+    // A button for filling the plot
+    private transient JButton _resetButton = null;
 
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
@@ -2830,9 +3021,16 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    class FillButtonListener implements ActionListener {
+    class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            fillPlot();
+            if (event.getSource() == _fillButton) {
+                fillPlot();
+            } else if (event.getSource() == _resetButton) {
+                resetAxes();
+            } else if (event.getSource() == _formatButton) {
+                PlotFormatter fmt = new PlotFormatter(PlotBox.this);
+                fmt.openModal();
+            }
         }
     }
 
