@@ -275,7 +275,7 @@ public class DEEDirector extends DEDirector {
                     actorToFire = currentEvent.actor();
 
                     // Deal with a fireAtCurrentTime event.
-                    if (currentTime.equals(timeConstants.NEGATIVE_INFINITY)) {
+                    if (currentTime.equals(Time.NEGATIVE_INFINITY)) {
                         currentTime = getModelTime();
                     }
 
@@ -330,7 +330,7 @@ public class DEEDirector extends DEDirector {
                 // Consider the multi-input atomic actors, e.g. the
                 // BooleanSelect and Inhibit.
                 if ((nextEvent.timeStamp().equals(
-                    timeConstants.NEGATIVE_INFINITY) ||
+                    Time.NEGATIVE_INFINITY) ||
                             nextEvent.hasTheSameTagAndDepthAs(currentEvent))
                         && nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
@@ -378,7 +378,7 @@ public class DEEDirector extends DEDirector {
         int microstep = 0;
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
@@ -446,7 +446,7 @@ public class DEEDirector extends DEDirector {
 
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep;
-        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,

@@ -103,14 +103,6 @@ import ptolemy.kernel.util.Workspace;
    is no time delay. Note that the zero-delay data dependencies are
    determined on a per port basis.
    <p>
-   Ports in the DE domain may be instances of DEIOPort. The DEIOPort class
-   should be used whenever an actor introduces time delays between the
-   inputs and the outputs. When an ordinary IOPort is used, the director
-   assumes, for the purpose of calculating priorities, that the delay
-   across the actor is zero. On the other hand, when DEIOPort is used,
-   the delay across the actor can be declared to be non-zero by calling
-   the delayTo() method on output ports.
-   <p>
    Directed loops with no delay are not permitted; they would make it
    impossible to assign priorities.  Such a loop can be broken by inserting
    an instance of the Delay actor.  If zero delay around the loop is
@@ -158,8 +150,7 @@ import ptolemy.kernel.util.Workspace;
    <P>
    The stop time of the execution can be set using the
    <i>stopTime</i> parameter. The parameter has default value
-   Double.MAX_VALUE, which means the execution stops
-   only when the model time reaches that (rather large) number.
+   Double.POSITIVE_INFINITY, which means the execution runs for ever..
    <P>
    Execution of a DE model ends when the time stamp of the oldest events
    exceeds a preset stop time. This stopping condition is checked inside
@@ -277,7 +268,7 @@ public class DEDirector extends Director implements TimedDirector {
     public Parameter startTime;
 
     /** The stop time of the model.  This parameter must contain a
-     *  DoubleToken.  The value defaults to MaxDouble.
+     *  DoubleToken.  The value defaults to Double.POSITIVE_INFINITY.
      */
     public Parameter stopTime;
 
@@ -517,7 +508,7 @@ public class DEDirector extends Director implements TimedDirector {
                         break;
                     } else if (
                         next.timeStamp().compareTo(
-                            timeConstants.NEGATIVE_INFINITY) != 0
+                            Time.NEGATIVE_INFINITY) != 0
                         && next.timeStamp().compareTo(getModelTime()) < 0) {
                         throw new InternalErrorException(
                                 "fire(): the time stamp of the next event "
@@ -602,7 +593,7 @@ public class DEDirector extends Director implements TimedDirector {
             // Double.NEGATIVE_INFINITY.
             // FIXME: I do not think this is a good design. If multi-threaded
             // simulation is necessary, DDE domain is a better choice. 
-            _enqueueEvent(actor, timeConstants.NEGATIVE_INFINITY);
+            _enqueueEvent(actor, Time.NEGATIVE_INFINITY);
             _eventQueue.notifyAll();
         }
     }
@@ -807,14 +798,14 @@ public class DEDirector extends Director implements TimedDirector {
         CompositeActor container = (CompositeActor)getContainer();
         Time outsideCurrentTime = ((Actor)container).
             getExecutiveDirector().getModelTime();
-        Time nextEventTime = timeConstants.MAX_VALUE;
+        Time nextEventTime = Time.POSITIVE_INFINITY;
         if (!_eventQueue.isEmpty()) {
             nextEventTime =  _eventQueue.get().timeStamp();
         }
 
         // A nextEventTime of Double.NEGATIVE_INFINITY is used to represent
         // a firing as soon as possible.
-        if (nextEventTime.equals(timeConstants.NEGATIVE_INFINITY)) {
+        if (nextEventTime.equals(Time.NEGATIVE_INFINITY)) {
             nextEventTime = outsideCurrentTime;
             return true;
         }
@@ -1048,7 +1039,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // that only happen at the current time.
                     // If the event is in the past, that is an error.
                     if (!nextEvent.timeStamp().equals(
-                        timeConstants.NEGATIVE_INFINITY) 
+                        Time.NEGATIVE_INFINITY) 
                         &&
                         nextEvent.timeStamp().compareTo(getModelTime()) < 0){
                         //missed an event
@@ -1199,7 +1190,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // FIXME: is the special NEGATIVE_INFINITY time
                     // necessary?
                     // Deal with a fireAtCurrentTime event.
-                    if (currentTime.equals(timeConstants.NEGATIVE_INFINITY)) {
+                    if (currentTime.equals(Time.NEGATIVE_INFINITY)) {
                         currentTime = getModelTime();
                     }
 
@@ -1267,7 +1258,7 @@ public class DEDirector extends Director implements TimedDirector {
                 boolean theSameActor = nextEvent.actor().equals(
                     currentEvent.actor());
                 if (nextEvent.timeStamp()
-                        .equals(timeConstants.NEGATIVE_INFINITY) ||
+                        .equals(Time.NEGATIVE_INFINITY) ||
                      nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
                      (nextEvent.hasTheSameTagAs(currentEvent) && 
                         hasPureEvent && theSameActor)){
@@ -1338,7 +1329,7 @@ public class DEDirector extends Director implements TimedDirector {
         int microstep = 0;
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
@@ -1421,7 +1412,7 @@ public class DEDirector extends Director implements TimedDirector {
         int microstep = 0;
         if (time == getModelTime()) {
             microstep = _microstep;
-        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
@@ -1798,7 +1789,7 @@ public class DEDirector extends Director implements TimedDirector {
             startTime.setTypeEquals(BaseType.DOUBLE);
 
             stopTime = new Parameter(this, "stopTime");
-            stopTime.setExpression("MaxDouble");
+            stopTime.setExpression("Infinity");
             stopTime.setTypeEquals(BaseType.DOUBLE);
 
             timeScale = new Parameter(this, "scale", new IntToken("10"));

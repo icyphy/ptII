@@ -139,7 +139,7 @@ public class Server extends VariableDelay {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _nextTimeFree = getDirector().timeConstants.NEGATIVE_INFINITY;
+        _nextTimeFree = Time.NEGATIVE_INFINITY;
         _delayedTokensList = new LinkedList();
     }
 

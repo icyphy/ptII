@@ -78,7 +78,7 @@ public class TimedSource extends Source implements TimedActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         stopTime = new Parameter(this, "stopTime");
-        stopTime.setExpression("MaxDouble");
+        stopTime.setExpression("Infinity");
         stopTime.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription", "<svg>\n" +

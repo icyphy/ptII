@@ -36,7 +36,6 @@ package ptolemy.actor;
 import java.util.Iterator;
 
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimeConstants;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -493,7 +492,7 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the stop time of the model. This base class returns
-     *  a new Time object with Double.MAX_VALUE as the value of the 
+     *  a new Time object with Double.POSITIVE_INFINITY as the value of the 
      *  stop time. 
      *  Subclasses need to override this method to get a different 
      *  stop time.
@@ -502,7 +501,7 @@ public class Director extends Attribute implements Executable {
      *  @return The stop time of the model.
      */
     public Time getModelStopTime() {
-        return new Time(this, Double.MAX_VALUE);
+        return new Time(this, Double.POSITIVE_INFINITY);
     }
 
     /** Initialize the model controlled by this director.  Set the
@@ -530,9 +529,6 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
         	_debug("Called initialize().");
         }
-        // Initialize the time constants that will be used in this director.
-        // NOTE: Ideally, only timed directors need to do this.
-        timeConstants = new TimeConstants(this);
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Nameable containersContainer = container.getContainer();
@@ -1117,13 +1113,6 @@ public class Director extends Attribute implements Executable {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
-    
-    /** The constant time objects associated with this director.
-     */
-    public TimeConstants timeConstants;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

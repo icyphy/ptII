@@ -444,7 +444,7 @@ public class TMDirector extends Director implements TimedDirector {
 
         }
         if (_isEmbedded() && 
-            _nextIterationTime.compareTo(timeConstants.MAX_VALUE) < 0) {
+            _nextIterationTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
             _requestFiringAt(_nextIterationTime);
         }
     }
@@ -802,13 +802,13 @@ public class TMDirector extends Director implements TimedDirector {
         try {
 
             _startTime = new Time(this);
-            _stopTime = new Time(this, Double.MAX_VALUE);
+            _stopTime = new Time(this, Double.POSITIVE_INFINITY);
 
             startTime = new Parameter(this, "startTime", 
                     new DoubleToken(_startTime.getDoubleValue()));
             startTime.setTypeEquals(BaseType.DOUBLE);
             stopTime = new Parameter(this, "stopTime",
-                    new DoubleToken(Double.MAX_VALUE));
+                    new DoubleToken("PositiveInfinity"));
             stopTime.setTypeEquals(BaseType.DOUBLE);
             preemptive = new Parameter(this, "preemptive",
                     new BooleanToken(false));

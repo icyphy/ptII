@@ -133,7 +133,7 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
         super.initialize();
         _tMinus = true;
         _tPlus = false;
-        _startTime = getDirector().timeConstants.POSITIVE_INFINITY;
+        _startTime = Time.POSITIVE_INFINITY;
     }
 
     /** Make sure the continuous clock runs inside a CT domain.
@@ -179,10 +179,10 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
         // override how this is done.
         _updateTentativeValues();
 
-        // Use timeConstants.NEGATIVE_INFINITY to indicate that no refire
+        // Use Time.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
         _tentativeNextFiringTime 
-            = getDirector().timeConstants.NEGATIVE_INFINITY;
+            = Time.NEGATIVE_INFINITY;
 
         // By default, the cycle count will not be incremented.
         _tentativeCycleCountIncrement = 0;

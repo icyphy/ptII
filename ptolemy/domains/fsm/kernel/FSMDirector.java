@@ -487,7 +487,7 @@ public class FSMDirector extends Director
             if (actors == null || actors.length == 0) {
                 return super.getModelNextIterationTime();
             }
-            double result = Double.MAX_VALUE;
+            double result = Double.POSITIVE_INFINITY;
             boolean givenByRefinement = false;
             for (int i = 0; i < actors.length; ++i) {
                 if (actors[i].getDirector() != this) {

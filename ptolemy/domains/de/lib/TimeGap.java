@@ -80,8 +80,7 @@ public class TimeGap extends DETransformer {
             input.get(0);
         }
         Time currentTime = getDirector().getModelTime();
-        if (_previousTime.compareTo(
-            getDirector().timeConstants.NEGATIVE_INFINITY) != 0) {
+        if (_previousTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
             DoubleToken outToken =
                 new DoubleToken(currentTime.subtract(_previousTime)
                     .getDoubleValue());
@@ -101,7 +100,7 @@ public class TimeGap extends DETransformer {
     /** Set the previous event time to -1.
      */
     public void initialize() throws IllegalActionException {
-        _previousTime = getDirector().timeConstants.NEGATIVE_INFINITY;
+        _previousTime = Time.NEGATIVE_INFINITY;
         super.initialize();
     }
 
