@@ -86,3 +86,5 @@ public class TrackedPropertyMap extends PropertyMap {
      *  object. The initial capacity is set to 1 to conserve memory.
      */
     protected HashSet _visitedBySet = new HashSet(1);
+}
+
