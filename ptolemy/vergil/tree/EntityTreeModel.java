@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
@@ -171,15 +172,32 @@ public class EntityTreeModel implements TreeModel {
         /** Trigger an update of the entire tree.
          */
         public void changeExecuted(ChangeRequest change) {
-            // FIXME it would be nice if there was more information in
-            // the change about the context of the change.
-            valueForPathChanged(new TreePath(getRoot()), getRoot());
+            System.out.println("change = " + change);
+            // Note that this should be in the swing thread.
+            SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        // FIXME it would be nice if there was more
+                        // information in the change about the context
+                        // of the change.
+                        valueForPathChanged(
+                                new TreePath(getRoot()), getRoot());
+                    }
+                });
         }
 
         /** Trigger an update of the entire tree.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
-            valueForPathChanged(new TreePath(getRoot()), getRoot());
+            // Note that this should be in the swing thread.
+            SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        // FIXME it would be nice if there was more
+                        // information in the change about the context
+                        // of the change.
+                        valueForPathChanged(
+                                new TreePath(getRoot()), getRoot());
+                    }
+                });
         }
     }
 
