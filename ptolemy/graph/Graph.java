@@ -76,7 +76,7 @@ affect comparison under the <code>equals</code> method (this restriction allows
 us to efficiently map weights into their associated nodes and edges).
 Otherwise, unpredictable behavior may result.
 
-@author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu
+@author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu, Shahrooz Shahparnia
 @version $Id$
 @see ptolemy.graph.Edge
 @see ptolemy.graph.Node
@@ -613,6 +613,31 @@ public class Graph {
         return Collections.unmodifiableList(_incidentEdgeList(node));
     }
 
+    /** Return the collection of edges that make a node n2 a neighbor of a 
+     *  node n1. In other words, return the set of edges that are incident to 
+     *  both n1 and n2. Each element of the returned collection is an instance 
+     *  of {@link Edge}.
+     *  @param n1 The node n1.
+     *  @param n2 The node n2.
+     *  @return The collection of edges that make n2 a neighbor of n1.
+     *  @see {@link DirectedGraph.#predecessorEdges(Node, Node)}.
+     *  @see {@link DirectedGraph.#successorEdges(Node, Node)}.
+     */
+    public Collection neighborEdges(Node n1, Node n2) {
+        Collection edgeCollection = this.incidentEdges(n1);
+        Iterator edges = edgeCollection.iterator();
+        ArrayList commonEdges = new ArrayList();
+        while (edges.hasNext()) {
+            Edge edge = (Edge)edges.next();
+            if (edge.source() == n2) {
+                commonEdges.add(edge);
+            } else if (edge.sink() == n2) {
+                commonEdges.add(edge);
+            }
+        }
+        return commonEdges;
+    }
+   
     /** Return all of the neighbors of a given node in the form of a
      *  a collection. Each element of the collection is a Node.
      *  A neighbor of a node X is a node that is the sink

@@ -53,7 +53,8 @@ More specifically, the weights version of an operation takes individual
 node weights or arrays of weights as arguments, and, when applicable, returns
 individual weights or arrays of weights.
 
-@author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya
+@author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya,
+Shahrooz Shahparnia
 @version $Id$
 */
 public class DirectedGraph extends Graph {
@@ -369,6 +370,28 @@ public class DirectedGraph extends Graph {
         return Collections.unmodifiableList(_outputEdgeList(node));
     }
 
+    /** Return the collection of edges that make a node n2 a predecessor of a 
+     *  node n1. In other words, return the set of edges directed from n2 to n1.
+     *  Each element of the returned collection is an instance of {@link Edge}.
+     *  @param n1 The node n1.
+     *  @param n2 The node n2.
+     *  @return The collection of edges that make n2 a predecessor of n1.
+     *  @see {@link DirectedGraph.#successorEdges(Node, Node)}.
+     *  @see {@link Graph.#neighborEdges(Node, Node)}.
+     */
+    public Collection predecessorEdges(Node n1, Node n2) {
+        Collection edgeCollection = this.outputEdges(n2);
+        Iterator edges = edgeCollection.iterator();
+        ArrayList commonEdges = new ArrayList();
+        while (edges.hasNext()) {
+            Edge edge = (Edge)edges.next();
+            if (edge.sink() == n1) {
+                commonEdges.add(edge);
+            }
+        }
+        return commonEdges;
+    }
+ 
     /** Return all of the predecessors of a given node in the form of a
      *  a collection. Each element of the collection is a Node.
      *  A predecessor of a node X is a node that is the source
@@ -625,6 +648,20 @@ public class DirectedGraph extends Graph {
         return Collections.unmodifiableList(_sourceNodes);
     }
 
+    /** Return the collection of edges that make a node n2 a successor of a 
+     *  node n1. In other words, return the set of edges directed from n1 to n2.
+     *  Each element of the returned collection is an instance
+     *  of {@link Edge}.
+     *  @param n1 The node n1.
+     *  @param n2 The node n2.
+     *  @return The collection of edges that make n2 a successor of n1.
+     *  @see {@link DirectedGraph.#predecessorEdges(Node, Node)}.
+     *  @see {@link Graph.#neighborEdges(Node, Node)}.
+     */
+    public Collection successorEdges(Node n1, Node n2) {
+        return predecessorEdges(n2, n1);
+    } 
+  
     /** Return all of the successors of a given node in the form of a
      *  a collection. Each element of the collection is a Node.
      *  A successor of a node X is a node that is the sink

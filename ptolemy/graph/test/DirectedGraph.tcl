@@ -1,6 +1,6 @@
 # Tests for the DirectedGraph class
 #
-# @Author: Yuhong Xiong
+# @Author: Yuhong Xiong, Shuvra S. Bhattacharyya, Shahrooz Shahparnia
 #
 # $Id$
 #
@@ -255,3 +255,69 @@ test DirectedGraph-5.5 { predecessors } {
     list $result
 } {{[node3, node4]}}
 
+######################################################################
+####
+# 
+test DirectedGraph-6.1 {Test successor edges} {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    set node1 [$p add $n1]
+    set node2 [$p add $n2]
+    set node3 [$p add $n3]
+    set node4 [$p add $n4]
+    set e1 [java::new {java.lang.String String} edge1]
+    set e2 [java::new {java.lang.String String} edge2]
+    set e3 [java::new {java.lang.String String} edge3]
+    set e4 [java::new {java.lang.String String} edge4]
+    set e5 [java::new {java.lang.String String} edge5]
+    set e6 [java::new {java.lang.String String} edge6]
+    set e7 [java::new {java.lang.String String} edge7]
+    set e8 [java::new {java.lang.String String} edge8]
+    set edge1 [$p addEdge $n1 $n2 $e1]
+    set edge2 [$p addEdge $n1 $n2 $e2]
+    set edge3 [$p addEdge $n1 $n3 $e3]
+    set edge4 [$p addEdge $n2 $n3 $e4]
+    set edge5 [$p addEdge $n3 $n2 $e5]
+    set edge6 [$p addEdge $n3 $n2 $e6]
+    set edge7 [$p addEdge $n2 $n4 $e7]
+    set edge8 [$p addEdge $n4 $n1 $e8]
+    set nodes [$p nodes]
+    set collection [$p successorEdges $node2 $node3]
+    set obj [java::cast java.lang.Object $collection]
+    set result1 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p successorEdges $node1 $node3]
+    set obj [java::cast java.lang.Object $collection]
+    set result2 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p successorEdges $node1 $node2]
+    set obj [java::cast java.lang.Object $collection]
+    set result3 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p successorEdges $node2 $node4]
+    set obj [java::cast java.lang.Object $collection]
+    set result4 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p successorEdges $node2 $node1]
+    set obj [java::cast java.lang.Object $collection]
+    set result5 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    list $result1 $result2 $result3 $result4 $result5
+} {{[(node2, node3, edge4)]} {[(node1, node3, edge3)]} {[(node1, node2, edge1), (node1, node2, edge2)]} {[(node2, node4, edge7)]} {[]}}
+
+######################################################################
+####
+# 
+test Graph-6.2 {Test predecessor edges} {
+    set collection [$p predecessorEdges $node2 $node3]
+    set obj [java::cast java.lang.Object $collection]
+    set result1 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p predecessorEdges $node1 $node3]
+    set obj [java::cast java.lang.Object $collection]
+    set result2 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p predecessorEdges $node4 $node2]
+    set obj [java::cast java.lang.Object $collection]
+    set result3 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p predecessorEdges $node2 $node1]
+    set obj [java::cast java.lang.Object $collection]
+    set result4 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    list $result1 $result2 $result3 $result4
+} {{[(node3, node2, edge5), (node3, node2, edge6)]} {[]} {[(node2, node4, edge7)]} {[(node1, node2, edge1), (node1, node2, edge2)]}}

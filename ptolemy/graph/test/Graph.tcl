@@ -1,6 +1,6 @@
 # Tests for the Graph class
 #
-# @Author: Shuvra S. Bhattacharyya, Yuhong Xiong 
+# @Author: Shuvra S. Bhattacharyya, Yuhong Xiong, Shahrooz Shahparnia 
 #
 # $Id$
 #
@@ -442,3 +442,21 @@ test Graph-5.7 { neighbors with duplicate node weights} {
     list $result
 } {{[node1, node2, node4, node4]}}
 
+######################################################################
+####
+# 
+test Graph-6.1 {Test neighbor edges} {
+    set collection [$p3 neighborEdges $v1 $v8]
+    set obj [java::cast java.lang.Object $collection]
+    set result1 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p3 neighborEdges $v3 $v6]
+    set obj [java::cast java.lang.Object $collection]
+    set result2 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p3 neighborEdges $v5 $v9]
+    set obj [java::cast java.lang.Object $collection]
+    set result3 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    set collection [$p3 neighborEdges $v9 $v9]
+    set obj [java::cast java.lang.Object $collection]
+    set result4 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    list $result1 $result2 $result3 $result4
+} {{[(v1, v8, e8), (v8, v1, e11)]} {[(v3, v6, e2)]} {[]} {[(v4, v9, e10), (v9, v9, e12)]}}
