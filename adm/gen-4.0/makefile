@@ -160,6 +160,8 @@ clean:
 	rm -rf $(PTII_SRC_JAR) src_jar
 	rm -rf $(PTIIDIST) src installshield/*
 
+FINDCLEAN = -find . \( -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core \)  -exec rm -rf {} \;
+
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
 # then we tar it up.
@@ -183,7 +185,7 @@ $(PTIIDIST):
 	@echo "  tar -X does not seem to work under Cygwin"
 	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar \
 		$(PTIIDIST)/config/*.class
-	-find $(PTIIDIST) \( -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core \)  -exec rm -rf {} \;
+	(cd $(PTIIDIST; $(FINDCLEAN)
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with gr and javasound"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
@@ -269,6 +271,8 @@ $(PTII_SRC): $(PTII_FULL)
 		cd ..; \
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
+		rm -rf `cat $(GENDIR)/src.ex`; \
+		$(FINDCLEAN);
 		cd ..; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -c -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
@@ -300,7 +304,8 @@ src_jar: #$(PTII_SRC)
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign3-domains.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
-
+	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
+	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 
 ###############
 
