@@ -189,6 +189,21 @@ public class ModalModel extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to ensure that the _controller private
+     *  variable is reset to the controller of the cloned object.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return The new Entity.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ModalModel newModel = (ModalModel)super.clone(workspace);
+        newModel._controller = (FSMActor)newModel.getEntity("_Controller");
+        return newModel;
+    }
+
     /** Delegate to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
      *  return true, indicating that this composite actor does not
@@ -350,9 +365,9 @@ public class ModalModel extends TypedCompositeActor
          *   Tableau for the effigy, but something goes wrong.
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
-
             Configuration configuration = (Configuration)effigy.toplevel();
-            return configuration.openModel(_controller);
+            ModalModel model = (ModalModel)((PtolemyEffigy)effigy).getModel();
+            return configuration.openModel(model._controller);
         }
     }
 }
