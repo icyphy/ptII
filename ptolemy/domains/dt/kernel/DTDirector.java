@@ -277,6 +277,7 @@ public class DTDirector extends SDFDirector {
             while (allactors.hasMoreElements()) {
 
                 Actor actor = (Actor)allactors.nextElement();
+                _currentActiveActor = actor;
 
                 boolean isFiringNonDTCompositeActor = false;
 
@@ -310,6 +311,8 @@ public class DTDirector extends SDFDirector {
                 if (isFiringNonDTCompositeActor) {
 		            _pseudoTimeEnabled = false;
 		        }
+		        
+		        _currentActiveActor = null;
 
             }
         }
@@ -334,7 +337,13 @@ public class DTDirector extends SDFDirector {
         if (_pseudoTimeEnabled == true) {
             timeValue = _insideDirector.getCurrentTime();
         } else {
-            timeValue = super.getCurrentTime();
+            if (_currentActiveActor == null) {
+                timeValue = _currentTime;
+            } else {
+                _DTActor dtActor = (_DTActor) 
+                                   _allActorsTable.get(_currentActiveActor);
+                timeValue = dtActor._localTime;
+            }
         }
         return timeValue;
     }
@@ -579,6 +588,18 @@ public class DTDirector extends SDFDirector {
 
         _requestRefireAt(_formerValidTimeFired + timeIncrement);
         return returnValue;
+    }
+    
+    
+    /** Set the local time of an actor in the  model under 
+     *  this director.
+     *  @param newTime The new current simulation time.
+     *  @param actor The actor to be assigned a new local time
+     */
+    public void setActorLocalTime(double newTime, Actor actor) {
+        _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
+        dtActor._localTime = newTime;
+        _currentTime = newTime;
     }
 
 
@@ -1148,6 +1169,7 @@ public class DTDirector extends SDFDirector {
         _actorTable = new ArrayList();
         _receiverTable = new ArrayList();
         _outputPortTable = new ArrayList();
+        _currentActiveActor = null;
         _allActorsTable = new Hashtable();
         _currentTime = 0.0;
         _formerTimeFired = 0.0;
@@ -1171,6 +1193,9 @@ public class DTDirector extends SDFDirector {
 
     // Hashtable for keeping track of actor information
     private Hashtable _allActorsTable;
+    
+    // The current active actor during a firing
+    private Actor _currentActiveActor;
 
     // The time when the previous valid prefire() was called
     private double _formerValidTimeFired;
@@ -1212,6 +1237,7 @@ public class DTDirector extends SDFDirector {
     // Inner class to cache important variables for contained actors
     private class _DTActor {
     	private Actor    _actor;
+    	private double   _localTime;
     	private int      _repeats;
         private boolean  _shouldGenerateInitialTokens;
 
@@ -1221,6 +1247,7 @@ public class DTDirector extends SDFDirector {
     	public _DTActor(Actor actor) {
     		_actor = actor;
     		_repeats = 0;
+    		_localTime = 0.0;
             _shouldGenerateInitialTokens = false;
     	}
     }
