@@ -417,6 +417,41 @@ do not exist already, and stores them in new attributes called
 "_tokenConsumptionRate" "_tokenInitProduction" and
 "_tokenConsumptionRate". These are transient (Variable rather than
 Parameter), so they will not trigger a prompt to save.
+
+<li> We made a further study of the semantics of signals with discontinuity
+in a continuous time domain and improved our implementation to handle
+discontinuity uniformly. We created a new set of clocks for the CT domain.
+The clocks are ContinuousClock and TriggeredContinuousClock actors
+listed under ptolemy/domains/ct/lib directory. They generate piecewise
+continuous clock signals with the discontinuities defined by offset parameters
+explicitly shown. We recommend the users not to use the Clock and
+TriggeredClock actors in CT domain but use the continuous versions
+mentioned above. In order to generate a sequence of events in CT domain,
+users should use the EventSource actor in ptolemy/domains/ct/lib directory,
+which produces DISCRETE outputs. This may cause back incompatibility.
+(I wonder if the change could be handled by MoML parser. The difficulty I can
+see is that the parser could not tell whether the clock is used as a continuous
+source or discrete source. And if it is used as a discrete source, signal types
+have to be adjusted. We can not force the signal types as discrete.)
+
+ <p>Another issue is about the signal type inference for modal
+model. If the modal model has both Continuous and Discrete signal
+types for its inputs, it needs manual adjustment of the output signal
+types. This is not a new issue although.
+
+So, the solutions for the incompatible issues include:
+<ol>
+<li> Replace Clock with ContinuousClock if it is used as a continuous source.
+
+<li> Replace Clock with EventSource if it is used as a discrete source.
+
+<li> Manually configure the signal types of outputs of modal
+model. (Right click an output port; add "signalType" as a parameter;
+type "CONTINUOUS" or "DISCRETE"; and click commit.)
+
+</ol>
+
+
 </menu>
 
 If you have developed your own actors under Ptolemy II 2.0.1 by
