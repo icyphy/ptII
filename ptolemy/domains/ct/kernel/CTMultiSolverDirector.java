@@ -423,9 +423,15 @@ public class CTMultiSolverDirector extends CTDirector {
                 generator.emitCurrentEvents();
             }
         }
+        // Also check breakpoint table for explicit requests from discrete
+        // actors.
+        if(getBreakPoints().contains(new Double(getCurrentTime()))) {
+            hasDiscreteEvents = true;
+        }
         // Execute all discrete actors in their topological order only
         // if there are events happening.
         if (hasDiscreteEvents) {
+            getBreakPoints().insert(new Double(getCurrentTime()));
             if(_debugging) _debug(getName(), "has discrete events at time"+
                     getCurrentTime());
             _setDiscretePhase(true);
