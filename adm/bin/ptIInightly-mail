@@ -114,7 +114,7 @@ echo "" >> $mailmsg
 echo "The warnings themselves are:" >> $mailmsg
 egrep 'has been deprecated.' $ptbuildlog | egrep 'in (diva|ptolemy).' >> $mailmsg
 
-egrep '\*\*\*' $ptbuildlog >> $mailmsg
+# egrep '\*\*\*' $ptbuildlog >> $mailmsg
 
 #echo "" >> $mailmsg
 #echo "------------------------------------------------" >> $mailmsg
