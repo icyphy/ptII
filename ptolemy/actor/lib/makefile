@@ -97,6 +97,7 @@ JSRCS = \
 	ArrayElement.java \
 	ArrayExtract.java \
 	ArrayLength.java \
+	ArrayLevelCrossing.java \
 	ArrayMaximum.java \
 	ArrayMinimum.java \
 	ArrayPeakSearch.java \
