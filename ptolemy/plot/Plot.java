@@ -150,6 +150,10 @@ import java.util.*;
  *      Note that 2<sup>32</sup> is over 4 billion.
  * <li> The limitations of the log axis facility are listed in
  *      the <code>_gridInit()</code> method in the PlotBox class.
+ * <li> The compatibility issues of the <code>pxgraph</code> script are
+ *      list in the
+ *<a href="ptplot.Pxgraph.html#pxgraph script compatibility issues">Pxgraph</a> 
+ *      class. 
  * </ul>
  *
  * @author Edward A. Lee, Christopher Hylands
