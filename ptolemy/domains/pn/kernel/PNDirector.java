@@ -285,7 +285,7 @@ public class PNDirector extends BasePNDirector {
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire() or are
      *  blocked on a read or while waiting for mutations to be processed.
-     *  @returns True if all active threads containing actors controlled
+     *  @return True if all active threads containing actors controlled
      *  by this thread have stopped or are blocked; otherwise return false.
      */
     protected synchronized boolean _areAllThreadsStopped() {
@@ -303,8 +303,8 @@ public class PNDirector extends BasePNDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _isDeadlocked() {
-	return (_readBlockCount + _writeBlockCount + _mutationBlockCount
-		== _getActiveActorsCount());
+	return (_readBlockCount + _writeBlockCount +
+                _mutationBlockCount == _getActiveActorsCount());
     }
 
     /** Return true if the execution has paused or deadlocked.
@@ -341,7 +341,7 @@ public class PNDirector extends BasePNDirector {
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
     // protected void _processTopologyRequests()
-    //             throws IllegalActionException, TopologyChangeFailedException {
+    //    throws IllegalActionException, TopologyChangeFailedException {
     // 	Workspace worksp = workspace();
     // 	super._processTopologyRequests();
     // 	//Perform the type resolution.
