@@ -68,6 +68,9 @@ to the results of calling java.security.Signature.getInstance() with
 the values of the <i>signatureAlgorithm</i> and <i>provider</i>
 parameters.  Derived classes should have a fire() method that uses the
 _signature member to process data appropriately.
+In the fire() method of the derived class, super.fire() should be
+called before accessing _signature so that _signature may be updated if the
+attributes changed.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).  See the
@@ -162,13 +165,26 @@ public class SignatureActor extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == signatureAlgorithm) {
+            _updateSignatureNeeded = true;
             _signatureAlgorithm =
                 ((StringToken)signatureAlgorithm.getToken()).stringValue();
         } else if (attribute == provider) {
+            _updateSignatureNeeded = true;
             _provider = ((StringToken)provider.getToken()).stringValue();
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Update _signature if an attribute has changed and then invoke
+     *  super.fire() to transform the input data.
+     *
+     *  @exception IllegalActionException If thrown by the base class or
+     *  if there is a problem processing the data.
+     */
+    public void fire() throws IllegalActionException {
+        _updateSignature();
+        super.fire();
     }
 
     /** Use the values of the <i>signatureAlgorithm</i> and
@@ -184,19 +200,7 @@ public class SignatureActor extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        try {
-            if (_provider.equalsIgnoreCase("SystemDefault")) {
-                _signature = Signature.getInstance(_signatureAlgorithm);
-            } else {
-                _signature = Signature.getInstance(_signatureAlgorithm,
-                        _provider);
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to initialize Signature with algorithm: '"
-                    + _signatureAlgorithm + "', provider: '"
-                    + _provider + "'");
-        }
+        _updateSignature();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -211,4 +215,41 @@ public class SignatureActor extends TypedAtomicActor {
 
     /** The name of the signature algorithm to be used. */
     protected String _signatureAlgorithm;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    Private  Methods                      ////
+
+    /** If necessary, the value of _signature is updated by calling 
+     * Signature.getInstance() with an argument that is
+     * created from the values of the _signatureAlgorithm and _provider
+     */
+    private void _updateSignature() throws IllegalActionException {
+        // Usually, this method is called from initialize().
+        // This method may end up being called in fire() if
+        // the user changed attributes while the model is running.
+
+        if (_updateSignatureNeeded) {
+            try {
+                if (_provider.equalsIgnoreCase("SystemDefault")) {
+                    _signature = Signature.getInstance(_signatureAlgorithm);
+                } else {
+                    _signature = Signature.getInstance(_signatureAlgorithm,
+                            _provider);
+                }
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to initialize Signature with algorithm: '"
+                        + _signatureAlgorithm + "', provider: '"
+                        + _provider + "'");
+            }
+            _updateSignatureNeeded = false;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    Private Variables                      ////
+
+    // Set to true if one of the parameters changed and we need to
+    // call _updateSignature().
+    private boolean _updateSignatureNeeded = true;
 }
