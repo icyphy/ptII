@@ -226,8 +226,8 @@ public class CachedMethod {
             if (cachedMethod == null) {
                 // Native convert the base class.
                 //  System.out.println("Checking for array map");
-                destTokenClass = ASTPtFunctionNode
-                    .convertTokenTypeToJavaType(argTypes[0]);
+                destTokenClass = ConversionUtilities
+                        .convertTokenTypeToJavaType(argTypes[0]);
 
                 Method method = _polymorphicGetMethod(destTokenClass,
                         methodName, methodArgTypes, conversions);
@@ -413,7 +413,7 @@ public class CachedMethod {
                     + "no matching method was found.");
         }
         Class returnType = _method.getReturnType();
-        Type type = ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
+        Type type = ConversionUtilities.convertJavaTypeToTokenType(returnType);
         return type;
     }
 
@@ -481,7 +481,7 @@ public class CachedMethod {
                         "Error invoking method " + method + " on object " +
                         argValues[0] + "\n");
             }
-            return ASTPtFunctionNode.convertJavaTypeToToken(result);
+            return ConversionUtilities.convertJavaTypeToToken(result);
         } else if (isFunction()) {
             int num = argValues.length;
             Object[] methodArgValues = new Object[num];
@@ -507,7 +507,7 @@ public class CachedMethod {
                 throw new IllegalActionException(null, ex,
                         "Error invoking function " + method + "\n");
             }
-            return ASTPtFunctionNode.convertJavaTypeToToken(result);
+            return ConversionUtilities.convertJavaTypeToToken(result);
         }
         throw new IllegalActionException("Cannot invoke function "
                 + method +  " that is not simple function or method");
@@ -603,10 +603,10 @@ public class CachedMethod {
             public Object convert(ptolemy.data.Token input)
                     throws IllegalActionException {
                 // Convert tokens to native types.
-                return ASTPtFunctionNode.convertTokenToJavaType(input)[0];
+                return ConversionUtilities.convertTokenToJavaType(input);
             }
         };
-
+    
     /** Identity conversion.  Does nothing. */
     public static final ArgumentConversion
     IDENTITY = new ArgumentConversion(3) {
@@ -616,7 +616,7 @@ public class CachedMethod {
                 return input;
             }
         };
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -654,10 +654,11 @@ public class CachedMethod {
                 Class class1 = arguments1[j];
                 Class class2 = arguments2[j];
                 try {
-                    Type type1 = ASTPtFunctionNode
+                    Type type1 = ConversionUtilities
                         .convertJavaTypeToTokenType(class1);
-                    Type type2 = ASTPtFunctionNode
+                    Type type2 = ConversionUtilities
                         .convertJavaTypeToTokenType(class2);
+
                     if (TypeLattice.compare(type2, type1)
                             == ptolemy.graph.CPO.LOWER) {
                         // Found one conversion where the second method
@@ -700,7 +701,7 @@ public class CachedMethod {
         try {
             // Tokens can be converted to native types.
             if (formal.isAssignableFrom(
-                    ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
+                     ConversionUtilities.convertTokenTypeToJavaType(actual))) {
                 return NATIVE;
             }
         } catch (IllegalActionException ex) {
@@ -713,7 +714,7 @@ public class CachedMethod {
             // acceptable
             if (formal.isPrimitive()) {
                 Type type =
-                    ASTPtFunctionNode.convertJavaTypeToTokenType(formal);
+                    ConversionUtilities.convertJavaTypeToTokenType(formal);
                 if (ptolemy.graph.CPO.LOWER ==
                         TypeLattice.compare(actual, type)) {
                     return NATIVE;

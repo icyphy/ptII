@@ -78,6 +78,7 @@ JSRCS = \
 	ConcreteMatrixToken.java \
 	ConcreteScalarToken.java \
 	Constants.java \
+	ConversionUtilities.java \
 	ExplicitScope.java \
 	FixPointFunctions.java \
 	GeneralToken.java \
