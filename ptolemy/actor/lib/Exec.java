@@ -121,7 +121,7 @@ public class Exec extends TypedAtomicActor {
 
         waitFor = new Parameter(this, "waitFor");
         waitFor.setTypeEquals(BaseType.BOOLEAN);
-        waitFor.setToken(BooleanToken.TRUE);
+        waitFor.setToken(BooleanToken.FALSE);
     }
 
     ///////////////////////////////////////////////////////////////////
