@@ -140,7 +140,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="1.0" max="40.0"/>
-<yRange min="0.0" max="1.7037000301548395"/>
+<yRange min="0.0" max="2.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
             </configure>
