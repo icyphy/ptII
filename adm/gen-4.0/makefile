@@ -342,6 +342,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf jni \
 		doc/usingVergil \
+		doc/design/usingVergil \
 		lib/hsif \
 		lib/jni.jar \
 		lib/chic.jar \
@@ -376,7 +377,6 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/configs/visualsense \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
-		ptolemy/doc/design/usingVergil \
 		ptolemy/domains/ci \
 		ptolemy/domains/csp \
 		ptolemy/domains/dde \
@@ -394,28 +394,48 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/wireless \
 		thales; \
 	   touch configure; \
+	   chmod a+rx configure; \
 	)
-	grep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/hyvisual$(VERSION)/bin/makefile \
+	egrep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/hyvisual$(VERSION)/bin/makefile \
 		> src_jar/hyvisual$(VERSION)/bin/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/bin/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/bin/makefile
-	grep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
+	# Fix up actor/lib/makefile
+	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile
 	# Fix up domains/makefile
-	grep -v "csp.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+	egrep -v "csp.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
 		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile \
-		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
+		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
-		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile
+		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile
 	# Fix up configs/makefile
-	grep -v "dsp.jar|full.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+	egrep -v "dsp.jar|full.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
 		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
+	# Fix up doc/design/makefile
+	egrep -v "ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
+		src_jar/hyvisual$(VERSION)/doc/design/makefile \
+		> src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/doc/design/makefile
+	# Fix up doc/makefile
+	egrep -v "comm|python|security|ci/kernel|ci/lib|csp|dde|giotto|pn/kernel|psdf|petrinet|sr/kernel|sr/lib|tm/kernel|tm/lib|wireless" \
+		src_jar/hyvisual$(VERSION)/doc/makefile \
+		> src_jar/hyvisual$(VERSION)/doc/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/doc/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/doc/makefile
+	# Fix up makefile
+	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar" \
+		src_jar/hyvisual$(VERSION)/makefile \
+		> src_jar/hyvisual$(VERSION)/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/makefile \
 	#cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
 	(cd src_jar/hyvisual$(VERSION); rm -rf `cat ../../src.ex`)
 
