@@ -30,12 +30,15 @@
 */
 
 package ptolemy.domains.pn.kernel;
+
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+
 import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNQueueReceiver
@@ -186,6 +189,124 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	_pause = false;
 	_terminate = false;
     }
+
+    /** Return true if this receiver is connected to the inside of a 
+     *  boundary port. A boundary port is an opaque port that is contained 
+     *  by a composite actor. If this receiver is connected to the inside 
+     *  of a boundary port, then return true; otherwise return false. 
+     *  This method is not synchronized so the caller should be.
+     * @return True if this receiver is connected to the inside of a 
+     *  boundary port; return false otherwise.
+     */
+     public boolean isConnectedToBoundary() {
+         IOPort innerPort = (IOPort)getContainer();
+         if( innerPort == null ) {
+             return false;
+         }
+         ComponentEntity innerEntity = 
+                 (ComponentEntity)innerPort.getContainer(); 
+
+         Port outerPort = null; 
+         ComponentEntity outerEntity = null; 
+         Enumeration enum = innerPort.connectedPorts(); 
+         while( enum.hasMoreElements() ) {
+             outerPort = (Port)enum.nextElement();
+             outerEntity = (ComponentEntity)outerPort.getContainer();
+             if( outerEntity == innerEntity.getContainer() ) {
+		 // The port container of this receiver is connected 
+                 // to a boundary port. Now determine if this receiver's
+                 // channel is connected to a boundary port.
+                 try {
+		 	Receiver[][] rcvrs = 
+                        	((IOPort)outerPort).deepGetReceivers();
+		     	for( int i = 0; i < rcvrs.length; i++ ) {
+                            for( int j = 0; j < rcvrs[i].length; j++ ) {
+		                 if( this == rcvrs[i][j] ) {
+			             return true;
+                                 }
+                             }
+			 }
+                 } catch( IllegalActionException e) {
+                     // FIXME: Do Something!
+                 }
+             }
+         }
+         return false;
+     }
+     
+    /** Return true if this receiver is contained on the inside of a 
+     *  boundary port. A boundary port is an opaque port that is 
+     *  contained by a composite actor. If this receiver is contained 
+     *  on the inside of a boundary port then return true; otherwise 
+     *  return false. This method is not synchronized so the caller 
+     *  should be.
+     * @return True if this receiver is contained on the inside of
+     *  a boundary port; return false otherwise.
+     */
+     public boolean isInsideBoundary() {
+         IOPort innerPort = (IOPort)getContainer();
+         if( innerPort == null ) {
+             return false;
+         }
+         ComponentEntity innerEntity = 
+                 (ComponentEntity)innerPort.getContainer(); 
+         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+             // This receiver is contained by the port 
+             // of a composite actor.
+             if( innerPort.isOutput() && !innerPort.isInput() ) {
+                 return true;
+             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
+                 return false;
+             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
+                 return false;
+             } else {
+                 // CONCERN: The following only works if the port 
+                 // is not both an input and output.
+                 throw new IllegalArgumentException("A port that is "
+                         + "both an input and output can not be " 
+                         + "properly dealt with by "
+                         + "DDEReceiver.isInsideBoundary");
+             }
+         } 
+         return false;
+     }
+
+    /** Return true if this receiver is contained on the outside of a 
+     *  boundary port. A boundary port is an opaque port that is 
+     *  contained by a composite actor. If this receiver is contained 
+     *  on the outside of a boundary port then return true; otherwise 
+     *  return false. This method is not synchronized so the caller 
+     *  should be.
+     * @return True if this receiver is contained on the outside of
+     *  a boundary port; return false otherwise.
+     */
+     public boolean isOutsideBoundary() {
+         IOPort innerPort = (IOPort)getContainer();
+         if( innerPort == null ) {
+             return false;
+         }
+         ComponentEntity innerEntity = 
+                 (ComponentEntity)innerPort.getContainer(); 
+         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+             // This receiver is contained by the port 
+             // of a composite actor.
+             if( innerPort.isOutput() && !innerPort.isInput() ) {
+                 return false;
+             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
+                 return true;
+             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
+                 return false;
+             } else {
+                 // CONCERN: The following only works if the port 
+                 // is not both an input and output.
+                 throw new IllegalArgumentException("A port that is "
+                         + "both an input and output can not be " 
+                         + "properly dealt with by "
+                         + "DDEReceiver.isInsideBoundary");
+             }
+         } 
+         return false;
+     }
 
     /** Return a true or false to indicate whether there is a read pending
      *  on this receiver or not, respectively.
