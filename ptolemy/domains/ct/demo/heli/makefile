@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/lorenz
+ME =		ptolemy/domains/ct/demo/heli
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -49,6 +49,7 @@ JSRCS = \
 	ControllerActor.java \
 	CruiseLinearizer.java \
 	HelicopterActor.java \
+	HeliControlApplet.java \
 	HoverLinearizer.java \
 	XZHigherDerivatives.java 
 

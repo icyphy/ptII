@@ -170,7 +170,7 @@ public class ControllerActor extends CTActor{
         _paramHm = new CTParameter(this, "hm", new DoubleToken(_hm));
 
         _Mm = (double)25.23;
-        _paramMm = new CTParameter(this, "Iy", new DoubleToken(_Mm));
+        _paramMm = new CTParameter(this, "Mm", new DoubleToken(_Mm));
 
         _mass = (double)4.9;
         _paramMass = new CTParameter(this, "Mass", new DoubleToken(_mass));

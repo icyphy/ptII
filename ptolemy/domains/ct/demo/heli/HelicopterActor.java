@@ -89,23 +89,23 @@ public class HelicopterActor extends CTActor{
         inputTh.setMultiport(false);
         inputTh.setDeclaredType(DoubleToken.class);
 
-        outputPx = new TypedIOPort(this, "outputPx");
-        outputPx.setInput(false);
-        outputPx.setOutput(true);
-        outputPx.setMultiport(false);
-        outputPx.setDeclaredType(DoubleToken.class);
+        outputDDPx = new TypedIOPort(this, "outputDDPx");
+        outputDDPx.setInput(false);
+        outputDDPx.setOutput(true);
+        outputDDPx.setMultiport(false);
+        outputDDPx.setDeclaredType(DoubleToken.class);
 
-        outputPz = new TypedIOPort(this, "outputPz");
-        outputPz.setInput(false);
-        outputPz.setOutput(true);
-        outputPz.setMultiport(false);
-        outputPz.setDeclaredType(DoubleToken.class);
+        outputDDPz = new TypedIOPort(this, "outputDDPz");
+        outputDDPz.setInput(false);
+        outputDDPz.setOutput(true);
+        outputDDPz.setMultiport(false);
+        outputDDPz.setDeclaredType(DoubleToken.class);
 
-        outputTh = new TypedIOPort(this, "outputTh");
-        outputTh.setInput(false);
-        outputTh.setOutput(true);
-        outputTh.setMultiport(false);
-        outputTh.setDeclaredType(DoubleToken.class);
+        outputDDTh = new TypedIOPort(this, "outputDDTh");
+        outputDDTh.setInput(false);
+        outputDDTh.setOutput(true);
+        outputDDTh.setMultiport(false);
+        outputDDTh.setDeclaredType(DoubleToken.class);
 
         _Iy = (double)0.271256;
         _paramIy = new CTParameter(this, "Iy", new DoubleToken(_Iy));
@@ -114,7 +114,7 @@ public class HelicopterActor extends CTActor{
         _paramHm = new CTParameter(this, "hm", new DoubleToken(_hm));
 
         _Mm = (double)25.23;
-        _paramMm = new CTParameter(this, "Iy", new DoubleToken(_Mm));
+        _paramMm = new CTParameter(this, "Mm", new DoubleToken(_Mm));
 
         _mass = (double)4.9;
         _paramMass = new CTParameter(this, "Mass", new DoubleToken(_mass));
@@ -139,9 +139,9 @@ public class HelicopterActor extends CTActor{
         double ddPz = (-Tm*Math.sin(Th)*Math.sin(A) - 
                 Tm*Math.cos(Th)*Math.cos(A))/_mass + g;
         double ddTh = (_Mm*A + _hm*Tm*Math.sin(A))/_Iy;
-        outputPx.broadcast(new DoubleToken(ddPx));
-        outputPz.broadcast(new DoubleToken(ddPz));
-        outputTh.broadcast(new DoubleToken(ddTh));
+        outputDDPx.broadcast(new DoubleToken(ddPx));
+        outputDDPz.broadcast(new DoubleToken(ddPz));
+        outputDDTh.broadcast(new DoubleToken(ddTh));
     }
     
     /** Update the parameter if they have been changed.
@@ -178,15 +178,15 @@ public class HelicopterActor extends CTActor{
 
     /** Output port Px
      */
-    public TypedIOPort outputPx;
+    public TypedIOPort outputDDPx;
 
     /** Output port Pz
      */
-    public TypedIOPort outputPz;
+    public TypedIOPort outputDDPz;
 
     /** Output port Th
      */
-    public TypedIOPort outputTh;
+    public TypedIOPort outputDDTh;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

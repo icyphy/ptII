@@ -83,7 +83,7 @@ public class HoverLinearizer extends CTActor{
         inputD3Px.setMultiport(false);
         inputD3Px.setDeclaredType(DoubleToken.class);
 
-        inputD4Px = new TypedIOPort(this, "inputDPx");
+        inputD4Px = new TypedIOPort(this, "inputD4Px");
         inputD4Px.setInput(true);
         inputD4Px.setOutput(false);
         inputD4Px.setMultiport(false);
@@ -113,7 +113,7 @@ public class HoverLinearizer extends CTActor{
         inputD3Pz.setMultiport(false);
         inputD3Pz.setDeclaredType(DoubleToken.class);
 
-        inputD4Pz = new TypedIOPort(this, "inputDPz");
+        inputD4Pz = new TypedIOPort(this, "inputD4Pz");
         inputD4Pz.setInput(true);
         inputD4Pz.setOutput(false);
         inputD4Pz.setMultiport(false);
