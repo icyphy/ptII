@@ -184,6 +184,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
         return _fields.keySet();
     }
 
+    /** Return the length of this token.
+     *  @return The length of this token, which is greater than or equal
+     *   to zero.
+     */
+    public int length() {
+        return _fields.size();
+    }
+
     /** Returns a new RecordToken representing the multiplicative identity.
      *  The returned token has the same set of labels as this one, and
      *  each field contains the multiplicative identity of the corresponding
