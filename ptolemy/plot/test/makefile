@@ -73,6 +73,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 tests:: $(EXTRA_SRCS) jclass test_java #test_jgraphical
+	echo "run 'make all_tests' to run the graphical tests"
+
 all_tests: tests test_jgraphical
 
 all: jclass
