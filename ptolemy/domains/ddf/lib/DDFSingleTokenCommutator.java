@@ -95,7 +95,7 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
 
         Token[] rates = new IntToken[input.getWidth()];
         rates[0] = new IntToken(1);
-        for (int i=1; i < input.getWidth(); i++) {
+        for (int i = 1; i < input.getWidth(); i++) {
             rates[i] = new IntToken(0);
         }
         inputTokenConsumptionRate.setToken(new ArrayToken(rates));
@@ -114,7 +114,7 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
         Token[] rates = new IntToken[input.getWidth()];
         int currentInputPosition = _getCurrentInputPosition();
         rates[currentInputPosition] = new IntToken(1);
-        for (int i=0; i < input.getWidth(); i++) {
+        for (int i = 0; i < input.getWidth(); i++) {
             if ( i != currentInputPosition)
                 rates[i] = new IntToken(0);
         }

@@ -154,7 +154,7 @@ public class DDFSelect extends TypedAtomicActor {
         super.initialize();
         _isControlRead = false;
         Token[] rates = new IntToken[input.getWidth()];
-        for (int i=0; i < input.getWidth(); i++) {
+        for (int i = 0; i < input.getWidth(); i++) {
             rates[i] = new IntToken(0);
         }
         inputTokenConsumptionRate.setToken(new ArrayToken(rates));
@@ -169,7 +169,7 @@ public class DDFSelect extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         if (_isControlRead) {
             Token[] rates = new IntToken[input.getWidth()];
-            for (int i=0; i < input.getWidth(); i++) {
+            for (int i = 0; i < input.getWidth(); i++) {
                 rates[i] = new IntToken(0);
             }
             rates[_control] = new IntToken(1);
@@ -177,7 +177,7 @@ public class DDFSelect extends TypedAtomicActor {
             controlTokenConsumptionRate.setToken(new IntToken(0));
         } else {
             Token[] rates = new IntToken[input.getWidth()];
-            for (int i=0; i < input.getWidth(); i++) {
+            for (int i = 0; i < input.getWidth(); i++) {
                 rates[i] = new IntToken(0);
             }
             inputTokenConsumptionRate.setToken(new ArrayToken(rates));
