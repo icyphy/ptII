@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for CT Vehicle to Vehicle demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2004 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,17 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo
-
-# PTJSPACES_DIR is set by configure to jspaces if Jini was found
-DIRS = 		BouncingBall CarTracking ComparedClocks \
-		Helicopter LevelCrossingDetector \
-		Lorenz SigmaDelta SquareWave \
-		SampledClocks StickyMasses Switch \
-		Transmission Thermostat V2V Corba #$(PTJSPACES_DIR)
+ME = 		ptolemy/domains/ct/demo/V2V
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -48,50 +41,48 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	V2V
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-# We don't include Corba/Corba.jar because we don't ship Corba.
-PTCLASSALLJARS = \
-	BouncingBall/BouncingBall.jar \
-	CarTracking/CarTracking.jar \
-	ComparedClocks/ComparedClocks.jar \
-	Helicopter/Helicopter.jar \
-	LevelCrossingDetector/LevelCrossingDetector.jar \
-	Lorenz/Lorenz.jar \
-	SampledClocks/SampledClocks.jar \
-	SigmaDelta/SigmaDelta.jar \
-	SquareWave/SquareWave.jar \
-	StickyMasses/StickyMasses.jar \
-	Switch/Switch.jar \
-	Transmission/Transmission.jar \
-	Thermostat/Thermostat.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	V2V.xml
 
-EXTRA_SRCS = index.htm
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	Agilent \
-	Saber
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: all jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer V2V.htm
+
+#demo_vergil_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer V2VVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" V2V.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" V2V.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
