@@ -127,10 +127,8 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
              attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
 
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistence?
-            if (attribute instanceof Variable &&
-                    !(attribute instanceof Parameter)) {
+            // Ignore things like Variable.
+            if (!attribute.isPersistent()) {
                 continue;
             }
 

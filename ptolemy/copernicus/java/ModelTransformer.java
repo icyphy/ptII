@@ -1768,13 +1768,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
     // Return true if the given attribute is one that can be ignored
     // during code generation...
     public static boolean _isIgnorableAttribute(Attribute attribute) {
-        // FIXME: This is horrible...  I guess we need an attribute for
-        // persistence?
-        if (attribute instanceof Variable &&
-                !(attribute instanceof Parameter)) {
+        // Ignore things like Variable.
+        if (attribute.isPersistent()) {
             return true;
         }
-
+        
         // Ignore frame sizes and locations.  They aren't really
         // necessary in the generated code, I don't think.
         if (attribute instanceof SizeAttribute ||
