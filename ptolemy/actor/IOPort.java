@@ -43,6 +43,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -1713,6 +1714,90 @@ public class IOPort extends ComponentPort {
         _isInputOutputStatusSet = true;
         _invalidate();
         _workspace.doneWriting();
+    }
+
+    /** Transfer data from this port to the ports it is connected to
+     *  on the inside.
+     *  This port must be an opaque input port.  If any
+     *  channel of the this port has no data, then that channel is
+     *  ignored. This method will transfer exactly one token on
+     *  each input channel that has at least one token available.
+     *
+     *  @exception IllegalActionException If this port is not an opaque
+     *   input port.
+     *  @return True if at least one data token is transferred.
+     */
+    public boolean transferInputs() throws IllegalActionException {
+        if (!this.isInput() || !this.isOpaque()) {
+            throw new IllegalActionException(this,
+                    "transferInputs: this port is not an opaque" +
+                    "input port.");
+        }
+        boolean wasTransferred = false;
+        Receiver[][] insideReceivers = this.deepGetReceivers();
+        for (int i = 0; i < this.getWidth(); i++) {
+	    if (this.hasToken(i)) {
+                try {
+                    Token t = this.get(i);
+                    if (insideReceivers != null && insideReceivers[i] != null) {
+                        if(_debugging) _debug(getName(),
+                                "transferring input from " + this.getName());
+                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                            insideReceivers[i][j].put(t);
+                        }
+                        wasTransferred = true;
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(
+                            "IOPort.transferInputs: Internal error: " +
+                            ex.getMessage());
+                }
+            }
+        }
+        return wasTransferred;
+    }
+
+    /** Transfer data from this port to the ports it is connected to on
+     *  the outside.
+     *  This port must be an opaque output port.  If any
+     *  channel of this port has no data, then that channel is
+     *  ignored. This method will transfer exactly one token on
+     *  each output channel that has at least one token available.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @return True if at least one data token is transferred.
+     */
+    public boolean transferOutputs() throws IllegalActionException {
+        if (!this.isOutput() || !this.isOpaque()) {
+            throw new IllegalActionException(this,
+                    "transferOutputs: this port is not " +
+                    "an opaque output port.");
+        }
+        boolean wasTransferred = false;
+        Receiver[][] insideReceivers = this.getInsideReceivers();
+        if (insideReceivers != null) {
+            for (int i = 0; i < insideReceivers.length; i++) {
+                if (insideReceivers[i] != null) {
+                    for (int j = 0; j < insideReceivers[i].length; j++) {
+			if (insideReceivers[i][j].hasToken()) {
+                            try {
+                                Token t = insideReceivers[i][j].get();
+                                this.send(i, t);
+                                wasTransferred = true;
+                            } catch (NoTokenException ex) {
+                                throw new InternalErrorException(
+                                        "IOPort.transferOutputs: " +
+                                        "Internal error: " +
+                                        ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return wasTransferred;
     }
 
     /** Unlink whatever relation is currently linked at the specified index

@@ -661,6 +661,63 @@ public class TypedIOPort extends IOPort implements Typeable {
         _constraints.add(ineq);
     }
 
+    /** Transfer data from this port to the ports it is connected to
+     *  on the inside.
+     *  This port must be an opaque input port.  If any
+     *  channel of the this port has no data, then that channel is
+     *  ignored. This method will transfer exactly one token on
+     *  each input channel that has at least one token available.
+     *  Before putting the token into the destination receivers, this
+     *  method also checks the type of the inside input port,
+     *  and converts the token if necessary.
+     *  The conversion is done by calling the
+     *  convert() method of the type of the inside input port.
+     *
+     *  @exception IllegalActionException If this port is not an opaque
+     *   input port.
+     *  @return True if at least one data token is transferred.
+     */
+    public boolean transferInputs() throws IllegalActionException {
+        if (!this.isInput() || !this.isOpaque()) {
+            throw new IllegalActionException(this,
+                    "transferInputs: this port is not an opaque" +
+                    "input port.");
+        }
+        boolean wasTransferred = false;
+        Receiver[][] insideReceivers = this.deepGetReceivers();
+        for (int i = 0; i < this.getWidth(); i++) {
+	    if (this.hasToken(i)) {
+                try {
+                    Token token = this.get(i);
+                    if (insideReceivers != null && insideReceivers[i] != null) {
+                        if(_debugging) _debug(getName(),
+                                "transferring input from " + this.getName());
+                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                            TypedIOPort port =
+                                (TypedIOPort)insideReceivers[i][j].
+				getContainer();
+                            Type insideType = port.getType();
+
+                            if (insideType.isEqualTo(token.getType())) {
+                                insideReceivers[i][j].put(token);
+                            } else {
+                                Token newToken = insideType.convert(token);
+                                insideReceivers[i][j].put(newToken);
+                            }
+                        }
+                        wasTransferred = true;
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(
+                            "TypedIOPort.transferInputs: Internal error: " +
+                            ex.getMessage());
+                }
+            }
+        }
+        return wasTransferred;
+    }
+
     /** Return the type constraints of this port in the form of a
      *  list of inequalities.
      *  @return A list of inequalities.

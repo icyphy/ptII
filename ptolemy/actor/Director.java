@@ -642,89 +642,32 @@ public class Director extends Attribute implements Executable {
 
     /** Transfer data from an input port of the
      *  container to the ports it is connected to on the inside.
-     *  The port argument must  be an opaque input port.  If any
-     *  channel of the input port has no data, then that channel is
-     *  ignored. This method will transfer exactly one token on
-     *  each input channel that has at least one token available.
+     *  This method delegates the operation to the same method on IOPort,
+     *  so that the subclass of IOPort, TypedIOPort, can override this method
+     *  to perform run-time type conversion.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @see IOPort.transferInputs
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
-        }
-        boolean wasTransferred = false;
-        Receiver[][] insideReceivers = port.deepGetReceivers();
-        for (int i = 0; i < port.getWidth(); i++) {
-	    if (port.hasToken(i)) {
-                try {
-                    Token t = port.get(i);
-                    if (insideReceivers != null && insideReceivers[i] != null) {
-                        if(_debugging) _debug(getName(),
-                                "transferring input from " + port.getName());
-                        for (int j = 0; j < insideReceivers[i].length; j++) {
-                            insideReceivers[i][j].put(t);
-                        }
-                        wasTransferred = true;
-                    }
-                } catch (NoTokenException ex) {
-                    // this shouldn't happen.
-                    throw new InternalErrorException(
-                            "Director.transferInputs: Internal error: " +
-                            ex.getMessage());
-                }
-            }
-        }
-        return wasTransferred;
+        return port.transferInputs();
     }
 
     /** Transfer data from an output port of the
      *  container to the ports it is connected to on the outside.
-     *  The port argument must be an opaque output port.  If any
-     *  channel of the output port has no data, then that channel is
-     *  ignored. This method will transfer exactly one token on
-     *  each output channel that has at least one token available.
+     *  This method delegates the operation to the same method on IOPort.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @see IOPort.transferOutputs
      */
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not " +
-                    "an opaque output port.");
-        }
-        boolean wasTransferred = false;
-        Receiver[][] insideReceivers = port.getInsideReceivers();
-        if (insideReceivers != null) {
-            for (int i = 0; i < insideReceivers.length; i++) {
-                if (insideReceivers[i] != null) {
-                    for (int j = 0; j < insideReceivers[i].length; j++) {
-			if (insideReceivers[i][j].hasToken()) {
-                            try {
-                                Token t = insideReceivers[i][j].get();
-                                port.send(i, t);
-                                wasTransferred = true;
-                            } catch (NoTokenException ex) {
-                                throw new InternalErrorException(
-                                        "Director.transferOutputs: " +
-                                        "Internal error: " +
-                                        ex.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return wasTransferred;
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
+        return port.transferOutputs();
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
