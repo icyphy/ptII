@@ -124,12 +124,16 @@ public class CommandLineTransformer extends SceneTransformer {
                 "ptolemy.copernicus.java.CommandLineTemplate");
         applicationClass.setLibraryClass();
 
-        SootClass modelClass = Scene.v().getMainClass();
+        SootClass modelClass = ModelTransformer.getModelClass();
 
         SootClass mainClass = SootUtilities.copyClass(applicationClass,
                 Options.getString(options, "targetPackage") + ".Main");
         mainClass.setApplicationClass();
             
+        // Tell the rest of soot that this is the interesting main method.
+        Scene.v().setMainClass(mainClass);
+
+        // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
 
         // Optimizations.

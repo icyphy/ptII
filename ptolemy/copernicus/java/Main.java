@@ -124,15 +124,16 @@ public class Main extends KernelMain {
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
+        
+        // Inline the director into the composite actor.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
+                InlineDirectorTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
                 ClassWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
                 JimpleWriter.v()));
 
-        // Inline the director into the composite actor.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
-                InlineDirectorTransformer.v(_toplevel)));
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
@@ -171,7 +172,7 @@ public class Main extends KernelMain {
                 ClassWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot3",
                 JimpleWriter.v()));
-
+      
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -183,6 +184,11 @@ public class Main extends KernelMain {
         // assignments to attributes and handle them differently.)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iat",
                 InlineParameterTransformer.v(_toplevel)));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
+                ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
+                JimpleWriter.v()));
         
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
@@ -204,8 +210,8 @@ public class Main extends KernelMain {
 
         // Deal with any more statically analyzeable token
         // references that were created.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
-                InlineTokenTransformer.v(_toplevel)));
+        //        Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
+        //        InlineTokenTransformer.v(_toplevel)));
      
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
@@ -213,10 +219,10 @@ public class Main extends KernelMain {
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
-
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
+     
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot5",
                 ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot5",
                 JimpleWriter.v()));
 
         // Unroll loops with constant loop bounds.
@@ -278,6 +284,7 @@ public class Main extends KernelMain {
         
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true"));
+        
      }
 
     /** Add transforms corresponding to the standard soot optimizations

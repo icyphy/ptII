@@ -80,8 +80,12 @@ JADTARGETPACKAGE =	ptolemy.copernicus.shallow.cg.jad
 JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/shallow/cg/jad
 
 # IIR
-MODEL = IIR
-SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
+#MODEL = IIR
+#SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
+
+MODEL = OrthogonalCom
+SOURCECLASS = $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/$(MODEL).xml
+
 SHALLOWTARGETCLASS = $(TARGETPACKAGE).CG$(MODEL)
 
 JVM_SIZE = -Xmx256m
@@ -113,7 +117,7 @@ runShallowDemo:
 	$(JAVA) -Xfuture -classpath "$(ROOT)" \
 		-Dptolemy.ptII.dir=$(PTII) \
 		ptolemy.actor.gui.CompositeActorApplication \
-		-class $(SHALLOWTARGETCLASS)
+		-class $(SHALLOWTARGETCLASS) -director.iterations 50000
 
 # Jad is a Java disassembler
 JAD=jad

@@ -103,7 +103,7 @@ public class InlineParameterTransformer extends SceneTransformer {
         // For every variable and settable attribute in the model, create a
         // field that has the value of that attributes.
         _createTokenAndExpressionFields(
-                Scene.v().getMainClass(), _model, _model,
+                ModelTransformer.getModelClass(), _model, _model,
                 attributeToValueFieldMap, debug);
 
         // Loop over all the actor instance classes.

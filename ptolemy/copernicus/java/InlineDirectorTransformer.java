@@ -113,7 +113,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
       
-        SootClass modelClass = Scene.v().getMainClass();
+        SootClass modelClass = ModelTransformer.getModelClass();
 
         // Inline the director
         {

@@ -104,9 +104,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
       
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
-        //   _getAttributeFields(Scene.v().getMainClass(), _model, 
+        //   _getAttributeFields(ModelTransformer.getModelClass(), _model, 
         //        _model, attributeToFieldMap);
-        classToObjectMap.put(Scene.v().getMainClass(), _model);
+        classToObjectMap.put(ModelTransformer.getModelClass(), _model);
        
         // Loop over all the actor instance classes and get the
         // attribute fields.

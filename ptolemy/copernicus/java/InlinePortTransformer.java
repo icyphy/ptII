@@ -57,6 +57,7 @@ import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.type.Typeable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -67,12 +68,14 @@ import ptolemy.copernicus.kernel.SootUtilities;
 A Transformer that is responsible for inlining the values of parameters.
 The values of the parameters are taken from the model specified for this 
 transformer.
+
 FIXME: This is SDF specific and should get pulled out on its own.
 FIXME: currently we try to speed things up if the buffersize is only
-one by removing the index update overhead.  Note that there are other optimizations
-that can be made here (for instance, if we can statically determine all the channel
-references (which is trivially true if there is only one channel), then there 
-is no need to have the index or portbuffer arrays.
+one by removing the index update overhead.  Note that there are other
+optimizations that can be made here (for instance, if we can
+statically determine all the channel references (which is trivially
+true if there is only one channel), then there is no need to have the
+index or portbuffer arrays.
 @author Stephen Neuendorffer
 @version $Id$
 */
@@ -83,12 +86,24 @@ public class InlinePortTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static InlinePortTransformer v(CompositeActor model) { 
         return new InlinePortTransformer(model);
+    }
+
+    /** Return the name of the field that is created to 
+     *  represent the given channel of the given type of the
+     *  given relation.
+     */
+    public static String getBufferFieldName(TypedIORelation relation, 
+            int channel, ptolemy.data.type.Type type) {
+        return "_" + SootUtilities.sanitizeName(relation.getName())
+            + "_" + channel
+            + "_" + SootUtilities.sanitizeName(type.toString());           
     }
 
     public String getDefaultOptions() {
@@ -102,9 +117,92 @@ public class InlinePortTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlinePortTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-      
-        // Some maps we use for storing the assocation between a port and
-        // the fields that we are replacing it with.
+
+        // First create the circular buffers for communication.
+        SootClass modelClass = ModelTransformer.getModelClass();
+        SootMethod clinitMethod;
+        Body clinitBody;
+        if(modelClass.declaresMethodByName("<clinit>")) {
+            clinitMethod = modelClass.getMethodByName("<clinit>");
+            clinitBody = clinitMethod.retrieveActiveBody();
+        } else {
+            clinitMethod = new SootMethod("<clinit>", new LinkedList(),
+                    VoidType.v(), Modifier.PUBLIC | Modifier.STATIC);
+            modelClass.addMethod(clinitMethod);
+            clinitBody = Jimple.v().newBody(clinitMethod);
+            clinitMethod.setActiveBody(clinitBody);
+            clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
+        }
+        Chain clinitUnits = clinitBody.getUnits();
+        
+        // If we're doing deep (SDF) codegen, then create a
+        // queue for every type of every channel of every relation.
+        for(Iterator relations = _model.relationList().iterator();
+            relations.hasNext();) {
+            TypedIORelation relation = (TypedIORelation)relations.next();
+
+            Parameter bufferSizeParameter = 
+                (Parameter)relation.getAttribute("bufferSize");
+            int bufferSize;
+            try {
+                bufferSize = 
+                    ((IntToken)bufferSizeParameter.getToken()).intValue();
+            } catch (Exception ex) {
+                System.out.println("No bufferSize parameter for " + 
+                        relation);
+                continue;
+            }
+            
+            // Determine the types that the relation is connected to.
+            Map typeMap = new HashMap();
+            List destinationPortList = 
+                relation.linkedDestinationPortList();
+            for(Iterator destinationPorts = destinationPortList.iterator();
+                destinationPorts.hasNext();) {
+                TypedIOPort port = (TypedIOPort)destinationPorts.next();
+                ptolemy.data.type.Type type = port.getType();
+                typeMap.put(type.toString(), type);
+            }
+            
+            for(Iterator types = typeMap.keySet().iterator();
+                types.hasNext();) {
+                ptolemy.data.type.Type type = 
+                    (ptolemy.data.type.Type)typeMap.get(types.next());
+                BaseType tokenType =
+                    PtolemyUtilities.getSootTypeForTokenType(type);
+                Type arrayType = ArrayType.v(tokenType, 1);
+                String fieldName = relation.getName() + "_bufferLocal";
+                Local arrayLocal = 
+                    Jimple.v().newLocal(fieldName, arrayType);
+                clinitBody.getLocals().add(arrayLocal);
+                
+                for(int i = 0; i < relation.getWidth(); i++) {
+                    SootField field = new SootField(
+                            getBufferFieldName(relation, i, type),
+                            arrayType,
+                            Modifier.PUBLIC | Modifier.STATIC);
+                    modelClass.addField(field);
+                    // System.out.println("creating field = " + field);
+                    
+                    // Tag the field with the type.
+                    field.addTag(new TypeTag(type));
+                    
+                    // Create the new buffer
+                    // Note: reverse order!
+                    clinitUnits.addFirst(Jimple.v().newAssignStmt(
+                            Jimple.v().newStaticFieldRef(field),
+                            arrayLocal));
+                    clinitUnits.addFirst(
+                            Jimple.v().newAssignStmt(arrayLocal, 
+                                    Jimple.v().newNewArrayExpr(tokenType, 
+                                            IntConstant.v(bufferSize))));
+                    
+                }
+            }
+        }
+     
+        // Some maps we use for storing the assocation between a port
+        // and the fields that we are replacing it with.
         Map portToTypeNameToBufferField = new HashMap();
         Map portToIndexArrayField = new HashMap();
 
@@ -455,8 +553,8 @@ public class InlinePortTransformer extends SceneTransformer {
                                                         unit); 
                                                         
                                                 SootField arrayField = 
-                                                    Scene.v().getMainClass().getFieldByName(
-                                                            ModelTransformer.getBufferFieldName(relation,
+                                                    ModelTransformer.getModelClass().getFieldByName(
+                                                            getBufferFieldName(relation,
                                                                     channel, port.getType()));
                                                         
                                                 // load the buffer array.
@@ -697,8 +795,11 @@ public class InlinePortTransformer extends SceneTransformer {
         return set;
     }            
     
-    private void _createBufferReferences(Entity entity, 
-            SootClass entityClass,
+    // Create references in the given class to the appropriate SDF
+    // commununication buffers for each port in the given entity.
+    // This includes both the communication buffers and index arrays.
+    private void _createBufferReferences(
+            Entity entity, SootClass entityClass,
             Map portToTypeNameToBufferField, Map portToIndexArrayField) {
         // Loop over all the ports of the actor.
         for(Iterator ports = entity.portList().iterator();
@@ -743,6 +844,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                             IntType.v(), 
                                             IntConstant.v(port.getWidth()))),
                             insertPoint);
+                    // Set the index field to point to the new array
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
                                     Jimple.v().newInstanceFieldRef(
@@ -752,11 +854,16 @@ public class InlinePortTransformer extends SceneTransformer {
                             insertPoint);
                 }
 
+                // If the port is an input, then it references
+                // the buffer of its own type.  If the port
+                // is an output, then we might have to convert to
+                // multiple types.  Create a reference to the
+                // port for each type that the port may reference.
                 if(port.isInput()) {
                     ptolemy.data.type.Type type =
                         (ptolemy.data.type.Type)port.getType();
                         
-                    _createBufferReference(entityClass, 
+                    _createPortBufferReference(entityClass, 
                             port, type, typeNameToBufferField);
                 } else if(port.isOutput()) {
                     Set typeSet = _getConnectedTypeList(port);
@@ -765,7 +872,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         ptolemy.data.type.Type type =
                             (ptolemy.data.type.Type)types.next();
                         
-                        _createBufferReference(entityClass, 
+                        _createPortBufferReference(entityClass, 
                                 port, type, typeNameToBufferField);
                     }
                 }
@@ -773,15 +880,18 @@ public class InlinePortTransformer extends SceneTransformer {
         }
     }
     
-    private void _createBufferReference(SootClass entityClass, 
+    // Create a reference in the given class for the given port and
+    // the given type.
+    private void _createPortBufferReference(SootClass entityClass, 
             TypedIOPort port, ptolemy.data.type.Type type, 
             Map typeNameToBufferField) {
         //  System.out.println("creating  buffer reference for " + port + " type = " + type);
         BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
-        SootField bufferField = new SootField("_portbuffer_" + port.getName()
-                + "_" + SootUtilities.sanitizeName(type.toString()),
-                ArrayType.v(tokenType, 2), Modifier.PUBLIC);
+        SootField bufferField =
+            new SootField("_portbuffer_" + port.getName() + "_" +
+                    SootUtilities.sanitizeName(type.toString()),
+                    ArrayType.v(tokenType, 2), Modifier.PUBLIC);
         entityClass.addField(bufferField);
         
         // Store references to the new field.
@@ -801,25 +911,22 @@ public class InlinePortTransformer extends SceneTransformer {
                 continue;
             }
           
-            Local bufferLocal = 
-                Jimple.v().newLocal("buffer", 
-                        ArrayType.v(tokenType, 1));
+            Local bufferLocal = Jimple.v().newLocal("buffer", 
+                    ArrayType.v(tokenType, 1));
             body.getLocals().add(bufferLocal);
-            Local channelLocal = 
-                Jimple.v().newLocal("channel", 
-                        ArrayType.v(tokenType, 2));
+            Local channelLocal = Jimple.v().newLocal("channel", 
+                    ArrayType.v(tokenType, 2));
             body.getLocals().add(channelLocal);
                         
-            // Create the array of port channels
+            // Create the array of port channels.
             body.getUnits().insertBefore(
-                    Jimple.v().newAssignStmt(
-                            channelLocal,
+                    Jimple.v().newAssignStmt(channelLocal,
                             Jimple.v().newNewArrayExpr(
                                     ArrayType.v(tokenType, 1),
                                     IntConstant.v(
                                             port.getWidth()))),
-                    insertPoint);;
-            // store it to the field.
+                    insertPoint);
+            // Set the field to point to the new array.
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(
                             Jimple.v().newInstanceFieldRef(
@@ -834,16 +941,14 @@ public class InlinePortTransformer extends SceneTransformer {
             for(Iterator relations = port.linkedRelationList().iterator();
                 relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation)relations.next();
-                for(int i = 0; 
-                    i < relation.getWidth();
-                    i++, channel++) {
+                for(int i = 0; i < relation.getWidth(); i++, channel++) {
                     // FIXME: buffersize is only one!
                     //  if(bufsize == 1) {
                     //  } else {
-                    // This is the buffer associated with that channel.
+                    // Get the buffer associated with the channel.
                     SootField arrayField = 
-                        Scene.v().getMainClass().getFieldByName(
-                                ModelTransformer.getBufferFieldName(relation, 
+                        ModelTransformer.getModelClass().getFieldByName(
+                                getBufferFieldName(relation, 
                                         i, type));
                     // Load the buffer array.
                     body.getUnits().insertBefore(
@@ -961,8 +1066,8 @@ public class InlinePortTransformer extends SceneTransformer {
                     if(channel == argChannel) {
                         found = true;
                         SootField arrayField = 
-                            Scene.v().getMainClass().getFieldByName(
-                                    ModelTransformer.getBufferFieldName(relation,
+                            ModelTransformer.getModelClass().getFieldByName(
+                                    getBufferFieldName(relation,
                                             channel, type));
                                                         
                         // load the buffer array.

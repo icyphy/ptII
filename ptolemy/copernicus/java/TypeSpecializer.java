@@ -175,7 +175,7 @@ public class TypeSpecializer extends SceneTransformer {
         
         // FIXME: we also need the fields that we represent from
         //
-        for(Iterator fields = Scene.v().getMainClass().getFields().iterator();
+        for(Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             // Ignore things that aren't reference types.
@@ -368,7 +368,7 @@ public class TypeSpecializer extends SceneTransformer {
         }
 
         // FIXME: Loop through all the fields in the main class and update the types.
-        for(Iterator fields = Scene.v().getMainClass().getFields().iterator();
+        for(Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             if(debug) System.out.println("updating types for " + field);

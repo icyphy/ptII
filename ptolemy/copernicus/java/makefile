@@ -145,7 +145,7 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.at targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.clt targetPackage:$(TARGETPACKAGE),iterations:5000 \
+		-p wjtp.clt targetPackage:$(TARGETPACKAGE),iterations:50000 \
 		-p wjtp.fot targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
@@ -158,6 +158,7 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.snapshot2 outDir:jimple2 \
 		-p wjtp.snapshot3 outDir:jimple3 \
 		-p wjtp.snapshot4 outDir:jimple4 \
+		-p wjtp.snapshot5 outDir:jimple5 \
 		-p wjtp.iee debug \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"

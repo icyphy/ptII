@@ -757,8 +757,15 @@ public class PtolemyUtilities {
 
     public static SootField intTypeField;
     public static SootField intMatrixTypeField;
+    
+    // Soot Class representing the ptolemy.actor.TypedIOPort class.
+    public static SootClass ioportClass;
+
+    // Soot Type representing the ptolemy.actor.TypedIOPort class.
+    public static Type ioportType;
+
     public static SootField longTypeField;
-    public static SootField  longMatrixTypeField;
+    public static SootField longMatrixTypeField;
     
     // SootClass representing ptolemy.kernel.util.NamedObj.
     public static SootClass namedObjClass;
@@ -771,8 +778,17 @@ public class PtolemyUtilities {
     // Soot Class representing the ptolemy.kernel.ComponentPort class.
     public static SootClass portClass;
 
+    // Soot Method representing the ptolemy.actor.TypedIOPort.setTypeEquals method.
+    public static SootMethod portSetTypeMethod;
+
     // Soot Type representing the ptolemy.kernel.ComponentPort class.
     public static Type portType;
+    
+    // Soot Class representing the ptolemy.kernel.ComponentRelation class.
+    public static SootClass relationClass;
+
+    // Soot Type representing the ptolemy.kernel.ComponentRelation class.
+    public static Type relationType;
 
     // Soot class representing the ptolemy.data.ScalarToken class.
     public static SootClass scalarTokenClass;
@@ -899,6 +915,17 @@ public class PtolemyUtilities {
         portClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentPort");
         portType = RefType.v(portClass);
+        
+        relationClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentRelation");
+        relationType = RefType.v(relationClass);
+        
+        ioportClass =
+            Scene.v().loadClassAndSupport("ptolemy.actor.TypedIOPort");
+        ioportType = RefType.v(ioportClass);
+        portSetTypeMethod = 
+            Scene.v().getMethod("<ptolemy.actor.TypedIOPort: void setTypeEquals(ptolemy.data.type.Type)>");
+       
         insertLinkMethod = SootUtilities.searchForMethodByName(portClass,
                 "insertLink");
         setInputMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setInput(boolean)>");

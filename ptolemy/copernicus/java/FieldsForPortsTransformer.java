@@ -71,9 +71,9 @@ public class FieldsForPortsTransformer extends SceneTransformer {
       
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
-        _getPortFields(Scene.v().getMainClass(), _model, 
+        _getPortFields(ModelTransformer.getModelClass(), _model, 
                 _model, portToFieldMap);
-        classToObjectMap.put(Scene.v().getMainClass(), _model);
+        classToObjectMap.put(ModelTransformer.getModelClass(), _model);
        
         // Loop over all the actor instance classes and get
         // fields for ports.

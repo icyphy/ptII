@@ -44,8 +44,9 @@ into bytecode using the Jasmin assembler.  The output directory is specified
 using the outDir parameter.  The class files will be placed in
 the appropriate subdirectory of that directory according to their package
 name.
+@author Stephen Neuendorffer
+@version $Id$
 */
-
 public class ClassWriter extends SceneTransformer {
     private static ClassWriter instance = new ClassWriter();
     private ClassWriter() {}
