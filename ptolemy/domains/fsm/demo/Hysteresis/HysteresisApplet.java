@@ -77,9 +77,11 @@ public class HysteresisApplet extends SDFApplet {
 	    // Create and configure ramp source
 	    Ramp rampSig = new Ramp(_toplevel, "rampSig");
 
-	    // Create and configure Sine transformer
-	    Sine sineSig = new Sine(_toplevel, "sineSig");
-	    sineSig.omega.setToken(new DoubleToken(0.1));
+	    // Create and configure TrigFunction transformer
+	    TrigFunction trigFunction =
+		new TrigFunction(_toplevel, "trigFunction");
+	    Scale scale = new Scale(_toplevel, "Scale");
+	    scale.factor.setToken(new DoubleToken(0.1));
 
 	    // Create and configure noise source
             Gaussian noise = new Gaussian(_toplevel, "noise");
@@ -258,8 +260,9 @@ public class HysteresisApplet extends SDFApplet {
                 (ctrlActInPort).link(rel2);
 
                 // Conect the actors.
-                _toplevel.connect(rampSig.output, sineSig.input);
-                _toplevel.connect(sineSig.output, add.plus);
+                _toplevel.connect(rampSig.output, scale.input);
+                _toplevel.connect(scale.output, trigFunction.input);
+                _toplevel.connect(trigFunction.output, add.plus);
                 _toplevel.connect(noise.output, add.plus);
 
                 _toplevel.connect(hdfActorOutPort, hystplotter.input);
