@@ -85,7 +85,7 @@ RELATIVE_PTPACKAGE_DIR = ../..
 PTTMPDIST =	$(PTMPDIR)/$(PTDIST)
 
 # Files to ship in the top level directory
-TOPFILES = configure configure.in copyright.txt\
+TOPFILES = config/confTest.java configure configure.in copyright.txt\
 	mk/ptII.mk.in mk/ptcommon.mk mk/ptdir.mk mk/ptno-compile.mk \
 	mk/ptdist.mk
 
@@ -119,10 +119,10 @@ distsclean:
 # the final distribution
 $(PTTMPDIST): pttmpdist
 pttmpdist: $(PTTMPDIR) $(PTDIST_EX)
-	-mkdir $(PTTMPDIR)/$(PTDIST)
+	-mkdir -p $(PTTMPDIR)/$(PTDIST)
 	(cd $(PTPACKAGE_ROOTDIR); \
-	 $(GNUTAR) -cf - -X $(PTPACKAGE_DIR)/$(PTDIST_EX) \
-		$(PTPACKAGE_DIR) $(TOPFILES)) | \
+	 	$(GNUTAR) -cf - -X $(PTPACKAGE_DIR)/$(PTDIST_EX) \
+			$(PTPACKAGE_DIR) $(TOPFILES)) | \
 	(cd $(PTTMPDIR)/$(PTDIST); $(GNUTAR) -xf -)
 
 $(PTTMPDIR):
@@ -135,7 +135,9 @@ $(PTDIST_EX): $(ROOT)/mk/ptdist.mk
 		echo "PTPACKAGE_DIR is not set in the makefile, so we";\
 		echo "won't create a tar exclude file"; \
 	else \
-		/bin/echo "adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n" > $@ ; \
+		echo "dummy" | \
+		awk '{printf("adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n")}' \
+			> $@; \
 	fi
 
 # Tar file distribution
