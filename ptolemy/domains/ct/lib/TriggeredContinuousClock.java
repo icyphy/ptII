@@ -32,7 +32,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ct.kernel.CTWaveformGenerator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
