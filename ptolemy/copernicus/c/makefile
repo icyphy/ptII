@@ -58,18 +58,18 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
         AnalysisUtilities.java \
+        CallGraphPruner.java \
         ClassStructureGenerator.java \
 	CNames.java \
-	CWriter.java \
-	CodeFileGenerator.java \
+    	CodeFileGenerator.java \
 	CodeGenerator.java \
 	Context.java \
 	CSwitch.java \
+	CWriter.java \
 	ExceptionTracker.java \
 	FileHandler.java \
 	HeaderFileGenerator.java \
         InstanceStructureGenerator.java \
-        InvokeGraphPruner.java \
 	JavaToC.java \
 	Main.java \
         MainFileGenerator.java \
@@ -82,6 +82,8 @@ JSRCS = \
 	RequiredFileGenerator.java \
 	StubFileGenerator.java \
 	Utilities.java
+
+# Omitted Files \
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

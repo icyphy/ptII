@@ -33,9 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import soot.ArrayType;
-import soot.BaseType;
-import soot.RefType;
+import soot.RefLikeType;
 import soot.SootMethod;
 import soot.Type;
 
@@ -126,22 +124,11 @@ public class NativeMethodGenerator {
                 code.append(_indent(1) + cReturnType + " dummy;\n");
                 Type returnType = method.getReturnType();
 
-                // Initializing the variable prevents warnings from gcc -
-                // O2.
-                if (returnType instanceof BaseType) {
-                    // Allocate memory for objects. Set other data types to
-                    // 0.
-                    if (returnType instanceof RefType) {
-                        code.append(_indent(1)
-                                + "dummy = malloc(sizeof(struct "
-                                + cReturnType + "));\n");
-                    }
-                    else {
-                        code.append(_indent(1) + "dummy = 0;\n");
-                    }
-                }
-                else if (returnType instanceof ArrayType) {
+                if (returnType instanceof RefLikeType) {
                     code.append(_indent(1) + "dummy = NULL;\n");
+                }
+                else {
+                    code.append(_indent(1) + "dummy = 0;\n");
                 }
 
                 code.append(_indent(1) + "return dummy;\n");

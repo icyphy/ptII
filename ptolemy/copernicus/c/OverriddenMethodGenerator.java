@@ -34,9 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import soot.ArrayType;
-import soot.BaseType;
-import soot.RefType;
+import soot.RefLikeType;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
@@ -293,6 +291,15 @@ public class OverriddenMethodGenerator {
                 "<java.math.BigDecimal: void <clinit>()>");
         // Uses classloader indirectly.
 
+        _forceOverriddenMethods.add(
+                "<java.lang.FloatingDecimal: void <clinit>()>");
+        // Causes segfault.
+
+        _forceOverriddenMethods.add(
+                "<java.lang.FDBigInt: void <clinit>()>");
+        // Causes segfault.
+
+
         ///////// Methods replaced with actual code ////////
 
         // Methods that provide basic I/O functionality in
@@ -332,6 +339,30 @@ public class OverriddenMethodGenerator {
         // java.lang.Class.
         _forceOverriddenMethods.add(
                 "<java.lang.Throwable: java.lang.String toString()>");
+
+
+        _forceOverriddenMethods.add(
+                "<java.util.PropertyPermissionCollection: void <clinit>()>");
+        // Threw segfault.
+
+
+        _forceOverriddenMethods.add(
+                "<java.lang.CharacterDataLatin1: void <clinit>()>");
+        // Threw segfault.
+
+        _forceOverriddenMethods.add(
+                "<java.io.FileSystem: void <clinit>()>");
+        // Segfaulted.
+
+        _forceOverriddenMethods.add(
+                "<java.lang.CharacterData: void <clinit>()>");
+        //Segfaulted.
+
+        _forceOverriddenMethods.add(
+                "<java.math.BitSieve: void <clinit>()>");
+        _forceOverriddenMethods.add(
+                "<java.io.FilePermissionCollection: void <clinit>()>");
+        //Segfaulted.
 
 
 
@@ -442,24 +473,14 @@ public class OverriddenMethodGenerator {
                 code.append(_indent(1) + cReturnType + " dummy;\n");
                 Type returnType = method.getReturnType();
 
-                // Initializing the variable prevents warnings from gcc -
-                // O2.
-                if (returnType instanceof BaseType) {
-                    // Allocate memory for objects. Set other data types to
-                    // 0.
-                    if (returnType instanceof RefType) {
-                        code.append(_indent(1)
-                                + "dummy = malloc(sizeof(struct "
-                                + cReturnType + "));\n");
-                    }
-                    else {
-                        code.append(_indent(1) + "dummy = 0;\n");
-                    }
-                }
-                else if (returnType instanceof ArrayType) {
+                if (returnType instanceof RefLikeType) {
                     code.append(_indent(1) + "dummy = NULL;\n");
                 }
-
+                // Initializing the variable prevents warnings from gcc -
+                // O2.
+                else {
+                    code.append(_indent(1) + "dummy = 0;\n");
+                }
                 code.append(_indent(1) + "return dummy;\n");
             }
         }

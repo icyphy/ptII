@@ -108,7 +108,8 @@ public class MakeFileGenerator {
             // FIXME: cd to $(PTII) so that we don't end up with a relative
             // path in the ld path under Solaris which will cause problems
             // when we move the executable around
-            code.append("GC_LIB = -Wl,-R`cd $(PTII); pwd`/lib -L$(PTII)/lib -lgc\n");
+            code.append("GC_LIB = -Wl,-R`cd $(PTII);"
+                    + " pwd`/lib -L$(PTII)/lib -lgc\n");
             code.append("GC_DIR = " + gcDir + "\n\n");
         }
 
@@ -141,7 +142,8 @@ public class MakeFileGenerator {
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
                 + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n"
-                + "\t" + CNames.classNameToFileName(className) + "_main.c\\\n");
+                + "\t"
+                + CNames.classNameToFileName(className) + "_main.c\\\n");
 
         HashSet libSources = RequiredFileGenerator.generateUserClasses(code);
 
@@ -166,7 +168,8 @@ public class MakeFileGenerator {
                 + StubFileGenerator.stubFileNameSuffix() + ")\n");
 
         // Main Target.
-        code.append("\n"+ className + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
+        code.append("\n"+ className
+                    + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
 
         code.append("\tgcc $(CFLAGS) $(OBJECTS) $(LIB_FILE) ");
         if (gc) {

@@ -80,7 +80,6 @@ public class JavaToC {
         }
 
         // Initialize code generation.
-        Scene.v().reset();
         Scene.v().setSootClassPath(classPath);
         Scene.v().loadClassAndSupport(className);
         RequiredFileGenerator RFG = new RequiredFileGenerator();

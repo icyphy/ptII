@@ -69,6 +69,7 @@ public class InterfaceLookupGenerator {
         }
         // Nothing needs to be done if no methods may need to be looked up.
         HashMap interfaceMethodsMap = getLookupMethods(source);
+
         if (interfaceMethodsMap.size() == 0) {
             return code.toString();
         }
@@ -114,7 +115,7 @@ public class InterfaceLookupGenerator {
 
     /** Returns the list of all methods that may need to be looked up.
      * Provides a mapping from the interface's method to the corresponding
-     * method in the class that implements it
+     * method in the class that implements it.
      * @param source The class for which this set is to be generated.
      * @return The set of all methods that may need to be looked up.
      */
@@ -133,8 +134,7 @@ public class InterfaceLookupGenerator {
                 SootMethod method = (SootMethod) methods.next();
 
                 // Find out whether this method is supported. Its supported
-                // if the source either declares on inherits this method.
-
+                // if the source either declares or inherits this method.
                 if (source.declaresMethod(method.getSubSignature())) {
                     interfaceMethodMap.put(method,
                             source.getMethod(method.getSubSignature()));

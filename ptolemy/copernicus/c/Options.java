@@ -48,7 +48,7 @@ key-value string pairs. Possible options are:
 <p>
 <b> pruneLevel </b> <br>
 <i> 0 </i> no code pruning done. <br>
-<i> 1 </i> Code Pruning done by InvokeGraphPruner.
+<i> 1 </i> Code Pruning done by CallGraphPruner.
 
 <p>
 <b> vta </b> <br>

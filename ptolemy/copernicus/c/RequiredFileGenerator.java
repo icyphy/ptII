@@ -240,7 +240,7 @@ public class RequiredFileGenerator {
         SootClass source = Scene.v().getSootClass(className);
 
 
-        InvokeGraphPruner pruner = new InvokeGraphPruner(source);
+        CallGraphPruner pruner = new CallGraphPruner(source);
         _requiredMethods = pruner.getReachableMethods();
         _requiredClasses = pruner.getReachableClasses();
         _requiredFields = pruner.getReachableFields();

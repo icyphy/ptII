@@ -34,7 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.copernicus.c;
 
 import soot.ArrayType;
-import soot.BaseType;
+import soot.PrimType;
 import soot.ByteType;
 import soot.IntType;
 import soot.Local;
@@ -47,6 +47,7 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
+import soot.Scene;
 import soot.jimple.AddExpr;
 import soot.jimple.AndExpr;
 import soot.jimple.ArrayRef;
@@ -580,6 +581,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseLookupSwitchStmt(LookupSwitchStmt stmt) {
         StringBuffer code = new StringBuffer();
         int numberOfTargets = stmt.getTargetCount();
+        int maxLong = 2147483647;
 
         code.append("switch ("
                 + CNames.localNameOf((Local)stmt.getKey())
@@ -588,7 +590,23 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         indentLevel++;
 
         for (int i = 0; i < numberOfTargets; i++) {
-            code.append(_indent() + "case " + stmt.getLookupValue(i) + ": goto "
+            int dummyLookupValue = stmt.getLookupValue(i);
+
+            //FIXME: Integer Compatibility issue.
+            if (dummyLookupValue > maxLong) {
+                dummyLookupValue = maxLong;
+                code.append(Utilities.comment(
+                        "Warning: index out of range of long: "
+                        + "truncated by CSWitch.caseLookupSwitchStmt()"));
+            }
+            else if(dummyLookupValue < -maxLong) {
+                dummyLookupValue = -maxLong;
+                code.append(Utilities.comment(
+                        "Warning: index out of range of long: "
+                        + "truncated by CSWitch.caseLookupSwitchStmt()"));
+            }
+
+            code.append(_indent() + "case " + dummyLookupValue + ": goto "
                     + getLabel(stmt.getTarget(i)) + ";\n");
         }
 
@@ -803,7 +821,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // implement that in C yet.
         Type dataType = v.getOp1().getType();
 
-        if (dataType instanceof BaseType) {
+        if (dataType instanceof PrimType) {
             if (dataType instanceof ByteType) {
                 dataWidth = 8;
             }
@@ -843,7 +861,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // implement that in C yet.
         Type dataType = v.getOp1().getType();
 
-        if (dataType instanceof BaseType) {
+        if (dataType instanceof PrimType) {
             if (dataType instanceof ByteType) {
                 dataWidth = 8;
             }
@@ -1074,6 +1092,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     public void caseTableSwitchStmt(TableSwitchStmt stmt) {
         StringBuffer code = new StringBuffer();
+
         int min = stmt.getLowIndex();
         int max = stmt.getHighIndex();
 
@@ -1142,7 +1161,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         // The "ifs" are in this order so that only the shortest data type
         // is chosen.
-        if (dataType instanceof BaseType) {
+        if (dataType instanceof PrimType) {
             if (dataType instanceof ByteType) {
                 dataWidth = 8;
             }
@@ -1347,47 +1366,40 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     /** Allocate memory for a given array.
      */
     protected String _generateArrayAllocation(Type elementType,
-            int dimensionsToFill, String sizeCode) {
-        if (!((elementType instanceof BaseType) ||
-                (elementType instanceof ArrayType))) {
-            _unexpectedCase(elementType, "unsupported array element type");
-            return "";
+        int dimensionsToFill, String sizeCode) {
+        int dimensions;
+        // Determine the name of the run-time variable that
+        // represents the array element class.
+        String elementClass;
+        String elementSizeType = "void*";
+
+        // The number of dimensions is always 1, unless the element is
+        // an array.
+        dimensions = 1;
+        if (elementType instanceof ArrayType) {
+            dimensions = ((ArrayType)elementType).numDimensions;
+            elementType = ((ArrayType)elementType).baseType;
+        }
+        if (elementType instanceof RefType) {
+            elementClass = CNames.typeNameOf(elementType);
         }
         else {
-            int dimensions;
-            // Determine the name of the run-time variable that
-            // represents the array element class.
-            String elementClass;
-            String elementSizeType = "void*";
-
-            // The number of dimensions is always 1, unless the element is
-            // an array.
-            dimensions = 1;
-            if (elementType instanceof ArrayType) {
-                dimensions = ((ArrayType)elementType).numDimensions;
-                elementType = ((ArrayType)elementType).baseType;
-            }
-            if (elementType instanceof RefType) {
-                elementClass = CNames.typeNameOf(elementType);
-            }
-            else {
-                // If its a primitive type.
-                elementClass = CNames.arrayClassPrefix +
-                    CNames.typeNameOf(elementType) + "_elem";
-                elementSizeType = CNames.typeNameOf(elementType);
-            }
-
-            // Generate code for a call to a run-time function that
-            // will allocate an array. This code should be completed
-            // by the calling method with the appropriate dimension
-            // and size.
-            return CNames.arrayAllocateFunction + "((PCCG_CLASS_PTR)"
-                + " malloc(sizeof(" + elementClass + "))"
-                + ", sizeof(" + elementSizeType + "), "
-                + dimensions + ", " + dimensionsToFill
-                + ", " + sizeCode
-                + ")";
+            // If its a primitive type.
+            elementClass = CNames.arrayClassPrefix +
+                CNames.typeNameOf(elementType) + "_elem";
+            elementSizeType = CNames.typeNameOf(elementType);
         }
+
+        // Generate code for a call to a run-time function that
+        // will allocate an array. This code should be completed
+        // by the calling method with the appropriate dimension
+        // and size.
+        return CNames.arrayAllocateFunction + "((PCCG_CLASS_PTR)"
+            + " malloc(sizeof(" + elementClass + "))"
+            + ", sizeof(" + elementSizeType + "), "
+            + dimensions + ", " + dimensionsToFill
+            + ", " + sizeCode
+            + ")";
     }
 
     /** Generate code for a binary operation expression.
@@ -1434,6 +1446,19 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         SootMethod method = expression.getMethod();
         SootClass declaringClass = method.getDeclaringClass();
 
+        // If the declaring class is an interface extending a method in
+        // Object, then the first argument to non-static methods will be
+        // the interface, not Object.
+        if ((expression instanceof VirtualInvokeExpr)
+                && (Scene.v().getSootClass("java.lang.Object")
+                        .declaresMethod(method.getSubSignature()))
+            ){
+            Type baseType = expression.getBase().getType();
+            if (baseType instanceof RefType) {
+                declaringClass = ((RefType)baseType).getSootClass();
+            }
+        }
+
         StringBuffer code = new StringBuffer();
 
         expression.getBase().apply(this);
@@ -1449,10 +1474,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         String cast = new String();
 
-
+        // Default cast is used only if the declaring class does not seem
+        // to inherit this method.
         cast = "("
             + CNames.instanceNameOf(declaringClass)
-            + "/* actual cast */)";
+            + "/* default cast */)";
 
         Iterator inheritedMethods = MethodListGenerator
             .getInheritedMethods(declaringClass)

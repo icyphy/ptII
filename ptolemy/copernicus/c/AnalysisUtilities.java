@@ -152,7 +152,7 @@ public class AnalysisUtilities{
     /** Return the list of interfaces, and all superInterfaces of these
      * interfaces implemented by a given class.
      * @param source The class to analyze.
-     * @return The list of interfaces it can direct support.
+     * @return The list of interfaces it can support.
      */
     public static HashSet getSuperInterfacesOf(SootClass source) {
         HashSet interfaceSet = new HashSet();
@@ -162,7 +162,6 @@ public class AnalysisUtilities{
 
         while (!gray.isEmpty()) {
             SootClass s = (SootClass)gray.getFirst();
-
             if (s.isInterface()) {
                 Iterator classes = s.getInterfaces().iterator();
 

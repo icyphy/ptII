@@ -478,7 +478,7 @@ public class MethodCodeGenerator {
             if (newCode.length() > 0) {
                 code.append(_indent(indentLevel)).append(newCode + ";");
                 code.append("/* "
-                        + unit.toBriefString().replace('/', '@') + " */");
+                        + unit.toString().replace('/', '@') + " */");
                 code.append("\n");
             }
 

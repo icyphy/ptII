@@ -130,12 +130,10 @@ public class CodeFileGenerator extends CodeGenerator {
 
 
         // Generate the code for all of the methods.
-        // JDK1.4 under Solaris fails if the next line is iterator()
-        // instead of snapshotIterator()
         MethodCodeGenerator methodCodeGenerator =
             new MethodCodeGenerator(_context, _requiredTypeMap);
 
-        methods = source.getMethods().snapshotIterator();
+        methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             SootMethod thisMethod = (SootMethod)methods.next();
             String methodCode = new String();
@@ -358,12 +356,11 @@ public class CodeFileGenerator extends CodeGenerator {
             SootMethod method = (SootMethod)(methods.next());
 
             // Method Pointer Initialization is not done for methods that
-            // are not required, static methods, and abstracxt methods.
+            // are not required, static methods, and abstract methods.
             if ((!method.isStatic())
                     && RequiredFileGenerator.isRequired(method)
                     && (!method.isAbstract())
                 ) {
-
                 code.append(_indent(1) + argumentReference
                         + "methods." + CNames.methodNameOf(method) + " = "
                         + CNames.functionNameOf(method) + ";\n");
