@@ -30,14 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib;
 
-// Java imports.
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.StringTokenizer;
-
-// Ptolemy imports.
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
@@ -48,6 +40,14 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.StringTokenizer;
+
+//////////////////////////////////////////////////////////////////////////
+//// Reader
 /**
 This actor reads tokens from an URL, and output them. Each entry
 in the file corresponds to one iteration. If there are multiple
@@ -63,7 +63,8 @@ If the "URL" parameter is an empty string, then the System.in
 is used for input.
 
 FIXME: The type of the output ports is set to Double for now.
-       We are waiting for the mechanism on the reflection of types.
+       It should read a line in the prefire() and refer the type
+       from there.
 
 @author  Jie Liu
 @version $Id$
@@ -206,7 +207,7 @@ public class Reader extends Source {
         }
     }
 
-    /** initialize the data array.
+    /** Open the file at the URL, and set the width of the output.
      */
     public void initialize() throws IllegalActionException {
         _dataSize = output.getWidth();
