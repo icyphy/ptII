@@ -84,5 +84,8 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" Multimode.xml
 
+# Get the rules for codegen.  Run "make demo_gdk" to run Giotto.
+include $(ROOT)/ptolemy/domains/giotto/kernel/giotto.mk
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -83,13 +83,8 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" Simple.xml
 
-GIOTTO_DIR=c:/Program Files/Giotto/giotto1.0.1
-gdk:
-	"$(JAVA)" -classpath ".$(CLASSPATHSEPARATOR)$(GIOTTO_DIR)" giotto.gdk.Start simple.giotto
-
-compile_simple:
-	#(cd "$(GIOTTO_DIR)/giotto/functionality/code/simple"; "$(JAVAC)" -classpath "$(GIOTTO_DIR)/gdk.jar" *.java)
-	(cd simple; "$(JAVAC)" -classpath "$(GIOTTO_DIR)/gdk.jar" *.java)
+# Get the rules for codegen.  Run "make demo_gdk" to run Giotto.
+include $(ROOT)/ptolemy/domains/giotto/kernel/giotto.mk
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
