@@ -1,4 +1,4 @@
-/* Load a sequence of binary images from files.
+/* Calculates the discrete cosine transform of a RenderedOp.
 
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
@@ -28,42 +28,60 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
-import ptolemy.actor.lib.Transformer;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-
-import java.awt.image.DataBuffer;
 import java.awt.image.renderable.ParameterBlock;
-import java.awt.image.BufferedImage;
 
 import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
-public class JAIDCT extends Transformer {
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// JAIDCT
+/**
+   Calculate the discrete cosine transform of an image.  Even though the
+   input image data may be 3 bytes (one for each band) per pixel, the 
+   output image data is of a higher resolution, not suitable for 
+   displaying or saving.  To display or save the output of this image,
+   use the JAIDataCaster actor to cast the data to an appropriate type
+   (for instance, byte).
+
+   @see JAIDataCaster
+   @see JAIIDCT
+   @author James Yeh
+   @version $Id$
+ */
+
+public class JAIDCT extends Transformer {
+    
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public JAIDCT(CompositeEntity container, String name)
              throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-
     }
 
+    /** Fire this actor.
+     *  Output the discrete cosine transform of the inputted image.
+     *  @exception IllegalActionException If a contained method throws it.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
-        dctParameters = new ParameterBlock();
+        ParameterBlock dctParameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
-        image = jaiImageToken.getValue();
-        //dctParameters.addSource((PlanarImage)image);
-        dctParameters.addSource(image);
-        RenderedOp Dct = JAI.create("dct", dctParameters);        
-	output.send(0, new JAIImageToken(Dct));
+        RenderedOp oldImage = jaiImageToken.getValue();
+        dctParameters.addSource(oldImage);
+        RenderedOp newImage = JAI.create("dct", dctParameters);        
+	output.send(0, new JAIImageToken(newImage));
     }
-    public RenderedOp image;
-    public ParameterBlock dctParameters;
-    public ParameterBlock _parameters;
 }
