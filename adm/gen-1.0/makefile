@@ -381,6 +381,11 @@ remote1distjavadocs:
 # Tests in actor/lib/auto use vergil and moml
 # We include the following directories so that they will appear in the
 # code coverage stats even though they are graphical: gui actor/gui
+#
+# Don't run
+#	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman 
+# it hangs
+#
 JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
@@ -422,7 +427,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/test \
