@@ -277,6 +277,13 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	    set iterationsValue [[java::cast ptolemy.data.IntToken \
 		    [[java::cast ptolemy.data.expr.Parameter \
 		    $iterations]  getToken]] doubleValue]
+	    if { [expr { ceil($iterationsValue) \
+		    == floor($iterationsValue)} ] } {
+		# If the floor and the ceiling are the same this this
+		# is an integer value, so round it.
+		# If we don't then we are likely to get a NumberFormatException
+		set iterationsValue [expr {round ($iterationsValue)}]
+	    }
 	    puts "iterationsValue = $iterationsValue"
 	    if { "$iterationsValue" == "0"} {
 		puts "WARNING: iterationsValue was 0, defaulting to 200"
