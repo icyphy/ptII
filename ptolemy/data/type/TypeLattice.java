@@ -167,7 +167,8 @@ public class TypeLattice {
          */
         public int compare(Object t1, Object t2) {
             if ( !(t1 instanceof Type) || !(t2 instanceof Type)) {
-                throw new IllegalArgumentException("TheTypeLattice.compare: "
+                throw new IllegalArgumentException(
+                        "TheTypeLattice.compare: "
                         + "Arguments are not instances of Type: "
                         + " type1 = " + t1 + ", type2 = " + t2);
             }
@@ -175,18 +176,47 @@ public class TypeLattice {
             Type ct1 = (Type)t1;
             Type ct2 = (Type)t2;
 
+            Type t1Rep = _toRepresentative(ct1);
+            Type t2Rep = _toRepresentative(ct2);
+
+            if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
+                return ((StructuredType)t1)._compare((StructuredType)t2);
+            } else if (_basicLattice.containsNodeWeight(t1Rep) &&
+                    _basicLattice.containsNodeWeight(t2Rep)) {
+                // Both are not the same structured type, so their relation is 
+                // defined by their relation in the basic lattice.
+                return _basicLattice.compare(t1Rep, t2Rep);
+            } else {
+                // Both arguments are not the same structured type, and
+                // at least one is user defined, so their relation is
+                // rather simple.
+                if (t1Rep.equals(t2Rep)) {
+                    return SAME;
+                } else if (t1Rep == BaseType.UNKNOWN ||
+                           t2Rep == BaseType.GENERAL) {
+                    return LOWER;
+                } else if (t2Rep == BaseType.UNKNOWN ||
+                           t1Rep == BaseType.GENERAL) {
+                    return HIGHER;
+                } else {
+                    return INCOMPARABLE;
+                }
+            }
+            
+            /*
             if (ct1 instanceof BaseType && ct2 instanceof BaseType) {
                 return _basicLattice.compare(ct1, ct2);
             }
-
-            Type t1Rep = _toRepresentative(ct1);
-            Type t2Rep = _toRepresentative(ct2);
 
             if ( !_basicLattice.containsNodeWeight(t1Rep) ||
                     !_basicLattice.containsNodeWeight(t2Rep)) {
                 // one or both arguments are user defined
                 if (t1Rep == t2Rep) {
                     return SAME;
+                } else if (t1Rep == BaseType.UNKNOWN) {
+                    return LOWER;
+                } else if (t2Rep == BaseType.UNKNOWN) {
+                    return HIGHER;
                 } else {
                     return INCOMPARABLE;
                 }
@@ -201,6 +231,7 @@ public class TypeLattice {
             // t1 and t2 are of different structured type, or one is
             // a base type.
             return _basicLattice.compare(t1Rep, t2Rep);
+             */
         }
 
         /** Throw an exception. This operation is not supported since the
@@ -229,42 +260,80 @@ public class TypeLattice {
 
             Type ct1 = (Type)t1;
             Type ct2 = (Type)t2;
-
-            if (t1 instanceof BaseType && t2 instanceof BaseType) {
-                return _basicLattice.greatestLowerBound(ct1, ct2);
-            }
-
+         
             Type t1Rep = _toRepresentative(ct1);
             Type t2Rep = _toRepresentative(ct2);
-
-            if ( !_basicLattice.containsNodeWeight(t1Rep) ||
-                    !_basicLattice.containsNodeWeight(t2Rep)) {
-                // one or both arguments are user defined
-                if (t1Rep == t2Rep) {
-                    return ct1;
+         
+            if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
+                return ((StructuredType)t1)._greatestLowerBound(
+                        (StructuredType)t2);
+            } else if (_basicLattice.containsNodeWeight(t1Rep) &&
+                    _basicLattice.containsNodeWeight(t2Rep)) {
+                // Both are not the same structured type, so their relation is 
+                // defined by their relation in the basic lattice.
+                int relation = _basicLattice.compare(t1Rep, t2Rep);
+                if (relation == SAME) {
+                    return t1;
+                } else if (relation == LOWER) {
+                    return t1;
+                } else if (relation == HIGHER) {
+                    return t2;
+                } else { // INCOMPARABLE
+                    return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
+                }
+            } else {
+                // Both arguments are not the same structured type, and
+                // at least one is user defined, so their relation is
+                // rather simple.
+                if (t1Rep.equals(t2Rep)) {
+                    return t1;
+                } else if (t1Rep == BaseType.UNKNOWN ||
+                           t2Rep == BaseType.GENERAL) {
+                    return t1;
+                } else if (t2Rep == BaseType.UNKNOWN ||
+                           t1Rep == BaseType.GENERAL) {
+                    return t2;
                 } else {
                     return bottom();
                 }
             }
 
-            if (t1Rep == t2Rep) {
-                // t1 and t2 are of the same structured type
-                return ((StructuredType)ct1)._greatestLowerBound(
-                        (StructuredType)ct2);
-            }
+   //          if (t1 instanceof BaseType && t2 instanceof BaseType) {
+//                 return _basicLattice.greatestLowerBound(ct1, ct2);
+//             }
 
-            // t1 and t2 are of different structured type, or one is
-            // a base type. If they are comparable, then one of them
-            // must be a base type.
-            int compareResult = _basicLattice.compare(t1Rep, t2Rep);
-            if (compareResult == HIGHER || compareResult == SAME) {
-                return ct2;
-            } else if (compareResult == LOWER) {
-                return ct1;
-            } else {
-                // incomparable, GLB should be UNKNOWN.
-                return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
-            }
+//             if ( !_basicLattice.containsNodeWeight(t1Rep) ||
+//                     !_basicLattice.containsNodeWeight(t2Rep)) {
+//                 // one or both arguments are user defined
+//                 if (t1Rep == t2Rep) {
+//                     return ct1;
+//                 } else if (t1Rep == BaseType.GENERAL) {
+//                     return t2Rep;
+//                 } else if (t2Rep == BaseType.GENERAL) {
+//                     return t1Rep;
+//                 } else {
+//                     return bottom();
+//                 }
+//             }
+
+//             if (t1Rep == t2Rep) {
+//                 // t1 and t2 are of the same structured type
+//                 return ((StructuredType)ct1)._greatestLowerBound(
+//                         (StructuredType)ct2);
+//             }
+
+//             // t1 and t2 are of different structured type, or one is
+//             // a base type. If they are comparable, then one of them
+//             // must be a base type.
+//             int compareResult = _basicLattice.compare(t1Rep, t2Rep);
+//             if (compareResult == HIGHER || compareResult == SAME) {
+//                 return ct2;
+//             } else if (compareResult == LOWER) {
+//                 return ct1;
+//             } else {
+//                 // incomparable, GLB should be UNKNOWN.
+//                 return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
+//             }
         }
 
         /** Return the greatest lower bound of a subset.
@@ -362,41 +431,82 @@ public class TypeLattice {
             Type ct1 = (Type)t1;
             Type ct2 = (Type)t2;
 
-            if (ct1 instanceof BaseType && ct2 instanceof BaseType) {
-                return _basicLattice.leastUpperBound(ct1, ct2);
-            }
-
             Type t1Rep = _toRepresentative(ct1);
             Type t2Rep = _toRepresentative(ct2);
-
-            if ( !_basicLattice.containsNodeWeight(t1Rep) ||
-                    !_basicLattice.containsNodeWeight(t2Rep)) {
-                // one or both arguments are user defined
-                if (t1Rep == t2Rep) {
-                    return ct1;
+         
+            if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
+                return ((StructuredType)t1)._leastUpperBound(
+                        (StructuredType)t2);
+            } else if (_basicLattice.containsNodeWeight(t1Rep) &&
+                    _basicLattice.containsNodeWeight(t2Rep)) {
+                // Both are not the same structured type, so their relation is 
+                // defined by their relation in the basic lattice.
+                int relation = _basicLattice.compare(t1Rep, t2Rep);
+                if (relation == SAME) {
+                    return t1;
+                } else if (relation == LOWER) {
+                    return t2;
+                } else if (relation == HIGHER) {
+                    return t1;
+                } else { // INCOMPARABLE
+                    return _basicLattice.leastUpperBound(t1Rep, t2Rep);
+                }
+            } else {
+                // Both arguments are not the same structured type, and
+                // at least one is user defined, so their relation is
+                // rather simple.
+                if (t1Rep.equals(t2Rep)) {
+                    return t1;
+                } else if (t1Rep == BaseType.UNKNOWN ||
+                           t2Rep == BaseType.GENERAL) {
+                    return t2;
+                } else if (t2Rep == BaseType.UNKNOWN ||
+                           t1Rep == BaseType.GENERAL) {
+                    return t1;
                 } else {
                     return top();
                 }
             }
 
-            if (t1Rep == t2Rep) {
-                // t1 and t2 are of the same structured type
-                return ((StructuredType)ct1)._leastUpperBound(
-                        (StructuredType)ct2);
-            }
+//             if (ct1 instanceof BaseType && ct2 instanceof BaseType) {
+//                 return _basicLattice.leastUpperBound(ct1, ct2);
+//             }
 
-            // t1 and t2 are of different structured type, or one is
-            // a base type. If they are comparable, then one of them
-            // must be a base type.
-            int compareResult = _basicLattice.compare(t1Rep, t2Rep);
-            if (compareResult == HIGHER || compareResult == SAME) {
-                return ct1;
-            } else if (compareResult == LOWER) {
-                return ct2;
-            } else {
-                // incomparable, LUB should be General
-                return _basicLattice.leastUpperBound(t1Rep, t2Rep);
-            }
+//             Type t1Rep = _toRepresentative(ct1);
+//             Type t2Rep = _toRepresentative(ct2);
+
+//             if ( !_basicLattice.containsNodeWeight(t1Rep) ||
+//                     !_basicLattice.containsNodeWeight(t2Rep)) {
+//                 // one or both arguments are user defined
+//                 if (t1Rep == t2Rep) {
+//                     return ct1;
+//                 } else if (t1Rep == BaseType.UNKNOWN) {
+//                     return t2Rep;
+//                 } else if (t2Rep == BaseType.UNKNOWN) {
+//                     return t1Rep;
+//                 } else {
+//                     return top();
+//                 }
+//             }
+
+//             if (t1Rep == t2Rep) {
+//                 // t1 and t2 are of the same structured type
+//                 return ((StructuredType)ct1)._leastUpperBound(
+//                         (StructuredType)ct2);
+//             }
+
+//             // t1 and t2 are of different structured type, or one is
+//             // a base type. If they are comparable, then one of them
+//             // must be a base type.
+//             int compareResult = _basicLattice.compare(t1Rep, t2Rep);
+//             if (compareResult == HIGHER || compareResult == SAME) {
+//                 return ct1;
+//             } else if (compareResult == LOWER) {
+//                 return ct2;
+//             } else {
+//                 // incomparable, LUB should be General
+//                 return _basicLattice.leastUpperBound(t1Rep, t2Rep);
+//             }
         }
 
         /** Return the least upper bound of a subset.
@@ -527,7 +637,7 @@ public class TypeLattice {
         ///////////////////////////////////////////////////////////////
         ////                      private methods                  ////
 
-            // If the argument is a structured type, return its representative;
+        // If the argument is a structured type, return its representative;
         // otherwise, return the argument. In the latter case, the argument
         // is either a base type or a user defined type that is not a
         // structured type.
