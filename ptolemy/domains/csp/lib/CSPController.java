@@ -31,6 +31,7 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.*;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.process.*;
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
